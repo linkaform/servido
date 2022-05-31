@@ -80,7 +80,7 @@ RUN apt-get update && \
     build-essential \
     python-dev \
     vim \
-    less 
+    less
 
 RUN rm /tmp/uwsgi-2.0.20.tar.gz
 
@@ -92,7 +92,7 @@ COPY --chown=www-data:www-data ./docker/uwsgi/servido.ini /etc/uwsgi/apps-enable
 
 #NGINX SETUP
 COPY --chown=www-data:www-data ./nginx /etc/nginx
-
+RUN rm /etc/nginx/certs/*
 
 #ENTRYPOINT
 
@@ -100,4 +100,5 @@ COPY --chown=www-data:www-data ./docker /docker/
 
 COPY --chown=www-data:www-data ./apps /srv/servido/apps
 COPY --chown=www-data:www-data ./servido_api /srv/servido/servido_api
+RUN rm /srv/servido/servido_api/certs/*
 COPY --chown=www-data:www-data ./servido.py /srv/servido/servido.py

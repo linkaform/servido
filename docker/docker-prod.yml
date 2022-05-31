@@ -11,8 +11,9 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    #volumes:
-     # - ./sites-enabled:/etc/nginx/sites-enabled
+    volumes:
+      - ../nginx/certs:/etc/nginx/certs
+      - ../servido_api/certs:/srv/servido/servido_api/certs
      # - ./:/docker/
      # - ../:/srv/servido/
      # - ../nginx:/etc/nginx
