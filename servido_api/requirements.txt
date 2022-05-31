@@ -1,0 +1,8 @@
+cryptography==3.4.7
+Flask
+#flask_jwt
+#Flask-JWT-Extended
+flask-cors
+flask_pymongo
+jsonschema==3.2.0
+requests

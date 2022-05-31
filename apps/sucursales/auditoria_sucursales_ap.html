@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Apymsa</title>
+  <meta name="title" content="Apymsa">
+  <meta name="description" content="Reportes Apymsa">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <link type="image/x-icon" rel="shortcut icon" href="../img/favicon.ico">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+  <nav class="navbar header">
+    <div class="navbar-brand">
+      <div class="row">
+        <div class="col-md-6"><a href="reportes.html"><div class="logo_marca"><img src="https://app.linkaform.com/img/login-linkaform-logo.png" alt="PC Link" id="image_log"></div></a></div>
+        <div class="col-md-6"><h1>Reportes Auditoria Excelencia Operativa</h1></div>
+      </div>
+      <div class="container">
+        <div class="back" id="atras"><i class="fa fa-solid fa-arrow-left"></i>Atras</div>
+        <div class="close" id="close_sesion"><a onclick="closeSession();"><i class="fa fa-regular fa-lock"></i>Cerrar Sesión</a></div>
+      </div>
+    </div>
+  </nav>
+  <div class="loading-container">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  <div style="width:100%">
+    <div class="app" id="appCont">
+      <div class="row inicio_ses" id="inicio_ses">
+        <div class="errorLogin" id="errorLog"></div>
+        <div class="control">
+          <div class="renglon">
+            <h3>Usuario: </h3>
+            <input class="form-control ds-input" id="user" name="user" value="">
+          </div>
+          <div class="renglon">
+            <h3>Contraseña: </h3>
+            <input class="form-control ds-input" type="password" id="pass" name="pass" value="">
+          </div>
+          <div class="controlBtn">
+            <div class="btn btn-primary" onclick="login()">Login</div>
+            <div class="btn btn-primary" onclick="reset()">Reset</div>
+          </div>
+        </div>
+      </div>
+      <div id="title_demo" style="margin-bottom: 20px;">
+        <center>
+          <h1><span>Datos demo</span>&nbsp;&nbsp;</h1>
+        </center>
+      </div>
+      <!--firstParameters -->
+      <div id="firstParameters" class="row div_filter" >
+        <div class="renglon col-6 row">
+          <div class="col-sm-12 col-md-6 col-lg-6">
+            <h4>Fecha Desde: </h4>
+            <input class="form-control ds-input" type="date" id="date_from" name="date_from" value="">
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-6">
+            <h4>Fecha Hasta: </h4>
+            <input class="form-control ds-input" type="date" id="date_to" name="date_to" value="">
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-6">
+            <h4>Regional: </h4>
+            <select class="form-control ds-input" id="catalog-79950-level-1" name="regional" value="">
+              <option value="--">Select Regional</option>
+            </select>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-6">
+            <h4>Perfil: </h4>
+            <select class="form-control ds-input" id="perfil" name="perfil" value="">
+              <option value="--">--Seleccione--</option>
+            </select>
+          </div>
+          <br>
+          <div class="col-sm-6 col-md-6 col-lg-6">
+            <div class="btn btn-primary" onclick="runFirstElement()">Run</div>
+          </div>
+        </div>
+        <div class="col-6 row">
+          <div class="col-sm-12 col-md-6 col-lg-6" id="div_alert1">
+            <div class="card border-info m-2">
+              <div class="card-body">
+                <center>
+                  <h2 class="card-title">Total Sucursales</h2>
+                  <p class="card-text" style="font-size: 25px;" id="textAlert1">0</p>
+                  <i class="fas fa-building" style="font-size:30px;"></i>
+                </center>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-6" id="div_alert2">
+            <div class="card border-info m-2" >
+              <div class="card-body">
+                <center>
+                  <h2 class="card-title">Total Evaluaciones</h2>
+                  <p class="card-text" style="font-size: 25px;" id="textAlert2">0</p>
+                  <i class="fas fa-check" style="font-size:30px;"></i>
+                </center>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 div_class">
+          <div id="firstElement" class="row"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 div_class">
+          <div id="secondElement" ></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 div_class">
+          <div id="thirdElement" ></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 div_class">
+          <div id="fourthElement" ></div>
+        </div>
+        <center class="title_tables">
+          <h2 ><span>Resultados por Preguntas</span>&nbsp;&nbsp;
+            <button  class="btn btn-primary" id="download-csv"><i class="fa-solid fa-file-csv"></i></button>
+            <button  class="btn btn-success" id="download-xlsx"><i class="fa-regular fa-file-excel"></i></button>
+          </h2>
+          <hr>
+        </center>
+        <div class="col-sm-12 col-md-12 col-lg-12 div_class">
+          <div id="fivethElement" ></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  </div>
+  <!-- tabulator : Excel Downlowd-->
+  <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
+  <!-- tabulator : PDF Downlowd-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
+
+  <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+  <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+
+  <script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+  <!-- Load d3.js -->
+  <!-- <script src="https://d3js.org/d3.v6.js"></script>-->
+  <script src="https://d3js.org/d3.v5.js"></script>
+  <script type="text/javascript" src="https://s3.amazonaws.com/dynatable-docs-assets/js/jquery.dynatable.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+  <script type="text/javascript" src="../utils/lkf_utils.js"></script>
+  <script type="text/javascript" src="../utils/servido_utils.js"></script>
+  <script type="text/javascript" src="./auditoria_sucursales_ap.js"></script>
+  <script type="text/javascript" src="./auditoria_sucursales_data.js"></script>
+</body>
+
+</html>

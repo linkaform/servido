@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+    <html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Servido</title>
+        <meta name="title" content="Apymsa">
+        <meta name="description" content="Reportes RH">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+        <link type="image/x-icon" rel="shortcut icon" href="../img/favicon.ico">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    </head>
+    <style type="text/css">
+        .wrapper {
+            width:100%;
+            margin: 1.5rem auto 4rem;
+        }
+
+        .header {
+            text-align: center;
+            position: relative;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #CCC;
+        }
+
+        .header:before {
+            content: "";
+            display: table;
+            width: 100%;
+            clear: both;
+        }
+    </style>
+    <body>
+
+        <div class="wrapper">
+          <header class="header">
+            <h1>Servido</h1>
+          </header>
+        </div>
+
+        <div class="row mx-auto">
+            <div class="col-sm-12 col-md-2 col-lg-2 mb-10" style="margin-bottom:10px;">
+
+                <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                  <button class="nav-link active" id="div_home" data-bs-toggle="pill" data-bs-target="#div_inicio" type="button" role="tab" aria-controls="div_inicio" aria-selected="true">Home</button>
+                  <button class="nav-link" id="div_servicios" data-bs-toggle="pill" data-bs-target="#div_service" type="button" role="tab" aria-controls="div_service" aria-selected="false">Services</button>
+                  <button class="nav-link" id="div_industria" data-bs-toggle="pill" data-bs-target="#div_industry" type="button" role="tab" aria-controls="div_industry" aria-selected="false">Industries</button>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-10 col-lg-10 mt-10" style="margin-bottom:10px;">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active" id="div_inicio" role="tabpanel" aria-labelledby="div_home" tabindex="0">
+                        <div class="row mx-auto">
+                            <div class="col-sm-12 col-md-12 col-lg-12 mb-4">
+                                <h1 class="h2"></h1>
+                                <p>Open Source project formed by a collection of templates that helps you building Microsites or your own Business Intelligence.</p>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 mx-auto">
+                                <h2 class="h4">WebApp:</h2>
+                                <p>Build of html, css and javascript files, easy to ready, contribute and build.</p>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 mx-auto">
+                                <h2 class="h4">API: </h2>
+                                <p>Small API base on python Flask that helps power you webapp.</p>
+                            </div>
+                        </div>
+                    </div>
+                  <div class="tab-pane fade" id="div_service" role="tabpanel"  aria-labelledby="div_servicios" tabindex="0">
+                        <!-- CARDS -->
+                        <div class="row mx-auto" >
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+                                                <i class="fa-solid fa-shop text-primary fa-3x"></i>
+
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <p class="mb-0 mt-3">Sucursales</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+
+                                               <i class="fa-solid fa-building text-primary fa-3x"></i>
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <p class="mb-0 mt-3">Relaciones Humanas</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+                                                <i class="fa-solid fa-seedling text-primary fa-3x"></i>
+
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <p class="mb-0 mt-3">Tissue cultere</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+                                                <i class="fa-solid fa-network-wired  text-primary fa-3x"></i>
+
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <p class="mb-0 mt-3">Servicios</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+                  <div class="tab-pane fade" id="div_industry" role="tabpanel" aria-labelledby="div_industria" tabindex="0">
+                        <!-- CARDS -->
+                        <div class="row mx-auto" >
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+                                                <i class="fa-solid fa-box fa-3x text-primary"></i>
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <p class="mb-0 mt-3">Retail</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+                                                <i class="fa-solid fa-cart-flatbed fa-3x text-primary"></i>
+
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <p class="mb-0 mt-3">Logística</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+                                                <i class="fa-solid fa-wrench text-primary fa-3x"></i>
+
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <p class="mb-0 mt-3">Mantenimiento de Equipo</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+                                                <i class="fa-solid fa-hammer text-primary fa-3x"></i>
+
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <p class="mb-0 mt-3">Contratistas</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+
+                                                <i class="fa-solid fa-display text-primary fa-3x"></i>
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <p class="mb-0 mt-3">Field Services</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+                                                <i class="fa-solid fa-lock text-primary fa-3x"></i>
+
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <p class="mb-0 mt-3">Seguridad</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+
+                                                <i class="fa-solid fa-list-check text-primary fa-3x"></i>
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <p class="mb-0 mt-3">Encuestas en campo</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+                                                <i class="fa-solid fa-satellite-dish text-primary fa-3x"></i>
+
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <p class="mb-0 mt-3">Telecomunicaciones </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+
+                                                <i class="fa-solid fa-industry text-primary fa-3x"></i>
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <p class="mb-0 mt-3 ">Manufactura</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="crossorigin="anonymous"></script>

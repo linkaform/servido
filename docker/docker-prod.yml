@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  servido:
+    restart: "no"
+    container_name: servido
+    hostname: servido
+    environment:
+      - FLASK_APP=servido.py
+    image: linkaform/servido:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    #volumes:
+     # - ./sites-enabled:/etc/nginx/sites-enabled
+     # - ./:/docker/
+     # - ../:/srv/servido/
+     # - ../nginx:/etc/nginx
+    build:
+     context: ../
+     dockerfile: Dockerfile
+     target: production
+    # command: nginx && /usr/local/bin/flask run --host 0.0.0.0
+    command: /docker/run_production
+    stdin_open: true
+    tty: true

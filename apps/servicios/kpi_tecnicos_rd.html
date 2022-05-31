@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Servido</title>
+    <meta name="title" content="Servido">
+    <meta name="description" content="Reportes Servido">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <link type="image/x-icon" rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+    <nav class="navbar header">
+      <div class="navbar-brand">
+        <div class="row">
+          <div class="col-md-6"><a href="reportes.html"><div class="logo_marca"><img  src="https://app.linkaform.com/img/login-linkaform-logo.png" alt="Linkaform" id="image_log"></div></a></div>
+          <div class="col-md-6"><h1>Servicios</h1></div>
+        </div>
+        <div class="container">
+          <div class="back" id="atras"><i class="fa fa-solid fa-arrow-left"></i>Atras</div>
+          <div class="close" id="close_sesion"><a onclick="closeSession();"><i class="fa-solid fa-unlock"></i>Cerrar Sesión</a></div>
+        </div>
+      </div>
+    </nav>
+    <div class="loading-container">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div style="width:100%">
+      <div class="app" id="appCont">
+        <div class="row inicio_ses" id="inicio_ses">
+          <div class="errorLogin" id="errorLog"></div>
+          <div class="control">
+            <div class="renglon">
+              <h3>Usuario: </h3>
+              <input class="form-control ds-input" id="user" name="user" value="">
+            </div>
+            <div class="renglon">
+              <h3>Contraseña: </h3>
+              <input class="form-control ds-input" type="password" id="pass" name="pass" value="">
+            </div>
+            <div class="controlBtn">
+              <div class="btn btn-primary" onclick="login()">Login</div>
+              <div class="btn btn-primary" onclick="reset()">Reset</div>
+            </div>
+          </div>
+        </div>
+        <div id="title_demo" style="margin-bottom: 20px;">
+          <center>  
+            <h1><span>Datos demo</span>&nbsp;&nbsp;</h1>
+          </center> 
+        </div>
+        <div id="firstParameters" class="row">
+          <div class="renglon col-12 row">
+            <div class="col-sm-12 col-md-5 col-lg-5">
+              <h4>Fecha Desde: </h4>
+              <input class="form-control ds-input" type="date" id="date_from" name="date_from" value="">
+            </div>
+            <div class="col-sm-12 col-md-5 col-lg-5">
+              <h4>Fecha Hasta: </h4>
+              <input class="form-control ds-input" type="date" id="date_to" name="date_to" value="">
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-2">
+              <div class="btn btn-primary"  style="margin-top:13%;" onclick="runFirstElement()">Run</div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class=" col-sm-12 col-md-12 col-lg-12" style="margin-top:20px;">
+            <!-- TABLES -->
+            <center class="title_tables">
+              <h2 ><span>% De reportes realizados</span>&nbsp;&nbsp;              
+                <button  class="btn btn-primary" id="download-xlsx"><i class="fa-solid fa-file-csv"></i></button>
+                <button  class="btn btn-success" id="download-xlsx"><i class="fa-regular fa-file-excel"></i></button>
+              </h2>
+              <hr>
+            </center>
+            <div id="firstElement"  class="row div_class"></div>
+            <div id="secondElement" class="row div_class">
+              <div class="col-sm-12 col-md-6 col-lg-6">
+                <div  style="width: 600px;height: 200;" >
+                  <canvas id="graphic_1" ></canvas>
+                </div>
+              </div>
+               <div class="col-sm-12 col-md-6 col-lg-6">
+                <div  style="width: 600px;height: 200;">
+                  <canvas id="graphic_2" ></canvas>
+                </div>
+              </div>
+            </div>
+            <div id="thirdElement"    class="row div_class"></div>
+            <center class="title_tables">
+              <h2 ><span>% Reporte por status Mtto:</span>&nbsp;&nbsp;              
+                <button  class="btn btn-primary" id="download-xlsx"><i class="fa-solid fa-file-csv"></i></button>
+                <button  class="btn btn-success" id="download-xlsx"><i class="fa-regular fa-file-excel"></i></button>
+              </h2>
+              <hr>
+            </center>
+            <div id="fourthElement"   class="row div_class"></div>
+            <center class="title_tables">
+              <h2 ><span>% Reporte por status Servicio:</span>&nbsp;&nbsp;              
+                <button  class="btn btn-primary" id="download-xlsx"><i class="fa-solid fa-file-csv"></i></button>
+                <button  class="btn btn-success" id="download-xlsx"><i class="fa-regular fa-file-excel"></i></button>
+              </h2>
+              <hr>
+            </center>
+            <div id="fivethElement"   class="row div_class"></div>
+            <center class="title_tables">
+              <h2 ><span>% Reporte por status Visita:</span>&nbsp;&nbsp;              
+                <button  class="btn btn-primary" id="download-xlsx"><i class="fa-solid fa-file-csv"></i></button>
+                <button  class="btn btn-success" id="download-xlsx"><i class="fa-regular fa-file-excel"></i></button>
+              </h2>
+              <hr>
+            </center>
+            <div id="sixthElement"    class="row div_class"></div>
+            <center class="title_tables">
+              <h2 ><span>% De campos llenos y promedio de evidencias servicio:</span>&nbsp;&nbsp;              
+                <button  class="btn btn-primary" id="download-xlsx"><i class="fa-solid fa-file-csv"></i></button>
+                <button  class="btn btn-success" id="download-xlsx"><i class="fa-regular fa-file-excel"></i></button>
+              </h2>
+              <hr>
+            </center>
+            <div id="seventhElement"  class="row div_class"></div>
+            <center class="title_tables">
+              <h2 ><span>% De campos llenos y promedio de evidencias mtto:</span>&nbsp;&nbsp;              
+                <button  class="btn btn-primary" id="download-xlsx"><i class="fa-solid fa-file-csv"></i></button>
+                <button  class="btn btn-success" id="download-xlsx"><i class="fa-regular fa-file-excel"></i></button>
+              </h2>
+              <hr>
+            </center>
+            <div id="eigthElement"    class="row div_class"></div>
+            <center class="title_tables">
+              <h2 ><span>% De valor facturado contra el total de periodo:</span>&nbsp;&nbsp;              
+                <button  class="btn btn-primary" id="download-xlsx"><i class="fa-solid fa-file-csv"></i></button>
+                <button  class="btn btn-success" id="download-xlsx"><i class="fa-regular fa-file-excel"></i></button>
+              </h2>
+              <hr>
+            </center>
+            <div id="nineElement"     class="row div_class"></div>
+            <div id="tenthElement"    class="row div_class"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+    <!-- chartjs -->
+    <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+
+    <!-- tabulator -->
+    <!-- tabulator : Excel Downlowd-->
+    <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
+    <!-- tabulator : PDF Downlowd-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
+
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+     <!-- end tabulator -->
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.js"
+    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+    <!-- Load d3.js -->
+
+    <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="../utils/lkf_utils.js"></script>
+    <script type="text/javascript" src="../utils/servido_utils.js"></script>
+    <script type="text/javascript" src="./kpi_tecnicos_rd_data.js"></script>
+    <script type="text/javascript" src="./kpi_tecnicos_rd.js"></script>
+  </body>
+
+</html>

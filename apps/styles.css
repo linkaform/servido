@@ -1,0 +1,90 @@
+/* resets */
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+}
+
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.container {
+  max-width: 100%;
+  width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* utils */
+
+.light {
+  font-weight: 300;
+}
+
+.text-center {
+  text-align: center;
+}
+
+p {
+  color: rgba(0,0,0,.65);
+}
+
+/* cards */
+
+.cards {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 100px;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+}
+
+.cards__box {
+  padding: 65px 50px 45px;
+  flex: 1 100%;
+  border: .5px solid #CECECE;
+  margin: 15px;
+}
+
+.cards__box h4 {
+  margin: 25px 0 20px 0;
+}
+
+.cards__icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 88px;
+  max-height: 88px;
+  background-color: #325dff;
+  padding: 28px;
+  border-radius: 50%;
+}
+
+/* media queries */
+
+@media(min-width: 768px) {
+  .cards__box {
+    flex: 1 calc(50% - 30px);
+  }
+}
+
+@media(min-width: 1024px) {
+  .cards__box {
+    flex: 1 calc(32% - 30px);
+  }
+}

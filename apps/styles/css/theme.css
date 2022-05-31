@@ -1,0 +1,88 @@
+table.table.table-striped {
+  width: 90%
+}
+
+.medium {
+  width: 50%
+
+}
+.form-wrapper {
+	margin-left: 20px;
+}
+
+.nav-bar {
+	padding: 15px 20px;
+	background-color: #15102e;
+	border-color: #15102e;
+}
+
+.hidden-field {
+  visibility: hidden;
+  display: none;
+}
+.small {
+font-size: 90% !important;
+
+}
+.disabled-field {
+  width: 40%;
+  margin-left: 20px;"
+}
+
+td.col1 {
+  width: 75%;
+  padding-right: 30px !important;
+}
+
+td.col2 {
+  width: 25%;
+}
+
+td.col2 table td:nth-child(1),
+td.col2 table td:nth-child(2),
+td.col2 table td:nth-child(3),
+td.col2 table td:nth-child(4),
+td.col2 table td:nth-child(5) {
+  width: 20%;
+  text-align: center;
+}
+
+td.col3 {
+  width: 33%;
+}
+
+td.col4 {
+  width: 25%;
+}
+
+td.col40 {
+  width: 40%;
+  padding-right: 30px !important;
+
+}
+
+td.col40 table td:nth-child(1),
+td.col40 table td:nth-child(2),
+td.col40 table td:nth-child(3),
+td.col40 table td:nth-child(4),
+td.col40 table td:nth-child(5) {
+  width: 20%;
+  text-align: center;
+}
+td.col50 {
+  width: 50%;
+}
+
+td.col60 {
+  width: 60%;
+  padding-right: 30px !important;
+
+}
+
+td.col66 {
+  width: 66%;
+}
+
+table.buttons {
+  width: 90%
+}

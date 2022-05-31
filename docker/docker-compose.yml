@@ -1,0 +1,29 @@
+version: '3.4'
+
+
+services:
+  servido:
+    restart: "no"
+    container_name: servido
+    hostname: servido
+    environment:
+      - FLASK_APP=servido.py
+    image: linkaform/servido:develop
+    ports:
+      - "5000:5000"
+      - "8011:80"
+      - "8012:443"
+    volumes:
+     # - ./sites-enabled:/etc/nginx/sites-enabled
+     - ./:/docker/
+     - ../:/srv/servido/
+     - ../nginx:/etc/nginx
+    build:
+     context: ../
+     dockerfile: Dockerfile
+     target: develop
+    command: nginx
+    # command: /docker/run_localhost
+
+    stdin_open: true
+    tty: true
