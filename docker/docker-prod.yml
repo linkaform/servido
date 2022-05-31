@@ -14,14 +14,10 @@ services:
     volumes:
       - ../nginx/certs:/etc/nginx/certs
       - ../servido_api/certs:/srv/servido/servido_api/certs
-     # - ./:/docker/
-     # - ../:/srv/servido/
-     # - ../nginx:/etc/nginx
     build:
      context: ../
      dockerfile: Dockerfile
      target: production
-    # command: nginx && /usr/local/bin/flask run --host 0.0.0.0
     command: /docker/run_production
     stdin_open: true
     tty: true
