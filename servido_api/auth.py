@@ -24,10 +24,10 @@ def setcookie():
     if jwt_token and user_id:
         resp = make_response(f"Your Cookies needed to run Servido hosted at {domain} has been set")
         resp.set_cookie('userJwt',jwt_token,  domain=domain, path='/', samesite='None', secure=True )
-        # resp.set_cookie('userId',user_id,     domain=domain, path='/', samesite='None', secure=True )
-        # resp.set_cookie('username',username,  domain=domain, path='/', samesite='None', secure=True )
-        # resp.set_cookie('email',email,        domain=domain, path='/', samesite='None', secure=True )
-        # resp.set_cookie('parentId',parent_id, domain=domain, path='/', samesite='None', secure=True )
+        resp.set_cookie('userId',user_id,     domain=domain, path='/', samesite='None', secure=True )
+        resp.set_cookie('userName',username,  domain=domain, path='/', samesite='None', secure=True )
+        resp.set_cookie('email',email,        domain=domain, path='/', samesite='None', secure=True )
+        resp.set_cookie('userParentId',parent_id, domain=domain, path='/', samesite='None', secure=True )
     elif not jwt_token:
         resp = make_response("You must send an Authorization Header to setup a cookie")
     elif jwt_token and not user_id:

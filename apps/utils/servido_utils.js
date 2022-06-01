@@ -1,4 +1,10 @@
 
+
+// Settings
+var url = "https://app.linkaform.com/api/";
+// var url = "http://192.168.0.20:8000/api/";
+// End Settings
+
 // Funciones Genericas Servido
 
 function urlParamstoJson() {
@@ -111,9 +117,7 @@ function login() {
         //---IMAGE
         if (userParentId!=null && userParentId!="")
         {
-          document.getElementById("image_log").setAttribute("src", "https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_"+userParentId+".thumbnail")
-          document.getElementById("image_log").setAttribute("width","125");
-          document.getElementById("image_log").setAttribute("height","75");
+          getCompanyLogo(userParentId)
         }
         // data = getFirstElementJson(date_from, date_to )
         // firstElement = drawFirstElement(userJwt);
@@ -134,6 +138,13 @@ function login() {
       html: mensage
     });
   }
+
+}
+
+function getCompanyLogo(userParentId){
+  document.getElementById("image_log").setAttribute("src", "https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_"+userParentId+".thumbnail")
+  document.getElementById("image_log").setAttribute("width","125");
+  document.getElementById("image_log").setAttribute("height","75");
 
 }
 
@@ -185,4 +196,22 @@ function colorHEX(){
     coolor = coolor + generarLetra() ;
   }
   return "#005" + coolor;
+}
+
+
+function getPAlleteColors(pallete,number){
+  var arrayColors = new Array();
+
+  //----Select Pallete
+  if (pallete==1){
+      arrayColors = chroma.scale(['#fafa6e','#2A4858']).mode('lch').colors(number);
+  }else if(pallete==2){
+      arrayColors = chroma.scale(['#1B4F72','#AED6F1','#F7DC6F']).mode('lch').colors(number);
+  }else if(pallete==3){
+      arrayColors = chroma.scale(['#90afc5','#336b87','#2a3132','#763626']).mode('lch').colors(number);
+  }else if(pallete==4){
+      arrayColors = chroma.scale(['#003b46','#07575b','#66a5ad','#c4dfe6']).mode('lch').colors(number);
+  }
+
+  return arrayColors;
 }

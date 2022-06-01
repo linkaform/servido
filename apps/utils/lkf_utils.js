@@ -1,5 +1,4 @@
 
-var url = "https://app.linkaform.com/api/";
 
 
 // Funciones Linkafrom
@@ -55,8 +54,7 @@ function getCatalog(form_id, catalog_id, level, catalogType='select') {
       elemOption.setAttribute('value','--Seleccione--');
       elemOption.text = '--Seleccione--';
       formNode.appendChild(elemOption);
-    }
-    if (res.rows){
+      if (res.rows){
       for (i = 0; i < res.rows.length; i++){
         if (catalogType === 'select'){
           var elemOption = document.createElement("option");
@@ -65,6 +63,10 @@ function getCatalog(form_id, catalog_id, level, catalogType='select') {
           formNode.appendChild(elemOption);
         }
        }
-     }
+      }
+    }else if(catalogType === 'custom'){
+      customCatalogView(res);
+    }
+
   })
 }
