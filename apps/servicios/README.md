@@ -13,8 +13,10 @@ Parametros para pintar elementos de reporte.
 |---|---|---|
 |firstElement|json|Definie los datos % De reportes realizados |
 
-#### Elementos del Reporte**
-##### % De reportes realizados ( First Element )
+## Elementos del Reporte**
+
+
+#### % De reportes realizados ( First Element )
 ![reportes realizados](docs/por_reprotes_realizados.png)
 
 |Nombre|Field|Descripcion|
@@ -28,3 +30,29 @@ Parametros para pintar elementos de reporte.
 |% Servicio|percentage_servicio|Porcentaje de Reporte de Servicio del técncio|
 |Visitas|visita|Cantidad de Visitas a cliente del técncio|
 |% Visitas|percentage_visita|% de Vistias a cliente del técncio|
+
+
+
+
+##### Reportes Por Tecnico ( Second Element )
+
+![reportes realizados](docs/reportes_tecnico.png)
+
+
+
+|Nombre|Field|Descripcion|
+|---|---|---|
+|Tecnico|responsable|Nombre del Tecnico|
+|Porcentaje Total|percentage_total|Porcentaje Total|
+
+
+
+##### Reportes Mantenimiento VS Servicio (Third Element )
+
+![reportes realizados](docs/reportes_mtto_vs_serv.png)
+
+
+|Nombre|Field|Descripcion|
+|---|---|---|
+|Titulo|title|Nombre servicio|
+|Porcentaje Total|Porcentaje|Porcentaje Total|

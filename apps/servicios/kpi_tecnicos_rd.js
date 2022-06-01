@@ -12,8 +12,10 @@ var scriptId = null;
 
 
 $('.title_tables').hide();
+hideElement("firstElement-Buttons")
 hideElement("title_demo")
 hideElement("firstParameters")
+
 hideElement("firstElement")
 hideElement("secondElement")
 hideElement("fourthElement")
@@ -21,7 +23,7 @@ hideElement("fivethElement")
 hideElement("sixthElement"  )
 hideElement("seventhElement")
 hideElement("eigthElement")
-hideElement("nineElement"  )
+hideElement("ninethElement")
 hideElement("tenthElement")
 
 window.onload = function(){
@@ -36,6 +38,8 @@ window.onload = function(){
          url = "https://preprod.linkaform.com/api/";
       }
     }
+
+
 		var elements = getAllElementsWithAttribute(formNode, 'data-infosync-id', key);
 		var value = decodeURI(qs[key]);
     if (key === 'infosyncRecordID'){
@@ -93,28 +97,37 @@ window.onload = function(){
     $('.title_tables').hide();
     hideElement("title_demo");
   }
+  ///-----HIDE AND SHOW
+  for(var key in qs){
+    if (key === 'embed'){
+      if (qs[key]){
+        $("#close_sesion").hide();
+        $("#image_log").hide();
+      }
+    }
+  }
 }
 
 
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
-  $('.title_tables').show();
   unhideElement("close_sesion");
   unhideElement("firstParameters");
   unhideElement("firstElement");
   unhideElement("secondElement");
   unhideElement("thirdElement");
   unhideElement("fourthElement");
-  unhideElement("fivethElement")
-  unhideElement("sixthElement")
-  unhideElement("seventhElement")
-  unhideElement("eigthElement")
-  unhideElement("nineElement")
-  unhideElement("tenthElement")
+  unhideElement("fivethElement");
+  unhideElement("sixthElement");
+  unhideElement("seventhElement");
+  unhideElement("eigthElement");
+  unhideElement("ninethElement");
+  unhideElement("tenthElement");
   unhideElement("firstElement-Buttons");
 }
 
 function loadDemoData(){
+  $('.title_tables').show();
   drawGraphic1(dataGraphic1);
   drawGraphic2(dataGraphic2);
   getDrawTable('firstElement', columsTable1, dataTable1);
@@ -123,7 +136,8 @@ function loadDemoData(){
   getDrawTable('sixthElement', columsTable4, dataTable4);
   getDrawTable('seventhElement', columsTable7, dataTable7);
   getDrawTable('eigthElement', columsTable6, dataTable6);
-  getDrawTable('tenthElement', columsTable8, dataTable8);
+  getDrawTable('ninethElement', columsTable8, dataTable8);
+  getDrawTable('tenthElement', columsTable9, dataTable9);
   setStyleRemove();
   unhideElement("title_demo")
 }
@@ -139,7 +153,19 @@ function runFirstElement(){
 };
 
 function getFirstElement(date_from, date_to){
+  $('.title_tables').hide();
   $("#firstElement").html("");
+  $("#thirdElement").html("");
+  $("#fourthElement").html("");
+  $("#fivethElement").html("");
+  $("#sixthElement").html("");
+  $("#seventhElement").html("");
+  $("#eigthElement").html("");
+  $("#ninethElement").html("");
+  $("#tenthElement").html("");
+  $('#graphic_1').hide();
+  $('#graphic_2').hide();
+  setStyleRemove();
   console.log('Get first',url);
   console.log('Script id.........',scriptId);
   fetch(url + 'infosync/scripts/run/', {
@@ -157,48 +183,62 @@ function getFirstElement(date_from, date_to){
   .then(res => res.json())
   .then(res => {
     if (res.success) {
-      //console.log('res112312312', res.response.json.firstElement)
+      $('.title_tables').show();
       if (res.response.json.firstElement.tabledata) {
         getDrawTable('firstElement',columsTable1,res.response.json.firstElement.tabledata);
       }
       if (res.response.json.secondElement.data) {
         console.log('drawSecondElement.........');
         drawGraphic1(res.response.json.secondElement.data);
-       
+        $('#graphic_1').show();
       }
       if (res.response.json.thirdElement.data) {
         console.log('drawThirdElement.........');
         drawGraphic2(res.response.json.thirdElement.data);
-        
+        $('#graphic_2').show();
       }
       if (res.response.json.fivethElement) {
         console.log('fivethElement.........');
         if (res.response.json.fivethElement[0].data_mtto)
         {
+          unhideElement("fourthElement");
           getDrawTable('fourthElement',columsTable2,res.response.json.fivethElement[0].data_mtto);
+          console.log(res.response.json.fivethElement[0].data_mtto);
         }
         if (res.response.json.fivethElement[0].data_serv)
         {
+          unhideElement("fivethElement");
           getDrawTable('fivethElement',columsTable3,res.response.json.fivethElement[0].data_serv);
         }
         if (res.response.json.fivethElement[0].data_vist)
         {
+          unhideElement("sixthElement");
           getDrawTable('sixthElement',columsTable4,res.response.json.fivethElement[0].data_vist);
         }
       }
       if (res.response.json.sixthElement) {
         console.log('sixthElement.........');
+        unhideElement("eigthElement");
         getDrawTable('eigthElement',columsTable6,res.response.json.sixthElement.tabledata);
 
       }
       if (res.response.json.seventhElement) {
         console.log('seventhElement.........');
+        unhideElement("seventhElement");
         getDrawTable('seventhElement',columsTable7,res.response.json.seventhElement.tabledata);
       }
       if (res.response.json.eigthElement) {
         console.log('eigthElement.........');
-        getDrawTable('tenthElement',columsTable8,res.response.json.eigthElement.tabledata);
+        unhideElement("tenthElement");
+        getDrawTable('tenthElement',columsTable9,res.response.json.eigthElement.tabledata);
       }
+      if (res.response.json.ninethElement) {
+        console.log('ninethElement.........');
+        unhideElement("ninethElement");
+        getDrawTable('ninethElement',columsTable8,res.response.json.ninethElement.tabledata);
+      }
+
+      setStyleRemove();
     } else {
       hideLoading();
       if(res.code == 11){
@@ -266,10 +306,10 @@ function editableData(){
    };
 };
 
-//-----TABLES
 
 function getDrawTable(id, columnsData, tableData){
-  var table = new Tabulator("#" + id, {
+
+  var  table = new Tabulator("#" + id, {
     height:"auto",
     layout:"fitDataTable",
     //layout:"fitColumns",
@@ -282,10 +322,23 @@ function getDrawTable(id, columnsData, tableData){
     columns:columnsData,
     renderHorizontal:"virtual",
   });
+  //trigger download of data.xlsx file
+  document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
+  document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
+    table.download("xlsx", "data.xlsx", {sheetName:"data"});
+  });
+
+  //trigger download of data.csv file
+  document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
+  document.getElementById("download_csv_"+id).addEventListener("click", function (){
+    table.download("csv", "data.csv");
+  });
+
 }
 
 //-----GRAPICHS
 let chart1;
+
 function drawGraphic1(data){
   ///-----DATA
   var labels = data.map(function(e) {
@@ -295,11 +348,7 @@ function drawGraphic1(data){
     return e.percentage_total;
   });;
 
-  var colors = new Array();
-  for (var i = 0; i < datasets.length; i++)
-  {
-    colors.push(colorHEX());
-  }
+  var array_colors = getPAlleteColors(4,datasets.length);
 
   //---CHART
   var ctx = document.getElementById('graphic_1').getContext('2d');
@@ -312,7 +361,7 @@ function drawGraphic1(data){
     data: {
       labels: labels,
       datasets: [{
-        backgroundColor: colors,
+        backgroundColor: array_colors,
         data: datasets
       }]
     },
@@ -346,12 +395,7 @@ function drawGraphic2(data){
     return e.Porcentaje;
   });;
 
-  var colors = new Array();
-  for (var i = 0; i < datasets.length; i++)
-  {
-    colors.push(colorHEX());
-  }
-
+  var array_colors = getPAlleteColors(4,datasets.length);
 
   //---CHART
   var ctx = document.getElementById('graphic_2').getContext('2d');
@@ -365,7 +409,7 @@ function drawGraphic2(data){
       labels: labels,
       datasets: [{
         label: "Test",
-        backgroundColor: colors,
+        backgroundColor: array_colors,
         data: datasets
       }]
     },
@@ -399,7 +443,7 @@ function setStyleRemove()
   document.getElementById("sixthElement").style.removeProperty('display');
   document.getElementById("seventhElement").style.removeProperty('display');
   document.getElementById("eigthElement").style.removeProperty('display');
-  document.getElementById("nineElement").style.removeProperty('display');
+  document.getElementById("ninethElement").style.removeProperty('display');
   document.getElementById("tenthElement").style.removeProperty('display');
 }
 // Tabulator

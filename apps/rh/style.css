@@ -131,20 +131,6 @@ body{ font-family: 'Lato', sans-serif; color: #696158; width: 100%; height: 100%
   background: rgba(0,0,0,0.3);
 }
 
-.div_filter_show
-{
-  display: flex !important;
-}
-
-.div_filter_hide
-{
-  display: none;
-}
-
-.div_main_hide
-{
-  display: none;
-}
 .opcionBtn{ width: 50%; display: inline-block; text-align: center; margin: 0 0 50px; }
 .opcionBtn img{ cursor: pointer;}
 #tableNomina thead th, #tableComisiones thead th{ background: #101e43; vertical-align: middle;}
@@ -201,68 +187,56 @@ body{ font-family: 'Lato', sans-serif; color: #696158; width: 100%; height: 100%
   .opcionBtn{ width: 100%;}
 }
 
-.div_class
-{
-  margin-top: 20px;
-  margin-right: 10px;
-  margin-left: 10px;
-}
-
-
-h2 {
+.title_tables h2 {
   color: black;
   font: 33px sans-serif;
   margin-top: 30px;
   text-align: left;
 }
 
-hr.hr_firts_element {
+
+hr {
   border-top: 1px solid #707b7c;
-  width: 530px;
+  width: 500px;
   margin-left: 0%;
 }
 
 
-hr.hr_fourth_element {
-  border-top: 1px solid #707b7c;
-  width: 565px;
-  margin-left: 0%;
+.load-wrapp{
+  margin-top: 100px;
+
+}
+
+.line {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 100px;
+  background-color: #E5514B;
+}
+
+.load-3 .line:nth-last-child(1) {
+  animation: loadingC 0.6s 0.1s linear infinite;
+}
+.load-3 .line:nth-last-child(2) {
+  animation: loadingC 0.6s 0.2s linear infinite;
+}
+.load-3 .line:nth-last-child(3) {
+  animation: loadingC 0.6s 0.3s linear infinite;
+}
+.load-3 .line:nth-last-child(4) {
+  animation: loadingC 0.6s 0.4s linear infinite;
 }
 
 
-hr.hr_fiveth_element {
-  border-top: 1px solid #707b7c;
-  width: 620px;
-  margin-left: 0%;
-}
-
-
-hr.hr_sixth_element {
-  border-top: 1px solid #707b7c;
-  width: 575px;
-  margin-left: 0%;
-}
-
-hr.hr_seventh_element {
-  border-top: 1px solid #707b7c;
-  width: 1040px;
-  margin-left: 0%;
-}
-
-hr.hr_eigth_element {
-  border-top: 1px solid #707b7c;
-  width: 990px;
-  margin-left: 0%;
-}
-
-hr.hr_nineth_element {
-  border-top: 1px solid #707b7c;
-  width: 260px;
-  margin-left: 0%;
-}
-
-hr.hr_tenth_element {
-  border-top: 1px solid #707b7c;
-  width: 910px;
-  margin-left: 0%;
+@keyframes loadingC {
+  0 {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, 15px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }

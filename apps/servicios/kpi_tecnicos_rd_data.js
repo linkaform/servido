@@ -3,14 +3,105 @@
 var columsTable1 = [
   { title:"Tecnico", field:'responsable'  ,headerHozAlign:"center",width:250},
   { title:"Reportes", field:'reportes'  ,headerHozAlign:"center",width:200},
-  { title:"% De Reportes", field:'percentage_total'  ,headerHozAlign:"center",width:200},
+  { title:"% De Reportes", field:'percentage_total'  ,headerHozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Mtto", field:'mantenimiento'  ,headerHozAlign:"center",width:200},
-  { title:"% Mtto", field:'percentage_mtto'  ,headerHozAlign:"center",width:200},
+  { title:"% Mtto", field:'percentage_mtto'  ,headerHozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Servicio", field:'servicio'  ,headerHozAlign:"center",width:200},
-  { title:"% Servicio", field:'percentage_servicio'  ,headerHozAlign:"center",width:200},
+  { title:"% Servicio", field:'percentage_servicio'  ,headerHozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Visitas", field:'visita'  ,headerHozAlign:"center",width:200},
-  { title:"% Visitas", field:'percentage_visita'  ,headerHozAlign:"center",width:200},
+  { title:"% Visitas", field:'percentage_visita'  ,headerHozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
 ];
+
+//---ESTATUS DE MTTO
+var columsTable2 = [
+  { title:"Tecnico", field:'responsable'  , formatter:"money",hozAlign:"center",width:250},
+  { title:"Abiertas", field:'abiertos'  ,formatter:"money",hozAlign:"center", width:250, },
+  { title:"% Abiertas", field:'percentage_abiertos'  ,formatter:"money",hozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
+  { title:"Progreso", field:'progreso'  ,formatter:"money",hozAlign:"center",width:200},
+  { title:"% Progreso", field:'percentage_progreso'  ,formatter:"money",hozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
+  { title:"Cerradas", field:'cerrado'  ,formatter:"money" , hozAlign:"center",width:200},
+  { title:"% Cerradas", field:'percentage_cerrado'  ,formatter:"money" , hozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
+  { title:"Total", field:'reportes'  ,formatter:"money" , hozAlign:"center",width:200},
+];
+
+//---ESTATUS DE SERVICIO
+var columsTable3 = [
+  { title:"Tecnico", field:'responsable'  ,hozAlign:"center",width:250},
+  { title:"Abiertas", field:'abiertos'  ,hozAlign:"center",width:250},
+  { title:"% Abiertas", field:'percentage_abiertos'  ,hozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
+  { title:"Pendientes", field:'pendientes'  ,hozAlign:"center",width:200},
+  { title:"% Pendientes", field:'percentage_pendientes'  ,hozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
+  { title:"Cerradas", field:'cerrado'  ,hozAlign:"center",width:200},
+  { title:"% Cerradas", field:'percentage_cerrado'  ,hozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
+  { title:"Total", field:'reportes'  ,hozAlign:"center",width:200},
+];
+
+//---ESTATUS DE VISITA
+var columsTable4 = [
+  { title:"Tecnico", field:'responsable'  ,hozAlign:"center",width:250},
+  { title:"Abiertas", field:'abiertos'  ,hozAlign:"center",width:250},
+  { title:"% Abiertas", field:'percentage_abiertos'  ,hozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
+  { title:"Cerradas", field:'cerrado'  ,hozAlign:"center",width:200},
+  { title:"% Cerradas", field:'percentage_cerrado'  ,hozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
+  { title:"Total", field:'reportes'  ,hozAlign:"center",width:200},
+];
+
+//----EVIDENCIAS DE MTTTO
+var columsTable6 = [
+  { title:"Tecnico", field:'responsable'  ,hozAlign:"center",width:250},
+  { title:"# de Reporte de Mtto", field:'reportes'  ,hozAlign:"center",width:250},
+  { title:"2 o mas evidencias", field:'evidencias'  ,hozAlign:"center",width:200},
+  { title:"Prom Campos llenos x reporte", field:'percentage_campos'  ,hozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
+];
+
+//----EVIDENCIAS SERVICIO
+var columsTable7 = [
+  { title:"Tecnico", field:'responsable'  ,hozAlign:"center",width:250},
+  { title:"# de Reporte de Servicio", field:'reportes'  ,hozAlign:"center",width:250},
+  { title:"2 o mas evidencias", field:'evidencias'  ,hozAlign:"center",width:200},
+  { title:"Prom Campos llenos x reporte", field:'percentage_campos'  ,hozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
+  { title:"Reportes ReAbiertos", field:'reabiertos'  ,hozAlign:"center",width:200},
+  { title:"% de Reporte ReAbiertos", field:'percentage_reabiertos'  ,hozAlign:"center",width:200,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
+];
+
+//---CHECK IN
+var columsTable8 = [
+  { title:"Tecnico", field:'responsable'  ,hozAlign:"center",width:250},
+  { title:"< 30 min", field:'menor_15'  ,hozAlign:"center",width:250,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
+  { title:" Ok ", field:'entre_15_600'  ,hozAlign:"center",width:250,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
+  { title:" > 10 Horas ", field:'mayor_600'  ,hozAlign:"center",width:250,formatter: "money",
+    formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
+  { title:" Total ", field:'total'  ,hozAlign:"center",width:250,formatter: "money",
+    formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+];
+
+
+
+var columsTable9 = [
+  { title:"Tecnico", field:'tecnico'  ,hozAlign:"center"},
+  { title:"Valor Facturado", field:'total'  ,hozAlign:"center",formatter: "money",
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+  { title:"Calificacion de Servicio", field:'calificacion'  ,hozAlign:"center",formatter: "money",
+    formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
+];
+
 
 var dataTable1 = [
   {"id":1, "responsable": "Francisco Don", "reportes": 35, "percentage_total":"38%" ,
@@ -25,20 +116,8 @@ var dataTable1 = [
     "mantenimiento":10, "percentage_mtto":"33%",
     "servicio":10,     "percentage_servicio":"33%",
     "visitas":10,       "percentage_visita":"33%"},
-]
-
-
-//---ESTATUS DE MTTO
-var columsTable2 = [
-  { title:"Tecnico", field:'responsable'  , formatter:"money",hozAlign:"center",width:250},
-  { title:"Abiertas", field:'abiertos'  ,formatter:"money",hozAlign:"center", width:250, },
-  { title:"% Abiertas", field:'percentage_abiertos'  ,formatter:"money",hozAlign:"center",width:200},
-  { title:"Progreso", field:'progreso'  ,formatter:"money",hozAlign:"center",width:200},
-  { title:"% Progreso", field:'percentage_progreso'  ,formatter:"money",hozAlign:"center",width:200},
-  { title:"Cerradas", field:'cerrado'  ,formatter:"money" , hozAlign:"center",width:200},
-  { title:"% Cerradas", field:'percentage_cerrado'  ,formatter:"money" , hozAlign:"center",width:200},
-  { title:"Total", field:'reportes'  ,formatter:"money" , hozAlign:"center",width:200},
 ];
+
 
 var dataTable2 = [
   { 
@@ -51,19 +130,8 @@ var dataTable2 = [
     "reportes": 0,
     "responsable": "Francisco Don"
   },
-]
-
-//---ESTATUS DE SERVICIO
-var columsTable3 = [
-  { title:"Tecnico", field:'responsable'  ,hozAlign:"center",width:250},
-  { title:"Abiertas", field:'abiertos'  ,hozAlign:"center",width:250},
-  { title:"% Abiertas", field:'percentage_abiertos'  ,hozAlign:"center",width:200},
-  { title:"Pendientes", field:'pendientes'  ,hozAlign:"center",width:200},
-  { title:"% Pendientes", field:'percentage_pendientes'  ,hozAlign:"center",width:200},
-  { title:"Cerradas", field:'cerrado'  ,hozAlign:"center",width:200},
-  { title:"% Cerradas", field:'percentage_cerrado'  ,hozAlign:"center",width:200},
-  { title:"Total", field:'reportes'  ,hozAlign:"center",width:200},
 ];
+
 
 var dataTable3 = [
   { 
@@ -77,17 +145,8 @@ var dataTable3 = [
     "reportes": 4,
     "responsable": "Francisco Don"
   },
-]
-
-//---ESTATUS DE VISITA
-var columsTable4 = [
-  { title:"Tecnico", field:'responsable'  ,hozAlign:"center",width:250},
-  { title:"Abiertas", field:'abiertos'  ,hozAlign:"center",width:250},
-  { title:"% Abiertas", field:'percentage_abiertos'  ,hozAlign:"center",width:200},
-  { title:"Cerradas", field:'cerrado'  ,hozAlign:"center",width:200},
-  { title:"% Cerradas", field:'percentage_cerrado'  ,hozAlign:"center",width:200},
-  { title:"Total", field:'reportes'  ,hozAlign:"center",width:200},
 ];
+
 
 var dataTable4 = [
   { 
@@ -103,14 +162,6 @@ var dataTable4 = [
 ];
 
 
-//----EVIDENCIAS DE MTTTO
-var columsTable6 = [
-  { title:"Tecnico", field:'responsable'  ,hozAlign:"center",width:250},
-  { title:"# de Reporte de Mtto", field:'reportes'  ,hozAlign:"center",width:250},
-  { title:"2 o mas evidencias", field:'evidencias'  ,hozAlign:"center",width:200},
-  { title:"Prom Campos llenos x reporte", field:'percentage_campos'  ,hozAlign:"center",width:200},
-];
-
 var dataTable6 = [
   { 
     "campos": 377,
@@ -121,17 +172,6 @@ var dataTable6 = [
     "responsable": "Francisco Don",
     "total": 173
   },
-];
-
-
-//----EVIDENCIAS SERVICIO
-var columsTable7 = [
-  { title:"Tecnico", field:'responsable'  ,hozAlign:"center",width:250},
-  { title:"# de Reporte de Servicio", field:'reportes'  ,hozAlign:"center",width:250},
-  { title:"2 o mas evidencias", field:'evidencias'  ,hozAlign:"center",width:200},
-  { title:"Prom Campos llenos x reporte", field:'percentage_campos'  ,hozAlign:"center",width:200},
-  { title:"Reportes ReAbiertos", field:'reabiertos'  ,hozAlign:"center",width:200},
-  { title:"% de Reporte ReAbiertos", field:'percentage_reabiertos'  ,hozAlign:"center",width:200},
 ];
 
 var dataTable7 = [
@@ -147,14 +187,19 @@ var dataTable7 = [
   },
 ];
 
-//---FACTURACIÓN
-var columsTable8 = [
-  { title:"Tecnico", field:'tecnico'  ,hozAlign:"center"},
-  { title:"Valor Facturado", field:'total'  ,hozAlign:"center"},
-  { title:"Calificacion de Servicio", field:'calificacion'  ,hozAlign:"center"},
-];
+
 
 var dataTable8 = [
+  { 
+    "tecnico": "Francisco Don",
+    "menos": '15%',
+    "okey": '75%',
+    "mas": '10%'
+  }
+];
+
+
+var dataTable9 = [
   { 
     "calificacion": 4,
     "tecnico": "Francisco Don",
