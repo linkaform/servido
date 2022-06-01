@@ -92,13 +92,15 @@ COPY --chown=www-data:www-data ./docker/uwsgi/servido.ini /etc/uwsgi/apps-enable
 
 #NGINX SETUP
 COPY --chown=www-data:www-data ./nginx /etc/nginx
+COPY --chown=www-data:www-data ./nginx/sites-available/servido.conf /etc/nginx/conf.d/servido.conf
 RUN rm /etc/nginx/certs/*
 
-#ENTRYPOINT
-
+#COPY ALL FILES
+RUN echo cacheeeee
 COPY --chown=www-data:www-data ./docker /docker/
-
 COPY --chown=www-data:www-data ./apps /srv/servido/apps
 COPY --chown=www-data:www-data ./servido_api /srv/servido/servido_api
 RUN rm /srv/servido/servido_api/certs/*
 COPY --chown=www-data:www-data ./servido.py /srv/servido/servido.py
+
+WORKDIR /srv/servido/

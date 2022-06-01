@@ -90,6 +90,15 @@ window.onload = function(){
     $('.title_tables').hide();
     hideElement("firstElement-Buttons");
   }
+  ///-----HIDE AND SHOW
+  for(var key in qs){
+    if (key === 'embed'){
+      if (qs[key]){
+        $("#close_sesion").hide();
+        $("#image_log").hide();
+      }
+    }
+  }
 }
 
 function unHideReportElements(){
@@ -245,14 +254,17 @@ function getDrawTable(id, columnsData, tableData){
     width: "150px"
   });
 
-  //trigger download of data.csv file
-  document.getElementById("download-csv").addEventListener("click", function(){
-      table.download("csv", "data.csv");
-  });
 
   //trigger download of data.xlsx file
-  document.getElementById("download-xlsx").addEventListener("click", function(){
-      table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
+  document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
+  document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
+    table.download("xlsx", "data.xlsx", {sheetName:"data"});
+  });
+
+  //trigger download of data.csv file
+  document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
+  document.getElementById("download_csv_"+id).addEventListener("click", function (){
+    table.download("csv", "data.csv");
   });
 }
 

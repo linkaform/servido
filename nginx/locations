@@ -1,0 +1,71 @@
+location / {
+  index index.html;
+  include /etc/nginx/proxy_params;
+}
+
+location /api {
+  root  /srv/servido/servio_api/;
+  ### testing parameter for SIGPIPE
+  uwsgi_ignore_client_abort on;
+  ### END TEST
+  uwsgi_pass  unix:///run/uwsgi/app/servido/socket.sock;
+  uwsgi_read_timeout 600s;
+  uwsgi_send_timeout 600s;
+
+  add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+  add_header 'Content-Type' 'text/html';
+  add_header 'Access-Control-Expose-Headers' 'Set-Cookie';
+
+
+  #proxy stuff
+  include /etc/nginx/proxy_params;
+  include /etc/nginx/uwsgi_params;
+}
+
+location /utils {
+  include /etc/nginx/proxy_params;
+  index index.html;
+}
+
+location /tissueculture {
+  include /etc/nginx/proxy_params;
+  index index.html;
+}
+
+location /sucursales {
+  include /etc/nginx/proxy_params;
+  index index.html;
+}
+
+location /servicios {
+  include /etc/nginx/proxy_params;
+  index index.html;
+}
+
+######
+###### locations para dar soporte a clientes especificos
+######
+
+location /hatzalah {
+  root   /srv/servido/apps/custom;
+  index index.html;
+  #include /etc/nginx/proxy_params;
+}
+
+location /pci_integration {
+  root   /srv/servido/apps/custom;
+  index index.html;
+  #include /etc/nginx/proxy_params;
+}
+
+location /pci {
+  root   /srv/servido/apps/custom;
+  index index.html;
+  #include /etc/nginx/proxy_params;
+}
+
+location /cocheros {
+  root   /srv/servido/apps/custom;
+  index index.html;
+  #include /etc/nginx/proxy_params;
+}

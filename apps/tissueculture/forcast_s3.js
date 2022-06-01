@@ -12,6 +12,7 @@ let scriptId = null;
 
 
 $('.title_tables').hide();
+$("#buttonFilter").hide();
 hideElement("title_demo")
 hideElement("firstParameters")
 hideElement("firstElement")
@@ -22,7 +23,6 @@ window.onload = function(){
   var formNode = document.getElementById("appCont");
 	for(var key in qs){
     if (key === 'script_id' ){
-      console.log('script id', key)
       scriptId = parseInt(qs[key]);
     }
     if (key === 'env') {
@@ -75,6 +75,7 @@ window.onload = function(){
 
   if(us != "" && jw != ""){
     hideElement("inicio_ses");
+
     unhideElement("close_sesion");
     getCompanyLogo(userParentId);
     userId = us;
@@ -85,10 +86,23 @@ window.onload = function(){
     if (scriptId == null) {
       loadDemoData();
     }
+    //--Hide element script
+    $("#buttonFilter").show();
+    document.getElementById("firstParameters").style.removeProperty('display');
   } else {
     unhideElement("inicio_ses");
     $('.title_tables').hide();
+    $("#buttonFilter").hide();
     hideElement("firstElement-Buttons");
+  }
+  //---SHOW AND HIDE ELEMENT
+  for(var key in qs){
+    if (key === 'embed'){
+      if (qs[key]){
+        $("#close_sesion").hide();
+        $("#image_log").hide();
+      }
+    }
   }
 }
 
@@ -104,6 +118,7 @@ function loadDemoData(){
   getDrawTable('firstElement', columsTable1, dataTable1);
   unhideElement("title_demo");
   setStyleRemove();
+  $("#buttonFilter").show();
 }
 
 
@@ -121,6 +136,7 @@ function runFirstElement(){
 function getFirstElement(plant_code,extra_weeks){
   $("#firstElement").html("");
   $('.title_tables').hide();
+
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
@@ -226,26 +242,29 @@ function getDrawTable(id, columnsData, tableData){
     data:tableData,
     dataTree:true,
     dataTreeBranchElement:false,
-    dataTreeChildIndent:25,
+    //dataTreeChildIndent:25,
     dataTreeFilter:false,
     dataTreeStartExpanded:true,
-    height:"550px",
-    layout:"fitDataTable",
+
+    height:"490px",
+    layout:"fitDataFill",
     // responsiveLayout: "hide",
     textDirection:"ltr",
-    // renderHorizontal:"virtual",
+    //renderHorizontal:"virtual",
     resizableRows:true,
-    width: "150px"
-  });
-
-  //trigger download of data.csv file
-  document.getElementById("download-csv").addEventListener("click", function(){
-      table.download("csv", "data.csv");
+    width: "250px"
   });
 
   //trigger download of data.xlsx file
-  document.getElementById("download-xlsx").addEventListener("click", function(){
-      table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
+  document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
+  document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
+    table.download("xlsx", "data.xlsx", {sheetName:"data"});
+  });
+
+  //trigger download of data.csv file
+  document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
+  document.getElementById("download_csv_"+id).addEventListener("click", function (){
+    table.download("csv", "data.csv");
   });
 }
 
