@@ -13,8 +13,8 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
   <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
+  <link rel="stylesheet" href="../styles/css/styles.css">
   <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
@@ -28,21 +28,25 @@
             </div>
           </a>
         </div>
-        <div class="col-md-6"><h1>Reportes Desempeno Jornales</h1></div>
-      </div>
-      <div class="container">
-        <div class="back" id="atras"><i class="fa fa-solid fa-arrow-left"></i>Atras</div>
-        <div class="close" id="close_sesion"><a onclick="closeSession();"><i class="fa-solid fa-lock"></i>Cerrar Sesión</a></div>
-      </div>
-    </div>
+        <div class="col-md-6">
+          <div class="container">
+            <div class="back"  id="atras"><i class="fa fa-solid fa-arrow-left"></i>Atras</div>
+              <div class="close" id="close_sesion"><a onclick="closeSession();"><i class="fa-solid fa-lock"></i>Cerrar Sesión</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12" id="title_report">
+          <h1>Reportes Desempeno Jornales</h1>
+        </div>
+      </div> 
   </nav>
   <div class="loading-container">
     <div class="spinner-border text-primary" role="status">
       <span class="sr-only">Loading...</span>
     </div>
   </div>
-  <div style="width:100%">
-    <div class="app" id="appCont">
+  <div style="width:100%;">
+    <div class="app" id="appCont" style="padding-top: 0px;">
       <div class="row inicio_ses" id="inicio_ses">
         <div class="errorLogin" id="errorLog"></div>
         <div class="control">
@@ -65,16 +69,18 @@
           <h1><span>Datos demo</span>&nbsp;&nbsp;</h1>
         </center>
       </div>
-      <div class="col-sm-12 col-md-12 col-lg-12 row mb-2">
+
+      <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
         <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
           <i class="fa-solid fa-filter"></i>
-        </button >
+        </button >  &nbsp;  &nbsp;
+        <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
       </div>
 
       <!-- id="firstParameters"-->
       <div id="firstParameters" class="collapse row show">
           <div class="col-sm-12 col-md-2 col-lg-3">
-            <h3>Año: </h3>
+            <h5>Año: </h5>
             <select class="form-control" id="year">
               <option value="2021">2021</option>
               <option value="2022">2022</option>
@@ -84,7 +90,7 @@
             </select>
           </div>
           <div class="col-sm-12 col-md-2 col-lg-3">
-            <h3>Mes: </h3>
+            <h5>Mes: </h5>
             <select class="form-control" id="month">
               <option value="01">Enero</option>
               <option value="02">Febrero</option>
@@ -101,100 +107,71 @@
             </select>
           </div>
           <div class="col-sm-12 col-md-3 col-lg-3">
-            <h3>Nombre Funcionaría: </h3>
+            <h5>Nombre Funcionaría: </h5>
             <select class="form-control" id="catalog-79040-level-1" onchange="getEmpleadoNumber();return false;">
               <option value="">--Seleccione--</option>
             </select>
           </div>
           <div class="col-sm-12 col-md-3 col-lg-3">
-            <h3>Codigo de Empleado: </h3>
+            <h5>Codigo de Empleado: </h5>
             <input class="form-control " type="text" id="code" name="code" value="">
           </div>
-          <div class="col-sm-12 col-md-2 col-lg-2">
-            <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
-          </div>
       </div>
-      <div class="row" style="margin-top:18px;" id="divContent">
-        <!-- CARDS -->
-        <div  style="margin-top:18px;" class="col-sm-12 col-md-4 col-lg-4 div_card" >
-          <div class="card border-info m-2">
-            <div class="card-body">
-              <center>
-                <h2 class="card-title">Total a Pagar</h2>
-                <p class="card-text" style="font-size: 25px;" id="textAlert1"></p>
-                <i class="fa-solid fa-sack-dollar" style="font-size:30px;"></i>
-              </center>
+      <div class="row" id="divContent">
+        <div id="firstElement"  style="margin-top:18px;padding: 0px;margin: auto;" class="col-sm-12 col-md-12 col-lg-12 row">
+          <!-- CARDS -->
+          <div  style="margin-top:18px;" class="col-sm-12 col-md-4 col-lg-4 div_card" >
+            <div class="card border-info m-2">
+              <div class="card-body">
+                <center>
+                  <h2 class="card-title">Total a Pagar</h2>
+                  <p class="card-text" style="font-size: 25px;" id="textAlert1"></p>
+                  <i class="fa-solid fa-sack-dollar" style="font-size:30px;"></i>
+                </center>
+              </div>
             </div>
           </div>
-        </div>
-        <div   style="margin-top:18px;" class="col-sm-12 col-md-4 col-lg-4 div_card" >
-          <div class="card border-info m-2">
-            <div class="card-body">
-              <center>
-                <h2 class="card-title">Total Horas Mes</h2>
-                <p class="card-text" style="font-size: 25px;" id="textAlert2"></p>
-                <i class="fa-solid fa-calendar" style="font-size:30px;"></i>
-              </center>
+          <div   style="margin-top:18px;" class="col-sm-12 col-md-4 col-lg-4 div_card" >
+            <div class="card border-info m-2">
+              <div class="card-body">
+                <center>
+                  <h2 class="card-title">Total Horas Mes</h2>
+                  <p class="card-text" style="font-size: 25px;" id="textAlert2"></p>
+                  <i class="fa-solid fa-calendar" style="font-size:30px;"></i>
+                </center>
+              </div>
             </div>
           </div>
-        </div>
-        <div   style="margin-top:18px;" class="col-sm-12 col-md-4 col-lg-4 div_card" >
-          <div class="card border-info m-2">
-            <div class="card-body">
-              <center>
-                <h2 class="card-title">Días</h2>
-                <p class="card-text" style="font-size: 25px;" id="textAlert3"></p>
-                <i class="fa-solid fa-sun" style="font-size:30px;"></i>
-              </center>
+          <div   style="margin-top:18px;" class="col-sm-12 col-md-4 col-lg-4 div_card" >
+            <div class="card border-info m-2">
+              <div class="card-body">
+                <center>
+                  <h2 class="card-title">Días</h2>
+                  <p class="card-text" style="font-size: 25px;" id="textAlert3"></p>
+                  <i class="fa-solid fa-sun" style="font-size:30px;"></i>
+                </center>
+              </div>
             </div>
           </div>
-        </div>
+        </div>  
         <!-- TABLES -->
-        <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top:18px;">
-          <center class="title_tables">
-            <h2 ><span>Resumen Licencias:</span>&nbsp;&nbsp;
-              <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
-              <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
-            </h2>
-            <hr>
-          </center>
+        <div class="col-sm-12 col-md-12 col-lg-12 ">
+          <div id="secondElement"  style="margin-top:18px;padding: 0px;" class="col-sm-12 col-md-12 col-lg-12"></div>
         </div>
         <div class="col-sm-12 col-md-12 col-lg-12 ">
-          <div id="firstElement"  style="margin-top:18px;padding: 0px;" class="col-sm-12 col-md-12 col-lg-12"></div>
-        </div>
-        <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top:18px;">
-          <center class="title_tables">
-            <h2 ><span>Resumen Licencias:</span>&nbsp;&nbsp;
-              <button  class="btn btn-primary" id="download_csv_secondElement"><i class="fa-solid fa-file-csv"></i></button>
-              <button  class="btn btn-success" id="download_xlsx_secondElement"><i class="fa-regular fa-file-excel"></i></button>
-            </h2>
-            <hr>
-          </center>
-        </div>
-        <div class="col-sm-12 col-md-12 col-lg-12 ">
-          <div id="secondElement" style="margin-top:18px;padding: 0px;" class="col-sm-12 col-md-6 col-lg-6"></div>
+          <div id="thirdElement" style="margin-top:18px;padding: 0px;" class="col-sm-12 col-md-6 col-lg-6"></div>
         </div>
         <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top:18px;">
           <center class="title_tables">
             <h2 ><span>Detallado de Registros:</span>&nbsp;&nbsp;
-              <button  class="btn btn-primary" id="download_csv_thirdElement"><i class="fa-solid fa-file-csv"></i></button>
-              <button  class="btn btn-success" id="download_xlsx_thirdElement"><i class="fa-regular fa-file-excel"></i></button>
+              <button  class="btn btn-primary" id="download_csv_fourthdElement"><i class="fa-solid fa-file-csv"></i></button>
+              <button  class="btn btn-success" id="download_xlsx_fourthdElement"><i class="fa-regular fa-file-excel"></i></button>
             </h2>
             <hr>
           </center>
         </div>
         <div class="col-sm-12 col-md-12 col-lg-12 div_class">
-          <div id="thirdElement"  style="margin-top:18px;padding: 0px;" class="col-sm-12 col-md-12 col-lg-12"></div>
-        </div>
-      </div>
-      <div class="load-wrapp">
-        <div class="load-3">
-          <center>
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-          </center>
+          <div id="fourthdElement"  style="margin-top:18px;padding: 0px;" class="col-sm-12 col-md-12 col-lg-12"></div>
         </div>
       </div>
   </div>

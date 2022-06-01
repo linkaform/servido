@@ -1,6 +1,5 @@
 // Reporte Production Forscast
 // Librerias: Chart.js
-
 let us = null;
 let usTy = null;
 let jw = null;
@@ -10,9 +9,10 @@ let userName = null;
 let userParentId = null;
 let scriptId = null;
 
+$('#divOptions').hide();
+$('#title_report').hide();
 $('.div_card').hide();
 $('.title_tables').hide();
-$('.load-wrapp').hide();
 hideElement("title_demo")
 hideElement("firstParameters")
 hideElement("firstElement")
@@ -72,9 +72,7 @@ window.onload = function(){
   userParentId = getCookie("userParentId");
   hideElement("close_sesion");
   hideElement("firstParameters");
-
   if(us != "" && jw != ""){
-
     hideElement("inicio_ses");
     unhideElement("close_sesion");
     // getCompanyLogo(userParentId);
@@ -91,9 +89,14 @@ window.onload = function(){
     
     getCatalog(79041,79040,1,catalogType='select');
     //---HIDE AND SHOW
+    setSpinner();
+    $('#divOptions').show();
+    $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
   } else {
     unhideElement("inicio_ses");
+    $('#divOptions').hide();
+    $('#title_report').hide();
     $('.title_tables').hide();
     $('.div_card').hide();
     hideElement("firstElement-Buttons");
@@ -111,8 +114,6 @@ window.onload = function(){
 
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
-
-
   $('.title_tables').show();
   unhideElement("close_sesion");
   unhideElement("firstParameters");
@@ -121,16 +122,21 @@ function unHideReportElements(){
 }
 
 function loadDemoData(){
+  //----
   $('.title_tables').show();
+  
   $('.div_card').show();
-  document.getElementById("firstElement").style.removeProperty('display');
-  getDrawTable('firstElement', columsTable7, dataTableLicencias );
-  getDrawTable('secondElement', columsTable6, dataTableTotal);
-  getDrawTableNested('thirdElement', dataTableTest);
+  getDrawTable('secondElement', columsTable6, dataTableLicencias );
+  getDrawTable('thirdElement', columsTable7, dataTableTotal);
+  getDrawTableNested('fourthdElement', dataTableTest);
+  
+
+  //---Remove Format
   document.getElementById("firstParameters").style.removeProperty('display');
   document.getElementById("firstElement").style.removeProperty('display');
   document.getElementById("secondElement").style.removeProperty('display');
   document.getElementById("thirdElement").style.removeProperty('display');
+  document.getElementById("fourthdElement").style.removeProperty('display');
   unhideElement("title_demo");
 }
 
@@ -168,7 +174,6 @@ function getFirstElement(year, month, hr_code, empleado){
   $('.load-wrapp').show();
   $('.title_tables').hide();
   $('.div_card').hide();
-  $("#firstElement").html("");
   $("#secondElement").html("");
   $("#thirdElement").html("");
   
@@ -192,16 +197,22 @@ function getFirstElement(year, month, hr_code, empleado){
       //----SHOW STYLES
       $('.load-wrapp').hide();
       $("#divContent").show();
-      $('.div_card').show();
       $('.title_tables').show();
       if (res.response.firstElement) {
-        console.log('drawFirstElement.........')
-        getDrawTableNested('thirdElement',Object.values(res.response.firstElement));
+        $('#textAlert1').text(res.response.firstElement['total_pagar'].toFixed(2));
+        $('#textAlert2').text(res.response.firstElement['total_mes'].toFixed(2));
+        $('#textAlert3').text(res.response.firstElement['total_dia'].toFixed(2));
+        $(".div_card").show();
+        document.getElementById("firstElement").style.removeProperty('display');
       }
       if (res.response.secondElement){
-        $('#textAlert1').text(res.response.secondElement['total_pagar'].toFixed(2));
-        $('#textAlert2').text(res.response.secondElement['total_mes'].toFixed(2));
-        $('#textAlert3').text(res.response.secondElement['total_dia'].toFixed(2));
+        getDrawTable('secondElement', columsTable6, res.response.secondElement);
+      }
+      if (res.response.thirdElement) {
+        getDrawTable('thirdElement', columsTable7, res.response.thirdElement);
+      }
+      if (res.response.fourthElement) {
+        getDrawTableNested('fourthdElement',Object.values(res.response.fourthElement));
       }
     } else {
       hideLoading();
@@ -210,11 +221,13 @@ function getFirstElement(year, month, hr_code, empleado){
           title: 'Error',
           html: res.error
         });
+        $('.load-wrapp').hide();
       } else {
         Swal.fire({
           title: 'Error',
           html: res.error
         });
+        $('.load-wrapp').hide();
       }
     }
   })
@@ -395,21 +408,22 @@ function getDrawTable(id, columnsData, tableData){
     columns:columnsData,
   });
 
-  console.log('IDDDD',id);
   //trigger download of data.xlsx file
-  document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
-  document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
-    table.download("xlsx", "data.xlsx", {sheetName:"data"});
-  });
+  if (document.getElementById("download_xlsx_"+id)){
+    document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
+    document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
+      table.download("xlsx", "data.xlsx", {sheetName:"data"});
+    });
+  }
 
   //trigger download of data.csv file
-  document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
-  document.getElementById("download_csv_"+id).addEventListener("click", function (){
-    table.download("csv", "data.csv");
-  });
+  if (document.getElementById("download_csv_"+id)){
+    document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
+    document.getElementById("download_csv_"+id).addEventListener("click", function (){
+      table.download("csv", "data.csv");
+    });
+  }
 }
-
-// Tabulator
 
 var minMaxFilterEditor = function(cell, onRendered, success, cancel, editorParams){
   var end;
