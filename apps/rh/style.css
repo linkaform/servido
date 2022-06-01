@@ -7,7 +7,7 @@ body{ font-family: 'Lato', sans-serif; color: #696158; width: 100%; height: 100%
 .header .navbar-brand{ width: 100%; }
 .header .navbar-brand .logo_marca{ vertical-align: middle; width: 200px; }
 .header .navbar-brand .logo_marca img{ width: 100%;}
-.header .navbar-brand h1{ color: #193792; font-size: 1.2em; vertical-align: middle; font-weight: bold; padding: 25px 0 0; white-space: normal;}
+.header .navbar-brand h1{ color: #16102F; font-size: 1.2em; vertical-align: middle; font-weight: bold; padding: 25px 0 0; white-space: normal;}
 .close{ display: none; text-align: right; width: 100%; font-size: 1em;}
 .close i{ margin-right: 5px;}
 .close a{cursor: pointer;}
@@ -202,41 +202,3 @@ hr {
 }
 
 
-.load-wrapp{
-  margin-top: 100px;
-
-}
-
-.line {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border-radius: 100px;
-  background-color: #E5514B;
-}
-
-.load-3 .line:nth-last-child(1) {
-  animation: loadingC 0.6s 0.1s linear infinite;
-}
-.load-3 .line:nth-last-child(2) {
-  animation: loadingC 0.6s 0.2s linear infinite;
-}
-.load-3 .line:nth-last-child(3) {
-  animation: loadingC 0.6s 0.3s linear infinite;
-}
-.load-3 .line:nth-last-child(4) {
-  animation: loadingC 0.6s 0.4s linear infinite;
-}
-
-
-@keyframes loadingC {
-  0 {
-    transform: translate(0, 0);
-  }
-  50% {
-    transform: translate(0, 15px);
-  }
-  100% {
-    transform: translate(0, 0);
-  }
-}
