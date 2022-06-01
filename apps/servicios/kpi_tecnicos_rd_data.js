@@ -3,16 +3,16 @@
 var columsTable1 = [
   { title:"Tecnico", field:'responsable'  ,headerHozAlign:"center",width:250},
   { title:"Reportes", field:'reportes'  ,headerHozAlign:"center",width:200},
-  { title:"% De Reportes", field:'percentage_total'  ,headerHozAlign:"center",width:200,formatter: "money",
+  { title:"% De Reportes", field:'percentage_total'  ,headerHozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Mtto", field:'mantenimiento'  ,headerHozAlign:"center",width:200},
-  { title:"% Mtto", field:'percentage_mtto'  ,headerHozAlign:"center",width:200,formatter: "money",
+  { title:"% Mtto", field:'percentage_mtto'  ,headerHozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Servicio", field:'servicio'  ,headerHozAlign:"center",width:200},
-  { title:"% Servicio", field:'percentage_servicio'  ,headerHozAlign:"center",width:200,formatter: "money",
+  { title:"% Servicio", field:'percentage_servicio'  ,headerHozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Visitas", field:'visita'  ,headerHozAlign:"center",width:200},
-  { title:"% Visitas", field:'percentage_visita'  ,headerHozAlign:"center",width:200,formatter: "money",
+  { title:"% Visitas", field:'percentage_visita'  ,headerHozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
 ];
 

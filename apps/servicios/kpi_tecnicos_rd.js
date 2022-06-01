@@ -10,7 +10,8 @@ let userName = null;
 let userParentId = null;
 var scriptId = null;
 
-
+$('#divOptions').hide();
+$('#title_report').hide();
 $('.title_tables').hide();
 hideElement("firstElement-Buttons")
 hideElement("title_demo")
@@ -92,12 +93,17 @@ window.onload = function(){
     if (scriptId == null) {
       loadDemoData();
     }
+    //---HIDE AND SHOW
+    setSpinner();
+    $('#divOptions').show();
+    $('#title_report').show();
+    document.getElementById("firstParameters").style.removeProperty('display');
   } else {
     unhideElement("inicio_ses");
     $('.title_tables').hide();
     hideElement("title_demo");
   }
-  ///-----HIDE AND SHOW
+  ///-----HIDE AND SHOW 
   for(var key in qs){
     if (key === 'embed'){
       if (qs[key]){
@@ -153,7 +159,10 @@ function runFirstElement(){
 };
 
 function getFirstElement(date_from, date_to){
+  $("#divContent").hide();
+  $('.load-wrapp').show();
   $('.title_tables').hide();
+  //----CLEAN
   $("#firstElement").html("");
   $("#thirdElement").html("");
   $("#fourthElement").html("");
@@ -163,8 +172,6 @@ function getFirstElement(date_from, date_to){
   $("#eigthElement").html("");
   $("#ninethElement").html("");
   $("#tenthElement").html("");
-  $('#graphic_1').hide();
-  $('#graphic_2').hide();
   setStyleRemove();
   console.log('Get first',url);
   console.log('Script id.........',scriptId);
@@ -183,6 +190,8 @@ function getFirstElement(date_from, date_to){
   .then(res => res.json())
   .then(res => {
     if (res.success) {
+      $('.load-wrapp').hide();
+      $("#divContent").show();
       $('.title_tables').show();
       if (res.response.json.firstElement.tabledata) {
         getDrawTable('firstElement',columsTable1,res.response.json.firstElement.tabledata);
@@ -246,11 +255,13 @@ function getFirstElement(date_from, date_to){
           title: 'Error',
           html: res.error
         });
+        $('.load-wrapp').hide();
       } else {
         Swal.fire({
           title: 'Error',
           html: res.error
         });
+        $('.load-wrapp').hide();
       }
     }
   })
