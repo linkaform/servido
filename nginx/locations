@@ -1,13 +1,18 @@
 location / {
   index index.html;
+  expires off;
+  add_header Cache-Control public;
+  add_header Cache-Control "no-store";
   include /etc/nginx/proxy_params;
+  add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
 }
 
 location /api {
   root  /srv/servido/servio_api/;
+
   ### testing parameter for SIGPIPE
   uwsgi_ignore_client_abort on;
-  ### END TEST
+
   uwsgi_pass  unix:///run/uwsgi/app/servido/socket.sock;
   uwsgi_read_timeout 600s;
   uwsgi_send_timeout 600s;
@@ -23,11 +28,15 @@ location /api {
 }
 
 location /utils {
+expires off;
+add_header Cache-Control "no-store";
   include /etc/nginx/proxy_params;
   index index.html;
 }
 
 location /tissueculture {
+expires off;
+add_header Cache-Control "no-store";
   include /etc/nginx/proxy_params;
   index index.html;
 }
