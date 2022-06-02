@@ -258,11 +258,13 @@ function getFirstElement(date_from, date_to, regional, perfil){
           title: 'Error',
           html: res.error
         });
+        $('.load-wrapp').hide();
       } else {
         Swal.fire({
           title: 'Error',
           html: res.error
         });
+        $('.load-wrapp').hide();
       }
     }
   })

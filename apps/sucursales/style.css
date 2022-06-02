@@ -193,3 +193,17 @@ body{ font-family: 'Lato', sans-serif; color: #696158; width: 100%; height: 100%
   .controlBtn{display: block;}
   .opcionBtn{ width: 100%;}
 }
+
+
+h2 {
+  color: black;
+  font: 33px sans-serif;
+  margin-top: 30px;
+  text-align: left;
+}
+
+hr {
+  border-top: 1px solid #707b7c;
+  width: 550px;
+  margin-left: 0%;
+}

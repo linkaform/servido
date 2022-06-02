@@ -323,15 +323,12 @@ function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
     height:"auto",
     layout:"fitDataTable",
-    //layout:"fitColumns",
     data:tableData,
-    // responsiveLayout: "hide",
     resizableRows:false,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
     columns:columnsData,
-    renderHorizontal:"virtual",
   });
   //trigger download of data.xlsx file
   document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));

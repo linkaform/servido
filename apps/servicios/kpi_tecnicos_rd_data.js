@@ -1,92 +1,92 @@
 
 //----COLUMS TABLE
 var columsTable1 = [
-  { title:"Tecnico", field:'responsable'  ,headerHozAlign:"center",width:250},
-  { title:"Reportes", field:'reportes'  ,headerHozAlign:"center",width:200},
-  { title:"% De Reportes", field:'percentage_total'  ,headerHozAlign:"right",width:200,formatter: "money",
+  { title:"Tecnico", field:'responsable',hozAlign:"left",width:250},
+  { title:"Reportes", field:'reportes'  ,hozAlign:"center",width:190},
+  { title:"% De Reportes", field:'percentage_total'  ,hozAlign:"right",width:190,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
-  { title:"Mtto", field:'mantenimiento'  ,headerHozAlign:"center",width:200},
-  { title:"% Mtto", field:'percentage_mtto'  ,headerHozAlign:"right",width:200,formatter: "money",
+  { title:"Mtto", field:'mantenimiento'  ,hozAlign:"center",width:190},
+  { title:"% Mtto", field:'percentage_mtto'  ,hozAlign:"right",width:190,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
-  { title:"Servicio", field:'servicio'  ,headerHozAlign:"center",width:200},
-  { title:"% Servicio", field:'percentage_servicio'  ,headerHozAlign:"right",width:200,formatter: "money",
+  { title:"Servicio", field:'servicio'  ,hozAlign:"center",width:190},
+  { title:"% Servicio", field:'percentage_servicio'  ,hozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
-  { title:"Visitas", field:'visita'  ,headerHozAlign:"center",width:200},
-  { title:"% Visitas", field:'percentage_visita'  ,headerHozAlign:"right",width:200,formatter: "money",
+  { title:"Visitas", field:'visita'  ,hozAlign:"center",width:180},
+  { title:"% Visitas", field:'percentage_visita'  ,hozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
 ];
 
 //---ESTATUS DE MTTO
 var columsTable2 = [
-  { title:"Tecnico", field:'responsable'  , formatter:"money",hozAlign:"center",width:250},
+  { title:"Tecnico", field:'responsable'  , formatter:"money",hozAlign:"left",width:250},
   { title:"Abiertas", field:'abiertos'  ,formatter:"money",hozAlign:"center", width:250, },
-  { title:"% Abiertas", field:'percentage_abiertos'  ,formatter:"money",hozAlign:"center",width:200,formatter: "money",
+  { title:"% Abiertas", field:'percentage_abiertos'  ,formatter:"money",hozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Progreso", field:'progreso'  ,formatter:"money",hozAlign:"center",width:200},
-  { title:"% Progreso", field:'percentage_progreso'  ,formatter:"money",hozAlign:"center",width:200,formatter: "money",
+  { title:"% Progreso", field:'percentage_progreso'  ,formatter:"money",hozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Cerradas", field:'cerrado'  ,formatter:"money" , hozAlign:"center",width:200},
-  { title:"% Cerradas", field:'percentage_cerrado'  ,formatter:"money" , hozAlign:"center",width:200,formatter: "money",
+  { title:"% Cerradas", field:'percentage_cerrado'  ,formatter:"money" , hozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Total", field:'reportes'  ,formatter:"money" , hozAlign:"center",width:200},
 ];
 
 //---ESTATUS DE SERVICIO
 var columsTable3 = [
-  { title:"Tecnico", field:'responsable'  ,hozAlign:"center",width:250},
+  { title:"Tecnico", field:'responsable'  ,hozAlign:"left",width:250},
   { title:"Abiertas", field:'abiertos'  ,hozAlign:"center",width:250},
-  { title:"% Abiertas", field:'percentage_abiertos'  ,hozAlign:"center",width:200,formatter: "money",
+  { title:"% Abiertas", field:'percentage_abiertos'  ,hozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Pendientes", field:'pendientes'  ,hozAlign:"center",width:200},
-  { title:"% Pendientes", field:'percentage_pendientes'  ,hozAlign:"center",width:200,formatter: "money",
+  { title:"% Pendientes", field:'percentage_pendientes'  ,hozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Cerradas", field:'cerrado'  ,hozAlign:"center",width:200},
-  { title:"% Cerradas", field:'percentage_cerrado'  ,hozAlign:"center",width:200,formatter: "money",
+  { title:"% Cerradas", field:'percentage_cerrado'  ,hozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Total", field:'reportes'  ,hozAlign:"center",width:200},
 ];
 
 //---ESTATUS DE VISITA
 var columsTable4 = [
-  { title:"Tecnico", field:'responsable'  ,hozAlign:"center",width:250},
+  { title:"Tecnico", field:'responsable'  ,hozAlign:"left",width:250},
   { title:"Abiertas", field:'abiertos'  ,hozAlign:"center",width:250},
-  { title:"% Abiertas", field:'percentage_abiertos'  ,hozAlign:"center",width:200,formatter: "money",
+  { title:"% Abiertas", field:'percentage_abiertos'  ,hozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Cerradas", field:'cerrado'  ,hozAlign:"center",width:200},
-  { title:"% Cerradas", field:'percentage_cerrado'  ,hozAlign:"center",width:200,formatter: "money",
+  { title:"% Cerradas", field:'percentage_cerrado'  ,hozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Total", field:'reportes'  ,hozAlign:"center",width:200},
 ];
 
 //----EVIDENCIAS DE MTTTO
 var columsTable6 = [
-  { title:"Tecnico", field:'responsable'  ,hozAlign:"center",width:250},
+  { title:"Tecnico", field:'responsable'  ,hozAlign:"left",width:250},
   { title:"# de Reporte de Mtto", field:'reportes'  ,hozAlign:"center",width:250},
   { title:"2 o mas evidencias", field:'evidencias'  ,hozAlign:"center",width:200},
-  { title:"Prom Campos llenos x reporte", field:'percentage_campos'  ,hozAlign:"center",width:200,formatter: "money",
+  { title:"Prom Campos llenos x reporte", field:'percentage_campos'  ,hozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
 ];
 
 //----EVIDENCIAS SERVICIO
 var columsTable7 = [
-  { title:"Tecnico", field:'responsable'  ,hozAlign:"center",width:250},
+  { title:"Tecnico", field:'responsable'  ,hozAlign:"left",width:250},
   { title:"# de Reporte de Servicio", field:'reportes'  ,hozAlign:"center",width:250},
   { title:"2 o mas evidencias", field:'evidencias'  ,hozAlign:"center",width:200},
-  { title:"Prom Campos llenos x reporte", field:'percentage_campos'  ,hozAlign:"center",width:200,formatter: "money",
+  { title:"Prom Campos llenos x reporte", field:'percentage_campos'  ,hozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Reportes ReAbiertos", field:'reabiertos'  ,hozAlign:"center",width:200},
-  { title:"% de Reporte ReAbiertos", field:'percentage_reabiertos'  ,hozAlign:"center",width:200,formatter: "money",
+  { title:"% de Reporte ReAbiertos", field:'percentage_reabiertos'  ,hozAlign:"right",width:200,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
 ];
 
 //---CHECK IN
 var columsTable8 = [
-  { title:"Tecnico", field:'responsable'  ,hozAlign:"center",width:250},
-  { title:"< 30 min", field:'menor_15'  ,hozAlign:"center",width:250,formatter: "money",
+  { title:"Tecnico", field:'responsable'  ,hozAlign:"left",width:250},
+  { title:"< 30 min", field:'menor_15'  ,hozAlign:"right",width:250,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
-  { title:" Ok ", field:'entre_15_600'  ,hozAlign:"center",width:250,formatter: "money",
+  { title:" Ok ", field:'entre_15_600'  ,hozAlign:"right",width:250,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
-  { title:" > 10 Horas ", field:'mayor_600'  ,hozAlign:"center",width:250,formatter: "money",
+  { title:" > 10 Horas ", field:'mayor_600'  ,hozAlign:"right",width:250,formatter: "money",
     formatterParams: {symbol: "% ", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:" Total ", field:'total'  ,hozAlign:"center",width:250,formatter: "money",
     formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
@@ -95,11 +95,11 @@ var columsTable8 = [
 
 
 var columsTable9 = [
-  { title:"Tecnico", field:'tecnico'  ,hozAlign:"center"},
-  { title:"Valor Facturado", field:'total'  ,hozAlign:"center",formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+  { title:"Tecnico", field:'tecnico'  ,hozAlign:"left",width:250},
+  { title:"Valor Facturado", field:'total'  ,hozAlign:"right",formatter: "money",
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3},width:150},
   { title:"Calificacion de Servicio", field:'calificacion'  ,hozAlign:"center",formatter: "money",
-    formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
+    formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 2},width:150},
 ];
 
 
@@ -191,10 +191,11 @@ var dataTable7 = [
 
 var dataTable8 = [
   { 
-    "tecnico": "Francisco Don",
-    "menos": '15%',
-    "okey": '75%',
-    "mas": '10%'
+    "responsable": "Francisco Don",
+    "menor_15": '15%',
+    "entre_15_600": '75%',
+    "mayor_600": '10%',
+    "total":'500'
   }
 ];
 

@@ -8,7 +8,7 @@
   <meta name="description" content="Forcast by Cicle">
   <link type="image/x-icon" rel="shortcut icon" href="../img/favicon.ico">
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-  <link type="image/x-icon" rel="shortcut icon" href="favicon.ico">
+  <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!--LIBRARY CHECK -->
@@ -71,27 +71,23 @@
         </center>
       </div>
 
-      <div class="col-sm-12 col-md-12 col-lg-12 row mb-2">
+      <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
         <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
           <i class="fa-solid fa-filter"></i>
-        </button >
-
-
+        </button >  &nbsp;  &nbsp;
+        <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
       </div>
 
+  
+
       <div id="firstParameters" class="collapse row show">
-        <div class="renglon col-12 row">
-          <div class="col-sm-12 col-md-5 col-lg-5">
-            <h3>Plant Code: </h3>
-            <input class="form-control ds-input" type="input" id="plant_code" name="plant_code">
-          </div>
-          <div class="col-sm-12 col-md-5 col-lg-5">
-            <h3>Extra Weeks: </h3>
-            <input class="form-control ds-input" type="number" id="extra_weeks" name="extra_weeks">
-          </div>
-          <div class="col-sm-12 col-md-2 col-lg-2">
-            <div class="btn btn-primary"  style="margin-top:13%;" onclick="runFirstElement()">Run</div>
-          </div>
+        <div class="col-sm-12 col-md-5 col-lg-5">
+          <h5>Plant Code: </h5>
+          <input class="form-control ds-input" type="input" id="plant_code" name="plant_code">
+        </div>
+        <div class="col-sm-12 col-md-5 col-lg-5">
+          <h5>Extra Weeks: </h5>
+          <input class="form-control ds-input" type="number" id="extra_weeks" name="extra_weeks">
         </div>
       </div>
       <div class="row" id="divContent">
