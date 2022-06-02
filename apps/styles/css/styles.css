@@ -1,3 +1,23 @@
+html{  display: block; width: 100%; height: 100%; overflow-x: hidden; overflow-y: auto; }
+body{ font-family: 'Lato', sans-serif; color: #696158; width: 100%; height: 100%; }
+#divNomina, #divComisiones, #divNominaContratista{ display: none; overflow-x: auto; overflow-y: hidden;}
+#detalleUsu, #detalleUsuNom{ display: none; margin-bottom: 30px;}
+#inicio_ses, #infoContra{ display: none;}
+.header{ width: 100%; display: block; text-align: center; }
+.header .navbar-brand{ width: 100%; }
+.header .navbar-brand .logo_marca{ vertical-align: middle; width: 200px; }
+.header .navbar-brand .logo_marca img{ width: 100%;}
+.header .navbar-brand h1{ color: #1A237E; font-size: 1.2em; vertical-align: middle; font-weight: bold; padding: 25px 0 0; white-space: normal;}
+.close{ display: none; text-align: right; width: 100%; font-size: 1em;}
+.close i{ margin-right: 5px;}
+.close a{cursor: pointer;}
+.back{ display: none; text-align: left; width: 50%; font-size: 1em;}
+.back i{ margin-right: 5px;}
+.back a{cursor: pointer;}
+.app{ padding: 2rem; }
+
+
+
 .load-wrapp{
   margin-top: 100px;
 
@@ -8,19 +28,24 @@
   width: 20px;
   height: 20px;
   border-radius: 100px;
-  background-color: #E5514B;
+  margin-right: 5px;
 }
 
 .load-3 .line:nth-last-child(1) {
+  background-color: #E5514B;/* RED*/
   animation: loadingC 0.6s 0.1s linear infinite;
 }
 .load-3 .line:nth-last-child(2) {
+  background-color: #9B59B6;/* Purple*/
+  /* background-color: #F1C40F;/* yellow*/
   animation: loadingC 0.6s 0.2s linear infinite;
 }
-.load-3 .line:nth-last-child(3) {
+ .load-3 .line:nth-last-child(3) {
+   background-color: #3498DC;/* Green*/
   animation: loadingC 0.6s 0.3s linear infinite;
 }
 .load-3 .line:nth-last-child(4) {
+  background-color: #2DCC71;/* Green*/
   animation: loadingC 0.6s 0.4s linear infinite;
 }
 
