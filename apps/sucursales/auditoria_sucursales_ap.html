@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
   <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
+  <link rel="stylesheet" href="../styles/css/styles.css">
   <link rel="stylesheet" href="style.css">
 
 </head>
@@ -21,22 +22,34 @@
   <nav class="navbar header">
     <div class="navbar-brand">
       <div class="row">
-        <div class="col-md-6"><a href="reportes.html"><div class="logo_marca"><img src="https://app.linkaform.com/img/login-linkaform-logo.png" alt="PC Link" id="image_log"></div></a></div>
-        <div class="col-md-6"><h1>Reportes Auditoria Excelencia Operativa</h1></div>
-      </div>
-      <div class="container">
-        <div class="back" id="atras"><i class="fa fa-solid fa-arrow-left"></i>Atras</div>
-        <div class="close" id="close_sesion"><a onclick="closeSession();"><i class="fa fa-regular fa-lock"></i>Cerrar Sesión</a></div>
-      </div>
-    </div>
+        <div class="col-md-6">
+          <a href="index.html">
+            <div class="logo_marca">
+              <img src="https://app.linkaform.com/img/login-linkaform-logo.png" alt="LinkaForm" id="image_log">
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6">
+          <div class="container">
+            <div class="back"  id="atras"><i class="fa fa-solid fa-arrow-left"></i>Atras</div>
+              <div class="close" id="close_sesion"><a onclick="closeSession();"><i class="fa-solid fa-lock"></i>Cerrar Sesión</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12" id="title_report">
+          <h1>Reportes Auditoria Excelencia Operativa</h1>
+        </div>
+      </div> 
   </nav>
+
+
   <div class="loading-container">
     <div class="spinner-border text-primary" role="status">
       <span class="sr-only">Loading...</span>
     </div>
   </div>
   <div style="width:100%">
-    <div class="app" id="appCont">
+    <div class="app" id="appCont"  style="padding-top: 0px;">
       <div class="row inicio_ses" id="inicio_ses">
         <div class="errorLogin" id="errorLog"></div>
         <div class="control">
@@ -54,40 +67,48 @@
           </div>
         </div>
       </div>
+
       <div id="title_demo" style="margin-bottom: 20px;">
         <center>
           <h1><span>Datos demo</span>&nbsp;&nbsp;</h1>
         </center>
       </div>
+
+      <!--Collapse -->
+      <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
+          <i class="fa-solid fa-filter"></i>
+        </button >  &nbsp;  &nbsp;
+        <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
+      </div>
+
       <!--firstParameters -->
-      <div id="firstParameters" class="row div_filter" >
-        <div class="renglon col-6 row">
-          <div class="col-sm-12 col-md-6 col-lg-6">
-            <h4>Fecha Desde: </h4>
-            <input class="form-control ds-input" type="date" id="date_from" name="date_from" value="">
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-6">
-            <h4>Fecha Hasta: </h4>
-            <input class="form-control ds-input" type="date" id="date_to" name="date_to" value="">
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-6">
-            <h4>Regional: </h4>
-            <select class="form-control ds-input" id="catalog-79950-level-1" name="regional" value="">
-              <option value="--">Select Regional</option>
-            </select>
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-6">
-            <h4>Perfil: </h4>
-            <select class="form-control ds-input" id="perfil" name="perfil" value="">
-              <option value="--">--Seleccione--</option>
-            </select>
-          </div>
-          <br>
-          <div class="col-sm-6 col-md-6 col-lg-6">
-            <div class="btn btn-primary" onclick="runFirstElement()">Run</div>
-          </div>
+      <div id="firstParameters" class="collapse row show" >
+        <div class="col-sm-12 col-md-3 col-lg-3">
+          <h5>Fecha Desde: </h5>
+          <input class="form-control ds-input" type="date" id="date_from" name="date_from" value="">
         </div>
-        <div class="col-6 row">
+        <div class="col-sm-12 col-md-3 col-lg-3">
+          <h5>Fecha Hasta: </h5>
+          <input class="form-control ds-input" type="date" id="date_to" name="date_to" value="">
+        </div>
+        <div class="col-sm-12 col-md-3 col-lg-3">
+          <h5>Regional: </h5>
+          <select class="form-control ds-input" id="catalog-79950-level-1" name="regional" value="">
+            <option value="--">Select Regional</option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-md-3 col-lg-3">
+          <h5>Perfil: </h5>
+          <select class="form-control ds-input" id="perfil" name="perfil" value="">
+            <option value="--">--Seleccione--</option>
+          </select>
+        </div>
+      </div>
+
+      <!--Content-->
+      <div class="row" id="divContent">
+        <div class="col-sm-12 col-md-12 col-lg-12 row" style="margin:auto;">
           <div class="col-sm-12 col-md-6 col-lg-6" id="div_alert1">
             <div class="card border-info m-2">
               <div class="card-body">
@@ -111,9 +132,6 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12 div_class">
           <div id="firstElement" class="row"></div>
         </div>
@@ -126,18 +144,20 @@
         <div class="col-sm-12 col-md-6 col-lg-6 div_class">
           <div id="fourthElement" ></div>
         </div>
-        <center class="title_tables">
-          <h2 ><span>Resultados por Preguntas</span>&nbsp;&nbsp;
-            <button  class="btn btn-primary" id="download-csv"><i class="fa-solid fa-file-csv"></i></button>
-            <button  class="btn btn-success" id="download-xlsx"><i class="fa-regular fa-file-excel"></i></button>
-          </h2>
-          <hr>
-        </center>
+       
+        <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top:18px;">
+          <center class="title_tables">
+            <h2 ><span>Resultados por Preguntas:</span>&nbsp;&nbsp;
+              <button  class="btn btn-primary" id="download_csv_fourthdElement"><i class="fa-solid fa-file-csv"></i></button>
+              <button  class="btn btn-success" id="download_xlsx_fourthdElement"><i class="fa-regular fa-file-excel"></i></button>
+            </h2>
+            <hr>
+          </center>
+        </div>
         <div class="col-sm-12 col-md-12 col-lg-12 div_class">
           <div id="fivethElement" ></div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -151,18 +171,35 @@
   <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
   <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 
+  <!-- Load d3.js -->
+  <script src="https://d3js.org/d3.v5.js"></script>
+
+  <!--Librarys -->
   <script
   src="https://code.jquery.com/jquery-3.6.0.js"
   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
   crossorigin="anonymous"></script>
-  <!-- Load d3.js -->
-  <!-- <script src="https://d3js.org/d3.v6.js"></script>-->
-  <script src="https://d3js.org/d3.v5.js"></script>
-  <script type="text/javascript" src="https://s3.amazonaws.com/dynatable-docs-assets/js/jquery.dynatable.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+
+
+  <!-- Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+  <script 
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
+  integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" 
+  crossorigin="anonymous"></script>
+
+  <script 
+  src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" 
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
+  crossorigin="anonymous"></script>
+
+  <!-- Utils -->
   <script type="text/javascript" src="../utils/lkf_utils.js"></script>
   <script type="text/javascript" src="../utils/servido_utils.js"></script>
+
+  <!-- utils js-->
   <script type="text/javascript" src="./auditoria_sucursales_ap.js"></script>
   <script type="text/javascript" src="./auditoria_sucursales_data.js"></script>
 </body>

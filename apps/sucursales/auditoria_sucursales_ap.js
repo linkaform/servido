@@ -11,6 +11,12 @@ let userParentId = null;
 var scriptId = null;
 
 
+
+$('#divOptions').hide();
+$('#title_report').hide();
+$('.div_card').hide();
+$('.title_tables').hide();
+
 hideElement("title_demo")
 hideElement("firstElement");
 hideElement("firstParameters");
@@ -85,11 +91,24 @@ window.onload = function(){
     unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
+    }else{
+      $('.div_card').hide();
+      $('.title_tables').hide();
     }
+
+
+    //---HIDE AND SHOW
+    setSpinner();
+    $('#divOptions').show();
+    $('#title_report').show();
+    document.getElementById("firstParameters").style.removeProperty('display');
+
   } else {
     unhideElement("inicio_ses");
     hideElement("title_demo");
-    document.getElementById("firstParameters").classname = "div_filter_hide";
+    $('#divOptions').hide();
+    $('#title_report').hide();
+    $('.title_tables').hide();
   }
 }
 
@@ -118,6 +137,7 @@ function get_parameters(){
 
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
+  $('.title_tables').show();
   unhideElement("firstParameters");
   unhideElement("firstElement");
   unhideElement("secondElement");
@@ -169,6 +189,13 @@ function runFirstElement(){
 };
 
 function getFirstElement(date_from, date_to, regional, perfil){
+  //----Hide Css
+  $("#divContent").hide();
+  $('.load-wrapp').show();
+  $('.title_tables').hide();
+  $('.div_card').hide();
+
+  //----Clean
   $("#firstElement").html("");
   $("#secondElement").html("");
   $("#thirdElement").html("");
@@ -189,6 +216,10 @@ function getFirstElement(date_from, date_to, regional, perfil){
   .then(res => res.json())
   .then(res => {
     if (res.success) {
+      //----Hide and show
+      $('.load-wrapp').hide();
+      $("#divContent").show();
+      $('.title_tables').show();
       if (res.response.json.firstElement.length) {
         if (res.response.json.totalSucursales)
         {
@@ -211,7 +242,6 @@ function getFirstElement(date_from, date_to, regional, perfil){
         }
         if (res.response.json.fourthElement.length){
           getDrawTable('fivethElement', columsTable1, res.response.json.fourthElement);
-          unhideElement("fivethElement")
           document.getElementById("fivethElement").style.removeProperty('display');
         }
         if (res.response.json.sixthElement.length)
@@ -466,6 +496,28 @@ function drawThirdElement(data){
   .attr("text-anchor", "middle")
   .style("font-size", "18px")
   .text("Evaluaciones por sección");
+
+  const x = d3.scaleBand()
+  .range([ 0, width ])
+  .domain(data.map(d => d.pagina))
+  .padding(0.2);
+
+  const y = d3.scaleLinear()
+  .domain([0, 120])
+  .range([ height, 0]);
+
+
+  svg.selectAll(".label")
+  .data(data)
+  .enter()
+  .append('text')
+  .text((data) => data.section_grade)
+  .attr('x', data => x(data.pagina) + x.bandwidth() / 2)
+  .attr('y', data => y(data.section_grade) - 15)
+  .style('fill','#494949')
+  .style("font-size", "12px")
+  .attr('text-anchor','middle');
+
 }
 
 function drawFourthElement(data){
@@ -563,15 +615,22 @@ function getDrawTable(id, columnsData, tableData){
     columns:columnsData,
     renderHorizontal:"virtual",
   });
-  //trigger download of data.csv file
-  document.getElementById("download-csv").addEventListener("click", function(){
-      table.download("csv", "data.csv");
-  });
 
-  //trigger download of data.xlsx file
-  document.getElementById("download-xlsx").addEventListener("click", function(){
-      table.download("xlsx", "data.xlsx", {sheetName:"Auditorias"});
-  });
+  if (document.getElementById("download_xlsx_"+id)){
+    //trigger download of data.xlsx file
+    document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
+    document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
+    table.download("xlsx", "data.xlsx", {sheetName:"data"});
+    });
+  }
+
+  if (document.getElementById("download_csv_"+id)){
+    //trigger download of data.csv file
+    document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
+    document.getElementById("download_csv_"+id).addEventListener("click", function (){
+      table.download("csv", "data.csv");
+    });
+  }
 }
 
 
