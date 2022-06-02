@@ -91,7 +91,6 @@ window.onload = function(){
     //---HIDE AND SHOW
     setSpinner();
     $('#divOptions').show();
-    $('.title_tables').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
 

@@ -108,6 +108,7 @@ window.onload = function(){
       if (qs[key]){
         $("#close_sesion").hide();
         $("#image_log").hide();
+        
       }
     }
   }
