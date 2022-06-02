@@ -91,6 +91,7 @@ window.onload = function(){
     //---HIDE AND SHOW
     setSpinner();
     $('#divOptions').show();
+    $('.title_tables').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
 
@@ -122,6 +123,7 @@ function unHideReportElements(){
 }
 
 function loadDemoData(){
+  $('.title_tables').show();
   getDrawTable('firstElement', columsTable1, dataTable1);
   unhideElement("title_demo")
 }

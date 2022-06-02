@@ -88,6 +88,7 @@ window.onload = function(){
     }
     
     getCatalog(79041,79040,1,catalogType='select');
+    
     //---HIDE AND SHOW
     setSpinner();
     $('#divOptions').show();
@@ -124,7 +125,6 @@ function unHideReportElements(){
 function loadDemoData(){
   //----
   $('.title_tables').show();
-  
   $('.div_card').show();
   getDrawTable('secondElement', columsTable6, dataTableLicencias );
   getDrawTable('thirdElement', columsTable7, dataTableTotal);

@@ -100,6 +100,16 @@ window.onload = function(){
     $('.title_tables').hide();
     hideElement("firstElement-Buttons");
   }
+  //---SHOW AND HIDE ELEMENT
+  for(var key in qs){
+    if (key === 'embed'){
+      if (qs[key]){
+        $("#close_sesion").hide();
+        $("#image_log").hide();
+      }
+    }
+  }
+  
 }
 
 function unHideReportElements(){
