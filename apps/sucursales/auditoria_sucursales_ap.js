@@ -110,6 +110,18 @@ window.onload = function(){
     $('#title_report').hide();
     $('.title_tables').hide();
   }
+  ///-----HIDE AND SHOW
+  for(var key in qs){
+    if (key === 'embed'){
+      if (qs[key]){
+        $("#close_sesion").hide();
+        $("#image_log").hide();
+      }
+    }
+  }
+
+
+
 }
 
 function get_parameters(){
