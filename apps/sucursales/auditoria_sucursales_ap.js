@@ -334,7 +334,7 @@ function drawFirstElement(data){
         
         if (d.score >= 80) {
           return "#27ae60";
-        } else if (d.score >= 60 && d.score=<79.9) {
+        } else if (d.score >= 60 && d.score<=79.9) {
           return "#f1c40f";
         }
         else if(d.score<=59.99)
@@ -426,7 +426,7 @@ function drawSecondElement(data){
        .attr("fill", function(d) {
           if (d.score >= 80) {
             return "#27ae60";
-          } else if (d.score >= 60 && d.score=<79.9) {
+          } else if (d.score >= 60 && d.score<=79.9) {
             return "#f1c40f";
           }
           else if(d.score<=59.9)
@@ -520,7 +520,7 @@ function drawThirdElement(data){
       .attr("fill", function(d) {
       if (d.section_grade >= 80) {
       return "#27ae60";
-      } else if (d.section_grade >= 60 && d.section_grade =<79.9) {
+      } else if (d.section_grade >= 60 && d.section_grade<=79.9) {
         return "#f1c40f";
       }
       else if(d.section_grade<=59.9)
@@ -609,7 +609,7 @@ function drawFourthElement(data){
     .attr("fill", function(d) {
       if (d.score >= 80) {
         return "#27ae60";
-      } else if (d.score > 60 && d.score<79.9) {
+      } else if (d.score >= 60 && d.score<=79.9) {
         return "#f1c40f";
       }
       else if(d.score<=59.9)
