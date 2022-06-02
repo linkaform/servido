@@ -287,7 +287,7 @@ function getFirstElement(date_from, date_to, regional, perfil){
 function drawFirstElement(data){
    $('#firstElement').empty();
    const margin = {top: 30, right: 30, bottom: 150, left: 60},
-       width = 1400 - margin.left - margin.right,
+       width = 1700 - margin.left - margin.right,
        height = 600 - margin.top - margin.bottom;
 
    // append the svg object to the body of the page
@@ -330,18 +330,29 @@ function drawFirstElement(data){
       .append('rect')
       .attr("x", d => x(d.sucursal))
       .attr("y", d => y(d.score))
+      .attr("fill", function(d) {
+        
+        if (d.score >= 80) {
+          return "#27ae60";
+        } else if (d.score >= 60 && d.score=<79.9) {
+          return "#f1c40f";
+        }
+        else if(d.score<=59.99)
+        {
+          return " #e74c3c ";
+        }
+      })
       .attr("width", x.bandwidth())
       .attr("height", d => height - y(d.score))
-      .attr("fill", "#5488c2")
     })
 
 
    //--Title
    svg.append("text")
   .attr("x", (width / 2))
-  .attr("y", 0 - (margin.top / 2))
+  .attr("y", 10 - (margin.top / 2))
   .attr("text-anchor", "middle")
-  .style("font-size", "22px")
+  .style("font-size", "21px")
   .text("Evaluaciones por sucursal");
 
    //----Toltip
@@ -360,7 +371,7 @@ function drawFirstElement(data){
   .data(data)
   .enter()
   .append('text')
-  .text((data) => parseInt(data.score) + ' / ' +data.total)
+  .text((data) => parseInt(data.score) + '% / ' +data.total)
   .attr('x', data => x(data.sucursal) + x.bandwidth() / 2)
   .attr('y', data => y(data.score) - 15)
   .style('fill','#494949')
@@ -412,10 +423,19 @@ function drawSecondElement(data){
      .join("rect")
        .attr("x", d => x(d.regional))
        .attr("y", d => y(d.score))
+       .attr("fill", function(d) {
+          if (d.score >= 80) {
+            return "#27ae60";
+          } else if (d.score >= 60 && d.score=<79.9) {
+            return "#f1c40f";
+          }
+          else if(d.score<=59.9)
+          {
+            return " #e74c3c ";
+          }
+        })
        .attr("width", x.bandwidth())
        .attr("height", d => height - y(d.score))
-       .attr("fill", "#5488c2")
-
    })
 
    //---TItle
@@ -441,7 +461,7 @@ function drawSecondElement(data){
   .data(data)
   .enter()
   .append('text')
-  .text((data) => parseInt(data.score) + ' / ' +data.total)
+  .text((data) => parseInt(data.score) + '% / ' +data.total)
   .attr('x', data => x(data.regional) + x.bandwidth() / 2)
   .attr('y', data => y(data.score) - 15)
   .style('fill','#494949')
@@ -492,15 +512,24 @@ function drawThirdElement(data){
 
 
    // Bars
-   svg.selectAll("mybar")
-     .data(data)
-     .join("rect")
-       .attr("x", d => x(d.pagina))
-       .attr("y", d => y(d.section_grade))
-       .attr("width", x.bandwidth())
-       .attr("height", d => height - y(d.section_grade))
-       .attr("fill", "#5488c2")
-
+    svg.selectAll("mybar")
+      .data(data)
+      .join("rect")
+      .attr("x", d => x(d.pagina))
+      .attr("y", d => y(d.section_grade))
+      .attr("fill", function(d) {
+      if (d.section_grade >= 80) {
+      return "#27ae60";
+      } else if (d.section_grade >= 60 && d.section_grade =<79.9) {
+        return "#f1c40f";
+      }
+      else if(d.section_grade<=59.9)
+      {
+        return " #e74c3c ";
+      }
+      })
+      .attr("width", x.bandwidth())
+      .attr("height", d => height - y(d.section_grade))
    })
 
    //---TItulo
@@ -517,7 +546,7 @@ function drawThirdElement(data){
   .padding(0.2);
 
   const y = d3.scaleLinear()
-  .domain([0, 120])
+  .domain([0, 125])
   .range([ height, 0]);
 
 
@@ -525,9 +554,9 @@ function drawThirdElement(data){
   .data(data)
   .enter()
   .append('text')
-  .text((data) => data.section_grade)
+  .text((data) =>  data.section_grade + '% / ' +data.total)
   .attr('x', data => x(data.pagina) + x.bandwidth() / 2)
-  .attr('y', data => y(data.section_grade) - 15)
+  .attr('y', data => y(data.section_grade) - 25)
   .style('fill','#494949')
   .style("font-size", "12px")
   .attr('text-anchor','middle');
@@ -577,9 +606,19 @@ function drawFourthElement(data){
     .join("rect")
     .attr("x", d => x(d.perfil))
     .attr("y", d => y(d.score))
+    .attr("fill", function(d) {
+      if (d.score >= 80) {
+        return "#27ae60";
+      } else if (d.score > 60 && d.score<79.9) {
+        return "#f1c40f";
+      }
+      else if(d.score<=59.9)
+      {
+        return " #e74c3c ";
+      }
+    })
     .attr("width", x.bandwidth())
     .attr("height", d => height - y(d.score))
-    .attr("fill", "#5488c2")
   })
 
   //---TItulo
@@ -604,7 +643,7 @@ function drawFourthElement(data){
   .data(data)
   .enter()
   .append('text')
-  .text((data) => parseInt(data.score) + ' / ' +data.total)
+  .text((data) => parseInt(data.score) + '% / ' +data.total)
   .attr('x', data => x(data.perfil) + x.bandwidth() / 2)
   .attr('y', data => y(data.score) - 15)
   .style('fill','#494949')
