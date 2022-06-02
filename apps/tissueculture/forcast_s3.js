@@ -11,6 +11,8 @@ let userParentId = null;
 let scriptId = null;
 
 
+$('#divOptions').hide();
+$('#title_report').hide();
 $('.title_tables').hide();
 $("#buttonFilter").hide();
 hideElement("title_demo")
@@ -86,11 +88,16 @@ window.onload = function(){
     if (scriptId == null) {
       loadDemoData();
     }
-    //--Hide element script
+    //---HIDE AND SHOW
+    setSpinner();
     $("#buttonFilter").show();
+    $('#divOptions').show();
+    $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
   } else {
     unhideElement("inicio_ses");
+    $('#divOptions').hide();
+    $('#title_report').hide();
     $('.title_tables').hide();
     $("#buttonFilter").hide();
     hideElement("firstElement-Buttons");
@@ -134,8 +141,12 @@ function runFirstElement(){
 
 
 function getFirstElement(plant_code,extra_weeks){
-  $("#firstElement").html("");
+  //----Hide styles
+  $("#divContent").hide();
+  $('.load-wrapp').show();
   $('.title_tables').hide();
+  //---CLean
+  $("#firstElement").html("");
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
@@ -152,13 +163,16 @@ function getFirstElement(plant_code,extra_weeks){
   .then(res => res.json())
   .then(res => {
     if (res.success) {
+       //----SHOW STYLES
+      $('.load-wrapp').hide();
+      $("#divContent").show();
       $('.title_tables').show();
       if (res.response.firstElement) {
         console.log('drawFirstElement.........')
         console.log('Data', res.response.firstElement.tabledata)
         console.log('Data', res.response.firstElement.colsData)
         getDrawTable('firstElement',res.response.firstElement.colsData, res.response.firstElement.tabledata);
-        document.getElementById("firstElement").style.removeProperty('display');
+        //document.getElementById("firstElement").style.removeProperty('display');
       }
     } else {
       hideLoading();
@@ -167,11 +181,13 @@ function getFirstElement(plant_code,extra_weeks){
           title: 'Error',
           html: res.error
         });
+        $('.load-wrapp').hide();
       } else {
         Swal.fire({
           title: 'Error',
           html: res.error
         });
+        $('.load-wrapp').hide();
       }
     }
   })
@@ -245,27 +261,29 @@ function getDrawTable(id, columnsData, tableData){
     //dataTreeChildIndent:25,
     dataTreeFilter:false,
     dataTreeStartExpanded:true,
-
     height:"490px",
-    layout:"fitDataFill",
+    layout:"fitDataTable",
     // responsiveLayout: "hide",
     textDirection:"ltr",
     //renderHorizontal:"virtual",
     resizableRows:true,
-    width: "250px"
   });
 
-  //trigger download of data.xlsx file
-  document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
-  document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
-    table.download("xlsx", "data.xlsx", {sheetName:"data"});
-  });
+  if (document.getElementById("download_xlsx_"+id)){
+    //trigger download of data.xlsx file
+    document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
+    document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
+      table.download("xlsx", "data.xlsx", {sheetName:"data"});
+    });
+  }
 
-  //trigger download of data.csv file
-  document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
-  document.getElementById("download_csv_"+id).addEventListener("click", function (){
-    table.download("csv", "data.csv");
-  });
+  if (document.getElementById("download_csv_"+id)){
+    //trigger download of data.csv file
+    document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
+    document.getElementById("download_csv_"+id).addEventListener("click", function (){
+      table.download("csv", "data.csv");
+    });
+  }
 }
 
 function setStyleRemove()

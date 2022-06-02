@@ -11,6 +11,8 @@ let userParentId = null;
 let scriptId = null;
 
 
+$('#divOptions').hide();
+$('#title_report').hide();
 $('.title_tables').hide();
 hideElement("title_demo")
 hideElement("firstParameters")
@@ -85,9 +87,19 @@ window.onload = function(){
     if (scriptId == null) {
       loadDemoData();
     }
+
+    //---HIDE AND SHOW
+    setSpinner();
+    $('#divOptions').show();
+    $('#title_report').show();
+    document.getElementById("firstParameters").style.removeProperty('display');
+
   } else {
     unhideElement("inicio_ses");
+    $('#divOptions').hide();
+    $('#title_report').hide();
     $('.title_tables').hide();
+
     hideElement("firstElement-Buttons");
   }
   ///-----HIDE AND SHOW
@@ -121,15 +133,17 @@ loading.style.display = 'none';
 
 function runFirstElement(){
   let plant_code = document.getElementById("plant_code");
-  setStyleRemove();
-  console.log('plant code', plant_code)
   firstElement =getFirstElement( plant_code.value,);
 };
 
 
 function getFirstElement(plant_code){
-  $("#firstElement").html("");
+  //---Hide style
+  $("#divContent").hide();
+  $('.load-wrapp').show();
   $('.title_tables').hide();
+  //----CLean
+  $("#firstElement").html("");
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
@@ -144,13 +158,15 @@ function getFirstElement(plant_code){
   .then(res => res.json())
   .then(res => {
     if (res.success) {
+      //----SHOW STYLES
+      $('.load-wrapp').hide();
+      $("#divContent").show();
       $('.title_tables').show();
+
       if (res.response.firstElement) {
         console.log('drawFirstElement.........')
-        console.log('Data', res.response.firstElement.tabledata)
-        console.log('Data', res.response.firstElement.colsData)
         getDrawTable('firstElement',res.response.firstElement.colsData, res.response.firstElement.tabledata);
-        document.getElementById("firstElement").style.removeProperty('display');
+        
       }
     } else {
       hideLoading();
@@ -223,7 +239,6 @@ function editableData(){
 //-----TABLES
 
 function getDrawTable(id, columnsData, tableData){
-  unhideElement("firstElement-Buttons");
   //editableData();
   //---CHECK
   dataTreecheck = false;
@@ -231,9 +246,7 @@ function getDrawTable(id, columnsData, tableData){
   {
     dataTreecheck = true;
   }
-  console.log('option', dataTreecheck);
-
-
+  console.log("document.getElementById('input_check').checked",document.getElementById('input_check').checked);
   var table = new Tabulator("#" + id, {
     //layout:"fitColumns",
     clipboard:true,
@@ -255,26 +268,25 @@ function getDrawTable(id, columnsData, tableData){
   });
 
 
-  //trigger download of data.xlsx file
-  document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
-  document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
-    table.download("xlsx", "data.xlsx", {sheetName:"data"});
-  });
+  if (document.getElementById("download_xlsx_"+id)){
+    //trigger download of data.xlsx file
+    document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
+    document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
+      table.download("xlsx", "data.xlsx", {sheetName:"data"});
+    });
+  }
 
-  //trigger download of data.csv file
-  document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
-  document.getElementById("download_csv_"+id).addEventListener("click", function (){
-    table.download("csv", "data.csv");
-  });
+  if (document.getElementById("download_csv_"+id)){ 
+    //trigger download of data.csv file
+    document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
+    document.getElementById("download_csv_"+id).addEventListener("click", function (){
+      table.download("csv", "data.csv");
+    });
+  }
 }
 
-function setStyleRemove()
-{
-  document.getElementById("firstParameters").style.removeProperty('display');
-}
 
 // Tabulator
-
 var minMaxFilterEditor = function(cell, onRendered, success, cancel, editorParams){
   var end;
   var container = document.createElement("span");

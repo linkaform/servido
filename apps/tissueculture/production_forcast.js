@@ -10,7 +10,8 @@ let userName = null;
 let userParentId = null;
 let scriptId = null;
 
-
+$('#divOptions').hide();
+$('#title_report').hide();
 $('.title_tables').hide();
 hideElement("title_demo")
 hideElement("firstParameters")
@@ -85,8 +86,17 @@ window.onload = function(){
     if (scriptId == null) {
       loadDemoData();
     }
+
+    //---HIDE AND SHOW
+    setSpinner();
+    $('#divOptions').show();
+    $('#title_report').show();
+    document.getElementById("firstParameters").style.removeProperty('display');
+
   } else {
     unhideElement("inicio_ses");
+    $('#divOptions').hide();
+    $('#title_report').hide();
     $('.title_tables').hide();
     hideElement("firstElement-Buttons");
   }
@@ -120,6 +130,11 @@ function runFirstElement(){
 
 
 function getFirstElement(yearWeekFrom, yearWeekTo){
+  //---Hide style
+  $("#divContent").hide();
+  $('.load-wrapp').show();
+  $('.title_tables').hide();
+  //---CLean
   $("#firstElement").html("");
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
@@ -136,6 +151,10 @@ function getFirstElement(yearWeekFrom, yearWeekTo){
   .then(res => res.json())
   .then(res => {
     if (res.success) {
+      //----SHOW STYLES
+      $('.load-wrapp').hide();
+      $("#divContent").show();
+      $('.title_tables').show();
       if (res.response.firstElement) {
         console.log('drawFirstElement.........')
         console.log('Data', res.response.firstElement.tabledata)
@@ -149,11 +168,13 @@ function getFirstElement(yearWeekFrom, yearWeekTo){
           title: 'Error',
           html: res.error
         });
+        $('.load-wrapp').hide();
       } else {
         Swal.fire({
           title: 'Error',
           html: res.error
         });
+        $('.load-wrapp').hide();
       }
     }
   })
@@ -218,7 +239,7 @@ function getDrawTable(id, columnsData, tableData){
 
   var table = new Tabulator("#" + id, {
     height:"550px",
-    layout:"fitDataTable",
+    layout:"fitData",
     //layout:"fitColumns",
     data:tableData,
     // responsiveLayout: "hide",
@@ -230,15 +251,23 @@ function getDrawTable(id, columnsData, tableData){
     renderHorizontal:"virtual",
   });
 
-  //trigger download of data.csv file
-  document.getElementById("download-csv").addEventListener("click", function(){
-      table.download("csv", "data.csv");
-  });
+  
 
   //trigger download of data.xlsx file
-  document.getElementById("download-xlsx").addEventListener("click", function(){
-      table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
-  });
+  if (document.getElementById("download_xlsx_"+id)){
+    document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
+    document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
+      table.download("xlsx", "data.xlsx", {sheetName:"data"});
+    });
+  }
+
+  //trigger download of data.csv file
+  if (document.getElementById("download_csv_"+id)){
+    document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
+    document.getElementById("download_csv_"+id).addEventListener("click", function (){
+      table.download("csv", "data.csv");
+    });
+  }
 }
 
 function setStyleRemove()

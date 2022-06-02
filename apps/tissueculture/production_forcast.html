@@ -12,11 +12,12 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
+  <link rel="stylesheet" href="../styles/css/styles.css">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <nav class="navbar header">
+   <nav class="navbar header">
     <div class="navbar-brand">
       <div class="row">
         <div class="col-md-6">
@@ -25,13 +26,18 @@
               <img src="https://app.linkaform.com/img/login-linkaform-logo.png" alt="LinkaForm" id="image_log">
             </div>
           </a>
-        </div>        <div class="col-md-6"><h1>Production Forcast</h1></div>
-      </div>
-      <div class="container">
-        <div class="back" id="atras"><i class="fa fa-solid fa-arrow-left"></i>Atras</div>
-        <div class="close" id="close_sesion"><a onclick="closeSession();"><i class="fa-solid fa-lock"></i>Cerrar Sesión</a></div>
-      </div>
-    </div>
+        </div>
+        <div class="col-md-6">
+          <div class="container">
+            <div class="back"  id="atras"><i class="fa fa-solid fa-arrow-left"></i>Atras</div>
+              <div class="close" id="close_sesion"><a onclick="closeSession();"><i class="fa-solid fa-lock"></i>Cerrar Sesión</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12" id="title_report">
+          <h1>Production Forcast</h1>
+        </div>
+      </div> 
   </nav>
   <div class="loading-container">
     <div class="spinner-border text-primary" role="status">
@@ -62,32 +68,38 @@
           <h1><span>Demo data</span>&nbsp;&nbsp;</h1>
         </center>
       </div>
-      <div id="firstParameters" class="row">
-        <div class="renglon col-12 row">
-          <div class="col-sm-12 col-md-5 col-lg-5">
-            <h3>Year Week From: </h3>
-            <input class="form-control ds-input" type="input" id="yearWeekFrom" name="yearWeekFrom" value="202217">
-          </div>
-          <div class="col-sm-12 col-md-5 col-lg-5">
-            <h3>Year Week To: </h3>
-            <input class="form-control ds-input" type="input" id="yearWeekTo" name="yearWeekTo" value="202218">
-          </div>
-          <div class="col-sm-12 col-md-2 col-lg-2">
-            <div class="btn btn-primary"  style="margin-top:13%;" onclick="runFirstElement()">Run</div>
-          </div>
+
+      <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
+          <i class="fa-solid fa-filter"></i>
+        </button >  &nbsp;  &nbsp;
+        <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
+      </div>
+
+      <div id="firstParameters" class="collapse row show">
+        <div class="col-sm-12 col-md-5 col-lg-5">
+          <h3>Year Week From: </h3>
+          <input class="form-control ds-input" type="input" id="yearWeekFrom" name="yearWeekFrom" value="202217">
+        </div>
+        <div class="col-sm-12 col-md-5 col-lg-5">
+          <h3>Year Week To: </h3>
+          <input class="form-control ds-input" type="input" id="yearWeekTo" name="yearWeekTo" value="202218">
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 18px;">
 
-          <center class="title_tables">
-            <h2 ><span>Report</span>&nbsp;&nbsp;
-              <button  class="btn btn-primary" id="download-csv"><i class="fa-solid fa-file-csv"></i></button>
-              <button  class="btn btn-success" id="download-xlsx"><i class="fa-regular fa-file-excel"></i></button>
-            </h2>
-            <hr>
-          </center>
-          <div id="firstElement" class="row ">
+      <div class="row" id="divContent">
+        <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 18px;">
+          <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top:18px;">
+            <center class="title_tables">
+              <h2 ><span>Report:</span>&nbsp;&nbsp;
+                <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
+                <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
+              </h2>
+              <hr style="width:220px; margin-left: 0%;border-top: 1px solid #707b7c;">
+            </center>
+          </div>
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <div id="firstElement" class="row "></div>
           </div>
         </div>
       </div>
@@ -104,15 +116,32 @@
   <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
   <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
   <!-- end tabulator -->
+
+  <!--Librarys -->
   <script
   src="https://code.jquery.com/jquery-3.6.0.js"
   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
   crossorigin="anonymous"></script>
-  <!-- Load d3.js -->
 
   <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+
+  <!-- Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+  <script 
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
+  integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" 
+  crossorigin="anonymous"></script>
+
+  <script 
+  src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" 
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
+  crossorigin="anonymous"></script>
+
+  <!-- Bootstrap -->
   <script type="text/javascript" src="../utils/lkf_utils.js"></script>
   <script type="text/javascript" src="../utils/servido_utils.js"></script>
+
   <script type="text/javascript" src="./production_forcast.js"></script>
   <script type="text/javascript" src="./production_forcast_data.js"></script>
 </body>

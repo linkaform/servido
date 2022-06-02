@@ -14,12 +14,11 @@
   <!--LIBRARY CHECK -->
   <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
+  <link rel="stylesheet" href="../styles/css/styles.css">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
-
   <nav class="navbar header">
     <div class="navbar-brand">
       <div class="row">
@@ -29,25 +28,26 @@
               <img src="https://app.linkaform.com/img/login-linkaform-logo.png" alt="LinkaForm" id="image_log">
             </div>
           </a>
-        </div>        
-        <div class="col-md-6"><h1>Forcast S3</h1></div>
-      </div>
-      <div class="container">
-        <div class="back" id="atras"><i class="fa fa-solid fa-arrow-left"></i>Atras</div>
-        <div class="close" id="close_sesion"><a onclick="closeSession();"><i class="fa-solid fa-lock"></i>Cerrar Sesión</a></div>
-      </div>
-    </div>
+        </div>
+        <div class="col-md-6">
+          <div class="container">
+            <div class="back"  id="atras"><i class="fa fa-solid fa-arrow-left"></i>Atras</div>
+              <div class="close" id="close_sesion"><a onclick="closeSession();"><i class="fa-solid fa-lock"></i>Cerrar Sesión</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12" id="title_report">
+          <h1>Forcast S3</h1>
+        </div>
+      </div> 
   </nav>
-
-
-
   <div class="loading-container">
     <div class="spinner-border text-primary" role="status">
       <span class="sr-only">Loading...</span>
     </div>
   </div>
   <div style="width:100%">
-    <div class="app" id="appCont">
+    <div class="app" id="appCont" style="padding-top: 0px;">
       <div class="row inicio_ses" id="inicio_ses">
         <div class="errorLogin" id="errorLog"></div>
         <div class="control">
@@ -75,9 +75,11 @@
         <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
           <i class="fa-solid fa-filter"></i>
         </button >
+
+
       </div>
 
-      <div id="firstParameters" class="collapse row">
+      <div id="firstParameters" class="collapse row show">
         <div class="renglon col-12 row">
           <div class="col-sm-12 col-md-5 col-lg-5">
             <h3>Plant Code: </h3>
@@ -92,7 +94,7 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row" id="divContent">
         <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 18px;">
           <center class="title_tables">
             <h2 ><span>Report</span>&nbsp;&nbsp;
