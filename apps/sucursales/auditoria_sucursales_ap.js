@@ -334,10 +334,10 @@ function drawFirstElement(data){
         
         if (d.score >= 80) {
           return "#27ae60";
-        } else if (d.score >= 60 && d.score<=79.9) {
+        } else if (d.score >= 60 && d.score<=79.999) {
           return "#f1c40f";
         }
-        else if(d.score<=59.99)
+        else if(d.score<=59.9999)
         {
           return " #e74c3c ";
         }
@@ -426,10 +426,10 @@ function drawSecondElement(data){
        .attr("fill", function(d) {
           if (d.score >= 80) {
             return "#27ae60";
-          } else if (d.score >= 60 && d.score<=79.9) {
+          } else if (d.score >= 60 && d.score<=79.999) {
             return "#f1c40f";
           }
-          else if(d.score<=59.9)
+          else if(d.score<=59.999)
           {
             return " #e74c3c ";
           }
@@ -520,10 +520,10 @@ function drawThirdElement(data){
       .attr("fill", function(d) {
       if (d.section_grade >= 80) {
       return "#27ae60";
-      } else if (d.section_grade >= 60 && d.section_grade<=79.9) {
+      } else if (d.section_grade >= 60 && d.section_grade<=79.999) {
         return "#f1c40f";
       }
-      else if(d.section_grade<=59.9)
+      else if(d.section_grade<=59.999)
       {
         return " #e74c3c ";
       }
@@ -609,10 +609,10 @@ function drawFourthElement(data){
     .attr("fill", function(d) {
       if (d.score >= 80) {
         return "#27ae60";
-      } else if (d.score >= 60 && d.score<=79.9) {
+      } else if (d.score >= 60 && d.score<=79.999) {
         return "#f1c40f";
       }
-      else if(d.score<=59.9)
+      else if(d.score<=59.999)
       {
         return " #e74c3c ";
       }
