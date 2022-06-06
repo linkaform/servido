@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+    <html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Servido</title>
+        <meta name="title" content="Servido">
+        <meta name="description" content="Forcast by Cicle">
+        <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+        <link type="image/x-icon" rel="shortcut icon" href="favicon.ico">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <!--LIBRARY CHECK -->
+        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
+        <link rel="stylesheet" href="../styles/css/styles.css">
+    </head>
+    <body>
+        <!-- Header -->
+        <nav class="navbar header">
+            <div class="navbar-brand">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="index.html">
+                            <div class="logo_marca">
+                                <img src="https://app.linkaform.com/img/login-linkaform-logo.png" alt="LinkaForm" id="image_log">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="container">
+                            <div class="back"  id="atras"><i class="fa fa-solid fa-arrow-left"></i>Atras</div>
+                            <div class="close" id="close_sesion"><a onclick="closeSession();"><i class="fa-solid fa-lock"></i>Cerrar Sesión</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" id="title_report">
+                <h1>Information Lead</h1>
+                </div>
+            </div> 
+        </nav>
+        <!-- LOading style -->
+        <div class="loading-container">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+
+        <div style="width:100%">
+            <div class="app" id="appCont">
+                <!--Session -->
+                <div class="row inicio_ses" id="inicio_ses">
+                    <div class="errorLogin" id="errorLog"></div>
+                    <div class="control">
+                        <div class="renglon">
+                            <h3>Usuario: </h3>
+                            <input class="form-control ds-input" id="user" name="user" value="">
+                        </div>
+                        <div class="renglon">
+                            <h3>Contraseña: </h3>
+                            <input class="form-control ds-input" type="password" id="pass" name="pass" value="">
+                        </div>
+                        <div class="controlBtn">
+                        <div class="btn btn-primary" onclick="login()">Login</div>
+                        <div class="btn btn-primary" onclick="reset()">Reset</div>
+                        </div>
+                    </div>
+                </div>
+                <!--Report -->
+                <div id="title_demo" style="margin-bottom: 20px;">
+                    <center>
+                        <h1><span>Demo data</span>&nbsp;&nbsp;</h1>
+                    </center>
+                </div>
+
+                <!--TItle -->
+                <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
+                        <i class="fa-solid fa-filter"></i>
+                    </button >  &nbsp;  &nbsp;
+                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
+                </div>
+
+
+                <div id="firstParameters" class="collapse row show">
+                    <div class="renglon col-12 row">
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <h4>Fecha Desde: </h4>
+                            <input class="form-control ds-input" type="date" id="date_from" name="date_from" value="">
+                        </div>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <h4>Fecha Hasta: </h4>
+                            <input class="form-control ds-input" type="date" id="date_to" name="date_to" value="">
+                        </div>
+                       
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:20px;" >
+                    <div id="firstElement"  class="col-sm-12 col-md-6 col-lg-6 mb-5">
+                        <div style="width: 900px;height: 500px;margin: auto;" > 
+                            <canvas id="graphicFirst"></canvas>
+                        </div>
+                    </div>
+                    <div id="secondElement" class="col-sm-12 col-md-6 col-lg-6 mb-5">
+                        <div  style="width: 450px;height: 450px;margin: auto;">
+                            <canvas id="graphicSecond"></canvas>
+                        </div>
+                    </div>
+                    <div id="thirdElement"  class="col-sm-12 col-md-6 col-lg-6 mb-5">  
+                        <div  style="width: 900px;height: 500px;margin: auto;">
+                            <canvas id="graphicThird"></canvas>
+                        </div>
+                    </div>
+                    <div id="fourthElement" class="col-sm-12 col-md-6 col-lg-6" style="align-items: center;margin-top: auto;margin-bottom: auto;">
+                        <div   style="margin-top:18px;" class="col-sm-12 col-md-12 col-lg-12" >
+                            <div class="card border-info m-2">
+                                <div class="card-body" style="margin:auto;">
+                                    <center>
+                                        <h2 class="card-title">Promedio Mes</h2>
+                                        <p class="card-text" style="font-size: 25px;">3.8</p>
+                                        <i class="fa-solid fa-chart-line" style="font-size:40px;"></i>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="fivethElement" class="col-sm-12 col-md-6 col-lg-6 "  style="width: 100%;height:500px;">
+                        <div  style="width: 100%;height: 20vh;">
+                            <canvas id="graphicFiveth"></canvas>
+                        </div>
+                    </div>
+                    <div id="sixthElement" class="col-sm-12 col-md-6 col-lg-6 "  style="width: 100%;height:500px;">
+                        <div  style="width: 450px;height: 450px;margin: auto;">
+                            <canvas id="graphicSixth"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <!-- Jquery -->
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.js"
+    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+    <!-- chartjs -->
+    <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+    <script 
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" 
+    crossorigin="anonymous"></script>
+
+    <script 
+    src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" 
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
+    crossorigin="anonymous"></script>
+
+
+    <!-- Utils -->
+    <script src="../styles/js/chroma.min.js"></script>
+    <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
+    <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="../utils/lkf_utils.js"></script>
+    <script type="text/javascript" src="../utils/servido_utils.js"></script>
+
+    <!-- Template -->
+    <script type="text/javascript" src="./lead_ap.js"></script>
+    <script type="text/javascript" src="./lead_data.js"></script>
+    </body>
+</html>

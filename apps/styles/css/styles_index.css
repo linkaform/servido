@@ -1,15 +1,5 @@
 
 @font-face {
-    font-family: 'proxbold';
-    src: url('prox-bold-webfont.woff2') format('woff2'),
-         url('prox-bold-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-
-@font-face {
     font-family: 'gothambook';
     src: url('gothambook-webfont.woff2') format('woff2'),
          url('gothambook-webfont.woff') format('woff');
@@ -18,15 +8,6 @@
 
 }
 
-
-@font-face {
-    font-family: 'gothambold';
-    src: url('gothambold-webfont.woff2') format('woff2'),
-         url('gothambold-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
 
 body{
     font-family: gothambook;

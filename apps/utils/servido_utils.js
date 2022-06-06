@@ -211,6 +211,10 @@ function getPAlleteColors(pallete,number){
       arrayColors = chroma.scale(['#90afc5','#336b87','#2a3132','#763626']).mode('lch').colors(number);
   }else if(pallete==4){
       arrayColors = chroma.scale(['#003b46','#07575b','#66a5ad','#c4dfe6']).mode('lch').colors(number);
+  }else if(pallete==5){
+    arrayColors = chroma.scale(['#27ae60','#f1c40f','#d35400']).mode('lch').colors(number);
+  }else if(pallete==6){
+    arrayColors = chroma.scale(['#3498db','#27ae60']).mode('lch').colors(number);
   }
 
   return arrayColors;

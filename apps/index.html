@@ -11,7 +11,7 @@
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
+        <link rel="stylesheet" type="text/css" href="./">
     </head>
     <style type="text/css">
         .wrapper {
@@ -33,6 +33,18 @@
             width: 100%;
             clear: both;
         }
+        @font-face {
+            font-family: 'gothambook';
+            src: url('./styles/css/gothambook-webfont.woff2') format('woff2'),
+            url('./styles/css/gothambook-webfont.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body{
+            font-family: gothambook;
+        }
+
     </style>
     <body>
 
@@ -81,7 +93,7 @@
 
                                             </div>
                                             <div class="text-end">
-                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location.href = './sucursales/index.html';">Index</button>
                                                 <p class="mb-0 mt-3">Sucursales</p>
                                             </div>
                                         </div>
@@ -97,7 +109,7 @@
                                                <i class="fa-solid fa-building text-primary fa-3x"></i>
                                             </div>
                                             <div class="text-end">
-                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location.href = './rh/index.html';">Index</button>
                                                 <p class="mb-0 mt-3">Relaciones Humanas</p>
                                             </div>
                                         </div>
@@ -126,10 +138,9 @@
                                         <div class="d-flex justify-content-between px-md-1">
                                             <div class="align-self-center">
                                                 <i class="fa-solid fa-network-wired  text-primary fa-3x"></i>
-
                                             </div>
                                             <div class="text-end">
-                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location.href = './servicios/index.html';">Index</button>
                                                 <p class="mb-0 mt-3">Servicios</p>
                                             </div>
                                         </div>
