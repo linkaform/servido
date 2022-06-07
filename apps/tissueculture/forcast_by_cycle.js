@@ -247,7 +247,7 @@ function getDrawTable(id, columnsData, tableData){
   {
     dataTreecheck = true;
   }
-  console.log("document.getElementById('input_check').checked",document.getElementById('input_check').checked);
+
   var table = new Tabulator("#" + id, {
     //layout:"fitColumns",
     clipboard:true,

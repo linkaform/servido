@@ -6,12 +6,12 @@
         <meta name="title" content="Apymsa">
         <meta name="description" content="Reportes RH">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-        <link type="image/x-icon" rel="shortcut icon" href="../img/favicon.ico">
+        <link type="image/x-icon" rel="shortcut icon" href="./styles/img/favicon.ico">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
+        <link rel="stylesheet" type="text/css" href="./">
     </head>
     <style type="text/css">
         .wrapper {
@@ -33,6 +33,18 @@
             width: 100%;
             clear: both;
         }
+        @font-face {
+            font-family: 'gothambook';
+            src: url('./styles/css/gothambook-webfont.woff2') format('woff2'),
+            url('./styles/css/gothambook-webfont.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body{
+            font-family: gothambook;
+        }
+
     </style>
     <body>
 
@@ -81,7 +93,7 @@
 
                                             </div>
                                             <div class="text-end">
-                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location.href = './sucursales/index.html';">Index</button>
                                                 <p class="mb-0 mt-3">Sucursales</p>
                                             </div>
                                         </div>
@@ -97,7 +109,7 @@
                                                <i class="fa-solid fa-building text-primary fa-3x"></i>
                                             </div>
                                             <div class="text-end">
-                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location.href = './rh/index.html';">Index</button>
                                                 <p class="mb-0 mt-3">Relaciones Humanas</p>
                                             </div>
                                         </div>
@@ -113,7 +125,7 @@
 
                                             </div>
                                             <div class="text-end">
-                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location.href = './tissueculture/index.html';">Index</button>
                                                 <p class="mb-0 mt-3">Tissue cultere</p>
                                             </div>
                                         </div>
@@ -126,11 +138,40 @@
                                         <div class="d-flex justify-content-between px-md-1">
                                             <div class="align-self-center">
                                                 <i class="fa-solid fa-network-wired  text-primary fa-3x"></i>
-
                                             </div>
                                             <div class="text-end">
-                                                <button type="button" class="btn btn-outline-secondary btn-sm">Demo</button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location.href = './servicios/index.html';">Index</button>
                                                 <p class="mb-0 mt-3">Servicios</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+                                               <i class="fa-solid fa-code-branch text-primary fa-3x"></i>
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location.href = './crm/index.html';">Index</button>
+                                                <p class="mb-0 mt-3">Lead</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-lg-3 mb-4">
+                                <div class="card" style="border: 1px solid  #85929e;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between px-md-1">
+                                            <div class="align-self-center">
+                                                <i class="fa-solid fa-question text-primary fa-3x"></i>
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location.href = './encuestas/index.html';">Index</button>
+                                                <p class="mb-0 mt-3">Encuestas</p>
                                             </div>
                                         </div>
                                     </div>
