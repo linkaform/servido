@@ -140,6 +140,8 @@ function get_parameters(){
   .then(res => {
     if (res.response.perfiles)
     {
+      $('#perfil').empty()
+      $("#perfil").append('<option >--Seleccione--</option>')
       for (var i = 0 ; i < res.response.perfiles.length; i++) {
         $("#perfil").append("<option value='" + res.response.perfiles[i] + "'>" + res.response.perfiles[i] + "</option>")
       }

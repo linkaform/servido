@@ -119,9 +119,9 @@ function login() {
         {
           getCompanyLogo(userParentId)
         }
-        // data = getFirstElementJson(date_from, date_to )
-        // firstElement = drawFirstElement(userJwt);
 
+        //---DEMO
+        //---EJECUTAR AQUI BLOQUE
 
       } else {
         hideLoading();
