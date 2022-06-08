@@ -87,15 +87,15 @@ var columsTable5 = [
 //--Table TOtal
 var columsTable7 = [
   { title:"Total Jornales", field:'total_jornales', hozAlign:"left", width:170,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
   { title:"Total Destajo", field:'total_destajo', hozAlign:"center",width:170,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
   { title:"Total Complemento" , field:'total_complemento', hozAlign:"center", width:190,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0} },
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2} },
   { title:"Total Compensaciones", field:'total_compensaciones', hozAlign:"center",width:190,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
   { title:"Total Salario", field:'total_salario', hozAlign:"center",width:170,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
 ];
 
 var columsTable6 = [

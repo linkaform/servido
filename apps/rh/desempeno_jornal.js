@@ -72,7 +72,7 @@ window.onload = function(){
   userParentId = getCookie("userParentId");
   hideElement("close_sesion");
   hideElement("firstParameters");
-  if(us != "" && jw != ""){
+  if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
     unhideElement("close_sesion");
     // getCompanyLogo(userParentId);
