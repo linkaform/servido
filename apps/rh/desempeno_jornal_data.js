@@ -86,7 +86,7 @@ var columsTable5 = [
 
 //--Table TOtal
 var columsTable7 = [
-  { title:"Total Jornales", field:'total_jornales', hozAlign:"left", width:170,formatter: "money",
+  { title:"Total Jornales", field:'total_jornales', hozAlign:"center", width:170,formatter: "money",
     formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
   { title:"Total Destajo", field:'total_destajo', hozAlign:"center",width:170,formatter: "money",
     formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
