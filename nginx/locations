@@ -78,3 +78,8 @@ location /cocheros {
   index index.html;
   #include /etc/nginx/proxy_params;
 }
+
+location /selecom {
+  root   /srv/servido/apps/custom;
+  index index.html;
+}
