@@ -99,7 +99,7 @@ var columsTable7 = [
 ];
 
 var columsTable6 = [
-  { title:"Licencia Sindical", field:'sindical', hozAlign:"left", width:200,formatter: "money",
+  { title:"Licencia Sindical", field:'sindical', hozAlign:"center", width:200,formatter: "money",
     formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
   { title:"Día Hijo", field:'hijo', hozAlign:"center",width:180,formatter: "money",
     formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
