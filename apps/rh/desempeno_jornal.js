@@ -199,9 +199,11 @@ function getFirstElement(year, month, hr_code, empleado){
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.firstElement) {
-        $('#textAlert1').text(res.response.firstElement['total_pagar'].toFixed(2));
+
+        
+        $('#textAlert1').text('$ '+ Intl.NumberFormat().format(res.response.firstElement['total_pagar'].toFixed(2)));
         $('#textAlert2').text(res.response.firstElement['total_mes'].toFixed(2));
-        $('#textAlert3').text(res.response.firstElement['total_dia'].toFixed(2));
+        $('#textAlert3').text(res.response.firstElement['total_dia'].toFixed(3));
         $(".div_card").show();
         document.getElementById("firstElement").style.removeProperty('display');
       }
