@@ -214,12 +214,16 @@ function getPAlleteColors(pallete,number){
   }else if(pallete==5){
     arrayColors = chroma.scale(['#27ae60','#f1c40f','#d35400']).mode('lch').colors(number);
   }else if(pallete==6){
-    arrayColors = chroma.scale(['#3498db','#27ae60']).mode('lch').colors(number);
+    arrayColors = chroma.scale(['#3498db','#1b4f72','#27ae60']).mode('lch').colors(number);
   }
 
   return arrayColors;
 }
 
+function setDemo() 
+{
+  
+}
 
 function setSpinner(){
   if ($("#divContent")){
