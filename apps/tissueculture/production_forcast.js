@@ -23,13 +23,15 @@ window.onload = function(){
   var formNode = document.getElementById("appCont");
 	for(var key in qs){
     if (key === 'script_id' ){
-      console.log('script id', key)
       scriptId = parseInt(qs[key]);
     }
     if (key === 'env') {
       if (qs[key] === 'test'){
          url = "https://preprod.linkaform.com/api/";
       }
+    }
+    if (key ==='title'){
+      $("#title_report").text(qs[key]);
     }
 		var elements = getAllElementsWithAttribute(formNode, 'data-infosync-id', key);
 		var value = decodeURI(qs[key]);
@@ -74,7 +76,7 @@ window.onload = function(){
   hideElement("firstParameters");
 
 
-  if(us != "" && jw != ""){
+  if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
     unhideElement("close_sesion");
     getCompanyLogo(userParentId);

@@ -32,6 +32,9 @@ window.onload = function(){
          url = "https://preprod.linkaform.com/api/";
       }
     }
+    if (key ==='title'){
+      $("#title_report").text(qs[key]);
+    }
 		var elements = getAllElementsWithAttribute(formNode, 'data-infosync-id', key);
 		var value = decodeURI(qs[key]);
     if (key === 'infosyncRecordID'){
@@ -75,7 +78,7 @@ window.onload = function(){
   hideElement("firstParameters");
 
 
-  if(us != "" && jw != ""){
+  if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
 
     unhideElement("close_sesion");

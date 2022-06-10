@@ -39,6 +39,9 @@ window.onload = function(){
          url = "https://preprod.linkaform.com/api/";
       }
     }
+    if (key ==='title'){
+      $("#title_report").text(qs[key]);
+    }
     get_parameters()
     var formNode = document.getElementById("appCont");
 		var elements = getAllElementsWithAttribute(formNode, 'data-infosync-id', key);
@@ -80,7 +83,7 @@ window.onload = function(){
   jw = getCookie("userJwt");
 
 
-  if(us != "" && jw != ""){
+  if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
     unhideElement("close_sesion");
     userId = us;
