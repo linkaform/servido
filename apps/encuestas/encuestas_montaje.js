@@ -103,6 +103,15 @@ window.onload = function(){
     $('#title_report').hide();
     hideElement("firstElement-Buttons");
   }
+  ///-----HIDE AND SHOW
+  for(var key in qs){
+    if (key === 'embed'){
+      if (qs[key]){
+        $("#close_sesion").hide();
+        $("#image_log").hide();
+      }
+    }
+  }
 }
 
 
