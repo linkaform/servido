@@ -1,0 +1,164 @@
+#!/bin/bash
+
+set -e
+set -u
+#set -o pipefail
+
+echo "" >.env
+_usage(){
+  APP=$(basename "$0")
+      echo
+      echo "Usage: $APP [options] <start|attach|build|restart>"
+
+      echo "    Special options:"
+      echo
+      echo "      -l           views log of the server mentiond"
+      echo "      -d           Run in detached docker mode, the app will run on backgroun. In case of build it will delete previos images"
+      echo "      -a           Attach to the server an run it manualy"
+      echo "      -r           Restart the dockers, if no option passed, it will restart all the services"
+      echo "      -b           Rebuilds the docker image"
+      echo "      -h           help!!!!"
+      echo
+      echo "    Command "
+      echo "      $APP start           Starts Servido service"
+      echo "      $APP attach          Attaches to  service"
+      echo "      $APP build           Makes a build of servido"
+      echo
+      echo
+      exit 1
+}
+
+LOGS=""
+RESTART=""
+DETACHED=0
+CONTINUE=0
+FLUSH=0
+PUBLISH=0
+COMPOSE_UP=""
+Docker_Command=runserver
+echo "Docker_Command=runserver" >>.env
+while getopts 'l:r:dm:ca:bh:f:p' opt; do
+  case "$opt" in
+    l)
+      echo "list"
+      #view logs
+      LOGS+=" $OPTARG "
+      ;;
+
+    h)
+     #help
+      echo "helpppp"
+      _usage
+      ;;
+    r)
+      #restart the service
+      RESTART+=" $OPTARG "
+      ;;
+
+    d)
+      echo 'q est esto ' " $1"
+      #run in detach mode
+      DETACHED=1
+      COMPOSE_UP+=" -d"
+      FLUSH=1
+      ;;
+    p)
+     PUBLISH=1
+     ;;
+    b)
+      #BUILD docker image
+      COMPOSE_UP+=" --build"
+
+      ;;
+    c)
+      #mirgrate and run server
+      echo "CONTINUE=1" >>.env
+     ;;
+    m)
+      #migrate
+      MIGRATE_APP="$OPTARG"
+      echo "MIGRATE_APP=$MIGRATE_APP" >>.env
+      echo "Docker_Command=migrate" >>.env
+     ;;
+    a)
+     #attach to server
+     Docker_Command=manual
+     echo $OPTARG
+     docker-compose up -d $OPTARG
+     docker exec -it $OPTARG bash
+     echo "Docker_Command=manual" >>.env
+    ;;
+    f)
+     #flush logs
+    echo $OPTARG
+    CONTAINER_ID=$(docker inspect  $OPTARG | grep Id | awk '{print $2}' | sed -e 's/^"//' -e 's/",$//')
+    echo $CONTAINER_ID
+    rm  /var/lib/docker/containers/$CONTAINER_ID/$CONTAINER_ID'-json.log'
+    ;;
+    ?)
+      _usage
+      ;;
+  esac
+done
+
+shift "$(($OPTIND -1))"
+
+echo "opt " $OPTIND
+echo "opt " $0
+echo "FLUSH" $FLUSH
+# Reload config
+
+
+echo "args $#"
+Command=""
+if [[ $# -gt 0 ]]; then
+  Command=$1
+
+fi
+
+echo "Command : $Command"
+echo $Command >>.env
+
+
+_build(){
+  echo 'entra al build'
+  cd ~/lkf/servido/docker
+  echo $(pwd)
+  if [[ $FLUSH == 1 ]]; then
+    docker image rm -f linkaform/servido:latest
+    docker image rm -f linkaform/servido:develop
+    docker-compose -f docker-prod.yml build --no-cache
+  else
+    docker-compose -f docker-prod.yml build
+    echo "3"
+  fi
+  docker push linkaform/servido:latest
+  if [[ $PUBLISH == 1 ]]; then
+    URL=$(grep SRV_URL .srv_env | awk '{print $2}')
+    if [[ -n $URL ]];
+      then
+        ssh $URL /usr/local/bin/update_servido.sh
+      else
+        echo "set up a valid host on you .srv_env enviorment"
+    fi
+  fi
+}
+
+_stop(){
+  docker stop servido
+  docker rm servido
+}
+
+case "$Command" in
+
+  build)
+    _build
+    echo "Building Servido...."
+
+  ;;
+
+
+  stop)
+    _stop
+  ;;
+  esac
