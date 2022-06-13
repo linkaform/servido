@@ -17,6 +17,7 @@ _usage(){
       echo "      -a           Attach to the server an run it manualy"
       echo "      -r           Restart the dockers, if no option passed, it will restart all the services"
       echo "      -b           Rebuilds the docker image"
+      echo "      -p           Publish, publica los cambios en produccion"
       echo "      -h           help!!!!"
       echo
       echo "    Command "
@@ -134,7 +135,9 @@ _build(){
   fi
   docker push linkaform/servido:latest
   if [[ $PUBLISH == 1 ]]; then
+    cd ~/lkf/servido
     URL=$(grep SRV_URL .srv_env | awk '{print $2}')
+    echo 'LA URLLLLL ES ' $URL
     if [[ -n $URL ]];
       then
         ssh $URL /usr/local/bin/update_servido.sh
