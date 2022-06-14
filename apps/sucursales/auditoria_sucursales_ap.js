@@ -291,9 +291,9 @@ function getFirstElement(date_from, date_to, regional, perfil){
 
 function drawFirstElement(data){
    $('#firstElement').empty();
-   const margin = {top: 30, right: 30, bottom: 150, left: 60},
-       width = 1700 - margin.left - margin.right,
-       height = 600 - margin.top - margin.bottom;
+   const margin = {top: 30, right: 30, bottom: 150, left: 90},
+       width = 1800 - margin.left - margin.right,
+       height = 650 - margin.top - margin.bottom;
 
    // append the svg object to the body of the page
    const svg = d3.select("#firstElement")
@@ -309,24 +309,26 @@ function drawFirstElement(data){
      // data = res.response.json;
 
    // X axis
-   const x = d3.scaleBand()
+      const x = d3.scaleBand()
      .range([ 0, width ])
      .domain(data.map(d => d.sucursal))
      .padding(0.2);
 
-   svg.append("g")
-     .attr("transform", `translate(0, ${height})`)
-     .call(d3.axisBottom(x))
-     .selectAll("text")
-       .attr("transform", "translate(-10,0)rotate(-45)")
-       .style("text-anchor", "end");
+      svg.append("g")
+      .attr("transform", `translate(0, ${height})`)
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+      .attr("transform", "translate(-10,0)rotate(-45)")
+      .style("font-size", "13px")
+      .style("text-anchor", "end");
 
-   // Add Y axis
-   const y = d3.scaleLinear()
-     .domain([0, 120])
-     .range([ height, 0]);
-   svg.append("g")
-     .call(d3.axisLeft(y));
+    // Add Y axis
+    const y = d3.scaleLinear()
+    .domain([0, 120])
+    .range([ height, 0]);
+
+    svg.append("g")
+    .call(d3.axisLeft(y));
 
 
     svg.selectAll("mybar")
@@ -380,8 +382,9 @@ function drawFirstElement(data){
   .attr('x', data => x(data.sucursal) + x.bandwidth() / 2)
   .attr('y', data => y(data.score) - 15)
   .style('fill','#494949')
-  .style("font-size", "12px")
+  .style("font-size", "13.5px")
   .attr('text-anchor','middle');
+
 }
 
 function drawSecondElement(data){
@@ -408,12 +411,14 @@ function drawSecondElement(data){
      .range([ 0, width ])
      .domain(data.map(d => d.regional))
      .padding(0.2);
-   svg.append("g")
-     .attr("transform", `translate(0, ${height})`)
-     .call(d3.axisBottom(x))
-     .selectAll("text")
-       .attr("transform", "translate(-10,0)rotate(-45)")
-       .style("text-anchor", "end");
+
+    svg.append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("font-size", "13px")
+    .style("text-anchor", "end");
 
    // Add Y axis
    const y = d3.scaleLinear()
@@ -470,7 +475,7 @@ function drawSecondElement(data){
   .attr('x', data => x(data.regional) + x.bandwidth() / 2)
   .attr('y', data => y(data.score) - 15)
   .style('fill','#494949')
-  .style("font-size", "12px")
+  .style("font-size", "13.5px")
   .attr('text-anchor','middle');
 }
 
@@ -505,6 +510,7 @@ function drawThirdElement(data){
      .call(d3.axisBottom(x))
      .selectAll("text")
        .attr("transform", "translate(-10,0)rotate(-45)")
+        .style("font-size", "13px")
        .style("text-anchor", "end");
 
    // Add Y axis
@@ -563,7 +569,7 @@ function drawThirdElement(data){
   .attr('x', data => x(data.pagina) + x.bandwidth() / 2)
   .attr('y', data => y(data.section_grade) - 25)
   .style('fill','#494949')
-  .style("font-size", "12px")
+  .style("font-size", "13.5px")
   .attr('text-anchor','middle');
 
 }
@@ -595,6 +601,7 @@ function drawFourthElement(data){
   .call(d3.axisBottom(x))
   .selectAll("text")
   .attr("transform", "translate(-10,0)rotate(-45)")
+  .style("font-size", "14px")
   .style("text-anchor", "end");
 
   // Add Y axis
@@ -652,7 +659,7 @@ function drawFourthElement(data){
   .attr('x', data => x(data.perfil) + x.bandwidth() / 2)
   .attr('y', data => y(data.score) - 15)
   .style('fill','#494949')
-  .style("font-size", "12px")
+  .style("font-size", "13.5px")
   .attr('text-anchor','middle');
 
 }

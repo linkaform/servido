@@ -1,0 +1,118 @@
+body{
+  font-family: 'Lato', sans-serif;
+  color: #696158;
+}
+
+.header{
+  background: #5c7490;
+}
+
+.app{
+  padding: 2rem;
+}
+
+.title{
+  width: 30%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.title .userTxt{
+  margin-bottom: 20px;
+}
+
+.control{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  margin-bottom: 20px;
+}
+
+.controlBtn{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+.controlBtn .btn{
+  background: #334769;
+  border: 1px solid #334769;
+  border-radius: 0px;
+  color: white;
+  margin: 5px;
+}
+
+.uno{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 10%;
+  margin-bottom: 20px;
+}
+
+.control input{
+  margin-bottom: 20px;
+  width: 85%;
+}
+
+.title .ambuControl{
+  margin-top: 30px;
+}
+/*
+.control .btn{
+  background: #334769;
+  border: 1px solid #334769;
+  border-radius: 0px;
+  color: white;
+  float: left;
+}*/
+
+.card{
+  margin-bottom: 10px;
+}
+
+.log-type{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.log-type i{
+  font-size: 1.75rem;
+}
+
+.log-type h3{
+  margin: 0;
+}
+
+.auth-status{
+  text-align: center;
+}
+
+.autorized{
+  background: #bfb800;
+}
+
+.unauthorized{
+  background: #ea7600;
+  color: white;
+}
+
+
+.location-body{
+  text-align: center;
+}
+
+.loading-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 56px);
+  position: absolute;
+  width: 100vw;
+  z-index: 1000;
+  background: rgba(0,0,0,0.3);
+}
