@@ -380,8 +380,9 @@ function drawFirstElement(data){
   .attr('x', data => x(data.sucursal) + x.bandwidth() / 2)
   .attr('y', data => y(data.score) - 15)
   .style('fill','#494949')
-  .style("font-size", "12px")
+  .style("font-size", "13.5px")
   .attr('text-anchor','middle');
+
 }
 
 function drawSecondElement(data){
@@ -470,7 +471,7 @@ function drawSecondElement(data){
   .attr('x', data => x(data.regional) + x.bandwidth() / 2)
   .attr('y', data => y(data.score) - 15)
   .style('fill','#494949')
-  .style("font-size", "12px")
+  .style("font-size", "13.5px")
   .attr('text-anchor','middle');
 }
 
@@ -563,7 +564,7 @@ function drawThirdElement(data){
   .attr('x', data => x(data.pagina) + x.bandwidth() / 2)
   .attr('y', data => y(data.section_grade) - 25)
   .style('fill','#494949')
-  .style("font-size", "12px")
+  .style("font-size", "13.5px")
   .attr('text-anchor','middle');
 
 }
@@ -652,7 +653,7 @@ function drawFourthElement(data){
   .attr('x', data => x(data.perfil) + x.bandwidth() / 2)
   .attr('y', data => y(data.score) - 15)
   .style('fill','#494949')
-  .style("font-size", "12px")
+  .style("font-size", "13.5px")
   .attr('text-anchor','middle');
 
 }
