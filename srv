@@ -122,8 +122,10 @@ echo $Command >>.env
 
 
 _build(){
-  echo 'entra al build'
   cd ~/lkf/servido/docker
+  mkdir -p build/custom
+  cp -a ~/lkf/custom ./build/
+  echo 'entra al build'
   echo $(pwd)
   if [[ $FLUSH == 1 ]]; then
     docker image rm -f linkaform/servido:latest
