@@ -242,14 +242,28 @@ function editableData(){
 
 //-----TABLES
 
+//---Structure Pop UP Variable
+var rowPopupFormatter = function(e, row, onRendered){
+    var data = row.getData(),
+    container = document.createElement("div"),
+    contents = "<strong style='font-size:1.2em;'>Detalles De La Información</strong><br/><ul style='padding:0;  margin-top:10px; margin-bottom:0;'>";
+    contents += "<li><strong>Cycle1:</strong> " + data.cycle_1 + "</li>";
+    contents += "<li><strong>Cycle2:</strong> " + data.cycle_2 + "</li>";
+    contents += "</ul>";
+    container.innerHTML = contents;
+    return container;
+};
+
+
+
 function getDrawTable(id, columnsData, tableData){
-  //editableData();
   //---CHECK
   dataTreecheck = false;
   if (document.getElementById('input_check').checked) 
   {
     dataTreecheck = true;
   }
+
 
   var table = new Tabulator("#" + id, {
     //layout:"fitColumns",
@@ -264,6 +278,7 @@ function getDrawTable(id, columnsData, tableData){
     dataTreeStartExpanded:dataTreecheck,
     height:"550px",
     layout:"fitDataTable",
+    //rowClickPopup:rowPopupFormatter,
     // responsiveLayout: "hide",
     textDirection:"ltr",
     // renderHorizontal:"virtual",

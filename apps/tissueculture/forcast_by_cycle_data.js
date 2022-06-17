@@ -1,5 +1,4 @@
 
-
 var columsTable1 = [
   {"headerFilter": "input", "title": "Plant Code", "frozen": false, "hozAlign": "left", "field": "plant_code", "with": 150},
   {"headerFilter": "input", "title": "Row Type", "frozen": false, "hozAlign": "left", "field": "row_type", "with": 150},
@@ -26,7 +25,7 @@ var columsTable1 = [
   {"title": "Cycle 11", "frozen": false, "hozAlign": "right", "field": "cycle_11", "formatter": "money", "with": 75,
     "formatterParams": {"symbol": "", "symbolAfter": "", "decimal": ".", "thousand": ",", "precision": 0}},
   {"title": "Cycle 12", "frozen": false, "hozAlign": "right", "field": "cycle_12", "formatter": "money", "with": 75,
-    "formatterParams": {"symbol": "", "symbolAfter": "", "decimal": ".", "thousand": ",", "precision": 0}}
+    "formatterParams": {"symbol": "", "symbolAfter": "", "decimal": ".", "thousand": ",", "precision": 0},cellPopUp:rowPopupFormatter}
 ]
 
 
