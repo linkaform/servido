@@ -99,6 +99,7 @@ RUN rm /etc/nginx/certs/*
 RUN echo cacheeeee
 COPY --chown=www-data:www-data ./docker /docker/
 COPY --chown=www-data:www-data ./apps /srv/servido/apps
+COPY --chown=www-data:www-data ./docker/build/custom /srv/servido/apps/custom
 COPY --chown=www-data:www-data ./servido_api /srv/servido/servido_api
 RUN rm /srv/servido/servido_api/certs/*
 COPY --chown=www-data:www-data ./servido.py /srv/servido/servido.py
