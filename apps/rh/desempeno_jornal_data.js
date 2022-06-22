@@ -55,7 +55,8 @@ var columsTable3 = [
 
 //--Table Horas
 var columsTable4 = [
-  { title:"Folio Horas", field:'folio_horas', hozAlign:"left", width:250},
+  { title:"Folio Horas", field:'folio_horas', hozAlign:"left",  formatter:"link", formatterParams:{
+    url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, target:"_blank",}, width:250},
   { title:"Hora Inicio" , field:'hora_inicio', hozAlign:"center", width:250, },
   { title:"Hora Final", field:'hora_final', hozAlign:"center",width:170},
   { title:"Horas", field:'horas', hozAlign:"center",width:170},
