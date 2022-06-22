@@ -120,11 +120,14 @@ fi
 echo "Command : $Command"
 echo $Command >>.env
 
+_copy(){
+  mkdir -p ~/lkf/servido/docker/build/custom
+  cd ~/lkf/custom/
+  tar -c --exclude .git --exclude README ./ | tar -x -C ~/lkf/servido/docker/build/custom/
+}
 
 _build(){
-  cd ~/lkf/servido/docker
-  mkdir -p build/custom
-  cp -a ~/lkf/custom ./build/
+  _copy
   echo 'entra al build'
   echo $(pwd)
   if [[ $FLUSH == 1 ]]; then
@@ -161,7 +164,6 @@ case "$Command" in
     echo "Building Servido...."
 
   ;;
-
 
   stop)
     _stop
