@@ -128,6 +128,7 @@ _copy(){
 
 _build(){
   _copy
+  cd ~/lkf/servido/docker
   echo 'entra al build'
   echo $(pwd)
   if [[ $FLUSH == 1 ]]; then
