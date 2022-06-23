@@ -116,7 +116,6 @@ window.onload = function(){
 
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
-  $('.title_tables').show();
   unhideElement("close_sesion");
   unhideElement("firstParameters");
   unhideElement("firstElement");
@@ -169,9 +168,12 @@ function getFirstElement(yearWeekFrom, yearWeekTo){
       $('.title_tables').show();
       if (res.response.firstElement) {
         console.log('drawFirstElement.........')
-        console.log('Data', res.response.firstElement.tabledata)
-        console.log('Data', res.response.firstElement.colsData)
+        //console.log('Data', res.response.firstElement.tabledata)
+        //console.log('Data', res.response.firstElement.colsData)
         getDrawTable('firstElement',res.response.firstElement.colsData, res.response.firstElement.tabledata);
+
+
+        drawSecondElement(dataSecondElementB);
       }
     } else {
       hideLoading();
@@ -242,6 +244,56 @@ function editableData(){
     return input;
    };
 };
+
+
+
+//----GRAPICH
+
+let chart2;
+function drawSecondElement(data){
+  //---CHART
+  var ctx = document.getElementById('graphicSecond').getContext('2d');
+
+  if (chart2) {
+    chart2.destroy();
+  }
+
+  chart2 = new Chart(ctx, {
+    type: 'line',
+    data: data,
+    plugins: [ChartDataLabels],
+    options: {
+      plugins: {
+        legend: {
+          display: true
+        },
+        scales: {
+          yAxes: [{ticks: {min: 6, max:16}}],
+        },
+        title: {
+          display: true,
+          text: 'Report',
+          font: {
+            size: 25
+          }
+        },
+        datalabels: {
+          color: 'black',
+          labels: {
+            title: {
+              font: {
+                weight: 'bold'
+              }
+            },
+          },
+          align:'top',
+        }
+      },
+    }    
+  });
+}
+
+
 
 //-----TABLES
 
