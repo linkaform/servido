@@ -115,7 +115,6 @@ window.onload = function(){
 
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
-  $('.title_tables').show();
   unhideElement("close_sesion");
   unhideElement("firstParameters");
   unhideElement("firstElement");
@@ -141,11 +140,11 @@ const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  let year = document.getElementById("year");
-  let month = document.getElementById("month");
-  let code = document.getElementById("code");
-  let empleado = document.getElementById("catalog-79040-level-1");
-  firstElement  = getFirstElement( year.value, month.value, code.value, empleado.value);
+  let date_from = document.getElementById("date_from");
+  let date_to = document.getElementById("date_to");
+  let product = document.getElementById("catalog-79039-level-1");
+
+  firstElement  = getFirstElement( date_from.value, date_to.value, product.value );
 };
 
 
@@ -156,17 +155,7 @@ function getEmpleadoNumber(){
   console.log('empleados',empleados);
 }
 
-function customCatalogView(res){
-  console.log('customCatalogView', res);
-  var codeEmp = res.rows[0].key[1]['61b7f5c4ca8fd89bb3caa7bc']; 
-  if (codeEmp !== null){
-    $("#code").val(''); 
-    $("#code").val(codeEmp);  
-  }
-  
-}
-
-function getFirstElement(date_from , date_to){
+function getFirstElement(date_from , date_to, product){
   $('.load-wrapp').show();
   $("#divContent").hide();
   $('.title_tables').hide();
@@ -180,6 +169,7 @@ function getFirstElement(date_from , date_to){
       script_id: scriptId,
       date_from: date_from,
       date_to: date_to,
+      product: product,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -193,8 +183,13 @@ function getFirstElement(date_from , date_to){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.firstElement) {
-        console.log('DRAW ELEMENT');
+      if (res.response.json.firstElement) {
+        console.log('drawFirstElement.........');
+        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data)
+      }
+      if (res.response.json.secondElement) {
+        console.log('drawsecondElement.........');
+        getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data)
       }
       
     } else {
@@ -271,7 +266,7 @@ function editableData(){
 function getDrawTable(id, columnsData, tableData){
   $('#'+id).empty();
   var table = new Tabulator("#" + id, {
-    height:"auto",
+    height:"300px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:true,
