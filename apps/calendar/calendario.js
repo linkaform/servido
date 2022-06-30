@@ -127,7 +127,7 @@ function loadDemoData(){
   unhideElement("title_demo")
   $('.title_tables').show();
   document.getElementById("firstElement").style.removeProperty('display');
-   
+
   getDrawCalendar('firstElement', resources1, events1);
 }
 
@@ -165,10 +165,13 @@ function getFirstElement(){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.json.firstElement) {
+      if (res.response.firstElement) {
         console.log('drawFirstElement.........');
         //--Draw Calendar
-        getDrawCalendar('firstElement', resources1, events1);
+        resources = res.response.firstElement.resource
+        events = res.response.firstElement.events
+
+        getDrawCalendar('firstElement', resources, events);
 
 
       }
@@ -197,10 +200,10 @@ function getDrawCalendar(id, resources, events){
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-    now: '2022-06-16',
-    editable: false,     // enable draggable events
+    now: '2022-06-23',
+    editable: true,     // enable draggable events
     aspectRatio: 1.8,
-    scrollTime: '00:00', // undo default 6am scrollTime
+    scrollTime: '06:00', // undo default 6am scrollTime
     headerToolbar: {
         left: 'today prev,next',
         center: 'title',
