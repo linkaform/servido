@@ -15,7 +15,24 @@
         <link rel="stylesheet" href="../styles/css/styles.css">
         <link rel="stylesheet" href="style.css">
     </head>
+    <style type="text/css">
 
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+
+    .bar {
+        fill: steelblue;
+    }
+
+    .x.axis path {
+        display: none;
+    }
+
+    </style>
     <body>
 
         <nav class="navbar header">
@@ -101,7 +118,7 @@
 
                 <!--Content-->
                 <div class="row" id="divContent">
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="overflow-y: scroll;">
+                    <div class="col-sm-12 col-md-12 col-lg-12 mt-5" style="overflow-y: scroll;">
                         <section class="title_tables">
                             <h2 class="title_tables"><span>Report</span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_firstElement">
@@ -115,11 +132,15 @@
                         </section> 
                         <div id="firstElement"></div>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="overflow-y: scroll;">
-                        <div id="secondElement" > 
-                            <div style="width: 1000px;height: 600px;margin: auto;" > 
-                                <canvas id="graphicSecond"></canvas>
+                    <div class="col-sm-12 col-md-12 col-lg-12 mt-5" style="overflow-y: scroll;">
+                        <div id="secondElement" ></div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12 mt-5" style="overflow-y: scroll;">
+                        <div id="thirdElement" >
+                            <div  style="width: 1400px;height: 100;">
+                                <canvas id="graphicSecond" ></canvas>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -145,7 +166,7 @@
     crossorigin="anonymous"></script>
 
     <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
-
+    <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 
@@ -162,8 +183,14 @@
     <!-- chartjs -->
     <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.js"></script>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v3.js"></script>
 
 
     <!-- Utils -->
