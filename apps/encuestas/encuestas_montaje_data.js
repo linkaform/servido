@@ -73,22 +73,6 @@ var dataFourthElement = {
   ]
 }; 
 
-var dataFourthElement = {
-  labels: ["Enero","Febrero","Marzo","Noviembre","Diciembre"],
-  datasets: [
-    {
-      label: "Centro",
-      data: [14,7,2, 24,27],
-    },
-    {
-      label: "Bajio",
-      data: [9,1,0,6,4],
-    }
-    
-  ]
-}; 
-
-
 var dataFivethElement = [
   {region: "Centro","total":18},
   {region: "Bajio","total":20},
