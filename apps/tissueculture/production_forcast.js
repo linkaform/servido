@@ -111,7 +111,7 @@ window.onload = function(){
       }
     }
   }
-  
+
 }
 
 function unHideReportElements(){
@@ -178,7 +178,8 @@ function getFirstElement(yearWeekFrom, yearWeekTo){
       }
       if (res.response.secondElement) {
         const numSets = res.response.secondElement.length;
-       drawBarHistogram('secondElement', res.response.secondElement , numSets);
+       // drawBarHistogram('secondElement', res.response.secondElement , numSets);
+       drawSecondElement( res.response.secondElement );
       }
     } else {
       hideLoading();
@@ -293,7 +294,7 @@ function drawSecondElement(data){
       },
       scales: {
           x: {
-            
+
           },
           "ay": {
             type: 'linear',
@@ -305,8 +306,8 @@ function drawSecondElement(data){
               display: true,
               position: 'left',
           }
-      },   
-    }  
+      },
+    }
   });
 }
 
@@ -331,7 +332,7 @@ function getDrawTable(id, columnsData, tableData){
     renderHorizontal:"virtual",
   });
 
-  
+
 
   //trigger download of data.xlsx file
   if (document.getElementById("download_xlsx_"+id)){
@@ -478,7 +479,7 @@ function drawBarHistogram(id, data, numSets = 0){
   }else if(numSets>=21){
     width_chart = 4500
   }
-  
+
 
 
   var margin = { top: 20, right: 50, bottom: 60, left: 50 },
@@ -511,7 +512,7 @@ function drawBarHistogram(id, data, numSets = 0){
   var YLine = d3.scale.linear().range([height, 0])
   .domain([0, d3.max(data, function (d) { return d3.max(d.LineCategory, function (b) { return b.Value }) })]);
 
-  //---COLOR BAR 
+  //---COLOR BAR
   var array_colors = getPAlleteColors(2,3);
   console.log('array_colors',array_colors);
   var color = d3.scale.ordinal().range(array_colors);
@@ -695,6 +696,3 @@ function drawBarHistogram(id, data, numSets = 0){
     return "translate(" + ((width) / 2 - thisWidth / 2) + ",0)";
   })
 }
-
-
-
