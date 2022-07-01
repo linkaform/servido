@@ -114,6 +114,7 @@ window.onload = function(){
 
 }
 
+
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
   unhideElement("close_sesion");
@@ -281,7 +282,7 @@ function drawSecondElement(data){
               }
           },
           datalabels: {
-              color: 'black',
+              color: '#707B7C',
               labels: {
                   title: {
                       font: {
