@@ -1,48 +1,49 @@
 //Estilos
 function style(feature) {
-return {
-weight: 1,
-opacity: 1,
-color: 'white',
-fillOpacity: 0.7,
-fillColor: getColor(feature.properties.COD_REGION)
-};
+  return {
+    weight: 1,
+    opacity: 1,
+    color: 'white',
+    fillOpacity: 0.7,
+    fillColor: getColor(feature.properties.COD_REGION)
+  };
 }
 
 function styler(feature) {
-return {
-fillColor: getColor(
-feature.properties.ESTADO),
-weight: 0.7,
-opacity: 0.8,
-color: 'black',
-fillOpacity: 0.3
-};
+  return {
+    fillColor: getColor(
+    feature.properties.ESTADO),
+    weight: 0.7,
+    opacity: 0.8,
+    color: 'black',
+    fillOpacity: 0.3
+  };
 }
 
 function getColor(b) {
-return b == "ACTIVO" ? '#CC4634' :
-b == "LIBRE" ? '#3FC13A' :
-b == "RESERVADO" ? '#CC4634' :
-b == "10" ? '#800026' :
-b == "20" ? '#AA68D8' :
-b == "30" ? '#E31A1C' :
-b == "40" ? '#32863F' :
-b == "50" ? '#FD8D3C' :
-b == "60" ? '#E11F7C' :
-b == "70" ? '#DEBD3C' :
-'#349FCC';}
+  return b == "ACTIVO" ? '#CC4634' :
+  b == "LIBRE" ? '#3FC13A' :
+  b == "RESERVADO" ? '#CC4634' :
+  b == "10" ? '#800026' :
+  b == "20" ? '#AA68D8' :
+  b == "30" ? '#E31A1C' :
+  b == "40" ? '#32863F' :
+  b == "50" ? '#FD8D3C' :
+  b == "60" ? '#E11F7C' :
+  b == "70" ? '#DEBD3C' :
+  '#349FCC';
+}
 
 
 function styled(feature) {
-return {
-fillColor: getColor(
-feature.properties.COD_REGION),
-weight: 1,
-opacity: 1,
-color: 'white',
-fillOpacity: 0.7
-};
+  return {
+    fillColor: getColor(
+    feature.properties.COD_REGION),
+    weight: 1,
+    opacity: 1,
+    color: 'white',
+    fillOpacity: 0.7
+  };
 }
 
  function fullextend() {
@@ -73,11 +74,12 @@ function drawMap(){
     var elemOption = document.createElement("div");
     elemOption.setAttribute('id','map');
     formNode.appendChild(elemOption);
+
   }
 
   //Mapa Base
   var mbAttr = '',
-  	mbUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+  mbUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
   var Basemapa  = L.tileLayer(mbUrl, {id: '', attribution: mbAttr});
 
   //Popup

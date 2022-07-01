@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+n<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -25,13 +25,13 @@
           <input class="form-control ds-input"  id="user" value="comercial1@cocheroscolombia.com">
           <input class="form-control ds-input" type="password" id="pass" value="linkaform"> <br>
           <div id="botones" class="controlBtn">
-            <div class="btn btn-primary" onclick="login()">Login</div>
+            <div class="btn btn-primary" onclick="login_execute()">Login</div>
             <div class="btn btn-primary" onclick="reset()">Reset</div>
           </div>
         </div>
       </div>
     </div>
-    <div id="test" onclick="drawMap()">Dibuja Mapa</div>
+    <div id="test" onclick="drawMap();">Dibuja Mapa</div>
     <div id="getfile" onclick="loadFile()">carga </div>
     <div id="tst"></div>
     <!-- <script src="file://data/Sectores.jsonp"></script>
@@ -47,11 +47,15 @@
   </script> -->
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+
+
     <script type="text/javascript" src="assets/js/lkf.js"></script>
+    <script src="leaflet-search-master\src\leaflet-search.js"></script>
+    <script src="assets/js/map.js"></script>
     <script type="text/javascript" src="assets/js/regiones.js"></script>
     <script type="text/javascript" src="assets/js/sectores.js"></script>
     <script type="text/javascript" src="assets/js/distritos.js"></script>
-    <script src="leaflet-search-master\src\leaflet-search.js"></script>
-    <script src="assets/js/map.js"></script>
+
+
   </body>
 </html>

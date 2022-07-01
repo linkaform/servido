@@ -295,14 +295,18 @@ function drawSecondElement(data){
             labels: {
               title: {
                 font: {
-                  weight: 'bold'
+                  weight: 'bold',
+                  size: 12,
                 }
               },
             },
-            align:'top',
+            padding:{
+              top: 20,
+              bottom:10,
+            },
+            align:'bot',
             formatter: function (value, context){
-              var value_num = parseFloat(value).toFixed(2);
-              var formato = value_num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
               return formato;
             }
           }
@@ -313,14 +317,22 @@ function drawSecondElement(data){
             title:{
               display: true,
               text: 'Year Week',
+              size: 30,
             },
+            ticks: {
+              fontSize: 40
+            }
           },
           "ay": {
             type: 'linear',
             display: true,
             title:{
               display: true,
-              text: 'Eaches',
+              text: 'Hours',
+              size: 30,
+            },
+            ticks: {
+              fontSize: 40
             },
             position: 'right',
           },
@@ -329,7 +341,11 @@ function drawSecondElement(data){
             display: true,
             title:{
               display: true,
-              text: 'Hours',
+              text: 'Eaches',
+              size: 30,
+            },
+            ticks: {
+              fontSize: 40
             },
             position: 'left',
           }
