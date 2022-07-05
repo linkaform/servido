@@ -23,6 +23,7 @@ hideElement("fivethElement");
 hideElement("sixthElement");
 
 
+
 window.onload = function(){
   var qs = urlParamstoJson();
   var formNode = document.getElementById("appCont");
@@ -95,8 +96,8 @@ window.onload = function(){
     if (scriptId == null) {
       loadDemoData();
     }
-
     //--Styles
+    setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
   } else {
@@ -123,8 +124,6 @@ function unHideReportElements(){
   unhideElement("firstElement-Buttons");
 }
 
-
-
 function loadDemoData(){
     unhideElement("title_demo")
     document.getElementById("firstElement").style.removeProperty('display');
@@ -140,9 +139,8 @@ function loadDemoData(){
     drawThirdElement(dataElement3);
     drawFivethElement(dataElement5);
     drawSixththElement(dataElement6);
-
-    
 }
+
 
 
 const loading = document.querySelector('.loading-container');
@@ -150,49 +148,92 @@ loading.style.display = 'none';
 
 
 function runFirstElement(){
-  let plant_code = document.getElementById("plant_code");
-  firstElement = getFirstElement( plant_code.value,);
+  let date_from = document.getElementById("date_from");
+  let date_to = document.getElementById("date_to");
+
+  firstElement = getFirstElement(date_from.value, date_to.value);
 };
 
 
-function getFirstElement(plant_code){
-  $("#firstElement").html("");
-  $('.title_tables').hide();
-  fetch(url + 'infosync/scripts/run/', {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: scriptId,
-      plant_code: plant_code,
-    }),
-    headers:{
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+userJwt
-    },
-  })
-  .then(res => res.json())
-  .then(res => {
-    if (res.success) {
-      $('.title_tables').show();
-      if (res.response.firstElement) {
-        console.log('drawFirstElement.........');
-      }
-    } else {
-      hideLoading();
-      if(res.code == 11){
-        Swal.fire({
-          title: 'Error',
-          html: res.error
-        });
-      } else {
-        Swal.fire({
-          title: 'Error',
-          html: res.error
-        });
-      }
-    }
-  })
-};
+function getFirstElement(date_from, date_to){
+    //----Hide Css
+    $("#divContent").hide();
+    $('.load-wrapp').show();
+    $('.title_tables').hide();
 
+    fetch(url + 'infosync/scripts/run/', {
+        method: 'POST',
+        body: JSON.stringify({
+          script_id: scriptId,
+          date_from: date_from,
+          date_to: date_to,
+        }),
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            //----Hide and show
+            $('.load-wrapp').hide();
+            $("#divContent").show();
+            $('.title_tables').show();
+
+
+            if (res.response.json.firstElement) {
+                console.log('drawFirstElement.........');
+                drawFirstElement(res.response.json.firstElement.data[0]);
+            }
+            if (res.response.json.secondElement) {
+                console.log('drawFirstElement.........');
+                drawSecondElement(res.response.json.secondElement.data[0]);
+            }
+             if (res.response.json.thirdElement) {
+                console.log('drawFirstElement.........');
+                drawThirdElement(res.response.json.thirdElement.data[0]);
+            }
+             if (res.response.json.fourthElement) {
+                console.log('drawFirstElement.........');
+                drawFourthElement(res.response.json.fourthElement.data[0]);
+            }
+             if (res.response.json.fivethElement) {
+                console.log('drawFirstElement.........');
+                drawFivethElement(res.response.json.fivethElement.data[0]);
+            }
+             if (res.response.json.sixthElement) {
+                console.log('drawFirstElement.........');
+                drawSixthElement(res.response.json.sixthElement.data[0]);
+            }
+             if (res.response.json.seventhElement) {
+                console.log('drawFirstElement.........');
+                drawSeventhElement(res.response.json.seventhElement.data[0]);
+            }
+             if (res.response.json.eigthElement) {
+                console.log('drawFirstElement.........');
+                drawEigthElement(res.response.json.eigthElement.data[0]);
+            }
+             if (res.response.json.ninethElement) {
+                console.log('drawFirstElement.........');
+                drawNineElement(res.response.json.ninethElement.data[0]);
+            }
+        }else{
+            hideLoading();
+            if(res.code == 11){
+                Swal.fire({
+                    title: 'Error',
+                    html: res.error
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    html: res.error
+                });
+            }
+        }
+    })
+};
 
 //-----GRAPICHS
 let chart1;
@@ -209,32 +250,63 @@ function drawFirstElement(data){
     chart1 = new Chart(ctx, {
         type: 'line',
         data: data,
+        plugins: [ChartDataLabels],
         options: {
             plugins: {
-                tooltip:{
-                    enabled: true,
-                },
-                legend:{
-                    display: true,
+                legend: {
+                    display: true
                 },
                 title: {
                     display: true,
-                    text: 'Tamaño de Lead Año',
+                    text: 'Reporte Tamaño de Leads',
                     font: {
                         size: 25
                     }
                 },
+                datalabels: {
+                    color: '#707B7C',
+                    labels: {
+                        title: {
+                            font: {
+                                weight: 'bold',
+                                size: 12,
+                            }
+                        },
+                    },
+                    padding:{
+                        top: 20,
+                        bottom:10,
+                    },
+                    align:'bot',
+                    formatter: function (value, context){
+                      var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      return formato;
+                    }
+                }
             },
-        }
-        
+            scales: {
+                x: {
+                    display: true,
+                    title:{
+                        display: true,
+                        text: '',
+                        size: 30,
+                    },
+                    ticks: {
+                        fontSize: 40
+                    }
+                },
+            }
+        },
     });
 }
 
 let chart2;
 function drawSecondElement(data){
+    console.log(data);
     //--- Data
     var labels = data.map(function(e) {
-        return e.nombre;
+        return e.nombre +' - ' + e.total.toFixed(2) + '%';
     });
     var datasets = data.map(function(e) {
         return e.total;
@@ -271,7 +343,7 @@ function drawSecondElement(data){
                 },
                 title: {
                     display: true,
-                    text: 'Tamaño Lead Mes',
+                    text: 'Porcentaje X Tamaño Lead',
                     font: {
                         size: 25
                     }
@@ -292,29 +364,124 @@ function drawThirdElement(data){
         chart3.destroy();
     }
 
-    //plugins: [ChartDataLabels],
     chart3 = new Chart(ctx, {
         type: 'line',
         data: data,
+        plugins: [ChartDataLabels],
         options: {
             plugins: {
-                tooltip:{
-                    enabled: true,
-                },
-                legend:{
-                    display: true,
+                legend: {
+                    display: true
                 },
                 title: {
                     display: true,
-                    text: 'Calificación Lead',
+                    text: 'Reporte Calificación de Leads',
                     font: {
                         size: 25
                     }
                 },
+                datalabels: {
+                    color: '#707B7C',
+                    labels: {
+                        title: {
+                            font: {
+                                weight: 'bold',
+                                size: 12,
+                            }
+                        },
+                    },
+                    padding:{
+                        top: 20,
+                        bottom:10,
+                    },
+                    align:'bot',
+                    formatter: function (value, context){
+                      var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      return formato;
+                    }
+                }
             },
-        }     
+            scales: {
+                x: {
+                    display: true,
+                    title:{
+                        display: true,
+                        text: '',
+                        size: 30,
+                    },
+                    ticks: {
+                        fontSize: 40
+                    }
+                },
+            }
+        },
     });
 }
+
+let chart4;
+function drawFourthElement(data){
+    //---CHART
+    var ctx = document.getElementById('graphicFourth').getContext('2d');
+    
+    if (chart4) {
+        chart4.destroy();
+    }
+
+    //plugins: [ChartDataLabels],
+    chart4 = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        plugins: [ChartDataLabels],
+        options: {
+            plugins: {
+                legend: {
+                    display: true
+                },
+                title: {
+                    display: true,
+                    text: 'Reporte Campañas',
+                    font: {
+                        size: 25
+                    }
+                },
+                datalabels: {
+                    color: '#707B7C',
+                    labels: {
+                        title: {
+                            font: {
+                                weight: 'bold',
+                                size: 12,
+                            }
+                        },
+                    },
+                    padding:{
+                        top: 20,
+                        bottom:10,
+                    },
+                    align:'bot',
+                    formatter: function (value, context){
+                      var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      return formato;
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title:{
+                        display: true,
+                        text: '',
+                        size: 30,
+                    },
+                    ticks: {
+                        fontSize: 40
+                    }
+                },
+            }
+        },
+    });
+}
+
 
 let chart5;
 function drawFivethElement(data){
@@ -329,40 +496,59 @@ function drawFivethElement(data){
     chart5 = new Chart(ctx, {
         type: 'line',
         data: data,
+        plugins: [ChartDataLabels],
         options: {
             plugins: {
-                tooltip:{
-                    enabled: true,
-                },
-                legend:{
-                    display: true,
+                legend: {
+                    display: true
                 },
                 title: {
                     display: true,
-                    text: 'Campaña Lead',
+                    text: 'Reporte Campañas Por Tipos',
                     font: {
                         size: 25
                     }
                 },
+                datalabels: {
+                    color: '#707B7C',
+                    labels: {
+                        title: {
+                            font: {
+                                weight: 'bold',
+                                size: 12,
+                            }
+                        },
+                    },
+                    padding:{
+                        top: 20,
+                        bottom:10,
+                    },
+                    align:'bot',
+                    formatter: function (value, context){
+                      var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      return formato;
+                    }
+                }
             },
-        }   
+            scales: {
+                x: {
+                    display: true,
+                    title:{
+                        display: true,
+                        text: '',
+                        size: 30,
+                    },
+                    ticks: {
+                        fontSize: 40
+                    }
+                },
+            }
+        },
     });
 }
 
-
 let chart6;
-function drawSixththElement(data){
-    //--- Data
-    var labels = data.map(function(e) {
-        return e.nombre;
-    });
-    var datasets = data.map(function(e) {
-        return e.total;
-    });
-
-    //--- Colors
-    var array_colors = getPAlleteColors(6,datasets.length);
-
+function drawSixthElement(data){
     //---CHART
     var ctx = document.getElementById('graphicSixth').getContext('2d');
     
@@ -370,32 +556,265 @@ function drawSixththElement(data){
         chart6.destroy();
     }
 
+    //plugins: [ChartDataLabels],
     chart6 = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: labels,
-            datasets: [{
-                backgroundColor: array_colors,
-                data: datasets
-            }]
-        },
+        type: 'bar',
+        data: data,
+        plugins: [ChartDataLabels],
         options: {
             plugins: {
-                tooltip:{
-                    enabled: true,
-                },
-                legend:{
-                    display: true,
+                legend: {
+                    display: true
                 },
                 title: {
                     display: true,
-                    text: 'Campaña Lead Mes',
+                    text: 'Reporte Leads X Status',
                     font: {
                         size: 25
                     }
                 },
+                datalabels: {
+                    color: '#707B7C',
+                    labels: {
+                        title: {
+                            font: {
+                                weight: 'bold',
+                                size: 12,
+                            }
+                        },
+                    },
+                    padding:{
+                        top: 20,
+                        bottom:10,
+                    },
+                    align:'bot',
+                    formatter: function (value, context){
+                      var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      return formato;
+                    }
+                }
             },
-        }
-     
+            scales: {
+                x: {
+                    display: true,
+                    title:{
+                        display: true,
+                        text: '',
+                        size: 30,
+                    },
+                    stacked: true,
+                    gridLines: {
+                        display: false,
+                    },
+                    ticks: {
+                        fontSize: 40
+                    }
+                },
+            }
+        },
+    });
+}
+
+let chart7;
+function drawSeventhElement(data){
+    //---CHART
+    var ctx = document.getElementById('graphicSeventh').getContext('2d');
+    
+    if (chart7) {
+        chart7.destroy();
+    }
+
+    //plugins: [ChartDataLabels],
+    chart7 = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        plugins: [ChartDataLabels],
+        options: {
+            plugins: {
+                legend: {
+                    display: true
+                },
+                title: {
+                    display: true,
+                    text: 'Reporte Leads X Etapa',
+                    font: {
+                        size: 25
+                    }
+                },
+                datalabels: {
+                    color: '#707B7C',
+                    labels: {
+                        title: {
+                            font: {
+                                weight: 'bold',
+                                size: 12,
+                            }
+                        },
+                    },
+                    padding:{
+                        top: 20,
+                        bottom:10,
+                    },
+                    align:'bot',
+                    formatter: function (value, context){
+                      var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      return formato;
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title:{
+                        display: true,
+                        text: '',
+                        size: 30,
+                    },
+                    stacked: true,
+                    gridLines: {
+                        display: false,
+                    },
+                    ticks: {
+                        fontSize: 40
+                    }
+                },
+            }
+        },
+    });
+}
+
+let chart8;
+function drawEigthElement(data){
+    //---CHART
+    var ctx = document.getElementById('graphicEigth').getContext('2d');
+    
+    if (chart8) {
+        chart8.destroy();
+    }
+
+    //plugins: [ChartDataLabels],
+    chart8 = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        plugins: [ChartDataLabels],
+        options: {
+            plugins: {
+                legend: {
+                    display: true
+                },
+                title: {
+                    display: true,
+                    text: 'Reporte Camapaña X Etapa',
+                    font: {
+                        size: 25
+                    }
+                },
+                datalabels: {
+                    color: '#807B7C',
+                    labels: {
+                        title: {
+                            font: {
+                                weight: 'bold',
+                                size: 12,
+                            }
+                        },
+                    },
+                    padding:{
+                        top: 20,
+                        bottom:10,
+                    },
+                    align:'bot',
+                    formatter: function (value, context){
+                      var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      return formato;
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title:{
+                        display: true,
+                        text: '',
+                        size: 30,
+                    },
+                    stacked: true,
+                    gridLines: {
+                        display: false,
+                    },
+                    ticks: {
+                        fontSize: 40
+                    }
+                },
+            }
+        },
+    });
+}
+
+let chart9;
+function drawNineElement(data){
+    //---CHART
+    var ctx = document.getElementById('nineEigth').getContext('2d');
+    
+    if (chart9) {
+        chart9.destroy();
+    }
+
+    //plugins: [ChartDataLabels],
+    chart9 = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        plugins: [ChartDataLabels],
+        options: {
+            plugins: {
+                legend: {
+                    display: true
+                },
+                title: {
+                    display: true,
+                    text: 'Reporte Camapañas',
+                    font: {
+                        size: 25
+                    }
+                },
+                datalabels: {
+                    color: '#907B7C',
+                    labels: {
+                        title: {
+                            font: {
+                                weight: 'bold',
+                                size: 12,
+                            }
+                        },
+                    },
+                    padding:{
+                        top: 20,
+                        bottom:10,
+                    },
+                    align:'bot',
+                    formatter: function (value, context){
+                      var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      return formato;
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title:{
+                        display: true,
+                        text: '',
+                        size: 30,
+                    },
+                    stacked: true,
+                    gridLines: {
+                        display: false,
+                    },
+                    ticks: {
+                        fontSize: 40
+                    }
+                },
+            }
+        },
     });
 }

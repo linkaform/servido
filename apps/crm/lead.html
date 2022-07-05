@@ -8,7 +8,7 @@
         <meta name="description" content="Forcast by Cicle">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-        <link type="image/x-icon" rel="shortcut icon" href="favicon.ico">
+       <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <!--LIBRARY CHECK -->
@@ -88,17 +88,17 @@
                     <div class="renglon col-12 row">
                         <div class="col-sm-12 col-md-5 col-lg-5">
                             <h4>Fecha Desde: </h4>
-                            <input class="form-control ds-input" type="date" id="date_from" name="date_from" value="">
+                            <input class="form-control ds-input" type="date" id="date_from" name="date_from" value="2022-01-01">
                         </div>
                         <div class="col-sm-12 col-md-5 col-lg-5">
                             <h4>Fecha Hasta: </h4>
-                            <input class="form-control ds-input" type="date" id="date_to" name="date_to" value="">
+                            <input class="form-control ds-input" type="date" id="date_to" name="date_to" value="2022-07-05">
                         </div>
                        
                     </div>
                 </div>
 
-                <div class="row" style="margin-top:20px;" >
+                <div class="row" style="margin-top:20px;" id="divContent">
                     <div id="firstElement"  class="col-sm-12 col-md-6 col-lg-6 mb-5">
                         <div style="width: 900px;height: 500px;margin: auto;" > 
                             <canvas id="graphicFirst"></canvas>
@@ -114,27 +114,35 @@
                             <canvas id="graphicThird"></canvas>
                         </div>
                     </div>
-                    <div id="fourthElement" class="col-sm-12 col-md-6 col-lg-6" style="align-items: center;margin-top: auto;margin-bottom: auto;">
-                        <div   style="margin-top:18px;" class="col-sm-12 col-md-12 col-lg-12" >
-                            <div class="card border-info m-2">
-                                <div class="card-body" style="margin:auto;">
-                                    <center>
-                                        <h2 class="card-title">Promedio Mes</h2>
-                                        <p class="card-text" style="font-size: 25px;">3.8</p>
-                                        <i class="fa-solid fa-chart-line" style="font-size:40px;"></i>
-                                    </center>
-                                </div>
-                            </div>
+
+                    <div id="fourthElement" class="col-sm-12 col-md-6 col-lg-6 "  style="width: 100%;height:500px;">
+                        <div  style="width: 100%;height: 20vh;">
+                            <canvas id="graphicFourth"></canvas>
                         </div>
                     </div>
                     <div id="fivethElement" class="col-sm-12 col-md-6 col-lg-6 "  style="width: 100%;height:500px;">
-                        <div  style="width: 100%;height: 20vh;">
+                        <div  style="width: 900px;height: 500px;margin: auto;">
                             <canvas id="graphicFiveth"></canvas>
                         </div>
                     </div>
                     <div id="sixthElement" class="col-sm-12 col-md-6 col-lg-6 "  style="width: 100%;height:500px;">
-                        <div  style="width: 450px;height: 450px;margin: auto;">
+                        <div  style="width: 900px;height: 500px;margin: auto;">
                             <canvas id="graphicSixth"></canvas>
+                        </div>
+                    </div>
+                    <div id="seventhElement" class="col-sm-12 col-md-6 col-lg-6 "  style="width: 100%;height:500px;">
+                        <div  style="width: 900px;height: 500px;margin: auto;">
+                            <canvas id="graphicSeventh"></canvas>
+                        </div>
+                    </div>
+                    <div id="eigthElement" class="col-sm-12 col-md-6 col-lg-6 "  style="width: 100%;height:500px;">
+                        <div  style="width: 900px;height: 500px;margin: auto;">
+                            <canvas id="graphicEigth"></canvas>
+                        </div>
+                    </div>
+                    <div id="nineElement" class="col-sm-12 col-md-6 col-lg-6 "  style="width: 100%;height:500px;">
+                        <div  style="width: 900px;height: 500px;margin: auto;">
+                            <canvas id="nineEigth"></canvas>
                         </div>
                     </div>
                 </div>
@@ -173,6 +181,7 @@
     <script src="../styles/js/chroma.min.js"></script>
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
     <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+    
     <script type="text/javascript" src="../utils/lkf_utils.js"></script>
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
