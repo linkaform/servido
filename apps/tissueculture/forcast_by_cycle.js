@@ -272,7 +272,7 @@ var rowPopupFormatter = function(e, row, onRendered){
 function getDrawTable(id, columnsData, tableData){
   //---CHECK
   dataTreecheck = false;
-  if (document.getElementById('input_check').checked) 
+  if (document.getElementById('input_check').checked)
   {
     dataTreecheck = true;
   }
@@ -308,7 +308,7 @@ function getDrawTable(id, columnsData, tableData){
     });
   }
 
-  if (document.getElementById("download_csv_"+id)){ 
+  if (document.getElementById("download_csv_"+id)){
     //trigger download of data.csv file
     document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
     document.getElementById("download_csv_"+id).addEventListener("click", function (){
@@ -385,7 +385,7 @@ function minMaxFilterFunction(headerValue, rowValue, rowData, filterParams){
 
 
 //---Options PLANTS
-function getDrawPlants(colum, plants) 
+function getDrawPlants(colum, plants)
 {
 
   for (var i = 4; i < colum.length; i++) {
@@ -404,28 +404,28 @@ function getDrawPlants(colum, plants)
   for (var i = 0; i < arrayPlants.length; i++) {
     $('#inputPlant1').append('<option value="'+arrayPlants[i]+'">'+arrayPlants[i]+'</option>');
   }
-  
+
 
   //----append
-  $("#inputWeekSale1").empty();
-  $('#inputWeekSale1').append('<option>Week Sale</option>');
+  $("#inputWeekFrom1").empty();
+  $('#inputWeekFrom1').append('<option>Week Sale</option>');
 
   for (var i = 0; i < arrayWeek.length; i++) {
-    $('#inputWeekSale1').append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
+    $('#inputWeekFrom1').append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
   }
-   
+
   //----append
-  $("#inputWeekEntry1").empty();
-  $('#inputWeekEntry1').append('<option>Week Entry</option>');
+  $("#inputWeekTo1").empty();
+  $('#inputWeekTo1').append('<option>Week Entry</option>');
 
   for (var i = 0; i < arrayWeek.length; i++) {
-    $('#inputWeekEntry1').append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
+    $('#inputWeekTo1').append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
   }
 }
 
-function setDrawOptions() 
+function setDrawOptions()
 {
-  if (arrayWeek.length>0 && arrayWeek && arrayPlants.length>0 && arrayPlants) 
+  if (arrayWeek.length>0 && arrayWeek && arrayPlants.length>0 && arrayPlants)
   {
     var id = new Date().getTime();
     $("#divPlants").append('<div class="col-sm-12 col-md-4 col-lg-4 mb-2 divOptions'+id+' divSecondaryOptions ">'
@@ -437,12 +437,12 @@ function setDrawOptions()
         +'<input type="number" class="form-control inputNumber" id="inputNumber'+id+'">'
       +'</div>'
       +'<div class="col-sm-12 col-md-2 col-lg-2 mb-2  divOptions'+id+' divSecondaryOptions ">'
-        +'<select class="form-control inputWeekSale" id="inputWeekSale'+id+'">'
+        +'<select class="form-control inputWeekFrom" id="inputWeekFrom'+id+'">'
           +'<option>Week Sale</option> '
         +'</select>'
       +'</div>'
       +'<div class="col-sm-12 col-md-2 col-lg-2 mb-2  divOptions'+id+' divSecondaryOptions ">'
-        +'<select class="form-control inputWeekEntry" id="inputWeekEntry'+id+'">'
+        +'<select class="form-control inputWeekTo" id="inputWeekTo'+id+'">'
           +'<option>Week Entry</option>   '
         +'</select>'
       +'</div>'
@@ -463,22 +463,22 @@ function setDrawOptions()
     for (var i = 0; i < arrayPlants.length; i++) {
       $('#inputPlant'+id).append('<option value="'+arrayPlants[i]+'">'+arrayPlants[i]+'</option>');
     }
-    
+
     //----append
-    $("#inputWeekSale"+id).empty();
-    $('#inputWeekSale'+id).append('<option>Week Sale</option>');
+    $("#inputWeekFrom"+id).empty();
+    $('#inputWeekFrom'+id).append('<option>Week Sale</option>');
 
     for (var i = 0; i < arrayWeek.length; i++) {
-      $('#inputWeekSale'+id).append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
+      $('#inputWeekFrom'+id).append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
     }
 
     //----append
-    $("#inputWeekEntry"+id).empty();
-    $('#inputWeekEntry'+id).append('<option>Week Entry</option>');
+    $("#inputWeekTo"+id).empty();
+    $('#inputWeekTo'+id).append('<option>Week Entry</option>');
 
     for (var i = 0; i < arrayWeek.length; i++) {
-      $('#inputWeekEntry'+id).append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
-    }     
+      $('#inputWeekTo'+id).append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
+    }
   }else{
     Swal.fire({
       title: 'Stop',
@@ -487,14 +487,14 @@ function setDrawOptions()
   }
 }
 
-function setDeleteOptions(id) 
+function setDeleteOptions(id)
 {
   if (id!=1 && id){
     $(".divOptions"+id).remove();
   }
 }
 
-function  getCleanOptions() 
+function  getCleanOptions()
 {
   arrayPlants = [];
   arrayWeek = [];
@@ -503,16 +503,16 @@ function  getCleanOptions()
   $("#inputNumber1").val(0);
   $("#inputPlant1").empty();
   $('#inputPlant1').append('<option>Plant Code</option>');
-  $("#inputWeekSale1").empty();
-  $('#inputWeekSale1').append('<option>Week Sale</option>');
-  $("#inputWeekEntry1").empty();
-  $('#inputWeekEntry1').append('<option>Week Entry</option>');
+  $("#inputWeekFrom1").empty();
+  $('#inputWeekFrom1').append('<option>Week Sale</option>');
+  $("#inputWeekTo1").empty();
+  $('#inputWeekTo1').append('<option>Week Entry</option>');
 }
 
 function sendOptions()
 {
   //$('#selectOdt').selectpicker('refresh');
-  if (arrayWeek.length>0 && arrayWeek && arrayPlants.length>0 && arrayPlants) 
+  if (arrayWeek.length>0 && arrayWeek && arrayPlants.length>0 && arrayPlants)
   {
     let numOptions = document.querySelectorAll('.inputPlant').length;
     var arrayPlantsSend = []
@@ -528,11 +528,11 @@ function sendOptions()
       arrayNumSend.push($(this).val());
     });
 
-    $('.inputWeekSale').each(function(){
+    $('.inputWeekFrom').each(function(){
       arrayWeekSaleSend.push($(this).val());
     });
 
-    $('.inputWeekEntry').each(function(){
+    $('.inputWeekTo').each(function(){
       arrayWeekEntrySend.push($(this).val());
     });
 
@@ -542,11 +542,11 @@ function sendOptions()
         'plant': arrayPlantsSend[i],
         'number': arrayNumSend[i],
         'sale': arrayWeekSaleSend[i],
-        'entry': arrayWeekEntrySend[i], 
+        'entry': arrayWeekEntrySend[i],
       });
     }
-
-    getSecondElement(12547, arrayReturn);
+    console.log(arrayReturn)
+    // getSecondElement(12547, arrayReturn);
   }else{
     Swal.fire({
       title: 'Stop',
@@ -555,7 +555,7 @@ function sendOptions()
   }
 }
 
-function getSecondElement(script, data) 
+function getSecondElement(script, data)
 {
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
