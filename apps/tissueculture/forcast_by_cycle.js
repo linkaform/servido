@@ -408,7 +408,7 @@ function getDrawPlants(colum, plants)
 
   //----append
   $("#inputWeekFrom1").empty();
-  $('#inputWeekFrom1').append('<option>Week Sale</option>');
+  $('#inputWeekFrom1').append('<option>Week From</option>');
 
   for (var i = 0; i < arrayWeek.length; i++) {
     $('#inputWeekFrom1').append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
@@ -416,7 +416,7 @@ function getDrawPlants(colum, plants)
 
   //----append
   $("#inputWeekTo1").empty();
-  $('#inputWeekTo1').append('<option>Week Entry</option>');
+  $('#inputWeekTo1').append('<option>Week To</option>');
 
   for (var i = 0; i < arrayWeek.length; i++) {
     $('#inputWeekTo1').append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
@@ -438,12 +438,12 @@ function setDrawOptions()
       +'</div>'
       +'<div class="col-sm-12 col-md-2 col-lg-2 mb-2  divOptions'+id+' divSecondaryOptions ">'
         +'<select class="form-control inputWeekFrom" id="inputWeekFrom'+id+'">'
-          +'<option>Week Sale</option> '
+          +'<option>Week From</option> '
         +'</select>'
       +'</div>'
       +'<div class="col-sm-12 col-md-2 col-lg-2 mb-2  divOptions'+id+' divSecondaryOptions ">'
         +'<select class="form-control inputWeekTo" id="inputWeekTo'+id+'">'
-          +'<option>Week Entry</option>   '
+          +'<option>Week To</option>   '
         +'</select>'
       +'</div>'
       +'<div class="col-sm-12 col-md-2 col-lg-2 mb-2  divOptions'+id+' divSecondaryOptions ">'
@@ -466,7 +466,7 @@ function setDrawOptions()
 
     //----append
     $("#inputWeekFrom"+id).empty();
-    $('#inputWeekFrom'+id).append('<option>Week Sale</option>');
+    $('#inputWeekFrom'+id).append('<option>Week From</option>');
 
     for (var i = 0; i < arrayWeek.length; i++) {
       $('#inputWeekFrom'+id).append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
@@ -474,7 +474,7 @@ function setDrawOptions()
 
     //----append
     $("#inputWeekTo"+id).empty();
-    $('#inputWeekTo'+id).append('<option>Week Entry</option>');
+    $('#inputWeekTo'+id).append('<option>Week To</option>');
 
     for (var i = 0; i < arrayWeek.length; i++) {
       $('#inputWeekTo'+id).append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
@@ -491,6 +491,7 @@ function setDeleteOptions(id)
 {
   if (id!=1 && id){
     $(".divOptions"+id).remove();
+    arrayReturn = [];
   }
 }
 
@@ -504,21 +505,22 @@ function  getCleanOptions()
   $("#inputPlant1").empty();
   $('#inputPlant1').append('<option>Plant Code</option>');
   $("#inputWeekFrom1").empty();
-  $('#inputWeekFrom1').append('<option>Week Sale</option>');
+  $('#inputWeekFrom1').append('<option>Week From</option>');
   $("#inputWeekTo1").empty();
-  $('#inputWeekTo1').append('<option>Week Entry</option>');
+  $('#inputWeekTo1').append('<option>Week To</option>');
 }
 
 function sendOptions()
 {
+  arrayReturn = [];
   //$('#selectOdt').selectpicker('refresh');
   if (arrayWeek.length>0 && arrayWeek && arrayPlants.length>0 && arrayPlants)
   {
     let numOptions = document.querySelectorAll('.inputPlant').length;
     var arrayPlantsSend = []
     var arrayNumSend = []
-    var arrayWeekSaleSend = []
-    var arrayWeekEntrySend = []
+    var arrayWeekFromSend = []
+    var arrayWeekToSend = []
 
     $('.inputPlant').each(function(){
       arrayPlantsSend.push($(this).val());
@@ -529,11 +531,11 @@ function sendOptions()
     });
 
     $('.inputWeekFrom').each(function(){
-      arrayWeekSaleSend.push($(this).val());
+      arrayWeekFromSend.push($(this).val());
     });
 
     $('.inputWeekTo').each(function(){
-      arrayWeekEntrySend.push($(this).val());
+      arrayWeekToSend.push($(this).val());
     });
 
 
@@ -541,8 +543,8 @@ function sendOptions()
       arrayReturn.push({
         'plant': arrayPlantsSend[i],
         'number': arrayNumSend[i],
-        'sale': arrayWeekSaleSend[i],
-        'entry': arrayWeekEntrySend[i],
+        'from': arrayWeekFromSend[i],
+        'to': arrayWeekToSend[i],
       });
     }
     console.log(arrayReturn)
