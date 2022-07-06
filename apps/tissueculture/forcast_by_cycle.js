@@ -9,15 +9,20 @@ let userJwt = null;
 let userName = null;
 let userParentId = null;
 let scriptId = null;
-
+var arrayPlants = [];
+var arrayWeek = [];
+var arrayReturn = [];
 
 $('#divOptions').hide();
 $('#title_report').hide();
 $('.title_tables').hide();
 hideElement("title_demo")
 hideElement("firstParameters")
-hideElement("firstElement")
+hideElement("divButtons");
+hideElement("divPlants");
 
+
+divPlants
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -76,7 +81,8 @@ window.onload = function(){
   userParentId = getCookie("userParentId");
   hideElement("close_sesion");
   hideElement("firstParameters");
-
+  hideElement("divButtons");
+  hideElement("divPlants");
 
   if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
@@ -96,6 +102,8 @@ window.onload = function(){
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
+    document.getElementById("divButtons").style.removeProperty('display');
+    document.getElementById("divPlants").style.removeProperty('display');
 
   } else {
     unhideElement("inicio_ses");
@@ -120,6 +128,8 @@ function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
   unhideElement("close_sesion");
   unhideElement("firstParameters");
+  unhideElement("divButtons");
+  unhideElement("divPlants");
   unhideElement("firstElement");
   unhideElement("firstElement-Buttons");
 }
@@ -143,6 +153,7 @@ function runFirstElement(){
 
 function getFirstElement(plant_code){
   //---Hide style
+  getCleanOptions();
   $("#divContent").hide();
   $('.load-wrapp').show();
   $('.title_tables').hide();
@@ -170,7 +181,9 @@ function getFirstElement(plant_code){
       if (res.response.firstElement) {
         console.log('drawFirstElement.........')
         getDrawTable('firstElement',res.response.firstElement.colsData, res.response.firstElement.tabledata);
-        
+        getDrawPlants(res.response.firstElement.colsData,  res.response.firstElement.tabledata)
+
+
       }
     } else {
       hideLoading();
@@ -368,4 +381,209 @@ function minMaxFilterFunction(headerValue, rowValue, rowData, filterParams){
            }
        }
    return true; //must return a boolean, true if it passes the filter.
+}
+
+
+//---Options PLANTS
+function getDrawPlants(colum, plants) 
+{
+
+  for (var i = 4; i < colum.length; i++) {
+    arrayWeek.push(colum[i]['title']);
+  }
+
+
+  for (var i = 0; i < plants.length; i++) {
+    arrayPlants.push(plants[i]['plant_code']);
+  }
+
+  //----append
+  $("#inputPlant1").empty();
+  $('#inputPlant1').append('<option>Plant Code</option>');
+
+  for (var i = 0; i < arrayPlants.length; i++) {
+    $('#inputPlant1').append('<option value="'+arrayPlants[i]+'">'+arrayPlants[i]+'</option>');
+  }
+  
+
+  //----append
+  $("#inputWeekSale1").empty();
+  $('#inputWeekSale1').append('<option>Week Sale</option>');
+
+  for (var i = 0; i < arrayWeek.length; i++) {
+    $('#inputWeekSale1').append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
+  }
+   
+  //----append
+  $("#inputWeekEntry1").empty();
+  $('#inputWeekEntry1').append('<option>Week Entry</option>');
+
+  for (var i = 0; i < arrayWeek.length; i++) {
+    $('#inputWeekEntry1').append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
+  }
+}
+
+function setDrawOptions() 
+{
+  if (arrayWeek.length>0 && arrayWeek && arrayPlants.length>0 && arrayPlants) 
+  {
+    var id = new Date().getTime();
+    $("#divPlants").append('<div class="col-sm-12 col-md-4 col-lg-4 mb-2 divOptions'+id+' divSecondaryOptions ">'
+        +'<select class="form-control inputPlant" id="inputPlant'+id+'">'
+          +'<option>Plant Code</option> '
+        +'</select>'
+      +'</div>'
+      +'<div class="col-sm-12 col-md-2 col-lg-2 mb-2  divOptions'+id+' divSecondaryOptions ">'
+        +'<input type="number" class="form-control inputNumber" id="inputNumber'+id+'">'
+      +'</div>'
+      +'<div class="col-sm-12 col-md-2 col-lg-2 mb-2  divOptions'+id+' divSecondaryOptions ">'
+        +'<select class="form-control inputWeekSale" id="inputWeekSale'+id+'">'
+          +'<option>Week Sale</option> '
+        +'</select>'
+      +'</div>'
+      +'<div class="col-sm-12 col-md-2 col-lg-2 mb-2  divOptions'+id+' divSecondaryOptions ">'
+        +'<select class="form-control inputWeekEntry" id="inputWeekEntry'+id+'">'
+          +'<option>Week Entry</option>   '
+        +'</select>'
+      +'</div>'
+      +'<div class="col-sm-12 col-md-2 col-lg-2 mb-2  divOptions'+id+' divSecondaryOptions ">'
+        +'<button class="btn btn-success" type="button" onclick="setDrawOptions();return false;">'
+          +'<i class="fa-solid fa-plus"></i>'
+        +'</button >  &nbsp;  &nbsp;'
+        +'<button class="btn btn-danger" type="button" onclick="setDeleteOptions('+id+');return false;">'
+          +'<i class="fa-solid fa-minus"></i>'
+        +'</button >  '
+      +'</div>'
+    );
+
+    //----append
+    $("#inputPlant"+id).empty();
+    $('#inputPlant'+id).append('<option>Plant Code</option>');
+
+    for (var i = 0; i < arrayPlants.length; i++) {
+      $('#inputPlant'+id).append('<option value="'+arrayPlants[i]+'">'+arrayPlants[i]+'</option>');
+    }
+    
+    //----append
+    $("#inputWeekSale"+id).empty();
+    $('#inputWeekSale'+id).append('<option>Week Sale</option>');
+
+    for (var i = 0; i < arrayWeek.length; i++) {
+      $('#inputWeekSale'+id).append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
+    }
+
+    //----append
+    $("#inputWeekEntry"+id).empty();
+    $('#inputWeekEntry'+id).append('<option>Week Entry</option>');
+
+    for (var i = 0; i < arrayWeek.length; i++) {
+      $('#inputWeekEntry'+id).append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
+    }     
+  }else{
+    Swal.fire({
+      title: 'Stop',
+      html: 'You need to execute query',
+    });
+  }
+}
+
+function setDeleteOptions(id) 
+{
+  if (id!=1 && id){
+    $(".divOptions"+id).remove();
+  }
+}
+
+function  getCleanOptions() 
+{
+  arrayPlants = [];
+  arrayWeek = [];
+  arrayReturn = [];
+  $('.divSecondaryOptions').remove();
+  $("#inputNumber1").val(0);
+  $("#inputPlant1").empty();
+  $('#inputPlant1').append('<option>Plant Code</option>');
+  $("#inputWeekSale1").empty();
+  $('#inputWeekSale1').append('<option>Week Sale</option>');
+  $("#inputWeekEntry1").empty();
+  $('#inputWeekEntry1').append('<option>Week Entry</option>');
+}
+
+function sendOptions()
+{
+  //$('#selectOdt').selectpicker('refresh');
+  if (arrayWeek.length>0 && arrayWeek && arrayPlants.length>0 && arrayPlants) 
+  {
+    let numOptions = document.querySelectorAll('.inputPlant').length;
+    var arrayPlantsSend = []
+    var arrayNumSend = []
+    var arrayWeekSaleSend = []
+    var arrayWeekEntrySend = []
+
+    $('.inputPlant').each(function(){
+      arrayPlantsSend.push($(this).val());
+    });
+
+    $('.inputNumber').each(function(){
+      arrayNumSend.push($(this).val());
+    });
+
+    $('.inputWeekSale').each(function(){
+      arrayWeekSaleSend.push($(this).val());
+    });
+
+    $('.inputWeekEntry').each(function(){
+      arrayWeekEntrySend.push($(this).val());
+    });
+
+
+    for (var i = 0; i < numOptions; i++) {
+      arrayReturn.push({
+        'plant': arrayPlantsSend[i],
+        'number': arrayNumSend[i],
+        'sale': arrayWeekSaleSend[i],
+        'entry': arrayWeekEntrySend[i], 
+      });
+    }
+
+    getSecondElement(12547, arrayReturn);
+  }else{
+    Swal.fire({
+      title: 'Stop',
+      html: 'You need to execute query, before send Plants',
+    });
+  }
+}
+
+function getSecondElement(script, data) 
+{
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: script,
+      plants: data,
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+    } else {
+      hideLoading();
+      if(res.code == 11){
+        Swal.fire({
+          title: 'Error',
+          html: res.error
+        });
+      } else {
+        Swal.fire({
+          title: 'Error',
+          html: res.error
+        });
+      }
+    }
+  })
 }

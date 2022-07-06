@@ -21,6 +21,10 @@ hideElement("thirdElement");
 hideElement("fourthElement");
 hideElement("fivethElement");
 hideElement("sixthElement");
+hideElement("seventhElement");
+hideElement("eigthElement");
+hideElement("nineElement");
+hideElement("tenthElement");
 
 
 
@@ -96,6 +100,7 @@ window.onload = function(){
     if (scriptId == null) {
       loadDemoData();
     }
+    console.log(getPAlleteColors(7,15));
     //--Styles
     setSpinner();
     $('#divOptions').show();
@@ -112,16 +117,20 @@ window.onload = function(){
 
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
-  unhideElement("close_sesion");
-  unhideElement("firstParameters");
-  unhideElement("firstElement");
-  unhideElement("secondElement");
-  unhideElement("thirdElement");
-  unhideElement("fourthElement");
-  unhideElement("fivethElement");
-  unhideElement("fivethElement");
-  unhideElement("sixthElement");
-  unhideElement("firstElement-Buttons");
+    unhideElement("close_sesion");
+    unhideElement("firstParameters");
+    unhideElement("firstElement");
+    unhideElement("secondElement");
+    unhideElement("thirdElement");
+    unhideElement("fourthElement");
+    unhideElement("fivethElement");
+    unhideElement("fivethElement");
+    unhideElement("sixthElement");
+    unhideElement("seventhElement");
+    unhideElement("eigthElement");
+    unhideElement("nineElement");
+    unhideElement("tenthElement");
+    unhideElement("firstElement-Buttons");
 }
 
 function loadDemoData(){
@@ -142,10 +151,8 @@ function loadDemoData(){
 }
 
 
-
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
-
 
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
@@ -153,7 +160,6 @@ function runFirstElement(){
 
   firstElement = getFirstElement(date_from.value, date_to.value);
 };
-
 
 function getFirstElement(date_from, date_to){
     //----Hide Css
@@ -182,41 +188,45 @@ function getFirstElement(date_from, date_to){
             $('.title_tables').show();
 
 
-            if (res.response.json.firstElement) {
+            if (res.response.json.firstElement.data) {
                 console.log('drawFirstElement.........');
                 drawFirstElement(res.response.json.firstElement.data[0]);
             }
-            if (res.response.json.secondElement) {
-                console.log('drawFirstElement.........');
+            if (res.response.json.secondElement.data) {
+                console.log('drawsecondElement.........');
                 drawSecondElement(res.response.json.secondElement.data[0]);
             }
-             if (res.response.json.thirdElement) {
-                console.log('drawFirstElement.........');
+             if (res.response.json.thirdElement.data) {
+                console.log('drawthirdElement.........');
                 drawThirdElement(res.response.json.thirdElement.data[0]);
             }
-             if (res.response.json.fourthElement) {
-                console.log('drawFirstElement.........');
+             if (res.response.json.fourthElement.data) {
+                console.log('drawfourthElement.........');
                 drawFourthElement(res.response.json.fourthElement.data[0]);
             }
-             if (res.response.json.fivethElement) {
-                console.log('drawFirstElement.........');
+             if (res.response.json.fivethElement.data) {
+                console.log('drawfivethElement.........');
                 drawFivethElement(res.response.json.fivethElement.data[0]);
             }
-             if (res.response.json.sixthElement) {
-                console.log('drawFirstElement.........');
+             if (res.response.json.sixthElement.data) {
+                console.log('drawsixthElement.........');
                 drawSixthElement(res.response.json.sixthElement.data[0]);
             }
-             if (res.response.json.seventhElement) {
-                console.log('drawFirstElement.........');
+             if (res.response.json.seventhElement.data) {
+                console.log('drawseventhElement.........');
                 drawSeventhElement(res.response.json.seventhElement.data[0]);
             }
-             if (res.response.json.eigthElement) {
-                console.log('drawFirstElement.........');
+             if (res.response.json.eigthElement.data) {
+                console.log('draweigthElement.........');
                 drawEigthElement(res.response.json.eigthElement.data[0]);
             }
-             if (res.response.json.ninethElement) {
-                console.log('drawFirstElement.........');
+            if (res.response.json.ninethElement.data) {
+                console.log('drawninethElement.........');
                 drawNineElement(res.response.json.ninethElement.data[0]);
+            }
+            if (res.response.json.tenthElement.data) {
+                console.log('drawTenthlement.........');
+                drawTenthElement(res.response.json.tenthElement.data[0]);
             }
         }else{
             hideLoading();
@@ -303,7 +313,6 @@ function drawFirstElement(data){
 
 let chart2;
 function drawSecondElement(data){
-    console.log(data);
     //--- Data
     var labels = data.map(function(e) {
         return e.nombre +' - ' + e.total.toFixed(2) + '%';
@@ -313,7 +322,7 @@ function drawSecondElement(data){
     });
 
     //--- Colors
-    var array_colors = getPAlleteColors(5,datasets.length);
+    var array_colors = getPAlleteColors(7,datasets.length);
 
 
     //---CHART
@@ -560,7 +569,6 @@ function drawSixthElement(data){
     chart6 = new Chart(ctx, {
         type: 'bar',
         data: data,
-        plugins: [ChartDataLabels],
         options: {
             plugins: {
                 legend: {
@@ -573,26 +581,7 @@ function drawSixthElement(data){
                         size: 25
                     }
                 },
-                datalabels: {
-                    color: '#707B7C',
-                    labels: {
-                        title: {
-                            font: {
-                                weight: 'bold',
-                                size: 12,
-                            }
-                        },
-                    },
-                    padding:{
-                        top: 20,
-                        bottom:10,
-                    },
-                    align:'bot',
-                    formatter: function (value, context){
-                      var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                      return formato;
-                    }
-                }
+                
             },
             scales: {
                 x: {
@@ -628,7 +617,6 @@ function drawSeventhElement(data){
     chart7 = new Chart(ctx, {
         type: 'bar',
         data: data,
-        plugins: [ChartDataLabels],
         options: {
             plugins: {
                 legend: {
@@ -641,26 +629,7 @@ function drawSeventhElement(data){
                         size: 25
                     }
                 },
-                datalabels: {
-                    color: '#707B7C',
-                    labels: {
-                        title: {
-                            font: {
-                                weight: 'bold',
-                                size: 12,
-                            }
-                        },
-                    },
-                    padding:{
-                        top: 20,
-                        bottom:10,
-                    },
-                    align:'bot',
-                    formatter: function (value, context){
-                      var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                      return formato;
-                    }
-                }
+                
             },
             scales: {
                 x: {
@@ -696,7 +665,6 @@ function drawEigthElement(data){
     chart8 = new Chart(ctx, {
         type: 'bar',
         data: data,
-        plugins: [ChartDataLabels],
         options: {
             plugins: {
                 legend: {
@@ -709,26 +677,7 @@ function drawEigthElement(data){
                         size: 25
                     }
                 },
-                datalabels: {
-                    color: '#807B7C',
-                    labels: {
-                        title: {
-                            font: {
-                                weight: 'bold',
-                                size: 12,
-                            }
-                        },
-                    },
-                    padding:{
-                        top: 20,
-                        bottom:10,
-                    },
-                    align:'bot',
-                    formatter: function (value, context){
-                      var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                      return formato;
-                    }
-                }
+                
             },
             scales: {
                 x: {
@@ -754,7 +703,7 @@ function drawEigthElement(data){
 let chart9;
 function drawNineElement(data){
     //---CHART
-    var ctx = document.getElementById('nineEigth').getContext('2d');
+    var ctx = document.getElementById('graphicNineth').getContext('2d');
     
     if (chart9) {
         chart9.destroy();
@@ -778,7 +727,7 @@ function drawNineElement(data){
                     }
                 },
                 datalabels: {
-                    color: '#907B7C',
+                    color: '#fbeee6 ',
                     labels: {
                         title: {
                             font: {
@@ -806,15 +755,65 @@ function drawNineElement(data){
                         text: '',
                         size: 30,
                     },
-                    stacked: true,
-                    gridLines: {
-                        display: false,
-                    },
+                    
                     ticks: {
                         fontSize: 40
                     }
                 },
             }
         },
+    });
+}
+
+let chart10;
+function drawTenthElement(data){
+    console.log(data);
+    //--- Data
+    var labels = data.map(function(e) {
+        return e.nombre +' - ' + e.total.toFixed(2) + '%';
+    });
+    var datasets = data.map(function(e) {
+        return e.total;
+    });
+
+    console.log(labels)
+    //--- Colors
+    var array_colors = getPAlleteColors(7,datasets.length);
+
+
+    //---CHART
+    var ctx = document.getElementById('graphicTenth').getContext('2d');
+    
+    if (chart10) {
+        chart10.destroy();
+    }
+
+    chart10 = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                backgroundColor: array_colors,
+                data: datasets
+            }]
+        },
+        options: {
+            plugins: {
+                tooltip:{
+                    enabled: true,
+                },
+                legend:{
+                    display: true,
+                },
+                title: {
+                    display: true,
+                    text: 'Porcentaje X Status',
+                    font: {
+                        size: 25
+                    }
+                },
+            },
+        }
+     
     });
 }

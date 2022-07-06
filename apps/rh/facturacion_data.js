@@ -2,6 +2,9 @@
 
 //--Table Facturación
 var columsTable1 = [
+  { title:"Folio", field:'folio',hozAlign:"center",formatter:"link", formatterParams:{
+    url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
+    target:"_blank",},width:200},
   { title:"Fecha", field:'fecha',hozAlign:"center",width:200},
   { title:"Mesa", field:'mesa', hozAlign:"right", width:100},
   { title:"Tipo Tarea" , field:'tarea', hozAlign:"center", width:150, },
@@ -17,15 +20,20 @@ var columsTable1 = [
     formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2} },
   { title:"Tipo Promoción" , field:'promocion', hozAlign:"center", width:100, },
   { title:"Total Unidades" , field:'total_unidades', hozAlign:"right", width:200,formatter: "money",
-  formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
+  formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 2},bottomCalc:"sum", bottomCalcParams:{
+    precision:2,} ,bottomCalcFormatter: "money",bottomCalcFormatterParams:  {decimal: ".",thousand: ",",symbol: ""},},
   { title:"Total", field:'total',hozAlign:"right",width:200 ,formatter: "money",
-  formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2} },
+  formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2},bottomCalc:"sum", bottomCalcParams:{
+    precision:2,} ,bottomCalcFormatter: "money",bottomCalcFormatterParams:  {decimal: ".",thousand: ",",symbol: "$"},},
 ];
 
 
 
 //--Table Horas
 var columsTable2 = [
+  { title:"Folio", field:'folio',hozAlign:"center",formatter:"link", formatterParams:{
+    url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
+    target:"_blank",},width:200},
   { title:"Fecha", field:'fecha',hozAlign:"center",width:200},
   { title:"Mesa", field:'mesa', hozAlign:"right", width:100},
   { title:"Cantidad Funcionarios" , field:'num_funcionarias', hozAlign:"right", width:100, },
@@ -35,13 +43,17 @@ var columsTable2 = [
   formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2} },
   { title:"Motivo" ,field:'motivo', hozAlign:"right", width:400, },
   { title:"Pago", field:'pago',hozAlign:"right",width:200 ,formatter: "money",
-  formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2} },
-  { title:"Total en Horas" ,field:'total_horas', hozAlign:"right", width:150, },
+  formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2},bottomCalc:"sum", bottomCalcParams:{
+    precision:2,} ,bottomCalcFormatter: "money",bottomCalcFormatterParams:  {decimal: ".",thousand: ",",symbol: "$"}, },
+  { title:"Total en Horas" ,field:'total_horas', hozAlign:"right", width:150,bottomCalc:"sum", bottomCalcParams:{
+    precision:2,}  },
 ];
 
 
 var dataTable1 = [
   {
+    folio :"19-589",
+    record_id :"589",
     fecha :"6/14/2022",
     mesa :"16",
     tipo_tarea :"EN7",
@@ -58,6 +70,8 @@ var dataTable1 = [
     total :"2838.71",
   },
     {
+    folio :"19-589",
+    record_id :"589",
     fecha :"6/14/2022",
     mesa :"16",
     tipo_tarea :"EN7",
@@ -74,6 +88,8 @@ var dataTable1 = [
     total :"2838.71",
   },
   {
+    folio :"19-589",
+    record_id :"589",
     fecha :"6/14/2022",
     mesa :"16",
     tipo_tarea :"EN7",
@@ -93,6 +109,8 @@ var dataTable1 = [
 
 var dataTable2 = [
   {
+    folio :"19-589",
+    record_id :"589",
     fecha:"6/1/2022",
     mesa:"12",
     cajas_funcionario:"4",
@@ -107,6 +125,8 @@ var dataTable2 = [
     total_horas:"2",
   },
   {
+    folio :"19-589",
+    record_id :"589",
     fecha:"6/1/2022",
     mesa:"12",
     cajas_funcionario:"4",
@@ -121,6 +141,8 @@ var dataTable2 = [
     total_horas:"2",
   },
   {
+    folio :"19-589",
+    record_id :"589",
     fecha:"6/1/2022",
     mesa:"12",
     cajas_funcionario:"4",

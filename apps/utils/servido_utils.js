@@ -215,6 +215,8 @@ function getPAlleteColors(pallete,number){
     arrayColors = chroma.scale(['#27ae60','#f1c40f','#d35400']).mode('lch').colors(number);
   }else if(pallete==6){
     arrayColors = chroma.scale(['#3498db','#1b4f72','#27ae60']).mode('lch').colors(number);
+  }else if(pallete==7){
+    arrayColors = chroma.scale(['#0b7fab','#f1e4de','#f4d75e','#e9723d','#7c7b89']).mode('lch').colors(number);
   }
 
   return arrayColors;
