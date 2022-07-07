@@ -109,8 +109,8 @@ El reporte en su primer elemento debe de recibir un json
 |Name|Field Name|Field|Descripcion|
 |---|---|---|---|
 |Plant Code| plant_code|text|Codigo de la Planta|
-|Row Type | row_typw|text|Indica si es Fufilmet, Requierd o Acutals|
+|Row Type | row_typw|text|Indica si es Fufilmet, Required o Acutals|
 |Total Actuals | cycle_x|int|Cantidad de Plantas disponibles de todos los cyclos combinados estimadas (se obtine el ultimo reporte de corte y se multiplica por su factor)|
-|Total Requierd | cycle_x|int|Cantidad de Plantas requeridas de todos los cyclos combinados|
-|Total Fufilment | cycle_x|int|Diferencia entre Actuals y Requierd|
+|Total Required | cycle_x|int|Cantidad de Plantas requeridas de todos los cyclos combinados|
+|Total Fulfillment | cycle_x|int|Diferencia entre Actuals y Required|
 |Cycle # | cycle_x|int|Cantidad de Plantas disponibles (estimadas), requeridas o su diferencia de dicho cyclo|

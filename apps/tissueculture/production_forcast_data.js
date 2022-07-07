@@ -8,9 +8,9 @@ var columsTable1 = [
       {title:"A. Forcast S2", field:"actualsS2202238",  widthGrow:4, headerFilter:minMaxFilterEditor, headerFilterFunc:minMaxFilterFunction, headerFilterLiveFilter:false},
       {title:"A. Forcast S3", field:"actualsS3202238",  },
       {title:"Stage 2 Req", field:"reqS2202238",   headerFilter:minMaxFilterEditor, headerFilterFunc:minMaxFilterFunction, headerFilterLiveFilter:false},
-      {title:"Stage 2 Asigne", field:"reqS2Asigne202238",   headerFilter:minMaxFilterEditor, headerFilterFunc:minMaxFilterFunction, headerFilterLiveFilter:false},
+      {title:"Stage 2 Assign", field:"reqS2Asigne202238",   headerFilter:minMaxFilterEditor, headerFilterFunc:minMaxFilterFunction, headerFilterLiveFilter:false},
       {title:"Stage 3 Req", field:"reqS3202238",   headerFilter:minMaxFilterEditor, headerFilterFunc:minMaxFilterFunction, headerFilterLiveFilter:false},
-      {title:"Stage 3 Asigne", field:"reqS3Asigne202238", cellEditing:function(cell){console.log('aqui',cell)}, editor:true, validator:["numeric"]} ,
+      {title:"Stage 3 Assign", field:"reqS3Asigne202238", cellEditing:function(cell){console.log('aqui',cell)}, editor:true, validator:["numeric"]} ,
     ]
   },
   {title:"202238",
@@ -19,9 +19,9 @@ var columsTable1 = [
       {title:"A. Forcast S2", field:"actualsS2202239",   headerFilter:minMaxFilterEditor, headerFilterFunc:minMaxFilterFunction, headerFilterLiveFilter:false},
       {title:"A. Forcast S3", field:"actualsS2202239",  },
       {title:"Stage 2 Req", field:"actualsS2202239",   headerFilter:minMaxFilterEditor, headerFilterFunc:minMaxFilterFunction, headerFilterLiveFilter:false},
-      {title:"Stage 2 Asigne", field:"actualsS2202239",   headerFilter:minMaxFilterEditor, headerFilterFunc:minMaxFilterFunction, headerFilterLiveFilter:false},
+      {title:"Stage 2 Assign", field:"actualsS2202239",   headerFilter:minMaxFilterEditor, headerFilterFunc:minMaxFilterFunction, headerFilterLiveFilter:false},
       {title:"Stage 3 Req", field:"actualsS2202239",   headerFilter:minMaxFilterEditor, headerFilterFunc:minMaxFilterFunction, headerFilterLiveFilter:false},
-      {title:"Stage 3 Asigne", field:"actualsS2202239",  headerFilter:minMaxFilterEditor, headerFilterFunc:minMaxFilterFunction, headerFilterLiveFilter:false},
+      {title:"Stage 3 Assign", field:"actualsS2202239",  headerFilter:minMaxFilterEditor, headerFilterFunc:minMaxFilterFunction, headerFilterLiveFilter:false},
     ]
   },
 ]
@@ -938,7 +938,7 @@ var dataSecondElementB = {
           "yAxisID": "ay",
           data: [732, 793, 854, 915, 976, 1037, 1098, 1159, 1000,220, 1098, 1037, 976],
           fill: false,
-      }, 
+      },
       {
           label: "Required hours S3 ",
           type: "line",
@@ -946,7 +946,7 @@ var dataSecondElementB = {
           "yAxisID": "ay",
           data: [ 727, 636, 545, 455, 364, 273, 182, 318, 409, 500, 591, 682 ],
           fill: false,
-      }, 
+      },
       {
           label: "Required hours S2+S3 ",
           type: "line",
@@ -954,14 +954,14 @@ var dataSecondElementB = {
           "yAxisID": "ay",
           data: [ 1459, 1429, 1399, 1369, 1339, 1309, 1279, 1477, 1629, 1598, 1627, 1657],
           fill: false,
-      }, 
+      },
       {
           label: "Required Eaches S2 ",
           type: "bar",
           backgroundColor: "#3498db",
           "yAxisID": "ay1",
           data: [ 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 1800, 1700, 1600 ],
-      }, 
+      },
       {
           label: "Num Eaches S2",
           type: "bar",
@@ -970,4 +970,4 @@ var dataSecondElementB = {
           data: [ 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 1800, 1700, 1600],
       }
     ]
-}; 
+};
