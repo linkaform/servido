@@ -1,4 +1,4 @@
-// Reporte Production Forscast
+customCatalogView// Reporte Production Forscast
 // Librerias: Chart.js
 let us = null;
 let usTy = null;
@@ -168,8 +168,7 @@ function customCatalogView(res){
   if (codeEmp !== null){
     $("#code").val(''); 
     $("#code").val(codeEmp);  
-  }
-  
+  } 
 }
 
 function getFirstElement(year, month, hr_code, empleado){

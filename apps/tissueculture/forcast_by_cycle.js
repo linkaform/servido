@@ -9,9 +9,9 @@ let userJwt = null;
 let userName = null;
 let userParentId = null;
 let scriptId = null;
-var arrayPlants = [];
-var arrayWeek = [];
-var arrayReturn = [];
+let arrayPlants = [];
+let arrayWeek = [];
+let arrayReturn = [];
 
 $('#divOptions').hide();
 $('#title_report').hide();
@@ -387,6 +387,7 @@ function minMaxFilterFunction(headerValue, rowValue, rowData, filterParams){
 //---Options PLANTS
 function getDrawPlants(colum, plants)
 {
+  var arrayPlantsQuery = [] 
 
   for (var i = 4; i < colum.length; i++) {
     arrayWeek.push(colum[i]['title']);
@@ -394,9 +395,11 @@ function getDrawPlants(colum, plants)
 
 
   for (var i = 0; i < plants.length; i++) {
-    arrayPlants.push(plants[i]['plant_code']);
+    arrayPlantsQuery.push(plants[i]['plant_code']);
   }
 
+  arrayPlants = [...new Set(arrayPlantsQuery)]
+  
   //----append
   $("#inputPlant1").empty();
   $('#inputPlant1').append('<option>Plant Code</option>');
@@ -421,10 +424,16 @@ function getDrawPlants(colum, plants)
   for (var i = 0; i < arrayWeek.length; i++) {
     $('#inputWeekTo1').append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
   }
+
+  console.log(arrayWeek);
+  console.log(arrayPlants);
 }
 
 function setDrawOptions()
 {
+  console.log('OPTIONS',arrayWeek);
+  console.log('OPTIONS',arrayPlants);
+
   if (arrayWeek.length>0 && arrayWeek && arrayPlants.length>0 && arrayPlants)
   {
     var id = new Date().getTime();

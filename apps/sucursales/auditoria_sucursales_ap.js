@@ -90,7 +90,8 @@ window.onload = function(){
     userJwt = jw;
     userName = getCookie("userName");
 
-    getRegionales()
+    getRegionales();
+    getSucursales();
     unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
@@ -182,12 +183,32 @@ function loadDemoData(){
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
+
+function customCatalogView(res){
+
+  if (res){
+    $("#sucursalesLista").empty();
+    $('#sucursalesLista').append('<option value="--">--Seleccione--</option>');
+
+    for (i = 0; i < res.rows.length; i++) {
+      $('#sucursalesLista').append('<option value="'+res.rows[i].key+'">'+res.rows[i].key+'</option>');
+    }
+  }
+}
+
+
 function getRegionales(){
   console.log('regionales')
   regionales = getCatalog(83987, 79950, 1, catalogType='select')
-  // regionales = getCatalog(79975, 79950, 1, catalogType='select')
-  console.log('regionales', regionales)
 }
+
+function getSucursales(){
+  console.log('Sucursales');
+  sucursales = getCatalog(79975,79950,1,catalogType='custom');
+  console.log(sucursales);
+}
+
+
 
 function runFirstElement(){
   //--show alert
@@ -196,16 +217,24 @@ function runFirstElement(){
   let date_to = document.getElementById("date_to");
   let regional = document.getElementById("catalog-79950-level-1");
   let perfil = document.getElementById("perfil");
-  firstElement =getFirstElement( date_from.value, date_to.value,
+  let seccion = document.getElementById("seccion");
+  let sucursal = document.getElementById("sucursalesLista");
+
+  firstElement =getFirstElement( 
+    date_from.value, 
+    date_to.value,
     regional.selectedOptions[0].value,
-    perfil.selectedOptions[0].value);
+    perfil.selectedOptions[0].value,
+    seccion.value, 
+    sucursal.value,
+    );
   //--Syle
   unhideElement("div_alert1");
   unhideElement("div_alert2");
   document.getElementById("firstParameters").style.removeProperty('display');
 };
 
-function getFirstElement(date_from, date_to, regional, perfil){
+function getFirstElement(date_from, date_to, regional, perfil, seccion, sucursal){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -223,7 +252,9 @@ function getFirstElement(date_from, date_to, regional, perfil){
       date_from: date_from,
       date_to: date_to,
       regional: regional,
-      perfil: perfil
+      perfil: perfil,
+      seccion: seccion,
+      sucursal: sucursal
     }),
     headers:{
       'Content-Type': 'application/json',
