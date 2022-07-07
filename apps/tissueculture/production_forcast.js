@@ -285,7 +285,7 @@ function drawSecondElement(data){
           },
            title: {
               display: true,
-              text: 'Requiers Report',
+              text: 'Requirements Report ',
               font: {
                   size: 25
               }
