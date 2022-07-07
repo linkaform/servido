@@ -387,6 +387,7 @@ function minMaxFilterFunction(headerValue, rowValue, rowData, filterParams){
 //---Options PLANTS
 function getDrawPlants(colum, plants)
 {
+  var arrayPlantsQuery = [] 
 
   for (var i = 4; i < colum.length; i++) {
     arrayWeek.push(colum[i]['title']);
@@ -394,9 +395,11 @@ function getDrawPlants(colum, plants)
 
 
   for (var i = 0; i < plants.length; i++) {
-    arrayPlants.push(plants[i]['plant_code']);
+    arrayPlantsQuery.push(plants[i]['plant_code']);
   }
 
+  var arrayPlants = [...new Set(arrayPlantsQuery)]
+  
   //----append
   $("#inputPlant1").empty();
   $('#inputPlant1').append('<option>Plant Code</option>');
