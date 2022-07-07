@@ -9,9 +9,9 @@ let userJwt = null;
 let userName = null;
 let userParentId = null;
 let scriptId = null;
-var arrayPlants = [];
-var arrayWeek = [];
-var arrayReturn = [];
+let arrayPlants = [];
+let arrayWeek = [];
+let arrayReturn = [];
 
 $('#divOptions').hide();
 $('#title_report').hide();
@@ -398,7 +398,7 @@ function getDrawPlants(colum, plants)
     arrayPlantsQuery.push(plants[i]['plant_code']);
   }
 
-  var arrayPlants = [...new Set(arrayPlantsQuery)]
+  arrayPlants = [...new Set(arrayPlantsQuery)]
   
   //----append
   $("#inputPlant1").empty();
@@ -424,10 +424,16 @@ function getDrawPlants(colum, plants)
   for (var i = 0; i < arrayWeek.length; i++) {
     $('#inputWeekTo1').append('<option value="'+arrayWeek[i]+'">'+arrayWeek[i]+'</option>');
   }
+
+  console.log(arrayWeek);
+  console.log(arrayPlants);
 }
 
 function setDrawOptions()
 {
+  console.log('OPTIONS',arrayWeek);
+  console.log('OPTIONS',arrayPlants);
+
   if (arrayWeek.length>0 && arrayWeek && arrayPlants.length>0 && arrayPlants)
   {
     var id = new Date().getTime();
