@@ -25,6 +25,7 @@ hideElement("seventhElement");
 hideElement("eigthElement");
 hideElement("nineElement");
 hideElement("tenthElement");
+hideElement("eleventhElement");
 
 
 
@@ -100,7 +101,20 @@ window.onload = function(){
     if (scriptId == null) {
       loadDemoData();
     }
-    console.log(getPAlleteColors(7,15));
+
+    ///----ASSIGN VALUES
+    var dateF = new Date();
+    var dateT = new Date();
+    dateF.setMonth(dateF.getMonth() - 6)
+
+    var dateFrom = dateF.toISOString().substring(0, 10);
+    var dateTo = dateT.toISOString().substring(0, 10);
+
+    $("#date_from").val(dateFrom);
+    $("#date_to").val(dateTo);
+
+
+
     //--Styles
     setSpinner();
     $('#divOptions').show();
@@ -130,6 +144,7 @@ function unHideReportElements(){
     unhideElement("eigthElement");
     unhideElement("nineElement");
     unhideElement("tenthElement");
+    unhideElement("eleventhElement");
     unhideElement("firstElement-Buttons");
 }
 
@@ -228,6 +243,11 @@ function getFirstElement(date_from, date_to){
                 console.log('drawTenthlement.........');
                 drawTenthElement(res.response.json.tenthElement.data[0]);
             }
+            
+            if (res.response.json.eleventhElement.data) {
+                console.log('drawTenthlement.........');
+                drawEleventhElement(res.response.json.eleventhElement.data[0]);
+            }
         }else{
             hideLoading();
             if(res.code == 11){
@@ -314,6 +334,7 @@ function drawFirstElement(data){
 let chart2;
 function drawSecondElement(data){
     //--- Data
+    console.log('SECOND',data)
     var labels = data.map(function(e) {
         return e.nombre +' - ' + e.total.toFixed(2) + '%';
     });
@@ -362,7 +383,6 @@ function drawSecondElement(data){
      
     });
 }
-
 
 let chart3;
 function drawThirdElement(data){
@@ -490,7 +510,6 @@ function drawFourthElement(data){
         },
     });
 }
-
 
 let chart5;
 function drawFivethElement(data){
@@ -767,7 +786,6 @@ function drawNineElement(data){
 
 let chart10;
 function drawTenthElement(data){
-    console.log(data);
     //--- Data
     var labels = data.map(function(e) {
         return e.nombre +' - ' + e.total.toFixed(2) + '%';
@@ -776,7 +794,6 @@ function drawTenthElement(data){
         return e.total;
     });
 
-    console.log(labels)
     //--- Colors
     var array_colors = getPAlleteColors(7,datasets.length);
 
@@ -808,6 +825,58 @@ function drawTenthElement(data){
                 title: {
                     display: true,
                     text: 'Porcentaje X Status',
+                    font: {
+                        size: 25
+                    }
+                },
+            },
+        }
+     
+    });
+}
+
+
+let chart11;
+function drawEleventhElement(data){
+    //--- Data
+    var labels = data.map(function(e) {
+        return e.nombre +' - ' + e.porcentaje.toFixed(2) + '% - ' + e.total.toFixed(2) ;
+    });
+    var datasets = data.map(function(e) {
+        return e.porcentaje;
+    });
+
+    //--- Colors
+    var array_colors = getPAlleteColors(7,datasets.length);
+
+    //---CHART
+    var ctx = document.getElementById('graphicEleventh').getContext('2d');
+    
+    if (chart11) {
+        chart11.destroy();
+    }
+
+    chart11 = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                backgroundColor: array_colors,
+                data: datasets
+            }]
+        },
+       
+        options: {
+            plugins: {
+                tooltip:{
+                    enabled: true,
+                },
+                legend:{
+                    display: true,
+                },
+                title: {
+                    display: true,
+                    text: 'Porcentaje Ganancia Campaña',
                     font: {
                         size: 25
                     }
