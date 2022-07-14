@@ -387,7 +387,7 @@ function minMaxFilterFunction(headerValue, rowValue, rowData, filterParams){
 //---Options PLANTS
 function getDrawPlants(colum, plants)
 {
-  var arrayPlantsQuery = [] 
+  var arrayPlantsQuery = []
 
   for (var i = 4; i < colum.length; i++) {
     arrayWeek.push(colum[i]['title']);
@@ -399,7 +399,7 @@ function getDrawPlants(colum, plants)
   }
 
   arrayPlants = [...new Set(arrayPlantsQuery)]
-  
+
   //----append
   $("#inputPlant1").empty();
   $('#inputPlant1').append('<option>Plant Code</option>');
@@ -550,14 +550,15 @@ function sendOptions()
 
     for (var i = 0; i < numOptions; i++) {
       arrayReturn.push({
-        'plant': arrayPlantsSend[i],
-        'number': arrayNumSend[i],
-        'from': arrayWeekFromSend[i],
-        'to': arrayWeekToSend[i],
+        'plantCode': arrayPlantsSend[i],
+        'qty': arrayNumSend[i],
+        'weekFrom': arrayWeekFromSend[i],
+        'weekTo': arrayWeekToSend[i],
       });
     }
-    console.log(arrayReturn)
-    // getSecondElement(12547, arrayReturn);
+    console.log('array return ', arrayReturn)
+    // getSecondElement(86507, arrayReturn);
+    getSecondElement(86391, arrayReturn);
   }else{
     Swal.fire({
       title: 'Stop',
