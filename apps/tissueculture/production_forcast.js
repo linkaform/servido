@@ -135,6 +135,7 @@ function unHideReportElements(){
 }
 
 function loadDemoData(){
+  $('.title_tables').show();
   getDrawTable('firstElement', columsTable1, dataTable1);
   drawSecondElement(dataSecondElementB);
   unhideElement("title_demo")
