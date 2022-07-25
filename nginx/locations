@@ -51,6 +51,16 @@ location /servicios {
   index index.html;
 }
 
+location /inventory {
+  include /etc/nginx/proxy_params;
+  index index.html;
+}
+
+location /acceso {
+  include /etc/nginx/proxy_params;
+  index index.html;
+}
+
 ######
 ###### locations para dar soporte a clientes especificos
 ######
