@@ -129,6 +129,7 @@ function loadDemoData(){
   getDrawTable('firstElement', columsTable1, dataTable1);
   unhideElement("title_demo");
   setStyleRemove();
+  $('.title_tables').show();
   $("#buttonFilter").show();
 }
 

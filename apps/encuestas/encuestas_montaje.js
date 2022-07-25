@@ -91,14 +91,15 @@ window.onload = function(){
     unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
+    }else{
+      runFirstElement();
     }
-
     //--Styles
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
 
-    runFirstElement();
+    
   } else {
     unhideElement("inicio_ses");
     $('.title_tables').hide();
@@ -131,8 +132,10 @@ function unHideReportElements(){
 
 
 function loadDemoData(){
+
+    console.log('DEMOOOOO');
+
     unhideElement("title_demo")
-    
     $('.title_tables').show();
     document.getElementById("firstElement").style.removeProperty('display');
     document.getElementById("secondElement").style.removeProperty('display');
