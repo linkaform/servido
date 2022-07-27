@@ -13,79 +13,81 @@ const locationParam = urlParms.get('location');
 const loading = document.querySelector('.loading-container');
 
 loading.style.display = 'none';
-
+reset();
 function reset() {
-  code.value = '';
-  image.src = 'https://image.flaticon.com/icons/svg/21/21104.svg';
-  name.textContent = '';
-  company.textContent = '';
-  date.textContent = '';
-  logText.textContent = '';
-  authText.textContent = '';
-  authContainer.classList.remove('unauthorized','autorized');
-  logIcon.classList.remove('fa-sign-in', 'fa-sign-out');
+    code.value = '';
+    //image.src = 'https://image.flaticon.com/icons/svg/21/21104.svg';
+    name.textContent = '';
+    company.textContent = '';
+    date.textContent = '';
+    logText.textContent = '';
+    authText.textContent = '';
+    authContainer.classList.remove('unauthorized','autorized');
+    logIcon.classList.remove('fa-sign-in', 'fa-sign-out');
 }
 
 
 locationText.textContent = capitalize(locationParam);
 
 function onClick() {
-  loading.style.display = 'flex';
-  fetch('https://app.linkaform.com/api/infosync/scripts/run/', {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: 55115,
-      location: locationParam,
-      code: code.value,
-    }),
-    headers:{
-      'Content-Type': 'application/json',
-    },
-  })
-  .then((res) => res.json())
-  .then((res) => {
-    if (res.success) {
-      image.src = res.response.user_pic.file_url;
-      name.textContent = res.response.user_name;
-      company.textContent = res.response.company;
-      date.textContent = res.response.date
+    loading.style.display = 'flex';
+    fetch('https://app.linkaform.com/api/infosync/scripts/run/', {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: 55115,
+            location: locationParam,
+            code: code.value,
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+        },
+    })
+    .then((res) => res.json())
+    .then((res) => {
+        if (res.success) {
 
-      if (res.response.log_type === 'check-in') {
-        logText.textContent = 'Entrada';
-        logIcon.classList.remove('fa-sign-out');
-        logIcon.classList.add('fa-sign-in');
-      } else {
-        logText.textContent = 'Salida';
-        logIcon.classList.remove('fa-sign-in');
-        logIcon.classList.add('fa-sign-out');
-      }
+            console.log(res.response);
+            ////image.src = res.response.user_pic.file_url;
+            name.textContent = res.response.user_name;
+            company.textContent = res.response.company;
+            date.textContent = res.response.date
 
-      if (res.response.status === 'Authorized') {
-        authText.textContent = 'Autorizado';
-        authContainer.classList.remove('unauthorized');
-        authContainer.classList.add('autorized');
-      } else {
-        authText.textContent = 'Desautorizado';
-        authContainer.classList.remove('autorized');
-        authContainer.classList.add('unauthorized');
-      }
+            if (res.response.log_type === 'check-in') {
+                logText.textContent = 'Entrada';
+                logIcon.classList.remove('fa-sign-out');
+                logIcon.classList.add('fa-sign-in');
+            } else {
+                logText.textContent = 'Salida';
+                logIcon.classList.remove('fa-sign-in');
+                logIcon.classList.add('fa-sign-out');
+            }
 
-    }
-  })
-  .finally(() => {
-    loading.style.display = 'none';
-    setTimeout(() => {
-      reset();
-    }, 5000);
-  });
+            if (res.response.status === 'Authorized') {
+                authText.textContent = 'Autorizado';
+                authContainer.classList.remove('unauthorized');
+                authContainer.classList.add('autorized');
+            } else {
+                authText.textContent = 'Desautorizado';
+                authContainer.classList.remove('autorized');
+                authContainer.classList.add('unauthorized');
+            }
+
+        }
+    })
+    .finally(() => {
+        loading.style.display = 'none';
+       /* setTimeout(() => {
+            reset();
+        }, 5000);*/
+    });
 };
 
 function capitalize(string) {
-  if (string) {
-    return string.replace('_', ' ')
-    .split(' ')
-    .map((str) => `${str.charAt(0).toUpperCase()}${str.slice(1)}`)
-    .join(' ');
-  }
-  return '';
+    if (string) {
+        return string.replace('_', ' ')
+        .split(' ')
+        .map((str) => `${str.charAt(0).toUpperCase()}${str.slice(1)}`)
+        .join(' ');
+    }
+    return '';
 };

@@ -6,13 +6,13 @@ var columsTable1 = [
     url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
     target:"_blank",}, width:250},
   { title:"Creado Por", field:'creado',hozAlign:"left",width:250},
-  { title:"Fecha De Creación",  field:'creacion',hozAlign:"left",width:150 },
+  { title:"Fecha de Creación",  field:'creacion',hozAlign:"left",width:150 },
   { title:"Tipo de Servicio",   field:'servicio',hozAlign:"left",width:160 },
-  { title:"Cliente",  field:'cliente',hozAlign:"left",width:350 },
+  { title:"Cliente",  field:'cliente',hozAlign:"left",width:400 },
   { title:"Contacto",  field:'contacto',hozAlign:"left",width:160 },
   { title:"Técnico Asignado",  field:'tecnico',hozAlign:"left",width:250 },
   { title:"Equipo",  field:'equipo',hozAlign:"left",width:160 },
-  { title:"Contacto de uso",field:'contacto_uso',hozAlign:"left",width:160 },
+  { title:"Contacto que lo usa ",field:'contacto_uso',hozAlign:"left",width:160 },
   { title:"Estatus", field:'status',hozAlign:"left",width:160 },
 ];
 

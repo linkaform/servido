@@ -97,14 +97,13 @@ window.onload = function(){
 
 
     ///----ASSIGN VALUES
-    var dateF = new Date();
+    //var dateF = new Date();
     var dateT = new Date();
-    dateF.setMonth(dateF.getMonth() - 6)
-
-    var dateFrom = dateF.toISOString().substring(0, 10);
+    //dateF.setMonth(dateF.getMonth() - 6)
+    //var dateFrom = dateF.toISOString().substring(0, 10);
     var dateTo = dateT.toISOString().substring(0, 10);
-
-    $("#date_from").val(dateFrom);
+    console.log(dateTo);
+    $("#date_from").val('2022-01-01');
     $("#date_to").val(dateTo);
     //--Styles
     setSpinner();
