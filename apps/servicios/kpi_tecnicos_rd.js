@@ -344,6 +344,8 @@ function getDrawTable(id, columnsData, tableData){
     table.download("csv", "data.csv");
   });
 
+
+  
 }
 
 //-----GRAPICHS

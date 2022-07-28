@@ -207,7 +207,13 @@ function getFirstElement(){
         getDrawTable('fivethElement',columsTable1,res.response.json.fivethElement.data);
         document.getElementById("fivethElement").style.removeProperty('display');
       }
-        
+      console.log('===')
+      console.log(res.response.json.sixthElement.data)
+      if (res.response.json.sixthElement.data){
+        getDrawTable('sixthElement',columsTable1,res.response.json.sixthElement.data);
+        document.getElementById("sixthElement").style.removeProperty('display');
+      }
+           
     } else {
       hideLoading();
       if(res.code == 11){

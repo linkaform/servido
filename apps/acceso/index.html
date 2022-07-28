@@ -1,108 +1,99 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Arauco</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="./styles.css">
+    </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>Arauco</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="./styles.css">
-</head>
-
-<body>
-  <nav class="navbar header">
-    <div class="navbar-brand">
-      <img src="https://www.arauco.cl/mexico/wp-content/themes/arauco/assets/img/logo-arauco-blanco.png" height="30" class="d-inline-block align-top" alt="">
-    </div>
-  </nav>
-  <div class="loading-container">
-    <div class="spinner-border text-primary" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-  </div>
-  <div class="container">
-    <div class="app">
-      <div class="row">
-        <div class="title">
-          <h3>Registro de entrada y salida</h3>
-        </div>
-        <div class="control">
-          <input class="form-control ds-input" type="text" id="codigo">
-          <div class="btn btn-primary" onclick="onClick()">Registrar</div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <div class="card" >
-            <img id="user-image" src="https://image.flaticon.com/icons/svg/21/21104.svg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <p class="card-text">
-                <b>Nombre:</b> <span id="name"></span>
-              </p>
-              <p class="card-text">
-                <b>Compañia:</b> <span id="company"></span>
-              </p>
+    <body>
+        <nav class="navbar header">
+            <div class="navbar-brand">
+                <img src="https://www.arauco.cl/mexico/wp-content/themes/arauco/assets/img/logo-arauco-blanco.png" height="30" class="d-inline-block align-top" alt="">
             </div>
-          </div>
+        </nav>
+        <div class="loading-container">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="app">
+                <div class="row">
+                    <div class="title">
+                        <h3>Registro de entrada y salida</h3>
+                    </div>
+                    <div class="control">
+                        <input class="form-control ds-input" type="text" id="codigo">
+                        <div class="btn btn-primary" onclick="onClick()">Registrar</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="card" >
+                            <div class="card-body">
+                                <p class="card-text"><b>Nombre:</b> <span id="name"></span></p>
+                            <p class="card-text">
+                                <b>Compañia:</b> <span id="company"></span>
+                            </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body log-type">
+                            <h3 class="card-title" id="log-text">Salida</h3>
+                                <i class="fa fa-sign-out" id="log-icon" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="card" >
+                            <div class="card-body">
+                                <p class="card-text"><b>Fecha</b></p>
+                                <p class="card-text"><span id="date"></span></p>
+                            </div>
+                        </div>
+                        <div class="card auth-status unauthorized">
+                            <div class="card-body">
+                                <p class="card-text"> Estatus de Registro </p>
+                                <p class="card-text" id="auth-text"> Desautorizado </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card" >
+                            <div class="card-body location-body">
+                                <h4><b>Planta</b></h4>
+                                <p class="card-text" id="location-text"></p>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <b>Proyecto</b>
+                                    <br>
+                                    <span> Proyecto Uno</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Permisos</b>
+                                    <br>
+                                    <span> Permiso Uno</span>
+                                    <br>
+                                    <span> Permiso Dos</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
 
-        <div class="col">
-          <div class="card">
-            <div class="card-body log-type">
-              <h3 class="card-title" id="log-text">Salida</h3>
-              <i class="fa fa-sign-out" id="log-icon" aria-hidden="true"></i>
-            </div>
-          </div>
-          <div class="card" >
-            <div class="card-body">
-              <p class="card-text">
-                <b>Fecha</b>
-              </p>
-              <p class="card-text">
-                <span id="date"></span>
-              </p>
-            </div>
-          </div>
-          <div class="card auth-status unauthorized">
-            <div class="card-body">
-              <p class="card-text"> Estatus de Registro </p>
-              <p class="card-text" id="auth-text"> Desautorizado </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="card" >
-            <div class="card-body location-body">
-              <h4><b>Planta</b></h4>
-              <p class="card-text" id="location-text"></p>
-            </div>
-          </div>
-
-          <div class="card">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                <b>Proyecto</b>
-                <br>
-                <span> Proyecto Uno</span>
-              </li>
-              <li class="list-group-item">
-                <b>Permisos</b>
-                <br>
-                <span> Permiso Uno</span>
-                <br>
-                <span> Permiso Dos</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script
-    src="./script.js">
-  </script>
-</body>
-
+        <script src="./script.js"></script>
+    </body>
 </html>
