@@ -111,7 +111,7 @@ window.onload = function(){
       if (qs[key]){
         $("#close_sesion").hide();
         $("#image_log").hide();
-        
+
       }
     }
   }
@@ -141,18 +141,17 @@ loading.style.display = 'none';
 function runFirstElement(){
   let plant_code = document.getElementById("plant_code");
   let extra_weeks = document.getElementById("extra_weeks");
-  firstElement = getFirstElement( plant_code.value,);
+  firstElement = getFirstElement( plant_code.value,extra_weeks.value);
 };
 
 
-function getFirstElement(plant_code,extra_weeks){
+function getFirstElement(plant_code, extra_weeks){
   //----Hide styles
   $("#divContent").hide();
   $('.load-wrapp').show();
   $('.title_tables').hide();
   //---CLean
   $("#firstElement").html("");
-
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
