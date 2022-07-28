@@ -103,7 +103,7 @@ window.onload = function(){
     //var dateFrom = dateF.toISOString().substring(0, 10);
     var dateTo = dateT.toISOString().substring(0, 10);
     console.log(dateTo);
-    $("#date_from").val('2022-01-01');
+    $("#date_from").val('2022-07-01');
     $("#date_to").val(dateTo);
     //--Styles
     setSpinner();
