@@ -26,7 +26,7 @@ function reset() {
     logIcon.classList.remove('fa-sign-in', 'fa-sign-out');
 }
 
-
+console.log(locationParam)
 locationText.textContent = capitalize(locationParam);
 
 function onClick() {
@@ -46,8 +46,10 @@ function onClick() {
     .then((res) => {
         if (res.success) {
 
-            console.log(res.response);
-            ////image.src = res.response.user_pic.file_url;
+            if (res.response.user_pic){
+                $("#user-image").attr("src", res.response.user_pic.file_url);
+            }
+
             name.textContent = res.response.user_name;
             company.textContent = res.response.company;
             date.textContent = res.response.date

@@ -11,7 +11,7 @@
     <body>
         <nav class="navbar header">
             <div class="navbar-brand">
-                <img src="https://www.arauco.cl/mexico/wp-content/themes/arauco/assets/img/logo-arauco-blanco.png" height="30" class="d-inline-block align-top" alt="">
+                <img src="https://app.linkaform.com/img/login-linkaform-logo.png" height="30" class="d-inline-block align-top" alt="">
             </div>
         </nav>
         <div class="loading-container">
@@ -20,80 +20,92 @@
             </div>
         </div>
         <div class="container">
-            <div class="app">
-                <div class="row">
-                    <div class="title">
-                        <h3>Registro de entrada y salida</h3>
-                    </div>
+            <div class="app row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="title"><h3>Registro de entrada y salida</h3></div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 row m-0">
                     <div class="control">
                         <input class="form-control ds-input" type="text" id="codigo">
                         <div class="btn btn-primary" onclick="onClick()">Registrar</div>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col">
-                        <div class="card" >
-                            <div class="card-body">
-                                <p class="card-text"><b>Nombre:</b> <span id="name"></span></p>
+                <div class="col-sm-4 col-md-4 col-lg-4" >
+                    <div class="card card-heigth border-warning mb-3 " >
+                        <div class="card-body">
+                            <p class="card-text"><b>Nombre:</b> <span id="name"></span></p>
                             <p class="card-text">
                                 <b>Compañia:</b> <span id="company"></span>
                             </p>
-                            </div>
                         </div>
                     </div>
-
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body log-type">
+                    <div class="card border-warning mb-3" >
+                        <div class="card-body" style="height: 250px;margin: auto;">
+                            <p class="card-text"><b>Imagen</b> </p>
+                            <img  id="user-image"  style="max-width:180px" >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4" >
+                    <div class="card card-heigth border-warning mb-3" >
+                        <div class="card-header"> 
+                            <p class="card-text"><b>Tipo De Registro</b></p>
+                        </div>
+                        <div class="card-body log-type"  style="margin: auto;">
                             <h3 class="card-title" id="log-text">Salida</h3>
-                                <i class="fa fa-sign-out" id="log-icon" aria-hidden="true"></i>
-                            </div>
+                            <i class="fa fa-sign-out" id="log-icon" aria-hidden="true"></i>
                         </div>
-                        <div class="card" >
-                            <div class="card-body">
-                                <p class="card-text"><b>Fecha</b></p>
-                                <p class="card-text"><span id="date"></span></p>
-                            </div>
+                    </div>
+                    <div class="card card-heigth border-warning mb-3" >
+                        <div class="card-body">
+                            <p class="card-text"><b>Fecha</b></p>
+                            <p class="card-text"><span id="date"></span></p>
                         </div>
-                        <div class="card auth-status unauthorized">
-                            <div class="card-body">
-                                <p class="card-text"> Estatus de Registro </p>
-                                <p class="card-text" id="auth-text"> Desautorizado </p>
-                            </div>
+                    </div>
+                    <div class="card auth-status unauthorized border-warning mb-3">
+                        <div class="card-body" style="height: 110px;margin: auto;">
+                            <p class="card-text"> <b>Estatus de Registro </b></p>
+                            <p class="card-text" id="auth-text"> Desautorizado </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4" >
+
+                    <div class="card card-heigth border-warning mb-3" >
+                        <div class="card-header"> 
+                            <p class="card-text"><b>Planta</b></p>
+                        </div>
+                        <div class="card-body log-type"  style="margin: auto;">
+                            <p class="card-text" id="location-text"></p>
                         </div>
                     </div>
 
-                    <div class="col">
-                        <div class="card" >
-                            <div class="card-body location-body">
-                                <h4><b>Planta</b></h4>
-                                <p class="card-text" id="location-text"></p>
-                            </div>
-                        </div>
 
-                        <div class="card">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    <b>Proyecto</b>
-                                    <br>
-                                    <span> Proyecto Uno</span>
-                                </li>
-                                <li class="list-group-item">
-                                    <b>Permisos</b>
-                                    <br>
-                                    <span> Permiso Uno</span>
-                                    <br>
-                                    <span> Permiso Dos</span>
-                                </li>
-                            </ul>
-                        </div>
+
+                    <div class="card border-warning mb-3" style="height: 250px;margin: auto;">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <b>Proyecto</b>
+                                <br>
+                                <span> Proyecto Uno</span>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Permisos</b>
+                                <br>
+                                <span> Permiso Uno</span>
+                                <br>
+                                <span> Permiso Dos</span>
+                            </li>
+                        </ul>
                     </div>
-
                 </div>
             </div>
         </div>
-
+        <script
+        src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
         <script src="./script.js"></script>
     </body>
 </html>

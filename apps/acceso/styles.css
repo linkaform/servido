@@ -1,10 +1,10 @@
 body{
   font-family: 'Lato', sans-serif;
-  color: #696158;
+  color: #16102F;
 }
 
 .header{
-  background: #696158;
+  background: #5d768a;
 }
 
 .app{
@@ -82,4 +82,8 @@ body{
   width: 100vw;
   z-index: 1000;
   background: rgba(0,0,0,0.3);
+}
+
+.card-heigth{
+  height: 130px;
 }
