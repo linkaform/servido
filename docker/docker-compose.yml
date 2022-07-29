@@ -16,7 +16,7 @@ services:
     volumes:
      # - ./sites-enabled:/etc/nginx/sites-enabled
      - ./:/docker/
-     - /home/josepato/lkf/custom:/srv/servido/apps/custom
+     - ~/lkf/custom:/srv/servido/apps/custom
      - ../:/srv/servido/
      - ../nginx:/etc/nginx
     build:
