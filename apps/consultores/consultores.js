@@ -162,11 +162,12 @@ function runFirstElement(){
   let date_to = document.getElementById("date_to");  
   let servicio = document.getElementById("servicio");
   let cliente = document.getElementById("cliente");
-  getFirstElement(date_to.value, date_from.value, servicio.value, cliente.value);
+  let tecnico = document.getElementById("tecnico");
+  getFirstElement(date_to.value, date_from.value, servicio.value, cliente.value, tecnico.value);
 };
 
 
-function getFirstElement(dateTo, dateFrom, servicio, cliente){
+function getFirstElement(dateTo, dateFrom, servicio, cliente, tecnico){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -181,6 +182,7 @@ function getFirstElement(dateTo, dateFrom, servicio, cliente){
       date_from: dateFrom,
       servicio: servicio,
       cliente: cliente,
+      tecnico: tecnico,
     }),
     headers:{
       'Content-Type': 'application/json',
