@@ -14,17 +14,17 @@ var columsTable1 = [
   { title:"Cantidad Cajas" , field:'cantidad_cajas', hozAlign:"right", width:100, },
   { title:"Descripción Producto" , field:'producto', hozAlign:"left", width:300, },
   { title:"Cajas Funcionarias" , field:'cajas_funcionaria', hozAlign:"right", width:260, formatter: "money",
-  formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
+  formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Un X Caja" , field:'cajas_unidad', hozAlign:"right", width:100, },
   { title:"Precio por Unidades", field:'precio_unidad',hozAlign:"right",width:100 ,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2} },
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3} },
   { title:"Tipo Promoción" , field:'promocion', hozAlign:"center", width:100, },
   { title:"Total Unidades" , field:'total_unidades', hozAlign:"right", width:200,formatter: "money",
-  formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 2},bottomCalc:"sum", bottomCalcParams:{
-    precision:2,} ,bottomCalcFormatter: "money",bottomCalcFormatterParams:  {decimal: ".",thousand: ",",symbol: ""},},
+  formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 3},bottomCalc:"sum", bottomCalcParams:{
+    precision:3,} ,bottomCalcFormatter: "money",bottomCalcFormatterParams:  {decimal: ".",thousand: ",",symbol: ""},},
   { title:"Total", field:'total',hozAlign:"right",width:200 ,formatter: "money",
-  formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2},bottomCalc:"sum", bottomCalcParams:{
-    precision:2,} ,bottomCalcFormatter: "money",bottomCalcFormatterParams:  {decimal: ".",thousand: ",",symbol: "$"},},
+  formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3},bottomCalc:"sum", bottomCalcParams:{
+    precision:3,} ,bottomCalcFormatter: "money",bottomCalcFormatterParams:  {decimal: ".",thousand: ",",symbol: "$"},},
 ];
 
 
@@ -40,13 +40,13 @@ var columsTable2 = [
   { title:"Cantidad de tiempo en minutos" , field:'cantidad_minutos', hozAlign:"right", width:100, },
   { title:"Minutos / 60 Minutos" , field:'cantidad_horas', hozAlign:"right", width:100, },
   { title:"Precio Unidad", field:'precio_unidad',hozAlign:"right",width:200 ,formatter: "money",
-  formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2} },
+  formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3} },
   { title:"Motivo" ,field:'motivo', hozAlign:"right", width:400, },
   { title:"Pago", field:'pago',hozAlign:"right",width:200 ,formatter: "money",
-  formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2},bottomCalc:"sum", bottomCalcParams:{
-    precision:2,} ,bottomCalcFormatter: "money",bottomCalcFormatterParams:  {decimal: ".",thousand: ",",symbol: "$"}, },
+  formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3},bottomCalc:"sum", bottomCalcParams:{
+    precision:3,} ,bottomCalcFormatter: "money",bottomCalcFormatterParams:  {decimal: ".",thousand: ",",symbol: "$"}, },
   { title:"Total en Horas" ,field:'total_horas', hozAlign:"right", width:150,bottomCalc:"sum", bottomCalcParams:{
-    precision:2,}  },
+    precision:3,}  },
 ];
 
 
