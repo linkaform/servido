@@ -87,7 +87,7 @@ window.onload = function(){
       loadDemoData();
     }
     
-    getCatalog(79041,79039,1,catalogType='select');
+    getCatalog(86374,85937,1,catalogType='custom');
     
     //---HIDE AND SHOW
     setSpinner();

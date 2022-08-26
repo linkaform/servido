@@ -184,7 +184,6 @@ function getFirstElement(){
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.json.firstElement) {
-        console.log('drawFirstElement.........');
         //--The data is same 
         getDrawTable('firstElement', columsTable1,res.response.json.firstElement.data);
         drawSecondElement(res.response.json.firstElement.data);

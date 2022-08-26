@@ -16,8 +16,10 @@ var columsTable1 = [
   { title:"Cajas Funcionarias" , field:'cajas_funcionaria', hozAlign:"right", width:260, formatter: "money",
   formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Un X Caja" , field:'cajas_unidad', hozAlign:"right", width:100, },
-  { title:"Precio por Unidades", field:'precio_unidad',hozAlign:"right",width:100 ,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3} },
+
+  { title:"Precio por Unidades", field:'precio_unidad',hozAlign:"right",width:100 },
+
+
   { title:"Tipo Promoción" , field:'promocion', hozAlign:"center", width:100, },
   { title:"Total Unidades" , field:'total_unidades', hozAlign:"right", width:200,formatter: "money",
   formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 3},bottomCalc:"sum", bottomCalcParams:{
