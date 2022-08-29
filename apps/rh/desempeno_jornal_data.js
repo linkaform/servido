@@ -6,14 +6,14 @@ var columsTable1 = [
   { title:"Tipo Empleado", field:'tipo_empleado', hozAlign:"left", width:300},
   { title:"Empleado" , field:'nombre_empleado', hozAlign:"center", width:260, },
   { title:"Jornal Diario", field:'jornal_diario', hozAlign:"right",width:250,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Codigo Empleado", field:'codigo_empleado', hozAlign:"center",width:200},
   { title:"Sueldo", field:'sueldo_empleado',hozAlign:"right",width:200 ,formatter: "money",
     formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0} },
   { title:"Total Destajo", field:'total_dia',hozAlign:"right",width:200 ,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2} },
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3} },
   { title:"Descuentos", field:'total_descuento',hozAlign:"right",width:200 ,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2} },
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3} },
 ];
 
 //--Table Production
@@ -26,7 +26,7 @@ var columsTable2 = [
   { title:"Tarea", field:'tipo_tarea', hozAlign:"center",width:160},
   { title:"Mesa", field:'mesa', hozAlign:"center",width:160},
   { title:"Precio de Tarea", field:'precio_tarea',hozAlign:"right",width:160, formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}  },
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}  },
   { title:"Unidades x Caja", field:'unidades_caja',hozAlign:"center",width:160},
   { title:"Cantidad en Mesa", field:'people_qty',hozAlign:"center",width:160},
   { title:"Cajas Hora", field:'cajas_hora',hozAlign:"center",width:160},
@@ -88,15 +88,15 @@ var columsTable5 = [
 //--Table TOtal
 var columsTable7 = [
   { title:"Total Jornales", field:'total_jornales', hozAlign:"center", width:170,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Total Destajo", field:'total_destajo', hozAlign:"center",width:170,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Total Complemento" , field:'total_complemento', hozAlign:"center", width:190,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2} },
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3} },
   { title:"Total Compensaciones", field:'total_compensaciones', hozAlign:"center",width:190,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Total Salario", field:'total_salario', hozAlign:"center",width:170,formatter: "money",
-    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 2}},
+    formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
 ];
 
 var columsTable6 = [
