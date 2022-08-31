@@ -52,9 +52,11 @@ ENV FLASK_ENV=development
 ENV FLASK_APP=servido.py
 
 #Downloads and compiles version 20 of uwsgi
-ADD https://projects.unbit.it/downloads/uwsgi-2.0.20.tar.gz /tmp/
-RUN cd /tmp/
-RUN tar zxvf /tmp/uwsgi-2.0.20.tar.gz &&  cd uwsgi-2.0.20 && make && mv uwsgi  /usr/bin/uwsgi-core
+# ADD https://projects.unbit.it/downloads/uwsgi-2.0.20.tar.gz /tmp/
+# RUN cd /tmp/
+# RUN tar zxvf /tmp/uwsgi-2.0.20.tar.gz &&  cd uwsgi-2.0.20 && make && mv uwsgi  /usr/bin/uwsgi-core
+
+RUN pip install uWSGI==2.0.20
 
 RUN mkdir -p /var/uwsgi/app/servido/socket
 RUN chown www-data:www-data -R /var/uwsgi
@@ -82,7 +84,7 @@ RUN apt-get update && \
     vim \
     less
 
-RUN rm /tmp/uwsgi-2.0.20.tar.gz
+# RUN rm /tmp/uwsgi-2.0.20.tar.gz
 
 
 RUN mkdir -p /srv/servido/servido/
