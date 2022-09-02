@@ -1,0 +1,28 @@
+.title_tables h3 {
+  color: black;
+  font: 33px gothambook;
+  margin-top: 30px;
+  text-align: left;
+}
+
+body{
+  font-family: gothambook;
+}
+
+.hrFirstElement {
+  border-top: 1px solid #707b7c;
+  width: 380px;
+  margin-left: 0%;
+}
+
+.hrSecondElement {
+  border-top: 1px solid #707b7c;
+  width: 480px;
+  margin-left: 0%;
+}
+
+.hrThirdElement {
+  border-top: 1px solid #707b7c;
+  width: 600px;
+  margin-left: 0%;
+}
