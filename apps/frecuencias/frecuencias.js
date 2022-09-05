@@ -87,7 +87,7 @@ window.onload = function(){
     userId  = us;
     userJwt = jw;
     userName = getCookie("userName");
-    document.getElementById("firstParameters").style.removeProperty('display');
+    //document.getElementById("firstParameters").style.removeProperty('display');
     unHideReportElements()
 
     if (scriptId == null) {
@@ -99,6 +99,8 @@ window.onload = function(){
     $("#date_from").val('2022-07-01');
     $("#date_to").val(dateTo);
     //--Styles
+    $("#localidades").multipleSelect();
+
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();

@@ -1,27 +1,42 @@
 // Datos demo para Reporte ENcuestas MOntaje
 
-
-//-- Tabla 1 
-
 //-- Tabla 1 
 var columsTable1 = [
   { title:"Localidad", field:'localidad',hozAlign:"left",width:400},
   { title:"Tipo de observación",  field:'observación',hozAlign:"left",width:400 },
-  { title:"Tipo",   field:'tipo',hozAlign:"center",width:200 },
-  { title:"Estado",  field:'estado',hozAlign:"center",width:150 },
+  { title:"Estado",  field:'estado',hozAlign:"center",
+  formatter:function(cell, formatterParams){
+    var value = cell.getValue();
+    if(value == 'Cumple' ){
+      return "<span style='color:#3FB449; font-weight:bold;'>" + value + "</span>";
+    }else{
+      return "<span style='color:#e74c3c; font-weight:bold;'>" + value + "</span>";
+    }
+  },width:150 },
   { title:"Realizados",  field:'realizados',hozAlign:"center",width:150 },
   { title:"Requeridos",  field:'requeridos',hozAlign:"center",width:150 },
 ];
 
 var columsTable2 = [
   { title:"Localidad", field:'observacion',hozAlign:"left",width:350},
-  { title:"Realizados",  field:'realizado',hozAlign:"right",width:150 },
-  { title:"Requeridos",   field:'requeridos',hozAlign:"right",width:160 },
+  { title:"Realizados",field:'realizado',hozAlign:"right",width:150 },
+  { title:"Requeridos",field:'requeridos',hozAlign:"right",
+  formatter:function(cell, formatterParams){
+    var value = cell.getValue();
+    if(value > 0){
+      return "<span style='color:#3FB449; font-weight:bold;'>" + value + "</span>";
+    }else{
+      return value;
+    }
+  },width:160 },
   { title:"Alcance",  field:'alcance',hozAlign:"center",width:130 },
 ];
 
 
+
+
 var columsTable3 = [
+  { title:"Localidad", field:'localidad',hozAlign:"left",width:350},
   { title:"Tipo de checklist", field:'etiqueta',hozAlign:"left",width:350},
   { title:"Sum of REALIZADOS",  field:'realizado',hozAlign:"right",width:200 },
   { title:"Sum of REQUERIDOS",   field:'requeridos',hozAlign:"right",width:200 },
@@ -33,64 +48,56 @@ var dataTable1 = [
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
-    tipo:"Monthly",
-    estado:"A Tiempo",
+    estado:"Cumple",
     realizados:28,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
-    tipo:"Monthly",
-    estado:"A Tiempo",
+    estado:"Cumple",
     realizados:45,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
-    tipo:"Monthly",
-    estado:"Sin Enviar",
+    estado:"No Cumple",
     realizados:45,
     requeridos:30,
   },
   {
     localidad: "Choco ATO SJO", 
     observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
-    tipo:"Monthly",
-    estado:"Sin Enviar",
+    estado:"No Cumple",
     realizados:45,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
-    tipo:"Monthly",
-    estado:"A Tiempo",
+    estado:"Cumple",
     realizados:28,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
-    tipo:"Monthly",
-    estado:"A Tiempo",
+    estado:"Cumple",
     realizados:28,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
-    tipo:"Monthly",
-    estado:"Sin Enviar",
+    estado:"No Cumple",
     realizados:28,
     requeridos:30,
   },
   {
     localidad: "Patio-Bar Imperial ATO SJO", 
     observación:"AB-F-19 CHECK LIST COCINA",
-    tipo:"Monthly",
-    estado:"Sin Enviar",
+    estado:"No Cumple",
     realizados:15,
     requeridos:30,
   }
@@ -151,48 +158,56 @@ var dataTable2 = [
 
 var dataTable3 = [
   {
+    localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-34 Control de Temperaturas Equipos Comedor", 
     realizado:518,
     requeridos:518,
     alcance:100,
   },
   {
+    localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-34 Control de Temperaturas Equipos Comedor", 
     realizado:518,
     requeridos:518,
     alcance:100,
   },
   {
+    localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-08-AM CONTROL DE TEMPERATURAS Y TIEMPOS DE VIDA", 
     realizado:518,
     requeridos:518,
     alcance:100,
   },
   {
+    localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-08-AM CONTROL DE TEMPERATURAS Y TIEMPOS DE VIDA", 
     realizado:518,
     requeridos:518,
     alcance:100,
   },
   {
+    localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-35 Control de Temperaturas Alimentos Comedor", 
     realizado:518,
     requeridos:518,
     alcance:100,
   },
   {
+    localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-37 Check list Operativo Cierre Comedor", 
     realizado:518,
     requeridos:518,
     alcance:100,
   },
   {
+    localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-37 Check list Operativo Cierre Comedor", 
     realizado:518,
     requeridos:518,
     alcance:100,
   },
   {
+    localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-37 Check list Operativo Cierre Comedor", 
     realizado:518,
     requeridos:518,
