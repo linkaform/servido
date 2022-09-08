@@ -1,0 +1,40 @@
+h2 {
+  color: black;
+  font: 33px sans-serif;
+  margin-top: 30px;
+  text-align: left;
+}
+
+.hr_firts_element {
+  border-top: 1px solid #707b7c;
+  width: 450px;
+  margin-left: 0%;
+}
+
+.hr_second_element {
+  border-top: 1px solid #707b7c;
+  width: 300px;
+  margin-left: 0%;
+}
+.hr_third_element {
+  border-top: 1px solid #707b7c;
+  width: 350px;
+  margin-left: 0%;
+}
+
+.hr_fourth_element {
+  border-top: 1px solid #707b7c;
+  width: 200px;
+  margin-left: 0%;
+}
+
+
+.hr_fivethElement_element {
+  border-top: 1px solid #707b7c;
+  width: 150px;
+  margin-left: 0%;
+}
+
+body{
+  font-family: gothambook;
+}

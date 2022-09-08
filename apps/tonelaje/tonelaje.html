@@ -13,7 +13,7 @@
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
       <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
       <link rel="stylesheet" href="../styles/css/styles.css">
-      <link rel="stylesheet" href="style.css">
+      <link rel="stylesheet" href="./style.css">
     </head>
 
     <body>
@@ -102,72 +102,64 @@
                 <!--Content -->
                 <div class="row"  id="divContent" >
                     <div class="col-xl-3 col-lg-12 stretch-card grid-margin">
+
+                        <!-- Text Fecha Inicio -->
+                        <div class="col-sm-12 col-md-12 col-lg-12 mb-3" >
+                            <div class="card border-alipata m-2">
+                                <div class="card-body" style="margin:auto;">
+                                    <center>
+                                        <h4 class="card-title">Fecha y hora inicio</h4>
+                                        <p class="card-text" style="font-size: 35px;" id="textFechaInicio">0000-00-00 00:00:00</p>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <!-- TONELADAS PROCESADAS de ingreso a Proceso  -->
-                        <div  class="col-xl-12 col-md-6 stretch-card grid-margin grid-margin-sm-0 pb-sm-3">
-                            <div class="card " style="background-color: #22242e;">
-                                <div class="card-body px-3 py-4">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div class="color-card">
-                                            <p class="mb-0 color-card-head text-white">Toneladas en proceso</p>
-                                            <h2 class="text-white">
-                                                <span class="h2" id="textToneladasProceso">0</span>
-                                            </h2>
-                                        </div>
-                                        <i class="card-icon-indicator mdi mdi-basket bg-inverse-icon-warning"></i>
-                                    </div>
-                                    <h6 class="text-white">Toneladas procesadas de ingreso a Proceso </h6>
+                        <div class="col-sm-12 col-md-12 col-lg-12 mb-3" >
+                            <div class="card border-alipata m-2">
+                                <div class="card-body" style="margin:auto;">
+                                    <center>
+                                        <h4 class="card-title">Toneladas en proceso</h4>
+                                        <p class="card-text" style="font-size: 45px;" id="textToneladasProceso"> 000</p>
+                                    </center>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Toneladas PROCESADAS en Molienda -->
-                        <div  class="col-xl-12 col-md-6 stretch-card grid-margin grid-margin-sm-0 pb-sm-3">
-                            <div class="card " style="background-color: #22242e;">
-                                <div class="card-body px-3 py-4">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div class="color-card">
-                                            <p class="mb-0 color-card-head text-white">Toneladas en molienda</p>
-                                            <h2 class="text-white">
-                                                <span class="h2" id="textToneladasMolienda">0</span>
-                                            </h2>
-                                        </div>
-                                        <i class="card-icon-indicator mdi mdi-basket bg-inverse-icon-warning"></i>
-                                    </div>
-                                    <h6 class="text-white">Toneladas procesadas en molienda </h6>
+                        <div class="col-sm-12 col-md-12 col-lg-12 mb-3" >
+                            <div class="card border-alipata m-2">
+                                <div class="card-body" style="margin:auto;">
+                                    <center>
+                                        <h4 class="card-title">Toneladas en molienda</h4>
+                                        <p class="card-text" style="font-size: 45px;" id="textToneladasMolienda"> 000 </p>
+                                    </center>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Proceso-->
-                        <div  class="col-xl-12 col-md-6 stretch-card grid-margin grid-margin-sm-0 pb-sm-3">
-                            <div class="card " style="background-color: #22242e;">
-                                <div class="card-body px-3 py-4">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div class="color-card">
-                                            <p class="mb-0 color-card-head text-white">Proceso</p>
-                                            <h2 class="text-white"><span class="h2" id="textProceso">0</span></h2>
-                                        </div>
-                                        <i class="card-icon-indicator mdi mdi-basket bg-inverse-icon-warning"></i>
-                                    </div>
-                                    <h6 class="text-white">Proceso</h6>
+                        <!--Proceso -->
+                        <div class="col-sm-12 col-md-12 col-lg-12 mb-3" >
+                            <div class="card border-alipata m-2">
+                                <div class="card-body" style="margin:auto;">
+                                    <center>
+                                        <h4 class="card-title">Proceso</h4>
+                                        <p class="card-text" style="font-size: 45px;" id="textProceso"></p>
+                                    </center>
                                 </div>
                             </div>
                         </div>
 
                         <!--Peso Faja -->
-                        <div  class="col-xl-12 col-md-6 stretch-card grid-margin grid-margin-sm-0 pb-sm-3">
-                            <div class="card " style="background-color: #22242e;">
-                                <div class="card-body px-3 py-4">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div class="color-card">
-                                            <p class="mb-0 color-card-head text-white">Peso Faja</p>
-                                            <h2 class="text-white">
-                                                <span class="h2" id="textPesoFaja">0</span><span class="h5">Kg</span>
-                                            </h2>
-                                        </div>
-                                        <i class="card-icon-indicator mdi mdi-basket bg-inverse-icon-warning"></i>
-                                    </div>
-                                    <h6 class="text-white">Total Kilogramos</h6>
+                        <div class="col-sm-12 col-md-12 col-lg-12 mb-3" >
+                            <div class="card border-alipata m-2">
+                                <div class="card-body" style="margin:auto;">
+                                    <center>
+                                        <h4 class="card-title">Peso Faja</h4>
+                                        <p class="card-text" style="font-size: 45px;" id="textPesoFaja"></p>
+                                    </center>
                                 </div>
                             </div>
                         </div>
@@ -175,141 +167,26 @@
                     <div class="col-xl-9 stretch-card grid-margin" >
                         <div class="card">
                             <div class="card-body">
-                                <div class="row">
-                                    <!--Fecha Y hora-->
-                                    <div class="col-sm-3">
-                                        <div class="card mb-3 mb-sm-0">
-                                            <div class="card-body py-3 px-4">
-                                                <p class="m-0 survey-head" style="color: #191E26;">Fecha y hora de inicio:</p>
-                                                <div class="d-flex justify-content-between align-items-end flot-bar-wrapper">
-                                                    <div>
-                                                        <h4 class="m-0 survey-value" style="color: #191E26;">2022-08-15 17:15:38</h4>
-                                                        <p class="m-0" style="color: #F28B30;" >Lima/Peru</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <!--SACOS DE CAL USADOS-->
-                                    <div class="col-sm-3">
-                                        <div class="card mb-3 mb-sm-0">
-                                            <div class="card-body py-3 px-4">
-                                                <p class="m-0 survey-head" style="color: #191E26;">SACOS DE CAL USADOS</p>
-                                                <div class="d-flex justify-content-between align-items-end flot-bar-wrapper">
-                                                    <div>
-                                                        <h4 class="m-0 survey-value" style="color: #191E26;" id="textSacosCal">0</h4>
-                                                        <p class="m-0" style="color: #F28B30;" id="textFechaSacosCal">0000-00-00 00:00:00</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--BOLAS de 2.5 USADAS-->
-                                    <div class="col-sm-3">
-                                        <div class="card mb-3 mb-sm-0">
-                                            <div class="card-body py-3 px-4">
-                                                <p class="m-0 survey-head" style="color: #191E26;">BOLAS de 2.5 USADAS</p>
-                                                <div class="d-flex justify-content-between align-items-end flot-bar-wrapper">
-                                                    <div>
-                                                        <h4 class="m-0 survey-value" style="color: #191E26;"  id="textBolas25">0</h4>
-                                                        <p class="m-0" style="color: #F28B30;"  id="textFechaBolas25">0000-00-00 00:00:00</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--BOLAS de 3.5 USADAS-->
-                                    <div class="col-sm-3">
-                                        <div class="card mb-3 mb-sm-0">
-                                            <div class="card-body py-3 px-4">
-                                                <p class="m-0 survey-head" style="color: #191E26;">BOLAS de 3.5 USADAS</p>
-                                                <div class="d-flex justify-content-between align-items-end flot-bar-wrapper">
-                                                    <div>
-                                                        <h4 class="m-0 survey-value" style="color: #191E26;"  id="textBolas35">0</h4>
-                                                        <p class="m-0" style="color: #F28B30;"  id="textFechaBolas35" >0000-00-00 00:00:00</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="row  my-3">
-                                    <!--GRAFICA MALLA -->
-                                    <div class="col-sm-4">
-                                        <div class="card mb-3 mb-sm-0" >
-                                            <div class="card-body py-3 px-4">
-                                                <p class="m-0 survey-head" style="color: #191E26;">Malla</p>
-                                                
-                                                <div class=" justify-content-between align-items-end flot-bar-wrapper">
-                                                    <div style="width: 400px;height: 300px;margin: auto;">
-                                                        <canvas id="graphicMalla" style="width: 400px;height: 300px;"></canvas>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                <!-- VALOR -->
+                                <div class="row mb-3">
                                     <!--CAPACIDAD HORA -->
-                                    <div class="col-sm-4">
-                                        <div class="card mb-3 mb-sm-0" >
+                                    <div class="col-sm-12 col-md-6 col-lg-6 ">
+                                        <div class="card mb-3 mb-sm-0 border-alipata" >
                                             <div class="card-body py-3 px-4">
                                                 <p class="m-0 survey-head" style="color: #191E26;" >Capacidad X Hora</p>
+                                                <center>
+                                                    <ul class="li_nav">
+                                                        <li><div class='box horas_peligroso'></div> Peligroso</li>
+                                                        <li><div class='box horas_lento'></div>Lento</li>
+                                                        <li><div class='box horas_regular'></div>Regular</li>    
+                                                        <li><div class='box horas_bien'></div>Muy Bien</li>
+                                                        <li><div class='box horas_excelente'></div>Excelente</li>  
+                                                    </ul>
+                                                </center>
                                                 <div class="d-flex justify-content-between align-items-end flot-bar-wrapper">
-                                                    <div style="width: 400px;height: 300px;margin: auto;">
-                                                        <canvas id="graphicHora" style="width: 400px;height: 300px;"></canvas>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- NIVEL DE BOLAS  -->
-                                    <div class="col-sm-4">
-                                        <div class="card mb-3 mb-sm-0" >
-                                            <div class="card-body py-3 px-4">
-                                                <p class="m-0 survey-head" style="color: #191E26;">Nivel De Bolas</p>
-                                                
-                                                <div class="d-flex justify-content-between align-items-end flot-bar-wrapper">
-                                                    <div style="width: 400px;height: 300px;margin: auto;">
-                                                        <canvas id="graphicBolas" style="width: 400px;height: 300px;"></canvas>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row  my-3">
-
-                                    <!--GRAFICA PH -->
-                                    <div class="col-sm-4">
-                                        <div class="card mb-3 mb-sm-0" >
-                                            <div class="card-body py-3 px-4">
-                                                <p class="m-0 survey-head" style="color: #191E26;">PH</p>
-                                                
-                                                <div class=" justify-content-between align-items-end flot-bar-wrapper">
-                                                    <div style="width: 400px;height: 300px;margin: auto;">
-                                                        <canvas id="graphicPh" style="width: 400px;height: 300px;"></canvas>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--GRAFICA Densidad -->
-                                    <div class="col-sm-4">
-                                        <div class="card mb-3 mb-sm-0" >
-                                            <div class="card-body py-3 px-4">
-                                                <p class="m-0 survey-head" style="color: #191E26;">Densidad</p>
-                                                
-                                                <div class=" justify-content-between align-items-end flot-bar-wrapper">
-                                                    <div style="width: 400px;height: 300px;margin: auto;">
-                                                        <canvas id="graphicDensidad" style="width: 400px;height: 300px;"></canvas>
+                                                    <div style="width: 250px;height: 250px;margin: auto;">
+                                                        <canvas id="graphicHora" style="width: 250px;height: 250px;"></canvas>
                                                     </div>
                                                 </div>
                                             </div>
@@ -317,21 +194,154 @@
                                     </div>
 
                                     <!--% CAPACIDAD Por Hora -->
-                                     <div class="col-sm-4">
-                                        <div class="card mb-3 mb-sm-0" >
+                                    <div class="col-sm-12 col-md-6 col-lg-6 ">
+                                        <div class="card mb-3 mb-sm-0 border-alipata" >
                                             <div class="card-body py-3 px-4">
                                                 <p class="m-0 survey-head" style="color: #191E26;">% CAPACIDAD POR HORA</p>
-                                                
                                                 <div class=" justify-content-between align-items-end flot-bar-wrapper">
-                                                    <div style="width: 300px;height: 300px;margin: auto;">
-                                                        <canvas id="graphicCapacidad" style="width: 300px;height: 300px;"></canvas>
+                                                    <div style="width: 300px;height: 310px;margin: auto;">
+                                                        <canvas id="graphicCapacidad" style="width: 300px;height: 310px;"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- PH --> 
+                                <div class="row mb-3 ">
+                                    <div class="col-sm-12 col-md-3 col-lg-3 ">
+                                        <div class="card border-alipata">
+                                            <div class="card-body" style="margin:auto;">
+                                                <center>
+                                                    <h4 class="card-title">Sacos de cal Usados</h4>
+                                                    <p class="card-text" style="font-size: 65px;" id="textSacosCal">0</p>
+                                                    <p class="card-text" style="font-size: 20px;" id="textFechaSacosCal">0000-00-00 00:00:00</p>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-9 col-lg-9">
+                                        <div class="card border-alipata">
+                                            <div class="card-body ">
+                                                <p class="m-0 survey-head" style="color: #191E26;">PH</p>
+                                                <div style="overflow-y: scroll;">
+                                                    <div style="width:900px;height:160px;">
+                                                        <canvas id="graphicPh" style="width:900px;height:160px;"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    
+                                <!-- BOLAS -->
+                                <div class="row mb-3">
+                                    <!-- NIVEL DE BOLAS  -->
+                                    <div class="col-sm-12 col-md-6 col-lg-6 mr-1">
+                                        <div class="card mb-3 mb-sm-0 border-alipata" >
+                                            <div class="card-body py-3 px-4">
+                                                <p class="m-0 survey-head" style="color: #191E26;">Nivel De Bolas</p>
+                                                 <center>
+                                                    <ul class="li_nav">
+                                                        <li><div class='box red'></div> Menos De La Mitad</li>
+                                                        <li><div class='box green'></div>Mitad</li>
+                                                        <li><div class='box yellow'></div>Mas De La Mitad</li>  
+                                                        <li><div class='box gray'></div>Nulo</li>  
+                                                    </ul>
+                                                </center>
+                                                <div class="d-flex justify-content-between align-items-end flot-bar-wrapper" style="overflow-y: scroll;">
+                                                    <div style="width: 600px;height: 400px;margin: auto;">
+                                                        <canvas id="graphicBolas" style="width: 600px;height: 400px;"></canvas>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
+                                    <div class="col-sm-12 col-md-6 col-lg-6 row ml-2">
+                                        <div class="col-sm-12 col-md-12 col-lg-12 row border-div mb-1">
+                                            <div class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                                                <div style="width: 135px;height: 135px;margin: auto;">
+                                                    <canvas id="graphicBolas2" style="width: 135px;height: 135px;"></canvas>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-6">
+                                                <div class="card border-none">
+                                                    <div class="card-body" style="margin:auto;">
+                                                        <center>
+                                                            <h4 class="card-title">Bolas 2.5</h4>
+                                                            <p class="card-text" style="font-size: 50px;" id="textBolas25">0</p>
+                                                            <p class="card-text" style="font-size: 20px;" id="textFechaBolas25">0000-00-00 00:00:00</p>
+                                                        </center>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12 col-lg-12 row border-div">
+                                            <div class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                                                <div style="width: 190px;height: 190px;margin: auto;">
+                                                    <canvas id="graphicBolas3" style="width: 190px;height: 190px;"></canvas>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-6">
+                                                <div class="card border-none" >
+                                                    <div class="card-body" style="margin:auto;">
+                                                        <center>
+                                                            <h4 class="card-title">Bolas 3.5</h4>
+                                                            <p class="card-text" style="font-size: 50px;" id="textBolas35">0</p>
+                                                            <p class="card-text" style="font-size: 20px;" id="textFechaBolas25">0000-00-00 00:00:00</p>
+                                                        </center>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                <!-- DENSIDAD -->
+                                <div class="row  mb-3">
+                                    <!--GRAFICA Densidad -->
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <div class="card mb-3 mb-sm-0 border-alipata" >
+                                            <div class="card-body py-3 px-4">
+                                                <p class="m-0 survey-head" style="color: #191E26;">Densidad</p>
+                                                 <center>
+                                                    <ul class="li_nav">
+                                                        <li><div class='box red'></div> Alerta</li>
+                                                        <li><div class='box green'></div>Excelente</li>  
+                                                    </ul>
+                                                </center>
+                                                <div class=" justify-content-between align-items-end flot-bar-wrapper">
+                                                    <div style="width: 250px;height: 250px;margin: auto;">
+                                                        <canvas id="graphicDensidad" style="width: 250px;height: 250px;"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--GRAFICA Malla -->
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <div class="card mb-3 mb-sm-0 border-alipata" >
+                                            <div class="card-body py-3 px-4">
+                                                <p class="m-0 survey-head" style="color: #191E26;">Malla</p>
+                                                <center>
+                                                    <ul class="li_nav">
+                                                        <li><div class='box red'></div> Alerta</li>
+                                                        <li><div class='box green'></div>Excelente</li>  
+                                                    </ul>
+                                                </center>
+                                                <div class=" justify-content-between align-items-end flot-bar-wrapper">
+                                                    <div style="width: 250px;height: 250px;margin: auto;">
+                                                        <canvas id="graphicMalla" style="width: 250px;height: 250px;"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

@@ -87,9 +87,9 @@ window.onload = function(){
       loadDemoData();
     }
     get_catalog_rumas();
-    $("#divContent").hide();
     //---HIDE AND SHOW
     setSpinner();
+    $('#divContent').hide();
     $('#divOptions').show();
     $('#title_report').show();
   } else {
@@ -121,12 +121,18 @@ function unHideReportElements(){
 }
 
 function loadDemoData(){
-  getDrawGraphicFirst('Excelente','#f39c12 ');
-  getDrawGraphicSecond('Excelente','#28b463');
-  getDrawGraphicThird('Baja','#cb4335 ');
-  getDrawGraphicFourth('Alcalino','#6c3483');
-  getDrawGraphicFive('Excelente','#f39c12 ');
-  getDrawGraphicSixth(60)
+
+  getDrawGraphicFirst(dataElement1);
+  getDrawGraphicSecond(dataElement2);
+  getDrawGraphicFourth(dataElement4);
+  getDrawGraphicFive(dataElement5);
+  getDrawGraphicSixth(60);
+
+ 
+  getDrawGraphicBolas2();
+  getDrawGraphicBolas3();
+
+  getDrawGraphicThird(dataElement3);
   
 }
 
@@ -165,6 +171,9 @@ function getFirstElement(ruma){
       $("#divContent").show();
       console.log(res.response.json);
       if (res.response.json.firstElement) {
+        if (res.response.json.firstElement['fecha_inicio'][0]) {
+          $('#textFechaInicio').text(res.response.json.firstElement['fecha_inicio'][0])
+        }
         if (res.response.json.firstElement['peso_faja'][0]) {
           $('#textPesoFaja').text(res.response.json.firstElement['peso_faja'][0])
         }
@@ -183,54 +192,42 @@ function getFirstElement(ruma){
           $('#textSacosCal').text(res.response.json.secondElement['sacos_cal'][0]['valor'])
           $('#textFechaSacosCal').text(res.response.json.secondElement['sacos_cal'][0]['fecha'])
         }  
+        if (res.response.json.secondElement['ph']) {
+          getDrawGraphicFourth(res.response.json.secondElement['ph']);
+        }  
         if (res.response.json.secondElement['bolas_2_5'][0]) {
           $('#textBolas25').text(res.response.json.secondElement['bolas_2_5'][0]['valor'])
           $('#textFechaBolas25').text(res.response.json.secondElement['bolas_2_5'][0]['fecha'])
+          getDrawGraphicBolas2();
         }  
         if (res.response.json.secondElement['bolas_3_5'][0]) {
           $('#textBolas35').text(res.response.json.secondElement['bolas_3_5'][0]['valor'])
           $('#textFechaBolas35').text(res.response.json.secondElement['bolas_3_5'][0]['fecha'])
+          getDrawGraphicBolas3();
         }  
       }
       if (res.response.json.thirdElement) {
 
-        if (res.response.json.thirdElement['malla'][0]) {
-          getDrawGraphicFirst('Excelente','#f39c12', res.response.json.thirdElement['malla'][0]);
+        if (res.response.json.thirdElement['malla']) {
+          getDrawGraphicFirst(res.response.json.thirdElement['malla']);
         }
-        if (res.response.json.thirdElement['capacidad_hora'][0]) {
-          texto = res.response.json.thirdElement['capacidad_hora'][0]['texto'];
-          valor = res.response.json.thirdElement['capacidad_hora'][0]['valor'];
-          color = res.response.json.thirdElement['capacidad_hora'][0]['color'];
-          getDrawGraphicSecond(texto, color, valor);
-        } 
 
-        if (res.response.json.thirdElement['nivel_bolas'][0]) {
-          texto = res.response.json.thirdElement['nivel_bolas'][0]['texto'];
-          valor = res.response.json.thirdElement['nivel_bolas'][0]['valor'];
-          color = res.response.json.thirdElement['nivel_bolas'][0]['color'];
-          getDrawGraphicThird(texto,color,valor);
-        }
-        if (res.response.json.thirdElement['ph'][0]) {
-          texto = res.response.json.thirdElement['ph'][0]['texto'];
-          valor = res.response.json.thirdElement['ph'][0]['valor'];
-          color = res.response.json.thirdElement['ph'][0]['color'];
-          getDrawGraphicFourth(texto,color,valor);
-        }  
-        if (res.response.json.thirdElement['densidad'][0]) {
-
-          texto = res.response.json.thirdElement['densidad'][0]['texto'];
-          valor = res.response.json.thirdElement['densidad'][0]['valor'];
-          color = res.response.json.thirdElement['densidad'][0]['color'];
-          getDrawGraphicFive(texto,color,valor);
+        if (res.response.json.thirdElement['capacidad_hora']) {
+          console.log(res.response.json.thirdElement['capacidad_hora'])
+          getDrawGraphicSecond(res.response.json.thirdElement['capacidad_hora']);
         } 
         if (res.response.json.thirdElement['porcentaje_hora'][0]) {
           valor = res.response.json.thirdElement['porcentaje_hora'][0];
           getDrawGraphicSixth(valor);
         }   
 
+        if (res.response.json.thirdElement['nivel_bolas']) {
+          getDrawGraphicThird(res.response.json.thirdElement['nivel_bolas']);
+        }
 
-
-
+        if (res.response.json.thirdElement['densidad']) {
+          getDrawGraphicFive(res.response.json.thirdElement['densidad']);
+        } 
       }
     } else {
       hideLoading();
@@ -251,36 +248,6 @@ function getFirstElement(ruma){
   })
 };
 
-//-----TABLES
-function getDrawTable(id, columnsData, tableData){
-  $('#'+id).empty();
-  var table = new Tabulator("#" + id, {
-    height:"300px",
-    layout:"fitDataTable",
-    data:tableData,
-    resizableRows:true,
-    clipboard:true,
-    clipboardPasteAction:"replace",
-    textDirection:"ltr",
-    columns:columnsData,
-  });
-
-  //trigger download of data.xlsx file
-  if (document.getElementById("download_xlsx_"+id)){
-    document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
-    document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
-      table.download("xlsx", "data.xlsx", {sheetName:"data"});
-    });
-  }
-
-  //trigger download of data.csv file
-  if (document.getElementById("download_csv_"+id)){
-    document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
-    document.getElementById("download_csv_"+id).addEventListener("click", function (){
-      table.download("csv", "data.csv");
-    });
-  }
-}
 
 //----- CATALOG 
 function get_catalog_rumas(){
@@ -317,35 +284,24 @@ function get_catalog_rumas(){
 
 //-----GRAPICH
 let chart1;
-function getDrawGraphicFirst(text, color, valor = 0){
+function getDrawGraphicFirst(data){
   //---CHART
   var ctx = document.getElementById('graphicMalla').getContext('2d');
   
-
   if (chart1) {
     chart1.destroy();
   }
 
   chart1 = new Chart(ctx, {
-    type: 'bar',
-    data:{
-        labels: ["Total"],
-        datasets: [
-            {
-              label: text,
-              data: [valor],
-              backgroundColor: color,
-              hoverBackgroundColor: color
-            }
-          ]
-      },
-      plugins: [ChartDataLabels],
-      options: setOptions,
+    type: 'pie',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
   });
 }
 
 let chart2;
-function getDrawGraphicSecond(text, color, valor = 0){
+function getDrawGraphicSecond(data){
   //---CHART
   var ctx = document.getElementById('graphicHora').getContext('2d');
   
@@ -354,25 +310,15 @@ function getDrawGraphicSecond(text, color, valor = 0){
   }
 
   chart2 = new Chart(ctx, {
-    type: 'bar',
-    data:{
-        labels: ["Total"],
-        datasets: [
-            {
-              label: text,
-              data: [valor],
-              backgroundColor: color,
-              hoverBackgroundColor: color
-            }
-          ]
-      },
-      plugins: [ChartDataLabels],
-      options: setOptions,
+    type: 'pie',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
   });
 }
 
 let chart3;
-function getDrawGraphicThird(text, color, valor = 0){
+function getDrawGraphicThird(data){
   //---CHART
   var ctx = document.getElementById('graphicBolas').getContext('2d');
   
@@ -382,23 +328,13 @@ function getDrawGraphicThird(text, color, valor = 0){
 
   chart3 = new Chart(ctx, {
     type: 'bar',
-    data:{
-        labels: ["Total"],
-        datasets: [
-            {
-              label: text,
-              data: [valor],
-              backgroundColor: color,
-              hoverBackgroundColor: color
-            }
-          ]
-      },
-      options: setOptionsBolas,
+    data:data,
+    options: setOptionsBolas,
   });
 }
 
 let chart4;
-function getDrawGraphicFourth(text, color, valor = 0){
+function getDrawGraphicFourth(data){
   //---CHART
   var ctx = document.getElementById('graphicPh').getContext('2d');
   
@@ -408,24 +344,14 @@ function getDrawGraphicFourth(text, color, valor = 0){
 
   chart4 = new Chart(ctx, {
     type: 'bar',
-    data:{
-        labels: ["Total"],
-        datasets: [
-            {
-              label: text,
-              data: [valor],
-              backgroundColor: color,
-              hoverBackgroundColor: color
-            }
-          ]
-      },
-      plugins: [ChartDataLabels],
-      options: setOptions,
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptionsPh,
   });
 }
 
 let chart5;
-function getDrawGraphicFive(text, color, valor = 0){
+function getDrawGraphicFive(data){
   //---CHART
   var ctx = document.getElementById('graphicDensidad').getContext('2d');
   
@@ -434,20 +360,10 @@ function getDrawGraphicFive(text, color, valor = 0){
   }
 
   chart5 = new Chart(ctx, {
-    type: 'bar',
-    data:{
-        labels: ["Total"],
-        datasets: [
-            {
-              label: text,
-              data: [valor],
-              backgroundColor: color,
-              hoverBackgroundColor: color
-            }
-          ]
-      },
-      plugins: [ChartDataLabels],
-      options: setOptions,
+    type: 'pie',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
   });
 }
 
@@ -479,5 +395,55 @@ function getDrawGraphicSixth(value){
       },
       plugins: [ChartDataLabels],
       options: setOptionsDounougth,
+  });
+}
+
+let chart7;
+function getDrawGraphicBolas2(){
+  //---CHART
+  var ctx = document.getElementById('graphicBolas2').getContext('2d');
+  
+  if (chart7) {
+    chart7.destroy();
+  }
+  chart7 = new Chart(ctx, {
+    type: 'pie',
+    data:{
+        labels: ['Total'],
+        datasets: [
+            {
+              label: 'Valor',
+              data: [2.5],
+              backgroundColor: ['#17202a'],
+            }
+          ]
+      },
+      plugins: [ChartDataLabels],
+      options: setOptions,
+  });
+}
+
+let chart8;
+function getDrawGraphicBolas3(){
+  //---CHART
+  var ctx = document.getElementById('graphicBolas3').getContext('2d');
+  
+  if (chart8) {
+    chart8.destroy();
+  }
+  chart8 = new Chart(ctx, {
+    type: 'pie',
+    data:{
+        labels: ['Total'],
+        datasets: [
+            {
+              label: 'Valor',
+              data: [3.5],
+              backgroundColor: ['#17202a'],
+            }
+          ]
+      },
+      plugins: [ChartDataLabels],
+      options: setOptions,
   });
 }

@@ -19,3 +19,67 @@ body{
   background-color: "#22242e";
 }
 
+
+.box {
+  margin: auto;
+  height: 20px;
+  width: 20px;
+  border: 1px solid black;
+}
+
+.red {
+  background-color:  #e74c3c;
+}
+
+.green {
+  background-color: #2ecc71;
+}
+
+.yellow {
+  background-color:  #f4d03f ;
+}
+
+.gray {
+  background-color:  #abb2b9 ;
+}
+
+
+.horas_excelente {
+  background-color:  #84C140 ;
+}
+.horas_bien {
+  background-color:  #B7D333 ;
+}
+.horas_regular {
+  background-color:  #F6E501 ;
+}
+.horas_lento {
+  background-color:  #FF7A1B ;
+}
+.horas_peligroso {
+  background-color:  #EF1C25 ;
+}
+
+
+
+
+
+.li_nav li{
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 10px;
+  color: #191E26;
+}
+
+.border-alipata{
+  border-color: #22242e;
+}
+
+.border-none{
+  border-style: none;
+}
+
+.border-div{
+  border: 1px solid black;
+  border-radius: 5px;
+}
