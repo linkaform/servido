@@ -5,6 +5,12 @@ h2 {
   text-align: left;
 }
 
+.hr_firts_element_linkaform {
+  border-top: 1px solid #707b7c;
+  width: 400px;
+  margin-left: 0%;
+}
+
 .hr_firts_element {
   border-top: 1px solid #707b7c;
   width: 450px;
