@@ -122,6 +122,8 @@ var columsTable6 = [
   formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
   { title:"Falta sin Aviso", field:'falta_sin_aviso', hozAlign:"center",width:200,formatter: "money",
   formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+  { title:"Otra", field:'otra', hozAlign:"center",width:200,formatter: "money",
+  formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
 ];
 
 var dataTableTest = [
