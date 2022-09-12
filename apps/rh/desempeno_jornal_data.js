@@ -19,7 +19,7 @@ var columsTable1 = [
 //--Table Production
 var columsTable2 = [
   { title:"Producción", field:'folio', hozAlign:"left", formatter:"link", formatterParams:{
-    url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
+    url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id},
     target:"_blank",},width:120},
   { title:"Descripción Producto", field:'descripcion_producto', hozAlign:"left",width:310},
   { title:"Producto" , field:'tipo_producto', hozAlign:"center", width:160, },
@@ -38,7 +38,7 @@ var columsTable2 = [
 //--Table Incidents
 var columsTable3 = [
   { title:"Folio Incidencias", field:'folio', hozAlign:"left", formatter:"link", formatterParams:{
-    url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
+    url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id},
     target:"_blank",}, width:250},
   { title:"Tipo" , field:'tipo', hozAlign:"center", width:250, },
   { title:"Día desde ", field:'dia_desde', hozAlign:"center",width:170},
@@ -117,6 +117,10 @@ var columsTable6 = [
   { title:"Día por Fallecimiento", field:'fallecimiento', hozAlign:"center",width:230,formatter: "money",
   formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
   { title:"Horas Vacuna Covid", field:'covid', hozAlign:"center",width:200,formatter: "money",
+  formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+  { title:"Falta con Aviso", field:'falta_con_aviso', hozAlign:"center",width:200,formatter: "money",
+  formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+  { title:"Falta sin Aviso", field:'falta_sin_aviso', hozAlign:"center",width:200,formatter: "money",
   formatterParams: {symbol: "$", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
 ];
 

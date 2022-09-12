@@ -56,6 +56,12 @@ location /inventory {
   index index.html;
 }
 
+location /licenses {
+  include /etc/nginx/proxy_params;
+  index index.html;
+}
+
+
 location /acceso {
   include /etc/nginx/proxy_params;
   index index.html;
