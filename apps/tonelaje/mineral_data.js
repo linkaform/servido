@@ -2,11 +2,11 @@
 
 var columsTable1 = [
   { title:"Ruma", field:'ruma',hozAlign:"left",width:200},
-  { title:"Cliente", field:'cliente',hozAlign:"left",width:200},
-  { title:"Toneladas en cancha de Minerales", field:'toneladas_cancha',hozAlign:"right",width:230},
-  { title:"Toneladas en proceso", field:'toneladas_proceso',hozAlign:"right",width:220},
-  { title:"Total", field:'toneladas_total',hozAlign:"right",width:220},
-  { title:"Viajes Diarios",  field:'viajes',hozAlign:"right",width:200 },
+  { title:"Cliente", field:'cliente',hozAlign:"left",width:400},
+  { title:"Toneladas en cancha de Minerales", field:'toneladas_cancha',hozAlign:"right",width:130},
+  { title:"Toneladas en proceso", field:'toneladas_proceso',hozAlign:"right",width:120},
+  { title:"Total", field:'toneladas_total',hozAlign:"right",width:120},
+  { title:"Viajes Diarios",  field:'viajes',hozAlign:"right",width:100 },
 ];
 
 var dataTable1 = [
@@ -182,7 +182,7 @@ var setOptions = {
 			display: true,
 			title:{
 				display: true,
-				text: 'Reporte General',
+				text: 'Toneladas',
 				size: 20,
 			},
 			ticks: {

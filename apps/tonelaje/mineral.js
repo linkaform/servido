@@ -88,18 +88,14 @@ window.onload = function(){
     userJwt = jw;
     userName = getCookie("userName");
     document.getElementById("firstParameters").style.removeProperty('display');
-    unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
     }
-
-    //----
-    get_catalog_rumas();
     //--Styles
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
-
+    $('#divRuma').hide();
   } else {
     unhideElement("inicio_ses");
     $('.title_tables').hide();
@@ -184,19 +180,35 @@ function getFirstElement(ruma, date_from, date_to){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.json.firstElement) {
-        //--The data is same 
+
+      console.log(res.response.json)
+      if (res.response.json.firstElement.data) {
         getDrawTable('firstElement', columsTable1,res.response.json.firstElement.data);
-        drawSecondElement(res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
-        document.getElementById("secondElement").style.removeProperty('display');
       }
       if (res.response.json.secondElement) {
-        console.log('drawSecondElement.........');
-        getDrawTable('thirdElement', columsTable2,res.response.json.secondElement.data);
-        drawFivethElement(res.response.json.secondElement.data);
+        drawSecondElement(res.response.json.secondElement);
+        document.getElementById("secondElement").style.removeProperty('display');
+      }
+      if (res.response.json.thirdElement) {
+        drawThirdElement(res.response.json.thirdElement);
         document.getElementById("thirdElement").style.removeProperty('display');
       }
+      if (res.response.json.fourthElement) {
+        drawFourthElement(res.response.json.fourthElement);
+        document.getElementById("fourthElement").style.removeProperty('display');
+      }
+      if (res.response.json.catalog.data) {
+        $("#ruma").empty();
+        $('#ruma').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < res.response.json.catalog.data.length; i++) {
+          text = 'Ruma ' + res.response.json.catalog.data[i]['62cf337f577dd60f5f7e5ccf'];
+          value = res.response.json.catalog.data[i]['62cf337f577dd60f5f7e5ccf'];
+          $('#ruma').append('<option value="'+ value +'">'+text+'</option>');
+        }
+        $('#divRuma').show();
+      }
+      
     } else {
       hideLoading();
       if(res.code == 11){
@@ -219,7 +231,7 @@ function getFirstElement(ruma, date_from, date_to){
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"auto",
+    height:"300px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -309,7 +321,7 @@ function get_catalog_rumas(){
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 88782,
+      script_id: 89383,
       option: 2,
       ruma: '',
     }),
@@ -322,16 +334,7 @@ function get_catalog_rumas(){
   .then(res => {
     if (res.success) {
       //----SHOW STYLES
-      if (res.response.json.catalog.data) {
-        console.log(res.response.json.catalog.data);
-        $("#ruma").empty();
-        $('#ruma').append('<option value="--">--Seleccione--</option>');
-        for (i = 0; i < res.response.json.catalog.data.length; i++) {
-          text = res.response.json.catalog.data[i]['62d9c7c53521a9920d897464'];
-          value = res.response.json.catalog.data[i]['62cf337f577dd60f5f7e5ccf'];
-          $('#ruma').append('<option value="'+ value +'">'+text+'</option>');
-        }
-      }
+      
     } 
   })
 }
