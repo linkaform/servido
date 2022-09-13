@@ -3,37 +3,20 @@
 //-- Tabla 1 
 var columsTable1 = [
   { title:"Localidad", field:'localidad',hozAlign:"left",width:400},
-  { title:"Tipo de observación",  field:'observación',hozAlign:"left",width:400 },
-  { title:"Estado",  field:'estado',hozAlign:"center",
-  formatter:function(cell, formatterParams){
-    var value = cell.getValue();
-    if(value == 'Cumple' ){
-      return "<span style='color:#3FB449; font-weight:bold;'>" + value + "</span>";
-    }else{
-      return "<span style='color:#e74c3c; font-weight:bold;'>" + value + "</span>";
-    }
-  },width:150 },
+  { title:"Tipo de observación",  field:'nombre',hozAlign:"left",width:600 },
+  { title:"Estado",  field:'estado',hozAlign:"center",formatter:"tickCross", sorter:"boolean", editor:true,width:150 },
   { title:"Realizados",  field:'realizados',hozAlign:"center",width:150 },
   { title:"Requeridos",  field:'requeridos',hozAlign:"center",width:150 },
+  { title:"Progreso", field:"alcance", formatter:"progress", editor:"progress", editorParams:{min:0, max:100,},width:250}
 ];
 
 var columsTable2 = [
-  { title:"Localidad", field:'observacion',hozAlign:"left",width:350},
-  { title:"Realizados",field:'realizado',hozAlign:"right",width:150 },
-  { title:"Requeridos",field:'requeridos',hozAlign:"right",
-  formatter:function(cell, formatterParams){
-    var value = cell.getValue();
-    if(value > 0){
-      return "<span style='color:#3FB449; font-weight:bold;'>" + value + "</span>";
-    }else{
-      return value;
-    }
-  },width:160 },
+  { title:"Localidad", field:'localidad',hozAlign:"left",width:350},
+  { title:"Realizados",field:'realizados',hozAlign:"right",width:150 },
+  { title:"Requeridos",field:'requeridos',hozAlign:"right",width:160 },
   { title:"Alcance",  field:'alcance',hozAlign:"center",width:130 },
+  { title:"Progreso", field:"alcance_progress", formatter:"progress", editor:"progress", editorParams:{min:0, max:100,},width:250}
 ];
-
-
-
 
 var columsTable3 = [
   { title:"Localidad", field:'localidad',hozAlign:"left",width:350},
@@ -48,56 +31,56 @@ var dataTable1 = [
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
-    estado:"Cumple",
+    estado:1,
     realizados:28,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
-    estado:"Cumple",
+    estado:1,
     realizados:45,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
-    estado:"No Cumple",
+    estado:0,
     realizados:45,
     requeridos:30,
   },
   {
     localidad: "Choco ATO SJO", 
     observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
-    estado:"No Cumple",
+    estado:0,
     realizados:45,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
-    estado:"Cumple",
+    estado:1,
     realizados:28,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
-    estado:"Cumple",
+    estado:1,
     realizados:28,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
-    estado:"No Cumple",
+    estado:0,
     realizados:28,
     requeridos:30,
   },
   {
     localidad: "Patio-Bar Imperial ATO SJO", 
     observación:"AB-F-19 CHECK LIST COCINA",
-    estado:"No Cumple",
+    estado:0,
     realizados:15,
     requeridos:30,
   }
@@ -216,8 +199,6 @@ var dataTable3 = [
 ];
 
 
-
-
 var dataFourthElement = {
   labels: ["COMEDOR CORTEZA","Clinica Biblica", "Bakery Multiplaza Escazú", "Bakery Multiplaza del Este", "Bakery Jacó", "Bakery Heredia"],
   datasets: [
@@ -280,7 +261,6 @@ var dataConfigFourth = {
     }
   },
 }
-
 
 var dataConfigFiveth = {
   plugins: {

@@ -79,7 +79,6 @@ window.onload = function(){
   hideElement("close_sesion");
   hideElement("firstParameters");
 
-
   if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
     unhideElement("close_sesion");
@@ -87,8 +86,6 @@ window.onload = function(){
     userId  = us;
     userJwt = jw;
     userName = getCookie("userName");
-    //document.getElementById("firstParameters").style.removeProperty('display');
-    unHideReportElements()
 
     if (scriptId == null) {
       loadDemoData();
@@ -98,17 +95,20 @@ window.onload = function(){
     var dateTo = dateT.toISOString().substring(0, 10);
     $("#date_from").val('2022-07-01');
     $("#date_to").val(dateTo);
+    
     //--Styles
-    $("#localidades").multipleSelect();
-
     setSpinner();
+    $('#divUsuario').hide();
+    $('#divLocalidad').hide();
     $('#divOptions').show();
     $('#title_report').show();
+    
     document.getElementById("firstParameters").style.removeProperty('display');
     
   } else {
     unhideElement("inicio_ses");
     $('#divOptions').hide();
+    $('#divContent').hide();
     $('#title_report').hide();
     $('.title_tables').hide();
     hideElement("firstElement-Buttons");
@@ -138,6 +138,7 @@ function unHideReportElements(){
 
 
 function loadDemoData(){
+  console.log('Entra a demo')
   unhideElement("title_demo")
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
@@ -163,12 +164,14 @@ loading.style.display = 'none';
 
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  getFirstElement(date_to.value, date_from.value, servicio.value, cliente.value, tecnico.value);
+  let date_to = document.getElementById("date_to");    
+  let usuario = document.getElementById("usuario");    
+  let localidades = $('#localidades').val();
+  getFirstElement(date_to.value, date_from.value, localidades, usuario.value);
 };
 
 
-function getFirstElement(dateTo, dateFrom, servicio, cliente, tecnico){
+function getFirstElement(dateTo, dateFrom, localidades, usuario){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -181,9 +184,8 @@ function getFirstElement(dateTo, dateFrom, servicio, cliente, tecnico){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      servicio: servicio,
-      cliente: cliente,
-      tecnico: tecnico,
+      localidades: localidades,
+      usuario: usuario,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -197,15 +199,43 @@ function getFirstElement(dateTo, dateFrom, servicio, cliente, tecnico){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res.response.json);
+      console.log(res.response.json)
       if (res.response.json.firstElement.data) {
-        console.log('drawFirstElement.........');
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+        document.getElementById("firstElement").style.removeProperty('display');
       }
-      if (res.response.json.secondElement) {
-        console.log('drawSecondElement.........');
-        drawSecondElement(res.response.json.secondElement);
+      if (res.response.json.secondElement.data) {
+        getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data);
+        document.getElementById("secondElement").style.removeProperty('display');
       }
+      if (res.response.json.fourthElement) {
+        console.log(res.response.json.fourthElement)
+        drawFourthElement(res.response.json.fourthElement, dataConfigFourth);
+        document.getElementById("fourthElement").style.removeProperty('display');
+      }
+      if (res.response.json.array_filters.localidades) {
+        console.log('Entra a localidades')
+        $("#localidades").empty();
+        $('#localidades').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < res.response.json.array_filters.localidades.length; i++) {
+          text = res.response.json.array_filters.localidades[i];
+          value = res.response.json.array_filters.localidades[i];
+          $('#localidades').append('<option value="'+ value +'">'+text+'</option>');
+          $("#localidades").multipleSelect('refresh');
+        }
+        $('#divLocalidad').show();
+      }
+      if (res.response.json.array_filters.localidades) {
+        $("#usuario").empty();
+        $('#usuario').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < res.response.json.array_filters.usuario.length; i++) {
+          text = res.response.json.array_filters.usuario[i];
+          value = res.response.json.array_filters.usuario[i];
+          $('#usuario').append('<option value="'+ value +'">'+text+'</option>');
+        }
+        $('#divUsuario').show();
+      }
+
     } else {
       hideLoading();
       if(res.code == 11){
