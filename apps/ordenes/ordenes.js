@@ -90,6 +90,7 @@ window.onload = function(){
     }
     //--Styles
     setSpinner();
+    get_filters();
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
@@ -135,10 +136,14 @@ loading.style.display = 'none';
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  getFirstElement(date_to.value, date_from.value);
+  let tecnico = document.getElementById("tecnico");  
+  let cliente = document.getElementById("cliente");  
+  let equipo = document.getElementById("equipo");  
+
+  getFirstElement(date_to.value, date_from.value, tecnico.value, cliente.value, equipo.value);
 };
 
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(dateTo, dateFrom, tecnico, cliente, equipo){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -151,9 +156,10 @@ function getFirstElement(dateTo, dateFrom){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      servicio: servicio,
+      equipo: equipo,
       cliente: cliente,
       tecnico: tecnico,
+      option: 1,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -167,11 +173,11 @@ function getFirstElement(dateTo, dateFrom){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
+      console.log(res.response.json)
       if (res.response.json.firstElement.data) {
-        console.log('drawFirstElement.........');
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+        document.getElementById("firstElement").style.removeProperty('display');
       }
-      
     } else {
       hideLoading();
       if(res.code == 11){
@@ -222,3 +228,53 @@ function getDrawTable(id, columnsData, tableData){
     });
   }
 }
+
+
+//----- CATALOG 
+function get_filters(){
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: 89566,
+      option: 2,
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      //----SHOW STYLES
+      if (res.response.json.array_filters.cliente) {
+        $("#cliente").empty();
+        $('#cliente').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < res.response.json.array_filters.cliente.length; i++) {
+          text  = res.response.json.array_filters.cliente[i];
+          value = res.response.json.array_filters.cliente[i];
+          $('#cliente').append('<option value="'+ value +'">'+text+'</option>');
+        }
+      }
+      if (res.response.json.array_filters.tecnico) {
+        $("#tecnico").empty();
+        $('#tecnico').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < res.response.json.array_filters.tecnico.length; i++) {
+          text  = res.response.json.array_filters.tecnico[i];
+          value = res.response.json.array_filters.tecnico[i];
+          $('#tecnico').append('<option value="'+ value +'">'+text+'</option>');
+        }
+      }
+      if (res.response.json.array_filters.equipo) {
+        $("#equipo").empty();
+        $('#equipo').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < res.response.json.array_filters.equipo.length; i++) {
+          text  = res.response.json.array_filters.equipo[i];
+          value = res.response.json.array_filters.equipo[i];
+          $('#equipo').append('<option value="'+ value +'">'+text+'</option>');
+        }
+      }
+    } 
+  })
+}
+
