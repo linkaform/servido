@@ -145,13 +145,14 @@ function runFirstElement(){
   let email = document.getElementById("email");
   let user_id = document.getElementById("user_id");
   let parent_id = document.getElementById("parent_id");
-  firstElement = getFirstElement(first_name.value, email.value, user_id.value, parent_id.value);
+  let parent_email = document.getElementById("parent_email");
+  firstElement = getFirstElement(first_name.value, email.value, user_id.value, parent_id.value, parent_email.value);
 };
 
 
 
 
-function getFirstElement(first_name, email, user_id, parent_id){
+function getFirstElement(first_name, email, user_id, parent_id, parent_email){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -167,6 +168,7 @@ function getFirstElement(first_name, email, user_id, parent_id){
       email: email,
       user_id: user_id,
       parent_id: parent_id,
+      parent_email:parent_email,
     }),
     headers:{
       'Content-Type': 'application/json',

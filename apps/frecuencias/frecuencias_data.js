@@ -4,17 +4,17 @@
 var columsTable1 = [
   { title:"Localidad", field:'localidad',hozAlign:"left",width:400},
   { title:"Tipo de observación",  field:'nombre',hozAlign:"left",width:600 },
-  { title:"Estado",  field:'estado',hozAlign:"center",formatter:"tickCross", sorter:"boolean", editor:true,width:150 },
+  { title:"Estado",  field:'estado',hozAlign:"center",formatter:"tickCross", sorter:"boolean", editor:true, width:150 },
   { title:"Realizados",  field:'realizados',hozAlign:"center",width:150 },
   { title:"Requeridos",  field:'requeridos',hozAlign:"center",width:150 },
   { title:"Progreso", field:"alcance", formatter:"progress", editor:"progress", editorParams:{min:0, max:100,},width:250}
 ];
 
 var columsTable2 = [
-  { title:"Localidad", field:'localidad',hozAlign:"left",width:350},
+  { title:"Localidad", field:'localidad',hozAlign:"left",width:500},
   { title:"Realizados",field:'realizados',hozAlign:"right",width:150 },
   { title:"Requeridos",field:'requeridos',hozAlign:"right",width:160 },
-  { title:"Alcance",  field:'alcance',hozAlign:"right"formatter: "money",formatterParams: {symbol: "%", symbolAfter: "", decimal: ".", thousand: ",", precision: 3},,width:130 },
+  { title:"Alcance",  field:'alcance',hozAlign:"right",formatter: "money",formatterParams: {symbol: "%", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:130 },
   { title:"Progreso", field:"alcance_progress", formatter:"progress", editor:"progress", editorParams:{min:0, max:100,},width:250}
 ];
 
@@ -22,7 +22,7 @@ var columsTable3 = [
   { title:"Tipo de checklist", field:'nombre',hozAlign:"left",width:500},
   { title:"Realizados",field:'realizados',hozAlign:"right",width:150 },
   { title:"Requeridos",field:'requeridos',hozAlign:"right",width:160 },
-  { title:"Alcance",  field:'alcance',hozAlign:"right",formatter: "money",formatterParams: {symbol: "%", symbolAfter: "", decimal: ".", thousand: ",", precision: 3},width:130 },
+  { title:"Alcance",  field:'alcance',hozAlign:"right",formatter: "money",formatterParams: {symbol: "%", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:130 },
   { title:"Progreso", field:"alcance_progress", formatter:"progress", editor:"progress", editorParams:{min:0, max:100,},width:250}
 ];
 

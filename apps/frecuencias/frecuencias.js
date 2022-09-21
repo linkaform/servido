@@ -218,7 +218,7 @@ function getFirstElement(dateTo, dateFrom, localidades, usuario){
         document.getElementById("fourthElement").style.removeProperty('display');
       }
       if (res.response.json.fivethElement) {
-        drawFivethElement(res.response.json.fivethElement, dataConfigFourth);
+        drawFivethElement(res.response.json.fivethElement, dataConfigFiveth);
         document.getElementById("fivethElement").style.removeProperty('display');
       }
       if (res.response.json.array_filters.localidades) {
