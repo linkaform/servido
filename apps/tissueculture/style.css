@@ -13,3 +13,10 @@ hr {
 body{
   font-family: gothambook;
 }
+
+
+.stock-HrfirstElement {
+  border-top: 1px solid #707b7c;
+  width: 360px;
+  margin-left: 0%;
+}

@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Frecuencias">
+        <meta name="description" content="Forcast by Cicle">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
@@ -12,8 +12,6 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!--Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <!--LIBRARY CHECK -->
-        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -39,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Resumen Mensual Springshot</h1>
+                    <h1 id="title_report">Reporte</h1>
                 </div>
             </div> 
         </nav>
@@ -98,77 +96,19 @@
                         <h5>Fecha Hasta: </h5>
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
-
-                    <div class="col-sm-12 col-md-3 col-lg-3" id="divLocalidad">
-                        <h5>Localidad: </h5>
-                        <select class="form-control mdb-select md-form" id="localidades" multiple="multiple" style="border:none !important;">
-                            <option value="">--Seleccione--</option>
-                        </select>
-                    </div>
-                     <div class="col-sm-12 col-md-3 col-lg-3" id="divUsuario">
-                        <h5>Usuario: </h5>
-                        <select class="form-control" id="usuario" >
-                            <option value="">--Seleccione--</option>
-                        </select>
-                    </div>
                 </div>
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-                    
-
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span>Reporte General:</span>&nbsp;&nbsp;
+                            <h3 ><span>Reporte de Stock </span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
-                            <hr class="hrFirstElement">
+                            <hr class="stock-HrfirstElement">
                         </section>
-                        <div id="firstElement"></div>
-                    </div>
-                    
-                    <!-- FirtsElement -->
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
-                        <section class="title_tables">
-                            <h3 ><span>Reporte por localidad:</span>&nbsp;&nbsp;
-                                <button  class="btn btn-primary" id="download_csv_secondElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button  class="btn btn-success" id="download_xlsx_secondElement"><i class="fa-regular fa-file-excel"></i></button>
-                            </h3>
-                            <hr class="hrSecondElement">
-                        </section>
-                        <div id="secondElement"></div>
-                    </div>
-                    
-                    
-                    <!-- SecondElement -->
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
-                        <section class="title_tables">
-                            <h3 ><span>Reporte por tipo de checklist:</span>&nbsp;&nbsp;
-                                <button  class="btn btn-primary" id="download_csv_thirdElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button  class="btn btn-success" id="download_xlsx_thirdElement"><i class="fa-regular fa-file-excel"></i></button>
-                            </h3>
-                            <hr class="hrThirdElement">
-                        </section>
-                        <div id="thirdElement"></div>
-                    </div>
-
-                    <!-- THirdElement  -->
-                    <div class="col-sm-12 col-md-6 col-lg-6 " style="align-items: center;overflow-y: scroll;">
-                        <div id="fourthElement" > 
-                            <div style="width: 1000px;height: 600px;margin: auto;" > 
-                                <canvas id="graphicFourth"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- FourthElement -->
-                    <div class="col-sm-12 col-md-6 col-lg-6 " style="align-items: center;overflow-y: scroll;">
-                        <div id="fivethElement" > 
-                            <div style="width: 1000px;height: 600px;margin: auto;" > 
-                                <canvas id="graphicFiveth"></canvas>
-                            </div>
-                        </div>
+                        <div id="firstElement" > </div>
                     </div>
                 </div>
             </div>
@@ -187,14 +127,6 @@
     <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
 
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
-    
-
-    <!-- chartjs -->
-    <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Jquery -->
     <script
@@ -202,20 +134,17 @@
     integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
     crossorigin="anonymous"></script>
 
+
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-
-
     <script 
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
     integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" 
     crossorigin="anonymous"></script>
-
     <script 
     src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" 
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
     crossorigin="anonymous"></script>
-
 
     <!-- Utils -->
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
@@ -225,11 +154,7 @@
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./frecuencias.js"></script>
-    <script type="text/javascript" src="./frecuencias_data.js"></script>
-
-
-    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
-    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+    <script type="text/javascript" src="./stock.js"></script>
+    <script type="text/javascript" src="./stock_data.js"></script>
     </body>
 </html>

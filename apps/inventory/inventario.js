@@ -95,14 +95,13 @@ window.onload = function(){
     }else{
       $('.div_card').hide();
       $('.title_tables').hide();
+      runFirstElement();
     }
-
-
     //---HIDE AND SHOW
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
-    runFirstElement();
+    
     document.getElementById("firstParameters").style.removeProperty('display');
 
   } else {
@@ -139,8 +138,19 @@ function unHideReportElements(){
 
 function loadDemoData(){
   unhideElement("title_demo")
-  document.getElementById("firstParameters").style.removeProperty('display');
+  getDrawTable('firstElement',columsTable1,dataTable1);
+  getDrawTable('secondElement',columsTable1,dataTable1);
+  getDrawTable('thirthElement',columsTable1,dataTable1);
+  getDrawTable('fourthElement',columsTable1,dataTable1);
+  getDrawTable('fivethElement',columsTable1,dataTable1);
+  getDrawTable('sixthElement',columsTable1,dataTable1);
+  document.getElementById("firstElement").style.removeProperty('display');
+  document.getElementById("secondElement").style.removeProperty('display');
+  document.getElementById("thirthElement").style.removeProperty('display');
+  document.getElementById("fourthElement").style.removeProperty('display');
   document.getElementById("fivethElement").style.removeProperty('display');
+  document.getElementById("sixthElement").style.removeProperty('display');
+  document.getElementById("firstParameters").style.removeProperty('display');
 }
 
 const loading = document.querySelector('.loading-container');
@@ -238,7 +248,7 @@ function getFirstElement(){
 function getDrawTable(id, columnsData, tableData){
   $('#'+id).empty();
   var table = new Tabulator("#" + id, {
-    height:"600px",
+    height:"400px",
     layout:"fitDataTable",
     //layout:"fitColumns",
     data:tableData,

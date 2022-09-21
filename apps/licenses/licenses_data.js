@@ -19,3 +19,34 @@ var columsTable2 = [
 
 
 
+var dataTable1 = [
+  {
+    codigo: '00001',
+    nombre: 'Cliente 1',
+    mail: 'cliente1@example1.com',
+    cuenta: 'Cuenta 1',
+    posicion: 'Jefe',
+    partnert: 'Examples s',
+    email_partnert: 'BossExample@example1.com',
+  },
+]
+
+
+var dataTable5 = [
+  {
+    nombre: 'Licencias Generales',
+    cuenta: 494,
+  },
+  {
+    nombre: 'Licencias Rh',
+    cuenta: 168,
+  },
+  {
+    nombre: 'Licencias PCI',
+    cuenta: 183,
+  },
+  {
+    nombre: 'Conexiones',
+    cuenta: 237,
+  },
+]

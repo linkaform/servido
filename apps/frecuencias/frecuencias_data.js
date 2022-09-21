@@ -14,72 +14,72 @@ var columsTable2 = [
   { title:"Localidad", field:'localidad',hozAlign:"left",width:350},
   { title:"Realizados",field:'realizados',hozAlign:"right",width:150 },
   { title:"Requeridos",field:'requeridos',hozAlign:"right",width:160 },
-  { title:"Alcance",  field:'alcance',hozAlign:"center",width:130 },
+  { title:"Alcance",  field:'alcance',hozAlign:"right"formatter: "money",formatterParams: {symbol: "%", symbolAfter: "", decimal: ".", thousand: ",", precision: 3},,width:130 },
   { title:"Progreso", field:"alcance_progress", formatter:"progress", editor:"progress", editorParams:{min:0, max:100,},width:250}
 ];
 
 var columsTable3 = [
-  { title:"Localidad", field:'localidad',hozAlign:"left",width:350},
-  { title:"Tipo de checklist", field:'etiqueta',hozAlign:"left",width:350},
-  { title:"Sum of REALIZADOS",  field:'realizado',hozAlign:"right",width:200 },
-  { title:"Sum of REQUERIDOS",   field:'requeridos',hozAlign:"right",width:200 },
-  { title:"Alcance",  field:'alcance',hozAlign:"center",width:130 },
+  { title:"Tipo de checklist", field:'nombre',hozAlign:"left",width:500},
+  { title:"Realizados",field:'realizados',hozAlign:"right",width:150 },
+  { title:"Requeridos",field:'requeridos',hozAlign:"right",width:160 },
+  { title:"Alcance",  field:'alcance',hozAlign:"right",formatter: "money",formatterParams: {symbol: "%", symbolAfter: "", decimal: ".", thousand: ",", precision: 3},width:130 },
+  { title:"Progreso", field:"alcance_progress", formatter:"progress", editor:"progress", editorParams:{min:0, max:100,},width:250}
 ];
 
 
 var dataTable1 = [
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
-    observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
+    nombre:"AB-F-01 CHECK LIST BARRA Y URNAS",
     estado:1,
     realizados:28,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
-    observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
+    nombre:"AB-F-01 CHECK LIST BARRA Y URNAS",
     estado:1,
     realizados:45,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
-    observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
+    nombre:"AB-F-01 CHECK LIST BARRA Y URNAS",
     estado:0,
     realizados:45,
     requeridos:30,
   },
   {
     localidad: "Choco ATO SJO", 
-    observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
+    nombre:"AB-F-01 CHECK LIST BARRA Y URNAS",
     estado:0,
     realizados:45,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
-    observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
+    nombre:"AB-F-01 CHECK LIST BARRA Y URNAS",
     estado:1,
     realizados:28,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
-    observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
+    nombre:"AB-F-01 CHECK LIST BARRA Y URNAS",
     estado:1,
     realizados:28,
     requeridos:30,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
-    observación:"AB-F-01 CHECK LIST BARRA Y URNAS",
+    nombre:"AB-F-01 CHECK LIST BARRA Y URNAS",
     estado:0,
     realizados:28,
     requeridos:30,
   },
   {
     localidad: "Patio-Bar Imperial ATO SJO", 
-    observación:"AB-F-19 CHECK LIST COCINA",
+    nombre:"AB-F-19 CHECK LIST COCINA",
     estado:0,
     realizados:15,
     requeridos:30,
@@ -87,112 +87,112 @@ var dataTable1 = [
 ];
 
 
-var dataTable2 = [
+var dataTable3 = [
   {
-    observacion:"AB-F-01 CHECK LIST BARRA Y URNAS", 
-    realizado:518,
+    nombre:"AB-F-01 CHECK LIST BARRA Y URNAS", 
+    realizados:518,
     requeridos:518,
     alcance:100,
   },
    {
-    observacion:"AB-F-01 CHECK LIST BARRA Y URNAS", 
-    realizado:518,
+    nombre:"AB-F-01 CHECK LIST BARRA Y URNAS", 
+    realizados:518,
     requeridos:518,
     alcance:100,
   },
   {
-    observacion:"AB-F-10-AM CONTROL DE TEMPERATURAS Y TIEMPOS DE VIDA", 
-    realizado:518,
+    nombre:"AB-F-10-AM CONTROL DE TEMPERATURAS Y TIEMPOS DE VIDA", 
+    realizados:518,
     requeridos:518,
     alcance:100,
   },
    {
-    observacion:"AB-F-10-AM CONTROL DE TEMPERATURAS Y TIEMPOS DE VIDA", 
-    realizado:518,
+    nombre:"AB-F-10-AM CONTROL DE TEMPERATURAS Y TIEMPOS DE VIDA", 
+    realizados:518,
     requeridos:518,
     alcance:100,
   },
   {
-    observacion:"AB-F-16B Check List Supervisor-CIERRE", 
-    realizado:518,
+    nombre:"AB-F-16B Check List Supervisor-CIERRE", 
+    realizados:518,
     requeridos:518,
     alcance:100,
   },
    {
-    observacion:"AB-F-32 TRAMPAS DE GRASA (Limpieza y Mantenimiento)", 
-    realizado:518,
+    nombre:"AB-F-32 TRAMPAS DE GRASA (Limpieza y Mantenimiento)", 
+    realizados:518,
     requeridos:518,
     alcance:100,
   },
    {
-    observacion:"AB-F-32 TRAMPAS DE GRASA (Limpieza y Mantenimiento)", 
-    realizado:518,
+    nombre:"AB-F-32 TRAMPAS DE GRASA (Limpieza y Mantenimiento)", 
+    realizados:518,
     requeridos:518,
     alcance:100,
   },
   {
-    observacion:"AB-F-33B BAR IMPERIAL-CIERRE-Check List Operativo FOH ", 
-    realizado:518,
+    nombre:"AB-F-33B BAR IMPERIAL-CIERRE-Check List Operativo FOH ", 
+    realizados:518,
     requeridos:518,
     alcance:100,
   }
 ];
 
 
-var dataTable3 = [
+var dataTable2 = [
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-34 Control de Temperaturas Equipos Comedor", 
-    realizado:518,
+    realizados:518,
     requeridos:518,
     alcance:100,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-34 Control de Temperaturas Equipos Comedor", 
-    realizado:518,
+    realizados:518,
     requeridos:518,
     alcance:100,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-08-AM CONTROL DE TEMPERATURAS Y TIEMPOS DE VIDA", 
-    realizado:518,
+    realizados:518,
     requeridos:518,
     alcance:100,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-08-AM CONTROL DE TEMPERATURAS Y TIEMPOS DE VIDA", 
-    realizado:518,
+    realizados:518,
     requeridos:518,
     alcance:100,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-35 Control de Temperaturas Alimentos Comedor", 
-    realizado:518,
+    realizados:518,
     requeridos:518,
     alcance:100,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-37 Check list Operativo Cierre Comedor", 
-    realizado:518,
+    realizados:518,
     requeridos:518,
     alcance:100,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-37 Check list Operativo Cierre Comedor", 
-    realizado:518,
+    realizados:518,
     requeridos:518,
     alcance:100,
   },
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
     etiqueta:"AE-F-37 Check list Operativo Cierre Comedor", 
-    realizado:518,
+    realizados:518,
     requeridos:518,
     alcance:100,
   }

@@ -19,6 +19,7 @@ hideElement("firstElement");
 hideElement("secondElement");
 hideElement("thirdElement");
 hideElement("fourthElement");
+hideElement("fivethElement");
 
 
 window.onload = function(){
@@ -199,7 +200,7 @@ function getFirstElement(dateTo, dateFrom, localidades, usuario){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res.response.json)
+      console.log('Res = ',res.response.json)
       if (res.response.json.firstElement.data) {
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
@@ -208,31 +209,50 @@ function getFirstElement(dateTo, dateFrom, localidades, usuario){
         getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data);
         document.getElementById("secondElement").style.removeProperty('display');
       }
+      if (res.response.json.thirdElement.data) {
+        getDrawTable('thirdElement', columsTable3, res.response.json.thirdElement.data);
+        document.getElementById("thirdElement").style.removeProperty('display');
+      }
       if (res.response.json.fourthElement) {
-        console.log(res.response.json.fourthElement)
         drawFourthElement(res.response.json.fourthElement, dataConfigFourth);
         document.getElementById("fourthElement").style.removeProperty('display');
       }
+      if (res.response.json.fivethElement) {
+        drawFivethElement(res.response.json.fivethElement, dataConfigFourth);
+        document.getElementById("fivethElement").style.removeProperty('display');
+      }
       if (res.response.json.array_filters.localidades) {
-        console.log('Entra a localidades')
+        localidades = $("#localidades").val()
+        //-----Get Value
         $("#localidades").empty();
         $('#localidades').append('<option value="--">--Seleccione--</option>');
         for (i = 0; i < res.response.json.array_filters.localidades.length; i++) {
           text = res.response.json.array_filters.localidades[i];
           value = res.response.json.array_filters.localidades[i];
           $('#localidades').append('<option value="'+ value +'">'+text+'</option>');
-          //$('#localidades').materialSelect();
-          //$("#localidades").multipleSelect('refresh');
         }
+        //-----Selected Value
+        if (localidades && localidades.length>0){
+          for (i = 0; i <= localidades.length; i++) {
+            $('#localidades option[value=' + localidades[i] + ']').attr('selected','selected');
+          }
+        }
+        //-----Show Value
+        $("#localidades").multipleSelect('refresh');
         $('#divLocalidad').show();
       }
       if (res.response.json.array_filters.localidades) {
+        usuarios = $("#usuario").val()
         $("#usuario").empty();
         $('#usuario').append('<option value="--">--Seleccione--</option>');
         for (i = 0; i < res.response.json.array_filters.usuario.length; i++) {
           text = res.response.json.array_filters.usuario[i];
           value = res.response.json.array_filters.usuario[i];
           $('#usuario').append('<option value="'+ value +'">'+text+'</option>');
+        }
+        //-----Selected Value
+        if (usuarios && usuarios.length>0){
+          $('#usuario option[value= "' + usuarios + '" ]').attr('selected','selected');
         }
         $('#divUsuario').show();
       }

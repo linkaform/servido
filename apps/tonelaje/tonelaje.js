@@ -85,11 +85,12 @@ window.onload = function(){
 
     if (scriptId == null) {
       loadDemoData();
+    }else{ 
+      get_catalog_rumas();
+      $('#divContent').hide();
     }
-    get_catalog_rumas();
     //---HIDE AND SHOW
     setSpinner();
-    $('#divContent').hide();
     $('#divOptions').show();
     $('#title_report').show();
   } else {
