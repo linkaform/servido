@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+    <html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Servido</title>
+        <meta name="title" content="Servido">
+        <meta name="description" content="Forcast by Cicle">
+        <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+        <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
+        <!--Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <!--Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <!--Utils -->        
+        <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
+        <link rel="stylesheet" href="../styles/css/styles.css">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <!-- Header -->
+        <nav class="navbar header">
+            <div class="navbar-brand">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="index.html">
+                            <div class="logo_marca">
+                                <img src="https://app.linkaform.com/img/login-linkaform-logo.png" alt="LinkaForm" id="image_log">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="container">
+                            <div class="back"  id="atras"><i class="fa fa-solid fa-arrow-left"></i>Atras</div>
+                            <div class="close" id="close_sesion"><a onclick="closeSession();"><i class="fa-solid fa-lock"></i>Cerrar Sesión</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <h1 id="title_report">TC Stock Age Report</h1>
+                </div>
+            </div> 
+        </nav>
+        <!-- Loading style -->
+        <div class="loading-container">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Content -->
+        <div style="width:100%">
+            <div class="app" id="appCont" style="padding-top: 0px;">
+                <!--Session -->
+                <div class="row inicio_ses" id="inicio_ses">
+                    <div class="errorLogin" id="errorLog"></div>
+                    <div class="control">
+                        <div class="renglon">
+                            <h3>Usuario: </h3>
+                            <input class="form-control ds-input" id="user" name="user" value="">
+                        </div>
+                        <div class="renglon">
+                            <h3>Contraseña: </h3>
+                            <input class="form-control ds-input" type="password" id="pass" name="pass" value="">
+                        </div>
+                        <div class="controlBtn">
+                        <div class="btn btn-primary" onclick="login()">Login</div>
+                        <div class="btn btn-primary" onclick="reset()">Reset</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Title Demo -->
+                <div id="title_demo" style="margin-bottom: 20px;">
+                    <center>
+                        <h1><span>Demo data</span>&nbsp;&nbsp;</h1>
+                    </center>
+                </div>
+
+
+
+                <!--OPtions FIlter -->
+                <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
+                        <i class="fa-solid fa-filter"></i>
+                    </button >  &nbsp;  &nbsp;
+                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
+                </div>
+
+                <!--Filters -->
+                <div id="firstParameters" class="collapse row show">
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Fecha Desde: </h5>
+                        <input class="form-control ds-input" type="date" id="date_from" name="date_from">
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Fecha Hasta: </h5>
+                        <input class="form-control ds-input" type="date" id="date_to" name="date_to">
+                    </div>
+                </div>
+
+                <!--Content -->
+                <div class="row" style="margin-top:20px;"  id="divContent">
+                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                        <section class="title_tables">
+                            <h3 ><span>Report Stock Age </span>&nbsp;&nbsp;
+                                <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
+                            </h3>
+                            <hr class="stock-HrfirstElement">
+                        </section>
+                        <div id="firstElement" > </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+
+    <!-- TABULATOR -->
+    <!-- tabulator : Excel Downlowd-->
+    <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
+    <!-- tabulator : PDF Downlowd-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
+
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+
+    <!-- Jquery -->
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.js"
+    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script 
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" 
+    crossorigin="anonymous"></script>
+    <script 
+    src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" 
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
+    crossorigin="anonymous"></script>
+
+    <!-- Utils -->
+    <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
+    <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+
+    <script type="text/javascript" src="../utils/lkf_utils.js"></script>
+    <script type="text/javascript" src="../utils/servido_utils.js"></script>
+
+    <!-- Template -->
+    <script type="text/javascript" src="./age.js"></script>
+    <script type="text/javascript" src="./age_data.js"></script>
+    </body>
+</html>
