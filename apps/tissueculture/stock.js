@@ -133,13 +133,12 @@ const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  getFirstElement(date_to.value, date_from.value);
+  let plant_code = document.getElementById("plant_code");
+  getFirstElement(plant_code.value);
 };
 
 //-----PETICION
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(plantCode){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -150,11 +149,7 @@ function getFirstElement(dateTo, dateFrom){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      date_to: dateTo,
-      date_from: dateFrom,
-      servicio: servicio,
-      cliente: cliente,
-      tecnico: tecnico,
+      plantCode: plantCode,
     }),
     headers:{
       'Content-Type': 'application/json',

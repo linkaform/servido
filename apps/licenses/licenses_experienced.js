@@ -146,13 +146,15 @@ function runFirstElement(){
   let user_id = document.getElementById("user_id");
   let parent_id = document.getElementById("parent_id");
   let parent_email = document.getElementById("parent_email");
-  firstElement = getFirstElement(first_name.value, email.value, user_id.value, parent_id.value, parent_email.value);
+  let vigencia = document.getElementById("vigencia");
+  console.log('Vigencia=', vigencia)
+  firstElement = getFirstElement(first_name.value, email.value, user_id.value, parent_id.value, parent_email.value, vigencia.value);
 };
 
 
 
 
-function getFirstElement(first_name, email, user_id, parent_id, parent_email){
+function getFirstElement(first_name, email, user_id, parent_id, parent_email, vigencia){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -169,6 +171,7 @@ function getFirstElement(first_name, email, user_id, parent_id, parent_email){
       user_id: user_id,
       parent_id: parent_id,
       parent_email:parent_email,
+      vigencia:vigencia,
     }),
     headers:{
       'Content-Type': 'application/json',
