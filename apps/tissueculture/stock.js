@@ -149,7 +149,7 @@ function getFirstElement(plantCode){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      plantCode: plantCode,
+      plant_code: plantCode,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -163,9 +163,10 @@ function getFirstElement(plantCode){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.json.firstElement.data) {
+      console.log('Data',res.response);
+      if (res.response.firstElement.tabledata) {
         console.log('drawFirstElement.........');
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+        getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata);
       }
       
     } else {
@@ -190,12 +191,12 @@ function getFirstElement(plantCode){
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"300px",
+    height:"400px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:true,
+    dataTreeStartExpanded:false,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",

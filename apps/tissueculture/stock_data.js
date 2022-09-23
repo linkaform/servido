@@ -4,92 +4,569 @@
 
 var columsTable1 = [
   { title:"Plant Code", field:'plant_code',hozAlign:"left",width:250},
-  { title:"NextCut Week", field:'next_week',hozAlign:"left",width:250},
-  { title:"Stage 2", field:'stage',hozAlign:"left",width:250},
-  {title:"Stage 3", hozAlign:"center",
+  { title:"Cut Week", field:'cut_week',hozAlign:"left",width:250},
+  {title:"Stage 2", hozAlign:"center",
     columns:[
-      {title:"Example", field:'example',hozAlign:"left",width:250},
-      {title:"Actuals", field:'actuals',hozAlign:"left",width:250},
+      {title:"Stage Actuals", field:'stage_2_actuals',hozAlign:"left",width:250},
+      {title:"Stage Required", field:'stage_2_required',hozAlign:"left",width:250},
+      {title:"Stage Difference", field:'stage_2_actuals_diff',hozAlign:"left",width:250},
     ]
   },
-  { title:"Requireds – cycle", field:'required',hozAlign:"left",width:250},
-  { title:"Total", field:'total',hozAlign:"left",width:250},
+  {title:"Stage 3", hozAlign:"center",
+    columns:[
+      {title:"Stage Actuals", field:'stage_3_actuals',hozAlign:"left",width:250},
+      {title:"Stage Required", field:'stage_3_required',hozAlign:"left",width:250},
+      {title:"Stage Difference", field:'stage_3_actuals_diff',hozAlign:"left",width:250},
+    ]
+  },
 ];
 
 var dataTable1 = [
   {
-    plant_code: "LNAFP",
-    next_week:  "",
-    stage:  "212,352",
-    example:"",
-    actuals:"85,850",
-    required:"2,167",
-    total:"",
-    _children:[
-    {
-      plant_code: "",
-      next_week:  "202248",
-      stage:  "",
-      example:"",
-      actuals:"9,990",
-      required:"2,167",
-      total:"",
-    },
-    {
-      plant_code: "",
-      next_week:  "202248",
-      stage:  "",
-      example:"",
-      actuals:"9,990",
-      required:"2,167",
-      total:"",
-    },
-    {
-      plant_code: "",
-      next_week:  "202248",
-      stage:  "",
-      example:"",
-      actuals:"9,990",
-      required:"2,167",
-      total:"",
-    },
-    {
-      plant_code: "",
-      next_week:  "202248",
-      stage:  "",
-      example:"",
-      actuals:"1,920",
-      required:"2,167",
-      total:"",
-    },
-    {
-      plant_code: "",
-      next_week:  "202248",
-      stage:  "",
-      example:"",
-      actuals:"29,340",
-      required:"2,167",
-      total:"",
-    },
-    {
-      plant_code: "",
-      next_week:  "202248",
-      stage:  "",
-      example:"",
-      actuals:"29,340",
-      required:"2,167",
-      total:"",
-    },
-    {
-      plant_code: "",
-      next_week:  "202248",
-      stage:  "",
-      example:"",
-      actuals:"79,305",
-      required:"94,216",
-      total:"14911",
-    },
-  ]},
-  
+    plant_code: 'AAAA',
+    stage_3_required: 26044,
+    stage_2_required: 26044,
+    stage_3_actuals_diff: 26044,
+    stage_2_actuals: 6047,
+    stage_3_actuals: 6047,
+    stage_2_actuals_diff: 50000,
+    _children: [
+      {
+          stage_2_diference: -911,
+          stage_3_required: 911,
+          cut_week: 202238,
+          stage_3_diference: -911,
+          stage_2_required: 911
+      },
+      {
+          stage_3_actuals: 2700,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -2949,
+          stage_3_diference: -549,
+          stage_2_actuals: 300,
+          cut_week: 202237
+      },
+      {
+          stage_2_diference: -3249,
+          stage_3_required: 3249,
+          cut_week: 202236,
+          stage_3_diference: -3249,
+          stage_2_required: 3249
+      },
+      {
+          stage_3_actuals: 108,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -3249,
+          stage_3_diference: -3141,
+          cut_week: 202235
+      },
+    ],
+  },
+  {
+    plant_code: 'AAAA',
+    stage_3_required: 26044,
+    stage_2_required: 26044,
+    stage_3_actuals_diff: 26044,
+    stage_2_actuals: 6047,
+    stage_3_actuals: 6047,
+    stage_2_actuals_diff: 50000,
+    _children: [
+      {
+          stage_2_diference: -911,
+          stage_3_required: 911,
+          cut_week: 202238,
+          stage_3_diference: -911,
+          stage_2_required: 911
+      },
+      {
+          stage_3_actuals: 2700,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -2949,
+          stage_3_diference: -549,
+          stage_2_actuals: 300,
+          cut_week: 202237
+      },
+      {
+          stage_2_diference: -3249,
+          stage_3_required: 3249,
+          cut_week: 202236,
+          stage_3_diference: -3249,
+          stage_2_required: 3249
+      },
+      {
+          stage_3_actuals: 108,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -3249,
+          stage_3_diference: -3141,
+          cut_week: 202235
+      },
+    ],
+  },
+  {
+    plant_code: 'AAAA',
+    stage_3_required: 26044,
+    stage_2_required: 26044,
+    stage_3_actuals_diff: 26044,
+    stage_2_actuals: 6047,
+    stage_3_actuals: 6047,
+    stage_2_actuals_diff: 50000,
+    _children: [
+      {
+          stage_2_diference: -911,
+          stage_3_required: 911,
+          cut_week: 202238,
+          stage_3_diference: -911,
+          stage_2_required: 911
+      },
+      {
+          stage_3_actuals: 2700,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -2949,
+          stage_3_diference: -549,
+          stage_2_actuals: 300,
+          cut_week: 202237
+      },
+      {
+          stage_2_diference: -3249,
+          stage_3_required: 3249,
+          cut_week: 202236,
+          stage_3_diference: -3249,
+          stage_2_required: 3249
+      },
+      {
+          stage_3_actuals: 108,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -3249,
+          stage_3_diference: -3141,
+          cut_week: 202235
+      },
+    ],
+  },
+  {
+    plant_code: 'AAAA',
+    stage_3_required: 26044,
+    stage_2_required: 26044,
+    stage_3_actuals_diff: 26044,
+    stage_2_actuals: 6047,
+    stage_3_actuals: 6047,
+    stage_2_actuals_diff: 50000,
+    _children: [
+      {
+          stage_2_diference: -911,
+          stage_3_required: 911,
+          cut_week: 202238,
+          stage_3_diference: -911,
+          stage_2_required: 911
+      },
+      {
+          stage_3_actuals: 2700,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -2949,
+          stage_3_diference: -549,
+          stage_2_actuals: 300,
+          cut_week: 202237
+      },
+      {
+          stage_2_diference: -3249,
+          stage_3_required: 3249,
+          cut_week: 202236,
+          stage_3_diference: -3249,
+          stage_2_required: 3249
+      },
+      {
+          stage_3_actuals: 108,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -3249,
+          stage_3_diference: -3141,
+          cut_week: 202235
+      },
+    ],
+  },
+  {
+    plant_code: 'AAAA',
+    stage_3_required: 26044,
+    stage_2_required: 26044,
+    stage_3_actuals_diff: 26044,
+    stage_2_actuals: 6047,
+    stage_3_actuals: 6047,
+    stage_2_actuals_diff: 50000,
+    _children: [
+      {
+          stage_2_diference: -911,
+          stage_3_required: 911,
+          cut_week: 202238,
+          stage_3_diference: -911,
+          stage_2_required: 911
+      },
+      {
+          stage_3_actuals: 2700,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -2949,
+          stage_3_diference: -549,
+          stage_2_actuals: 300,
+          cut_week: 202237
+      },
+      {
+          stage_2_diference: -3249,
+          stage_3_required: 3249,
+          cut_week: 202236,
+          stage_3_diference: -3249,
+          stage_2_required: 3249
+      },
+      {
+          stage_3_actuals: 108,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -3249,
+          stage_3_diference: -3141,
+          cut_week: 202235
+      },
+    ],
+  },
+  {
+    plant_code: 'AAAA',
+    stage_3_required: 26044,
+    stage_2_required: 26044,
+    stage_3_actuals_diff: 26044,
+    stage_2_actuals: 6047,
+    stage_3_actuals: 6047,
+    stage_2_actuals_diff: 50000,
+    _children: [
+      {
+          stage_2_diference: -911,
+          stage_3_required: 911,
+          cut_week: 202238,
+          stage_3_diference: -911,
+          stage_2_required: 911
+      },
+      {
+          stage_3_actuals: 2700,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -2949,
+          stage_3_diference: -549,
+          stage_2_actuals: 300,
+          cut_week: 202237
+      },
+      {
+          stage_2_diference: -3249,
+          stage_3_required: 3249,
+          cut_week: 202236,
+          stage_3_diference: -3249,
+          stage_2_required: 3249
+      },
+      {
+          stage_3_actuals: 108,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -3249,
+          stage_3_diference: -3141,
+          cut_week: 202235
+      },
+    ],
+  },
+  {
+    plant_code: 'AAAA',
+    stage_3_required: 26044,
+    stage_2_required: 26044,
+    stage_3_actuals_diff: 26044,
+    stage_2_actuals: 6047,
+    stage_3_actuals: 6047,
+    stage_2_actuals_diff: 50000,
+    _children: [
+      {
+          stage_2_diference: -911,
+          stage_3_required: 911,
+          cut_week: 202238,
+          stage_3_diference: -911,
+          stage_2_required: 911
+      },
+      {
+          stage_3_actuals: 2700,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -2949,
+          stage_3_diference: -549,
+          stage_2_actuals: 300,
+          cut_week: 202237
+      },
+      {
+          stage_2_diference: -3249,
+          stage_3_required: 3249,
+          cut_week: 202236,
+          stage_3_diference: -3249,
+          stage_2_required: 3249
+      },
+      {
+          stage_3_actuals: 108,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -3249,
+          stage_3_diference: -3141,
+          cut_week: 202235
+      },
+    ],
+  },
+  {
+    plant_code: 'AAAA',
+    stage_3_required: 26044,
+    stage_2_required: 26044,
+    stage_3_actuals_diff: 26044,
+    stage_2_actuals: 6047,
+    stage_3_actuals: 6047,
+    stage_2_actuals_diff: 50000,
+    _children: [
+      {
+          stage_2_diference: -911,
+          stage_3_required: 911,
+          cut_week: 202238,
+          stage_3_diference: -911,
+          stage_2_required: 911
+      },
+      {
+          stage_3_actuals: 2700,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -2949,
+          stage_3_diference: -549,
+          stage_2_actuals: 300,
+          cut_week: 202237
+      },
+      {
+          stage_2_diference: -3249,
+          stage_3_required: 3249,
+          cut_week: 202236,
+          stage_3_diference: -3249,
+          stage_2_required: 3249
+      },
+      {
+          stage_3_actuals: 108,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -3249,
+          stage_3_diference: -3141,
+          cut_week: 202235
+      },
+    ],
+  },
+  {
+    plant_code: 'AAAA',
+    stage_3_required: 26044,
+    stage_2_required: 26044,
+    stage_3_actuals_diff: 26044,
+    stage_2_actuals: 6047,
+    stage_3_actuals: 6047,
+    stage_2_actuals_diff: 50000,
+    _children: [
+      {
+          stage_2_diference: -911,
+          stage_3_required: 911,
+          cut_week: 202238,
+          stage_3_diference: -911,
+          stage_2_required: 911
+      },
+      {
+          stage_3_actuals: 2700,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -2949,
+          stage_3_diference: -549,
+          stage_2_actuals: 300,
+          cut_week: 202237
+      },
+      {
+          stage_2_diference: -3249,
+          stage_3_required: 3249,
+          cut_week: 202236,
+          stage_3_diference: -3249,
+          stage_2_required: 3249
+      },
+      {
+          stage_3_actuals: 108,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -3249,
+          stage_3_diference: -3141,
+          cut_week: 202235
+      },
+    ],
+  },
+  {
+    plant_code: 'AAAA',
+    stage_3_required: 26044,
+    stage_2_required: 26044,
+    stage_3_actuals_diff: 26044,
+    stage_2_actuals: 6047,
+    stage_3_actuals: 6047,
+    stage_2_actuals_diff: 50000,
+    _children: [
+      {
+          stage_2_diference: -911,
+          stage_3_required: 911,
+          cut_week: 202238,
+          stage_3_diference: -911,
+          stage_2_required: 911
+      },
+      {
+          stage_3_actuals: 2700,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -2949,
+          stage_3_diference: -549,
+          stage_2_actuals: 300,
+          cut_week: 202237
+      },
+      {
+          stage_2_diference: -3249,
+          stage_3_required: 3249,
+          cut_week: 202236,
+          stage_3_diference: -3249,
+          stage_2_required: 3249
+      },
+      {
+          stage_3_actuals: 108,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -3249,
+          stage_3_diference: -3141,
+          cut_week: 202235
+      },
+    ],
+  },
+  {
+    plant_code: 'AAAA',
+    stage_3_required: 26044,
+    stage_2_required: 26044,
+    stage_3_actuals_diff: 26044,
+    stage_2_actuals: 6047,
+    stage_3_actuals: 6047,
+    stage_2_actuals_diff: 50000,
+    _children: [
+      {
+          stage_2_diference: -911,
+          stage_3_required: 911,
+          cut_week: 202238,
+          stage_3_diference: -911,
+          stage_2_required: 911
+      },
+      {
+          stage_3_actuals: 2700,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -2949,
+          stage_3_diference: -549,
+          stage_2_actuals: 300,
+          cut_week: 202237
+      },
+      {
+          stage_2_diference: -3249,
+          stage_3_required: 3249,
+          cut_week: 202236,
+          stage_3_diference: -3249,
+          stage_2_required: 3249
+      },
+      {
+          stage_3_actuals: 108,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -3249,
+          stage_3_diference: -3141,
+          cut_week: 202235
+      },
+    ],
+  },
+  {
+    plant_code: 'AAAA',
+    stage_3_required: 26044,
+    stage_2_required: 26044,
+    stage_3_actuals_diff: 26044,
+    stage_2_actuals: 6047,
+    stage_3_actuals: 6047,
+    stage_2_actuals_diff: 50000,
+    _children: [
+      {
+          stage_2_diference: -911,
+          stage_3_required: 911,
+          cut_week: 202238,
+          stage_3_diference: -911,
+          stage_2_required: 911
+      },
+      {
+          stage_3_actuals: 2700,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -2949,
+          stage_3_diference: -549,
+          stage_2_actuals: 300,
+          cut_week: 202237
+      },
+      {
+          stage_2_diference: -3249,
+          stage_3_required: 3249,
+          cut_week: 202236,
+          stage_3_diference: -3249,
+          stage_2_required: 3249
+      },
+      {
+          stage_3_actuals: 108,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -3249,
+          stage_3_diference: -3141,
+          cut_week: 202235
+      },
+    ],
+  },
+  {
+    plant_code: 'AAAA',
+    stage_3_required: 26044,
+    stage_2_required: 26044,
+    stage_3_actuals_diff: 26044,
+    stage_2_actuals: 6047,
+    stage_3_actuals: 6047,
+    stage_2_actuals_diff: 50000,
+    _children: [
+      {
+          stage_2_diference: -911,
+          stage_3_required: 911,
+          cut_week: 202238,
+          stage_3_diference: -911,
+          stage_2_required: 911
+      },
+      {
+          stage_3_actuals: 2700,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -2949,
+          stage_3_diference: -549,
+          stage_2_actuals: 300,
+          cut_week: 202237
+      },
+      {
+          stage_2_diference: -3249,
+          stage_3_required: 3249,
+          cut_week: 202236,
+          stage_3_diference: -3249,
+          stage_2_required: 3249
+      },
+      {
+          stage_3_actuals: 108,
+          stage_3_required: 3249,
+          stage_2_required: 3249,
+          stage_2_diference: -3249,
+          stage_3_diference: -3141,
+          cut_week: 202235
+      },
+    ],
+  },
 ];
 
