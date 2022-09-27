@@ -167,8 +167,7 @@ function getFirstElement(plantCode){
       if (res.response.firstElement.tabledata) {
         console.log('drawFirstElement.........');
         getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata);
-      }
-      
+      }  
     } else {
       hideLoading();
       if(res.code == 11){
