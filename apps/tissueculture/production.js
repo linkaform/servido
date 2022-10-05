@@ -13,9 +13,16 @@ let scriptId = null;
 $('#divOptions').hide();
 $('#title_report').hide();
 $('.title_tables').hide();
+$('.div_card').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
+hideElement("secondElement");
+hideElement("thirdElement");
+hideElement("fourthElement");
+hideElement("fivethElement");
+hideElement("sixthElement");
+hideElement("seventhElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -88,6 +95,14 @@ window.onload = function(){
     if (scriptId == null) {
       loadDemoData();
     }
+    //----Dates Assing
+    date = new Date();
+    primerDia = new Date(date.getFullYear(), date.getMonth(), 1);
+    ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    $("#date_from").val(primerDia.toISOString().substring(0, 10));
+    $("#date_to").val(ultimoDia.toISOString().substring(0, 10));
+
+
     //--Styles
     setSpinner();
     $('#divOptions').show();
@@ -118,15 +133,29 @@ function unHideReportElements(){
   unhideElement("firstElement-Buttons");
   unhideElement("firstParameters");
   unhideElement("close_sesion");
-  unhideElement("firstElement");
 }
 
 function loadDemoData(){
   unhideElement("title_demo")
   $('.title_tables').show();
-  getDrawTable('firstElement', columsTable1, dataTable1);
+
+  getDrawGraphicFirst(dataElement, setOptions1)
+  getDrawGraphicSecond(dataElement, setOptions2)
+  getDrawGraphicThird(dataElement, setOptions3)
+  getDrawGraphicFourth(dataElement, setOptions4)
+  getDrawGraphicFiveth(dataElement2, setOptions5)
+
+  getDrawTable('sixthElement', columsTable1, dataTable1);
+  getDrawTable('seventhElement', columsTable2, dataTable2);
+  $('.div_card').show();
   document.getElementById("firstParameters").style.removeProperty('display');
   document.getElementById("firstElement").style.removeProperty('display');
+  document.getElementById("secondElement").style.removeProperty('display');
+  document.getElementById("thirdElement").style.removeProperty('display');
+  document.getElementById("fourthElement").style.removeProperty('display');
+  document.getElementById("fivethElement").style.removeProperty('display');
+  document.getElementById("sixthElement").style.removeProperty('display');
+  document.getElementById("seventhElement").style.removeProperty('display');
 }
 
 const loading = document.querySelector('.loading-container');
@@ -135,11 +164,13 @@ loading.style.display = 'none';
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  getFirstElement(date_to.value, date_from.value);
+  let plant_code = document.getElementById("plant_code");  
+  let stage = document.getElementById("stage");  
+  getFirstElement(date_to.value, date_from.value, plant_code.value, stage.value);
 };
 
 //-----PETICION
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(dateTo, dateFrom, plantCode, stage){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -152,9 +183,8 @@ function getFirstElement(dateTo, dateFrom){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      servicio: servicio,
-      cliente: cliente,
-      tecnico: tecnico,
+      plant_code: plantCode,
+      stage: stage,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -168,11 +198,68 @@ function getFirstElement(dateTo, dateFrom){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.json.firstElement.data) {
-        console.log('drawFirstElement.........');
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+      console.log('Valores')
+      console.log(res.response)
+      if (res.response.firstElement.tabledata) {
+        $('#textAlert1').text(res.response.firstElement.tabledata.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
       }
-      
+      if (res.response.secondElement.tabledata) {
+        $('#textAlert2').text(res.response.secondElement.tabledata.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+      }
+      if (res.response.thirdElement.tabledata) {
+        $('#textAlert3').text(res.response.thirdElement.tabledata.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+      }
+      if (res.response.firstElement.tabledata && res.response.secondElement.tabledata) {
+        percentage = (res.response.firstElement.tabledata/res.response.secondElement.tabledata)
+        percentage = (percentage *100)
+
+        var data = [
+          {
+            domain: { x: [0, 1], y: [0, 1] },
+            value: percentage,
+            title: { text: "Percentage %" },
+            type: "indicator",
+            mode: "gauge+number"
+          }
+        ];
+
+        var layout = { width: 400, height: 220, margin: { t: 0 , b: 0 } };
+        Plotly.newPlot('GaugeTest', data, layout);
+
+      }
+
+
+
+      if (res.response.fourthElement.tabledata) {
+        dataElementFormat = getFormatterFirst(res.response.fourthElement.tabledata);
+        getDrawGraphicFirst(dataElementFormat, setOptions1)
+        document.getElementById("firstElement").style.removeProperty('display');
+      }
+      if (res.response.fifthElement.tabledata) {
+        dataElementFormat = getFormatterSecond(res.response.fifthElement.tabledata);
+        getDrawGraphicSecond(dataElementFormat, setOptions2)
+        document.getElementById("secondElement").style.removeProperty('display');
+      }
+      if (res.response.sixthElement.tabledata) {
+        dataElementFormat = getFormatterThird(res.response.sixthElement.tabledata);
+        getDrawGraphicThird(dataElementFormat, setOptions3)
+        document.getElementById("thirdElement").style.removeProperty('display');
+      }
+      if (res.response.seventhElement.tabledata) {+
+        console.log('Entra a pie')
+        dataElementFormat = getFormatterFourth(res.response.seventhElement.tabledata);
+        getDrawGraphicFourth(dataElementFormat, setOptions4)
+        document.getElementById("fourthElement").style.removeProperty('display');
+      }
+      if (res.response.ninthElement.tabledata) {
+        getDrawTable('sixthElement', columsTable1, res.response.ninthElement.tabledata);
+        document.getElementById("sixthElement").style.removeProperty('display');
+      }
+      if (res.response.tenthElement.tabledata) {
+        getDrawTable('seventhElement', columsTable2, res.response.tenthElement.tabledata);
+        document.getElementById("seventhElement").style.removeProperty('display');
+      }
+      $('.div_card').show();
     } else {
       hideLoading();
       if(res.code == 11){
@@ -222,4 +309,192 @@ function getDrawTable(id, columnsData, tableData){
       table.download("csv", "data.csv");
     });
   }
+}
+
+
+//-----GRAPICH
+let chart1;
+function getDrawGraphicFirst(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicFirst').getContext('2d');
+  
+  if (chart1) {
+    chart1.destroy();
+  }
+
+  chart1 = new Chart(ctx, {
+    type: 'pie',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}
+
+let chart2;
+function getDrawGraphicSecond(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicSecond').getContext('2d');
+  
+  if (chart2) {
+    chart2.destroy();
+  }
+
+  chart2 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}
+
+let chart3;
+function getDrawGraphicThird(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicThird').getContext('2d');
+  
+  if (chart3) {
+    chart3.destroy();
+  }
+
+  chart3 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}
+
+let chart4;
+function getDrawGraphicFourth(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicFourth').getContext('2d');
+  
+  if (chart4) {
+    chart4.destroy();
+  }
+
+  chart4 = new Chart(ctx, {
+    type: 'pie',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}
+
+let chart5;
+function getDrawGraphicFiveth(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicFiveth').getContext('2d');
+  
+  if (chart5) {
+    chart5.destroy();
+  }
+
+  chart5 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}
+
+//-----FORMATER
+function getFormatterFirst(data){
+  labelsValue = data.map(function(e) {
+    return e.team + ' / ' + e.total;
+  });
+
+  dataValue = data.map(function(e) {
+    return e.percentage;
+  });
+
+  array_colors = getPAlleteColors(7,dataValue.length);
+  
+  dataElement1 = {
+    labels: labelsValue,
+    datasets: [
+      {
+        label: 'Valores:',
+        data: dataValue,
+        backgroundColor: array_colors,
+      },
+    ]
+  }
+  
+  return dataElement1;
+}
+
+function getFormatterSecond(data){
+  labelsValue = data.map(function(e) {
+    return e.plant_code + ' - '+ e.total;
+  });
+
+  dataValue = data.map(function(e) {
+    return e.total;
+  });
+
+  array_colors = getPAlleteColors(7,dataValue.length);
+  
+  dataElement2 = {
+    labels: labelsValue,
+    datasets: [
+      {
+        label: 'Valores:',
+        data: dataValue,
+        backgroundColor: array_colors,
+      },
+    ]
+  }
+  
+  return dataElement2;
+}
+
+function getFormatterThird(data){
+  labelsValue = data.map(function(e) {
+    return e.plant_code + ' - '+ e.total;
+  });
+
+  dataValue = data.map(function(e) {
+    return e.total;
+  });
+
+  array_colors = getPAlleteColors(7,dataValue.length);
+  
+  dataElement3 = {
+    labels: labelsValue,
+    datasets: [
+      {
+        label: 'Valores:',
+        data: dataValue,
+        backgroundColor: array_colors,
+      },
+    ]
+  }
+  
+  return dataElement3;
+}
+
+function getFormatterFourth(data){
+  labelsValue = data.map(function(e) {
+    return 'Stage ' + e.stage + ' / ' + e.total;
+  });
+
+  dataValue = data.map(function(e) {
+    return e.percentage;
+  });
+
+  array_colors = getPAlleteColors(7,dataValue.length);
+  
+  dataElement4 = {
+    labels: labelsValue,
+    datasets: [
+      {
+        label: 'Valores:',
+        data: dataValue,
+        backgroundColor: array_colors,
+      },
+    ]
+  }
+  
+  return dataElement4;
 }

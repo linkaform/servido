@@ -25,9 +25,6 @@ var columsTable1 = [
   },
 ];
 
-
-
-
 var dataTable1 = [
   {
     plant_code: 'AAAA',

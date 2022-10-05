@@ -122,11 +122,27 @@ function unHideReportElements(){
 }
 
 function loadDemoData(){
-  unhideElement("title_demo")
   $('.title_tables').show();
-  getDrawTable('firstElement', columsTable1, dataTable1);
+  unhideElement("title_demo")
+
+  getDrawGraphicFirst(dataElement, setOptions1)
+  getDrawGraphicSecond(dataElement, setOptions2)
+  getDrawGraphicThird(dataElement, setOptions3)
+  getDrawGraphicFourth(dataElement, setOptions4)
+
+  getDrawTable('fivethElement', columsTable1, dataTable1);
+  getDrawTable('sixthElement', columsTable2, dataTable2);
+  getDrawTable('seventhElement', columsTable3, dataTable3);
+
   document.getElementById("firstParameters").style.removeProperty('display');
   document.getElementById("firstElement").style.removeProperty('display');
+  document.getElementById("secondElement").style.removeProperty('display');
+  document.getElementById("thirdElement").style.removeProperty('display');
+  document.getElementById("fourthElement").style.removeProperty('display');
+  document.getElementById("fivethElement").style.removeProperty('display');
+  document.getElementById("sixthElement").style.removeProperty('display');
+  document.getElementById("seventhElement").style.removeProperty('display');
+  //getDrawTable('firstElement', columsTable1, dataTable1);
 }
 
 const loading = document.querySelector('.loading-container');
@@ -222,4 +238,74 @@ function getDrawTable(id, columnsData, tableData){
       table.download("csv", "data.csv");
     });
   }
+}
+
+
+//-----GRAPICH
+let chart1;
+function getDrawGraphicFirst(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicFirst').getContext('2d');
+  
+  if (chart1) {
+    chart1.destroy();
+  }
+
+  chart1 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}
+
+let chart2;
+function getDrawGraphicSecond(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicSecond').getContext('2d');
+  
+  if (chart2) {
+    chart2.destroy();
+  }
+
+  chart2 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}
+
+let chart3;
+function getDrawGraphicThird(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicThird').getContext('2d');
+  
+  if (chart3) {
+    chart3.destroy();
+  }
+
+  chart3 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}
+
+let chart4;
+function getDrawGraphicFourth(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicFourth').getContext('2d');
+  
+  if (chart4) {
+    chart4.destroy();
+  }
+
+  chart4 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
 }
