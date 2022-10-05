@@ -8,19 +8,13 @@ var columsTable1 = [
   {title:"Stage 2", hozAlign:"center",
     columns:[
       {title:"Actuals", field:'stage_2_actuals',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0},width:250},
-      {title:"Forecst", field:'stage_2_forcast',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0},width:250},
-      {title:"Produced", field:'stage_2_produced',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0},width:250},
-      {title:"Required", field:'stage_2_required',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0},width:250},
-      {title:"Production Difference", field:'stage_2_diff',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0},width:250},
+      {title:"Forecast", field:'stage_2_forcast',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0},width:250},
     ]
   },
   {title:"Stage 3", hozAlign:"center",
     columns:[
       {title:"Actuals", field:'stage_3_actuals',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0},width:250},
-      {title:"Forecst", field:'stage_3_forcast',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0},width:250},
-      {title:"Produced", field:'stage_3_produced',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0},width:250},
-      {title:"Required", field:'stage_3_required',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0},width:250},
-      {title:"Production Difference", field:'stage_3_diff',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0},width:250},
+      {title:"Forecast", field:'stage_3_forcast',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0},width:250},
     ]
   },
 ];
