@@ -252,7 +252,7 @@ function getDrawGraphicFirst(data, setOptions){
   }
 
   chart1 = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data:data,
     plugins: [ChartDataLabels],
     options: setOptions,
@@ -269,7 +269,7 @@ function getDrawGraphicSecond(data, setOptions){
   }
 
   chart2 = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data:data,
     plugins: [ChartDataLabels],
     options: setOptions,
@@ -286,7 +286,7 @@ function getDrawGraphicThird(data, setOptions){
   }
 
   chart3 = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data:data,
     plugins: [ChartDataLabels],
     options: setOptions,
@@ -303,7 +303,7 @@ function getDrawGraphicFourth(data, setOptions){
   }
 
   chart4 = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data:data,
     plugins: [ChartDataLabels],
     options: setOptions,

@@ -219,16 +219,25 @@ function getFirstElement(dateTo, dateFrom, plantCode, stage){
             value: percentage,
             title: { text: "Percentage %" },
             type: "indicator",
-            mode: "gauge+number"
+            mode: "gauge+number",
+            gauge: {
+              axis: { range: [null, 100], tickwidth: 1},
+              bar: { color: "#f7bd53" },
+              bgcolor: "white",
+              borderwidth: 2,
+              bordercolor: "gray",
+              steps: [
+                { range: [0, 70], color: "#ff5252" },
+                { range: [71, 90], color: "#fdfc8b" },
+                { range: [91, 100], color: "#8db600" }
+              ],
+            },
           }
         ];
 
         var layout = { width: 400, height: 220, margin: { t: 0 , b: 0 } };
         Plotly.newPlot('GaugeTest', data, layout);
-
       }
-
-
 
       if (res.response.fourthElement.tabledata) {
         dataElementFormat = getFormatterFirst(res.response.fourthElement.tabledata);
