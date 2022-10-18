@@ -96,25 +96,143 @@
                         <h5>Fecha Hasta: </h5>
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Plant Code: </h5>
+                        <input class="form-control ds-input" type="text" id="plant_code" name="plant_code">
+                    </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Stage: </h5>
+                        <select class="form-control" id="stage" name="stage">
+                            <option value="">--Seleccione--</option>
+                            <option value="stage2">Stage 2</option>
+                            <option value="stage3">Stage 3</option>
+                        </select>
+                    </div>
                 </div>
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
+
+                    <!-- CARDS -->
+                    <div  style="margin-top:18px;" class="col-sm-12 col-md-3 col-lg-3 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body">
+                                <center>
+                                    <h2 class="card-title text-center">Multiplication Factor</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert1">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:18px;" class="col-sm-12 col-md-3 col-lg-3 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body">
+                                <center>
+                                    <h2 class="card-title text-center">Productivity</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert2">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:18px;" class="col-sm-12 col-md-3 col-lg-3 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body">
+                                <center>
+                                    <h2 class="card-title text-center">Multiplication Factor</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert3">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:18px;" class="col-sm-12 col-md-3 col-lg-3 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body">
+                                <center>
+                                    <h2 class="card-title text-center">Productivity</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert3">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- GRAPICHS -->
+                    <div id="firstElement" class="col-sm-12 col-md-6 col-lg-6 mb-5" style="overflow-y: scroll;">
+                        <div  style="width: 600px;height: 400px;margin: auto;">
+                            <canvas id="graphicFirst"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="secondElement" class="col-sm-12 col-md-6 col-lg-6 mb-5" style="overflow-y: scroll;">
+                        <div  style="width: 600px;height: 400px;margin: auto;">
+                            <canvas id="graphicSecond"></canvas>
+                        </div>
+                    </div>
+
+
+                    <div id="thirdElement" class="col-sm-12 col-md-6 col-lg-6 mb-5" style="overflow-y: scroll;">
+                        <div  style="width: 600px;height: 400px;margin: auto;">
+                            <canvas id="graphicThird"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="fourthElement" class="col-sm-12 col-md-6 col-lg-6 mb-5" style="overflow-y: scroll;">
+                        <div  style="width: 600px;height: 400px;margin: auto;">
+                            <canvas id="graphicFourth"></canvas>
+                        </div>
+                    </div>
+
+
+
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
                             <h3 ><span>Report Performance </span>&nbsp;&nbsp;
-                                <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
+                                <button  class="btn btn-primary" id="download_csv_fivethElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_fivethElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
-                            <hr class="stock-HrfirstElement">
+                            <hr class="stock-HrfivethElement">
                         </section>
-                        <div id="firstElement" > </div>
+                        <div id="fivethElement" > </div>
                     </div>
+
+                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                        <section class="title_tables">
+                            <h3 ><span>Report Performance </span>&nbsp;&nbsp;
+                                <button  class="btn btn-primary" id="download_csv_sixthElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_sixthElement"><i class="fa-regular fa-file-excel"></i></button>
+                            </h3>
+                            <hr class="stock-HrsixthElement">
+                        </section>
+                        <div id="sixthElement" > </div>
+                    </div>
+
+
+                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                        <section class="title_tables">
+                            <h3 ><span>Report Performance </span>&nbsp;&nbsp;
+                                <button  class="btn btn-primary" id="download_csv_sevenElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_sevenElement"><i class="fa-regular fa-file-excel"></i></button>
+                            </h3>
+                            <hr class="stock-HrsevenElement">
+                        </section>
+                        <div id="seventhElement" > </div>
+                    </div>
+
+
+
                 </div>
             </div>
         </div>
     </body>
+    <!-- chartjs -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- TABULATOR -->
     <!-- tabulator : Excel Downlowd-->

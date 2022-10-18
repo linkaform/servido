@@ -164,6 +164,7 @@ var setOptionsDounougth = {
 		    size: 15,
 			},
 		},
+		
 		datalabels: {
 		    color: 'white',
 		    font: {

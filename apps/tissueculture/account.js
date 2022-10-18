@@ -115,6 +115,7 @@ window.onload = function(){
 
 
 function unHideReportElements(){
+  //Set here all report elements that need to be unHiden on a loggin
   unhideElement("firstElement-Buttons");
   unhideElement("firstParameters");
   unhideElement("close_sesion");
@@ -122,40 +123,31 @@ function unHideReportElements(){
 }
 
 function loadDemoData(){
-  $('.title_tables').show();
   unhideElement("title_demo")
-
-  getDrawGraphicFirst(dataElement, setOptions1)
-  getDrawGraphicSecond(dataElement, setOptions2)
-  getDrawGraphicThird(dataElement, setOptions3)
-  getDrawGraphicFourth(dataElement, setOptions4)
-
-  getDrawTable('fivethElement', columsTable1, dataTable1);
-  getDrawTable('sixthElement', columsTable2, dataTable2);
-  getDrawTable('seventhElement', columsTable3, dataTable3);
-
+  $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
-  document.getElementById("firstElement").style.removeProperty('display');
-  document.getElementById("secondElement").style.removeProperty('display');
-  document.getElementById("thirdElement").style.removeProperty('display');
-  document.getElementById("fourthElement").style.removeProperty('display');
-  document.getElementById("fivethElement").style.removeProperty('display');
-  document.getElementById("sixthElement").style.removeProperty('display');
-  document.getElementById("seventhElement").style.removeProperty('display');
-  //getDrawTable('firstElement', columsTable1, dataTable1);
+  getDrawTable('firstElement', columsTable1, dataTable1);
 }
 
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  getFirstElement(date_to.value, date_from.value);
+  let plantCode = document.getElementById("plant_code");
+  let year = document.getElementById("year");  
+  console.log('Year', year.value)
+  if (year.value != null && year.value!=""){
+    getFirstElement(plant_code.value, year.value);
+  }
+  else
+  {
+    Swal.fire({
+      title: 'Year Required',
+    });
+  }
 };
 
-//-----PETICION
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(plantCode, year){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -166,11 +158,8 @@ function getFirstElement(dateTo, dateFrom){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      date_to: dateTo,
-      date_from: dateFrom,
-      servicio: servicio,
-      cliente: cliente,
-      tecnico: tecnico,
+      plant_code: plantCode,
+      year: year,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -184,9 +173,11 @@ function getFirstElement(dateTo, dateFrom){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.json.firstElement.data) {
+      console.log(res.response.firstElement.tabledata);
+      console.log(res.response);
+      if (res.response.firstElement.tabledata) {
         console.log('drawFirstElement.........');
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+        getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata);
       }
       
     } else {
@@ -216,7 +207,7 @@ function getDrawTable(id, columnsData, tableData){
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:true,
+    dataTreeStartExpanded:false,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
@@ -238,74 +229,4 @@ function getDrawTable(id, columnsData, tableData){
       table.download("csv", "data.csv");
     });
   }
-}
-
-
-//-----GRAPICH
-let chart1;
-function getDrawGraphicFirst(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicFirst').getContext('2d');
-  
-  if (chart1) {
-    chart1.destroy();
-  }
-
-  chart1 = new Chart(ctx, {
-    type: 'line',
-    data:data,
-    plugins: [ChartDataLabels],
-    options: setOptions,
-  });
-}
-
-let chart2;
-function getDrawGraphicSecond(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicSecond').getContext('2d');
-  
-  if (chart2) {
-    chart2.destroy();
-  }
-
-  chart2 = new Chart(ctx, {
-    type: 'line',
-    data:data,
-    plugins: [ChartDataLabels],
-    options: setOptions,
-  });
-}
-
-let chart3;
-function getDrawGraphicThird(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicThird').getContext('2d');
-  
-  if (chart3) {
-    chart3.destroy();
-  }
-
-  chart3 = new Chart(ctx, {
-    type: 'line',
-    data:data,
-    plugins: [ChartDataLabels],
-    options: setOptions,
-  });
-}
-
-let chart4;
-function getDrawGraphicFourth(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicFourth').getContext('2d');
-  
-  if (chart4) {
-    chart4.destroy();
-  }
-
-  chart4 = new Chart(ctx, {
-    type: 'line',
-    data:data,
-    plugins: [ChartDataLabels],
-    options: setOptions,
-  });
 }

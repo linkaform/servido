@@ -193,7 +193,7 @@ function getFirstElement(plantCode){
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"400px",
+    height:"600px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -202,7 +202,7 @@ function getDrawTable(id, columnsData, tableData){
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
-    columns:columnsData,
+    columns:columnsData
   });
 
   if (document.getElementById("download_xlsx_"+id)){
