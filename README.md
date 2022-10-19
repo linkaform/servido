@@ -60,3 +60,8 @@ docker-compose -f docker-prod.yml build servido
 ```
 docker push linkaform/servido:latest
 ```
+
+
+Actualizar el certificado
+
+Copiar el certificdo a nginx/certs/domain.com.chained.crt
