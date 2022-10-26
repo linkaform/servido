@@ -89,7 +89,6 @@ window.onload = function(){
       loadDemoData();
     }
     //--Styles
-    get_catalog();
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
@@ -128,6 +127,21 @@ function loadDemoData(){
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
   getDrawTable('firstElement', columsTable1, dataTable1);
+  getDrawTable('exampletable', columsTable2, dataTable2);
+  getDrawGraphicFirst(data1, setOptions1);
+  getDrawGraphicSecond(data2, setOptions2);
+  getDrawGraphicThird(data3, setOptions3);
+  getDrawGraphicFourth(data4, setOptions4);
+  getDrawGauge('seccion1',50);
+  getDrawGauge('seccion2',50);
+  getDrawGauge('seccion3',50);
+  getDrawGauge('seccion4',50);
+  getDrawGauge('seccion5',50);
+  getDrawGauge('seccion6',50);
+  getDrawGauge('seccion7',50);
+  getDrawGauge('seccion8',50);
+
+  console.log('Colores',getPAlleteColors(9,8));
 }
 
 const loading = document.querySelector('.loading-container');
@@ -136,23 +150,10 @@ loading.style.display = 'none';
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  let plaga = document.getElementById("plaga");  
-  let plantas = document.getElementById("plantas");  
-
-  if (date_from.value != null && date_from.value!="" && date_to.value != null && date_to.value!="" ){
-    getFirstElement(date_to.value, date_from.value, plaga.value, plantas.value);
-  }
-  else
-  {
-    Swal.fire({
-      title: 'Fechas Requeridas',
-    });
-  }
-
-
+  getFirstElement(date_to.value, date_from.value);
 };
 
-function getFirstElement(dateTo, dateFrom, plaga, plantas){
+function getFirstElement(dateTo, dateFrom){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -165,9 +166,9 @@ function getFirstElement(dateTo, dateFrom, plaga, plantas){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      plaga: plaga,
-      plantas: plantas,
-      option: 1,
+      servicio: servicio,
+      cliente: cliente,
+      tecnico: tecnico,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -205,10 +206,38 @@ function getFirstElement(dateTo, dateFrom, plaga, plantas){
   })
 };
 
+//-----GAUGE
+function getDrawGauge(id,value){
+  var data = [
+    {
+      domain: { x: [0, 1], y: [0, 1] },
+      value: value,
+      title: { text: "Example" },
+      type: "indicator",
+      mode: "gauge+number",
+      gauge: {
+        axis: { range: [null, 100], tickwidth: 1},
+        bar: { color: "#f7bd53" },
+        bgcolor: "white",
+        borderwidth: 2,
+        bordercolor: "gray",
+        steps: [
+          { range: [0, 70], color: "#ff5252" },
+          { range: [71, 90], color: "#fdfc8b" },
+          { range: [91, 100], color: "#8db600" }
+        ],
+      },
+    }
+  ];
+
+  var layout = { width: 400, height: 220, margin: { t: 0 , b: 0 } };
+  Plotly.newPlot(id , data, layout);
+}
+
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"300px",
+    height:"265px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -238,44 +267,74 @@ function getDrawTable(id, columnsData, tableData){
 }
 
 
-//----Catalog
-function get_catalog() 
-{
-  console.log('Catalogo')
-  fetch(url + 'infosync/scripts/run/', {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: 91413,
-      option: 2,
-    }),
-    headers:{
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+userJwt
-    },
-  })
-  .then(res => res.json())
-  .then(res => {
-    if (res.success) {
-      console.log('DATA',res.response.json.catalog_plantas)
-      if (res.response.json.catalog_plantas.data) {
-        console.log('ENtra a plantas')
-        $("#plantas").empty();
-        $('#plantas').append('<option value="--">--Seleccione--</option>');
 
-        for (i = 0; i < res.response.json.catalog_plantas.data.length; i++) {
-          console.log('vALOR',res.response.json.catalog_plantas.data[i]['5dd3840540300af39939b3cb'])
-          value = res.response.json.catalog_plantas.data[i]['5dd3840540300af39939b3cb']
-          $('#plantas').append('<option value="'+ value +'">'+value+'</option>');
-        }
-      }
-      if (res.response.json.catalog_plaga.data) {
-        $("#plaga").empty();
-        $('#plaga').append('<option value="--">--Seleccione--</option>');
-        for (i = 0; i < res.response.json.catalog_plaga.data.length; i++) {
-          value = res.response.json.catalog_plaga.data[i]['5de8466781856ac92af8f5bc'];
-          $('#plaga').append('<option value="'+ value +'">'+value+'</option>');
-        }
-      }
-    } 
-  })
-};
+
+//-----GRAPICH
+let chart1;
+function getDrawGraphicFirst(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicFirst').getContext('2d');
+  
+  if (chart1) {
+    chart1.destroy();
+  }
+
+  chart1 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}
+
+
+let chart2;
+function getDrawGraphicSecond(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicSecond').getContext('2d');
+  
+  if (chart2) {
+    chart2.destroy();
+  }
+
+  chart2 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}
+
+let chart3;
+function getDrawGraphicThird(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicThird').getContext('2d');
+  
+  if (chart3) {
+    chart3.destroy();
+  }
+
+  chart3 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}
+
+let chart4;
+function getDrawGraphicFourth(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicFourth').getContext('2d');
+  
+  if (chart4) {
+    chart4.destroy();
+  }
+
+  chart4 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}

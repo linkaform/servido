@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Forcast by Cicle">
+        <meta name="description" content="Planes de Acción">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte Tendencias</h1>
+                    <h1 id="title_report">Reporte Planes de Acción</h1>
                 </div>
             </div> 
         </nav>
@@ -96,37 +96,138 @@
                         <h5>Fecha Hasta: </h5>
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
-
-                    <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Plantas: </h5>
-                        <select class="form-control ds-input" id="plantas" name="plantas">
-                            <option value="--">--Seleccione--</option>
+                    <div class="col-sm-12 col-md-3 col-lg-3" >
+                        <h5>Sucursal: </h5>
+                        <select class="form-control" id="sucursal" >
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3" >
+                        <h5>Estatus: </h5>
+                        <select class="form-control" id="estatus" >
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3" >
+                        <h5>Sección: </h5>
+                        <select class="form-control" id="seccion">
+                            <option value="">--Seleccione--</option>
                         </select>
                     </div>
 
-                     <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Plagas: </h5>
-                        <select class="form-control ds-input" id="plaga" name="plaga">
-                            <option value="--">--Seleccione--</option>
-                        </select>
-                    </div>
+
+
                 </div>
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                    <!--  Gauges  -->
+                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
+                        <div class="card border-info m-2">
+                            <h2 class="card-title text-center">Servicio y Experiencia</h2>
+                            <div id='seccion1' style="margin:auto;align-items: center;"></div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
+                        <div class="card border-info m-2">
+                            <h2 class="card-title text-center">Mi equipo APYMSA</h2>
+                            <div id='seccion2' style="margin:auto;align-items: center;"></div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
+                        <div class="card border-info m-2">
+                            <h2 class="card-title text-center">Mantenimiento y Limpieza</h2>
+                            <div id='seccion3' style="margin:auto;align-items: center;"></div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
+                        <div class="card border-info m-2">
+                            <h2 class="card-title text-center">Gestión de Almacén</h2>
+                            <div id='seccion4' style="margin:auto;align-items: center;"></div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
+                        <div class="card border-info m-2">
+                            <h2 class="card-title text-center">Revisión Inventario</h2>
+                            <div id='seccion5' style="margin:auto;align-items: center;"></div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
+                        <div class="card border-info m-2">
+                            <h2 class="card-title text-center">Logística y Ultima milla</h2>
+                            <div id='seccion6' style="margin:auto;align-items: center;"></div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
+                        <div class="card border-info m-2">
+                            <h2 class="card-title text-center">Gestión Documental</h2>
+                            <div id='seccion7' style="margin:auto;align-items: center;"></div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
+                        <div class="card border-info m-2">
+                            <h2 class="card-title text-center">Crédito y Cobranza</h2>
+                            <div id='seccion8' style="margin:auto;align-items: center;"></div>
+                        </div>
+                    </div>
+
+                    <!--  Tables  -->
+                    <div class="col-sm-12 col-md-12 col-lg-12 mt-1" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span>Tendencias Voladores</span>&nbsp;&nbsp;
-                                <button class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
+                            <h3 ><span>Secciónes de planes de acción</span>&nbsp;&nbsp;
+                                <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
+                            </h3>
+                            <hr class="hrFirstElement">
+                        </section>
+                        <div id="exampletable"></div>
+                    </div>
+
+
+                    <div class="col-sm-12 col-md-12 col-lg-12 mt-1" style="align-items: center;overflow-y: scroll;">
+                        <section class="title_tables">
+                            <h3 ><span>Reportes De Planes de Acción </span>&nbsp;&nbsp;
+                                <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
                             <hr class="hrFirstElement">
                         </section>
                         <div id="firstElement" > </div>
                     </div>
 
-                   
+                    <!--  Graficas  -->
                     
+                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                        <div  style="width: 1000px;height: 600px;margin: auto;">
+                            <canvas id="graphicFirst"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="thirdElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                        <div  style="width: 1000px;height: 600px;margin: auto;">
+                            <canvas id="graphicSecond"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="fourthElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                        <div  style="width: 1000px;height: 600px;margin: auto;">
+                            <canvas id="graphicThird"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="fivethElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                        <div  style="width: 1000px;height: 600px;margin: auto;">
+                            <canvas id="graphicFourth"></canvas>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -172,6 +273,9 @@
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
     crossorigin="anonymous"></script>
 
+    <!-- Jquery Gauge-->
+    <script src='https://cdn.plot.ly/plotly-2.14.0.min.js'></script>
+    
 
     <!-- Utils -->
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
@@ -181,7 +285,7 @@
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./tendencia_voladores.js"></script>
-    <script type="text/javascript" src="./tendencia_voladores_data.js"></script>
+    <script type="text/javascript" src="./planes_accion.js"></script>
+    <script type="text/javascript" src="./planes_accion_data.js"></script>
     </body>
 </html>

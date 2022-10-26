@@ -89,6 +89,7 @@ window.onload = function(){
       loadDemoData();
     }
     //--Styles
+    //get_catalog();
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
@@ -138,7 +139,17 @@ function runFirstElement(){
   let plaga = document.getElementById("plaga");  
   let plantas = document.getElementById("plantas");  
 
-  getFirstElement(date_to.value, date_from.value, plaga.value, plantas.value);
+  if (date_from.value != null && date_from.value!="" && date_to.value != null && date_to.value!="" ){
+    getFirstElement(date_to.value, date_from.value, plaga.value, plantas.value);
+  }
+  else
+  {
+    Swal.fire({
+      title: 'Fechas Requeridas',
+    });
+  }
+
+
 };
 
 function getFirstElement(dateTo, dateFrom, plaga, plantas){
@@ -225,3 +236,46 @@ function getDrawTable(id, columnsData, tableData){
     });
   }
 }
+
+
+//----Catalog
+function get_catalog() 
+{
+  console.log('Catalogo')
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: 91413,
+      option: 2,
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      console.log('DATA',res.response.json.catalog_plantas)
+      if (res.response.json.catalog_plantas.data) {
+        console.log('ENtra a plantas')
+        $("#plantas").empty();
+        $('#plantas').append('<option value="--">--Seleccione--</option>');
+
+        for (i = 0; i < res.response.json.catalog_plantas.data.length; i++) {
+          console.log('vALOR',res.response.json.catalog_plantas.data[i]['5dd3840540300af39939b3cb'])
+          value = res.response.json.catalog_plantas.data[i]['5dd3840540300af39939b3cb']
+          $('#plantas').append('<option value="'+ value +'">'+value+'</option>');
+        }
+      }
+      if (res.response.json.catalog_plaga.data) {
+        $("#plaga").empty();
+        $('#plaga').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < res.response.json.catalog_plaga.data.length; i++) {
+          value = res.response.json.catalog_plaga.data[i]['5de8466781856ac92af8f5bc'];
+          $('#plaga').append('<option value="'+ value +'">'+value+'</option>');
+        }
+      }
+    } 
+  })
+};
