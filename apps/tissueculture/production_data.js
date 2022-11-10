@@ -333,6 +333,7 @@ var setOptions4 = {
   plugins: {
     legend: {
       display: true,
+      position:'top'
     },
     title: {
         display: true,
@@ -347,9 +348,11 @@ var setOptions4 = {
           weight: 'bold',
           size: 25,
         },
-        align:'bot',
-        formatter: function (value, context){
-          return value + '%';
+      anchor:'start',
+      align:'top',
+      offset:50,
+      formatter: function (value, context){
+        return value + '%';
         }
       },
 
@@ -452,9 +455,12 @@ var setOptions6 = {
       color: 'white',
       font: {
         weight: 'bold',
-        size: 35,
+        size: 15,
       },
       align:'bot',
+      formatter: function (value, context){
+        return value + '%';
+      }
     }
   },
   scales: {
