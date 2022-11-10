@@ -126,22 +126,15 @@ function loadDemoData(){
   unhideElement("title_demo")
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
+  document.getElementById("firstElement").style.removeProperty('display');
+  document.getElementById("secondElement").style.removeProperty('display');
   getDrawTable('firstElement', columsTable1, dataTable1);
-  getDrawTable('exampletable', columsTable2, dataTable2);
+  getDrawTable('secondElement', columsTable2, dataTable2);
   getDrawGraphicFirst(data1, setOptions1);
   getDrawGraphicSecond(data2, setOptions2);
   getDrawGraphicThird(data3, setOptions3);
   getDrawGraphicFourth(data4, setOptions4);
-  getDrawGauge('seccion1',50);
-  getDrawGauge('seccion2',50);
-  getDrawGauge('seccion3',50);
-  getDrawGauge('seccion4',50);
-  getDrawGauge('seccion5',50);
-  getDrawGauge('seccion6',50);
-  getDrawGauge('seccion7',50);
-  getDrawGauge('seccion8',50);
-
-  console.log('Colores',getPAlleteColors(9,8));
+  getDrawGraphicFiveth(data5, setOptions5);
 }
 
 const loading = document.querySelector('.loading-container');
@@ -206,33 +199,6 @@ function getFirstElement(dateTo, dateFrom){
   })
 };
 
-//-----GAUGE
-function getDrawGauge(id,value){
-  var data = [
-    {
-      domain: { x: [0, 1], y: [0, 1] },
-      value: value,
-      title: { text: "Example" },
-      type: "indicator",
-      mode: "gauge+number",
-      gauge: {
-        axis: { range: [null, 100], tickwidth: 1},
-        bar: { color: "#f7bd53" },
-        bgcolor: "white",
-        borderwidth: 2,
-        bordercolor: "gray",
-        steps: [
-          { range: [0, 70], color: "#ff5252" },
-          { range: [71, 90], color: "#fdfc8b" },
-          { range: [91, 100], color: "#8db600" }
-        ],
-      },
-    }
-  ];
-
-  var layout = { width: 400, height: 220, margin: { t: 0 , b: 0 } };
-  Plotly.newPlot(id , data, layout);
-}
 
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
@@ -338,3 +304,23 @@ function getDrawGraphicFourth(data, setOptions){
     options: setOptions,
   });
 }
+
+
+let chart5;
+function getDrawGraphicFiveth(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicFiveth').getContext('2d');
+  
+  if (chart5) {
+    chart5.destroy();
+  }
+
+  chart5 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}
+
+

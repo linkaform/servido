@@ -740,7 +740,7 @@ function drawNineElement(data){
                 },
                 title: {
                     display: true,
-                    text: 'Reporte Camapañas',
+                    text: 'Reporte Campañas',
                     font: {
                         size: 25
                     }

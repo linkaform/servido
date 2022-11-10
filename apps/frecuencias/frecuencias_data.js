@@ -3,7 +3,7 @@
 //-- Tabla 1 
 var columsTable1 = [
   { title:"Localidad", field:'localidad',hozAlign:"left",width:400},
-  { title:"Tipo de observación",  field:'nombre',hozAlign:"left",width:600 },
+  { title:"Tipo de checklist",  field:'nombre',hozAlign:"left",width:600 },
   { title:"Estado",  field:'estado',hozAlign:"center",formatter:"tickCross", sorter:"boolean", editor:true, width:150 },
   { title:"Realizados",  field:'realizados',hozAlign:"center",width:150 },
   { title:"Requeridos",  field:'requeridos',hozAlign:"center",width:150 },
@@ -25,6 +25,50 @@ var columsTable3 = [
   { title:"Alcance",  field:'alcance',hozAlign:"right",formatter: "money",formatterParams: {symbol: "%", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:130 },
   { title:"Progreso", field:"alcance_progress", formatter:"progress", editor:"progress", editorParams:{min:0, max:100,},width:250}
 ];
+
+
+
+
+var columsTable4 = [
+  { title:"Localidad", field:'localidad',hozAlign:"left",width:500},
+  {title:"AB-F-01 EXAMPLE", hozAlign:"center",
+    columns:[
+      {title:"Cantidad", field:'cantidad_abf_01',hozAlign:"right",width:150},
+      {title:"Porcentajes", field:'porcentaje_abf_01',hozAlign:"right",formatter: "money",formatterParams: {symbol: "%", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
+      {title:"Status", field:'color_abf_01',formatter:"color",width:85},
+    ]
+  },
+  {title:"AB-F-02 EXAMPLE", hozAlign:"center",
+    columns:[
+      {title:"Cantidad", field:'cantidad_abf_02',hozAlign:"right",width:150},
+      {title:"Porcentajes", field:'porcentaje_abf_02',hozAlign:"right",formatter: "money",formatterParams: {symbol: "%", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
+      {title:"Status", field:'color_abf_02',formatter:"color",width:85},
+    ]
+  },
+  {title:"AB-F-03 EXAMPLE", hozAlign:"center",
+    columns:[
+      {title:"Cantidad", field:'cantidad_abf_03',hozAlign:"right",width:150},
+      {title:"Porcentajes", field:'porcentaje_abf_03',hozAlign:"right",formatter: "money",formatterParams: {symbol: "%", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
+      {title:"Status", field:'color_abf_03',formatter:"color",width:85},
+    ]
+  },
+  {title:"AB-F-04 EXAMPLE", hozAlign:"center",
+    columns:[
+      {title:"Cantidad", field:'cantidad_abf_04',hozAlign:"right",width:150},
+      {title:"Porcentajes", field:'porcentaje_abf_04',hozAlign:"right",formatter: "money",formatterParams: {symbol: "%", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
+      {title:"Status", field:'color_abf_04',formatter:"color",width:85},
+    ]
+  },
+  {title:"AB-F-05 EXAMPLE", hozAlign:"center",
+    columns:[
+      {title:"Cantidad", field:'cantidad_abf_04',hozAlign:"right",width:150},
+      {title:"Porcentajes", field:'porcentaje_abf_04',hozAlign:"right",formatter: "money",formatterParams: {symbol: "%", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
+      {title:"Status", field:'color_abf_04',formatter:"color",width:85},
+    ]
+  },
+];
+
+
 
 
 var dataTable1 = [
@@ -86,59 +130,6 @@ var dataTable1 = [
   }
 ];
 
-
-var dataTable3 = [
-  {
-    nombre:"AB-F-01 CHECK LIST BARRA Y URNAS", 
-    realizados:518,
-    requeridos:518,
-    alcance:100,
-  },
-   {
-    nombre:"AB-F-01 CHECK LIST BARRA Y URNAS", 
-    realizados:518,
-    requeridos:518,
-    alcance:100,
-  },
-  {
-    nombre:"AB-F-10-AM CONTROL DE TEMPERATURAS Y TIEMPOS DE VIDA", 
-    realizados:518,
-    requeridos:518,
-    alcance:100,
-  },
-   {
-    nombre:"AB-F-10-AM CONTROL DE TEMPERATURAS Y TIEMPOS DE VIDA", 
-    realizados:518,
-    requeridos:518,
-    alcance:100,
-  },
-  {
-    nombre:"AB-F-16B Check List Supervisor-CIERRE", 
-    realizados:518,
-    requeridos:518,
-    alcance:100,
-  },
-   {
-    nombre:"AB-F-32 TRAMPAS DE GRASA (Limpieza y Mantenimiento)", 
-    realizados:518,
-    requeridos:518,
-    alcance:100,
-  },
-   {
-    nombre:"AB-F-32 TRAMPAS DE GRASA (Limpieza y Mantenimiento)", 
-    realizados:518,
-    requeridos:518,
-    alcance:100,
-  },
-  {
-    nombre:"AB-F-33B BAR IMPERIAL-CIERRE-Check List Operativo FOH ", 
-    realizados:518,
-    requeridos:518,
-    alcance:100,
-  }
-];
-
-
 var dataTable2 = [
   {
     localidad: "Bakery-Bar Imperial ATO LIR", 
@@ -198,6 +189,285 @@ var dataTable2 = [
   }
 ];
 
+var dataTable3 = [
+  {
+    nombre:"AB-F-01 CHECK LIST BARRA Y URNAS", 
+    realizados:518,
+    requeridos:518,
+    alcance:100,
+  },
+   {
+    nombre:"AB-F-01 CHECK LIST BARRA Y URNAS", 
+    realizados:518,
+    requeridos:518,
+    alcance:100,
+  },
+  {
+    nombre:"AB-F-10-AM CONTROL DE TEMPERATURAS Y TIEMPOS DE VIDA", 
+    realizados:518,
+    requeridos:518,
+    alcance:100,
+  },
+   {
+    nombre:"AB-F-10-AM CONTROL DE TEMPERATURAS Y TIEMPOS DE VIDA", 
+    realizados:518,
+    requeridos:518,
+    alcance:100,
+  },
+  {
+    nombre:"AB-F-16B Check List Supervisor-CIERRE", 
+    realizados:518,
+    requeridos:518,
+    alcance:100,
+  },
+   {
+    nombre:"AB-F-32 TRAMPAS DE GRASA (Limpieza y Mantenimiento)", 
+    realizados:518,
+    requeridos:518,
+    alcance:100,
+  },
+   {
+    nombre:"AB-F-32 TRAMPAS DE GRASA (Limpieza y Mantenimiento)", 
+    realizados:518,
+    requeridos:518,
+    alcance:100,
+  },
+  {
+    nombre:"AB-F-33B BAR IMPERIAL-CIERRE-Check List Operativo FOH ", 
+    realizados:518,
+    requeridos:518,
+    alcance:100,
+  }
+];
+
+
+var dataTable4 = [
+  {
+    localidad:"Bartolome", 
+    cantidad_abf_01:50/100,
+    porcentaje_abf_01:50,
+    color_abf_01:"#CB4335",
+    cantidad_abf_02:50/100,
+    porcentaje_abf_02:50,
+    color_abf_02:"#F4D03F ",
+    cantidad_abf_03:50/100,
+    porcentaje_abf_03:50,
+    color_abf_03:"#27AE60",
+    cantidad_abf_04:50/100,
+    porcentaje_abf_04:50,
+    color_abf_04:"#707B7C",
+    cantidad_abf_05:50/100,
+    porcentaje_abf_05:50,
+    color_abf_05:"#F4D03F",
+  },
+  {
+    localidad:"Bartolome", 
+    cantidad_abf_01:50/100,
+    porcentaje_abf_01:50,
+    color_abf_01:"#CB4335",
+    cantidad_abf_02:50/100,
+    porcentaje_abf_02:50,
+    color_abf_02:"#F4D03F ",
+    cantidad_abf_03:50/100,
+    porcentaje_abf_03:50,
+    color_abf_03:"#27AE60",
+    cantidad_abf_04:50/100,
+    porcentaje_abf_04:50,
+    color_abf_04:"#707B7C",
+    cantidad_abf_05:50/100,
+    porcentaje_abf_05:50,
+    color_abf_05:"#F4D03F",
+  },
+  {
+    localidad:"Bartolome", 
+    cantidad_abf_01:50/100,
+    porcentaje_abf_01:50,
+    color_abf_01:"#CB4335",
+    cantidad_abf_02:50/100,
+    porcentaje_abf_02:50,
+    color_abf_02:"#F4D03F ",
+    cantidad_abf_03:50/100,
+    porcentaje_abf_03:50,
+    color_abf_03:"#27AE60",
+    cantidad_abf_04:50/100,
+    porcentaje_abf_04:50,
+    color_abf_04:"#707B7C",
+    cantidad_abf_05:50/100,
+    porcentaje_abf_05:50,
+    color_abf_05:"#F4D03F",
+  },
+    {
+    localidad:"Bartolome", 
+    cantidad_abf_01:50/100,
+    porcentaje_abf_01:50,
+    color_abf_01:"#CB4335",
+    cantidad_abf_02:50/100,
+    porcentaje_abf_02:50,
+    color_abf_02:"#F4D03F ",
+    cantidad_abf_03:50/100,
+    porcentaje_abf_03:50,
+    color_abf_03:"#27AE60",
+    cantidad_abf_04:50/100,
+    porcentaje_abf_04:50,
+    color_abf_04:"#707B7C",
+    cantidad_abf_05:50/100,
+    porcentaje_abf_05:50,
+    color_abf_05:"#F4D03F",
+  },
+  
+    {
+    localidad:"Bartolome", 
+    cantidad_abf_01:50/100,
+    porcentaje_abf_01:50,
+    color_abf_01:"#CB4335",
+    cantidad_abf_02:50/100,
+    porcentaje_abf_02:50,
+    color_abf_02:"#F4D03F ",
+    cantidad_abf_03:50/100,
+    porcentaje_abf_03:50,
+    color_abf_03:"#27AE60",
+    cantidad_abf_04:50/100,
+    porcentaje_abf_04:50,
+    color_abf_04:"#707B7C",
+    cantidad_abf_05:50/100,
+    porcentaje_abf_05:50,
+    color_abf_05:"#F4D03F",
+  },
+  
+    {
+    localidad:"Bartolome", 
+    cantidad_abf_01:50/100,
+    porcentaje_abf_01:50,
+    color_abf_01:"#CB4335",
+    cantidad_abf_02:50/100,
+    porcentaje_abf_02:50,
+    color_abf_02:"#F4D03F ",
+    cantidad_abf_03:50/100,
+    porcentaje_abf_03:50,
+    color_abf_03:"#27AE60",
+    cantidad_abf_04:50/100,
+    porcentaje_abf_04:50,
+    color_abf_04:"#707B7C",
+    cantidad_abf_05:50/100,
+    porcentaje_abf_05:50,
+    color_abf_05:"#F4D03F",
+  },
+  
+    {
+    localidad:"Bartolome", 
+    cantidad_abf_01:50/100,
+    porcentaje_abf_01:50,
+    color_abf_01:"#CB4335",
+    cantidad_abf_02:50/100,
+    porcentaje_abf_02:50,
+    color_abf_02:"#F4D03F ",
+    cantidad_abf_03:50/100,
+    porcentaje_abf_03:50,
+    color_abf_03:"#27AE60",
+    cantidad_abf_04:50/100,
+    porcentaje_abf_04:50,
+    color_abf_04:"#707B7C",
+    cantidad_abf_05:50/100,
+    porcentaje_abf_05:50,
+    color_abf_05:"#F4D03F",
+  },
+  
+    {
+    localidad:"Bartolome", 
+    cantidad_abf_01:50/100,
+    porcentaje_abf_01:50,
+    color_abf_01:"#CB4335",
+    cantidad_abf_02:50/100,
+    porcentaje_abf_02:50,
+    color_abf_02:"#F4D03F ",
+    cantidad_abf_03:50/100,
+    porcentaje_abf_03:50,
+    color_abf_03:"#27AE60",
+    cantidad_abf_04:50/100,
+    porcentaje_abf_04:50,
+    color_abf_04:"#707B7C",
+    cantidad_abf_05:50/100,
+    porcentaje_abf_05:50,
+    color_abf_05:"#F4D03F",
+  },
+  
+    {
+    localidad:"Bartolome", 
+    cantidad_abf_01:50/100,
+    porcentaje_abf_01:50,
+    color_abf_01:"#CB4335",
+    cantidad_abf_02:50/100,
+    porcentaje_abf_02:50,
+    color_abf_02:"#F4D03F ",
+    cantidad_abf_03:50/100,
+    porcentaje_abf_03:50,
+    color_abf_03:"#27AE60",
+    cantidad_abf_04:50/100,
+    porcentaje_abf_04:50,
+    color_abf_04:"#707B7C",
+    cantidad_abf_05:50/100,
+    porcentaje_abf_05:50,
+    color_abf_05:"#F4D03F",
+  },
+  
+    {
+    localidad:"Bartolome", 
+    cantidad_abf_01:50/100,
+    porcentaje_abf_01:50,
+    color_abf_01:"#CB4335",
+    cantidad_abf_02:50/100,
+    porcentaje_abf_02:50,
+    color_abf_02:"#F4D03F ",
+    cantidad_abf_03:50/100,
+    porcentaje_abf_03:50,
+    color_abf_03:"#27AE60",
+    cantidad_abf_04:50/100,
+    porcentaje_abf_04:50,
+    color_abf_04:"#707B7C",
+    cantidad_abf_05:50/100,
+    porcentaje_abf_05:50,
+    color_abf_05:"#F4D03F",
+  },
+  
+    {
+    localidad:"Bartolome", 
+    cantidad_abf_01:50/100,
+    porcentaje_abf_01:50,
+    color_abf_01:"#CB4335",
+    cantidad_abf_02:50/100,
+    porcentaje_abf_02:50,
+    color_abf_02:"#F4D03F ",
+    cantidad_abf_03:50/100,
+    porcentaje_abf_03:50,
+    color_abf_03:"#27AE60",
+    cantidad_abf_04:50/100,
+    porcentaje_abf_04:50,
+    color_abf_04:"#707B7C",
+    cantidad_abf_05:50/100,
+    porcentaje_abf_05:50,
+    color_abf_05:"#F4D03F",
+  },
+  
+    {
+    localidad:"Bartolome", 
+    cantidad_abf_01:50/100,
+    porcentaje_abf_01:50,
+    color_abf_01:"#CB4335",
+    cantidad_abf_02:50/100,
+    porcentaje_abf_02:50,
+    color_abf_02:"#F4D03F ",
+    cantidad_abf_03:50/100,
+    porcentaje_abf_03:50,
+    color_abf_03:"#27AE60",
+    cantidad_abf_04:50/100,
+    porcentaje_abf_04:50,
+    color_abf_04:"#707B7C",
+    cantidad_abf_05:50/100,
+    porcentaje_abf_05:50,
+    color_abf_05:"#F4D03F",
+  },
+  
+];
 
 var dataFourthElement = {
   labels: ["COMEDOR CORTEZA","Clinica Biblica", "Bakery Multiplaza Escazú", "Bakery Multiplaza del Este", "Bakery Jacó", "Bakery Heredia"],

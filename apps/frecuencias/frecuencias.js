@@ -20,6 +20,7 @@ hideElement("secondElement");
 hideElement("thirdElement");
 hideElement("fourthElement");
 hideElement("fivethElement");
+hideElement("sixthElement");
 
 
 window.onload = function(){
@@ -148,10 +149,12 @@ function loadDemoData(){
   document.getElementById("thirdElement").style.removeProperty('display');
   document.getElementById("fourthElement").style.removeProperty('display');
   document.getElementById("fivethElement").style.removeProperty('display');
+  document.getElementById("sixthElement").style.removeProperty('display');
 
   getDrawTable('firstElement', columsTable1, dataTable1);
   getDrawTable('secondElement', columsTable2, dataTable2);
   getDrawTable('thirdElement', columsTable3, dataTable3);
+  getDrawTable('fourthElement', columsTable4, dataTable4);
 
   drawFourthElement(dataFourthElement, dataConfigFourth);
   drawFivethElement(dataFivethElement, dataConfigFiveth);
@@ -168,11 +171,16 @@ function runFirstElement(){
   let date_to = document.getElementById("date_to");    
   let usuario = document.getElementById("usuario");    
   let localidades = $('#localidades').val();
-  getFirstElement(date_to.value, date_from.value, localidades, usuario.value);
+  check = 'on';
+  if (document.getElementById('input_check').checked)
+  {
+    check = 'off';
+  }
+  getFirstElement(date_to.value, date_from.value, localidades, usuario.value, check);
 };
 
 
-function getFirstElement(dateTo, dateFrom, localidades, usuario){
+function getFirstElement(dateTo, dateFrom, localidades, usuario, check){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -187,6 +195,7 @@ function getFirstElement(dateTo, dateFrom, localidades, usuario){
       date_from: dateFrom,
       localidades: localidades,
       usuario: usuario,
+      check: check,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -200,7 +209,6 @@ function getFirstElement(dateTo, dateFrom, localidades, usuario){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log('Res = ',res.response.json)
       if (res.response.json.firstElement.data) {
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
@@ -215,12 +223,20 @@ function getFirstElement(dateTo, dateFrom, localidades, usuario){
       }
       if (res.response.json.fourthElement) {
         drawFourthElement(res.response.json.fourthElement, dataConfigFourth);
-        document.getElementById("fourthElement").style.removeProperty('display');
+        document.getElementById("fivethElement").style.removeProperty('display');
       }
       if (res.response.json.fivethElement) {
         drawFivethElement(res.response.json.fivethElement, dataConfigFiveth);
-        document.getElementById("fivethElement").style.removeProperty('display');
+        document.getElementById("sixthElement").style.removeProperty('display');
       }
+      if (res.response.json.sixthElement) {
+        console.log(res.response.json.sixthElement.colums_data)
+        console.log(res.response.json.sixthElement.data)
+        getDrawTable('fourthElement', res.response.json.sixthElement.colums_data, res.response.json.sixthElement.data);
+        document.getElementById("fourthElement").style.removeProperty('display');
+      }
+
+
       if (res.response.json.array_filters.localidades) {
         localidades = $("#localidades").val()
         //-----Get Value

@@ -111,11 +111,27 @@
                             <option value="">--Seleccione--</option>
                         </select>
                     </div>
+                    <div class="col-sm-12 col-md-2 col-lg-2">
+                        <h5>Resumen por: </h5>
+                        <input type="checkbox"  data-toggle="toggle" data-width="130" data-on="Cantidad" data-off="Porcentaje" id="input_check" data-onstyle="success" data-offstyle="primary">
+                    </div>
                 </div>
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
                     
+
+                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                        <section class="title_tables">
+                            <h3 ><span>Reporte Resumen:</span>&nbsp;&nbsp;
+                                <button  class="btn btn-primary" id="download_csv_fourthElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_fourthElement"><i class="fa-regular fa-file-excel"></i></button>
+                            </h3>
+                            <hr class="hrFirstElement">
+                        </section>
+                        <div id="fourthElement"></div>
+                    </div>  
+
 
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
@@ -127,6 +143,8 @@
                         </section>
                         <div id="firstElement"></div>
                     </div>
+
+
                     
                     <!-- FirtsElement -->
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
@@ -142,7 +160,7 @@
 
                     <!-- THirdElement  -->
                     <div class="col-sm-12 col-md-12 col-lg-12 " style="align-items: left;overflow-y: scroll;">
-                        <div id="fourthElement" > 
+                        <div id="fivethElement" > 
                             <div style="width: 1000px;height: 600px;" > 
                                 <canvas id="graphicFourth"></canvas>
                             </div>
@@ -164,7 +182,7 @@
 
                     <!-- FourthElement -->
                     <div class="col-sm-12 col-md-12 col-lg-12 " style="align-items: left;overflow-y: scroll;">
-                        <div id="fivethElement" > 
+                        <div id="sixthElement" > 
                             <div style="width: 1100px;height: 700px;" > 
                                 <canvas id="graphicFiveth"></canvas>
                             </div>
@@ -184,10 +202,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
 
-    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
-
+   <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
-    
 
     <!-- chartjs -->
     <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>

@@ -102,12 +102,7 @@
                             <option value="">--Seleccione--</option>
                         </select>
                     </div>
-                    <div class="col-sm-12 col-md-3 col-lg-3" >
-                        <h5>Estatus: </h5>
-                        <select class="form-control" id="estatus" >
-                            <option value="">--Seleccione--</option>
-                        </select>
-                    </div>
+
                     <div class="col-sm-12 col-md-3 col-lg-3" >
                         <h5>Sección: </h5>
                         <select class="form-control" id="seccion">
@@ -121,110 +116,65 @@
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-                    <!--  Gauges  -->
-                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
-                        <div class="card border-info m-2">
-                            <h2 class="card-title text-center">Servicio y Experiencia</h2>
-                            <div id='seccion1' style="margin:auto;align-items: center;"></div>
-                        </div>
-                    </div>
-
-                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
-                        <div class="card border-info m-2">
-                            <h2 class="card-title text-center">Mi equipo APYMSA</h2>
-                            <div id='seccion2' style="margin:auto;align-items: center;"></div>
-                        </div>
-                    </div>
-
-                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
-                        <div class="card border-info m-2">
-                            <h2 class="card-title text-center">Mantenimiento y Limpieza</h2>
-                            <div id='seccion3' style="margin:auto;align-items: center;"></div>
-                        </div>
-                    </div>
-
-                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
-                        <div class="card border-info m-2">
-                            <h2 class="card-title text-center">Gestión de Almacén</h2>
-                            <div id='seccion4' style="margin:auto;align-items: center;"></div>
-                        </div>
-                    </div>
-
-                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
-                        <div class="card border-info m-2">
-                            <h2 class="card-title text-center">Revisión Inventario</h2>
-                            <div id='seccion5' style="margin:auto;align-items: center;"></div>
-                        </div>
-                    </div>
-
-                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
-                        <div class="card border-info m-2">
-                            <h2 class="card-title text-center">Logística y Ultima milla</h2>
-                            <div id='seccion6' style="margin:auto;align-items: center;"></div>
-                        </div>
-                    </div>
-
-                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
-                        <div class="card border-info m-2">
-                            <h2 class="card-title text-center">Gestión Documental</h2>
-                            <div id='seccion7' style="margin:auto;align-items: center;"></div>
-                        </div>
-                    </div>
-
-                    <div  style="margin-top:18px;" class="col-sm-12 col-md-6 col-lg-3 div_card">
-                        <div class="card border-info m-2">
-                            <h2 class="card-title text-center">Crédito y Cobranza</h2>
-                            <div id='seccion8' style="margin:auto;align-items: center;"></div>
-                        </div>
-                    </div>
-
                     <!--  Tables  -->
                     <div class="col-sm-12 col-md-12 col-lg-12 mt-1" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span>Secciónes de planes de acción</span>&nbsp;&nbsp;
+                            <h3 ><span>Dias promedio en cerrar una tarea</span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
                             <hr class="hrFirstElement">
                         </section>
-                        <div id="exampletable"></div>
+                        <div id="firstElement"></div>
                     </div>
 
 
                     <div class="col-sm-12 col-md-12 col-lg-12 mt-1" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
                             <h3 ><span>Reportes De Planes de Acción </span>&nbsp;&nbsp;
-                                <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
+                                <button  class="btn btn-primary" id="download_csv_secondElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_secondElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
                             <hr class="hrFirstElement">
                         </section>
-                        <div id="firstElement" > </div>
+                        <div id="secondElement" > </div>
                     </div>
 
                     <!--  Graficas  -->
                     
-                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                    <div id="thirdElement" class="col-sm-12 col-md-12 col-lg-12 mb-5 mt-5" style="overflow-y: scroll;">
+                        <h3 style="text-align: center;">Acciones correctivas activas por sucursal<span> del 10/01/2022 - 10/20/2022</span></h3>
                         <div  style="width: 1000px;height: 600px;margin: auto;">
                             <canvas id="graphicFirst"></canvas>
                         </div>
                     </div>
 
-                    <div id="thirdElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                    <div id="fourthElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                        <h3 style="text-align: center;">Acciones correctivas activas por Regional<span>  del 10/01/2022 al 10/20/2022</span></h3>
                         <div  style="width: 1000px;height: 600px;margin: auto;">
                             <canvas id="graphicSecond"></canvas>
                         </div>
                     </div>
 
-                    <div id="fourthElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
-                        <div  style="width: 1000px;height: 600px;margin: auto;">
+                    <div id="fivethElement" class="col-sm-12 col-md-6 col-lg-6 mb-5" style="overflow-y: scroll;">
+                        <h3 style="text-align: center;">Tareas vencidas<span>  del 10/01/2022 al 10/20/2022</span></h3>
+                        <div  style="width: 850px;height: 500px;margin: auto;">
                             <canvas id="graphicThird"></canvas>
                         </div>
                     </div>
 
-                    <div id="fivethElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
-                        <div  style="width: 1000px;height: 600px;margin: auto;">
+                    <div id="sixthElement" class="col-sm-12 col-md-6 col-lg-6 mb-5" style="overflow-y: scroll;">
+                        <h3 style="text-align: center;">Tareas vencidas por sección <span> del 10/01/2022 al 10/20/2022</span></h3>
+                        <div  style="width: 850px;height: 500px;margin: auto;">
                             <canvas id="graphicFourth"></canvas>
+                        </div>
+                    </div>
+
+
+                    <div id="seventhElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                        <h3 style="text-align: center;">Tareas realizadas por sucursal <span> del 10/01/2022 al 10/20/2022</span></h3>
+                        <div  style="width: 1000px;height: 600px;margin: auto;">
+                            <canvas id="graphicFiveth"></canvas>
                         </div>
                     </div>
 
@@ -239,13 +189,12 @@
     <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
     <!-- tabulator : PDF Downlowd-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
-
     <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
-
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
-    
+
+
+
 
     <!-- chartjs -->
     <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
