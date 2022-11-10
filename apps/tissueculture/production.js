@@ -34,7 +34,7 @@ window.onload = function(){
     }
     if (key === 'env') {
       if (qs[key] === 'test'){
-         url = "https://preprod.linkaform.com/api/";
+         url = "http://127.0.0.1:8000/api/";
       }
     }
     if (key ==='title'){
@@ -108,7 +108,7 @@ window.onload = function(){
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
-    
+
   } else {
     unhideElement("inicio_ses");
     $('#divContent').hide();
@@ -163,9 +163,9 @@ loading.style.display = 'none';
 
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  let plant_code = document.getElementById("plant_code");  
-  let stage = document.getElementById("stage");  
+  let date_to = document.getElementById("date_to");
+  let plant_code = document.getElementById("plant_code");
+  let stage = document.getElementById("stage");
   getFirstElement(date_to.value, date_from.value, plant_code.value, stage.value);
 };
 
@@ -326,7 +326,7 @@ let chart1;
 function getDrawGraphicFirst(data, setOptions){
   //---CHART
   var ctx = document.getElementById('graphicFirst').getContext('2d');
-  
+
   if (chart1) {
     chart1.destroy();
   }
@@ -343,7 +343,7 @@ let chart2;
 function getDrawGraphicSecond(data, setOptions){
   //---CHART
   var ctx = document.getElementById('graphicSecond').getContext('2d');
-  
+
   if (chart2) {
     chart2.destroy();
   }
@@ -360,7 +360,7 @@ let chart3;
 function getDrawGraphicThird(data, setOptions){
   //---CHART
   var ctx = document.getElementById('graphicThird').getContext('2d');
-  
+
   if (chart3) {
     chart3.destroy();
   }
@@ -377,7 +377,7 @@ let chart4;
 function getDrawGraphicFourth(data, setOptions){
   //---CHART
   var ctx = document.getElementById('graphicFourth').getContext('2d');
-  
+
   if (chart4) {
     chart4.destroy();
   }
@@ -394,7 +394,7 @@ let chart5;
 function getDrawGraphicFiveth(data, setOptions){
   //---CHART
   var ctx = document.getElementById('graphicFiveth').getContext('2d');
-  
+
   if (chart5) {
     chart5.destroy();
   }
@@ -418,7 +418,7 @@ function getFormatterFirst(data){
   });
 
   array_colors = getPAlleteColors(7,dataValue.length);
-  
+
   dataElement1 = {
     labels: labelsValue,
     datasets: [
@@ -429,7 +429,7 @@ function getFormatterFirst(data){
       },
     ]
   }
-  
+
   return dataElement1;
 }
 
@@ -443,7 +443,7 @@ function getFormatterSecond(data){
   });
 
   array_colors = getPAlleteColors(7,dataValue.length);
-  
+
   dataElement2 = {
     labels: labelsValue,
     datasets: [
@@ -454,7 +454,7 @@ function getFormatterSecond(data){
       },
     ]
   }
-  
+
   return dataElement2;
 }
 
@@ -468,7 +468,7 @@ function getFormatterThird(data){
   });
 
   array_colors = getPAlleteColors(7,dataValue.length);
-  
+
   dataElement3 = {
     labels: labelsValue,
     datasets: [
@@ -479,7 +479,7 @@ function getFormatterThird(data){
       },
     ]
   }
-  
+
   return dataElement3;
 }
 
@@ -493,7 +493,7 @@ function getFormatterFourth(data){
   });
 
   array_colors = getPAlleteColors(7,dataValue.length);
-  
+
   dataElement4 = {
     labels: labelsValue,
     datasets: [
@@ -504,6 +504,6 @@ function getFormatterFourth(data){
       },
     ]
   }
-  
+
   return dataElement4;
 }
