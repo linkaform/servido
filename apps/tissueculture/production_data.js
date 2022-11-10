@@ -15,7 +15,6 @@ var columsTable1 = [
   { title:"v. vs Work Order", field:'variance',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
 ];
 
-
 var columsTable2 = [
   { title:"Produce Folio", field:'prod_folio',hozAlign:"left",width:150,  headerFilter:"input", formatter:"link", formatterParams:{
       url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id},
@@ -30,8 +29,6 @@ var columsTable2 = [
   { title:"Variance vs Work Order", field:'variance',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
   { title:"Order Status", field:'order_status',hozAlign:"left",width:250},
 ];
-
-
 
 var dataTable1 = [
   {
@@ -107,7 +104,6 @@ var dataTable1 = [
     variance: "100",
   },
 ];
-
 
 var dataTable2 = [
   {
@@ -185,6 +181,7 @@ var dataTable2 = [
 ];
 
 
+
 var dataElement = {
   labels: ['Valor1','valor2'],
   datasets: [
@@ -211,6 +208,9 @@ var dataElement2 = {
     },
   ]
 };
+
+
+
 
 
 var setOptions1 = {
@@ -373,35 +373,101 @@ var setOptions4 = {
 var setOptions5 = {
   plugins: {
     legend: {
+      display: true
+    },
+    title: {
+      display: true,
+      text: 'Daily Production Report',
+      font: {
+        size: 25
+      }
+    },
+    datalabels: {
+      color: '#17202a',
+      labels: {
+        title: {
+          font: {
+            weight: 'bold',
+            size: 18,
+          }
+        },
+      },
+      align:'bot',
+    }
+  },
+  scales: {
+    x: {
+      display: true,
+      title:{
+        display: true,
+        text: 'Date',
+        size: 30,
+      },
+      ticks: {
+        fontSize: 40
+      }
+    },
+    "ay": {
+      type: 'linear',
+      display: true,
+      title:{
+        display: true,
+        text: 'Containers',
+        size: 30,
+      },
+      ticks: {
+        fontSize: 40
+      },
+      position: 'right',
+    },
+    "ay1": {
+      type: 'linear',
+      display: true,
+      title:{
+        display: true,
+        text: 'Eaches',
+        size: 30,
+      },
+      ticks: {
+        fontSize: 40
+      },
+      position: 'left',
+    }
+  },
+};
+
+var setOptions6 = {
+  plugins: {
+    legend: {
       display: true,
     },
     title: {
         display: true,
-        text: 'Variance By Crop',
+        text: 'By Week',
         font: {
           size: 25
         }
     },
     datalabels: {
-        color: 'white',
-        font: {
-          weight: 'bold',
-          size: 35,
-        },
-        align:'bot',
-      }
+      color: 'white',
+      font: {
+        weight: 'bold',
+        size: 35,
+      },
+      align:'bot',
+    }
   },
   scales: {
     x: {
-      display: true,
+      display: false,
       gridLines: {
-        display: true,
+        display: false,
       },
     },
     y:{
-      display: true,
+      display: false,
       gridLines: {
-        display: true,
+        display: false,
       },
     }
   },

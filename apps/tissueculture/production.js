@@ -198,8 +198,6 @@ function getFirstElement(dateTo, dateFrom, plantCode, stage){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log('Valores')
-      console.log(res.response)
       if (res.response.firstElement.tabledata) {
         $('#textAlert1').text(res.response.firstElement.tabledata.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
       }
@@ -254,8 +252,7 @@ function getFirstElement(dateTo, dateFrom, plantCode, stage){
         getDrawGraphicThird(dataElementFormat, setOptions3)
         document.getElementById("thirdElement").style.removeProperty('display');
       }
-      if (res.response.seventhElement.tabledata) {+
-        console.log('Entra a pie')
+      if (res.response.seventhElement.tabledata) {
         dataElementFormat = getFormatterFourth(res.response.seventhElement.tabledata);
         getDrawGraphicFourth(dataElementFormat, setOptions4)
         document.getElementById("fourthElement").style.removeProperty('display');
@@ -267,6 +264,16 @@ function getFirstElement(dateTo, dateFrom, plantCode, stage){
       if (res.response.tenthElement.tabledata) {
         getDrawTable('seventhElement', columsTable2, res.response.tenthElement.tabledata);
         document.getElementById("seventhElement").style.removeProperty('display');
+      }
+      if (res.response.fourthElementCutDay.tabledata){
+        dataElementFormat = getFormatterFiveth(res.response.fourthElementCutDay.tabledata);
+        getDrawGraphicFiveth(dataElementFormat, setOptions5)
+        document.getElementById("fivethElement").style.removeProperty('display');
+      }
+      if (res.response.fourthElementWeek.tabledata){  
+        dataElementFormat = getFormatterSixth(res.response.fourthElementWeek.tabledata);
+        getDrawGraphicSixth(dataElementFormat, setOptions6)
+        document.getElementById("eigthElement").style.removeProperty('display');
       }
       $('.div_card').show();
     } else {
@@ -407,6 +414,23 @@ function getDrawGraphicFiveth(data, setOptions){
   });
 }
 
+let chart6;
+function getDrawGraphicSixth(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicSixth').getContext('2d');
+
+  if (chart6) {
+    chart6.destroy();
+  }
+
+  chart6 = new Chart(ctx, {
+    type: 'pie',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}
+
 //-----FORMATER
 function getFormatterFirst(data){
   labelsValue = data.map(function(e) {
@@ -506,4 +530,72 @@ function getFormatterFourth(data){
   }
 
   return dataElement4;
+}
+
+
+function getFormatterFiveth(data){
+  labelsValue = data.map(function(e) {
+    return  e.date;
+  });
+
+  dataValueEaches = data.map(function(e) {
+    return e.eaches;
+  });
+
+  dataValueProduced = data.map(function(e) {
+    return e.produced;
+  });
+
+  arrayColorsProd = getPAlleteColors(7,dataValueEaches.length);
+
+  arrayColorsEaches = getPAlleteColors(7,dataValueProduced.length);
+
+  dataElement5 = {
+    labels: labelsValue,
+    datasets: [
+      {
+        label: 'Produced',
+        type: "line",
+        borderColor: "#2d6073",
+        yAxisID: "ay",
+        data: dataValueProduced,
+        fill: false,
+      },
+      {
+        label: 'Eaches',
+        type: "line",
+        borderColor: "#65b8a6",
+        yAxisID: "ay1",
+        data: dataValueEaches,
+        fill: false,
+      },
+    ]
+  }
+
+  return dataElement5;
+}
+
+function getFormatterSixth(data){
+  labelsValue = data.map(function(e) {
+    return 'Week: '+ e.cut_week;
+  });
+
+  dataValue = data.map(function(e) {
+    return e.eaches;
+  });
+
+  array_colors = getPAlleteColors(7,dataValue.length);
+
+  dataElement1 = {
+    labels: labelsValue,
+    datasets: [
+      {
+        label: 'Eaches',
+        data: dataValue,
+        backgroundColor: array_colors,
+      },
+    ]
+  }
+
+  return dataElement1;
 }

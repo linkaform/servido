@@ -230,8 +230,8 @@ function getFirstElement(dateTo, dateFrom, localidades, usuario, check){
         document.getElementById("sixthElement").style.removeProperty('display');
       }
       if (res.response.json.sixthElement) {
-        console.log(res.response.json.sixthElement.colums_data)
-        console.log(res.response.json.sixthElement.data)
+        console.log('COLUMNAS',res.response.json.sixthElement.colums_data)
+        console.log('DATA',res.response.json.sixthElement.data)
         getDrawTable('fourthElement', res.response.json.sixthElement.colums_data, res.response.json.sixthElement.data);
         document.getElementById("fourthElement").style.removeProperty('display');
       }
