@@ -3,28 +3,32 @@
 //--Table Montajes Por Mes
 
 var columsTable1 = [
-  { title:"Week", field:'year_week',hozAlign:"left",width:250},
-  { title:"Plant Code", field:'plant_code',hozAlign:"left",width:250},
-  { title:"Stage", field:'stage',hozAlign:"left",width:250},
+  { title:"Week", field:'year_week',hozAlign:"left",width:150, headerFilter:"input"},
+  { title:"Plant Code", field:'plant_code',hozAlign:"left",width:150, headerFilter:"input"},
+  { title:"Stage", field:'stage',hozAlign:"left",width:150, headerFilter:"input"},
 
-  { title:"Produced Eaches", field:'eaches',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:250},
-  { title:"Produced Containers", field:'produced',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:250},
-  { title:"Work Order", field:'work_order',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:250},
-  { title:"Variance vs Work Order", field:'variance',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:250},
-  { title:"Required Eaches", field:'required',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:250},
-  { title:"Variance Vs Required", field:'req_variance',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:250},
+  { title:"Prod. Eaches", field:'eaches',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
+  { title:"Prod. Containers", field:'produced',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
+  { title:"Req. Eaches", field:'required',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
+  { title:"V. Vs Required", field:'req_variance',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
+  { title:"Work Order", field:'work_order',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
+  { title:"v. vs Work Order", field:'variance',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
 ];
 
 
 var columsTable2 = [
-  { title:"Week", field:'year_week',hozAlign:"left",width:250},
-  { title:"Plant Code", field:'plant_code',hozAlign:"left",width:250},
-  { title:"Stage", field:'stage',hozAlign:"left",width:250},
-  { title:"Team Assigned", field:'team',hozAlign:"left",width:250},
+  { title:"Produce Folio", field:'prod_folio',hozAlign:"left",width:150,  headerFilter:"input", formatter:"link", formatterParams:{
+      url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id},
+      target:"_blank",}
+    },
+  { title:"Plant Code", field:'plant_code',hozAlign:"left",width:150, headerFilter:"input"},
+  { title:"Stage", field:'stage',hozAlign:"left",width:150, headerFilter:"input"},
+  { title:"Team Assigned", field:'team',hozAlign:"left",width:150, headerFilter:"input"},
 
-  { title:"Produced", field:'produced',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:250},
-  { title:"Work Order", field:'work_order',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:250},
-  { title:"Variance vs Work Order", field:'variance',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:250},
+  { title:"Work Order", field:'work_order',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
+  { title:"Produced", field:'produced',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
+  { title:"Variance vs Work Order", field:'variance',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: true, decimal: ".", thousand: ",", precision: 2},width:150},
+  { title:"Order Status", field:'order_status',hozAlign:"left",width:250},
 ];
 
 
