@@ -331,7 +331,7 @@ var setOptions1 = {
     },
     title: {
         display: true,
-        text: 'Grapich Example',
+        text: 'Grapich Productivity',
         font: {
           size: 25
         }

@@ -27,7 +27,7 @@ hideElement("seventhElement");
 window.onload = function(){
   var qs = urlParamstoJson();
   var formNode = document.getElementById("appCont");
-	for(var key in qs){
+  for(var key in qs){
     if (key === 'script_id' ){
       console.log('script id', key)
       scriptId = parseInt(qs[key]);
@@ -40,41 +40,41 @@ window.onload = function(){
     if (key ==='title'){
       $("#title_report").text(qs[key]);
     }
-		var elements = getAllElementsWithAttribute(formNode, 'data-infosync-id', key);
-		var value = decodeURI(qs[key]);
+    var elements = getAllElementsWithAttribute(formNode, 'data-infosync-id', key);
+    var value = decodeURI(qs[key]);
     if (key === 'infosyncRecordID'){
       var recId = document.getElementById("infosyncRecordID");
       recId.value = value;
     }
-		else if(elements.length > 0){
-			switch(elements[0].type){
-				case 'text':
-					elements[0].value = value;
-					break;
-				case 'textarea':
-					elements[0].value = value;
-					break;
-				case 'select-one':
-					elements[0].value = value;
-					break;
-				case 'radio':
-					for(var idx in elements){
-						if(elements[idx].value === value){
-							elements[idx].checked = true;
-						}
-					}
-					break;
-				case 'checkbox':
-					var values = value.split(';');
-					for(var idx in elements){
-						if(values.indexOf(elements[idx].value) !== -1){
-							elements[idx].checked = true;
-						}
-					}
-					break;
-			}
-		}
-	}
+    else if(elements.length > 0){
+      switch(elements[0].type){
+        case 'text':
+          elements[0].value = value;
+          break;
+        case 'textarea':
+          elements[0].value = value;
+          break;
+        case 'select-one':
+          elements[0].value = value;
+          break;
+        case 'radio':
+          for(var idx in elements){
+            if(elements[idx].value === value){
+              elements[idx].checked = true;
+            }
+          }
+          break;
+        case 'checkbox':
+          var values = value.split(';');
+          for(var idx in elements){
+            if(values.indexOf(elements[idx].value) !== -1){
+              elements[idx].checked = true;
+            }
+          }
+          break;
+      }
+    }
+  }
 
   us = getCookie("userId");
   jw = getCookie("userJwt");
