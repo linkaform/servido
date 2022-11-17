@@ -271,7 +271,7 @@ function getFirstElement(dateTo, dateFrom, plantCode, stage){
         getDrawGraphicFiveth(dataElementFormat, setOptions5)
         document.getElementById("fivethElement").style.removeProperty('display');
       }
-      if (res.response.fourthElementWeek.tabledata){  
+      if (res.response.fourthElementWeek.tabledata){
         dataElementFormat = getFormatterSixth(res.response.fourthElementWeek.tabledata);
         getDrawGraphicSixth(dataElementFormat, setOptions6)
         document.getElementById("eigthElement").style.removeProperty('display');
@@ -555,7 +555,7 @@ function getFormatterFiveth(data){
     labels: labelsValue,
     datasets: [
       {
-        label: 'Produced',
+        label: 'Containers',
         type: "line",
         borderColor: "#2d6073",
         yAxisID: "ay",
