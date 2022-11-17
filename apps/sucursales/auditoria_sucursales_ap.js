@@ -420,9 +420,9 @@ function drawFirstElement(data){
 
 function drawSecondElement(data){
    $('#secondElement').empty();
-   const margin = {top: 30, right: 30, bottom: 150, left: 60},
-       width = 700 - margin.left - margin.right,
-       height = 300 - margin.top - margin.bottom;
+    const margin = {top: 30, right: 30, bottom: 150, left: 90},
+       width = 1800 - margin.left - margin.right,
+       height = 650 - margin.top - margin.bottom;
 
    // append the svg object to the body of the page
    const svg = d3.select("#secondElement")
@@ -512,9 +512,9 @@ function drawSecondElement(data){
 
 function drawThirdElement(data){
    $('#thirdElement').empty();
-   const margin = {top: 30, right: 30, bottom: 150, left: 60},
-       width = 700 - margin.left - margin.right,
-       height = 300 - margin.top - margin.bottom;
+    const margin = {top: 30, right: 30, bottom: 150, left: 90},
+       width = 1800 - margin.left - margin.right,
+       height = 650 - margin.top - margin.bottom;
 
    // append the svg object to the body of the page
    const svg = d3.select("#thirdElement")
@@ -607,9 +607,9 @@ function drawThirdElement(data){
 
 function drawFourthElement(data){
   $('#fourthElement').empty();
-  const margin = {top: 30, right: 30, bottom: 150, left: 60},
-  width = 700 - margin.left - margin.right,
-  height = 300 - margin.top - margin.bottom;
+   const margin = {top: 30, right: 30, bottom: 150, left: 90},
+       width = 1800 - margin.left - margin.right,
+       height = 650 - margin.top - margin.bottom;
 
   // append the svg object to the body of the page
   const svg = d3.select("#fourthElement")

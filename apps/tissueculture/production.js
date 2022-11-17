@@ -248,6 +248,7 @@ function getFirstElement(dateTo, dateFrom, plantCode, stage){
         document.getElementById("secondElement").style.removeProperty('display');
       }
       if (res.response.sixthElement.tabledata) {
+        console.log(res.response.sixthElement.tabledata);
         dataElementFormat = getFormatterThird(res.response.sixthElement.tabledata);
         getDrawGraphicThird(dataElementFormat, setOptions3)
         document.getElementById("thirdElement").style.removeProperty('display');
@@ -426,7 +427,7 @@ function getDrawGraphicSixth(data, setOptions){
   chart6 = new Chart(ctx, {
     type: 'pie',
     data:data,
-    plugins: [ChartDataLabels],
+    //plugins: [ChartDataLabels],
     options: setOptions,
   });
 }

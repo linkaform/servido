@@ -214,6 +214,9 @@ var dataElement2 = {
 
 
 var setOptions1 = {
+  layout:{
+    padding:10
+  },
   plugins: {
     legend: {
       display: true,
@@ -437,6 +440,9 @@ var setOptions5 = {
 };
 
 var setOptions6 = {
+  layout:{
+    padding:15
+  },
   plugins: {
     legend: {
       display: true,
@@ -448,13 +454,16 @@ var setOptions6 = {
           size: 25
         }
     },
-    datalabels: {
-      color: 'white',
-      font: {
-        weight: 'bold',
-        size: 35,
+
+    labels:{
+      render: (context)=>{
+        console.log(context.value)
+        return context.value + ' %'
       },
-      align:'bot',
+      fontSize: 15,
+      fontWeight: 'bold',
+      position:'outside',
+      textMargin: 5
     }
   },
   scales: {

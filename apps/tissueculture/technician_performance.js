@@ -16,12 +16,6 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
-hideElement("secondElement");
-hideElement("thirdElement");
-hideElement("fourthElement");
-hideElement("fivethElement");
-hideElement("sixthElement");
-hideElement("seventhElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -132,20 +126,43 @@ function loadDemoData(){
   unhideElement("title_demo")
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
-  document.getElementById("firstElement").style.removeProperty('display');
-  document.getElementById("secondElement").style.removeProperty('display');
+
   getDrawTable('firstElement', columsTable1, dataTable1);
-  getDrawTable('secondElement', columsTable2, dataTable2);
-  getDrawGraphicFirst(data1, setOptions1);
-  getDrawGraphicSecond(data2, setOptions2);
-  getDrawGraphicThird(data3, setOptions3);
-  getDrawGraphicFourth(data4, setOptions4);
-  getDrawGraphicFiveth(data5, setOptions5);
+  document.getElementById("firstElement").style.removeProperty('display');
+
+  getDrawGraphicFirst(dataElement1, setOptions1)
+  document.getElementById("secondElement").style.removeProperty('display');
+
+  getDrawGraphicSecond(dataElement2, setOptions2)
   document.getElementById("thirdElement").style.removeProperty('display');
+
+  getDrawTable('fourthElement', columsTable2, dataTable2);
   document.getElementById("fourthElement").style.removeProperty('display');
+
+  getDrawTable('fivethElement', columsTable3, dataTable3);
   document.getElementById("fivethElement").style.removeProperty('display');
+
+  getDrawGraphicThird(dataElement3, setOptions3)
   document.getElementById("sixthElement").style.removeProperty('display');
+
+  getDrawTable('seventhElement', columsTable4, dataTable4);
   document.getElementById("seventhElement").style.removeProperty('display');
+
+  getDrawGraphicFourth(dataElement4, setOptions4)
+  document.getElementById("eigthElement").style.removeProperty('display');
+
+  getDrawGraphicFiveth(dataElement5, setOptions5)
+  document.getElementById("nineElement").style.removeProperty('display');
+
+  getDrawTable('tenthElement', columsTable5, dataTable5);
+  document.getElementById("tenthElement").style.removeProperty('display');
+
+  getDrawTable('eleventhElement', columsTable6, dataTable6);
+  document.getElementById("eleventhElement").style.removeProperty('display');
+
+  getDrawGraphicSixth(dataElement6, setOptions6);
+  document.getElementById("twelvethElement").style.removeProperty('display');
+  
 }
 
 const loading = document.querySelector('.loading-container');
@@ -154,13 +171,10 @@ loading.style.display = 'none';
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  let sucursal = document.getElementById("sucursal");  
-  let seccion = document.getElementById("seccion");  
-
-  getFirstElement(date_to.value, date_from.value);
+  getFirstElement(date_to.value, date_from.value, '200px');
 };
 
-function getFirstElement(dateTo, dateFrom, sucursal, seccion){
+function getFirstElement(dateTo, dateFrom){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -173,8 +187,9 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      sucursal: sucursal,
-      seccion: seccion,
+      servicio: servicio,
+      cliente: cliente,
+      tecnico: tecnico,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -188,33 +203,10 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res.response.json)
       if (res.response.json.firstElement.data) {
-        getDrawTable('secondElement', columsTable2, res.response.json.firstElement.data);
-        document.getElementById("secondElement").style.removeProperty('display');
+        console.log('drawFirstElement.........');
+        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
       }
-      if (res.response.json.secondElement) {
-        getDrawGraphicFirst(res.response.json.secondElement, setOptions1);
-        document.getElementById("thirdElement").style.removeProperty('display');
-      }
-      if (res.response.json.thirdElement) {
-        getDrawGraphicFirst(res.response.json.thirdElement, setOptions2);
-        document.getElementById("fourthElement").style.removeProperty('display');
-      }
-      if (res.response.json.fourthElement) {
-        getDrawGraphicFirst(res.response.json.fourthElement, setOptions3);
-        document.getElementById("fivethElement").style.removeProperty('display');
-      }
-      if (res.response.json.fivethElement) {
-        getDrawGraphicFirst(res.response.json.fivethElement, setOptions4);
-        document.getElementById("sixthElement").style.removeProperty('display');
-      }
-      if (res.response.json.sixthElement) {
-        getDrawGraphicFirst(res.response.json.sixthElement, setOptions5);
-        document.getElementById("seventhElement").style.removeProperty('display');
-      }
-
-
       
     } else {
       hideLoading();
@@ -235,11 +227,10 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
   })
 };
 
-
 //-----TABLES
-function getDrawTable(id, columnsData, tableData){
+function getDrawTable(id, columnsData, tableData, size){
   var  table = new Tabulator("#" + id, {
-    height:"265px",
+    height:size,
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -268,15 +259,12 @@ function getDrawTable(id, columnsData, tableData){
   }
 }
 
-
-
-
 //-----GRAPICH
 let chart1;
 function getDrawGraphicFirst(data, setOptions){
   //---CHART
   var ctx = document.getElementById('graphicFirst').getContext('2d');
-  
+
   if (chart1) {
     chart1.destroy();
   }
@@ -294,7 +282,7 @@ let chart2;
 function getDrawGraphicSecond(data, setOptions){
   //---CHART
   var ctx = document.getElementById('graphicSecond').getContext('2d');
-  
+
   if (chart2) {
     chart2.destroy();
   }
@@ -311,7 +299,7 @@ let chart3;
 function getDrawGraphicThird(data, setOptions){
   //---CHART
   var ctx = document.getElementById('graphicThird').getContext('2d');
-  
+
   if (chart3) {
     chart3.destroy();
   }
@@ -324,29 +312,29 @@ function getDrawGraphicThird(data, setOptions){
   });
 }
 
+
 let chart4;
 function getDrawGraphicFourth(data, setOptions){
   //---CHART
   var ctx = document.getElementById('graphicFourth').getContext('2d');
-  
+
   if (chart4) {
     chart4.destroy();
   }
 
   chart4 = new Chart(ctx, {
-    type: 'bar',
+    type: 'pie',
     data:data,
     plugins: [ChartDataLabels],
     options: setOptions,
   });
 }
 
-
 let chart5;
 function getDrawGraphicFiveth(data, setOptions){
   //---CHART
   var ctx = document.getElementById('graphicFiveth').getContext('2d');
-  
+
   if (chart5) {
     chart5.destroy();
   }
@@ -359,4 +347,19 @@ function getDrawGraphicFiveth(data, setOptions){
   });
 }
 
+let chart6;
+function getDrawGraphicSixth(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicSixth').getContext('2d');
 
+  if (chart6) {
+    chart6.destroy();
+  }
+
+  chart6 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}

@@ -16,12 +16,6 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
-hideElement("secondElement");
-hideElement("thirdElement");
-hideElement("fourthElement");
-hideElement("fivethElement");
-hideElement("sixthElement");
-hideElement("seventhElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -132,20 +126,7 @@ function loadDemoData(){
   unhideElement("title_demo")
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
-  document.getElementById("firstElement").style.removeProperty('display');
-  document.getElementById("secondElement").style.removeProperty('display');
   getDrawTable('firstElement', columsTable1, dataTable1);
-  getDrawTable('secondElement', columsTable2, dataTable2);
-  getDrawGraphicFirst(data1, setOptions1);
-  getDrawGraphicSecond(data2, setOptions2);
-  getDrawGraphicThird(data3, setOptions3);
-  getDrawGraphicFourth(data4, setOptions4);
-  getDrawGraphicFiveth(data5, setOptions5);
-  document.getElementById("thirdElement").style.removeProperty('display');
-  document.getElementById("fourthElement").style.removeProperty('display');
-  document.getElementById("fivethElement").style.removeProperty('display');
-  document.getElementById("sixthElement").style.removeProperty('display');
-  document.getElementById("seventhElement").style.removeProperty('display');
 }
 
 const loading = document.querySelector('.loading-container');
@@ -154,13 +135,10 @@ loading.style.display = 'none';
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  let sucursal = document.getElementById("sucursal");  
-  let seccion = document.getElementById("seccion");  
-
   getFirstElement(date_to.value, date_from.value);
 };
 
-function getFirstElement(dateTo, dateFrom, sucursal, seccion){
+function getFirstElement(dateTo, dateFrom){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -173,8 +151,7 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      sucursal: sucursal,
-      seccion: seccion,
+      option:'1',
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -188,33 +165,10 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res.response.json)
       if (res.response.json.firstElement.data) {
-        getDrawTable('secondElement', columsTable2, res.response.json.firstElement.data);
-        document.getElementById("secondElement").style.removeProperty('display');
+        console.log('drawFirstElement.........');
+        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
       }
-      if (res.response.json.secondElement) {
-        getDrawGraphicFirst(res.response.json.secondElement, setOptions1);
-        document.getElementById("thirdElement").style.removeProperty('display');
-      }
-      if (res.response.json.thirdElement) {
-        getDrawGraphicFirst(res.response.json.thirdElement, setOptions2);
-        document.getElementById("fourthElement").style.removeProperty('display');
-      }
-      if (res.response.json.fourthElement) {
-        getDrawGraphicFirst(res.response.json.fourthElement, setOptions3);
-        document.getElementById("fivethElement").style.removeProperty('display');
-      }
-      if (res.response.json.fivethElement) {
-        getDrawGraphicFirst(res.response.json.fivethElement, setOptions4);
-        document.getElementById("sixthElement").style.removeProperty('display');
-      }
-      if (res.response.json.sixthElement) {
-        getDrawGraphicFirst(res.response.json.sixthElement, setOptions5);
-        document.getElementById("seventhElement").style.removeProperty('display');
-      }
-
-
       
     } else {
       hideLoading();
@@ -235,11 +189,10 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
   })
 };
 
-
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"265px",
+    height:"500px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -267,96 +220,3 @@ function getDrawTable(id, columnsData, tableData){
     });
   }
 }
-
-
-
-
-//-----GRAPICH
-let chart1;
-function getDrawGraphicFirst(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicFirst').getContext('2d');
-  
-  if (chart1) {
-    chart1.destroy();
-  }
-
-  chart1 = new Chart(ctx, {
-    type: 'bar',
-    data:data,
-    plugins: [ChartDataLabels],
-    options: setOptions,
-  });
-}
-
-
-let chart2;
-function getDrawGraphicSecond(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicSecond').getContext('2d');
-  
-  if (chart2) {
-    chart2.destroy();
-  }
-
-  chart2 = new Chart(ctx, {
-    type: 'bar',
-    data:data,
-    plugins: [ChartDataLabels],
-    options: setOptions,
-  });
-}
-
-let chart3;
-function getDrawGraphicThird(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicThird').getContext('2d');
-  
-  if (chart3) {
-    chart3.destroy();
-  }
-
-  chart3 = new Chart(ctx, {
-    type: 'bar',
-    data:data,
-    plugins: [ChartDataLabels],
-    options: setOptions,
-  });
-}
-
-let chart4;
-function getDrawGraphicFourth(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicFourth').getContext('2d');
-  
-  if (chart4) {
-    chart4.destroy();
-  }
-
-  chart4 = new Chart(ctx, {
-    type: 'bar',
-    data:data,
-    plugins: [ChartDataLabels],
-    options: setOptions,
-  });
-}
-
-
-let chart5;
-function getDrawGraphicFiveth(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicFiveth').getContext('2d');
-  
-  if (chart5) {
-    chart5.destroy();
-  }
-
-  chart5 = new Chart(ctx, {
-    type: 'bar',
-    data:data,
-    plugins: [ChartDataLabels],
-    options: setOptions,
-  });
-}
-
-
