@@ -588,7 +588,7 @@ function drawThirdElement(data){
   .padding(0.2);
 
   const y = d3.scaleLinear()
-  .domain([0, 125])
+  .domain([0, 120])
   .range([ height, 0]);
 
 
@@ -598,10 +598,11 @@ function drawThirdElement(data){
   .append('text')
   .text((data) =>  data.section_grade + '% / ' +data.total)
   .attr('x', data => x(data.pagina) + x.bandwidth() / 2)
-  .attr('y', data => y(data.section_grade) - 25)
+  .attr('y', data => y(data.section_grade) - 65)
   .style('fill','#494949')
   .style("font-size", "13.5px")
   .attr('text-anchor','middle');
+
 
 }
 
@@ -688,7 +689,7 @@ function drawFourthElement(data){
   .append('text')
   .text((data) => parseInt(data.score) + '% / ' +data.total)
   .attr('x', data => x(data.perfil) + x.bandwidth() / 2)
-  .attr('y', data => y(data.score) - 15)
+  .attr('y', data => y(data.score) - 60)
   .style('fill','#494949')
   .style("font-size", "13.5px")
   .attr('text-anchor','middle');

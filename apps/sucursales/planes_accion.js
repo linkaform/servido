@@ -96,6 +96,7 @@ window.onload = function(){
     }
     //--Styles
     setSpinner();
+    getSucursales();
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
@@ -157,7 +158,7 @@ function runFirstElement(){
   let sucursal = document.getElementById("sucursal");  
   let seccion = document.getElementById("seccion");  
 
-  getFirstElement(date_to.value, date_from.value);
+  getFirstElement(date_to.value, date_from.value, sucursal.value, seccion.value);
 };
 
 function getFirstElement(dateTo, dateFrom, sucursal, seccion){
@@ -165,7 +166,6 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
   $("#divContent").hide();
   $('.load-wrapp').show();
   $('.title_tables').hide();
-
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
@@ -189,6 +189,18 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
       $("#divContent").show();
       $('.title_tables').show();
       console.log(res.response.json)
+      //----Date
+      date_from = new Date($('#date_from').val());
+      date_to = new Date($('#date_to').val());
+
+      date_from.setDate(date_from.getDate() + 1)
+      date_to.setDate(date_to.getDate() + 1)
+
+      date_from = date_from.toLocaleDateString()
+      date_to = date_to.toLocaleDateString()
+
+      $('.text_date').text(' del '+date_from+' al '+ date_to)
+
       if (res.response.json.firstElement.data) {
         getDrawTable('secondElement', columsTable2, res.response.json.firstElement.data);
         document.getElementById("secondElement").style.removeProperty('display');
@@ -198,24 +210,22 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
         document.getElementById("thirdElement").style.removeProperty('display');
       }
       if (res.response.json.thirdElement) {
-        getDrawGraphicFirst(res.response.json.thirdElement, setOptions2);
+        console.log('Third Element',res.response.json.thirdElement)
+        getDrawGraphicSecond(res.response.json.thirdElement, setOptions2);
         document.getElementById("fourthElement").style.removeProperty('display');
       }
       if (res.response.json.fourthElement) {
-        getDrawGraphicFirst(res.response.json.fourthElement, setOptions3);
+        getDrawGraphicThird(res.response.json.fourthElement, setOptions3);
         document.getElementById("fivethElement").style.removeProperty('display');
       }
       if (res.response.json.fivethElement) {
-        getDrawGraphicFirst(res.response.json.fivethElement, setOptions4);
+        getDrawGraphicFourth(res.response.json.fivethElement, setOptions4);
         document.getElementById("sixthElement").style.removeProperty('display');
       }
       if (res.response.json.sixthElement) {
-        getDrawGraphicFirst(res.response.json.sixthElement, setOptions5);
+        getDrawGraphicFiveth(res.response.json.sixthElement, setOptions5);
         document.getElementById("seventhElement").style.removeProperty('display');
       }
-
-
-      
     } else {
       hideLoading();
       if(res.code == 11){
@@ -268,9 +278,6 @@ function getDrawTable(id, columnsData, tableData){
   }
 }
 
-
-
-
 //-----GRAPICH
 let chart1;
 function getDrawGraphicFirst(data, setOptions){
@@ -284,11 +291,9 @@ function getDrawGraphicFirst(data, setOptions){
   chart1 = new Chart(ctx, {
     type: 'bar',
     data:data,
-    plugins: [ChartDataLabels],
     options: setOptions,
   });
 }
-
 
 let chart2;
 function getDrawGraphicSecond(data, setOptions){
@@ -302,7 +307,6 @@ function getDrawGraphicSecond(data, setOptions){
   chart2 = new Chart(ctx, {
     type: 'bar',
     data:data,
-    plugins: [ChartDataLabels],
     options: setOptions,
   });
 }
@@ -319,7 +323,6 @@ function getDrawGraphicThird(data, setOptions){
   chart3 = new Chart(ctx, {
     type: 'bar',
     data:data,
-    plugins: [ChartDataLabels],
     options: setOptions,
   });
 }
@@ -336,7 +339,6 @@ function getDrawGraphicFourth(data, setOptions){
   chart4 = new Chart(ctx, {
     type: 'bar',
     data:data,
-    plugins: [ChartDataLabels],
     options: setOptions,
   });
 }
@@ -354,9 +356,22 @@ function getDrawGraphicFiveth(data, setOptions){
   chart5 = new Chart(ctx, {
     type: 'bar',
     data:data,
-    plugins: [ChartDataLabels],
     options: setOptions,
   });
 }
+//---CATALOG
+function getSucursales(){
+  //--Form ID , Catalog, Level , Type
+  getCatalog(82135,79950,1,catalogType='custom');
+}
 
+function customCatalogView(res){
+  if (res){
+    $("#sucursal").empty();
+    $('#sucursal').append('<option value="--">--Seleccione--</option>');
 
+    for (i = 0; i < res.rows.length; i++) {
+      $('#sucursal').append('<option value="'+res.rows[i].key+'">'+res.rows[i].key+'</option>');
+    }
+  }
+}

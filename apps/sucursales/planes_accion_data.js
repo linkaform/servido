@@ -539,7 +539,9 @@ var data5 = {
 
 var setOptions1 = {
   plugins: {
+
     datalabels: {
+      display: false,
       color: 'white',
     }
   },
@@ -557,6 +559,7 @@ var setOptions1 = {
 var setOptions2 = {
   plugins: {
     datalabels: {
+      display: false,
       color: 'white',
     }
   },
@@ -575,6 +578,7 @@ var setOptions3 = {
   responsive: true,
   plugins: {
     datalabels: {
+      display: false,
       color: 'white',
     },
     legend: {
@@ -599,6 +603,7 @@ var setOptions4 = {
   responsive: true,
   plugins: {
     legend: {
+      display: false,
       position: 'top',
     },
     datalabels: {
@@ -612,6 +617,7 @@ var setOptions4 = {
 var setOptions5 = {
   plugins: {
     datalabels: {
+      display: false,
       color: 'white',
     }
   },

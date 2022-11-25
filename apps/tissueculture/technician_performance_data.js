@@ -15,12 +15,12 @@ var columsTable2 = [
 ];
 
 var columsTable3 = [
-  { title:"Plant", field:'value_plant',hozAlign:"left", responsive:0, width:200,},
+  { title:"Cutter", field:'value_plant',hozAlign:"left", responsive:0, width:200,},
   { title:"Cut", field:'value_cut',hozAlign:"left", responsive:2, width:200,},
 ];
 
 var columsTable4 = [
-  { title:"Cutter", field:'value_cutter',hozAlign:"left", responsive:0, width:200,},
+  { title:"Cutter", field:'value_plant',hozAlign:"left", responsive:0, width:200,},
   { title:"Cut", field:'value_cut',hozAlign:"left", responsive:2, width:200,},
 ];
 
@@ -28,14 +28,6 @@ var columsTable4 = [
 var columsTable5 = [
   { title:"Cutter", field:'cutter',hozAlign:"left", width:150,},
   { title:"Work Hours", field:'work_hours',hozAlign:"left", width:150,},
-];
-
-var columsTable6 = [
-  { title:"Stage", field:'stage',hozAlign:"left", width:150,},
-  { title:"Magnolia", field:'magnolia',hozAlign:"left", width:150,},
-  { title:"Team 1", field:'team_1',hozAlign:"left", width:150,},
-  { title:"Team 2", field:'team_2',hozAlign:"left", width:150,},
-  { title:"Team 3", field:'team_3',hozAlign:"left", width:150,},
 ];
 
 
@@ -307,18 +299,13 @@ var dataElement5 = {
   ]
 };
 
+
 var dataElement6 = {
-  labels: ["Team 1","Team 2","Team 3"],
+  labels: ["Joe Down","Pedro Palos","Casi Miro"],
   datasets: [
     {
-      label: "Stage 2",
-        data: [500,760,650],
-        backgroundColor: "#1f618d",
-    },
-    {
-      label: "Stage 3",
-        data: [300,380,400],
-        backgroundColor: "#e67e22",
+      data: [852,789,760],
+      backgroundColor: array_colors,
     },
   ]
 };
@@ -406,10 +393,10 @@ var setOptions3 = {
       display: true,
     },
     title: {
-        display: true,
+        display: false,
         text: 'Productivity by Cutter',
         font: {
-          size: 25
+          size: 35
         }
     },
     datalabels: {
@@ -417,7 +404,7 @@ var setOptions3 = {
       color: 'white',
       font: {
         weight: 'bold',
-        size: 35,
+        size: 10,
       },
       align:'bot',
     }
@@ -483,7 +470,7 @@ var setOptions5 = {
     },
     title: {
         display: true,
-        text: 'Work Hours By Cutter',
+        text: 'Work Hours By Plant',
         font: {
           size: 25
         }
@@ -514,14 +501,16 @@ var setOptions5 = {
   },
 };
 
+
+
 var setOptions6 = {
   plugins: {
     legend: {
-      display: true,
+      display: false,
     },
     title: {
         display: true,
-        text: 'Grapich Multiplication Factor',
+        text: 'Works Hour by Cutter',
         font: {
           size: 25
         }
@@ -531,7 +520,7 @@ var setOptions6 = {
       color: 'white',
       font: {
         weight: 'bold',
-        size: 35,
+        size: 15,
       },
       align:'bot',
     }
