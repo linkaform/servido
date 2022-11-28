@@ -238,9 +238,6 @@ function getFirstElement(dateTo, dateFrom){
         getDrawText(res.response.json.eighthElement)
         getDrawGraphicFourth(res.response.json.eighthElement, setOptions4);
         document.getElementById("eigthElement").style.removeProperty('display');
-
-
-
       }
 
       if (res.response.json.ninthElement) {
@@ -350,6 +347,12 @@ function getDrawGraphicSecond(data, setOptions){
     chart2.destroy();
   }
 
+  //----DATA COLORS
+  if (data.datasets[0].data.length){
+    array_colors = getPAlleteColors(7,data.datasets[0].data.length);
+    data.datasets[0].backgroundColor = array_colors
+  }
+
   chart2 = new Chart(ctx, {
     type: 'bar',
     data:data,
@@ -365,6 +368,12 @@ function getDrawGraphicThird(data, setOptions){
 
   if (chart3) {
     chart3.destroy();
+  }
+
+  //----DATA COLORS
+  if (data.datasets[0].data.length){
+    array_colors = getPAlleteColors(7,data.datasets[0].data.length);
+    data.datasets[0].backgroundColor = array_colors
   }
 
   chart3 = new Chart(ctx, {
@@ -385,6 +394,12 @@ function getDrawGraphicFourth(data, setOptions){
     chart4.destroy();
   }
 
+  //----DATA COLORS
+  if (data.datasets[0].data.length){
+    array_colors = getPAlleteColors(7,data.datasets[0].data.length);
+    data.datasets[0].backgroundColor = array_colors
+  }
+
   chart4 = new Chart(ctx, {
     type: 'pie',
     data:data,
@@ -400,6 +415,12 @@ function getDrawGraphicFiveth(data, setOptions){
 
   if (chart5) {
     chart5.destroy();
+  }
+
+  //----DATA COLORS
+  if (data.datasets[0].data.length){
+    array_colors = getPAlleteColors(7,data.datasets[0].data.length);
+    data.datasets[0].backgroundColor = array_colors
   }
 
   chart5 = new Chart(ctx, {
@@ -421,6 +442,12 @@ function getDrawGraphicSixth(data, setOptions){
     chart6.destroy();
   }
 
+  //----DATA COLORS
+  if (data.datasets[0].data.length){
+    array_colors = getPAlleteColors(7,data.datasets[0].data.length);
+    data.datasets[0].backgroundColor = array_colors
+  }
+  
   chart6 = new Chart(ctx, {
     type: 'bar',
     data:data,
