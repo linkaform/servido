@@ -190,18 +190,8 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
       $('.title_tables').show();
       console.log(res.response.json)
       //----Date
-      date_from = new Date($('#date_from').val());
-      date_to = new Date($('#date_to').val());
-
-      date_from.setDate(date_from.getDate() + 1)
-      date_to.setDate(date_to.getDate() + 1)
-
-      date_from = date_from.toLocaleDateString()
-      date_to = date_to.toLocaleDateString()
-
-      $('.text_date').text(' del '+date_from+' al '+ date_to)
-
-      if (res.response.json.firstElement.data) {
+      getTextTitle();
+      if (res.response.json.firstElement && res.response.json.firstElement.data) {
         getDrawTable('secondElement', columsTable2, res.response.json.firstElement.data);
         document.getElementById("secondElement").style.removeProperty('display');
       }
@@ -210,7 +200,6 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
         document.getElementById("thirdElement").style.removeProperty('display');
       }
       if (res.response.json.thirdElement) {
-        console.log('Third Element',res.response.json.thirdElement)
         getDrawGraphicSecond(res.response.json.thirdElement, setOptions2);
         document.getElementById("fourthElement").style.removeProperty('display');
       }
@@ -226,6 +215,12 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
         getDrawGraphicFiveth(res.response.json.sixthElement, setOptions5);
         document.getElementById("seventhElement").style.removeProperty('display');
       }
+      if (res.response.json.seventhElement && res.response.json.seventhElement.data) {
+        getDrawTable('firstElement', columsTable1, res.response.json.seventhElement.data);
+        document.getElementById("firstElement").style.removeProperty('display');
+      }
+
+
     } else {
       hideLoading();
       if(res.code == 11){
@@ -343,7 +338,6 @@ function getDrawGraphicFourth(data, setOptions){
   });
 }
 
-
 let chart5;
 function getDrawGraphicFiveth(data, setOptions){
   //---CHART
@@ -359,6 +353,28 @@ function getDrawGraphicFiveth(data, setOptions){
     options: setOptions,
   });
 }
+
+//----TEXT
+function getTextTitle(){
+  date = new Date();
+  date_from = date.toLocaleDateString();
+  date_to = date.toLocaleDateString();
+
+ if ($('#date_from').val() !== ""){
+    date_from = new Date($('#date_from').val());
+    date_from.setDate(date_from.getDate() + 1)
+    date_from = date_from.toLocaleDateString()
+  }
+
+ if ($('#date_to').val() !== ""){
+    date_to = new Date($('#date_to').val());
+    date_to.setDate(date_to.getDate() + 1)
+    date_to = date_to.toLocaleDateString()
+  }
+  
+  $('.text_date').text(' del '+date_from+' al '+ date_to)
+}
+
 //---CATALOG
 function getSucursales(){
   //--Form ID , Catalog, Level , Type
@@ -375,3 +391,4 @@ function customCatalogView(res){
     }
   }
 }
+

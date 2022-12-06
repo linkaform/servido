@@ -95,13 +95,14 @@ window.onload = function(){
     ///----ASSIGN VALUES
     var dateT = new Date();
     var dateTo = dateT.toISOString().substring(0, 10);
-    $("#date_from").val('2022-07-01');
+    $("#date_from").val(dateTo);
     $("#date_to").val(dateTo);
-    
+    //--Catalog
+    get_catalog(1);
     //--Styles
     setSpinner();
+    $("#localidades").multipleSelect('refresh');
     $('#divUsuario').hide();
-    $('#divLocalidad').hide();
     $('#divOptions').show();
     $('#title_report').show();
     
@@ -126,7 +127,6 @@ window.onload = function(){
   }
 }
 
-
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
   unhideElement("close_sesion");
@@ -136,8 +136,6 @@ function unHideReportElements(){
   unhideElement("thirdElement");
   unhideElement("fourthElement");
 }
-
-
 
 function loadDemoData(){
   console.log('Entra a demo')
@@ -160,7 +158,6 @@ function loadDemoData(){
   drawFivethElement(dataFivethElement, dataConfigFiveth);
 
 }
-
 
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
@@ -196,6 +193,7 @@ function getFirstElement(dateTo, dateFrom, localidades, usuario, check){
       localidades: localidades,
       usuario: usuario,
       check: check,
+      option: 1,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -230,49 +228,9 @@ function getFirstElement(dateTo, dateFrom, localidades, usuario, check){
         document.getElementById("sixthElement").style.removeProperty('display');
       }
       if (res.response.json.sixthElement) {
-        console.log('COLUMNAS',res.response.json.sixthElement.colums_data)
-        console.log('DATA',res.response.json.sixthElement.data)
         getDrawTable('fourthElement', res.response.json.sixthElement.colums_data, res.response.json.sixthElement.data);
         document.getElementById("fourthElement").style.removeProperty('display');
       }
-
-
-      if (res.response.json.array_filters.localidades) {
-        localidades = $("#localidades").val()
-        //-----Get Value
-        $("#localidades").empty();
-        $('#localidades').append('<option value="--">--Seleccione--</option>');
-        for (i = 0; i < res.response.json.array_filters.localidades.length; i++) {
-          text = res.response.json.array_filters.localidades[i];
-          value = res.response.json.array_filters.localidades[i];
-          $('#localidades').append('<option value="'+ value +'">'+text+'</option>');
-        }
-        //-----Selected Value
-        if (localidades && localidades.length>0){
-          for (i = 0; i <= localidades.length; i++) {
-            $('#localidades option[value=' + localidades[i] + ']').attr('selected','selected');
-          }
-        }
-        //-----Show Value
-        $("#localidades").multipleSelect('refresh');
-        $('#divLocalidad').show();
-      }
-      if (res.response.json.array_filters.localidades) {
-        usuarios = $("#usuario").val()
-        $("#usuario").empty();
-        $('#usuario').append('<option value="--">--Seleccione--</option>');
-        for (i = 0; i < res.response.json.array_filters.usuario.length; i++) {
-          text = res.response.json.array_filters.usuario[i];
-          value = res.response.json.array_filters.usuario[i];
-          $('#usuario').append('<option value="'+ value +'">'+text+'</option>');
-        }
-        //-----Selected Value
-        if (usuarios && usuarios.length>0){
-          $('#usuario option[value= "' + usuarios + '" ]').attr('selected','selected');
-        }
-        $('#divUsuario').show();
-      }
-
     } else {
       hideLoading();
       if(res.code == 11){
@@ -291,7 +249,6 @@ function getFirstElement(dateTo, dateFrom, localidades, usuario, check){
     }
   })
 };
-
 
 
 //-----GRAPICH
@@ -331,7 +288,6 @@ function drawFivethElement(datasets, dataconfig){
   });
 }
 
-
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
@@ -363,3 +319,69 @@ function getDrawTable(id, columnsData, tableData){
     });
   }
 }
+
+//----- CATALOGS
+
+function get_catalog(option) 
+{
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: 89485,
+      option: 2,
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      if (option == 1){
+        if (res.response.json.array_filters.paises){
+          $("#paises").empty();
+          $('#paises').append('<option value="--">--Seleccione--</option>');
+          for (i = 0; i < res.response.json.array_filters.paises.length; i++) {
+            value = res.response.json.array_filters.paises[i]
+            $('#paises').append('<option value="'+ value +'">'+value+'</option>');
+          }
+        }
+        if (res.response.json.array_filters.localidades){
+          $("#localidades").empty();
+          $('#localidades').append('<option value="--">--Seleccione--</option>');
+          for (i = 0; i < res.response.json.array_filters.localidades.length; i++) {
+            value = res.response.json.array_filters.localidades[i].localidad;
+            $('#localidades').append('<option value="'+ value +'">'+value+'</option>');
+          }
+          $("#localidades").multipleSelect('refresh');
+        }
+      }else if(option == 2){
+
+        console.log('Entraaaa a modificación')
+        filter = $('#paises').val();
+        if (res.response.json.array_filters.localidades){
+          $("#localidades").empty();
+          $('#localidades').append('<option value="--">--Seleccione--</option>');
+
+         for (i = 0; i < res.response.json.array_filters.localidades.length; i++) {
+            pais  = res.response.json.array_filters.localidades[i].pais;
+            value = res.response.json.array_filters.localidades[i].localidad;
+            if (filter == '--'){
+              $('#localidades').append('<option value="'+ value +'">'+value+'</option>');
+            }
+            else
+            {
+              console.log(filter,'==',pais)
+              if(filter == pais){
+                $('#localidades').append('<option value="'+ value +'">'+value+'</option>');
+              }
+            }
+          }
+        }
+        $("#localidades").multipleSelect('refresh');
+        
+      }
+    } 
+  })
+};

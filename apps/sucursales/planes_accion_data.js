@@ -551,7 +551,10 @@ var setOptions1 = {
       stacked: true,
     },
     y: {
-      stacked: true
+      stacked: true,
+      ticks: {
+        stepSize: 1
+      },
     }
   }
 };
@@ -569,7 +572,10 @@ var setOptions2 = {
       stacked: true,
     },
     y: {
-      stacked: true
+      stacked: true,
+      ticks: {
+        stepSize: 1
+      },
     }
   }
 };
@@ -594,7 +600,10 @@ var setOptions3 = {
       stacked: true,
     },
     y: {
-      stacked: true
+      stacked: true,
+      ticks: {
+        stepSize: 1
+      },
     }
   }
 };
@@ -608,6 +617,13 @@ var setOptions4 = {
     },
     datalabels: {
       color: 'white',
+    }
+  },
+  scales: {
+    y:{
+      ticks: {
+        stepSize: 1
+      }, 
     }
   },
 };
@@ -627,7 +643,10 @@ var setOptions5 = {
       stacked: true,
     },
     y: {
-      stacked: true
+      stacked: true,
+      ticks: {
+        stepSize: 1
+      }, 
     }
   }
 };
