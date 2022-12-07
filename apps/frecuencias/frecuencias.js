@@ -167,17 +167,18 @@ function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");    
   let usuario = document.getElementById("usuario");    
+  let paises = $('#paises').val();
   let localidades = $('#localidades').val();
   check = 'on';
   if (document.getElementById('input_check').checked)
   {
     check = 'off';
   }
-  getFirstElement(date_to.value, date_from.value, localidades, usuario.value, check);
+  getFirstElement(date_to.value, date_from.value, paises, localidades, usuario.value, check);
 };
 
 
-function getFirstElement(dateTo, dateFrom, localidades, usuario, check){
+function getFirstElement(dateTo, dateFrom, paises, localidades, usuario, check){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -190,6 +191,7 @@ function getFirstElement(dateTo, dateFrom, localidades, usuario, check){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
+      paises: paises,
       localidades: localidades,
       usuario: usuario,
       check: check,
