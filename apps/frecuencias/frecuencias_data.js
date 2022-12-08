@@ -27,8 +27,6 @@ var columsTable3 = [
 ];
 
 
-
-
 var columsTable4 = [
   { title:"Localidad", field:'localidad',hozAlign:"left",width:500},
   {title:"AB-F-01 EXAMPLE", hozAlign:"center",

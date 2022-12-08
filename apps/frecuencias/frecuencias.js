@@ -230,9 +230,13 @@ function getFirstElement(dateTo, dateFrom, paises, localidades, usuario, check){
         document.getElementById("sixthElement").style.removeProperty('display');
       }
       if (res.response.json.sixthElement) {
+        console.log(res.response.json.sixthElement.colums_data)
         getDrawTable('fourthElement', res.response.json.sixthElement.colums_data, res.response.json.sixthElement.data);
         document.getElementById("fourthElement").style.removeProperty('display');
       }
+
+      console.log(document.getElementById("divContent").outerHTML);
+
     } else {
       hideLoading();
       if(res.code == 11){

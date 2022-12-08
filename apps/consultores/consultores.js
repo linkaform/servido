@@ -126,6 +126,12 @@ window.onload = function(){
         $("#image_log").hide();
       }
     }
+    if (key === 'run'){
+      if (qs[key]){
+        console.log('Holaaaaaaaaaaaaa')
+        setTimeout(runFirstElement(),3000);
+      }
+    }
   }
 }
 
