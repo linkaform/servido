@@ -97,6 +97,7 @@ window.onload = function(){
     //--Styles
     setSpinner();
     getSucursales();
+    getRegionales();
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
@@ -157,11 +158,17 @@ function runFirstElement(){
   let date_to = document.getElementById("date_to");  
   let sucursal = document.getElementById("sucursal");  
   let seccion = document.getElementById("seccion");  
+  let regional = document.getElementById("catalog-79950-level-1");  
+  let check = 'on';
+  if (document.getElementById('input_check').checked)
+  {
+    check = 'off';
+  }
 
-  getFirstElement(date_to.value, date_from.value, sucursal.value, seccion.value);
+  getFirstElement(date_to.value, date_from.value, sucursal.value, seccion.value, regional.value, check);
 };
 
-function getFirstElement(dateTo, dateFrom, sucursal, seccion){
+function getFirstElement(dateTo, dateFrom, sucursal, seccion, regional, check){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -175,6 +182,7 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
       date_from: dateFrom,
       sucursal: sucursal,
       seccion: seccion,
+      regional: regional,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -192,7 +200,7 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
       //----Date
       getTextTitle();
       if (res.response.json.firstElement && res.response.json.firstElement.data) {
-        getDrawTable('secondElement', columsTable2, res.response.json.firstElement.data);
+        getDrawTable('secondElement', columsTable2, res.response.json.firstElement.data, check);
         document.getElementById("secondElement").style.removeProperty('display');
       }
       if (res.response.json.secondElement) {
@@ -216,7 +224,7 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
         document.getElementById("seventhElement").style.removeProperty('display');
       }
       if (res.response.json.seventhElement && res.response.json.seventhElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.seventhElement.data);
+        getDrawTable('firstElement', columsTable1, res.response.json.seventhElement.data, check);
         document.getElementById("firstElement").style.removeProperty('display');
       }
 
@@ -242,14 +250,20 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion){
 
 
 //-----TABLES
-function getDrawTable(id, columnsData, tableData){
+function getDrawTable(id, columnsData, tableData, checked='off'){
+  //----Expanded
+  valueExpanded = false;
+  if (checked == 'on'){
+    valueExpanded = true;
+  }
+  //-----Table
   var  table = new Tabulator("#" + id, {
     height:"265px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:false,
+    dataTreeStartExpanded:valueExpanded,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
@@ -379,6 +393,10 @@ function getTextTitle(){
 function getSucursales(){
   //--Form ID , Catalog, Level , Type
   getCatalog(82135,79950,1,catalogType='custom');
+}
+
+function getRegionales(){
+  regionales = getCatalog(83987, 79950, 1, catalogType='select')
 }
 
 function customCatalogView(res){

@@ -12,6 +12,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+        <!--LIBRARY CHECK -->
+        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+        <!--Utils -->    
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
         <link rel="stylesheet" href="style.css">
@@ -130,6 +133,17 @@
                             <option value="--">--Seleccione--</option>
                         </select>
                     </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Ceo: </h5>
+                        <select class="form-control ds-input" id="ceo" name="ceo" >
+                            <option value="--">--Seleccione--</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Tabla Campos Promedio por: </h5>
+                        <input type="checkbox"  data-toggle="toggle" data-width="130" data-on="Pregunta" data-off="Sección" id="input_check" data-onstyle="success" data-offstyle="primary">
+                    </div>
+
                 </div>
 
                 <!--Content-->
@@ -140,7 +154,7 @@
                             <div class="card border-info m-2">
                                 <div class="card-body" style="margin:auto;">
                                     <center>
-                                        <h2 class="card-title">Total Sucursales</h2>
+                                        <h2 class="card-title">Total Unidades de Negocio</h2>
                                         <p class="card-text" style="font-size: 25px;" id="textAlert1">0</p>
                                         <i class="fas fa-building" style="font-size:30px;"></i>
                                     </center>
@@ -172,6 +186,12 @@
                         <div id="fourthElement" ></div>
                     </div>
 
+                    <div id="seventhElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                        <div  style="width: 1400px;height: 600px;margin: auto;">
+                            <canvas id="graphicFiveth" ></canvas>
+                        </div>
+                    </div>
+
                     <div class="col-sm-12 col-md-12 col-lg-12" style="overflow-y: scroll;">
                         <section class="title_tables">
                             <h2 class="title_tables"><span>% De campos llenos y promedio de evidencias servicio:</span>&nbsp;&nbsp;
@@ -186,8 +206,8 @@
                         </section> 
                         <div id="fivethElement" ></div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
     </body>
@@ -212,7 +232,14 @@
     crossorigin="anonymous"></script>
     <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
 
+    <!-- chartjs -->
+    <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 
@@ -227,6 +254,9 @@
     crossorigin="anonymous"></script>
 
     <!-- Utils -->
+    <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
+    <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+
     <script type="text/javascript" src="../utils/lkf_utils.js"></script>
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 

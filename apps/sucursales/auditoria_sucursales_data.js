@@ -1,4 +1,5 @@
 //Datos Demo del Reporte Autitoria Sucursales
+var array_background = getPAlleteColors(11,8);
 
 var dataFirstElement = [
   {
@@ -182,3 +183,43 @@ var dataTable1 = [
     "items_bad": 2
   },
 ]
+
+
+
+var data5 = {
+  labels: ['CEO 1','CEO 2','CEO 3','CEO 4','CEO 5'],
+  datasets: [
+    {
+      label: 'Evaluaciones',
+      data: [25,10,20,25,20],
+      backgroundColor: array_background,
+    },
+  ]
+};
+
+var setOptions5 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Reporte de Evaluaciones CEO',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'white',
+    }
+  },
+  scales: {
+    y:{
+      ticks: {
+        stepSize: 1
+      }, 
+    }
+  },
+};

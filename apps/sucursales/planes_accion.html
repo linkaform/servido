@@ -12,6 +12,8 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!--Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <!--LIBRARY CHECK -->
+        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -97,7 +99,7 @@
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3" >
-                        <h5>Sucursal: </h5>
+                        <h5>Unidad de Negocio: </h5>
                         <select class="form-control" id="sucursal" >
                             <option value="">--Seleccione--</option>
                         </select>
@@ -116,6 +118,16 @@
                             <option value="7._gestión_documental">7. Gestión Documental</option>
                             <option value="8._crédito_y_cobranza">8. Crédito y Cobranza</option>
                         </select>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Regional: </h5>
+                        <select class="form-control ds-input" id="catalog-79950-level-1" name="regional" value="">
+                            <option value="--">Select Regional</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-2 col-lg-2">
+                        <h5>Tablas por: </h5>
+                        <input type="checkbox"  data-toggle="toggle" data-width="130" data-on="Resumen" data-off="Todo" id="input_check" data-onstyle="success" data-offstyle="primary">
                     </div>
                 </div>
                 <!--Content -->
@@ -147,7 +159,7 @@
                     <!--  Graficas  -->
                     
                     <div id="thirdElement" class="col-sm-12 col-md-12 col-lg-12 mb-5 mt-5" style="overflow-y: scroll;">
-                        <h3 style="text-align: center;">Acciones correctivas activas por sucursal<span class="text_date"> del 10/01/2022 - 10/20/2022</span></h3>
+                        <h3 style="text-align: center;">Acciones correctivas activas por Unidad de Negocio<span class="text_date"> del 10/01/2022 - 10/20/2022</span></h3>
                         <div  style="width: 1000px;height: 600px;margin: auto;">
                             <canvas id="graphicFirst"></canvas>
                         </div>
@@ -165,7 +177,7 @@
 
                             &nbsp;&nbsp;
 
-                            <a href="#" data-mdb-toggle="tooltip" title="Actividades vencidas (con dias de vecimiento negativos) que se encuentran en estatus Pendiente o En progreso"><i class="fa-sharp fa-solid fa-circle-question" style="font-size:25px;"></i></a>
+                            <a  name="#" data-mdb-toggle="tooltip" title="Actividades vencidas (con dias de vecimiento negativos) que se encuentran en estatus Pendiente o En progreso" style="cursor: default; "><i class="fa-sharp fa-solid fa-circle-question" style="font-size:25px;color: #3498db;"></i></a>
                         </h3>
                         <div  style="width: 850px;height: 500px;margin: auto;">
                             <canvas id="graphicThird"></canvas>
@@ -176,7 +188,7 @@
                         <h3 style="text-align: center;">Tareas vencidas por sección 
                             <span class="text_date"> del 10/01/2022 al 10/20/2022</span>
                             &nbsp;&nbsp;
-                            <a href="#" data-mdb-toggle="tooltip" title="Actividades vencidas (con dias de vecimiento negativos) que se encuentran en estatus Pendiente o En progreso"><i class="fa-sharp fa-solid fa-circle-question" style="font-size:25px;"></i></a>
+                            <a  name="#" data-mdb-toggle="tooltip" title="Actividades vencidas (con dias de vecimiento negativos) que se encuentran en estatus Pendiente o En progreso" style="cursor: default; "><i class="fa-sharp fa-solid fa-circle-question" style="font-size:25px;color:#3498db;"></i></a>
                         </h3>
                         <div  style="width: 850px;height: 600px;margin: auto;margin-top: 40px;">
                             <canvas id="graphicFourth"></canvas>
@@ -185,7 +197,7 @@
 
 
                     <div id="seventhElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
-                        <h3 style="text-align: center;">Tareas realizadas por sucursal <span class="text_date"> del 10/01/2022 al 10/20/2022</span></h3>
+                        <h3 style="text-align: center;">Tareas terminadas por Unidad de Negocio <span class="text_date"> del 10/01/2022 al 10/20/2022</span></h3>
                         <div  style="width: 1000px;height: 600px;margin: auto;">
                             <canvas id="graphicFiveth"></canvas>
                         </div>

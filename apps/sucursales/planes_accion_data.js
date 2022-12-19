@@ -3,9 +3,9 @@ var array_background = getPAlleteColors(10,8);
 console.log(array_background)
 
 var columsTable1 = [
-  { title:"Sección", field:'seccion',hozAlign:"left",headerFilter:"input",width:300},
+  { title:"Sección", field:'seccion',hozAlign:"left",dir:"asc",headerFilter:"input",width:300},
   { title:"Progreso", field:'progreso', hozAlign:"left", formatter:"progress", editor:true,width:200},
-  { title:"Valor", field:'valor',hozAlign:"left",width:150},
+  { title:"Promedio", field:'valor',formatter: "money", formatterParams: { precision: 1 },hozAlign:"left",width:150},
 ];
 
 var columsTable2 = [
