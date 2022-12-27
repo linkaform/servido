@@ -16,6 +16,7 @@ $('#divOptions').hide();
 $('#title_report').hide();
 $('.div_card').hide();
 $('.title_tables').hide();
+$('.button-chart').hide();
 
 hideElement("title_demo")
 hideElement("firstElement");
@@ -277,6 +278,7 @@ function getFirstElement(date_from, date_to, regional, perfil, seccion, sucursal
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
+      $('.button-chart').show();
       if (res.response.json.firstElement.length) {
         console.log('Valores',res.response.json);
         if (res.response.json.totalSucursales)
@@ -842,3 +844,5 @@ function get_catalog()
     } 
   })
 };
+
+

@@ -104,7 +104,7 @@ var dataFourthElement = [
 ]
 
 var columsTable1 = [
-  { title:"Pregunta", field:'pregunta', hozAlign:"left", headerFilter:"input",width:650},
+  { title:"Pregunta", field:'pregunta', hozAlign:"left",dir:"asc", headerFilter:"input",width:650},
   { title:"Item OK" , field:'items_ok', hozAlign:"center", width:250, },
   { title:"Items Bad", field:'items_bad', hozAlign:"center",width:200},
   { title:"Total", field:'total', hozAlign:"center",width:200},

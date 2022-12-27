@@ -1,4 +1,8 @@
 
+body{
+  font-family: gothambook;
+}
+
 
 h2 {
   color: black;
@@ -13,6 +17,19 @@ hr {
   margin-left: 0%;
 }
 
-body{
-  font-family: gothambook;
+
+.chart_screenII{
+  width: 100% !important; 
+  height: 100% !important;
+}
+
+
+.chart_screenIII{
+  width: 130% !important; 
+  height: 170% !important;
+}
+
+.chart_screenIV{
+  width: 180% !important; 
+  height: 150% !important;
 }

@@ -88,7 +88,7 @@
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
                         <i class="fa-solid fa-filter"></i>
                     </button >  &nbsp;  &nbsp;
-                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
+                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div> &nbsp;  &nbsp;
                 </div>
 
                 <!--firstParameters -->
@@ -128,7 +128,7 @@
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Sucursal: </h5>
+                        <h5>Unidades de Negocio: </h5>
                         <select class="form-control ds-input" id="sucursalesLista" name="regional" >
                             <option value="--">--Seleccione--</option>
                         </select>
@@ -173,20 +173,35 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-lg-12 div_class" style="overflow-y: scroll;">
+                    <div class="col-sm-12 col-md-12 col-lg-12 div_class mt-2" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('firstElement','chart_screenII');return false;">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
                         <div id="firstElement" class="row"></div>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-12 div_class" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('secondElement','chart_screenII');return false;">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
                         <div id="secondElement" ></div>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-12 div_class" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('thirdElement','chart_screenII');return false;">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
                         <div id="thirdElement" ></div>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-12 div_class" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('fourthElement','chart_screenII');return false;">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
                         <div id="fourthElement" ></div>
                     </div>
 
                     <div id="seventhElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicFiveth','chart_screenIII');return false;">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
                         <div  style="width: 1400px;height: 600px;margin: auto;">
                             <canvas id="graphicFiveth" ></canvas>
                         </div>
@@ -256,9 +271,9 @@
     <!-- Utils -->
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
     <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
-
     <script type="text/javascript" src="../utils/lkf_utils.js"></script>
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
+    <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
 
     <!-- utils js-->
     <script type="text/javascript" src="./auditoria_sucursales_ap.js"></script>

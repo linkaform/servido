@@ -184,21 +184,8 @@ function closeSession(){
   location.reload();
 }
 
-function generarLetra(){
-  var letras = ["a","b","c","d","e","f","0","1","2","3","4","5","6","7","8","9"];
-  var numero = (Math.random()*15).toFixed(0);
-  return letras[numero];
-}
 
-function colorHEX(){
-  var coolor = "";
-  for(var i=0;i<3;i++){
-    coolor = coolor + generarLetra() ;
-  }
-  return "#005" + coolor;
-}
-
-
+///-----STYLE
 function getPAlleteColors(pallete,number){
   var arrayColors = new Array();
 
@@ -230,10 +217,6 @@ function getPAlleteColors(pallete,number){
   return arrayColors;
 }
 
-function setDemo() 
-{
-  
-}
 
 function setSpinner(){
   if ($("#divContent")){
@@ -251,4 +234,28 @@ function setSpinner(){
     ); 
     $('.load-wrapp').hide();
   }  
+}
+
+
+///-----DOWNLOAD 
+function get_chartDownload(id,style) 
+{
+  $('#'+id).addClass(style);
+  html2canvas(document.querySelector("#"+id)).then(canvas => {
+    getDownload(canvas.toDataURL(), 'file-name.png');
+  });
+  $("#"+id).removeClass(style);
+}
+
+function getDownload(uri, filename){
+  var link = document.createElement('a');
+  if (typeof link.download === 'string') {
+      link.href = uri;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  } else {
+    window.open(uri);
+  }
 }
