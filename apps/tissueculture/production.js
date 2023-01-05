@@ -29,7 +29,6 @@ window.onload = function(){
   var formNode = document.getElementById("appCont");
   for(var key in qs){
     if (key === 'script_id' ){
-      console.log('script id', key)
       scriptId = parseInt(qs[key]);
     }
     if (key === 'env') {
@@ -248,7 +247,6 @@ function getFirstElement(dateTo, dateFrom, plantCode, stage){
         document.getElementById("secondElement").style.removeProperty('display');
       }
       if (res.response.sixthElement.tabledata) {
-        console.log(res.response.sixthElement.tabledata);
         dataElementFormat = getFormatterThird(res.response.sixthElement.tabledata);
         getDrawGraphicThird(dataElementFormat, setOptions3)
         document.getElementById("thirdElement").style.removeProperty('display');

@@ -1,3 +1,7 @@
+body{
+  font-family: gothambook;
+}
+
 .title_tables h3 {
   color: black;
   font: 33px gothambook;
@@ -5,15 +9,14 @@
   text-align: left;
 }
 
+.chart_screen{
+  width: 100% !important; 
+  height: 100% !important;
+}
 
-.hrFirstElement {
+.hrFirstElement-tendencia_area_plaga {
   border-top: 1px solid #707b7c;
-  width: 500px;
+  width: 600px;
   margin-left: 0%;
 }
 
-
-
-body{
-  font-family: gothambook;
-}

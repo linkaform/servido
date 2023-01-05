@@ -809,7 +809,6 @@ function getFormatterFiveth(data){
 //-----CATALOG
 function get_catalog() 
 {
-  console.log('ENTRA A CATALOGO')
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({

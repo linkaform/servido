@@ -16,12 +16,6 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
-hideElement("secondElement");
-hideElement("thirdElement");
-hideElement("fourthElement");
-hideElement("fivethElement");
-hideElement("sixthElement");
-
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -81,34 +75,29 @@ window.onload = function(){
   hideElement("close_sesion");
   hideElement("firstParameters");
 
+
   if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
     unhideElement("close_sesion");
     getCompanyLogo(userParentId);
-    userId  = us;
+    userId = us;
     userJwt = jw;
     userName = getCookie("userName");
-
+    document.getElementById("firstParameters").style.removeProperty('display');
+    unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
     }
-    ///----ASSIGN VALUES
-    var dateT = new Date();
-    var dateTo = dateT.toISOString().substring(0, 10);
-    $("#date_from").val(dateTo);
-    $("#date_to").val(dateTo);
-    //--Catalog
-    //get_catalog();
     //--Styles
     setSpinner();
-    $('#divUsuario').hide();
     $('#divOptions').show();
     $('#title_report').show();
-    document.getElementById("firstParameters").style.removeProperty('display'); 
+    document.getElementById("firstParameters").style.removeProperty('display');
+    
   } else {
     unhideElement("inicio_ses");
-    $('#divOptions').hide();
     $('#divContent').hide();
+    $('#divOptions').hide();
     $('#title_report').hide();
     $('.title_tables').hide();
     hideElement("firstElement-Buttons");
@@ -125,24 +114,20 @@ window.onload = function(){
 }
 
 
-
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
-  unhideElement("close_sesion");
+  unhideElement("firstElement-Buttons");
   unhideElement("firstParameters");
+  unhideElement("close_sesion");
   unhideElement("firstElement");
-  unhideElement("secondElement");
-  unhideElement("thirdElement");
-  unhideElement("fourthElement");
 }
 
 function loadDemoData(){
-  console.log('Entra a demo')
   unhideElement("title_demo")
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
-
-  getDrawTable('firstElement', columsTable1, dataTable1)
+  
+  getDrawTable('firstElement', columsTable1, dataTable1);
   document.getElementById("firstElement").style.removeProperty('display');
 }
 
@@ -151,17 +136,16 @@ loading.style.display = 'none';
 
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");    
-  let bodega = document.getElementById("bodega");    
-  let tecnico = document.getElementById("tecnico");    
-  getFirstElement(date_to.value, date_from.value, bodega.value, tecnico.value);
+  let date_to = document.getElementById("date_to");  
+  getFirstElement(date_to.value, date_from.value);
 };
 
-function getFirstElement(dateTo, dateFrom, bodega, tecnico){
+function getFirstElement(dateTo, dateFrom){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
   $('.title_tables').hide();
+
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
@@ -169,7 +153,8 @@ function getFirstElement(dateTo, dateFrom, bodega, tecnico){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      bodega: bodega,
+      servicio: servicio,
+      cliente: cliente,
       tecnico: tecnico,
     }),
     headers:{
@@ -184,15 +169,11 @@ function getFirstElement(dateTo, dateFrom, bodega, tecnico){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res)
-      
-      if (res.response.firstElement) {
-        getDrawTable('firstElement', columsTable1, res.response.firstElement);
-        document.getElementById("firstElement").style.removeProperty('display');
+      if (res.response.json.firstElement.data) {
+        console.log('drawFirstElement.........');
+        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
       }
       
-
-
     } else {
       hideLoading();
       if(res.code == 11){
@@ -215,17 +196,18 @@ function getFirstElement(dateTo, dateFrom, bodega, tecnico){
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"250px",
+    height:"500px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:true,
+    dataTreeStartExpanded:false,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
     columns:columnsData,
   });
+
   if (document.getElementById("download_xlsx_"+id)){
     //trigger download of data.xlsx file
     document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
@@ -233,6 +215,7 @@ function getDrawTable(id, columnsData, tableData){
     table.download("xlsx", "data.xlsx", {sheetName:"data"});
     });
   }
+
   if (document.getElementById("download_csv_"+id)){
     //trigger download of data.csv file
     document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
@@ -241,36 +224,3 @@ function getDrawTable(id, columnsData, tableData){
     });
   }
 }
-
-
-
-//-----CATALOG
-function get_catalog() 
-{
-  fetch(url + 'infosync/scripts/run/', {
-      method: 'POST',
-      body: JSON.stringify({
-        script_id: 93873,
-        catalogo: '1',
-      }),
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+userJwt
-      },
-    })
-    .then(res => res.json())
-    .then(res => {
-    if (res.success) {
-      //console.log('CATALOGO',res.response.json.catalogElement)
-      if (res.response.json.catalogElement.length){
-        $("#tecnico").empty();
-        $('#tecnico').append('<option value="--">--Seleccione--</option>');
-        for (i = 0; i <res.response.json.catalogElement.length; i++) {
-          value = res.response.json.catalogElement[i]['6312291bd4fc25871bb0152e']
-          $('#tecnico').append('<option value="'+ value +'">'+value+'</option>');
-        }
-      }
-    } 
-  })
-};
-

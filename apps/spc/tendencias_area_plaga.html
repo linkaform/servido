@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">SPC - Reporte Consolidado Por Visita</h1>
+                    <h1 id="title_report">SPC - Tendencias Por Área Por Plaga</h1>
                 </div>
             </div> 
         </nav>
@@ -96,28 +96,35 @@
                         <h5>Fecha Hasta: </h5>
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
-                    <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Cliente: </h5>
-                        <select class="form-control" id="cliente" name="cliente">
-                            <option value="">--Seleccione--</option>
-                        </select>
-                    </div>
                 </div>
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+
+                    <!--Primer Elemento -->
+                    <div class="col-sm-12 col-md-12 col-lg-12 mb-5" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span>Consolidado Por Visita</span>&nbsp;&nbsp;
+                            <h3 ><span> Reporte De Tendencias Area</span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
-                            <hr class="hrFirstElement">
+                            <hr class="hrFirstElement-tendencia_area_plaga">
                         </section>
                         <div id="firstElement" > </div>
                     </div>
 
-                    
+                    <!--Segundo Elemento -->
+                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicFirst','chart_screen');return false;">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
+                        <div  style="width: 1400px;height: 600px;margin: auto;">
+                            <canvas id="graphicFirst" ></canvas>
+                        </div>
+                    </div>
+
+
+
                 </div>
             </div>
         </div>
@@ -167,12 +174,12 @@
     <!-- Utils -->
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
     <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
-
     <script type="text/javascript" src="../utils/lkf_utils.js"></script>
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
+    <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./consolidado_visita_goma.js"></script>
-    <script type="text/javascript" src="./consolidado_visita_goma_data.js"></script>
+    <script type="text/javascript" src="./tendencias_area_plaga.js"></script>
+    <script type="text/javascript" src="./tendencias_area_plaga_data.js"></script>
     </body>
 </html>
