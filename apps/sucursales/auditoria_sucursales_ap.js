@@ -18,6 +18,21 @@ $('.div_card').hide();
 $('.title_tables').hide();
 $('.button-chart').hide();
 
+
+
+
+
+
+
+
+
+hideElement("download_firstElement")
+hideElement("download_secondElement")
+hideElement("download_thirdElement")
+hideElement("download_fourthElement")
+hideElement("download_graphicFiveth")
+
+
 hideElement("title_demo")
 hideElement("firstElement");
 hideElement("firstParameters");
@@ -278,7 +293,6 @@ function getFirstElement(date_from, date_to, regional, perfil, seccion, sucursal
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      $('.button-chart').show();
       if (res.response.json.firstElement.length) {
         console.log('Valores',res.response.json);
         if (res.response.json.totalSucursales)
@@ -290,14 +304,18 @@ function getFirstElement(date_from, date_to, regional, perfil, seccion, sucursal
           document.getElementById("textAlert2").innerText = res.response.json.totalEvaluaciones;
         }
         if (res.response.json.firstElement.length){
+          console.log('Entra a primer elemento')
           drawFirstElement(res.response.json.firstElement)
+          $("#download_firstElement").show();
         }
         if (res.response.json.secondElement.length){
           unhideElement("secondElement")
+          $("#download_secondElement").show();
           drawSecondElement(res.response.json.secondElement)
         }
         if (res.response.json.fifthElement.length){
           unhideElement("thirdElement")
+          $("#download_thirdElement").show();
           drawThirdElement(res.response.json.fifthElement)
         }
         if (res.response.json.fourthElement.length){
@@ -306,11 +324,13 @@ function getFirstElement(date_from, date_to, regional, perfil, seccion, sucursal
         }
         if (res.response.json.sixthElement.length){
           unhideElement("fourthElement")
+          $("#download_fourthElement").show();
           drawFourthElement(res.response.json.sixthElement);
         }
         if (res.response.json.sevenElement.length){
           dataElementFormat = getFormatterFiveth(res.response.json.sevenElement);
           getDrawGraphicFiveth(dataElementFormat, setOptions5)
+          $("#download_graphicFiveth").show();
           document.getElementById("seventhElement").style.removeProperty('display');
           document.getElementById("graphicFiveth").style.removeProperty('display');
         }

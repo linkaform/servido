@@ -13,6 +13,18 @@ let scriptId = null;
 $('#divOptions').hide();
 $('#title_report').hide();
 $('.title_tables').hide();
+
+
+
+
+
+
+
+hideElement("download_graphicFirst");
+hideElement("download_graphicSecond");
+hideElement("download_graphicThird");
+hideElement("download_graphicFourth");
+hideElement("download_graphicFiveth");
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
@@ -205,29 +217,33 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion, regional, check){
       }
       if (res.response.json.secondElement) {
         getDrawGraphicFirst(res.response.json.secondElement, setOptions1);
+        $("#download_graphicFirst").show();
         document.getElementById("thirdElement").style.removeProperty('display');
       }
       if (res.response.json.thirdElement) {
         getDrawGraphicSecond(res.response.json.thirdElement, setOptions2);
+        $("#download_graphicSecond").show();
         document.getElementById("fourthElement").style.removeProperty('display');
       }
       if (res.response.json.fourthElement) {
         getDrawGraphicThird(res.response.json.fourthElement, setOptions3);
+        $("#download_graphicThird").show();
         document.getElementById("fivethElement").style.removeProperty('display');
       }
       if (res.response.json.fivethElement) {
         getDrawGraphicFourth(res.response.json.fivethElement, setOptions4);
+        $("#download_graphicFourth").show();
         document.getElementById("sixthElement").style.removeProperty('display');
       }
       if (res.response.json.sixthElement) {
         getDrawGraphicFiveth(res.response.json.sixthElement, setOptions5);
+        $("#download_graphicFiveth").show();
         document.getElementById("seventhElement").style.removeProperty('display');
       }
       if (res.response.json.seventhElement && res.response.json.seventhElement.data) {
         getDrawTable('firstElement', columsTable1, res.response.json.seventhElement.data, check);
         document.getElementById("firstElement").style.removeProperty('display');
       }
-
 
     } else {
       hideLoading();
