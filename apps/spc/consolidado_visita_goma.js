@@ -13,9 +13,11 @@ let scriptId = null;
 $('#divOptions').hide();
 $('#title_report').hide();
 $('.title_tables').hide();
+$('#download_graphicFirst').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
+hideElement("secondElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -126,7 +128,12 @@ function loadDemoData(){
   unhideElement("title_demo")
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
+
   getDrawTable('firstElement', columsTable1, dataTable1);
+  document.getElementById("firstElement").style.removeProperty('display');
+
+  getDrawGraphicFirst(data1, setOptions1);
+  document.getElementById("secondElement").style.removeProperty('display');
 }
 
 const loading = document.querySelector('.loading-container');
@@ -166,8 +173,13 @@ function getFirstElement(dateTo, dateFrom){
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.json.firstElement.data) {
-        console.log('drawFirstElement.........');
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+        document.getElementById("firstElement").style.removeProperty('display');
+      }
+      if (res.response.json.secondElement) {
+        $('#download_graphicFirst').show();
+        getDrawGraphicFirst(res.response.json.secondElement, setOptions1);
+        document.getElementById("secondElement").style.removeProperty('display');
       }
       
     } else {
@@ -219,4 +231,21 @@ function getDrawTable(id, columnsData, tableData){
       table.download("csv", "data.csv");
     });
   }
+}
+
+//-----GRAPICH
+let chart1;
+function getDrawGraphicFirst(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicFirst').getContext('2d');
+  
+  if (chart1) {
+    chart1.destroy();
+  }
+
+  chart1 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    options: setOptions,
+  });
 }
