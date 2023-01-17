@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte</h1>
+                    <h1 id="title_report">Report Harvest Report</h1>
                 </div>
             </div> 
         </nav>
@@ -87,20 +87,7 @@
 
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
-                    <div class="col-sm-12 col-md-4 col-lg-4" >
-                        <h5>Week: </h5>
-                        <select class="form-control mdb-select md-form" id="week" multiple="multiple" style="border:none !important;">
-                            <option value="">--Seleccione--</option>
-                            <option value="">Week 1</option>
-                            <option value="">Week 2</option>
-                            <option value="">Week 4</option>
-                            <option value="">Week 5</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-12 col-md-4 col-lg-4">
-                        <h5>Plant Code: </h5>
-                        <input class="form-control ds-input " type="input" id="plant_code" name="plant_code">
-                    </div>
+
                 </div>
 
                 <!--Content -->
@@ -109,7 +96,7 @@
                     <!-- First Element - Table -->
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span>Production Plan</span>&nbsp;&nbsp;
+                            <h3 ><span> Harvest Report </span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
@@ -117,29 +104,6 @@
                         </section>
                         <div id="firstElement" > </div>
                     </div>
-
-
-                    <!-- Second Element - Grafica -->
-                    <div id="secondElement" class="col-sm-12 col-md-8 col-lg-8 mb-5 mt-5" style="overflow-y: scroll;">
-                        <div  style="width: 1000px;height: 400px;margin: auto;">
-                            <canvas id="graphicFirst"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Thirdth Element - Grafica -->
-                    <div id="thirdElement" class="col-sm-12 col-md-4 col-lg-4 mb-5 mt-5" style="overflow-y: scroll;">
-                        <div  style="width: 400px;height: 400px;margin: auto;">
-                            <canvas id="graphicSecond"></canvas>
-                        </div>
-                    </div>
-                    
-                    <!-- Fourth Element - Grafica -->
-                    <div id="fourthElement" class="col-sm-12 col-md-8 col-lg-8 mb-5 mt-5" style="overflow-y: scroll;">
-                        <div  style="width: 1000px;height: 500px;margin: auto;">
-                            <canvas id="graphicThird"></canvas>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
@@ -197,7 +161,7 @@
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./production_plan.js"></script>
-    <script type="text/javascript" src="./production_plan_data.js"></script>
+    <script type="text/javascript" src="./harvest.js"></script>
+    <script type="text/javascript" src="./harvest_data.js"></script>
     </body>
 </html>

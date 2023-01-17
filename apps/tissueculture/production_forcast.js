@@ -183,9 +183,10 @@ function getFirstElement(yearWeekFrom, yearWeekTo){
       $('.title_tables').show();
       if (res.response.firstElement) {
         console.log('drawFirstElement.........')
-        //console.log('Data', res.response.firstElement.tabledata)
-        //console.log('Data', res.response.firstElement.colsData)
-        getDrawTable('firstElement',res.response.firstElement.colsData, res.response.firstElement.tabledata);
+        colData = res.response.firstElement.colsData
+        columns = get_sort_object(colData);
+
+        getDrawTable('firstElement',columns, res.response.firstElement.tabledata);
       }
       if (res.response.secondElement) {
         const numSets = res.response.secondElement.length;
@@ -464,3 +465,31 @@ function minMaxFilterFunction(headerValue, rowValue, rowData, filterParams){
    return true; //must return a boolean, true if it passes the filter.
 }
 
+
+
+function get_sort_object(data) {
+  data_result = []
+  data_colums = []
+  for (var i = 0; i < data.length; i++) {
+    if (data[i].columns === undefined) {
+      data_result.push(data[i])
+    } else {
+      data_colums.push(data[i])
+    }
+  }
+
+  data_colums.sort( (a, b) => {
+    if(a.title < b.title) {
+      return -1;
+    }
+    if(a.title > b.title) {
+      return 1;
+    }
+    return 0;
+  });
+
+  for (var i = 0; i < data_colums.length; i++) {
+    data_result.push(data_colums[i])
+  } 
+  return data_result;
+}

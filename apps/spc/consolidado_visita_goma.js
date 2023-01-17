@@ -90,6 +90,8 @@ window.onload = function(){
     if (scriptId == null) {
       loadDemoData();
     }
+    //--Catalog
+    get_catalog();
     //--Styles
     setSpinner();
     $('#divOptions').show();
@@ -142,10 +144,23 @@ loading.style.display = 'none';
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  getFirstElement(date_to.value, date_from.value);
+  let equipo = document.getElementById("equipo");  
+
+  if (date_from.value != null && date_from.value!="" && date_to.value != null && date_to.value!=""){
+    getFirstElement(date_to.value, date_from.value, equipo.value);
+  }
+  else
+  {
+    Swal.fire({
+      title: 'Rango de fechas requerido!!',
+    });
+  }
+
+
+  
 };
 
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(dateTo, dateFrom, equipo){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -158,7 +173,7 @@ function getFirstElement(dateTo, dateFrom){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      option:'1',
+      equipo: equipo,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -244,8 +259,43 @@ function getDrawGraphicFirst(data, setOptions){
   }
 
   chart1 = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data:data,
     options: setOptions,
   });
 }
+
+
+//-----CATALOG
+function get_catalog() 
+{
+  fetch(url + 'infosync/scripts/run/', {
+      method: 'POST',
+      body: JSON.stringify({
+        script_id: 94568,
+        option: 0,
+      }),
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+userJwt
+      },
+    })
+    .then(res => res.json())
+    .then(res => {
+    if (res.success) {
+      console.log('CATALOGO',res.response.json.array_filters.equipo)
+      if (res.response.json.array_filters.equipo.length){
+        $("#equipo").empty();
+        $('#equipo').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i <res.response.json.array_filters.equipo.length; i++) {
+          value = res.response.json.array_filters.equipo[i]
+          $('#equipo').append('<option value="'+ value +'"> Equipo '+value+'</option>');
+        }
+      }
+    } 
+  })
+};
+
+
+
+

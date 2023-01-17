@@ -266,26 +266,31 @@ var dataTable1 = [
 
 
 var data1 = {
-  labels: ['Volador 1','Volador 2','Volador 3','Volador 4','Volador 5'],
+  labels: ['2022-12-01','2022-12-08','2022-12-15','2022-12-25','2023-01-03'],
   datasets: [
     {
-      label: 'Realizados',
+      label: 'Volador 1',
       data: [25,10,20,25,20],
-      backgroundColor: array_background,
-      borderColor: [
-          "#264653",
-          "#1b747c",
-          "#26988e",
-          "#1c7c81",
-          "#266c73",
-          "#387370",
-          "#548764",
-          "#b89649",
-          "#db8741",
-          "#d27424",
-          "#bd5d25",
-          "#a34828"
-      ],
+      borderColor: "#264653",
+      fill: false
+    },
+        {
+      label: 'Volador 1',
+      data: [5,52,11,85,65],
+      borderColor: "#1b747c",
+      fill: false
+    },
+        {
+      label: 'Volador 1',
+      data: [12,4,20,54,30],
+      borderColor: "#26988e",
+      fill: false
+    },
+        {
+      label: 'Volador 1',
+      data: [15,20,30,45,50],
+      borderColor: "#1c7c81",
+      fill: false
     },
   ]
 };

@@ -169,9 +169,6 @@ var dataTable1 = [
 ];
 
 //-----DATA GRAPHIC
-
-
-
 var data1 = {
   labels: ['LNAFP','LNAPE','LNAFP','LNAPE','LNAPO',],
   datasets: [
@@ -195,6 +192,22 @@ var data2 = {
       label: 'Value',
       data: [40,50],
       backgroundColor: [array_background[3],array_background[0]],
+    },
+  ]
+};
+
+var data3 = {
+  labels: ['Team 1','Team 2','Team 3','Team 4','Team 5',],
+  datasets: [
+    {
+      label: 'Production Plan',
+      data: [90,300,150,60,200],
+      backgroundColor: array_background[3],
+    },
+    {
+      label: 'Produced Production ',
+      data: [45,170,90,30,140],
+      backgroundColor: array_background[0],
     },
   ]
 };
@@ -254,6 +267,35 @@ var setOptions2 = {
     y: {
       stacked: false,
       display: false,
+      ticks: {
+        stepSize: 1
+      },
+    }
+  }
+};
+
+var setOptions3 = {
+  plugins: {
+
+    datalabels: {
+      display: true,
+      color: 'white',
+    },
+    title: {
+      display: true,
+      text: 'Team vs Team',
+      font: {
+        size: 25
+      }
+    },
+  },
+  responsive: true,
+  scales: {
+    x: {
+      stacked: false,
+    },
+    y: {
+      stacked: false,
       ticks: {
         stepSize: 1
       },

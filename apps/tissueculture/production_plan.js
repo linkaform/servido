@@ -18,6 +18,7 @@ hideElement("firstParameters");
 hideElement("firstElement");
 hideElement("secondElement");
 hideElement("thirdElement");
+hideElement("fourthElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -142,6 +143,8 @@ function loadDemoData(){
   getDrawGraphicSecond(data2, setOptions2);
   document.getElementById("thirdElement").style.removeProperty('display');
 
+  getDrawGraphicThirdth(data3, setOptions3);
+  document.getElementById("fourthElement").style.removeProperty('display');
 }
 
 const loading = document.querySelector('.loading-container');
@@ -267,6 +270,22 @@ function getDrawGraphicSecond(data, setOptions){
 
   chart2 = new Chart(ctx, {
     type: 'pie',
+    data:data,
+    options: setOptions,
+  });
+}
+
+let chart3;
+function getDrawGraphicThirdth(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicThird').getContext('2d');
+  
+  if (chart3) {
+    chart3.destroy();
+  }
+
+  chart3 = new Chart(ctx, {
+    type: 'bar',
     data:data,
     options: setOptions,
   });

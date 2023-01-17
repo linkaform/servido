@@ -293,47 +293,61 @@ function getFirstElement(date_from, date_to, regional, perfil, seccion, sucursal
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.json.firstElement.length) {
-        console.log('Valores',res.response.json);
-        if (res.response.json.totalSucursales)
-        {
-          document.getElementById("textAlert1").innerText = res.response.json.totalSucursales;
-        }
-        if (res.response.json.totalSucursales)
-        {
-          document.getElementById("textAlert2").innerText = res.response.json.totalEvaluaciones;
-        }
-        if (res.response.json.firstElement.length){
-          console.log('Entra a primer elemento')
-          drawFirstElement(res.response.json.firstElement)
-          $("#download_firstElement").show();
-        }
-        if (res.response.json.secondElement.length){
-          unhideElement("secondElement")
-          $("#download_secondElement").show();
-          drawSecondElement(res.response.json.secondElement)
-        }
-        if (res.response.json.fifthElement.length){
-          unhideElement("thirdElement")
-          $("#download_thirdElement").show();
-          drawThirdElement(res.response.json.fifthElement)
-        }
-        if (res.response.json.fourthElement.length){
-          getDrawTable('fivethElement', columsTable1, res.response.json.fourthElement);
-          document.getElementById("fivethElement").style.removeProperty('display');
-        }
-        if (res.response.json.sixthElement.length){
-          unhideElement("fourthElement")
-          $("#download_fourthElement").show();
-          drawFourthElement(res.response.json.sixthElement);
-        }
-        if (res.response.json.sevenElement.length){
-          dataElementFormat = getFormatterFiveth(res.response.json.sevenElement);
-          getDrawGraphicFiveth(dataElementFormat, setOptions5)
-          $("#download_graphicFiveth").show();
-          document.getElementById("seventhElement").style.removeProperty('display');
-          document.getElementById("graphicFiveth").style.removeProperty('display');
-        }
+      //----CLEAN
+      document.getElementById("textAlert1").innerText = 0;
+      document.getElementById("textAlert2").innerText = 0;
+
+      $("#download_firstElement").hide();
+      $("#download_secondElement").hide();
+      $("#download_thirdElement").hide();
+      $("#download_fourthElement").hide();
+      $("#download_graphicFiveth").hide();
+
+      hideElement("firstElement");
+      hideElement("firstElement");
+      hideElement("secondElement");
+      hideElement("thirdElement");
+      hideElement("fourthElement");
+      hideElement("fivethElement");
+      hideElement("seventhElement");
+
+      if (res.response.json.totalSucursales)
+      {
+        document.getElementById("textAlert1").innerText = res.response.json.totalSucursales;
+      }
+      if (res.response.json.totalSucursales)
+      {
+        document.getElementById("textAlert2").innerText = res.response.json.totalEvaluaciones;
+      }
+      if (res.response.json.firstElement.length){
+        drawFirstElement(res.response.json.firstElement)
+        unhideElement("firstElement")
+        $("#download_firstElement").show();
+      }
+      if (res.response.json.secondElement.length){
+        unhideElement("secondElement")
+        $("#download_secondElement").show();
+        drawSecondElement(res.response.json.secondElement)
+      }
+      if (res.response.json.fifthElement.length){
+        unhideElement("thirdElement")
+        $("#download_thirdElement").show();
+        drawThirdElement(res.response.json.fifthElement)
+      }
+      if (res.response.json.fourthElement.length){
+        getDrawTable('fivethElement', columsTable1, res.response.json.fourthElement);
+        document.getElementById("fivethElement").style.removeProperty('display');
+      }
+      if (res.response.json.sixthElement.length){
+        unhideElement("fourthElement")
+        $("#download_fourthElement").show();
+        drawFourthElement(res.response.json.sixthElement);
+      }
+      if (res.response.json.sevenElement.length){
+        dataElementFormat = getFormatterFiveth(res.response.json.sevenElement);
+        $("#download_graphicFiveth").show();
+        getDrawGraphicFiveth(dataElementFormat, setOptions5)
+        document.getElementById("seventhElement").style.removeProperty('display');
       }
     } else {
       hideLoading();

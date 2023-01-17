@@ -208,7 +208,14 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion, regional, check){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res.response.json)
+      //------CLEAN
+      $("#download_graphicFirst").hide();
+      $("#download_graphicSecond").hide();
+      $("#download_graphicThird").hide();
+      $("#download_graphicFourth").hide();
+      $("#download_graphicFiveth").hide();
+
+
       //----Date
       getTextTitle();
       if (res.response.json.firstElement && res.response.json.firstElement.data) {
@@ -242,6 +249,7 @@ function getFirstElement(dateTo, dateFrom, sucursal, seccion, regional, check){
       }
       if (res.response.json.seventhElement && res.response.json.seventhElement.data) {
         getDrawTable('firstElement', columsTable1, res.response.json.seventhElement.data, check);
+        $("#download_graphicFiveth").show();
         document.getElementById("firstElement").style.removeProperty('display');
       }
 

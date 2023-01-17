@@ -17,6 +17,8 @@ hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
 hideElement("secondElement");
+hideElement("thirdElement");
+hideElement("fourthElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -89,12 +91,13 @@ window.onload = function(){
     if (scriptId == null) {
       loadDemoData();
     }
-    //--Catalog
-    get_catalog();
     //--Styles
+
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
+    $("#week").multipleSelect('refresh');
+
     document.getElementById("firstParameters").style.removeProperty('display');
     
   } else {
@@ -126,39 +129,25 @@ function unHideReportElements(){
 }
 
 function loadDemoData(){
-  unhideElement("title_demo")
+
   $('.title_tables').show();
+  unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
   
   getDrawTable('firstElement', columsTable1, dataTable1);
   document.getElementById("firstElement").style.removeProperty('display');
-
-  getDrawGraphicFirst(data1, setOptions1);
-  document.getElementById("secondElement").style.removeProperty('display');
-
 }
 
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  let dispositivo = document.getElementById("dispositivo");  
-  
-  if (date_from.value != null && date_from.value!="" && date_to.value != null && date_to.value!=""){
-    getFirstElement(date_to.value, date_from.value, dispositivo.value);
-  }
-  else
-  {
-    Swal.fire({
-      title: 'Rango de fechas requerido!!',
-    });
-  }
-  
+  //let date_from = document.getElementById("date_from");
+  //let date_to = document.getElementById("date_to");  
+  getFirstElement();
 };
 
-function getFirstElement(dateTo, dateFrom, dispositivo){
+function getFirstElement(){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -169,9 +158,8 @@ function getFirstElement(dateTo, dateFrom, dispositivo){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      date_to: dateTo,
-      date_from: dateFrom,
-      dispositivo: dispositivo,
+      //date_to: dateTo,
+      //date_from: dateFrom,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -185,13 +173,10 @@ function getFirstElement(dateTo, dateFrom, dispositivo){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.json.firstElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+      console.log('Valores',res.response.firstElement.tabledata)
+      if (res.response.firstElement.tabledata.length) {
+        getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata);
         document.getElementById("firstElement").style.removeProperty('display');
-      }
-      if (res.response.json.secondElement) {
-        getDrawGraphicFirst(res.response.json.secondElement, setOptions1);
-        document.getElementById("secondElement").style.removeProperty('display');
       }
       
     } else {
@@ -213,11 +198,10 @@ function getFirstElement(dateTo, dateFrom, dispositivo){
   })
 };
 
-
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"300px",
+    height:"350px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -245,53 +229,3 @@ function getDrawTable(id, columnsData, tableData){
     });
   }
 }
-
-
-//-----GRAPICH
-let chart1;
-function getDrawGraphicFirst(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicFirst').getContext('2d');
-  
-  if (chart1) {
-    chart1.destroy();
-  }
-
-  chart1 = new Chart(ctx, {
-    type: 'line',
-    data:data,
-    options: setOptions,
-  });
-}
-
-
-//-----CATALOG
-function get_catalog() 
-{
-  fetch(url + 'infosync/scripts/run/', {
-      method: 'POST',
-      body: JSON.stringify({
-        script_id: 94392,
-        option: 0,
-      }),
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+userJwt
-      },
-    })
-    .then(res => res.json())
-    .then(res => {
-    if (res.success) {
-      console.log('CATALOGO',res.response.json.array_filters.dispositivo)
-      if (res.response.json.array_filters.dispositivo.length){
-        $("#dispositivo").empty();
-        $('#dispositivo').append('<option value="--">--Seleccione--</option>');
-        for (i = 0; i <res.response.json.array_filters.dispositivo.length; i++) {
-          value = res.response.json.array_filters.dispositivo[i]
-          $('#dispositivo').append('<option value="'+ value +'"> Dispositivo '+value+'</option>');
-        }
-      }
-    } 
-  })
-};
-
