@@ -1,6 +1,8 @@
 // Reporte Production Forscast
 // Librerias: Chart.js
-
+var count = 0;
+var count_consult = 0;
+var flag = 1;
 let us = null;
 let usTy = null;
 let jw = null;
@@ -13,12 +15,23 @@ let scriptId = null;
 $('#divOptions').hide();
 $('#title_report').hide();
 $('.title_tables').hide();
+$('.div_card').hide();
+$(".div_gauge").hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
 hideElement("secondElement");
 hideElement("thirdElement");
 hideElement("fourthElement");
+hideElement("fivethElement");
+hideElement("sixthElement");
+hideElement("seventhElement");
+hideElement("eigthElement");
+hideElement("ninethElement");
+hideElement("tenthElement");
+hideElement("eleventhElement");
+hideElement("twelfthElement");
+hideElement("thirteenthElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -90,6 +103,15 @@ window.onload = function(){
     unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
+    }else{
+      runFirstElement();
+
+      setTimeout(()=> {},1000);
+
+      setInterval(function(){
+        getContador();
+      }, 1000);
+
     }
     //--Styles
 
@@ -97,7 +119,6 @@ window.onload = function(){
     $('#divOptions').show();
     $('#title_report').show();
     $("#week").multipleSelect('refresh');
-
     document.getElementById("firstParameters").style.removeProperty('display');
     
   } else {
@@ -119,7 +140,6 @@ window.onload = function(){
   }
 }
 
-
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
   unhideElement("firstElement-Buttons");
@@ -131,32 +151,72 @@ function unHideReportElements(){
 function loadDemoData(){
 
   $('.title_tables').show();
-  unhideElement("title_demo")
+  //unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
   
   getDrawTable('firstElement', columsTable1, dataTable1);
   document.getElementById("firstElement").style.removeProperty('display');
 
-  getDrawGraphicFirst(data1, setOptions1);
+
+
+  getDrawGauge('gaugeFirst', dataGauge1)
   document.getElementById("secondElement").style.removeProperty('display');
 
-  getDrawGraphicSecond(data2, setOptions2);
+  getDrawGauge('gaugeSecond', dataGauge2)
   document.getElementById("thirdElement").style.removeProperty('display');
 
-  getDrawGraphicThirdth(data3, setOptions3);
+  getDrawGauge('gaugeThird', dataGauge3)
   document.getElementById("fourthElement").style.removeProperty('display');
+
+
+
+  getDrawGauge('gaugeFourth', dataGauge4)
+  document.getElementById("fivethElement").style.removeProperty('display');
+
+  getDrawGauge('gaugeFiveth', dataGauge5)
+  document.getElementById("sixthElement").style.removeProperty('display');
+
+  getDrawGauge('gaugeSixth', dataGauge6)
+  document.getElementById("seventhElement").style.removeProperty('display');
+
+
+
+  getDrawGauge('gaugeSeventh', dataGauge7)
+  document.getElementById("eigthElement").style.removeProperty('display');
+
+  getDrawGauge('gaugeEigth', dataGauge8)
+  document.getElementById("ninethElement").style.removeProperty('display');
+
+  getDrawGauge('gaugeNineth', dataGauge9)
+  document.getElementById("tenthElement").style.removeProperty('display');
+
+
+
+  getDrawGauge('gaugeTeenth', dataGauge10)
+  document.getElementById("eleventhElement").style.removeProperty('display');
+
+  getDrawGauge('gaugeEleventh', dataGauge11)
+  document.getElementById("twelfthElement").style.removeProperty('display');
+
+  getDrawGauge('gaugeTwelfth', dataGauge12)
+  document.getElementById("thirteenthElement").style.removeProperty('display');
+
+
+  setShowElements(0)
+
+  setInterval(function(){
+    getContador();
+  }, 1000);
 }
 
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  getFirstElement(date_to.value, date_from.value);
+  getFirstElement();
 };
 
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -167,11 +227,6 @@ function getFirstElement(dateTo, dateFrom){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      date_to: dateTo,
-      date_from: dateFrom,
-      servicio: servicio,
-      cliente: cliente,
-      tecnico: tecnico,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -185,9 +240,28 @@ function getFirstElement(dateTo, dateFrom){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.json.firstElement.data) {
-        console.log('drawFirstElement.........');
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+      console.log('Todo',res.response);
+      if (res.response.secondElement.tabledata.length) {
+        getDrawGaugeList(res.response.secondElement.tabledata);
+        getDrawTable('firstElement', columsTable1, res.response.secondElement.tabledata);
+        document.getElementById("firstElement").style.removeProperty('display');
+      }
+      if (res.response.firstElement) {
+        data = res.response.firstElement.hours
+        $("#textAlert1").text(data['total']['available'])
+        $("#textAlert2").text(data['total']['worked'])
+        $("#textAlert3").text(data['Team 1']['available'])
+        $("#textAlert4").text(data['Team 2']['available'])
+        $("#textAlert5").text(data['Team 3']['available'])
+        $("#textAlert6").text(data['Team 1']['stage2'])
+        $("#textAlert7").text(data['Team 2']['stage2'])
+        $("#textAlert8").text(data['Team 3']['stage2'])
+        $("#textAlert9").text(data['Team 1']['stage3'])
+        $("#textAlert10").text(data['Team 2']['stage3'])
+        $("#textAlert11").text(data['Team 3']['stage3'])
+        $("#textAlert12").text(data['Team 1']['worked'])
+        $("#textAlert13").text(data['Team 2']['worked'])
+        $("#textAlert14").text(data['Team 3']['worked'])
       }
       
     } else {
@@ -212,7 +286,7 @@ function getFirstElement(dateTo, dateFrom){
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"350px",
+    height:"100%",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -241,52 +315,242 @@ function getDrawTable(id, columnsData, tableData){
   }
 }
 
-//-----GRAPICH
-let chart1;
-function getDrawGraphicFirst(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicFirst').getContext('2d');
-  
-  if (chart1) {
-    chart1.destroy();
-  }
 
-  chart1 = new Chart(ctx, {
-    type: 'bar',
-    data:data,
-    options: setOptions,
-  });
+//-----GAUGE
+function getDrawGauge(id, data){
+  var layout = { width: 350, height: 155, margin: { t: 40 , b: 0 } };
+  Plotly.newPlot(id, data, layout);
 }
 
+function getFormatGauge(label, value, range, id) {
+  range_steps = []
+  range_value = range / 3;
+  range_value2 = (range_value * 2)
+  range_value3 = (range_value * 3)
 
-let chart2;
-function getDrawGraphicSecond(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicSecond').getContext('2d');
-  
-  if (chart2) {
-    chart2.destroy();
-  }
+  range_steps.push({ range: [0, range_value.toFixed(2)], color: "#ff5252" })
+  range_steps.push({ range: [range_value.toFixed(2) , range_value2.toFixed(2) ], color: "#fdfc8b" })
+  range_steps.push({ range: [range_value2.toFixed(2) , range_value3.toFixed(2) ], color: "#8db600" })
 
-  chart2 = new Chart(ctx, {
-    type: 'pie',
-    data:data,
-    options: setOptions,
-  });
+
+  dataGauge = [
+    {
+      domain: { x: [0, 1], y: [0, 1] },
+      value: value,
+      title: { text: label , 'font': {'size': 25} },
+      type: "indicator",
+      mode: "gauge+number",
+      gauge: {
+        axis: { range: [null, range], tickwidth: 1},
+        bar: { color: "#f7bd53" },
+        bgcolor: "white",
+        borderwidth: 2,
+        bordercolor: "gray",
+        steps: range_steps,
+      },
+    }
+  ];
+  //console.log('Esquema',dataGauge);
+  getDrawGauge(id, dataGauge)
+
 }
 
-let chart3;
-function getDrawGraphicThirdth(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicThird').getContext('2d');
-  
-  if (chart3) {
-    chart3.destroy();
-  }
+function getDrawGaugeList(data){
+  if (data[0].length){
+    if (data[0][0]){
+      label = data[0][0]['label'];
+      value = data[0][0]['value'];
+      range = data[0][0]['range'];
+      id = 'gaugeFirst';
+      getFormatGauge(label, value, range, id) 
+    }
+    if (data[0][1]){
+      label = data[0][1]['label'];
+      value = data[0][1]['value'];
+      range = data[0][1]['range'];
+      id = 'gaugeSecond';
+      getFormatGauge(label, value, range, id) 
+    }
+    if (data[0][2]){
+      label = data[0][2]['label'];
+      value = data[0][2]['value'];
+      range = data[0][2]['range'];
+      id = 'gaugeThird';
+      getFormatGauge(label, value, range, id) 
+    }
 
-  chart3 = new Chart(ctx, {
-    type: 'bar',
-    data:data,
-    options: setOptions,
-  });
+    if (data[1][0]){
+      label = data[1][0]['label'];
+      value = data[1][0]['value'];
+      range = data[1][0]['range'];
+      id = 'gaugeFourth';
+      getFormatGauge(label, value, range, id) 
+    }
+    if (data[1][1]){
+      label = data[1][1]['label'];
+      value = data[1][1]['value'];
+      range = data[1][1]['range'];
+      id = 'gaugeFiveth';
+      getFormatGauge(label, value, range, id) 
+    }
+    if (data[1][2]){
+      label = data[1][2]['label'];
+      value = data[1][2]['value'];
+      range = data[1][2]['range'];
+      id = 'gaugeSixth';
+      getFormatGauge(label, value, range, id) 
+    }
+
+    if (data[2][0]){
+      label = data[2][0]['label'];
+      value = data[2][0]['value'];
+      range = data[2][0]['range'];
+      id = 'gaugeSeventh';
+      getFormatGauge(label, value, range, id) 
+    }
+    if (data[2][1]){
+      label = data[2][1]['label'];
+      value = data[2][1]['value'];
+      range = data[2][1]['range'];
+      id = 'gaugeEigth';
+      getFormatGauge(label, value, range, id) 
+    }
+    if (data[2][2]){
+      label = data[2][2]['label'];
+      value = data[2][2]['value'];
+      range = data[2][2]['range'];
+      id = 'gaugeNineth';
+      getFormatGauge(label, value, range, id) 
+    }
+
+    if (data[3][0]){
+      label = data[3][0]['label'];
+      value = data[3][0]['value'];
+      range = data[3][0]['range'];
+      id = 'gaugeTeenth';
+      getFormatGauge(label, value, range, id) 
+    }
+    if (data[3][1]){
+      label = data[3][1]['label'];
+      value = data[3][1]['value'];
+      range = data[3][1]['range'];
+      id = 'gaugeEleventh';
+      getFormatGauge(label, value, range, id) 
+    }
+    if (data[3][2]){
+      label = data[3][2]['label'];
+      value = data[3][2]['value'];
+      range = data[3][2]['range'];
+      id = 'gaugeTwelfth';
+      getFormatGauge(label, value, range, id) 
+    }
+  }
+}
+
+//-----TIMER SHOW
+function getContador(){
+  count ++;
+  count_consult ++;
+  console.log('Segundo',count)
+  console.log('Segundo General',count_consult)
+  if (count == 10) {
+    $("#divContent").hide();
+    $('.load-wrapp').show();
+    if (flag == 0){
+      setShowElements(0)
+      flag = 1
+    }
+    else if (flag == 1){
+      setShowElements(1)
+      flag = 2
+    }
+    else if (flag == 2){
+      setShowElements(2)
+      flag = 0
+    }  
+    count = 0;
+  }
+  if (count_consult == 180) {
+    runFirstElement();
+    setTimeout(()=> {},1000);
+    count = 0;
+  }
+}
+
+function setShowElements(option){
+
+  //---- HIDE
+  $(".div_card").hide();
+  $(".div_first").hide();
+  $("#secondElement").hide();
+  $("#thirdElement").hide();
+  $("#fourthElement").hide();
+  $("#fivethElement").hide();
+  $("#sixthElement").hide();
+  $("#seventhElement").hide();
+  $("#eigthElement").hide();
+  $("#ninethElement").hide();
+  $("#tenthElement").hide();
+  $("#eleventhElement").hide();
+  $("#twelfthElement").hide();
+  $("#thirteenthElement").hide();
+
+  if (option == 0){
+    $(".div_card").hide();
+    $(".div_gauge").hide();
+    $(".div_first").show();
+    $("#secondElement").hide();
+    $("#thirdElement").hide();
+    $("#fourthElement").hide();
+    $("#fivethElement").hide();
+    $("#sixthElement").hide();
+    $("#seventhElement").hide();
+    $("#eigthElement").hide();
+    $("#ninethElement").hide();
+    $("#tenthElement").hide();
+    $("#eleventhElement").hide();
+    $("#twelfthElement").hide();
+    $("#thirteenthElement").hide();
+  }
+  else if(option == 1){
+    $(".div_card").hide();
+    $(".div_first").hide();
+    $(".div_gauge").show();
+
+    $("#secondElement").show();
+    $("#thirdElement").show();
+    $("#fourthElement").show();
+    $("#fivethElement").show();
+    $("#sixthElement").show();
+    $("#seventhElement").show();
+    $("#eigthElement").show();
+    $("#ninethElement").show();
+    $("#tenthElement").show();
+    $("#eleventhElement").show();
+    $("#twelfthElement").show();
+    $("#thirteenthElement").show();
+  }
+  else if(option == 2){
+    $(".div_card").show();
+    $(".div_gauge").hide();
+    $(".div_first").hide();
+    $("#secondElement").hide();
+    $("#thirdElement").hide();
+    $("#fourthElement").hide();
+    $("#fivethElement").hide();
+    $("#sixthElement").hide();
+    $("#seventhElement").hide();
+    $("#eigthElement").hide();
+    $("#ninethElement").hide();
+    $("#tenthElement").hide();
+    $("#eleventhElement").hide();
+    $("#twelfthElement").hide();
+    $("#thirteenthElement").hide();
+  }
+  //---- STYLES
+  setTimeout(()=> {
+    $("#divContent").show();
+    $('.load-wrapp').hide();
+  }
+  ,1500);
 }

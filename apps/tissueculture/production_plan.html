@@ -78,36 +78,178 @@
 
 
                 <!--OPtions FIlter -->
-                <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
-                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
-                        <i class="fa-solid fa-filter"></i>
-                    </button >  &nbsp;  &nbsp;
-                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
-                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions"></div>
 
                 <!--Filters -->
-                <div id="firstParameters" class="collapse row show">
-                    <div class="col-sm-12 col-md-4 col-lg-4" >
-                        <h5>Week: </h5>
-                        <select class="form-control mdb-select md-form" id="week" multiple="multiple" style="border:none !important;">
-                            <option value="">--Seleccione--</option>
-                            <option value="">Week 1</option>
-                            <option value="">Week 2</option>
-                            <option value="">Week 4</option>
-                            <option value="">Week 5</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-12 col-md-4 col-lg-4">
-                        <h5>Plant Code: </h5>
-                        <input class="form-control ds-input " type="input" id="plant_code" name="plant_code">
-                    </div>
-                </div>
+                <div id="firstParameters" class="collapse row show"></div>
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
 
+                    <!-- Cards - First -->
+                    <div  style="margin-top:10px;" class="col-sm-12 col-md-6 col-lg-6 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body p-0">
+                                <center>
+                                    <h2 class="card-title text-center">Hours Availables</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert1">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:10px;" class="col-sm-12 col-md-6 col-lg-6 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body p-0">
+                                <center>
+                                    <h2 class="card-title text-center">Hours Work</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert2">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cards - Second -->
+                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-4 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body p-0">
+                                <center>
+                                    <h2 class="card-title text-center">Hours T1 Available</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert3">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-4 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body p-0">
+                                <center>
+                                    <h2 class="card-title text-center">Hours T2 Available</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert4">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-4 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body p-0">
+                                <center>
+                                    <h2 class="card-title text-center">Hours T3 Available</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert5">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Cards - Third -->
+                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-4 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body p-0">
+                                <center>
+                                    <h2 class="card-title text-center">Hours T1 Stage 2</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert6">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-4 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body p-0">
+                                <center>
+                                    <h2 class="card-title text-center">Hours T2 Stage 2</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert7">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-4 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body p-0">
+                                <center>
+                                    <h2 class="card-title text-center">Hours T3 Stage 2</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert8">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Cards - Fourth -->
+                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-4 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body p-0">
+                                <center>
+                                    <h2 class="card-title text-center">Hours T1 Stage 3</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert9">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-4 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body p-0">
+                                <center>
+                                    <h2 class="card-title text-center">Hours T2 Stage 3</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert10">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-4 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body p-0">
+                                <center>
+                                    <h2 class="card-title text-center">Hours T3 Stage 3</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert11">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cards - Fiveth -->
+                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-4 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body p-0">
+                                <center>
+                                    <h2 class="card-title text-center">Hours T1 Worked</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert12">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-4 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body p-0">
+                                <center>
+                                    <h2 class="card-title text-center">Hours T2 Worked</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert13">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-4 div_card">
+                        <div class="card border-info m-2">
+                            <div class="card-body p-0">
+                                <center>
+                                    <h2 class="card-title text-center">Hours T3 Worked</h2>
+                                    <p class="card-text" style="font-size: 25px;" id="textAlert14">00</p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <!-- First Element - Table -->
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                    <div class="col-sm-12 col-md-12 col-lg-12 div_first">
                         <section class="title_tables">
                             <h3 ><span>Production Plan</span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
@@ -119,24 +261,95 @@
                     </div>
 
 
-                    <!-- Second Element - Grafica -->
-                    <div id="secondElement" class="col-sm-12 col-md-8 col-lg-8 mb-5 mt-5" style="overflow-y: scroll;">
-                        <div  style="width: 1000px;height: 400px;margin: auto;">
-                            <canvas id="graphicFirst"></canvas>
+                    <!-- Second Element - CARDS -->
+                    <div class="row col-sm-12 col-md-12 col-lg-12 ml-1 plan_production_card_secondary div_gauge">
+                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="secondElement">
+                            <div class="card card_border_none">
+                                <div id='gaugeFirst' style="margin:auto;align-items: center;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Third Element - CARDS -->
+                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="thirdElement">
+                            <div class="card  card_border_none">
+                                <div id='gaugeSecond' style="margin:auto;align-items: center;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Fourth Element - CARDS -->
+                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="fourthElement">
+                            <div class="card  card_border_none">
+                                <div id='gaugeThird' style="margin:auto;align-items: center;"></div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Thirdth Element - Grafica -->
-                    <div id="thirdElement" class="col-sm-12 col-md-4 col-lg-4 mb-5 mt-5" style="overflow-y: scroll;">
-                        <div  style="width: 400px;height: 400px;margin: auto;">
-                            <canvas id="graphicSecond"></canvas>
+                    <div class="row col-sm-12 col-md-12 col-lg-12 ml-1 plan_production_card_primary div_gauge">
+                        <!-- Fiveth Element - CARDS -->
+                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="fivethElement">
+                            <div class="card card_border_none ">
+                                <div id='gaugeFourth' style="margin:auto;align-items: center;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Sixth Element - CARDS -->
+                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="sixthElement">
+                            <div class="card card_border_none ">
+                                <div id='gaugeFiveth' style="margin:auto;align-items: center;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Seventh Element - CARDS -->
+                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="seventhElement">
+                            <div class="card card_border_none ">
+                                <div id='gaugeSixth' style="margin:auto;align-items: center;"></div>
+                            </div>
                         </div>
                     </div>
-                    
-                    <!-- Fourth Element - Grafica -->
-                    <div id="fourthElement" class="col-sm-12 col-md-8 col-lg-8 mb-5 mt-5" style="overflow-y: scroll;">
-                        <div  style="width: 1000px;height: 500px;margin: auto;">
-                            <canvas id="graphicThird"></canvas>
+
+                    <div class="row col-sm-12 col-md-12 col-lg-12 ml-1 plan_production_card_success div_gauge">
+                       <!-- Eigth Element - CARDS -->
+                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="eigthElement">
+                            <div class="card card_border_none ">
+                                <div id='gaugeSeventh' style="margin:auto;align-items: center;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Nine Element - CARDS -->
+                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="ninethElement">
+                            <div class="card card_border_none ">
+                                <div id='gaugeEigth' style="margin:auto;align-items: center;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Tenth Element - CARDS -->
+                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="tenthElement">
+                            <div class="card card_border_none ">
+                                <div id='gaugeNineth' style="margin:auto;align-items: center;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row col-sm-12 col-md-12 col-lg-12 ml-1 plan_production_card_info div_gauge">
+                         <!-- Eleventh Element - CARDS -->
+                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="eleventhElement">
+                            <div class="card card_border_none ">
+                                <div id='gaugeTeenth' style="margin:auto;align-items: center;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Twelfth Element - CARDS -->
+                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="twelfthElement">
+                            <div class="card card_border_none ">
+                                <div id='gaugeEleventh' style="margin:auto;align-items: center;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Thirteenth Element - CARDS -->
+                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="thirteenthElement">
+                            <div class="card card_border_none ">
+                                <div id='gaugeTwelfth' style="margin:auto;align-items: center;"></div>
+                            </div>
                         </div>
                     </div>
 
@@ -188,6 +401,9 @@
     <!-- SELECT MULTIPLE -->
     <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
     <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+
+    <!-- Jquery Gauge-->
+    <script src='https://cdn.plot.ly/plotly-2.14.0.min.js'></script>
 
     <!-- Utils -->
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>

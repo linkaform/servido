@@ -168,137 +168,274 @@ var dataTable1 = [
   }, 
 ];
 
-//-----DATA GRAPHIC
-var data1 = {
-  labels: ['LNAFP','LNAPE','LNAFP','LNAPE','LNAPO',],
-  datasets: [
-    {
-      label: 'Production Plan',
-      data: [25,10,20,15,10],
-      backgroundColor: array_background[3],
-    },
-    {
-      label: 'Produced Production ',
-      data: [10,5,10,15,10],
-      backgroundColor: array_background[0],
-    },
-  ]
-};
+//-----DATA GAUGE
 
-var data2 = {
-  labels: ['Produced Production','Production Plan',],
-  datasets: [
-    {
-      label: 'Value',
-      data: [40,50],
-      backgroundColor: [array_background[3],array_background[0]],
+var dataGauge1 = [
+  {
+    domain: { x: [0, 1], y: [0, 1] },
+    value: 80,
+    title: { text: "Total " , 'font': {'size': 30} },
+    type: "indicator",
+    mode: "gauge+number",
+    gauge: {
+    axis: { range: [null, 150], tickwidth: 1},
+    bar: { color: "#f7bd53" },
+    bgcolor: "white",
+    borderwidth: 2,
+    bordercolor: "gray",
+    steps: [
+    { range: [0, 70], color: "#ff5252" },
+    { range: [71, 100], color: "#fdfc8b" },
+    { range: [101, 150], color: "#8db600" }
+    ],
     },
-  ]
-};
-
-var data3 = {
-  labels: ['Team 1','Team 2','Team 3','Team 4','Team 5',],
-  datasets: [
-    {
-      label: 'Production Plan',
-      data: [90,300,150,60,200],
-      backgroundColor: array_background[3],
-    },
-    {
-      label: 'Produced Production ',
-      data: [45,170,90,30,140],
-      backgroundColor: array_background[0],
-    },
-  ]
-};
-
-
-//-----CONFIG GRAPHIC
-var setOptions1 = {
-  plugins: {
-
-    datalabels: {
-      display: true,
-      color: 'white',
-    },
-    title: {
-      display: true,
-      text: 'Production Plant',
-      font: {
-        size: 25
-      }
-    },
-  },
-  responsive: true,
-  scales: {
-    x: {
-      stacked: false,
-    },
-    y: {
-      stacked: false,
-      ticks: {
-        stepSize: 1
-      },
-    }
   }
-};
+];
 
-var setOptions2 = {
-  plugins: {
-    datalabels: {
-      display: true,
-      color: 'white',
+var dataGauge2 = [
+  {
+    domain: { x: [0, 1], y: [0, 1] },
+    value: 40,
+    title: { text: "Stage 2 " , 'font': {'size': 30} },
+    type: "indicator",
+    mode: "gauge+number",
+    gauge: {
+    axis: { range: [null, 150], tickwidth: 1},
+    bar: { color: "#f7bd53" },
+    bgcolor: "white",
+    borderwidth: 2,
+    bordercolor: "gray",
+    steps: [
+    { range: [0, 70], color: "#ff5252" },
+    { range: [71, 100], color: "#fdfc8b" },
+    { range: [101, 150], color: "#8db600" }
+    ],
     },
-    title: {
-      display: true,
-      text: 'Production Plan Vs Produced',
-      font: {
-        size: 25
-      }
-    },
-  },
-  responsive: true,
-  scales: {
-
-    x: {
-      stacked: false,
-      display: false,
-    },
-    y: {
-      stacked: false,
-      display: false,
-      ticks: {
-        stepSize: 1
-      },
-    }
   }
-};
+];
 
-var setOptions3 = {
-  plugins: {
-
-    datalabels: {
-      display: true,
-      color: 'white',
+var dataGauge3 = [
+  {
+    domain: { x: [0, 1], y: [0, 1] },
+    value: 140,
+    title: { text: "Stage 3" , 'font': {'size': 30} },
+    type: "indicator",
+    mode: "gauge+number",
+    gauge: {
+    axis: { range: [null, 150], tickwidth: 1},
+    bar: { color: "#f7bd53" },
+    bgcolor: "white",
+    borderwidth: 2,
+    bordercolor: "gray",
+    steps: [
+    { range: [0, 70], color: "#ff5252" },
+    { range: [71, 100], color: "#fdfc8b" },
+    { range: [101, 150], color: "#8db600" }
+    ],
     },
-    title: {
-      display: true,
-      text: 'Team vs Team',
-      font: {
-        size: 25
-      }
-    },
-  },
-  responsive: true,
-  scales: {
-    x: {
-      stacked: false,
-    },
-    y: {
-      stacked: false,
-      ticks: {
-        stepSize: 1
-      },
-    }
   }
-};
+];
+
+
+
+var dataGauge4 = [
+  {
+    domain: { x: [0, 1], y: [0, 1] },
+    value: 120,
+    title: { text: "T1" , 'font': {'size': 30} },
+    type: "indicator",
+    mode: "gauge+number",
+    gauge: {
+    axis: { range: [null, 150], tickwidth: 1},
+    bar: { color: "#f7bd53" },
+    bgcolor: "white",
+    borderwidth: 2,
+    bordercolor: "gray",
+    steps: [
+    { range: [0, 70], color: "#ff5252" },
+    { range: [71, 100], color: "#fdfc8b" },
+    { range: [101, 150], color: "#8db600" }
+    ],
+    },
+  }
+];
+
+var dataGauge5 = [
+  {
+    domain: { x: [0, 1], y: [0, 1] },
+    value: 110,
+    title: { text: "S2" , 'font': {'size': 30} },
+    type: "indicator",
+    mode: "gauge+number",
+    gauge: {
+    axis: { range: [null, 150], tickwidth: 1},
+    bar: { color: "#f7bd53" },
+    bgcolor: "white",
+    borderwidth: 2,
+    bordercolor: "gray",
+    steps: [
+    { range: [0, 70], color: "#ff5252" },
+    { range: [71, 100], color: "#fdfc8b" },
+    { range: [101, 150], color: "#8db600" }
+    ],
+    },
+  }
+];
+
+var dataGauge6 = [
+  {
+    domain: { x: [0, 1], y: [0, 1] },
+    value: 120,
+    title: { text: "S3" , 'font': {'size': 30} },
+    type: "indicator",
+    mode: "gauge+number",
+    gauge: {
+    axis: { range: [null, 150], tickwidth: 1},
+    bar: { color: "#f7bd53" },
+    bgcolor: "white",
+    borderwidth: 2,
+    bordercolor: "gray",
+    steps: [
+    { range: [0, 70], color: "#ff5252" },
+    { range: [71, 100], color: "#fdfc8b" },
+    { range: [101, 150], color: "#8db600" }
+    ],
+    },
+  }
+];
+
+
+
+var dataGauge7 = [
+  {
+    domain: { x: [0, 1], y: [0, 1] },
+    value: 50,
+    title: { text: "T2" , 'font': {'size': 30} },
+    type: "indicator",
+    mode: "gauge+number",
+    gauge: {
+    axis: { range: [null, 150], tickwidth: 1},
+    bar: { color: "#f7bd53" },
+    bgcolor: "white",
+    borderwidth: 2,
+    bordercolor: "gray",
+    steps: [
+    { range: [0, 70], color: "#ff5252" },
+    { range: [71, 100], color: "#fdfc8b" },
+    { range: [101, 150], color: "#8db600" }
+    ],
+    },
+  }
+];
+
+var dataGauge8 = [
+  {
+    domain: { x: [0, 1], y: [0, 1] },
+    value: 30,
+    title: { text: "S2" , 'font': {'size': 30} },
+    type: "indicator",
+    mode: "gauge+number",
+    gauge: {
+    axis: { range: [null, 150], tickwidth: 1},
+    bar: { color: "#f7bd53" },
+    bgcolor: "white",
+    borderwidth: 2,
+    bordercolor: "gray",
+    steps: [
+    { range: [0, 70], color: "#ff5252" },
+    { range: [71, 100], color: "#fdfc8b" },
+    { range: [101, 150], color: "#8db600" }
+    ],
+    },
+  }
+];
+
+var dataGauge9 = [
+  {
+    domain: { x: [0, 1], y: [0, 1] },
+    value: 15,
+    title: { text: "S3" , 'font': {'size': 30} },
+    type: "indicator",
+    mode: "gauge+number",
+    gauge: {
+    axis: { range: [null, 150], tickwidth: 1},
+    bar: { color: "#f7bd53" },
+    bgcolor: "white",
+    borderwidth: 2,
+    bordercolor: "gray",
+    steps: [
+    { range: [0, 70], color: "#ff5252" },
+    { range: [71, 100], color: "#fdfc8b" },
+    { range: [101, 150], color: "#8db600" }
+    ],
+    },
+  }
+];
+
+
+
+var dataGauge10 = [
+  {
+    domain: { x: [0, 1], y: [0, 1] },
+    value: 90,
+    title: { text: "T3" , 'font': {'size': 30} },
+    type: "indicator",
+    mode: "gauge+number",
+    gauge: {
+    axis: { range: [null, 150], tickwidth: 1},
+    bar: { color: "#f7bd53" },
+    bgcolor: "white",
+    borderwidth: 2,
+    bordercolor: "gray",
+    steps: [
+    { range: [0, 70], color: "#ff5252" },
+    { range: [71, 100], color: "#fdfc8b" },
+    { range: [101, 150], color: "#8db600" }
+    ],
+    },
+  }
+];
+
+var dataGauge11 = [
+  {
+    domain: { x: [0, 1], y: [0, 1] },
+    value: 80,
+    title: { text: "S2" , 'font': {'size': 30} },
+    type: "indicator",
+    mode: "gauge+number",
+    gauge: {
+    axis: { range: [null, 150], tickwidth: 1},
+    bar: { color: "#f7bd53" },
+    bgcolor: "white",
+    borderwidth: 2,
+    bordercolor: "gray",
+    steps: [
+    { range: [0, 70], color: "#ff5252" },
+    { range: [71, 100], color: "#fdfc8b" },
+    { range: [101, 150], color: "#8db600" }
+    ],
+    },
+  }
+];
+
+var dataGauge12 = [
+  {
+    domain: { x: [0, 1], y: [0, 1] },
+    value: 100,
+    title: { text: "S3" , 'font': {'size': 30} },
+    type: "indicator",
+    mode: "gauge+number",
+    gauge: {
+    axis: { range: [null, 150], tickwidth: 1},
+    bar: { color: "#f7bd53" },
+    bgcolor: "white",
+    borderwidth: 2,
+    bordercolor: "gray",
+    steps: [
+    { range: [0, 70], color: "#ff5252" },
+    { range: [71, 100], color: "#fdfc8b" },
+    { range: [101, 150], color: "#8db600" }
+    ],
+    },
+  }
+];

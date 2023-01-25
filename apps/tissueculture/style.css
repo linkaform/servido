@@ -67,3 +67,32 @@ body{
   width: 350px;
   margin-left: 0%;
 }
+
+.card_border_none {
+  border:none;
+}
+
+
+.plan_production_card_secondary {
+  margin-bottom: 5px;
+  border: solid #b3aca4 2.5px; 
+  border-radius: 10px;
+}
+
+.plan_production_card_primary {
+  margin-bottom: 5px;
+  border: solid #157a8c 2.5px; 
+  border-radius: 10px;
+}
+
+.plan_production_card_success {
+  margin-bottom: 5px;
+  border: solid #106b87 2.5px; 
+  border-radius: 10px;
+}
+
+.plan_production_card_info {
+  margin-bottom: 5px;
+  border: solid #003f69 2.5px; 
+  border-radius: 10px;
+}
