@@ -1,3 +1,11 @@
+var array_background = getPAlleteColors(4,4);
+console.log(array_background)
+var array_background = getPAlleteColors(6,4);
+console.log(array_background)
+var array_background = getPAlleteColors(7,4);
+console.log(array_background)
+
+
 
 var array_background = getPAlleteColors(10,12);
 console.log(array_background)

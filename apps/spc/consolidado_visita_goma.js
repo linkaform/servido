@@ -145,9 +145,10 @@ function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
   let equipo = document.getElementById("equipo");  
+  let area = document.getElementById("area");  
 
   if (date_from.value != null && date_from.value!="" && date_to.value != null && date_to.value!=""){
-    getFirstElement(date_to.value, date_from.value, equipo.value);
+    getFirstElement(date_to.value, date_from.value, equipo.value, area.value);
   }
   else
   {
@@ -160,7 +161,7 @@ function runFirstElement(){
   
 };
 
-function getFirstElement(dateTo, dateFrom, equipo){
+function getFirstElement(dateTo, dateFrom, equipo, area){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -174,6 +175,7 @@ function getFirstElement(dateTo, dateFrom, equipo){
       date_to: dateTo,
       date_from: dateFrom,
       equipo: equipo,
+      area: area,
     }),
     headers:{
       'Content-Type': 'application/json',

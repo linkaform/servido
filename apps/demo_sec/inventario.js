@@ -226,6 +226,7 @@ function getDrawTable(id, columnsData, tableData){
     textDirection:"ltr",
     columns:columnsData,
   });
+
   if (document.getElementById("download_xlsx_"+id)){
     //trigger download of data.xlsx file
     document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
@@ -233,12 +234,53 @@ function getDrawTable(id, columnsData, tableData){
     table.download("xlsx", "data.xlsx", {sheetName:"data"});
     });
   }
+
+
   if (document.getElementById("download_csv_"+id)){
     //trigger download of data.csv file
     document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
     document.getElementById("download_csv_"+id).addEventListener("click", function (){
       table.download("csv", "data.csv");
     });
+  }
+
+  //---PDF
+  var element = document.getElementById("download_pdf_"+id);
+
+  if (element)
+  {
+    document.getElementById("download_pdf_"+id).replaceWith(document.getElementById("download_pdf_"+id).cloneNode(true));
+    document.getElementById("download_pdf_"+id).addEventListener("click", function(){
+      table.download("pdf", "data.pdf", {
+          orientation:"landscape", //set page orientation to portrait
+          theme: 'grid',
+          autoTable:function(doc)
+          { 
+            var margins = 30;
+            var leftMargin = 40;
+            var marginsIndent = 40;
+
+            doc.setFontSize(11);
+            return {
+              styles: {
+                cellPadding: 2, 
+                fontSize: 8,
+              },
+              headStyles: {
+                fillColor: [139, 0, 0]
+              },
+              startY: 100, //This was the way to push the start of the table down
+            };
+          },
+          createdCell: function(cell, opts) {
+            if (opts.column.index == 1) {        
+              cell.styles.textColor = "#20a8d8";
+              cell.styles.fillColor = "#000";
+            }
+          },
+      });
+    });
+
   }
 }
 

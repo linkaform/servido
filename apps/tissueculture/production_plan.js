@@ -250,18 +250,22 @@ function getFirstElement(){
         data = res.response.firstElement.hours
         $("#textAlert1").text(data['total']['available'])
         $("#textAlert2").text(data['total']['worked'])
+
         $("#textAlert3").text(data['Team 1']['available'])
-        $("#textAlert4").text(data['Team 2']['available'])
-        $("#textAlert5").text(data['Team 3']['available'])
-        $("#textAlert6").text(data['Team 1']['stage2'])
-        $("#textAlert7").text(data['Team 2']['stage2'])
-        $("#textAlert8").text(data['Team 3']['stage2'])
-        $("#textAlert9").text(data['Team 1']['stage3'])
+        $("#textAlert4").text(data['Team 1']['worked'])
+        $("#textAlert5").text(data['Team 1']['stage2'])
+        $("#textAlert6").text(data['Team 1']['stage3'])
+
+        $("#textAlert7").text(data['Team 2']['available'])
+        $("#textAlert8").text(data['Team 2']['worked'])
+        $("#textAlert9").text(data['Team 2']['stage2'])
         $("#textAlert10").text(data['Team 2']['stage3'])
-        $("#textAlert11").text(data['Team 3']['stage3'])
-        $("#textAlert12").text(data['Team 1']['worked'])
-        $("#textAlert13").text(data['Team 2']['worked'])
-        $("#textAlert14").text(data['Team 3']['worked'])
+
+        $("#textAlert11").text(data['Team 3']['available'])
+        $("#textAlert12").text(data['Team 3']['worked'])
+        $("#textAlert13").text(data['Team 3']['stage2'])
+        $("#textAlert14").text(data['Team 3']['stage3'])
+
       }
       
     } else {

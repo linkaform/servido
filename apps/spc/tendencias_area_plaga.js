@@ -145,9 +145,10 @@ function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
   let dispositivo = document.getElementById("dispositivo");  
+  let area = document.getElementById("area");  
   
   if (date_from.value != null && date_from.value!="" && date_to.value != null && date_to.value!=""){
-    getFirstElement(date_to.value, date_from.value, dispositivo.value);
+    getFirstElement(date_to.value, date_from.value, dispositivo.value, area.value);
   }
   else
   {
@@ -158,7 +159,7 @@ function runFirstElement(){
   
 };
 
-function getFirstElement(dateTo, dateFrom, dispositivo){
+function getFirstElement(dateTo, dateFrom, dispositivo, area){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -172,6 +173,7 @@ function getFirstElement(dateTo, dateFrom, dispositivo){
       date_to: dateTo,
       date_from: dateFrom,
       dispositivo: dispositivo,
+      area: area,
     }),
     headers:{
       'Content-Type': 'application/json',
