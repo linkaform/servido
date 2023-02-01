@@ -1,0 +1,17 @@
+body{
+  font-family: gothambook;
+}
+
+h2 {
+  color: black;
+  font: 33px sans-serif;
+  margin-top: 30px;
+  text-align: left;
+}
+
+hr.servicio_status_hr_firts_element {
+  border-top: 1px solid #707b7c;
+  width: 400px;
+  margin-left: 0%;
+}
+
