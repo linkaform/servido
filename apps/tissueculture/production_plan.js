@@ -339,7 +339,7 @@ function setDrawWeek(){
   date = new Date();
   monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
   date_from =  new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1);
-  date_to = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 5 - date.getDay());
+  date_to = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7 - date.getDay());
   $('#text_range').text(monthNames[date_from.getMonth()] + ' ' + date_from.getDate() + ' to ' + monthNames[date_to.getMonth()] + ' ' + date_to.getDate());
 
   //---DAY
