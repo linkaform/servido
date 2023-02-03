@@ -101,17 +101,18 @@ window.onload = function(){
     userName = getCookie("userName");
     document.getElementById("firstParameters").style.removeProperty('display');
     unHideReportElements()
+    setDrawWeek();
     if (scriptId == null) {
       loadDemoData();
     }else{
       runFirstElement();
-
+      
       setTimeout(()=> {},1000);
 
       setInterval(function(){
         getContador();
       }, 1000);
-
+    
     }
     //--Styles
 
@@ -202,11 +203,15 @@ function loadDemoData(){
   document.getElementById("thirteenthElement").style.removeProperty('display');
 
 
-  setShowElements(0)
 
+
+  setShowElements(2)
+
+  /*
   setInterval(function(){
     getContador();
   }, 1000);
+  */
 }
 
 const loading = document.querySelector('.loading-container');
@@ -240,34 +245,68 @@ function getFirstElement(){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log('Todo',res.response);
+      console.log('VALORES GENERALES',res.response);
       if (res.response.secondElement.tabledata.length) {
         getDrawGaugeList(res.response.secondElement.tabledata);
-        getDrawTable('firstElement', columsTable1, res.response.secondElement.tabledata);
-        document.getElementById("firstElement").style.removeProperty('display');
       }
       if (res.response.firstElement) {
         data = res.response.firstElement.hours
-        $("#textAlert1").text(data['total']['available'].toFixed(2))
-        $("#textAlert2").text(data['total']['worked'].toFixed(2))
+        $("#textAlert1").text(data['total']['available'].toFixed(0))
+        $("#textAlert2").text(data['total']['worked'].toFixed(0))
 
-        $("#textAlert3").text(data['Team 1']['available'].toFixed(2))
-        $("#textAlert4").text(data['Team 1']['worked'].toFixed(2))
-        $("#textAlert5").text(data['Team 1']['stage2'].toFixed(2))
-        $("#textAlert6").text(data['Team 1']['stage3'].toFixed(2))
+        $("#text_team1_01").text(data['Team 1']['available'].toFixed(0))
+        $("#text_team1_02").text(data['Team 1']['consumed'].toFixed(0))
 
-        $("#textAlert7").text(data['Team 2']['available'].toFixed(2))
-        $("#textAlert8").text(data['Team 2']['worked'].toFixed(2))
-        $("#textAlert9").text(data['Team 2']['stage2'].toFixed(2))
-        $("#textAlert10").text(data['Team 2']['stage3'].toFixed(2))
+        $("#text_team1_03").text(data['Team 1']['worked'].toFixed(0))
+        $("#text_team1_04").text(data['Team 1']['estimated'].toFixed(0))
 
-        $("#textAlert11").text(data['Team 3']['available'].toFixed(2))
-        $("#textAlert12").text(data['Team 3']['worked'].toFixed(2))
-        $("#textAlert13").text(data['Team 3']['stage2'].toFixed(2))
-        $("#textAlert14").text(data['Team 3']['stage3'].toFixed(2))
+        $("#text_team1_05").text(data['Team 1']['stage2'].toFixed(0))
+        $("#text_team1_06").text(data['Team 1']['stage2_estimated'].toFixed(0))
 
+        $("#text_team1_07").text(data['Team 1']['stage3'].toFixed(0))
+        $("#text_team1_08").text(data['Team 1']['stage3_estimated'].toFixed(0))
+
+
+        $("#text_team2_01").text(data['Team 2']['available'].toFixed(0))
+        $("#text_team2_02").text(data['Team 2']['consumed'].toFixed(0))
+
+        $("#text_team2_03").text(data['Team 2']['worked'].toFixed(0))
+        $("#text_team2_04").text(data['Team 2']['estimated'].toFixed(0))
+
+        $("#text_team2_05").text(data['Team 2']['stage2'].toFixed(0))
+        $("#text_team2_06").text(data['Team 2']['stage2_estimated'].toFixed(0))
+
+        $("#text_team2_07").text(data['Team 2']['stage3'].toFixed(0))
+        $("#text_team2_08").text(data['Team 2']['stage3_estimated'].toFixed(0))
+
+
+        $("#text_team3_01").text(data['Team 3']['available'].toFixed(0))
+        $("#text_team3_02").text(data['Team 3']['consumed'].toFixed(0))
+
+        $("#text_team3_03").text(data['Team 3']['worked'].toFixed(0))
+        $("#text_team3_04").text(data['Team 3']['estimated'].toFixed(0))
+
+        $("#text_team3_05").text(data['Team 3']['stage2'].toFixed(0))
+        $("#text_team3_06").text(data['Team 3']['stage2_estimated'].toFixed(0))
+
+        $("#text_team3_07").text(data['Team 3']['stage3'].toFixed(0))
+        $("#text_team3_08").text(data['Team 3']['stage3_estimated'].toFixed(0))
       }
-      
+
+      if (res.response.thirdElement){
+        data = res.response.thirdElement.tabledata;
+        data.sort(function (a, b) {
+          if (a.progress > b.progress) {
+            return 1;
+          }
+          if (a.progress < b.progress) {
+            return -1;
+          }
+          return 0;
+        });
+        getDrawTable('firstElement', columsTable1, data);
+        document.getElementById("firstElement").style.removeProperty('display');
+      }
     } else {
       hideLoading();
       if(res.code == 11){
@@ -287,10 +326,33 @@ function getFirstElement(){
   })
 };
 
+//-----TIME
+function setDrawWeek(){
+  //--Week 
+  date = new Date();
+  oneJan = new Date(date.getFullYear(),0,1);
+  numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000));
+  result = Math.ceil(( date.getDay() + 1 + numberOfDays) / 7);
+  $('#text_weeek').text('Week: '+result);
+
+  //---Range Week
+  date = new Date();
+  monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
+  date_from =  new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1);
+  date_to = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 5 - date.getDay());
+  $('#text_range').text(monthNames[date_from.getMonth()] + ' ' + date_from.getDate() + ' to ' + monthNames[date_to.getMonth()] + ' ' + date_to.getDate());
+
+  //---DAY
+  date = new Date();
+  $('#text_today').text('Today is '+ monthNames[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear() )
+
+}
+
+
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"100%",
+    height:"550px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -319,10 +381,9 @@ function getDrawTable(id, columnsData, tableData){
   }
 }
 
-
 //-----GAUGE
 function getDrawGauge(id, data){
-  var layout = { width: 350, height: 155, margin: { t: 40 , b: 0 } };
+  var layout = { width: 340, height: 140, margin: { t: 42 , b: 0 } };
   Plotly.newPlot(id, data, layout);
 }
 
@@ -341,7 +402,7 @@ function getFormatGauge(label, value, range, id) {
     {
       domain: { x: [0, 1], y: [0, 1] },
       value: value,
-      title: { text: label , 'font': {'size': 25} },
+      title: { text: label , 'font': {'size': 20} },
       type: "indicator",
       mode: "gauge+number",
       gauge: {
@@ -354,29 +415,32 @@ function getFormatGauge(label, value, range, id) {
       },
     }
   ];
+  //console.log('DATA GAUGE',dataGauge)
   //console.log('Esquema',dataGauge);
+  //---COntainer
+  num = range.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+  $('#text_' + id).text(num +' Containers')
   getDrawGauge(id, dataGauge)
-
 }
 
 function getDrawGaugeList(data){
   if (data[0].length){
     if (data[0][0]){
-      label = data[0][0]['label'];
+      label = 'Total Requierd';
       value = data[0][0]['value'];
       range = data[0][0]['range'];
       id = 'gaugeFirst';
       getFormatGauge(label, value, range, id) 
     }
     if (data[0][1]){
-      label = data[0][1]['label'];
+      label = 'Stage 2';
       value = data[0][1]['value'];
       range = data[0][1]['range'];
       id = 'gaugeSecond';
       getFormatGauge(label, value, range, id) 
     }
     if (data[0][2]){
-      label = data[0][2]['label'];
+      label = 'Stage 3';
       value = data[0][2]['value'];
       range = data[0][2]['range'];
       id = 'gaugeThird';
@@ -384,21 +448,21 @@ function getDrawGaugeList(data){
     }
 
     if (data[1][0]){
-      label = data[1][0]['label'];
+      label = 'Total Requierd';
       value = data[1][0]['value'];
       range = data[1][0]['range'];
       id = 'gaugeFourth';
       getFormatGauge(label, value, range, id) 
     }
     if (data[1][1]){
-      label = data[1][1]['label'];
+      label = 'Stage 2';
       value = data[1][1]['value'];
       range = data[1][1]['range'];
       id = 'gaugeFiveth';
       getFormatGauge(label, value, range, id) 
     }
     if (data[1][2]){
-      label = data[1][2]['label'];
+      label = 'Stage 3';
       value = data[1][2]['value'];
       range = data[1][2]['range'];
       id = 'gaugeSixth';
@@ -406,21 +470,21 @@ function getDrawGaugeList(data){
     }
 
     if (data[2][0]){
-      label = data[2][0]['label'];
+      label = 'Total Requierd';
       value = data[2][0]['value'];
       range = data[2][0]['range'];
       id = 'gaugeSeventh';
       getFormatGauge(label, value, range, id) 
     }
     if (data[2][1]){
-      label = data[2][1]['label'];
+      label = 'Stage 2';
       value = data[2][1]['value'];
       range = data[2][1]['range'];
       id = 'gaugeEigth';
       getFormatGauge(label, value, range, id) 
     }
     if (data[2][2]){
-      label = data[2][2]['label'];
+      label = 'Stage 3';
       value = data[2][2]['value'];
       range = data[2][2]['range'];
       id = 'gaugeNineth';
@@ -428,21 +492,21 @@ function getDrawGaugeList(data){
     }
 
     if (data[3][0]){
-      label = data[3][0]['label'];
+      label = 'Total Requierd';
       value = data[3][0]['value'];
       range = data[3][0]['range'];
       id = 'gaugeTeenth';
       getFormatGauge(label, value, range, id) 
     }
     if (data[3][1]){
-      label = data[3][1]['label'];
+      label = 'Stage 2';
       value = data[3][1]['value'];
       range = data[3][1]['range'];
       id = 'gaugeEleventh';
       getFormatGauge(label, value, range, id) 
     }
     if (data[3][2]){
-      label = data[3][2]['label'];
+      label = 'Stage 3';
       value = data[3][2]['value'];
       range = data[3][2]['range'];
       id = 'gaugeTwelfth';
@@ -455,9 +519,9 @@ function getDrawGaugeList(data){
 function getContador(){
   count ++;
   count_consult ++;
-  console.log('Segundo',count)
-  console.log('Segundo General',count_consult)
-  if (count == 10) {
+  //console.log('Segundo',count)
+  //console.log('Segundo General',count_consult)
+  if (count == 60) {
     $("#divContent").hide();
     $('.load-wrapp').show();
     if (flag == 0){
@@ -500,6 +564,7 @@ function setShowElements(option){
   $("#thirteenthElement").hide();
 
   if (option == 0){
+    $('#title_report').text('Report Production Plan Vs Done')
     $(".div_card").hide();
     $(".div_gauge").hide();
     $(".div_first").show();
@@ -517,6 +582,7 @@ function setShowElements(option){
     $("#thirteenthElement").hide();
   }
   else if(option == 1){
+    $('#title_report').text('Report Production Plan Vs Done')
     $(".div_card").hide();
     $(".div_first").hide();
     $(".div_gauge").show();
@@ -535,6 +601,7 @@ function setShowElements(option){
     $("#thirteenthElement").show();
   }
   else if(option == 2){
+    $('#title_report').text('Work Hours Available, Worked and Estimated by Team an Stage')
     $(".div_card").show();
     $(".div_gauge").hide();
     $(".div_first").hide();

@@ -96,3 +96,38 @@ body{
   border: solid #003f69 2.5px; 
   border-radius: 10px;
 }
+
+.plan_production_text_title {
+  writing-mode: vertical-lr;
+  text-align: center;
+  color: black;
+  
+}
+
+
+.plan_production_card_headerI {
+  text-align:center;
+  background: #A2C4C9;
+}
+
+.plan_production_card_headerII {
+  text-align:center;
+  background: #D9A9C3;
+}
+
+.plan_production_card_headerIII {
+  text-align:center;
+  background: #FFE599;
+}
+
+.plan_production_card_headerIV {
+  text-align:center;
+  background: #A0CCF2;
+}
+
+
+
+.plan_production_subcard_headerI {
+  text-align:center;
+  background: #B6D7A8;
+}

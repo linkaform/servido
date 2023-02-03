@@ -85,24 +85,36 @@
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
+                    <!-- INDICATORS -->
+                    <div  class="col-sm-12 col-md-12 col-lg-12 row mb-2">
+                        <div  class="col-sm-12 col-md-12 col-lg-12 ">
+                            <span class="text-black h4" id="text_weeek"></span>
+                        </div>
+                        <div  class="col-sm-12 col-md-6 col-lg-6 ">
+                            <span class="text-black h4" id="text_range"></span>
+                        </div>
+                        <div  class="col-sm-12 col-md-6 col-lg-6" style="text-align: right;">
+                            <span class="text-black h4" id="text_today"></span>
+                        </div>
+                    </div>
 
                     <!-- Cards - First -->
-                    <div  style="margin-top:10px;" class="col-sm-12 col-md-6 col-lg-6 div_card">
+                    <div  class="col-sm-12 col-md-6 col-lg-6 div_card mt-2">
                         <div class="card border-info m-2">
                             <div class="card-body p-0">
                                 <center>
-                                    <h2 class="card-title text-center">Hours Availables</h2>
+                                    <h2 class="card-title text-center text-uppercase text-dark">Hours Availables</h2>
                                     <p class="card-text" style="font-size: 35px;" id="textAlert1">00</p>
                                 </center>
                             </div>
                         </div>
                     </div>
 
-                    <div  style="margin-top:10px;" class="col-sm-12 col-md-6 col-lg-6 div_card">
+                    <div  class="col-sm-12 col-md-6 col-lg-6 div_card mt-2">
                         <div class="card border-info m-2">
                             <div class="card-body p-0">
                                 <center>
-                                    <h2 class="card-title text-center">Hours Work</h2>
+                                    <h2 class="card-title text-center text-uppercase text-dark">Hours Work</h2>
                                     <p class="card-text" style="font-size: 35px;" id="textAlert2">00</p>
                                 </center>
                             </div>
@@ -111,147 +123,451 @@
 
 
 
-
                     <!-- Cards - Second -->
-                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-3 div_card">
+                    <div  class="col-sm-12 col-md-12 col-lg-3 div_card mt-2 text-dark">
                         <div class="card border-info m-2">
-                            <div class="card-body p-0">
-                                <center>
-                                    <h2 class="card-title text-center">Hours T1 Available</h2>
-                                    <p class="card-text" style="font-size: 35px;" id="textAlert3">00</p>
-                                </center>
+                            <div class="card-body p-0 plan_production_card_headerI" >
+                                <h5 class="card-title text-uppercase text-dark mt-1">Team 1 Work Hours Available</h5>
+                                <div class="row">
+                                    <!-- Available -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pr-0 ">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7">
+                                            <div class="card-body plan_production_subcard_headerI">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Available</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team1_01">00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- COnsumed -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pl-0">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7 ">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Consumed</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team1_02">00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
 
-                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-3 div_card">
+                    <div  class="col-sm-12 col-md-12 col-lg-3 div_card mt-2">
                         <div class="card border-info m-2">
-                            <div class="card-body p-0">
-                                <center>
-                                    <h2 class="card-title text-center">Hours T1 Worked</h2>
-                                    <p class="card-text" style="font-size: 35px;" id="textAlert4">00</p>
-                                </center>
+                            <div class="card-body p-0 plan_production_card_headerII" >
+                                <h5 class="card-title text-uppercase text-dark mt-1">Hours Team 1</h5>
+                                <div class="row">
+                                    <!-- Available -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pr-0 ">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7">
+                                            <div class="card-body plan_production_subcard_headerI">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Worked</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark"  id="text_team1_03">00</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- COnsumed -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pl-0">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7 ">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Estimated</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team1_04">00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
 
-
-                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-3 div_card">
+                    <div  class="col-sm-12 col-md-12 col-lg-3 div_card mt-2">
                         <div class="card border-info m-2">
-                            <div class="card-body p-0">
-                                <center>
-                                    <h2 class="card-title text-center">Hours T1 Stage 2</h2>
-                                    <p class="card-text" style="font-size: 35px;" id="textAlert5">00</p>
-                                </center>
+                            <div class="card-body p-0 plan_production_card_headerIII" >
+                                <h5 class="card-title text-uppercase text-dark mt-1">Hours Team 1 Stage 2</h5>
+                                <div class="row">
+                                    <!-- Available -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pr-0 ">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7">
+                                            <div class="card-body plan_production_subcard_headerI">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Worked</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team1_05">00</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- COnsumed -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pl-0">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7 ">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Estimated</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team1_06">00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
 
-                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-3 div_card">
+                    <div  class="col-sm-12 col-md-12 col-lg-3 div_card mt-2">
                         <div class="card border-info m-2">
-                            <div class="card-body p-0">
-                                <center>
-                                    <h2 class="card-title text-center">Hours T1 Stage 3</h2>
-                                    <p class="card-text" style="font-size: 35px;" id="textAlert6">00</p>
-                                </center>
+                            <div class="card-body p-0 plan_production_card_headerIV" >
+                                <h5 class="card-title text-uppercase text-dark mt-1">Hours Team 1 Stage 3</h5>
+                                <div class="row">
+                                    <!-- Available -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pr-0 ">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7">
+                                            <div class="card-body plan_production_subcard_headerI">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Worked</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team1_07">00</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- COnsumed -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pl-0">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7 ">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Estimated</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team1_08">00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
-
 
                     <!-- Cards - Third -->
-                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-3 div_card">
+                    <div  class="col-sm-12 col-md-12 col-lg-3 div_card mt-2">
                         <div class="card border-info m-2">
-                            <div class="card-body p-0">
-                                <center>
-                                    <h2 class="card-title text-center">Hours T2 Available</h2>
-                                    <p class="card-text" style="font-size: 35px;" id="textAlert7">00</p>
-                                </center>
+                            <div class="card-body p-0 plan_production_card_headerI" >
+                                <h5 class="card-title text-uppercase text-dark mt-1">Team 2 Work Hours Available</h5>
+                                <div class="row">
+                                    <!-- Available -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pr-0 ">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7">
+                                            <div class="card-body plan_production_subcard_headerI">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Available</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team2_01">00</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- COnsumed -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pl-0">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7 ">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Consumed</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team2_02">00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
 
-                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-3 div_card">
+                    <div  class="col-sm-12 col-md-12 col-lg-3 div_card mt-2">
                         <div class="card border-info m-2">
-                            <div class="card-body p-0">
-                                <center>
-                                    <h2 class="card-title text-center">Hours T2 Worked</h2>
-                                    <p class="card-text" style="font-size: 35px;" id="textAlert8">00</p>
-                                </center>
+                            <div class="card-body p-0 plan_production_card_headerII" >
+                                <h5 class="card-title text-uppercase text-dark mt-1">Hours Team 2</h5>
+                                <div class="row">
+                                    <!-- Available -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pr-0 ">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7">
+                                            <div class="card-body plan_production_subcard_headerI">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Worked</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team2_03">00</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- COnsumed -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pl-0">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7 ">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Estimated</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team2_04">00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
 
-                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-3 div_card">
+                    <div  class="col-sm-12 col-md-12 col-lg-3 div_card mt-2">
                         <div class="card border-info m-2">
-                            <div class="card-body p-0">
-                                <center>
-                                    <h2 class="card-title text-center">Hours T2 Stage 2</h2>
-                                    <p class="card-text" style="font-size: 35px;" id="textAlert9">00</p>
-                                </center>
+                            <div class="card-body p-0 plan_production_card_headerIII" >
+                                <h5 class="card-title text-uppercase text-dark mt-1">Hours Team 2 Stage 2</h5>
+                                <div class="row">
+                                    <!-- Available -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pr-0 ">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7">
+                                            <div class="card-body plan_production_subcard_headerI">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Worked</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team2_05">00</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- COnsumed -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pl-0">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7 ">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Estimated</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team2_06">00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
 
-                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-3 div_card">
+                    <div  class="col-sm-12 col-md-12 col-lg-3 div_card mt-2">
                         <div class="card border-info m-2">
-                            <div class="card-body p-0">
-                                <center>
-                                    <h2 class="card-title text-center">Hours T2 Stage 3</h2>
-                                    <p class="card-text" style="font-size: 35px;" id="textAlert10">00</p>
-                                </center>
+                            <div class="card-body p-0 plan_production_card_headerIV" >
+                                <h5 class="card-title text-uppercase text-dark mt-1">Hours Team 2 Stage 3</h5>
+                                <div class="row">
+                                    <!-- Available -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pr-0 ">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7">
+                                            <div class="card-body plan_production_subcard_headerI">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Worked</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team2_07">00</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- COnsumed -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pl-0">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7 ">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Estimated</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team2_08">00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
-
 
                     <!-- Cards - Fourth -->
-                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-3 div_card">
+                    <div  class="col-sm-12 col-md-12 col-lg-3 div_card mt-2">
                         <div class="card border-info m-2">
-                            <div class="card-body p-0">
-                                <center>
-                                    <h2 class="card-title text-center">Hours T3 Available</h2>
-                                    <p class="card-text" style="font-size: 35px;" id="textAlert11">00</p>
-                                </center>
+                            <div class="card-body p-0 plan_production_card_headerI" >
+                                <h5 class="card-title text-uppercase text-dark mt-1">Team 3 Work Hours Available</h5>
+                                <div class="row">
+                                    <!-- Available -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pr-0 ">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7">
+                                            <div class="card-body plan_production_subcard_headerI">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Available</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team3_01">00</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- COnsumed -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pl-0">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7 ">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Consumed</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team3_02">00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
 
-                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-3 div_card">
+                    <div  class="col-sm-12 col-md-12 col-lg-3 div_card mt-2">
                         <div class="card border-info m-2">
-                            <div class="card-body p-0">
-                                <center>
-                                    <h2 class="card-title text-center">Hours T3 Worked</h2>
-                                    <p class="card-text" style="font-size: 35px;" id="textAlert12">00</p>
-                                </center>
+                            <div class="card-body p-0 plan_production_card_headerII" >
+                                <h5 class="card-title text-uppercase text-dark mt-1">Hours Team 3</h5>
+                                <div class="row">
+                                    <!-- Available -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pr-0 ">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7">
+                                            <div class="card-body plan_production_subcard_headerI">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Worked</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team3_03">00</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- COnsumed -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pl-0">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7 ">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Estimated</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team3_04">00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
 
-                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-3 div_card">
+                    <div  class="col-sm-12 col-md-12 col-lg-3 div_card mt-2">
                         <div class="card border-info m-2">
-                            <div class="card-body p-0">
-                                <center>
-                                    <h2 class="card-title text-center">Hours T3 Stage 2</h2>
-                                    <p class="card-text" style="font-size: 35px;" id="textAlert13">00</p>
-                                </center>
+                            <div class="card-body p-0 plan_production_card_headerIII" >
+                                <h5 class="card-title text-uppercase text-dark mt-1">Hours Team 3 Stage 2</h5>
+                                <div class="row">
+                                    <!-- Available -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pr-0 ">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7">
+                                            <div class="card-body plan_production_subcard_headerI">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Worked</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team3_05">00</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- COnsumed -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pl-0">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7 ">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Estimated</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team3_06">00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
 
-                    <div  style="margin-top:10px;" class="col-sm-12 col-md-12 col-lg-3 div_card">
+                    <div  class="col-sm-12 col-md-12 col-lg-3 div_card mt-2">
                         <div class="card border-info m-2">
-                            <div class="card-body p-0">
-                                <center>
-                                    <h2 class="card-title text-center">Hours T3 Stage 3</h2>
-                                    <p class="card-text" style="font-size: 35px;" id="textAlert14">00</p>
-                                </center>
+                            <div class="card-body p-0 plan_production_card_headerIV" >
+                                <h5 class="card-title text-uppercase text-dark mt-1">Hours Team 3 Stage 3</h5>
+                                <div class="row">
+                                    <!-- Available -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pr-0 ">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7">
+                                            <div class="card-body plan_production_subcard_headerI">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Worked</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team3_07">00</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- COnsumed -->
+                                    <div class="col-xs-12 col-md-12 col-lg-6 pl-0">
+                                        <div class="card card-stats mb-4 mb-xl-0 rounded-7 ">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6 class="card-title text-uppercase text-dark mb-0">Estimated</h6>
+                                                        <span class="h4 font-weight-bold mb-0 text-dark" id="text_team3_08">00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
-
-
-
 
                     <!-- First Element - Table -->
                     <div class="col-sm-12 col-md-12 col-lg-12 div_first">
@@ -265,12 +581,21 @@
                         <div id="firstElement" > </div>
                     </div>
 
-
-                    <!-- Second Element - CARDS -->
+                    
+                    <!-- GAUGE -->
                     <div class="row col-sm-12 col-md-12 col-lg-12 ml-1 plan_production_card_secondary div_gauge">
-                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="secondElement">
+
+                        <div class="col-sm-12 col-md-6 col-lg-1 plan_production_text_title mt-2" >
+                            <h3>TOTAL</h3>
+                        </div>
+
+                        <!-- Second Element - GAUGE -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mt-2" id="secondElement">
                             <div class="card card_border_none">
                                 <div id='gaugeFirst' style="margin:auto;align-items: center;"></div>
+                                <div style="text-align:center;">
+                                    <span class="text-dark" id="text_gaugeFirst"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -278,6 +603,9 @@
                         <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="thirdElement">
                             <div class="card  card_border_none">
                                 <div id='gaugeSecond' style="margin:auto;align-items: center;"></div>
+                                <div style="text-align:center;">
+                                    <span class="text-dark" id="text_gaugeSecond"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -285,15 +613,25 @@
                         <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="fourthElement">
                             <div class="card  card_border_none">
                                 <div id='gaugeThird' style="margin:auto;align-items: center;"></div>
+                                <div style="text-align:center;">
+                                    <span class="text-dark" id="text_gaugeThird"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="row col-sm-12 col-md-12 col-lg-12 ml-1 plan_production_card_primary div_gauge">
+                        <div class="col-sm-12 col-md-6 col-lg-1 plan_production_text_title mt-2" >
+                            <h3>TEAM 1</h3>
+                        </div>
+
                         <!-- Fiveth Element - CARDS -->
-                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="fivethElement">
+                        <div class="col-sm-12 col-md-6 col-lg-3 mt-2" id="fivethElement">
                             <div class="card card_border_none ">
                                 <div id='gaugeFourth' style="margin:auto;align-items: center;"></div>
+                                <div style="text-align:center;">
+                                    <span class="text-dark"  id="text_gaugeFourth"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -301,6 +639,9 @@
                         <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="sixthElement">
                             <div class="card card_border_none ">
                                 <div id='gaugeFiveth' style="margin:auto;align-items: center;"></div>
+                                <div style="text-align:center;">
+                                    <span class="text-dark" id="text_gaugeFiveth"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -308,15 +649,25 @@
                         <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="seventhElement">
                             <div class="card card_border_none ">
                                 <div id='gaugeSixth' style="margin:auto;align-items: center;"></div>
+                                <div style="text-align:center;">
+                                    <span class="text-dark" id="text_gaugeSixth"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="row col-sm-12 col-md-12 col-lg-12 ml-1 plan_production_card_success div_gauge">
+                        <div class="col-sm-12 col-md-6 col-lg-1 plan_production_text_title mt-2" >
+                            <h3>TEAM 2</h3>
+                        </div>
+
                        <!-- Eigth Element - CARDS -->
-                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="eigthElement">
+                        <div class="col-sm-12 col-md-6 col-lg-3 mt-2" id="eigthElement">
                             <div class="card card_border_none ">
                                 <div id='gaugeSeventh' style="margin:auto;align-items: center;"></div>
+                                <div style="text-align:center;">
+                                    <span class="text-dark" id="text_gaugeSeventh"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -324,6 +675,9 @@
                         <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="ninethElement">
                             <div class="card card_border_none ">
                                 <div id='gaugeEigth' style="margin:auto;align-items: center;"></div>
+                                <div style="text-align:center;">
+                                    <span class="text-dark" id="text_gaugeEigth"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -331,15 +685,25 @@
                         <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="tenthElement">
                             <div class="card card_border_none ">
                                 <div id='gaugeNineth' style="margin:auto;align-items: center;"></div>
+                               <div style="text-align:center;">
+                                    <span class="text-dark"  id="text_gaugeNineth"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="row col-sm-12 col-md-12 col-lg-12 ml-1 plan_production_card_info div_gauge">
+                        <div class="col-sm-12 col-md-6 col-lg-1 plan_production_text_title mt-2" >
+                            <h3>TEAM 3</h3>
+                        </div>
+
                          <!-- Eleventh Element - CARDS -->
-                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="eleventhElement">
+                        <div class="col-sm-12 col-md-6 col-lg-3 mt-2" id="eleventhElement">
                             <div class="card card_border_none ">
                                 <div id='gaugeTeenth' style="margin:auto;align-items: center;"></div>
+                                <div style="text-align:center;">
+                                    <span class="text-dark"  id="text_gaugeTeenth"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -347,6 +711,9 @@
                         <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="twelfthElement">
                             <div class="card card_border_none ">
                                 <div id='gaugeEleventh' style="margin:auto;align-items: center;"></div>
+                                <div style="text-align:center;">
+                                    <span class="text-dark" id="text_gaugeEleventh"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -354,6 +721,9 @@
                         <div class="col-sm-12 col-md-6 col-lg-4 mt-2" id="thirteenthElement">
                             <div class="card card_border_none ">
                                 <div id='gaugeTwelfth' style="margin:auto;align-items: center;"></div>
+                                <div style="text-align:center;">
+                                    <span class="text-dark" id="text_gaugeTwelfth"></span>
+                                </div>
                             </div>
                         </div>
                     </div>

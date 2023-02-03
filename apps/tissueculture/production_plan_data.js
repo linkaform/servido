@@ -5,12 +5,10 @@ var columsTable1 = [
   { title:"Plant Code", field:'plant_code',hozAlign:"left",width:150},
   { title:"Plant Name", field:'plant_name',hozAlign:"left",width:350},
   { title:"Container Type", field:'container_type',hozAlign:"left",width:250},
-  { title:"Week", field:'week',hozAlign:"left",width:100},
-  { title:"Status", field:'status',hozAlign:"left",width:250},
-  { title:"Production Plan", field:'production_plan',hozAlign:"left",width:200},
-  { title:"Produced Production", field:'produced_production',hozAlign:"left",width:200},
-  { title:"Progress %",  field:"progress", hozAlign:"left", formatter:"progress", editor:true, width:200 },
-
+  { title:"Stage", field:'stage',hozAlign:"left",width:250},
+  { title:"Production Plan", field:'planned', formatter: "money", formatterParams: {decimal: ".", thousand: ",", precision: 2 } , hozAlign:"right",width:200},
+  { title:"Produced Production", field:'produced', formatter: "money", formatterParams: {decimal: ".", thousand: ",", precision: 0 } , dir:"asc",hozAlign:"right",width:200},
+  { title:"Progress %",  field:"progress", hozAlign:"left", formatter:"progress", editor:true,width:200 },
 ];
 
 
@@ -174,7 +172,7 @@ var dataGauge1 = [
   {
     domain: { x: [0, 1], y: [0, 1] },
     value: 80,
-    title: { text: "Total " , 'font': {'size': 30} },
+    title: { text: "Total Requierd" , 'font': {'size': 22} },
     type: "indicator",
     mode: "gauge+number",
     gauge: {
@@ -196,7 +194,7 @@ var dataGauge2 = [
   {
     domain: { x: [0, 1], y: [0, 1] },
     value: 40,
-    title: { text: "Stage 2 " , 'font': {'size': 30} },
+    title: { text: "Stage 2" , 'font': {'size': 22} },
     type: "indicator",
     mode: "gauge+number",
     gauge: {
@@ -218,7 +216,7 @@ var dataGauge3 = [
   {
     domain: { x: [0, 1], y: [0, 1] },
     value: 140,
-    title: { text: "Stage 3" , 'font': {'size': 30} },
+    title: { text: "Stage 3" , 'font': {'size': 22} },
     type: "indicator",
     mode: "gauge+number",
     gauge: {
@@ -242,7 +240,7 @@ var dataGauge4 = [
   {
     domain: { x: [0, 1], y: [0, 1] },
     value: 120,
-    title: { text: "T1" , 'font': {'size': 30} },
+    title: { text: "Total Requierd" , 'font': {'size': 22} },
     type: "indicator",
     mode: "gauge+number",
     gauge: {
@@ -264,7 +262,7 @@ var dataGauge5 = [
   {
     domain: { x: [0, 1], y: [0, 1] },
     value: 110,
-    title: { text: "S2" , 'font': {'size': 30} },
+    title: { text:  "Stage 2" , 'font': {'size': 22} },
     type: "indicator",
     mode: "gauge+number",
     gauge: {
@@ -286,7 +284,7 @@ var dataGauge6 = [
   {
     domain: { x: [0, 1], y: [0, 1] },
     value: 120,
-    title: { text: "S3" , 'font': {'size': 30} },
+    title: { text:  "Stage 3" , 'font': {'size': 22} },
     type: "indicator",
     mode: "gauge+number",
     gauge: {
@@ -310,7 +308,7 @@ var dataGauge7 = [
   {
     domain: { x: [0, 1], y: [0, 1] },
     value: 50,
-    title: { text: "T2" , 'font': {'size': 30} },
+    title: { text: "Total Requierd" , 'font': {'size': 22} },
     type: "indicator",
     mode: "gauge+number",
     gauge: {
@@ -332,7 +330,7 @@ var dataGauge8 = [
   {
     domain: { x: [0, 1], y: [0, 1] },
     value: 30,
-    title: { text: "S2" , 'font': {'size': 30} },
+    title: { text:  "Stage 2" , 'font': {'size': 22} },
     type: "indicator",
     mode: "gauge+number",
     gauge: {
@@ -354,7 +352,7 @@ var dataGauge9 = [
   {
     domain: { x: [0, 1], y: [0, 1] },
     value: 15,
-    title: { text: "S3" , 'font': {'size': 30} },
+    title: { text:  "Stage 3" , 'font': {'size': 22} },
     type: "indicator",
     mode: "gauge+number",
     gauge: {
@@ -378,7 +376,7 @@ var dataGauge10 = [
   {
     domain: { x: [0, 1], y: [0, 1] },
     value: 90,
-    title: { text: "T3" , 'font': {'size': 30} },
+    title: { text: "Total Requierd" , 'font': {'size': 22} },
     type: "indicator",
     mode: "gauge+number",
     gauge: {
@@ -400,7 +398,7 @@ var dataGauge11 = [
   {
     domain: { x: [0, 1], y: [0, 1] },
     value: 80,
-    title: { text: "S2" , 'font': {'size': 30} },
+    title: { text:  "Stage 2" , 'font': {'size': 22} },
     type: "indicator",
     mode: "gauge+number",
     gauge: {
@@ -422,7 +420,7 @@ var dataGauge12 = [
   {
     domain: { x: [0, 1], y: [0, 1] },
     value: 100,
-    title: { text: "S3" , 'font': {'size': 30} },
+    title: { text:  "Stage 3" , 'font': {'size': 22} },
     type: "indicator",
     mode: "gauge+number",
     gauge: {
