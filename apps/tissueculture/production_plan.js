@@ -1,8 +1,11 @@
 // Reporte Production Forscast
 // Librerias: Chart.js
+var flag_element = 1;
+var flag_show = true;
 var count = 0;
 var count_consult = 0;
-var flag = 1;
+var scrollInterval = null;
+
 let us = null;
 let usTy = null;
 let jw = null;
@@ -106,9 +109,8 @@ window.onload = function(){
       loadDemoData();
     }else{
       runFirstElement();
-      
-      setTimeout(()=> {},1000);
-
+      setTimeout(()=> {},3000);
+      setShowElements(0);
       setInterval(function(){
         getContador();
       }, 1000);
@@ -155,10 +157,8 @@ function loadDemoData(){
   //unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
   
-  getDrawTable('firstElement', columsTable1, dataTable1);
+  getDrawTable('firstElement', columsTable1, dataTable1, 650);
   document.getElementById("firstElement").style.removeProperty('display');
-
-
 
   getDrawGauge('gaugeFirst', dataGauge1)
   document.getElementById("secondElement").style.removeProperty('display');
@@ -169,8 +169,6 @@ function loadDemoData(){
   getDrawGauge('gaugeThird', dataGauge3)
   document.getElementById("fourthElement").style.removeProperty('display');
 
-
-
   getDrawGauge('gaugeFourth', dataGauge4)
   document.getElementById("fivethElement").style.removeProperty('display');
 
@@ -179,8 +177,6 @@ function loadDemoData(){
 
   getDrawGauge('gaugeSixth', dataGauge6)
   document.getElementById("seventhElement").style.removeProperty('display');
-
-
 
   getDrawGauge('gaugeSeventh', dataGauge7)
   document.getElementById("eigthElement").style.removeProperty('display');
@@ -191,8 +187,6 @@ function loadDemoData(){
   getDrawGauge('gaugeNineth', dataGauge9)
   document.getElementById("tenthElement").style.removeProperty('display');
 
-
-
   getDrawGauge('gaugeTeenth', dataGauge10)
   document.getElementById("eleventhElement").style.removeProperty('display');
 
@@ -202,16 +196,8 @@ function loadDemoData(){
   getDrawGauge('gaugeTwelfth', dataGauge12)
   document.getElementById("thirteenthElement").style.removeProperty('display');
 
+  setShowElements(0)
 
-
-
-  setShowElements(2)
-
-  /*
-  setInterval(function(){
-    getContador();
-  }, 1000);
-  */
 }
 
 const loading = document.querySelector('.loading-container');
@@ -226,7 +212,6 @@ function getFirstElement(){
   $("#divContent").hide();
   $('.load-wrapp').show();
   $('.title_tables').hide();
-
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
@@ -251,48 +236,105 @@ function getFirstElement(){
       }
       if (res.response.firstElement) {
         data = res.response.firstElement.hours
-        $("#textAlert1").text(data['total']['available'].toFixed(0))
-        $("#textAlert2").text(data['total']['worked'].toFixed(0))
 
-        $("#text_team1_01").text(data['Team 1']['available'].toFixed(0))
-        $("#text_team1_02").text(data['Team 1']['consumed'].toFixed(0))
+        if (data['total']['available']!= undefined){
+          $("#textAlert1").text(data['total']['available'].toFixed(0))
+        }
+        if (data['total']['worked']!= undefined){
+          $("#textAlert2").text(data['total']['worked'].toFixed(0))
+        }
 
-        $("#text_team1_03").text(data['Team 1']['worked'].toFixed(0))
-        $("#text_team1_04").text(data['Team 1']['estimated'].toFixed(0))
+        if (data['Team 1']['available']!= undefined){
+          $("#text_team1_01").text(data['Team 1']['available'].toFixed(0))
+        }
+        if (data['Team 1']['consumed']!= undefined){
+          $("#text_team1_02").text(data['Team 1']['consumed'].toFixed(0) + '%')
+        }
 
-        $("#text_team1_05").text(data['Team 1']['stage2'].toFixed(0))
-        $("#text_team1_06").text(data['Team 1']['stage2_estimated'].toFixed(0))
+        if (data['Team 1']['worked']!= undefined){
+          $("#text_team1_03").text(data['Team 1']['worked'].toFixed(0))
+        }
+        if (data['Team 1']['estimated']!= undefined){
+          $("#text_team1_04").text(data['Team 1']['estimated'].toFixed(0))
+        }
 
-        $("#text_team1_07").text(data['Team 1']['stage3'].toFixed(0))
-        $("#text_team1_08").text(data['Team 1']['stage3_estimated'].toFixed(0))
+        if (data['Team 1']['stage2']!= undefined){
+          $("#text_team1_05").text(data['Team 1']['stage2'].toFixed(0))
+        }
+        if (data['Team 1']['stage2_estimated']!= undefined){
+          $("#text_team1_06").text(data['Team 1']['stage2_estimated'].toFixed(0))
+        }
+
+        if (data['Team 1']['stage3']!= undefined){
+          $("#text_team1_07").text(data['Team 1']['stage3'].toFixed(0))
+        }
+
+        if (data['Team 1']['stage3_estimated']!= undefined){
+          $("#text_team1_08").text(data['Team 1']['stage3_estimated'].toFixed(0))
+        }
+
+        
+        if (data['Team 2']['available']!= undefined ){
+          $("#text_team2_01").text(data['Team 2']['available'].toFixed(0))
+        }
+
+        if (data['Team 2']['consumed']!= undefined ){
+          $("#text_team2_02").text(data['Team 2']['consumed'].toFixed(0) + '%')
+        }
+
+        if (data['Team 2']['worked']!= undefined ){
+          $("#text_team2_03").text(data['Team 2']['worked'].toFixed(0))
+        }
+
+        if (data['Team 2']['estimated']!= undefined ){
+          $("#text_team2_04").text(data['Team 2']['estimated'].toFixed(0))
+        }
+
+        if (data['Team 2']['stage2']!= undefined ){
+          $("#text_team2_05").text(data['Team 2']['stage2'].toFixed(0))
+        }
+
+        if (data['Team 2']['stage2_estimated']!= undefined ){
+          $("#text_team2_06").text(data['Team 2']['stage2_estimated'].toFixed(0))
+        }
+
+        if (data['Team 2']['stage3']!= undefined ){
+          $("#text_team2_07").text(data['Team 2']['stage3'].toFixed(0))
+        }
+
+        if (data['Team 2']['stage3_estimated']!= undefined ){
+          $("#text_team2_08").text(data['Team 2']['stage3_estimated'].toFixed(0))
+        }
 
 
-        $("#text_team2_01").text(data['Team 2']['available'].toFixed(0))
-        $("#text_team2_02").text(data['Team 2']['consumed'].toFixed(0))
+        if (data['Team 3']['available']!= undefined ){
+          $("#text_team3_01").text(data['Team 3']['available'].toFixed(0))
+        }
+        if (data['Team 3']['consumed']!= undefined ){
+          $("#text_team3_02").text(data['Team 3']['consumed'].toFixed(0) + '%')
+        }
 
-        $("#text_team2_03").text(data['Team 2']['worked'].toFixed(0))
-        $("#text_team2_04").text(data['Team 2']['estimated'].toFixed(0))
+        if (data['Team 3']['worked']!= undefined ){
+          $("#text_team3_03").text(data['Team 3']['worked'].toFixed(0))
+        }
+        if (data['Team 3']['estimated']!= undefined ){
+          $("#text_team3_04").text(data['Team 3']['estimated'].toFixed(0))
+        }
 
-        $("#text_team2_05").text(data['Team 2']['stage2'].toFixed(0))
-        $("#text_team2_06").text(data['Team 2']['stage2_estimated'].toFixed(0))
+        if (data['Team 3']['stage2']!= undefined ){
+          $("#text_team3_05").text(data['Team 3']['stage2'].toFixed(0))
+        }
+        if (data['Team 3']['stage2_estimated']!= undefined ){
+          $("#text_team3_06").text(data['Team 3']['stage2_estimated'].toFixed(0))
+        }
 
-        $("#text_team2_07").text(data['Team 2']['stage3'].toFixed(0))
-        $("#text_team2_08").text(data['Team 2']['stage3_estimated'].toFixed(0))
-
-
-        $("#text_team3_01").text(data['Team 3']['available'].toFixed(0))
-        $("#text_team3_02").text(data['Team 3']['consumed'].toFixed(0))
-
-        $("#text_team3_03").text(data['Team 3']['worked'].toFixed(0))
-        $("#text_team3_04").text(data['Team 3']['estimated'].toFixed(0))
-
-        $("#text_team3_05").text(data['Team 3']['stage2'].toFixed(0))
-        $("#text_team3_06").text(data['Team 3']['stage2_estimated'].toFixed(0))
-
-        $("#text_team3_07").text(data['Team 3']['stage3'].toFixed(0))
-        $("#text_team3_08").text(data['Team 3']['stage3_estimated'].toFixed(0))
+        if (data['Team 3']['stage3']!= undefined ){
+          $("#text_team3_07").text(data['Team 3']['stage3'].toFixed(0))
+        }
+        if (data['Team 3']['stage3_estimated']!= undefined ){
+          $("#text_team3_08").text(data['Team 3']['stage3_estimated'].toFixed(0))
+        }
       }
-
       if (res.response.thirdElement){
         data = res.response.thirdElement.tabledata;
         data.sort(function (a, b) {
@@ -304,8 +346,12 @@ function getFirstElement(){
           }
           return 0;
         });
-        getDrawTable('firstElement', columsTable1, data);
+        height = getDrawHeigth(data);
+        getDrawTable('firstElement', columsTable1, data, height);
         document.getElementById("firstElement").style.removeProperty('display');
+      }
+      if (res.response.params.week){
+        $("#text_weeek").text('Week: '+res.response.params.week)
       }
     } else {
       hideLoading();
@@ -333,7 +379,7 @@ function setDrawWeek(){
   oneJan = new Date(date.getFullYear(),0,1);
   numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000));
   result = Math.ceil(( date.getDay() + 1 + numberOfDays) / 7);
-  $('#text_weeek').text('Week: '+result);
+  //$('#text_weeek').text('Week: '+result);
 
   //---Range Week
   date = new Date();
@@ -345,14 +391,12 @@ function setDrawWeek(){
   //---DAY
   date = new Date();
   $('#text_today').text('Today is '+ monthNames[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear() )
-
 }
 
-
 //-----TABLES
-function getDrawTable(id, columnsData, tableData){
+function getDrawTable(id, columnsData, tableData, height){
   var  table = new Tabulator("#" + id, {
-    height:"550px",
+    height: height + "px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -381,6 +425,38 @@ function getDrawTable(id, columnsData, tableData){
   }
 }
 
+function getDrawHeigth(data) {
+  valueHeigth = 30;
+  numElements  = data.length;
+  if (numElements > 0){
+    valueHeigth = (numElements * 30)
+  }
+  return valueHeigth;
+}
+
+function setScrollTable(heigth, second){
+  countScroll = 0;
+  setTimeout(function(){
+    heightTable = document.getElementById('firstElement').clientHeight; 
+    console.log('heightTable',heightTable);
+    if (heightTable > 650) {
+      height = 0;
+      heightTransition =  heightTable / 125;
+      scrollInterval = setInterval(function(){
+        height += heightTransition;
+        window.scrollTo(0, height);
+        console.log('height',height,'/',' heightTable', heightTable);
+        heigthDifference = heightTable - 600;
+        if (height >= heigthDifference){
+          window.scrollTo(0, 0);
+          height = 0;
+        }
+        countScroll += 1;
+      }, 1000);
+    }
+  }, 3000);
+
+}
 //-----GAUGE
 function getDrawGauge(id, data){
   var layout = { width: 340, height: 140, margin: { t: 42 , b: 0 } };
@@ -426,7 +502,7 @@ function getFormatGauge(label, value, range, id) {
 function getDrawGaugeList(data){
   if (data[0].length){
     if (data[0][0]){
-      label = 'Total Requierd';
+      label = 'Total Required';
       value = data[0][0]['value'];
       range = data[0][0]['range'];
       id = 'gaugeFirst';
@@ -448,7 +524,7 @@ function getDrawGaugeList(data){
     }
 
     if (data[1][0]){
-      label = 'Total Requierd';
+      label = 'Total Required';
       value = data[1][0]['value'];
       range = data[1][0]['range'];
       id = 'gaugeFourth';
@@ -470,7 +546,7 @@ function getDrawGaugeList(data){
     }
 
     if (data[2][0]){
-      label = 'Total Requierd';
+      label = 'Total Required';
       value = data[2][0]['value'];
       range = data[2][0]['range'];
       id = 'gaugeSeventh';
@@ -492,7 +568,7 @@ function getDrawGaugeList(data){
     }
 
     if (data[3][0]){
-      label = 'Total Requierd';
+      label = 'Total Required';
       value = data[3][0]['value'];
       range = data[3][0]['range'];
       id = 'gaugeTeenth';
@@ -516,37 +592,46 @@ function getDrawGaugeList(data){
 }
 
 //-----TIMER SHOW
+function setStopInterval(option = 0) {
+  $("#divContent").hide();
+  $('.load-wrapp').show();
+  flag_show = false;
+  setShowElements(option)
+}
+
 function getContador(){
   count ++;
   count_consult ++;
   //console.log('Segundo',count)
-  //console.log('Segundo General',count_consult)
-  if (count == 60) {
-    $("#divContent").hide();
-    $('.load-wrapp').show();
-    if (flag == 0){
-      setShowElements(0)
-      flag = 1
+  console.log('Segundo General',count_consult)
+  if (flag_show == true){
+    if (count == 60) {
+      $("#divContent").hide();
+      $('.load-wrapp').show();
+      if (flag_element == 0){
+        setShowElements(0)
+        flag_element = 1
+      }
+      else if (flag_element == 1){
+        setShowElements(1)
+        flag_element = 2
+      }
+      else if (flag_element == 2){
+        setShowElements(2)
+        flag_element = 0
+      }  
+      count = 0;
     }
-    else if (flag == 1){
-      setShowElements(1)
-      flag = 2
-    }
-    else if (flag == 2){
-      setShowElements(2)
-      flag = 0
-    }  
-    count = 0;
-  }
+  }  
   if (count_consult == 180) {
     runFirstElement();
     setTimeout(()=> {},1000);
-    count = 0;
+    count_consult = 0;
   }
 }
 
 function setShowElements(option){
-
+  console.log('OPtion', option)
   //---- HIDE
   $(".div_card").hide();
   $(".div_first").hide();
@@ -562,6 +647,8 @@ function setShowElements(option){
   $("#eleventhElement").hide();
   $("#twelfthElement").hide();
   $("#thirteenthElement").hide();
+ 
+  
 
   if (option == 0){
     $('#title_report').text('Report Production Plan Vs Done')
@@ -580,6 +667,11 @@ function setShowElements(option){
     $("#eleventhElement").hide();
     $("#twelfthElement").hide();
     $("#thirteenthElement").hide();
+
+    $("#button_plant").addClass("active");
+    $("#button_teams").removeClass("active");
+    $("#button_hours").removeClass("active");
+    setScrollTable();
   }
   else if(option == 1){
     $('#title_report').text('Report Production Plan Vs Done')
@@ -599,6 +691,11 @@ function setShowElements(option){
     $("#eleventhElement").show();
     $("#twelfthElement").show();
     $("#thirteenthElement").show();
+
+    $("#button_plant").removeClass("active");
+    $("#button_teams").addClass("active");
+    $("#button_hours").removeClass("active");
+    clearInterval(scrollInterval);
   }
   else if(option == 2){
     $('#title_report').text('Work Hours Available, Worked and Estimated by Team an Stage')
@@ -617,6 +714,11 @@ function setShowElements(option){
     $("#eleventhElement").hide();
     $("#twelfthElement").hide();
     $("#thirteenthElement").hide();
+
+    $("#button_plant").removeClass("active");
+    $("#button_teams").removeClass("active");
+    $("#button_hours").addClass("active");
+    clearInterval(scrollInterval);
   }
   //---- STYLES
   setTimeout(()=> {
