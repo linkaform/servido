@@ -157,7 +157,7 @@ function loadDemoData(){
   //unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
   
-  getDrawTable('firstElement', columsTable1, dataTable1, 650);
+  getDrawTable('firstElement', columsTable1, dataTable1, 770);
   document.getElementById("firstElement").style.removeProperty('display');
 
   getDrawGauge('gaugeFirst', dataGauge1)
@@ -495,7 +495,7 @@ function getFormatGauge(label, value, range, id) {
   //console.log('Esquema',dataGauge);
   //---COntainer
   num = range.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-  $('#text_' + id).text(num +' Containers')
+  $('#text_' + id).text(num +' Eaches')
   getDrawGauge(id, dataGauge)
 }
 
