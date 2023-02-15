@@ -5,7 +5,7 @@ var columsTable1 = [
   { title:"Plant Code", field:'plant_code',hozAlign:"left",width:150},
   { title:"Plant Name", field:'plant_name',hozAlign:"left",width:350},
   { title:"Container Type", field:'container',hozAlign:"left",width:250},
-  { title:"Stage", field:'stage',hozAlign:"left",width:250},
+  { title:"Stage", field:'stage',hozAlign:"right",width:250},
   { title:"Production Plan", field:'planned', formatter: "money", formatterParams: {decimal: ".", thousand: ",", precision: 0 } , hozAlign:"right",width:200},
   { title:"Production", field:'produced', formatter: "money", formatterParams: {decimal: ".", thousand: ",", precision: 0 } , hozAlign:"right",width:200},
   { title:"Progress", field:'progress', formatter: "money", formatterParams: {decimal: ".", symbol:"%",symbolAfter:true,thousand: ",", precision: 0 } ,hozAlign:"right",width:120},

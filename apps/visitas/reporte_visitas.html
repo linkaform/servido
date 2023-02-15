@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Forcast by Cicle">
+        <meta name="description" content="Reporte Visitas">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte Bacao</h1>
+                    <h1 id="title_report">Reporte Visitas</h1>
                 </div>
             </div> 
         </nav>
@@ -96,15 +96,23 @@
                         <h5>Fecha Hasta: </h5>
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-3" >
+                        <h5>Promotor: </h5>
+                        <select class="form-control mdb-select md-form" id="promotor">
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>
+
+
                 </div>
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-
                     <!--Primer Elemento -->
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3><span>Recepción Bacao</span>&nbsp;&nbsp;
+                            <h3><span>Recepción Visitas</span>&nbsp;&nbsp;
                                 <button class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
@@ -113,41 +121,6 @@
                         <div id="firstElement" ></div>
                     </div>
 
-                    
-
-                    <!--Segundo Elemento -->
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
-                        <section class="title_tables">
-                            <h3><span>Secado Natural Fin Bacao</span>&nbsp;&nbsp;
-                                <button class="btn btn-primary" id="download_csv_secondElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button class="btn btn-success" id="download_xlsx_secondElement"><i class="fa-regular fa-file-excel"></i></button>
-                            </h3>
-                            <hr class="hrSecondElement">
-                        </section>
-                        <div id="secondElement"></div>
-                    </div>
-
-
-
-                    <!--Tercer Elemento -->
-                    <div id="thirdElement" class="col-sm-12 col-md-12 col-lg-12 mt-5" style="overflow-y: scroll;">
-                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicFirst','chart_screen');return false;">
-                            <i class="fa-sharp fa-solid fa-download"></i>
-                        </button >
-                        <div  style="width: 1500px;height: 850px;margin: auto;">
-                            <canvas id="graphicFirst" ></canvas>
-                        </div>
-                    </div>
-
-                    <!--Cuarto Elemento -->
-                    <div id="fourthElement" class="col-sm-12 col-md-12 col-lg-12 mt-5" style="overflow-y: scroll;">
-                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicSecond','chart_screen');return false;">
-                            <i class="fa-sharp fa-solid fa-download"></i>
-                        </button >
-                        <div  style="width: 1500px;height: 850px;margin: auto;">
-                            <canvas id="graphicSecond" ></canvas>
-                        </div>
-                    </div>
 
 
 
@@ -204,7 +177,7 @@
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./reporte_cacao.js"></script>
-    <script type="text/javascript" src="./reporte_cacao_data.js"></script>
+    <script type="text/javascript" src="./reporte_visitas.js"></script>
+    <script type="text/javascript" src="./reporte_visitas_data.js"></script>
     </body>
 </html>

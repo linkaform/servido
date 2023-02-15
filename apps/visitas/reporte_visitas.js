@@ -92,6 +92,8 @@ window.onload = function(){
     }
     //--Styles
     setSpinner();
+    setDate();
+    get_catalog();
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
@@ -134,34 +136,43 @@ function loadDemoData(){
   unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
 
-
-
   getDrawTable('firstElement', columsTable1, dataTable1, 350);
   document.getElementById("firstElement").style.removeProperty('display');
-
-  getDrawTable('secondElement', columsTable2, dataTable2, 350);
-  document.getElementById("secondElement").style.removeProperty('display');
-
-
-
-
-
-  getDrawGraphicFirst(data1, setOptions1);
-  document.getElementById("graphicFirst").style.removeProperty('display');
 }
 
+//-----DATE
+function setDate(){
+  array_month = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+  //---DATE TO
+  date_to = new Date();
+  year = date_to.getFullYear();
+  month = array_month[date_to.getMonth()];
+  day = date_to.getDate();
+  date_to = year +'-'+ month +'-'+ day;
+  $('#date_to').val(date_to);
+  //---DATE FROM
+  date_from = new Date();
+  date_from.setDate(date_from.getDate() - 30)
 
+  year = date_from.getFullYear();
+  month = array_month[date_from.getMonth()];
+  day = date_from.getDate();
+  date_from = year +'-'+ month +'-'+ day;
+  $('#date_from').val(date_from);
+}
 
 
 
 //-----EXCUTION
 function runFirstElement(){
-  //let date_from = document.getElementById("date_from");
-  //let date_to = document.getElementById("date_to");  
-  getFirstElement();
-};
+  let date_from = document.getElementById("date_from");
+  let date_to = document.getElementById("date_to");  
+  let promotor = document.getElementById("promotor");  
 
-function getFirstElement(dateTo, dateFrom){
+  getFirstElement(date_to.value, date_from.value, promotor.value);
+}
+
+function getFirstElement(dateTo, dateFrom, promotor){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -172,8 +183,10 @@ function getFirstElement(dateTo, dateFrom){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      //date_to: dateTo,
-      //date_from: dateFrom,
+      date_to: dateTo,
+      date_from: dateFrom,
+      promotor: promotor,
+      option: 1,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -187,21 +200,13 @@ function getFirstElement(dateTo, dateFrom){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res.response.json)
-      if (res.response.json.firstElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data, 355);
+      console.log(res.response)
+      
+      if (res.response.firstElement.tabledata) {
+        getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata, 450);
         document.getElementById("firstElement").style.removeProperty('display');
       }
       
-      if (res.response.json.secondElement.data) {
-        getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data, 355);
-        document.getElementById("secondElement").style.removeProperty('display');
-      }
-
-      getDrawGraphicFirst(data1, setOptions1);
-      document.getElementById("graphicFirst").style.removeProperty('display');
-      document.getElementById("thirdElement").style.removeProperty('display');
-
 
     } else {
       hideLoading();
@@ -220,10 +225,7 @@ function getFirstElement(dateTo, dateFrom){
       }
     }
   })
-};
-
-
-
+}
 
 //-----TABLES
 function getDrawTable(id, columnsData, tableData, height = 500){
@@ -258,20 +260,39 @@ function getDrawTable(id, columnsData, tableData, height = 500){
 }
 
 
-//-----GRAPICH
-let chart1;
-function getDrawGraphicFirst(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicFirst').getContext('2d');
-  if (chart1) {
-    chart1.destroy();
-  }
+//-----CATALOG
+function get_catalog() 
+{
+  fetch(url + 'infosync/scripts/run/', {
+      method: 'POST',
+      body: JSON.stringify({
+        script_id: 95556,
+        option: 0,
+      }),
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+userJwt
+      },
+    })
+    .then(res => res.json())
+    .then(res => {
+    if (res.success) {
+      if (res.response.catalog.length){
+        array_value = []
+        for (i = 0; i < res.response.catalog.length; i++) {
+          if (!array_value.includes(res.response.catalog[i]['63dc0f1ec29b8336b7b72615'])) {
+            array_value.push(res.response.catalog[i]['63dc0f1ec29b8336b7b72615'])
+          }
+        }
+        array_value.sort();
+        $("#promotor").empty();
+        $('#promotor').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i <array_value.length; i++) {
+          $('#promotor').append('<option value="'+ array_value[i] +'">'+array_value[i]+'</option>');
+        }
 
-  chart1 = new Chart(ctx, {
-    type: 'bar',
-    data:data,
-    options: setOptions,
-    plugins: [ChartDataLabels],
-  });
-}
+      }
+    } 
+  })
+};
 

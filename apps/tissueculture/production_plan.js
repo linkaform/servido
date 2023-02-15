@@ -196,7 +196,7 @@ function loadDemoData(){
   getDrawGauge('gaugeTwelfth', dataGauge12)
   document.getElementById("thirteenthElement").style.removeProperty('display');
 
-  setShowElements(0)
+  setShowElements(2)
 
 }
 

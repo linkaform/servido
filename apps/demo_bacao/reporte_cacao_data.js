@@ -5,6 +5,7 @@ var columsTable1 = [
   { title:"Fecha Ingreso", field:'fecha_ingreso',hozAlign:"right",width:160 },
   { title:"Modalidad",field:'modalidad',hozAlign:"center",width:150 },
   { title:"Kg Fresco",  field:'kg_fresco',hozAlign:"right",width:160 },
+  { title:"Kg Seco",  field:'kg_seco',hozAlign:"right",width:160 },
   { title:"Operario",  field:'operario',hozAlign:"right",width:160 },
   { title:"Grados Brix",  field:'grados_brix',hozAlign:"left",width:160 },
   { title:"Genetica",  field:'genetica',hozAlign:"right",width:160 },
@@ -214,10 +215,10 @@ var data1 = {
       dataTotal: [13117,13350,5893,6622,7608,12272,6338,6526,6809,13063,2675,4625,2546,2004],
       backgroundColor: ' #5dade2',
     },
-
-
   ]
 };
+
+
 
 var setOptions1 = {
   responsive: true,
@@ -267,3 +268,23 @@ var setOptions1 = {
     }
   }
 };
+
+var setOptions2 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Reporte Recolección II',
+        font: {
+          size: 25
+        }
+    },
+   
+  },
+  
+};
+
