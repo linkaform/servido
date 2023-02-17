@@ -7,6 +7,16 @@ location / {
   add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
 }
 
+location /libs {
+  root   /srv/servido/;
+  expires off;
+  index index.html;
+  add_header Cache-Control public;
+  add_header Cache-Control "no-store";
+  include /etc/nginx/proxy_params;
+  add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
+}
+
 location /api {
   root  /srv/servido/servio_api/;
 
