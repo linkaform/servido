@@ -1,11 +1,17 @@
 //----Total
 
-var columsTable1 = [{ 
-  title:"Nombre Cliente", field:'nombre_cliente', hozAlign:"left", width:400},
-  { title:"Codigo" , field:'codigo', hozAlign:"left", width:250},
-  { title:"Nombre Equipo", field:'nombre_equipo', hozAlign:"left", width:400},
-  { title:"Cantidad", field:'cantidad', hozAlign:"left", width:200},
+var columsTable1 = [
+  { title:"Codigo" , field:'codigo', hozAlign:"left", width:150},
+  { title:"Nombre Cliente", field:'nombre_cliente', hozAlign:"left", width:450},
+  { title:"Comentario del Contrato", field:'comentario_contrato', hozAlign:"left", width:450},
+  { title:"Nombre del Contacto", field:'nombre_contacto', hozAlign:"left", width:250},
+  { title:"Email del Contacto", field:'email_contacto', hozAlign:"left", width:250},
+  { title:"Telefono del Contacto", field:'telefono_contacto', hozAlign:"right", width:150},
+  { title:"Puesto del Contacto", field:'puesto_contacto', hozAlign:"left", width:250},
+  { title:"Nombre Equipo", field:'nombre_equipo', hozAlign:"left", width:500},
+  { title:"Cantidad", field:'cantidad', hozAlign:"right", width:100},
 ];
+
 
 var dataTable1 = [
   {

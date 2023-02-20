@@ -7,13 +7,13 @@ var columsTable1 = [
   { title:"Merchant", field:'merchant',hozAlign:"left",width:300},
   { title:"Store", field:'store',hozAlign:"left",width:300},
   { title:"Centro Comercial", field:'centro_comercial',hozAlign:"left",width:250},
-  { title:"Promotor", field:'promotor',hozAlign:"left",width:200},
+  { title:"Promotor", field:'promotor',hozAlign:"left",width:300},
   { title:"City", field:'city',hozAlign:"left",width:250},
   { title:"State", field:'state',hozAlign:"left",width:250},
-  { title:"Fecha", field:'fecha_creacion',hozAlign:"left",width:250},
-  { title:"Check In", field:'checkin',hozAlign:"left",width:250},
-  { title:"Check Out", field:'checkout',hozAlign:"left",width:250},
-  { title:"Tiempo Visita", field:'tiempo_visita',formatter: "money", formatterParams: { symbol: "", symbolAfter: false, precision: 2},hozAlign:"right",width:250},
+  { title:"Fecha", field:'fecha_creacion',hozAlign:"right",width:250},
+  { title:"Check In", field:'checkin',hozAlign:"right",width:250},
+  { title:"Check Out", field:'checkout',hozAlign:"right",width:250},
+  { title:"Tiempo Visita", field:'tiempo_visita',hozAlign:"right",width:250},
 ];
 
 var dataTable1 = [
