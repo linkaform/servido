@@ -2,6 +2,7 @@
 
 var columsTable1 = [
   { title:"Codigo" , field:'codigo', hozAlign:"left", width:150},
+  { title:"Fecha" , field:'fecha', hozAlign:"left", width:150},
   { title:"Nombre Cliente", field:'nombre_cliente', hozAlign:"left", width:450},
   { title:"Comentario del Contrato", field:'comentario_contrato', hozAlign:"left", width:450},
   { title:"Nombre del Contacto", field:'nombre_contacto', hozAlign:"left", width:250},
