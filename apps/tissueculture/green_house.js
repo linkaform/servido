@@ -193,7 +193,7 @@ function getFirstElement(plantCode){
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"380px",
+    height:"880px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
