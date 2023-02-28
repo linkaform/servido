@@ -11,12 +11,15 @@ var columsTable1 = [
   { title:"City", field:'city',hozAlign:"left",width:250},
   { title:"State", field:'state',hozAlign:"left",width:250},
   { title:"Fecha", field:'fecha_creacion',hozAlign:"right",width:250},
-  { title:"Cordenas Latitud", field:'cordenada_latitud',hozAlign:"center",width:250},
-  { title:"Cordenas Longitud", field:'cordenada_longitud',hozAlign:"center",width:250},
+  { title:"Cordenas Latitud", field:'cordenada_latitud',hozAlign:"right",formatter: "money",
+   "formatterParams": {"symbol": "", "symbolAfter": "", "thousand": "",  precision:false},width:250},
+  { title:"Cordenas Longitud", field:'cordenada_longitud',hozAlign:"right",formatter: "money",
+   "formatterParams": {"symbol": "", "symbolAfter": "", "thousand": "",  precision:false},width:250},
   { title:"Check In", field:'checkin',hozAlign:"right",width:250},
   { title:"Check Out", field:'checkout',hozAlign:"right",width:250},
   { title:"Tiempo Visita", field:'tiempo_visita',hozAlign:"right",width:250},
 ];
+
 
 var dataTable1 = [
   {
