@@ -136,12 +136,15 @@ const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  let plant_code = document.getElementById("plant_code");
-  getFirstElement(plant_code.value);
+  let yearWeekFrom = document.getElementById("yearWeekFrom");
+  let yearWeekTo = document.getElementById("yearWeekTo");
+  // getFirstElement(plant_code.value);
+  // setStyleRemove();
+  firstElement =getFirstElement( yearWeekFrom.value, yearWeekTo.value);
 };
 
 //-----PETICION
-function getFirstElement(plantCode){
+function getFirstElement(yearWeekFrom, yearWeekTo){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -152,7 +155,8 @@ function getFirstElement(plantCode){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      plant_code: plantCode,
+      year_week_from: yearWeekFrom,
+      year_week_to: yearWeekTo,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -169,7 +173,8 @@ function getFirstElement(plantCode){
       console.log('Data',res.response);
       if (res.response.firstElement.tabledata) {
         console.log('drawFirstElement.........');
-        getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata);
+        colData = res.response.firstElement.colsData
+        getDrawTable('firstElement', colData, res.response.firstElement.tabledata);
       }
     } else {
       hideLoading();
