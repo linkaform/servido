@@ -98,7 +98,7 @@ window.onload = function(){
     $("#date_from").val(dateTo);
     $("#date_to").val(dateTo);
     //--Catalog
-    //get_catalog();
+    get_catalog();
     //--Styles
     setSpinner();
     $('#divUsuario').hide();
@@ -303,12 +303,13 @@ function get_catalog()
     .then(res => res.json())
     .then(res => {
     if (res.success) {
-      //console.log('CATALOGO',res.response.json.catalogElement)
+      console.log('CATALOGO',res.response.json)
       if (res.response.json.catalogElement.length){
         $("#tecnico").empty();
         $('#tecnico').append('<option value="--">--Seleccione--</option>');
         for (i = 0; i <res.response.json.catalogElement.length; i++) {
           value = res.response.json.catalogElement[i]['6312291bd4fc25871bb0152e']
+          console.log('Valor',value)
           $('#tecnico').append('<option value="'+ value +'">'+value+'</option>');
         }
       }
