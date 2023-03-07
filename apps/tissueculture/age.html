@@ -89,13 +89,19 @@
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
                     <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Fecha Desde: </h5>
-                        <input class="form-control ds-input" type="date" id="date_from" name="date_from">
+                        <h5>Plant Code: </h5>
+                        <input class="form-control ds-input" type="text" id="plant_code" name="plant_code">
                     </div>
+                    
                     <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Fecha Hasta: </h5>
-                        <input class="form-control ds-input" type="date" id="date_to" name="date_to">
+                        <h5>Stage: </h5>
+                        <select class="form-control ds-input" id="stage" name="stage">
+                            <option value="--">Select</option>
+                            <option value="Active">Active</option>
+                            <option value="Pull">Pull</option>
+                        </select>
                     </div>
+
                 </div>
 
                 <!--Content -->
@@ -130,10 +136,7 @@
 
 
     <!-- Jquery -->
-    <script
-    src="https://code.jquery.com/jquery-3.6.0.js"
-    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-    crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
 
     <!-- Bootstrap -->

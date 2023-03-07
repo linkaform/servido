@@ -133,13 +133,13 @@ const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  getFirstElement(date_to.value, date_from.value);
+  let plant_code = document.getElementById("plant_code");
+  let stage = document.getElementById("stage");
+  getFirstElement(plant_code.value, stage.value);
 };
 
 //-----PETICION
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(plantCode, stage){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -150,11 +150,8 @@ function getFirstElement(dateTo, dateFrom){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      date_to: dateTo,
-      date_from: dateFrom,
-      servicio: servicio,
-      cliente: cliente,
-      tecnico: tecnico,
+      plant_code: plantCode,
+      stage: stage,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -168,9 +165,11 @@ function getFirstElement(dateTo, dateFrom){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.json.firstElement.data) {
-        console.log('drawFirstElement.........');
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+      console.log('VALOR',res.response);
+      if (res.response.firstElement) {
+        console.log(res.response.firstElement);
+        getDrawTable('firstElement', res.response.firstElement.colsData , res.response.firstElement.tabledata );
+        document.getElementById("firstElement").style.removeProperty('display');
       }
       
     } else {
