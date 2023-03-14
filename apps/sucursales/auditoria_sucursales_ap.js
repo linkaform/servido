@@ -371,7 +371,7 @@ function getFirstElement(date_from, date_to, regional, perfil, seccion, sucursal
 //-----GRAPHIC
 function drawFirstElement(data){
    $('#firstElement').empty();
-   const margin = {top: 30, right: 30, bottom: 150, left: 90},
+   const margin = {top: 30, right: 30, bottom: 150, left: 110},
        width = 1800 - margin.left - margin.right,
        height = 650 - margin.top - margin.bottom;
 
@@ -468,9 +468,10 @@ function drawFirstElement(data){
 
 function drawSecondElement(data){
    $('#secondElement').empty();
-    const margin = {top: 30, right: 30, bottom: 150, left: 90},
+    const margin = {top: 30, right: 30, bottom: 210, left: 90},
        width = 1800 - margin.left - margin.right,
-       height = 650 - margin.top - margin.bottom;
+      //height = 650 - margin.top - margin.bottom;
+      height = 850 - margin.top - margin.bottom;
 
    // append the svg object to the body of the page
    const svg = d3.select("#secondElement")
@@ -496,7 +497,7 @@ function drawSecondElement(data){
     .call(d3.axisBottom(x))
     .selectAll("text")
     .attr("transform", "translate(-10,0)rotate(-45)")
-    .style("font-size", "13px")
+    .style("font-size", "17px")
     .style("text-anchor", "end");
 
    // Add Y axis
@@ -532,7 +533,7 @@ function drawSecondElement(data){
   .attr("x", (width / 2))
   .attr("y", 0 - (margin.top / 2))
   .attr("text-anchor", "middle")
-  .style("font-size", "18px")
+  .style("font-size", "22px")
   .text("Evaluaciones por regional");
 
   //----Toltip
@@ -554,15 +555,17 @@ function drawSecondElement(data){
   .attr('x', data => x(data.regional) + x.bandwidth() / 2)
   .attr('y', data => y(data.score) - 15)
   .style('fill','#494949')
-  .style("font-size", "13.5px")
+  .style("font-size", "17px")
+  .style("font-weight", "bold")
   .attr('text-anchor','middle');
 }
 
 function drawThirdElement(data){
    $('#thirdElement').empty();
-    const margin = {top: 30, right: 30, bottom: 150, left: 90},
+    const margin = {top: 30, right: 30, bottom: 220, left: 115},
        width = 1800 - margin.left - margin.right,
-       height = 650 - margin.top - margin.bottom;
+       //height = 650 - margin.top - margin.bottom;
+       height = 850 - margin.top - margin.bottom;
 
    // append the svg object to the body of the page
    const svg = d3.select("#thirdElement")
@@ -589,7 +592,7 @@ function drawThirdElement(data){
      .call(d3.axisBottom(x))
      .selectAll("text")
        .attr("transform", "translate(-10,0)rotate(-45)")
-        .style("font-size", "13px")
+        .style("font-size", "17px")
        .style("text-anchor", "end");
 
    // Add Y axis
@@ -627,7 +630,7 @@ function drawThirdElement(data){
   .attr("x", (width / 2))
   .attr("y", 0 - (margin.top / 2))
   .attr("text-anchor", "middle")
-  .style("font-size", "18px")
+  .style("font-size", "22px")
   .text("Evaluaciones por sección");
 
   const x = d3.scaleBand()
@@ -646,9 +649,10 @@ function drawThirdElement(data){
   .append('text')
   .text((data) =>  data.section_grade + '% / ' +data.total)
   .attr('x', data => x(data.pagina) + x.bandwidth() / 2)
-  .attr('y', data => y(data.section_grade) - 65)
+  .attr('y', data => y(data.section_grade) - 85)
   .style('fill','#494949')
-  .style("font-size", "13.5px")
+  .style("font-size", "17px")
+  .style("font-weight", "bold")
   .attr('text-anchor','middle');
 }
 

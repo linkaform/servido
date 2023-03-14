@@ -13,10 +13,15 @@ let scriptId = null;
 $('#divOptions').hide();
 $('#title_report').hide();
 $('.title_tables').hide();
-$('#firstElement').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
+hideElement("secondElement");
+hideElement("thirdElement");
+hideElement("fourthElement");
+hideElement("fivethElement");
+hideElement("sixthElement");
+
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -76,15 +81,14 @@ window.onload = function(){
   hideElement("close_sesion");
   hideElement("firstParameters");
 
-
   if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
     unhideElement("close_sesion");
     getCompanyLogo(userParentId);
-    userId = us;
+    userId  = us;
     userJwt = jw;
     userName = getCookie("userName");
-    unHideReportElements()
+
     if (scriptId == null) {
       loadDemoData();
     }
@@ -95,13 +99,14 @@ window.onload = function(){
     $("#date_to").val(dateTo);
     //--Styles
     setSpinner();
+    $('#divUsuario').hide();
     $('#divOptions').show();
     $('#title_report').show();
-    document.getElementById("firstParameters").style.removeProperty('display');
+    document.getElementById("firstParameters").style.removeProperty('display'); 
   } else {
     unhideElement("inicio_ses");
-    $('#divContent').hide();
     $('#divOptions').hide();
+    $('#divContent').hide();
     $('#title_report').hide();
     $('.title_tables').hide();
     hideElement("firstElement-Buttons");
@@ -118,51 +123,41 @@ window.onload = function(){
 }
 
 
+
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
-  unhideElement("firstElement-Buttons");
-  unhideElement("firstParameters");
   unhideElement("close_sesion");
+  unhideElement("firstParameters");
+  unhideElement("firstElement");
+  unhideElement("secondElement");
+  unhideElement("thirdElement");
+  unhideElement("fourthElement");
 }
 
 function loadDemoData(){
-
+  console.log('Entra a demo')
   unhideElement("title_demo")
   $('.title_tables').show();
-  $('.title_report').show();
   document.getElementById("firstParameters").style.removeProperty('display');
-  
-  getDrawGraphicFirst(data1, setOptions1);
+
+  getDrawTable('firstElement', columsTable1, dataTable1)
   document.getElementById("firstElement").style.removeProperty('display');
 }
-
-
 
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  let area = document.getElementById("area");  
-  let plaga = document.getElementById("plaga");  
-  if (date_from.value != null && date_to.value != null && date_from.value != "" && date_to.value != ""){
-    getFirstElement(date_to.value, date_from.value, plaga.value, area.value);
-  }
-  else
-  {
-    Swal.fire({
-      title: 'Rango de Fechas Requerido',
-    });
-  }
+  let date_to = document.getElementById("date_to");    
+  getFirstElement(date_to.value, date_from.value);
 };
 
-function getFirstElement(dateTo, dateFrom, plaga, area){
+function getFirstElement(dateTo, dateFrom, bodega, tecnico){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
   $('.title_tables').hide();
-
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
@@ -170,8 +165,6 @@ function getFirstElement(dateTo, dateFrom, plaga, area){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      plaga: plaga,
-      area: area,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -185,13 +178,12 @@ function getFirstElement(dateTo, dateFrom, plaga, area){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-
-    
-      if (res.response.json.firstElement) {
-        getDrawGraphicFirst(res.response.json.firstElement, setOptions1);
+      console.log(res)
+      
+      if (res.response.firstElement) {
+        getDrawTable('firstElement', columsTable1, res.response.firstElement);
         document.getElementById("firstElement").style.removeProperty('display');
       }
-      
     } else {
       hideLoading();
       if(res.code == 11){
@@ -214,12 +206,12 @@ function getFirstElement(dateTo, dateFrom, plaga, area){
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"300px",
+    height:"350px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:false,
+    dataTreeStartExpanded:true,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
@@ -234,6 +226,7 @@ function getDrawTable(id, columnsData, tableData){
     });
   }
 
+
   if (document.getElementById("download_csv_"+id)){
     //trigger download of data.csv file
     document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
@@ -241,25 +234,79 @@ function getDrawTable(id, columnsData, tableData){
       table.download("csv", "data.csv");
     });
   }
+
+  //---PDF
+  var element = document.getElementById("download_pdf_"+id);
+  if (element)
+  {
+    document.getElementById("download_pdf_"+id).replaceWith(document.getElementById("download_pdf_"+id).cloneNode(true));
+    document.getElementById("download_pdf_"+id).addEventListener("click", function(){
+      table.download("pdf", "data.pdf", {
+          orientation:"landscape", //set page orientation to portrait
+          theme: 'grid',
+          autoTable:function(doc)
+          { 
+            var margins = 30;
+            var leftMargin = 40;
+            var marginsIndent = 40;
+
+            //----IMAGENES
+            // Parametros - Posición weigth / Posición heigt / Weigth / Heigth 
+            doc.addImage(img_apymsa1, 'PNG', 40, 20, 125, 35);
+            doc.addImage(img_apymsa2, 'PNG', 680, 18, 125, 50);
+
+            //----TEXTO
+            doc.addFont('ArialMS', 'Arial', 'normal');
+            doc.setFont('Arial-Bold');
+            //doc.setFont('Courier-Bold');
+            doc.setFontSize(18);
+            doc.setTextColor(23,32,42);
+            doc.text("RANKING DE SUCURSALES", 300, 40);
+
+
+            doc.setFontSize(9);
+            doc.setTextColor(23,32,42);
+            doc.text("Rango: Del 01/01/23 - 31/01/23 ", 40, 70);
+
+
+
+            doc.setFontSize(11);
+            return {
+              styles: {
+                cellPadding: 2, 
+                fontSize: 8,
+                halign : 'center'
+              },
+              headStyles: {
+                fillColor: [178, 186, 187]
+              },
+              alternateRowStyles: {
+                fillColor : [212, 230, 241]
+              },
+              columnStyles: {
+                0: {columnWidth: 50 },
+                1: {columnWidth: 30 },
+                //1: {columnWidth: 'auto'},
+                //2: {columnWidth: 'wrap', halign: 'left'},
+                2: {columnWidth: 'wrap', halign: 'left'},
+                3: {columnWidth: 'auto'}
+              },
+
+              startY: 80, //This was the way to push the start of the table down
+            };
+          },
+          createdCell: function(cell, opts) {
+            if (opts.column.index == 1) {        
+              cell.styles.textColor = "#20a8d8";
+              cell.styles.fillColor = "#000";
+              console.log(cell.raw)
+            }
+          },
+      });
+    });
+
+  }
 }
 
-//-----GRAPICH
-let chart1;
-function getDrawGraphicFirst(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicFirst').getContext('2d');
-  if (chart1) {
-    chart1.destroy();
-  }
-  
-  textTitle = 'Tendencias por Area voladores por plaga';
-  date_to = $('#date_to').val()
-  date_from = $('#date_from').val()
-  setOptions.plugins.title.text = textTitle + ' | ' + date_from + ' / ' + date_to
-  chart1 = new Chart(ctx, {
-    type: 'line',
-    data:data,
-    options: setOptions,
-  });
-}
+
 

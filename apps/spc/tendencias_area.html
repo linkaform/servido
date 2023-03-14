@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">SPC - Tendencias Por Área </h1>
+                    <h1 id="title_report">SPC - Tendencias Por Área Por Plaga</h1>
                 </div>
             </div> 
         </nav>
@@ -98,33 +98,50 @@
                     </div>
 
                     <div class="col-sm-12 col-md-3 col-lg-3" >
-                        <h5>Cliente: </h5>
-                        <select class="form-control mdb-select md-form" id="cliente">
-                            <option value="">--Seleccione--</option>
+                        <h5>Plaga: </h5>
+                        <select class="form-control mdb-select md-form" id="plaga">
+                            <option value="--">--Seleccione--</option>
+                            <option value="Mosca domestica">Mosca domestica</option>
+                            <option value="Mosca de la fruta">Mosca de la fruta</option>
+                            <option value="Mosca del drenaje">Mosca del drenaje</option>
+                            <option value="Mosca metalica">Mosca metalica</option>
+                            <option value="Mariposa">Mariposa</option>
+                            <option value="Gorgojos">Gorgojos</option>
+                            <option value="Chicharrita">Chicharrita</option>
+                            <option value="Abejas">Abejas</option>
+                            <option value="Avispas">Avispas</option>
+                            <option value="Mosquitos">Mosquitos</option>
+                            <option value="Mariquita">Mariquita</option>
+                            <option value="OtrosVoladres">OtrosVoladres</option>
                         </select>
                     </div>
-
-                    <div class="col-sm-12 col-md-3 col-lg-3" >
-                        <h5>Dispositivo: </h5>
-                        <select class="form-control mdb-select md-form" id="dispositivo">
-                            <option value="">--Seleccione--</option>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Área </h5>
+                        <select class="form-control mdb-select md-form" id="area">
+                            <option value="--">--Seleccione--</option>
+                            <option value="bodega">Bodega</option>
+                            <option value="salsas">Salsas</option>
+                            <option value="planta_2">Planta 2</option>
+                            <option value="laboratorio">Laboratorio</option>
+                            <option value="transportes">Transportes</option>
+                            <option value="otros">Otros</option>
                         </select>
                     </div>
 
                 </div>
-
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
-                        <section class="title_tables">
-                            <h3 ><span> Reporte De Tendencias Area</span>&nbsp;&nbsp;
-                                <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
-                            </h3>
-                            <hr class="hrFirstElement">
-                        </section>
-                        <div id="firstElement" > </div>
+
+                    <!--Primer Elemento -->
+                    <div id="firstElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicFirst','chart_screen');return false;">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
+                        <div  style="width: 1400px;height: 600px;margin: auto;">
+                            <canvas id="graphicFirst" ></canvas>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -177,7 +194,7 @@
 
     <script type="text/javascript" src="../utils/lkf_utils.js"></script>
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
-
+    <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
     <!-- Template -->
     <script type="text/javascript" src="./tendencias_area.js"></script>
     <script type="text/javascript" src="./tendencias_area_data.js"></script>

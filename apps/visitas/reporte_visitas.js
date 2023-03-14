@@ -169,7 +169,18 @@ function runFirstElement(){
   let date_to = document.getElementById("date_to");  
   let promotor = document.getElementById("promotor");  
 
-  getFirstElement(date_to.value, date_from.value, promotor.value);
+  if (date_from.value != null && date_to.value != null && date_from.value != "" && date_to.value != ""){
+    getFirstElement(date_to.value, date_from.value, promotor.value);
+  }
+  else
+  {
+    Swal.fire({
+      title: 'Rango de Fechas Requerido',
+    });
+  }
+
+
+  
 }
 
 function getFirstElement(dateTo, dateFrom, promotor){

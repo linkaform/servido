@@ -33,3 +33,8 @@ hr {
   width: 180% !important; 
   height: 150% !important;
 }
+
+.chart_screenV{
+  width: 1800px !important; 
+  height: 850px !important;
+}
