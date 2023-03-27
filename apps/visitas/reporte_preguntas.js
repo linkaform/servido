@@ -13,10 +13,11 @@ let scriptId = null;
 $('#divOptions').hide();
 $('#title_report').hide();
 $('.title_tables').hide();
-$('#firstElement').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
+hideElement("secondElement");
+hideElement("thirdElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -84,20 +85,19 @@ window.onload = function(){
     userId = us;
     userJwt = jw;
     userName = getCookie("userName");
+    document.getElementById("firstParameters").style.removeProperty('display');
     unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
     }
-    ///----ASSIGN VALUES
-    var dateT = new Date();
-    var dateTo = dateT.toISOString().substring(0, 10);
-    $("#date_from").val(dateTo);
-    $("#date_to").val(dateTo);
     //--Styles
     setSpinner();
+    setDate();
+    get_catalog();
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
+    
   } else {
     unhideElement("inicio_ses");
     $('#divContent').hide();
@@ -123,41 +123,67 @@ function unHideReportElements(){
   unhideElement("firstElement-Buttons");
   unhideElement("firstParameters");
   unhideElement("close_sesion");
+  unhideElement("firstElement");
 }
-
-function loadDemoData(){
-
-  unhideElement("title_demo")
-  $('.title_tables').show();
-  $('.title_report').show();
-  document.getElementById("firstParameters").style.removeProperty('display');
-  
-  getDrawGraphicFirst(data1, setOptions1);
-  document.getElementById("firstElement").style.removeProperty('display');
-}
-
-
 
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
+
+//-----DEMO 
+function loadDemoData(){
+  $('.title_tables').show();
+  unhideElement("title_demo")
+  document.getElementById("firstParameters").style.removeProperty('display');
+
+  getDrawTable('firstElement', columsTable1, dataTable1, 350);
+  document.getElementById("firstElement").style.removeProperty('display');
+}
+
+//-----DATE
+function setDate(){
+  array_month = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+  //---DATE TO
+  date_to = new Date();
+  year = date_to.getFullYear();
+  month = array_month[date_to.getMonth()];
+  day = date_to.getDate();
+  date_to = year +'-'+ month +'-'+ day;
+  $('#date_to').val(date_to);
+  //---DATE FROM
+  date_from = new Date();
+  date_from.setDate(date_from.getDate() - 30)
+
+  year = date_from.getFullYear();
+  month = array_month[date_from.getMonth()];
+  day = date_from.getDate();
+  date_from = year +'-'+ month +'-'+ day;
+  $('#date_from').val(date_from);
+}
+
+
+
+//-----EXCUTION
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  let area = document.getElementById("area");  
-  let plaga = document.getElementById("plaga");  
-  if (date_from.value != null && date_to.value != null && date_from.value != "" && date_to.value != "" && area.value != "--" ){
-    getFirstElement(date_to.value, date_from.value, plaga.value, area.value);
+  let promotor = document.getElementById("promotor");  
+
+  if (date_from.value != null && date_to.value != null && date_from.value != "" && date_to.value != ""){
+    getFirstElement(date_to.value, date_from.value, promotor.value);
   }
   else
   {
     Swal.fire({
-      title: 'Filtros requeridos',
+      title: 'Rango de Fechas Requerido',
     });
   }
-};
 
-function getFirstElement(dateTo, dateFrom, plaga, area){
+
+  
+}
+
+function getFirstElement(dateTo, dateFrom, promotor){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -170,8 +196,8 @@ function getFirstElement(dateTo, dateFrom, plaga, area){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      plaga: plaga,
-      area: area,
+      promotor: promotor,
+      option: 1,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -185,13 +211,14 @@ function getFirstElement(dateTo, dateFrom, plaga, area){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-
-    
-      if (res.response.json.firstElement) {
-        getDrawGraphicFirst(res.response.json.firstElement, setOptions1);
+      console.log(res.response)
+      
+      if (res.response.firstElement.tabledata) {
+        getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata, 450);
         document.getElementById("firstElement").style.removeProperty('display');
       }
       
+
     } else {
       hideLoading();
       if(res.code == 11){
@@ -209,12 +236,12 @@ function getFirstElement(dateTo, dateFrom, plaga, area){
       }
     }
   })
-};
+}
 
 //-----TABLES
-function getDrawTable(id, columnsData, tableData){
+function getDrawTable(id, columnsData, tableData, height = 500){
   var  table = new Tabulator("#" + id, {
-    height:"300px",
+    height:height +"px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -243,23 +270,40 @@ function getDrawTable(id, columnsData, tableData){
   }
 }
 
-//-----GRAPICH
-let chart1;
-function getDrawGraphicFirst(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicFirst').getContext('2d');
-  if (chart1) {
-    chart1.destroy();
-  }
-  
-  textTitle = 'Tendencias por Area voladores por plaga';
-  date_to = $('#date_to').val()
-  date_from = $('#date_from').val()
-  setOptions.plugins.title.text = textTitle + ' | ' + date_from + ' / ' + date_to
-  chart1 = new Chart(ctx, {
-    type: 'line',
-    data:data,
-    options: setOptions,
-  });
-}
+
+//-----CATALOG
+function get_catalog() 
+{
+  fetch(url + 'infosync/scripts/run/', {
+      method: 'POST',
+      body: JSON.stringify({
+        script_id: 95556,
+        option: 0,
+      }),
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+userJwt
+      },
+    })
+    .then(res => res.json())
+    .then(res => {
+    if (res.success) {
+      if (res.response.catalog.length){
+        array_value = []
+        for (i = 0; i < res.response.catalog.length; i++) {
+          if (!array_value.includes(res.response.catalog[i]['63dc0f1ec29b8336b7b72615'])) {
+            array_value.push(res.response.catalog[i]['63dc0f1ec29b8336b7b72615'])
+          }
+        }
+        array_value.sort();
+        $("#promotor").empty();
+        $('#promotor').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i <array_value.length; i++) {
+          $('#promotor').append('<option value="'+ array_value[i] +'">'+array_value[i]+'</option>');
+        }
+
+      }
+    } 
+  })
+};
 

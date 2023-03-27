@@ -176,8 +176,7 @@ function runFirstElement(){
   {
     check = 'off';
   }
-
-  getFirstElement(date_to.value, date_from.value, sucursal.value, seccion.value, regional.value, check);
+    getFirstElement(date_to.value, date_from.value, sucursal.value, seccion.value, regional.value, check);
 };
 
 function getFirstElement(dateTo, dateFrom, sucursal, seccion, regional, check){
