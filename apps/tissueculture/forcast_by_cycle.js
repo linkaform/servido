@@ -194,6 +194,14 @@ function getFirstElement(plant_code){
       }
     }
   })
+  .catch(function(error)
+  {
+    Swal.fire({
+      title: 'Error',
+      html: res.error
+    });
+    $('.load-wrapp').hide();
+  });
 };
 
 

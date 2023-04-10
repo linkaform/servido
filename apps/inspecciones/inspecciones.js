@@ -16,6 +16,7 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
+hideElement("secondElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -115,6 +116,7 @@ window.onload = function(){
 
 
 function unHideReportElements(){
+  //Set here all report elements that need to be unHiden on a loggin
   unhideElement("firstElement-Buttons");
   unhideElement("firstParameters");
   unhideElement("close_sesion");
@@ -124,9 +126,14 @@ function unHideReportElements(){
 function loadDemoData(){
   unhideElement("title_demo")
   $('.title_tables').show();
-  getDrawTable('firstElement', columsTable1, dataTable1);
   document.getElementById("firstParameters").style.removeProperty('display');
+  
+  getDrawTable('firstElement', columsTable1, dataTable1, '295px');
   document.getElementById("firstElement").style.removeProperty('display');
+  
+
+  getDrawTable('secondElement', columsTable2, dataTable2, '380px');
+  document.getElementById("secondElement").style.removeProperty('display');
 }
 
 const loading = document.querySelector('.loading-container');
@@ -138,7 +145,6 @@ function runFirstElement(){
   getFirstElement(date_to.value, date_from.value);
 };
 
-//-----PETICION
 function getFirstElement(dateTo, dateFrom){
   //----Hide Css
   $("#divContent").hide();
@@ -190,25 +196,17 @@ function getFirstElement(dateTo, dateFrom){
       }
     }
   })
-  .catch(function(error)
-  {
-    Swal.fire({
-      title: 'Error',
-      html: res.error
-    });
-    $('.load-wrapp').hide();
-  });
 };
 
 //-----TABLES
-function getDrawTable(id, columnsData, tableData){
+function getDrawTable(id, columnsData, tableData, heightTable='300px'){
   var  table = new Tabulator("#" + id, {
-    height:"300px",
+    height:heightTable,
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:true,
+    dataTreeStartExpanded:false,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",

@@ -150,7 +150,9 @@ function setDate(){
   day = date_to.getDate();
   date_to = year +'-'+ month +'-'+ day;
   $('#date_to').val(date_to);
-  //---DATE FROM
+  $('#date_from').val(date_to);
+  //---DATE FROM IN CASE 30 DAYS
+  /*
   date_from = new Date();
   date_from.setDate(date_from.getDate() - 30)
 
@@ -159,6 +161,7 @@ function setDate(){
   day = date_from.getDate();
   date_from = year +'-'+ month +'-'+ day;
   $('#date_from').val(date_from);
+  */
 }
 
 
@@ -168,22 +171,10 @@ function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
   let promotor = document.getElementById("promotor");  
-
-  if (date_from.value != null && date_to.value != null && date_from.value != "" && date_to.value != ""){
-    getFirstElement(date_to.value, date_from.value, promotor.value);
-  }
-  else
-  {
-    Swal.fire({
-      title: 'Rango de Fechas Requerido',
-    });
-  }
-
-
-  
+  getFirstElement(date_to.value, date_from.value);
 }
 
-function getFirstElement(dateTo, dateFrom, promotor){
+function getFirstElement(dateTo, dateFrom){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -196,8 +187,6 @@ function getFirstElement(dateTo, dateFrom, promotor){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      promotor: promotor,
-      option: 1,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -211,14 +200,10 @@ function getFirstElement(dateTo, dateFrom, promotor){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res.response)
-      
       if (res.response.firstElement.tabledata) {
         getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata, 450);
         document.getElementById("firstElement").style.removeProperty('display');
       }
-      
-
     } else {
       hideLoading();
       if(res.code == 11){

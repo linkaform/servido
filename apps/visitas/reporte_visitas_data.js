@@ -21,6 +21,8 @@ var columsTable1 = [
 ];
 
 
+
+
 var dataTable1 = [
   {
     "folio": "850-11702", 

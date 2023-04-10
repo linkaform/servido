@@ -13,6 +13,7 @@ var columsTable1 = [
   { title:"6. Logística y Ultima milla", field:'logistica',hozAlign:"center", width:250},
   { title:"7. Gestión Documental", field:'gestion_documental',hozAlign:"center", width:250},
   { title:"8. Crédito y Cobranza", field:'credito_cobranza',hozAlign:"center", width:250},
+  { title:"9. División Talleres", field:'divison_talleres',hozAlign:"center", width:250},
   { title:"RESULTADO GENERAL EXCELENCIA OPERATIVA", field:'resultado',hozAlign:"center", width:250},
 ];
 
@@ -30,6 +31,7 @@ var dataTable1 = [
     logistica:"100%",
     gestion_documental:"0%",
     credito_cobranza:"62%",
+    divison_talleres:'100%',
     resultado:"70%",
   },
   {
@@ -44,6 +46,7 @@ var dataTable1 = [
     logistica:"33%",
     gestion_documental:"100%",
     credito_cobranza:"85%",
+    divison_talleres:'100%',
     resultado:"66%",
   },
   {
@@ -58,6 +61,7 @@ var dataTable1 = [
     logistica:"33%",
     gestion_documental:"100%",
     credito_cobranza:"85%",
+    divison_talleres:'100%',
     resultado:"66%",
   },
     {
@@ -72,6 +76,7 @@ var dataTable1 = [
     logistica:"33%",
     gestion_documental:"100%",
     credito_cobranza:"85%",
+    divison_talleres:'100%',
     resultado:"66%",
   },
       {
@@ -86,6 +91,7 @@ var dataTable1 = [
     logistica:"33%",
     gestion_documental:"100%",
     credito_cobranza:"85%",
+    divison_talleres:'100%',
     resultado:"66%",
   },
   {
@@ -100,6 +106,7 @@ var dataTable1 = [
     logistica:"33%",
     gestion_documental:"100%",
     credito_cobranza:"85%",
+    divison_talleres:'100%',
     resultado:"66%",
   },
   {
@@ -114,6 +121,7 @@ var dataTable1 = [
     logistica:"33%",
     gestion_documental:"100%",
     credito_cobranza:"85%",
+    divison_talleres:'100%',
     resultado:"66%",
   },
   {
@@ -128,6 +136,7 @@ var dataTable1 = [
     logistica:"33%",
     gestion_documental:"100%",
     credito_cobranza:"85%",
+    divison_talleres:'100%',
     resultado:"66%",
   },
   {
@@ -142,6 +151,7 @@ var dataTable1 = [
     logistica:"33%",
     gestion_documental:"100%",
     credito_cobranza:"85%",
+    divison_talleres:'100%',
     resultado:"66%",
   },
   {
@@ -156,6 +166,7 @@ var dataTable1 = [
     logistica:"33%",
     gestion_documental:"100%",
     credito_cobranza:"85%",
+    divison_talleres:'100%',
     resultado:"66%",
   },
   {
@@ -170,6 +181,7 @@ var dataTable1 = [
     logistica:"33%",
     gestion_documental:"100%",
     credito_cobranza:"85%",
+    divison_talleres:'100%',
     resultado:"66%",
   },
   {
@@ -184,6 +196,7 @@ var dataTable1 = [
     logistica:"33%",
     gestion_documental:"100%",
     credito_cobranza:"85%",
+    divison_talleres:'100%',
     resultado:"66%",
   },
 ];

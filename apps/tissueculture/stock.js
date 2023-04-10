@@ -166,12 +166,20 @@ function getFirstElement(plantCode){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log('Data',res.response);
+      console.log('Data Status',res.code);
       if (res.response.firstElement.tabledata) {
         console.log('drawFirstElement.........');
         getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata);
       }
-    } else {
+    }
+    else if (res.status == 401) {
+        Swal.fire({
+          title: 'Authentication Error',
+          html: res.error
+        });
+        $('.load-wrapp').hide();
+    }
+    else {
       hideLoading();
       if(res.code == 11){
         Swal.fire({
@@ -188,6 +196,14 @@ function getFirstElement(plantCode){
       }
     }
   })
+  .catch(function(error)
+  {
+    Swal.fire({
+      title: 'Error',
+      html: res.error
+    });
+    $('.load-wrapp').hide();
+  });
 };
 
 //-----TABLES
