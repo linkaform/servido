@@ -2,19 +2,21 @@
 
 //-- Tabla 1 
 var columsTable1 = [
-  { title:"Folio", field:'folio',hozAlign:"left", width:150},
+  { title:"Folio", field:'folio', hozAlign:"left", formatter:"link", formatterParams:{
+    url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
+    target:"_blank",}, width:150},
   { title:"Id", field:'id',hozAlign:"right", width:100},
   { title:"Unidad De Negocio", field:'unidad_negocio',hozAlign:"left", width:250},
-  { title:"1. Servicio y Experiencia", field:'servicio',hozAlign:"center", width:250},
-  { title:"2. Mi equipo APYMSA", field:'equipo',hozAlign:"center", width:250},
-  { title:"3. Imagen Mantenimiento y Limpieza", field:'imagen',hozAlign:"center", width:250},
-  { title:"4. Gestión de Almacén", field:'gestion',hozAlign:"center", width:250},
-  { title:"5. Revisión Inventario", field:'revision',hozAlign:"center", width:250},
-  { title:"6. Logística y Ultima milla", field:'logistica',hozAlign:"center", width:250},
-  { title:"7. Gestión Documental", field:'gestion_documental',hozAlign:"center", width:250},
-  { title:"8. Crédito y Cobranza", field:'credito_cobranza',hozAlign:"center", width:250},
-  { title:"9. División Talleres", field:'divison_talleres',hozAlign:"center", width:250},
-  { title:"RESULTADO GENERAL EXCELENCIA OPERATIVA", field:'resultado',hozAlign:"center", width:250},
+  { title:"1. Servicio y Experiencia", field:'servicio',hozAlign:"right", width:250},
+  { title:"2. Mi equipo APYMSA", field:'equipo',hozAlign:"right", width:250},
+  { title:"3. Imagen Mantenimiento y Limpieza", field:'imagen',hozAlign:"right", width:250},
+  { title:"4. Gestión de Almacén", field:'gestion',hozAlign:"right", width:250},
+  { title:"5. Revisión Inventario", field:'revision',hozAlign:"right", width:250},
+  { title:"6. Logística y Ultima milla", field:'logistica',hozAlign:"right", width:250},
+  { title:"7. Gestión Documental", field:'gestion_documental',hozAlign:"right", width:250},
+  { title:"8. Crédito y Cobranza", field:'credito_cobranza',hozAlign:"right", width:250},
+  { title:"9. División Talleres", field:'divison_talleres',hozAlign:"right", width:250},
+  { title:"RESULTADO GENERAL EXCELENCIA OPERATIVA", field:'resultado',hozAlign:"right", width:250},
 ];
 
 

@@ -180,8 +180,8 @@ function getFirstElement(dateTo, dateFrom, bodega, tecnico){
       $('.title_tables').show();
       console.log(res)
       
-      if (res.response.firstElement) {
-        getDrawTable('firstElement', columsTable1, res.response.firstElement);
+      if (res.response.json.firstElement.data) {
+        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
     } else {
@@ -263,10 +263,13 @@ function getDrawTable(id, columnsData, tableData){
             doc.setTextColor(23,32,42);
             doc.text("RANKING DE SUCURSALES", 300, 40);
 
-
+            //----FECHA
+    
+            dateTo = $("#date_to").val();
+            dateFrom = $("#date_from").val();
             doc.setFontSize(9);
             doc.setTextColor(23,32,42);
-            doc.text("Rango: Del 01/01/23 - 31/01/23 ", 40, 70);
+            doc.text("Rango: Del " + dateFrom + " / " + dateTo + " ", 40, 70);
 
 
 
