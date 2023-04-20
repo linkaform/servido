@@ -17,11 +17,6 @@ hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
 hideElement("secondElement");
-hideElement("thirdElement");
-hideElement("fourthElement");
-hideElement("fivethElement");
-hideElement("sixthElement");
-
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -140,8 +135,11 @@ function loadDemoData(){
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
 
-  getDrawTable('firstElement', columsTable1, dataTable1)
+  drawFirstElement(dataElement1);
   document.getElementById("firstElement").style.removeProperty('display');
+
+  getDrawTable('secondElement', columsTable1, dataTable1)
+  document.getElementById("secondElement").style.removeProperty('display');
 }
 
 const loading = document.querySelector('.loading-container');
@@ -203,6 +201,8 @@ function getFirstElement(dateTo, dateFrom, bodega, tecnico){
   })
 };
 
+
+
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
@@ -234,92 +234,24 @@ function getDrawTable(id, columnsData, tableData){
       table.download("csv", "data.csv");
     });
   }
-
-  //---PDF
-  var element = document.getElementById("download_pdf_"+id);
-  if (element)
-  {
-    document.getElementById("download_pdf_"+id).replaceWith(document.getElementById("download_pdf_"+id).cloneNode(true));
-    document.getElementById("download_pdf_"+id).addEventListener("click", function(){
-      table.download("pdf", "data.pdf", {
-          orientation:"landscape", //set page orientation to portrait
-          theme: 'grid',
-          autoTable:function(doc)
-          { 
-            var margins = 30;
-            var leftMargin = 40;
-            var marginsIndent = 40;
-
-            //----IMAGENES
-            // Parametros - Posición weigth / Posición heigt / Weigth / Heigth 
-            doc.addImage(img_apymsa1, 'PNG', 40, 20, 125, 35);
-            doc.addImage(img_apymsa2, 'PNG', 680, 18, 125, 50);
-
-            //----TEXTO
-            doc.setFont('helvetica', 'bold')
-            //doc.setFont("helvetica");
-            //doc.setFont('Courier-Bold');
-            doc.setFontSize(18);
-            doc.setTextColor(23,32,42);
-            doc.text("RANKING DE UNIDADES DE NEGOCIO", 300, 40);
-
-            //----FECHA
-    
-            doc.setFont('helvetica')
-            dateTo = $("#date_to").val();
-            dateFrom = $("#date_from").val();
-            doc.setFontSize(9);
-            doc.setTextColor(23,32,42);
-            doc.text("Rango: Del " + dateFrom + " / " + dateTo + " ", 40, 70);
-
-
-
-            doc.setFontSize(11);
-            return {
-              styles: {
-                cellPadding: 2, 
-                fontSize: 8,
-                halign : 'center'
-              },
-              headStyles: {
-                fillColor: [127, 140, 141]
-              },
-              alternateRowStyles: {
-                fillColor : [212, 230, 241]
-              },
-              columnStyles: {
-                0: {columnWidth: 50 ,valign: 'bottom'},
-                1: {columnWidth: 30 ,valign: 'bottom'},
-                //1: {columnWidth: 'auto'},
-                //2: {columnWidth: 'wrap', halign: 'left'},
-                2: {columnWidth: 'wrap', halign: 'left',valign: 'middle'},
-                3: {columnWidth: 'auto',valign: 'middle'},
-                4: {columnWidth: 'auto',valign: 'middle'},
-                5: {columnWidth: 'auto',valign: 'middle'},
-                6: {columnWidth: 'auto',valign: 'middle'},
-                7: {columnWidth: 'auto',valign: 'middle'},
-                8: {columnWidth: 'auto',valign: 'middle'},
-                9: {columnWidth: 'auto',valign: 'middle'},
-                10: {columnWidth: 'auto',valign: 'middle'},
-                11: {columnWidth: 'auto',valign: 'middle'},
-                12: {columnWidth: 'auto',fontSize: 9,fontStyle: 'bold',valign: 'middle'}
-              },
-
-              startY: 80, //This was the way to push the start of the table down
-            };
-          },
-          createdCell: function(cell, opts) {
-            if (opts.column.index == 1) {        
-              cell.styles.textColor = "#20a8d8";
-              cell.styles.fillColor = "#000";
-              console.log(cell.raw)
-            }
-          },
-      });
-    });
-
-  }
 }
 
 
 
+let chart1;
+function drawFirstElement(data){
+
+  //---CHART
+  var ctx = document.getElementById('graphicFirst').getContext('2d');
+  
+  if (chart1) {
+    chart1.destroy();
+  }
+
+  chart1 = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    plugins: [ChartDataLabels],
+    options: setOptions,
+  });
+}

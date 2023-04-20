@@ -225,161 +225,161 @@ function getFirstElement(){
   })
   .then(res => res.json())
   .then(res => {
-    if (res.success) {
-      //----Hide and show
-      $('.load-wrapp').hide();
-      $("#divContent").show();
-      $('.title_tables').show();
-      console.log('VALORES GENERALES',res.response);
-      if (res.response.secondElement.tabledata.length) {
-        getDrawGaugeList(res.response.secondElement.tabledata);
+if (res.success) {
+  //----Hide and show
+  $('.load-wrapp').hide();
+  $("#divContent").show();
+  $('.title_tables').show();
+  console.log('VALORES GENERALES',res.response);
+  if (res.response.secondElement.tabledata.length) {
+    getDrawGaugeList(res.response.secondElement.tabledata);
+  }
+  if (res.response.firstElement) {
+    data = res.response.firstElement.hours
+
+    if (data['total']['available']!= undefined){
+      $("#textAlert1").text(data['total']['available'].toFixed(0))
+    }
+    if (data['total']['worked']!= undefined){
+      $("#textAlert2").text(data['total']['worked'].toFixed(0))
+    }
+
+    if (data['Team 1'] !== undefined) {
+
+      if (data['Team 1']['available']!= undefined){
+        $("#text_team1_01").text(data['Team 1']['available'].toFixed(0))
       }
-      if (res.response.firstElement) {
-        data = res.response.firstElement.hours
-
-        if (data['total']['available']!= undefined){
-          $("#textAlert1").text(data['total']['available'].toFixed(0))
-        }
-        if (data['total']['worked']!= undefined){
-          $("#textAlert2").text(data['total']['worked'].toFixed(0))
-        }
-
-        if (data['Team 1']['available']!= undefined){
-          $("#text_team1_01").text(data['Team 1']['available'].toFixed(0))
-        }
-        if (data['Team 1']['consumed']!= undefined){
-          $("#text_team1_02").text(data['Team 1']['consumed'].toFixed(0) + '%')
-        }
-
-        if (data['Team 1']['worked']!= undefined){
-          $("#text_team1_03").text(data['Team 1']['worked'].toFixed(0))
-        }
-        if (data['Team 1']['estimated']!= undefined){
-          $("#text_team1_04").text(data['Team 1']['estimated'].toFixed(0))
-        }
-
-        if (data['Team 1']['stage2']!= undefined){
-          $("#text_team1_05").text(data['Team 1']['stage2'].toFixed(0))
-        }
-        if (data['Team 1']['stage2_estimated']!= undefined){
-          $("#text_team1_06").text(data['Team 1']['stage2_estimated'].toFixed(0))
-        }
-
-        if (data['Team 1']['stage3']!= undefined){
-          $("#text_team1_07").text(data['Team 1']['stage3'].toFixed(0))
-        }
-
-        if (data['Team 1']['stage3_estimated']!= undefined){
-          $("#text_team1_08").text(data['Team 1']['stage3_estimated'].toFixed(0))
-        }
-
-        
-        if (data['Team 2']['available']!= undefined ){
-          $("#text_team2_01").text(data['Team 2']['available'].toFixed(0))
-        }
-
-        if (data['Team 2']['consumed']!= undefined ){
-          $("#text_team2_02").text(data['Team 2']['consumed'].toFixed(0) + '%')
-        }
-
-        if (data['Team 2']['worked']!= undefined ){
-          $("#text_team2_03").text(data['Team 2']['worked'].toFixed(0))
-        }
-
-        if (data['Team 2']['estimated']!= undefined ){
-          $("#text_team2_04").text(data['Team 2']['estimated'].toFixed(0))
-        }
-
-        if (data['Team 2']['stage2']!= undefined ){
-          $("#text_team2_05").text(data['Team 2']['stage2'].toFixed(0))
-        }
-
-        if (data['Team 2']['stage2_estimated']!= undefined ){
-          $("#text_team2_06").text(data['Team 2']['stage2_estimated'].toFixed(0))
-        }
-
-        if (data['Team 2']['stage3']!= undefined ){
-          $("#text_team2_07").text(data['Team 2']['stage3'].toFixed(0))
-        }
-
-        if (data['Team 2']['stage3_estimated']!= undefined ){
-          $("#text_team2_08").text(data['Team 2']['stage3_estimated'].toFixed(0))
-        }
-
-
-        if (data['Team 3']['available']!= undefined ){
-          $("#text_team3_01").text(data['Team 3']['available'].toFixed(0))
-        }
-        if (data['Team 3']['consumed']!= undefined ){
-          $("#text_team3_02").text(data['Team 3']['consumed'].toFixed(0) + '%')
-        }
-
-        if (data['Team 3']['worked']!= undefined ){
-          $("#text_team3_03").text(data['Team 3']['worked'].toFixed(0))
-        }
-        if (data['Team 3']['estimated']!= undefined ){
-          $("#text_team3_04").text(data['Team 3']['estimated'].toFixed(0))
-        }
-
-        if (data['Team 3']['stage2']!= undefined ){
-          $("#text_team3_05").text(data['Team 3']['stage2'].toFixed(0))
-        }
-        if (data['Team 3']['stage2_estimated']!= undefined ){
-          $("#text_team3_06").text(data['Team 3']['stage2_estimated'].toFixed(0))
-        }
-
-        if (data['Team 3']['stage3']!= undefined ){
-          $("#text_team3_07").text(data['Team 3']['stage3'].toFixed(0))
-        }
-        if (data['Team 3']['stage3_estimated']!= undefined ){
-          $("#text_team3_08").text(data['Team 3']['stage3_estimated'].toFixed(0))
-        }
+      if (data['Team 1']['consumed']!= undefined){
+        $("#text_team1_02").text(data['Team 1']['consumed'].toFixed(0) + '%')
       }
-      if (res.response.thirdElement){
-        data = res.response.thirdElement.tabledata;
-        data.sort(function (a, b) {
-          if (a.progress > b.progress) {
-            return 1;
-          }
-          if (a.progress < b.progress) {
-            return -1;
-          }
-          return 0;
-        });
-        height = getDrawHeigth(data);
-        getDrawTable('firstElement', columsTable1, data, height);
-        document.getElementById("firstElement").style.removeProperty('display');
+
+      if (data['Team 1']['worked']!= undefined){
+        $("#text_team1_03").text(data['Team 1']['worked'].toFixed(0))
       }
-      if (res.response.params.week){
-        $("#text_weeek").text('Week: '+res.response.params.week)
+      if (data['Team 1']['estimated']!= undefined){
+        $("#text_team1_04").text(data['Team 1']['estimated'].toFixed(0))
       }
-    } else {
-      hideLoading();
-      if(res.code == 11){
-        Swal.fire({
-          title: 'Error',
-          html: res.error
-        });
-        $('.load-wrapp').hide();
-      } else {
-        Swal.fire({
-          title: 'Error',
-          html: res.error
-        });
-        $('.load-wrapp').hide();
+
+      if (data['Team 1']['stage2']!= undefined){
+        $("#text_team1_05").text(data['Team 1']['stage2'].toFixed(0))
+      }
+      if (data['Team 1']['stage2_estimated']!= undefined){
+        $("#text_team1_06").text(data['Team 1']['stage2_estimated'].toFixed(0))
+      }
+
+      if (data['Team 1']['stage3']!= undefined){
+        $("#text_team1_07").text(data['Team 1']['stage3'].toFixed(0))
+      }
+
+      if (data['Team 1']['stage3_estimated']!= undefined){
+        $("#text_team1_08").text(data['Team 1']['stage3_estimated'].toFixed(0))
+      }
+      
+   }
+
+    if (data['Team 2'] !== undefined) {
+      if (data['Team 2']['available']!= undefined ){
+        $("#text_team2_01").text(data['Team 2']['available'].toFixed(0))
+      }
+
+      if (data['Team 2']['consumed']!= undefined ){
+        $("#text_team2_02").text(data['Team 2']['consumed'].toFixed(0) + '%')
+      }
+
+      if (data['Team 2']['worked']!= undefined ){
+        $("#text_team2_03").text(data['Team 2']['worked'].toFixed(0))
+      }
+
+      if (data['Team 2']['estimated']!= undefined ){
+        $("#text_team2_04").text(data['Team 2']['estimated'].toFixed(0))
+      }
+
+      if (data['Team 2']['stage2']!= undefined ){
+        $("#text_team2_05").text(data['Team 2']['stage2'].toFixed(0))
+      }
+
+      if (data['Team 2']['stage2_estimated']!= undefined ){
+        $("#text_team2_06").text(data['Team 2']['stage2_estimated'].toFixed(0))
+      }
+
+      if (data['Team 2']['stage3']!= undefined ){
+        $("#text_team2_07").text(data['Team 2']['stage3'].toFixed(0))
+      }
+
+      if (data['Team 2']['stage3_estimated']!= undefined ){
+        $("#text_team2_08").text(data['Team 2']['stage3_estimated'].toFixed(0))
       }
     }
-  })
-  .catch(function(error)
-  {
+
+    if (data['Team 3'] !== undefined) {
+
+      if (data['Team 3']['available']!= undefined ){
+        $("#text_team3_01").text(data['Team 3']['available'].toFixed(0))
+      }
+      if (data['Team 3']['consumed']!= undefined ){
+        $("#text_team3_02").text(data['Team 3']['consumed'].toFixed(0) + '%')
+      }
+
+      if (data['Team 3']['worked']!= undefined ){
+        $("#text_team3_03").text(data['Team 3']['worked'].toFixed(0))
+      }
+      if (data['Team 3']['estimated']!= undefined ){
+        $("#text_team3_04").text(data['Team 3']['estimated'].toFixed(0))
+      }
+
+      if (data['Team 3']['stage2']!= undefined ){
+        $("#text_team3_05").text(data['Team 3']['stage2'].toFixed(0))
+      }
+      if (data['Team 3']['stage2_estimated']!= undefined ){
+        $("#text_team3_06").text(data['Team 3']['stage2_estimated'].toFixed(0))
+      }
+
+      if (data['Team 3']['stage3']!= undefined ){
+        $("#text_team3_07").text(data['Team 3']['stage3'].toFixed(0))
+      }
+      if (data['Team 3']['stage3_estimated']!= undefined ){
+        $("#text_team3_08").text(data['Team 3']['stage3_estimated'].toFixed(0))
+      }
+    }
+  }
+  if (res.response.thirdElement){
+    data = res.response.thirdElement.tabledata;
+    data.sort(function (a, b) {
+      if (a.progress > b.progress) {
+        return 1;
+      }
+      if (a.progress < b.progress) {
+        return -1;
+      }
+      return 0;
+    });
+    height = getDrawHeigth(data);
+    getDrawTable('firstElement', columsTable1, data, height);
+    console.log('Data que llega')
+    document.getElementById("firstElement").style.removeProperty('display');
+  }
+  if (res.response.params.week){
+    $("#text_weeek").text('Week: '+res.response.params.week)
+  }
+} else {
+  hideLoading();
+  if(res.code == 11){
     Swal.fire({
       title: 'Error',
       html: res.error
     });
     $('.load-wrapp').hide();
-  });
+  } else {
+    Swal.fire({
+      title: 'Error',
+      html: res.error
+    });
+    $('.load-wrapp').hide();
+  }
+}
+    
+  })
 };
-
 //-----TIME
 function setDrawWeek(){
   //--Week 

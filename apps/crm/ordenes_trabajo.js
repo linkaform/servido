@@ -16,12 +16,6 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
-hideElement("secondElement");
-hideElement("thirdElement");
-hideElement("fourthElement");
-hideElement("fivethElement");
-hideElement("sixthElement");
-
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -81,32 +75,29 @@ window.onload = function(){
   hideElement("close_sesion");
   hideElement("firstParameters");
 
+
   if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
     unhideElement("close_sesion");
     getCompanyLogo(userParentId);
-    userId  = us;
+    userId = us;
     userJwt = jw;
     userName = getCookie("userName");
-
+    document.getElementById("firstParameters").style.removeProperty('display');
+    unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
     }
-    ///----ASSIGN VALUES
-    var dateT = new Date();
-    var dateTo = dateT.toISOString().substring(0, 10);
-    $("#date_from").val(dateTo);
-    $("#date_to").val(dateTo);
     //--Styles
     setSpinner();
-    $('#divUsuario').hide();
     $('#divOptions').show();
     $('#title_report').show();
-    document.getElementById("firstParameters").style.removeProperty('display'); 
+    document.getElementById("firstParameters").style.removeProperty('display');
+    
   } else {
     unhideElement("inicio_ses");
-    $('#divOptions').hide();
     $('#divContent').hide();
+    $('#divOptions').hide();
     $('#title_report').hide();
     $('.title_tables').hide();
     hideElement("firstElement-Buttons");
@@ -123,24 +114,20 @@ window.onload = function(){
 }
 
 
-
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
-  unhideElement("close_sesion");
+  unhideElement("firstElement-Buttons");
   unhideElement("firstParameters");
+  unhideElement("close_sesion");
   unhideElement("firstElement");
-  unhideElement("secondElement");
-  unhideElement("thirdElement");
-  unhideElement("fourthElement");
 }
 
 function loadDemoData(){
-  console.log('Entra a demo')
   unhideElement("title_demo")
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
 
-  getDrawTable('firstElement', columsTable1, dataTable1)
+  getDrawTable('firstElement', columsTable1, dataTable1);
   document.getElementById("firstElement").style.removeProperty('display');
 }
 
@@ -148,23 +135,28 @@ const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");    
-  getFirstElement(date_to.value, date_from.value);
+  dataTreecheck = false;
+  if (document.getElementById('input_check').checked)
+  {
+    dataTreecheck = true;
+  }
+  getFirstElement(dataTreecheck);
+
+
 };
 
-function getFirstElement(dateTo, dateFrom, bodega, tecnico){
+function getFirstElement(facturables){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
   $('.title_tables').hide();
 
+
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      date_to: dateTo,
-      date_from: dateFrom,
+      facturables: facturables,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -178,12 +170,12 @@ function getFirstElement(dateTo, dateFrom, bodega, tecnico){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res)
-      
       if (res.response.json.firstElement.data) {
+        console.log('drawFirstElement.........');
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
+      
     } else {
       hideLoading();
       if(res.code == 11){
@@ -206,12 +198,12 @@ function getFirstElement(dateTo, dateFrom, bodega, tecnico){
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"350px",
+    height:"300px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:true,
+    dataTreeStartExpanded:false,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
@@ -226,7 +218,6 @@ function getDrawTable(id, columnsData, tableData){
     });
   }
 
-
   if (document.getElementById("download_csv_"+id)){
     //trigger download of data.csv file
     document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
@@ -234,92 +225,4 @@ function getDrawTable(id, columnsData, tableData){
       table.download("csv", "data.csv");
     });
   }
-
-  //---PDF
-  var element = document.getElementById("download_pdf_"+id);
-  if (element)
-  {
-    document.getElementById("download_pdf_"+id).replaceWith(document.getElementById("download_pdf_"+id).cloneNode(true));
-    document.getElementById("download_pdf_"+id).addEventListener("click", function(){
-      table.download("pdf", "data.pdf", {
-          orientation:"landscape", //set page orientation to portrait
-          theme: 'grid',
-          autoTable:function(doc)
-          { 
-            var margins = 30;
-            var leftMargin = 40;
-            var marginsIndent = 40;
-
-            //----IMAGENES
-            // Parametros - Posición weigth / Posición heigt / Weigth / Heigth 
-            doc.addImage(img_apymsa1, 'PNG', 40, 20, 125, 35);
-            doc.addImage(img_apymsa2, 'PNG', 680, 18, 125, 50);
-
-            //----TEXTO
-            doc.setFont('helvetica', 'bold')
-            //doc.setFont("helvetica");
-            //doc.setFont('Courier-Bold');
-            doc.setFontSize(18);
-            doc.setTextColor(23,32,42);
-            doc.text("RANKING DE UNIDADES DE NEGOCIO", 300, 40);
-
-            //----FECHA
-    
-            doc.setFont('helvetica')
-            dateTo = $("#date_to").val();
-            dateFrom = $("#date_from").val();
-            doc.setFontSize(9);
-            doc.setTextColor(23,32,42);
-            doc.text("Rango: Del " + dateFrom + " / " + dateTo + " ", 40, 70);
-
-
-
-            doc.setFontSize(11);
-            return {
-              styles: {
-                cellPadding: 2, 
-                fontSize: 8,
-                halign : 'center'
-              },
-              headStyles: {
-                fillColor: [127, 140, 141]
-              },
-              alternateRowStyles: {
-                fillColor : [212, 230, 241]
-              },
-              columnStyles: {
-                0: {columnWidth: 50 ,valign: 'bottom'},
-                1: {columnWidth: 30 ,valign: 'bottom'},
-                //1: {columnWidth: 'auto'},
-                //2: {columnWidth: 'wrap', halign: 'left'},
-                2: {columnWidth: 'wrap', halign: 'left',valign: 'middle'},
-                3: {columnWidth: 'auto',valign: 'middle'},
-                4: {columnWidth: 'auto',valign: 'middle'},
-                5: {columnWidth: 'auto',valign: 'middle'},
-                6: {columnWidth: 'auto',valign: 'middle'},
-                7: {columnWidth: 'auto',valign: 'middle'},
-                8: {columnWidth: 'auto',valign: 'middle'},
-                9: {columnWidth: 'auto',valign: 'middle'},
-                10: {columnWidth: 'auto',valign: 'middle'},
-                11: {columnWidth: 'auto',valign: 'middle'},
-                12: {columnWidth: 'auto',fontSize: 9,fontStyle: 'bold',valign: 'middle'}
-              },
-
-              startY: 80, //This was the way to push the start of the table down
-            };
-          },
-          createdCell: function(cell, opts) {
-            if (opts.column.index == 1) {        
-              cell.styles.textColor = "#20a8d8";
-              cell.styles.fillColor = "#000";
-              console.log(cell.raw)
-            }
-          },
-      });
-    });
-
-  }
 }
-
-
-

@@ -2,3 +2,8 @@
 body{
   font-family: gothambook;
 }
+.hrFirstElement {
+  border-top: 1px solid #707b7c;
+  width: 500px;
+  margin-left: 0%;
+}
