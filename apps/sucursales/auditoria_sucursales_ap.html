@@ -174,24 +174,28 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-sm-12 col-md-12 col-lg-12 div_class mt-2" style="overflow-y: scroll;">
                         <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('firstElement','chart_screenII');return false;" id="download_firstElement">
                             <i class="fa-sharp fa-solid fa-download"></i>
                         </button >
                         <div id="firstElement" class="row"></div>
                     </div>
+
                     <div class="col-sm-12 col-md-12 col-lg-12 div_class" style="overflow-y: scroll;">
                         <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('secondElement','chart_screenV');return false;" id="download_secondElement">
                             <i class="fa-sharp fa-solid fa-download"></i>
                         </button >
                         <div id="secondElement" ></div>
                     </div>
+
                     <div class="col-sm-12 col-md-12 col-lg-12 div_class" style="overflow-y: scroll;">
                         <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('thirdElement','chart_screenV');return false;"  id="download_thirdElement">
                             <i class="fa-sharp fa-solid fa-download"></i>
                         </button >
                         <div id="thirdElement" ></div>
                     </div>
+
                     <div class="col-sm-12 col-md-12 col-lg-12 div_class" style="overflow-y: scroll;">
                         <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('fourthElement','chart_screenII');return false;" id="download_fourthElement"> 
                             <i class="fa-sharp fa-solid fa-download"></i>
@@ -208,6 +212,20 @@
                         </div>
                     </div>
 
+                    
+                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                        <section class="title_tables">
+                            <h3 ><span> Evaluaciones por Sucursal:</span>&nbsp;&nbsp;
+                                <button  class="btn btn-primary" id="download_csv_eigthElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_eigthElement"><i class="fa-regular fa-file-excel"></i></button>
+                            </h3>
+                            <hr class="hrEigthElement">
+                        </section>
+                        <div id="eigthElement"></div>
+                    </div>
+
+
+
                     <div class="col-sm-12 col-md-12 col-lg-12" style="overflow-y: scroll;">
                         <section class="title_tables">
                             <h2 class="title_tables"><span>% De campos llenos y promedio de evidencias servicio:</span>&nbsp;&nbsp;
@@ -222,6 +240,9 @@
                         </section> 
                         <div id="fivethElement" ></div>
                     </div>
+
+
+
 
                 </div>
             </div>
@@ -277,6 +298,6 @@
     <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
 
     <!-- utils js-->
-    <script type="text/javascript" src="./auditoria_sucursales_ap.js"></script>
     <script type="text/javascript" src="./auditoria_sucursales_data.js"></script>
+    <script type="text/javascript" src="./auditoria_sucursales_ap.js"></script>
 </html>

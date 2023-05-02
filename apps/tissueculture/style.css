@@ -14,6 +14,20 @@ body{
   font-family: gothambook;
 }
 
+.green-HrfirstElement {
+  border-top: 1px solid #707b7c;
+  width: 360px;
+  margin-left: 0%;
+}
+
+
+.green-HrThirdElement {
+  border-top: 1px solid #707b7c;
+  width: 300px;
+  margin-left: 0%;
+}
+
+
 
 .stock-HrfirstElement {
   border-top: 1px solid #707b7c;

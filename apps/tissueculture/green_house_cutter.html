@@ -4,26 +4,20 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Reporte Ranking">
+        <meta name="description" content="Green House Production">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
-        
-
         <!--Bootstrap -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!--Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <!--LIBRARY CHECK -->
-        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-
-
         <!-- Header -->
         <nav class="navbar header">
             <div class="navbar-brand">
@@ -43,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte De Rankings</h1>
+                    <h1 id="title_report">Green House Production Report</h1>
                 </div>
             </div> 
         </nav>
@@ -74,6 +68,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!--Title Demo -->
                 <div id="title_demo" style="margin-bottom: 20px;">
                     <center>
@@ -81,7 +76,9 @@
                     </center>
                 </div>
 
-                <!--Options FIlter -->
+
+
+                <!--OPtions FIlter -->
                 <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
                         <i class="fa-solid fa-filter"></i>
@@ -91,6 +88,7 @@
 
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
+                    
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Fecha Desde: </h5>
                         <input class="form-control ds-input" type="date" id="date_from" name="date_from">
@@ -99,70 +97,100 @@
                         <h5>Fecha Hasta: </h5>
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
-                    <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Score: </h5>
-                        <input type="checkbox"  data-toggle="toggle" data-on="Puntos" data-off="Porcentaje" data-width="160" id="input_check">
-                    </div>
+                    
                 </div>
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
+                    
 
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                    <!--FIRST ELEMENT - TABLE -->
+                    <div class="col-sm-12 col-md-12 col-lg-4" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span> Ranking de Unidades de Negocio:</span>&nbsp;&nbsp;
-                                <button  class="btn btn-danger" id="download_pdf_firstElement"><i class="fa-regular fa-file-pdf"></i></button>
+                            <h3 ><span>Report Plant</span>&nbsp;&nbsp;
+                                <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
-                            <hr class="hrFirstElement">
+                            <hr class="green-HrfirstElement">
                         </section>
-                        <div id="firstElement"></div>
+                        <div id="firstElement"> </div>
+                    </div>
+                    
+                    <!--SECOND ELEMENT - GRAPHIC -->
+                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-8 mb-5 mt-5" style="overflow-y: scroll;">
+                        <h3 style="text-align: center;">
+                            <button class="btn btn-secondary button-chart float-right" type="button" onclick="get_chartDownload('graphicFirst','chart_screenIV');return false;" id="download_graphicFirst">
+                                <i class="fa-sharp fa-solid fa-download"></i>
+                            </button >
+                        </h3>
+                        <div  style="width: 1000px;height: 400px;margin: auto;">
+                            <canvas id="graphicFirst"></canvas>
+                        </div>
+                    </div>
+
+                    <!--THIRD ELEMENT - TABLE -->
+                    <div class="col-sm-12 col-md-12 col-lg-6" style="align-items: center;overflow-y: scroll;">
+                        <section class="title_tables">
+                            <h3 ><span>Report Cutter</span>&nbsp;&nbsp;
+                                <button  class="btn btn-primary" id="download_csv_thirdElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_thirdElement"><i class="fa-regular fa-file-excel"></i></button>
+                            </h3>
+                            <hr class="green-HrThirdElement">
+                        </section>
+                        <div id="thirdElement"> </div>
+                    </div>
+
+                    <!--FOURTH ELEMENT - GRAPHIC -->
+                    <div id="fourthElement" class="col-sm-12 col-md-12 col-lg-6" style="overflow-y: scroll;">
+                        <h3 style="text-align: center;">
+                            <button class="btn btn-secondary  button-chart  float-right" type="button" onclick="get_chartDownload('graphicFirst','chart_screenIV');return false;" id="download_graphicFirst">
+                                <i class="fa-sharp fa-solid fa-download"></i>
+                            </button >
+                        </h3>
+                        <div  style="width: 450px;height: 450px;margin: auto;">
+                            <canvas id="graphicSecond"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </body>
 
-
-    <!-- TABULATOR -->
     <!-- tabulator : Excel Downlowd-->
     <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
     <!-- tabulator : PDF Downlowd-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
 
-   <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <link href="../utils/tabulator/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="../utils/tabulator/js/tabulator.min.js"></script>
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 
-    <!-- chartjs -->
-    <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Jquery -->
     <script
     src="https://code.jquery.com/jquery-3.6.0.js"
     integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
     crossorigin="anonymous"></script>
-
+    
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-
-
     <script 
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
     integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" 
     crossorigin="anonymous"></script>
-
     <script 
     src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" 
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
     crossorigin="anonymous"></script>
 
+    <!-- chartjs -->
+    <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    
     <!-- Utils -->
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
     <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
@@ -171,11 +199,7 @@
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./ranking.js"></script>
-    <script type="text/javascript" src="./ranking_data.js"></script>
-
-
-    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
-    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+    <script type="text/javascript" src="./green_house_cutter.js"></script>
+    <script type="text/javascript" src="./green_house_cutter_data.js"></script>
     </body>
 </html>

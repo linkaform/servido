@@ -259,3 +259,13 @@ function getDownload(uri, filename){
     window.open(uri);
   }
 }
+
+
+
+function setDateFilterMonth() {
+  date = new Date();
+  primerDia = new Date(date.getFullYear(), date.getMonth(), 1);
+  ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  $("#date_from").val(primerDia.toISOString().substring(0, 10));
+  $("#date_to").val(ultimoDia.toISOString().substring(0, 10));
+}

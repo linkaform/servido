@@ -19,19 +19,11 @@ $('.title_tables').hide();
 $('.button-chart').hide();
 
 
-
-
-
-
-
-
-
 hideElement("download_firstElement")
 hideElement("download_secondElement")
 hideElement("download_thirdElement")
 hideElement("download_fourthElement")
 hideElement("download_graphicFiveth")
-
 
 hideElement("title_demo")
 hideElement("firstElement");
@@ -41,6 +33,7 @@ hideElement("thirdElement");
 hideElement("fourthElement");
 hideElement("fivethElement");
 hideElement("seventhElement");
+hideElement("eigthElement");
 hideElement("div_alert1");
 hideElement("div_alert2");
 
@@ -192,7 +185,7 @@ function loadDemoData(){
   drawSecondElement(dataSecondElement);
   drawThirdElement(dataThirdElement);
   drawFourthElement(dataFourthElement);
-  getDrawTable('fivethElement',columsTable1,dataTable1);
+  getDrawTable('fivethElement',columsTable1,dataTable1, 'auto');
 }
 
 const loading = document.querySelector('.loading-container');
@@ -310,6 +303,7 @@ function getFirstElement(date_from, date_to, regional, perfil, seccion, sucursal
       hideElement("fourthElement");
       hideElement("fivethElement");
       hideElement("seventhElement");
+      hideElement("eigthElement");
 
       if (res.response.json.totalSucursales)
       {
@@ -320,9 +314,14 @@ function getFirstElement(date_from, date_to, regional, perfil, seccion, sucursal
         document.getElementById("textAlert2").innerText = res.response.json.totalEvaluaciones;
       }
       if (res.response.json.firstElement.length){
-        drawFirstElement(res.response.json.firstElement)
+        drawFirstElement(res.response.json.firstElement);
         unhideElement("firstElement")
         $("#download_firstElement").show();
+        //---TABLE
+        
+        getDrawTable('eigthElement', columsTable2, res.response.json.firstElement, '300px');
+        document.getElementById("eigthElement").style.removeProperty('display');
+
       }
       if (res.response.json.secondElement.length){
         unhideElement("secondElement")
@@ -335,7 +334,7 @@ function getFirstElement(date_from, date_to, regional, perfil, seccion, sucursal
         drawThirdElement(res.response.json.fifthElement)
       }
       if (res.response.json.fourthElement.length){
-        getDrawTable('fivethElement', columsTable1, res.response.json.fourthElement);
+        getDrawTable('fivethElement', columsTable1, res.response.json.fourthElement, 'auto');
         document.getElementById("fivethElement").style.removeProperty('display');
       }
       if (res.response.json.sixthElement.length){
@@ -764,10 +763,10 @@ function getDrawGraphicFiveth(data, setOptions){
 
 
 //-----TABLES
-function getDrawTable(id, columnsData, tableData){
+function getDrawTable(id, columnsData, tableData, height){
   $('#'+id).empty();
   var table = new Tabulator("#" + id, {
-    height:"auto",
+    height:height,
     layout:"fitDataTable",
     //layout:"fitColumns",
     data:tableData,

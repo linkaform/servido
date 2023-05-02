@@ -11,17 +11,11 @@ var columsTable1 = [
       {title:"Estimadas", field:'horas_estimadas',hozAlign:"right",width:150},
     ]
   },
-  {title:"Horas Por Autorizar", hozAlign:"center", 
-    columns:[
-      {title:"Pendientes Aut", field:'horas_pendientes',hozAlign:"right",width:150},
-      {title:"Pendientes X Aut", field:'horas_pendientes_aut',hozAlign:"right",width:150},
-      {title:"Sin Estimación", field:'horas_sin_estimacion',hozAlign:"right",width:150},
-    ]
-  },
   {title:"Tareas", hozAlign:"center", 
     columns:[
       {title:"Pendientes", field:'tareas_pendientes',hozAlign:"right",width:150},
       {title:"En Curso", field:'tareas_encurso',hozAlign:"right",width:150},
+      {title:"En pruebas y revisión", field:'tareas_pruebas',hozAlign:"right",width:150},
       {title:"Pausadas", field:'tareas_pausadas',hozAlign:"right",width:150},
     ]
   },
@@ -46,6 +40,7 @@ var dataTable1 = [
     "horas_pendientes_aut": '5',
     "horas_sin_estimacion": '10',
     "tareas_pendientes": '10',
+    "tareas_pruebas": '5',
     "tareas_encurso": '10',
     "tareas_pausadas": '10',
   },
@@ -58,6 +53,7 @@ var dataTable1 = [
     "horas_pendientes_aut": '5',
     "horas_sin_estimacion": '10',
     "tareas_pendientes": '10',
+    "tareas_pruebas": '5',
     "tareas_encurso": '10',
     "tareas_pausadas": '10',
   },
@@ -70,6 +66,7 @@ var dataTable1 = [
     "horas_pendientes_aut": '5',
     "horas_sin_estimacion": '10',
     "tareas_pendientes": '10',
+    "tareas_pruebas": '5',
     "tareas_encurso": '10',
     "tareas_pausadas": '10',
   },
@@ -82,6 +79,7 @@ var dataTable1 = [
     "horas_pendientes_aut": '5',
     "horas_sin_estimacion": '10',
     "tareas_pendientes": '10',
+    "tareas_pruebas": '5',
     "tareas_encurso": '10',
     "tareas_pausadas": '10',
   },

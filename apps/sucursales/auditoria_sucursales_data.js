@@ -103,6 +103,46 @@ var dataFourthElement = [
     }
 ]
 
+var data5 = {
+  labels: ['CEO 1','CEO 2','CEO 3','CEO 4','CEO 5'],
+  datasets: [
+    {
+      label: 'Evaluaciones',
+      data: [25,10,20,25,20],
+      backgroundColor: array_background,
+    },
+  ]
+};
+
+var setOptions5 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Reporte de Evaluaciones CEO',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'white',
+    }
+  },
+  scales: {
+    y:{
+      ticks: {
+        stepSize: 1
+      }, 
+    }
+  },
+};
+
+
+
 var columsTable1 = [
   { title:"Pregunta", field:'pregunta', hozAlign:"left",dir:"asc", headerFilter:"input",width:650},
   { title:"Item OK" , field:'items_ok', hozAlign:"center", width:250, },
@@ -186,40 +226,66 @@ var dataTable1 = [
 
 
 
-var data5 = {
-  labels: ['CEO 1','CEO 2','CEO 3','CEO 4','CEO 5'],
-  datasets: [
-    {
-      label: 'Evaluaciones',
-      data: [25,10,20,25,20],
-      backgroundColor: array_background,
-    },
-  ]
-};
+ 
+ 
 
-var setOptions5 = {
-  responsive: true,
-  plugins: {
-    legend: {
-      display: false,
-      position: 'top',
+
+
+
+
+var columsTable2 = [
+  { title:"Sucursal", field:'sucursal', hozAlign:"left",width:650},
+  { title:"Score" , field:'score',formatter:function(cell){
+      var value = cell.getValue();
+      if (value >= 80){
+        cell.getElement().style.backgroundColor = "#27ae60";
+      }
+      else if(value >= 60 && value <=79.999 ){
+        cell.getElement().style.backgroundColor = "#f1c40f";
+      }
+      else if(value <=59.9999 ){
+        cell.getElement().style.backgroundColor = "#e74c3c";
+      }
+      return value + '%';
     },
-    title: {
-        display: true,
-        text: 'Reporte de Evaluaciones CEO',
-        font: {
-          size: 25
-        }
-    },
-    datalabels: {
-      color: 'white',
-    }
+    hozAlign:"right", dir:"asc", width:150 
   },
-  scales: {
-    y:{
-      ticks: {
-        stepSize: 1
-      }, 
-    }
+];
+
+console.log('DEFINICIÓN',columsTable2);
+
+
+var dataTable2 = [
+  {
+    "sucursal": "Ciudad Juarez Torres",
+    "score": 89.8,
   },
-};
+  {
+    "sucursal": "Ciudad Juarez Torres",
+    "score": 89.8,
+  },
+  {
+    "sucursal": "Ciudad Juarez Torres",
+    "score": 89.8,
+  },
+  {
+    "sucursal": "Ciudad Juarez Torres",
+    "score": 89.8,
+  },
+  {
+    "sucursal": "Ciudad Juarez Torres",
+    "score": 89.8,
+  },
+  {
+    "sucursal": "Ciudad Juarez Torres",
+    "score": 89.8,
+  },
+  {
+    "sucursal": "Ciudad Juarez Torres",
+    "score": 89.8,
+  },
+  {
+    "sucursal": "Ciudad Juarez Torres",
+    "score": 89.8,
+  },
+]
