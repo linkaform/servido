@@ -226,15 +226,10 @@ var dataTable1 = [
 
 
 
- 
- 
-
-
-
-
 
 var columsTable2 = [
   { title:"Sucursal", field:'sucursal', hozAlign:"left",width:650},
+  { title:"Fecha", field:'fecha', hozAlign:"left",width:150},
   { title:"Score" , field:'score',formatter:function(cell){
       var value = cell.getValue();
       if (value >= 80){
@@ -251,8 +246,6 @@ var columsTable2 = [
     hozAlign:"right", dir:"asc", width:150 
   },
 ];
-
-console.log('DEFINICIÓN',columsTable2);
 
 
 var dataTable2 = [

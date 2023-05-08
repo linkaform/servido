@@ -1,4 +1,3 @@
-chart2// Reporte Production Forscast
 // Librerias: Chart.js
 
 let us = null;

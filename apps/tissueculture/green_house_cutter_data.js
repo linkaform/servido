@@ -5,6 +5,7 @@
 var columsTable1 = [
   { title:"Plant", field:'plant',hozAlign:"left",width:100},
   { title:"Green House", field:'green_house',hozAlign:"left",width:230},
+  { title:"Ready Date", field:'ready_date',hozAlign:"right",width:120},
   { title:"Date", field:'date',hozAlign:"left",width:120},
   { title:"Flats", field:'flats_cant',hozAlign:"right",width:100},
 ];
@@ -46,10 +47,10 @@ var dataTable1 = [
 
 var columsTable2 = [
   { title:"Date", field:'date',hozAlign:"left",width:100},
-  { title:"Cutter", field:'cutter',hozAlign:"left",width:200},
-  { title:"Flats", field:'flats',hozAlign:"right",width:150},
-  { title:"Hours", field:'hours',hozAlign:"right",width:150},
-  { title:"Flats X Hour", field:'flats_x_hour',hozAlign:"right",width:150},
+  { title:"Planter", field:'cutter',hozAlign:"left",width:200},
+  { title:"Flats", field:'flats',hozAlign:"right", bottomCalc:"avg", bottomCalcParams:{precision:3}, width:150},
+  { title:"Hours", field:'hours',hozAlign:"right", bottomCalc:"avg", bottomCalcParams:{precision:3}, width:150},
+  { title:"Flats X Hour", field:'flats_x_hour',hozAlign:"right", bottomCalc:"avg", bottomCalcParams:{precision:3}, width:150},
 ];
 
 var dataTable2 = [

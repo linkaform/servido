@@ -5,18 +5,28 @@ var columsTable1 = [
   { title:"Usuario", field:'usuario',hozAlign:"left",width:250},
   {title:"Horas", hozAlign:"center", 
     columns:[
-      {title:"Ayer", field:'horas_ayer',hozAlign:"right",width:150},
-      {title:"Semana", field:'horas_semana',hozAlign:"right",width:150},
-      {title:"Mes", field:'horas_mes',hozAlign:"right",width:150},
-      {title:"Estimadas", field:'horas_estimadas',hozAlign:"right",width:150},
+      {title:"Ayer", field:'horas_ayer',hozAlign:"right",headerTooltip:true,width:150},
+      {title:"Semana", field:'horas_semana',hozAlign:"right",headerTooltip:true,width:150},
+      {title:"Mes", field:'horas_mes',hozAlign:"right",headerTooltip:true,width:150},
+      {title:"Estimadas", field:'horas_estimadas',hozAlign:"right",headerTooltip:true,width:150},
+    ]
+  },
+  {title:"Horas Facturación", hozAlign:"center", 
+    columns:[
+      {title:"Facturables Ayer", field:'facurables_horas_ayer',hozAlign:"right",headerTooltip:true,width:150},
+      {title:"No Facturables Ayer", field:'no_facturables_horas_ayer',hozAlign:"right",headerTooltip:true,width:150},
+      {title:"Facturables semana", field:'facurables_horas_semana',hozAlign:"right",headerTooltip:true,width:150},
+      {title:"No Facturables semana", field:'no_facturables_horas_semana',hozAlign:"right",headerTooltip:true,width:150},
+      {title:"Facturables mes", field:'facurables_horas_mes',hozAlign:"right",headerTooltip:true,width:150},
+      {title:"No Facturables mes", field:'no_facturables_horas_mes',hozAlign:"right",headerTooltip:true,width:150},
     ]
   },
   {title:"Tareas", hozAlign:"center", 
     columns:[
-      {title:"Pendientes", field:'tareas_pendientes',hozAlign:"right",width:150},
-      {title:"En Curso", field:'tareas_encurso',hozAlign:"right",width:150},
-      {title:"En pruebas y revisión", field:'tareas_pruebas',hozAlign:"right",width:150},
-      {title:"Pausadas", field:'tareas_pausadas',hozAlign:"right",width:150},
+      {title:"Pendientes", field:'tareas_pendientes',hozAlign:"right",headerTooltip:true,width:150},
+      {title:"En Curso", field:'tareas_encurso',hozAlign:"right",headerTooltip:true,width:150},
+      {title:"En pruebas y revisión", field:'tareas_pruebas',hozAlign:"right",headerTooltip:true,width:150},
+      {title:"Pausadas", field:'tareas_pausadas',hozAlign:"right",headerTooltip:true,width:150},
     ]
   },
 ];
@@ -43,6 +53,13 @@ var dataTable1 = [
     "tareas_pruebas": '5',
     "tareas_encurso": '10',
     "tareas_pausadas": '10',
+    "facurables_horas_ayer": '5',
+    "no_facturables_horas_ayer": '5',
+    "facurables_horas_semana": '20',
+    "no_facturables_horas_semana": '15',
+    "facurables_horas_mes": '50',
+    "no_facturables_horas_mes": '90',
+
   },
   {
     "usuario": 'Josue',
@@ -56,6 +73,13 @@ var dataTable1 = [
     "tareas_pruebas": '5',
     "tareas_encurso": '10',
     "tareas_pausadas": '10',
+        "facurables_horas_ayer": '5',
+    "no_facturables_horas_ayer": '5',
+    "facurables_horas_semana": '20',
+    "no_facturables_horas_semana": '15',
+    "facurables_horas_mes": '50',
+    "no_facturables_horas_mes": '90',
+
   },
     {
     "usuario": 'Misael',
@@ -69,6 +93,13 @@ var dataTable1 = [
     "tareas_pruebas": '5',
     "tareas_encurso": '10',
     "tareas_pausadas": '10',
+        "facurables_horas_ayer": '5',
+    "no_facturables_horas_ayer": '5',
+    "facurables_horas_semana": '20',
+    "no_facturables_horas_semana": '15',
+    "facurables_horas_mes": '50',
+    "no_facturables_horas_mes": '90',
+
   },
   {
     "usuario": 'Jose Pato',
@@ -82,5 +113,12 @@ var dataTable1 = [
     "tareas_pruebas": '5',
     "tareas_encurso": '10',
     "tareas_pausadas": '10',
+    "facurables_horas_ayer": '5',
+    "no_facturables_horas_ayer": '5',
+    "facurables_horas_semana": '20',
+    "no_facturables_horas_semana": '15',
+    "facurables_horas_mes": '50',
+    "no_facturables_horas_mes": '90',
+
   },
 ];

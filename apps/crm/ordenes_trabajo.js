@@ -135,17 +135,10 @@ const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  dataTreecheck = false;
-  if (document.getElementById('input_check').checked)
-  {
-    dataTreecheck = true;
-  }
-  getFirstElement(dataTreecheck);
-
-
+  getFirstElement();
 };
 
-function getFirstElement(facturables){
+function getFirstElement(){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -156,7 +149,6 @@ function getFirstElement(facturables){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      facturables: facturables,
     }),
     headers:{
       'Content-Type': 'application/json',

@@ -105,7 +105,7 @@
                     
 
                     <!--FIRST ELEMENT - TABLE -->
-                    <div class="col-sm-12 col-md-12 col-lg-4" style="align-items: center;overflow-y: scroll;">
+                    <div class="col-sm-12 col-md-12 col-lg-5" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
                             <h3 ><span>Report Plant</span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
@@ -117,13 +117,13 @@
                     </div>
                     
                     <!--SECOND ELEMENT - GRAPHIC -->
-                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-8 mb-5 mt-5" style="overflow-y: scroll;">
+                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-7 mb-5 mt-5" style="overflow-y: scroll;">
                         <h3 style="text-align: center;">
                             <button class="btn btn-secondary button-chart float-right" type="button" onclick="get_chartDownload('graphicFirst','chart_screenIV');return false;" id="download_graphicFirst">
                                 <i class="fa-sharp fa-solid fa-download"></i>
                             </button >
                         </h3>
-                        <div  style="width: 1000px;height: 400px;margin: auto;">
+                        <div  style="width: 1000px;height: 500px;margin: auto;">
                             <canvas id="graphicFirst"></canvas>
                         </div>
                     </div>
@@ -143,7 +143,7 @@
                     <!--FOURTH ELEMENT - GRAPHIC -->
                     <div id="fourthElement" class="col-sm-12 col-md-12 col-lg-6" style="overflow-y: scroll;">
                         <h3 style="text-align: center;">
-                            <button class="btn btn-secondary  button-chart  float-right" type="button" onclick="get_chartDownload('graphicFirst','chart_screenIV');return false;" id="download_graphicFirst">
+                            <button class="btn btn-secondary  button-chart  float-right" type="button" onclick="get_chartDownload('graphicSecond','chart_screenIV');return false;" id="download_graphicFirst">
                                 <i class="fa-sharp fa-solid fa-download"></i>
                             </button >
                         </h3>
@@ -197,7 +197,8 @@
 
     <script type="text/javascript" src="../utils/lkf_utils.js"></script>
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
-
+    <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
+    
     <!-- Template -->
     <script type="text/javascript" src="./green_house_cutter.js"></script>
     <script type="text/javascript" src="./green_house_cutter_data.js"></script>

@@ -134,17 +134,11 @@ function loadDemoData(){
   unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
 
-
-
   getDrawTable('firstElement', columsTable1, dataTable1, 350);
   document.getElementById("firstElement").style.removeProperty('display');
 
   getDrawTable('secondElement', columsTable2, dataTable2, 350);
   document.getElementById("secondElement").style.removeProperty('display');
-
-
-
-
 
   getDrawGraphicFirst(data1, setOptions1);
   document.getElementById("graphicFirst").style.removeProperty('display');

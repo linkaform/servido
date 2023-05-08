@@ -5,7 +5,7 @@ var columsTable1 = [
   { title:"EBC", field:'ebc',hozAlign:"left",width:250},
   { title:"Provincia ", field:'provincia',hozAlign:"left",width:250},
   { title:"Canton ", field:'canton',hozAlign:"left",width:250},
-  { title:"Fecha de obtención permiso ", field:'fecha_permiso',hozAlign:"left",width:250},
+  { title:"Fecha de obtención permiso ", field:'fecha_obtencion',hozAlign:"left",width:250},
   { title:"Fecha de inspeccion ", field:'fecha_inspeccion',hozAlign:"left",width:250},
   {title:"Folio", field:'folio', hozAlign:"right", formatter:"link", formatterParams:{
     url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
@@ -17,10 +17,9 @@ var columsTable2 = [
   { title:"EBC", field:'ebc',hozAlign:"left",width:250},
   { title:"Provincia", field:'provincia',hozAlign:"left",width:250},
   { title:"Canton ", field:'canton',hozAlign:"left",width:250},
-  { title:"Fecha de obtención permiso ", field:'fecha_permiso',hozAlign:"left",width:250},
-  { title:"Proxima inspeccion ", field:'fecha_inspeccion',hozAlign:"left",width:250},
+  { title:"Fecha de obtención permiso ", field:'fecha_obtencion',hozAlign:"left",width:250},
+  { title:"Proxima inspeccion ", field:'proxima_inspeccion',hozAlign:"left",width:250},
   { title:"Días para vencimiento", field:'dias_vencimiento',hozAlign:"right",width:250},
-  { title:"", field:'color_status', formatter:"color", hozAlign:"right",width:50},
 ];
 
 

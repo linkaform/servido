@@ -88,11 +88,18 @@ window.onload = function(){
     unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
+    }else{
+      //--Catalog
+      console.log('entra quí')
+      get_catalog(1);
     }
     //--Styles
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
+    $("#provincia").multipleSelect('refresh');
+    $("#canton").multipleSelect('refresh');
+    $("#parroquia").multipleSelect('refresh');
     document.getElementById("firstParameters").style.removeProperty('display');
     
   } else {
@@ -142,10 +149,23 @@ loading.style.display = 'none';
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  getFirstElement(date_to.value, date_from.value);
+  let date_inspeccion  = document.getElementById("date_inspeccion");        
+  let provincia = document.getElementById("provincia");  
+  let canton = document.getElementById("canton");  
+  let parroquia = document.getElementById("parroquia");  
+  getFirstElement(
+    date_to.value,
+    date_from.value, 
+    date_inspeccion.value, 
+    provincia.value, 
+    canton.value, 
+    parroquia.value
+  );
 };
 
-function getFirstElement(dateTo, dateFrom){
+
+
+function getFirstElement(dateTo, dateFrom, dateInspeccion, provincia, canton, parroquia){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -157,10 +177,11 @@ function getFirstElement(dateTo, dateFrom){
     body: JSON.stringify({
       script_id: scriptId,
       date_to: dateTo,
-      date_from: dateFrom,
-      servicio: servicio,
-      cliente: cliente,
-      tecnico: tecnico,
+      dateFrom: dateFrom,
+      dateInspeccion: dateInspeccion,
+      provincia: provincia,
+      canton: canton,
+      parroquia: parroquia,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -175,10 +196,13 @@ function getFirstElement(dateTo, dateFrom){
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.json.firstElement.data) {
-        console.log('drawFirstElement.........');
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+        document.getElementById("firstElement").style.removeProperty('display');
       }
-      
+      if (res.response.json.secondElement.data) {
+        getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data);
+        document.getElementById("secondElement").style.removeProperty('display');
+      }
     } else {
       hideLoading();
       if(res.code == 11){
@@ -229,3 +253,100 @@ function getDrawTable(id, columnsData, tableData, heightTable='300px'){
     });
   }
 }
+
+//----- CATALOGS
+
+function get_catalog(option = 1) 
+{
+  option = option
+  filterArrayA = ''
+  filterArrayB = ''
+  if (option == 2) {
+    filterArrayA = $('#provincia').val();
+    console.log('Valores',filterArrayA)
+  }else if (option == 3){
+    filterArrayA = $('#provincia').val();
+    filterArrayB = $('#canton').val();
+  } 
+
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: 100512,
+      option: option,
+      filter_arrayA:filterArrayA,
+      filter_arrayB:filterArrayB,
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+      if (res.response.json.catalog){
+        
+        if (option == 1){
+          //-----FILTER PROVINCIA 
+          $("#provincia").empty();
+          $('#provincia').append('<option value="--">--Seleccione--</option>');
+          for (i = 0; i < res.response.json.catalog.length; i++) {
+            value = res.response.json.catalog[i]
+            $('#provincia').append('<option value="'+ value +'">'+value+'</option>');
+          }
+          $("#provincia").multipleSelect('refresh');
+        }else if (option == 2){
+          $("#canton").empty();
+          $('#canton').append('<option value="--">--Seleccione--</option>');
+
+          $("#parroquia").empty();
+          $('#parroquia').append('<option value="--">--Seleccione--</option>');
+
+          for (i = 0; i < res.response.json.catalog.length; i++) {
+            value = res.response.json.catalog[i]
+            $('#canton').append('<option value="'+ value +'">'+value+'</option>');
+          }
+          $("#canton").multipleSelect('refresh');
+        }else if (option == 3){
+          $("#parroquia").empty();
+          $('#parroquia').append('<option value="--">--Seleccione--</option>');
+          for (i = 0; i < res.response.json.catalog.length; i++) {
+            value = res.response.json.catalog[i]
+            $('#parroquia').append('<option value="'+ value +'">'+value+'</option>');
+          }
+          $("#parroquia").multipleSelect('refresh');
+        }
+
+      }
+  })
+};
+
+
+//-----SELECT
+
+$(function() {
+    $('#provincia').multipleSelect({
+      filter: true,
+      /*
+      onClick: function (view) {
+        console.log('onClick event fire! view: ' + JSON.stringify(view) + '\n');
+      },
+      */
+      onClose: function () {
+        get_catalog(2);
+      },
+    })
+
+    $('#canton').multipleSelect({
+      filter: true,
+      /*
+      onClick: function (view) {
+        console.log('onClick event fire! view: ' + JSON.stringify(view) + '\n');
+      },
+      */
+      onClose: function () {
+        get_catalog(3);
+      },
+    })
+
+})

@@ -183,8 +183,7 @@ function getFirstElement(dateTo, dateFrom, check){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res)
-      
+      console.log(res.response.json.firstElement.data)
       if (res.response.json.firstElement.data) {
         colums  = columsTable1A;
         if (document.getElementById('input_check').checked)

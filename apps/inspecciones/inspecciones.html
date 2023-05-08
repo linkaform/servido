@@ -12,6 +12,8 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!--Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <!--LIBRARY CHECK -->
+        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -96,6 +98,29 @@
                         <h5>Fecha Hasta: </h5>
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
+
+
+                    <div class="col-sm-12 col-md-3 col-lg-3" id="divProvincia">
+                        <h5>Provincia: </h5>
+                        <select class="form-control mdb-select md-form" id="provincia" multiple="multiple" style="border:none !important;">
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-3" id="divCanton">
+                        <h5>Canton: </h5>
+                        <select class="form-control mdb-select md-form" id="canton" multiple="multiple" style="border:none !important;" >
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-3" id="divParroquia">
+                        <h5>Parroquia: </h5>
+                        <select class="form-control mdb-select md-form" id="parroquia" multiple="multiple" style="border:none !important;" >
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>
+
                 </div>
 
                 <!--Content -->
@@ -169,6 +194,10 @@
     src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" 
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
     crossorigin="anonymous"></script>
+
+    <!-- Multiplke -->
+    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
+    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
 
 
     <!-- Utils -->

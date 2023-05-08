@@ -165,10 +165,9 @@ function getFirstElement(plantCode, stage){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log('VALOR',res.response);
       if (res.response.firstElement) {
-        console.log(res.response.firstElement);
-        getDrawTable('firstElement', res.response.firstElement.colsData , res.response.firstElement.tabledata );
+        formatColums = setFormatCol(res.response.firstElement.colsData)
+        getDrawTable('firstElement', formatColums , res.response.firstElement.tabledata );
         document.getElementById("firstElement").style.removeProperty('display');
       }
       
@@ -189,14 +188,6 @@ function getFirstElement(plantCode, stage){
       }
     }
   })
-  .catch(function(error)
-  {
-    Swal.fire({
-      title: 'Error',
-      html: res.error
-    });
-    $('.load-wrapp').hide();
-  });
 };
 
 //-----TABLES
@@ -229,4 +220,25 @@ function getDrawTable(id, columnsData, tableData){
       table.download("csv", "data.csv");
     });
   }
+}
+
+function setFormatCol(data) {
+  data_format = []
+  for (var i = 0; i < data.length; i++) {
+    field = data[i]['field']
+    if (field == 'folio') {
+      data[i] = { 
+        title:"Folio", 
+        field:'folio', 
+        hozAlign:"left", 
+        formatter:"link", formatterParams:{
+          url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
+          target:"_blank",
+        }, 
+        width:150
+      }
+    }
+    data_format.push(data[i])
+  }
+  return data_format;
 }

@@ -52,7 +52,7 @@ window.onload = function(){
     if (key ==='title'){
       $("#title_report").text(qs[key]);
     }
-    get_parameters()
+    get_parameters();
     var formNode = document.getElementById("appCont");
 		var elements = getAllElementsWithAttribute(formNode, 'data-infosync-id', key);
 		var value = decodeURI(qs[key]);
@@ -186,6 +186,7 @@ function loadDemoData(){
   drawThirdElement(dataThirdElement);
   drawFourthElement(dataFourthElement);
   getDrawTable('fivethElement',columsTable1,dataTable1, 'auto');
+  getDrawTable('eigthElement',columsTable2,dataTable2, 'auto');
 }
 
 const loading = document.querySelector('.loading-container');
@@ -317,11 +318,6 @@ function getFirstElement(date_from, date_to, regional, perfil, seccion, sucursal
         drawFirstElement(res.response.json.firstElement);
         unhideElement("firstElement")
         $("#download_firstElement").show();
-        //---TABLE
-        
-        getDrawTable('eigthElement', columsTable2, res.response.json.firstElement, '300px');
-        document.getElementById("eigthElement").style.removeProperty('display');
-
       }
       if (res.response.json.secondElement.length){
         unhideElement("secondElement")
@@ -347,6 +343,11 @@ function getFirstElement(date_from, date_to, regional, perfil, seccion, sucursal
         $("#download_graphicFiveth").show();
         getDrawGraphicFiveth(dataElementFormat, setOptions5)
         document.getElementById("seventhElement").style.removeProperty('display');
+      }
+      if (res.response.json.eigthElement.length){
+        console.log('Valores Octavo', res.response.json.eigthElement)
+        getDrawTable('eigthElement', columsTable2, res.response.json.eigthElement, '300px');
+        document.getElementById("eigthElement").style.removeProperty('display');
       }
     } else {
       hideLoading();
@@ -768,9 +769,9 @@ function getDrawTable(id, columnsData, tableData, height){
   var table = new Tabulator("#" + id, {
     height:height,
     layout:"fitDataTable",
-    //layout:"fitColumns",
     data:tableData,
-    // responsiveLayout: "hide",
+    dataTree:true,
+    dataTreeStartExpanded:false,
     resizableRows:true,
     clipboard:true,
     clipboardPasteAction:"replace",
