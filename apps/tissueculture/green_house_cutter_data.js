@@ -48,9 +48,9 @@ var dataTable1 = [
 var columsTable2 = [
   { title:"Date", field:'date',hozAlign:"left",width:100},
   { title:"Planter", field:'cutter',hozAlign:"left",width:200},
-  { title:"Flats", field:'flats',hozAlign:"right", bottomCalc:"avg", bottomCalcParams:{precision:3}, width:150},
-  { title:"Hours", field:'hours',hozAlign:"right", bottomCalc:"avg", bottomCalcParams:{precision:3}, width:150},
-  { title:"Flats X Hour", field:'flats_x_hour',hozAlign:"right", bottomCalc:"avg", bottomCalcParams:{precision:3}, width:150},
+  { title:"Flats", field:'flats',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:2}, width:150},
+  { title:"Hours", field:'hours',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:2}, width:150},
+  { title:"Flats X Hour", field:'flats_x_hour',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:2}, width:150},
 ];
 
 var dataTable2 = [
@@ -83,10 +83,21 @@ var data1 = {
   labels: ['2022-12-01','2022-12-08','2022-12-15','2022-12-25','2023-01-03'],
   datasets: [
     {
-      label: 'Valores',
+      label:'Valores',
+      type: 'bar',
       data: [25,10,20,25,20],
       background: "#264653",
+      'yAxisID': 'y',
     },
+    {
+      label:'Hours',
+      type: 'line',
+      borderColor: "#515a5a",
+      'yAxisID': 'y1',
+      data: [ 27, 36, 45, 95, 34],
+      fill: false,
+    },
+
   ]
 };
 
@@ -99,6 +110,11 @@ var setOptions1 = {
       display: true,
       position: 'top',
     },
+    datalabels:{
+      color: '#17202a',
+      fontSize: 15,
+      fontWeight: 'bold',
+    },
     title: {
         display: true,
         text: 'Report Week',
@@ -106,20 +122,38 @@ var setOptions1 = {
           size: 25
         }
     },
-    datalabels: {
-      color: 'white',
-    }
   },
   scales: {
     y:{
+      type: 'linear',
+      display: true,
+      title:{
+        display: true,
+        text: 'Floats',
+        size: 20,
+      },
       ticks: {
         stepSize: 1
       }, 
+      position: 'left',
+
+    },
+    y1:{
+      type: 'linear',
+      display: true,
+      title:{
+        display: true,
+        text: 'Hours',
+        size: 20,
+      },
+      ticks: {
+        stepSize: 1
+      }, 
+      position: 'right', 
     }
+
   },
 };
-
-
 
 var data2 = {
   labels: ['Mariana','Julia','Tere'],
@@ -131,8 +165,6 @@ var data2 = {
     },
   ]
 };
-
-
 
 var setOptions2 = {
   responsive: true,
