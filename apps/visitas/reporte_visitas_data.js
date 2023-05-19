@@ -2,7 +2,7 @@
 var columsTable1 = [
   {title:"Folio", field:'folio', hozAlign:"right", formatter:"link", formatterParams:{
   url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
-  target:"_blank",}, width:100},
+  target:"_blank",}, headerFilter:"input",width:100},
   { title:"Store ID", field:'store_id',hozAlign:"right",width:200},
   { title:"Merchant", field:'merchant',hozAlign:"left",width:300},
   { title:"Store", field:'store',hozAlign:"left",width:300},
@@ -10,7 +10,7 @@ var columsTable1 = [
   { title:"Promotor", field:'promotor',hozAlign:"left",width:300},
   { title:"City", field:'city',hozAlign:"left",width:250},
   { title:"State", field:'state',hozAlign:"left",width:250},
-  { title:"Fecha", field:'fecha_creacion',hozAlign:"right",width:250},
+  { title:"Fecha Inicio de Captura", field:'fecha_captura',hozAlign:"right",width:250},
   { title:"Cordenas Latitud", field:'cordenada_latitud',hozAlign:"right",formatter: "money",
    "formatterParams": {"symbol": "", "symbolAfter": "", "thousand": "",  precision:false},width:250},
   { title:"Cordenas Longitud", field:'cordenada_longitud',hozAlign:"right",formatter: "money",

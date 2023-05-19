@@ -124,10 +124,11 @@ var dataTable1 = [
   },
 ];
 
+
 var columsTable2 = [
   { title:"Bache", field:'bache',hozAlign:"left",width:250},
-  { title:"Fecha Fin Secado", field:'fecha_secado',hozAlign:"right",width:160 },
-  { title:"Kg Recogidos",  field:'kg_recogidos',hozAlign:"right",width:160 },
+  { title:"Fecha Secado", field:'fecha_secado',hozAlign:"right",width:160 },
+  { title:"Kg REcogidos",  field:'kg_recogidos',hozAlign:"right",width:160 },
 ];
 
 
@@ -218,8 +219,6 @@ var data1 = {
   ]
 };
 
-
-
 var setOptions1 = {
   responsive: true,
   plugins: {
@@ -269,22 +268,4 @@ var setOptions1 = {
   }
 };
 
-var setOptions2 = {
-  responsive: true,
-  plugins: {
-    legend: {
-      display: true,
-      position: 'top',
-    },
-    title: {
-        display: true,
-        text: 'Reporte Recolección II',
-        font: {
-          size: 25
-        }
-    },
-   
-  },
-  
-};
 

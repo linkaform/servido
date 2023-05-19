@@ -109,7 +109,8 @@ window.onload = function(){
       $('.div_card').hide();
       $('.title_tables').hide();
     }
-
+    //---MULTIPLE
+    $("#perfil").multipleSelect('refresh');
 
     //---HIDE AND SHOW
     get_catalog();
@@ -157,6 +158,7 @@ function get_parameters(){
       for (var i = 0 ; i < res.response.perfiles.length; i++) {
         $("#perfil").append("<option value='" + res.response.perfiles[i] + "'>" + res.response.perfiles[i] + "</option>")
       }
+      $("#perfil").multipleSelect('refresh');
     }
   })
 }
@@ -194,7 +196,6 @@ loading.style.display = 'none';
 
 
 function customCatalogView(res){
-
   if (res){
     $("#sucursalesLista").empty();
     $('#sucursalesLista').append('<option value="--">--Seleccione--</option>');
@@ -223,7 +224,7 @@ function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");
   let regional = document.getElementById("catalog-79950-level-1");
-  let perfil = document.getElementById("perfil");
+  let perfil = $('#perfil').val();
   let seccion = document.getElementById("seccion");
   let sucursal = document.getElementById("sucursalesLista");
   let ceo = document.getElementById("ceo");
@@ -239,7 +240,7 @@ function runFirstElement(){
     date_from.value, 
     date_to.value,
     regional.selectedOptions[0].value,
-    perfil.selectedOptions[0].value,
+    perfil,
     seccion.value, 
     sucursal.value,
     ceo.value,
@@ -262,6 +263,8 @@ function getFirstElement(date_from, date_to, regional, perfil, seccion, sucursal
   $("#firstElement").html("");
   $("#secondElement").html("");
   $("#thirdElement").html("");
+  console.log('PERFIL:',perfil);
+
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({

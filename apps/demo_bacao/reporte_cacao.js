@@ -1,6 +1,3 @@
-// Reporte Production Forscast
-// Librerias: Chart.js
-
 let us = null;
 let usTy = null;
 let jw = null;
@@ -24,7 +21,6 @@ window.onload = function(){
   var formNode = document.getElementById("appCont");
 	for(var key in qs){
     if (key === 'script_id' ){
-      console.log('script id', key)
       scriptId = parseInt(qs[key]);
     }
     if (key === 'env') {
@@ -87,6 +83,7 @@ window.onload = function(){
     userName = getCookie("userName");
     document.getElementById("firstParameters").style.removeProperty('display');
     unHideReportElements()
+    
     if (scriptId == null) {
       loadDemoData();
     }
@@ -115,7 +112,6 @@ window.onload = function(){
   }
 }
 
-
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
   unhideElement("firstElement-Buttons");
@@ -141,33 +137,33 @@ function loadDemoData(){
   document.getElementById("secondElement").style.removeProperty('display');
 
   getDrawGraphicFirst(data1, setOptions1);
-  document.getElementById("graphicFirst").style.removeProperty('display');
+  document.getElementById("thirdElement").style.removeProperty('display');
 }
-
-
-
-
 
 //-----EXCUTION
 function runFirstElement(){
-  //let date_from = document.getElementById("date_from");
-  //let date_to = document.getElementById("date_to");  
-  getFirstElement();
+  let date_from = document.getElementById("date_from");
+  let date_to = document.getElementById("date_to");  
+  let buscador = document.getElementById("buscador");  
+  let variedad = document.getElementById("variedad");  
+
+  getFirstElement(date_from.value,date_to.value,buscador.value,variedad.value);
 };
 
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(dateTo, dateFrom, buscador, variedad){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
   $('.title_tables').hide();
 
-
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      //date_to: dateTo,
-      //date_from: dateFrom,
+      date_to: dateTo,
+      date_from: dateFrom,
+      buscador: buscador,
+      variedad: variedad,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -193,7 +189,6 @@ function getFirstElement(dateTo, dateFrom){
       }
 
       getDrawGraphicFirst(data1, setOptions1);
-      document.getElementById("graphicFirst").style.removeProperty('display');
       document.getElementById("thirdElement").style.removeProperty('display');
 
 
@@ -215,9 +210,6 @@ function getFirstElement(dateTo, dateFrom){
     }
   })
 };
-
-
-
 
 //-----TABLES
 function getDrawTable(id, columnsData, tableData, height = 500){
@@ -250,7 +242,6 @@ function getDrawTable(id, columnsData, tableData, height = 500){
     });
   }
 }
-
 
 //-----GRAPICH
 let chart1;

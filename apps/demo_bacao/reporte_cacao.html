@@ -88,14 +88,33 @@
 
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
+
+
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Fecha Desde: </h5>
                         <input class="form-control ds-input" type="date" id="date_from" name="date_from">
                     </div>
+
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Fecha Hasta: </h5>
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Buscador </h5>
+                        <input class="form-control ds-input" type="text" id="buscador" name="buscador">
+                    </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-3" >
+                        <h5>Variedad de cacao: </h5>
+                        <select class="form-control mdb-select md-form" id="variedad">
+                            <option value="--">--Seleccione--</option>
+                            <option value="CCN51">CCN51</option>
+                            <option value="AROMATICO">AROMATICO</option>
+                            <option value="LOCAL">LOCAL</option>
+                        </select>
+                    </div>
+
                 </div>
 
                 <!--Elements -->
@@ -116,27 +135,24 @@
                     <!--Segundo Elemento -->
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3><span>Secado Natural Fin Bacao</span>&nbsp;&nbsp;
+                            <h3><span>Secado Fin Bacao</span>&nbsp;&nbsp;
                                 <button class="btn btn-primary" id="download_csv_secondElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button class="btn btn-success" id="download_xlsx_secondElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
                             <hr class="hrSecondElement">
                         </section>
-                        <div id="secondElement"></div>
+                        <div id="secondElement" ></div>
                     </div>
-
 
                     <!--Tercer Elemento -->
                     <div id="thirdElement" class="col-sm-12 col-md-12 col-lg-12 mt-5" style="overflow-y: scroll;">
-                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicFirst','chart_screen');return false;">
-                            <i class="fa-sharp fa-solid fa-download"></i>
-                        </button >
                         <div  style="width: 1500px;height: 850px;margin: auto;">
                             <canvas id="graphicFirst" ></canvas>
                         </div>
                     </div>
 
-                    
+
+
                 </div>
             </div>
         </div>

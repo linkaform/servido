@@ -2,31 +2,31 @@
 
 //--Table Montajes Por Mes
 var columsTable1 = [
-  { title:"Usuario", field:'usuario',frozen:true, hozAlign:"left",  width:250},
-  {title:"Horas", hozAlign:"center", 
+  { title:"Usuario", field:'usuario',frozen:true,  width:250},
+  {title:"Horas", hozAlign:"center" ,
     columns:[
-      {title:"Ayer", field:'horas_ayer',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",frozen:false, width:150},
-      {title:"Semana", field:'horas_semana',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",frozen:false, width:150},
-      {title:"Mes", field:'horas_mes',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",frozen:false, width:150},
-      {title:"Estimadas", field:'horas_estimadas',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",frozen:false, width:150},
+      {title:"Ayer", field:'horas_ayer',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",bottomCalcParams:{precision:0}, width:150},
+      {title:"Semana", field:'horas_semana',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",bottomCalcParams:{precision:0}, width:150},
+      {title:"Mes", field:'horas_mes',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",bottomCalcParams:{precision:0}, width:150},
+      {title:"Estimadas", field:'horas_estimadas',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",bottomCalcParams:{precision:0}, width:150},
     ]
   },
-  {title:"Horas Facturación", hozAlign:"center", 
+  {title:"Horas Facturación", hozAlign:"center",
     columns:[
-      {title:"Facturables Ayer", field:'facurables_horas_ayer',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",frozen:false, width:150},
-      {title:"No Facturables Ayer", field:'no_facturables_horas_ayer',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",frozen:false, width:150},
-      {title:"Facturables semana", field:'facurables_horas_semana',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",frozen:false, width:150},
-      {title:"No Facturables semana", field:'no_facturables_horas_semana',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",frozen:false, width:150},
-      {title:"Facturables mes", field:'facurables_horas_mes',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",frozen:false, width:150},
-      {title:"No Facturables mes", field:'no_facturables_horas_mes',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",frozen:false, width:150},
+      {title:"Facturables Ayer", field:'facurables_horas_ayer',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",bottomCalcParams:{precision:0}, width:150},
+      {title:"No Facturables Ayer", field:'no_facturables_horas_ayer',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",bottomCalcParams:{precision:0}, width:150},
+      {title:"Facturables semana", field:'facurables_horas_semana',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",bottomCalcParams:{precision:0}, width:150},
+      {title:"No Facturables semana", field:'no_facturables_horas_semana',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",bottomCalcParams:{precision:0}, width:150},
+      {title:"Facturables mes", field:'facurables_horas_mes',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",bottomCalcParams:{precision:0}, width:150},
+      {title:"No Facturables mes", field:'no_facturables_horas_mes',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",bottomCalcParams:{precision:0}, width:150},
     ]
   },
-  {title:"Tareas", hozAlign:"center", 
+  {title:"Tareas", hozAlign:"center",
     columns:[
-      {title:"Pendientes", field:'tareas_pendientes',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",frozen:false, width:150},
-      {title:"En Curso", field:'tareas_encurso',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",frozen:false, width:150},
-      {title:"En pruebas y revisión", field:'tareas_pruebas',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",frozen:false, width:150},
-      {title:"Pausadas", field:'tareas_pausadas',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",frozen:false, width:150},
+      {title:"Pendientes", field:'tareas_pendientes',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",bottomCalcParams:{precision:0}, width:150},
+      {title:"En Curso", field:'tareas_encurso',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",bottomCalcParams:{precision:0}, width:150},
+      {title:"En pruebas y revisión", field:'tareas_pruebas',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",bottomCalcParams:{precision:0}, width:150},
+      {title:"Pausadas", field:'tareas_pausadas',hozAlign:"right",headerTooltip:true, bottomCalc:"sum",bottomCalcParams:{precision:0}, width:150},
     ]
   },
 ];

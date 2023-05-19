@@ -48,9 +48,9 @@ var dataTable1 = [
 var columsTable2 = [
   { title:"Date", field:'date',hozAlign:"left",width:100},
   { title:"Planter", field:'cutter',hozAlign:"left",width:200},
-  { title:"Flats", field:'flats',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:2}, width:150},
-  { title:"Hours", field:'hours',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:2}, width:150},
-  { title:"Flats X Hour", field:'flats_x_hour',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:2}, width:150},
+  { title:"Flats", field:'flats',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:150},
+  { title:"Hours", field:'hours',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:150},
+  { title:"Flats X Hour", field:'flats_x_hour',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:150},
 ];
 
 var dataTable2 = [
