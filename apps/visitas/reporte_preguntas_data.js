@@ -18,6 +18,7 @@ var columsTable1 = [
   { title:"Ventajas competitivas, beneficios y características de KueskiPay  ", field:'pregunta_7',hozAlign:"left", headerTooltip:true,width:300},
   { title:"Compartir los datos de soporte telefónico ", field:'pregunta_8',hozAlign:"left", headerTooltip:true,width:300},
   { title:"Canales de comunicación oficiales (WA, correo, etc.)", field:'pregunta_9',hozAlign:"left", headerTooltip:true,width:300},
+  { title:"¿Hay presencia de Aplazo en la tienda?", field:'pregunta_21',hozAlign:"left", headerTooltip:true,width:300},
   { title:"¿Hay Material Publicitario de Kueski?", field:'pregunta_10',hozAlign:"left", headerTooltip:true,width:300},
   {
     title:"¿Dónde hay presencia de material de Kueski?",

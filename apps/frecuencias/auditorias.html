@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Forcast by Cicle">
+        <meta name="description" content="Reporte Auditorias">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte de servicios - Alcar consultores</h1>
+                    <h1 id="title_report">Reporte</h1>
                 </div>
             </div> 
         </nav>
@@ -92,57 +92,67 @@
                         <h5>Fecha Desde: </h5>
                         <input class="form-control ds-input" type="date" id="date_from" name="date_from">
                     </div>
+
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Fecha Hasta: </h5>
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
+                    
                     <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Servicio: </h5>
-                        <select class="form-control ds-input" id="servicio" name="servicio">
-                            <option value="--">--Seleccione--</option>
-                            <option value="presencial">Presencial</option>
-                            <option value="oficina">Oficina</option>
-                            <option value="remoto">Remoto</option>
+                        <h5>País: </h5>
+                        <select class="form-control mdb-select md-form" id="pais" multiple="multiple" style="border:none !important;">
+                            <option value="">--Seleccione--</option>
                         </select>
                     </div>
+
                     <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Cliente: </h5>
-                        <select class="form-control ds-input" id="cliente" name="cliente">
-                            <option value="--">--Seleccione--</option>
+                        <h5>Localidad: </h5>
+                        <select class="form-control mdb-select md-form" id="localidad" multiple="multiple" style="border:none !important;" >
+                            <option value="">--Seleccione--</option>
                         </select>
                     </div>
+
                     <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Tecnico asignado: </h5>
-                        <select class="form-control ds-input" id="tecnico" name="tecnico">
-                            <option value="--">--Seleccione--</option>
-                            <option value="tsu_jazmín_ayala">TSU Jazmín Ayala</option>
-                            <option value="ing_moisés_carrera">Ing Moisés Carrera</option>
-                            <option value="proveedor_externo">Proveedor Externo</option>
+                        <h5>Tienda: </h5>
+                        <select class="form-control mdb-select md-form" id="tienda" multiple="multiple" style="border:none !important;" >
+                            <option value="">--Seleccione--</option>
                         </select>
                     </div>
+
                 </div>
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
-                        <section class="title_tables">
-                            <h3 ><span>Servicios :</span>&nbsp;&nbsp;
-                                <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
-                                <button  class="btn btn-danger" id="download_pdf_firstElement"><i class="fa-regular fa-file-pdf"></i></button>
-                            </h3>
-                            <hr class="hrFirstElement">
-                        </section>
-                        <div id="firstElement" > </div>
-                    </div>
 
-                    <div class="col-sm-12 col-md-12 col-lg-12 mt-5" style="align-items: center;overflow-y: scroll;">
-                        <div id="secondElement" > 
-                            <div style="width: 1000px;height: 500px;margin: auto;" > 
-                                <canvas id="graphicSecond"></canvas>
-                            </div>
+                    
+                    <!--First Element -->
+                    <div id="firstElement" class="col-sm-12 col-md-12 col-lg-6 mt-5" style="overflow-y: scroll;">
+                        <div  style="width: 800px;height: 450px;margin: auto;">
+                            <canvas id="graphicFirst" ></canvas>
                         </div>
                     </div>
+
+                    <!-- Second Element -->
+                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-6 mt-5" style="overflow-y: scroll;">
+                        <div  style="width: 800px;height: 450px;margin: auto;">
+                            <canvas id="graphicSecond" ></canvas>
+                        </div>
+                    </div>
+
+                    <!--Third Element -->
+                    <div id="thirdElement" class="col-sm-12 col-md-12 col-lg-6 mt-5" style="overflow-y: scroll;">
+                        <div  style="width: 800px;height: 450px;margin: auto;">
+                            <canvas id="graphicThird" ></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Fourth Element -->
+                    <div id="fourthElement" class="col-sm-12 col-md-12 col-lg-6 mt-5" style="overflow-y: scroll;">
+                        <div  style="width: 800px;height: 450px;margin: auto;">
+                            <canvas id="graphicFourth" ></canvas>
+                        </div>
+                    </div>
+
                     
                 </div>
             </div>
@@ -159,7 +169,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
 
     <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+    
 
     <!-- chartjs -->
     <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
@@ -195,8 +207,14 @@
     <script type="text/javascript" src="../utils/lkf_utils.js"></script>
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
+
+    <!-- Multiplke -->
+    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
+    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+
+
     <!-- Template -->
-    <script type="text/javascript" src="./consultores.js"></script>
-    <script type="text/javascript" src="./consultores_data.js"></script>
+    <script type="text/javascript" src="./auditorias.js"></script>
+    <script type="text/javascript" src="./auditorias_data.js"></script>
     </body>
 </html>

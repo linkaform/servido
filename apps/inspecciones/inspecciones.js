@@ -90,7 +90,6 @@ window.onload = function(){
       loadDemoData();
     }else{
       //--Catalog
-      console.log('entra quí')
       get_catalog(1);
     }
     //--Styles
@@ -149,14 +148,12 @@ loading.style.display = 'none';
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  let date_inspeccion  = document.getElementById("date_inspeccion");        
   let provincia = document.getElementById("provincia");  
   let canton = document.getElementById("canton");  
   let parroquia = document.getElementById("parroquia");  
   getFirstElement(
     date_to.value,
     date_from.value, 
-    date_inspeccion.value, 
     provincia.value, 
     canton.value, 
     parroquia.value
