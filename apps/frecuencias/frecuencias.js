@@ -327,7 +327,6 @@ function getDrawTable(id, columnsData, tableData){
 }
 
 //----- CATALOGS
-
 function get_catalog(option) 
 {
   fetch(url + 'infosync/scripts/run/', {

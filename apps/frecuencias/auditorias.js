@@ -93,12 +93,12 @@ window.onload = function(){
     }
     //--Styles
     setSpinner();
+    $('#divOptions').show();
     $("#pais").multipleSelect('refresh');
     $("#localidad").multipleSelect('refresh');
     $("#tienda").multipleSelect('refresh');
-
-    $('#divOptions').show();
-    $('#title_report').show();
+    //---Catalog
+    get_catalog();
     document.getElementById("firstParameters").style.removeProperty('display');
     
   } else {
@@ -133,19 +133,7 @@ function loadDemoData(){
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
   setGraphic(dataExample)
-  /*
-    getDrawGraphicFirst(data1, setOptions1)
-    document.getElementById("firstElement").style.removeProperty('display');
-
-    getDrawGraphicSecond(data2, setOptions2)
-    document.getElementById("secondElement").style.removeProperty('display');
-
-    getDrawGraphicThird(data3, setOptions3)
-    document.getElementById("thirdElement").style.removeProperty('display');
-
-    getDrawGraphicFourth(data4, setOptions4)
-    document.getElementById("fourthElement").style.removeProperty('display');
-  */
+  
 }
 
 const loading = document.querySelector('.loading-container');
@@ -154,10 +142,13 @@ loading.style.display = 'none';
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  getFirstElement(date_to.value, date_from.value);
+  let pais = $('#pais').val();  
+  let localidad = $('#localidad').val();  
+  let tienda = $('#tienda').val();  
+  getFirstElement(date_to.value, date_from.value, pais, localidad, tienda);
 };
 
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(dateTo, dateFrom, pais, localidad, tienda){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -170,9 +161,10 @@ function getFirstElement(dateTo, dateFrom){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      servicio: servicio,
-      cliente: cliente,
-      tecnico: tecnico,
+      pais: pais,
+      localidad: localidad,
+      tienda: tienda,
+      option: 1,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -186,11 +178,9 @@ function getFirstElement(dateTo, dateFrom){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.json.firstElement.data) {
-        console.log('drawFirstElement.........');
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+      if (res.response.json.firstElement) {
+        setGraphic(res.response.json.firstElement)
       }
-      
     } else {
       hideLoading();
       if(res.code == 11){
@@ -210,16 +200,23 @@ function getFirstElement(dateTo, dateFrom){
   })
 };
 
+
+
 //-----GRAPICH
-function getDrawGraphic(data, setOptions, canvas){
+function getDrawGraphic(data, setOptions, canvas, type, name){
   let chart;
   //---CHART
   var ctx = document.getElementById(canvas).getContext('2d');
   if (chart) {
     chart.destroy();
   }
+
+  setOptions['plugins']['title']['text'] = name
+  console.log(name)
+
+
   chart = new Chart(ctx, {
-    type: 'bar',
+    type: type,
     data:data,
     options: setOptions,
     plugins: [ChartDataLabels],
@@ -231,12 +228,40 @@ function setGraphic(data) {
   if (Object.entries(data).length != 0){
     //---Clean Body
     document.getElementById("divContent").innerHTML = "";   
-
     for (let key in data){
       form = data[key]
+      if ('historico' in form){
+        //-----APPEND
+        $("#divContent").append(
+          "<div class='col-sm-12 col-md-12 col-lg-6 mt-5' style='overflow-y: scroll;'>"+
+            "<div  style='width: 800px;height: 450px;margin: auto;'>"+
+              "<canvas id='historico_" + form['id_formulario'] + "'></canvas>"+
+            "</div>"+
+          "</div>"
+        );
+        name = 'Reporte Historico' + form['name_form']
+        id = 'historico_' + form['id_formulario']
+        getDrawGraphic(form['historico'], setOptions1, id,'line',name);
+      }
+      if ('tendencia' in form){
+        //-----APPEND
+        $("#divContent").append(
+          "<div class='col-sm-12 col-md-12 col-lg-6 mt-5' style='overflow-y: scroll;'>"+
+            "<div  style='width: 800px;height: 450px;margin: auto;'>"+
+              "<canvas id='tendencia_" + form['id_formulario'] + "'></canvas>"+
+            "</div>"+
+          "</div>"
+        );
+        name = 'Reporte Tendencia' + form['name_form']
+        id = 'tendencia_' + form['id_formulario']
+        getDrawGraphic(form['tendencia'], setOptions2, id,'bar',name);
+      }
+
+
+      /*
       for (let obj in form){
         graphic = form[obj]
-        console.log(graphic);
+
         //-----APPEND
         $("#divContent").append(
           "<div class='col-sm-12 col-md-12 col-lg-6 mt-5' style='overflow-y: scroll;'>"+
@@ -245,21 +270,90 @@ function setGraphic(data) {
             "</div>"+
           "</div>"
         );
-        //----ADD NAME
-        console.log('setOptions1',setOptions1)
-
         //----ADD GRAPHIC
         if (obj == 'historico'){
-          getDrawGraphic(graphic, setOptions1, key+"_"+obj);
+          getDrawGraphic(graphic, setOptions1, key+"_"+obj,'line');
         }else if(obj == 'tendencia'){
-          getDrawGraphic(graphic, setOptions2, key+"_"+obj);
+          getDrawGraphic(graphic, setOptions2, key+"_"+obj,'bar');
         }
 
-      }
+      }*/
+
+
     }
   }
 }
 
+//----- CATALOGS
+function get_catalog() 
+{
+  arrayPais = []
+  arrayLocalidad = []
+  arrayTienda = []
+
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: 102558,
+      option: 2,
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      if (res.response.json.catalog){
+        for (i = 0; i < res.response.json.catalog.length; i++) {
+          valuePais = res.response.json.catalog[i]['631fccdd844ed53c7d989718'];
+          valueLocalidad = res.response.json.catalog[i]['631fc1e48d9fe191da0c3daf'];
+          valueTienda = res.response.json.catalog[i]['6447050b61228c1a0c56f21f'];
+
+          if (arrayPais.indexOf(valuePais) === -1) {
+            arrayPais.push(valuePais);
+          }
+          if (arrayLocalidad.indexOf(valueLocalidad) === -1) {
+            arrayLocalidad.push(valueLocalidad);
+          }
+          if (arrayTienda.indexOf(valueTienda) === -1) {
+            arrayTienda.push(valueTienda);
+          }
+        }
+
+        //----Pais
+        $("#pais").empty();
+        $('#pais').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < arrayPais.length; i++) {
+          value = arrayPais[i]
+          $('#pais').append('<option value="'+ value +'">'+value+'</option>');
+        }
+        $("#pais").multipleSelect('refresh');
+
+        //----Pais
+        $("#localidad").empty();
+        $('#localidad').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < arrayLocalidad.length; i++) {
+          value = arrayLocalidad[i]
+          $('#localidad').append('<option value="'+ value +'">'+value+'</option>');
+        }
+        $("#localidad").multipleSelect('refresh');
+
+        //----Pais
+        $("#tienda").empty();
+        $('#tienda').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < arrayTienda.length; i++) {
+          value = arrayTienda[i]
+          $('#tienda').append('<option value="'+ value +'">'+value+'</option>');
+        }
+        $("#tienda").multipleSelect('refresh');
+
+
+      }
+    } 
+  })
+};
 
                     
                         

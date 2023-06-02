@@ -62,8 +62,8 @@ var data4 = {
 };
 
 
-var dataExample = {
-  formulario1: {
+var dataExample = [
+  {
     historico: {
       labels: ['Ene-23','Feb-23','Mar-23','Abr-23','May-23','Jun-23'],
       datasets: [
@@ -91,9 +91,11 @@ var dataExample = {
           borderColor: "#EB5353",
         },
       ]
-    }
+    },
+    name_form:'Reporte 1',
+    id_formulario:1,
   },
-  formulario2:{
+  {
     historico: {
       labels: ['Dic-21','Enero-22','Feb-22','Mar-22','Abr-22','May-22','Jun-22','Jul-22','Ago-22','Sept-22','Oct-22','Nov-22','Dic-22','Ene-23'],
       datasets: [
@@ -121,9 +123,11 @@ var dataExample = {
           borderColor: "#EB5353",
         },
       ] 
-    }
+    },
+    name_form:'Reporte 2',
+    id_formulario:2,
   }
-}
+]
 
 
 

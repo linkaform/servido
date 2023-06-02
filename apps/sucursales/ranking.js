@@ -262,15 +262,7 @@ function getDrawTable(id, columnsData, tableData){
             //----IMAGENES
             // Parametros - Posición weigth / Posición heigt / Weigth / Heigth 
             doc.addImage(img_apymsa1, 'PNG', 25, 2, 180, 80);
-            doc.addImage(img_apymsa2, 'PNG', 600, 18, 150, 35);
-
-            //----TEXTO
-            doc.setFont('helvetica', 'bold')
-            dateTo = $("#date_to").val();
-            dateFrom = $("#date_from").val();
-            doc.setFontSize(9);
-            doc.setTextColor(23,32,42);
-            doc.text("Rango: Del " + dateFrom + " / " + dateTo + " ", 600, 70);
+            doc.addImage(img_apymsa2, 'PNG', 600, 20, 200, 60);
 
 
 
@@ -282,30 +274,29 @@ function getDrawTable(id, columnsData, tableData){
                 halign : 'center'
               },
               headStyles: {
-                fillColor: [38, 107, 115]
+                fillColor: [38, 107, 115],
+                valign: 'middle'
               },
               alternateRowStyles: {
                 fillColor : [220, 230, 241]
               },
               columnStyles: {
-                0: {columnWidth: 0,valign: 'bottom'},
-                1: {columnWidth: 50,valign: 'bottom'},
-                //1: {columnWidth: 'auto'},
-                //2: {columnWidth: 'wrap', halign: 'left'},
-                2: {columnWidth: 50, halign: 'left',valign: 'middle'},
-                3: {columnWidth: 'auto', halign: 'left',valign: 'middle'},
-                4: {columnWidth: 'auto',valign: 'middle'},
-                5: {columnWidth: 'auto',valign: 'middle'},
-                6: {columnWidth: 'auto',valign: 'middle'},
-                7: {columnWidth: 'auto',valign: 'middle'},
-                8: {columnWidth: 'auto',valign: 'middle'},
-                9: {columnWidth: 'auto',valign: 'middle'},
-                10: {columnWidth: 'auto',valign: 'middle'},
-                11: {columnWidth: 'auto',valign: 'middle'},
-                12: {columnWidth: 60,valign: 'middle'},
-                13: {columnWidth: 'auto',fontSize: 9,fontStyle: 'bold',valign: 'middle'}
+                0: {cellWidth: 0,valign: 'bottom',valign: 'middle'},
+                1: {cellWidth: 50,valign: 'bottom',valign: 'middle'},
+                2: {cellWidth: 50, halign: 'center',valign: 'bottom'},
+                3: {cellWidth: 'auto', halign: 'left',valign: 'middle'},
+                4: {cellWidth: 'auto',valign: 'middle'},
+                5: {cellWidth: 'auto',valign: 'middle'},
+                6: {cellWidth: 'auto',valign: 'middle'},
+                7: {cellWidth: 'auto',valign: 'middle'},
+                8: {cellWidth: 'auto',valign: 'middle'},
+                9: {cellWidth: 'auto',valign: 'middle'},
+                10: {cellWidth: 'auto',valign: 'middle'},
+                11: {cellWidth: 'auto',valign: 'middle'},
+                12: {cellWidth: 60,valign: 'middle'},
+                13: {cellWidth: 'auto',fontSize: 9,fontStyle: 'bold',valign: 'middle'},
               },
-
+              margin: { top: 10 },
               startY: 80, //This was the way to push the start of the table down
             };
           },
