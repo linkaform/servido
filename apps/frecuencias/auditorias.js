@@ -179,6 +179,7 @@ function getFirstElement(dateTo, dateFrom, pais, localidad, tienda){
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.json.firstElement) {
+        console.log('Valores',res.response.json.firstElement)
         setGraphic(res.response.json.firstElement)
       }
     } else {
@@ -212,8 +213,6 @@ function getDrawGraphic(data, setOptions, canvas, type, name){
   }
 
   setOptions['plugins']['title']['text'] = name
-  console.log(name)
-
 
   chart = new Chart(ctx, {
     type: type,
@@ -225,9 +224,9 @@ function getDrawGraphic(data, setOptions, canvas, type, name){
 
 //----Funcion Dinamic
 function setGraphic(data) {
+  $('#divContent').empty()
   if (Object.entries(data).length != 0){
     //---Clean Body
-    document.getElementById("divContent").innerHTML = "";   
     for (let key in data){
       form = data[key]
       if ('historico' in form){
@@ -239,7 +238,7 @@ function setGraphic(data) {
             "</div>"+
           "</div>"
         );
-        name = 'Reporte Historico' + form['name_form']
+        name = 'Histórico ' + form['name_form']
         id = 'historico_' + form['id_formulario']
         getDrawGraphic(form['historico'], setOptions1, id,'line',name);
       }
@@ -252,7 +251,7 @@ function setGraphic(data) {
             "</div>"+
           "</div>"
         );
-        name = 'Reporte Tendencia' + form['name_form']
+        name = 'Resultados por sección ' + form['name_form']
         id = 'tendencia_' + form['id_formulario']
         getDrawGraphic(form['tendencia'], setOptions2, id,'bar',name);
       }

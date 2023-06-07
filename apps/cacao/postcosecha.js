@@ -16,12 +16,6 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
-hideElement("secondElement");
-hideElement("thirdElement");
-hideElement("fourthElement");
-hideElement("fivethElement");
-hideElement("sixthElement");
-
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -81,32 +75,29 @@ window.onload = function(){
   hideElement("close_sesion");
   hideElement("firstParameters");
 
+
   if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
     unhideElement("close_sesion");
     getCompanyLogo(userParentId);
-    userId  = us;
+    userId = us;
     userJwt = jw;
     userName = getCookie("userName");
-
+    document.getElementById("firstParameters").style.removeProperty('display');
+    unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
     }
-    ///----ASSIGN VALUES
-    var dateT = new Date();
-    var dateTo = dateT.toISOString().substring(0, 10);
-    $("#date_from").val(dateTo);
-    $("#date_to").val(dateTo);
     //--Styles
     setSpinner();
-    $('#divUsuario').hide();
     $('#divOptions').show();
     $('#title_report').show();
-    document.getElementById("firstParameters").style.removeProperty('display'); 
+    document.getElementById("firstParameters").style.removeProperty('display');
+    
   } else {
     unhideElement("inicio_ses");
-    $('#divOptions').hide();
     $('#divContent').hide();
+    $('#divOptions').hide();
     $('#title_report').hide();
     $('.title_tables').hide();
     hideElement("firstElement-Buttons");
@@ -122,23 +113,21 @@ window.onload = function(){
   }
 }
 
+
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
-  unhideElement("close_sesion");
+  unhideElement("firstElement-Buttons");
   unhideElement("firstParameters");
+  unhideElement("close_sesion");
   unhideElement("firstElement");
-  unhideElement("secondElement");
-  unhideElement("thirdElement");
-  unhideElement("fourthElement");
 }
 
 function loadDemoData(){
-  console.log('Entra a demo')
   unhideElement("title_demo")
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
-
-  getDrawTable('firstElement', columsTable1A, dataTable1)
+  
+  getDrawTable('firstElement', columsTable1, dataTable1);
   document.getElementById("firstElement").style.removeProperty('display');
 }
 
@@ -147,21 +136,16 @@ loading.style.display = 'none';
 
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");   
-  let check = false;
-  if (document.getElementById('input_check').checked)
-  {
-    check = true;
-  } 
-  console.log('VALOR CJECK', check);
-  getFirstElement(date_to.value, date_from.value, check);
+  let date_to = document.getElementById("date_to");  
+  getFirstElement(date_to.value, date_from.value);
 };
 
-function getFirstElement(dateTo, dateFrom, check){
+function getFirstElement(dateTo, dateFrom){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
   $('.title_tables').hide();
+
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
@@ -169,7 +153,6 @@ function getFirstElement(dateTo, dateFrom, check){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      check: check,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -183,16 +166,12 @@ function getFirstElement(dateTo, dateFrom, check){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res.response.json.firstElement.data)
       if (res.response.json.firstElement.data) {
-        colums  = columsTable1A;
-        if (document.getElementById('input_check').checked)
-        {
-          colums  = columsTable1B;
-        } 
-        getDrawTable('firstElement', colums , res.response.json.firstElement.data);
+        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
+        console.log(url)
       }
+      
     } else {
       hideLoading();
       if(res.code == 11){
@@ -215,12 +194,12 @@ function getFirstElement(dateTo, dateFrom, check){
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"600px",
+    height:"500px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:true,
+    dataTreeStartExpanded:false,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
@@ -235,7 +214,6 @@ function getDrawTable(id, columnsData, tableData){
     });
   }
 
-
   if (document.getElementById("download_csv_"+id)){
     //trigger download of data.csv file
     document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
@@ -243,109 +221,4 @@ function getDrawTable(id, columnsData, tableData){
       table.download("csv", "data.csv");
     });
   }
-
-  //---PDF
-  var element = document.getElementById("download_pdf_"+id);
-  if (element)
-  {
-    document.getElementById("download_pdf_"+id).replaceWith(document.getElementById("download_pdf_"+id).cloneNode(true));
-    document.getElementById("download_pdf_"+id).addEventListener("click", function(){
-      table.download("pdf", "data.pdf", {
-          orientation:"landscape", //set page orientation to portrait
-          theme: 'grid',
-          autoTable:function(doc)
-          { 
-            var margins = 30;
-            var leftMargin = 40;
-            var marginsIndent = 40;
-
-            //----IMAGENES
-            // Parametros - Posición weigth / Posición heigt / Weigth / Heigth 
-            doc.addImage(img_apymsa1, 'PNG', 25, 2, 180, 80);
-            doc.addImage(img_apymsa2, 'PNG', 600, 20, 200, 60);
-
-
-
-
-
-            doc.setFontSize(11);
-            return {
-              styles: {
-                cellPadding: 2, 
-                fontSize: 8,
-                halign : 'center'
-              },
-              headStyles: {
-                fillColor: [38, 107, 115],
-                valign: 'middle'
-              },
-              alternateRowStyles: {
-                fillColor : [220, 230, 241]
-              },
-              columnStyles: {
-                0: {cellWidth: 0,valign: 'bottom',valign: 'middle'},
-                1: {cellWidth: 50,valign: 'bottom',valign: 'middle'},
-                2: {cellWidth: 50, halign: 'center',valign: 'bottom'},
-                3: {cellWidth: 'auto', halign: 'left',valign: 'middle'},
-                4: {cellWidth: 'auto',valign: 'middle'},
-                5: {cellWidth: 'auto',valign: 'middle'},
-                6: {cellWidth: 'auto',valign: 'middle'},
-                7: {cellWidth: 'auto',valign: 'middle'},
-                8: {cellWidth: 'auto',valign: 'middle'},
-                9: {cellWidth: 'auto',valign: 'middle'},
-                10: {cellWidth: 'auto',valign: 'middle'},
-                11: {cellWidth: 'auto',valign: 'middle'},
-                12: {cellWidth: 60,valign: 'middle'},
-                13: {cellWidth: 'auto',fontSize: 9,fontStyle: 'bold',valign: 'middle'},
-              },
-              margin: { top: 10 },
-              startY: 80, //This was the way to push the start of the table down
-            };
-          },
-          createdCell: function(cell, opts) {
-            if (opts.column.index == 1) {        
-              cell.styles.textColor = "#20a8d8";
-              cell.styles.fillColor = "#000";
-            }
-          },
-      });
-    });
-
-  }
-}
-
-//------PDF
-function getDownloadPdf(id = 0){
-  Swal.fire('Espere Por Favor');
-  Swal.showLoading();
-  link = ''
-  fetch(url + 'infosync/scripts/run/', {
-      method: 'POST',
-      body: JSON.stringify({
-        script_id: 98210,
-        ids: id,
-        template: 254,
-      }),
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+userJwt
-      },
-    })
-    .then(res => res.json())
-    .then(res => {
-    if (res.success) {
-      if (res.response.json.download.data){
-        Swal.close()
-        link = res.response.json.download.data.download_url;
-        console.log('LINK',link)
-
-        Object.assign(document.createElement('a'), {
-          target: '_blank',
-          rel: 'noopener noreferrer',
-          href: link,
-        }).click();
-      }
-    } 
-  })
-  return link;
 }
