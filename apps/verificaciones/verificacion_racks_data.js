@@ -164,17 +164,30 @@ var dataTable1 = [
   },
 ];
 
+/*
+formatter: (cell, formatterParams) => {
+      if (cell.getData().pdf_name != "Sin PDF") {
+        return `<a href="${cell.getData().pdf_file}" target="_blank">${cell.getData().pdf_name}</a>`;
+      } else if (cell.getData().pdf_name != undefined) {
+        return cell.getData().pdf_name;
+      } else {
+      }
+      return "Hola";
+},
+*/
 
 //----DATA TABLE
 var columsTable2 = [
-  { title:"Folio", field:'folio',hozAlign:"left",width:100},
-  { title:"Almacén", field:'almacen',hozAlign:"left",width:200},
-  { title:"Pasadizo", field:'pasadizo',hozAlign:"left",width:200},
-  { title:"Cara", field:'cara',hozAlign:"left",width:200},
-  { title:"Torre", field:'torre',hozAlign:"left",width:200},
-  { title:"Número de Rack", field:'num_rack',hozAlign:"left",width:200},
-  { title:"Inspector", field:'inspector',field:'score',hozAlign:"left",width:250},
-  { title:"Status", field:'status',formatter:function(cell){
+  { title:"Folio", field:'folio', hozAlign:"left", formatter:"link", formatterParams:{
+    url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
+    target:"_blank",},headerFilter:"input", width:150},
+  { title:"Almacén", field:'almacen',hozAlign:"left",headerFilter:"input",width:100},
+  { title:"Pasadizo", field:'pasadizo',hozAlign:"left",headerFilter:"input",width:100},
+  { title:"Cara", field:'cara',hozAlign:"left",headerFilter:"input",width:100},
+  { title:"Torre", field:'torre',hozAlign:"left",headerFilter:"input",width:100},
+  { title:"Número de Rack", field:'num_rack',hozAlign:"right",headerFilter:"input",width:150},
+  { title:"Inspector", field:'inspector',hozAlign:"left",headerFilter:"input",width:200},
+  { title:"Status", field:'status',hozAlign:"center",formatter:function(cell){
     var value = cell.getValue();
     if (value == 'Verde'){
       cell.getElement().style.backgroundColor = "#A9DFBF";
@@ -190,257 +203,180 @@ var columsTable2 = [
   {//create column group
     title:"¿Los pernos de anclaje están rotos o incompletos?",
     columns:[
-      {title:"Si/No", field:"si_no1", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia1",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"100px",
-        width:"200px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones1", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_1", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_1",hozAlign:"center",width:200},
+      {title:"Observaciones", field:"observaciones_1", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿Los pernos de anclaje están desajustados o torcidos?",
     columns:[
-      {title:"Si/No", field:"si_no2", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia2",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones2", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_2", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_2",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_2", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿La placa base presenta golpes o fisuras?",
     columns:[
-      {title:"Si/No", field:"si_no3", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia3",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones3", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_3", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_3",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_3", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿La placa base o los pernos tienen presencia de óxido?",
     columns:[
-      {title:"Si/No", field:"si_no4", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia4",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones4", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_4", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_4",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_4", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿La placa base está sin protector de puntal?",
     columns:[
-      {title:"Si/No", field:"si_no5", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia5",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones5", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_5", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_5",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_5", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿El protector de puntal está oxidado o abollado?",
     columns:[
-      {title:"Si/No", field:"si_no6", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia6",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones6", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_6", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_6",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_6", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿Los puntales presentan deformaciones o golpes?",
     columns:[
-      {title:"Si/No", field:"si_no7", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia7",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones7", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_7", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_7",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_7", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿Las diagonales presentan deformaciones o golpes?",
     columns:[
-      {title:"Si/No", field:"si_no8", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia8",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones8", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_8", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_8",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_8", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿Las horizontales presentan deformaciones o golpes?",
     columns:[
-      {title:"Si/No", field:"si_no9", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia9",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones9", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_9", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_9",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_9", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿Los distanciadores presentan deformaciones o golpes?",
     columns:[
-      {title:"Si/No", field:"si_no10", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia10",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones10", hozAlign:"left", width:200},
-    ],
-  },
-  {//create column group
-    title:"¿Los distanciadores presentan deformaciones o golpes?",
-    columns:[
-      {title:"Si/No", field:"si_no11", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia11",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones11", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_10", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_10",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_10", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿El puntal presenta problemas de verticalidad?",
     columns:[
-      {title:"Si/No", field:"si_no12", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia12",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones12", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_11", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_11",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_11", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿Existen elementos oxidados?",
     columns:[
-      {title:"Si/No", field:"si_no12", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia13",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones13", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_12", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_12",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_12", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿El protector lateral del bastidor está oxidado o abollado?",
     columns:[
-      {title:"Si/No", field:"si_no14", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia14",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones14", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_13", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_13",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_13", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿Los pernos y seguros están desajustados o incompletos?",
     columns:[
-      {title:"Si/No", field:"si_no15", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia15",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones15", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_14", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_14",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_14", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿El larguero presenta deformaciones o golpes?",
     columns:[
-      {title:"Si/No", field:"si_no16", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia16",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones16", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_15", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_15",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_15", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿El larguero presenta problemas de horizontalidad?",
     columns:[
-      {title:"Si/No", field:"si_no17", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia17",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones17", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_16", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_16",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_16", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿El larguero presenta problemas de oxidación?",
     columns:[
-      {title:"Si/No", field:"si_no18", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia18",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones18", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_17", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_17",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_17", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿Los pernos y clavijas de anclaje están desajustados o incompletos?",
     columns:[
-      {title:"Si/No", field:"si_no19", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia19",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones19", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_18", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_18",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_18", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿El tensor esta roto, deformado o desconectado?",
     columns:[
-      {title:"Si/No", field:"si_no20", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia20",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones20", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_19", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_19",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_19", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿Los pernos están desajustados o incompletos?",
     columns:[
-      {title:"Si/No", field:"si_no21", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia21",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones21", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_20", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_20",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_20", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿La losa presenta daños o desniveles?",
     columns:[
-      {title:"Si/No", field:"si_no22", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia22",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones22", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_21", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_21",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones_21", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
     title:"¿Tiene otras observaciones?",
     columns:[
-      {title:"Si/No", field:"si_no23", hozAlign:"right", width:100},
-      {title:"Evidencia", field:"evidencia23",hozAlign:"center",formatter:"image", formatterParams:{
-        height:"50px",
-        width:"50px",
-      }, width:200},
-      {title:"Observaciones", field:"observaciones23", hozAlign:"left", width:200},
+      {title:"Si/No", field:"pregunta_22", hozAlign:"right", width:100},
+      {title:"Evidencia", field:"evidencia_22",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones22", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
-  { title:"Comentarios Adicionales", field:'comentarios',hozAlign:"left",width:200},
+  { title:"Comentarios Adicionales", field:'comentarios',hozAlign:"left", tooltip:true ,width:200},
 ];
 
 var dataTable2 = [
@@ -453,10 +389,10 @@ var dataTable2 = [
     num_rack:'1A75',
     inspector:'Daniel Eduardo',
     status:'Verde',
-    si_no1:'Si',
+    pregunta_1:'Si',
     evidencia1:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones1:'Observaciones Ejemplo',
-    si_no2:'Sí',
+    pregunta_2:'Sí',
     evidencia2:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones2:'Observaciones',
     comentarios:'Comentarios ejemplo',
@@ -470,10 +406,10 @@ var dataTable2 = [
     num_rack:'1A78',
     inspector:'Daniel Eduardo',
     status:'Amarillo',
-    si_no1:'Si',
+    pregunta_1:'Si',
     evidencia1:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones1:'Observaciones Ejemplo',
-    si_no2:'Sí',
+    pregunta_2:'Sí',
     evidencia2:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones2:'Observaciones',
     comentarios:'Comentarios ejemplo',
@@ -487,10 +423,10 @@ var dataTable2 = [
     num_rack:'2B75',
     inspector:'Daniel Eduardo',
     status:'Rojo',
-    si_no1:'Si',
+    pregunta_1:'Si',
     evidencia1:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones1:'Observaciones Ejemplo',
-    si_no2:'Sí',
+    pregunta_2:'Sí',
     evidencia2:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones2:'Observaciones',
     comentarios:'Comentarios ejemplo',
@@ -504,10 +440,10 @@ var dataTable2 = [
     num_rack:'1A75',
     inspector:'Daniel Eduardo',
     status:'Verde',
-    si_no1:'Si',
+    pregunta_1:'Si',
     evidencia1:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones1:'Observaciones Ejemplo',
-    si_no2:'Sí',
+    pregunta_2:'Sí',
     evidencia2:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones2:'Observaciones',
     comentarios:'Comentarios ejemplo',
@@ -521,10 +457,10 @@ var dataTable2 = [
     num_rack:'1A78',
     inspector:'Daniel Eduardo',
     status:'Amarillo',
-    si_no1:'Si',
+    pregunta_1:'Si',
     evidencia1:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones1:'Observaciones Ejemplo',
-    si_no2:'Sí',
+    pregunta_2:'Sí',
     evidencia2:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones2:'Observaciones',
     comentarios:'Comentarios ejemplo',
@@ -538,10 +474,10 @@ var dataTable2 = [
     num_rack:'2B75',
     inspector:'Daniel Eduardo',
     status:'Rojo',
-    si_no1:'Si',
+    pregunta_1:'Si',
     evidencia1:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones1:'Observaciones Ejemplo',
-    si_no2:'Sí',
+    pregunta_2:'Sí',
     evidencia2:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones2:'Observaciones',
     comentarios:'Comentarios ejemplo',
@@ -555,10 +491,10 @@ var dataTable2 = [
     num_rack:'1A75',
     inspector:'Daniel Eduardo',
     status:'Verde',
-    si_no1:'Si',
+    pregunta_1:'Si',
     evidencia1:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones1:'Observaciones Ejemplo',
-    si_no2:'Sí',
+    pregunta_2:'Sí',
     evidencia2:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones2:'Observaciones',
     comentarios:'Comentarios ejemplo',
@@ -572,10 +508,10 @@ var dataTable2 = [
     num_rack:'1A78',
     inspector:'Daniel Eduardo',
     status:'Amarillo',
-    si_no1:'Si',
+    pregunta_1:'Si',
     evidencia1:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones1:'Observaciones Ejemplo',
-    si_no2:'Sí',
+    pregunta_2:'Sí',
     evidencia2:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones2:'Observaciones',
     comentarios:'Comentarios ejemplo',
@@ -589,10 +525,10 @@ var dataTable2 = [
     num_rack:'2B75',
     inspector:'Daniel Eduardo',
     status:'Rojo',
-    si_no1:'Si',
+    pregunta_1:'Si',
     evidencia1:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones1:'Observaciones Ejemplo',
-    si_no2:'Sí',
+    pregunta_2:'Sí',
     evidencia2:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones2:'Observaciones',
     comentarios:'Comentarios ejemplo',
@@ -606,10 +542,10 @@ var dataTable2 = [
     num_rack:'1A75',
     inspector:'Daniel Eduardo',
     status:'Verde',
-    si_no1:'Si',
+    pregunta_1:'Si',
     evidencia1:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones1:'Observaciones Ejemplo',
-    si_no2:'Sí',
+    pregunta_2:'Sí',
     evidencia2:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones2:'Observaciones',
     comentarios:'Comentarios ejemplo',
@@ -623,10 +559,10 @@ var dataTable2 = [
     num_rack:'1A78',
     inspector:'Daniel Eduardo',
     status:'Amarillo',
-    si_no1:'Si',
+    pregunta_1:'Si',
     evidencia1:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones1:'Observaciones Ejemplo',
-    si_no2:'Sí',
+    pregunta_2:'Sí',
     evidencia2:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones2:'Observaciones',
     comentarios:'Comentarios ejemplo',
@@ -640,10 +576,10 @@ var dataTable2 = [
     num_rack:'2B75',
     inspector:'Daniel Eduardo',
     status:'Rojo',
-    si_no1:'Si',
+    pregunta_1:'Si',
     evidencia1:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones1:'Observaciones Ejemplo',
-    si_no2:'Sí',
+    pregunta_2:'Sí',
     evidencia2:'https://www.lugaresturisticosenmexico.com/wp-content/uploads/2022/05/Puerto-Escondido-Oaxaca-Playa-Carrizalillo.jpg',
     observaciones2:'Observaciones',
     comentarios:'Comentarios ejemplo',
@@ -682,7 +618,7 @@ var setOptions1 = {
         }
     },
     datalabels: {
-      color: 'white',
+      color: 'black',
       font: {
         size: 25
       },
@@ -750,7 +686,7 @@ var setOptions2 = {
         }
     },
     datalabels: {
-      color: 'white',
+      color: 'black',
       formatter: function (value, context){
         return value + '%';
       }

@@ -16,6 +16,9 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
+hideElement("secondElement");
+hideElement("thirdElement");
+hideElement("fourthElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -139,8 +142,8 @@ function loadDemoData(){
 
 
   getDrawGraphic(data1, setOptions1, 'graphicFirst', 'doughnut')
-  document.getElementById("thirthElement").style.removeProperty('display');
-  document.getElementById("graphicSecond").style.removeProperty('display');
+  document.getElementById("secondElement").style.removeProperty('display');
+  document.getElementById("graphicFirst").style.removeProperty('display');
 
 
   getDrawGraphic(data2, setOptions2, 'graphicSecond', 'bar')
@@ -155,12 +158,18 @@ const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  getFirstElement(date_to.value, date_from.value);
+  let almacen = $('#almacen').val();
+  let pasadiso = $('#pasadiso').val();
+  let cara = $('#cara').val();
+  let torre = $('#torre').val();
+  let num_rack = $('#number_rack').val();
+  let color = $('#color').val();
+  let pregunta = $('#pregunta').val();
+  console.log('NUM RACK', num_rack);
+  getFirstElement(almacen, pasadiso, cara, torre, num_rack, color, pregunta);
 };
 
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(almacen, pasadiso, cara, torre, num_rack, color, pregunta){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -171,8 +180,13 @@ function getFirstElement(dateTo, dateFrom){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      date_to: dateTo,
-      date_from: dateFrom,
+      almacen: almacen,
+      pasadiso: pasadiso,
+      cara: cara,
+      torre: torre,
+      num_rack: num_rack,
+      color: color,
+      pregunta: pregunta,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -187,9 +201,26 @@ function getFirstElement(dateTo, dateFrom){
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.json.firstElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data,350);
         document.getElementById("firstElement").style.removeProperty('display');
-        console.log(url)
+      }
+
+      if (res.response.json.secondElement) {
+        getDrawGraphic1(res.response.json.secondElement, setOptions1, 'graphicFirst', 'doughnut')
+        document.getElementById("secondElement").style.removeProperty('display');
+        document.getElementById("graphicFirst").style.removeProperty('display');
+      }
+      
+      if (res.response.json.thirdElement) {
+        getDrawGraphic2(res.response.json.thirdElement, setOptions2, 'graphicSecond', 'bar')
+        document.getElementById("thirthElement").style.removeProperty('display');
+        document.getElementById("graphicSecond").style.removeProperty('display');
+      }
+
+      if (res.response.json.fourthElement.data) {
+        let columsTable = setColumsData(columsTable2)
+        getDrawTable('fourthElement', columsTable, res.response.json.fourthElement.data,500);
+        document.getElementById("fourthElement").style.removeProperty('display');
       }
       
     } else {
@@ -300,20 +331,74 @@ function getDrawTable(id, columnsData, tableData, height){
   }
 }
 
-
 //-----GHRAPICH
-function getDrawGraphic(data, setOptions, canvas, type){
-  let chart;
+let chart1;
+function getDrawGraphic1(data, setOptions, canvas, type){
   //---CHART
   var ctx = document.getElementById(canvas).getContext('2d');
-  if (chart) {
-    chart.destroy();
+  if (chart1) {
+    chart1.destroy();
   }
 
-  chart = new Chart(ctx, {
+  chart1 = new Chart(ctx, {
     type: type,
     data:data,
     options: setOptions,
     plugins: [ChartDataLabels],
   });
+}
+
+
+let chart2;
+function getDrawGraphic2(data, setOptions, canvas, type){
+  //---CHART
+  var ctx = document.getElementById(canvas).getContext('2d');
+  if (chart2) {
+    chart2.destroy();
+  }
+
+  chart2 = new Chart(ctx, {
+    type: type,
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
+}
+
+
+
+//----CUSTOM COLUMS
+function setColumsData(columsData){
+  ///----VALORES
+  filter = $("#pregunta").val()
+  array_filter = []
+  if (filter!=undefined){
+    for (var i = 0; i < filter.length; i++) {
+      value = filter[i]
+      value = Number(value)
+      array_filter.push(value)
+    }
+  }
+  //----FORMATEO
+  newColums = []
+  count = 0
+  if(filter!=undefined){
+    if (array_filter.length > 0){
+      for (var i = 0; i < columsData.length; i++) {
+        if (i>=8 && i<=29) {
+          if (array_filter.includes(count+1)) {
+            newColums.push(columsData[i])
+            console.log(columsData[i])
+            console.log(count)
+          }
+          count+=1
+        }else{
+          newColums.push(columsData[i])
+        }
+      }
+      columsData = newColums;
+    }
+  }
+  console.log('Columnas',columsData);
+  return columsData
 }

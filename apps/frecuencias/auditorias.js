@@ -213,6 +213,7 @@ function getDrawGraphic(data, setOptions, canvas, type, name){
   }
 
   setOptions['plugins']['title']['text'] = name
+  console.log(setOptions)
 
   chart = new Chart(ctx, {
     type: type,
@@ -238,9 +239,12 @@ function setGraphic(data) {
             "</div>"+
           "</div>"
         );
-        name = 'Histórico ' + form['name_form']
+        name_array = []
+        name_form =  form['name_form']
+        name_array.push('Historico');
+        name_array.push(name_form);
         id = 'historico_' + form['id_formulario']
-        getDrawGraphic(form['historico'], setOptions1, id,'line',name);
+        getDrawGraphic(form['historico'], setOptions1, id,'line',name_array);
       }
       if ('tendencia' in form){
         //-----APPEND
@@ -251,34 +255,13 @@ function setGraphic(data) {
             "</div>"+
           "</div>"
         );
-        name = 'Resultados por sección ' + form['name_form']
+        name_array = []
+        name_form =  form['name_form']
+        name_array.push('Resultados por sección');
+        name_array.push(name_form);
         id = 'tendencia_' + form['id_formulario']
-        getDrawGraphic(form['tendencia'], setOptions2, id,'bar',name);
+        getDrawGraphic(form['tendencia'], setOptions2, id,'bar',name_array);
       }
-
-
-      /*
-      for (let obj in form){
-        graphic = form[obj]
-
-        //-----APPEND
-        $("#divContent").append(
-          "<div class='col-sm-12 col-md-12 col-lg-6 mt-5' style='overflow-y: scroll;'>"+
-            "<div  style='width: 800px;height: 450px;margin: auto;'>"+
-              "<canvas id='"+key+"_"+obj+"'></canvas>"+
-            "</div>"+
-          "</div>"
-        );
-        //----ADD GRAPHIC
-        if (obj == 'historico'){
-          getDrawGraphic(graphic, setOptions1, key+"_"+obj,'line');
-        }else if(obj == 'tendencia'){
-          getDrawGraphic(graphic, setOptions2, key+"_"+obj,'bar');
-        }
-
-      }*/
-
-
     }
   }
 }
