@@ -167,9 +167,11 @@ function getFirstElement(dateTo, dateFrom){
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.json.firstElement.data) {
+
+        
+        console.log(res.response.json.firstElement.data)
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
-        console.log(url)
       }
       
     } else {
@@ -204,6 +206,25 @@ function getDrawTable(id, columnsData, tableData){
     clipboardPasteAction:"replace",
     textDirection:"ltr",
     columns:columnsData,
+    columnDefaults:{
+      tooltip:function(e, cell, onRendered){
+          console.log('DATA', cell.getRow().getData());
+          var div = document.createElement("div");
+          var reportadas = parseFloat(cell.getRow().getData().caneas_reportadas);
+          var totales = parseFloat(cell.getRow().getData().caneas_totales);
+          var colum = cell.getColumn().getField()
+          var flag_operario = cell.getRow().getData().operario;
+          if (flag_operario =='') {
+            if(colum == 'caneas'){
+              if(totales != reportadas){
+                div.style.backgroundColor = "#F9E79F";
+                div.innerText =  "Canecas Reportadas:" +  totales + " - Canecas Recibidas:" + reportadas ;
+                return div;
+              }
+            }
+          }
+      },
+    }
   });
 
   if (document.getElementById("download_xlsx_"+id)){

@@ -112,6 +112,15 @@
                             <option value="">--Seleccione--</option>
                         </select>
                     </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-3" id="divTienda">
+                        <h5>Tienda: </h5>
+                        <select class="form-control mdb-select md-form" id="tiendas" multiple="multiple" style="border:none !important;">
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>
+
+
                     <div class="col-sm-12 col-md-3 col-lg-3" id="divUsuario">
                         <h5>Usuario: </h5>
                         <select class="form-control" id="usuario" >
@@ -127,7 +136,7 @@
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
                     
-
+                    <!-- FourthElement Listo-->
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
                             <h3 ><span>Reporte Resumen:</span>&nbsp;&nbsp;
@@ -139,7 +148,7 @@
                         <div id="fourthElement"></div>
                     </div>  
 
-
+                    <!-- FirtsElement -->
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
                             <h3 ><span>Reporte General:</span>&nbsp;&nbsp;
@@ -151,12 +160,11 @@
                         <div id="firstElement"></div>
                     </div>
 
-
                     
-                    <!-- FirtsElement -->
+                    <!-- SecondElement Listo-->
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span>Reporte por localidad:</span>&nbsp;&nbsp;
+                            <h3 ><span>Reporte por tienda:</span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_secondElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_secondElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
@@ -165,7 +173,8 @@
                         <div id="secondElement"></div>
                     </div>
 
-                    <!-- THirdElement  -->
+
+                    <!-- FivethElement  Listo-->
                     <div class="col-sm-12 col-md-12 col-lg-12 " style="align-items: left;overflow-y: scroll;">
                         <div id="fivethElement" > 
                             <div style="width: 1000px;height: 600px;" > 
@@ -175,7 +184,7 @@
                     </div>
                     
                     
-                    <!-- SecondElement -->
+                    <!-- ThirdElement -->
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
                             <h3 ><span>Reporte por tipo de checklist:</span>&nbsp;&nbsp;
@@ -187,7 +196,8 @@
                         <div id="thirdElement"></div>
                     </div>
 
-                    <!-- FourthElement -->
+
+                    <!-- SixthElement -->
                     <div class="col-sm-12 col-md-12 col-lg-12 " style="align-items: left;overflow-y: scroll;">
                         <div id="sixthElement" > 
                             <div style="width: 1100px;height: 700px;" > 
@@ -195,6 +205,8 @@
                             </div>
                         </div>
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -248,8 +260,8 @@
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./frecuencias.js"></script>
-    <script type="text/javascript" src="./frecuencias_data.js"></script>
+    <script type="text/javascript" src="./frecuencias_retail.js"></script>
+    <script type="text/javascript" src="./frecuencias_retail_data.js"></script>
 
 
     <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
