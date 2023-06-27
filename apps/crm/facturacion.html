@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Frecuencias">
+        <meta name="description" content="Facturación">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
@@ -12,8 +12,6 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!--Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <!--LIBRARY CHECK -->
-        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -39,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte de Tienda</h1>
+                    <h1 id="title_report">Reporte</h1>
                 </div>
             </div> 
         </nav>
@@ -74,7 +72,7 @@
                 <!--Title Demo -->
                 <div id="title_demo" style="margin-bottom: 20px;">
                     <center>
-                        <h1><span>Demo data</span>&nbsp;&nbsp;</h1>
+                        <h1><span>Reporte Facturación</span>&nbsp;&nbsp;</h1>
                     </center>
                 </div>
 
@@ -92,119 +90,55 @@
                 <div id="firstParameters" class="collapse row show">
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Fecha Desde: </h5>
-                        <input class="form-control ds-input" type="date" id="date_from" name="date_from">
+                        <input class="form-control ds-input" type="month" id="date_from" name="date_from">
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Fecha Hasta: </h5>
-                        <input class="form-control ds-input" type="date" id="date_to" name="date_to">
-                    </div>
-
-                    <div class="col-sm-12 col-md-3 col-lg-3" id="divPais">
-                        <h5>Pais: </h5>
-                        <select class="form-control mdb-select md-form" id="paises" onchange="get_catalog(2);return false;">
-                            <option value="">--Seleccione--</option>
-                        </select>
-                    </div>
-
-                    <div class="col-sm-12 col-md-3 col-lg-3" id="divLocalidad">
-                        <h5>Localidad: </h5>
-                        <select class="form-control mdb-select md-form" id="localidades" multiple="multiple" style="border:none !important;">
-                            <option value="">--Seleccione--</option>
-                        </select>
-                    </div>
-
-                    <div class="col-sm-12 col-md-3 col-lg-3" id="divTienda">
-                        <h5>Tienda: </h5>
-                        <select class="form-control mdb-select md-form" id="tiendas" multiple="multiple" style="border:none !important;">
-                            <option value="">--Seleccione--</option>
-                        </select>
-                    </div>
-
-
-                    <div class="col-sm-12 col-md-3 col-lg-3" id="divUsuario">
-                        <h5>Usuario: </h5>
-                        <select class="form-control" id="usuario" >
-                            <option value="">--Seleccione--</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-12 col-md-2 col-lg-2">
-                        <h5>Resumen por: </h5>
-                        <input type="checkbox"  data-toggle="toggle" data-width="130" data-on="Cantidad" data-off="Porcentaje" id="input_check" data-onstyle="success" data-offstyle="primary">
+                        <input class="form-control ds-input" type="month" id="date_to" name="date_to">
                     </div>
                 </div>
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-                    
-                    <!-- FourthElement Listo-->
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                    <!-- FRIST ELEMENT-->
+                    <div class="col-sm-12 col-md-12 col-lg-6" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span>Reporte Resumen:</span>&nbsp;&nbsp;
-                                <button  class="btn btn-primary" id="download_csv_fourthElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button  class="btn btn-success" id="download_xlsx_fourthElement"><i class="fa-regular fa-file-excel"></i></button>
-                            </h3>
-                            <hr class="hrFirstElement">
-                        </section>
-                        <div id="fourthElement"></div>
-                    </div>  
-
-                    <!-- FirtsElement -->
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
-                        <section class="title_tables">
-                            <h3 ><span>Reporte General:</span>&nbsp;&nbsp;
+                            <h3 ><span> Ordenes X Facturación</span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
                             <hr class="hrFirstElement">
                         </section>
-                        <div id="firstElement"></div>
+                        <div id="firstElement" > </div>
                     </div>
 
-                    
-                    <!-- SecondElement Listo-->
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
-                        <section class="title_tables">
-                            <h3 ><span>Reporte por tienda:</span>&nbsp;&nbsp;
-                                <button  class="btn btn-primary" id="download_csv_secondElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button  class="btn btn-success" id="download_xlsx_secondElement"><i class="fa-regular fa-file-excel"></i></button>
-                            </h3>
-                            <hr class="hrSecondElement">
-                        </section>
-                        <div id="secondElement"></div>
-                    </div>
-
-
-                    <!-- FivethElement  Listo-->
-                    <div class="col-sm-12 col-md-12 col-lg-12 " style="align-items: left;overflow-y: scroll;">
-                        <div id="fivethElement" > 
-                            <div style="width: 1000px;height: 600px;" > 
-                                <canvas id="graphicFourth"></canvas>
-                            </div>
+                    <!-- SECOND ELEMENT-->
+                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-6" style="overflow-y: scroll;">
+                        <div  style="width: 650px;height: 650px;margin: auto;">
+                            <canvas id="graphicFirst" ></canvas>
                         </div>
                     </div>
-                    
-                    
-                    <!-- ThirdElement -->
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+
+                    <!-- FOURT ELEMENT-->
+                    <div id="fourthElement" class="col-sm-12 col-md-12 col-lg-12 mt-5" style="overflow-y: scroll;">
+                        <div  style="width: 1500px;height: 800px;margin: auto;">
+                            <canvas id="graphicSecond" ></canvas>
+                        </div>
+                    </div>
+
+
+                    <!-- THIRD ELEMENT-->
+                    <div class="col-sm-12 col-md-12 col-lg-12 mt-5" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span>Reporte por tipo de checklist:</span>&nbsp;&nbsp;
+                            <h3 ><span> Ordenes X Facturación Detalle</span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_thirdElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_thirdElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
                             <hr class="hrThirdElement">
                         </section>
-                        <div id="thirdElement"></div>
+                        <div id="thirdElement" > </div>
                     </div>
 
-
-                    <!-- SixthElement -->
-                    <div class="col-sm-12 col-md-12 col-lg-12 " style="align-items: left;overflow-y: scroll;">
-                        <div id="sixthElement" > 
-                            <div style="width: 1100px;height: 700px;" > 
-                                <canvas id="graphicFiveth"></canvas>
-                            </div>
-                        </div>
-                    </div>
 
 
                 </div>
@@ -221,8 +155,9 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
 
-   <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+    
 
     <!-- chartjs -->
     <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
@@ -239,7 +174,6 @@
 
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-
 
     <script 
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
@@ -260,11 +194,7 @@
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./frecuencias_retail.js"></script>
-    <script type="text/javascript" src="./frecuencias_retail_data.js"></script>
-
-
-    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
-    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+    <script type="text/javascript" src="./facturacion.js"></script>
+    <script type="text/javascript" src="./facturacion_data.js"></script>
     </body>
 </html>

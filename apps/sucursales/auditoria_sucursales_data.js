@@ -228,7 +228,7 @@ var dataTable1 = [
 
 
 var columsTable2 = [
-  { title:"Sucursal", field:'sucursal', hozAlign:"left",width:650},
+  { title:"Unidad de Negocio", field:'sucursal', hozAlign:"left",width:650},
   { title:"Fecha", field:'fecha', hozAlign:"left",width:150},
   { title:"Score" , field:'score',formatter:function(cell){
       var value = cell.getValue();

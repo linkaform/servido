@@ -7,3 +7,9 @@ body{
   width: 500px;
   margin-left: 0%;
 }
+
+.hrThirdElement {
+  border-top: 1px solid #707b7c;
+  width: 520px;
+  margin-left: 0%;
+}

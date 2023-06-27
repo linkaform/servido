@@ -19,9 +19,6 @@ hideElement("firstElement");
 hideElement("secondElement");
 hideElement("thirdElement");
 hideElement("fourthElement");
-hideElement("fivethElement");
-hideElement("sixthElement");
-
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -81,36 +78,29 @@ window.onload = function(){
   hideElement("close_sesion");
   hideElement("firstParameters");
 
+
   if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
     unhideElement("close_sesion");
     getCompanyLogo(userParentId);
-    userId  = us;
+    userId = us;
     userJwt = jw;
     userName = getCookie("userName");
-
+    document.getElementById("firstParameters").style.removeProperty('display');
+    unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
     }
-    ///----ASSIGN VALUES
-    var dateT = new Date();
-    var dateTo = dateT.toISOString().substring(0, 10);
-    $("#date_from").val(dateTo);
-    $("#date_to").val(dateTo);
-    //--Catalog
-    get_catalog(1);
     //--Styles
     setSpinner();
-    $('#divUsuario').hide();
     $('#divOptions').show();
     $('#title_report').show();
-    
     document.getElementById("firstParameters").style.removeProperty('display');
     
   } else {
     unhideElement("inicio_ses");
-    $('#divOptions').hide();
     $('#divContent').hide();
+    $('#divOptions').hide();
     $('#title_report').hide();
     $('.title_tables').hide();
     hideElement("firstElement-Buttons");
@@ -126,59 +116,55 @@ window.onload = function(){
   }
 }
 
+
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
-  unhideElement("close_sesion");
+  unhideElement("firstElement-Buttons");
   unhideElement("firstParameters");
+  unhideElement("close_sesion");
   unhideElement("firstElement");
-  unhideElement("secondElement");
-  unhideElement("thirdElement");
-  unhideElement("fourthElement");
 }
 
 function loadDemoData(){
   unhideElement("title_demo")
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
+  
+  getDrawTable('firstElement', columsTable1, dataTable1, '270');
   document.getElementById("firstElement").style.removeProperty('display');
+
+  getDrawGraphic1(data1, setOptions1, 'graphicFirst', 'pie')
   document.getElementById("secondElement").style.removeProperty('display');
+  document.getElementById("graphicFirst").style.removeProperty('display');
+
+
+  getDrawTable('thirdElement', columsTable2, dataTable2,'300');
   document.getElementById("thirdElement").style.removeProperty('display');
+
+  getDrawGraphic2(data2, setOptions2, 'graphicSecond', 'bar')
   document.getElementById("fourthElement").style.removeProperty('display');
+  document.getElementById("graphicSecond").style.removeProperty('display');
+
+
+
+  getDrawTable('fivethElement', columsTable3, dataTable3,'200');
   document.getElementById("fivethElement").style.removeProperty('display');
-  document.getElementById("sixthElement").style.removeProperty('display');
 
-  getDrawTable('firstElement', columsTable1, dataTable1);
-  getDrawTable('secondElement', columsTable2, dataTable2);
-  getDrawTable('thirdElement', columsTable3, dataTable3);
-  getDrawTable('fourthElement', columsTable4, dataTable4);
 
-  drawFourthElement(dataFourthElement, dataConfigFourth);
-  drawFivethElement(dataFivethElement, dataConfigFiveth);
+
 
 }
 
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
-
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");    
-  let usuario = document.getElementById("usuario");    
-  let paises = $('#paises').val();
-  let localidades = $('#localidades').val();
-  let tiendas = $('#tiendas').val();
-  check = 'on';
-  if (document.getElementById('input_check').checked)
-  {
-    check = 'off';
-  }
-  console.log('TIENDAS :',tiendas);
-  getFirstElement(date_to.value, date_from.value, paises, localidades, tiendas, usuario.value, check);
+  let date_to = document.getElementById("date_to");  
+  getFirstElement(date_to.value, date_from.value);
 };
 
-
-function getFirstElement(dateTo, dateFrom, paises, localidades, tiendas, usuario, check){
+function getFirstElement(dateTo, dateFrom){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -191,12 +177,6 @@ function getFirstElement(dateTo, dateFrom, paises, localidades, tiendas, usuario
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      paises: paises,
-      localidades: localidades,
-      tiendas: tiendas,
-      usuario: usuario,
-      check: check,
-      option: 1,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -210,31 +190,30 @@ function getFirstElement(dateTo, dateFrom, paises, localidades, tiendas, usuario
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
+      console.log(res.response.json)
       if (res.response.json.firstElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data, '500px');
         document.getElementById("firstElement").style.removeProperty('display');
       }
-      if (res.response.json.secondElement.data) {
-        getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data);
+
+      if (res.response.json.secondElement) {
+        getDrawGraphic1(res.response.json.secondElement, setOptions1, 'graphicFirst', 'pie')
         document.getElementById("secondElement").style.removeProperty('display');
+        document.getElementById("graphicFirst").style.removeProperty('display');
       }
+
+
       if (res.response.json.thirdElement.data) {
-        getDrawTable('thirdElement', columsTable3, res.response.json.thirdElement.data);
+        getDrawTable('thirdElement', columsTable2, res.response.json.thirdElement.data, '500px');
         document.getElementById("thirdElement").style.removeProperty('display');
       }
+
       if (res.response.json.fourthElement) {
-        drawFourthElement(res.response.json.fourthElement, dataConfigFourth);
-        document.getElementById("fivethElement").style.removeProperty('display');
-      }
-      if (res.response.json.fivethElement) {
-        drawFivethElement(res.response.json.fivethElement, dataConfigFiveth);
-        document.getElementById("sixthElement").style.removeProperty('display');
-      }
-      if (res.response.json.sixthElement) {
-        console.log(res.response.json.sixthElement.colums_data)
-        getDrawTable('fourthElement', res.response.json.sixthElement.colums_data, res.response.json.sixthElement.data);
+        getDrawGraphic2(res.response.json.fourthElement, setOptions2, 'graphicSecond', 'bar')
         document.getElementById("fourthElement").style.removeProperty('display');
+        document.getElementById("graphicSecond").style.removeProperty('display');
       }
+
     } else {
       hideLoading();
       if(res.code == 11){
@@ -254,48 +233,10 @@ function getFirstElement(dateTo, dateFrom, paises, localidades, tiendas, usuario
   })
 };
 
-
-//-----GRAPICH
-let chart1;
-function drawFourthElement(datasets, dataconfig){
-
-  //---CHART
-  var ctx = document.getElementById('graphicFourth').getContext('2d');
-  
-  if (chart1) {
-    chart1.destroy();
-  }
-
-  chart1 = new Chart(ctx, {
-    type: 'bar',
-    data: datasets,
-    plugins: [ChartDataLabels],
-    options: dataconfig
-  });
-}
-
-let chart2;
-function drawFivethElement(datasets, dataconfig){
-
-  //---CHART
-  var ctx = document.getElementById('graphicFiveth').getContext('2d');
-  
-  if (chart2) {
-      chart2.destroy();
-  }
-
-  chart2 = new Chart(ctx, {
-    type: 'bar',
-    data: datasets,
-    plugins: [ChartDataLabels],
-    options: dataconfig,
-  });
-}
-
 //-----TABLES
-function getDrawTable(id, columnsData, tableData){
+function getDrawTable(id, columnsData, tableData, height){
   var  table = new Tabulator("#" + id, {
-    height:"250px",
+    height:height+"px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -324,91 +265,40 @@ function getDrawTable(id, columnsData, tableData){
   }
 }
 
-//----- CATALOGS
-function get_catalog(option) {
-
-  pais  = $("#paises").val();
-  localidades = $("#localidades").val();
-  filter_data = ''
-  type_catalog = ''
-  if (option == 1) {
-    type_catalog = 'pais'
-  }
-  if (option == 2) {
-    type_catalog = 'localidad'
-    filter_data = pais
-  }
-  else if(option == 3){
-    type_catalog = 'tienda'
-    filter_data = localidades
+//-----GHRAPICH
+let chart1;
+function getDrawGraphic1(data, setOptions, canvas, type){
+  //---CHART
+  var ctx = document.getElementById(canvas).getContext('2d');
+  if (chart1) {
+    chart1.destroy();
   }
 
+  //---SET COLORS
+  array_colors = getPAlleteColors(7,data['labels'].length);
+  data['datasets'][0]['backgroundColor'] = array_colors
 
-  fetch(url + 'infosync/scripts/run/', {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: 103097,
-      option: 2,
-      filter: filter_data,
-      type_catalog: type_catalog,
-    }),
-    headers:{
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+userJwt
-    },
-  })
-  .then(res => res.json())
-  .then(res => {
-    if (res.success) {
-      if (option == 1){
-        if (res.response.json.array_filters.paises){
-          $("#paises").empty();
-          $("#localidades").empty();
-          $("#localidades").multipleSelect('refresh');
-          $("#tiendas").empty();
-          $("#tiendas").multipleSelect('refresh');
-          $('#paises').append('<option value="--">--Seleccione--</option>');
-          for (i = 0; i < res.response.json.array_filters.paises.length; i++) {
-            value = res.response.json.array_filters.paises[i]
-            $('#paises').append('<option value="'+ value +'">'+value+'</option>');
-          }
-        }
-      }
-      if (option == 2){
-        if (res.response.json.array_filters.localidades){
-          $("#tiendas").empty();
-          $("#tiendas").multipleSelect('refresh');
-          $("#localidades").empty();
-          $('#localidades').append('<option value="--">--Seleccione--</option>');
-          $("#localidades").multipleSelect('refresh');
-          for (i = 0; i < res.response.json.array_filters.localidades.length; i++) {
-            value = res.response.json.array_filters.localidades[i];
-            $('#localidades').append('<option value="'+ value +'">'+value+'</option>');
-          }
-          $("#localidades").multipleSelect('refresh');
-        }
-      }
-      if (option == 3){
-        if (res.response.json.array_filters.tiendas){
-          $("#tiendas").empty();
-          $('#tiendas').append('<option value="--">--Seleccione--</option>');
-          $("#tiendas").multipleSelect('refresh');
-          for (i = 0; i < res.response.json.array_filters.tiendas.length; i++) {
-            value = res.response.json.array_filters.tiendas[i];
-            $('#tiendas').append('<option value="'+ value +'">'+value+'</option>');
-          }
-          $("#tiendas").multipleSelect('refresh');
-        }
-      }
-    } 
-  })
-};
-//----EVENTS FILTERS
-$(function() {
-  $('#localidades').multipleSelect({
-    filter: true,
-    onClose: function () {
-      get_catalog(3);
-    },
-  })
-})
+
+  chart1 = new Chart(ctx, {
+    type: type,
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
+}
+
+let chart2;
+function getDrawGraphic2(data, setOptions, canvas, type){
+  //---CHART
+  var ctx = document.getElementById(canvas).getContext('2d');
+  if (chart2) {
+    chart2.destroy();
+  }
+
+  chart2 = new Chart(ctx, {
+    type: type,
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
+}

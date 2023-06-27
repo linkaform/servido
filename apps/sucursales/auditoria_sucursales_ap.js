@@ -443,7 +443,7 @@ function drawFirstElement(data){
   .attr("y", 10 - (margin.top / 2))
   .attr("text-anchor", "middle")
   .style("font-size", "21px")
-  .text("Evaluaciones por sucursal");
+  .text("Evaluaciones por Unidad de Negocio");
 
    //----Toltip
   const x = d3.scaleBand()

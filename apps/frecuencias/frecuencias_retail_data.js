@@ -12,7 +12,6 @@ var columsTable1 = [
 
 
 var columsTable2 = [
-  { title:"Localidad", field:'localidad',hozAlign:"left",width:500},
   { title:"Tienda", field:'tienda',hozAlign:"left",width:500},
   { title:"Realizados",field:'realizados',hozAlign:"right",width:150 },
   { title:"Requeridos",field:'requeridos',hozAlign:"right",width:160 },
@@ -508,7 +507,7 @@ var dataConfigFourth = {
     },
     title: {
       display: true,
-      text: 'Grafica X Localidad',
+      text: 'Grafica X Tienda',
       font: {
         size: 25
       }
