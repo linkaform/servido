@@ -1,18 +1,18 @@
 // Datos demo para Reporte ENcuestas MOntaje
 
-//--Table Montajes Por Mes
 var columsTable1 = [
+  { title:"Lote", field:'lote',hozAlign:"left",width:150},
+  { title:"Fecha",field:'fecha',hozAlign:"left",width:150},
+  { title:"Tipo", field:'tipo',hozAlign:"left",width:150},
   { title:"Folio", field:'folio', hozAlign:"left", formatter:"link", formatterParams:{
     url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
     target:"_blank",},headerFilter:"input", width:150},
-  { title:"Fecha", field:'fecha',hozAlign:"left",width:250},
   { title:"Operario", field:'operario',hozAlign:"left",width:250},
-  { title:"Lote", field:'lote',hozAlign:"left",width:250},
-  { title:"Canecas", field:'caneas',hozAlign:"left",
+  { title:"Canecas", field:'canecas',hozAlign:"right",
     formatter:function(cell){
       var value = cell.getValue();
-      var reportadas = parseFloat(cell.getRow().getData().caneas_reportadas);
-      var totales = parseFloat(cell.getRow().getData().caneas_totales);
+      var reportadas = parseFloat(cell.getRow().getData().canecas_reportadas);
+      var totales = parseFloat(cell.getRow().getData().canecas_totales);
       var flag_operario = cell.getRow().getData().operario;
       if (flag_operario =='') {
         if(totales != reportadas){
@@ -20,284 +20,669 @@ var columsTable1 = [
         }
       }
       return value;
-    },width:250},
-  { title:"Kg Promedio",field:'kg',hozAlign:"left",width:150 },
-  { title:"Total Kg", field:'total',hozAlign:"left",width:160 },
+    },width:150},
+  { title:"Kg Promedio",field:'kg',hozAlign:"right",width:150 },
+  { title:"Total Kg", field:'total',hozAlign:"right",width:160 },
+  /*
+  
+  */
 ];
 
 var dataTable1 = [
   {
-    "folio": "91-12068",
-    "kg": "",
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
     "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
     "_children": [
       {
           "folio": "",
-          "kg": 30,
           "operario": "Operario 1",
-          "caneas": 3,
-          "fecha": "",
+          "canecas": 3,
+          "kg": 30,
           "total": 90
       },
       {
           "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
           "kg": 30,
-          "operario": "Operario 2",
-          "caneas": 5,
-          "fecha": "",
-          "total": 150
+          "total": 90
       },
       {
           "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
           "kg": 30,
-          "operario": "Operario 3",
-          "caneas": 1,
-          "fecha": "",
-          "total": 30
-      }
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
     ],
-    "caneas": 9,
-    "caneas_reportadas": 5,
-    "caneas_totales": 10,
-    "fecha": "2023-06-01",
-    "total": 270
   },
   {
-    "folio": "91-12068",
-    "kg": "",
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
     "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
     "_children": [
       {
           "folio": "",
-          "kg": 30,
           "operario": "Operario 1",
-          "caneas": 3,
-          "fecha": "",
+          "canecas": 3,
+          "kg": 30,
           "total": 90
       },
       {
           "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
           "kg": 30,
-          "operario": "Operario 2",
-          "caneas": 5,
-          "fecha": "",
-          "total": 150
+          "total": 90
       },
       {
           "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
           "kg": 30,
-          "operario": "Operario 3",
-          "caneas": 1,
-          "fecha": "",
-          "total": 30
-      }
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
     ],
-    "caneas": 9,
-    "fecha": "2023-06-01",
-    "total": 270
   },
   {
-    "folio": "91-12068",
-    "kg": "",
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
     "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
     "_children": [
       {
           "folio": "",
-          "kg": 30,
           "operario": "Operario 1",
-          "caneas": 3,
-          "fecha": "",
+          "canecas": 3,
+          "kg": 30,
           "total": 90
       },
       {
           "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
           "kg": 30,
-          "operario": "Operario 2",
-          "caneas": 5,
-          "fecha": "",
-          "total": 150
+          "total": 90
       },
       {
           "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
           "kg": 30,
-          "operario": "Operario 3",
-          "caneas": 1,
-          "fecha": "",
-          "total": 30
-      }
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
     ],
-    "caneas": 9,
-    "fecha": "2023-06-01",
-    "total": 270
   },
   {
-    "folio": "91-12068",
-    "kg": "",
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
     "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
     "_children": [
       {
           "folio": "",
-          "kg": 30,
           "operario": "Operario 1",
-          "caneas": 3,
-          "fecha": "",
+          "canecas": 3,
+          "kg": 30,
           "total": 90
       },
       {
           "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
           "kg": 30,
-          "operario": "Operario 2",
-          "caneas": 5,
-          "fecha": "",
-          "total": 150
+          "total": 90
       },
       {
           "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
           "kg": 30,
-          "operario": "Operario 3",
-          "caneas": 1,
-          "fecha": "",
-          "total": 30
-      }
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
     ],
-    "caneas": 9,
-    "fecha": "2023-06-01",
-    "total": 270
   },
   {
-    "folio": "91-12068",
-    "kg": "",
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
     "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
     "_children": [
       {
           "folio": "",
-          "kg": 30,
           "operario": "Operario 1",
-          "caneas": 3,
-          "fecha": "",
+          "canecas": 3,
+          "kg": 30,
           "total": 90
       },
       {
           "folio": "",
-          "kg": 30,
-          "operario": "Operario 2",
-          "caneas": 5,
-          "fecha": "",
-          "total": 150
-      },
-      {
-          "folio": "",
-          "kg": 30,
-          "operario": "Operario 3",
-          "caneas": 1,
-          "fecha": "",
-          "total": 30
-      }
-    ],
-    "caneas": 9,
-    "fecha": "2023-06-01",
-    "total": 270
-  }
-  ,{
-    "folio": "91-12068",
-    "kg": "",
-    "operario": "",
-    "_children": [
-      {
-          "folio": "",
-          "kg": 30,
           "operario": "Operario 1",
-          "caneas": 3,
-          "fecha": "",
+          "canecas": 3,
+          "kg": 30,
           "total": 90
       },
       {
           "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
           "kg": 30,
-          "operario": "Operario 2",
-          "caneas": 5,
-          "fecha": "",
-          "total": 150
+          "total": 90
       },
       {
           "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
           "kg": 30,
-          "operario": "Operario 3",
-          "caneas": 1,
-          "fecha": "",
-          "total": 30
-      }
+          "total": 90
+      },
     ],
-    "caneas": 9,
-    "fecha": "2023-06-01",
-    "total": 270
   },
   {
-    "folio": "91-12068",
-    "kg": "",
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
     "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
     "_children": [
       {
           "folio": "",
-          "kg": 30,
           "operario": "Operario 1",
-          "caneas": 3,
-          "fecha": "",
+          "canecas": 3,
+          "kg": 30,
           "total": 90
       },
       {
           "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
           "kg": 30,
-          "operario": "Operario 2",
-          "caneas": 5,
-          "fecha": "",
-          "total": 150
+          "total": 90
       },
       {
           "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
           "kg": 30,
-          "operario": "Operario 3",
-          "caneas": 1,
-          "fecha": "",
-          "total": 30
-      }
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
     ],
-    "caneas": 9,
-    "fecha": "2023-06-01",
-    "total": 270
   },
   {
-    "folio": "91-12068",
-    "kg": "",
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
     "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
     "_children": [
       {
           "folio": "",
-          "kg": 30,
           "operario": "Operario 1",
-          "caneas": 3,
-          "fecha": "",
+          "canecas": 3,
+          "kg": 30,
           "total": 90
       },
       {
           "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
           "kg": 30,
-          "operario": "Operario 2",
-          "caneas": 5,
-          "fecha": "",
-          "total": 150
+          "total": 90
       },
       {
           "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
           "kg": 30,
-          "operario": "Operario 3",
-          "caneas": 1,
-          "fecha": "",
-          "total": 30
-      }
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
     ],
-    "caneas": 9,
+  },
+  {
+    "lote": "150",
     "fecha": "2023-06-01",
-    "total": 270
-  }
+    "tipo": "Local",
+    "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
+    "_children": [
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+    ],
+  },
+  {
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
+    "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
+    "_children": [
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+    ],
+  },
+  {
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
+    "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
+    "_children": [
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+    ],
+  },
+  {
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
+    "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
+    "_children": [
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+    ],
+  },
+  {
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
+    "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
+    "_children": [
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+    ],
+  },
+  {
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
+    "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
+    "_children": [
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+    ],
+  },
+  {
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
+    "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
+    "_children": [
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+    ],
+  },
+  {
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
+    "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
+    "_children": [
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+    ],
+  },
+  {
+    "lote": "150",
+    "fecha": "2023-06-01",
+    "tipo": "Local",
+    "operario": "",
+    "canecas": 9,
+    "canecas_reportadas": 5,
+    "canecas_totales": 10,
+    "kg": 150,
+    "total": 270,
+    "_children": [
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+      {
+          "folio": "",
+          "operario": "Operario 1",
+          "canecas": 3,
+          "kg": 30,
+          "total": 90
+      },
+    ],
+  },
 ];

@@ -126,9 +126,15 @@ function loadDemoData(){
   unhideElement("title_demo")
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
-  
-  getDrawTable('firstElement', columsTable1, dataTable1);
-  document.getElementById("firstElement").style.removeProperty('display');
+
+
+  getDrawTable('sixthElement', columsTable1, dataTable1);
+  document.getElementById("sixthElement").style.removeProperty('display');
+
+
+  getDrawTable('seventhElement', columsTable2, dataTable2);
+  document.getElementById("seventhElement").style.removeProperty('display');
+
 }
 
 const loading = document.querySelector('.loading-container');
@@ -153,6 +159,9 @@ function getFirstElement(dateTo, dateFrom){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
+      servicio: servicio,
+      cliente: cliente,
+      tecnico: tecnico,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -167,11 +176,8 @@ function getFirstElement(dateTo, dateFrom){
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.json.firstElement.data) {
-
-        
-        console.log(res.response.json.firstElement.data)
+        console.log('drawFirstElement.........');
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
-        document.getElementById("firstElement").style.removeProperty('display');
       }
       
     } else {
@@ -206,24 +212,6 @@ function getDrawTable(id, columnsData, tableData){
     clipboardPasteAction:"replace",
     textDirection:"ltr",
     columns:columnsData,
-    columnDefaults:{
-      tooltip:function(e, cell, onRendered){
-          var div = document.createElement("div");
-          var reportadas = parseFloat(cell.getRow().getData().canecas_reportadas);
-          var totales = parseFloat(cell.getRow().getData().canecas_totales);
-          var colum = cell.getColumn().getField()
-          var flag_operario = cell.getRow().getData().operario;
-          if (flag_operario =='') {
-            if(colum == 'canecas'){
-              if(totales != reportadas){
-                div.style.backgroundColor = "#F9E79F";
-                div.innerText =  "Canecas Reportadas: " +  totales + " - Canecas Recibidas:" + reportadas ;
-                return div;
-              }
-            }
-          }
-      },
-    }
   });
 
   if (document.getElementById("download_xlsx_"+id)){
@@ -241,4 +229,85 @@ function getDrawTable(id, columnsData, tableData){
       table.download("csv", "data.csv");
     });
   }
+}
+
+//-----GRAPHIC
+let chart1;
+function getDrawGraphic1(data, setOptions, canvas, type){
+  //---CHART
+  var ctx = document.getElementById(canvas).getContext('2d');
+  if (chart1) {
+    chart1.destroy();
+  }
+
+  chart1 = new Chart(ctx, {
+    type: type,
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
+}
+
+let chart2;
+function getDrawGraphic1(data, setOptions, canvas, type){
+  //---CHART
+  var ctx = document.getElementById(canvas).getContext('2d');
+  if (chart2) {
+    chart2.destroy();
+  }
+
+  chart2 = new Chart(ctx, {
+    type: type,
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
+}
+
+let chart3;
+function getDrawGraphic1(data, setOptions, canvas, type){
+  //---CHART
+  var ctx = document.getElementById(canvas).getContext('2d');
+  if (chart3) {
+    chart3.destroy();
+  }
+
+  chart3 = new Chart(ctx, {
+    type: type,
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
+}
+
+let chart4;
+function getDrawGraphic1(data, setOptions, canvas, type){
+  //---CHART
+  var ctx = document.getElementById(canvas).getContext('2d');
+  if (chart4) {
+    chart4.destroy();
+  }
+
+  chart4 = new Chart(ctx, {
+    type: type,
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
+}
+
+let chart5;
+function getDrawGraphic1(data, setOptions, canvas, type){
+  //---CHART
+  var ctx = document.getElementById(canvas).getContext('2d');
+  if (chart5) {
+    chart5.destroy();
+  }
+
+  chart5 = new Chart(ctx, {
+    type: type,
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
 }
