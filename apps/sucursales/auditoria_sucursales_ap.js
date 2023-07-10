@@ -200,7 +200,6 @@ function customCatalogView(res){
     $("#sucursalesLista").empty();
     $('#sucursalesLista').append('<option value="--">--Seleccione--</option>');
 
-    console.log(res)
     for (i = 0; i < res.rows.length; i++) {
       $('#sucursalesLista').append('<option value="'+res.rows[i].key+'">'+res.rows[i].key+'</option>');
     }
@@ -208,7 +207,6 @@ function customCatalogView(res){
 }
 
 function getRegionales(){
-  console.log('regionales')
   regionales = getCatalog(83987, 79950, 1, catalogType='select')
 }
 

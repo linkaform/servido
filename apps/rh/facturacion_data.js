@@ -12,7 +12,7 @@ var columsTable1 = [
   { title:"Codigo " , field:'codigo', hozAlign:"center", width:150, },
   { title:"Personas en Mesa" , field:'personas_mesa', hozAlign:"right", width:100, },
   { title:"Cantidad Cajas" , field:'cantidad_cajas', hozAlign:"right", width:100, },
-  { title:"Descripción Producto" , field:'producto', hozAlign:"left", width:300, },
+  { title:"Descripción Producto" , field:'producto', hozAlign:"left", headerFilter:"input", width:300, },
   { title:"Cajas Funcionarias" , field:'cajas_funcionaria', hozAlign:"right", width:260, formatter: "money",
   formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 3}},
   { title:"Un X Caja" , field:'cajas_unidad', hozAlign:"right", width:100, },
@@ -20,7 +20,7 @@ var columsTable1 = [
   { title:"Precio por Unidades", field:'precio_unidad',hozAlign:"right",width:100 },
 
 
-  { title:"Tipo Promoción" , field:'promocion', hozAlign:"center", width:100, },
+  { title:"Tipo Promoción" , field:'promocion', hozAlign:"center", headerFilter:"input",width:100, },
   { title:"Total Unidades" , field:'total_unidades', hozAlign:"right", width:200,formatter: "money",
   formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 3},bottomCalc:"sum", bottomCalcParams:{
     precision:3,} ,bottomCalcFormatter: "money",bottomCalcFormatterParams:  {decimal: ".",thousand: ",",symbol: ""},},

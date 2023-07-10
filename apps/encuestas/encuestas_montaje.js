@@ -263,7 +263,7 @@ function drawSecondElement(data){
         },
         title: {
           display: true,
-          text: 'Montajes Mensuales Por Cliente',
+          text: 'Bandas Mensuales Por Cliente',
           font: {
             size: 25
           }
@@ -307,7 +307,7 @@ function drawFourthElement(data){
         },
         title: {
           display: true,
-          text: 'Montajes Mensuales Por Region',
+          text: 'Bandas Mensuales Por Region',
           font: {
             size: 25
           }
@@ -340,7 +340,6 @@ function drawFivethElement(data){
 
     //--- Colors
     var array_colors = getPAlleteColors(6,datasets.length);
-    console.log('COLORS!!!!',array_colors);
     //---CHART
     var ctx = document.getElementById('graphicFiveth').getContext('2d');
     

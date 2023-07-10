@@ -1,6 +1,9 @@
 //-----TABLAS
 var columsTable1 = [
   { title:"Unidad de Negocio", field:'sucursal', hozAlign:"left",width:650},
+  { title:"Folio", field:'folio', hozAlign:"left", formatter:"link", formatterParams:{
+    url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
+    target:"_blank",}, width:150},
   { title:"Fecha", field:'fecha', hozAlign:"left",width:150},
   { title:"Score" , field:'score',formatter:function(cell){
       var value = cell.getValue();
@@ -135,3 +138,204 @@ var dataTable2 = [
     "items_bad": 2
   },
 ];
+
+//-----GRAFICAS
+var data1 = {
+  labels: ['Ciudad Juarez Oscar Flores','Ciudad Victoria','Merida Canek','Forum Tlaquepaque','Cordoba','Pachuca'],
+  datasets: [
+    {
+      label: 'Evaluaciones',
+      data: [90,80,70,60,40,30],
+      numData: [9,8,7,6,4,3],
+      backgroundColor: ['#27ae60','#27ae60','#f1c40f','#f1c40f','#e74c3c','#e74c3c'],
+    },
+  ]
+};
+
+var setOptions1 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Evaluaciones por Unidad de Negocio',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'black',
+      font: {
+        size: 12
+      },
+      formatter: function (value, context){
+        numRegistros = context.dataset.numData[context.dataIndex]
+        return value + '% / ' + numRegistros;
+      }
+    }
+  },
+};
+
+
+var data2 = {
+  labels: ['Monica Contreras Carranza','Pedro Manuel Miron Domingue','Roberto Torres','Luis Arnulfo Gonzalez',
+  'Yessica Evelin Serrano Torres','Nichiren Iglesias','Fernanda Chavez Cardenas','Igor Ivan Vega Molina','Gloria Rodriguez Villaseca'],
+  datasets: [
+    {
+      label: 'Evaluaciones',
+      data: [80,79,78,74,71,67,52,51,47],
+      numData: [5,67,67,67,67,67,67,67,67],
+      backgroundColor: ['#27ae60','#f1c40f','#f1c40f','#f1c40f','#f1c40f','#f1c40f','#e74c3c','#e74c3c','#e74c3c'],
+    },
+  ]
+};
+
+var setOptions2 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Evaluaciones por regional',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'black',
+      font: {
+        size: 12
+      },
+      formatter: function (value, context){
+        numRegistros = context.dataset.numData[context.dataIndex]
+        return value + '% / ' + numRegistros;
+      }
+    }
+  },
+};
+
+
+var data3 = {
+  labels: ['5. Revisión Inventario','8. Crédito y Cobranza','4. Gestión de Almacén','1. Servicio y Experiencia',
+  '3. Imagen Mantenimiento y Limpieza','2. Mi equipo APYMSA','9.- División Talleres','6. Logística y Ultima milla','7. Gestión Documental'],
+  datasets: [
+    {
+      label: 'Evaluaciones',
+      data: [80,79,78,74,71,67,52,51,47],
+      numData: [5,67,67,67,67,67,67,67,67],
+      backgroundColor: ['#27ae60','#f1c40f','#f1c40f','#f1c40f','#f1c40f','#f1c40f','#e74c3c','#e74c3c','#e74c3c'],
+    },
+  ]
+};
+
+var setOptions3 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Evaluaciones por sección',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'black',
+      font: {
+        size: 12
+      },
+      formatter: function (value, context){
+        numRegistros = context.dataset.numData[context.dataIndex]
+        return value + '% / ' + numRegistros;
+      }
+    }
+  },
+};
+
+
+var data4 = {
+  labels: ['Auditor','Gerente de Unidad de Negocio','Regional Operativo'],
+  datasets: [
+    {
+      label: 'Evaluaciones',
+      data: [74,70,56],
+      numData: [5,40,22],
+      backgroundColor: ['#e74c3c','#e74c3c','#e74c3c'],
+    },
+  ]
+};
+
+var setOptions4 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Evaluaciones por perfil',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'black',
+      font: {
+        size: 12
+      },
+      formatter: function (value, context){
+        numRegistros = context.dataset.numData[context.dataIndex]
+        return value + '% / ' + numRegistros;
+      }
+    }
+  },
+};
+
+
+var data5 = {
+  labels: ['CEO 1','CEO 2','CEO 3','CEO 4','CEO 5'],
+  datasets: [
+    {
+      label: 'Evaluaciones',
+      data: [25,10,20,25,20],
+      backgroundColor: ['#27ae60','#27ae60','#27ae60','#27ae60','#27ae60'],
+    },
+  ]
+};
+
+var setOptions5 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Reporte de Evaluaciones CEO',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'black',
+    }
+  },
+  scales: {
+    y:{
+      ticks: {
+        stepSize: 1
+      }, 
+    }
+  },
+};

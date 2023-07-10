@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Forcast by Cicle">
+        <meta name="description" content="Auditoria Express GUN">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte</h1>
+                    <h1 id="title_report">Reporte Auditoria Excelencia Operativa Express GUN</h1>
                 </div>
             </div> 
         </nav>
@@ -98,8 +98,8 @@
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Regional: </h5>
-                        <select class="form-control ds-input" id="catalog-79950-level-1" name="regional" value="">
-                            <option value="--">Select Regional</option>
+                        <select class="form-control ds-input" id="regional" >
+                            <option value="--">--Seleccione--</option>
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3">
@@ -112,20 +112,19 @@
                         <h5>Sección: </h5>
                         <select class="form-control ds-input" id="seccion" name="seccion" value="">
                             <option value="--">--Seleccione--</option>
-                            <option value="1">Servicio y Experiencia</option>
-                            <option value="2">Mi equipo APYMSA </option>
-                            <option value="3">Imagen Mantenimiento y Limpieza </option>
-                            <option value="4">Gestión de Almacén</option>
-                            <option value="5">Revisión Inventario </option>
-                            <option value="6">Logística y Ultima milla</option>
-                            <option value="7">Gestión Documentación </option>
-                            <option value="8">Crédito y Cobranza</option>
-                            <option value="9">División Talleres</option>
+                            <option value="1">Exterior</option>
+                            <option value="2">Logística y Ultima milla</option>
+                            <option value="3">Gestión de Almacén </option>
+                            <option value="4">Crédito y Cobranza</option>
+                            <option value="5">División Talleres</option>
+                            <option value="6">Servicio y Experiencia</option>
+                            <option value="7">Mi equipo APYMSA</option>
+                            <option value="8">Gestión Documental</option>
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Unidades de Negocio: </h5>
-                        <select class="form-control ds-input" id="sucursalesLista" name="regional" >
+                        <select class="form-control ds-input" id="unidades" >
                             <option value="--">--Seleccione--</option>
                         </select>
                     </div>
@@ -144,38 +143,80 @@
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
                     
+                    <!--CARD ELEMENT-->
+                    <div class="col-sm-12 col-md-12 col-lg-12 row" style="margin:auto;">
+                        <div class="col-sm-12 col-md-6 col-lg-6" id="div_alert1">
+                            <div class="card border-info m-2">
+                                <div class="card-body" style="margin:auto;">
+                                    <center>
+                                        <h2 class="card-title">Total Unidades de Negocio</h2>
+                                        <p class="card-text" style="font-size: 25px;" id="textAlert1">0</p>
+                                        <i class="fas fa-building" style="font-size:30px;"></i>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6" id="div_alert2">
+                            <div class="card border-info m-2" >
+                                <div class="card-body" style="margin:auto;">
+                                    <center>
+                                        <h2 class="card-title">Total Evaluaciones</h2>
+                                        <p class="card-text" style="font-size: 25px;" id="textAlert2">0</p>
+                                        <i class="fas fa-check" style="font-size:30px;"></i>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <!--First Element -->
-                    <div id="firstElement" class="col-sm-12 col-md-12 col-lg-6 mt-5" style="overflow-y: scroll;">
-                        <div  style="width: 1200px;height: 600px;margin: auto;">
+                    <div id="firstElement" class="col-sm-12 col-md-12 col-lg-12 mt-5" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicFirst','chart_screenVI');return false;" id="downloadGraphicFirst">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
+                        <div  style="width: 1200px;height: 650px;margin: auto;">
                             <canvas id="graphicFirst" ></canvas>
                         </div>
                     </div>
 
                     <!--Second Element -->
-                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-6 mt-5" style="overflow-y: scroll;">
-                        <div  style="width: 1200px;height: 600px;margin: auto;">
+                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-12 mt-5" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicSecond','chart_screenVI');return false;" id="downloadGraphicSecond">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
+                        <div  style="width: 1200px;height: 650px;margin: auto;">
                             <canvas id="graphicSecond" ></canvas>
                         </div>
                     </div>
 
                     <!--Third Element -->
-                    <div id="thirdElement" class="col-sm-12 col-md-12 col-lg-6 mt-5" style="overflow-y: scroll;">
-                        <div  style="width: 1200px;height: 600px;margin: auto;">
+                    <div id="thirdElement" class="col-sm-12 col-md-12 col-lg-12 mt-5" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicThird','chart_screenVI');return false;" id="downloadGraphicThird">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
+                        <div  style="width: 1200px;height: 650px;margin: auto;">
                             <canvas id="graphicThird" ></canvas>
                         </div>
                     </div>
 
 
                     <!--Fourth Element -->
-                    <div id="fourthElement" class="col-sm-12 col-md-12 col-lg-6 mt-5" style="overflow-y: scroll;">
-                        <div  style="width: 1200px;height: 600px;margin: auto;">
+                    <div id="fourthElement" class="col-sm-12 col-md-12 col-lg-12 mt-5" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicFourth','chart_screenVI');return false;" id="downloadGraphicFourth">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
+                        <div  style="width: 1200px;height: 650px;margin: auto;">
                             <canvas id="graphicFourth" ></canvas>
                         </div>
                     </div>
 
                     <!--Fiveth Element -->
-                    <div id="fivethElement" class="col-sm-12 col-md-12 col-lg-6 mt-5" style="overflow-y: scroll;">
-                        <div  style="width: 1200px;height: 600px;margin: auto;">
+                    <div id="fivethElement" class="col-sm-12 col-md-12 col-lg-12 mt-5" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicFiveth','chart_screenVI');return false;" id="downloadGraphicFiveth">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
+                        <div  style="width: 1200px;height: 650px;margin: auto;">
                             <canvas id="graphicFiveth" ></canvas>
                         </div>
                     </div>
@@ -186,7 +227,6 @@
                             <h3 ><span> Evaluaciones por Unidad de Negocio: </span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_sixthElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_sixthElement"><i class="fa-regular fa-file-excel"></i></button>
-                                <button  class="btn btn-danger" id="download_pdf_sixthElement"><i class="fa-regular fa-file-pdf"></i></button>
                             </h3>
                             <hr class="hrSixthElement">
                         </section>
@@ -199,15 +239,11 @@
                             <h3 ><span> % De campos llenos y promedio de evidencias servicio:</span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_seventhElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_seventhElement"><i class="fa-regular fa-file-excel"></i></button>
-                                <button  class="btn btn-danger" id="download_pdf_seventhElement"><i class="fa-regular fa-file-pdf"></i></button>
                             </h3>
                             <hr class="hrSeventhElement">
                         </section>
                         <div id="seventhElement" > </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
@@ -260,9 +296,9 @@
     <!-- Utils -->
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
     <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
-
     <script type="text/javascript" src="../utils/lkf_utils.js"></script>
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
+    <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
 
     <!-- Template -->
     <script type="text/javascript" src="./auditoria_express.js"></script>
