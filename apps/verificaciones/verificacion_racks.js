@@ -385,11 +385,9 @@ function setColumsData(columsData){
   if(filter!=undefined){
     if (array_filter.length > 0){
       for (var i = 0; i < columsData.length; i++) {
-        if (i>=8 && i<=29) {
+        if (i>=8 && i<=32) {
           if (array_filter.includes(count+1)) {
             newColums.push(columsData[i])
-            console.log(columsData[i])
-            console.log(count)
           }
           count+=1
         }else{
@@ -399,6 +397,5 @@ function setColumsData(columsData){
       columsData = newColums;
     }
   }
-  console.log('Columnas',columsData);
   return columsData
 }

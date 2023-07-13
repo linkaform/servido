@@ -20,20 +20,6 @@ hideElement("div_alert2");
 
 hideElement("firstElement");
 hideElement("secondElement");
-hideElement("thirdElement");
-hideElement("fourthElement");
-hideElement("fivethElement");
-hideElement("sixthElement");
-hideElement("seventhElement");
-
-
-hideElement("downloadGraphicFirst")
-hideElement("downloadGraphicSecond")
-hideElement("downloadGraphicThird")
-hideElement("downloadGraphicFourth")
-hideElement("downloadGraphicFiveth")
-
-
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -148,6 +134,10 @@ function loadDemoData(){
 
   getDrawTable('firstElement', columsTable1, dataTable1);
   document.getElementById("firstElement").style.removeProperty('display');
+
+
+  getDrawTable('secondElement', columsTable2, dataTable2);
+  document.getElementById("secondElement").style.removeProperty('display');
 }
 
 const loading = document.querySelector('.loading-container');
@@ -193,6 +183,10 @@ function getFirstElement(date_from, date_to, promotores){
       if (res.response.json.firstElement.data.length) {
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
+      }
+      if (res.response.json.secondElement.data.length) {
+        getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data);
+        document.getElementById("secondElement").style.removeProperty('display');
       }
     } else {
       hideLoading();

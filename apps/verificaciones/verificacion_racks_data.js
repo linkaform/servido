@@ -7,6 +7,7 @@ var columsTable1 = [
   { title:"%No", field:'no_percentage',hozAlign:"right",width:80},
 ];
 
+
 var dataTable1 = [
   {
     pregunta:'¿Los pernos de anclaje están rotos o incompletos?',
@@ -164,17 +165,6 @@ var dataTable1 = [
   },
 ];
 
-/*
-formatter: (cell, formatterParams) => {
-      if (cell.getData().pdf_name != "Sin PDF") {
-        return `<a href="${cell.getData().pdf_file}" target="_blank">${cell.getData().pdf_name}</a>`;
-      } else if (cell.getData().pdf_name != undefined) {
-        return cell.getData().pdf_name;
-      } else {
-      }
-      return "Hola";
-},
-*/
 
 //----DATA TABLE
 var columsTable2 = [
@@ -203,7 +193,7 @@ var columsTable2 = [
   {//create column group
     title:"¿Los pernos de anclaje están rotos o incompletos?",
     columns:[
-      {title:"Si/No", field:"pregunta_1", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_1", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_1",hozAlign:"center",width:200},
       {title:"Observaciones", field:"observaciones_1", tooltip:true ,width:200},
     ],
@@ -211,7 +201,7 @@ var columsTable2 = [
   {//create column group
     title:"¿Los pernos de anclaje están desajustados o torcidos?",
     columns:[
-      {title:"Si/No", field:"pregunta_2", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_2", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_2",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_2", hozAlign:"left", tooltip:true ,width:200},
     ],
@@ -219,7 +209,7 @@ var columsTable2 = [
   {//create column group
     title:"¿La placa base presenta golpes o fisuras?",
     columns:[
-      {title:"Si/No", field:"pregunta_3", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_3", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_3",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_3", hozAlign:"left", tooltip:true ,width:200},
     ],
@@ -227,7 +217,7 @@ var columsTable2 = [
   {//create column group
     title:"¿La placa base o los pernos tienen presencia de óxido?",
     columns:[
-      {title:"Si/No", field:"pregunta_4", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_4", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_4",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_4", hozAlign:"left", tooltip:true ,width:200},
     ],
@@ -235,7 +225,7 @@ var columsTable2 = [
   {//create column group
     title:"¿La placa base está sin protector de puntal?",
     columns:[
-      {title:"Si/No", field:"pregunta_5", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_5", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_5",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_5", hozAlign:"left", tooltip:true ,width:200},
     ],
@@ -243,137 +233,161 @@ var columsTable2 = [
   {//create column group
     title:"¿El protector de puntal está oxidado o abollado?",
     columns:[
-      {title:"Si/No", field:"pregunta_6", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_6", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_6",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_6", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿Los puntales presentan deformaciones o golpes?",
+    title:"¿Los pernos del protector de puntal se encuentran desajustados o torcidos?",
     columns:[
-      {title:"Si/No", field:"pregunta_7", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_7", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_7",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_7", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿Las diagonales presentan deformaciones o golpes?",
+    title:"¿Los puntales presentan deformaciones o golpes?",
     columns:[
-      {title:"Si/No", field:"pregunta_8", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_8", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_8",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_8", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿Las horizontales presentan deformaciones o golpes?",
+    title:"¿Las diagonales presentan deformaciones o golpes?",
     columns:[
-      {title:"Si/No", field:"pregunta_9", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_9", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_9",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_9", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿Los distanciadores presentan deformaciones o golpes?",
+    title:"¿Las horizontales presentan deformaciones o golpes?",
     columns:[
-      {title:"Si/No", field:"pregunta_10", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_10", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_10",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_10", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿El puntal presenta problemas de verticalidad?",
+    title:"¿Los distanciadores presentan deformaciones o golpes?",
     columns:[
-      {title:"Si/No", field:"pregunta_11", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_11", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_11",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_11", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿Existen elementos oxidados?",
+    title:"¿El puntal presenta problemas de verticalidad?",
     columns:[
-      {title:"Si/No", field:"pregunta_12", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_12", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_12",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_12", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿El protector lateral del bastidor está oxidado o abollado?",
+    title:"¿Existen elementos oxidados?",
     columns:[
-      {title:"Si/No", field:"pregunta_13", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_13", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_13",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_13", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿Los pernos y seguros están desajustados o incompletos?",
+    title:"¿El protector lateral del bastidor está oxidado o abollado?",
     columns:[
-      {title:"Si/No", field:"pregunta_14", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_14", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_14",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_14", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿El larguero presenta deformaciones o golpes?",
+    title:"¿Los pernos y seguros están desajustados o incompletos?",
     columns:[
-      {title:"Si/No", field:"pregunta_15", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_15", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_15",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_15", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿El larguero presenta problemas de horizontalidad?",
+    title:"¿El larguero presenta deformaciones o golpes?",
     columns:[
-      {title:"Si/No", field:"pregunta_16", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_16", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_16",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_16", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿El larguero presenta problemas de oxidación?",
+    title:"¿El larguero presenta problemas de horizontalidad?",
     columns:[
-      {title:"Si/No", field:"pregunta_17", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_17", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_17",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_17", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿Los pernos y clavijas de anclaje están desajustados o incompletos?",
+    title:"¿El larguero presenta problemas de oxidación?",
     columns:[
-      {title:"Si/No", field:"pregunta_18", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_18", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_18",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_18", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿El tensor esta roto, deformado o desconectado?",
+    title:"¿Los pernos y clavijas de anclaje están desajustados, torcidos o incompletos?",
     columns:[
-      {title:"Si/No", field:"pregunta_19", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_19", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_19",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_19", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿Los pernos están desajustados o incompletos?",
+    title:"¿El larguero presenta problemas de engranaje o conexión con el puntal?",
     columns:[
-      {title:"Si/No", field:"pregunta_20", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_20", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_20",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_20", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿La losa presenta daños o desniveles?",
+    title:"¿El tensor está roto, deformado o desconectado?",
     columns:[
-      {title:"Si/No", field:"pregunta_21", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_21", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_21",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones_21", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   {//create column group
-    title:"¿Tiene otras observaciones?",
+    title:"¿El arriostre está roto, deformado o desconectado?",
     columns:[
-      {title:"Si/No", field:"pregunta_22", hozAlign:"right", width:100},
+      {title:"Si/No", field:"pregunta_22", hozAlign:"right", width:150},
       {title:"Evidencia", field:"evidencia_22",hozAlign:"center", width:200},
       {title:"Observaciones", field:"observaciones22", hozAlign:"left", tooltip:true ,width:200},
+    ],
+  },
+  {//create column group
+    title:"¿Los pernos están desajustados o incompletos?",
+    columns:[
+      {title:"Si/No", field:"pregunta_23", hozAlign:"right", width:150},
+      {title:"Evidencia", field:"evidencia_23",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones23", hozAlign:"left", tooltip:true ,width:200},
+    ],
+  },
+  {//create column group
+    title:"¿La losa presenta daños o desniveles?",
+    columns:[
+      {title:"Si/No", field:"pregunta_24", hozAlign:"right", width:150},
+      {title:"Evidencia", field:"evidencia_24",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones24", hozAlign:"left", tooltip:true ,width:200},
+    ],
+  },
+  {//create column group
+    title:"¿Tiene otras observaciones?",
+    columns:[
+      {title:"Si/No", field:"pregunta_25", hozAlign:"right", width:150},
+      {title:"Evidencia", field:"evidencia_25",hozAlign:"center", width:200},
+      {title:"Observaciones", field:"observaciones25", hozAlign:"left", tooltip:true ,width:200},
     ],
   },
   { title:"Comentarios Adicionales", field:'comentarios',hozAlign:"left", tooltip:true ,width:200},
@@ -585,7 +599,6 @@ var dataTable2 = [
     comentarios:'Comentarios ejemplo',
   },
 ];
-
 
 
 //----- CONFIG GRAPHIC
