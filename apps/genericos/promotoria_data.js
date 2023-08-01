@@ -107,6 +107,7 @@ var columsTable2 = [
   { title:"HORA ENTRADA", field:'hora_entrada', hozAlign:"left", headerTooltip:true,width:160},
   { title:"FECHA SALIDA", field:'fecha_salida', hozAlign:"left", headerTooltip:true,width:160},
   { title:"HORA SALIDA", field:'hora_salida', hozAlign:"left", headerTooltip:true,width:160},
+  { title:"TIEMPO DE TRABAJO", field:'tiempo_trabajo', hozAlign:"center", headerTooltip:true,width:200},
   { title:"HORAS TRABAJADAS", field:'horas_totales', hozAlign:"right", headerTooltip:true, bottomCalc:"sum", bottomCalcParams:{precision:2},width:160},
 ];
 

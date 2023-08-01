@@ -170,11 +170,16 @@ function setDate(){
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  let promotor = document.getElementById("promotor");  
-  getFirstElement(date_to.value, date_from.value);
+
+  option = 0;
+  if (document.getElementById('input_check').checked)
+  {
+    option = 1;
+  }
+  getFirstElement(date_to.value, date_from.value, option);
 }
 
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(dateTo, dateFrom, option){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -187,6 +192,7 @@ function getFirstElement(dateTo, dateFrom){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
+      option: option,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -201,7 +207,11 @@ function getFirstElement(dateTo, dateFrom){
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.firstElement.tabledata) {
-        getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata, 450);
+        if(option == 0){
+          getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata, 450);
+        }else if(option == 1){
+          getDrawTable('firstElement', columsTable2, res.response.firstElement.tabledata, 450);
+        }
         document.getElementById("firstElement").style.removeProperty('display');
       }
     } else {
