@@ -51,6 +51,7 @@ var columsTable2 = [
   { title:"Flats", field:'flats',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:150},
   { title:"Hours", field:'hours',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:150},
   { title:"Flats X Hour", field:'flats_x_hour',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:150},
+  { title:"Flats Half Hour", field:'flats_half_hour',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:150},
 ];
 
 var dataTable2 = [

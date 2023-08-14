@@ -490,7 +490,7 @@ function getFormatGauge(label, value, range, id) {
       type: "indicator",
       mode: "gauge+number",
       gauge: {
-        axis: { range: [null, range], tickwidth: 1},
+        axis: { range: [true, range], tickwidth: 1},
         bar: { color: "#f7bd53" },
         bgcolor: "white",
         borderwidth: 2,
