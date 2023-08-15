@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Reporte Visitas">
+        <meta name="description" content="Encuestas Montaje">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte Visitas</h1>
+                    <h1 id="title_report">Reporte de Bandas</h1>
                 </div>
             </div> 
         </nav>
@@ -76,13 +76,8 @@
                     </center>
                 </div>
 
-
-
                 <!--OPtions FIlter -->
                 <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
-                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
-                        <i class="fa-solid fa-filter"></i>
-                    </button >  &nbsp;  &nbsp;
                     <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
                 </div>
 
@@ -90,45 +85,62 @@
                 <div id="firstParameters" class="collapse row show">
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Fecha Desde: </h5>
-                        <input class="form-control ds-input" type="date" id="date_from" name="date_from">
+                        <input class="form-control ds-input" type="month" id="date_from" name="date_from">
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Fecha Hasta: </h5>
-                        <input class="form-control ds-input" type="date" id="date_to" name="date_to">
+                        <input class="form-control ds-input" type="month" id="date_to" name="date_to">
                     </div>
-
-                    <div class="col-sm-12 col-md-3 col-lg-3" >
-                        <h5>Promotor: </h5>
-                        <select class="form-control mdb-select md-form" id="promotor">
-                            <option value="">--Seleccione--</option>
-                        </select>
-                    </div>
-
-
                 </div>
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-                    <!--Primer Elemento -->
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                    <div class="col-sm-12 col-md-6 col-lg-6 " style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3><span>Recepción Visitas</span>&nbsp;&nbsp;
-                                <button class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
+                            <h3 ><span>Bandas Mensuales por Cliente:</span>&nbsp;&nbsp;
+                                <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
                             <hr class="hrFirstElement">
                         </section>
-                        <div id="firstElement" ></div>
+                        <div id="firstElement" > </div>
                     </div>
-
-                    
+                    <div class="col-sm-12 col-md-6 col-lg-6 " style="align-items: center;overflow-y: scroll;">
+                        <div id="secondElement" > 
+                            <div style="width: 700px;height: 400px;margin: auto;" > 
+                                <canvas id="graphicSecond"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-5" style="align-items: center;overflow-y: scroll;">
+                        <section class="title_tables">
+                            <h3 ><span>Bandas por Mes por Region:</span>&nbsp;&nbsp;
+                                <button  class="btn btn-primary" id="download_csv_thirdElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_thirdElement"><i class="fa-regular fa-file-excel"></i></button>
+                            </h3>
+                            <hr class="hrthirdElement">
+                        </section>
+                        <div id="thirdElement"></div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 " style="align-items: center;overflow-y: scroll;">
+                        <div id="fourthElement" > 
+                            <div style="width: 700px;height: 400px;margin: auto;" > 
+                                <canvas id="graphicFourth"></canvas>
+                            </div>
+                            <div style="width: 500px;height: 500px;margin: auto;" > 
+                                <canvas id="graphicFiveth"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </body>
 
 
+
     <!-- TABULATOR -->
+    <!-- tabulator : Excel Downlowd-->
     <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
     <!-- tabulator : PDF Downlowd-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
@@ -136,16 +148,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
 
     <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
-
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
     
 
     <!-- chartjs -->
     <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script type="text/javascript" src="https://unpkg.com/chart.js-plugin-labels-dv/dist/chartjs-plugin-labels.min.js"></script>
     <!-- Jquery -->
     <script
     src="https://code.jquery.com/jquery-3.6.0.js"
@@ -174,7 +186,7 @@
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./reporte_visitas.js"></script>
-    <script type="text/javascript" src="./reporte_visitas_data.js"></script>
+    <script type="text/javascript" src="./encuestas_montaje.js"></script>
+    <script type="text/javascript" src="./encuestas_montaje_data.js"></script>
     </body>
 </html>

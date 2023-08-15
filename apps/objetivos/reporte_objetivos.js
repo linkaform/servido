@@ -91,8 +91,6 @@ window.onload = function(){
     }
     //--Styles
     setSpinner();
-    setDate();
-    get_catalog();
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
@@ -133,49 +131,19 @@ function loadDemoData(){
   unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
 
-  getDrawTable('firstElement', columsTable1, dataTable1, 350);
-  document.getElementById("firstElement").style.removeProperty('display');
 }
 
-//-----DATE
-function setDate(){
-  array_month = ['01','02','03','04','05','06','07','08','09','10','11','12'];
-  //---DATE TO
-  date_to = new Date();
-  year = date_to.getFullYear();
-  month = array_month[date_to.getMonth()];
-  day = date_to.getDate();
-  date_to = year +'-'+ month +'-'+ day;
-  $('#date_to').val(date_to);
-  //---DATE FROM
-  date_from = new Date();
-  date_from.setDate(date_from.getDate() - 30)
 
-  year = date_from.getFullYear();
-  month = array_month[date_from.getMonth()];
-  day = date_from.getDate();
-  date_from = year +'-'+ month +'-'+ day;
-  $('#date_from').val(date_from);
-}
 
 //-----EXCUTION
 function runFirstElement(){
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  let promotor = document.getElementById("promotor");  
-
-  if (date_from.value != null && date_to.value != null && date_from.value != "" && date_to.value != ""){
-    getFirstElement(date_to.value, date_from.value, promotor.value);
-  }
-  else
-  {
-    Swal.fire({
-      title: 'Rango de Fechas Requerido',
-    });
-  }
+  let year = document.getElementById("year");
+  let month = document.getElementById("month");  
+  getFirstElement(year.value, month.value);
+ 
 }
 
-function getFirstElement(dateTo, dateFrom, promotor){
+function getFirstElement(year, month){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -186,10 +154,8 @@ function getFirstElement(dateTo, dateFrom, promotor){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      date_to: dateTo,
-      date_from: dateFrom,
-      promotor: promotor,
-      option: 1,
+      year: year,
+      month: month,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -203,11 +169,15 @@ function getFirstElement(dateTo, dateFrom, promotor){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res.response)
-      
-      if (res.response.firstElement.tabledata) {
-        getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata, 450);
+
+      if (res.response.json.firstElement.data) {
+        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data, 350);
         document.getElementById("firstElement").style.removeProperty('display');
+      }
+      if (res.response.json.secondElement) {
+        drawFirstElement(res.response.json.secondElement, setOptions1)
+        document.getElementById("secondElement").style.removeProperty('display');
+        document.getElementById("graphicFirst").style.removeProperty('display');
       }
       
 
@@ -262,39 +232,21 @@ function getDrawTable(id, columnsData, tableData, height = 500){
   }
 }
 
-//-----CATALOG
-function get_catalog() 
-{
-  fetch(url + 'infosync/scripts/run/', {
-      method: 'POST',
-      body: JSON.stringify({
-        script_id: 95556,
-        option: 0,
-      }),
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+userJwt
-      },
-    })
-    .then(res => res.json())
-    .then(res => {
-      if (res.success) {
-        if (res.response.catalog.length){
-          array_value = []
-          for (i = 0; i < res.response.catalog.length; i++) {
-            if (!array_value.includes(res.response.catalog[i]['63dc0f1ec29b8336b7b72615'])) {
-              array_value.push(res.response.catalog[i]['63dc0f1ec29b8336b7b72615'])
-            }
-          }
-          array_value.sort();
-          $("#promotor").empty();
-          $('#promotor').append('<option value="--">--Seleccione--</option>');
-          for (i = 0; i <array_value.length; i++) {
-            $('#promotor').append('<option value="'+ array_value[i] +'">'+array_value[i]+'</option>');
-          }
+//----GRAFICAS
+//-----GRAPICH
+let chart1;
+function drawFirstElement(datasets, dataconfig){
+  //---CHART
+  var ctx = document.getElementById('graphicFirst').getContext('2d');
+  if (chart1) {
+    chart1.destroy();
+  }
+  chart1 = new Chart(ctx, {
+    type: 'bar',
+    data: datasets,
+    plugins: [ChartDataLabels],
+    options: dataconfig
+  });
+}
 
-        }
-      } 
-    })
-};
 

@@ -18,12 +18,14 @@ hideElement("firstParameters");
 hideElement("firstElement");
 hideElement("secondElement");
 hideElement("thirdElement");
+hideElement("fourthElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
   var formNode = document.getElementById("appCont");
 	for(var key in qs){
     if (key === 'script_id' ){
+      console.log('script id', key)
       scriptId = parseInt(qs[key]);
     }
     if (key === 'env') {
@@ -91,7 +93,6 @@ window.onload = function(){
     }
     //--Styles
     setSpinner();
-    setDate();
     get_catalog();
     $('#divOptions').show();
     $('#title_report').show();
@@ -116,66 +117,50 @@ window.onload = function(){
   }
 }
 
+
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
   unhideElement("firstElement-Buttons");
   unhideElement("firstParameters");
   unhideElement("close_sesion");
+  unhideElement("firstElement");
+}
+
+function loadDemoData(){
+  unhideElement("title_demo")
+  $('.title_tables').show();
+  document.getElementById("firstParameters").style.removeProperty('display');
+
+  getDrawTable('firstElement', columsTable1, dataTable1, 350);
+  document.getElementById("firstElement").style.removeProperty('display');
+
+  drawFirstElement(data1, setOptions1)
+  document.getElementById("secondElement").style.removeProperty('display');
+  document.getElementById("graphicFirst").style.removeProperty('display');
+
+  drawSecondElement(data2, setOptions2)
+  document.getElementById("thirdElement").style.removeProperty('display');
+  document.getElementById("graphicSecond").style.removeProperty('display');
+
+
+  drawThirdElement(data3, setOptions3)
+  document.getElementById("fourthElement").style.removeProperty('display');
+  document.getElementById("graphicThird").style.removeProperty('display');
+
+
 }
 
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
-
-//-----DEMO 
-function loadDemoData(){
-  $('.title_tables').show();
-  unhideElement("title_demo")
-  document.getElementById("firstParameters").style.removeProperty('display');
-
-  getDrawTable('firstElement', columsTable1, dataTable1, 350);
-  document.getElementById("firstElement").style.removeProperty('display');
-}
-
-//-----DATE
-function setDate(){
-  array_month = ['01','02','03','04','05','06','07','08','09','10','11','12'];
-  //---DATE TO
-  date_to = new Date();
-  year = date_to.getFullYear();
-  month = array_month[date_to.getMonth()];
-  day = date_to.getDate();
-  date_to = year +'-'+ month +'-'+ day;
-  $('#date_to').val(date_to);
-  //---DATE FROM
-  date_from = new Date();
-  date_from.setDate(date_from.getDate() - 30)
-
-  year = date_from.getFullYear();
-  month = array_month[date_from.getMonth()];
-  day = date_from.getDate();
-  date_from = year +'-'+ month +'-'+ day;
-  $('#date_from').val(date_from);
-}
-
-//-----EXCUTION
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  let promotor = document.getElementById("promotor");  
+  let producto = document.getElementById("producto");  
+  getFirstElement(date_to.value, date_from.value, producto.value);
+};
 
-  if (date_from.value != null && date_to.value != null && date_from.value != "" && date_to.value != ""){
-    getFirstElement(date_to.value, date_from.value, promotor.value);
-  }
-  else
-  {
-    Swal.fire({
-      title: 'Rango de Fechas Requerido',
-    });
-  }
-}
-
-function getFirstElement(dateTo, dateFrom, promotor){
+function getFirstElement(dateTo, dateFrom, product){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -188,8 +173,7 @@ function getFirstElement(dateTo, dateFrom, promotor){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      promotor: promotor,
-      option: 1,
+      product: product,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -203,13 +187,29 @@ function getFirstElement(dateTo, dateFrom, promotor){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res.response)
-      
-      if (res.response.firstElement.tabledata) {
-        getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata, 450);
+
+      if (res.response.json.firstElement.data) {
+        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data, 350);
         document.getElementById("firstElement").style.removeProperty('display');
       }
-      
+      if (res.response.json.secondElement) {
+        drawFirstElement(res.response.json.secondElement, setOptions1)
+        document.getElementById("secondElement").style.removeProperty('display');
+        document.getElementById("graphicFirst").style.removeProperty('display');
+      }
+      if (res.response.json.thirdElement) {
+        console.log(res.response.json.thirdElement)
+        drawSecondElement(res.response.json.thirdElement, setOptions2)
+        document.getElementById("thirdElement").style.removeProperty('display');
+        document.getElementById("graphicSecond").style.removeProperty('display');
+      }
+      if (res.response.json.fourthElement) {
+        console.log(res.response.json.fourthElement)
+        drawThirdElement(res.response.json.fourthElement, setOptions3)
+        document.getElementById("fourthElement").style.removeProperty('display');
+        document.getElementById("graphicThird").style.removeProperty('display');
+      }
+
 
     } else {
       hideLoading();
@@ -228,12 +228,12 @@ function getFirstElement(dateTo, dateFrom, promotor){
       }
     }
   })
-}
+};
 
 //-----TABLES
-function getDrawTable(id, columnsData, tableData, height = 500){
+function getDrawTable(id, columnsData, tableData, height){
   var  table = new Tabulator("#" + id, {
-    height:height +"px",
+    height: height+"px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -262,14 +262,77 @@ function getDrawTable(id, columnsData, tableData, height = 500){
   }
 }
 
+//-----GRAPICH
+let chart1;
+function drawFirstElement(datasets, dataconfig){
+
+  //---CHART
+  var ctx = document.getElementById('graphicFirst').getContext('2d');
+  
+  if (chart1) {
+    chart1.destroy();
+  }
+  //---COLORS
+  array_colors = getPAlleteColors(6, datasets['labels'].length);
+  datasets['datasets'][0]['backgroundColor'] = array_colors
+  datasets['datasets'][0]['borderColor'] = array_colors
+
+  chart1 = new Chart(ctx, {
+    type: 'bar',
+    data: datasets,
+    plugins: [ChartDataLabels],
+    options: dataconfig
+  });
+}
+
+let chart2;
+function drawSecondElement(datasets, dataconfig){
+
+  //---CHART
+  var ctx = document.getElementById('graphicSecond').getContext('2d');
+  
+  if (chart2) {
+    chart2.destroy();
+  }
+  //---COLORS
+  console.log(datasets)
+  array_colors = getPAlleteColors(6, datasets['labels'].length);
+  datasets['datasets'][0]['backgroundColor'] = array_colors
+  datasets['datasets'][0]['borderColor'] =  array_colors
+
+  chart2 = new Chart(ctx, {
+    type: 'bar',
+    data: datasets,
+    plugins: [ChartDataLabels],
+    options: dataconfig
+  });
+}
+
+let chart3;
+function drawThirdElement(datasets, dataconfig){
+  //---CHART
+  var ctx = document.getElementById('graphicThird').getContext('2d');
+  
+  if (chart3) {
+    chart3.destroy();
+  }
+
+  chart3 = new Chart(ctx, {
+    type: 'line',
+    data: datasets,
+    plugins: [ChartDataLabels],
+    options: dataconfig
+  });
+}
+
 //-----CATALOG
 function get_catalog() 
 {
   fetch(url + 'infosync/scripts/run/', {
       method: 'POST',
       body: JSON.stringify({
-        script_id: 95556,
-        option: 0,
+        script_id: 106747,
+        option: 1,
       }),
       headers:{
         'Content-Type': 'application/json',
@@ -278,23 +341,22 @@ function get_catalog()
     })
     .then(res => res.json())
     .then(res => {
-      if (res.success) {
-        if (res.response.catalog.length){
-          array_value = []
-          for (i = 0; i < res.response.catalog.length; i++) {
-            if (!array_value.includes(res.response.catalog[i]['63dc0f1ec29b8336b7b72615'])) {
-              array_value.push(res.response.catalog[i]['63dc0f1ec29b8336b7b72615'])
-            }
+    if (res.success) {
+      if (res.response.catalog.length){
+        array_value = []
+        for (i = 0; i < res.response.catalog.length; i++) {
+          if (!array_value.includes(res.response.catalog[i]['00000ffff10653866f9a0d94'])) {
+            array_value.push(res.response.catalog[i]['00000ffff10653866f9a0d94'])
           }
-          array_value.sort();
-          $("#promotor").empty();
-          $('#promotor').append('<option value="--">--Seleccione--</option>');
-          for (i = 0; i <array_value.length; i++) {
-            $('#promotor').append('<option value="'+ array_value[i] +'">'+array_value[i]+'</option>');
-          }
-
         }
-      } 
-    })
-};
+        array_value.sort();
+        $("#producto").empty();
+        $('#producto').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i <array_value.length; i++) {
+          $('#producto').append('<option value="'+ array_value[i] +'">'+array_value[i]+'</option>');
+        }
 
+      }
+    } 
+  })
+};

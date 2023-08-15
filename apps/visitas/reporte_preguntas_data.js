@@ -66,8 +66,6 @@ var columsTable1 = [
   { title:"Comparte tus comentarios adicionales", field:'pregunta_20',hozAlign:"left", headerTooltip:true,width:300},
 ];
 
-
-
 var dataTable1 = [
   {
     "folio": "850-11702", 
@@ -473,13 +471,104 @@ var dataTable1 = [
     "pregunta_19": 'Comentario de ejemplo',
     "pregunta_20": 'Comentario de ejemplo',
   },   
-
 ];
 
+var columsTable2 = [
+  {title:"Folio", field:'folio', hozAlign:"right", formatter:"link", formatterParams:{
+  url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
+  target:"_blank",},  headerTooltip:true,width:100},
+  { title:"Store ID", field:'store_id',hozAlign:"right", headerTooltip:true,width:200},
+  { title:"Merchant", field:'merchant',hozAlign:"left", headerTooltip:true,width:300},
+  { title:"Store", field:'store',hozAlign:"left", headerTooltip:true,width:300},
+  { title:"Promotor", field:'promotor',hozAlign:"left", headerTooltip:true,width:300},
+  { title:"Fecha", field:'fecha',hozAlign:"center", headerTooltip:true,width:150},
+  { title:"Hora", field:'hora',hozAlign:"center", headerTooltip:true,width:150},
 
-
-
-
+  { title:"¿La tienda cuenta con usuario y contraseña ?", field:'pregunta_1',hozAlign:"left", headerTooltip:true,width:300},
+  { title:"¿La tienda ya cuenta con los datos de soporte telefónico servicio al cliente y tienda?", field:'pregunta_2',hozAlign:"left", headerTooltip:true,width:300},
+  { title:"Describe las fallas u optunidades de mejora que te comentaron los vendedores, y cómo se resolvieron.", field:'pregunta_3',hozAlign:"left", headerTooltip:true,width:300},
+  {
+    title:"En tu visita, ¿Qué obstáculos y/o retos tiene la tienda?",
+    columns:[
+      { title:"Clientes no les interesa Kueski Pay", field:'pregunta_4A',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Vendedores no cuentan con capacitación", field:'pregunta_4B',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Vendedores no ofrecen Kueski Pay", field:'pregunta_4C',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Dar Beneficios de Kuesky Pay a Vendedores", field:'pregunta_4D',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"No tienen autorización de corporativo para ofrecer Kueski", field:'pregunta_4F',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Otro", field:'pregunta_4G',hozAlign:"left", headerTooltip:true,width:300},
+    ],
+  },
+  { title:"¿Compartiste las ventas que tiene con Kueski Pay actualmente la tienda?", field:'pregunta_5',hozAlign:"left", headerTooltip:true,width:300},
+  {
+    title:"¿La tienda cuenta con publicidad de Kueski?",
+    columns:[
+      { title:"No", field:'pregunta_6A',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Sticker", field:'pregunta_6B',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Carta Informativa ( mini banner )", field:'pregunta_6C',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Video Pantalla", field:'pregunta_6D',hozAlign:"left", headerTooltip:true,width:300},
+    ],
+  },
+  { title:"¿Numero telefonico de sucursal?", field:'pregunta_8',hozAlign:"left", headerTooltip:true,width:300},
+  { title:"¿Cuál es el nombre del gerente de sucursal o encargado?", field:'pregunta_9',hozAlign:"left", headerTooltip:true,width:300},
+  { title:"¿Cuál es el mail del gerente o encargado de sucursal?", field:'pregunta_10',hozAlign:"left", headerTooltip:true,width:300},
+  {
+    title:"¿La tienda tiene promociones vigentes de Kueski?",
+    columns:[
+      { title:"Respuesta", field:'pregunta_11',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"¿Cuál?", field:'pregunta_12',hozAlign:"left", headerTooltip:true,width:300},
+    ],
+  },
+  {
+    title:"¿ Tuvo alguna  promoción de Kueski el mes pasado ?",
+    columns:[
+      { title:"Respuesta", field:'pregunta_13',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"¿Cuál?", field:'pregunta_14',hozAlign:"left", headerTooltip:true,width:300},
+    ],
+  },
+  {
+    title:"¿La tienda tiene promociones vigentes de la marca?",
+    columns:[
+      { title:"Respuesta", field:'pregunta_15',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"¿Cuál?", field:'pregunta_16',hozAlign:"left", headerTooltip:true,width:300},
+    ],
+  },
+  {
+    title:"¿La tienda tuvo alguna  promoción de la marca el mes pasado?",
+    columns:[
+      { title:"Respuesta", field:'pregunta_17',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"¿Cuál?", field:'pregunta_18',hozAlign:"left", headerTooltip:true,width:300},
+    ],
+  },
+  { title:"Comentarios Adicionales", field:'pregunta_19',hozAlign:"left", headerTooltip:true,width:300},
+  { title:"¿La tienda cuenta con cobro de Aplazo?", field:'pregunta_20',hozAlign:"left", headerTooltip:true,width:300},
+  {
+    title:"¿La tienda cuenta con publicidad de Aplazo?",
+    columns:[
+      { title:"No", field:'pregunta_21A',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Banner", field:'pregunta_21B',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Sticker", field:'pregunta_21C',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Video Pantalla", field:'pregunta_21D',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Carta Informativa", field:'pregunta_21E',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Cenefa", field:'pregunta_21F',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Stopper", field:'pregunta_21G',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Otro", field:'pregunta_21H',hozAlign:"left", headerTooltip:true,width:300},
+    ],
+  },
+  {
+    title:"¿Tiene algún incentivo de Aplazo?",
+    columns:[
+      { title:"Respuesta", field:'pregunta_22',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Desarrollar Respuesta", field:'pregunta_23',hozAlign:"left", headerTooltip:true,width:300},
+    ],
+  },
+  {
+    title:"¿Tiene alguna promoción la tienda con Aplazo?",
+    columns:[
+      { title:"Respuesta", field:'pregunta_24',hozAlign:"left", headerTooltip:true,width:300},
+      { title:"Desarrollar Respuesta", field:'pregunta_25',hozAlign:"left", headerTooltip:true,width:300},
+    ],
+  },
+];
   
 
 

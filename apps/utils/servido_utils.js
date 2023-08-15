@@ -120,9 +120,6 @@ function login() {
           getCompanyLogo(userParentId)
         }
 
-        //---DEMO
-        //---EJECUTAR AQUI BLOQUE
-
       } else {
         hideLoading();
         Swal.fire({
@@ -217,7 +214,6 @@ function getPAlleteColors(pallete,number){
   return arrayColors;
 }
 
-
 function setSpinner(){
   if ($("#divContent")){
     $("#divContent").after(''+
@@ -235,7 +231,6 @@ function setSpinner(){
     $('.load-wrapp').hide();
   }  
 }
-
 
 ///-----DOWNLOAD 
 function get_chartDownload(id,style) 
@@ -259,8 +254,6 @@ function getDownload(uri, filename){
     window.open(uri);
   }
 }
-
-
 
 function setDateFilterMonth() {
   date = new Date();

@@ -150,20 +150,24 @@ loading.style.display = 'none';
 
 
 function runFirstElement(){
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
 
-  if (date_from.value!="" && date_to.value!="") {
-    getFirstElement(date_to.value, date_from.value);
+  if ($("#date_from").length > 0 && $("#date_to").length > 0) {
+    let date_from = document.getElementById("date_from");
+    let date_to = document.getElementById("date_to");  
+    if (date_from.value!="" && date_to.value!="") {
+      getFirstElement(date_to.value, date_from.value);
+    }else{
+      Swal.fire({
+        title: 'Rango de fechas requerido',
+      });
+    }
   }else{
-    Swal.fire({
-      title: 'Rango de fechas requerido',
-    });
+    getFirstElement();
   }
 };
 
 
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(dateTo='', dateFrom=''){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -241,6 +245,15 @@ function drawSecondElement(data){
       chart2.destroy();
   }
 
+  //----TITLE
+  title = ''
+  if ($("#date_from").length > 0 && $("#date_to").length > 0) {
+    title = 'Bandas Mensuales Por Cliente'
+  }else{
+    title = 'Montajes Mensuales Por Cliente'
+  }
+  
+
   chart2 = new Chart(ctx, {
     type: 'line',
     data: {
@@ -264,7 +277,7 @@ function drawSecondElement(data){
         },
         title: {
           display: true,
-          text: 'Bandas Mensuales Por Cliente',
+          text: title,
           font: {
             size: 25
           }
@@ -291,8 +304,16 @@ function drawFourthElement(data){
   //---CHART
   var ctx = document.getElementById('graphicFourth').getContext('2d');
   
+  //----TITLE
+  title = ''
+  if ($("#date_from").length > 0 && $("#date_to").length > 0) {
+    title = 'Bandas Mensuales Por Region'
+  }else{
+    title = 'Montajes Mensuales Por Region'
+  }
+
   if (chart4) {
-      chart4.destroy();
+    chart4.destroy();
   }
   chart4 = new Chart(ctx, {
     type: 'line',
@@ -308,7 +329,7 @@ function drawFourthElement(data){
         },
         title: {
           display: true,
-          text: 'Bandas Mensuales Por Region',
+          text: title,
           font: {
             size: 25
           }
@@ -338,6 +359,7 @@ function drawFivethElement(data){
     var datasets = data.map(function(e) {
         return e.total;
     });
+
 
     //--- Colors
     var array_colors = getPAlleteColors(6,datasets.length);
