@@ -1,4 +1,5 @@
-FROM python:3.7.10-stretch as develop
+#FROM python:3.7.10-stretch as develop
+FROM python:3.7.16-bullseye as develop
 
 
 RUN apt-get update && \
@@ -36,15 +37,39 @@ FROM develop as build
 RUN apt-get update && \
     apt-get install -y \
       nginx \
-      uwsgi \
-      uwsgi-plugin-python \
       apt-transport-https \
       ca-certificates \
       curl \
       gnupg2 \
       software-properties-common \
       build-essential \
-      python-dev
+      python-dev \
+      libpython2.7 \
+      libzmq5 \
+      libjansson4
+      #uwsgi \
+      #uwsgi-plugin-python \
+
+RUN cd /tmp/
+### install uwsgi 2.18 ###
+RUN wget http://ftp.us.debian.org/debian/pool/main/libm/libmatheval/libmatheval1_1.1.11+dfsg-3_amd64.deb
+RUN wget http://ftp.us.debian.org/debian/pool/main/u/uwsgi/uwsgi-core_2.0.18-1_amd64.deb
+RUN wget http://ftp.us.debian.org/debian/pool/main/u/uwsgi/uwsgi_2.0.18-1_amd64.deb
+RUN wget http://ftp.us.debian.org/debian/pool/main/u/uwsgi/uwsgi-plugin-python_2.0.18-1_amd64.deb
+RUN dpkg -i libmatheval1_1.1.11+dfsg-3_amd64.deb
+RUN dpkg -i uwsgi-core_2.0.18-1_amd64.deb
+RUN dpkg -i uwsgi_2.0.18-1_amd64.deb 
+RUN dpkg -i uwsgi-plugin-python_2.0.18-1_amd64.deb
+
+#wget http://ftp.us.debian.org/debian/pool/main/libm/libmatheval/libmatheval1_1.1.11+dfsg-3_amd64.deb
+#wget http://ftp.us.debian.org/debian/pool/main/u/uwsgi/uwsgi-core_2.0.18-1_amd64.deb
+#wget http://ftp.us.debian.org/debian/pool/main/u/uwsgi/uwsgi_2.0.18-1_amd64.deb
+#wget http://ftp.us.debian.org/debian/pool/main/u/uwsgi/uwsgi-plugin-python_2.0.18-1_amd64.deb
+#dpkg -i libmatheval1_1.1.11+dfsg-3_amd64.deb
+#dpkg -i uwsgi-core_2.0.18-1_amd64.deb
+#dpkg -i uwsgi_2.0.18-1_amd64.deb 
+#dpkg -i uwsgi-plugin-python_2.0.18-1_amd64.deb
+######################################################
 
 #Flask Env
 ENV FLASK_APP=flaskr

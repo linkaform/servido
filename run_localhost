@@ -1,0 +1,55 @@
+#!/bin/bash
+# wget https://f001.backblazeb2.com/file/lkf-resources/lkf-models-0.1.tar.gz
+# pip install lkf-models-0.1.tar.gz
+# tar -xzvf lkf-models-0.1.tar.gz
+# pip install ./lkf-models-0.1/
+# pip install ./lkf-models-0.1/
+echo '================================================='
+echo "RUNNING on local server mode!!!!"
+echo '================================================='
+cd /srv/servido/
+/bin/sh -c 'nginx && /usr/local/bin/flask run --host 0.0.0.0'
+# cp /docker/local_settings.py /srv/backend.linkaform.com/infosync-api/backend/infosync/local_settings.py
+# cp /docker/dev_settings.py /srv/backend.linkaform.com/infosync-api/backend/infosync/dev_settings.py
+# cd /srv/backend.linkaform.com/infosync-api/backend/infosync
+# cd /srv/backend.linkaform.com/infosync-api/backend
+#
+# HAS_KEYS=$(ls -ld /srv/backend.linkaform.com/infosync-api/backend/infosync/lkf_jwt)
+# if [[ $HAS_KEYS != *[!\ ]* ]]; then
+#     echo "No JWT keys!!!!"
+#     echo "coping temp keys form docker"
+#     cp /docker/lkf_jwt* /srv/backend.linkaform.com/infosync-api/backend/infosync/
+#     cp /docker/creds.json /srv/backend.linkaform.com/infosync-api/backend/infosync/
+# fi
+#
+# echo "MIGRATE_APP $MIGRATE_APP"
+# echo "CONTINUE $CONTINUE"
+# echo "Command $Command"
+# unset LANG
+# export LANG=en_US.UTF-8
+# unset PYTHONIOENCODING
+# export PYTHONIOENCODING=utf-8
+# case "$Command" in
+#     migrate)
+#         if [[ $MIGRATE_APP != *[!\ ]* ]]; then
+#            echo 1
+#            python manage.py migrate  $MIGRATE_APP
+#         else
+#             echo 3
+#            python manage.py migrate --fake-initial
+#         fi
+#         if [[  $CONTINUE == 1 ]]; then
+#             echo 4
+#             python manage.py runserver 0.0.0.0:8000
+#         fi
+#     ;;
+#
+#     manual)
+#         echo 5
+#         bash
+#     ;;
+#
+#     runserver)
+#         python manage.py runserver 0.0.0.0:8000
+#     ;;
+# esac
