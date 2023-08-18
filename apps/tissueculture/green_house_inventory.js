@@ -90,6 +90,7 @@ window.onload = function(){
     }
     //--Styles
     setSpinner();
+    get_catalog();
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
@@ -135,10 +136,18 @@ const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  getFirstElement();
+  let date_from = document.getElementById("date_from");
+  let date_to = document.getElementById("date_to");  
+  let plant = document.getElementById("plant");  
+  let option_in = document.getElementById("in");  
+  let option_out = document.getElementById("out"); 
+
+
+ 
+  getFirstElement(date_to.value, date_from.value, plant.value, option_in.value, option_out.value);
 };
 
-function getFirstElement(){
+function getFirstElement(dateTo, dateFrom, plant, option_in, option_out){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -149,6 +158,11 @@ function getFirstElement(){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
+      date_to: dateTo,
+      date_from: dateFrom,
+      plant: plant,
+      option_in: option_in,
+      option_out: option_out,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -163,7 +177,6 @@ function getFirstElement(){
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.json.firstElement.data) {
-        console.log('drawFirstElement.........');
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
@@ -190,7 +203,7 @@ function getFirstElement(){
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"300px",
+    height:"400px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -219,3 +232,56 @@ function getDrawTable(id, columnsData, tableData){
   }
 }
 
+
+//----- CATALOGS
+function get_catalog() 
+{
+  arrayPlant = []
+  arrayOut = []
+
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: 107085,
+      option: 1,
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      if (res.response.json.catalog){
+        for (i = 0; i < res.response.json.catalog.length; i++) {
+          valuePlant = res.response.json.catalog[i]['61ef32bcdf0ec2ba73dec33d'];
+          valueOut = res.response.json.catalog[i]['6442e4831198daf81456f274'];
+          if (arrayPlant.indexOf(valuePlant) === -1) {
+            arrayPlant.push(valuePlant);
+          }
+          if (arrayOut.indexOf(valueOut) === -1) {
+            arrayOut.push(valueOut);
+          }
+        }
+        arrayPlant.sort();
+        arrayOut.sort();
+        //----Pais
+        $("#plant").empty();
+        $('#plant').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < arrayPlant.length; i++) {
+          value = arrayPlant[i]
+          $('#plant').append('<option value="'+ value +'">'+value+'</option>');
+        }
+
+        //----Pais
+        $("#out").empty();
+        $('#out').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < arrayOut.length; i++) {
+          value = arrayOut[i]
+          $('#out').append('<option value="'+ value +'">'+value+'</option>');
+        }
+      }
+    } 
+  })
+};

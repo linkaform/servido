@@ -85,7 +85,11 @@
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
                         <i class="fa-solid fa-filter"></i>
                     </button >  &nbsp;  &nbsp;
-                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
+                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>&nbsp;  &nbsp;
+                    
+                    <button class="btn btn-danger" type="button" id="buttonPdf" onclick="printPDF();return false;" style="display: none;">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </button >  &nbsp;  &nbsp;
                 </div>
 
                 <!--Filters -->
@@ -125,7 +129,7 @@
                 </div>
 
                 <!--Content -->
-                <div class="row" style="margin-top:20px;"  id="divContent">
+                <div class="row" style="margin-top:20px;"  id="divContent" >
                     
 
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">

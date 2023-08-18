@@ -7,6 +7,7 @@ var columsTable1 = [
   { title:"Lote", field:'lote',hozAlign:"left", headerFilter:"input",width:200},
   { title:"Vacio",field:'vacio',hozAlign:"left", headerFilter:"input",formatter:function(cell){
     var value = cell.getValue();
+    console.log('VALOR',value)
     if (value <30  || value > 32){
       cell.getElement().style.backgroundColor = "#f1c40f";
     }

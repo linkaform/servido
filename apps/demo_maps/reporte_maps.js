@@ -16,6 +16,9 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
+hideElement("secondElement");
+hideElement("thirdElement");
+hideElement("fourthElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -127,18 +130,33 @@ function loadDemoData(){
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
 
-  getDrawTable('firstElement', columsTable1, dataTable1);
-  document.getElementById("firstElement").style.removeProperty('display');
+  var map = L.map('firstElement').setView([51.505, -0.09], 13);
+
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+  }).addTo(map);
+
+  var circle = L.circle([51.508, -0.11], {
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 0.5,
+    radius: 500
+  }).addTo(map);
+
 }
 
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  getFirstElement();
+  let date_from = document.getElementById("date_from");
+  let date_to = document.getElementById("date_to");  
+  let producto = document.getElementById("producto");  
+  getFirstElement(date_to.value, date_from.value, producto.value);
 };
 
-function getFirstElement(){
+function getFirstElement(dateTo, dateFrom, product){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -149,6 +167,9 @@ function getFirstElement(){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
+      date_to: dateTo,
+      date_from: dateFrom,
+      product: product,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -162,12 +183,12 @@ function getFirstElement(){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
+
       if (res.response.json.firstElement.data) {
-        console.log('drawFirstElement.........');
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data, 350);
         document.getElementById("firstElement").style.removeProperty('display');
       }
-      
+
     } else {
       hideLoading();
       if(res.code == 11){
@@ -187,35 +208,5 @@ function getFirstElement(){
   })
 };
 
-//-----TABLES
-function getDrawTable(id, columnsData, tableData){
-  var  table = new Tabulator("#" + id, {
-    height:"300px",
-    layout:"fitDataTable",
-    data:tableData,
-    resizableRows:false,
-    dataTree:true,
-    dataTreeStartExpanded:false,
-    clipboard:true,
-    clipboardPasteAction:"replace",
-    textDirection:"ltr",
-    columns:columnsData,
-  });
 
-  if (document.getElementById("download_xlsx_"+id)){
-    //trigger download of data.xlsx file
-    document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
-    document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
-    table.download("xlsx", "data.xlsx", {sheetName:"data"});
-    });
-  }
-
-  if (document.getElementById("download_csv_"+id)){
-    //trigger download of data.csv file
-    document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
-    document.getElementById("download_csv_"+id).addEventListener("click", function (){
-      table.download("csv", "data.csv");
-    });
-  }
-}
 

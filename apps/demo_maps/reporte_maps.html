@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Forcast by Cicle">
+        <meta name="description" content="Reporte de Calidad">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
@@ -12,8 +12,9 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!--Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <!--LIBRARY CHECK -->
-        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+        <!--MAPS  -->     
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -39,7 +40,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte Ordenes de Trabajo</h1>
+                    <h1 id="title_report">Reporte de Calidad</h1>
                 </div>
             </div> 
         </nav>
@@ -78,13 +79,14 @@
                     </center>
                 </div>
 
+
+
                 <!--OPtions FIlter -->
                 <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
                         <i class="fa-solid fa-filter"></i>
                     </button >  &nbsp;  &nbsp;
-                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div> &nbsp;  &nbsp;
-                     
+                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
                 </div>
 
                 <!--Filters -->
@@ -92,18 +94,12 @@
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-                    <!--FirstElment -->
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
-                        <section class="title_tables">
-                            <h3 ><span>Reporte Ordenes de Trabajo</span>&nbsp;&nbsp;
-                                <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
-                            </h3>
-                            <hr class="hrFirstElement">
-                        </section>
-                        <div id="firstElement" > </div>
+
+                    <!--First Element-->
+                    <div class="col-sm-12 col-md-12 col-lg-12 mb-4" style="align-items: center;overflow-y: scroll;">
+                        <div id="firstElement" style="height:450px"></div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -158,7 +154,7 @@
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./ordenes_trabajo.js"></script>
-    <script type="text/javascript" src="./ordenes_trabajo_data.js"></script>
+    <script type="text/javascript" src="./reporte_maps.js"></script>
+    <script type="text/javascript" src="./reporte_maps_data.js"></script>
     </body>
 </html>

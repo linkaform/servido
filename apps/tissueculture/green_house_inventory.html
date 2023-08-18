@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Forcast by Cicle">
+        <meta name="description" content="Green House Inventory Move">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
@@ -12,8 +12,6 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!--Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <!--LIBRARY CHECK -->
-        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -39,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte Ordenes de Trabajo</h1>
+                    <h1 id="title_report">Green House Inventory Move</h1>
                 </div>
             </div> 
         </nav>
@@ -78,34 +76,66 @@
                     </center>
                 </div>
 
+
+
                 <!--OPtions FIlter -->
                 <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
                         <i class="fa-solid fa-filter"></i>
                     </button >  &nbsp;  &nbsp;
-                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div> &nbsp;  &nbsp;
-                     
+                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
                 </div>
 
                 <!--Filters -->
-                <div id="firstParameters" class="collapse row show"></div>
+                <div id="firstParameters" class="collapse row show">
+                    <div class="col-sm-12 col-md-2 col-lg-2">
+                        <h5>Date From: </h5>
+                        <input class="form-control ds-input" type="date" id="date_from" name="date_from">
+                    </div>
+                    <div class="col-sm-12 col-md-2 col-lg-2">
+                        <h5>Date To: </h5>
+                        <input class="form-control ds-input" type="date" id="date_to" name="date_to">
+                    </div>
 
+                    <div class="col-sm-12 col-md-2 col-lg-2">
+                        <h5>Plant: </h5>
+                        <select class="form-control" id="plant" name="plant">
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Warehouse Out: </h5>
+                        <select class="form-control" id="out" name="out">
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Warehouse In: </h5>
+                        <select class="form-control" id="in" name="in">
+                            <option value="">--Seleccione--</option>
+                            <option value="green_house_1">Green House 1</option>
+                            <option value="green_house_2">Green House 2</option>
+                            <option value="green_house_3">Green House 3</option>
+                            <option value="green_house_4">Green House 4</option>
+                        </select>
+                    </div>
+
+                    
+                </div>
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-                    <!--FirstElment -->
+                    <!--First Elemtent -->
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span>Reporte Ordenes de Trabajo</span>&nbsp;&nbsp;
+                            <h3 ><span> Report Inventory </span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
-                            <hr class="hrFirstElement">
+                            <hr class="green-HrfirstElement" >
                         </section>
                         <div id="firstElement" > </div>
                     </div>
-                    
                 </div>
-            </div>
         </div>
     </body>
 
@@ -158,7 +188,7 @@
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./ordenes_trabajo.js"></script>
-    <script type="text/javascript" src="./ordenes_trabajo_data.js"></script>
+    <script type="text/javascript" src="./green_house_inventory.js"></script>
+    <script type="text/javascript" src="./green_house_inventory_data.js"></script>
     </body>
 </html>

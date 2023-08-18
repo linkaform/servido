@@ -163,7 +163,7 @@ const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 
-function runFirstElement(){
+function runFirstElement(flagPrint = false){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");    
   let usuario = document.getElementById("usuario");    
@@ -174,11 +174,11 @@ function runFirstElement(){
   {
     check = 'off';
   }
-  getFirstElement(date_to.value, date_from.value, paises, localidades, usuario.value, check);
+  getFirstElement(date_to.value, date_from.value, paises, localidades, usuario.value, check, flagPrint);
 };
 
 
-function getFirstElement(dateTo, dateFrom, paises, localidades, usuario, check){
+function getFirstElement(dateTo, dateFrom, paises, localidades, usuario, check, flagPrint = false){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -210,15 +210,15 @@ function getFirstElement(dateTo, dateFrom, paises, localidades, usuario, check){
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.json.firstElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data, flagPrint);
         document.getElementById("firstElement").style.removeProperty('display');
       }
       if (res.response.json.secondElement.data) {
-        getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data);
+        getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data, flagPrint);
         document.getElementById("secondElement").style.removeProperty('display');
       }
       if (res.response.json.thirdElement.data) {
-        getDrawTable('thirdElement', columsTable3, res.response.json.thirdElement.data);
+        getDrawTable('thirdElement', columsTable3, res.response.json.thirdElement.data, flagPrint);
         document.getElementById("thirdElement").style.removeProperty('display');
       }
       if (res.response.json.fourthElement) {
@@ -230,8 +230,7 @@ function getFirstElement(dateTo, dateFrom, paises, localidades, usuario, check){
         document.getElementById("sixthElement").style.removeProperty('display');
       }
       if (res.response.json.sixthElement) {
-        console.log(res.response.json.sixthElement.colums_data)
-        getDrawTable('fourthElement', res.response.json.sixthElement.colums_data, res.response.json.sixthElement.data);
+        getDrawTable('fourthElement', res.response.json.sixthElement.colums_data, res.response.json.sixthElement.data, flagPrint);
         document.getElementById("fourthElement").style.removeProperty('display');
       }
 
@@ -295,9 +294,15 @@ function drawFivethElement(datasets, dataconfig){
 }
 
 //-----TABLES
-function getDrawTable(id, columnsData, tableData){
+function getDrawTable(id, columnsData, tableData, flagPrint){
+  optionHeight = ''
+  if (flagPrint){
+    optionHeight = '100%'
+  }else{
+    optionHeight = '250px'
+  }
   var  table = new Tabulator("#" + id, {
-    height:"250px",
+    height:optionHeight,
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -390,3 +395,14 @@ function get_catalog(option)
     } 
   })
 };
+
+//---- NEW FUNCTION
+function printPDF() {
+  document.getElementById("image_log").style.display = 'none';
+  document.getElementById("divOptions").style.display = 'none';
+  //document.getElementById("firstParameters").style.display = 'none';  
+  window.print();
+  document.getElementById("image_log").style.removeProperty('display');
+  document.getElementById("divOptions").style.removeProperty('display');
+  //document.getElementById("firstParameters").style.removeProperty('display');
+}
