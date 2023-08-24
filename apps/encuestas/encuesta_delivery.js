@@ -135,15 +135,6 @@ function loadDemoData(){
 
   getDrawTable('firstElement', columsTable1, dataTable1, 350);
   document.getElementById("firstElement").style.removeProperty('display');
-
-  getDrawGraphicFirst(data1, setOptions1);
-  document.getElementById("secondElement").style.removeProperty('display');
-
-  getDrawTable('thirdElement', columsTable2, dataTable2, 350);
-  document.getElementById("thirdElement").style.removeProperty('display');
-
-  getDrawGraphicSecond(data2, setOptions2);
-  document.getElementById("fourthElement").style.removeProperty('display');
 }
 
 //-----DATE
@@ -247,7 +238,7 @@ function getDrawTable(id, columnsData, tableData, height = 500){
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:true,
+    dataTreeStartExpanded:false,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
@@ -271,37 +262,39 @@ function getDrawTable(id, columnsData, tableData, height = 500){
   }
 }
 
-//-----GRAPICH
-let chart1;
-function getDrawGraphicFirst(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicFirst').getContext('2d');
-  if (chart1) {
-    chart1.destroy();
-  }
+//-----CATALOG
+function get_catalog() 
+{
+  fetch(url + 'infosync/scripts/run/', {
+      method: 'POST',
+      body: JSON.stringify({
+        script_id: 95556,
+        option: 0,
+      }),
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+userJwt
+      },
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.success) {
+        if (res.response.catalog.length){
+          array_value = []
+          for (i = 0; i < res.response.catalog.length; i++) {
+            if (!array_value.includes(res.response.catalog[i]['63dc0f1ec29b8336b7b72615'])) {
+              array_value.push(res.response.catalog[i]['63dc0f1ec29b8336b7b72615'])
+            }
+          }
+          array_value.sort();
+          $("#promotor").empty();
+          $('#promotor').append('<option value="--">--Seleccione--</option>');
+          for (i = 0; i <array_value.length; i++) {
+            $('#promotor').append('<option value="'+ array_value[i] +'">'+array_value[i]+'</option>');
+          }
 
-  chart1 = new Chart(ctx, {
-    type: 'line',
-    data:data,
-    options: setOptions,
-    plugins: [ChartDataLabels],
-  });
-}
-
-
-let chart2;
-function getDrawGraphicSecond(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicSecond').getContext('2d');
-  if (chart2) {
-    chart2.destroy();
-  }
-
-  chart2 = new Chart(ctx, {
-    type: 'line',
-    data:data,
-    options: setOptions,
-    plugins: [ChartDataLabels],
-  });
-}
+        }
+      } 
+    })
+};
 
