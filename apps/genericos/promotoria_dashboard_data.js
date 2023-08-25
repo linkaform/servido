@@ -1,19 +1,19 @@
 //-----TABLAS
 var columsTable1 = [
-  { title:"Promotor", field:'promotor', hozAlign:"left", headerTooltip:true,width:280},
-  { title:"Visitas Realizadas", field:'visitas_realizadas', hozAlign:"right", headerTooltip:true,width:140},
-  { title:"Tiempo Trabajado", field:'text_time', hozAlign:"right", headerTooltip:true,width:140},
-  { title:"Promedio Visitas por día", field:'promedio_visitas', hozAlign:"right", headerTooltip:true,width:140},
-  { title:"Productos Inspeccionados", field:'productos_inspeccionados', hozAlign:"right", headerTooltip:true,width:140},
+  { title:"Promotor", field:'promotor', hozAlign:"left", headerTooltip:true,headerFilter:true,width:280},
+  { title:"Visitas Realizadas", field:'visitas_realizadas', hozAlign:"right", headerTooltip:true,headerFilter:true,width:140},
+  { title:"Tiempo Trabajado", field:'text_time', hozAlign:"right", headerTooltip:true,headerFilter:true,width:140},
+  { title:"Promedio Visitas por día", field:'promedio_visitas', hozAlign:"right", headerTooltip:true,headerFilter:true,width:140},
+  { title:"Productos Inspeccionados", field:'productos_inspeccionados', hozAlign:"right", headerTooltip:true,headerFilter:true,width:140},
 ];
 
 
 var columsTable2 = [
-  { title:"Tienda", field:'tienda', hozAlign:"left", headerTooltip:true,width:300},
-  { title:"Determinante", field:'determinante', hozAlign:"left", headerTooltip:true,width:140},
-  { title:"Visitas Realizadas", field:'visitas_realizadas', hozAlign:"right", headerTooltip:true,width:100},
-  { title:"Tiempo Trabajado", field:'text_time', hozAlign:"right", headerTooltip:true,width:140},
-  { title:"Productos Inspeccionados", field:'productos_inspeccionados', hozAlign:"right", headerTooltip:true,width:140},
+  { title:"Tienda", field:'tienda', hozAlign:"left", headerTooltip:true,headerFilter:true,width:300},
+  { title:"Determinante", field:'determinante', hozAlign:"left", headerTooltip:true,headerFilter:true,width:140},
+  { title:"Visitas Realizadas", field:'visitas_realizadas', hozAlign:"right", headerTooltip:true,headerFilter:true,width:100},
+  { title:"Tiempo Trabajado", field:'text_time', hozAlign:"right", headerTooltip:true,headerFilter:true,width:140},
+  { title:"Productos Inspeccionados", field:'productos_inspeccionados', hozAlign:"right", headerTooltip:true,headerFilter:true,width:140},
 ];
 
 var dataTable1 = [

@@ -4,6 +4,7 @@ var columsTable1 = [
   target:"_blank",},headerFilter:"input", width:150},
   { title:"PROMOTOR/A", field:'promotor', hozAlign:"left", headerTooltip:true,headerFilter:true,width:350},
   { title:"DETERMINANTE", field:'determinante', hozAlign:"right", headerTooltip:true,headerFilter:true,width:160},
+  { title:"DIRECCIÓN", field:'dir', hozAlign:"right", headerTooltip:true,headerFilter:true,width:190},
   { title:"TIENDA", field:'tienda', hozAlign:"left", headerTooltip:true,headerFilter:true,width:350},
   { title:"FECHA ENTRADA", field:'fecha_entrada', hozAlign:"left", headerTooltip:true,width:160},
   { title:"HORA ENTRADA", field:'hora_entrada', hozAlign:"left", headerTooltip:true,width:160},

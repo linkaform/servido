@@ -17,3 +17,26 @@
 body{
   font-family: gothambook;
 }
+
+#firstElement{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #e0e0e0;
+}
+
+.leaflet-popup-tip{
+  background: #e0e0e0;
+}
+
+.easy-button-button {
+  display: block !important;
+}
+
+.tag-filter-tags-container {
+  left: 30px;
+}

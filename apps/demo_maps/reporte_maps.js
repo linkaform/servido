@@ -129,21 +129,7 @@ function loadDemoData(){
   unhideElement("title_demo")
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
-
-  var map = L.map('firstElement').setView([51.505, -0.09], 13);
-
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap'
-  }).addTo(map);
-
-  var circle = L.circle([51.508, -0.11], {
-    color: 'red',
-    fillColor: '#f03',
-    fillOpacity: 0.5,
-    radius: 500
-  }).addTo(map);
-
+  getDrawMaps('firstElement',listDirection)
 }
 
 const loading = document.querySelector('.loading-container');
@@ -208,5 +194,49 @@ function getFirstElement(dateTo, dateFrom, product){
   })
 };
 
+//----MAPS
+function getElementCss(dataInformation, option){
+  let component = ''
+  if (option == 'simple'){
+    component = "<div class='row'>"+
+      "<div class='col-sm-12 col-md-12 col-lg-12 text-center'>"+
+        "<br/>"+ dataInformation.updated_by_name +
+        "<br/>"+ dataInformation.folio  +
+        "<br/>"+ dataInformation.update_at  +
+        "<br/>"+ dataInformation.form_name  +
+      "</div>"+
+    "</div>";
+  }
+  return component
+}
 
+var map = ''
+function getDrawMaps(idElement,dataGeo) {
+  //-----PRIMER FORMA
+  /*
+    map = L.map(idElement).setView([25.6866, -100.3161], 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 20,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
 
+    dataGeo.forEach((dataElement) => {
+      content = getElementCss(dataElement, dataElement.format);
+      text = "<p><a href='https://app.linkaform.com/#/login' target='_blank'>"+dataElement.folio+"</a> | Tiempo: "+ dataElement.duration +"<p>";
+      L.marker(dataElement.geolocation).addTo(map)
+      .bindTooltip(text , 
+      {
+        permanent: false, 
+        direction: 'right'
+      })
+      .bindPopup(content);
+    });
+  */
+  ///-----MAPTILER
+  const key = 'CFO8UkTXma2NIsWHbLe4';
+  const map = L.map('firstElement').setView([0, 0], 1);
+  const mtLayer = L.maptilerLayer({
+    apiKey: key,
+    style: "streets-v2", //optional
+  }).addTo(map);
+}

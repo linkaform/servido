@@ -9,7 +9,7 @@ let userJwt = null;
 let userName = null;
 let userParentId = null;
 let scriptId = null;
-
+var tableFirstData = null;
 $('#divOptions').hide();
 $('#title_report').hide();
 $('.title_tables').hide();
@@ -28,7 +28,6 @@ window.onload = function(){
   var formNode = document.getElementById("appCont");
 	for(var key in qs){
     if (key === 'script_id' ){
-      console.log('script id', key)
       scriptId = parseInt(qs[key]);
     }
     if (key === 'env') {
@@ -138,7 +137,6 @@ function unHideReportElements(){
 }
 
 function loadDemoData(){
-  console.log('Entra a demo')
   unhideElement("title_demo")
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
@@ -149,11 +147,12 @@ function loadDemoData(){
   document.getElementById("fivethElement").style.removeProperty('display');
   document.getElementById("sixthElement").style.removeProperty('display');
 
+  //----PDF ASIGN
+  tableFirstData = dataTable1;
   getDrawTable('firstElement', columsTable1, dataTable1);
   getDrawTable('secondElement', columsTable2, dataTable2);
   getDrawTable('thirdElement', columsTable3, dataTable3);
   getDrawTable('fourthElement', columsTable4, dataTable4);
-
   drawFourthElement(dataFourthElement, dataConfigFourth);
   drawFivethElement(dataFivethElement, dataConfigFiveth);
 
@@ -210,6 +209,7 @@ function getFirstElement(dateTo, dateFrom, paises, localidades, usuario, check, 
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.json.firstElement.data) {
+        tableFirstData = res.response.json.firstElement.data;
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data, flagPrint);
         document.getElementById("firstElement").style.removeProperty('display');
       }
@@ -233,9 +233,6 @@ function getFirstElement(dateTo, dateFrom, paises, localidades, usuario, check, 
         getDrawTable('fourthElement', res.response.json.sixthElement.colums_data, res.response.json.sixthElement.data, flagPrint);
         document.getElementById("fourthElement").style.removeProperty('display');
       }
-
-      console.log(document.getElementById("divContent").outerHTML);
-
     } else {
       hideLoading();
       if(res.code == 11){
@@ -307,7 +304,7 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:false,
+    dataTreeStartExpanded:true,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
@@ -327,6 +324,76 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
     document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
     document.getElementById("download_csv_"+id).addEventListener("click", function (){
       table.download("csv", "data.csv");
+    });
+  }
+
+  //---PDF CUSTOM
+  if (document.getElementById("download_pdf_"+id)){
+    //trigger download of data.csv file
+    document.getElementById("download_pdf_"+id).replaceWith(document.getElementById("download_pdf_"+id).cloneNode(true));
+    document.getElementById("download_pdf_"+id).addEventListener("click", function(){
+      //----IMAGE GRAPHIC
+      let urlGraphicFourth = '';
+      html2canvas(document.querySelector("#graphicFourth")).then(canvas => {
+        urlGraphicFourth = canvas.toDataURL();
+      });
+
+      let urlGraphicFiveth = '';
+      html2canvas(document.querySelector("#graphicFiveth")).then(canvas => {
+        urlGraphicFiveth = canvas.toDataURL();
+      });
+      setTimeout(() => {
+        table.download("pdf", "data.pdf", {
+          orientation:"landscape", //set page orientation to portrait
+          theme: 'grid',
+          autoTable:function(doc){ 
+            var margins = 30;
+            var leftMargin = 40;
+            var marginsIndent = 40;
+
+            //----IMAGENES
+            doc.setFontSize(20);
+            doc.text(300, 40, 'Reporte de Cumplimiento');
+            doc.addImage(img_morpho, 'JPEG', 650, 20, 140, 40);
+
+            // Parametros - Posición weigth / Posición heigt / Weigth / Heigth 
+            doc.addImage(urlGraphicFourth, 'JPEG', 150, 60, 500, 250);
+            doc.addImage(urlGraphicFiveth, 'JPEG', 150, 310, 500, 250);
+
+            return {
+              styles: {
+                cellPadding: 2, 
+                fontSize: 8,
+                halign : 'center'
+              },
+              headStyles: {
+                fillColor: [38, 107, 115],
+                valign: 'middle'
+              },
+              alternateRowStyles: {
+                fillColor : [220, 230, 241]
+              },
+              didParseCell: function (data) {
+                if( data.row.raw[2].content < data.row.raw[3].content && data.column.index == 2 && data.section === 'body'){
+                  data.cell.styles.textColor = "red";
+                }else if( data.row.raw[2].content >= data.row.raw[3].content && data.column.index == 2 && data.section === 'body'){
+                  data.cell.styles.textColor = "green";
+                }
+              },
+              columnStyles: {
+                0: {cellWidth: 'auto',halign: 'left'},
+                1: {cellWidth: 'auto',halign: 'left'},
+                2: {cellWidth: 'auto',halign: 'center'},
+                3: {cellWidth: 'auto',halign: 'center'},
+                4: {cellWidth: 'auto',halign: 'center'},
+                5: {cellWidth: 'auto',halign: 'center'},
+              },
+              margin: { top: 10 },
+              startY: 800, //This was the way to push the start of the table down
+            };
+          },
+        });
+      }, 1000);
     });
   }
 }
@@ -367,8 +434,6 @@ function get_catalog(option)
           $("#localidades").multipleSelect('refresh');
         }
       }else if(option == 2){
-
-        console.log('Entraaaa a modificación')
         filter = $('#paises').val();
         if (res.response.json.array_filters.localidades){
           $("#localidades").empty();
@@ -398,11 +463,20 @@ function get_catalog(option)
 
 //---- NEW FUNCTION
 function printPDF() {
-  document.getElementById("image_log").style.display = 'none';
-  document.getElementById("divOptions").style.display = 'none';
-  //document.getElementById("firstParameters").style.display = 'none';  
-  window.print();
-  document.getElementById("image_log").style.removeProperty('display');
-  document.getElementById("divOptions").style.removeProperty('display');
-  //document.getElementById("firstParameters").style.removeProperty('display');
+  var table = new Tabulator("#firstElementDownload", {
+    height:'10px',
+    layout:"fitDataTable",
+    data:tableFirstData,
+    textDirection:"ltr",
+    columns:columsTable1,
+  });
+
+  if (document.getElementById("buttonDownloadFirst")){
+    //trigger download of data.csv file
+    document.getElementById("buttonDownloadFirst").replaceWith(document.getElementById("buttonDownloadFirst").cloneNode(true));
+    document.getElementById("buttonDownloadFirst").addEventListener("click", function (){
+      table.download("csv", "data.csv");
+    });
+  }
+  document.querySelector('#buttonDownloadFirst').click();
 }
