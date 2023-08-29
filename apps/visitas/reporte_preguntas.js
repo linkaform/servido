@@ -136,7 +136,7 @@ function loadDemoData(){
   unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
 
-  getDrawTable('firstElement', columsTable1, dataTable1, 350);
+  getDrawTable('firstElement', columsTable3, dataTable1, 350);
   document.getElementById("firstElement").style.removeProperty('display');
 }
 
@@ -206,9 +206,12 @@ function getFirstElement(dateTo, dateFrom, option){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
+      console.log(res.response.firstElement.tabledata)
       if (res.response.firstElement.tabledata) {
+        
         if(option == 0){
-          getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata, 450);
+
+          getDrawTable('firstElement', columsTable3, res.response.firstElement.tabledata, 450);
         }else if(option == 1){
           getDrawTable('firstElement', columsTable2, res.response.firstElement.tabledata, 450);
         }
@@ -290,13 +293,13 @@ function get_catalog()
             array_value.push(res.response.catalog[i]['63dc0f1ec29b8336b7b72615'])
           }
         }
-        array_value.sort();
+        array_value.sort();  
         $("#promotor").empty();
         $('#promotor').append('<option value="--">--Seleccione--</option>');
         for (i = 0; i <array_value.length; i++) {
           $('#promotor').append('<option value="'+ array_value[i] +'">'+array_value[i]+'</option>');
         }
-
+        console.log(array_value);
       }
     } 
   })
