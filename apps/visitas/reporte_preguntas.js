@@ -1,6 +1,7 @@
 // Reporte Production Forscast
 // Librerias: Chart.js
 
+
 let us = null;
 let usTy = null;
 let jw = null;
@@ -9,6 +10,7 @@ let userJwt = null;
 let userName = null;
 let userParentId = null;
 let scriptId = null;
+let nuevo = null
 
 $('#divOptions').hide();
 $('#title_report').hide();
@@ -19,12 +21,15 @@ hideElement("firstElement");
 hideElement("secondElement");
 hideElement("thirdElement");
 
+
+
+
 window.onload = function(){
   var qs = urlParamstoJson();
   var formNode = document.getElementById("appCont");
 	for(var key in qs){
     if (key === 'script_id' ){
-      console.log('script id', key)
+      console.log('script_id', key)
       scriptId = parseInt(qs[key]);
     }
     if (key === 'env') {
@@ -136,11 +141,12 @@ function loadDemoData(){
   unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
 
-  getDrawTable('firstElement', columsTable1, dataTable1, 350);
+
+  getDrawTable('firstElement', columsTable3, dataTable1, 350);
   document.getElementById("firstElement").style.removeProperty('display');
 }
 
-//-----DATE
+//-----DATEE
 function setDate(){
   array_month = ['01','02','03','04','05','06','07','08','09','10','11','12'];
   //---DATE TO
@@ -179,6 +185,7 @@ function runFirstElement(){
   getFirstElement(date_to.value, date_from.value, option);
 }
 
+
 function getFirstElement(dateTo, dateFrom, option){
   //----Hide Css
   $("#divContent").hide();
@@ -206,9 +213,12 @@ function getFirstElement(dateTo, dateFrom, option){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
+      console.log(res.response.firstElement.tabledata)
       if (res.response.firstElement.tabledata) {
+        
         if(option == 0){
-          getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata, 450);
+
+          getDrawTable('firstElement', columsTable3, res.response.firstElement.tabledata, 450);
         }else if(option == 1){
           getDrawTable('firstElement', columsTable2, res.response.firstElement.tabledata, 450);
         }
@@ -290,13 +300,14 @@ function get_catalog()
             array_value.push(res.response.catalog[i]['63dc0f1ec29b8336b7b72615'])
           }
         }
-        array_value.sort();
+        array_value.sort();  
         $("#promotor").empty();
         $('#promotor').append('<option value="--">--Seleccione--</option>');
         for (i = 0; i <array_value.length; i++) {
           $('#promotor').append('<option value="'+ array_value[i] +'">'+array_value[i]+'</option>');
         }
 
+        console.log(array_value);
       }
     } 
   })
