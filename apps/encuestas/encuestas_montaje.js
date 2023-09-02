@@ -192,6 +192,7 @@ function getFirstElement(dateTo='', dateFrom=''){
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.json.firstElement) {
+        console.log(res)
         //--The data is same 
         getDrawTable('firstElement', columsTable1,res.response.json.firstElement.data);
         drawSecondElement(res.response.json.firstElement.data);
