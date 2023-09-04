@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Rh</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="./styles.css">
+         <!--Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+
+    <body>
+        <nav class="navbar header">
+            <div class="navbar-brand">
+                <img src="https://app.linkaform.com/img/login-linkaform-logo.png" height="30" class="d-inline-block align-top" alt="">
+            </div>
+            <div class="navbar-brand">
+                <div class="form-check form-switch ml-1">
+                    <input class="form-check-input" type="checkbox" role="switch" id="switchCheck" onchange="setFlag();return false;" />
+                    <label class="form-check-label" >Registro Manual</label>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="app row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="title"><h3>REGISTRO Y ENTRADA COLABORADORES</h3></div>
+                </div>
+
+                <div class="container mb-1">
+                    <div class="search">
+                        <select class="form-control" id="codePlant">
+                            <option value="" >Seleccione Planta</option>
+                            <option value="Planta 1" selected>Planta 1</option>
+                            <option value="Planta 2">Planta 2</option>
+                            <option value="Planta 3">Planta 3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="container mb-5">
+                    <div class="search">
+                      <i class="fa fa-search"></i>
+                      <input type="text" class="form-control" placeholder="Codigo de empleado" id="codeUser"  onkeypress="pulse(event)" value="JERJ127HS">
+                    </div>
+                </div>
+
+
+
+                <div class="container mt-5" style="display:none;">
+                    <button class="btn btn-success" >Escanear Codigo</button>
+                </div>
+
+
+                <!-- DIV CARD-->
+                <div class="container" id="dataCard" style="display:none;">
+                    <div class="row justify-content-md-center">
+                        <div class="col-sm-12 col-md-12 col-lg-8" >
+                            <!-- VALOR -->
+                            <div class="card border border-dark rounded shadow">
+                                <div class="card-body">
+                                    <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block" alt="Imagen Usuario" style="width:150px;height:150px;" id="imgUser">
+                                    <p class="text-center fw-bold  mt-1 h3" id="nameUser">Nombre</p>
+                                    <p class="text-center fw-light mt-1 h5" id="companyUser">Compañia</p>
+
+                                    <div class="row justify-content-md-center mt-5">
+                                        <div class="col-sm-12 col-md-5 col-lg-5 text-center" >
+                                            <p class="fw-bold  h4">Planta:</p>
+                                            <p class="fw-light mt-1 h5" id="textPlant">Planta</p>
+                                        </div>
+                                        <div class="col-sm-12 col-md-2 col-lg-2" ></div>
+                                        <div class="col-sm-12 col-md-5 col-lg-5 text-center" >
+                                            <p class="fw-bold h4">Vigencia:</p>
+                                            <p class="fw-light mt-1 h5" id="textValidity">YYYY-MM-DD</p>
+                                        </div>
+                                    </div>
+
+                                    <p class="fw-bold mt-5 h4">Permisos:</p>
+
+                                    <div class="row" id="divAccess"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-4">
+                            <!-- VALOR -->
+                            <div class="card border border-dark rounded shadow">
+                                <div class="card-body">
+                                    <h3 class="text-center fw-bold mt-1" id="textType">Entrada</h3>
+
+                                    <p class="fw-bold mt-5 h4">Fecha:</p>
+                                    <p class="fw-light mt-1 h5" id="textDate">2023-05-03</p>
+
+                                    <p class="fw-bold mt-5 h4">Proyecto:</p>
+                                    <p class="fw-light mt-1 h5" id="textProyect">Construcción</p>
+
+                                    <button type="button" class="btn btn-primary btn-warning fw-bold h5 mt-5 col-12" data-bs-toggle="modal" data-bs-target="#modalEquipment" id="buttonAddEquipment" style="display:none;">
+                                       + Equipo
+                                    </button>
+
+                                    <button type="button" class="btn bg-info fw-bold h5 mt-1 col-12" onclick="setAddRegister();return false;" id="buttonSend" style="display:none;">
+                                      Registrar
+                                    </button>
+
+                                    <div class="container rounded shadow card_authorized  align-bottom" style="height:100px;" id="divStatus">
+                                        <br><p class="text-center fw-bold h5 mt-3 text-white" id="textStatus">Autorizado</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                 <div class="container" id="dataBlockCard" style="display:none;">
+                    <div class="row justify-content-md-center">
+                        <div class="col-sm-12 col-md-12 col-lg-12" >
+                            <!-- VALOR -->
+                            <div class="card border border-dark rounded shadow">
+                                <div class="card-body">
+                                    <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block" alt="Imagen Usuario" style="width:150px;height:150px;" id="imgBlockUser">
+                                    <p class="text-center fw-bold  mt-1 h3" id="blockNameUser">Nombre</p>
+                                    <p class="text-center fw-light mt-1 h5" id="blockCompanyUser">Compañia</p>
+
+                                    <div class="row justify-content-md-center mt-5">
+                                        <div class="col-sm-12 col-md-5 col-lg-5 text-center" >
+                                            <p class="fw-bold  h4">Planta:</p>
+                                            <p class="fw-light mt-1 h5" id="textBlockPlant">Planta</p>
+                                        </div>
+                                        <div class="col-sm-12 col-md-2 col-lg-2" ></div>
+                                        <div class="col-sm-12 col-md-5 col-lg-5 text-center" >
+                                            <p class="fw-bold h4">Vigencia:</p>
+                                            <p class="fw-light mt-1 h5" id="textBlockValidity">YYYY-MM-DD</p>
+                                        </div>
+                                        <div class="container rounded shadow card_unauthorized  align-bottom mt-2" style="height:100px">
+                                           <br><p class="text-center fw-bold h3 mt-3 text-white" id="textStatus">No Autorizado</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- DIV EMPTY-->
+                <div class="container" id="divEmpty" style="display:none;">
+                    <div class="row justify-content-md-center">
+                        <div class="col-sm-12 col-md-12 col-lg-12" >
+                            <!-- VALOR -->
+                            <div class="card border border-dark rounded shadow" >
+                                <div class="card-body">
+                                    <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/64efbf5f241e60d950ff5b9e.jpg" alt="Imagen Usuario" class=" mx-auto d-block" style="width:500px;height:400px;">
+                                    <h3 class="text-center fw-bold mt-1" >No existen coincidencias para este usuario</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DIV SUCCES-->
+                <div class="container" id="divSucces" style="display:none;">
+                    <div class="row justify-content-md-center">
+                        <div class="col-sm-12 col-md-12 col-lg-12" >
+                            <!-- VALOR -->
+                            <div class="card border border-dark rounded shadow" >
+                                <div class="card-body">
+                                    <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/64eff7cfac9dc4d7c612ba8a.png"  class=" mx-auto d-block" style="width:300px;height:300px;">
+                                    <h3 class="text-center fw-bold mt-1" >REGISTRO DE COLABORADOR EXITOSO</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DIV LOAD-->
+                <div class="container" id="divLoad" style="display:none;">
+                    <div class="load-4">
+                        <div class="ring-1"></div>
+                    </div>
+                </div>
+
+                <!-- DIV MODAL-->
+                <div class="container" id="divModal">
+                    <div class="modal fade  modal-lg" id="modalEquipment"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Equipo</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Tabs navs -->
+                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#tabEquipment" type="button" role="tab" aria-controls="home" aria-selected="true">Añadir Equipo</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#listEquipment" type="button" role="tab" aria-controls="profile" aria-selected="false">Lista Equipo</button>
+                                            </li>
+                                           
+                                        </ul>
+                                        <div class="tab-content" id="myTabContent">
+                                            <div class="tab-pane fade show active" id="tabEquipment" role="tabpanel" aria-labelledby="home-tab" >
+                                                <div class="alert alert-success m-0 " role="alert" id="alertAdd" style="display: none;">
+                                                  <h5 class="alert-heading">Equipo Agregado!</h5>
+                                                </div>
+                                                <div class="alert alert-danger m-0" role="alert" id="alertEmpty" style="display: none;">
+                                                   Campos requeridos vacios
+                                                </div>
+
+                                                <div class="mb-3 mt-3">
+                                                  <label class="form-label">Titulo</label>
+                                                  <input type="text" class="form-control" id="textNameItem">
+                                                </div>
+                                                <div class="mb-3">
+                                                  <label class="form-label">Descripción</label>
+                                                  <textarea class="form-control" id="textDescItem" rows="3"></textarea>
+                                                </div>
+                                                <button class="btn col-12 fw-bold text-white" type="button" style="background:#0E5E6F;" onclick="setAddItem();return false;">Agregar</button>
+                                            </div>
+                                            <div class="tab-pane fade" id="listEquipment" role="tabpanel" aria-labelledby="profile-tab" style="max-height: 450px;overflow-y: scroll;">
+                                                <ul class="list-group mt-3" id="listItems"></ul>
+                                            </div>
+                                        </div>
+                                    <!-- Tabs content -->
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DIV INFORMATION-->
+                <div class="container" id="divInformation" style="display:none;"></div>
+            </div>
+        </div>
+        <script
+        src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
+        <!-- LIBRERÍA PARA CODIGO QR -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- LIBRERÍA PARA CODIGO QR -->
+        <script src="https://unpkg.com/html5-qrcode"></script>
+        <script src="./script.js"></script>
+    </body>
+</html>

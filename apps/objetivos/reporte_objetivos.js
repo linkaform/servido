@@ -91,10 +91,12 @@ window.onload = function(){
     }
     //--Styles
     setSpinner();
+    get_catalog();
     $('#divOptions').show();
     $('#title_report').show();
+    $("#cadenas").multipleSelect('refresh');
     document.getElementById("firstParameters").style.removeProperty('display');
-    
+
   } else {
     unhideElement("inicio_ses");
     $('#divContent').hide();
@@ -134,16 +136,16 @@ function loadDemoData(){
 }
 
 
-
 //-----EXCUTION
 function runFirstElement(){
   let year = document.getElementById("year");
   let month = document.getElementById("month");  
-  getFirstElement(year.value, month.value);
+  let cadenas = $("#cadenas").val();  
+  getFirstElement(year.value, month.value, cadenas);
  
 }
 
-function getFirstElement(year, month){
+function getFirstElement(year, month, cadenas){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -156,6 +158,7 @@ function getFirstElement(year, month){
       script_id: scriptId,
       year: year,
       month: month,
+      cadenas: cadenas,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -171,7 +174,7 @@ function getFirstElement(year, month){
       $('.title_tables').show();
 
       if (res.response.json.firstElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data, 350);
+        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data, 500);
         document.getElementById("firstElement").style.removeProperty('display');
       }
       if (res.response.json.secondElement) {
@@ -244,9 +247,43 @@ function drawFirstElement(datasets, dataconfig){
   chart1 = new Chart(ctx, {
     type: 'bar',
     data: datasets,
-    plugins: [ChartDataLabels],
     options: dataconfig
   });
 }
 
 
+//----- CATALOGS
+function get_catalog() 
+{
+  arrayChain = []
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: 106617,
+      option: 1,
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      if (res.response.catalog){
+        //----Pais
+        if(res.response.catalog.length > 0 ){
+          $("#cadenas").empty();
+          $('#cadenas').append('<option value="--">--Seleccione--</option>');
+          for (i = 0; i < res.response.catalog.length; i++) {
+            value = res.response.catalog[i]
+            $('#cadenas').append('<option value="'+ value +'">'+value+'</option>');
+          }
+          $("#cadenas").multipleSelect('refresh');
+        }
+      }
+    } 
+  })
+};
+
+                    

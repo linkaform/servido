@@ -1,17 +1,17 @@
 
 var columsTable1 = [
-  { title:"CODIGO TIENDA", field:'code_store',headerFilter:"input",hozAlign:"left",width:200},
-  { title:"DET TIENDA", field:'det_store',hozAlign:"left",width:150},
+  { title:"CODIGO TIENDA", field:'code_store',headerFilter:"input",hozAlign:"left",width:150},
+  { title:"DET TIENDA", field:'det_store',hozAlign:"left",width:100},
   { title:"NOMBRE DE LA TIENDA", field:'name_store',hozAlign:"left",width:200},
-  { title:"CADENA", field:'chain',hozAlign:"left",width:200},
-  { title:"AÑO", field:'year',hozAlign:"left",width:100},
-  { title:"MES", field:'month',hozAlign:"left",width:100},
-  { title:"OBJETIVOS PIEZAS", field:'parts',hozAlign:"right",width:150},
-  { title:"REALIZADOS PIEZAS", field:'done_parts',hozAlign:"right",width:150},
+  { title:"CADENA", field:'chain',hozAlign:"left",width:100},
+  { title:"AÑO", field:'year',hozAlign:"left",width:75},
+  { title:"MES", field:'month',hozAlign:"left",width:75},
+  { title:"OBJETIVOS PIEZAS", field:'parts',hozAlign:"right",headerTooltip:true,width:100},
+  { title:"REALIZADOS PIEZAS", field:'done_parts',hozAlign:"right",headerTooltip:true,width:100},
   { title:"OBJETIVOS PESOS", field:'money',hozAlign:"right",formatter: "money",
-   "formatterParams": {"symbol": "$", "symbolAfter": "", "thousand": ",",  precision:2},width:200},
+   "formatterParams": {"symbol": "$", "symbolAfter": "", "thousand": ",",  precision:2},headerTooltip:true,width:100},
   { title:"REALIZADOS PESOS", field:'done_money',hozAlign:"right",formatter: "money",
-   "formatterParams": {"symbol": "$", "symbolAfter": "", "thousand": ",",  precision:2},width:200},
+   "formatterParams": {"symbol": "$", "symbolAfter": "", "thousand": ",",  precision:2},headerTooltip:true,width:100},
   {title:"Progreso", field:"progress", formatter:"progress", formatterParams:{color:["rgb(255,0,0)", "orange", "#00dd00"]}, width:150},
   
 ];
@@ -406,9 +406,6 @@ var setOptions1 = {
           size: 25
         }
     },
-    datalabels: {
-      color: 'white',
-    }
   },
   scales: {
     x: {
