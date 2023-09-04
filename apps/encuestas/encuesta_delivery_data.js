@@ -385,8 +385,4 @@ var setOptions2 = {
     }
   }
 };
-<<<<<<< HEAD
-=======
 
-
->>>>>>> ec74369 (Modificación del reporte de Forbo)
