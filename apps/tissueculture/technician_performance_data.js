@@ -26,9 +26,13 @@ var columsTable4 = [
 
 
 var columsTable5 = [
-  { title:"Cutter", field:'cutter',hozAlign:"left", width:150,},
+  { title:"Cutter", field:'cutter',hozAlign:"left", width:250,},
   { title:"Work Hours", field:'work_hours',hozAlign:"left", width:150,},
 ];
+
+
+
+
 
 
 

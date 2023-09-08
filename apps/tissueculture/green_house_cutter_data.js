@@ -3,11 +3,13 @@
 //--Table Montajes Por Mes
 
 var columsTable1 = [
-  { title:"Plant", field:'plant',hozAlign:"left",width:100},
-  { title:"Green House", field:'green_house',hozAlign:"left",width:230},
-  { title:"Ready Date", field:'ready_date',hozAlign:"right",width:120},
-  { title:"Date", field:'date',hozAlign:"left",width:120},
-  { title:"Flats", field:'flats_cant',hozAlign:"right",width:100},
+  { title:"Plant", field:'plant_code',hozAlign:"left",headerFilter:"input",width:100},
+  { title:"Ready Date", field:'ready_date',hozAlign:"right",headerFilter:"input",width:120},
+  { title:"Green House", field:'green_house',hozAlign:"left",headerFilter:"input",width:230},
+  { title:"Date", field:'date',hozAlign:"left",headerFilter:"input",width:120},
+  { title:"Required Flats", field:'required',hozAlign:"right",headerFilter:"input",width:100},
+  { title:"Produce Flats", field:'total_flats',hozAlign:"right",headerFilter:"input",width:100},
+  { title:"Variance", field:'variance',hozAlign:"right",headerFilter:"input",width:100},
 ];
 
 var dataTable1 = [
@@ -44,14 +46,22 @@ var dataTable1 = [
 ];
 
 
+var dataTableExample1 = [
+  {
+    plant_code: "ABCO",
+    
+    green_house: "Example",
+    date: "26-04-2023",
+    flats: "500",
+  },
+];
 
 var columsTable2 = [
-  { title:"Date", field:'date',hozAlign:"left",width:100},
-  { title:"Planter", field:'cutter',hozAlign:"left",width:200},
-  { title:"Flats", field:'flats',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:150},
-  { title:"Hours", field:'hours',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:150},
-  { title:"Flats X Hour", field:'flats_x_hour',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:150},
-  { title:"Flats Half Hour", field:'flats_half_hour',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:150},
+  { title:"Date", field:'date',hozAlign:"left",headerFilter:"input",width:100},
+  { title:"Planter", field:'cutter',hozAlign:"left",headerFilter:"input",width:200},
+  { title:"Flats", field:'flats',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, headerFilter:"input",width:150},
+  { title:"Hours", field:'hours',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, headerFilter:"input",width:150},
+  { title:"Flats X Hour", field:'flats_half_hour',hozAlign:"right", bottomCalc:"avg", bottomCalcParams:{precision:0}, headerFilter:"input",width:150},
 ];
 
 var dataTable2 = [
@@ -183,6 +193,26 @@ var setOptions2 = {
     },
     datalabels: {
       color: 'white',
+    }
+  },
+};
+
+var setOptions3 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Report Required vs Total',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'black',
     }
   },
 };

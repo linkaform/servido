@@ -259,7 +259,7 @@ function get_catalog()
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 106617,
+      script_id: 108383,
       option: 1,
     }),
     headers:{

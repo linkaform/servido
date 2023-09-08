@@ -6,8 +6,9 @@ var columsTable1 = [
   { title:"Ready Week",field:'ready_week',hozAlign:"left",headerFilter:"input", width:200 },
   { title:"Warehouse Out", field:'out',hozAlign:"left",width:200 },
   { title:"Warehouse In",field:'in',hozAlign:"left",width:200 },
-  { title:"Date",  field:'date',hozAlign:"left",width:160 },
-  { title:"Qty",  field:'qty',hozAlign:"left",width:200 },
+  { title:"Created Date",  field:'created_date',hozAlign:"left",width:160 },
+  { title:"Move Date",  field:'move_date',hozAlign:"left",width:160 },
+  { title:"Qty",  field:'qty',hozAlign:"right",width:200 },
 ];
 
 var dataTable1 = [

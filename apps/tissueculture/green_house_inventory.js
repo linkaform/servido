@@ -141,13 +141,16 @@ function runFirstElement(){
   let plant = document.getElementById("plant");  
   let option_in = document.getElementById("in");  
   let option_out = document.getElementById("out"); 
-
-
- 
-  getFirstElement(date_to.value, date_from.value, plant.value, option_in.value, option_out.value);
+  check = 'on';
+  if (document.getElementById('input_check').checked)
+  {
+    //---created date
+    check = 'off';
+  }
+  getFirstElement(date_to.value, date_from.value, plant.value, option_in.value, option_out.value, check);
 };
 
-function getFirstElement(dateTo, dateFrom, plant, option_in, option_out){
+function getFirstElement(dateTo, dateFrom, plant, option_in, option_out, check){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -163,6 +166,7 @@ function getFirstElement(dateTo, dateFrom, plant, option_in, option_out){
       plant: plant,
       option_in: option_in,
       option_out: option_out,
+      check: check,
     }),
     headers:{
       'Content-Type': 'application/json',

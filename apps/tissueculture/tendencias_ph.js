@@ -16,10 +16,6 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
-hideElement("secondElement");
-hideElement("thirdElement");
-hideElement("fourthElement");
-hideElement("fivethElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -32,9 +28,6 @@ window.onload = function(){
     if (key === 'env') {
       if (qs[key] === 'test'){
          url = "https://preprod.linkaform.com/api/";
-      }
-      if (qs[key] === 'local'){
-         url = "http://127.0.0.1:8000/api/";
       }
     }
     if (key ==='title'){
@@ -96,12 +89,11 @@ window.onload = function(){
       loadDemoData();
     }
     //--Styles
-    setDateFilterMonth();
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
-
+    
   } else {
     unhideElement("inicio_ses");
     $('#divContent').hide();
@@ -123,6 +115,7 @@ window.onload = function(){
 
 
 function unHideReportElements(){
+  //Set here all report elements that need to be unHiden on a loggin
   unhideElement("firstElement-Buttons");
   unhideElement("firstParameters");
   unhideElement("close_sesion");
@@ -130,24 +123,16 @@ function unHideReportElements(){
 }
 
 function loadDemoData(){
-  $('.title_tables').show();
   unhideElement("title_demo")
+  $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
 
-
-  getDrawTable('firstElement', columsTable1, dataTable1, '500px');
+  getDrawTable('firstElement', columsTable1, dataTable1);
   document.getElementById("firstElement").style.removeProperty('display');
 
-  getDrawTable('thirdElement', columsTable2, dataTable1, '400px');
-  document.getElementById("thirdElement").style.removeProperty('display');
-
-  getDrawGraphicFirst(data1, setOptions1);
+  drawFirstElement(data1, setOptions1)
   document.getElementById("secondElement").style.removeProperty('display');
   document.getElementById("graphicFirst").style.removeProperty('display');
-
-  getDrawGraphicSecond(data2, setOptions2);
-  document.getElementById("fourthElement").style.removeProperty('display');
-
 
 }
 
@@ -156,12 +141,11 @@ loading.style.display = 'none';
 
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");
-  getFirstElement(date_from.value, date_to.value);
+  let date_to = document.getElementById("date_to");  
+  getFirstElement(date_to.value, date_from.value);
 };
 
-//-----PETICION
-function getFirstElement(date_from, date_to){
+function getFirstElement(dateTo, dateFrom){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -172,8 +156,8 @@ function getFirstElement(date_from, date_to){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      date_from: date_from,
-      date_to: date_to,
+      date_to: dateTo,
+      date_from: dateFrom,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -187,38 +171,17 @@ function getFirstElement(date_from, date_to){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      //---Peticiones
+
       if (res.response.json.firstElement.data) {
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
-      if (res.response.json.secondElement) {
-        getDrawGraphicFirst(res.response.json.secondElement, setOptions1);
-        document.getElementById("secondElement").style.removeProperty('display');
-        document.getElementById("graphicFirst").style.removeProperty('display');
-      }
-      if (res.response.json.thirdElement.data) {
-        getDrawTable('thirdElement', columsTable2, res.response.json.thirdElement.data);
-        document.getElementById("thirdElement").style.removeProperty('display');
-      }
-      if (res.response.json.fourthElement) {
-        getDrawGraphicSecond(res.response.json.fourthElement, setOptions2);
-        document.getElementById("fourthElement").style.removeProperty('display');
-      }
-      if (res.response.json.fivethElement) {
-        getDrawGraphicThird(res.response.json.fivethElement, setOptions3);
-        document.getElementById("graphicThird").style.removeProperty('display');
+       if (res.response.json.secondElement) {
+        drawFirstElement(res.response.json.secondElement, setOptions1);
         document.getElementById("fivethElement").style.removeProperty('display');
       }
-    }
-    else if (res.status == 401) {
-        Swal.fire({
-          title: 'Authentication Error',
-          html: res.error
-        });
-        $('.load-wrapp').hide();
-    }
-    else {
+      
+    } else {
       hideLoading();
       if(res.code == 11){
         Swal.fire({
@@ -238,9 +201,9 @@ function getFirstElement(date_from, date_to){
 };
 
 //-----TABLES
-function getDrawTable(id, columnsData, tableData, heightTable){
+function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:heightTable,
+    height:"400px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -249,7 +212,7 @@ function getDrawTable(id, columnsData, tableData, heightTable){
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
-    columns:columnsData
+    columns:columnsData,
   });
 
   if (document.getElementById("download_xlsx_"+id)){
@@ -269,63 +232,29 @@ function getDrawTable(id, columnsData, tableData, heightTable){
   }
 }
 
-
 //-----GRAPICH
 let chart1;
-function getDrawGraphicFirst(data, setOptions){
+function drawFirstElement(datasets, dataconfig){
+  console.log(datasets.datasets.length)
   //---CHART
   var ctx = document.getElementById('graphicFirst').getContext('2d');
   
   if (chart1) {
     chart1.destroy();
   }
+  //---COLORS
+  /*array_colors = getPAlleteColors(8, datasets['datasets'].length);
+  datasets['datasets'].forEach( function(valor, indice, array) {
+    console.log("En el índice " + indice + " hay este valor: " + valor);
+  });*/
 
-  //-----COLORS
-  data.datasets[0].background = '#f5b041';
 
   chart1 = new Chart(ctx, {
-    type: 'bar',
-    data:data,
+    type: 'line',
+    data: datasets,
     plugins: [ChartDataLabels],
-    options: setOptions,
-  });
-}
-
-let chart2;
-function getDrawGraphicSecond(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicSecond').getContext('2d');
-  
-  if (chart2) {
-    chart2.destroy();
-  }
-
-  //-----COLORS
-  var array_colors = getPAlleteColors(7,data.datasets.length);
-  data.datasets.background = array_colors;
-
-  chart2 = new Chart(ctx, {
-    type: 'pie',
-    data:data,
-     plugins: [ChartDataLabels],
-    options: setOptions,
+    options: dataconfig
   });
 }
 
 
-let chart3;
-function getDrawGraphicThird(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicThird').getContext('2d');
-  
-  if (chart3) {
-    chart3.destroy();
-  }
-
-  chart3 = new Chart(ctx, {
-    type: 'bar',
-    data:data,
-     plugins: [ChartDataLabels],
-    options: setOptions,
-  });
-}

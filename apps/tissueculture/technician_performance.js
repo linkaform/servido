@@ -160,6 +160,9 @@ function loadDemoData(){
 
   getDrawGraphicSixth(dataElement6, setOptions6)
   document.getElementById("tenthElement").style.removeProperty('display');
+
+  getDrawTable('eleventhElement', columsTable5, dataTable5);
+  document.getElementById("eleventhElement").style.removeProperty('display');
 }
 
 const loading = document.querySelector('.loading-container');
@@ -249,8 +252,11 @@ function getFirstElement(dateTo, dateFrom){
         getDrawGraphicSixth(res.response.json.tenthElement, setOptions6)
         document.getElementById("tenthElement").style.removeProperty('display');
       }
-     
-      
+
+      if (res.response.json.eleventhElement.tabledata) {
+        getDrawTable('eleventhElement', columsTable5, res.response.json.eleventhElement.tabledata);
+        document.getElementById("eleventhElement").style.removeProperty('display');
+      }
     } else {
       hideLoading();
       if(res.code == 11){

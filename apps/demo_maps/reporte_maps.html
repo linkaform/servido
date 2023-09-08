@@ -37,9 +37,18 @@
             //---SET MARKERS MAP
             dataGeo.forEach((dataElement) => {
                 content = getElement(dataElement, dataElement.format);
-                L.marker(dataElement.geolocation).addTo(map).bindPopup(content);
+                text = "<p><a href='https://app.linkaform.com/#/login' target='_blank'>200001</a> | Tiempo: 05:50 <p>";
+                L.marker(dataElement.geolocation).addTo(map).bindTooltip(text , 
+                {
+                    permanent: true, 
+                    direction: 'right'
+                }).bindPopup(content);
             });
         }
+
+
+      
+  
 
         function getElement(dataInformation, option){
             let component = ''

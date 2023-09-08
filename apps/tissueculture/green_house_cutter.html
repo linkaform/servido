@@ -105,7 +105,7 @@
                     
 
                     <!--FIRST ELEMENT - TABLE -->
-                    <div class="col-sm-12 col-md-12 col-lg-5" style="align-items: center;overflow-y: scroll;">
+                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
                             <h3 ><span>Report Plant</span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
@@ -117,16 +117,29 @@
                     </div>
                     
                     <!--SECOND ELEMENT - GRAPHIC -->
-                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-7 mb-5 mt-5" style="overflow-y: scroll;">
+                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-12 mb-5 mt-5" style="overflow-y: scroll;">
                         <h3 style="text-align: center;">
                             <button class="btn btn-secondary button-chart float-right" type="button" onclick="get_chartDownload('graphicFirst','chart_screenIV');return false;" id="download_graphicFirst">
                                 <i class="fa-sharp fa-solid fa-download"></i>
                             </button >
                         </h3>
-                        <div  style="width: 1000px;height: 500px;margin: auto;">
+                        <div  style="width: 1350px;height: 700px;margin: auto;">
                             <canvas id="graphicFirst"></canvas>
                         </div>
                     </div>
+
+                    <!--FIVETH ELEMENT - GRAPHIC -->
+                    <div id="fivethElement" class="col-sm-12 col-md-12 col-lg-12 mt-5 mb-5" style="overflow-y: scroll;">
+                        <h3 style="text-align: center;">
+                            <button class="btn btn-secondary  button-chart  float-right" type="button" onclick="get_chartDownload('graphicThird','chart_screenIV');return false;" id="download_graphicThird">
+                                <i class="fa-sharp fa-solid fa-download"></i>
+                            </button >
+                        </h3>
+                        <div  style="width: 1350px;height: 700px;margin: auto;">
+                            <canvas id="graphicThird" ></canvas>
+                        </div>
+                    </div>
+
 
                     <!--THIRD ELEMENT - TABLE -->
                     <div class="col-sm-12 col-md-12 col-lg-6" style="align-items: center;overflow-y: scroll;">
