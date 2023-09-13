@@ -3,14 +3,30 @@
 //--Table Montajes Por Mes
 
 var columsTable1 = [
-  { title:"Plant", field:'plant_code',hozAlign:"left",headerFilter:"input",width:100},
-  { title:"Ready Date", field:'ready_date',hozAlign:"right",headerFilter:"input",width:120},
-  { title:"Green House", field:'green_house',hozAlign:"left",headerFilter:"input",width:230},
-  { title:"Date", field:'date',hozAlign:"left",headerFilter:"input",width:120},
-  { title:"Required Flats", field:'required',hozAlign:"right",headerFilter:"input",width:100},
-  { title:"Produce Flats", field:'total_flats',hozAlign:"right",headerFilter:"input",width:100},
-  { title:"Variance", field:'variance',hozAlign:"right",headerFilter:"input",width:100},
+  { title:"Plant", field:'plant_code',hozAlign:"left",headerFilter:"input",headerTooltip:true,width:100},
+  { title:"Ready Date", field:'ready_date',hozAlign:"right",headerFilter:"input",headerTooltip:true,width:120},
+  { title:"Green House", field:'green_house',hozAlign:"left",headerFilter:"input",headerTooltip:true,width:230},
+  { title:"Date", field:'date',hozAlign:"left",headerFilter:"input",headerTooltip:true,width:120},
+
+  { title:"Required Flats", field:'required',hozAlign:"right",headerFilter:"input",headerTooltip:true,
+  formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},width:100},
+  { title:"Produce Flats", field:'total_flats',hozAlign:"right",headerFilter:"input",headerTooltip:true,
+  formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},width:100},
+  { title:"Variance", field:'variance',hozAlign:"right",headerFilter:"input",headerTooltip:true,
+  formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},width:100},
+  { title:"Required Eaches", field:'required_eaches',hozAlign:"right",headerFilter:"input",headerTooltip:true,
+  formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},width:100},
+  { title:"Eaches", field:'eaches',hozAlign:"right",headerFilter:"input",headerTooltip:true,
+  formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},width:100},
+  { title:"Containers", field:'containers',hozAlign:"right",headerFilter:"input",headerTooltip:true,
+  formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},width:100},
+  { title:"Scrap Plant", field:'scrap',hozAlign:"right",headerFilter:"input",headerTooltip:true,
+  formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},width:100},
+  { title:"Scrap Percentage", field:'scrap_percentage',hozAlign:"right",headerFilter:"input",headerTooltip:true,
+  formatter:"money", formatterParams:{decimal:",",symbol:"",precision:2},width:100},
 ];
+
+
 
 var dataTable1 = [
   {
@@ -88,6 +104,51 @@ var dataTable2 = [
   },
 ]
 
+
+
+var columsTable3 = [
+  { title:"Plant", field:'plant',hozAlign:"left",headerFilter:"input",headerTooltip:true,width:100},
+  { title:"Green House", field:'green_house',hozAlign:"left",headerFilter:"input",headerTooltip:true,width:230},
+  { title:"Date", field:'date',hozAlign:"left",headerFilter:"input",headerTooltip:true,width:120},
+  { title:"Produce Flats", field:'flats_cant',hozAlign:"right",headerFilter:"input",headerTooltip:true,
+  formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},width:100},
+  { title:"Required Flats", field:'required',hozAlign:"right",headerFilter:"input",headerTooltip:true,
+  formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},width:100},
+];
+
+
+var dataTable3 = [
+  {
+    plant_code: "ABCO",
+    green_house: "Example",
+    date: "26-04-2023",
+    total_flats: "500",
+  },
+    {
+    plant_code: "ABCO",
+    green_house: "Example",
+    date: "26-04-2023",
+    total_flats: "500",
+  },
+    {
+    plant_code: "ABCO",
+    green_house: "Example",
+    date: "26-04-2023",
+    total_flats: "500",
+  },
+    {
+    plant_code: "ABCO",
+    green_house: "Example",
+    date: "26-04-2023",
+    total_flats: "500",
+  },
+    {
+    plant_code: "ABCO",
+    green_house: "Example",
+    date: "26-04-2023",
+    total_flats: "500",
+  },
+];
 
 
 var data1 = {

@@ -141,6 +141,9 @@ function loadDemoData(){
   getDrawTable('thirdElement', columsTable2, dataTable1, '400px');
   document.getElementById("thirdElement").style.removeProperty('display');
 
+  getDrawTable('sixthElement', columsTable3, dataTable3, '500px');
+  document.getElementById("sixthElement").style.removeProperty('display');
+
   getDrawGraphicFirst(data1, setOptions1);
   document.getElementById("secondElement").style.removeProperty('display');
   document.getElementById("graphicFirst").style.removeProperty('display');
@@ -209,6 +212,10 @@ function getFirstElement(date_from, date_to){
         getDrawGraphicThird(res.response.json.fivethElement, setOptions3);
         document.getElementById("graphicThird").style.removeProperty('display');
         document.getElementById("fivethElement").style.removeProperty('display');
+      }
+      if (res.response.json.sixthElement.data) {
+        getDrawTable('sixthElement', columsTable3, res.response.json.sixthElement.data);
+        document.getElementById("sixthElement").style.removeProperty('display');
       }
     }
     else if (res.status == 401) {
