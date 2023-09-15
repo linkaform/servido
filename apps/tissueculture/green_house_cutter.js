@@ -191,6 +191,7 @@ function getFirstElement(date_from, date_to){
       $("#divContent").show();
       $('.title_tables').show();
       //---Peticiones
+      console.log('data=',res.response.json.firstElement.data)
       if (res.response.json.firstElement.data) {
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
