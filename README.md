@@ -1,31 +1,32 @@
 # Linkaform/Airflow_srv:Develeop
 
 
-### Pre Requisitos
+
+### Requerimientos
+
 Docker y docker compose
 
-Para poder correr esta aplicacion se neceita instalar docker y docker-compose
 
-Para ver las instrucciones referise a 
+### Docker-compose install
 
-- docker 
-  https://docs.docker.com/install/#server
-- docker-compose
-  https://docs.docker.com/compose/install/
 
-### Give your user docker capabilities
-
+1. To download and install the Compose CLI plugin, run:
 ```
-sudo usermod -aG docker $USER
-
-```
-
-
-
-
 DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
 mkdir -p $DOCKER_CONFIG/cli-plugins
 curl -SL https://github.com/docker/compose/releases/download/v2.20.3/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+```
+
+
+2. Apply executable permissions to the binary:
+```
+ chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+```
+
+3.  Test the installation.
+```
+ sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+```
 
 Open Source project formed by a collection of templates that helps you building Microsites or your own Business Intelligence
 
@@ -34,10 +35,6 @@ Open Source project formed by a collection of templates that helps you building 
 ```
 cd docker
 docker-compose up -d
-```
-```
-cd docker
-docker compose up -d
 ```
 
 Once the project is running you can access:
