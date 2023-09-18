@@ -19,6 +19,7 @@ services:
      - ~/lkf/custom:/srv/servido/apps/custom
      - ../:/srv/servido/
      - ../nginx:/etc/nginx
+     - ${PWD}/../nginx/sites-available/servido_local.conf:/etc/nginx/sites-enabled/servido_local.conf:ro
     build:
      context: ../
      dockerfile: Dockerfile

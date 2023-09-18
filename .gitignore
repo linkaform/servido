@@ -114,3 +114,6 @@ certs/
 
 # Custom WebApps
 custom/
+
+#nginx
+nginx/sites-enabled/

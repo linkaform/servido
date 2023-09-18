@@ -120,7 +120,7 @@ COPY --chown=www-data:www-data ./docker/uwsgi/servido.ini /etc/uwsgi/apps-enable
 #NGINX SETUP
 RUN echo testssssssssssss
 RUN rm -rf /etc/nginx/certs/
-RUN rm -rf /etc/nginx/sites-enabled/default
+RUN rm -rf /etc/nginx/sites-enabled/
 RUN echo testsssssssssssssss
 COPY --chown=www-data:www-data ./nginx /etc/nginx
 COPY --chown=www-data:www-data ./nginx/sites-available/servido.conf /etc/nginx/sites-enabled/servido.conf
