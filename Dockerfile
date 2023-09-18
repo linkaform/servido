@@ -124,8 +124,6 @@ RUN rm -rf /etc/nginx/sites-enabled/default
 RUN echo testsssssssssssssss
 COPY --chown=www-data:www-data ./nginx /etc/nginx
 COPY --chown=www-data:www-data ./nginx/sites-available/servido.conf /etc/nginx/sites-enabled/servido.conf
-COPY --chown=www-data:www-data ./nginx/certs/linkaform.com.chained.crt /etc/nginx/certs/linkaform.com.chained.crt
-COPY --chown=www-data:www-data ./nginx/certs/linkaform.com.key /etc/nginx/certs/linkaform.com.key
 
 #COPY ALL FILES
 RUN echo cacheeeee
