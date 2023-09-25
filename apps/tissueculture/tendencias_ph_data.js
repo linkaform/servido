@@ -3,6 +3,7 @@
 //--Table Montajes Por Mes
 var columsTable1 = [
   { title:"Plant Code", field:'plant_code',hozAlign:"left",headerFilter:"input", width:150},
+  { title:"Lote", field:'lot',hozAlign:"left",headerFilter:"input", width:150},
   { title:"Ready Year",field:'ready_year',hozAlign:"left",headerFilter:"input", width:200 },
   { title:"Ready Week",field:'ready_week',hozAlign:"left",headerFilter:"input", width:200 },
   { title:"Green House", field:'green_house',hozAlign:"left",width:200 },
@@ -15,21 +16,28 @@ var columsTable1 = [
 var dataTable1 = [
   {
     "plant_code":'LNACO',
-    "ready_year":'',
-    "ready_week":'',
-    "green_house":'',
-    "table_mesa":'',
-    "ph_data":'',
-    "ec_data":'',
     "_children":[
       {
-        "plant_code":'',
-        "ready_year":'2023',
-        "ready_week":'44',
-        "green_house":'1',
-        "table_mesa":'7',
-        "ph_data":'6.93',
-        "ec_data":'31',
+
+        "lot":123,
+        "_children":[
+          {
+            "ready_year":'2023',
+            "ready_week":'44',
+            "green_house":'1',
+            "table_mesa":'7',
+            "ph_data":'6.93',
+            "ec_data":'31',
+          },
+          {
+            "ready_year":'2023',
+            "ready_week":'44',
+            "green_house":'1',
+            "table_mesa":'7',
+            "ph_data":'6.93',
+            "ec_data":'31',
+          },
+        ],
       },
     ],
   },
