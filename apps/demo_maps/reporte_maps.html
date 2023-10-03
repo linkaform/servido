@@ -15,6 +15,10 @@
     <div id="map">
       <a href="https://www.maptiler.com" style="position:absolute;left:10px;bottom:10px;z-index:999;"><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"></a>
     </div>
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.js"
+    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script type="text/javascript" src="./reporte_maps_data.js"></script>
     <script>
@@ -32,19 +36,41 @@
             }
 
             function hideOverlappingTooltips() {
-              var rects = [];
-              var tooltips = document.getElementsByClassName('myTooltip');
-              for (var i = 0; i < tooltips.length; i++) {
-                  tooltips[i].style.visibility = '';
-                  rects[i] = tooltips[i].getBoundingClientRect();
-              }
-              for (var i = 0; i < tooltips.length; i++) {
-                  if (tooltips[i].style.visibility != 'hidden') {
-                      for (var j = i + 1; j < tooltips.length; j++) {
-                          if (overlap(rects[i], rects[j])) tooltips[j].style.visibility = 'hidden';
-                      }
-                  }
-              }
+                var rects = [];
+                var idListData = [];
+                var idListGroup = [];
+                var tooltips = document.getElementsByClassName('myTooltip');
+                for (var i = 0; i < tooltips.length; i++) {
+                    
+
+                    //---Ids
+                    var attrData = tooltips[i].querySelectorAll('.toltip-data'); 
+                    var attrGroup = tooltips[i].querySelectorAll('.toltip-group'); 
+
+
+                    tooltips[i].style.visibility = '';
+                    document.getElementById(attrData[0].id).style.display = 'block';
+                    document.getElementById(attrGroup[0].id).style.display = 'none';
+
+                    rects[i] = tooltips[i].getBoundingClientRect();
+                    idListData[i]= attrData[0].id
+                    idListGroup[i]= attrGroup[0].id
+                }
+                for (var i = 0; i < tooltips.length; i++) {
+                    let count = 1
+                    if (tooltips[i].style.visibility != 'hidden') {
+                        for (var j = i + 1; j < tooltips.length; j++) {
+                            if (overlap(rects[i], rects[j])){
+                                tooltips[j].style.visibility = 'hidden';
+                                count +=1
+                                document.getElementById(idListData[i]).style.display = 'none';
+                                document.getElementById(idListGroup[i]).style.display = 'block';
+                                document.getElementById(idListGroup[i]).textContent = 'Records:'+count;
+                            }
+                        }
+                    }
+                    
+                }
             }
 
         function setDrawMap(dataGeo){
@@ -71,8 +97,11 @@
 
             //---SET MARKERS MAP
             dataGeo.forEach((dataElement) => {
+                console.log('dataElement',dataElement)
+                console.log('=====================')
                 content = getElement(dataElement, dataElement.format);
-                text = "<p><a href='https://app.linkaform.com/#/login' target='_blank'>200001</a> | Tiempo: 05:50 <p>";
+                text = "<p id='toltip-"+dataElement.record_id+"-show' class='toltip-data'><a href='https://app.linkaform.com/#/login' target='_blank'>200001</a> | Tiempo: 05:50 <p>"+
+                "<p id='toltip-"+dataElement.record_id+"-hide' style='display:none;' class='toltip-group'>0<p>";
                 L.marker(dataElement.geolocation,{icon: greenIcon}).addTo(map).bindTooltip(text , 
                 {
                     permanent: true, 

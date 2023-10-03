@@ -244,12 +244,6 @@ function drawFirstElement(datasets, dataconfig){
   if (chart1) {
     chart1.destroy();
   }
-  //---COLORS
-  /*array_colors = getPAlleteColors(8, datasets['datasets'].length);
-  datasets['datasets'].forEach( function(valor, indice, array) {
-    console.log("En el índice " + indice + " hay este valor: " + valor);
-  });*/
-
 
   chart1 = new Chart(ctx, {
     type: 'line',

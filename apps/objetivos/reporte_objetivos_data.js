@@ -6,6 +6,14 @@ var columsTable1 = [
   { title:"CADENA", field:'chain',hozAlign:"left",width:100},
   { title:"AÑO", field:'year',hozAlign:"left",width:75},
   { title:"MES", field:'month',hozAlign:"left",width:75},
+
+  { title:"MARCA", field:'make',hozAlign:"left",headerTooltip:true,width:150},
+  { title:"MODELO", field:'model',hozAlign:"left",headerTooltip:true,width:150},
+  { title:"SKU", field:'sku',hozAlign:"left",headerTooltip:true,width:150},
+  { title:"PIEZAS VENDIDAS", field:'pz_done',hozAlign:"left",headerTooltip:true,width:150},
+  { title:"PRECIO UNITARIO", field:'price',hozAlign:"left",headerTooltip:true,width:150},
+
+
   { title:"OBJETIVOS PIEZAS", field:'parts',hozAlign:"right",headerTooltip:true,width:100},
   { title:"REALIZADOS PIEZAS", field:'done_parts',hozAlign:"right",headerTooltip:true,width:100},
   { title:"OBJETIVOS PESOS", field:'money',hozAlign:"right",formatter: "money",
@@ -13,7 +21,6 @@ var columsTable1 = [
   { title:"REALIZADOS PESOS", field:'done_money',hozAlign:"right",formatter: "money",
    "formatterParams": {"symbol": "$", "symbolAfter": "", "thousand": ",",  precision:2},headerTooltip:true,width:100},
   {title:"Progreso", field:"progress", formatter:"progress", formatterParams:{color:["rgb(255,0,0)", "orange", "#00dd00"]}, width:150},
-  
 ];
 
 var dataTable1 = [
