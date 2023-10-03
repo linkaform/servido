@@ -180,6 +180,7 @@ function getFirstElement(dateTo, dateFrom, plant, option_in, option_out, check){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
+      console.log(res.response.json)
       if (res.response.json.firstElement.data) {
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');

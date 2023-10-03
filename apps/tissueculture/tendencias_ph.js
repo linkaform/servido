@@ -172,13 +172,15 @@ function getFirstElement(dateTo, dateFrom){
       $("#divContent").show();
       $('.title_tables').show();
 
+      console.log(res.response.json)
+
       if (res.response.json.firstElement.data) {
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
        if (res.response.json.secondElement) {
         drawFirstElement(res.response.json.secondElement, setOptions1);
-        document.getElementById("fivethElement").style.removeProperty('display');
+        document.getElementById("secondElement").style.removeProperty('display');
       }
       
     } else {
