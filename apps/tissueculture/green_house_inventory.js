@@ -16,6 +16,7 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
+hideElement("secondElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -121,6 +122,7 @@ function unHideReportElements(){
   unhideElement("firstParameters");
   unhideElement("close_sesion");
   unhideElement("firstElement");
+  unhideElement("secondElement");
 }
 
 function loadDemoData(){
@@ -130,6 +132,9 @@ function loadDemoData(){
 
   getDrawTable('firstElement', columsTable1, dataTable1);
   document.getElementById("firstElement").style.removeProperty('display');
+
+  getDrawTable('secondElement', columsTable2, dataTable2);
+  document.getElementById("secondElement").style.removeProperty('display');
 }
 
 const loading = document.querySelector('.loading-container');
@@ -184,6 +189,10 @@ function getFirstElement(dateTo, dateFrom, plant, option_in, option_out, check){
       if (res.response.json.firstElement.data) {
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
+      }
+      if(res.response.json.secondElement.data){
+        getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data);
+        document.getElementById("secondElement").style.removeProperty('display');
       }
       
     } else {
@@ -244,6 +253,7 @@ function get_catalog()
   arrayPlant = []
   arrayOut = []
 
+
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
@@ -259,6 +269,7 @@ function get_catalog()
   .then(res => {
     if (res.success) {
       if (res.response.json.catalog){
+        //console.log(res.response.json.catalog)
         for (i = 0; i < res.response.json.catalog.length; i++) {
           valuePlant = res.response.json.catalog[i]['61ef32bcdf0ec2ba73dec33d'];
           valueOut = res.response.json.catalog[i]['6442e4831198daf81456f274'];
@@ -289,4 +300,43 @@ function get_catalog()
       }
     } 
   })
+
+  arrayIn = []
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: 107085,
+      option: 2,
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.success){
+      //console.log("Datos devueltos")
+      if(res.response.json.catalogtwo){
+        //console.log(res.response.json.catalogtwo)
+        for (i = 0; i < res.response.json.catalogtwo.length; i++) {
+          valueIn = res.response.json.catalogtwo[i]['6442e4831198daf81456f274'];
+          //console.log(valueIn)
+          if(arrayIn.indexOf(valueIn) === -1){
+            arrayIn.push(valueIn)
+          }
+          arrayIn.sort()
+          //---Warehouse Out
+          $("#in").empty();
+          $("#in").append('<option value="--">--Seleccione--</option>');
+          for(i = 0; i < arrayIn.length; i++){
+            value = arrayIn[i]
+            $('#in').append('<option value="' + value + '">'+value + '</option>');
+          }
+        }
+      }
+    }
+    })
+
+
 };
