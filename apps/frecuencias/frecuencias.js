@@ -335,7 +335,8 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
       //----IMAGE GRAPHIC
       let urlGraphicFourth = '';
       html2canvas(document.querySelector("#graphicFourth")).then(canvas => {
-        urlGraphicFourth = canvas.toDataURL();
+        urlGraphicFourth = document.body.appendChild(canvas);
+        console.log(urlGraphicFourth)
       });
 
       let urlGraphicFiveth = '';
@@ -393,7 +394,7 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
             };
           },
         });
-      }, 1000);
+      }, 2000);
     });
   }
 }
