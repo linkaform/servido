@@ -333,19 +333,30 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
     document.getElementById("download_pdf_"+id).replaceWith(document.getElementById("download_pdf_"+id).cloneNode(true));
     document.getElementById("download_pdf_"+id).addEventListener("click", function(){
       //----IMAGE GRAPHIC
+      let intentoA = 0;
+      let intentoB = 0;
+      let limite = 5;
+
       let urlGraphicFourth = '';
-      html2canvas(document.querySelector("#graphicFourth")).then(canvas => {
-        imageTimeout:4000,
+      while(!urlGraphicFourth && intentoA < limite){
+        html2canvas(document.querySelector("#graphicFourth")).then(canvas => {
+        imageTimeout:4500,
         urlGraphicFourth =  canvas.toDataURL();
-        console.log(urlGraphicFourth)
-      });
+        });
+        intentoA ++;
+      }
 
       let urlGraphicFiveth = '';
-      html2canvas(document.querySelector("#graphicFiveth")).then(canvas => {
-        imageTimeout:4000,
+
+      while(!urlGraphicFiveth && intentoB < limite){
+        html2canvas(document.querySelector("#graphicFiveth")).then(canvas => {
+        imageTimeout:4500,
         urlGraphicFiveth = canvas.toDataURL();
         
-      });
+        });
+        intentoB ++;
+      }
+
       setTimeout(() => {
         table.download("pdf", "data.pdf", {
           orientation:"landscape", //set page orientation to portrait
