@@ -335,13 +335,16 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
       //----IMAGE GRAPHIC
       let urlGraphicFourth = '';
       html2canvas(document.querySelector("#graphicFourth")).then(canvas => {
-        urlGraphicFourth = document.body.appendChild(canvas);
+        imageTimeout:4000,
+        urlGraphicFourth =  canvas.toDataURL();
         console.log(urlGraphicFourth)
       });
 
       let urlGraphicFiveth = '';
       html2canvas(document.querySelector("#graphicFiveth")).then(canvas => {
+        imageTimeout:4000,
         urlGraphicFiveth = canvas.toDataURL();
+        
       });
       setTimeout(() => {
         table.download("pdf", "data.pdf", {
@@ -398,6 +401,7 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
     });
   }
 }
+
 
 //----- CATALOGS
 function get_catalog(option) 

@@ -22,7 +22,7 @@ hideElement("thirdElement");
 window.onload = function(){
   var qs = urlParamstoJson();
   var formNode = document.getElementById("appCont");
-	for(var key in qs){
+    for(var key in qs){
     if (key === 'script_id' ){
       scriptId = parseInt(qs[key]);
     }
@@ -34,41 +34,41 @@ window.onload = function(){
     if (key ==='title'){
       $("#title_report").text(qs[key]);
     }
-		var elements = getAllElementsWithAttribute(formNode, 'data-infosync-id', key);
-		var value = decodeURI(qs[key]);
+        var elements = getAllElementsWithAttribute(formNode, 'data-infosync-id', key);
+        var value = decodeURI(qs[key]);
     if (key === 'infosyncRecordID'){
       var recId = document.getElementById("infosyncRecordID");
       recId.value = value;
     }
-		else if(elements.length > 0){
-			switch(elements[0].type){
-				case 'text':
-					elements[0].value = value;
-					break;
-				case 'textarea':
-					elements[0].value = value;
-					break;
-				case 'select-one':
-					elements[0].value = value;
-					break;
-				case 'radio':
-					for(var idx in elements){
-						if(elements[idx].value === value){
-							elements[idx].checked = true;
-						}
-					}
-					break;
-				case 'checkbox':
-					var values = value.split(';');
-					for(var idx in elements){
-						if(values.indexOf(elements[idx].value) !== -1){
-							elements[idx].checked = true;
-						}
-					}
-					break;
-			}
-		}
-	}
+        else if(elements.length > 0){
+            switch(elements[0].type){
+                case 'text':
+                    elements[0].value = value;
+                    break;
+                case 'textarea':
+                    elements[0].value = value;
+                    break;
+                case 'select-one':
+                    elements[0].value = value;
+                    break;
+                case 'radio':
+                    for(var idx in elements){
+                        if(elements[idx].value === value){
+                            elements[idx].checked = true;
+                        }
+                    }
+                    break;
+                case 'checkbox':
+                    var values = value.split(';');
+                    for(var idx in elements){
+                        if(values.indexOf(elements[idx].value) !== -1){
+                            elements[idx].checked = true;
+                        }
+                    }
+                    break;
+            }
+        }
+    }
 
   us = getCookie("userId");
   jw = getCookie("userJwt");
@@ -132,6 +132,8 @@ function loadDemoData(){
   $('.title_tables').show();
   unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
+  getDrawTable('firstElement', columsTable1, dataTable1, 500);
+  document.getElementById("firstElement").style.removeProperty('display');
 
 }
 
@@ -211,7 +213,7 @@ function getDrawTable(id, columnsData, tableData, height = 500){
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:false,
+    dataTreeStartExpanded:true,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
@@ -272,6 +274,7 @@ function get_catalog()
     if (res.success) {
       if (res.response.catalog){
         //----Pais
+        console.log("Catalog:"+res.response.catalog)
         if(res.response.catalog.length > 0 ){
           $("#cadenas").empty();
           $('#cadenas').append('<option value="--">--Seleccione--</option>');
@@ -285,5 +288,3 @@ function get_catalog()
     } 
   })
 };
-
-                    

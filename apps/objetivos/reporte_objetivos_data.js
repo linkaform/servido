@@ -4,6 +4,10 @@ var columsTable1 = [
   { title:"DET TIENDA", field:'det_store',hozAlign:"left",width:100},
   { title:"NOMBRE DE LA TIENDA", field:'name_store',hozAlign:"left",width:200},
   { title:"CADENA", field:'chain',hozAlign:"left",width:100},
+  { title:"FOLIO", field:'folio', hozAlign:"left", formatter:"link", formatterParams:{
+    url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
+    target:"_blank",},headerFilter:"input", width:150},
+  { title:"FECHA", field:'date',hozAlign:"left",width:100},
   { title:"AÑO", field:'year',hozAlign:"left",width:75},
   { title:"MES", field:'month',hozAlign:"left",width:75},
 
@@ -25,7 +29,6 @@ var columsTable1 = [
 
 var dataTable1 = [
   {
-    "folio": "", 
     "record_id": "", 
     "codigo_tienda":'BODEGONB094',
     "det_tienda":'B094',
