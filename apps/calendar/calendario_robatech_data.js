@@ -68,80 +68,53 @@ var resources2 = [
   
   let events1 =  [
     {
-      resourceId: 'a',
-      title  : 'Visitar a Linkaform',
-      start  : '2023-10-09T09:00:00',
-      end: '2023-10-09T10:00:00',
-      color: '#CA6F1E'
+        "color": "#CA6F1E",
+        "resourceId": "1384-7243",
+        "end": "2023-10-09T10:00:00",
+        "start": "2023-10-09T09:00:00",
+        "title": "realizar_visita"
     },
     {
-      resourceId: 'a',
-      title  : 'Visitar a Linkaform',
-      start  : '2023-10-09T09:00:00',
-      end: '2023-10-09T10:00:00',
-      color: '#28B463'
+        "color": "#CA6F1E",
+        "resourceId": "1384-7243",
+        "end": "2023-10-09T13:00:00",
+        "start": "2023-10-09T11:00:00",
+        "title": "concretar_venta"
     },
     {
-      resourceId: 'a',
-      title  : 'Vender a general',
-      start  : '2023-10-09T11:00:00',
-      end    : '2023-10-09T13:00:00',
-      color: '#CA6F1E'
+        "color": "#CA6F1E",
+        "resourceId": "1384-7243",
+        "end": "2023-10-10T0:56:00",
+        "start": "2023-10-10T7:56:00",
+        "title": ""
     },
     {
-      resourceId: 'b',
-      title  : 'Vender a general',
-      start  : '2023-10-09T11:00:00',
-      end    : '2023-10-09T13:00:00',
-      color: '#28B463'
+        "color": "#CA6F1E",
+        "resourceId": "1388-7243",
+        "end": "2023-10-09T16:30:00",
+        "start": "2023-10-09T15:30:00",
+        "title": "taller"
     },
     {
-      resourceId: 'b',
-      title  : 'Actividad 3',
-      start  : '2023-10-10T08:30:00',
-      end    : '2023-10-10T13:00:00',
-      color: '#CA6F1E',
-      allDay : false // will make the time show
-    },
-
-
-    {
-      resourceId: 'e',
-      title  : 'Elaboración de Reportes',
-      start  : '2023-10-11T14:00:00',
-      end    : '2023-10-11T16:00:00',
-      color: '#28B463'
+        "color": "#CA6F1E",
+        "resourceId": "1388-7243",
+        "end": "2023-10-10T10:30:00",
+        "start": "2023-10-10T09:00:00",
+        "title": "realizar_visita"
     },
     {
-      resourceId: 'e',
-      title  : 'Elaboración de Reportes',
-      start  : '2023-10-11T14:30:00',
-      end    : '2023-10-11T16:45:00',
-      color: '#CA6F1E',
-    },
-
-    {
-      resourceId: 'e',
-      title  : 'Entrega Material',
-      start  : '2023-10-12T09:00:00',
-      end    : '2023-10-12T10:00:00',
-      color: '#28B463'
+        "color": "#CA6F1E",
+        "resourceId": "1388-7243",
+        "end": "2023-10-11T15:32:00",
+        "start": "2023-10-11T15:32:00",
+        "title": "seguimiento_de_cotizaciones"
     },
     {
-      resourceId: 'e',
-      title  : 'Entrega Material',
-      start  : '2023-10-12T09:15:00',
-      end    : '2023-10-12T10:20:00',
-      color: '#CA6F1E',
-    },
-
-    {
-      resourceId: 'g',
-      title  : 'Seguimiento de Cotizaciones',
-      start  : '2023-10-13T10:30:00',
-      end    : '2023-10-13T13:00:00',
-      color: '#28B463'
-    },
-    
-  ]
+        "color": "#28B463",
+        "resourceId": "1389-7243",
+        "end": "2023-10-09T16:35:00",
+        "start": "2023-10-09T15:35:00",
+        "title": "elaboración_de_reportes"
+    }
+]
   

@@ -131,7 +131,6 @@ function loadDemoData(){
   getDrawCalendar('firstElement', resources1, events1);
 }
 
-
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
@@ -139,7 +138,6 @@ loading.style.display = 'none';
 function runFirstElement(){
   firstElement = getFirstElement();
 };
-
 
 function getFirstElement(){
   //----Hide Css

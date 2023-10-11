@@ -19,6 +19,12 @@
         <link rel="stylesheet" href="../styles/css/styles.css">
         <link rel="stylesheet" href="style.css">
         <link href='../utils/main.css' rel='stylesheet' />
+        <style type="text/css">
+            .imagen{
+                width: 80%;
+                height: 80%;
+            }
+        </style>
     </head>
     <body>
         <!-- Header -->
@@ -84,7 +90,8 @@
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
                         <i class="fa-solid fa-filter"></i>
                     </button >  &nbsp;  &nbsp;
-                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>&nbsp;  &nbsp;
+                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
+
                 </div>
 
                 <!--Filters -->
@@ -92,22 +99,19 @@
                     <div class="col-sm-12 col-md-3 col-lg-3" id="divGestor">
                         <h5>Gestor: </h5>
                         <select class="form-control mdb-select md-form" id="gestor" multiple="multiple">
-                            <option value="">--Seleccione--</option>
+                            <!--<option value="">--Seleccione--</option>
                             <option value="juan">Juan Contreras</option>
                             <option value="miguel">Miguel Pérez Cruz</option>
+                        -->
                         </select>
                     </div>
                     
-                    <div class="col-sm-12 col-md-2 col-lg-2">
+                    <div class="col-sm-12 col-md-3 col-lg-3" id="divActivities">
                         <h5>Actividad: </h5>
-                        <select class="form-control" id="out" name="out">
+                        <select class="form-control mdb-select md-form" id="activities" multiple="multiple">
                             <option value="">--Seleccione--</option>
-                            <option value="act1">Agendar Cita con Cliente</option>
-                            <option value="act2">Realizar Visita</option>
-                            <option value="act3">Seguimiento de Cotizaciones</option>
-                            <option value="act4">Concretar Venta</option>
-                            <option value="act5">Seguimiento de Factura/Cobranza</option>
-                            <option value="act5">Elaboración de Reportes</option>
+                            <option value="planificado">Actividades planificadas</option>
+                            <option value="realizado">Actividades realizadas</option>
                         </select>
                     </div>
                 </div>
@@ -116,11 +120,40 @@
                 <div class="row" style="margin-top:20px;"  id="divContent">
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <div id="firstElement" >  </div>
+
+                        <!-- MODAL -->
+                        <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header justify-content-md-center">
+                                <h5 class="modal-title" id="exampleModalLabel">Información del Evento</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body container justify-content-md-center gap-0 row-gap-3">
+                                <div id="eventInfo" class="text-center col col-lg-12 fs-4 p-6"></div>
+                                <div id="eventDescription" class="text-center col col-lg-12 fs-3"></div>
+                                <div class="modal-body container justify-content-md-center col col-lg-12" id="contentEvidencia">
+                                    <img src="" class="rounded mx-auto d-block imagen" title="Evidencia" id="evidencia" alt="Evidencia">
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cerrar</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </body>
+
+    <!-- Importa jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Importa Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
 
     <!-- Jquery -->
     <script

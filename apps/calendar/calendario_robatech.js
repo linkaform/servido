@@ -12,7 +12,7 @@ let scriptId = null;
 
 $('#divOptions').hide();
 $('#title_report').hide();
-//$('.title_tables').hide();
+$('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
@@ -83,23 +83,32 @@ window.onload = function(){
     userId = us;
     userJwt = jw;
     userName = getCookie("userName");
+    unHideReportElements();
     document.getElementById("firstParameters").style.removeProperty('display');
-    unHideReportElements()
+    
     if (scriptId == null) {
       loadDemoData();
     }
 
+    //--ASSING VALUES
+    var dateT = new Date();
+    var dateTo = dateT.toISOString().substring(0, 10);
+    get_catalog(1);
+
     //--Styles
     setSpinner();
     $("#gestor").multipleSelect('refresh');
+    $("#activities").multipleSelect('refresh');
     $('#divOptions').show();
     $('#title_report').show();
-    //runFirstElement();
+    
+    document.getElementById("firstParameters").style.removeProperty('display');
+    //unHideReportElements()
 
   } else {
     unhideElement("inicio_ses");
-    //$('.title_tables').hide();
     $('#divOptions').hide();
+    $('#divContent').hide();
     $('#title_report').hide();
     hideElement("firstElement-Buttons");
   }
@@ -113,7 +122,6 @@ window.onload = function(){
     }
   }
 }
-
 
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
@@ -135,24 +143,35 @@ function loadDemoData(){
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
-
-function runFirstElement(){
-  let gestor = $('#gestor').val();
+/*function runFirstElemento(){
+  console.log("Pruebas")
+  //firstElement = getFirstElement();
+  //getFirstElement(gestores, activities);
   firstElement = getFirstElement();
-};
+};*/
 
+function runFirstElement() {
+  let gestores = $('#gestor').val();
+  let activities = $('#activities').val();
+  let option = 2;
 
-function getFirstElement(){
+  firstElement = getFirstElement(gestores, activities, option);
+}
+
+function getFirstElement(gestores, activities, option){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
   //$('.title_tables').hide();
 
-
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
+      gestores: gestores,
+      activities: activities,
+      option: option,
+
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -166,14 +185,17 @@ function getFirstElement(){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.firstElement) {
-        console.log('drawFirstElement.........');
+      if (res.response.json.firstElement.data) {
+        
         //--Draw Calendar
-        resources = res.response.firstElement.resource
-        events = res.response.firstElement.events
+        resourcess = res.response.json.firstElement.data
+      }
+      if (res.response.json.secondElement.data){
+        eventss = res.response.json.secondElement.data
 
-        getDrawCalendar('firstElement', resources, events);
-
+        getDrawCalendar('firstElement', resourcess, eventss);
+        document.getElementById("firstParameters").style.removeProperty('display');
+        document.getElementById("firstElement").style.removeProperty('display');
       }
     } else {
       hideLoading();
@@ -194,20 +216,74 @@ function getFirstElement(){
   })
 };
 
+
+//----CATALOG
+function get_catalog(option){
+  console.log("Catálogo")
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: 110328,
+      option: 1,
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.success){
+        if(res.response.json.catalogFirst.data){
+          $("#gestor").empty();
+          $('#gestor').append('<option value="--">--Seleccione--</option>')
+          for (i = 0; i < res.response.json.catalogFirst.data.length; i++){
+            value = res.response.json.catalogFirst.data[i].gestor;
+            $('#gestor').append('<option value="'+ value + '">'+value+'</option>');
+          }
+          $('#gestor').multipleSelect('refresh')
+        }
+    }
+  })
+}
+
+
 //----CALENDAR
 function getDrawCalendar(id, resources, events){
+  let hoy = new Date();
+  let ahora = formatoFecha()
+  /*nowString = ahora.toString();
+  console.log("Ahora...: ", nowString)
+  console.log(typeof(nowString))*/
   var calendarEl = document.getElementById(id);
+  nowTest = '2023-10-11'
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-    now: '2023-10-09',
-    editable: true,     // enable draggable events
+    now: ahora,
+    selectable : true,
+    editable: false,     // enable draggable events
     aspectRatio: 1.8,
     scrollTime: '06:00', // undo default 6am scrollTime
     headerToolbar: {
         left: 'today prev,next',
         center: 'title',
         right: 'resourceTimelineDay,timeGridWeek,dayGridMonth'
+    },
+    eventClick: function(info) {
+      let evidencia = info.event._def.extendedProps.evidencia;
+
+      let imgEvidencia = $('#evidencia');
+
+      if(evidencia){
+        imgEvidencia.attr('src',evidencia);
+      } else {
+        imgEvidencia.attr('src','');
+        $('#contentEvidencia').hide()
+      }
+      $('#eventInfo').html(info.event.title);
+      $('#eventDescription').html(info.event.extendedProps.activity);
+      $('#eventModal').modal('show');
     },
     initialView: 'resourceTimelineDay',
     views: {
@@ -235,4 +311,25 @@ function getDrawCalendar(id, resources, events){
 
   calendar.setOption('locale', 'es');
   calendar.render();
+}
+
+function formatoFecha() {
+  // Obtén la fecha actual
+  const fecha = new Date();
+
+  // Obtiene el año, mes y día
+  const año = fecha.getFullYear();
+  const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // Se suma 1 al mes porque en JavaScript los meses comienzan desde 0
+  const dia = fecha.getDate().toString().padStart(2, '0');
+
+  // Formatea la fecha en el formato deseado
+  const fechaFormateada = `${año}-${mes}-${dia}`;
+
+  console.log(fechaFormateada); // Mostrará la fecha en el formato "2023-10-11"
+
+  return(fechaFormateada);
+}
+
+function cerrarModal(){
+  $('#eventModal').modal('hide')
 }
