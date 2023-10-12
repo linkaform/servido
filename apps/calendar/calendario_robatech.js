@@ -185,6 +185,7 @@ function getFirstElement(gestores, activities, option){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
+      console.log(res.response.json);
       if (res.response.json.firstElement.data) {
         
         //--Draw Calendar
@@ -256,13 +257,11 @@ function getDrawCalendar(id, resources, events){
   console.log("Ahora...: ", nowString)
   console.log(typeof(nowString))*/
   var calendarEl = document.getElementById(id);
-  nowTest = '2023-10-11'
-
   var calendar = new FullCalendar.Calendar(calendarEl, {
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
     now: ahora,
     selectable : true,
-    editable: false,     // enable draggable events
+    editable: true,     // enable draggable events
     aspectRatio: 1.8,
     scrollTime: '06:00', // undo default 6am scrollTime
     headerToolbar: {
@@ -272,10 +271,22 @@ function getDrawCalendar(id, resources, events){
     },
     eventClick: function(info) {
       let evidencia = info.event._def.extendedProps.evidencia;
+      let record_id = info.event.extendedProps.record_id;
+      let url = "https://preprod.linkaform.com/#/records/detail/"
 
       let imgEvidencia = $('#evidencia');
 
+      let btnRedirigir = $('#redirigirFolio')
+
+      if(record_id){
+        url = url+record_id;
+        btnRedirigir.attr('href',url)
+      }else{
+        btnRedirigir.attr('href',url)
+      }
+
       if(evidencia){
+        $('contentEvidencia').show()
         imgEvidencia.attr('src',evidencia);
       } else {
         imgEvidencia.attr('src','');
@@ -285,7 +296,7 @@ function getDrawCalendar(id, resources, events){
       $('#eventDescription').html(info.event.extendedProps.activity);
       $('#eventModal').modal('show');
     },
-    initialView: 'resourceTimelineDay',
+    initialView: 'timeGridWeek',
     views: {
         resourceTimelineThreeDays: {
             type: 'resourceTimeline',
@@ -297,7 +308,7 @@ function getDrawCalendar(id, resources, events){
     resourceAreaColumns: [
         {
             group: true,
-            headerContent: 'Usuario',
+            headerContent: 'Gestores',
             field: 'nombre_usuario'
         },
         {

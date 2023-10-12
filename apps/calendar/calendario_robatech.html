@@ -138,9 +138,25 @@
                                     <img src="" class="rounded mx-auto d-block imagen" title="Evidencia" id="evidencia" alt="Evidencia">
                                 </div>
                               </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cerrar</button>
-                              </div>
+                              <!--
+                              <div class="modal-footer row">
+                                <div class="col align-self-start bg-secondary">
+                                    <button type="button" class="btn btn-primary" onclick="cerrarModal()">Folio</button>
+                                </div>
+                                <div class="col align-self-end bg-primary">
+                                    <button type="button" class="btn btn-danger text-end" onclick="cerrarModal()">Cerrar</button>
+                                </div>
+                              </div> -->
+
+                              <div class="modal-footer row justify-content-between">
+                                    <div class="p-2">
+                                        <a href="" type="button" id="redirigirFolio" class="btn btn-primary rounded" onclick="redirigirFolio()">Más detalles</a>
+                                    </div>
+                                    <div class="p-2">
+                                        <button type="button" class="btn btn-danger rounded text-end" onclick="cerrarModal()">Cerrar</button>
+                                    </div>
+                               </div>
+
                             </div>
                           </div>
                         </div>
