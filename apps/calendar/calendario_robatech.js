@@ -272,7 +272,7 @@ function getDrawCalendar(id, resources, events){
     eventClick: function(info) {
       let evidencia = info.event._def.extendedProps.evidencia;
       let record_id = info.event.extendedProps.record_id;
-      let url = "https://app.linkaform.com/#/records/detail/"
+      let url = "https://preprod.linkaform.com/#/records/detail/"
 
       let imgEvidencia = $('#evidencia');
 
