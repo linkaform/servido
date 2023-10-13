@@ -68,53 +68,60 @@ var resources2 = [
   
   let events1 =  [
     {
-        "color": "#CA6F1E",
+        "color": "255,51,43",
         "resourceId": "1384-7243",
         "end": "2023-10-09T10:00:00",
         "start": "2023-10-09T09:00:00",
-        "title": "realizar_visita"
+        "title": "realizar visita",
+        "gestor":"Alfonso Cua"
     },
     {
-        "color": "#CA6F1E",
+        "color": "206, 81, 76",
         "resourceId": "1384-7243",
         "end": "2023-10-09T13:00:00",
         "start": "2023-10-09T11:00:00",
-        "title": "concretar_venta"
+        "title": "concretar_venta",
+        "gestor":"Alfonso Cua"
     },
     {
         "color": "#CA6F1E",
         "resourceId": "1384-7243",
         "end": "2023-10-10T0:56:00",
         "start": "2023-10-10T7:56:00",
-        "title": ""
+        "title": "",
+        "gestor":"Alfonso Cua"
     },
     {
         "color": "#CA6F1E",
         "resourceId": "1388-7243",
         "end": "2023-10-09T16:30:00",
         "start": "2023-10-09T15:30:00",
-        "title": "taller"
+        "title": "taller",
+        "gestor":"Alfonso Cua"
     },
     {
         "color": "#CA6F1E",
         "resourceId": "1388-7243",
         "end": "2023-10-10T10:30:00",
         "start": "2023-10-10T09:00:00",
-        "title": "realizar_visita"
+        "title": "realizar_visita",
+        "gestor":"Alfonso Cua"
     },
     {
         "color": "#CA6F1E",
         "resourceId": "1388-7243",
         "end": "2023-10-11T15:32:00",
         "start": "2023-10-11T15:32:00",
-        "title": "seguimiento_de_cotizaciones"
+        "title": "seguimiento_de_cotizaciones",
+        "gestor":"Alfonso Cua"
     },
     {
         "color": "#28B463",
         "resourceId": "1389-7243",
         "end": "2023-10-09T16:35:00",
         "start": "2023-10-09T15:35:00",
-        "title": "elaboración_de_reportes"
+        "title": "elaboración_de_reportes",
+        "gestor":"Alfonso Cua"
     }
 ]
   

@@ -16,6 +16,7 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
+hideElement("secondElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -128,6 +129,7 @@ function unHideReportElements(){
   unhideElement("close_sesion");
   unhideElement("firstParameters");
   unhideElement("firstElement");
+  unhideElement("secondElement");
 }
 
 function loadDemoData(){
@@ -135,6 +137,8 @@ function loadDemoData(){
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
   document.getElementById("firstElement").style.removeProperty('display');
+
+  document.getElementById("secondElement").style.removeProperty('display');
 
   getDrawCalendar('firstElement', resources1, events1);
 }
@@ -197,6 +201,7 @@ function getFirstElement(gestores, activities, option){
         getDrawCalendar('firstElement', resourcess, eventss);
         document.getElementById("firstParameters").style.removeProperty('display');
         document.getElementById("firstElement").style.removeProperty('display');
+        document.getElementById("secondElement").style.removeProperty('display');
       }
     } else {
       hideLoading();
@@ -236,13 +241,30 @@ function get_catalog(option){
   .then(res => {
     if(res.success){
         if(res.response.json.catalogFirst.data){
-          $("#gestor").empty();
-          $('#gestor').append('<option value="--">--Seleccione--</option>')
+          console.log(res.response.json.catalogFirst.data)
+          var selectElement = $("#gestor");
+          selectElement.empty();
+          selectElement.append('<option value="--">--Seleccione--</option>')
           for (i = 0; i < res.response.json.catalogFirst.data.length; i++){
             value = res.response.json.catalogFirst.data[i].gestor;
-            $('#gestor').append('<option value="'+ value + '">'+value+'</option>');
+            colores = res.response.json.catalogFirst.data[i].color;
+            selectElement.append('<option value="'+ value + '">'+value+'</option>');
+            var optionContainer = $("<div class='option-container'></div>")
+            var option = $("<option></option>")
+              .text(value)
+              .val(value)
+
+            var colorDiv1 = $("<div class='color-box'></div>").css({width: "20px", height: "20px", backgroundColor: colores[0]}).addClass("color-box");
+            var colorDiv2 = $("<div class='color-box'></div>").css({width: "20px", height: "20px", backgroundColor: colores[1]}).addClass("color-box");
+            
+            optionContainer.append(colorDiv1)
+            optionContainer.append(colorDiv2)
+            optionContainer.append(option)
+
+            //Agregar la opción al select
+            selectElement.append(optionContainer);
           }
-          $('#gestor').multipleSelect('refresh')
+          selectElement.multipleSelect('refresh')
         }
     }
   })
@@ -251,6 +273,18 @@ function get_catalog(option){
 
 //----CALENDAR
 function getDrawCalendar(id, resources, events){
+  // Obtén la fecha actual
+  var today = new Date();
+
+  let secondElement = $('#numSemana');
+
+  // Calcula el número de semana
+  var weekNumber = getWeekNumber(today);
+
+  if(weekNumber){
+    secondElement.html('Semana ' + weekNumber);
+  }
+
   let hoy = new Date();
   let ahora = formatoFecha()
   /*nowString = ahora.toString();
@@ -269,10 +303,27 @@ function getDrawCalendar(id, resources, events){
         center: 'title',
         right: 'resourceTimelineDay,timeGridWeek,dayGridMonth'
     },
+    /*eventContent: function(arg) {
+      var event = arg.event;
+      var startTime = getHours(event.startStr);
+
+      var endTime = getHours(event.endStr);
+      var html = '<b>' + startTime + '-' + endTime + " " + event.extendedProps.gestor +'</b><br>' + event.title;
+
+      // Puedes personalizar aún más la apariencia del evento aquí.
+      // Por ejemplo, puedes cambiar el color del evento, agregar clases CSS, etc.
+
+      // Aplicar estilos CSS al contenedor del evento
+      var containerStyle = 'max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;';
+      html = '<div style="' + containerStyle + '">' + html + '</div>';
+
+      return { html: html };
+    }*/
     eventClick: function(info) {
+      //console.log(info.event)
       let evidencia = info.event._def.extendedProps.evidencia;
       let record_id = info.event.extendedProps.record_id;
-      let url = "https://preprod.linkaform.com/#/records/detail/"
+      let url = "https://app.linkaform.com/#/records/detail/"
 
       let imgEvidencia = $('#evidencia');
 
@@ -295,6 +346,14 @@ function getDrawCalendar(id, resources, events){
       $('#eventInfo').html(info.event.title);
       $('#eventDescription').html(info.event.extendedProps.activity);
       $('#eventModal').modal('show');
+    },
+    viewDidMount: function(viewInfo){
+      var vistaActual = viewInfo.view.type;
+      if(vistaActual === 'dayGridMonth'){
+        $('#numSemana').css("visibility", "hidden").css("height",0);
+      }else{
+        $('#numSemana').css("visibility", "visible").css("height",'auto');
+      }
     },
     initialView: 'timeGridWeek',
     views: {
@@ -343,4 +402,38 @@ function formatoFecha() {
 
 function cerrarModal(){
   $('#eventModal').modal('hide')
+}
+
+//---Función para agregar el número de la semana actual al calendario
+
+function getWeekNumber(date) {
+  // Copia la fecha para evitar cambios en la fecha original
+  date = new Date(date);
+
+  // Establece el día 4 (jueves) como el primer día de la semana
+  date.setHours(0, 0, 0, 0);
+  date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+
+  // Calcular el número de semana
+  var week1 = new Date(date.getFullYear(), 0, 4);
+  return 1 + Math.round(((date - week1) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+}
+
+function getHours(hourDate){
+  var date = new Date(hourDate)
+
+  var hour = date.getHours();
+  var minute = date.getMinutes();
+
+  if (minute < 10){
+    minute = '0'+minute;
+  }
+
+  hourDate = hour + ":" + minute;
+
+  if(hourDate){
+    return hourDate;
+  }else{
+    return('');
+  }
 }
