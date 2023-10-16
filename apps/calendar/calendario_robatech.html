@@ -24,6 +24,22 @@
                 width: 80%;
                 height: 80%;
             }
+
+            .option-container{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .color-box{
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+                margin-right: 10px;
+                border: 1px solid #000;
+            }
+
+
         </style>
     </head>
     <body>
@@ -96,7 +112,7 @@
 
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
-                    <div class="col-sm-12 col-md-3 col-lg-3" id="divGestor">
+                    <div class="col-sm-12 col-md-3 col-lg-3" id="divnameGestor">
                         <h5>Gestor: </h5>
                         <select class="form-control mdb-select md-form" id="gestor" multiple="multiple">
                             <!--<option value="">--Seleccione--</option>
@@ -113,6 +129,11 @@
                             <option value="planificado">Actividades planificadas</option>
                             <option value="realizado">Actividades realizadas</option>
                         </select>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-6" id="divActivities2">
+                        <h5> Identificador: </h5>
+                        <div id="identificador" class="flex row justify-content p-2"></div>
                     </div>
                 </div>
 
@@ -133,6 +154,10 @@
                                 </button>
                               </div>
                               <div class="modal-body container justify-content-md-center gap-0 row-gap-3">
+                                <div class=" row justify-content-between p-2">
+                                    <div id="nameGestor"></div>
+                                    <div id="statusActivity"></div>   
+                                </div>
                                 <div id="eventInfo" class="text-center col col-lg-12 fs-4 p-6"></div>
                                 <div id="eventDescription" class="text-center col col-lg-12 fs-3"></div>
                                 <div class="modal-body container justify-content-md-center col col-lg-12" id="contentEvidencia">

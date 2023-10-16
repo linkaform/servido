@@ -198,6 +198,20 @@ function getFirstElement(gestores, activities, option){
       if (res.response.json.secondElement.data){
         eventss = res.response.json.secondElement.data
 
+        eventss.forEach(element => {
+          console.log(element)
+          let parColor = arrayColors[element.gestor]
+          if(element.status == 'Planificado'){
+            
+            //alert(parColor)
+            
+            //let colores = arrayColors.indiceGestor;
+           element.color = parColor[0]
+          }else{
+            element.color = colores[1]
+          }
+        });
+
         getDrawCalendar('firstElement', resourcess, eventss);
         document.getElementById("firstParameters").style.removeProperty('display');
         document.getElementById("firstElement").style.removeProperty('display');
@@ -222,7 +236,9 @@ function getFirstElement(gestores, activities, option){
   })
 };
 
-
+var arrayColors = {};
+var secondArrayColors = [];
+var lengthCatalog = 0;
 //----CATALOG
 function get_catalog(option){
   console.log("Catálogo")
@@ -245,8 +261,20 @@ function get_catalog(option){
           var selectElement = $("#gestor");
           selectElement.empty();
           selectElement.append('<option value="--">--Seleccione--</option>')
+          lengthCatalog = res.response.json.catalogFirst.data.length; //Definimos el tamaño del catálogo
+          
+          let coloresFormateados = generarArregloConTonalidades(res.response.json.catalogFirst.data.length)
+
           for (i = 0; i < res.response.json.catalogFirst.data.length; i++){
+            
             value = res.response.json.catalogFirst.data[i].gestor;
+
+            arrayColors[value] = coloresFormateados[i];
+            secondArrayColors.push({
+              "nombre": value,
+              "colores": coloresFormateados[i]
+            })
+
             colores = res.response.json.catalogFirst.data[i].color;
             selectElement.append('<option value="'+ value + '">'+value+'</option>');
             var optionContainer = $("<div class='option-container'></div>")
@@ -264,6 +292,45 @@ function get_catalog(option){
             //Agregar la opción al select
             selectElement.append(optionContainer);
           }
+
+          //--- Modificación de colores
+          var elementoIndentificador = $("#identificador");
+          var usuariosColores = secondArrayColors;
+
+          usuariosColores.forEach(function(usuario){
+            var usuarioContainer = $("<div>").addClass('usuario-container')
+              .css({display:"flex"})
+            var usuarioElement = $("<div>").text(usuario.nombre)
+              .css({padding:"5px"})
+            usuarioElement.css("color", usuario.colores[0],);
+
+            var colorElement1 = $("<div>")
+              .addClass("color-circle")
+              .css({
+                backgroundColor: usuario.colores[0],
+                width: "30px",
+                height: "30px",
+                borderRadius:"50%",
+                display:"inline-block",
+                marginRight:"10px"
+              });
+
+            var colorElement2 = $("<div>")
+              .css({
+                backgroundColor: usuario.colores[1],
+                width: "30px",
+                height: "30px",
+                borderRadius:"50%",
+                display:"inline-block",
+                marginRight:"10px"
+              });
+
+              usuarioContainer.append(usuarioElement, colorElement1, colorElement2);
+              elementoIndentificador.append(usuarioContainer)
+
+          })
+
+          console.log(arrayColors); // Muestra el arreglo con las tonalidades generadas
           selectElement.multipleSelect('refresh')
         }
     }
@@ -282,7 +349,7 @@ function getDrawCalendar(id, resources, events){
   var weekNumber = getWeekNumber(today);
 
   if(weekNumber){
-    secondElement.html('Semana ' + weekNumber);
+    secondElement.html('Semana actual: ' + weekNumber);
   }
 
   let hoy = new Date();
@@ -303,11 +370,14 @@ function getDrawCalendar(id, resources, events){
         center: 'title',
         right: 'resourceTimelineDay,timeGridWeek,dayGridMonth'
     },
-    /*eventContent: function(arg) {
+    eventContent: function(arg) {
       var event = arg.event;
       var startTime = getHours(event.startStr);
 
       var endTime = getHours(event.endStr);
+      if (!endTime){
+        endTime = ''
+      } 
       var html = '<b>' + startTime + '-' + endTime + " " + event.extendedProps.gestor +'</b><br>' + event.title;
 
       // Puedes personalizar aún más la apariencia del evento aquí.
@@ -318,17 +388,23 @@ function getDrawCalendar(id, resources, events){
       html = '<div style="' + containerStyle + '">' + html + '</div>';
 
       return { html: html };
-    }*/
+    },
     eventClick: function(info) {
-      //console.log(info.event)
+      console.log("El event Object es:")
+      console.log(info.event)
       let evidencia = info.event._def.extendedProps.evidencia;
       let record_id = info.event.extendedProps.record_id;
       let url = "https://app.linkaform.com/#/records/detail/"
+      let infoGestor = info.event.extendedProps.gestor;
+      let infoStatus = info.event.extendedProps.status;
 
+      //---Variables del elemento HTML
       let imgEvidencia = $('#evidencia');
-
       let btnRedirigir = $('#redirigirFolio')
+      let nameGestor = $('#nameGestor')
+      let statusActivity = $('#statusActivity')
 
+      //---Funcionalidades
       if(record_id){
         url = url+record_id;
         btnRedirigir.attr('href',url)
@@ -343,6 +419,20 @@ function getDrawCalendar(id, resources, events){
         imgEvidencia.attr('src','');
         $('#contentEvidencia').hide()
       }
+
+      if(infoGestor){
+        nameGestor.show();
+        nameGestor.html(infoGestor)
+      }else{
+        nameGestor.html('');
+      }
+
+      if(infoStatus){
+        statusActivity.html("Actividad "+infoStatus)
+      }else{
+        statusActivity.html('');
+      }
+
       $('#eventInfo').html(info.event.title);
       $('#eventDescription').html(info.event.extendedProps.activity);
       $('#eventModal').modal('show');
@@ -405,7 +495,6 @@ function cerrarModal(){
 }
 
 //---Función para agregar el número de la semana actual al calendario
-
 function getWeekNumber(date) {
   // Copia la fecha para evitar cambios en la fecha original
   date = new Date(date);
@@ -419,21 +508,56 @@ function getWeekNumber(date) {
   return 1 + Math.round(((date - week1) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
 }
 
-function getHours(hourDate){
-  var date = new Date(hourDate)
+function getHours(hourDate) {
+  try {
+    var date = new Date(hourDate);
 
-  var hour = date.getHours();
-  var minute = date.getMinutes();
+    if (isNaN(date)) {
+      throw new Error("La cadena no representa una fecha válida.");
+    }
 
-  if (minute < 10){
-    minute = '0'+minute;
-  }
+    var hour = date.getHours();
+    var minute = date.getMinutes();
 
-  hourDate = hour + ":" + minute;
+    if (minute < 10) {
+      minute = '0' + minute;
+    }
 
-  if(hourDate){
-    return hourDate;
-  }else{
-    return('');
+    return hour + ":" + minute;
+  } catch (error) {
+    console.error(error);
+    return ''; 
   }
 }
+
+//Generar colores en automático
+function generarArregloConTonalidades(cantidad) {
+  var colores = [];
+
+  for (var i = 0; i < cantidad; i++) {
+    var base = "#" + Math.floor(Math.random() * 16777215).toString(16); // Generar un color hexadecimal aleatorio
+    var baseColor = base;
+    
+    // Obtén los componentes RGB del color base
+    var baseInt = parseInt(base.slice(1), 16);
+    var rBase = (baseInt >> 16) & 150;
+    var gBase = (baseInt >> 16) & 190;
+    var bBase = baseInt & 230;
+
+    // Ajusta los componentes de color para obtener tonalidades diferentes
+    var r = Math.min(rBase + i, 100);
+    var g = Math.min(gBase + i, 150);
+    var b = Math.min(bBase + i, 190);
+
+    var tonalidad = "#" + (r << 16 | g << 8 | b).toString(16).padStart(6, '0');
+    colores.push([baseColor, tonalidad]);
+  }
+
+  return colores;
+}
+
+/*function formatearUsuarios(){
+  arrayColors.forEach(element => {
+    alert(element);
+  })
+}*/
