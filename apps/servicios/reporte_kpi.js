@@ -150,20 +150,15 @@ loading.style.display = 'none';
 
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  let plant = document.getElementById("plant");  
-  let option_in = document.getElementById("in");  
-  let option_out = document.getElementById("out"); 
-  check = 'on';
-  if (document.getElementById('input_check').checked)
-  {
-    //---created date
-    check = 'off';
-  }
-  getFirstElement(date_to.value, date_from.value, plant.value, option_in.value, option_out.value, check);
+  let date_to = document.getElementById("date_to");
+  let gestores = $('#gestor').val()  
+  
+  getFirstElement(date_to.value, date_from.value, gestores);
 };
 
-function getFirstElement(dateTo, dateFrom, plant, option_in, option_out, check){
+function getFirstElement(dateTo, dateFrom, gestores){
+  console.log(dateTo)
+  console.log(dateFrom)
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -173,13 +168,11 @@ function getFirstElement(dateTo, dateFrom, plant, option_in, option_out, check){
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: scriptId,
+      script_id: 110347,
       date_to: dateTo,
       date_from: dateFrom,
-      plant: plant,
-      option_in: option_in,
-      option_out: option_out,
-      check: check,
+      gestores:gestores,
+      option:2
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -193,14 +186,22 @@ function getFirstElement(dateTo, dateFrom, plant, option_in, option_out, check){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res.response.json)
-      if (res.response.json.firstElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+      console.log(res.response)
+      if (res.response.json.secondElement.data) {
+        getDrawTable('firstElement', columsTable1, res.response.json.secondElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
-      if(res.response.json.secondElement.data){
-        getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data);
+      if(res.response.json.thirdElement.data){
+        console.log(res.response.json.thirdElement.data)
+        getDrawGraphicFirst(res.response.json.thirdElement.data, options1);
         document.getElementById("secondElement").style.removeProperty('display');
+        document.getElementById("graphicFirst").style.removeProperty('display');
+      }
+      if(res.response.json.fourtElement.data){
+        console.log(res.response.json.thirdElement.data)
+        getDrawGraphicSecond(res.response.json.fourtElement.data, options2);
+        document.getElementById("ThirdElement").style.removeProperty('display');
+        document.getElementById("graphicSecond").style.removeProperty('display');
       }
       
     } else {
@@ -225,6 +226,7 @@ function getFirstElement(dateTo, dateFrom, plant, option_in, option_out, check){
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
+
     height:"400px",
     layout:"fitDataTable",
     data:tableData,
@@ -235,6 +237,20 @@ function getDrawTable(id, columnsData, tableData){
     clipboardPasteAction:"replace",
     textDirection:"ltr",
     columns:columnsData,
+    rowFormatter: function(row) {
+        var data = row.getData();
+        var porcentajeEfectividad = data.porcentaje_efectividad;
+        var cell = row.getCell("porcentaje_efectividad"); // Encuentra la celda específica
+
+        if (porcentajeEfectividad <= 49) {
+            cell.getElement().style.backgroundColor = "red";
+        } else if (porcentajeEfectividad >= 50 && porcentajeEfectividad <= 74) {
+            cell.getElement().style.backgroundColor = "orange";
+        }
+        else if (porcentajeEfectividad >= 75 && porcentajeEfectividad <= 100){
+          cell.getElement().style.backgroundColor = "green";
+        }
+    },
   });
 
   if (document.getElementById("download_xlsx_"+id)){
@@ -261,11 +277,10 @@ function get_catalog()
   arrayPlant = []
   arrayOut = []
 
-
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 107085,
+      script_id: 110347,
       option: 1,
     }),
     headers:{
@@ -276,94 +291,50 @@ function get_catalog()
   .then(res => res.json())
   .then(res => {
     if (res.success) {
-      if (res.response.json.catalog){
-        //console.log(res.response.json.catalog)
-        for (i = 0; i < res.response.json.catalog.length; i++) {
-          valuePlant = res.response.json.catalog[i]['61ef32bcdf0ec2ba73dec33d'];
-          valueOut = res.response.json.catalog[i]['6442e4831198daf81456f274'];
-          if (arrayPlant.indexOf(valuePlant) === -1) {
-            arrayPlant.push(valuePlant);
-          }
-          if (arrayOut.indexOf(valueOut) === -1) {
-            arrayOut.push(valueOut);
-          }
+      if (res.response.json.firstElement.data){
+        /*console.log(res.response.json)
+        console.log("----------------")
+        console.log(res.response.json.firstElement.data)*/
+        //res.response.json.firstElement.data)
+       /* let gestoresContent = $('#gestor');
+        gestoresContent.empty();
+        for (i = 0; i < res.response.json.firstElement.data.length; i++) {
+        value = res.response.json.firstElement.data[i].gestor;
+
+        gestoresContent.append('<option value="'+ value + '">'+value+'</option>');
+        let option = $("<option></option>")
+            .text(value)
+            .val(value)
+        console.log(option)
+
+          gestoresContent.append(option)
+         
         }
-        arrayPlant.sort();
-        arrayOut.sort();
-        //----Pais
-        $("#plant").empty();
-        $('#plant').append('<option value="--">--Seleccione--</option>');
-        for (i = 0; i < arrayPlant.length; i++) {
-          value = arrayPlant[i]
-          $('#plant').append('<option value="'+ value +'">'+value+'</option>');
+        
+        gestoresContent.multipleSelect('refresh')*/
+        let listGestor = []
+
+        for (i = 0; i < res.response.json.firstElement.data.length; i++) {
+          valueGestor = res.response.json.firstElement.data[i].gestor;
+
+          if (listGestor.indexOf(valueGestor) === -1) {
+            listGestor.push(valueGestor);
+          }
+
         }
 
-        //----Pais
-        $("#out").empty();
-        $('#out').append('<option value="--">--Seleccione--</option>');
-        for (i = 0; i < arrayOut.length; i++) {
-          value = arrayOut[i]
-          $('#out').append('<option value="'+ value +'">'+value+'</option>');
+        console.log(listGestor)
+         //----Pais
+        $("#gestor").empty();
+        for (i = 0; i < listGestor.length; i++) {
+          value = listGestor[i]
+          $('#gestor').append('<option value="'+ value +'">'+value+'</option>');
         }
+        $("#gestor").multipleSelect('refresh');
       }
     } 
   })
 
-  arrayIn = []
-  fetch(url + 'infosync/scripts/run/', {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: 107085,
-      option: 2,
-    }),
-    headers:{
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+userJwt
-    },
-  })
-  .then(res => res.json())
-  .then(res => {
-    if(res.success){
-      //console.log("Datos devueltos")
-      if(res.response.json.catalogtwo){
-        console.log(res.response.json.catalogtwo)
-        res.response.json.catalogtwo.forEach((element,index)=>{
-          //console.log("FE:"+element['6442e4831198daf81456f274'])
-          valueIn = element['6442e4831198daf81456f274'];
-          console.log("EFE:"+valueIn)
-          if(arrayIn.includes(valueIn) == false){
-            console.log("Dato:"+valueIn)
-            arrayIn.push(valueIn)
-          }
-          arrayIn.sort()
-          //---Warehouse Out
-          $("#in").empty();
-          $("#in").append('<option value="--">--Seleccione--</option>');
-          $('#in').append('<option value="scrap">Scrap</option>');
-          for(i = 0; i < arrayIn.length; i++){
-            value = arrayIn[i]
-            $('#in').append('<option value="' + value + '">'+value + '</option>');
-          }
-        })
-        /*for (i = 0; i < res.response.json.catalogtwo.length; i++) {
-          valueIn = res.response.json.catalogtwo[i]['6442e4831198daf81456f274'];
-          //console.log(valueIn)
-          if(arrayIn.includes(valueIn) == false){
-            //console.log("Dato:"+valueIn)
-            arrayIn.push(valueIn)
-          }
-          arrayIn.sort()
-          //---Warehouse Out
-          $("#in").empty();
-          $("#in").append('<option value="--">--Seleccione--</option>');
-          for(i = 0; i < arrayIn.length; i++){
-            value = arrayIn[i]
-            $('#in').append('<option value="' + value + '">'+value + '</option>');
-          }
-        }*/
-      }
-    }
-    })
 };
 
 
@@ -398,9 +369,9 @@ function getDrawGraphicSecond(data, setOptions){
   data.datasets.background = array_colors;
 
   chart2 = new Chart(ctx, {
-    type: 'pie',
+    type: 'bar',
     data:data,
-     plugins: [ChartDataLabels],
     options: setOptions,
+    plugins: [ChartDataLabels],
   });
 }

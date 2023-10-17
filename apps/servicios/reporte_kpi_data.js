@@ -81,61 +81,45 @@ var dataTable1B = [
 //--Table Montajes Por Mes
 var columsTable1 = [
   { title:"Gestor", field:'gestor',hozAlign:"left",headerFilter:"input", width:150},
-  { title:"Agendar Cita con Cliente",field:'agendar_cita',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Agendar Cita con Cliente",field:'agendar_cita',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
   { title:"Realizar Visita", field:'visita',hozAlign:"right", width:130 },
-  { title:"Seguimiento de Cotizaciones",field:'cotizaciones',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
-  { title:"Concretar Venta",  field:'venta',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0},width:130 },
-  { title:"Seguimiento de Factura/Cobranza",  field:'factura',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
-  { title:"Elaboración de Reportes",  field:'reporte',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Seguimiento de Cotizaciones",field:'cotizaciones',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Concretar Venta",  field:'venta',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0},width:130 },
+  { title:"Seguimiento de Factura/Cobranza",  field:'factura',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Elaboración de Reportes",  field:'reporte',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
 
-  { title:"Actualización de Base de Datos y Prospectos", field:'actualizacion_bd',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130},
-  { title:"Weekends",field:'weekends',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
-  { title:"Garantia", field:'garantia',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
-  { title:"Traslado",field:'traslado',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
-  { title:"Capacitación",  field:'capacitacion',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
-  { title:"Servicio",  field:'servicio',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
-  { title:"Taller",  field:'taller',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Actualización de Base de Datos y Prospectos", field:'actualizacion_bd',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130},
+  { title:"Weekends",field:'weekends',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Garantia", field:'garantia',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Traslado",field:'traslado',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Capacitación",  field:'capacitacion',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Servicio",  field:'servicio',hozAlign:"right",sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Taller",  field:'taller',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
 
-  { title:"Comida", field:'comida',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
-  { title:"Asistencia Telefónica",field:'asistencia_telefonica',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
-  { title:"Entrega Material",  field:'entrega_material',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
-  { title:"Otra",  field:'otra',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Comida", field:'comida',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Asistencia Telefónica",field:'asistencia_telefonica',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Entrega Material",  field:'entrega_material',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Otra",  field:'otra',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
 
-  { title:"Total de actividades", field:'total_actividades',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Total de actividades", field:'total_actividades',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130, formatter: customFormatter },
   { title:"Horas Efectivas",field:'horas_efectivas',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
   { title:"Horas sin actividad ",  field:'horas_sin_actividad',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
   { title:"Tiempo extra",  field:'tiempo_extra',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+
+  { title:"% Efectividad",  field:'porcentaje_efectividad',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130},
   
 ];
 
+function customFormatter(cell){
+  var row = cell.getRow().getData();
+  var suma = 0;
+
+  suma = parseFloat(row.agendar_cita) + parseFloat(row.visita) + parseFloat(row.cotizaciones) + parseFloat(row.venta) + parseFloat(row.factura) + parseFloat(row.reporte) + parseFloat(row.actualizacion_bd) + parseFloat(row.weekends) + parseFloat(row.garantia) + parseFloat(row.traslado) + parseFloat(row.capacitacion) + parseFloat(row.servicio) + parseFloat(row.taller) + parseFloat(row.comida) + parseFloat(row.asistencia_telefonica) + parseFloat(row.entrega_material) + parseFloat(row.otra);
+  return suma;
+}
+
 var dataTable1 = [
-  {
-    "gestor":'Juan Contreras',
-    "agendar_cita":'2',
-    "visita":'3',
-    "cotizaciones":'4',
-    "venta":'5',
-    "factura":'5',
 
-    "reporte":'2',
-    "actualizacion_bd":'1',
-    "weekends":'4',
-    "garantia":'8',
-    "traslado":'8',
-    "capacitacion":'4',
-
-    "servicio":'2',
-    "taller":'4',
-    "comida":'3',
-    "asistencia_telefonica":'1',
-    "entrega_material":'3',
-    "otra":'7',
-
-    "total_actividades":'20',
-    "horas_efectivas":'12',
-    "horas_sin_actividad":'6',
-    "tiempo_extra":'4',
-  },
   {
     "gestor":'Ana de Reyes',
     "agendar_cita":'1',
@@ -158,7 +142,6 @@ var dataTable1 = [
     "entrega_material":'6',
     "otra":'1',
 
-    "total_actividades":'20',
     "horas_efectivas":'12',
     "horas_sin_actividad":'6',
     "tiempo_extra":'4',
@@ -185,7 +168,6 @@ var dataTable1 = [
     "entrega_material":'5',
     "otra":'2',
 
-    "total_actividades":'20',
     "horas_efectivas":'12',
     "horas_sin_actividad":'6',
     "tiempo_extra":'4',
@@ -212,7 +194,6 @@ var dataTable1 = [
     "entrega_material":'2',
     "otra":'7',
 
-    "total_actividades":'20',
     "horas_efectivas":'12',
     "horas_sin_actividad":'6',
     "tiempo_extra":'4',
@@ -239,7 +220,6 @@ var dataTable1 = [
     "entrega_material":'5',
     "otra":'5',
 
-    "total_actividades":'20',
     "horas_efectivas":'12',
     "horas_sin_actividad":'6',
     "tiempo_extra":'4',
@@ -392,12 +372,23 @@ var options1 = {
 
 
 var data2 = {
-  labels: ['Tiempo extra','Horas sin actividad','Horas efectivas'],
+  labels: ['Gerardo Robles Gutierres','Eduardo Lopez','Evelyn Calzada','Roman Ruíz','Verónica Dominguez'],
   datasets: [
     {
-      label: 'Flats',
-      data: [25,10,20],
-      background: ["#d94052","#ee7e4c","#ead56c"],
+      label: 'Tiempo extra',
+      data: [11,26,13,10,10],
+      backgroundColor: '#F39C12',
+    },
+    {
+      label: 'Horas sin actividad',
+      data: [18,26,16,22,12],
+      backgroundColor: '#229954',
+    },
+    {
+      label: 'Horas efectivas',
+      data: [11,10,42,60,62],
+      //dataTotal: [13,13,58,66,76],
+      backgroundColor: '#5499C7',
     },
   ]
 };
@@ -411,13 +402,42 @@ var options2 = {
     },
     title: {
         display: true,
-        text: 'Resumen de horas',
+        text: 'Gestores por actividad',
         font: {
           size: 25
         }
     },
+    labels:{
+      render: (context)=>{
+        value = 0;
+        if (context.dataset.label == 'Cacao Seco'){
+          value = context.dataset.dataTotal[context.index];
+          value = value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+          return value;      
+        }
+      }, 
+      fontSize: 15,
+      fontWeight: 'bold',
+      position:'outside',
+      textMargin: 5
+    },
     datalabels: {
       color: 'white',
+      formatter: function (value, context){
+        var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return formato;
+      }
     }
   },
+  scales: {
+    x: {
+      stacked: true,
+    },
+    y: {
+      stacked: true,
+      ticks: {
+        stepSize: 1
+      },
+    }
+  }
 };
