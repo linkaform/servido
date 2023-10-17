@@ -274,6 +274,7 @@ function getDrawTable(id, columnsData, tableData){
 //----- CATALOGS
 function get_catalog() 
 {
+  console.log(scriptId)
   arrayPlant = []
   arrayOut = []
 
