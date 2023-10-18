@@ -168,7 +168,7 @@ function getFirstElement(dateTo, dateFrom, gestores){
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: scriptId,
+      script_id: 110669,
       date_to: dateTo,
       date_from: dateFrom,
       gestores:gestores,
@@ -281,7 +281,7 @@ function get_catalog()
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: scriptId,
+      script_id: 110669,
       option: 1,
     }),
     headers:{
