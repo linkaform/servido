@@ -164,7 +164,7 @@ function getFirstElement(dateTo, dateFrom, cadena, producto){
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: scriptId,
+      script_id: 110973,
       date_to: dateTo,
       date_from: dateFrom,
       cadena: cadena,
@@ -256,7 +256,7 @@ function get_catalog()
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 110684,
+      script_id: 110973,
       option: 0,
     }),
     headers:{
