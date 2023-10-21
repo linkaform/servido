@@ -92,7 +92,8 @@ window.onload = function(){
     }
     //--Styles
     setSpinner();
-    get_catalog();
+    console.log('-------------script id', scriptId)
+    get_catalog(scriptId);
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
@@ -356,7 +357,7 @@ function getDrawTableTwo(id, columnsData, tableData){
 }
 
 //----- CATALOGS
-function get_catalog() 
+function get_catalog(scriptId) 
 {
   arrayPlant = []
   arrayOut = []
@@ -365,8 +366,8 @@ function get_catalog()
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 107085,
-      option: 0,
+      script_id: scriptId,
+      option: "getFilters",
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -379,8 +380,8 @@ function get_catalog()
       if (res.response.json.catalog){
         //console.log(res.response.json.catalog)
         for (i = 0; i < res.response.json.catalog.length; i++) {
-          valuePlant = res.response.json.catalog[i]['61ef32bcdf0ec2ba73dec33d'];
-          valueOut = res.response.json.catalog[i]['6442e4831198daf81456f274'];
+          valuePlant = res.resposne.json.catalog[i]['plantCode'];
+          valueWarehouse = res.response.json.catalog[i]['warehouse'];
           if (arrayPlant.indexOf(valuePlant) === -1) {
             arrayPlant.push(valuePlant);
           }
@@ -408,63 +409,6 @@ function get_catalog()
       }
     } 
   })
-
-  arrayIn = []
-  fetch(url + 'infosync/scripts/run/', {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: 107085,
-      option: 2,
-    }),
-    headers:{
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+userJwt
-    },
-  })
-  .then(res => res.json())
-  .then(res => {
-    if(res.success){
-      //console.log("Datos devueltos")
-      if(res.response.json.catalogtwo){
-        console.log(res.response.json.catalogtwo)
-        res.response.json.catalogtwo.forEach((element,index)=>{
-          //console.log("FE:"+element['6442e4831198daf81456f274'])
-          valueIn = element['6442e4831198daf81456f274'];
-          console.log("EFE:"+valueIn)
-          if(arrayIn.includes(valueIn) == false){
-            console.log("Dato:"+valueIn)
-            arrayIn.push(valueIn)
-          }
-          arrayIn.sort()
-          //---Warehouse Out
-          $("#in").empty();
-          $("#in").append('<option value="--">--Seleccione--</option>');
-          $('#in').append('<option value="scrap">Scrap</option>');
-          for(i = 0; i < arrayIn.length; i++){
-            value = arrayIn[i]
-            $('#in').append('<option value="' + value + '">'+value + '</option>');
-          }
-        })
-        /*for (i = 0; i < res.response.json.catalogtwo.length; i++) {
-          valueIn = res.response.json.catalogtwo[i]['6442e4831198daf81456f274'];
-          //console.log(valueIn)
-          if(arrayIn.includes(valueIn) == false){
-            //console.log("Dato:"+valueIn)
-            arrayIn.push(valueIn)
-          }
-          arrayIn.sort()
-          //---Warehouse Out
-          $("#in").empty();
-          $("#in").append('<option value="--">--Seleccione--</option>');
-          for(i = 0; i < arrayIn.length; i++){
-            value = arrayIn[i]
-            $('#in').append('<option value="' + value + '">'+value + '</option>');
-          }
-        }*/
-      }
-    }
-    })
-
 
 };
 
