@@ -113,7 +113,7 @@ var columsTable1C = [
 
 var columsTable1 = [
   { title:"Gestor", field:'gestor',hozAlign:"left",headerFilter:"input", width:150},
-  { title:"Llamadas y asistencias telefonicas",field:'llamada_tel',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Llamadas y asistencias telefonicas",field:'llamada_tel',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130, },
   { title:"Visita presencial", field:'visita',hozAlign:"right", width:130 },
   { title:"Cotizaciones",field:'cotizaciones',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
   { title:"Asistencia administrativa",  field:'asistencia_ad',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0},width:130 },
