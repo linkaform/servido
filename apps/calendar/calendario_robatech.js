@@ -200,11 +200,11 @@ function getFirstElement(gestores, activities, option){
         
         eventss.forEach(element => {
           let parColor = arrayColors[element.gestor]
-          if(element.status == 'Planificado'){
+          if(element.status == 'planificada'){
 
            element.color = parColor[1]
         
-          }else if(element.status == 'Realizado' ){
+          }else if(element.status == 'realizada' ){
             element.color = parColor[0]
           }
         });
@@ -254,7 +254,7 @@ function get_catalog(option){
   .then(res => {
     if(res.success){
         if(res.response.json.catalogFirst.data){
-          console.log(res.response.json.catalogFirst.data)
+          //console.log(res.response.json.catalogFirst.data)
           var selectElement = $("#gestor");
           selectElement.empty();
           selectElement.append('<option value="--">--Seleccione--</option>')
@@ -321,7 +321,7 @@ function get_catalog(option){
 
           })
 
-          console.log(arrayColors); // Muestra el arreglo con las tonalidades generadas
+          //console.log(arrayColors); // Muestra el arreglo con las tonalidades generadas
           selectElement.multipleSelect('refresh')
         }
     }
