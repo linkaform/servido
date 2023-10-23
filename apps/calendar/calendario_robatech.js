@@ -204,7 +204,7 @@ function getFirstElement(gestores, activities, option){
 
            element.color = parColor[1]
         
-          }else if(element.status == 'realizada' ){
+          }else if(element.status == 'realizada'  ){
             element.color = parColor[0]
           }
         });

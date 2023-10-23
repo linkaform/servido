@@ -168,7 +168,7 @@ function getFirstElement(dateTo, dateFrom, gestores){
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: scriptId,
+      script_id: 110669,
       date_to: dateTo,
       date_from: dateFrom,
       gestores:gestores,
@@ -227,10 +227,10 @@ function getFirstElement(dateTo, dateFrom, gestores){
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
     //----Configuración para el tooltip del encabezado
-    var columnTitleElement = document.querySelector("#"+id+" th.tabulator-col[tabulator-field='llamada_tel']")
+    //var columnTitleElement = document.querySelector("#"+id+" th.tabulator-col[tabulator-field='llamada_tel']")
 
     // Agrega el evento mouseover al elemento del título de la columna
-    columnTitleElement.addEventListener("mouseover", function () {
+    /*columnTitleElement.addEventListener("mouseover", function () {
         // Crea un elemento de tooltip personalizado
         var tooltip = document.createElement("div");
         tooltip.className = "custom-tooltip";
@@ -243,15 +243,15 @@ function getDrawTable(id, columnsData, tableData){
 
         // Agrega el tooltip al cuerpo del documento
         document.body.appendChild(tooltip);
-    });
+    });*/
 
     // Agrega un evento mouseout para eliminar el tooltip cuando se retira el mouse
-    columnTitleElement.addEventListener("mouseout", function () {
+    /*columnTitleElement.addEventListener("mouseout", function () {
         var tooltip = document.querySelector(".custom-tooltip");
         if (tooltip) {
             tooltip.remove();
         }
-    });
+    });*/
 
     height:"400px",
     layout:"fitDataTable",
@@ -277,7 +277,13 @@ function getDrawTable(id, columnsData, tableData){
           cell.getElement().style.backgroundColor = "green";
         }
     },
+  
   });
+  /*table.on("headerMouseOver", function(e, column){
+    //e - the mouse event object
+    //column - column component
+    alert("Eres crack");
+  });*/
 
   if (document.getElementById("download_xlsx_"+id)){
     //trigger download of data.xlsx file

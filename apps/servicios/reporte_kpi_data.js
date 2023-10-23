@@ -113,19 +113,19 @@ var columsTable1C = [
 
 var columsTable1 = [
   { title:"Gestor", field:'gestor',hozAlign:"left",headerFilter:"input", width:150},
-  { title:"Llamadas y asistencias telefonicas",field:'llamada_tel',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130, },
-  { title:"Visita presencial", field:'visita',hozAlign:"right", width:130 },
+  { title:"Llamadas y asistencias telefonicas",field:'llamada_tel',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130,headerPopup:"Llamadas y asistencias telefonicas"},
+  { title:"Visita presencial", field:'visita',hozAlign:"right", width:130, headerPopup:"Visita presencial" },
   { title:"Cotizaciones",field:'cotizaciones',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
-  { title:"Asistencia administrativa",  field:'asistencia_ad',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0},width:130 },
-  { title:"Reuniones virtuales",  field:'reunion_virt',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Asistencia administrativa",  field:'asistencia_ad',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0},width:130, headerPopup:"Asistencia administrativa" },
+  { title:"Reuniones virtuales",  field:'reunion_virt',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130, headerPopup:"Reuniones virtuales" },
   { title:"Traslados",  field:'traslados',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
 
 
   { title:"Otra",  field:'otra',hozAlign:"right", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
 
-  { title:"Total de actividades", field:'total_actividades',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130, formatter: customFormatter },
-  { title:"Horas Efectivas",field:'horas_efectivas',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
-  { title:"Horas sin actividad ",  field:'horas_sin_actividad',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
+  { title:"Total de actividades", field:'total_actividades',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130, formatter: customFormatter, headerPopup:"Total de actividades" },
+  { title:"Horas Efectivas",field:'horas_efectivas',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130,  headerPopup:"Horas Efectivas" },
+  { title:"Horas sin actividad ",  field:'horas_sin_actividad',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130, headerPopup:"Horas sin actividad" },
   { title:"Tiempo extra",  field:'tiempo_extra',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130 },
 
   { title:"% Efectividad",  field:'porcentaje_efectividad',hozAlign:"right", bottomCalc:"sum", bottomCalcParams:{precision:0}, width:130},
