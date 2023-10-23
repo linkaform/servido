@@ -197,18 +197,15 @@ function getFirstElement(gestores, activities, option){
       }
       if (res.response.json.secondElement.data){
         eventss = res.response.json.secondElement.data
-
+        
         eventss.forEach(element => {
-          console.log(element)
           let parColor = arrayColors[element.gestor]
           if(element.status == 'Planificado'){
-            
-            //alert(parColor)
-            
-            //let colores = arrayColors.indiceGestor;
-           element.color = parColor[0]
-          }else{
-            element.color = colores[1]
+
+           element.color = parColor[1]
+        
+          }else if(element.status == 'Realizado' ){
+            element.color = parColor[0]
           }
         });
 
@@ -263,7 +260,7 @@ function get_catalog(option){
           selectElement.append('<option value="--">--Seleccione--</option>')
           lengthCatalog = res.response.json.catalogFirst.data.length; //Definimos el tamaño del catálogo
           
-          let coloresFormateados = generarArregloConTonalidades(res.response.json.catalogFirst.data.length)
+          let coloresFormateados = generarArregloConTonalidades()
 
           for (i = 0; i < res.response.json.catalogFirst.data.length; i++){
             
@@ -277,20 +274,10 @@ function get_catalog(option){
 
             colores = res.response.json.catalogFirst.data[i].color;
             selectElement.append('<option value="'+ value + '">'+value+'</option>');
-            var optionContainer = $("<div class='option-container'></div>")
-            var option = $("<option></option>")
-              .text(value)
-              .val(value)
-
-            var colorDiv1 = $("<div class='color-box'></div>").css({width: "20px", height: "20px", backgroundColor: colores[0]}).addClass("color-box");
-            var colorDiv2 = $("<div class='color-box'></div>").css({width: "20px", height: "20px", backgroundColor: colores[1]}).addClass("color-box");
             
-            optionContainer.append(colorDiv1)
-            optionContainer.append(colorDiv2)
-            optionContainer.append(option)
 
             //Agregar la opción al select
-            selectElement.append(optionContainer);
+            //selectElement.append(optionContainer);
           }
 
           //--- Modificación de colores
@@ -302,9 +289,9 @@ function get_catalog(option){
               .css({display:"flex"})
             var usuarioElement = $("<div>").text(usuario.nombre)
               .css({padding:"5px"})
-            usuarioElement.css("color", usuario.colores[0],);
+            //usuarioElement.css("color", usuario.colores[0],);
 
-            var colorElement1 = $("<div>")
+            var colorElement1 = $("<div>R</div>")
               .addClass("color-circle")
               .css({
                 backgroundColor: usuario.colores[0],
@@ -312,17 +299,21 @@ function get_catalog(option){
                 height: "30px",
                 borderRadius:"50%",
                 display:"inline-block",
-                marginRight:"10px"
+                marginRight:"5px",
+                textAlign:"center",
+                color:"white"
               });
 
-            var colorElement2 = $("<div>")
+            var colorElement2 = $("<div>P</div>")
               .css({
                 backgroundColor: usuario.colores[1],
                 width: "30px",
                 height: "30px",
                 borderRadius:"50%",
                 display:"inline-block",
-                marginRight:"10px"
+                marginRight:"5px",
+                textAlign:"center",
+                color:"white"
               });
 
               usuarioContainer.append(usuarioElement, colorElement1, colorElement2);
@@ -532,26 +523,7 @@ function getHours(hourDate) {
 
 //Generar colores en automático
 function generarArregloConTonalidades(cantidad) {
-  var colores = [];
-
-  for (var i = 0; i < cantidad; i++) {
-    var base = "#" + Math.floor(Math.random() * 16777215).toString(16); // Generar un color hexadecimal aleatorio
-    var baseColor = base;
-    
-    // Obtén los componentes RGB del color base
-    var baseInt = parseInt(base.slice(1), 16);
-    var rBase = (baseInt >> 16) & 150;
-    var gBase = (baseInt >> 16) & 190;
-    var bBase = baseInt & 230;
-
-    // Ajusta los componentes de color para obtener tonalidades diferentes
-    var r = Math.min(rBase + i, 100);
-    var g = Math.min(gBase + i, 150);
-    var b = Math.min(bBase + i, 190);
-
-    var tonalidad = "#" + (r << 16 | g << 8 | b).toString(16).padStart(6, '0');
-    colores.push([baseColor, tonalidad]);
-  }
+  var colores = [['#B03A2E','#EC7063'],['#76448A ','#AF7AC5'],['#1F618D','#5499C7'],['#148F77','#48C9B0'],['#B7950B','#F4D03F'],['#B9770E','#F5B041'],['#B9770E','#F5B041']];
 
   return colores;
 }
