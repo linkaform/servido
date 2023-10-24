@@ -213,7 +213,7 @@ function getFirstElement(dateTo, dateFrom, user, type_payment){
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"400px",
+    height:"550px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -253,7 +253,7 @@ function get_catalog()
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 111029,
+      script_id: 111017,
       option: 0,
     }),
     headers:{
@@ -288,7 +288,7 @@ function get_catalog()
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 111029,
+      script_id: 111017,
       option: 2,
     }),
     headers:{

@@ -2,43 +2,59 @@
 
 //--Table Montajes Por Mes
 var columsTable1 = [
-  { title:"Expense date", field:'expense_date',hozAlign:"left",headerFilter:"input", width:150},
-  { title:"Merchant",field:'merchant',hozAlign:"left", width:200 },
-  { title:"Amount", field:'amount',hozAlign:"left", width:200 },
+  { title:"Expense date", field:'expense_date',hozAlign:"left",headerFilter:"input", width:200},
+  { title:"Merchant",field:'merchant',hozAlign:"left", width:230 },
+  { title:"Amount", field:'amount',hozAlign:"right", width:200, formatter:"money", formatterParams:{
+    decimal:".",
+    thousand:",",
+    symbol:"$",
+    symbolAfter:false,
+    negativeSign:true,
+    precision:false,
+  } },
   { title:"Currency",field:'currency',hozAlign:"left",headerFilter:"currencyput", width:200 },
-  { title:"Account",  field:'account',hozAlign:"right",width:160 },
+  { title:"Account",  field:'account',hozAlign:"right",width:200 },
+  { title:"Department",  field:'department',hozAlign:"left",width:200 },
   {
-  title: "Department",
-  field: 'department',
-  hozAlign: "left",
-  formatter: function (cell, formatterParams, onRendered) {
-    // Obtén la matriz de enlaces
-    var links = cell.getValue();
+    title: "Receipt",
+    field: "receipt",
+    formatter: function (cell, formatterParams, onRendered) {
+      var images = cell.getValue(); // Obtén la lista de URLs de imágenes
 
-    // Crea un div para mostrar los enlaces
-    var div = document.createElement("div");
+      if (Array.isArray(images)) {
+        //----En caso de haber urls se crea un contenedor para las imágenes
+        var imageContainer = document.createElement("div");
+        imageContainer.style.display = "flex";
+        imageContainer.style.alignItems = "center";
+        imageContainer.style.justifyContent = "center";
 
-    // Recorre los enlaces y crea elementos <a> para cada uno
-    for (var i = 0; i < links.length; i++) {
-      var link = links[i];
-      var linkElement = document.createElement("a");
-      linkElement.href = link;
-      linkElement.textContent = "Link " + (i + 1);
-      linkElement.target = "_blank"; // Abre el enlace en una nueva ventana/tab
+        images.forEach(function (imageUrl) {
+          //---- Creación de un elemento de imagen para cada URL
+          var img = document.createElement("img");
+          img.src = imageUrl;
 
-      div.appendChild(linkElement);
-      if (i < links.length - 1) {
-        div.appendChild(document.createElement("br")); // Agrega un salto de línea entre los enlaces
+          //----Aplicación de estilos CSS para ajustar el tamaño de las imágenes
+          img.style.width = "80px";
+          img.style.height = "90px";
+
+          //----Creación de un elemento a para envolver la imagen
+          var link = document.createElement("a");
+          link.href = imageUrl;
+          link.target = "_blank",
+          link.appendChild(img)
+
+          //---- Agregar la imagen al contenedor
+          imageContainer.appendChild(link);
+        });
+
+        //---- Se devuelve el contenedor de imágenes
+        return imageContainer;
       }
-    }
 
-    return div;
+      return ""; //---- Devuelve una cadena vacía si no hay imágenes
+    },
   },
-  width: 200,
-  },
-  { title:"Receipt",  field:'receipt',hozAlign:"right",width:160 },
 ];
-
 
 var dataTable1c = [
   {
@@ -128,7 +144,8 @@ var dataTable1 = [
             "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/7AE700980B884A048B4CF100205D08FF/User_Image_1696697112.jpeg",
             "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/22E5A0EFD8D74CE8BE902B7443AC18F7/User_Image_1696976863.jpeg",
             "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/F6294C20DE55401BB64E67B78695E135/User_Image_1697135887.jpeg"
-        ]
+        ],
+        "receipt":"",
     },
     {
         "merchant": "Target",
@@ -142,7 +159,8 @@ var dataTable1 = [
             "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/7AE700980B884A048B4CF100205D08FF/User_Image_1696697112.jpeg",
             "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/22E5A0EFD8D74CE8BE902B7443AC18F7/User_Image_1696976863.jpeg",
             "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/F6294C20DE55401BB64E67B78695E135/User_Image_1697135887.jpeg"
-        ]
+        ],
+        "receipt":"sdf",
     },
     {
         "merchant": "Stagecoach Foodmart ",
@@ -156,7 +174,8 @@ var dataTable1 = [
             "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/7AE700980B884A048B4CF100205D08FF/User_Image_1696697112.jpeg",
             "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/22E5A0EFD8D74CE8BE902B7443AC18F7/User_Image_1696976863.jpeg",
             "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/F6294C20DE55401BB64E67B78695E135/User_Image_1697135887.jpeg"
-        ]
+        ],
+        "receipt":"",
     },
     {
         "merchant": "Tressies ",
@@ -170,7 +189,8 @@ var dataTable1 = [
             "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/7AE700980B884A048B4CF100205D08FF/User_Image_1696697112.jpeg",
             "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/22E5A0EFD8D74CE8BE902B7443AC18F7/User_Image_1696976863.jpeg",
             "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/F6294C20DE55401BB64E67B78695E135/User_Image_1697135887.jpeg"
-        ]
+        ],
+        "receipt":"",
     }
 ]
 
