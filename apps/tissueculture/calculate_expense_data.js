@@ -16,44 +16,37 @@ var columsTable1 = [
   { title:"Account",  field:'account',hozAlign:"right",width:200 },
   { title:"Department",  field:'department',hozAlign:"left",width:200 },
   {
-    title: "Receipt",
-    field: "receipt",
-    formatter: function (cell, formatterParams, onRendered) {
-      var images = cell.getValue(); // Obtén la lista de URLs de imágenes
+  title: "Receipt",
+  field: "receipt",
+  formatter: function (cell, formatterParams, onRendered) {
+    var images = cell.getValue(); // Obtén la lista de URLs de imágenes
 
-      if (Array.isArray(images)) {
-        //----En caso de haber urls se crea un contenedor para las imágenes
-        var imageContainer = document.createElement("div");
-        imageContainer.style.display = "flex";
-        imageContainer.style.alignItems = "center";
-        imageContainer.style.justifyContent = "center";
+    if (Array.isArray(images)) {
+      //----Creación un contenedor div para los enlaces de ticket
+      var linkContainer = document.createElement("div");
+      linkContainer.style.display = "flex";
+      linkContainer.style.alignItems = "center";
+      linkContainer.style.justifyContent = "center";
 
-        images.forEach(function (imageUrl) {
-          //---- Creación de un elemento de imagen para cada URL
-          var img = document.createElement("img");
-          img.src = imageUrl;
+      images.forEach(function (imageUrl) {
+        //----Creación de un elemento de enlace para cada URL
+        var link = document.createElement("a");
+        link.href = imageUrl;
+        link.target = "_blank";
+        link.textContent = "Enlace a Ticket";
+        //----Espaciado entre los enlaces
+        link.style.marginRight = "10px";
 
-          //----Aplicación de estilos CSS para ajustar el tamaño de las imágenes
-          img.style.width = "80px";
-          img.style.height = "90px";
+        //---- Integración del elemento de enlace al contenedor
+        linkContainer.appendChild(link);
+      });
 
-          //----Creación de un elemento a para envolver la imagen
-          var link = document.createElement("a");
-          link.href = imageUrl;
-          link.target = "_blank",
-          link.appendChild(img)
-
-          //---- Agregar la imagen al contenedor
-          imageContainer.appendChild(link);
-        });
-
-        //---- Se devuelve el contenedor de imágenes
-        return imageContainer;
-      }
-
-      return ""; //---- Devuelve una cadena vacía si no hay imágenes
-    },
+      // Devolver el contenedor de enlaces
+      return linkContainer;
+    }
   },
+}
+
 ];
 
 var dataTable1c = [
