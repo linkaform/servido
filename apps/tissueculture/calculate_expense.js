@@ -242,13 +242,11 @@ function getDrawTable(id, columnsData, tableData){
   }
 }
 
-
 //----- CATALOGS
 function get_catalog() 
 {
   arrayUser = []
   arrayOut = []
-
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',

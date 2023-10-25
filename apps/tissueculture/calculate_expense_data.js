@@ -16,37 +16,53 @@ var columsTable1 = [
   { title:"Account",  field:'account',hozAlign:"right",width:200 },
   { title:"Department",  field:'department',hozAlign:"left",width:200 },
   {
-  title: "Receipt",
+  title: "Receipt Links", // Columna para los enlaces
   field: "receipt",
   formatter: function (cell, formatterParams, onRendered) {
     var images = cell.getValue(); // Obtén la lista de URLs de imágenes
 
     if (Array.isArray(images)) {
-      //----Creación un contenedor div para los enlaces de ticket
       var linkContainer = document.createElement("div");
       linkContainer.style.display = "flex";
       linkContainer.style.alignItems = "center";
       linkContainer.style.justifyContent = "center";
 
       images.forEach(function (imageUrl) {
-        //----Creación de un elemento de enlace para cada URL
         var link = document.createElement("a");
         link.href = imageUrl;
         link.target = "_blank";
         link.textContent = "Enlace a Ticket";
-        //----Espaciado entre los enlaces
         link.style.marginRight = "10px";
 
-        //---- Integración del elemento de enlace al contenedor
         linkContainer.appendChild(link);
       });
 
-      // Devolver el contenedor de enlaces
       return linkContainer;
-    }
+      }
+    },
   },
-}
+{
+  title: "Receipt Images", // Columna para las imágenes
+  field: "receipt", // Asegúrate de utilizar el mismo campo que la columna anterior
+  formatter: "image", // Usar el formatter "image" para mostrar imágenes
+  formatterParams: {
+    height: "85px", // Altura deseada
+    width: "80px",  // Ancho automático para mantener la proporción original
+  },
+  width:100,
+  formatter: function (cell, formatterParams, onRendered) {
+    var img = document.createElement("img");
+    img.src = cell.getValue();
 
+    // Estilos CSS para centrar horizontalmente la imagen
+    img.style.height = "90px";
+    img.style.width = "auto";
+    img.style.display = "block";
+    img.style.margin = "0 auto";
+
+    return img;
+  },
+},
 ];
 
 var dataTable1c = [
