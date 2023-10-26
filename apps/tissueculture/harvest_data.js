@@ -2,13 +2,13 @@ var array_background = getPAlleteColors(4,8);
 
 //--Table Montajes Por Mes
 var columsTable1 = [
-  { title:"Harvest Year", field:'havest_year',hozAlign:"left",width:250, headerFilter:"input"},
-  { title:"Harvest Month", field:'havest_month',hozAlign:"left",width:250, headerFilter:"input"},
-  { title:"Harvest Week", field:'havest_week',hozAlign:"left",width:250, headerFilter:"input"},
-  { title:"Plant Code", field:'plant_code',hozAlign:"left",width:250, headerFilter:"input"},
-  { title:"Plant Name", field:'plant_name',hozAlign:"left",width:350, headerFilter:"input"},
-  { title:"Total Harvest", field:'total_harvest',hozAlign:"right",formatterParams: {decimal: ".", thousand: ",", precision: 2 }, width:250, headerFilter:"input"},
-  { title:"From", field:'from',hozAlign:"left",width:350, headerFilter:"input"},
+  { title:"From", field:'from',hozAlign:"left",width:280, headerFilter:"input"},
+  { title:"Harvest Year", field:'havest_year',hozAlign:"left",width:190, headerFilter:"input"},
+  { title:"Harvest Month", field:'havest_month',hozAlign:"left",width:190, headerFilter:"input"},
+  { title:"Harvest Week", field:'havest_week',hozAlign:"left",width:190, headerFilter:"input"},
+  { title:"Plant Code", field:'plant_code',hozAlign:"left",width:190, headerFilter:"input"},
+  { title:"Plant Name", field:'plant_name',hozAlign:"left",width:250, headerFilter:"input"},
+  { title:"Total Harvest", field:'total_harvest',hozAlign:"right", formatter:"money", formatterParams: {decimal: ".", thousand: ",", precision: 2 }, width:190, headerFilter:"input"},
 ];
 
 
