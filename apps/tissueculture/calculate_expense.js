@@ -214,7 +214,7 @@ function getFirstElement(dateTo, dateFrom, user, type_payment){
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
     height:"550px",
-    layout:"fitDataTable",
+    layout:"fitDataStretch",
     data:tableData,
     resizableRows:false,
     dataTree:true,
