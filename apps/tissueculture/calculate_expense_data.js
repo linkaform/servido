@@ -142,64 +142,48 @@ var dataTable1c = [
 
 var dataTable1 = [
     {
-        "merchant": "Costco ",
-        "account": 512009,
-        "receipt": "Pendiente",
-        "currency": "usd",
-        "amount": 567.91,
-        "expense_date": "2023-10-04",
-        "department": [
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/8C8CE7905E0A4B0CAA740FDE2BE6DF03/User_Image_1696465021.jpeg",
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/7AE700980B884A048B4CF100205D08FF/User_Image_1696697112.jpeg",
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/22E5A0EFD8D74CE8BE902B7443AC18F7/User_Image_1696976863.jpeg",
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/F6294C20DE55401BB64E67B78695E135/User_Image_1697135887.jpeg"
-        ],
-        "receipt":"",
+      "merchant": "Costco ",
+      "account": 512009,
+      "receipt": [
+        "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/8C8CE7905E0A4B0CAA740FDE2BE6DF03/User_Image_1696465021.jpeg"
+      ],
+      "currency": "usd",
+      "amount": 567.91,
+      "expense_date": "2023-10-04",
+      "department": "240: Laboratory"
     },
     {
-        "merchant": "Target",
-        "account": 711007,
-        "receipt": "Pendiente",
-        "currency": "usd",
-        "amount": 15.14,
-        "expense_date": "2023-10-07",
-        "department": [
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/8C8CE7905E0A4B0CAA740FDE2BE6DF03/User_Image_1696465021.jpeg",
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/7AE700980B884A048B4CF100205D08FF/User_Image_1696697112.jpeg",
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/22E5A0EFD8D74CE8BE902B7443AC18F7/User_Image_1696976863.jpeg",
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/F6294C20DE55401BB64E67B78695E135/User_Image_1697135887.jpeg"
-        ],
-        "receipt":"sdf",
+      "merchant": "Costco ",
+      "account": 512009,
+      "receipt": [
+        "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/8C8CE7905E0A4B0CAA740FDE2BE6DF03/User_Image_1696465021.jpeg"
+      ],
+      "currency": "usd",
+      "amount": 567.91,
+      "expense_date": "2023-10-04",
+      "department": "240: Laboratory"
     },
     {
-        "merchant": "Stagecoach Foodmart ",
-        "account": 512004,
-        "receipt": "Pendiente",
-        "currency": "usd",
-        "amount": 70.68,
-        "expense_date": "2023-10-10",
-        "department": [
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/8C8CE7905E0A4B0CAA740FDE2BE6DF03/User_Image_1696465021.jpeg",
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/7AE700980B884A048B4CF100205D08FF/User_Image_1696697112.jpeg",
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/22E5A0EFD8D74CE8BE902B7443AC18F7/User_Image_1696976863.jpeg",
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/F6294C20DE55401BB64E67B78695E135/User_Image_1697135887.jpeg"
-        ],
-        "receipt":"",
+      "merchant": "Costco ",
+      "account": 512009,
+      "receipt": [
+        "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/8C8CE7905E0A4B0CAA740FDE2BE6DF03/User_Image_1696465021.jpeg"
+      ],
+      "currency": "usd",
+      "amount": 567.91,
+      "expense_date": "2023-10-04",
+      "department": "240: Laboratory"
     },
     {
-        "merchant": "Tressies ",
-        "account": 711008,
-        "receipt": "Pendiente",
-        "currency": "usd",
-        "amount": 58,
-        "expense_date": "2023-10-12",
-        "department": [
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/8C8CE7905E0A4B0CAA740FDE2BE6DF03/User_Image_1696465021.jpeg",
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/7AE700980B884A048B4CF100205D08FF/User_Image_1696697112.jpeg",
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/22E5A0EFD8D74CE8BE902B7443AC18F7/User_Image_1696976863.jpeg",
-            "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/F6294C20DE55401BB64E67B78695E135/User_Image_1697135887.jpeg"
-        ],
-        "receipt":"",
+      "merchant": "Costco ",
+      "account": 512009,
+      "receipt": [
+        "https://f001.backblazeb2.com/file/app-linkaform/public-client-9908/82753/8C8CE7905E0A4B0CAA740FDE2BE6DF03/User_Image_1696465021.jpeg"
+      ],
+      "currency": "usd",
+      "amount": 567.91,
+      "expense_date": "2023-10-04",
+      "department": "240: Laboratory"
     }
 ]
 

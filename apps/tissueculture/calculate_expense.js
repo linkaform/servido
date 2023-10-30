@@ -225,21 +225,85 @@ function getDrawTable(id, columnsData, tableData){
     columns:columnsData,
   });
 
-  if (document.getElementById("download_xlsx_"+id)){
-    //trigger download of data.xlsx file
-    document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
-    document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
-    table.download("xlsx", "data.xlsx", {sheetName:"data"});
-    });
-  }
+  if (document.getElementById("download_xlsx_" + id)) {
+    document.getElementById("download_xlsx_" + id).replaceWith(document.getElementById("download_xlsx_" + id).cloneNode(true));
+    document.getElementById("download_xlsx_" + id).addEventListener("click", function () {
+        var modifiedData = JSON.parse(JSON.stringify(table.getData(true)));
 
-  if (document.getElementById("download_csv_"+id)){
-    //trigger download of data.csv file
-    document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
-    document.getElementById("download_csv_"+id).addEventListener("click", function (){
-      table.download("csv", "data.csv");
+        modifiedData.forEach(function (row) {
+            if (row.hasOwnProperty("receipt")) {
+                var receiptLinks = row["receipt"];
+                if (Array.isArray(receiptLinks) && receiptLinks.length > 0 && typeof receiptLinks[0] === "string") {
+                    var urlRegex = /https?:\/\/[^\s\[\]]+/g;
+                    var urlsInCell = receiptLinks[0].match(urlRegex);
+                    if (urlsInCell) {
+                        row["receipt"] = urlsInCell[0];
+                    }
+                }
+            }
+        });
+
+        //----Reorganizar el orden de las columnas (columna "receipt" al final)
+        modifiedData.forEach(function (row) {
+            var receiptValue = row["receipt"];
+            //----Eliminar temporalmente la columna "receipt"
+            delete row["receipt"];
+            //----Agregar "receipt" al final
+            row["receipt"] = receiptValue;
+        });
+
+        //----Convertir los datos en un libro de trabajo
+        var ws = XLSX.utils.json_to_sheet(modifiedData);
+        var wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "data");
+
+        //----Descargar el archivo XLSX
+        XLSX.writeFile(wb, "data.xlsx");
     });
-  }
+}
+
+  if (document.getElementById("download_csv_" + id)) {
+    document.getElementById("download_csv_" + id).replaceWith(document.getElementById("download_csv_" + id).cloneNode(true));
+    document.getElementById("download_csv_" + id).addEventListener("click", function () {
+        var modifiedDataCSV = JSON.parse(JSON.stringify(table.getData(true)));
+
+        modifiedDataCSV.forEach(function (row) {
+            if (row.hasOwnProperty("receipt")) {
+                var receiptLinks = row["receipt"];
+                if (Array.isArray(receiptLinks) && receiptLinks.length > 0 && typeof receiptLinks[0] === "string") {
+                    var urlRegex = /https?:\/\/[^\s\[\]]+/g;
+                    var urlsInCell = receiptLinks[0].match(urlRegex);
+                    if (urlsInCell) {
+                        row["receipt"] = urlsInCell[0];
+                    }
+                }
+            }
+        });
+
+        //----Reorganizar el orden de las columnas (columna "receipt" al final)
+        modifiedDataCSV.forEach(function (row) {
+            var receiptValue = row["receipt"];
+            // Eliminar temporalmente la columna "receipt"
+            delete row["receipt"]; 
+            row["receipt"] = receiptValue; // Agregar "receipt" al final
+        });
+
+        //----Convertir los datos a CSV
+        var csvContent = Papa.unparse(modifiedDataCSV);
+
+        //----Crear un enlace de descarga para el archivo CSV
+        var blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        var downloadLink = document.createElement("a");
+        var url = URL.createObjectURL(blob);
+        downloadLink.setAttribute("href", url);
+        downloadLink.setAttribute("download", "data.csv");
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    });
+}
+
 }
 
 //----- CATALOGS
