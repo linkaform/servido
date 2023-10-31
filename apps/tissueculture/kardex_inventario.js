@@ -105,6 +105,7 @@ window.onload = function(){
     $('#divOptions').hide();
     $('#title_report').hide();
     $('.title_tables').hide();
+    $("#warehouse").multipleSelect('refresh');
     hideElement("firstElement-Buttons");
   }
   ///-----HIDE AND SHOW
