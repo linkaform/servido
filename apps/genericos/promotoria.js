@@ -191,14 +191,14 @@ function getFirstElement(date_from, date_to, promotores){
         getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data);
         document.getElementById("secondElement").style.removeProperty('display');
       }
-      if (res.response.json.group_users) {
+      /*if (res.response.json.group_users) {
         let selectPromotores = $('#list_promotores');
         let listaPromotores = res.response.json.group_users;
         selectPromotores.empty()
         listaPromotores.forEach(element => {
           selectPromotores.append('<option value="' + element + '">' + element + '</option>');
         })
-      }
+      }*/
     } else {
       hideLoading();
       if(res.code == 11){
@@ -287,9 +287,8 @@ function get_catalog()
   })
 };
 
-
-function select_promotor(selectPromotor){
+/*function select_promotor(selectPromotor){
   var nombrePromotor = selectPromotor.value;
   alert("El nombre del promotor es: " + nombrePromotor);
   table.setFilter("promotor", "=", nombrePromotor);
-}
+}*/
