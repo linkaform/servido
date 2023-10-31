@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Reporte de KPI">
+        <meta name="description" content="Forcast by Cicle">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
@@ -12,12 +12,10 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!--Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <!--LIBRARY CHECK -->
-        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
-        <!-- <link rel="stylesheet" href="style.css"> -->
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <!-- Header -->
@@ -39,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte de KPI</h1>
+                    <h1 id="title_report">Tendencias Por Plaga</h1>
                 </div>
             </div> 
         </nav>
@@ -78,6 +76,8 @@
                     </center>
                 </div>
 
+
+
                 <!--OPtions FIlter -->
                 <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
@@ -88,54 +88,63 @@
 
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
-                    <div class="col-sm-12 col-md-2 col-lg-2">
-                        <h5>Date From: </h5>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Fecha Desde: </h5>
                         <input class="form-control ds-input" type="date" id="date_from" name="date_from">
                     </div>
-
-                    <div class="col-sm-12 col-md-2 col-lg-2">
-                        <h5>Date To: </h5>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Fecha Hasta: </h5>
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
-
-                    <div class="col-sm-12 col-md-3 col-lg-3" id="divnameGestor">
-                        <h5>Gestor: </h5>
-                        <select class="form-control mdb-select md-form" id="gestor" multiple="multiple">
-                           
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Numero De Dispositivo: </h5>
+                        <select class="form-control mdb-select md-form" id="dispositivo">
+                            <option value="">--Seleccione--</option>
                         </select>
                     </div>
-                    
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Área </h5>
+                        <select class="form-control mdb-select md-form" id="area">
+                            <option value="--">--Seleccione--</option>
+                            <option value="bodega">Bodega</option>
+                            <option value="salsas">Salsas</option>
+                            <option value="planta_2">Planta 2</option>
+                            <option value="laboratorio">Laboratorio</option>
+                            <option value="transportes">Transportes</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                    </div>
                 </div>
+
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-                    <!--First Elemtent -->
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+
+                    <!--Primer Elemento -->
+                    <div class="col-sm-12 col-md-12 col-lg-12 mb-5" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span> Resumen de actividades</span>&nbsp;&nbsp;
+                            <h3 ><span> Reporte De Tendencias Area</span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
-                            <hr class="green-HrfirstElement" >
+                            <hr class="hrFirstElement-tendencia_area_plaga">
                         </section>
                         <div id="firstElement" > </div>
                     </div>
 
-                    <!--Second Elemtent -->
-                    <div id="secondElement" class="col-sm-12 col-md-4 col-lg-6 mb-5" style="overflow-y: scroll;">
-                        <div  style="width: 800px;height: 600px;margin: auto;">
-                            <canvas id="graphicFirst"></canvas>
+                    <!--Segundo Elemento -->
+                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicFirst','chart_screen');return false;">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
+                        <div  style="width: 1600px;height: 600px;margin: auto;">
+                            <canvas id="graphicFirst" ></canvas>
                         </div>
                     </div>
 
-                    <!--Third Elemtent -->
-                    <div id="ThirdElement" class="col-sm-12 col-md-4 col-lg-6 mb-5" style="overflow-y: scroll;">
-                        <div  style="width: 800px;height: 600px;margin: auto;">
-                            <canvas id="graphicSecond"></canvas>
-                        </div>
-                    </div>
 
-        
+
                 </div>
+            </div>
         </div>
     </body>
 
@@ -183,15 +192,12 @@
     <!-- Utils -->
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
     <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
-
     <script type="text/javascript" src="../utils/lkf_utils.js"></script>
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
+    <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./reporte_kpi.js"></script>
-    <script type="text/javascript" src="./reporte_kpi_data.js"></script>
-
-    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
-    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+    <script type="text/javascript" src="./tendencias_plaga.js"></script>
+    <script type="text/javascript" src="./tendencias_plaga_data.js"></script>
     </body>
 </html>

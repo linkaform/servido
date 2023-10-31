@@ -17,7 +17,6 @@ hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
 hideElement("secondElement");
-hideElement("ThirdElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -90,10 +89,10 @@ window.onload = function(){
     if (scriptId == null) {
       loadDemoData();
     }
+    //--Catalog
+    get_catalog();
     //--Styles
     setSpinner();
-    get_catalog(); //Obtener catálogos
-    $('#gestor').multipleSelect('refresh');
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
@@ -124,24 +123,18 @@ function unHideReportElements(){
   unhideElement("firstParameters");
   unhideElement("close_sesion");
   unhideElement("firstElement");
-  unhideElement("secondElement");
 }
 
 function loadDemoData(){
   unhideElement("title_demo")
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
-
+  
   getDrawTable('firstElement', columsTable1, dataTable1);
   document.getElementById("firstElement").style.removeProperty('display');
 
-  getDrawGraphicFirst(data1, options1);
+  getDrawGraphicFirst(data1, setOptions1);
   document.getElementById("secondElement").style.removeProperty('display');
-  document.getElementById("graphicFirst").style.removeProperty('display');
-
-  getDrawGraphicSecond(data2, options2);
-  document.getElementById("ThirdElement").style.removeProperty('display');
-  document.getElementById("graphicSecond").style.removeProperty('display');
 
 }
 
@@ -150,15 +143,23 @@ loading.style.display = 'none';
 
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");
-  let gestores = $('#gestor').val()  
+  let date_to = document.getElementById("date_to");  
+  let dispositivo = document.getElementById("dispositivo");  
+  let area = document.getElementById("area");  
   
-  getFirstElement(date_to.value, date_from.value, gestores);
+  if (date_from.value != null && date_from.value!="" && date_to.value != null && date_to.value!=""){
+    getFirstElement(date_to.value, date_from.value, dispositivo.value, area.value);
+  }
+  else
+  {
+    Swal.fire({
+      title: 'Rango de fechas requerido!!',
+    });
+  }
+  
 };
 
-function getFirstElement(dateTo, dateFrom, gestores){
-  console.log(dateTo)
-  console.log(dateFrom)
+function getFirstElement(dateTo, dateFrom, dispositivo, area){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -168,11 +169,11 @@ function getFirstElement(dateTo, dateFrom, gestores){
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 110669,
+      script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
-      gestores:gestores,
-      option:2
+      dispositivo: dispositivo,
+      area: area,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -186,22 +187,13 @@ function getFirstElement(dateTo, dateFrom, gestores){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res.response)
-      if (res.response.json.secondElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.secondElement.data);
+      if (res.response.json.firstElement.data) {
+        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
-      if(res.response.json.thirdElement.data){
-        console.log(res.response.json.thirdElement.data)
-        getDrawGraphicFirst(res.response.json.thirdElement.data, options1);
+      if (res.response.json.secondElement) {
+        getDrawGraphicFirst(res.response.json.secondElement, setOptions1);
         document.getElementById("secondElement").style.removeProperty('display');
-        document.getElementById("graphicFirst").style.removeProperty('display');
-      }
-      if(res.response.json.fourtElement.data){
-        console.log(res.response.json.thirdElement.data)
-        getDrawGraphicSecond(res.response.json.fourtElement.data, options2);
-        document.getElementById("ThirdElement").style.removeProperty('display');
-        document.getElementById("graphicSecond").style.removeProperty('display');
       }
       
     } else {
@@ -223,37 +215,11 @@ function getFirstElement(dateTo, dateFrom, gestores){
   })
 };
 
+
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    //----Configuración para el tooltip del encabezado
-    //var columnTitleElement = document.querySelector("#"+id+" th.tabulator-col[tabulator-field='llamada_tel']")
-
-    // Agrega el evento mouseover al elemento del título de la columna
-    /*columnTitleElement.addEventListener("mouseover", function () {
-        // Crea un elemento de tooltip personalizado
-        var tooltip = document.createElement("div");
-        tooltip.className = "custom-tooltip";
-        tooltip.textContent = "Texto del tooltip personalizado"; // Personaliza el texto del tooltip
-
-        // Posiciona el tooltip cerca del título de la columna
-        var rect = columnTitleElement.getBoundingClientRect();
-        tooltip.style.top = rect.bottom + "px";
-        tooltip.style.left = rect.left + "px";
-
-        // Agrega el tooltip al cuerpo del documento
-        document.body.appendChild(tooltip);
-    });*/
-
-    // Agrega un evento mouseout para eliminar el tooltip cuando se retira el mouse
-    /*columnTitleElement.addEventListener("mouseout", function () {
-        var tooltip = document.querySelector(".custom-tooltip");
-        if (tooltip) {
-            tooltip.remove();
-        }
-    });*/
-
-    height:"400px",
+    height:"300px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -263,27 +229,7 @@ function getDrawTable(id, columnsData, tableData){
     clipboardPasteAction:"replace",
     textDirection:"ltr",
     columns:columnsData,
-    rowFormatter: function(row) {
-        var data = row.getData();
-        var porcentajeEfectividad = data.porcentaje_efectividad;
-        var cell = row.getCell("porcentaje_efectividad"); // Encuentra la celda específica
-
-        if (porcentajeEfectividad <= 49) {
-            cell.getElement().style.backgroundColor = "red";
-        } else if (porcentajeEfectividad >= 50 && porcentajeEfectividad <= 74) {
-            cell.getElement().style.backgroundColor = "orange";
-        }
-        else if (porcentajeEfectividad >= 75 && porcentajeEfectividad <= 100){
-          cell.getElement().style.backgroundColor = "green";
-        }
-    },
-  
   });
-  /*table.on("headerMouseOver", function(e, column){
-    //e - the mouse event object
-    //column - column component
-    alert("Eres crack");
-  });*/
 
   if (document.getElementById("download_xlsx_"+id)){
     //trigger download of data.xlsx file
@@ -303,108 +249,51 @@ function getDrawTable(id, columnsData, tableData){
 }
 
 
-//----- CATALOGS
-function get_catalog() 
-{
-  console.log(scriptId)
-  arrayPlant = []
-  arrayOut = []
-
-  fetch(url + 'infosync/scripts/run/', {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: 110669,
-      option: 1,
-    }),
-    headers:{
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+userJwt
-    },
-  })
-  .then(res => res.json())
-  .then(res => {
-    if (res.success) {
-      if (res.response.json.firstElement.data){
-        /*console.log(res.response.json)
-        console.log("----------------")
-        console.log(res.response.json.firstElement.data)*/
-        //res.response.json.firstElement.data)
-       /* let gestoresContent = $('#gestor');
-        gestoresContent.empty();
-        for (i = 0; i < res.response.json.firstElement.data.length; i++) {
-        value = res.response.json.firstElement.data[i].gestor;
-
-        gestoresContent.append('<option value="'+ value + '">'+value+'</option>');
-        let option = $("<option></option>")
-            .text(value)
-            .val(value)
-        console.log(option)
-
-          gestoresContent.append(option)
-         
-        }
-        
-        gestoresContent.multipleSelect('refresh')*/
-        let listGestor = []
-
-        for (i = 0; i < res.response.json.firstElement.data.length; i++) {
-          valueGestor = res.response.json.firstElement.data[i].gestor;
-
-          if (listGestor.indexOf(valueGestor) === -1) {
-            listGestor.push(valueGestor);
-          }
-
-        }
-
-        console.log(listGestor)
-         //----Pais
-        $("#gestor").empty();
-        for (i = 0; i < listGestor.length; i++) {
-          value = listGestor[i]
-          $('#gestor').append('<option value="'+ value +'">'+value+'</option>');
-        }
-        $("#gestor").multipleSelect('refresh');
-      }
-    } 
-  })
-
-};
-
-
 //-----GRAPICH
 let chart1;
 function getDrawGraphicFirst(data, setOptions){
   //---CHART
   var ctx = document.getElementById('graphicFirst').getContext('2d');
+  
   if (chart1) {
     chart1.destroy();
   }
 
   chart1 = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data:data,
     options: setOptions,
-    plugins: [ChartDataLabels],
   });
 }
 
-let chart2;
-function getDrawGraphicSecond(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicSecond').getContext('2d');
-  
-  if (chart2) {
-    chart2.destroy();
-  }
 
-  //-----COLORS
-  var array_colors = getPAlleteColors(7,data.datasets.length);
-  data.datasets.background = array_colors;
+//-----CATALOG
+function get_catalog() 
+{
+  fetch(url + 'infosync/scripts/run/', {
+      method: 'POST',
+      body: JSON.stringify({
+        script_id: scriptId,
+        option: 0,
+      }),
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+userJwt
+      },
+    })
+    .then(res => res.json())
+    .then(res => {
+    if (res.success) {
+      console.log('CATALOGO',res.response.json.array_filters.dispositivo)
+      if (res.response.json.array_filters.dispositivo.length){
+        $("#dispositivo").empty();
+        $('#dispositivo').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i <res.response.json.array_filters.dispositivo.length; i++) {
+          value = res.response.json.array_filters.dispositivo[i]
+          $('#dispositivo').append('<option value="'+ value +'"> Dispositivo '+value+'</option>');
+        }
+      }
+    } 
+  })
+};
 
-  chart2 = new Chart(ctx, {
-    type: 'bar',
-    data:data,
-    options: setOptions,
-    plugins: [ChartDataLabels],
-  });
-}

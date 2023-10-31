@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Reporte de KPI">
+        <meta name="description" content="Green House Inventory Move">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
@@ -17,7 +17,7 @@
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
-        <!-- <link rel="stylesheet" href="style.css"> -->
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <!-- Header -->
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte de KPI</h1>
+                    <h1 id="title_report">Realme DB</h1>
                 </div>
             </div> 
         </nav>
@@ -89,21 +89,27 @@
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
                     <div class="col-sm-12 col-md-2 col-lg-2">
-                        <h5>Date From: </h5>
+                        <h5>Fecha inicio: </h5>
                         <input class="form-control ds-input" type="date" id="date_from" name="date_from">
                     </div>
-
                     <div class="col-sm-12 col-md-2 col-lg-2">
-                        <h5>Date To: </h5>
+                        <h5>Fecha fin: </h5>
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
 
-                    <div class="col-sm-12 col-md-3 col-lg-3" id="divnameGestor">
-                        <h5>Gestor: </h5>
-                        <select class="form-control mdb-select md-form" id="gestor" multiple="multiple">
-                           
+                    <div class="col-sm-12 col-md-2 col-lg-2">
+                        <h5>Cadena: </h5>
+                        <select class="form-control" id="cadena" name="cadena">
+                            <option value="">--Seleccione--</option>
                         </select>
                     </div>
+                    <div class="col-sm-12 col-md-2 col-lg-2">
+                        <h5>Marca: </h5>
+                        <select class="form-control" id="producto" name="producto">
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>
+                    
                     
                 </div>
                 <!--Content -->
@@ -111,7 +117,7 @@
                     <!--First Elemtent -->
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span> Resumen de actividades</span>&nbsp;&nbsp;
+                            <h3 ><span>Resumen de ventas</span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
@@ -120,25 +126,20 @@
                         <div id="firstElement" > </div>
                     </div>
 
-                    <!--Second Elemtent -->
-                    <div id="secondElement" class="col-sm-12 col-md-4 col-lg-6 mb-5" style="overflow-y: scroll;">
-                        <div  style="width: 800px;height: 600px;margin: auto;">
+                   <!--SECOND ELEMENT - GRAPHIC -->
+                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-12 mb-5 mt-5" style="overflow-y: scroll;">
+                        <h3 style="text-align: center;">
+                            <button class="btn btn-secondary button-chart float-right" type="button" onclick="get_chartDownload('graphicFirst','chart_screenIV');return false;" id="download_graphicFirst">
+                                <i class="fa-sharp fa-solid fa-download"></i>
+                            </button >
+                        </h3>
+                        <div  style="width: 1350px;height: 700px;margin: auto;">
                             <canvas id="graphicFirst"></canvas>
                         </div>
                     </div>
-
-                    <!--Third Elemtent -->
-                    <div id="ThirdElement" class="col-sm-12 col-md-4 col-lg-6 mb-5" style="overflow-y: scroll;">
-                        <div  style="width: 800px;height: 600px;margin: auto;">
-                            <canvas id="graphicSecond"></canvas>
-                        </div>
-                    </div>
-
-        
                 </div>
         </div>
     </body>
-
 
     <!-- TABULATOR -->
     <!-- tabulator : Excel Downlowd-->
@@ -188,10 +189,7 @@
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./reporte_kpi.js"></script>
-    <script type="text/javascript" src="./reporte_kpi_data.js"></script>
-
-    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
-    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+    <script type="text/javascript" src="./reporte_ventas.js"></script>
+    <script type="text/javascript" src="./reporte_ventas_data.js"></script>
     </body>
 </html>

@@ -1,3 +1,15 @@
+.tabulator-sub-table .tabulator-header {
+  display: none;
+}
+
+.green-row {
+  background-color: #CDEA92; 
+}
+
+.tabulator .tabulator-col.hidden-header {
+  display: none;
+}
+
 
 h2 {
   color: black;

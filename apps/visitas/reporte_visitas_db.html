@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Reporte de KPI">
+        <meta name="description" content="Reporte Visitas">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
@@ -12,12 +12,10 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!--Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <!--LIBRARY CHECK -->
-        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
-        <!-- <link rel="stylesheet" href="style.css"> -->
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <!-- Header -->
@@ -39,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte de KPI</h1>
+                    <h1 id="title_report">Reporte Visitas</h1>
                 </div>
             </div> 
         </nav>
@@ -88,60 +86,47 @@
 
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
-                    <div class="col-sm-12 col-md-2 col-lg-2">
-                        <h5>Date From: </h5>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Fecha Desde: </h5>
                         <input class="form-control ds-input" type="date" id="date_from" name="date_from">
                     </div>
-
-                    <div class="col-sm-12 col-md-2 col-lg-2">
-                        <h5>Date To: </h5>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Fecha Hasta: </h5>
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
 
-                    <div class="col-sm-12 col-md-3 col-lg-3" id="divnameGestor">
-                        <h5>Gestor: </h5>
-                        <select class="form-control mdb-select md-form" id="gestor" multiple="multiple">
-                           
+                    <div class="col-sm-12 col-md-3 col-lg-3" >
+                        <h5>Promotor: </h5>
+                        <select class="form-control mdb-select md-form" id="promotor">
+                            <option value="">--Seleccione--</option>
                         </select>
                     </div>
-                    
+
+
                 </div>
+
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-                    <!--First Elemtent -->
+                    <!--Primer Elemento -->
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span> Resumen de actividades</span>&nbsp;&nbsp;
-                                <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
+                            <h3><span>Recepción Visitas</span>&nbsp;&nbsp;
+                                <button class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
-                            <hr class="green-HrfirstElement" >
+                            <hr class="hrFirstElement">
                         </section>
-                        <div id="firstElement" > </div>
+                        <div id="firstElement" ></div>
                     </div>
 
-                    <!--Second Elemtent -->
-                    <div id="secondElement" class="col-sm-12 col-md-4 col-lg-6 mb-5" style="overflow-y: scroll;">
-                        <div  style="width: 800px;height: 600px;margin: auto;">
-                            <canvas id="graphicFirst"></canvas>
-                        </div>
-                    </div>
-
-                    <!--Third Elemtent -->
-                    <div id="ThirdElement" class="col-sm-12 col-md-4 col-lg-6 mb-5" style="overflow-y: scroll;">
-                        <div  style="width: 800px;height: 600px;margin: auto;">
-                            <canvas id="graphicSecond"></canvas>
-                        </div>
-                    </div>
-
-        
+                    
                 </div>
+            </div>
         </div>
     </body>
 
 
     <!-- TABULATOR -->
-    <!-- tabulator : Excel Downlowd-->
     <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
     <!-- tabulator : PDF Downlowd-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
@@ -155,11 +140,10 @@
 
     <!-- chartjs -->
     <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <script type="text/javascript" src="https://unpkg.com/chart.js-plugin-labels-dv/dist/chartjs-plugin-labels.min.js"></script>
     <!-- Jquery -->
     <script
     src="https://code.jquery.com/jquery-3.6.0.js"
@@ -188,10 +172,7 @@
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./reporte_kpi.js"></script>
-    <script type="text/javascript" src="./reporte_kpi_data.js"></script>
-
-    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
-    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+    <script type="text/javascript" src="./reporte_visitas_db.js"></script>
+    <script type="text/javascript" src="./reporte_visitas_db_data.js"></script>
     </body>
 </html>
