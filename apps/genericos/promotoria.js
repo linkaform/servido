@@ -181,12 +181,23 @@ function getFirstElement(date_from, date_to, promotores){
       //----CLEAN
       hideElement("firstElement");
       if (res.response.json.firstElement.data.length) {
+        console.log("-----------------------")
+        console.log(res.response)
+        console.log("------------------------")
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
       if (res.response.json.secondElement.data.length) {
         getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data);
         document.getElementById("secondElement").style.removeProperty('display');
+      }
+      if (res.response.json.group_users) {
+        let selectPromotores = $('#list_promotores');
+        let listaPromotores = res.response.json.group_users;
+        selectPromotores.empty()
+        listaPromotores.forEach(element => {
+          selectPromotores.append('<option value="' + element + '">' + element + '</option>');
+        })
       }
     } else {
       hideLoading();
@@ -207,10 +218,11 @@ function getFirstElement(date_from, date_to, promotores){
   })
 };
 
+var  table;
 
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
-  var  table = new Tabulator("#" + id, {
+  table = new Tabulator("#" + id, {
     height:"500px",
     layout:"fitDataTable",
     data:tableData,
@@ -274,3 +286,10 @@ function get_catalog()
     } 
   })
 };
+
+
+function select_promotor(selectPromotor){
+  var nombrePromotor = selectPromotor.value;
+  alert("El nombre del promotor es: " + nombrePromotor);
+  table.setFilter("promotor", "=", nombrePromotor);
+}
