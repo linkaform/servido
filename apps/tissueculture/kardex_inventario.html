@@ -95,15 +95,13 @@
 
                     <div class="col-sm-12 col-md-2 col-lg-2">
                         <h5>Plant Code: </h5>
-                        <select class="form-control" id="plant" name="plant">
+                        <select class="form-control" id="productCode" name="productCode">
                             <option value="">Seleccione</option>
                         </select>
                     </div>
                      <div class="col-sm-12 col-md-2 col-lg-2">
                         <h5>Lot Number: </h5>
-                        <select class="form-control" id="out" name="out">
-                            <option value="">Seleccione</option>
-                        </select>
+                        <input type="text" name="lotNumber" id="lotNumber">
                     </div>
                    <!-- <div class="col-sm-12 col-md-2 col-lg-2">
                         <h5>Warehouse Out: </h5>
@@ -114,17 +112,13 @@
                 -->
                     <div class="col-sm-12 col-md-2 col-lg-2">
                         <h5>Warehouse: </h5>
-                        <select class="form-control" id="in" name="in">
-                            <option value="">--Seleccione--</option>
-                            <option value="">Warehouse 1</option>
-                            <option value="">Warehouse 2</option>
-                            <option value="">Warehouse 3</option>
-                            <option value="">Warehouse 4</option>
+                        <select class="form-control" id="warehouse" name="warehouse">
+                            <option value="">Seleccione</option>
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-2 col-lg-2" id="filter_range">
                         <h5>Range of Date: </h5>
-                        <select class="form-control" id="in" name="in" onchange="filtro_fechas(this)">
+                        <select class="form-control" id="dateOptions" name="dateOptions" onchange="filtro_fechas(this)">
                             <option value="today">Today</option>
                             <option value="yesterday">Yesterday</option>
                             <option value="this_week">This week</option>
@@ -143,12 +137,12 @@
                        
                         <div class="col-sm-12 col-md-2 col-lg-3">
                             <h5>Date From: </h5>
-                            <input class="form-control ds-input" type="date" id="date_from" name="date_from">
+                            <input class="form-control ds-input" type="date" id="dateFrom" name="dateFrom">
                         </div>
                        
                         <div class="col-sm-12 col-md-2 col-lg-3">
                             <h5>Date To: </h5>
-                            <input class="form-control ds-input" type="date" id="date_to" name="date_to">
+                            <input class="form-control ds-input" type="date" id="dateTo" name="dateTo">
                         </div>
                     </div>
                     

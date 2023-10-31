@@ -19,6 +19,7 @@ hideElement("firstElement");
 hideElement("secondElement");
 
 window.onload = function(){
+  console.log('url=', url)
   var qs = urlParamstoJson();
   var formNode = document.getElementById("appCont");
 	for(var key in qs){
@@ -291,11 +292,11 @@ function get_catalog()
         }
 
         //----Pais
-        $("#out").empty();
-        $('#out').append('<option value="--">--Seleccione--</option>');
+        $("#in").empty();
+        $('#in').append('<option value="--">--Seleccione--</option>');
         for (i = 0; i < arrayOut.length; i++) {
           value = arrayOut[i]
-          $('#out').append('<option value="'+ value +'">'+value+'</option>');
+          $('#in').append('<option value="'+ value +'">'+value+'</option>');
         }
       }
     } 
@@ -329,12 +330,12 @@ function get_catalog()
           }
           arrayIn.sort()
           //---Warehouse Out
-          $("#in").empty();
-          $("#in").append('<option value="--">--Seleccione--</option>');
-          $('#in').append('<option value="scrap">Scrap</option>');
+          $("#out").empty();
+          $("#out").append('<option value="--">--Seleccione--</option>');
+          $('#out').append('<option value="scrap">Scrap</option>');
           for(i = 0; i < arrayIn.length; i++){
             value = arrayIn[i]
-            $('#in').append('<option value="' + value + '">'+value + '</option>');
+            $('#out').append('<option value="' + value + '">'+value + '</option>');
           }
         })
         /*for (i = 0; i < res.response.json.catalogtwo.length; i++) {

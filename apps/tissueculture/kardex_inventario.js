@@ -143,21 +143,16 @@ function loadDemoData(){
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 function runFirstElement(){
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  let plant = document.getElementById("plant");  
-  let option_in = document.getElementById("in");  
-  let option_out = document.getElementById("out"); 
-  check = 'on';
-  if (document.getElementById('input_check').checked)
-  {
-    //---created date
-    check = 'off';
-  }
-  getFirstElement(date_to.value, date_from.value, plant.value, option_in.value, option_out.value, check);
+  let dateFrom = document.getElementById("dateFrom");
+  let dateTo = document.getElementById("dateTo");  
+  let dateOptions = document.getElementById("dateOptions");  
+  let productCode = document.getElementById("productCode");  
+  let lotNumber = document.getElementById("lotNumber");  
+  let warehouse = document.getElementById("warehouse"); 
+  getFirstElement(dateFrom.value, dateTo.value, dateOptions.value, productCode.value, lotNumber.value, warehouse.value);
 };
 
-function getFirstElement(dateTo, dateFrom, plant, option_in, option_out, check){
+function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, warehouse){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -168,14 +163,12 @@ function getFirstElement(dateTo, dateFrom, plant, option_in, option_out, check){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      date_to: dateTo,
       date_from: dateFrom,
-      product_code: product_code,
-      lot_number: lot_number,
+      date_to: dateTo,
+      date_options: dateOptions,
+      product_code: productCode,
+      lot_number: lotNumber,
       warehouse: warehouse,
-      range_date: '',
-      date_from: '',
-      date_to:''
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -377,34 +370,24 @@ function get_catalog(scriptId)
   .then(res => res.json())
   .then(res => {
     if (res.success) {
-      if (res.response.json.catalog){
-        //console.log(res.response.json.catalog)
-        for (i = 0; i < res.response.json.catalog.length; i++) {
-          valuePlant = res.resposne.json.catalog[i]['plantCode'];
-          valueWarehouse = res.response.json.catalog[i]['warehouse'];
-          if (arrayPlant.indexOf(valuePlant) === -1) {
-            arrayPlant.push(valuePlant);
-          }
-          if (arrayOut.indexOf(valueOut) === -1) {
-            arrayOut.push(valueOut);
-          }
-        }
-        arrayPlant.sort();
-        arrayOut.sort();
+      if (res.response.json){
+        res.response.json['productCode'].sort();
+        res.response.json['warehouse'].sort();
         //----Pais
-        $("#plant").empty();
-        $('#plant').append('<option value="--">--Seleccione--</option>');
-        for (i = 0; i < arrayPlant.length; i++) {
-          value = arrayPlant[i]
-          $('#plant').append('<option value="'+ value +'">'+value+'</option>');
+        $("#productCode").empty();
+        $('#productCode').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < res.response.json['productCode'].length; i++) {
+          value =  res.response.json['productCode'][i]
+          $('#productCode').append('<option value="'+ value +'">'+value+'</option>');
         }
 
         //----Pais
-        $("#out").empty();
-        $('#out').append('<option value="--">--Seleccione--</option>');
-        for (i = 0; i < arrayOut.length; i++) {
-          value = arrayOut[i]
-          $('#out').append('<option value="'+ value +'">'+value+'</option>');
+        $("#warehouse").empty();
+        $('#warehouse').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < res.response.json['warehouse'].length; i++) {
+          value = res.response.json['warehouse'][i]
+          console.log('value----', value)
+          $('#warehouse').append('<option value="'+ value +'">'+value+'</option>');
         }
       }
     } 
