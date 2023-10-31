@@ -133,6 +133,7 @@ function loadDemoData(){
   console.log("Estas en Demo")
   unhideElement("title_demo")
   $('.title_tables').show();
+  $("#warehouse").multipleSelect('refresh');
   document.getElementById("firstParameters").style.removeProperty('display');
 
   getDrawTable('firstElement', columsTable1, dataTable1);
@@ -373,6 +374,8 @@ function get_catalog(scriptId)
   .then(res => {
     if (res.success) {
       if (res.response.json){
+        //Creamos una variable para renderizar el elemento multiselect
+        var warehouseOptions = $("#warehouse")
         res.response.json['productCode'].sort();
         res.response.json['warehouse'].sort();
         //----Pais
@@ -391,6 +394,8 @@ function get_catalog(scriptId)
           console.log('value----', value)
           $('#warehouse').append('<option value="'+ value +'">'+value+'</option>');
         }
+
+        warehouseOptions.multiselect('refresh');
       }
     } 
   })
