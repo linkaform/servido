@@ -96,6 +96,7 @@ window.onload = function(){
     get_catalog(scriptId);
     $('#divOptions').show();
     $('#title_report').show();
+    $('#out').multipleSelect('refresh');
     document.getElementById("firstParameters").style.removeProperty('display');
     
   } else {
