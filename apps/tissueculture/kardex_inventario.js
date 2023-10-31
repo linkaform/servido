@@ -388,14 +388,13 @@ function get_catalog(scriptId)
 
         //----Pais
         $("#warehouse").empty();
-        $('#warehouse').append('<option value="--">--Seleccione--</option>');
         for (i = 0; i < res.response.json['warehouse'].length; i++) {
           value = res.response.json['warehouse'][i]
           console.log('value----', value)
           $('#warehouse').append('<option value="'+ value +'">'+value+'</option>');
         }
 
-        warehouseOptions.multiselect('refresh');
+        warehouseOptions.multipleSelect('refresh');
       }
     } 
   })
