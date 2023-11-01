@@ -523,7 +523,7 @@ function getHours(hourDate) {
 
 //Generar colores en automático
 function generarArregloConTonalidades(cantidad) {
-  var colores = [['#B03A2E','#EC7063'],['#76448A ','#AF7AC5'],['#1F618D','#5499C7'],['#148F77','#48C9B0'],['#B7950B','#F4D03F'],['#B9770E','#F5B041'],['#B9770E','#F5B041']];
+  var colores = [['#B03A2E','#EC7063'],['#76448A ','#AF7AC5'],['#1F618D','#5499C7'],['#148F77','#48C9B0'],['#B7950B','#F4D03F'],['#B9770E','#F5B041'],['#B9770E','#F5B041'], ];
 
   return colores;
 }

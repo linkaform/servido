@@ -314,7 +314,7 @@ var setOptions1 = {
     },
     title: {
         display: true,
-        text: 'Reporte de tendencia por plaga',
+        text: 'Reporte de Tendencia Por Voladores',
         font: {
           size: 25
         }
