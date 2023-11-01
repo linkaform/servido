@@ -221,14 +221,20 @@ function getFirstElement(date_from, date_to, promotores){
 var  table;
 
 //-----TABLES
-function getDrawTable(id, columnsData, tableData){
-  table = new Tabulator("#" + id, {
-    height:"500px",
+function getDrawTable(id, columnsData, tableData, flagPrint){
+  optionHeight = ''
+  if (flagPrint){
+    optionHeight = '100%'
+  }else{
+    optionHeight = '250px'
+  }
+  var  table = new Tabulator("#" + id, {
+    height:optionHeight,
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:false,
+    dataTreeStartExpanded:true,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
