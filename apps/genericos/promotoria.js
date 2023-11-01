@@ -226,7 +226,7 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
   if (flagPrint){
     optionHeight = '100%'
   }else{
-    optionHeight = '250px'
+    optionHeight = '500px'
   }
   var  table = new Tabulator("#" + id, {
     height:optionHeight,
