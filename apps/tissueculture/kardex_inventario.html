@@ -13,7 +13,11 @@
         <!--Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <!--LIBRARY CHECK -->
-        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+        <!-- <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet"> -->
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+        <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css"
+        integrity="sha256-7stu7f6AB+1rx5IqD8I+XuIcK4gSnpeGeSjqsODU+Rk=" crossorigin="anonymous" />
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -108,10 +112,13 @@
                         </select>
                     </div>
                 -->
-                    <div class="col-sm-12 col-md-2 col-lg-2 ">
+                    <div class="col-sm-12 col-md-2 col-lg-2  ">
                         <h5>Warehouse: </h5>
-                        <select class=" col-sm-12 col-md-12 col-lg-12 form-select " id="warehouse" name="warehouse" multiple="multiple">
-                           
+                        <select class="w-100 h-100" id="warehouse" name="warehouse" multiple="multiple">
+                           <option value="today">Today</option>
+                            <option value="yesterday">Yesterday</option>
+                            <option value="this_week">This week</option>
+                            <option value="last_week">Last week</option>
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-2 col-lg-2" id="filter_range">
@@ -232,8 +239,22 @@
     <script type="text/javascript" src="./kardex_inventario.js"></script>
     <script type="text/javascript" src="./kardex_inventario_data.js"></script>
 
-    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
-    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
+    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script> -->
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"
+        integrity="sha256-qoj3D1oB1r2TAdqKTYuWObh01rIVC1Gmw9vWp1+q5xw=" crossorigin="anonymous"></script>
+        <script>
+        $(document).ready(() => {
+            $('#warehouse').multiselect({
+                buttonWidth:"100%",
+                enableHTML: true,
+                includeSelectAllOption: true
+            });
+        });
+    </script>
 
     </body>
 </html>

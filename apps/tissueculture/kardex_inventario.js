@@ -96,7 +96,7 @@ window.onload = function(){
     get_catalog(scriptId);
     $('#divOptions').show();
     $('#title_report').show();
-    $('#out').multipleSelect('refresh');
+    $('#warehouse').multipleSelect('refresh');
     document.getElementById("firstParameters").style.removeProperty('display');
     
   } else {
@@ -117,6 +117,11 @@ window.onload = function(){
       }
     }
   }
+
+  $(document).ready(function() {
+    $('#warehouse').multiselect();
+  });
+
 }
 
 
