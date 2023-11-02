@@ -523,7 +523,7 @@ function getHours(hourDate) {
 
 //Generar colores en automático
 function generarArregloConTonalidades(cantidad) {
-  var colores = [['#B03A2E','#EC7063'],['#76448A ','#AF7AC5'],['#1F618D','#5499C7'],['#148F77','#48C9B0'],['#B7950B','#F4D03F'],['#B9770E','#F5B041'],['#B9770E','#F5B041'], ];
+  var colores = [['#B03A2E','#EC7063'],['#76448A ','#AF7AC5'],['#1F618D','#5499C7'],['#148F77','#48C9B0'],['#B7950B','#F4D03F'],['#FF8B00','#FFAF4F'], ['#F62929','#F77171'], ['#04ABFF','#60CAFF'], ['#6C3483','#8E44AD'], ['#117A65','#16A085'],['#AF601A','#E67E22'], ['#B500FF','#D46AFF'], ['#00AC6B','#52C79B'], ['#1461FF','#4884FF'], ['#00B0CA','#43C4D7'], ['#6B00FF','#8F3EFF'], ['#CE0092','#DF64BB'], ['#3262BE','#698ED6'], ['#B141A9','#C975C3'], ['#DE8900','#DBA54E'] ];
 
   return colores;
 }
