@@ -96,7 +96,7 @@ window.onload = function(){
     get_catalog(scriptId);
     $('#divOptions').show();
     $('#title_report').show();
-    $('#warehouse').multipleSelect('refresh');
+    //$('#warehouse').multipleSelect('refresh');
     document.getElementById("firstParameters").style.removeProperty('display');
     
   } else {
@@ -118,9 +118,14 @@ window.onload = function(){
     }
   }
 
+  /*$(document).ready(function() {
+    $('#warehouse').multiselect();
+  });*/
+
   $(document).ready(function() {
     $('#warehouse').multiselect();
-  });
+});
+
 
 }
 
@@ -138,7 +143,7 @@ function loadDemoData(){
   console.log("Estas en Demo")
   unhideElement("title_demo")
   $('.title_tables').show();
-  $("#warehouse").multipleSelect('refresh');
+  $("#warehouse").multiselect('refresh');
   document.getElementById("firstParameters").style.removeProperty('display');
 
   getDrawTable('firstElement', columsTable1, dataTable1);
@@ -146,6 +151,24 @@ function loadDemoData(){
 
   getDrawTableTwo('secondElement', columsTable2, dataTable2);
   document.getElementById("secondElement").style.removeProperty('display');
+  
+  //----Vaciar el elemento select con ID 'warehouse'
+  $("#warehouse").empty();
+
+  //----Definir los datos demo
+  let data_demo = ["warehouse1", "warehouse2", "warehouse3", "warehouse4", "warehouse5"];
+  let data_multiselect = [];
+
+  for (let i = 0; i < data_demo.length; i++) {
+      let valueMultiselect = data_demo[i];
+      let objMultiselect = { label: valueMultiselect, value: valueMultiselect };
+      data_multiselect.push(objMultiselect);
+  }
+
+  console.log('value----');
+  $('#warehouse').multiselect('dataprovider', data_multiselect);
+  $('#warehouse').multiselect('refresh');
+  
 }
 
 const loading = document.querySelector('.loading-container');
@@ -391,15 +414,24 @@ function get_catalog(scriptId)
           $('#productCode').append('<option value="'+ value +'">'+value+'</option>');
         }
 
-        //----Pais
+        //----Warehouse
         $("#warehouse").empty();
-        for (i = 0; i < res.response.json['warehouse'].length; i++) {
-          value = res.response.json['warehouse'][i]
-          console.log('value----', value)
-          $('#warehouse').append('<option value="'+ value +'">'+value+'</option>');
+
+        //----Almacenar los datos de la query en una variable para procesarla
+        let data_warehouse = res.response.json['warehouse'];
+        //----La variable permitirá guardar la data en el formato aceptado por la librería, la cual es: [{label: "elemento1", value: "elemento1"},]
+        let data_multiselect = [];
+
+        //---Iterar a través de los datos y crear objetos para el multiselect
+        for (let i = 0; i < data_warehouse.length; i++) {
+            let valueMultiselect = data_warehouse[i];
+            let objMultiselect = { label: valueMultiselect, value: valueMultiselect };
+            data_multiselect.push(objMultiselect);
         }
 
-        warehouseOptions.multipleSelect('refresh');
+        console.log('value----');
+        $('#warehouse').multiselect('dataprovider', data_multiselect);
+        $('#warehouse').multiselect('refresh');
       }
     } 
   })
