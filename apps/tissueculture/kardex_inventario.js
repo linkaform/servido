@@ -125,10 +125,7 @@ window.onload = function(){
   $(document).ready(function() {
     $('#warehouse').multiselect();
 });
-
-
 }
-
 
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
@@ -140,7 +137,6 @@ function unHideReportElements(){
 }
 
 function loadDemoData(){
-  console.log("Estas en Demo")
   unhideElement("title_demo")
   $('.title_tables').show();
   $("#warehouse").multiselect('refresh');
@@ -165,7 +161,7 @@ function loadDemoData(){
       data_multiselect.push(objMultiselect);
   }
 
-  console.log('value----');
+  //console.log('value----');
   $('#warehouse').multiselect('dataprovider', data_multiselect);
   $('#warehouse').multiselect('refresh');
   
@@ -213,14 +209,17 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res.response.json)
+      //console.log(res.response.json)
       if (res.response.json.firstElement.data) {
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
       if(res.response.json.secondElement.data){
-        getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data);
+        //----Se crea y define una variable que almacene la data de la query para no escribir toda la ruta
+        let dataTableTwo = res.response.json.secondElement.data;
+        getDrawTableTwo('secondElement', columsTable2, dataTableTwo);
         document.getElementById("secondElement").style.removeProperty('display');
+        
       }
       
     } else {
@@ -311,12 +310,12 @@ function getDrawTableTwo(id, columnsData, tableData){
            {title:"Date", field:"date", sorter:"date"},
            {title:"Product Code", field:"product_code"},
            {title:"Lot Number", field:"lot_number"},
-           {title:"Warehouse from", field:"warehouse_from"},
-           {title:"Warehouse to", field:"warehouse_to"},
+           {title:"Warehouse from", field:"warhouse_from"},
+           {title:"Warehouse to", field:"warhouse_in"},
            {title:"Move Type", field:"move_type"},
            {title:"Unit", field:"unit"},
-           {title:"Qty In", field:"qty_ins"},
-           {title:"Qty Out", field:"qty_outs"},
+           {title:"Qty In", field:"qty_in"},
+           {title:"Qty Out", field:"qty_out"},
            {title:"Balance", field:"balance", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:2}},
            ],
        });
@@ -429,7 +428,7 @@ function get_catalog(scriptId)
             data_multiselect.push(objMultiselect);
         }
 
-        console.log('value----');
+        
         $('#warehouse').multiselect('dataprovider', data_multiselect);
         $('#warehouse').multiselect('refresh');
       }
