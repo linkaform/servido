@@ -137,6 +137,7 @@ function unHideReportElements(){
 }
 
 function loadDemoData(){
+  console.log('dem,o data....')
   unhideElement("title_demo")
   $('.title_tables').show();
   $("#warehouse").multiselect('refresh');
@@ -185,7 +186,7 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
   $('.load-wrapp').show();
   $('.title_tables').hide();
 
-
+  console.log('logNumber', lotNumber)
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
@@ -217,6 +218,7 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
       if(res.response.json.secondElement.data){
         //----Se crea y define una variable que almacene la data de la query para no escribir toda la ruta
         let dataTableTwo = res.response.json.secondElement.data;
+        console.log('tabel 2')
         getDrawTableTwo('secondElement', columsTable2, dataTableTwo);
         document.getElementById("secondElement").style.removeProperty('display');
         
@@ -278,7 +280,7 @@ function getDrawTable(id, columnsData, tableData){
 function getDrawTableTwo(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
     columnHeaderVertAlign:"top",
-    height:"341px",
+    height:"100%",
     layout:"fitColumns",
     columnDefaults:{
       resizable:true,
@@ -310,13 +312,13 @@ function getDrawTableTwo(id, columnsData, tableData){
            {title:"Date", field:"date", sorter:"date"},
            {title:"Product Code", field:"product_code"},
            {title:"Lot Number", field:"lot_number"},
-           {title:"Warehouse from", field:"warhouse_from"},
-           {title:"Warehouse to", field:"warhouse_in"},
+           {title:"Warehouse from", field:"warehouse_from"},
+           {title:"Warehouse to", field:"warehouse_to"},
            {title:"Move Type", field:"move_type"},
            {title:"Unit", field:"unit"},
-           {title:"Qty In", field:"qty_in"},
-           {title:"Qty Out", field:"qty_out"},
-           {title:"Balance", field:"balance", sorter:"number", bottomCalc:"sum", bottomCalcParams:{precision:2}},
+           {title:"Qty In", field:"qty_in", bottomCalc:"sum"},
+           {title:"Qty Out", field:"qty_out", bottomCalc:"sum"},
+           {title:"Balance", field:"balance", sorter:"number"},
            ],
        });
        
