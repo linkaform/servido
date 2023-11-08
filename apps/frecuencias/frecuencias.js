@@ -335,28 +335,27 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
       //----IMAGE GRAPHIC
       let intentoA = 0;
       let intentoB = 0;
-      let limite = 5;
+      let limite = 7;
 
       let urlGraphicFourth = '';
-      while(!urlGraphicFourth && intentoA < limite){
+      
         html2canvas(document.querySelector("#graphicFourth")).then(canvas => {
         imageTimeout:4500,
         urlGraphicFourth =  canvas.toDataURL();
+        console.log(urlGraphicFourth)
+        console.log()
         });
-        intentoA ++;
-      }
-
+        
       let urlGraphicFiveth = '';
-
-      while(!urlGraphicFiveth && intentoB < limite){
+      
         html2canvas(document.querySelector("#graphicFiveth")).then(canvas => {
         imageTimeout:4500,
-        urlGraphicFiveth = canvas.toDataURL();
+        urlGraphicFiveth = canvas.toDataURL('image/jpeg');
+        console.log(urlGraphicFiveth)
+        console.log()
         
         });
-        intentoB ++;
-      }
-
+      
       setTimeout(() => {
         table.download("pdf", "data.pdf", {
           orientation:"landscape", //set page orientation to portrait
@@ -408,7 +407,7 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
             };
           },
         });
-      }, 2000);
+      }, 3500);
     });
   }
 }
