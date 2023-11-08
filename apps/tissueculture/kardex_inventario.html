@@ -18,6 +18,8 @@
         <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css"
         integrity="sha256-7stu7f6AB+1rx5IqD8I+XuIcK4gSnpeGeSjqsODU+Rk=" crossorigin="anonymous" />
+        <!-- SELECT 2-->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -95,11 +97,11 @@
 
                     <div class="col-sm-12 col-md-2 col-lg-2">
                         <h5>Plant Code: </h5>
-                        <select class="form-control" id="productCode" name="productCode">
+                        <select class="js-example-theme-multiple w-100 h-110 select2-selection" id="productCode" name="productCode">
                             <option value="">Seleccione</option>
                         </select>
                     </div>
-                     <div class="col-sm-12 col-md-12 col-lg-2">
+                    <div class="col-sm-12 col-md-12 col-lg-2">
                         <h5>Lot Number: </h5>
                         <input type="text" name="lotNumber" id="lotNumber" class="form-control">
                     </div>
@@ -155,27 +157,17 @@
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
                     <!--First Elemtent -->
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
-                        <section class="title_tables">
-                            <h3 ><span>Summary</span>&nbsp;&nbsp;
-                                <!--<button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>-->
-                            </h3>
-                            <hr class="green-HrfirstElement" >
-                        </section>
-                        <div id="firstElement" > </div>
-                    </div>
-
+                
                     <!--Second Elemtent -->
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
                             <h3 ><span> Report Kardex</span>&nbsp;&nbsp;
-                                <button  class="btn btn-primary" id="download_csv_secondElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button  class="btn btn-success" id="download_xlsx_secondElement"><i class="fa-regular fa-file-excel"></i></button>
+                                <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
                             <hr class="green-HrsecondElement" >
                         </section>
-                        <div id="secondElement" > </div>
+                        <div id="firstElement" > </div>
                     </div>
                 </div>
         </div>
@@ -240,6 +232,13 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"
         integrity="sha256-qoj3D1oB1r2TAdqKTYuWObh01rIVC1Gmw9vWp1+q5xw=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js" integrity="sha512-UnrKxsCMN9hFk7M56t4I4ckB4N/2HHi0w/7+B/1JsXIX3DmyBcsGpT3/BsuZMZf+6mAr0vP81syWtfynHJ69JA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- SCRIPT SELECT2-->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
         <script>
         $(document).ready(() => {
             $('#warehouse').multiselect({

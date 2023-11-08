@@ -16,7 +16,7 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
-hideElement("secondElement");
+//hideElement("secondElement");
 hideElement("filter_date")
 
 window.onload = function(){
@@ -75,6 +75,7 @@ window.onload = function(){
   jw = getCookie("userJwt");
   userParentId = getCookie("userParentId");
   hideElement("close_sesion");
+  //hideElement("firstParameters");
   hideElement("firstParameters");
 
 
@@ -86,6 +87,7 @@ window.onload = function(){
     userJwt = jw;
     userName = getCookie("userName");
     document.getElementById("firstParameters").style.removeProperty('display');
+    $('#firstParameters').addClass('show'); //---IMPORTANTE: Quitar cuando no se ocupe la librería de JQuery Multiple Select.
     unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
@@ -105,6 +107,10 @@ window.onload = function(){
     $('#divOptions').hide();
     $('#title_report').hide();
     $('.title_tables').hide();
+    /* I M P O R T A N T E */
+    /*Se tiene que eliminar la clase de show al elemento con clase firstParameters ya que las librerías
+    para los multiselectores alteran ligeramente si se muestran o no.*/
+    $('#firstParameters').removeClass('show'); //----IMPORTANTE: Quitar cuando no se ocupe la librería de JQuery Multiple Select.
     $("#warehouse").multipleSelect('refresh');
     hideElement("firstElement-Buttons");
   }
@@ -124,6 +130,16 @@ window.onload = function(){
 
   $(document).ready(function() {
     $('#warehouse').multiselect();
+
+  $(document).ready(function() {
+    $('.js-example-theme-multiple').select2({
+        placeholder: 'Seleccione o escriba para buscar',
+        allowClear: true, // Opcional, para agregar una "X" para deseleccionar
+        selectionCssClass: "select2-selection",
+
+    });
+  });
+
 });
 }
 
@@ -133,7 +149,7 @@ function unHideReportElements(){
   unhideElement("firstParameters");
   unhideElement("close_sesion");
   unhideElement("firstElement");
-  unhideElement("secondElement");
+  //unhideElement("secondElement");
 }
 
 function loadDemoData(){
@@ -141,13 +157,9 @@ function loadDemoData(){
   unhideElement("title_demo")
   $('.title_tables').show();
   $("#warehouse").multiselect('refresh');
-  document.getElementById("firstParameters").style.removeProperty('display');
 
-  getDrawTable('firstElement', columsTable1, dataTable1);
+  getDrawTableTwo('firstElement', columsTable2, dataTable2);
   document.getElementById("firstElement").style.removeProperty('display');
-
-  getDrawTableTwo('secondElement', columsTable2, dataTable2);
-  document.getElementById("secondElement").style.removeProperty('display');
   
   //----Vaciar el elemento select con ID 'warehouse'
   $("#warehouse").empty();
@@ -165,6 +177,8 @@ function loadDemoData(){
   //console.log('value----');
   $('#warehouse').multiselect('dataprovider', data_multiselect);
   $('#warehouse').multiselect('refresh');
+
+  document.getElementById("firstParameters").style.removeProperty('display');
   
 }
 
@@ -177,7 +191,10 @@ function runFirstElement(){
   let productCode = document.getElementById("productCode");  
   let lotNumber = document.getElementById("lotNumber");  
   let warehouse = document.getElementById("warehouse"); 
-  getFirstElement(dateFrom.value, dateTo.value, dateOptions.value, productCode.value, lotNumber.value, warehouse.value);
+  let selectedWarehouse = [...warehouse.selectedOptions].map(option => option.value);
+  console.log("Warehouse")
+  console.log(selectedWarehouse)
+  getFirstElement(dateFrom.value, dateTo.value, dateOptions.value, productCode.value, lotNumber.value, selectedWarehouse);
 };
 
 function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, warehouse){
@@ -210,17 +227,13 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      //console.log(res.response.json)
-      if (res.response.json.firstElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
-        document.getElementById("firstElement").style.removeProperty('display');
-      }
+      console.log(res.response.json)
       if(res.response.json.secondElement.data){
         //----Se crea y define una variable que almacene la data de la query para no escribir toda la ruta
         let dataTableTwo = res.response.json.secondElement.data;
         console.log('tabel 2')
-        getDrawTableTwo('secondElement', columsTable2, dataTableTwo);
-        document.getElementById("secondElement").style.removeProperty('display');
+        getDrawTableTwo('firstElement', columsTable2, dataTableTwo);
+        document.getElementById("firstElement").style.removeProperty('display');
         
       }
       
@@ -244,39 +257,8 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
 };
 
 //-----TABLES
-function getDrawTable(id, columnsData, tableData){
-  var  table = new Tabulator("#" + id, {
-    height:"70px",
-    layout:"fitDataTable",
-    data:tableData,
-    resizableRows:false,
-    dataTree:true,
-    dataTreeStartExpanded:false,
-    clipboard:true,
-    clipboardPasteAction:"replace",
-    textDirection:"ltr",
-    //groupBy:"in",
-    columns:columnsData,
-  });
 
-  if (document.getElementById("download_xlsx_"+id)){
-    //trigger download of data.xlsx file
-    document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
-    document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
-    table.download("xlsx", "data.xlsx", {sheetName:"data"});
-    });
-  }
-
-  if (document.getElementById("download_csv_"+id)){
-    //trigger download of data.csv file
-    document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
-    document.getElementById("download_csv_"+id).addEventListener("click", function (){
-      table.download("csv", "data.csv");
-    });
-  }
-}
-
-
+var subData;
 function getDrawTableTwo(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
     columnHeaderVertAlign:"top",
@@ -307,20 +289,36 @@ function getDrawTableTwo(id, columnsData, tableData){
 
        var subTable = new Tabulator(tableEl, {
            layout:"fitColumns",
+           addRowPos: "bottom",
            data:row.getData().serviceHistory,
            columns:[
            {title:"Date", field:"date", sorter:"date"},
            {title:"Product Code", field:"product_code"},
-           {title:"Lot Number", field:"lot_number"},
+           {title:"Lot Number", field:"lot_number", hozAlign:"right"},
            {title:"Warehouse from", field:"warehouse_from"},
            {title:"Warehouse to", field:"warehouse_to"},
            {title:"Move Type", field:"move_type"},
            {title:"Unit", field:"unit"},
-           {title:"Qty In", field:"qty_in", bottomCalc:"sum"},
-           {title:"Qty Out", field:"qty_out", bottomCalc:"sum"},
-           {title:"Balance", field:"balance", sorter:"number"},
+           {title:"Qty In", field:"qty_in", hozAlign:"right", formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+           {title:"Qty Out", field:"qty_out", hozAlign:"right", formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+           {title:"Balance", field:"balance", hozAlign:"right", sorter:"number", formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
            ],
+
+           rowFormatter:function(row){
+            subData = row.getData();
+
+            console.log("New Data")
+            console.log(subData)
+            console.log("END")
+           },
+
+           tableBuilt: function () {
+              // Evento interno cuando la tabla se ha construido
+              subTable.addRow({})
+            }
        });
+
+      //Agregar nueva fila       
        
       // Aplica la clase CSS para ocultar los encabezados de la tabla anidada
       subTable.element.classList.add("tabulator-sub-table");
@@ -359,24 +357,223 @@ function getDrawTableTwo(id, columnsData, tableData){
       var cell = row.getCell("balance_table");
       cell.getElement().style.backgroundColor = "#BFC9CA"
 
-
     },
+
+    downloadConfig:{
+      columnGroups: true,
+      rowGroups: true,
+    }
 
   });
 
+  //---Definición de la estructura de las columnas del archivo xlsx y csv
+
+  let structureColumns = [
+      {header:'Date', key:"date"},
+      {header:'Product code', key:'product_code'},
+      {header:'Lot number', key:'lot_number'},
+      {header:'Warehouse from', key:'warehouse_from'},
+      {header:'Warehouse to', key:'warehouse_to'},
+      {header:'Move type', key:'move_type'},
+      {header:'Unit', key:'unit'},
+      {header:'Qty in', key:'qty_in'},
+      {header:'Qty out', key:'qty_out'},
+      {header:'Balance', key:'balance'},
+    ]
+
   if (document.getElementById("download_xlsx_"+id)){
-    //trigger download of data.xlsx file
+    //----Trigger download of data.xlsx file
     document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
     document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
-    table.download("xlsx", "data.xlsx", {sheetName:"data"});
+    //----Obtener datos anidados
+    var nestedData = table.getData(true);
+    //----Almacena los datos de las tablas anidadas
+    var exportData = [];
+    //----Almacena 
+    var styleRows = [];
+    let contRow = 1;
+
+    nestedData.forEach(row => {
+        let titles = {
+          'date':" ",
+          'lot_number':" ",
+          'product_code':" ",
+          'move_type':" ",
+          'warehouse_from':row.warehouse || '',
+          'warehouse_to':" ",
+          'unit': " ",
+          'qty_in': " ",
+          'qty_out': "Initial Balance",
+          'balance':"0",
+        }
+        contRow ++;
+        styleRows.push(contRow)
+        if (row.hasOwnProperty("serviceHistory")) {
+            exportData.push(titles);
+            exportData.push(...row.serviceHistory);
+            contRow = contRow + (row.serviceHistory.length)
+        }
     });
+
+    const dataForXLSX = exportData.map(item => {
+    return {
+        'date': item.date || " ",
+        'lot_number': item.lot_number || " ",
+        'product_code': item.product_code || " ",
+        'move_type': item.move_type || " ",
+        'warehouse_from': item.warehouse_from || " ",
+        'warehouse_to': item.warehouse_to || " ",
+        'unit': item.unit || " ",
+        'qty_in': item.qty_in || " ",
+        'qty_out': item.qty_out || " ",
+        'balance': item.balance || " ",
+      };
+    });
+
+    //----Creación del libro de trabajo
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = 'linkaform';
+    workbook.lastModifiedBy = 'Bot';
+    workbook.created = new Date(2023, 8, 30);
+    workbook.modified = new Date();
+    workbook.lastPrinted = new Date(2023, 7, 27);
+
+    //----Creación de la hoja de trabajo
+    const sheet = workbook.addWorksheet('NestedData');
+
+    //----Creación de columnas
+    sheet.columns = structureColumns;
+
+  sheet.addRows(dataForXLSX);
+
+  //----Agregar formato
+  for(let iRow = 2; iRow <= dataForXLSX.length; iRow ++){
+    if(styleRows.includes(iRow) == false){
+      const rowToStyle = sheet.getRow(iRow);
+      for(let i = 8; i<=10; i++){
+        let cell = rowToStyle.getCell(i);
+        cell.numFmt = '#,##0';
+      }
+    }
+  }
+
+  // Estiliza el título
+  const rowTitle = sheet.getRow(1);
+  for(let i = 1; i<=10; i++){
+    rowTitle.getCell(i).font = {
+      name: 'Arial Black',
+      family: 2,
+      size: 14,
+    }
+  }
+
+  //----Ontener la fila a la que deseas aplicar el estilo (por ejemplo, la fila 2)
+  styleRows.forEach(num => {
+    const rowToStyle = sheet.getRow(num);
+
+    //----Aplica background a las primeras 8 celdas 
+    for (let i = 1; i <=8; i++){
+      rowToStyle.getCell(i).fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '76D7C4' },
+      };
+    }
+
+    //----Aplicar background a las últimas dos celdas
+    for (let i = 9; i <=10; i++){
+      if(i == 10){
+        rowToStyle.getCell(i).alignment = {horizontal: 'right'}
+      }
+      rowToStyle.getCell(i).fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'BFC9CA' },
+      };
+    }
+
+  })
+
+
+  //----Generar el archivo y descárgalo
+  workbook.xlsx.writeBuffer().then((data) => {
+    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    saveAs(blob, 'nombre_archivo.xlsx');
+  });
+
+  });
   }
 
   if (document.getElementById("download_csv_"+id)){
-    //trigger download of data.csv file
+    //----trigger download of data.csv file
     document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
     document.getElementById("download_csv_"+id).addEventListener("click", function (){
-      table.download("csv", "data.csv");
+    //----Obtener datos anidados
+    var nestedData = table.getData(true);
+    //----Almacena los datos de las tablas anidadas
+    var exportData = [];
+    var styleRows = [];
+    let contRow = 1;
+
+    nestedData.forEach(row => {
+        let titles = {
+          'date':" ",
+          'lot_number':" ",
+          'product_code':" ",
+          'move_type':" ",
+          'warehouse_from':row.warehouse || '',
+          'warehouse_to':" ",
+          'unit': " ",
+          'qty_in': " ",
+          'qty_out': "Initial Balance",
+          'balance':"0",
+        }
+        contRow ++;
+        styleRows.push(contRow)
+        if (row.hasOwnProperty("serviceHistory")) {
+            exportData.push(titles);
+            exportData.push(...row.serviceHistory);
+            contRow = contRow + (row.serviceHistory.length)
+        }
+    });
+
+    const dataForXLSX = exportData.map(item => {
+    return {
+        'date': item.date || " ",
+        'lot_number': item.lot_number || " ",
+        'product_code': item.product_code || " ",
+        'move_type': item.move_type || " ",
+        'warehouse_from': item.warehouse_from || " ",
+        'warehouse_to': item.warehouse_to || " ",
+        'unit': item.unit || " ",
+        'qty_in': item.qty_in || " ",
+        'qty_out': item.qty_out || " ",
+        'balance': item.balance || " ",
+        };
+    });
+
+    //----Creación del libro de trabajo
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = 'linkaform';
+    workbook.lastModifiedBy = 'Bot';
+    workbook.created = new Date(2023, 8, 30);
+    workbook.modified = new Date();
+    workbook.lastPrinted = new Date(2023, 7, 27);
+
+    //----Creación de la hoja de trabajo
+    const sheet = workbook.addWorksheet('NestedData');
+
+    //----Creación de columnas
+    sheet.columns = structureColumns;
+
+  sheet.addRows(dataForXLSX);
+
+  // Genera el archivo y descárgalo
+  workbook.csv.writeBuffer().then((csvData) => {
+    const csvBlob = new Blob([csvData], { type: 'text/csv' });
+    saveAs(csvBlob, 'nombre_archivo.csv');
+  });
+
     });
   }
 }

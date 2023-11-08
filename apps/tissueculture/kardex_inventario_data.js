@@ -121,7 +121,7 @@ var dataTable2B = [
 var columsTable2 = [
   {title:"Date", field:"date_title"},
   {title:"Product Code", field:"product_code_title"},
-  {title:"Lot Number", field:"lot_number_title"},
+  {title:"Lot Number", field:"lot_number_title", hozAlign:"right"},
   {
     title: "Warehouse from",
     columns:[
@@ -131,9 +131,9 @@ var columsTable2 = [
   {title:"Warehouse to", field:"warehouse_to_table"},
   {title:"Move Type", field:"move_type_table"},
   {title:"Unit", field:"unit_table"},
-  {title:"Qty In", field:"qty_in_table"},
-  {title:"Qty Out", field:"qty_out_table"},
-  {title:"Balance", field:"balance_table"},
+  {title:"Qty In", field:"qty_in_table", hozAlign:"right"},
+  {title:"Qty Out", field:"qty_out_table", hozAlign:"right"},
+  {title:"Balance", field:"balance_table", hozAlign:"right"},
 ];
 
 var dataTable2 = [

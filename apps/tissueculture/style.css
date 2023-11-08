@@ -1,4 +1,12 @@
+::selection {
+  background-color: #52be80 !important;
+  color: #e8e6e3 !important;
+}
 
+.select2-selection {
+    background-color: 'red'; /* Puedes cambiar el color de fondo según tu preferencia */
+    /* Otras propiedades de estilo que desees */
+}
 
 .tabulator-sub-table .tabulator-header {
   display: none;
