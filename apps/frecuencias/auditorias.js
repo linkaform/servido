@@ -234,6 +234,11 @@ function setGraphic(data) {
         //-----APPEND
         $("#divContent").append(
           "<div class='col-sm-12 col-md-12 col-lg-6 mt-5' style='overflow-y: scroll;'>"+
+            "<h3 style='text-align: center;'>"+
+                "<button class='btn btn-secondary button-chart float-right' type='button' onclick=\"get_chartDownload('historico_"+ form['id_formulario'] +"', 'chart_screenIV');return false;\" id='download_graphicFirst'>"+
+                    "<i class='fa-sharp fa-solid fa-download'></i>"+
+                "</button >"+
+            "</h3>"+
             "<div  style='width: 800px;height: 450px;margin: auto;'>"+
               "<canvas id='historico_" + form['id_formulario'] + "'></canvas>"+
             "</div>"+
@@ -250,6 +255,11 @@ function setGraphic(data) {
         //-----APPEND
         $("#divContent").append(
           "<div class='col-sm-12 col-md-12 col-lg-6 mt-5' style='overflow-y: scroll;'>"+
+            "<h3 style='text-align: center;'>"+
+                "<button class='btn btn-secondary button-chart float-right' type='button' onclick=\"get_chartDownload('tendencia_"+ form['id_formulario'] +"', 'chart_screenIV');return false;\" id='download_graphicFirst'>"+
+                    "<i class='fa-sharp fa-solid fa-download'></i>"+
+                "</button >"+
+            "</h3>"+
             "<div  style='width: 800px;height: 450px;margin: auto;'>"+
               "<canvas id='tendencia_" + form['id_formulario'] + "'></canvas>"+
             "</div>"+
