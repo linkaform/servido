@@ -16,7 +16,7 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
-//hideElement("secondElement");
+hideElement("secondElement");
 hideElement("filter_date")
 
 window.onload = function(){
@@ -128,19 +128,38 @@ window.onload = function(){
     $('#warehouse').multiselect();
   });*/
 
-  $(document).ready(function() {
+  /*$(document).ready(function() {
     $('#warehouse').multiselect();
+  });*/
 
   $(document).ready(function() {
     $('.js-example-theme-multiple').select2({
-        placeholder: 'Seleccione o escriba para buscar',
+        placeholder: 'Seleccione',
         allowClear: true, // Opcional, para agregar una "X" para deseleccionar
         selectionCssClass: "select2-selection",
 
     });
   });
 
-});
+  $(document).ready(function() {
+    $('#warehouse').select2({
+      language: {
+      noResults: function() {
+        return '';
+      }
+    }
+    });
+  });
+
+  $(document).ready(function(){
+    //----Función que escucha al selector de params
+    $("#productCode").on('select2:select', function(e){
+      var data = e.params.data;
+      console.log(data)
+      get_lotNumber(data.id);
+    })
+  })
+
 }
 
 function unHideReportElements(){
@@ -156,13 +175,17 @@ function loadDemoData(){
   console.log('dem,o data....')
   unhideElement("title_demo")
   $('.title_tables').show();
-  $("#warehouse").multiselect('refresh');
+
+  //$("#warehouse").multiselect('refresh');
 
   getDrawTableTwo('firstElement', columsTable2, dataTable2);
   document.getElementById("firstElement").style.removeProperty('display');
+
+  unhideElement("secondElement");
+  document.getElementById("secondElement").style.removeProperty('display');
   
   //----Vaciar el elemento select con ID 'warehouse'
-  $("#warehouse").empty();
+  /*$("#warehouse").empty();
 
   //----Definir los datos demo
   let data_demo = ["warehouse1", "warehouse2", "warehouse3", "warehouse4", "warehouse5"];
@@ -176,11 +199,12 @@ function loadDemoData(){
 
   //console.log('value----');
   $('#warehouse').multiselect('dataprovider', data_multiselect);
-  $('#warehouse').multiselect('refresh');
+  $('#warehouse').multiselect('refresh');*/
 
   document.getElementById("firstParameters").style.removeProperty('display');
   
 }
+
 
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
@@ -234,6 +258,10 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
         console.log('tabel 2')
         getDrawTableTwo('firstElement', columsTable2, dataTableTwo);
         document.getElementById("firstElement").style.removeProperty('display');
+
+        //document.getElementById("secondElement").style.removeProperty('display');
+        unhideElement("secondElement");
+        document.getElementById("secondElement").style.removeProperty('display');
         
       }
       
@@ -604,9 +632,9 @@ function get_catalog(scriptId)
         var warehouseOptions = $("#warehouse")
         res.response.json['productCode'].sort();
         res.response.json['warehouse'].sort();
-        //----Pais
+        //----Product code
         $("#productCode").empty();
-        $('#productCode').append('<option value="--">--Seleccione--</option>');
+        $('#productCode').append('<option value="--">Seleccione</option>');
         for (i = 0; i < res.response.json['productCode'].length; i++) {
           value =  res.response.json['productCode'][i]
           $('#productCode').append('<option value="'+ value +'">'+value+'</option>');
@@ -635,6 +663,43 @@ function get_catalog(scriptId)
   })
 
 };
+
+/*Esta función será llamada al seleccionar un plant code determinado.
+  La función llamará a los lot_number correspondientes a cada plant code y los agregará al selector lotNumber."
+*/
+function get_lotNumber(id)
+{
+  fetch(url + 'infosync/scripts/run',{
+    method: 'POST',
+    body: JSON.stringify({
+      scriptId: scriptId,
+      options:"getLotNumber",
+      plant_code: id
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.success){
+      if(res.response.json){
+        
+          //----Lot number
+          $("lotNumber").empty();
+          $("lotNumber").append("<option value='--'/>Seleccione</option> ")
+
+          let dataLotNumber = res.response.json['catalog_lotNumber'];
+          for(let i = 0; i < dataLotNumber.length(); i++){
+            value = dataLotNumber[i];
+            $("#lotNumber").append('<option value="' + value + '">'+value+'</option>');
+          }
+        
+      }
+    }
+  })
+}
 
 function filtro_fechas(selectElement) {
   var valorSeleccionado = selectElement.value;

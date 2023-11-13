@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <!--LIBRARY CHECK -->
         <!-- <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet"> -->
-        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+        <!--<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> -->
         <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css"
         integrity="sha256-7stu7f6AB+1rx5IqD8I+XuIcK4gSnpeGeSjqsODU+Rk=" crossorigin="anonymous" />
@@ -97,13 +97,15 @@
 
                     <div class="col-sm-12 col-md-2 col-lg-2">
                         <h5>Plant Code: </h5>
-                        <select class="js-example-theme-multiple w-100 h-110 select2-selection" id="productCode" name="productCode">
-                            <option value="">Seleccione</option>
+                        <select class="js-example-theme-multiple w-100 h-100 select2-selection" id="productCode" name="productCode">
+                            
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-2">
                         <h5>Lot Number: </h5>
-                        <input type="text" name="lotNumber" id="lotNumber" class="form-control">
+                        <select class="js-example-theme-multiple w-100 h-100 select2-selection" type="text" name="lotNumber" id="lotNumber">
+                            
+                        </select>
                     </div>
                    <!-- <div class="col-sm-12 col-md-2 col-lg-2">
                         <h5>Warehouse Out: </h5>
@@ -114,7 +116,8 @@
                 -->
                     <div class="col-sm-12 col-md-2 col-lg-2  ">
                         <h5>Warehouse: </h5>
-                        <select class="w-100 h-100" id="warehouse" name="warehouse" multiple="multiple">
+                        <select class="js-basic-multiple w-100 h-100" id="warehouse" name="warehouse[]" multiple="multiple">
+                            
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-2 col-lg-2" id="filter_range">
@@ -156,9 +159,15 @@
                 </div>
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-                    <!--First Elemtent -->
-                
                     <!--Second Elemtent -->
+                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                        <div class="card w-25 bg-primary text-white" > 
+                            <div class="card-body">
+                                <h1 class="card-title">Actuals</h1>
+                          </div>
+                        </div>
+                    </div>
+                    <!--First Elemtent -->
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
                             <h3 ><span> Report Kardex</span>&nbsp;&nbsp;
@@ -240,13 +249,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
         <script>
-        $(document).ready(() => {
-            $('#warehouse').multiselect({
-                buttonWidth:"100%",
-                enableHTML: true,
-                includeSelectAllOption: true
-            });
-        });
+        
     </script>
 
     </body>
