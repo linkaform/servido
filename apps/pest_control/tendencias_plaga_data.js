@@ -27,16 +27,16 @@ var columsTable1 = [
   { title:"Mosca Fruta", field:'mosca_fruta',hozAlign:"left",width:250},
   { title:"Mosca Drenaje", field:'mosca_drenaje',hozAlign:"left",width:250},
   { title:"Mosca Metalica", field:'mosca_metalica',hozAlign:"left",width:250},
-  { title:"Mariposa", field:'mariposa',hozAlign:"left",width:250},
+  { title:"Mosca foridas", field:'mosca_foridas',hozAlign:"left",width:250},
+  { title:"Palomilla almacen", field:'palomilla_almacen',hozAlign:"left",width:250},
+  { title:"Otra palomilla", field:'otra_palomilla',hozAlign:"left",width:250},
   { title:"Gorgojos", field:'gorgojos',hozAlign:"left",width:250},
-  { title:"Chicharrita", field:'chicharrita',hozAlign:"left",width:250},
+  { title:"Otros escarabajos", field:'otros_escarabajos',hozAlign:"left",width:250},
   { title:"Abejas", field:'abejas',hozAlign:"left",width:250},
   { title:"Avispas", field:'avispas',hozAlign:"left",width:250},
-  { title:"Mosquito", field:'mosquito',hozAlign:"left",width:250},
-  { title:"Mariquita", field:'mariquita',hozAlign:"left",width:250},
-  { title:"Otras Plagas", field:'otras_plagas',hozAlign:"left",width:250},
-  { title:"Descripción", field:'descripcion',hozAlign:"left",width:250},
-  { title:"Realizada", field:'realizada',hozAlign:"left",width:250},
+  { title:"Zancudos", field:'zancudos',hozAlign:"left",width:250},
+  { title:"Insecto area verde", field:'insecto_area_verde',hozAlign:"left",width:250},
+  { title:"Otros voladores", field:'otros_voladores',hozAlign:"left",width:250},
 ];
 
 var dataTable1 = [

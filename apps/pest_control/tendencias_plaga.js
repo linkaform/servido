@@ -145,10 +145,10 @@ function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
   let dispositivo = document.getElementById("dispositivo");  
-  let area = document.getElementById("area");  
+  //let area = document.getElementById("area");  
   
   if (date_from.value != null && date_from.value!="" && date_to.value != null && date_to.value!=""){
-    getFirstElement(date_to.value, date_from.value, dispositivo.value, area.value);
+    getFirstElement(date_to.value, date_from.value, dispositivo.value);
   }
   else
   {
@@ -156,24 +156,27 @@ function runFirstElement(){
       title: 'Rango de fechas requerido!!',
     });
   }
-  
 };
 
-function getFirstElement(dateTo, dateFrom, dispositivo, area){
+function getFirstElement(dateTo, dateFrom, dispositivo){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
   $('.title_tables').hide();
 
+  console.log(dateTo)
+  console.log(dateFrom)
+  console.log(dispositivo)
+  //console.log(area)
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: scriptId,
+      script_id: 111230,
       date_to: dateTo,
       date_from: dateFrom,
       dispositivo: dispositivo,
-      area: area,
+      //area: area,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -187,7 +190,10 @@ function getFirstElement(dateTo, dateFrom, dispositivo, area){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
+      console.log("Respuesta")
+      console.log(res)
       if (res.response.json.firstElement.data) {
+        //console.log(res.response.json.firtsElement.data)
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
@@ -269,6 +275,7 @@ function getDrawGraphicFirst(data, setOptions){
 //-----CATALOG
 function get_catalog() 
 {
+  console.log("Se ha hecho la solicitud");
   fetch(url + 'infosync/scripts/run/', {
       method: 'POST',
       body: JSON.stringify({
@@ -283,8 +290,8 @@ function get_catalog()
     .then(res => res.json())
     .then(res => {
     if (res.success) {
-      console.log("Data")
-      console.log('CATALOGO',res)
+      console.log("CATALOGO")
+      console.log(res)
       if (res.response.json.array_filters.dispositivo.length){
         $("#dispositivo").empty();
         $('#dispositivo').append('<option value="--">--Seleccione--</option>');
