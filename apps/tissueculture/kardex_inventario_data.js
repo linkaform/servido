@@ -3,7 +3,7 @@
 //--Table Montajes Por Mes
 var columsTable1 = [
   //{ title:"Date from", field:'date_from',hozAlign:"left",headerFilter:"input", width:150},
-  { title:"Date from", field:'date_from',hozAlign:"left", width:150},
+  { title:"Date from", field:'date_from',hozAlign:"left", width:100},
   { title:"Date to",field:'date_to',hozAlign:"left", width:200 },
   { title:"Lot Number", field:'number',hozAlign:"left", width:200 },
   { title:"Product Code", field:'code',hozAlign:"left", width:200 },
@@ -26,7 +26,7 @@ var dataTable1 = [
 
 //--Table Total
 var columsTable2B = [
-  { title:"Date", field:'date',hozAlign:"right", width:150},
+  { title:"Date", field:'date',hozAlign:"right", width:100},
   { title:"Production Code", field:'plant_code',hozAlign:"left", width:150},
   { title:"Lot Number",field:'lot_number',hozAlign:"right", width:200 },
   { title:"Warehouse from", field:'out',hozAlign:"left",width:200 },
@@ -119,21 +119,22 @@ var dataTable2B = [
 
 //--Table Total
 var columsTable2 = [
-  {title:"Date", field:"date_title"},
-  {title:"Product Code", field:"product_code_title"},
-  {title:"Lot Number", field:"lot_number_title", hozAlign:"right"},
+  {title:"Date", field:"date_title", width:100},
+  {title:"Product Code", field:"product_code_title",  width:150},
+  {title:"Lot Number", field:"lot_number_title", hozAlign:"right", width:150},
   {
     title: "Warehouse from",
     columns:[
-        {title:"WAREHOUSE", field:"warehouse", cssClass: "hidden-header"},
-      ]
+        {title:"WAREHOUSE", field:"warehouse", cssClass: "hidden-header", width:200 },
+      ],
+    width:200
   },
-  {title:"Warehouse to", field:"warehouse_to_table"},
-  {title:"Move Type", field:"move_type_table"},
-  {title:"Unit", field:"unit_table"},
-  {title:"Qty In", field:"qty_in_table", hozAlign:"right"},
-  {title:"Qty Out", field:"qty_out_table", hozAlign:"right"},
-  {title:"Balance", field:"balance_table", hozAlign:"right"},
+  {title:"Warehouse to", field:"warehouse_to_table", width:200 },
+  {title:"Move Type", field:"move_type_table", width:120 },
+  {title:"Unit", field:"unit_table", width:100 },
+  {title:"Qty In", field:"qty_in_table", hozAlign:"right", width:100 },
+  {title:"Qty Out", field:"qty_out_table", hozAlign:"right", width:100 },
+  {title:"Balance", field:"balance_table", hozAlign:"right", width:150},
 ];
 
 var dataTable2 = [
