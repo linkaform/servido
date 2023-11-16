@@ -291,9 +291,9 @@ function getDrawTableTwo(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
     columnHeaderVertAlign:"top",
     height:"100%",
-    layout:"fitColumns",
+    layout:"fitDataTable",
     columnDefaults:{
-      resizable:true,
+      resizable:false,
     },
     data:tableData,
     columns:columnsData,
@@ -316,22 +316,25 @@ function getDrawTableTwo(id, columnsData, tableData){
        row.getElement().appendChild(holderEl);
 
        var subTable = new Tabulator(tableEl, {
-           layout:"fitColumns",
+           layout:"fitDataTable",
            addRowPos: "bottom",
+           columnDefaults:{
+              resizable:false,
+           },
            data:row.getData().serviceHistory,
-           columns:[
-           {title:"Date", field:"date", sorter:"date"},
-           {title:"Product Code", field:"product_code"},
-           {title:"Lot Number", field:"lot_number", hozAlign:"right"},
-           {title:"Warehouse from", field:"warehouse_from"},
-           {title:"Warehouse to", field:"warehouse_to"},
-           {title:"Move Type", field:"move_type"},
-           {title:"Unit", field:"unit"},
-           {title:"Qty In", field:"qty_in", hozAlign:"right", formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
-           {title:"Qty Out", field:"qty_out", hozAlign:"right", formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
-           {title:"Balance", field:"balance", hozAlign:"right", sorter:"number", formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
-           ],
-
+           // columns:[
+           // {title:"Date", field:"date", sorter:"date"},
+           // {title:"Product Code", field:"product_code"},
+           // {title:"Lot Number", field:"lot_number", hozAlign:"right"},
+           // {title:"Warehouse from", field:"warehouse_from"},
+           // {title:"Warehouse to", field:"warehouse_to"},
+           // {title:"Move Type", field:"move_type"},
+           // {title:"Unit", field:"unit"},
+           // {title:"Qty In", field:"qty_in", hozAlign:"right", formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+           // {title:"Qty Out", field:"qty_out", hozAlign:"right", formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+           // {title:"Balance", field:"balance", hozAlign:"right", sorter:"number", formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+           // ],
+           columns:columsTable2B,
            rowFormatter:function(row){
             subData = row.getData();
 
