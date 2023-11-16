@@ -133,8 +133,8 @@ window.onload = function(){
   });*/
 
   $(document).ready(function() {
-    $('.js-example-theme-multiple').select2({
-        placeholder: 'Select',
+    $('.js-theme-multiple').select2({
+        placeholder: 'Loading',
         allowClear: true, // Opcional, para agregar una "X" para deseleccionar
         selectionCssClass: "select2-selection",
 
@@ -338,9 +338,6 @@ function getDrawTableTwo(id, columnsData, tableData){
            rowFormatter:function(row){
             subData = row.getData();
 
-            console.log("New Data")
-            console.log(subData)
-            console.log("END")
            },
 
            tableBuilt: function () {
@@ -445,7 +442,7 @@ function getDrawTableTwo(id, columnsData, tableData){
           'warehouse_to':" ",
           'unit': " ",
           'qty_in': " ",
-          'qty_out': "Initial Balance",
+          'qty_out': "Initial",
           'balance':"0",
         }
         contRow ++;
@@ -518,7 +515,7 @@ function getDrawTableTwo(id, columnsData, tableData){
       rowToStyle.getCell(i).fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: '76D7C4' },
+        fgColor: { argb: '007bff' },
       };
     }
 
@@ -530,7 +527,7 @@ function getDrawTableTwo(id, columnsData, tableData){
       rowToStyle.getCell(i).fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'BFC9CA' },
+        fgColor: { argb: '007bff' },
       };
     }
 
@@ -567,7 +564,7 @@ function getDrawTableTwo(id, columnsData, tableData){
           'warehouse_to':" ",
           'unit': " ",
           'qty_in': " ",
-          'qty_out': "Initial Balance",
+          'qty_out': "Initial",
           'balance':"0",
         }
         contRow ++;
@@ -647,8 +644,14 @@ function get_catalog(scriptId)
         res.response.json['productCode'].sort();
         res.response.json['warehouse'].sort();
         //----Product code
+        $('#productCode').select2({
+              placeholder: 'Select',
+              allowClear: true, // Opcional, para agregar una "X" para deseleccionar
+              selectionCssClass: "select2-selection",
+
+        });
         $("#productCode").empty();
-        $('#productCode').append('<option value="">Select</option>');
+        $("#productCode").append("<option value=''/></option> ")
         for (i = 0; i < res.response.json['productCode'].length; i++) {
           value =  res.response.json['productCode'][i]
           $('#productCode').append('<option value="'+ value +'">'+value+'</option>');
@@ -701,8 +704,14 @@ function get_lotNumber(id)
       if(res.response.json){
         
           //----Lot number
+          $('#lotNumber').select2({
+              placeholder: 'Select',
+              allowClear: true, // Opcional, para agregar una "X" para deseleccionar
+              selectionCssClass: "select2-selection",
+
+          });
           $("#lotNumber").empty();
-          $("#lotNumber").append("<option value=''/>Select</option> ")
+          $("#lotNumber").append("<option value=''/></option> ")
           let dataLotNumber = res.response.json['lotNumber'];
           for(let i = 0; i < dataLotNumber.length; i++){
             value = dataLotNumber[i];
