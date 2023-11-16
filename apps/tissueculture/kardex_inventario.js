@@ -134,7 +134,7 @@ window.onload = function(){
 
   $(document).ready(function() {
     $('.js-example-theme-multiple').select2({
-        placeholder: 'Seleccione',
+        placeholder: 'Select',
         allowClear: true, // Opcional, para agregar una "X" para deseleccionar
         selectionCssClass: "select2-selection",
 
@@ -316,22 +316,25 @@ function getDrawTableTwo(id, columnsData, tableData){
        row.getElement().appendChild(holderEl);
 
        var subTable = new Tabulator(tableEl, {
-           layout:"fitColumns",
+           layout:"fitDataTable",
            addRowPos: "bottom",
+           columnDefaults:{
+              resizable:false,
+           },
            data:row.getData().serviceHistory,
-           columns:[
-           {title:"Date", field:"date", sorter:"date", hozAlign:"left",  width:100, headerFilter:"input"},
-           {title:"Product Code", field:"product_code",  width:150},
-           {title:"Lot Number", field:"lot_number", hozAlign:"right",  width:150},
-           {title:"Warehouse from", field:"warehouse_from", },
-           {title:"Warehouse to", field:"warehouse_to",  width:200},
-           {title:"Move Type", field:"move_type", width:120},
-           {title:"Unit", field:"unit", width:100 },
-           {title:"Qty In", field:"qty_in", hozAlign:"right", width:100, formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
-           {title:"Qty Out", field:"qty_out", hozAlign:"right", width:100, formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
-           {title:"Balance", field:"balance", hozAlign:"right", sorter:"number", width:150, formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
-           ],
-
+           // columns:[
+           // {title:"Date", field:"date", sorter:"date"},
+           // {title:"Product Code", field:"product_code"},
+           // {title:"Lot Number", field:"lot_number", hozAlign:"right"},
+           // {title:"Warehouse from", field:"warehouse_from"},
+           // {title:"Warehouse to", field:"warehouse_to"},
+           // {title:"Move Type", field:"move_type"},
+           // {title:"Unit", field:"unit"},
+           // {title:"Qty In", field:"qty_in", hozAlign:"right", formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+           // {title:"Qty Out", field:"qty_out", hozAlign:"right", formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+           // {title:"Balance", field:"balance", hozAlign:"right", sorter:"number", formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0}},
+           // ],
+           columns:columsTable2B,
            rowFormatter:function(row){
             subData = row.getData();
 
@@ -352,38 +355,49 @@ function getDrawTableTwo(id, columnsData, tableData){
       subTable.element.classList.add("tabulator-sub-table");
 
       if (row.getData().id === 'warehouse') {
-      row.getElement().classList.add("green-row");
+        row.getElement().classList.add("green-row");
       }
 
       var cell = row.getCell("date_title");
-      cell.getElement().style.backgroundColor = "#76D7C4"
+      cell.getElement().style.backgroundColor = "#007bff"
+      cell.getElement().style.color = "white"
 
       var cell = row.getCell("product_code_title");
-      cell.getElement().style.backgroundColor = "#76D7C4"
+      cell.getElement().style.backgroundColor = "#007bff"
+      cell.getElement().style.color = "white"
 
       var cell = row.getCell("lot_number_title");
-      cell.getElement().style.backgroundColor = "#76D7C4"
+      cell.getElement().style.backgroundColor = "#007bff"
+      cell.getElement().style.color = "white"
 
       var cell = row.getCell("warehouse");
-      cell.getElement().style.backgroundColor = "#76D7C4"
+      cell.getElement().style.backgroundColor = "#007bff"
+      cell.getElement().style.color = "white"
 
       var cell = row.getCell("warehouse_to_table");
-      cell.getElement().style.backgroundColor = "#76D7C4"
+      cell.getElement().style.backgroundColor = "#007bff"
+      cell.getElement().style.color = "white"
 
       var cell = row.getCell("move_type_table");
-      cell.getElement().style.backgroundColor = "#76D7C4"
+      cell.getElement().style.backgroundColor = "#007bff"
+      cell.getElement().style.color = "white"
 
       var cell = row.getCell("unit_table");
-      cell.getElement().style.backgroundColor = "#76D7C4"
+      cell.getElement().style.backgroundColor = "#007bff"
+      cell.getElement().style.color = "white"
 
       var cell = row.getCell("qty_in_table");
-      cell.getElement().style.backgroundColor = "#76D7C4"
+      cell.getElement().style.backgroundColor = "#007bff"
+      cell.getElement().style.color = "white"
 
       var cell = row.getCell("qty_out_table");
-      cell.getElement().style.backgroundColor = "#BFC9CA"
+      cell.getElement().style.backgroundColor = "#007bff"
+      cell.getElement().style.color = "white"
 
       var cell = row.getCell("balance_table");
-      cell.getElement().style.backgroundColor = "#BFC9CA"
+      cell.getElement().style.backgroundColor = "#007bff"
+      cell.getElement().style.color = "white"
+      cell.getElement().style.fontWeight = "bold"
 
     },
 
@@ -634,7 +648,7 @@ function get_catalog(scriptId)
         res.response.json['warehouse'].sort();
         //----Product code
         $("#productCode").empty();
-        $('#productCode').append('<option value="--">Seleccione</option>');
+        $('#productCode').append('<option value="">Select</option>');
         for (i = 0; i < res.response.json['productCode'].length; i++) {
           value =  res.response.json['productCode'][i]
           $('#productCode').append('<option value="'+ value +'">'+value+'</option>');
@@ -669,12 +683,12 @@ function get_catalog(scriptId)
 */
 function get_lotNumber(id)
 {
-  fetch(url + 'infosync/scripts/run',{
+  fetch(url + 'infosync/scripts/run/',{
     method: 'POST',
     body: JSON.stringify({
-      scriptId: scriptId,
-      options:"getLotNumber",
-      plant_code: id
+      script_id: scriptId,
+      option:"getLotNumber",
+      product_code: id
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -687,11 +701,10 @@ function get_lotNumber(id)
       if(res.response.json){
         
           //----Lot number
-          $("lotNumber").empty();
-          $("lotNumber").append("<option value='--'/>Seleccione</option> ")
-
-          let dataLotNumber = res.response.json['catalog_lotNumber'];
-          for(let i = 0; i < dataLotNumber.length(); i++){
+          $("#lotNumber").empty();
+          $("#lotNumber").append("<option value=''/>Select</option> ")
+          let dataLotNumber = res.response.json['lotNumber'];
+          for(let i = 0; i < dataLotNumber.length; i++){
             value = dataLotNumber[i];
             $("#lotNumber").append('<option value="' + value + '">'+value+'</option>');
           }

@@ -141,7 +141,6 @@ function loadDemoData(){
   unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
 
-
   getDrawTable('firstElement', columsTable3, dataTable1, 350);
   document.getElementById("firstElement").style.removeProperty('display');
 }
@@ -306,7 +305,6 @@ function get_catalog()
         for (i = 0; i <array_value.length; i++) {
           $('#promotor').append('<option value="'+ array_value[i] +'">'+array_value[i]+'</option>');
         }
-
         console.log(array_value);
       }
     } 
