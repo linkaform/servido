@@ -123,12 +123,7 @@ var columsTable2 = [
   {title:"Date", field:"date_title", width:100},
   {title:"Product Code", field:"product_code_title",  width:150},
   {title:"Lot Number", field:"lot_number_title", hozAlign:"right", width:200},
-  {
-    title: "Warehouse from", field:"warehouse",
-    // columns:[
-    //     {title:"WAREHOUSE", field:"warehouse", cssClass: "hidden-header", width:200 },
-    //   ],
-    width:200
+  {title: "Warehouse from", field:"warehouse",width:200
   },
   {title:"Warehouse to", field:"warehouse_to_table", width:200 },
   {title:"Move Type", field:"move_type_table", width:120 },
