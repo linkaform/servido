@@ -305,7 +305,7 @@ function get_catalog()
         $('#cliente').append('<option value="--">--Seleccione--</option>');
         for (i = 0; i <res.response.json.catalogClient.length; i++) {
           value = res.response.json.catalogClient[i]['653fd525b96022a0f257926f']
-          $('#cliente').append('<option value="'+ value +'"> Cliente '+value+'</option>');
+          $('#cliente').append('<option value="'+ value +'">'+value+'</option>');
         }
 
         
