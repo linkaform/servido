@@ -90,15 +90,15 @@ window.onload = function(){
     userJwt = jw;
     userName = getCookie("userName");
     document.getElementById("firstParameters").style.removeProperty('display');
+    $('#firstParameters').addClass('show'); //---IMPORTANTE: Quitar cuando no se ocupe la librería de JQuery Multiple Select.
     unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
     }
-    console.log('estilos')
     //--Styles
     setSpinner();
-    setDate();
-    //get_catalog();
+    console.log('estilos')
+    get_catalog(scriptId);
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
@@ -109,6 +109,11 @@ window.onload = function(){
     $('#divOptions').hide();
     $('#title_report').hide();
     $('.title_tables').hide();
+    /* I M P O R T A N T E */
+    /*Se tiene que eliminar la clase de show al elemento con clase firstParameters ya que las librerías
+    para los multiselectores alteran ligeramente si se muestran o no.*/
+    $('#firstParameters').removeClass('show'); //----IMPORTANTE: Quitar cuando no se ocupe la librería de JQuery Multiple Select.
+    $("#warehouse").multipleSelect('refresh');
     hideElement("firstElement-Buttons");
   }
   ///-----HIDE AND SHOW
@@ -123,8 +128,8 @@ window.onload = function(){
 
   //C O N  F G U R A T I O N  F I L T E R
   $(document).ready(function() {
-    $('.js-example-theme-multiple').select2({
-        placeholder: 'Seleccione',
+    $('.js-theme-multiple').select2({
+        placeholder: 'Loading',
         allowClear: true, // Opcional, para agregar una "X" para deseleccionar
         selectionCssClass: "select2-selection",
 
@@ -164,8 +169,6 @@ function unHideReportElements(){
   unhideElement("sixthElement");
 }
 
-const loading = document.querySelector('.loading-container');
-loading.style.display = 'none';
 
 
 //-----DEMO 
@@ -194,57 +197,37 @@ function loadDemoData(){
   document.getElementById("sixthElement").style.removeProperty('display');
 }
 
-//-----DATE
-function setDate(){
-  array_month = ['01','02','03','04','05','06','07','08','09','10','11','12'];
-  //---DATE TO
-  date_to = new Date();
-  year = date_to.getFullYear();
-  month = array_month[date_to.getMonth()];
-  day = date_to.getDate();
-  date_to = year +'-'+ month +'-'+ day;
-  $('#date_to').val(date_to);
-  //---DATE FROM
-  date_from = new Date();
-  date_from.setDate(date_from.getDate() - 30)
-
-  year = date_from.getFullYear();
-  month = array_month[date_from.getMonth()];
-  day = date_from.getDate();
-  date_from = year +'-'+ month +'-'+ day;
-  $('#date_from').val(date_from);
-}
-
 //-----EXCUTION
+const loading = document.querySelector('.loading-container');
+loading.style.display = 'none';
 function runFirstElement(){
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  //let promotor = document.getElementById("promotor");  
+  let dateFrom = document.getElementById("dateFrom");
+  let dateTo = document.getElementById("dateTo");  
+  let dateOptions = document.getElementById("dateOptions");  
+  let productCode = document.getElementById("productCode");  
+  let lotNumber = document.getElementById("lotNumber");  
+  let warehouse = document.getElementById("warehouse"); 
+  let selectedWarehouse = [...warehouse.selectedOptions].map(option => option.value);
+  getFirstElement(dateFrom.value, dateTo.value, dateOptions.value, productCode.value, lotNumber.value, selectedWarehouse);
+};
 
-  if (date_from.value != null && date_to.value != null && date_from.value != "" && date_to.value != ""){
-    getFirstElement(date_to.value, date_from.value);
-  }
-  else
-  {
-    Swal.fire({
-      title: 'Rango de Fechas Requerido',
-    });
-  }
-}
-
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, warehouse){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
   $('.title_tables').hide();
-
+  console.log('getting first elemetn')
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      date_to: dateTo,
       date_from: dateFrom,
+      date_to: dateTo,
+      date_options: dateOptions,
+      product_code: productCode,
+      lot_number: lotNumber,
+      warehouse: warehouse,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -258,6 +241,7 @@ function getFirstElement(dateTo, dateFrom){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
+      console.log(res.response.json)
       if (res.response.json.firstElement.data) {
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
@@ -343,43 +327,110 @@ function getDrawTable(id, columnsData, tableData){
 }
 
 
-//-----GRAPICH
-let chart1;
-function getDrawGraphicFirst(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicFirst').getContext('2d');
-  if (chart1) {
-    chart1.destroy();
-  }
-
-  chart1 = new Chart(ctx, {
-    type: 'line',
-    data:data,
-    options: setOptions,
-    plugins: [ChartDataLabels],
-  });
-}
+//----- CATALOGS
+function get_catalog(scriptId) 
+  {
+    arrayPlant = []
+    arrayOut = []
 
 
-let chart2;
-function getDrawGraphicSecond(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicSecond').getContext('2d');
-  
-  if (chart2) {
-    chart2.destroy();
-  }
+    fetch(url + 'infosync/scripts/run/', {
+      method: 'POST',
+      body: JSON.stringify({
+        script_id: scriptId,
+        option: "getFilters",
+      }),
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+userJwt
+      },
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.success) {
+        if (res.response.json){
+          //Creamos una variable para renderizar el elemento multiselect
+          var warehouseOptions = $("#warehouse")
+          res.response.json['productCode'].sort();
+          res.response.json['warehouse'].sort();
+          //----Product code
+          $('#productCode').select2({
+                placeholder: 'Select',
+                allowClear: true, // Opcional, para agregar una "X" para deseleccionar
+                selectionCssClass: "select2-selection",
 
-  //-----COLORS
-  var array_colors = getPAlleteColors(7,data.datasets.length);
-  data.datasets.background = array_colors;
+          });
+          $("#productCode").empty();
+          $("#productCode").append("<option value=''/></option> ")
+          for (i = 0; i < res.response.json['productCode'].length; i++) {
+            value =  res.response.json['productCode'][i]
+            $('#productCode').append('<option value="'+ value +'">'+value+'</option>');
+          }
 
-  chart2 = new Chart(ctx, {
-    type: 'pie',
-    data:data,
-     plugins: [ChartDataLabels],
-    options: setOptions,
-  });
+          //----Warehouse
+          $("#warehouse").empty();
+
+          //----Almacenar los datos de la query en una variable para procesarla
+          let data_warehouse = res.response.json['warehouse'];
+          //----La variable permitirá guardar la data en el formato aceptado por la librería, la cual es: [{label: "elemento1", value: "elemento1"},]
+          let data_multiselect = [];
+
+          //---Iterar a través de los datos y crear objetos para el multiselect
+          for (let i = 0; i < data_warehouse.length; i++) {
+              let valueMultiselect = data_warehouse[i];
+              let objMultiselect = { label: valueMultiselect, value: valueMultiselect };
+              data_multiselect.push(objMultiselect);
+          }
+
+          
+          $('#warehouse').multiselect('dataprovider', data_multiselect);
+          $('#warehouse').multiselect('refresh');
+        }
+      } 
+    })
+
+  };
+
+/*Esta función será llamada al seleccionar un plant code determinado.
+  La función llamará a los lot_number correspondientes a cada plant code y los agregará al selector lotNumber."
+*/
+function get_lotNumber(id)
+{
+  fetch(url + 'infosync/scripts/run/',{
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: scriptId,
+      option:"getLotNumber",
+      product_code: id
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.success){
+      if(res.response.json){
+        
+          //----Lot number
+          $('#lotNumber').select2({
+              placeholder: 'Select',
+              allowClear: true, // Opcional, para agregar una "X" para deseleccionar
+              selectionCssClass: "select2-selection",
+
+          });
+          $("#lotNumber").empty();
+          $("#lotNumber").append("<option value=''/></option> ")
+          let dataLotNumber = res.response.json['lotNumber'];
+          for(let i = 0; i < dataLotNumber.length; i++){
+            value = dataLotNumber[i];
+            $("#lotNumber").append('<option value="' + value + '">'+value+'</option>');
+          }
+        
+      }
+    }
+  })
 }
 
 function filtro_fechas(selectElement) {

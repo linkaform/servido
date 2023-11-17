@@ -96,13 +96,13 @@
                 <div id="firstParameters" class="collapse row show">
                     <div class="col-sm-12 col-md-2 col-lg-2">
                         <h5>Plant Code: </h5>
-                        <select class="js-example-theme-multiple w-100 h-100 select2-selection" id="productCode" name="productCode">
+                        <select class="js-theme-multiple w-100 h-100 select2-selection" id="productCode" name="productCode">
                             
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-2">
                         <h5>Lot Number: </h5>
-                        <select class="js-example-theme-multiple w-100 h-100 select2-selection" type="text" name="lotNumber" id="lotNumber">
+                        <select class="js-theme-multiple w-100 h-100 select2-selection" type="text" name="lotNumber" id="lotNumber">
                             
                         </select>
                     </div>
@@ -155,7 +155,7 @@
                     <!--Primer Elemento -->
                     <div class="col-sm-4 col-md-6 col-lg-6" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3><span>Scrap by group</span>&nbsp;&nbsp;
+                            <h3><span>Scrap by Product</span>&nbsp;&nbsp;
                                 <button class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
@@ -167,7 +167,7 @@
                     <!--Segundo Elemento -->
                     <div class="col-sm-4 col-md-6 col-lg-6" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3><span>Scrap by group by Warehouse</span>&nbsp;&nbsp;
+                            <h3><span>Scrap by Product by Warehouse</span>&nbsp;&nbsp;
                                 <button class="btn btn-primary" id="download_csv_secondElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button class="btn btn-success" id="download_xlsx_secondElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
@@ -179,7 +179,7 @@
                     <!--Tercer Elemento -->
                     <div class="col-sm-12 col-md-12 col-lg-6" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span>Scrap by Crop and Lote</span>&nbsp;&nbsp;
+                            <h3 ><span>Scrap by Product and Lote</span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_thirdElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_thirdElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
@@ -280,7 +280,17 @@
     <script type="text/javascript" src="./scrap_report.js"></script>
     <script type="text/javascript" src="./scrap_report_data.js"></script>
 
+    <!-- Multiselect -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"
+        integrity="sha256-qoj3D1oB1r2TAdqKTYuWObh01rIVC1Gmw9vWp1+q5xw=" crossorigin="anonymous"></script>
+
+
     <!-- SCRIPT SELECT2-->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+
+
     </body>
 </html>

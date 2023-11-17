@@ -98,7 +98,6 @@ window.onload = function(){
     get_catalog(scriptId);
     $('#divOptions').show();
     $('#title_report').show();
-    //$('#warehouse').multipleSelect('refresh');
     document.getElementById("firstParameters").style.removeProperty('display');
     
   } else {
@@ -216,8 +215,6 @@ function runFirstElement(){
   let lotNumber = document.getElementById("lotNumber");  
   let warehouse = document.getElementById("warehouse"); 
   let selectedWarehouse = [...warehouse.selectedOptions].map(option => option.value);
-  console.log("Warehouse")
-  console.log(selectedWarehouse)
   getFirstElement(dateFrom.value, dateTo.value, dateOptions.value, productCode.value, lotNumber.value, selectedWarehouse);
 };
 
