@@ -145,10 +145,10 @@ function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
   let dispositivo = document.getElementById("dispositivo");  
-  //let area = document.getElementById("area");  
+  let cliente = document.getElementById("cliente");  
   
   if (date_from.value != null && date_from.value!="" && date_to.value != null && date_to.value!=""){
-    getFirstElement(date_to.value, date_from.value, dispositivo.value);
+    getFirstElement(date_to.value, date_from.value, dispositivo.value, cliente.value);
   }
   else
   {
@@ -158,7 +158,7 @@ function runFirstElement(){
   }
 };
 
-function getFirstElement(dateTo, dateFrom, dispositivo){
+function getFirstElement(dateTo, dateFrom, dispositivo, cliente){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -167,7 +167,7 @@ function getFirstElement(dateTo, dateFrom, dispositivo){
   console.log(dateTo)
   console.log(dateFrom)
   console.log(dispositivo)
-  //console.log(area)
+  console.log(cliente)
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
@@ -176,7 +176,7 @@ function getFirstElement(dateTo, dateFrom, dispositivo){
       date_to: dateTo,
       date_from: dateFrom,
       dispositivo: dispositivo,
-      //area: area,
+      cliente: cliente,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -293,12 +293,22 @@ function get_catalog()
       console.log("CATALOGO")
       console.log(res)
       if (res.response.json.array_filters.dispositivo.length){
+
         $("#dispositivo").empty();
         $('#dispositivo').append('<option value="--">--Seleccione--</option>');
         for (i = 0; i <res.response.json.array_filters.dispositivo.length; i++) {
           value = res.response.json.array_filters.dispositivo[i]
           $('#dispositivo').append('<option value="'+ value +'"> Dispositivo '+value+'</option>');
         }
+
+        $("#cliente").empty();
+        $('#cliente').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i <res.response.json.catalogClient.length; i++) {
+          value = res.response.json.catalogClient[i]['653fd525b96022a0f257926f']
+          $('#cliente').append('<option value="'+ value +'"> Cliente '+value+'</option>');
+        }
+
+        
       }
     } 
   })

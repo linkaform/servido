@@ -34,7 +34,7 @@ var columsTable1 = [
   { title:"Otros escarabajos", field:'otros_escarabajos',hozAlign:"left",width:250},
   { title:"Abejas", field:'abejas',hozAlign:"left",width:250},
   { title:"Avispas", field:'avispas',hozAlign:"left",width:250},
-  { title:"Zancudos", field:'zancudos',hozAlign:"left",width:250},
+  { title:"Mosquitos", field:'mosquitos',hozAlign:"left",width:250},
   { title:"Insecto area verde", field:'insecto_area_verde',hozAlign:"left",width:250},
   { title:"Otros voladores", field:'otros_voladores',hozAlign:"left",width:250},
 ];
