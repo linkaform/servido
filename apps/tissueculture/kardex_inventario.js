@@ -251,6 +251,7 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
+      console.log("RESPUESTA")
       console.log(res.response.json)
       if(res.response.json.secondElement.data){
         //----Se crea y define una variable que almacene la data de la query para no escribir toda la ruta
