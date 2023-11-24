@@ -180,21 +180,23 @@ function loadDemoData(){
   getDrawTable('firstElement', columsTable1, dataTable1, 350);
   document.getElementById("firstElement").style.removeProperty('display');
 
-
-  getDrawTable('secondElement', columsTable2, dataTable2, 350);
-  document.getElementById("secondElement").style.removeProperty('display');
-
-  getDrawTable('thirdElement', columsTable3, dataTable3, 350);
-  document.getElementById("thirdElement").style.removeProperty('display');
-
   getDrawTable('fourthElement', columsTable4, dataTable4, 350);
   document.getElementById("fourthElement").style.removeProperty('display');
 
-  getDrawTable('fiveElement', columsTable5, dataTable5, 350);
-  document.getElementById("fiveElement").style.removeProperty('display');
-
   getDrawTable('sixthElement', columsTable6, dataTable6, 350);
   document.getElementById("sixthElement").style.removeProperty('display');
+
+
+  getDrawGraphicFirst(data1, setOptions1);
+  document.getElementById("secondElement").style.removeProperty('display');
+  
+  getDrawGraphicSecond(data1, setOptions2);
+  document.getElementById("fivethElement").style.removeProperty('display');
+
+  getDrawGraphicThird(data1, setOptions2);
+  document.getElementById("seventhElement").style.removeProperty('display');
+
+
 }
 
 //-----EXCUTION
@@ -325,6 +327,61 @@ function getDrawTable(id, columnsData, tableData){
     });
   }
 }
+
+//-----GRAFICA
+let chart1;
+function getDrawGraphicFirst(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicFirst').getContext('2d');
+  if (chart1) {
+    chart1.destroy();
+  }
+
+  chart1 = new Chart(ctx, {
+    type: 'line',
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
+}
+
+let chart2;
+function getDrawGraphicSecond(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicSecond').getContext('2d');
+  if (chart2) {
+    chart2.destroy();
+  }
+
+  chart2 = new Chart(ctx, {
+    type: 'line',
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
+}
+
+
+
+let chart3;
+function getDrawGraphicThird(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicThird').getContext('2d');
+  if (chart3) {
+    chart3.destroy();
+  }
+
+  chart3 = new Chart(ctx, {
+    type: 'line',
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
+}
+
+
+
+
 
 
 //----- CATALOGS

@@ -184,3 +184,104 @@ dataTable6 = [
     scrap_pct: 11.6
   },
 ]
+
+
+//----- CONFIG GRAPHIC
+var data1 = {
+  labels: ['20-11-23','20-11-23','20-11-24','20-11-25'],
+  datasets: [
+    {
+      label: 'LNAS',
+      data: [10,15,5,20,40],
+      backgroundColor: '#bad3c6',
+      fill: true,
+    },
+    {
+      label: 'LBJA',
+      data: [15,20,10,25,45],
+      backgroundColor: '#f9d9ac',
+      fill: true,
+    },
+    {
+      label: 'JABS',
+      data: [20,25,20,30,50],
+      backgroundColor:'#fca483',
+      fill: true,
+    },
+    {
+      label: 'LAABB',
+      data: [25,30,25,35,55],
+      backgroundColor: '#f18886',
+      fill: true,
+    },
+  ]
+};
+
+var setOptions1 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Product Graphic',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'black',
+      font: {
+        size: 12
+      },
+    }
+  },
+};
+
+var setOptions2 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Product Graphic',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'black',
+      font: {
+        size: 12
+      },
+    }
+  },
+};
+
+var setOptions3 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Product Graphic',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'black',
+      font: {
+        size: 12
+      },
+    }
+  },
+};
