@@ -357,22 +357,40 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
         });
       
       setTimeout(() => {
+        // Obtener la fecha actual en el formato solicitado
+        const currentDate = new Date();
+        const formattedDate = `${currentDate.getDate().toString().padStart(2, '0')}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getFullYear()} ${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}:${currentDate.getSeconds().toString().padStart(2, '0')}`;
+
+        
+
         table.download("pdf", "data.pdf", {
           orientation:"landscape", //set page orientation to portrait
           theme: 'grid',
           autoTable:function(doc){ 
+
+            // Función para agregar contenido a cada página
+            const addContentToPage = () => {
+                //----Agregar texto que se repite en cada página
+                doc.setFontSize(9);
+                doc.text(`Fecha de consulta: ${formattedDate}`, 635, 560);
+            };
+
             var margins = 30;
             var leftMargin = 40;
             var marginsIndent = 40;
 
             //----IMAGENES
-            doc.setFontSize(20);
+            doc.setFontSize(9);
             doc.text(300, 40, 'Reporte de Cumplimiento');
             doc.addImage(img_morpho, 'JPEG', 650, 20, 140, 40);
 
-            // Parametros - Posición weigth / Posición heigt / Weigth / Heigth 
+            //----Parametros - Posición weigth / Posición heigt / Weigth / Heigth 
             doc.addImage(urlGraphicFourth, 'JPEG', 150, 60, 500, 250);
             doc.addImage(urlGraphicFiveth, 'JPEG', 150, 310, 500, 250);
+
+            //doc.addFontSize(8)
+            doc.text(`Fecha de consulta: ${formattedDate}`, 635, 565)
+
 
             return {
               styles: {
@@ -404,6 +422,12 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
               },
               margin: { top: 10 },
               startY: 800, //This was the way to push the start of the table down
+              addPageContent: function (currentPage, pageCount, options) {
+                    // Agregar contenido a cada página
+                    addContentToPage();
+
+                    // Puedes agregar más contenido adicional en cada página si es necesario
+                }
             };
           },
         });
@@ -411,7 +435,6 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
     });
   }
 }
-
 
 //----- CATALOGS
 function get_catalog(option) 
