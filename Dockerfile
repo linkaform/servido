@@ -31,6 +31,10 @@ RUN pip3 install linkaform_api-3.0.tar.gz
 EXPOSE 80 443
 #CMD ["flask", “run”]
 
+
+##########################
+#### build Build ####
+##########################
 #FROM develop as production
 FROM develop as build
 
@@ -96,9 +100,11 @@ RUN chown www-data:www-data -R /run/uwsgi/
 #aqui se pudira poner un stage para que solo copie los compilados
 
 
-
 WORKDIR /srv/servido/app/
 
+##########################
+#### Production Build ####
+##########################
 
 FROM build as production
 

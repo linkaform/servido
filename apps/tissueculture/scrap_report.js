@@ -254,20 +254,20 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
         document.getElementById("secondElement").style.removeProperty('display');
       }
 
-      if (res.response.json.thirdElement.data) {
-        console.log(res.response.json.thirdElement.data)
-        //alert("Hay data")
+      // if (res.response.json.thirdElement.data) {
+      //   console.log(res.response.json.thirdElement.data)
+      //   //alert("Hay data")
         
-        getDrawGraphicFirst(res.response.json.thirdElement.data, setOptions1);
-        document.getElementById("thirdElement").style.removeProperty('display');
-      }
+      //   getDrawGraphicFirst(res.response.json.thirdElement.data, setOptions1);
+      //   document.getElementById("thirdElement").style.removeProperty('display');
+      // }
 
 
 
-      /*if (res.response.json.fourthElement.data) {
+      if (res.response.json.fourthElement.data) {
         getDrawTable('fourthElement', columsTable3, res.response.json.fourthElement.data, 350);
         document.getElementById("secondElement").style.removeProperty('display');
-      }*/
+      }
 
       if (res.response.json.fiveElement.data) {
         getDrawGraphicSecond(res.response.json.fiveElement.data, setOptions2);
@@ -297,11 +297,11 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    height:"90px",
+    height:"500px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
-    dataTree:false,
+    dataTree:true,
     dataTreeStartExpanded:false,
     clipboard:false,
     clipboardPasteAction:"replace",

@@ -1,7 +1,7 @@
 var columsTable1 = [
-  { title:"Plant Code", field:'plant_code',hozAlign:"left",width:150},
-  { title:"Scrap Flats", field:'scrap_flats',hozAlign:"right",width:150 },
-  { title:"Total Flats",  field:'total_flats',hozAlign:"right",width:120 },
+  { title:"Plant Code", field:'product_code',hozAlign:"left",width:150, headerFilter:"input"},
+  { title:"Scrap Flats", field:'scrap_flats',hozAlign:"right",width:150 ,formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},},
+  { title:"Total Flats",  field:'total_flats',hozAlign:"right",width:120, formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},},
   { title:"Scrap %", field:'scrap_pct',hozAlign:"right",width:150, formatter:function(cell, formatterParams, onRendered){
     //cell - the cell component
     //formatterParams - parameters set for the column
