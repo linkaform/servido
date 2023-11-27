@@ -232,10 +232,31 @@ var setOptions1 = {
         }
     },
     datalabels: {
+      anchor:'end',
+      align:'top',
       color: 'black',
       font: {
         size: 12
       },
+      formatter: (value, context) => {
+        const  datasetArray = [];
+        context.chart.data.datasets.forEach((dataset) =>{
+          if(dataset.data[context.dataIndex] != undefined) {
+            datasetArray.push(dataset.data[context.dataIndex]);
+          }
+        });
+
+        function totalSum(total, datapoint) {
+          return total + datapoint;
+        }
+
+        let sum = datasetArray.reduce(totalSum, 0);
+        if(context.datasetIndex === datasetArray.length -1){
+          return sum;
+        }else{
+          return '';
+        }
+      }
     }
   },
 };
@@ -255,10 +276,31 @@ var setOptions2 = {
         }
     },
     datalabels: {
+      anchor:'end',
+      align:'top',
       color: 'black',
       font: {
         size: 12
       },
+      formatter: (value, context) => {
+        const  datasetArray = [];
+        context.chart.data.datasets.forEach((dataset) =>{
+          if(dataset.data[context.dataIndex] != undefined) {
+            datasetArray.push(dataset.data[context.dataIndex]);
+          }
+        });
+
+        function totalSum(total, datapoint) {
+          return total + datapoint;
+        }
+
+        let sum = datasetArray.reduce(totalSum, 0);
+        if(context.datasetIndex === datasetArray.length -1){
+          return sum;
+        }else{
+          return '';
+        }
+      }
     }
   },
 };
@@ -278,10 +320,31 @@ var setOptions3 = {
         }
     },
     datalabels: {
+      anchor:'end',
+      align:'top',
       color: 'black',
       font: {
         size: 12
       },
+      formatter: (value, context) => {
+        const  datasetArray = [];
+        context.chart.data.datasets.forEach((dataset) =>{
+          if(dataset.data[context.dataIndex] != undefined) {
+            datasetArray.push(dataset.data[context.dataIndex]);
+          }
+        });
+
+        function totalSum(total, datapoint) {
+          return total + datapoint;
+        }
+
+        let sum = datasetArray.reduce(totalSum, 0);
+        if(context.datasetIndex === datasetArray.length -1){
+          return sum;
+        }else{
+          return '';
+        }
+      }
     }
   },
 };
