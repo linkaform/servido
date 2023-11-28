@@ -257,8 +257,27 @@ var setOptions1 = {
           return '';
         }
       }
-    }
+    },
+    
   },
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: 'Date'
+      }
+    },
+    y: {
+      stacked: true,
+      title: {
+        display: true,
+        text: 'Value'
+      },
+      ticks: {
+        stepSize: 5
+      }
+    }
+  }
 };
 
 var setOptions2 = {
@@ -303,6 +322,24 @@ var setOptions2 = {
       }
     }
   },
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: 'Date'
+      }
+    },
+    y: {
+      stacked: true,
+      title: {
+        display: true,
+        text: 'Value'
+      },
+      ticks: {
+        stepSize: 5
+      }
+    }
+  }
 };
 
 var setOptions3 = {
@@ -347,4 +384,22 @@ var setOptions3 = {
       }
     }
   },
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: 'Date'
+      }
+    },
+    y: {
+      stacked: true,
+      title: {
+        display: true,
+        text: 'Value'
+      },
+      ticks: {
+        stepSize: 5
+      }
+    }
+  }
 };
