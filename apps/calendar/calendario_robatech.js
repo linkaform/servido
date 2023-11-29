@@ -141,6 +141,7 @@ function loadDemoData(){
   document.getElementById("secondElement").style.removeProperty('display');
 
   getDrawCalendar('firstElement', resources1, events1);
+  
 }
 
 
