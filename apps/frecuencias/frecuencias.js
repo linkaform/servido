@@ -10,6 +10,8 @@ let userName = null;
 let userParentId = null;
 let scriptId = null;
 var tableFirstData = null;
+var fecha_de = null;
+var fecha_hasta = null;
 $('#divOptions').hide();
 $('#title_report').hide();
 $('.title_tables').hide();
@@ -173,6 +175,8 @@ function runFirstElement(flagPrint = false){
   {
     check = 'off';
   }
+  fecha_de = date_from.value
+  fecha_hasta = date_to.value
   getFirstElement(date_to.value, date_from.value, paises, localidades, usuario.value, check, flagPrint);
 };
 
@@ -382,6 +386,10 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
             //----IMAGENES
             doc.setFontSize(9);
             doc.text(300, 40, 'Reporte de Cumplimiento');
+            doc.text(405, 40, 'Del')
+            doc.text(420, 40, fecha_de)
+            doc.text(469, 40, 'Al')
+            doc.text(479, 40, fecha_hasta)
             doc.addImage(img_morpho, 'JPEG', 650, 20, 140, 40);
 
             //----Parametros - Posición weigth / Posición heigt / Weigth / Heigth 
