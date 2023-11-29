@@ -1,5 +1,5 @@
 var columsTable1 = [
-  { title:"Plant Code", field:'product_code',hozAlign:"left",width:150, headerFilter:"input"},
+  { title:"Plant Code", field:'product_code',hozAlign:"left",width:250, headerFilter:"input"},
   { title:"Scrap Flats", field:'scrap_flats',hozAlign:"right",width:150 ,formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},},
   { title:"Total Flats",  field:'total_flats',hozAlign:"right",width:120, formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},},
   { title:"Scrap %", field:'scrap_pct',hozAlign:"right",width:150, formatter:function(cell, formatterParams, onRendered){
@@ -98,7 +98,9 @@ var dataTable3 = [
 //C U A R T A  T A B L A
 var columsTable4 = [
   { title:"Warehouse", field:'warehouse',hozAlign:"left",width:150 },
-  { title:"ScrapFlats", field:'scrap_flats',hozAlign:"right",width:150, formatter:function(cell, formatterParams, onRendered){
+  { title:"Scrap Flats", field:'scrap_flats',hozAlign:"right",width:150 ,formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},},
+  { title:"Total Flats", field:'total_flats',hozAlign:"right",width:150 ,formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},},
+  { title:"ScrapFlats", field:'scrap_pct',hozAlign:"right",width:150, formatter:function(cell, formatterParams, onRendered){
     //cell - the cell component
     //formatterParams - parameters set for the column
     //onRendered - function to call when the formatter has been rendered
@@ -124,8 +126,8 @@ var columsTable5 = [
   { title:"Plant Code", field:'plant_code',hozAlign:"left",width:150},
   { title:"Reason", field:'reason',hozAlign:"left",width:150},
   { title:"Warehouse", field:'warehouse',hozAlign:"left",width:150 },
-  { title:"Scrap Flats", field:'scrap_flats',hozAlign:"right",width:150 },
-  { title:"Total Flats",  field:'total_flats',hozAlign:"right",width:120 },
+  { title:"Scrap Flats", field:'scrap_flats',hozAlign:"right",width:150 ,formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},},
+  { title:"Total Flats", field:'total_flats',hozAlign:"right",width:150 ,formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},},
   { title:"Scrap %", field:'scrap_pct',hozAlign:"right",width:150, formatter:function(cell, formatterParams, onRendered){
     //cell - the cell component
     //formatterParams - parameters set for the column
@@ -157,9 +159,8 @@ var dataTable5 = [
 
 //S E X T A  T A B L A
 var columsTable6 = [
-  { title:"Reason", field:'reason',hozAlign:"left",width:150},
-  { title:"Scrap Flats", field:'scrap_flats',hozAlign:"right",width:150 },
-  { title:"Total Flats",  field:'total_flats',hozAlign:"right",width:120 },
+  { title:"Reason", field:'reason',hozAlign:"left",width:250},
+  { title:"Scrap Flats", field:'scrap_flats',hozAlign:"right",width:150 ,formatter:"money", formatterParams:{decimal:",",symbol:"",precision:0},},
   { title:"Scrap %", field:'scrap_pct',hozAlign:"right",width:150, formatter:function(cell, formatterParams, onRendered){
     //cell - the cell component
     //formatterParams - parameters set for the column

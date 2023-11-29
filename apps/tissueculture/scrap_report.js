@@ -245,16 +245,32 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
       $('.title_tables').show();
       console.log(res.response.json)
       if (res.response.json.firstElement.data) {
+        // by Product
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
+        getDrawGraphicFirst(res.response.json.secondElement.data, setOptions1);
+        document.getElementById("secondElement").style.removeProperty('display');
+
+        // by warehouse
+        getDrawTable('fourthElement', columsTable4, res.response.json.fourthElement.data, 350);
+        document.getElementById("secondElement").style.removeProperty('display');
+        // getDrawGraphicSecond(data1, setOptions2);
+        // document.getElementById("fivethElement").style.removeProperty('display');
+
+          
+        // by Reason
+        getDrawTable('sixthElement', columsTable6, res.response.json.sixthElement.data, 350);
+        document.getElementById("sixthElement").style.removeProperty('display');
+        // getDrawGraphicThird(data1, setOptions2);
+        // document.getElementById("seventhElement").style.removeProperty('display');
        
       }
       
-      if (res.response.json.secondElement.data) {
-        console.log(res.response.json.secondElement.data)
-        getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data,);
-        document.getElementById("secondElement").style.removeProperty('display');
-      }
+      // if (res.response.json.secondElement.data) {
+      //   console.log(res.response.json.secondElement.data)
+      //   getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data,);
+      //   document.getElementById("secondElement").style.removeProperty('display');
+      // }
 
       // if (res.response.json.thirdElement.data) {
       //   console.log(res.response.json.thirdElement.data)
@@ -266,15 +282,15 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
 
 
 
-      if (res.response.json.fourthElement.data) {
-        getDrawTable('fourthElement', columsTable3, res.response.json.fourthElement.data, 350);
-        document.getElementById("secondElement").style.removeProperty('display');
-      }
+      // if (res.response.json.fourthElement.data) {
+      //   getDrawTable('fourthElement', columsTable3, res.response.json.fourthElement.data, 350);
+      //   document.getElementById("secondElement").style.removeProperty('display');
+      // }
 
-      if (res.response.json.fiveElement.data) {
-        getDrawGraphicSecond(res.response.json.fiveElement.data, setOptions2);
-        document.getElementById("fiveElement").style.removeProperty('display');
-      }
+      // if (res.response.json.fiveElement.data) {
+      //   getDrawGraphicSecond(res.response.json.fiveElement.data, setOptions2);
+      //   document.getElementById("fiveElement").style.removeProperty('display');
+      // }
       
 
     } else {
