@@ -1,0 +1,728 @@
+<!--
+  Hi this is only a guide of how can you embed your forms. In this simple example,
+  only basic fields are showed as a guide (texts, options, numbers and dats). But is not limited
+  to this fields you can use any kind of fields, as long as you follow the correct structure.
+  We have all our documentation at https://developer.linkaform.com here you can learn more
+  Servido Public Lib
+  This Public Lib is offerd as an opensource software you can copy it change it or use it as
+  it is.
+  The Servido Public Lib must be imported along with your scripts in the next way:
+    <script src="https://embed.linkaform.com/infosync-public.js"></script>
+  To override the default behaviors of success and error after submit use:
+    infosync.onSuccess = function(){...};
+    infosync.onError = function(){...};
+  Be aware that these methods should appear after the import of the Servido Public Lib.
+  In order for this HTML code to work correctly by sending the information to the LinkaForm app
+  the following must remain intact:
+    - The form id must be infosyncForm. (to see the id got to the forms advance option)
+    - The hidden input tag with id: infosyncFormID.
+    - The values of the attributes on each field inside the form must not be altered to
+    ensure its behavior.
+    - The onclick method in the submit button must not change.
+  Anything else around these can be altered to change the general behavior or looks of the form.
+  Find here a css that can help get you started
+  <link href="http://www.servido.org/styles/bootstrap.css" rel="stylesheet">
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Contact Center</h2>
+    <form id="infosyncForm">
+      <input type="hidden" id="infosyncFormID" value="85639"/>
+      <input type="hidden" id="infosyncRedirectUrl" data-redirect-url="" data-redirect-active="false"/>
+      <input type="hidden" id="infosyncErrorMessage" data-message="Something went wrong. Try again." data-message-active="true"/>
+      <input type="hidden" id="infosyncSuccessMessage" data-message="Form successfully sent!" data-message-active="true"/>
+       
+
+        <h2>Datos del Cliente</h2>
+            <p>Cliente</p>
+            <p>Nombre</p>
+            <select name="62c249dd5c5351329c5026ad" value="sí" data-infosync-id="62c249dd5c5351329c5026ad" id="62c249dd5c5351329c5026ad">
+              <option value="">--Seleccione--</option>
+            </select>
+
+
+            <p>¿El Cliente esta en la base de datos?</p>
+                <input type="radio" name="62c38baa0a581e8416e76580" value="sí" data-infosync-id="62c38baa0a581e8416e76580" >Sí</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62c38baa0a581e8416e76580"></p>
+                <input type="radio" name="62c38baa0a581e8416e76580" value="no" data-infosync-id="62c38baa0a581e8416e76580" >No</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62c38baa0a581e8416e76580"></p>
+            <p>Nombre completo</p>
+              <input type="text" data-infosync-id="62c38c9d358cafb0a121c572" />
+              <p class="infosync-field-error" data-infosync-error-id="62c38c9d358cafb0a121c572"></p>
+            <p>Teléfono fijo</p>
+              <input type="number" data-infosync-id="62c62acc39ec3804e53023d4" />
+              <p class="infosync-field-error" data-infosync-error-id="62c62acc39ec3804e53023d4"></p>
+            <p>Teléfono oficina</p>
+              <input type="number" data-infosync-id="62c874cb0959cecc800a5975" />
+              <p class="infosync-field-error" data-infosync-error-id="62c874cb0959cecc800a5975"></p>
+            <p>Extensión</p>
+              <input type="number" data-infosync-id="62c874cb0959cecc800a5976" />
+              <p class="infosync-field-error" data-infosync-error-id="62c874cb0959cecc800a5976"></p>
+            <p>Celular movil</p>
+              <input type="number" data-infosync-id="62c61ce95f552d49f0288305" />
+              <p class="infosync-field-error" data-infosync-error-id="62c61ce95f552d49f0288305"></p>
+            <p>E mail</p>
+              <input type="email" data-infosync-id="62c38c9d358cafb0a121c575" />
+              <p class="infosync-field-error" data-infosync-error-id="62c38c9d358cafb0a121c575"></p>
+            <p>Calle</p>
+              <input type="text" data-infosync-id="62c38c9d358cafb0a121c576" />
+              <p class="infosync-field-error" data-infosync-error-id="62c38c9d358cafb0a121c576"></p>
+            <p>Numero Exterior</p>
+              <input type="text" data-infosync-id="62c38c9d358cafb0a121c578" />
+              <p class="infosync-field-error" data-infosync-error-id="62c38c9d358cafb0a121c578"></p>
+            <p>Colonia</p>
+              <input type="text" data-infosync-id="62c38c9d358cafb0a121c57a" />
+              <p class="infosync-field-error" data-infosync-error-id="62c38c9d358cafb0a121c57a"></p>
+            <p>Municipio</p>
+              <input type="text" data-infosync-id="62ebf2808becf1299824e051" />
+              <p class="infosync-field-error" data-infosync-error-id="62ebf2808becf1299824e051"></p>
+            <p>Estado</p>
+              <input type="text" data-infosync-id="62ebf2808becf1299824e050" />
+              <p class="infosync-field-error" data-infosync-error-id="62ebf2808becf1299824e050"></p>
+            <p>Codigo Postal</p>
+              <input type="text" data-infosync-id="62ebf2808becf1299824e052" />
+              <p class="infosync-field-error" data-infosync-error-id="62ebf2808becf1299824e052"></p>
+            <p>Entre Calles / Referencias</p>
+              <input type="text" data-infosync-id="62c38c9d358cafb0a121c577" />
+              <p class="infosync-field-error" data-infosync-error-id="62c38c9d358cafb0a121c577"></p>
+            <p>Numero Interior</p>
+              <input type="text" data-infosync-id="62c38c9d358cafb0a121c579" />
+              <p class="infosync-field-error" data-infosync-error-id="62c38c9d358cafb0a121c579"></p>
+
+
+            <p>ContactType</p>
+            <select name="62b90f663e4bb0114e510138" value="sí" data-infosync-id="62b90f663e4bb0114e510138" id="62b90f663e4bb0114e510138">
+              <option value="">--Seleccione--</option>
+            </select>
+
+            <p>Clasificación de retrabajo</p>
+              <select name="65297f64f99134151fe93e1e" data-infosync-id="65297f64f99134151fe93e1e" >
+                <p class="infosync-field-error" data-infosync-error-id="65297f64f99134151fe93e1e"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="reparado">Reparado</option>
+                <option value="cambio_de_empaque">Cambio de empaque</option>
+                <option value="pedido_liverpol">Pedido Liverpol</option>
+                <option value="revisión">Revisión</option>
+                <option value="producción">Producción</option>
+                <option value="otro">Otro</option>
+              </select>
+            <p>Tipo de Informacion</p>
+                <input type="radio" name="62c48484ab4a85da5f81518a" value="lugares_de_compra" data-infosync-id="62c48484ab4a85da5f81518a" >Lugares de Compra</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62c48484ab4a85da5f81518a"></p>
+                <input type="radio" name="62c48484ab4a85da5f81518a" value="del_equipo" data-infosync-id="62c48484ab4a85da5f81518a" >Del Equipo</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62c48484ab4a85da5f81518a"></p>
+                <input type="radio" name="62c48484ab4a85da5f81518a" value="de_refacciones" data-infosync-id="62c48484ab4a85da5f81518a" >De Refacciones</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62c48484ab4a85da5f81518a"></p>
+                <input type="radio" name="62c48484ab4a85da5f81518a" value="informacion_general" data-infosync-id="62c48484ab4a85da5f81518a" >Informacion General</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62c48484ab4a85da5f81518a"></p>
+                <input type="radio" name="62c48484ab4a85da5f81518a" value="informacion_equipos_industriales" data-infosync-id="62c48484ab4a85da5f81518a" >Informacion Equipos Industriales</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62c48484ab4a85da5f81518a"></p>
+        <h2>Datos de Compra</h2>
+            <p>Refaccion Comprada</p>
+            <select name="62b9123062e4c26cf0dc9c48" data-infosync-id="62b9123062e4c26cf0dc9c48" id="62b9123062e4c26cf0dc9c48">
+              <option value="">--Seleccione--</option>
+            </select>
+            <p>Modelo</p>
+            <select name="62b911f174992ac1e6dc9c9d" data-infosync-id="62b911f174992ac1e6dc9c9d" id="62b911f174992ac1e6dc9c9d">
+            <option value="">--Seleccione--</option>
+            </select>
+            <p>Generado por</p>
+                <input type="radio" name="632b51f8fbda7c7c799c011e" value="venta" data-infosync-id="632b51f8fbda7c7c799c011e" >Venta</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="632b51f8fbda7c7c799c011e"></p>
+                <input type="radio" name="632b51f8fbda7c7c799c011e" value="cotización" data-infosync-id="632b51f8fbda7c7c799c011e" >Cotización</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="632b51f8fbda7c7c799c011e"></p>
+            <p>Monto</p>
+              <input type="number" data-infosync-id="632b51f8fbda7c7c799c011f" />
+              <p class="infosync-field-error" data-infosync-error-id="632b51f8fbda7c7c799c011f"></p>
+            <p>Unidades</p>
+              <input type="number" data-infosync-id="632b51f8fbda7c7c799c0120" />
+              <p class="infosync-field-error" data-infosync-error-id="632b51f8fbda7c7c799c0120"></p>
+            <p>Serie del equipo</p>
+              <input type="text" data-infosync-id="62be3064804a534948502698" />
+              <p class="infosync-field-error" data-infosync-error-id="62be3064804a534948502698"></p>
+            <p>Fecha de Compra</p>
+              <input type="date" data-infosync-id="62be3064804a534948502699" />
+              <p class="infosync-field-error" data-infosync-error-id="62be3064804a534948502699"></p>
+            <p>Distribuidor</p>
+              <select name="62c384f54e663b0e4ee76556" data-infosync-id="62c384f54e663b0e4ee76556" >
+                <p class="infosync-field-error" data-infosync-error-id="62c384f54e663b0e4ee76556"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="amazon">AMAZON</option>
+                <option value="aurrera">AURRERA</option>
+                <option value="bodegas_california">BODEGAS CALIFORNIA</option>
+                <option value="casa_guerra">CASA GUERRA</option>
+                <option value="casa_myers">CASA MYERS</option>
+                <option value="cimaco">CIMACO</option>
+                <option value="city_club">CITY CLUB</option>
+                <option value="climeez_del_norte">CLIMEEZ DEL NORTE</option>
+                <option value="comercial_encanto">COMERCIAL ENCANTO</option>
+                <option value="comercial_mexicana">COMERCIAL MEXICANA</option>
+                <option value="coppel">COPPEL</option>
+                <option value="costco">COSTCO</option>
+                <option value="ekar_de_gas">EKAR DE GAS</option>
+                <option value="elektra">ELEKTRA</option>
+                <option value="elizondo">ELIZONDO</option>
+                <option value="famsa">FAMSA</option>
+                <option value="foly">FOLY</option>
+                <option value="futurama">FUTURAMA</option>
+                <option value="gala">GALA</option>
+                <option value="heb">HEB</option>
+                <option value="hemsa">HEMSA</option>
+                <option value="home_depot">HOME DEPOT</option>
+                <option value="ingusa">INGUSA</option>
+                <option value="liverpool">LIVERPOOL</option>
+                <option value="lm">LM</option>
+                <option value="luxor">LUXOR</option>
+                <option value="material_america">MATERIAL AMERICA</option>
+                <option value="mathasa">MATHASA</option>
+                <option value="maya">MAYA</option>
+                <option value="mercado_libre">MERCADO LIBRE</option>
+                <option value="mueblerias_villarreal-el_pasito-multi_basic-progreso">MUEBLERIAS VILLARREAL-EL PASITO-MULTI BASIC-PROGRESO</option>
+                <option value="muebles_america">MUEBLES AMERICA</option>
+                <option value="muñoz">MUÑOZ</option>
+                <option value="navarro">NAVARRO</option>
+                <option value="portillo">PORTILLO</option>
+                <option value="proveedora_termica_del_norte">PROVEEDORA TERMICA DEL NORTE</option>
+                <option value="sams">SAMS</option>
+                <option value="savoy">SAVOY</option>
+                <option value="sears">SEARS</option>
+                <option value="soriana">SORIANA</option>
+                <option value="symphony">SYMPHONY</option>
+                <option value="teckel">TECKEL</option>
+                <option value="tecni_climas">TECNI CLIMAS</option>
+                <option value="tienda_el_punto">TIENDA EL PUNTO</option>
+                <option value="valdez_baluarte">VALDEZ BALUARTE</option>
+                <option value="wal_mart">WAL MART</option>
+                <option value="surtidora_departamental">Surtidora Departamental</option>
+                <option value="mueblería_medina_hermanos">Mueblería Medina Hermanos</option>
+                <option value="ata">ATA</option>
+                <option value="cetress">Cetress</option>
+                <option value="sadi">SADI</option>
+                <option value="d2c">D2C</option>
+                <option value="nuevo_mundo">Nuevo Mundo</option>
+                <option value="electrodomésticos_utlan">Electrodomésticos Utlan</option>
+                <option value="full">Full</option>
+                <option value="gongar">Gongar</option>
+                <option value="mueblería_el_arco">Mueblería el Arco</option>
+                <option value="grupo_ferretero">Grupo Ferretero</option>
+                <option value="claro_shop">Claro Shop</option>
+                <option value="refrimar_de_la_laguna">Refrimar de la Laguna</option>
+                <option value="radio_refrigeración">Radio Refrigeración</option>
+                <option value="aire_calderón">Aire Calderón</option>
+                <option value="impulsora_de_muebles_y_aparatos">Impulsora de Muebles y Aparatos</option>
+                <option value="lafiso">Lafiso</option>
+                <option value="lalo_mueblerías">Lalo Mueblerías</option>
+                <option value="la_barata">La Barata</option>
+              </select>
+            <p>Folio generado para:</p>
+              <select name="62be3064804a53494850269b" data-infosync-id="62be3064804a53494850269b" >
+                <p class="infosync-field-error" data-infosync-error-id="62be3064804a53494850269b"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="d2c">D2C</option>
+                <option value="contact_center">Contact Center</option>
+                <option value="distribuidores">Distribuidores</option>
+                <option value="tienda_el_punto">Tienda el Punto</option>
+              </select>
+            <p>Canal de Entrada</p>
+              <select name="62be30cd48ffb499cb5026a6" data-infosync-id="62be30cd48ffb499cb5026a6" >
+                <p class="infosync-field-error" data-infosync-error-id="62be30cd48ffb499cb5026a6"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="llamada">Llamada</option>
+                <option value="chat_web">Chat Web</option>
+                <option value="facebook_messenger">Facebook Messenger</option>
+                <option value="email">Email</option>
+                <option value="whatsapp_facebook">Whatsapp Facebook</option>
+                <option value="whatsapp_google">Whatsapp Google</option>
+                <option value="whatsapp_web_page">Whatsapp Web Page</option>
+              </select>
+            <p>Por que medio nos Conocio</p>
+              <select name="62be3129148896e3565026b7" data-infosync-id="62be3129148896e3565026b7" >
+                <p class="infosync-field-error" data-infosync-error-id="62be3129148896e3565026b7"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="busqueda_google_palabras_claves_(_organico_seo)">Busqueda Google Palabras Claves ( Organico SEO)</option>
+                <option value="busqueda_google_anuncio_pagado_(_sem)">Busqueda Google Anuncio Pagado ( SEM)</option>
+                <option value="facebook_fan_page_symphony">Facebook Fan Page Symphony</option>
+                <option value="facebook_fan_page_artic_cicle">Facebook Fan Page Artic Cicle</option>
+                <option value="facebook_fan_page_master_cool">Facebook Fan Page Master Cool</option>
+                <option value="facebook_fan_page_travel_aire">Facebook Fan Page Travel Aire</option>
+                <option value="empaque_producto">Empaque Producto</option>
+                <option value="manual_producto">Manual Producto</option>
+                <option value="cliente_cartera_(_ya_nos_conocia_)">Cliente Cartera ( Ya nos conocia )</option>
+                <option value="anuncios_por_tv">Anuncios por TV</option>
+                <option value="panoramicos">Panoramicos</option>
+                <option value="lonas">Lonas</option>
+                <option value="revistas">Revistas</option>
+                <option value="publicidad_movil_(_camionetas_)">Publicidad Movil ( Camionetas )</option>
+                <option value="referenciados_por_familiares_o_amigos">Referenciados por Familiares o Amigos</option>
+              </select>
+            <p>Status de la cotización</p>
+              <select name="62be3129148896e3565026b8" data-infosync-id="62be3129148896e3565026b8" >
+                <p class="infosync-field-error" data-infosync-error-id="62be3129148896e3565026b8"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="cotizacion_formal_(_solo_verbal_)">Cotizacion Formal ( Solo Verbal )</option>
+                <option value="cotizacion_informal_(_por_escrito_)">Cotizacion Informal ( Por Escrito )</option>
+                <option value="pendiente_autorice_cliente">Pendiente Autorice Cliente</option>
+              </select>
+            <p>Cotización finalizó en:</p>
+              <select name="62c34a6c5c323b6fca9ef734" data-infosync-id="62c34a6c5c323b6fca9ef734" >
+                <p class="infosync-field-error" data-infosync-error-id="62c34a6c5c323b6fca9ef734"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="se_enviaron_datos_bancarios">Se enviaron Datos Bancarios</option>
+                <option value="no_le_interesó">No le interesó</option>
+                <option value="pendiente_comprobar_depósito">Pendiente comprobar depósito</option>
+                <option value="información_de_tienda_física">Información de Tienda Física</option>
+                <option value="pidió_información_de_equipo_industrial">Pidió información de Equipo Industrial</option>
+                <option value="solo_pidió_precio">Solo pidió precio</option>
+                <option value="no__hay_existencias">No  hay existencias</option>
+                <option value="venta">Venta</option>
+              </select>
+            <p>Forma de pago</p>
+              <select name="62c34a6c5c323b6fca9ef735" data-infosync-id="62c34a6c5c323b6fca9ef735" >
+                <p class="infosync-field-error" data-infosync-error-id="62c34a6c5c323b6fca9ef735"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="deposito_en_tienda_de__conveniencia">Deposito en Tienda de  Conveniencia</option>
+                <option value="pago_en_efectivo_en_domicilio">Pago en Efectivo en Domicilio</option>
+                <option value="terminal_punto_de_venta">Terminal Punto de Venta</option>
+                <option value="paypal_pagina_web_(_en_linea_)">Paypal Pagina Web ( En Linea )</option>
+                <option value="transferencia_bancaria_(spei)">Transferencia bancaria (SPEI)</option>
+                <option value="deposito_a_cuenta_impco">Deposito a cuenta Impco</option>
+              </select>
+        <h2>Reporte de Cliente</h2>
+            <p>Problema Reportado por Cliente</p>
+              <textarea data-infosync-id="62bdf448a2d87814df017f2a" ></textarea>
+              <p class="infosync-field-error" data-infosync-error-id="62bdf448a2d87814df017f2a"></p>
+        <h2>Datos de Visita</h2>
+            <p>Centro de Servicio Asignado</p>
+            <p>Cp</p>
+            <select name="62b910e04f1531bc1e51019a" data-infosync-id="62b910e04f1531bc1e51019a" id="62b910e04f1531bc1e51019a" 
+            onchange="onChangeSelectServicesZona();return false;">
+            <option value="">--Seleccione--</option>
+            </select>
+            <p>Zona</p>
+            <select name="6336fcc6d313f7486961127f" data-infosync-id="6336fcc6d313f7486961127f" id="6336fcc6d313f7486961127f" onchange="onChangeSelectServicesTaller();return false;">
+            <option value="">--Seleccione--</option>
+            </select>
+
+            <p>Nombre de Taller</p>
+            <select name="62b910e04f1531bc1e51019d" data-infosync-id="62b910e04f1531bc1e51019d" id="62b910e04f1531bc1e51019d">
+            <option value="">--Seleccione--</option>
+            </select>
+
+            <p>Fecha de visita del servicio</p>
+
+            <p>Fecha</p>
+            <select name="6387d3dc1d866b59d3d7c96e" data-infosync-id="6387d3dc1d866b59d3d7c96e" id="6387d3dc1d866b59d3d7c96e" onchange="onChangeSelectDate();return false;">
+            <option value="">--Seleccione--</option>
+            </select>
+
+            <p>Horario*</p>
+            <select name="6387d41cfc28e6e0c99c11c2" data-infosync-id="6387d41cfc28e6e0c99c11c2" id="6387d41cfc28e6e0c99c11c2">
+            <option value="">--Seleccione--</option>
+            </select>
+
+            <p>Reagendar</p>
+              <select name="63a4d13b35755329d31b437b" data-infosync-id="63a4d13b35755329d31b437b" >
+                <p class="infosync-field-error" data-infosync-error-id="63a4d13b35755329d31b437b"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="reagendar">Reagendar</option>
+                <option value="procesando">Procesando</option>
+                <option value="reagendado">Reagendado</option>
+                <option value="error">Error</option>
+              </select>
+            <p>Confirmar fecha de visita</p>
+                <input type="radio" name="62cc8813824d8d9e1f70445f" value="sí" data-infosync-id="62cc8813824d8d9e1f70445f" >Sí</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62cc8813824d8d9e1f70445f"></p>
+                <input type="radio" name="62cc8813824d8d9e1f70445f" value="no" data-infosync-id="62cc8813824d8d9e1f70445f" >No</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62cc8813824d8d9e1f70445f"></p>
+            <p>Confirmar visita del técnico</p>
+                <input type="radio" name="633cb9ccf6e6c60a1b757687" value="sí" data-infosync-id="633cb9ccf6e6c60a1b757687" >Sí</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="633cb9ccf6e6c60a1b757687"></p>
+                <input type="radio" name="633cb9ccf6e6c60a1b757687" value="no" data-infosync-id="633cb9ccf6e6c60a1b757687" >No</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="633cb9ccf6e6c60a1b757687"></p>
+            <p>Tipo de servicio</p>
+                <input type="radio" name="631917075ce0dc81d20c3d46" value="ruta" data-infosync-id="631917075ce0dc81d20c3d46" >Ruta</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="631917075ce0dc81d20c3d46"></p>
+                <input type="radio" name="631917075ce0dc81d20c3d46" value="fila" data-infosync-id="631917075ce0dc81d20c3d46" >Fila</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="631917075ce0dc81d20c3d46"></p>
+            <p>Status de Servicio</p>
+              <select name="62be28214463678859386be8" data-infosync-id="62be28214463678859386be8" >
+                <p class="infosync-field-error" data-infosync-error-id="62be28214463678859386be8"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="pendiente_por_asignar">Pendiente por Asignar</option>
+                <option value="asignado">Asignado</option>
+                <option value="pendiente_de_refacciones">Pendiente de Refacciones</option>
+                <option value="mover_equipo">Mover Equipo</option>
+                <option value="mandar_guia_a_cliente">Mandar Guia a Cliente</option>
+                <option value="no_asignado">No Asignado</option>
+                <option value="fuera_de_zona">Fuera de Zona</option>
+                <option value="zona_de_riesgo_o_conflictiva">Zona de Riesgo o Conflictiva</option>
+                <option value="cancelado_por_cliente">Cancelado por Cliente</option>
+                <option value="cancelado_por_centro_de_servicio_impco">Cancelado por Centro de Servicio Impco</option>
+              </select>
+            <p>Numero de Guia</p>
+              <input type="text" data-infosync-id="62be28214463678859386be9" />
+              <p class="infosync-field-error" data-infosync-error-id="62be28214463678859386be9"></p>
+            <p>Observaciones Asignacion de Servicio/Agente</p>
+              <textarea data-infosync-id="62be28214463678859386bea" ></textarea>
+              <p class="infosync-field-error" data-infosync-error-id="62be28214463678859386bea"></p>
+            <p>Confirmación de servicio asignado</p>
+                <input type="radio" name="633cb9ccf6e6c60a1b757688" value="sí" data-infosync-id="633cb9ccf6e6c60a1b757688" >Sí</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="633cb9ccf6e6c60a1b757688"></p>
+                <input type="radio" name="633cb9ccf6e6c60a1b757688" value="no" data-infosync-id="633cb9ccf6e6c60a1b757688" >No</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="633cb9ccf6e6c60a1b757688"></p>
+        <h2>Datos de Falla del Equipo</h2>
+            <p>Falla</p>
+              <textarea data-infosync-id="65297f65f99134151fe93e1f" ></textarea>
+              <p class="infosync-field-error" data-infosync-error-id="65297f65f99134151fe93e1f"></p>
+            <p>Solución</p>
+              <textarea data-infosync-id="65297f65f99134151fe93e20" ></textarea>
+              <p class="infosync-field-error" data-infosync-error-id="65297f65f99134151fe93e20"></p>
+            <p>Observación</p>
+              <textarea data-infosync-id="62c5daede17d13af7f57fff7" ></textarea>
+              <p class="infosync-field-error" data-infosync-error-id="62c5daede17d13af7f57fff7"></p>
+            <p>Destino</p>
+              <select name="65297f65f99134151fe93e22" data-infosync-id="65297f65f99134151fe93e22" >
+                <p class="infosync-field-error" data-infosync-error-id="65297f65f99134151fe93e22"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="a">A</option>
+                <option value="b">B</option>
+                <option value="scrap">Scrap</option>
+              </select>
+            <p>Status de Servicio por Parte del Tecnico</p>
+              <select name="62be2bb4908cabc0c7c2ab93" data-infosync-id="62be2bb4908cabc0c7c2ab93" >
+                <p class="infosync-field-error" data-infosync-error-id="62be2bb4908cabc0c7c2ab93"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="pendiente_de_refaccion">Pendiente de Refaccion</option>
+                <option value="mover_equipo">Mover Equipo</option>
+                <option value="completado">Completado</option>
+                <option value="cerrado_por_falla_irreparable">Cerrado por falla Irreparable</option>
+                <option value="cerrado_por_invalidación_de_garantia">Cerrado por invalidación de Garantia</option>
+                <option value="cancelado_por_cliente_conflictivo">Cancelado por cliente conflictivo</option>
+                <option value="cancelado_por_zona_peligrosa_o_de_riesgo">Cancelado por zona peligrosa o de riesgo</option>
+                <option value="cancelado_por_cliente_no_comprobó_garantia_ticket">Cancelado por cliente no comprobó garantia Ticket</option>
+                <option value="cliente_no_localizado">Cliente no localizado</option>
+                <option value="completado_venta">Completado Venta</option>
+                <option value="completado_no_venta">Completado No Venta</option>
+                <option value="abierto">Abierto</option>
+                <option value="cancelado_por_cliente,_no_quiso_reparación">Cancelado por cliente, no quiso reparación</option>
+                <option value="cancelado_por_cliente,_ya_lo_había_reparado">Cancelado por cliente, ya lo había reparado</option>
+              </select>
+            <p>Especifique refacción pendiente</p>
+              <textarea data-infosync-id="633cb9ccf6e6c60a1b757689" ></textarea>
+              <p class="infosync-field-error" data-infosync-error-id="633cb9ccf6e6c60a1b757689"></p>
+        <h2>Datos Observaciones</h2>
+            <p>Observaciones de Consulta</p>
+              <select name="62c48db8fa2a81cb0c495484" data-infosync-id="62c48db8fa2a81cb0c495484" >
+                <p class="infosync-field-error" data-infosync-error-id="62c48db8fa2a81cb0c495484"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="completado">Completado</option>
+                <option value="pendiente_de_refaccion">Pendiente de Refaccion</option>
+                <option value="falla_irreparable">Falla Irreparable</option>
+                <option value="invalidacion_de_garantia">Invalidacion de Garantia</option>
+                <option value="mover_equipo">Mover Equipo</option>
+                <option value="cancelado_cliente_conflictivo">Cancelado cliente conflictivo</option>
+                <option value="cancelado_zona_peligrosa_o_de_riesgo">Cancelado zona peligrosa o de riesgo</option>
+                <option value="cancelado_cliente_no_comprobo_garantia_(no_ticket)">Cancelado Cliente No Comprobo Garantia (No Ticket)</option>
+              </select>
+            <p>Observaciones de Atencion Distribuidores</p>
+              <select name="62c34d0f49bfcf4fdc909652" data-infosync-id="62c34d0f49bfcf4fdc909652" >
+                <p class="infosync-field-error" data-infosync-error-id="62c34d0f49bfcf4fdc909652"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="completado">Completado</option>
+                <option value="pendiente_de_refaccion">Pendiente de Refaccion</option>
+                <option value="falla_irreparable">Falla irreparable</option>
+                <option value="invalidacion_de_garantia">Invalidacion de Garantia</option>
+                <option value="mover_equipo">Mover Equipo</option>
+                <option value="cancelado_cliente_conflictivo">Cancelado Cliente Conflictivo</option>
+                <option value="cancelado_zona_peligrosa_o_de_riesgo">Cancelado Zona Peligrosa o de Riesgo</option>
+                <option value="cancelado_cliente_no_comprobo_garantia_(_no_ticket_)">Cancelado Cliente No Comprobo Garantia ( No Ticket )</option>
+              </select>
+            <p>Observaciones Soporte a Centro de Servicio</p>
+              <select name="62be2eaf4632765603820aeb" data-infosync-id="62be2eaf4632765603820aeb" >
+                <p class="infosync-field-error" data-infosync-error-id="62be2eaf4632765603820aeb"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="completado">Completado</option>
+                <option value="pendiente_de_refaccion">Pendiente de Refaccion</option>
+                <option value="falla_irreparable">Falla Irreparable</option>
+                <option value="invalidacion_de_garantia">Invalidacion de Garantia</option>
+                <option value="mover_equipo">Mover Equipo</option>
+                <option value="cancelado_cliente_conflictivo">Cancelado cliente conflictivo</option>
+                <option value="cancelado_zona_peligrosa_o_de_riesgo">Cancelado zona peligrosa o de riesgo</option>
+                <option value="cancelado_cliente_no_comprobo_garantia_(no_ticket)">Cancelado Cliente No Comprobo Garantia (No Ticket)</option>
+              </select>
+            <p>Centro de Servicio que nos Contacto</p>
+              <select name="62be2eaf4632765603820aec" data-infosync-id="62be2eaf4632765603820aec" >
+                <p class="infosync-field-error" data-infosync-error-id="62be2eaf4632765603820aec"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="completado">Completado</option>
+                <option value="pendiente_de_refaccion">Pendiente de Refaccion</option>
+                <option value="falla_irreparable">Falla Irreparable</option>
+                <option value="invalidacion_de_garantia">Invalidacion de Garantia</option>
+                <option value="mover_equipo">Mover Equipo</option>
+                <option value="cancelado_cliente_conflictivo">Cancelado cliente conflictivo</option>
+                <option value="cancelado_zona_peligrosa_o_de_riesgo">Cancelado zona peligrosa o de riesgo</option>
+                <option value="cancelado_cliente_no_comprobo_garantia_(no_ticket)">Cancelado Cliente No Comprobo Garantia (No Ticket)</option>
+              </select>
+        <h2>Datos Administrativos</h2>
+            <p>Monto Cobrado en Servicio con Costo</p>
+              <input type="number" data-infosync-id="62c6336d6341e48c6e57ffe2" />
+              <p class="infosync-field-error" data-infosync-error-id="62c6336d6341e48c6e57ffe2"></p>
+            <p>Nombre del Tecnico</p>
+              <input type="text" data-infosync-id="62c34e6e897643be45a1e041" />
+              <p class="infosync-field-error" data-infosync-error-id="62c34e6e897643be45a1e041"></p>
+            <p>Fecha de conclusión del servicio</p>
+              <input type="date" data-infosync-id="62c34e6e897643be45a1e042" />
+              <p class="infosync-field-error" data-infosync-error-id="62c34e6e897643be45a1e042"></p>
+            <p>Observaciones Tecnico</p>
+              <textarea data-infosync-id="62be2f1c46a37cc626820b02" ></textarea>
+              <p class="infosync-field-error" data-infosync-error-id="62be2f1c46a37cc626820b02"></p>
+            <p>Status de Servicio Administrativamente</p>
+              <select name="62ccc2dc2bce4cbdae7043fb" data-infosync-id="62ccc2dc2bce4cbdae7043fb" >
+                <p class="infosync-field-error" data-infosync-error-id="62ccc2dc2bce4cbdae7043fb"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="pagado">Pagado</option>
+                <option value="pendiente_de_pago">Pendiente de Pago</option>
+                <option value="no_reportado">No Reportado</option>
+              </select>
+            <p>Numero de Factura del Centro de Servicio</p>
+              <input type="text" data-infosync-id="62be2fea804a534948502695" />
+              <p class="infosync-field-error" data-infosync-error-id="62be2fea804a534948502695"></p>
+            <p>Fecha de Presentacion de Requerimiento de Pago</p>
+              <input type="date" data-infosync-id="62c34e6e897643be45a1e043" />
+              <p class="infosync-field-error" data-infosync-error-id="62c34e6e897643be45a1e043"></p>
+            <p>Fecha de Pago del Servicio</p>
+              <input type="date" data-infosync-id="62be2fea804a534948502696" />
+              <p class="infosync-field-error" data-infosync-error-id="62be2fea804a534948502696"></p>
+            <p>Observaciones Admnistrativas</p>
+              <textarea data-infosync-id="62be2fea804a534948502697" ></textarea>
+              <p class="infosync-field-error" data-infosync-error-id="62be2fea804a534948502697"></p>
+        <h2>Seguimiento</h2>
+            <p>Fecha de seguimiento</p>
+              <input type="date" data-infosync-id="62d0b27afa1958d934a3c119" />
+              <p class="infosync-field-error" data-infosync-error-id="62d0b27afa1958d934a3c119"></p>
+            <p>Persona que llama</p>
+                <input type="radio" name="62d0b27afa1958d934a3c11a" value="cliente" data-infosync-id="62d0b27afa1958d934a3c11a" >Cliente</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62d0b27afa1958d934a3c11a"></p>
+                <input type="radio" name="62d0b27afa1958d934a3c11a" value="distribuidor" data-infosync-id="62d0b27afa1958d934a3c11a" >Distribuidor</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62d0b27afa1958d934a3c11a"></p>
+            <p>Motivo</p>
+              <textarea data-infosync-id="62d0b27afa1958d934a3c11b" ></textarea>
+              <p class="infosync-field-error" data-infosync-error-id="62d0b27afa1958d934a3c11b"></p>
+            <p>Crear registro</p>
+                <input type="radio" name="62ea5caf301bb467b9618f53" value="ninguno" data-infosync-id="62ea5caf301bb467b9618f53" >Ninguno</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62ea5caf301bb467b9618f53"></p>
+                <input type="radio" name="62ea5caf301bb467b9618f53" value="consultar_un_servicio" data-infosync-id="62ea5caf301bb467b9618f53" >Consultar un Servicio</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62ea5caf301bb467b9618f53"></p>
+                <input type="radio" name="62ea5caf301bb467b9618f53" value="atención_a_distribuidores" data-infosync-id="62ea5caf301bb467b9618f53" >Atención a Distribuidores</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62ea5caf301bb467b9618f53"></p>
+            <p>Observaciones de Consulta</p>
+              <select name="62ea5caf301bb467b9618f54" data-infosync-id="62ea5caf301bb467b9618f54" >
+                <p class="infosync-field-error" data-infosync-error-id="62ea5caf301bb467b9618f54"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="completado">Completado</option>
+                <option value="pendiente_de_refaccion">Pendiente de Refaccion</option>
+                <option value="falla_irreparable">Falla Irreparable</option>
+                <option value="invalidacion_de_garantia">Invalidacion de Garantia</option>
+                <option value="mover_equipo">Mover Equipo</option>
+                <option value="cancelado_cliente_conflictivo">Cancelado cliente conflictivo</option>
+                <option value="cancelado_zona_peligrosa_o_de_riesgo">Cancelado zona peligrosa o de riesgo</option>
+                <option value="cancelado_cliente_no_comprobo_garantia_(no_ticket)">Cancelado Cliente No Comprobo Garantia (No Ticket)</option>
+              </select>
+            <p>Observaciones de Atencion Distribuidores</p>
+              <select name="62ea5caf301bb467b9618f55" data-infosync-id="62ea5caf301bb467b9618f55" >
+                <p class="infosync-field-error" data-infosync-error-id="62ea5caf301bb467b9618f55"></p>
+                <option value="">Selecciona una opción</option>
+                <option value="completado">Completado</option>
+                <option value="pendiente_de_refaccion">Pendiente de Refaccion</option>
+                <option value="falla_irreparable">Falla Irreparable</option>
+                <option value="invalidacion_de_garantia">Invalidacion de Garantia</option>
+                <option value="mover_equipo">Mover Equipo</option>
+                <option value="cancelado_cliente_conflictivo">Cancelado cliente conflictivo</option>
+                <option value="cancelado_zona_peligrosa_o_de_riesgo">Cancelado zona peligrosa o de riesgo</option>
+                <option value="cancelado_cliente_no_comprobo_garantia_(no_ticket)">Cancelado Cliente No Comprobo Garantia (No Ticket)</option>
+              </select>
+            <p>Status Seguimiento</p>
+                <input type="radio" name="62ec3e1b0c20d51725e7a2a0" value="pendiente" data-infosync-id="62ec3e1b0c20d51725e7a2a0" >Pendiente</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62ec3e1b0c20d51725e7a2a0"></p>
+                <input type="radio" name="62ec3e1b0c20d51725e7a2a0" value="realizado" data-infosync-id="62ec3e1b0c20d51725e7a2a0" >Realizado</input><br>
+                <p class="infosync-field-error" data-infosync-error-id="62ec3e1b0c20d51725e7a2a0"></p>
+            <p>Folio padre (Solo para Consulta de servicio y Atención a Distribidores</p>
+              <input type="text" data-infosync-id="62ea5bafe92b6caf57b4e68d" />
+              <p class="infosync-field-error" data-infosync-error-id="62ea5bafe92b6caf57b4e68d"></p>
+        <h2>Buttons</h2>
+      <br>
+      <button onclick="infosync.reset()" type="reset">Borrar respuestas</button>
+      <button onclick="infosync.send()" type="button">Mandar respuestas</button>
+    </form>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script type="text/javascript">
+
+    function getCatalog(option, parameter = null){
+      fetch('https://preprod.linkaform.com/api/infosync/scripts/run/', {
+        method: 'POST',
+        body: JSON.stringify({
+          option: option,
+          parameter: parameter,
+          script_id: 111679,
+        }),
+        headers:{
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          if (res.response.catalog){
+            if(option == 1){
+              setOptionsSelectClient(res.response.catalog);
+            }else if(option == 2){
+              setOptionsSelectContacType(res.response.catalog)
+            }else if(option == 3){
+              setOptionsSelectRefaccion(res.response.catalog)
+            }else if(option == 4){
+              setOptionsSelectModel(res.response.catalog)
+            }else if(option == 5){
+              setOptionsSelectServiceAsigment(res.response.catalog)
+            }else if(option == 6){
+              setOptionsSelectServiceZona(res.response.catalog)
+            }else if(option == 7){
+              setOptionsSelectServiceTaller(res.response.catalog)
+            }else if(option == 8){
+              setOptionsSelectDate(res.response.catalog)
+            }else if(option == 9){
+              setOptionsSelectDateHour(res.response.catalog)
+            }
+          }
+        } 
+      })
+    };
+
+
+    function setOptionsSelectClient(data){
+      //----Ejemplo
+      $("#62c249dd5c5351329c5026ad").empty();
+      $('#62c249dd5c5351329c5026ad').append('<option value="--">--Seleccione--</option>');
+      
+      for (i = 0; i < data.length; i++) {
+        value =  data[i]['62c249dd5c5351329c5026b1'];
+        $('#62c249dd5c5351329c5026ad').append('<option value="'+ value +'">'+value+'</option>');
+      }
+    }
+
+    function setOptionsSelectContacType(data){
+      //----Ejemplo
+      $("#62b90f663e4bb0114e510138").empty();
+      $('#62b90f663e4bb0114e510138').append('<option value="--">--Seleccione--</option>');
+      for (i = 0; i < data.length; i++) {
+        value =  data[i]['62b90f663e4bb0114e51013a'];
+        $('#62b90f663e4bb0114e510138').append('<option value="'+ value +'">'+value+'</option>');
+      }
+    }
+
+    function setOptionsSelectRefaccion(data){
+      //----Ejemplo
+      $("#62b9123062e4c26cf0dc9c48").empty();
+      $('#62b9123062e4c26cf0dc9c48').append('<option value="--">--Seleccione--</option>');
+      for (i = 0; i < data.length; i++) {
+        value =  data[i]['62b91259d7ebb886ab216072'];
+        $('#62b9123062e4c26cf0dc9c48').append('<option value="'+ value +'">'+value+'</option>');
+      }
+    }
+
+    function setOptionsSelectModel(data){
+      //----Ejemplo
+      $("#62b911f174992ac1e6dc9c9d").empty();
+      $('#62b911f174992ac1e6dc9c9d').append('<option value="--">--Seleccione--</option>');
+      for (i = 0; i < data.length; i++) {
+        value =  data[i]['62b912042493c4514fdc9c7d'];
+        $('#62b911f174992ac1e6dc9c9d').append('<option value="'+ value +'">'+value+'</option>');
+      }
+    }
+
+    function setOptionsSelectServiceAsigment(data){
+      //----Ejemplo
+      $("#62b910e04f1531bc1e51019a").empty();
+      $('#62b910e04f1531bc1e51019a').append('<option value="--">--Seleccione--</option>');
+      for (i = 0; i < data.length; i++) {
+        value =  data[i]['62b910e04f1531bc1e5101a2'];
+        $('#62b910e04f1531bc1e51019a').append('<option value="'+ value +'">'+value+'</option>');
+      }
+    }
+
+    function setOptionsSelectServiceZona(data){
+      //----Ejemplo
+      $("#6336fcc6d313f7486961127f").empty();
+      $('#6336fcc6d313f7486961127f').append('<option value="--">--Seleccione--</option>');
+      for (i = 0; i < data.length; i++) {
+        value =  data[i]['6336fcc6d313f7486961127f'];
+        $('#6336fcc6d313f7486961127f').append('<option value="'+ value +'">'+value+'</option>');
+      }
+    }
+
+    function setOptionsSelectServiceTaller(data){
+      //----Ejemplo
+      $("#62b910e04f1531bc1e51019d").empty();
+      $('#62b910e04f1531bc1e51019d').append('<option value="--">--Seleccione--</option>');
+      for (i = 0; i < data.length; i++) {
+        value =  data[i]['62b910e04f1531bc1e51019d'];
+        $('#62b910e04f1531bc1e51019d').append('<option value="'+ value +'">'+value+'</option>');
+      }
+    }
+
+    function setOptionsSelectDate(data){
+      //----Ejemplo
+      $("#6387d3dc1d866b59d3d7c96e").empty();
+      $('#6387d3dc1d866b59d3d7c96e').append('<option value="--">--Seleccione--</option>');
+      for (i = 0; i < data.length; i++) {
+        value =  data[i]['6387d3dc1d866b59d3d7c96e'];
+        $('#6387d3dc1d866b59d3d7c96e').append('<option value="'+ value +'">'+value+'</option>');
+      }
+    }
+
+    function setOptionsSelectDateHour(data){
+      //----Ejemplo
+      $("#6387d41cfc28e6e0c99c11c2").empty();
+      $('#6387d41cfc28e6e0c99c11c2').append('<option value="--">--Seleccione--</option>');
+      for (i = 0; i < data.length; i++) {
+        value =  data[i]['6387d41cfc28e6e0c99c11c2'];
+        $('#6387d41cfc28e6e0c99c11c2').append('<option value="'+ value +'">'+value+'</option>');
+      }
+    }
+
+
+    function onChangeSelectServicesZona(){
+      valueCp = $('#62b910e04f1531bc1e51019a').val();
+      listParameter = [valueCp]
+      getCatalog(6,listParameter);
+    }
+
+    function onChangeSelectServicesTaller(){
+      valueCp = $('#62b910e04f1531bc1e51019a').val();
+      valueZona = $('#6336fcc6d313f7486961127f').val();
+      listParameter = [valueCp,valueZona]
+      getCatalog(7,listParameter);
+    }
+
+    function onChangeSelectDate() {
+      valueDate = $('#6387d3dc1d866b59d3d7c96e').val();
+      listParameter = [valueDate]
+      getCatalog(9,listParameter);
+    }
+
+    window.onload = function(){
+      getCatalog(1);
+      getCatalog(2);
+      getCatalog(3);
+      getCatalog(4);
+      getCatalog(5);
+      getCatalog(8);
+    }   
+  </script>
+</html>

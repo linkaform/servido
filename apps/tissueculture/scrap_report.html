@@ -153,8 +153,9 @@
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
+
                     <!--Primer Elemento -->
-                    <div class="col-sm-4 col-md-6 col-lg-6" style="align-items: center;overflow-y: scroll;">
+                    <div class="col-sm-12 col-md-6 col-lg-6" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
                             <h3><span>Scrap by Product</span>&nbsp;&nbsp;
                                 <button class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
@@ -164,30 +165,12 @@
                         </section>
                         <div id="firstElement" ></div>
                     </div>
-
-                    <!--Segundo Elemento -->
-                    <div class="col-sm-4 col-md-6 col-lg-6" style="align-items: center;overflow-y: scroll;">
-                        <section class="title_tables">
-                            <h3><span>Scrap by Product by Warehouse</span>&nbsp;&nbsp;
-                                <button class="btn btn-primary" id="download_csv_secondElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button class="btn btn-success" id="download_xlsx_secondElement"><i class="fa-regular fa-file-excel"></i></button>
-                            </h3>
-                            <hr class="hrSecondElement">
-                        </section>
-                        <div id="secondElement" ></div>
+                    <div class="col-sm-12 col-md-6 col-lg-6" style="align-items: center;overflow-y: scroll;" id="secondElement">
+                         <div  style="width: 850px;height: 450px;margin: auto;">
+                            <canvas id="graphicFirst"></canvas>
+                        </div>
                     </div>
 
-                    <!--Tercer Elemento -->
-                    <div class="col-sm-12 col-md-12 col-lg-6" style="align-items: center;overflow-y: scroll;">
-                        <section class="title_tables">
-                            <h3 ><span>Scrap by Product and Lote</span>&nbsp;&nbsp;
-                                <button  class="btn btn-primary" id="download_csv_thirdElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button  class="btn btn-success" id="download_xlsx_thirdElement"><i class="fa-regular fa-file-excel"></i></button>
-                            </h3>
-                            <hr class="green-HrThirdElement">
-                        </section>
-                        <div id="thirdElement"> </div>
-                    </div>
 
                     <!--FOURTH ELEMENT - TABLE -->
                     <div class="col-sm-12 col-md-12 col-lg-6" style="align-items: center;overflow-y: scroll;">
@@ -200,17 +183,10 @@
                         </section>
                         <div id="fourthElement"> </div>
                     </div>
-
-                    <!--FIVE ELEMENT - GRAPHIC -->
-                    <div class="col-sm-12 col-md-12 col-lg-6" style="align-items: center;overflow-y: scroll;">
-                        <section class="title_tables">
-                            <h3 ><span>Scrap by Reason by Warehouse</span>&nbsp;&nbsp;
-                                <button  class="btn btn-primary" id="download_csv_fiveElement"><i class="fa-solid fa-file-csv"></i></button>
-                                <button  class="btn btn-success" id="download_xlsx_fiveElement"><i class="fa-regular fa-file-excel"></i></button>
-                            </h3>
-                            <hr class="green-HrFiveElement">
-                        </section>
-                        <div id="fiveElement"> </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6" style="align-items: center;overflow-y: scroll;" id="fivethElement">
+                        <div  style="width: 850px;height: 450px;margin: auto;">
+                            <canvas id="graphicSecond"></canvas>
+                        </div>
                     </div>
 
                     <!--SIXTH ELEMENT - GRAPHIC -->
@@ -223,6 +199,11 @@
                             <hr class="green-HrSixthElement">
                         </section>
                         <div id="sixthElement"> </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6" style="align-items: center;overflow-y: scroll;" id="seventhElement">
+                        <div  style="width: 850px;height: 450px;margin: auto;">
+                            <canvas id="graphicThird"></canvas>
+                        </div>
                     </div>
 
                 </div>

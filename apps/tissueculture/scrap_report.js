@@ -180,21 +180,23 @@ function loadDemoData(){
   getDrawTable('firstElement', columsTable1, dataTable1, 350);
   document.getElementById("firstElement").style.removeProperty('display');
 
-
-  getDrawTable('secondElement', columsTable2, dataTable2, 350);
-  document.getElementById("secondElement").style.removeProperty('display');
-
-  getDrawTable('thirdElement', columsTable3, dataTable3, 350);
-  document.getElementById("thirdElement").style.removeProperty('display');
-
   getDrawTable('fourthElement', columsTable4, dataTable4, 350);
   document.getElementById("fourthElement").style.removeProperty('display');
 
-  getDrawTable('fiveElement', columsTable5, dataTable5, 350);
-  document.getElementById("fiveElement").style.removeProperty('display');
-
   getDrawTable('sixthElement', columsTable6, dataTable6, 350);
   document.getElementById("sixthElement").style.removeProperty('display');
+
+
+  getDrawGraphicFirst(data1, setOptions1);
+  document.getElementById("secondElement").style.removeProperty('display');
+  
+  getDrawGraphicSecond(data1, setOptions2);
+  document.getElementById("fivethElement").style.removeProperty('display');
+
+  getDrawGraphicThird(data1, setOptions2);
+  document.getElementById("seventhElement").style.removeProperty('display');
+
+
 }
 
 //-----EXCUTION
@@ -243,16 +245,32 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
       $('.title_tables').show();
       console.log(res.response.json)
       if (res.response.json.firstElement.data) {
+        // by Product
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
+        getDrawGraphicFirst(res.response.json.secondElement.data, setOptions1);
+        document.getElementById("secondElement").style.removeProperty('display');
+
+        // by warehouse
+        getDrawTable('fourthElement', columsTable4, res.response.json.fourthElement.data, 350);
+        document.getElementById("secondElement").style.removeProperty('display');
+        // getDrawGraphicSecond(data1, setOptions2);
+        // document.getElementById("fivethElement").style.removeProperty('display');
+
+          
+        // by Reason
+        getDrawTable('sixthElement', columsTable6, res.response.json.sixthElement.data, 350);
+        document.getElementById("sixthElement").style.removeProperty('display');
+        // getDrawGraphicThird(data1, setOptions2);
+        // document.getElementById("seventhElement").style.removeProperty('display');
        
       }
       
-      if (res.response.json.secondElement.data) {
-        console.log(res.response.json.secondElement.data)
-        getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data,);
-        document.getElementById("secondElement").style.removeProperty('display');
-      }
+      // if (res.response.json.secondElement.data) {
+      //   console.log(res.response.json.secondElement.data)
+      //   getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data,);
+      //   document.getElementById("secondElement").style.removeProperty('display');
+      // }
 
       // if (res.response.json.thirdElement.data) {
       //   console.log(res.response.json.thirdElement.data)
@@ -264,15 +282,15 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
 
 
 
-      if (res.response.json.fourthElement.data) {
-        getDrawTable('fourthElement', columsTable3, res.response.json.fourthElement.data, 350);
-        document.getElementById("secondElement").style.removeProperty('display');
-      }
+      // if (res.response.json.fourthElement.data) {
+      //   getDrawTable('fourthElement', columsTable3, res.response.json.fourthElement.data, 350);
+      //   document.getElementById("secondElement").style.removeProperty('display');
+      // }
 
-      if (res.response.json.fiveElement.data) {
-        getDrawGraphicSecond(res.response.json.fiveElement.data, setOptions2);
-        document.getElementById("fiveElement").style.removeProperty('display');
-      }
+      // if (res.response.json.fiveElement.data) {
+      //   getDrawGraphicSecond(res.response.json.fiveElement.data, setOptions2);
+      //   document.getElementById("fiveElement").style.removeProperty('display');
+      // }
       
 
     } else {
@@ -325,6 +343,61 @@ function getDrawTable(id, columnsData, tableData){
     });
   }
 }
+
+//-----GRAFICA
+let chart1;
+function getDrawGraphicFirst(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicFirst').getContext('2d');
+  if (chart1) {
+    chart1.destroy();
+  }
+
+  chart1 = new Chart(ctx, {
+    type: 'line',
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
+}
+
+let chart2;
+function getDrawGraphicSecond(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicSecond').getContext('2d');
+  if (chart2) {
+    chart2.destroy();
+  }
+
+  chart2 = new Chart(ctx, {
+    type: 'line',
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
+}
+
+
+
+let chart3;
+function getDrawGraphicThird(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicThird').getContext('2d');
+  if (chart3) {
+    chart3.destroy();
+  }
+
+  chart3 = new Chart(ctx, {
+    type: 'line',
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
+}
+
+
+
+
 
 
 //----- CATALOGS
