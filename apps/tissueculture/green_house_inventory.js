@@ -285,19 +285,14 @@ function get_catalog()
         arrayOut.sort();
         //----Pais
         $("#plant").empty();
-        $('#plant').append('<option value="--">--Seleccione--</option>');
+        $('#plant').append('<option value="">--Seleccione--</option>');
         for (i = 0; i < arrayPlant.length; i++) {
           value = arrayPlant[i]
           $('#plant').append('<option value="'+ value +'">'+value+'</option>');
         }
 
         //----Pais
-        $("#in").empty();
-        $('#in').append('<option value="--">--Seleccione--</option>');
-        for (i = 0; i < arrayOut.length; i++) {
-          value = arrayOut[i]
-          $('#in').append('<option value="'+ value +'">'+value+'</option>');
-        }
+
       }
     } 
   })
@@ -320,24 +315,22 @@ function get_catalog()
       //console.log("Datos devueltos")
       if(res.response.json.catalogtwo){
         console.log(res.response.json.catalogtwo)
-        res.response.json.catalogtwo.forEach((element,index)=>{
-          //console.log("FE:"+element['6442e4831198daf81456f274'])
-          valueIn = element['6442e4831198daf81456f274'];
-          console.log("EFE:"+valueIn)
-          if(arrayIn.includes(valueIn) == false){
-            console.log("Dato:"+valueIn)
-            arrayIn.push(valueIn)
-          }
+        res.response.json.catalogtwo.forEach((element, index)=>{
+          console.log("FE:"+element)
+          arrayIn.push(element)
+        })
+          arrayIn.push('Scrap')
           arrayIn.sort()
           //---Warehouse Out
+          $("#in").empty();
+          $('#in').append('<option value="">--Seleccione--</option>');
           $("#out").empty();
-          $("#out").append('<option value="--">--Seleccione--</option>');
-          $('#out').append('<option value="scrap">Scrap</option>');
+          $("#out").append('<option value="">--Seleccione--</option>');
           for(i = 0; i < arrayIn.length; i++){
             value = arrayIn[i]
             $('#out').append('<option value="' + value + '">'+value + '</option>');
+            $('#in').append('<option value="' + value + '">'+value + '</option>');
           }
-        })
         /*for (i = 0; i < res.response.json.catalogtwo.length; i++) {
           valueIn = res.response.json.catalogtwo[i]['6442e4831198daf81456f274'];
           //console.log(valueIn)
