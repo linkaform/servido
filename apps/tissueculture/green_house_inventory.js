@@ -126,26 +126,6 @@ window.onload = function(){
     });
   });
 
-  $(document).ready(function() {
-    $('#warehouse_from').select2({
-      language: {
-      noResults: function() {
-        return '';
-      }
-    }
-    });
-  });
-
-  $(document).ready(function() {
-    $('#warehouse_to').select2({
-      language: {
-      noResults: function() {
-        return '';
-      }
-    }
-    });
-  });
-
   $(document).ready(function(){
     //----Función que escucha al selector de params
     $("#productCode").on('select2:select', function(e){
@@ -370,6 +350,18 @@ function get_catalog()
           arrayIn.push('Scrap')
           arrayIn.sort()
           //---Warehouse Out
+          $("#warehouse_from").select2({
+            placeholder: 'Select',
+            allowClear: true,
+            selectionCssClass: "select2-selection",
+          })
+
+          $("#warehouse_to").select2({
+            placeholder: 'Select',
+            allowClear: true,
+            selectionCssClass: "select2-selection",
+          })
+
           $("#warehouse_to").empty();
           $('#warehouse_to').append('<option value="">--Seleccione--</option>');
           $("#warehouse_from").empty();
