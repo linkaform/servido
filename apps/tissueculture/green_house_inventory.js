@@ -17,6 +17,8 @@ hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
 hideElement("secondElement");
+hideElement("filter_date")
+
 
 window.onload = function(){
   console.log('url=', url)
@@ -114,6 +116,44 @@ window.onload = function(){
       }
     }
   }
+
+  $(document).ready(function() {
+    $('.js-theme-multiple').select2({
+        placeholder: 'Loading',
+        allowClear: true, // Opcional, para agregar una "X" para deseleccionar
+        selectionCssClass: "select2-selection",
+
+    });
+  });
+
+  $(document).ready(function() {
+    $('#warehouse_from').select2({
+      language: {
+      noResults: function() {
+        return '';
+      }
+    }
+    });
+  });
+
+  $(document).ready(function() {
+    $('#warehouse_to').select2({
+      language: {
+      noResults: function() {
+        return '';
+      }
+    }
+    });
+  });
+
+  $(document).ready(function(){
+    //----Función que escucha al selector de params
+    $("#productCode").on('select2:select', function(e){
+      var data = e.params.data;
+      console.log(data)
+      get_lotNumber(data.id);
+    })
+  })
 }
 
 
@@ -141,7 +181,8 @@ function loadDemoData(){
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
-function runFirstElement(){
+function runFirstElement(){ 
+  let dateOptions = document.getElementById("dateOptions");
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
   let plant = document.getElementById("product_code");  
@@ -153,10 +194,10 @@ function runFirstElement(){
     //---created date
     check = 'off';
   }
-  getFirstElement(date_to.value, date_from.value, plant.value, option_in.value, option_out.value, check);
+  getFirstElement(dateOptions.value, date_to.value, date_from.value, plant.value, option_in.value, option_out.value, check);
 };
 
-function getFirstElement(dateTo, dateFrom, plant, option_in, option_out, check){
+function getFirstElement(dateOptions, dateTo, dateFrom, plant, option_in, option_out, check){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -170,6 +211,7 @@ function getFirstElement(dateTo, dateFrom, plant, option_in, option_out, check){
       date_to: dateTo,
       date_from: dateFrom,
       product_code: plant,
+      date_options: dateOptions,
       warehouse_from: option_out,
       warehouse_to: option_in,
       check: check,
@@ -270,7 +312,7 @@ function get_catalog()
   .then(res => {
     if (res.success) {
       if (res.response.json.catalog){
-        //console.log(res.response.json.catalog)
+        console.log(res.response.json.catalog)
         for (i = 0; i < res.response.json.catalog.length; i++) {
           valuePlant = res.response.json.catalog[i]['61ef32bcdf0ec2ba73dec33d'];
           valueOut = res.response.json.catalog[i]['6442e4831198daf81456f274'];
@@ -284,6 +326,11 @@ function get_catalog()
         arrayPlant.sort();
         arrayOut.sort();
         //----Pais
+        $("#product_code").select2({
+            placeholder: 'Select',
+            allowClear: true,
+            selectionCssClass: "select2-selection",
+        })
         $("#product_code").empty();
         $('#product_code').append('<option value="">--Seleccione--</option>');
         for (i = 0; i < arrayPlant.length; i++) {
@@ -314,10 +361,11 @@ function get_catalog()
     if(res.success){
       //console.log("Datos devueltos")
       if(res.response.json.catalogtwo){
+        console.log("catalogtwo")
         console.log(res.response.json.catalogtwo)
         res.response.json.catalogtwo.forEach((element, index)=>{
           console.log("FE:"+element)
-          arrayIn.push(element)
+          arrayIn.push(element['6442e4831198daf81456f274'])
         })
           arrayIn.push('Scrap')
           arrayIn.sort()
@@ -353,3 +401,12 @@ function get_catalog()
 
 
 };
+
+function filtro_fechas(selectElement) {
+  var valorSeleccionado = selectElement.value;
+  if (valorSeleccionado === "custom") {
+    $("#filter_range").hide()
+    $("#filter_date").show()
+    realizarAccionCustom();
+  }
+}

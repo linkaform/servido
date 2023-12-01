@@ -14,6 +14,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <!--LIBRARY CHECK -->
         <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+        <!-- SELECT 2-->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -43,6 +45,7 @@
                 </div>
             </div> 
         </nav>
+
         <!-- Loading style -->
         <div class="loading-container">
             <div class="spinner-border text-primary" role="status">
@@ -90,7 +93,7 @@
 
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
-                    <div class="col-sm-12 col-md-2 col-lg-2">
+                   <!-- <div class="col-sm-12 col-md-2 col-lg-2">
                         <h5>Date From: </h5>
                         <input class="form-control ds-input" type="date" id="date_from" name="date_from">
                     </div>
@@ -116,7 +119,68 @@
                         <select class="form-control" id="warehouse_to" name="warehouse_to">
                             <option value="">--Seleccione--</option>
                         </select>
+                    </div> -->
+
+                    <!-- Inicio -->
+                    <div class="col-sm-12 col-md-2 col-lg-2">
+                        <h5>Plant: </h5>
+                        <select class="js-theme-multiple w-100 h-100 select2-selection" id="product_code" name="product_code">
+                            
+                        </select>
                     </div>
+                    
+                    <!-- <div class="col-sm-12 col-md-2 col-lg-2">
+                        <h5>Warehouse Out: </h5>
+                        <select class="form-control" id="out" name="out">
+                            <option value="">--Seleccione--</option>
+                        </select> 
+                    </div>-->
+                
+                    <div class="col-sm-12 col-md-2 col-lg-2  ">
+                        <h5>Warehouse Out: </h5>
+                        <select class="js-basic-multiple w-100 h-100" id="warehouse_from" name="warehouse_from[]" multiple="multiple">
+                            
+                        </select>
+                    </div>
+
+                    <div class="col-sm-12 col-md-2 col-lg-2  ">
+                        <h5>Warehouse In: </h5>
+                        <select class="js-basic-multiple w-100 h-100" id="warehouse_to" name="warehouse_to[]" multiple="multiple">
+                            
+                        </select>
+                    </div>
+
+                    <div class="col-sm-12 col-md-2 col-lg-2" id="filter_range">
+                        <h5>Range of Date: </h5>
+                        <select class="form-control" id="dateOptions" name="dateOptions" onchange="filtro_fechas(this)">
+                            <option value=""></option>
+                            <option value="today">Today</option>
+                            <option value="yesterday">Yesterday</option>
+                            <option value="this_week">This week</option>
+                            <option value="last_week">Last week</option>
+                            <option value="last_fifteen_days">Last 15 days</option>
+                            <option value="this_month">This month</option>
+                            <option value="last_month">Last month</option>
+                            <option value="this_year">This year</option>
+                            <option value="last_year">Last year</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div> 
+
+                    
+                    <div class="col-sm-12 col-md-6 col-lg-6 row" id="filter_date">
+                       
+                        <div class="col-sm-12 col-md-2 col-lg-3">
+                            <h5>Date From: </h5>
+                            <input class="form-control ds-input" type="date" id="date_from" name="dateFrom">
+                        </div>
+                       
+                        <div class="col-sm-12 col-md-2 col-lg-3">
+                            <h5>Date To: </h5>
+                            <input class="form-control ds-input" type="date" id="date_to" name="dateTo">
+                        </div>
+                    </div>
+                    <!-- Fin -->
              
                     <div class="col-sm-12 col-md-2 col-lg-2">
                         <h5>Filtrado por: </h5>
@@ -204,5 +268,8 @@
     <!-- Template -->
     <script type="text/javascript" src="./green_house_inventory.js"></script>
     <script type="text/javascript" src="./green_house_inventory_data.js"></script>
+
+    <!-- SCRIPT SELECT2-->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     </body>
 </html>
