@@ -4,9 +4,9 @@
 var columsTable1 = [
   { title:"Plant Code", field:'product_code',hozAlign:"left",headerFilter:"input", width:150},
   { title:"Ready Week",field:'lot_number',hozAlign:"left",headerFilter:"input", width:200 },
-  { title:"Warehouse Out", field:'warehouse_from',hozAlign:"left",headerFilter:"input", width:200 },
-  { title:"Warehouse In",field:'warehouse_to',hozAlign:"left",headerFilter:"input", width:200 },
-  { title:"Created Date",  field:'created_date',hozAlign:"left",width:160 },
+  { title:"Warehouse From", field:'warehouse_from',hozAlign:"left",headerFilter:"input", width:200 },
+  { title:"Warehouse To",field:'warehouse_to',hozAlign:"left",headerFilter:"input", width:200 },
+  { title:"Created Date",  field:'created_at',hozAlign:"left",width:160 },
   { title:"Move Date",  field:'date',hozAlign:"left",width:160 },
   { title:"Qty",  field:'qty',hozAlign:"right",width:200 },
 ];
@@ -82,8 +82,8 @@ var dataTable1 = [
 var columsTable2 = [
   { title:"Plant Code", field:'product_code',hozAlign:"left",headerFilter:"input", width:150},
   { title:"Ready Week",field:'lot_number',hozAlign:"left",headerFilter:"input", width:200 },
-  { title:"Warehouse Out", field:'warehouse_from',hozAlign:"left",headerFilter:"input", width:200 },
-  { title:"Warehouse In",field:'warehouse_to',hozAlign:"left",headerFilter:"input", width:200 },
+  { title:"Warehouse From", field:'warehouse_from',hozAlign:"left",headerFilter:"input", width:200 },
+  { title:"Warehouse To",field:'warehouse_to',hozAlign:"left",headerFilter:"input", width:200 },
   { title:"Qty Total",  field:'qty',hozAlign:"right",width:200 },
 ];
 
