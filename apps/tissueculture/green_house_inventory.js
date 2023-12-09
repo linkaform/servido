@@ -345,7 +345,7 @@ function get_catalog()
         console.log(res.response.json.catalogtwo)
         res.response.json.catalogtwo.forEach((element, index)=>{
           console.log("FE:"+element)
-          arrayIn.push(element['6442e4831198daf81456f274'])
+          arrayIn.push(element)
         })
           arrayIn.push('Scrap')
           arrayIn.sort()
