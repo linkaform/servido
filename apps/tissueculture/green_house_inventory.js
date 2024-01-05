@@ -280,7 +280,7 @@ function get_catalog()
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 107085,
+      script_id: scriptId,
       option: 1,
     }),
     headers:{
@@ -328,7 +328,7 @@ function get_catalog()
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 107085,
+      script_id: scriptId,
       option: 2,
     }),
     headers:{
@@ -345,7 +345,7 @@ function get_catalog()
         console.log(res.response.json.catalogtwo)
         res.response.json.catalogtwo.forEach((element, index)=>{
           console.log("FE:"+element)
-          arrayIn.push(element['6442e4831198daf81456f274'])
+          arrayIn.push(element)
         })
           arrayIn.push('Scrap')
           arrayIn.sort()
