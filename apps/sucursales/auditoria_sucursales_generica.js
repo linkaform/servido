@@ -114,7 +114,6 @@ window.onload = function(){
     $("#sucursal").multipleSelect('refresh');
 
     //---HIDE AND SHOW
-    get_catalog();
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
@@ -224,7 +223,7 @@ function runFirstElement(){
   unHideReportElements()
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");
-  let regional = document.getElementById("catalog-79950-level-1");
+  let regional = document.getElementById("regional");
   let transversal = $('#transversal').val();
   let sucursal = $('#sucursal').val();
   
@@ -234,7 +233,7 @@ function runFirstElement(){
   firstElement =getFirstElement( 
     date_from.value, 
     date_to.value,
-    regional.selectedOptions[0].value,
+    regional.value,
     transversal,
     sucursal,
     );
@@ -748,45 +747,6 @@ function getDrawGraphicFiveth(data, setOptions, canvas, type, name){
     plugins: [ChartDataLabels],
   });
 }
-
-
-//-----CATALOG
-function get_catalog() 
-{
-  fetch(url + 'infosync/scripts/run/', {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: 83787,
-      option: 2,
-    }),
-    headers:{
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+userJwt
-    },
-  })
-  .then(res => res.json())
-  .then(res => {
-    if (res.success) {
-      if (res.response.json.catalog){
-        arrayCeo = []
-        for (i = 0; i <res.response.json.catalog.length; i++) {
-          value = res.response.json.catalog[i]['61d7aed1647e2b73d9b1f681']
-          if (!arrayCeo.includes(value)){
-            arrayCeo.push(value);
-          }
-        }
-        if(arrayCeo.length){
-          $("#ceo").empty();
-          $('#ceo').append('<option value="--">--Seleccione--</option>');
-          for (i = 0; i < arrayCeo.length; i++) {
-            value = arrayCeo[i]
-            $('#ceo').append('<option value="'+ value +'">'+value+'</option>');
-          }
-        }
-      }
-    } 
-  })
-};
 
 //-----GAUGE
 function getDrawGauge(id, data){
