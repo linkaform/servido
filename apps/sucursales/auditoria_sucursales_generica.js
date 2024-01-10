@@ -624,7 +624,7 @@ function drawThirdElement(data){
   .append('text')
   .text((data) =>  data.section_grade + '% / ' +data.total)
   .attr('x', data => x(data.pagina) + x.bandwidth() / 2)
-  .attr('y', data => y(data.section_grade) - 85)
+  .attr('y', data => y(data.section_grade) - 120)
   .style('fill','#494949')
   .style("font-size", "17px")
   .style("font-weight", "bold")
@@ -633,9 +633,9 @@ function drawThirdElement(data){
 
 function drawFourthElement(data){
   $('#fourthElement').empty();
-   const margin = {top: 30, right: 30, bottom: 20, left: 90},
+   const margin = {top: 30, right: 30, bottom: 90, left: 90},
        width = 800 - margin.left - margin.right,
-       height = 650 - margin.top - margin.bottom;
+       height = 700 - margin.top - margin.bottom;
 
   // append the svg object to the body of the page
   const svg = d3.select("#fourthElement")
@@ -716,7 +716,7 @@ function drawFourthElement(data){
   .append('text')
   .text((data) => parseInt(data.score) + '% / ' +data.total)
   .attr('x', data => x(data.perfil) + x.bandwidth() / 2)
-  .attr('y', data => y(data.score) - 60)
+  .attr('y', data => y(data.score) - 80)
   .style('fill','#494949')
   .style("font-size", "13.5px")
   .attr('text-anchor','middle');
