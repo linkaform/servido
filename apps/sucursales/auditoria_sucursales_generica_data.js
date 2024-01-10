@@ -5,83 +5,69 @@ var dataFirstElement = [
   {
     "total": 7,
     "score": 120.63,
-    "sucursal": "Sucursal División Norte"
+    "sucursal": "Las palmas Ciudad de México"
   },
   {
     "total": 1,
     "score": 91.12,
-    "sucursal": "Sucursal División Nor-Oriente"
+    "sucursal": "Rivera Maya"
   },
   {
     "total": 1,
     "score": 65.91,
-    "sucursal": "Sucursal División Sur"
+    "sucursal": "Quelaquetza Oaxaca"
   },
-  {
-    "total": 1,
-    "score": 63.64,
-    "sucursal": "Sucursal División Este"
-  },
-  {
-    "total": 1,
-    "score": 40.34,
-    "sucursal": "Sucursal División Oeste"
-  }
+  
 ]
 
 var dataSecondElement = [
   {
     "total": 8,
-    "regional": "Fernanda Luis",
+    "regional": "Armando Contresas López",
     "score": 113.5
   },
   {
     "total": 1,
-    "regional": "Jose Alfonso",
+    "regional": "Ismael Paramo Ruiz",
     "score": 91.12
   },
   {
     "total": 1,
-    "regional": "Josue Gonzalez",
+    "regional": "Sergio Ramos Cortez",
     "score": 65.91
   },
-  {
-    "total": 1,
-    "regional": "Misael Bañuelos ",
-    "score": 40.34
-  }
 ]
 
 var dataThirdElement = [
   {
     "section_grade": 300,
     "total": 17,
-    "pagina": "8. Crédito y Cobranza"
+    "pagina": "Crédito y Cobranza"
   },
   {
     "section_grade": 95,
     "total": 17,
-    "pagina": "4. Gestión de Almacén"
+    "pagina": "Gestión de Almacén"
   },
   {
     "section_grade": 94,
     "total": 17,
-    "pagina": "3. Imagen Mantenimiento y Limpieza"
+    "pagina": "Imagen Mantenimiento y Limpieza"
   },
   {
     "section_grade": 85,
     "total": 17,
-    "pagina": "6. Logística y Ultima milla"
+    "pagina": "Logística y Ultima milla"
   },
   {
     "section_grade": 85,
     "total": 17,
-    "pagina": "7. Gestión Documental"
+    "pagina": "Gestión Documental"
   },
   {
     "section_grade": 84,
     "total": 17,
-    "pagina": "1. Servicio y Experiencia"
+    "pagina": "Servicio y Experiencia"
   },
 ]
 
@@ -318,10 +304,22 @@ var dataFivethElement = {
   labels: ['Dic-21','Enero-22','Feb-22','Mar-22','Abr-22','May-22','Jun-22','Jul-22','Ago-22','Sept-22','Oct-22','Nov-22','Dic-22','Ene-23'],
   datasets: [
     {
-      label: 'Procentaje %',
+      label: 'Las palmas Ciudad de México',
       data: [17,26,33,40,25,35,50,55,60,70,66,80,82,90],
       backgroundColor: "#f1c40f",
       borderColor: "#f1c40f",
+    },
+    {
+      label: 'Rivera Maya',
+      data: [15,26,33,38,23,43,25,34,56,23,23,12,13,56],
+      backgroundColor: "#57c8d1",
+      borderColor: "#57c8d1",
+    },
+    {
+      label: 'Guelaguetza Oaxaca',
+      data: [23,23,56,23,24,24,23,12,35,45,51,13,16,12],
+      backgroundColor: "#56d29f ",
+      borderColor: "#56d29f ",
     },
   ]
 };
