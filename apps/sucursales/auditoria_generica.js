@@ -334,7 +334,7 @@ function get_catalog()
 
         //----Pais
         $("#tienda").empty();
-        $('#tienda').append('<option value="--">--Seleccione--</option>');
+        $('#tienda').append('<option value="--">Seleccione</option>');
         for (i = 0; i < arrayTienda.length; i++) {
           value = arrayTienda[i]
           $('#tienda').append('<option value="'+ value +'">'+value+'</option>');

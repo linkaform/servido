@@ -112,7 +112,7 @@
 
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Regional: </h5>
-                        <select class="form-control ds-input" id="regional" name="regional" value="">
+                        <select class="form-control ds-input" id="regional" name="regional" >
                             <option value="--">Seleccione</option>
                             <option value="--">Armando Contreras López</option>
                             <option value="--">Ismael Paramo Ruiz</option>
@@ -120,15 +120,24 @@
                         </select>
                     </div>
 
-                    <div class="col-sm-12 col-md-3 col-lg-3">
+                    <!--<div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Sucursal: </h5>
-                        <select class="form-control mdb-select md-form" id="sucursal"  style="border:none !important;" >
-                            <option value="">Seleccione</option>
+                        <select class="form-control ds-input" id="tienda" name="tienda" >
+                           <option value="">Seleccione</option>
                             <option value="--">Las palamas Ciudad de México</option>
                             <option value="--">Rivera Maya</option>
                             <option value="--">Guelaguetza Oaxaca</option>
                         </select>
+                    </div> -->
+
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Tienda: </h5>
+                        <select class="form-control mdb-select md-form" id="tienda" multiple="multiple" style="border:none !important;" >
+                            <option value="">--Seleccione--</option>
+                        </select>
                     </div>
+
+                    
 
                 </div>
 
@@ -158,7 +167,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-4 col-lg-4" id="div_alert2">
+                        <div class="col-sm-12 col-md-4 col-lg-4" id="div_alert3">
                             <div class="card border-info m-2" >
                                 <div class="card card_border_none">
                                 <div id='gaugeFirst' style="margin:auto;align-items: center;"></div>
@@ -204,18 +213,18 @@
                         </button >
                         <div id="thirdElement" ></div>
                     </div>
-                    <div id="seventhElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                    <!--<div id="seventhElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
                         <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicFiveth','chart_screenIII');return false;" id="download_graphicFiveth">
                             <i class="fa-sharp fa-solid fa-download"></i>
                         </button >
                         <div  style="width: 1400px;height: 600px;margin: auto;">
                             <canvas id="graphicFiveth" ></canvas>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div><h1>Historicos</h1> </div>
                   
-                    <div class='col-sm-12 col-md-12 col-lg-12 mt-5 ' style='overflow-y: scroll;'>
+                    <div id="eigthElementB" class='col-sm-12 col-md-12 col-lg-12 mt-5 ' style='overflow-y: scroll;'>
                         <h3 style='text-align: center;'>
                             <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('fivethElement','chart_screenII');return false;" id="download_fivethElement">
                             <i class="fa-sharp fa-solid fa-download"></i>
@@ -224,7 +233,7 @@
                         <div  style='width: 1800px;height: 800px; margin: auto;'>
                           <canvas id='fivethElement' class="row"></canvas>
                         </div>
-                    </div> 
+                    </div>  
 
                 </div>
             </div>
@@ -274,7 +283,6 @@
 
     <!-- Jquery Gauge-->
     <script src='https://cdn.plot.ly/plotly-2.14.0.min.js'></script>
-
     <!-- Multiplke -->
     <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
     <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
@@ -282,11 +290,12 @@
     <!-- Utils -->
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
     <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+
     <script type="text/javascript" src="../utils/lkf_utils.js"></script>
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
     <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
 
     <!-- utils js-->
-    <script type="text/javascript" src="./auditoria_sucursales_generica_data.js"></script>
     <script type="text/javascript" src="./auditoria_sucursales_generica.js"></script>
+    <script type="text/javascript" src="./auditoria_sucursales_generica_data.js"></script>
 </html>

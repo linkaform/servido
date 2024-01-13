@@ -308,7 +308,7 @@ var dataFivethElement = {
       data: [17,26,33,40,25,35,50,55,60,70,66,80,82,90],
       backgroundColor: "#f1c40f",
       borderColor: "#f1c40f",
-    },
+    },  
     {
       label: 'Rivera Maya',
       data: [15,26,33,38,23,43,25,34,56,23,23,12,13,56],

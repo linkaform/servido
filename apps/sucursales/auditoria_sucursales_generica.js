@@ -32,12 +32,12 @@ hideElement("firstParameters");
 hideElement("secondElement");
 hideElement("thirdElement");
 hideElement("fourthElement");
-//hideElement("fivethElement");
+hideElement("fivethElement");
 hideElement("seventhElement");
-//hideElement("eigthElement");
+hideElement("eigthElement");
 hideElement("div_alert1");
 hideElement("div_alert2");
-
+hideElement("div_alert3");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -53,7 +53,7 @@ window.onload = function(){
     if (key ==='title'){
       $("#title_report").text(qs[key]);
     }
-    get_parameters();
+    //get_parameters();
     var formNode = document.getElementById("appCont");
 		var elements = getAllElementsWithAttribute(formNode, 'data-infosync-id', key);
 		var value = decodeURI(qs[key]);
@@ -101,8 +101,8 @@ window.onload = function(){
     userJwt = jw;
     userName = getCookie("userName");
 
-    getRegionales();
-    getSucursales();
+    //getRegionales();
+    //getSucursales();
     unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
@@ -112,6 +112,7 @@ window.onload = function(){
     }
     //---MULTIPLE
     $("#sucursal").multipleSelect('refresh');
+    get_catalog();
 
     //---HIDE AND SHOW
     setSpinner();
@@ -141,7 +142,7 @@ function get_parameters(){
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: scriptId,
+      script_id: 113130,
       only_users: true
     }),
     headers:{
@@ -151,14 +152,10 @@ function get_parameters(){
   })
   .then(res => res.json())
   .then(res => {
-    if (res.response.perfiles)
+    if (res.response)
     {
-      $('#sucursal').empty()
-      $("#sucursal").append('<option >--Seleccione--</option>')
-      for (var i = 0 ; i < res.response.perfiles.length; i++) {
-        $("#sucursal").append("<option value='" + res.response.perfiles[i] + "'>" + res.response.perfiles[i] + "</option>")
-      }
-      $("#sucursal").multipleSelect('refresh');
+      console.log(res.response)
+      
     }
   })
 }
@@ -170,6 +167,7 @@ function unHideReportElements(){
   unhideElement("firstElement");
   unhideElement("secondElement");
   unhideElement("thirdElement");
+  unhideElement("fivethElement");
   unhideElement("fourthElement");
   unhideElement("sixthElement");
 }
@@ -178,6 +176,8 @@ function loadDemoData(){
   unhideElement("title_demo")
   unhideElement("div_alert1");
   unhideElement("div_alert2");
+  unhideElement("div_alert3");
+
   document.getElementById("firstParameters").style.removeProperty('display');
 
   document.getElementById("textAlert1").innerText = 10;
@@ -225,11 +225,8 @@ function runFirstElement(){
   let date_to = document.getElementById("date_to");
   let regional = document.getElementById("regional");
   let transversal = $('#transversal').val();
-  let sucursal = $('#sucursal').val();
+  let sucursal = $('#tienda').val();
   
-
-
-
   firstElement =getFirstElement( 
     date_from.value, 
     date_to.value,
@@ -240,6 +237,8 @@ function runFirstElement(){
   //--Syle
   unhideElement("div_alert1");
   unhideElement("div_alert2");
+  unhideElement("div_alert3");
+
   document.getElementById("firstParameters").style.removeProperty('display');
 };
 
@@ -254,12 +253,13 @@ function getFirstElement(date_from, date_to, regional, transversal, sucursal){
   $("#firstElement").html("");
   $("#secondElement").html("");
   $("#thirdElement").html("");
+  $("#fivethElement").html("");
   console.log('Transversal:',transversal);
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: scriptId,
+      script_id: 113130,
       date_from: date_from,
       date_to: date_to,
       regional: regional,
@@ -289,40 +289,59 @@ function getFirstElement(date_from, date_to, regional, transversal, sucursal){
       $("#download_graphicFiveth").hide();
 
       hideElement("firstElement");
-      hideElement("firstElement");
       hideElement("secondElement");
       hideElement("thirdElement");
-      hideElement("fourthElement");
       hideElement("fivethElement");
+      hideElement("fourthElement");
+
       
 
-      if (res.response.json.totalSucursales)
+      if (res.response.json.firstElement)
       {
-        document.getElementById("textAlert1").innerText = res.response.json.totalSucursales;
+        document.getElementById("textAlert1").innerText = res.response.json.firstElement.numSucursales[0]['total'];
       }
-      if (res.response.json.totalSucursales)
+      if (res.response.json.firstElement)
       {
-        document.getElementById("textAlert2").innerText = res.response.json.totalEvaluaciones;
+        document.getElementById("textAlert2").innerText = res.response.json.firstElement.numEvaluaciones[0]['total'];
       }
-      if (res.response.json.firstElement.length){
-        drawFirstElement(res.response.json.firstElement);
+      if (res.response.json.secondElement)
+      {
+        getDrawGauge('gaugeFirst', dataGauge1)
+        //document.getElementById("firstGauge").style.removeProperty('display');
+      }
+      if (res.response.json.thirdElement){
+        console.log("D A T A")
+        drawFirstElement(res.response.json.thirdElement.data);
         unhideElement("firstElement")
         $("#download_firstElement").show();
       }
-      if (res.response.json.secondElement.length){
+      if (res.response.json.fourthElement){
+        unhideElement("fourthElement")
+        $("#download_secondElement").show();
+        drawFourthElement(res.response.json.fourthElement.data);
+      }
+      if (res.response.json.fivethElement){
         unhideElement("secondElement")
         $("#download_secondElement").show();
-        drawSecondElement(res.response.json.secondElement)
+        drawSecondElement(res.response.json.fivethElement.data);
       }
-      if (res.response.json.fifthElement.length){
+      if (res.response.json.sixthElement){
         unhideElement("thirdElement")
         $("#download_thirdElement").show();
-        drawThirdElement(res.response.json.fifthElement)
+        drawThirdElement(res.response.json.sixthElement.data);
       }
-      if (res.response.json.fourthElement.length){
+      if (res.response.json.seventhElement){
+        console.log("------------------------")
+        console.log(res.response.json.seventhElement)
+        console.log("------------------------")
+        unhideElement("fivethElement")
+        //$("#download_fivethElement").show();
+        drawFivethElement(res.response.json.seventhElement);
+      }
+      /*if (res.response.json.fourthElement.length){
         getDrawTable('fivethElement', columsTable1, res.response.json.fourthElement, 'auto');
         document.getElementById("fivethElement").style.removeProperty('display');
-      }
+      }*/
       
     } else {
       hideLoading();
@@ -345,6 +364,7 @@ function getFirstElement(date_from, date_to, regional, transversal, sucursal){
 
 //-----GRAPHIC
 function drawFirstElement(data){
+  console.log("Primer elemento")
    $('#firstElement').empty();
    const margin = {top: 30, right: 30, bottom: 150, left: 110},
        width = 1800 - margin.left - margin.right,
@@ -753,3 +773,75 @@ function getDrawGauge(id, data){
   var layout = { width: 340, height: 190, margin: { t: 42 , b: 0 } };
   Plotly.newPlot(id, data, layout);
 }
+
+function get_catalog() 
+{
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: 113130,
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      if (res.response.json){
+        list_transversal = []
+        list_regional = []
+        list_sucursal = []
+
+        if(res.response.json.firstCatalog){
+          list_transversal = res.response.json.firstCatalog
+          console.log(list_transversal)
+          $('#transversal').empty();
+          $('#transversal').append('<option value="--">Seleccione</option>')
+          for(i = 0; i < list_transversal.length; i++){
+              email = list_transversal[i]['email']
+              transversal = list_transversal[i]['transversal']
+              console.log("Transversal = " , transversal);
+              //---TRANSVERSAL
+              $('#transversal').append('<option value="' + transversal + '">' + transversal + '</option>');
+          }
+        }
+        if(res.response.json.secondCatalog){
+          list_regional = res.response.json.secondCatalog
+          console.log(list_regional)
+          $('#regional').empty();
+          $('#regional').append('<option value="--">Seleccione</option>')
+          for(i = 0; i < list_regional.length; i++){
+              email = list_regional[i]['email']
+              regional = list_regional[i]['regional']
+              console.log("regional = " , regional);
+              //---REGIONAL
+              $('#regional').append('<option value="' + regional + '">' + regional + '</option>');
+          }
+        }
+
+        if(res.response.json.thirdCatalog){
+          list_sucursal = res.response.json.thirdCatalog
+          console.log(list_sucursal)
+          $('#tienda').empty();
+          $('#tienda').append('<option value="--">Seleccione</option>')
+          for(i = 0; i < list_sucursal.length; i++){
+              email = list_sucursal[i]['email']
+              sucursal = list_sucursal[i]['sucursal']
+              console.log("sucursal = " , sucursal);
+              //---SUCURSAL
+              $('#tienda').append('<option value="' + sucursal + '">' + sucursal + '</option>');
+          }
+
+          $("#tienda").multipleSelect('refresh');
+        }
+
+
+        //console.log(res.response.json.firstElement)
+      }
+
+      
+    } 
+  })
+};
