@@ -168,6 +168,7 @@ function unHideReportElements(){
   unhideElement("secondElement");
   unhideElement("thirdElement");
   unhideElement("fivethElement");
+  unhideElement("seventhElement");
   unhideElement("fourthElement");
   unhideElement("sixthElement");
 }
@@ -293,20 +294,45 @@ function getFirstElement(date_from, date_to, regional, transversal, sucursal){
       hideElement("thirdElement");
       hideElement("fivethElement");
       hideElement("fourthElement");
+      hideElement("seventhElement");
 
-      
-
+      let sucEvaluada = 0
+      let numEval = 0
+      let promedio = 0
       if (res.response.json.firstElement)
       {
         document.getElementById("textAlert1").innerText = res.response.json.firstElement.numSucursales[0]['total'];
+        sucEvaluada = res.response.json.firstElement.numSucursales[0]['total'];
       }
       if (res.response.json.firstElement)
       {
         document.getElementById("textAlert2").innerText = res.response.json.firstElement.numEvaluaciones[0]['total'];
+        numEval = res.response.json.firstElement.numEvaluaciones[0]['total'];
       }
       if (res.response.json.secondElement)
       {
-        getDrawGauge('gaugeFirst', dataGauge1)
+        promedio = (numEval / sucEvaluada)
+        dataGauge = [
+        {
+          domain: { x: [0, 1], y: [0, 1] },
+          value: promedio,
+          title: { text: "Resultado promedio" , 'font': {'size': 22} },
+          type: "indicator",
+          mode: "gauge+number",
+          gauge: {
+          axis: { range: [null, 100], tickwidth: 1},
+          bar: { color: "#018088" },
+          bgcolor: "white",
+          borderwidth: 2,
+          bordercolor: "gray",
+          steps: [
+
+          { range: [0, 100], color: "#fff" }
+          ],
+          },
+        }
+        ];
+        getDrawGauge('gaugeFirst', dataGauge)
         //document.getElementById("firstGauge").style.removeProperty('display');
       }
       if (res.response.json.thirdElement){
@@ -334,6 +360,7 @@ function getFirstElement(date_from, date_to, regional, transversal, sucursal){
         console.log("------------------------")
         console.log(res.response.json.seventhElement)
         console.log("------------------------")
+        unhideElement("seventhElement")
         unhideElement("fivethElement")
         //$("#download_fivethElement").show();
         drawFivethElement(res.response.json.seventhElement);
@@ -790,6 +817,8 @@ function get_catalog()
   .then(res => {
     if (res.success) {
       if (res.response.json){
+        hideElement("seventhElement");
+
         list_transversal = []
         list_regional = []
         list_sucursal = []
