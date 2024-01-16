@@ -35,6 +35,7 @@ hideElement("fourthElement");
 hideElement("fivethElement");
 hideElement("seventhElement");
 hideElement("eigthElement");
+
 hideElement("div_alert1");
 hideElement("div_alert2");
 hideElement("div_alert3");
@@ -188,6 +189,9 @@ function loadDemoData(){
   drawThirdElement(dataThirdElement);
   drawFourthElement(dataFourthElement);
   drawFivethElement(dataFivethElement);
+  unhideElement("seventhElement")
+  unhideElement("eigthElement");
+  unhideElement("fivethElement")
   getDrawGauge('gaugeFirst', dataGauge1)
   document.getElementById("firstGauge").style.removeProperty('display');
   $("#sucursal").multipleSelect('refresh');
@@ -309,9 +313,21 @@ function getFirstElement(date_from, date_to, regional, transversal, sucursal){
         document.getElementById("textAlert2").innerText = res.response.json.firstElement.numEvaluaciones[0]['total'];
         numEval = res.response.json.firstElement.numEvaluaciones[0]['total'];
       }
-      if (res.response.json.secondElement)
+     
+      if (res.response.json.thirdElement){
+        console.log("D A T A")
+        //Gráfico de Evaluaciones por sucursal
+        drawFirstElement(res.response.json.thirdElement.data);
+        res.response.json.thirdElement.data.forEach(element =>{
+          promedio += element['score']
+        })
+        promedio = promedio / res.response.json.thirdElement.data.length;
+        unhideElement("firstElement")
+        $("#download_firstElement").show();
+      }
+       if (res.response.json.secondElement)
       {
-        promedio = (numEval / sucEvaluada)
+        
         dataGauge = [
         {
           domain: { x: [0, 1], y: [0, 1] },
@@ -335,23 +351,20 @@ function getFirstElement(date_from, date_to, regional, transversal, sucursal){
         getDrawGauge('gaugeFirst', dataGauge)
         //document.getElementById("firstGauge").style.removeProperty('display');
       }
-      if (res.response.json.thirdElement){
-        console.log("D A T A")
-        drawFirstElement(res.response.json.thirdElement.data);
-        unhideElement("firstElement")
-        $("#download_firstElement").show();
-      }
       if (res.response.json.fourthElement){
+        //Grafico de evaluaciones por sucursal
         unhideElement("fourthElement")
         $("#download_secondElement").show();
         drawFourthElement(res.response.json.fourthElement.data);
       }
       if (res.response.json.fivethElement){
+        //Grafico para evaluacioens por regional
         unhideElement("secondElement")
         $("#download_secondElement").show();
         drawSecondElement(res.response.json.fivethElement.data);
       }
       if (res.response.json.sixthElement){
+        //Grafico para evaluaciones por sección
         unhideElement("thirdElement")
         $("#download_thirdElement").show();
         drawThirdElement(res.response.json.sixthElement.data);
@@ -361,9 +374,11 @@ function getFirstElement(date_from, date_to, regional, transversal, sucursal){
         console.log(res.response.json.seventhElement)
         console.log("------------------------")
         unhideElement("seventhElement")
+        unhideElement("eigthElement");
         unhideElement("fivethElement")
-        //$("#download_fivethElement").show();
         drawFivethElement(res.response.json.seventhElement);
+        $("#download_fivethElement").show();
+        //drawFivethElement(res.response.json.seventhElement);
       }
       /*if (res.response.json.fourthElement.length){
         getDrawTable('fivethElement', columsTable1, res.response.json.fourthElement, 'auto');
@@ -426,7 +441,7 @@ function drawFirstElement(data){
 
     // Add Y axis
     const y = d3.scaleLinear()
-    .domain([0, 120])
+    .domain([0, 10])
     .range([ height, 0]);
 
     svg.append("g")
@@ -471,7 +486,7 @@ function drawFirstElement(data){
   .padding(0.2);
 
   const y = d3.scaleLinear()
-  .domain([0, 120])
+  .domain([0, 10])
   .range([ height, 0]);
   svg.append("g")
   .call(d3.axisLeft(y));
@@ -480,7 +495,7 @@ function drawFirstElement(data){
   .data(data)
   .enter()
   .append('text')
-  .text((data) => parseInt(data.score) + '% / ' +data.total)
+  .text((data) => (data.score) + '% / ' +data.total)
   .attr('x', data => x(data.sucursal) + x.bandwidth() / 2)
   .attr('y', data => y(data.score) - 15)
   .style('fill','#494949')
@@ -524,7 +539,7 @@ function drawSecondElement(data){
 
    // Add Y axis
    const y = d3.scaleLinear()
-     .domain([0, 120])
+     .domain([0, 10])
      .range([ height, 0]);
 
        svg.append("g")
@@ -565,7 +580,7 @@ function drawSecondElement(data){
   .padding(0.2);
 
   const y = d3.scaleLinear()
-  .domain([0, 120])
+  .domain([0, 10])
   .range([ height, 0]);
 
 
@@ -573,7 +588,7 @@ function drawSecondElement(data){
   .data(data)
   .enter()
   .append('text')
-  .text((data) => parseInt(data.score) + '% / ' +data.total)
+  .text((data) => (data.score) + '% / ' +data.total)
   .attr('x', data => x(data.regional) + x.bandwidth() / 2)
   .attr('y', data => y(data.score) - 15)
   .style('fill','#494949')
@@ -661,7 +676,7 @@ function drawThirdElement(data){
   .padding(0.2);
 
   const y = d3.scaleLinear()
-  .domain([0, 120])
+  .domain([0, 10])
   .range([ height, 0]);
 
 
@@ -710,7 +725,7 @@ function drawFourthElement(data){
 
   // Add Y axis
   const y = d3.scaleLinear()
-  .domain([0, 100])
+  .domain([0, 10])
   .range([ height, 0]);
 
   svg.append("g")
@@ -753,7 +768,7 @@ function drawFourthElement(data){
   .padding(0.2);
 
   const y = d3.scaleLinear()
-  .domain([0, 120])
+  .domain([0, 10])
   .range([ height, 0]);
 
 
@@ -761,7 +776,7 @@ function drawFourthElement(data){
   .data(data)
   .enter()
   .append('text')
-  .text((data) => parseInt(data.score) + '% / ' +data.total)
+  .text((data) => (data.score) + '% / ' +data.total)
   .attr('x', data => x(data.perfil) + x.bandwidth() / 2)
   .attr('y', data => y(data.score) - 80)
   .style('fill','#494949')
