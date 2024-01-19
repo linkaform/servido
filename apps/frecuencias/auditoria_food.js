@@ -94,7 +94,9 @@ window.onload = function(){
     //--Styles
     setSpinner();
     $('#divOptions').show();
-    
+    $("#pais").multipleSelect('refresh');
+    $("#localidad").multipleSelect('refresh');
+    $("#tienda").multipleSelect('refresh');
     //---Catalog
     get_catalog();
     document.getElementById("firstParameters").style.removeProperty('display');
@@ -141,10 +143,15 @@ function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
   let id_forma = $('#formas').val();
-  getFirstElement(date_to.value, date_from.value, id_forma);
+  let pais = $('#pais').val();  
+  let localidad = $('#localidad').val();
+  console.log(pais)
+  console.log(localidad)
+  getFirstElement(date_to.value, date_from.value, id_forma, pais, localidad);
+
 };
 
-function getFirstElement(dateTo, dateFrom, id_forma){
+function getFirstElement(dateTo, dateFrom, id_forma, pais, localidad){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -158,6 +165,8 @@ function getFirstElement(dateTo, dateFrom, id_forma){
       date_to: dateTo,
       date_from: dateFrom,
       id_forma: id_forma,
+      pais: pais,
+      localidad: localidad,
       option: 1,
     }),
     headers:{
@@ -275,7 +284,8 @@ function setGraphic(data) {
     }
   }
 }
-
+var valuePaisLocalidad = {}
+var localidades = []
 //----- CATALOGS
 function get_catalog() 
 {
@@ -286,7 +296,7 @@ function get_catalog()
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 113370,
+      script_id: 113389,
       option: 2,
     }),
     headers:{
@@ -298,11 +308,11 @@ function get_catalog()
   .then(res => {
     if (res.success) {
       if (res.response.json.catalog){
-        console.log("Pruebas")
-        console.log(res.response.json.catalog)
-        console.log("/**/*/*/*/*/*/*/*/*/*/*/")
-        valueFormas = res.response.json.catalog;
         
+        valueFormas = res.response.json.catalog;
+        valuePaisLocalidad = res.response.json.catalogTwo;
+        list_pais = ''
+        list_localidad = ''
 
         //----Formas
         $("#formas").empty();
@@ -316,15 +326,57 @@ function get_catalog()
           value = id_forma + '-' + name
           $('#formas').append('<option value="'+ value +'">'+name+'</option>');
         }
-        //$("#pais").multipleSelect('refresh');
 
+        list_pais = Object.keys(valuePaisLocalidad)
+        
+        //----Pais
+        $("#pais").empty();
+        $('#pais').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i < list_pais.length; i++) {
+          value = list_pais[i]
+          $('#pais').append('<option value="'+ value +'">'+value+'</option>');
+        }
+        $("#pais").multipleSelect('refresh');
+        
       }
     } 
   })
 };
 
-                    
-                        
-                            
-                       
-                    
+//Función para obtener las localidades según los paises seleccionados
+$('#pais').multipleSelect({
+  onClick: function (view) {
+    pais = view.value;
+    status = view.selected;
+    
+    actualizar_localidad(pais, status)
+  }
+})
+
+
+function actualizar_localidad(pais, status){
+  
+  Object.entries(valuePaisLocalidad).forEach(([key, value]) => {
+    //console.log("key: ", key, " value: ", value); //Value es un arreglo de localidades
+  if(pais == key && status == 'true'){
+    value.forEach(element => {
+      localidades.push(element)
+    })
+  }else if (pais == key && status == 'false'){
+    var index = 0
+    value.forEach(element => {
+      index = localidades.indexOf(element)
+      localidades.splice(index, 1)
+    })
+  }
+
+  //----Pais
+    $("#localidad").empty();
+    $('#localidad').append('<option value="--">Seleccione</option>');
+    for (i = 0; i < localidades.length; i++) {
+      value = localidades[i]
+      $('#localidad').append('<option value="'+ value +'">'+value+'</option>');
+    }
+    $("#localidad").multipleSelect('refresh');
+  })
+}

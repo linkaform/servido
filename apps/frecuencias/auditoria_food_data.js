@@ -122,12 +122,7 @@ var dataExample = [
           backgroundColor: "#36AE7C",
           borderColor: "#36AE7C",
         },
-        {
-          label: 'No Cumple',
-          data: [20,60,10,70,20,5,30],
-          backgroundColor: "#EB5353",
-          borderColor: "#EB5353",
-        },
+        
       ] 
     },
     name_form:'Reporte 2',
@@ -188,7 +183,7 @@ var setOptions2 = {
     datalabels: {
       color: 'white',
       formatter: function (value, context){
-        return value;
+        return value ;
       }
     }
   },
