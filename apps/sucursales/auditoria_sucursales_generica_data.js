@@ -279,7 +279,7 @@ var setOptions6 = {
     },
     title: {
         display: true,
-        text: 'Reporte Historico Auditoria I',
+        text: 'Reporte Historico Auditoria',
         font: {
           size: 25
         }

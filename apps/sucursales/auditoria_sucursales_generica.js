@@ -686,7 +686,7 @@ function drawThirdElement(data){
   .append('text')
   .text((data) =>  data.section_grade + '% / ' +data.total)
   .attr('x', data => x(data.pagina) + x.bandwidth() / 2)
-  .attr('y', data => y(data.section_grade) - 120)
+  .attr('y', data => y(data.section_grade) - 10)
   .style('fill','#494949')
   .style("font-size", "17px")
   .style("font-weight", "bold")
