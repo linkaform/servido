@@ -1,3 +1,25 @@
+#firstElement{
+  background-color:#ccc;
+  border: 1px solid #333;
+  border-radius: 10px;
+}
+
+/*Theme the header*/
+#firstElement .tabulator-header {
+    background-color:#F3CCEC !important;
+}
+
+/*Allow column header names to wrap lines*/
+#firstElement .tabulator-header .tabulator-col,
+#firstElement .tabulator-header .tabulator-col-row-handle {
+    white-space: normal;
+}
+
+/*Color the table rows*/
+#firstElement .tabulator-tableHolder .tabulator-table .tabulator-row:hover{
+    color:white;
+    background-color: #a9cce3 !important;
+}
 
 body{
   font-family: gothambook;
