@@ -17,6 +17,7 @@ hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
 hideElement("secondElement");
+hideElement("ThirdElement");
 hideElement("filter_date")
 
 window.onload = function(){
@@ -131,7 +132,9 @@ function unHideReportElements(){
   unhideElement("firstParameters");
   unhideElement("close_sesion");
   unhideElement("firstElement");
-  //unhideElement("secondElement");
+  unhideElement("secondElement");
+  hideElement("ThirdElement");
+
 }
 
 function loadDemoData(){
@@ -145,6 +148,9 @@ function loadDemoData(){
   document.getElementById("firstElement").style.removeProperty('display');
   
   document.getElementById("firstParameters").style.removeProperty('display');
+
+  drawFirstElement(dataFirstElement)
+  document.getElementById("ThirdElement").style.removeProperty('display');
   
 }
 
@@ -543,3 +549,48 @@ function getDownloadPdf(id = 0){
   })
   return link;
 }
+
+//Configuration for the graphic
+let chart2;
+function  drawFirstElement(data){
+  var ctx = document.getElementById("graphicFirst").getContext('2d');
+
+  if (chart2){
+    chart2.destroy()
+  }
+
+  chart2 = new Chart(ctx,{
+    type: "bar",
+    data:data,
+    plugins: [ChartDataLabels],
+    options: {
+      plugins:{
+        legend: {
+          display: false
+        },
+        scales:{
+          yAxes: [{ticks: {min:1, max:200}}],
+        },
+        title:{
+          display: true,
+          text: 'Visitas por promotor',
+          font: {
+            size: 25
+          }
+        },
+        datalabels:{
+          color: 'black',
+          labels: {
+            title: {
+              font: {
+                weight: 'bold'
+              }
+            },
+          },
+          align: 'top'
+        }
+      }
+    }
+  })
+}
+

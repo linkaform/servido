@@ -53,7 +53,7 @@ var columsTableThree = [
 
 var dataTable = [
   {
-    "usuario": "MAURICIO HERNÁNDEZ",
+    "usuario": "Mauricio Hernández",
     "ciudad": "Días laborados",
     "cadena": "2",
     "serviceHistory": [
@@ -113,11 +113,11 @@ var dataTable = [
             ]
       },
       {
-          "fecha": "2024/01/03",
+          "fecha": "2024/01/04",
           "ciudad": "CIUDAD DE MÉXICO",
           "cadena": "FARMACIA GUADALAJARA",
           "tienda": "RIO DE LA LOZA",
-          "fecha_inicio": "Dia 2024-01-03",
+          "fecha_inicio": "Dia 2024-01-04",
           "actividad_inicial": "Trabajdo",
           "hora_final": "8:00:11",
           "actividad_final": "Total Vistias",
@@ -144,16 +144,16 @@ var dataTable = [
     ]
   },
   {
-    "usuario": "MAURICIO HERNÁNDEZ",
+    "usuario": "Armando Contreras",
     "ciudad": "Días bien laborados",
     "cadena": "2",
     "serviceHistory": [
       {
-          "fecha": "2024/01/03",
+          "fecha": "2024/01/05",
           "ciudad": "CIUDAD DE MÉXICO",
           "cadena": "FARMACIA GUADALAJARA",
           "tienda": "RIO DE LA LOZA",
-          "fecha_inicio": "Dia 2024-01-03",
+          "fecha_inicio": "Dia 2024-01-05",
           "actividad_inicial": "Trabajdo",
           "hora_final": "8:00:11",
           "actividad_final": "Total Vistias",
@@ -191,11 +191,11 @@ var dataTable = [
             ]
       },
       {
-          "fecha": "2024/01/03",
+          "fecha": "2024/01/06",
           "ciudad": "CIUDAD DE MÉXICO",
           "cadena": "FARMACIA GUADALAJARA",
           "tienda": "RIO DE LA LOZA",
-          "fecha_inicio": "Dia 2024-01-03",
+          "fecha_inicio": "Dia 2024-01-06",
           "actividad_inicial": "Trabajdo",
           "hora_final": "8:00:11",
           "actividad_final": "Total Vistias",
@@ -220,11 +220,11 @@ var dataTable = [
             ]
       },
       {
-          "fecha": "2024/01/03",
+          "fecha": "2024/01/07",
           "ciudad": "CIUDAD DE MÉXICO",
           "cadena": "FARMACIA GUADALAJARA",
           "tienda": "RIO DE LA LOZA",
-          "fecha_inicio": "Dia 2024-01-03",
+          "fecha_inicio": "Dia 2024-01-07",
           "actividad_inicial": "Trabajdo",
           "hora_final": "8:00:11",
           "actividad_final": "Total Vistias",
@@ -278,3 +278,15 @@ var dataTable = [
     ]
   }
 ]
+
+
+var dataFirstElement = {
+  labels: ["Mauricio Hernández","Armando Contreras"],
+  datasets: [
+    {
+      label: "Servicios",
+      backgroundColor: ["#7BD3EA", "#ECA869",],
+      data: [200,150],
+    }
+  ]
+}; 
