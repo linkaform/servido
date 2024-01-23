@@ -544,7 +544,121 @@ if (document.getElementById("download_xlsx_"+id)){
     //trigger download of data.csv file
     document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
     document.getElementById("download_csv_"+id).addEventListener("click", function (){
-      table.download("csv", "data.csv");
+      //table.download("csv", "data.csv");
+      //Obtener datos anidados
+    var nestedData = table.getData(true);
+    //----Almacena los datos de las tablas anidadas
+    var exportData = [];
+    //----Almacena 
+    var styleRows = [];
+    let contRow = 1;
+
+    nestedData.forEach(row => {
+      console.log("Nested Data")
+      console.log(row)
+      console.log("Nested Data")
+      let titles = {
+        'usuario': row.usuario,
+        'ciudad': row.ciudad,
+        'cadena': row.cadena,
+        'tienda': row.tienda,
+        'fecha_inicio': row.fecha_inicio,
+        'hora_inicio': row.hora_inicio,
+        'fecha_final': row.fecha_final,
+        'hora_final': row.hora_final,
+        'duracion_visita': row.duracion_visita,
+        'total_hrs_dia': row.total_hrs_dia,
+        'evidencia': row.evidencia
+      }
+      contRow ++;
+      styleRows.push(contRow)
+      if (row.hasOwnProperty("serviceHistory")) {
+          exportData.push(titles);
+          exportData.push(...row.serviceHistory);
+          contRow = contRow + (row.serviceHistory.length)
+      }
+    })
+
+    const dataForXLSX = exportData.map(item => {
+      console.log("row")
+      console.log(item)
+      return {
+        'usuario': item.fecha || item.usuario,
+        'ciudad': item.ciudad || " ",
+        'cadena': item.cadena || " ",
+        'tienda': item.tienda || " ",
+        'fecha_inicio': item.fecha_inicio || " ",
+        'hora_inicio': item.actividad_inicial || " ",
+        'fecha_final': item.hora_final || " ",
+        'hora_final': item.total_movimiento || " ",
+        'duracion_visita': item.duracion_visita || " ",
+        'total_hrs_dia': item.total_movimiento || " ",
+        'evidencia': item.evidencia || " ",
+      };
+    });
+
+    let dataForXLSXTwo = []
+    exportData.forEach(item => {
+      dataForXLSXTwo.push(
+        {
+        'usuario': item.fecha || item.usuario,
+        'ciudad': item.ciudad || " ",
+        'cadena': item.cadena || " ",
+        'tienda': item.tienda || " ",
+        'fecha_inicio': item.fecha_inicio || " ",
+        'hora_inicio': item.actividad_inicial || " ",
+        'fecha_final': item.hora_final || " ",
+        'hora_final': item.total_movimiento || " ",
+        'duracion_visita': item.duracion_visita || " ",
+        'total_hrs_dia': item.total_movimiento || " ",
+        'evidencia': item.evidencia || " ",
+      })
+
+      if(item.serviceHistoryTwo){
+        item.serviceHistoryTwo.forEach(element => {
+          dataForXLSXTwo.push(
+            {
+            'usuario': element.folio || ' ',
+            'ciudad': element.ciudad || " ",
+            'cadena': element.cadena || " ",
+            'tienda': element.tienda || " ",
+            'fecha_inicio': element.fecha_inicio || " ",
+            'hora_inicio': element.actividad_inicial || " ",
+            'fecha_final': element.fecha_final || " ",
+            'hora_final': element.hora_final || " ",
+            'duracion_visita': element.duracion_visita || " ",
+            'total_hrs_dia': element.total_movimiento || " ",
+            'evidencia': element.evidencia || " ",
+          })
+        })
+      }
+
+    })
+    console.log(dataForXLSXTwo)
+
+    console.log("La data en excel es: ")
+    console.log(dataForXLSX)
+    //----Creación del libro de trabajo
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = 'linkaform';
+    workbook.lastModifiedBy = 'Bot';
+    workbook.created = new Date(2024, 1, 23);
+    workbook.modified = new Date();
+    workbook.lastPrinted = new Date(2024, 1, 23);
+
+    //----Creación de la hoja de trabajo
+    const sheet = workbook.addWorksheet('NestedData');
+
+    //----Creación de columnas
+    sheet.columns = structureColumns;
+
+  sheet.addRows(dataForXLSXTwo);
+
+  //----Generar el archivo y descárgalo
+  workbook.csv.writeBuffer().then((data) => {
+    const csvBlob = new Blob([data], { type: 'text/csv' });
+    saveAs(csvBlob, 'nombre_archivo.csv');
+  });
     });
   }
 
