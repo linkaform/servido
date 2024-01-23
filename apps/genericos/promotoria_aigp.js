@@ -429,9 +429,9 @@ if (document.getElementById("download_xlsx_"+id)){
     let contRow = 1;
 
     nestedData.forEach(row => {
-      /*console.log("Nested Data")
+      console.log("Nested Data")
       console.log(row)
-      console.log("Nested Data")*/
+      console.log("Nested Data")
       let titles = {
         'fecha': " ",
         'ciudad': " ",
@@ -450,6 +450,8 @@ if (document.getElementById("download_xlsx_"+id)){
       if (row.hasOwnProperty("serviceHistory")) {
           exportData.push(titles);
           exportData.push(...row.serviceHistory);
+          console.log("Export data")
+          console.log(exportData)
           contRow = contRow + (row.serviceHistory.length)
       }
     })
