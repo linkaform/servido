@@ -397,6 +397,112 @@ function getDrawTableTwo(id, columnsData, tableData){
      
     },
   });
+
+//---Definición de la estructura de las columnas del archivo xlsx y csv
+
+  let structureColumns = [
+      {header:'Usuario', key:"usuario"},
+      {header:'Ciudad', key:'ciudad'},
+      {header:'Cadena', key:'cadena'},
+      {header:'Tienda', key:'tienda'},
+      {header:'Fecha inicio', key:'fecha_inicio'},
+      {header:'Hora Inicio', key:'hora_inicio'},
+      {header:'Fecha final', key:'fecha_final'},
+      {header:'Hora final', key:'hora_final'},
+      {header:'Duración visita', key:'duracion_visita'},
+      {header:'Total horas x día', key:'total_hrs_dia'},
+      {header:'Evidencia', key:'evidencia'},
+    ]
+
+if (document.getElementById("download_xlsx_"+id)){
+    //trigger download of data.xlsx file
+    document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
+    document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
+    table.download("xlsx", "data.xlsx", {sheetName:"data"});
+
+    //Obtener datos anidados
+    var nestedData = table.getData(true);
+    //----Almacena los datos de las tablas anidadas
+    var exportData = [];
+    //----Almacena 
+    var styleRows = [];
+    let contRow = 1;
+
+    nestedData.forEach(row => {
+      /*console.log("Nested Data")
+      console.log(row)
+      console.log("Nested Data")*/
+      let titles = {
+        'fecha': " ",
+        'ciudad': " ",
+        'cadena': " ",
+        'tienda': " ",
+        'fecha_inicio': " ",
+        'actividad_inicial': " ",
+        'fecha_final': " ",
+        'actividad_final': " ",
+        'duracion_visita': " ",
+        'total_movimiento': " ",
+        'evidencia': " "
+      }
+      contRow ++;
+      styleRows.push(contRow)
+      if (row.hasOwnProperty("serviceHistory")) {
+          exportData.push(titles);
+          exportData.push(...row.serviceHistory);
+          contRow = contRow + (row.serviceHistory.length)
+      }
+    })
+
+    const dataForXLSX = exportData.map(item => {
+      return {
+        'fecha': item.fecha || " ",
+        'ciudad': item.ciudad || " ",
+        'cadena': item.cadena || " ",
+        'tienda': item.tienda || " ",
+        'fecha_inicio': item.fecha_inicio || " ",
+        'actividad_inicial': item.actividad_inicial || " ",
+        'hora_final': item.hora_final || " ",
+        'actividad_final': item.actividad_final || " ",
+        'duracion_visita': item.duracion_visita || " ",
+        'total_movimiento': item.total_movimiento || " ",
+        'evidencia': item.evidencia || " ",
+      };
+    });
+
+    //----Creación del libro de trabajo
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = 'linkaform';
+    workbook.lastModifiedBy = 'Bot';
+    workbook.created = new Date(2024, 1, 23);
+    workbook.modified = new Date();
+    workbook.lastPrinted = new Date(2024, 1, 23);
+
+    //----Creación de la hoja de trabajo
+    const sheet = workbook.addWorksheet('NestedData');
+
+    //----Creación de columnas
+    sheet.columns = structureColumns;
+
+  sheet.addRows(dataForXLSX);
+
+  //----Generar el archivo y descárgalo
+  workbook.xlsx.writeBuffer().then((data) => {
+    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    saveAs(blob, 'nombre_archivo.xlsx');
+  });
+
+    });
+  }
+
+  if (document.getElementById("download_csv_"+id)){
+    //trigger download of data.csv file
+    document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
+    document.getElementById("download_csv_"+id).addEventListener("click", function (){
+      table.download("csv", "data.csv");
+    });
+  }
+
 }
 
 //----- CATALOGS
