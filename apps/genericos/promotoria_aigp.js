@@ -393,9 +393,11 @@ function getDrawTableTwo(id, columnsData, tableData){
       var cell = row.getCell("duracion_visita");
       cell.getElement().style.backgroundColor = "#c450cf"
       cell.getElement().style.color = "white"
-
-     
     },
+    downloadConfig:{
+    columnGroups: true,
+    rowGroups: true,
+    }
   });
 
 //---Definición de la estructura de las columnas del archivo xlsx y csv
@@ -418,7 +420,7 @@ if (document.getElementById("download_xlsx_"+id)){
     //trigger download of data.xlsx file
     document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
     document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
-    table.download("xlsx", "data.xlsx", {sheetName:"data"});
+    //table.download("xlsx", "data.xlsx", {sheetName:"data"});
 
     //Obtener datos anidados
     var nestedData = table.getData(true);
@@ -433,45 +435,86 @@ if (document.getElementById("download_xlsx_"+id)){
       console.log(row)
       console.log("Nested Data")
       let titles = {
-        'fecha': " ",
-        'ciudad': " ",
-        'cadena': " ",
-        'tienda': " ",
-        'fecha_inicio': " ",
-        'actividad_inicial': " ",
-        'fecha_final': " ",
-        'actividad_final': " ",
-        'duracion_visita': " ",
-        'total_movimiento': " ",
-        'evidencia': " "
+        'usuario': row.usuario,
+        'ciudad': row.ciudad,
+        'cadena': row.cadena,
+        'tienda': row.tienda,
+        'fecha_inicio': row.fecha_inicio,
+        'hora_inicio': row.hora_inicio,
+        'fecha_final': row.fecha_final,
+        'hora_final': row.hora_final,
+        'duracion_visita': row.duracion_visita,
+        'total_hrs_dia': row.total_hrs_dia,
+        'evidencia': row.evidencia
       }
       contRow ++;
       styleRows.push(contRow)
       if (row.hasOwnProperty("serviceHistory")) {
           exportData.push(titles);
           exportData.push(...row.serviceHistory);
-          console.log("Export data")
-          console.log(exportData)
           contRow = contRow + (row.serviceHistory.length)
       }
     })
 
     const dataForXLSX = exportData.map(item => {
+      console.log("row")
+      console.log(item)
       return {
-        'fecha': item.fecha || " ",
+        'usuario': item.fecha || item.usuario,
         'ciudad': item.ciudad || " ",
         'cadena': item.cadena || " ",
         'tienda': item.tienda || " ",
         'fecha_inicio': item.fecha_inicio || " ",
-        'actividad_inicial': item.actividad_inicial || " ",
-        'hora_final': item.hora_final || " ",
-        'actividad_final': item.actividad_final || " ",
+        'hora_inicio': item.actividad_inicial || " ",
+        'fecha_final': item.hora_final || " ",
+        'hora_final': item.total_movimiento || " ",
         'duracion_visita': item.duracion_visita || " ",
-        'total_movimiento': item.total_movimiento || " ",
+        'total_hrs_dia': item.total_movimiento || " ",
         'evidencia': item.evidencia || " ",
       };
     });
 
+    let dataForXLSXTwo = []
+    exportData.forEach(item => {
+      dataForXLSXTwo.push(
+        {
+        'usuario': item.fecha || item.usuario,
+        'ciudad': item.ciudad || " ",
+        'cadena': item.cadena || " ",
+        'tienda': item.tienda || " ",
+        'fecha_inicio': item.fecha_inicio || " ",
+        'hora_inicio': item.actividad_inicial || " ",
+        'fecha_final': item.hora_final || " ",
+        'hora_final': item.total_movimiento || " ",
+        'duracion_visita': item.duracion_visita || " ",
+        'total_hrs_dia': item.total_movimiento || " ",
+        'evidencia': item.evidencia || " ",
+      })
+
+      if(item.serviceHistoryTwo){
+        item.serviceHistoryTwo.forEach(element => {
+          dataForXLSXTwo.push(
+            {
+            'usuario': element.folio || ' ',
+            'ciudad': element.ciudad || " ",
+            'cadena': element.cadena || " ",
+            'tienda': element.tienda || " ",
+            'fecha_inicio': element.fecha_inicio || " ",
+            'hora_inicio': element.actividad_inicial || " ",
+            'fecha_final': element.fecha_final || " ",
+            'hora_final': element.hora_final || " ",
+            'duracion_visita': element.duracion_visita || " ",
+            'total_hrs_dia': element.total_movimiento || " ",
+            'evidencia': element.evidencia || " ",
+          })
+        })
+      }
+
+    })
+    console.log(dataForXLSXTwo)
+
+    console.log("La data en excel es: ")
+    console.log(dataForXLSX)
     //----Creación del libro de trabajo
     const workbook = new ExcelJS.Workbook();
     workbook.creator = 'linkaform';
@@ -486,7 +529,7 @@ if (document.getElementById("download_xlsx_"+id)){
     //----Creación de columnas
     sheet.columns = structureColumns;
 
-  sheet.addRows(dataForXLSX);
+  sheet.addRows(dataForXLSXTwo);
 
   //----Generar el archivo y descárgalo
   workbook.xlsx.writeBuffer().then((data) => {
