@@ -279,7 +279,7 @@ var dataTable = [
   }
 ]
 
-
+//Data pora el gráfico de barras
 var dataFirstElement = {
   labels: ["Mauricio Hernández","Armando Contreras"],
   datasets: [
@@ -290,3 +290,19 @@ var dataFirstElement = {
     }
   ]
 }; 
+
+
+//Estructura de las columnas del archivo xlsx y csv
+let structureColumns = [
+      {header:'Usuario', key:"usuario"},
+      {header:'Ciudad', key:'ciudad'},
+      {header:'Cadena', key:'cadena'},
+      {header:'Tienda', key:'tienda'},
+      {header:'Fecha inicio', key:'fecha_inicio'},
+      {header:'Hora Inicio', key:'hora_inicio'},
+      {header:'Fecha final', key:'fecha_final'},
+      {header:'Hora final', key:'hora_final'},
+      {header:'Duración visita', key:'duracion_visita'},
+      {header:'Total horas x día', key:'total_hrs_dia'},
+      {header:'Evidencia', key:'evidencia'},
+    ]

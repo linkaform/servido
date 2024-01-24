@@ -18,7 +18,6 @@ hideElement("firstParameters");
 hideElement("firstElement");
 hideElement("secondElement");
 hideElement("ThirdElement");
-hideElement("filter_date")
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -96,7 +95,7 @@ window.onload = function(){
     //--Styles
     setSpinner();
     console.log('-------------script id', scriptId)
-    get_catalog(scriptId);
+    //get_catalog(scriptId);
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
@@ -111,7 +110,6 @@ window.onload = function(){
     /*Se tiene que eliminar la clase de show al elemento con clase firstParameters ya que las librerías
     para los multiselectores alteran ligeramente si se muestran o no.*/
     $('#firstParameters').removeClass('show'); //----IMPORTANTE: Quitar cuando no se ocupe la librería de JQuery Multiple Select.
-    $("#warehouse").multipleSelect('refresh');
     hideElement("firstElement-Buttons");
   }
   ///-----HIDE AND SHOW
@@ -144,7 +142,7 @@ function loadDemoData(){
 
   //$("#warehouse").multiselect('refresh');
 
-  getDrawTableTwo('firstElement', columsTable, dataTable);
+  getDrawTableFirst('firstElement', columsTable, dataTable);
   document.getElementById("firstElement").style.removeProperty('display');
   
   document.getElementById("firstParameters").style.removeProperty('display');
@@ -160,15 +158,12 @@ loading.style.display = 'none';
 function runFirstElement(){
   let dateFrom = document.getElementById("dateFrom");
   let dateTo = document.getElementById("dateTo");  
-  let dateOptions = document.getElementById("dateOptions");  
-  let productCode = document.getElementById("productCode");  
-  let lotNumber = document.getElementById("lotNumber");  
-  let warehouse = document.getElementById("warehouse"); 
-  let selectedWarehouse = [...warehouse.selectedOptions].map(option => option.value);
-  getFirstElement(dateFrom.value, dateTo.value, dateOptions.value, productCode.value, lotNumber.value, selectedWarehouse);
+  let cadena = document.getElementById("cadena");  
+  
+  getFirstElement(dateFrom.value, dateTo.value, cadena.value);
 };
 
-function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, warehouse){
+function getFirstElement(dateFrom, dateTo, cadena){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -181,10 +176,8 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
       script_id: scriptId,
       date_from: dateFrom,
       date_to: dateTo,
-      date_options: dateOptions,
-      product_code: productCode,
-      lot_number: lotNumber,
-      warehouse: warehouse,
+      cadena: cadena,
+      
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -198,20 +191,20 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log("RESPUESTA")
-      console.log(res.response.json)
-      if(res.response.json.secondElement.data){
+      console.log("Implementación pendiente")
+      /*if(res.response.json.secondElement.data){
         //----Se crea y define una variable que almacene la data de la query para no escribir toda la ruta
         let dataTableTwo = res.response.json.secondElement.data;
         console.log('tabel 2')
-        getDrawTableTwo('firstElement', columsTable2, dataTableTwo);
+        getDrawTableFirst('firstElement', columsTable2, dataTableTwo);
         document.getElementById("firstElement").style.removeProperty('display');
 
         //document.getElementById("secondElement").style.removeProperty('display');
         unhideElement("secondElement");
         document.getElementById("secondElement").style.removeProperty('display');
         
-      }
+      }*/
+
       
     } else {
       hideLoading();
@@ -235,7 +228,7 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
 //-----TABLES
 
 var subData;
-function getDrawTableTwo(id, columnsData, tableData){
+function getDrawTableFirst(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
     //columnHeaderVertAlign:"top",
     height:"100%",
@@ -400,121 +393,17 @@ function getDrawTableTwo(id, columnsData, tableData){
     }
   });
 
-//---Definición de la estructura de las columnas del archivo xlsx y csv
-
-  let structureColumns = [
-      {header:'Usuario', key:"usuario"},
-      {header:'Ciudad', key:'ciudad'},
-      {header:'Cadena', key:'cadena'},
-      {header:'Tienda', key:'tienda'},
-      {header:'Fecha inicio', key:'fecha_inicio'},
-      {header:'Hora Inicio', key:'hora_inicio'},
-      {header:'Fecha final', key:'fecha_final'},
-      {header:'Hora final', key:'hora_final'},
-      {header:'Duración visita', key:'duracion_visita'},
-      {header:'Total horas x día', key:'total_hrs_dia'},
-      {header:'Evidencia', key:'evidencia'},
-    ]
 
 if (document.getElementById("download_xlsx_"+id)){
     //trigger download of data.xlsx file
     document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
     document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
-    //table.download("xlsx", "data.xlsx", {sheetName:"data"});
 
     //Obtener datos anidados
     var nestedData = table.getData(true);
-    //----Almacena los datos de las tablas anidadas
-    var exportData = [];
-    //----Almacena 
-    var styleRows = [];
-    let contRow = 1;
+    
+    let dataForXLSXCSV = get_structure_xlsx_csv(nestedData)
 
-    nestedData.forEach(row => {
-      console.log("Nested Data")
-      console.log(row)
-      console.log("Nested Data")
-      let titles = {
-        'usuario': row.usuario,
-        'ciudad': row.ciudad,
-        'cadena': row.cadena,
-        'tienda': row.tienda,
-        'fecha_inicio': row.fecha_inicio,
-        'hora_inicio': row.hora_inicio,
-        'fecha_final': row.fecha_final,
-        'hora_final': row.hora_final,
-        'duracion_visita': row.duracion_visita,
-        'total_hrs_dia': row.total_hrs_dia,
-        'evidencia': row.evidencia
-      }
-      contRow ++;
-      styleRows.push(contRow)
-      if (row.hasOwnProperty("serviceHistory")) {
-          exportData.push(titles);
-          exportData.push(...row.serviceHistory);
-          contRow = contRow + (row.serviceHistory.length)
-      }
-    })
-
-    const dataForXLSX = exportData.map(item => {
-      console.log("row")
-      console.log(item)
-      return {
-        'usuario': item.fecha || item.usuario,
-        'ciudad': item.ciudad || " ",
-        'cadena': item.cadena || " ",
-        'tienda': item.tienda || " ",
-        'fecha_inicio': item.fecha_inicio || " ",
-        'hora_inicio': item.actividad_inicial || " ",
-        'fecha_final': item.hora_final || " ",
-        'hora_final': item.total_movimiento || " ",
-        'duracion_visita': item.duracion_visita || " ",
-        'total_hrs_dia': item.total_movimiento || " ",
-        'evidencia': item.evidencia || " ",
-      };
-    });
-
-    let dataForXLSXTwo = []
-    exportData.forEach(item => {
-      dataForXLSXTwo.push(
-        {
-        'usuario': item.fecha || item.usuario,
-        'ciudad': item.ciudad || " ",
-        'cadena': item.cadena || " ",
-        'tienda': item.tienda || " ",
-        'fecha_inicio': item.fecha_inicio || " ",
-        'hora_inicio': item.actividad_inicial || " ",
-        'fecha_final': item.hora_final || " ",
-        'hora_final': item.total_movimiento || " ",
-        'duracion_visita': item.duracion_visita || " ",
-        'total_hrs_dia': item.total_movimiento || " ",
-        'evidencia': item.evidencia || " ",
-      })
-
-      if(item.serviceHistoryTwo){
-        item.serviceHistoryTwo.forEach(element => {
-          dataForXLSXTwo.push(
-            {
-            'usuario': element.folio || ' ',
-            'ciudad': element.ciudad || " ",
-            'cadena': element.cadena || " ",
-            'tienda': element.tienda || " ",
-            'fecha_inicio': element.fecha_inicio || " ",
-            'hora_inicio': element.actividad_inicial || " ",
-            'fecha_final': element.fecha_final || " ",
-            'hora_final': element.hora_final || " ",
-            'duracion_visita': element.duracion_visita || " ",
-            'total_hrs_dia': element.total_movimiento || " ",
-            'evidencia': element.evidencia || " ",
-          })
-        })
-      }
-
-    })
-    console.log(dataForXLSXTwo)
-
-    console.log("La data en excel es: ")
-    console.log(dataForXLSX)
     //----Creación del libro de trabajo
     const workbook = new ExcelJS.Workbook();
     workbook.creator = 'linkaform';
@@ -529,7 +418,7 @@ if (document.getElementById("download_xlsx_"+id)){
     //----Creación de columnas
     sheet.columns = structureColumns;
 
-  sheet.addRows(dataForXLSXTwo);
+    sheet.addRows(dataForXLSXCSV);
 
   //----Generar el archivo y descárgalo
   workbook.xlsx.writeBuffer().then((data) => {
@@ -544,10 +433,41 @@ if (document.getElementById("download_xlsx_"+id)){
     //trigger download of data.csv file
     document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
     document.getElementById("download_csv_"+id).addEventListener("click", function (){
-      //table.download("csv", "data.csv");
-      //Obtener datos anidados
+    //Obtener datos anidados
     var nestedData = table.getData(true);
-    //----Almacena los datos de las tablas anidadas
+    let dataForXLSXCSV = get_structure_xlsx_csv(nestedData)
+    
+
+    console.log("La data en excel es: ")
+    //----Creación del libro de trabajo
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = 'linkaform';
+    workbook.lastModifiedBy = 'Bot';
+    workbook.created = new Date(2024, 1, 23);
+    workbook.modified = new Date();
+    workbook.lastPrinted = new Date(2024, 1, 23);
+
+    //----Creación de la hoja de trabajo
+    const sheet = workbook.addWorksheet('NestedData');
+
+    //----Creación de columnas
+    sheet.columns = structureColumns;
+
+   sheet.addRows(dataForXLSXCSV);
+
+  //----Generar el archivo y descárgalo
+  workbook.csv.writeBuffer().then((data) => {
+    const csvBlob = new Blob([data], { type: 'text/csv' });
+    saveAs(csvBlob, 'nombre_archivo.csv');
+  });
+    });
+  }
+
+}
+
+
+function get_structure_xlsx_csv(nestedData){
+  //----Almacena los datos de las tablas anidadas
     var exportData = [];
     //----Almacena 
     var styleRows = [];
@@ -578,24 +498,6 @@ if (document.getElementById("download_xlsx_"+id)){
           contRow = contRow + (row.serviceHistory.length)
       }
     })
-
-    const dataForXLSX = exportData.map(item => {
-      console.log("row")
-      console.log(item)
-      return {
-        'usuario': item.fecha || item.usuario,
-        'ciudad': item.ciudad || " ",
-        'cadena': item.cadena || " ",
-        'tienda': item.tienda || " ",
-        'fecha_inicio': item.fecha_inicio || " ",
-        'hora_inicio': item.actividad_inicial || " ",
-        'fecha_final': item.hora_final || " ",
-        'hora_final': item.total_movimiento || " ",
-        'duracion_visita': item.duracion_visita || " ",
-        'total_hrs_dia': item.total_movimiento || " ",
-        'evidencia': item.evidencia || " ",
-      };
-    });
 
     let dataForXLSXTwo = []
     exportData.forEach(item => {
@@ -637,183 +539,16 @@ if (document.getElementById("download_xlsx_"+id)){
     console.log(dataForXLSXTwo)
 
     console.log("La data en excel es: ")
-    console.log(dataForXLSX)
-    //----Creación del libro de trabajo
-    const workbook = new ExcelJS.Workbook();
-    workbook.creator = 'linkaform';
-    workbook.lastModifiedBy = 'Bot';
-    workbook.created = new Date(2024, 1, 23);
-    workbook.modified = new Date();
-    workbook.lastPrinted = new Date(2024, 1, 23);
+    //console.log(dataForXLSX)
+    
 
-    //----Creación de la hoja de trabajo
-    const sheet = workbook.addWorksheet('NestedData');
-
-    //----Creación de columnas
-    sheet.columns = structureColumns;
-
-  sheet.addRows(dataForXLSXTwo);
-
-  //----Generar el archivo y descárgalo
-  workbook.csv.writeBuffer().then((data) => {
-    const csvBlob = new Blob([data], { type: 'text/csv' });
-    saveAs(csvBlob, 'nombre_archivo.csv');
-  });
-    });
-  }
+    return dataForXLSXTwo
 
 }
 
 //----- CATALOGS
-function get_catalog(scriptId) 
-{
-  arrayPlant = []
-  arrayOut = []
+//get_catalog
 
-
-  fetch(url + 'infosync/scripts/run/', {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: scriptId,
-      option: "getFilters",
-    }),
-    headers:{
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+userJwt
-    },
-  })
-  .then(res => res.json())
-  .then(res => {
-    if (res.success) {
-      if (res.response.json){
-        //Creamos una variable para renderizar el elemento multiselect
-        var warehouseOptions = $("#warehouse")
-        res.response.json['productCode'].sort();
-        res.response.json['warehouse'].sort();
-        //----Product code
-        $('#productCode').select2({
-              placeholder: 'Select',
-              allowClear: true, // Opcional, para agregar una "X" para deseleccionar
-              selectionCssClass: "select2-selection",
-
-        });
-        $("#productCode").empty();
-        $("#productCode").append("<option value=''/></option> ")
-        for (i = 0; i < res.response.json['productCode'].length; i++) {
-          value =  res.response.json['productCode'][i]
-          $('#productCode').append('<option value="'+ value +'">'+value+'</option>');
-        }
-
-        //----Warehouse
-        $("#warehouse").empty();
-
-        //----Almacenar los datos de la query en una variable para procesarla
-        let data_warehouse = res.response.json['warehouse'];
-        //----La variable permitirá guardar la data en el formato aceptado por la librería, la cual es: [{label: "elemento1", value: "elemento1"},]
-        let data_multiselect = [];
-
-        //---Iterar a través de los datos y crear objetos para el multiselect
-        for (let i = 0; i < data_warehouse.length; i++) {
-            let valueMultiselect = data_warehouse[i];
-            let objMultiselect = { label: valueMultiselect, value: valueMultiselect };
-            data_multiselect.push(objMultiselect);
-        }
-
-        
-        $('#warehouse').multiselect('dataprovider', data_multiselect);
-        $('#warehouse').multiselect('refresh');
-      }
-    } 
-  })
-
-};
-
-/*Esta función será llamada al seleccionar un plant code determinado.
-  La función llamará a los lot_number correspondientes a cada plant code y los agregará al selector lotNumber."
-*/
-function get_lotNumber(id)
-{
-  fetch(url + 'infosync/scripts/run/',{
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: scriptId,
-      option:"getLotNumber",
-      product_code: id
-    }),
-    headers:{
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+userJwt
-    },
-  })
-  .then(res => res.json())
-  .then(res => {
-    if(res.success){
-      if(res.response.json){
-        
-          //----Lot number
-          $('#lotNumber').select2({
-              placeholder: 'Select',
-              allowClear: true, // Opcional, para agregar una "X" para deseleccionar
-              selectionCssClass: "select2-selection",
-
-          });
-          $("#lotNumber").empty();
-          $("#lotNumber").append("<option value=''/></option> ")
-          let dataLotNumber = res.response.json['lotNumber'];
-          for(let i = 0; i < dataLotNumber.length; i++){
-            value = dataLotNumber[i];
-            $("#lotNumber").append('<option value="' + value + '">'+value+'</option>');
-          }
-        
-      }
-    }
-  })
-}
-
-function filtro_fechas(selectElement) {
-  var valorSeleccionado = selectElement.value;
-  if (valorSeleccionado === "custom") {
-    $("#filter_range").hide()
-    $("#filter_date").show()
-    realizarAccionCustom();
-  }
-}
-
-//------PDF
-function getDownloadPdf(id = 0){
-  Swal.fire('Espere Por Favor');
-  Swal.showLoading();
-  link = ''
-  fetch(url + 'infosync/scripts/run/', {
-      method: 'POST',
-      body: JSON.stringify({
-        script_id: 98210,
-        ids: id,
-        template: 254,
-      }),
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+userJwt
-      },
-    })
-    .then(res => res.json())
-    .then(res => {
-    if (res.success) {
-      if (res.response.json.download.data){
-        Swal.close()
-        link = res.response.json.download.data.download_url;
-        console.log('LINK',link)
-
-        Object.assign(document.createElement('a'), {
-          target: '_blank',
-          rel: 'noopener noreferrer',
-          href: link,
-        }).click();
-      }
-    } 
-  })
-  return link;
-}
 
 //Configuration for the graphic
 let chart2;
