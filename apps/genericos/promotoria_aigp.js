@@ -142,7 +142,7 @@ function loadDemoData(){
 
   //$("#warehouse").multiselect('refresh');
 
-  getDrawTableFirst('firstElement', columsTable, dataTable);
+  getDrawTableFirst('firstElement', columsTableTwo, dataTableC);
   document.getElementById("firstElement").style.removeProperty('display');
   
   document.getElementById("firstParameters").style.removeProperty('display');
@@ -233,115 +233,19 @@ function getDrawTableFirst(id, columnsData, tableData){
     //columnHeaderVertAlign:"top",
     height:"100%",
     layout:"fitDataTable",
-    columnDefaults:{
+    /*columnDefaults:{
       resizable:false,
-    },
+    },*/
+    dataTree: true,
+    dataTreeStartExpanded:true,
+    clipboard:true,
+    clipboardPasteAction:"replace",
     data:tableData,
     columns:columnsData,
 
     //Primer anidamiento
-    rowFormatter:function(row){
-      //Crea y dá estilos a los elementos contenedores
-      var holderEl = document.createElement("div")
-      var tableEl = document.createElement("div")
-
-      holderEl.style.boxSizing = "border-box";
-      holderEl.style.padding = "0px";
-      holderEl.style.borderTop = "1px solid #333";
-      holderEl.style.borderBotom = "1px solid #333";
-
-      tableEl.style.border = "0px solid #333";
-
-      holderEl.appendChild(tableEl);
-
-      row.getElement().appendChild(holderEl);
-
-      var subTable = new Tabulator(tableEl, {
-           height:"100%",
-           layout:"fitDataTable",
-           headerVisible:false,
-           addRowPos: "bottom",
-           columnDefaults:{
-              resizable:false,
-           },
-           data:row.getData().serviceHistory,
-           columns:columsTableTwo,
-
-           //Segundo anidamiento
-           rowFormatter:function(subRow){
-            //Crea y da estilos a los elementos contenedores
-            var subHolderEl = document.createElement("div")
-            var subTableEl = document.createElement("div")
-
-            subHolderEl.style.boxSizing = "border-box";
-            subHolderEl.style.padding = "0px";
-            subHolderEl.style.borderTop = "1px solid #333";
-            subHolderEl.style.borderBotom = "1px solid #333";
-
-            subTableEl.style.border = "0px solid #333";
-
-            subHolderEl.appendChild(subTableEl);
-
-            subRow.getElement().appendChild(subHolderEl);
-
-            var subTable2 = new Tabulator(subTableEl, {
-               height:"100%",
-               layout:"fitDataTable",
-               headerVisible:false,
-               addRowPos: "bottom",
-               columnDefaults:{
-                  resizable:false,
-               },
-               data: subRow.getData().serviceHistoryTwo,
-                   columns:columsTableThree, 
-                });
-
-                var cellTwo = subRow.getCell("fecha");
-                cellTwo.getElement().style.backgroundColor = "#007bff"
-                cellTwo.getElement().style.color = "white"
-
-                var cellTwo = subRow.getCell("ciudad");
-                cellTwo.getElement().style.backgroundColor = "#007bff"
-                cellTwo.getElement().style.color = "white"
-
-                var cellTwo = subRow.getCell("cadena");
-                cellTwo.getElement().style.backgroundColor = "#007bff"
-                cellTwo.getElement().style.color = "white"
-
-                var cellTwo = subRow.getCell("tienda");
-                cellTwo.getElement().style.backgroundColor = "#007bff"
-                cellTwo.getElement().style.color = "white"
-
-                var cellTwo = subRow.getCell("fecha_inicio");
-                cellTwo.getElement().style.backgroundColor = "#007bff"
-                cellTwo.getElement().style.color = "white"
-
-                var cellTwo = subRow.getCell("actividad_inicial");
-                cellTwo.getElement().style.backgroundColor = "#007bff"
-                cellTwo.getElement().style.color = "white"
-
-                var cellTwo = subRow.getCell("hora_final");
-                cellTwo.getElement().style.backgroundColor = "#007bff"
-                cellTwo.getElement().style.color = "white"
-
-                var cellTwo = subRow.getCell("actividad_final");
-                cellTwo.getElement().style.backgroundColor = "#007bff"
-                cellTwo.getElement().style.color = "white"
-
-                var cellTwo = subRow.getCell("duracion_visita");
-                cellTwo.getElement().style.backgroundColor = "#007bff"
-                cellTwo.getElement().style.color = "white"
-
-                var cellTwo = subRow.getCell("total_movimiento");
-                cellTwo.getElement().style.backgroundColor = "#007bff"
-                cellTwo.getElement().style.color = "white"
-
-                var cellTwo = subRow.getCell("evidencia");
-                cellTwo.getElement().style.backgroundColor = "#007bff"
-                cellTwo.getElement().style.color = "white"
-
-           },
-       });
+    /*rowFormatter:function(row){
+     
 
       var cell = row.getCell("usuario");
       cell.getElement().style.backgroundColor = "#c450cf"
@@ -386,7 +290,7 @@ function getDrawTableFirst(id, columnsData, tableData){
       var cell = row.getCell("duracion_visita");
       cell.getElement().style.backgroundColor = "#c450cf"
       cell.getElement().style.color = "white"
-    },
+    },*/
     downloadConfig:{
     columnGroups: true,
     rowGroups: true,

@@ -27,7 +27,7 @@
                     <div class="col-md-6">
                         <a href="index.html">
                             <div class="logo_marca">
-                                <img src="https://app.linkaform.com/img/login-linkaform-logo.png" alt="LinkaForm" id="image_log">
+                                <img src="https://preprod.linkaform.com/img/login-linkaform-logo.png" alt="LinkaForm" id="image_log">
                             </div>
                         </a>
                     </div>
@@ -118,19 +118,33 @@
                 </div>
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
-                    <!--Second Elemtent -->
-                    <div id="secondElement" class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
-                        <div class="card w-25 bg-primary text-white" > 
-                            <div class="card-body">
-                                <h1 class="card-title">Total de visitas: 200</h1>
-                          </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12 row">
+                        <!--Second Elemtent -->
+                        <div id="secondElement" class="col-sm-6 col-md-3 col-lg-3">
+                            <div class="card w-100 bg-primary text-white">
+                                <div class="card-body text-center mt-3"> <!-- Añadido "text-center" aquí -->
+                                    <h3 class="card-title">Total de visitas: 16</h3>
+                                </div>
+                            </div>
                         </div>
+
+
+
+                        <!--Third Element-->
+                        <div id="secondElement" class="col-sm-6 col-md-3 col-lg-3" >
+                            <div class="card w-100 bg-primary text-white" > 
+                                <div class="card-body text-center mt-3">
+                                    <h3 class="card-title">Total promotores: 2</h3>
+                              </div>
+                            </div>
+                        </div>
+                        
                     </div>
                     
                     <!--First Elemtent -->
                     <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span> Gráficas: Visitas por promotor</span>&nbsp;&nbsp;
+                            <h3 ><span>Visitas por promotor</span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
