@@ -13,23 +13,23 @@ var dataExample = [
                 ],
                 "datasets": [
                     {
-                        "borderColor": "#36AE7C",
+                        "borderColor": "#2E86C1",
                         "data": [
                             40,
                             317,
                             900
                         ],
-                        "backgroundColor": "#36AE7C",
+                        "backgroundColor": "#2E86C1",
                         "label": "Segundos promedio",
                     },
                     {
-                        "borderColor": "#FF5733",
+                        "borderColor": "#239B56",
                         "data": [
                             50,
                             300,
                             800
                         ],
-                        "backgroundColor": "#FF5733",
+                        "backgroundColor": "#239B56",
                         "label": "Estandar"
                     }
                 ]
@@ -49,7 +49,7 @@ var dataExample = [
                 ],
                 "datasets": [
                     {
-                        "borderColor": "#FF5733",
+                        "borderColor": "#239B56",
                         "data": [
                             382,
                             382,
@@ -59,11 +59,11 @@ var dataExample = [
                             382,
                             382
                         ],
-                        "backgroundColor": "#FF5733",
+                        "backgroundColor": "#239B56",
                         "label": "Estandar",
                     },
                     {
-                        "borderColor": "#46C2CB",
+                        "borderColor": "#2E86C1",
                         "data": [
                             0,
                             0,
@@ -73,7 +73,7 @@ var dataExample = [
                             0,
                             388
                         ],
-                        "backgroundColor": "#46C2CB",
+                        "backgroundColor": "#2E86C1",
                         "label": "Segundos promedio en realizar actividades"
                     },
                     

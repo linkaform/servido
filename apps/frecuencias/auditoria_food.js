@@ -236,6 +236,14 @@ function setGraphic(data) {
       form = data[key]
       console.log("Form")
       console.log(form)
+      //Comprobar que existan registros
+      if(form['tendencia'].length <= 0){
+        Swal.fire({
+          icon:"info",
+          title: "Oops...",
+          text: "No hay registros con tu criterio de busqueda."
+        })
+      }
       console.log("Form")
       if ('historico' in form){
         //-----APPEND
