@@ -141,14 +141,25 @@ loading.style.display = 'none';
 
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  let pais = $('#pais').val();  
+  let date_to = document.getElementById("date_to");
+  let id_forma = $("#formas").val()  
+  let pais = $('#pais').val();
   let localidad = $('#localidad').val();  
-  let tienda = $('#tienda').val();  
-  getFirstElement(date_to.value, date_from.value, pais, localidad, tienda);
+  let tienda = $('#tienda').val();
+  let option = 1;  
+  //alert(id_forma)
+  if(id_forma == '--'){
+    Swal.fire({
+      icon:'error',
+      title:'Ojo',
+      text:'Debe seleccionar una forma'
+    })
+  }else{
+    getFirstElement(date_to.value, date_from.value, id_forma, pais, localidad, tienda);
+  }  
 };
 
-function getFirstElement(dateTo, dateFrom, pais, localidad, tienda){
+function getFirstElement(dateTo, dateFrom, id_forma, pais, localidad, tienda){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -161,6 +172,7 @@ function getFirstElement(dateTo, dateFrom, pais, localidad, tienda){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
+      id_forma:id_forma,
       pais: pais,
       localidad: localidad,
       tienda: tienda,
@@ -180,7 +192,16 @@ function getFirstElement(dateTo, dateFrom, pais, localidad, tienda){
       $('.title_tables').show();
       if (res.response.json.firstElement) {
         console.log('Valores',res.response.json.firstElement)
-        setGraphic(res.response.json.firstElement)
+        if(res.response.json.firstElement[0].estandar == 0){
+          Swal.fire({
+            title:'Oops',
+            text:'No se ha establecido un estandar para esta cuenta.',
+            html: res.error
+          })
+        }else{
+          setGraphic(res.response.json.firstElement)
+
+        }
       }
     } else {
       hideLoading();
@@ -230,6 +251,16 @@ function setGraphic(data) {
     //---Clean Body
     for (let key in data){
       form = data[key]
+      console.log("Form")
+      console.log(form)
+      //Comprobar que existan registros
+      if(form['tendencia'].length <= 0){
+        Swal.fire({
+          icon:"info",
+          title: "Oops...",
+          text: "No hay registros con tu criterio de busqueda."
+        })
+      }
       if ('historico' in form){
         //-----APPEND
         $("#divContent").append(
@@ -270,7 +301,13 @@ function setGraphic(data) {
         name_array.push('Resultados por sección');
         name_array.push(name_form);
         id = 'tendencia_' + form['id_formulario']
-        getDrawGraphic(form['tendencia'], setOptions2, id,'bar',name_array);
+        let grading = 0
+        grading = parseInt(form['grading'])
+        if(grading == 1){
+          getDrawGraphic(form['tendencia'], setOptions2, id,'bar',name_array);
+        }else{
+          getDrawGraphic(form['tendencia'], setOptions3, id,'bar',name_array);
+        }
       }
     }
   }
@@ -298,6 +335,22 @@ function get_catalog()
   .then(res => {
     if (res.success) {
       if (res.response.json.catalog){
+        valueFormas = res.response.json.catalogTwo;
+
+        //----Formas
+        $("#formas").empty();
+        $('#formas').append('<option value="--">Seleccione la forma</option>');
+        for (i = 0; i < valueFormas.length; i++) {
+          //id_forma = Id de la forma
+          id_forma = valueFormas[i].id
+          str_id_forma = id_forma.toString();
+          //name = Nombre de la forma
+          name = valueFormas[i].name
+          value = id_forma + '-' + name
+          $('#formas').append('<option value="'+ value +'">'+name+'</option>');
+        }
+
+
         for (i = 0; i < res.response.json.catalog.length; i++) {
           valuePais = res.response.json.catalog[i]['631fccdd844ed53c7d989718'];
           valueLocalidad = res.response.json.catalog[i]['631fc1e48d9fe191da0c3daf'];
