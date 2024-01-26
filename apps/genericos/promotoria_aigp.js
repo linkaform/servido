@@ -142,7 +142,7 @@ function loadDemoData(){
 
   //$("#warehouse").multiselect('refresh');
 
-  getDrawTableFirst('firstElement', columsTableTwo, dataTableC);
+  getDrawTableFirst('firstElement', columsTable, dataTable);
   document.getElementById("firstElement").style.removeProperty('display');
   
   document.getElementById("firstParameters").style.removeProperty('display');
@@ -237,11 +237,30 @@ function getDrawTableFirst(id, columnsData, tableData){
       resizable:false,
     },*/
     dataTree: true,
+    dataTreeChildIndent:5,
     dataTreeStartExpanded:true,
     clipboard:true,
     clipboardPasteAction:"replace",
     data:tableData,
     columns:columnsData,
+    dataMutate:function(data){
+      //alert("Pruebas")
+      var firstChild = data._children && data._children[0];
+        if(firstChild){
+            // Mueve los datos del primer hijo al nivel superior
+            data.folio = firstChild.folio;
+            data.ciudad = firstChild.ciudad;
+            data.cadena = firstChild.cadena;
+            data.fecha_inicio = firstChild.fecha_inicio;
+            data.hora_inicio = firstChild.hora_inicio;
+            data.fecha_final = firstChild.fecha_final;
+            data.hora_final = firstChild.hora_final;
+            data.duracion_visita = firstChild.duracion_visita;
+            data.total_hrs_dia = firstChild.total_hrs_dia;
+            data.record_id = firstChild.record_id;
+        }
+        return data;
+    },
 
     //Primer anidamiento
     /*rowFormatter:function(row){
@@ -297,76 +316,19 @@ function getDrawTableFirst(id, columnsData, tableData){
     }
   });
 
-
-if (document.getElementById("download_xlsx_"+id)){
-    //trigger download of data.xlsx file
+  if (document.getElementById("download_xlsx_"+id)){
     document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
     document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
-
-    //Obtener datos anidados
-    var nestedData = table.getData(true);
-    
-    let dataForXLSXCSV = get_structure_xlsx_csv(nestedData)
-
-    //----Creación del libro de trabajo
-    const workbook = new ExcelJS.Workbook();
-    workbook.creator = 'linkaform';
-    workbook.lastModifiedBy = 'Bot';
-    workbook.created = new Date(2024, 1, 23);
-    workbook.modified = new Date();
-    workbook.lastPrinted = new Date(2024, 1, 23);
-
-    //----Creación de la hoja de trabajo
-    const sheet = workbook.addWorksheet('NestedData');
-
-    //----Creación de columnas
-    sheet.columns = structureColumns;
-
-    sheet.addRows(dataForXLSXCSV);
-
-  //----Generar el archivo y descárgalo
-  workbook.xlsx.writeBuffer().then((data) => {
-    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    saveAs(blob, 'nombre_archivo.xlsx');
-  });
-
+    table.download("xlsx", "data.xlsx", {sheetName:"data"});
     });
   }
 
   if (document.getElementById("download_csv_"+id)){
-    //trigger download of data.csv file
     document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
     document.getElementById("download_csv_"+id).addEventListener("click", function (){
-    //Obtener datos anidados
-    var nestedData = table.getData(true);
-    let dataForXLSXCSV = get_structure_xlsx_csv(nestedData)
-    
-
-    console.log("La data en excel es: ")
-    //----Creación del libro de trabajo
-    const workbook = new ExcelJS.Workbook();
-    workbook.creator = 'linkaform';
-    workbook.lastModifiedBy = 'Bot';
-    workbook.created = new Date(2024, 1, 23);
-    workbook.modified = new Date();
-    workbook.lastPrinted = new Date(2024, 1, 23);
-
-    //----Creación de la hoja de trabajo
-    const sheet = workbook.addWorksheet('NestedData');
-
-    //----Creación de columnas
-    sheet.columns = structureColumns;
-
-   sheet.addRows(dataForXLSXCSV);
-
-  //----Generar el archivo y descárgalo
-  workbook.csv.writeBuffer().then((data) => {
-    const csvBlob = new Blob([data], { type: 'text/csv' });
-    saveAs(csvBlob, 'nombre_archivo.csv');
-  });
+      table.download("csv", "data.csv");
     });
   }
-
 }
 
 
@@ -451,7 +413,27 @@ function get_structure_xlsx_csv(nestedData){
 }
 
 //----- CATALOGS
-//get_catalog
+function get_catalog(){
+  fetch(url + 'infosync/scripts/run/',{
+    method:'POST',
+    body: JSON.stringify({
+      script_id:id,
+      option: 2
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer' + userJwt
+    }
+  })
+  .then(res => res.json())
+  .then(res =>{
+    if(res.success){
+      if(res.response.json.catalog){
+        console.log("Estas recibiendo el catálogo");
+      }
+    }
+  })
+}
 
 
 //Configuration for the graphic

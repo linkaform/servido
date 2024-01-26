@@ -4,8 +4,35 @@
   border-radius: 10px;
 }
 
+.promotoria_aigp .tabulator-tree-level-0 .tabulator-cell a {
+    /* Estilos que deseas eliminar */
+    color: inherit; /* Heredar el color del texto */
+    text-decoration: inherit !important; /* Heredar la decoración del texto (generalmente subrayado) */
+    pointer-events: none;
+}
+
+.promotoria_aigp .tabulator-tree-level-0 .fa-print{
+  display: none;
+}
+
+.promotoria_aigp .tabulator-tree-level-1 .tabulator-cell a {
+    /* Estilos que deseas eliminar */
+    color: inherit; /* Heredar el color del texto */
+    text-decoration: inherit !important; /* Heredar la decoración del texto (generalmente subrayado) */
+    pointer-events: none;
+}
+
+
+.promotoria_aigp .tabulator-tree-level-1{
+  text-decoration: none;
+}
+
+.promotoria_aigp .tabulator-tree-level-1 .fa-print{
+  display: none;
+}
+
 /*Theme the header*/
-.tabulator-header {
+.promotoria_aigp .tabulator-header {
     background-color:#F3CCEC !important;
 }
 
@@ -34,7 +61,7 @@
 }
 
 .tabulator-cell{
-  font-size: 13px;
+  font-size: 12px;
 }
 
 body{
