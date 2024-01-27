@@ -95,7 +95,7 @@ window.onload = function(){
     //--Styles
     setSpinner();
     console.log('-------------script id', scriptId)
-    //get_catalog(scriptId);
+    get_catalog();
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
@@ -149,9 +149,7 @@ function loadDemoData(){
 
   drawFirstElement(dataFirstElement)
   document.getElementById("ThirdElement").style.removeProperty('display');
-  
 }
-
 
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
@@ -169,7 +167,6 @@ function getFirstElement(dateFrom, dateTo, cadena){
   $('.load-wrapp').show();
   $('.title_tables').hide();
 
-  console.log('logNumber', lotNumber)
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
@@ -177,6 +174,7 @@ function getFirstElement(dateFrom, dateTo, cadena){
       date_from: dateFrom,
       date_to: dateTo,
       cadena: cadena,
+      option:1
       
     }),
     headers:{
@@ -192,6 +190,13 @@ function getFirstElement(dateFrom, dateTo, cadena){
       $("#divContent").show();
       $('.title_tables').show();
       console.log("Implementación pendiente")
+      if(res.response.json.firstElement.data){
+        let data = res.response.json.firstElement.data
+        getDrawTableFirst('firstElement', columsTable, data);
+        document.getElementById("firstElement").style.removeProperty('display');
+        
+        document.getElementById("firstParameters").style.removeProperty('display');
+      }
       /*if(res.response.json.secondElement.data){
         //----Se crea y define una variable que almacene la data de la query para no escribir toda la ruta
         let dataTableTwo = res.response.json.secondElement.data;
@@ -243,24 +248,6 @@ function getDrawTableFirst(id, columnsData, tableData){
     clipboardPasteAction:"replace",
     data:tableData,
     columns:columnsData,
-    dataMutate:function(data){
-      //alert("Pruebas")
-      var firstChild = data._children && data._children[0];
-        if(firstChild){
-            // Mueve los datos del primer hijo al nivel superior
-            data.folio = firstChild.folio;
-            data.ciudad = firstChild.ciudad;
-            data.cadena = firstChild.cadena;
-            data.fecha_inicio = firstChild.fecha_inicio;
-            data.hora_inicio = firstChild.hora_inicio;
-            data.fecha_final = firstChild.fecha_final;
-            data.hora_final = firstChild.hora_final;
-            data.duracion_visita = firstChild.duracion_visita;
-            data.total_hrs_dia = firstChild.total_hrs_dia;
-            data.record_id = firstChild.record_id;
-        }
-        return data;
-    },
 
     //Primer anidamiento
     /*rowFormatter:function(row){
@@ -413,27 +400,49 @@ function get_structure_xlsx_csv(nestedData){
 }
 
 //----- CATALOGS
-function get_catalog(){
-  fetch(url + 'infosync/scripts/run/',{
-    method:'POST',
+function get_catalog() 
+{
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
     body: JSON.stringify({
-      script_id:id,
-      option: 2
+      script_id: 113646,
+      option: 2,
     }),
     headers:{
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer' + userJwt
-    }
+      'Authorization': 'Bearer '+userJwt
+    },
   })
   .then(res => res.json())
-  .then(res =>{
-    if(res.success){
-      if(res.response.json.catalog){
-        console.log("Estas recibiendo el catálogo");
+  .then(res => {
+    if (res.success) {
+      console.log(res)
+      if (res.response.json.catalog){
+        let data = []
+        data = res.response.json.catalog
+        console.log('CATALOGO',res.response.json.catalog);
+
+        $("#cadena").empty();
+        $('#cadena').append('<option value="--">Seleccione la cadena</option>');
+        data.forEach(element => {
+          value = element['64eecef6983b37deb80baec8']
+          $('#cadena').append('<option value="'+value+'">'+value+'</option>');
+        })
+
+        
+        /*if(arrayCeo.length){
+          $("#ceo").empty();
+          $('#ceo').append('<option value="--">--Seleccione--</option>');
+          for (i = 0; i < arrayCeo.length; i++) {
+            value = arrayCeo[i]
+            $('#ceo').append('<option value="'+ value +'">'+value+'</option>');
+          }
+        }*/
+        
       }
-    }
+    } 
   })
-}
+};
 
 
 //Configuration for the graphic
