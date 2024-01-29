@@ -17,6 +17,10 @@ hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
 hideElement("secondElement");
+hideElement("fourthElement");
+hideElement("fivethElement");
+
+
 hideElement("ThirdElement");
 
 window.onload = function(){
@@ -207,6 +211,8 @@ function getFirstElement(dateFrom, dateTo, cadena){
       }
 
       if(res.response.json.thirdElement.data){
+        unhideElement("fourthElement");
+        unhideElement("fivethElement");
         console.log(res.response.json.thirdElement.data)
         let data_general = {}
         data_general = res.response.json.thirdElement.data[0]
@@ -423,7 +429,7 @@ function get_catalog()
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 113646,
+      script_id: 113918,
       option: 2,
     }),
     headers:{
@@ -508,37 +514,46 @@ function  drawFirstElement(data){
 }
 
 //------PDF
-function getDownloadPdf(id = 0){
-  Swal.fire('Espere Por Favor');
-  Swal.showLoading();
-  link = ''
-  fetch(url + 'infosync/scripts/run/', {
-      method: 'POST',
-      body: JSON.stringify({
-        script_id: 98210,
-        ids: id,
-        template: 254,
-      }),
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+userJwt
-      },
+function getDownloadPdf(id = 0) {
+    Swal.fire('Espere Por Favor');
+    Swal.showLoading();
+    fetch(url + 'infosync/scripts/run/', {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: 113904,
+            ids: id,
+            template: 4,
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userJwt
+        },
     })
     .then(res => res.json())
     .then(res => {
-    if (res.success) {
-      if (res.response.json.download.data){
-        Swal.close()
-        link = res.response.json.download.data.download_url;
-        console.log('LINK',link)
+        if (res.success) {
+            if (res.response.json.download.data) {
+                Swal.close();
+                const link = res.response.json.download.data.download_url;
+                console.log('LINK', link);
 
-        Object.assign(document.createElement('a'), {
-          target: '_blank',
-          rel: 'noopener noreferrer',
-          href: link,
-        }).click();
-      }
-    } 
-  })
-  return link;
+                // Crear un enlace temporal
+                const downloadLink = document.createElement('a');
+                downloadLink.href = link;
+                downloadLink.download = 'archivo.pdf'; // Nombre del archivo a descargar
+
+                // Simular un clic en el enlace para iniciar la descarga
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink); // Eliminar el enlace temporal
+            } else {
+                Swal.fire('Error', 'No se pudo obtener el enlace de descarga', 'error');
+            }
+        } else {
+            Swal.fire('Error', 'La solicitud no tuvo éxito', 'error');
+        }
+    })
+    .catch(error => {
+        Swal.fire('Error', 'Hubo un error en la solicitud: ' + error.message, 'error');
+    });
 }
