@@ -216,8 +216,10 @@ function getFirstElement(dateFrom, dateTo, cadena){
         console.log(res.response.json.thirdElement.data)
         let data_general = {}
         data_general = res.response.json.thirdElement.data[0]
-        $("#total_visitas").append(data_general.total_visitas)
-        $("#total_promotores").append(data_general.numero_promotor)
+        $("#total_visitas").empty()
+        $("#total_promotores").empty()
+        $("#total_visitas").append("Total de visitas: ",data_general.total_visitas)
+        $("#total_promotores").append("Total promotores: ",data_general.numero_promotor)
         drawFirstElement(dataGraphic)
         document.getElementById("ThirdElement").style.removeProperty('display');
       }
@@ -534,18 +536,27 @@ function getDownloadPdf(id = 0) {
         if (res.success) {
             if (res.response.json.download.data) {
                 Swal.close();
-                const link = res.response.json.download.data.download_url;
-                console.log('LINK', link);
+                const linkR = res.response.json.download.data.download_url;
+                console.log('LINK', linkR);
 
-                // Crear un enlace temporal
+                /*// Crear un enlace temporal
                 const downloadLink = document.createElement('a');
                 downloadLink.href = link;
-                downloadLink.download = 'archivo.pdf'; // Nombre del archivo a descargar
+                downloadLink.download = 'archivo.pdf'; // Nombre del archivo a descargar*/
 
-                // Simular un clic en el enlace para iniciar la descarga
+                /*// Simular un clic en el enlace para iniciar la descarga
                 document.body.appendChild(downloadLink);
                 downloadLink.click();
-                document.body.removeChild(downloadLink); // Eliminar el enlace temporal
+                document.body.removeChild(downloadLink); // Eliminar el enlace temporal*/
+
+                // Crear un enlace para descargar el PDF
+                var link = document.createElement('a');
+                link.href = linkR;
+                link.target = "_blank"; // Abrir en una nueva pestaña o ventana
+                link.download = "archivo.pdf"; // Nombre de archivo para descargar
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             } else {
                 Swal.fire('Error', 'No se pudo obtener el enlace de descarga', 'error');
             }
