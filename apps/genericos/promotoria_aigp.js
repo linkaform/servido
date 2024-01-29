@@ -197,6 +197,24 @@ function getFirstElement(dateFrom, dateTo, cadena){
         
         document.getElementById("firstParameters").style.removeProperty('display');
       }
+
+      if(res.response.json.secondElement.data){
+        console.log(res.response.json.secondElement.data)
+        let dataGraphic = {}
+        dataGraphic = res.response.json.secondElement.data[0]
+        drawFirstElement(dataGraphic)
+        document.getElementById("ThirdElement").style.removeProperty('display');
+      }
+
+      if(res.response.json.thirdElement.data){
+        console.log(res.response.json.thirdElement.data)
+        let data_general = {}
+        data_general = res.response.json.thirdElement.data[0]
+        $("#total_visitas").append(data_general.total_visitas)
+        $("#total_promotores").append(data_general.numero_promotor)
+        drawFirstElement(dataGraphic)
+        document.getElementById("ThirdElement").style.removeProperty('display');
+      }
       /*if(res.response.json.secondElement.data){
         //----Se crea y define una variable que almacene la data de la query para no escribir toda la ruta
         let dataTableTwo = res.response.json.secondElement.data;
@@ -489,3 +507,38 @@ function  drawFirstElement(data){
   })
 }
 
+//------PDF
+function getDownloadPdf(id = 0){
+  Swal.fire('Espere Por Favor');
+  Swal.showLoading();
+  link = ''
+  fetch(url + 'infosync/scripts/run/', {
+      method: 'POST',
+      body: JSON.stringify({
+        script_id: 98210,
+        ids: id,
+        template: 254,
+      }),
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+userJwt
+      },
+    })
+    .then(res => res.json())
+    .then(res => {
+    if (res.success) {
+      if (res.response.json.download.data){
+        Swal.close()
+        link = res.response.json.download.data.download_url;
+        console.log('LINK',link)
+
+        Object.assign(document.createElement('a'), {
+          target: '_blank',
+          rel: 'noopener noreferrer',
+          href: link,
+        }).click();
+      }
+    } 
+  })
+  return link;
+}
