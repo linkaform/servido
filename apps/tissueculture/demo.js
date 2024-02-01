@@ -173,7 +173,7 @@ function loadDemoData(){
   drawFirstElement(dataFirstElement);
   //document.getElementById("firstElement").style.removeProperty('display');
 
-  getDrawTable('secondElementB', columsTable1, dataTable1);
+  getDrawTable('secondElement', columsTable1, dataTable1);
 
   getDrawGauge('gaugeFirst', dataGauge1)
   document.getElementById("firstGauge").style.removeProperty('display');
@@ -299,7 +299,7 @@ function getFirstElement(date_from, date_to){
         $("#download_firstElement").show();
       }
       if(res.response.json.thirdElement.data){
-        getDrawTable('secondElementB', columsTable1, res.response.json.thirdElement.data);
+        getDrawTable('secondElement', columsTable1, res.response.json.thirdElement.data);
       }
       if (res.response.json.fourthElement){
         //Grafico de evaluaciones por sucursal
