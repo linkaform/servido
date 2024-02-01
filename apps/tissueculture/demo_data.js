@@ -71,3 +71,35 @@ var dataGauge1 = [
     },
   }
 ];
+
+//Configuración de la tabla anidada
+
+var columsTable1 = [
+  {title:"Greenhouse", field:"warehouse", hozAlign:"left", headerFilter:"input",headerTooltip:true, width:170},
+  {title:"Product code", field:"productCode", hozAlign:"left", headerFilter:"input",headerTooltip:true, width:150},
+  {title:"AdjustIn total", field:"adjustIn", hozAlign:"right", width:150},
+  {title:"AdjustOut total", field:"adjustOut", hozAlign:"right", width:150},
+  {title:"Balance", field:"balance", hozAlign:"right", width:100}
+]
+
+var dataTable1 = [
+  {"warehouse": "Warehouse1", 
+    "_children":[
+      {"productCode":"LNAFP",
+        "adjustIn":123,
+        "adjustOut":234,
+        "balance":122
+      },
+      {"productCode":"LNAFP",
+        "adjustIn":123,
+        "adjustOut":234,
+        "balance":122
+      },
+      {"productCode":"LNAFP",
+        "adjustIn":123,
+        "adjustOut":234,
+        "balance":122
+      }
+      ]
+  }
+]

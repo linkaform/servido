@@ -26,7 +26,7 @@ hideElement("title_demo")
 //hideElement("firstElement");
 hideElement("sixthElement");
 hideElement("firstParameters");
-
+//hideElement("secondElement");
 
 hideElement("div_alert1");
 hideElement("div_alert2");
@@ -157,7 +157,7 @@ function unHideReportElements(){
   $('.title_tables').show();
   //$('.divOptions').show();
   unhideElement("firstParameters");
-  //unhideElement("firstElement");
+  //unhideElement("secondElement");
 }
 
 function loadDemoData(){
@@ -173,10 +173,14 @@ function loadDemoData(){
   drawFirstElement(dataFirstElement);
   //document.getElementById("firstElement").style.removeProperty('display');
 
+  getDrawTable('secondElementB', columsTable1, dataTable1);
 
   getDrawGauge('gaugeFirst', dataGauge1)
   document.getElementById("firstGauge").style.removeProperty('display');
   $("#sucursal").multipleSelect('refresh');
+
+  //Tabla
+  //document.getElementById("secondElementB").style.removeProperty('display');
 }
 
 const loading = document.querySelector('.loading-container');
@@ -279,10 +283,10 @@ function getFirstElement(date_from, date_to){
 
         getDrawGauge('gaugeFirst', dataGauge)
       }
-      if (res.response.json.thirdElement){
+      if (res.response.json.secondElement){
         console.log("D A T A")
         //Gráfico de Evaluaciones por sucursal
-        drawFirstElement(res.response.json.thirdElement);
+        drawFirstElement(res.response.json.secondElement);
         //drawFirstElement(dataFirstElement);
         //document.getElementById("firstElement").style.removeProperty('display');
 
@@ -293,6 +297,9 @@ function getFirstElement(date_from, date_to){
         unhideElement("firstElement")*/
         //unhideElement("firstElement")
         $("#download_firstElement").show();
+      }
+      if(res.response.json.thirdElement.data){
+        getDrawTable('secondElementB', columsTable1, res.response.json.thirdElement.data);
       }
       if (res.response.json.fourthElement){
         //Grafico de evaluaciones por sucursal
@@ -393,9 +400,40 @@ function  drawFirstElement(data){
   })
 }
 
-
 //-----GAUGE
 function getDrawGauge(id, data){
   var layout = { width: 340, height: 190, margin: { t: 42 , b: 0 } };
   Plotly.newPlot(id, data, layout);
+}
+
+//-----TABLES
+function getDrawTable(id, columnsData, tableData){
+  var  table = new Tabulator("#" + id, {
+    height:"100%",
+    layout:"fitDataTable",
+    data:tableData,
+    resizableRows:false,
+    dataTree:true,
+    dataTreeStartExpanded:false,
+    clipboard:true,
+    clipboardPasteAction:"replace",
+    textDirection:"ltr",
+    columns:columnsData
+  });
+
+  if (document.getElementById("download_xlsx_"+id)){
+    //trigger download of data.xlsx file
+    document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
+    document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
+    table.download("xlsx", "data.xlsx", {sheetName:"data"});
+    });
+  }
+
+  if (document.getElementById("download_csv_"+id)){
+    //trigger download of data.csv file
+    document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
+    document.getElementById("download_csv_"+id).addEventListener("click", function (){
+      table.download("csv", "data.csv");
+    });
+  }
 }
