@@ -269,7 +269,7 @@ function getDrawTableFirst(id, columnsData, tableData){
     },*/
     dataTree: true,
     dataTreeChildIndent:5,
-    dataTreeStartExpanded:true,
+    dataTreeStartExpanded:false,
     clipboard:true,
     clipboardPasteAction:"replace",
     data:tableData,
@@ -522,7 +522,7 @@ function getDownloadPdf(id = 0) {
     fetch(url + 'infosync/scripts/run/', {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 113904,
+            script_id: 113918,
             ids: id,
             template: 4,
         }),

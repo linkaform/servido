@@ -20,7 +20,7 @@ var columsTable = [
   {title:"Fecha final", field:"fecha_final", width:100, headerWordWrap:true },
   {title:"Hora final de jornada", field:"hora_final", hozAlign:"right", width:100, headerWordWrap:true },
   {title:"Duración visita", field:"duracion_visita", hozAlign:"right", width:100, headerWordWrap:true },
-  {title:"Total horas x día", field:"total_hrs_dia", hozAlign:"right", width:180, headerWordWrap:true},
+  {title:"Total horas x día en traslados", field:"total_hrs_dia", hozAlign:"right", width:180, headerWordWrap:true},
   /*{title:"Evidencia", field:"evidencia", hozAlign:"right", width:100, headerWordWrap:true},*/
   { title:"Evidencia", field:"record_id", hozAlign:"right", width:90, headerWordWrap:true, formatter:function(cell){
     return "<i class='fa fa-print'></i>"; 
