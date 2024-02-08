@@ -377,7 +377,7 @@ function  drawFirstElement(data){
         },
         title:{
           display: true,
-          text: 'Visitas por promotor',
+          text: 'Mantenimientos terminados por tipo',
           font: {
             size: 25
           }

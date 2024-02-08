@@ -4,8 +4,20 @@
 var columsTable1 = [
   { title:"Mantenimiento", field:'mantenimiento',hozAlign:"left",width:200},
   { title:"Estatus ", field:'estatus',hozAlign:"left",width:230},
-  { title:"Cantidad ", field:'cantidad',hozAlign:"left",width:100},
-  { title:"% Efectividad ", field:'efectividad',hozAlign:"left",width:100, formatter: function(cell, formatterParams, onRendered) {
+  { title:"Cantidad ", field:'cantidad',hozAlign:"left",width:100,  formatter: function(cell, formatterParams, onRendered) {
+      var value = cell.getValue();
+      var statusValue = cell.getData().estatus; // Obtener el valor de "Estatus" de la fila
+      var bgColor = ''; // Color de fondo por defecto o basado en condiciones
+      
+      // Definir condiciones para cambiar el color de fondo
+      if (statusValue === undefined || statusValue === null || statusValue === '') {
+        // Aplicar negrita si "Estatus" está vacío
+        return '<strong>' + value + '</strong>';
+      } else {
+        return value;
+      }
+    }},
+  { title:"% Efectividad ", field:'efectividad',hozAlign:"left",width:130, formatter: function(cell, formatterParams, onRendered) {
       var value = cell.getValue();
       var bgColor = ''; // Color de fondo por defecto o basado en condiciones
       
@@ -20,20 +32,20 @@ var columsTable1 = [
       
       // Devolver el valor de la celda con el color de fondo aplicado
       if(value){
-        return '<div style="background-color: ' + bgColor + '">' + value + '</div>';
+        return '<div style="background-color: ' + bgColor + '"><strong>' + value + '</strong></div>';
       }
     }},
 ];
 
 
 var columsTable2 = [
-  { title:"Cliente", field:'cliente',hozAlign:"left",width:250},
-  { title:"Equipo", field:'equipo',hozAlign:"left",width:250},
-  { title:"Marca ", field:'marca',hozAlign:"left",width:200},
-  { title:"Modelo", field:'modelo',hozAlign:"left",width:250},
-  { title:"Serie", field:'serie',hozAlign:"left",width:250},
-  { title:"Proximo mantenimiento", field:'prox_mantenimiento',hozAlign:"right",width:180},
-  { title:"Orden de trabajo programada", field:'ord_trabajo',hozAlign:"right",width:100},
+  { title:"Cliente", field:'cliente',hozAlign:"left",width:300, headerWordWrap:true},
+  { title:"Equipo", field:'equipo',hozAlign:"left",width:350, headerWordWrap:true},
+  { title:"Marca ", field:'marca',hozAlign:"left",width:200, headerWordWrap:true},
+  { title:"Modelo", field:'modelo',hozAlign:"left",width:250, headerWordWrap:true},
+  { title:"Serie", field:'serie',hozAlign:"left",width:250, headerWordWrap:true},
+  { title:"Proximo mantenimiento", field:'prox_mantenimiento',hozAlign:"left",width:180, headerWordWrap:true},
+  { title:"Orden de trabajo", field:'ord_trabajo',hozAlign:"left",width:170, headerWordWrap:true},
 
 ];
 
