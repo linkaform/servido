@@ -5,7 +5,24 @@ var columsTable1 = [
   { title:"Mantenimiento", field:'mantenimiento',hozAlign:"left",width:200},
   { title:"Estatus ", field:'estatus',hozAlign:"left",width:230},
   { title:"Cantidad ", field:'cantidad',hozAlign:"left",width:100},
-  { title:"% Efectividad ", field:'efectividad',hozAlign:"left",width:100},
+  { title:"% Efectividad ", field:'efectividad',hozAlign:"left",width:100, formatter: function(cell, formatterParams, onRendered) {
+      var value = cell.getValue();
+      var bgColor = ''; // Color de fondo por defecto o basado en condiciones
+      
+      // Definir condiciones para cambiar el color de fondo
+      if (value >= 80) {
+        bgColor = 'green'; // Color verde claro para valores >= 80
+      } else if (value >= 60 && value < 80) {
+        bgColor = 'yellow'; // Color amarillo claro para valores entre 60 y 79
+      } else {
+        bgColor = 'red'; // Color coral claro para valores < 60
+      }
+      
+      // Devolver el valor de la celda con el color de fondo aplicado
+      if(value){
+        return '<div style="background-color: ' + bgColor + '">' + value + '</div>';
+      }
+    }},
 ];
 
 
