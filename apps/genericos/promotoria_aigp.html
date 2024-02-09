@@ -12,8 +12,8 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!--Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        
-        
+        <!--LIBRARY CHECK -->
+        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -104,6 +104,14 @@
                         <select class="form-control" id="cadena" name="cadena">
                             <option value="--">Seleccione</option>
                         </select>
+                    </div>
+
+                    <div id="content_button" class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Expanda o agrupe la data: </h5>
+                        <!--<input type="checkbox"  data-toggle="toggle" data-width="130" data-on="Expandir" data-off="Agrupar" id="input_check" data-onstyle="success" data-offstyle="primary">-->
+
+                        <input type="button" name="expandir" id="expandir" class="btn btn-primary" value="Expandir">
+                        <input type="button" name="expandir" id="agrupar" class="btn btn-secondary" value="Agrupar">
                     </div>
                     <!-- 
                     <div class="col-sm-12 col-md-2 col-lg-2" id="filter_date">
