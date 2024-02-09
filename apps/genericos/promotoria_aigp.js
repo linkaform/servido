@@ -205,7 +205,6 @@ function getFirstElement(dateFrom, dateTo, cadena){
       }
 
       if(res.response.json.secondElement.data){
-        console.log(res.response.json.secondElement.data)
         let dataGraphic = {}
         dataGraphic = res.response.json.secondElement.data[0]
         drawFirstElement(dataGraphic)
@@ -215,7 +214,6 @@ function getFirstElement(dateFrom, dateTo, cadena){
       if(res.response.json.thirdElement.data){
         unhideElement("fourthElement");
         unhideElement("fivethElement");
-        console.log(res.response.json.thirdElement.data)
         let data_general = {}
         data_general = res.response.json.thirdElement.data[0]
         $("#total_visitas").empty()
@@ -403,7 +401,7 @@ function getDrawTableFirst(id, columnsData, tableData, expand=true){
                   'hora_final': elementTwo.hora_final || " ",
                   'duracion_visita': elementTwo.duracion_visita || " ",
                   'total_hrs_dia': elementTwo.total_hrs_dia || " ",
-                  'evidencia': "https://f001.backblazeb2.com/file/slimey-linkaform/public-client-13145/downloads/pdfs/105624/"+elementTwo.fecha+"/version_1/Formulario_Loquay"+elementTwo.fecha.replace('-', '_')+".pdf" 
+                  'evidencia': elementTwo.url_download
                 }
                 exportData.push(titles)
                 console.log("elementTwo")
