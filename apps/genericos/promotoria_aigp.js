@@ -210,6 +210,12 @@ function getFirstElement(dateFrom, dateTo, cadena){
         drawFirstElement(dataGraphic)
         document.getElementById("ThirdElement").style.removeProperty('display');
       }
+      
+      if(res.response.json.listIds){
+        let array_ids = []
+        array_ids = res.response.json.listIds;
+        generar_urls_pdf(array_ids);
+      }
 
       if(res.response.json.thirdElement.data){
         unhideElement("fourthElement");
@@ -223,6 +229,7 @@ function getFirstElement(dateFrom, dateTo, cadena){
         drawFirstElement(dataGraphic)
         document.getElementById("ThirdElement").style.removeProperty('display');
       }
+
       /*if(res.response.json.secondElement.data){
         //----Se crea y define una variable que almacene la data de la query para no escribir toda la ruta
         let dataTableTwo = res.response.json.secondElement.data;
@@ -389,10 +396,18 @@ function getDrawTableFirst(id, columnsData, tableData, expand=true){
             if(element.hasOwnProperty('_children')){
               exportData.push(titles)
               element._children.forEach(elementTwo => {
+                let ciudad = 'element.ciudad'
+                if(typeof elementTwo.ciudad == 'string'){
+                  ciudad = ciudad
+                }
+                if(typeof elementTwo.ciudad == 'object'){
+                  ciudad = elementTwo.ciudad[0]
+                }
+
                 titles = {
                   'usuario':elementTwo.usuario || " ",
                   'fecha': elementTwo.fecha || " ",
-                  'ciudad': elementTwo.ciudad || " ",
+                  'ciudad': ciudad || " ",
                   'cadena': elementTwo.cadena || " ",
                   'tienda': elementTwo.tienda || " ",
                   'fecha_inicio': elementTwo.fecha_inicio || " ",
@@ -690,31 +705,73 @@ function getDownloadPdf(id = 0) {
     });
 }
 
+//Generar pds
+function generar_urls_pdf(ids){
+  console.log("Realizando solicitud para crear pdfs");
+  fetch(url + 'infosync/scripts/run/', {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: 114350,
+            ids: ids,
+            template: 411,
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userJwt
+        },
+    })
+  .then(() => {
+    console.log('Solicitud enviada al servidor sin esperar respuesta');
+  })
+  .catch(error => {
+    console.error('Error al enviar la solicitud:', error);
+  });
+}
+
 var cont_check = 0;
 var is_group = false;
+var group_user = false
+var group_date = false
 
 document.getElementById('expandir').addEventListener('click', (e)=>{
-  if(cont_check == 1 && is_group == true){
-    getDrawTableFirst('firstElement', columsTable, dataTable1, expand=[true, true])
-    is_group = true;
-    cont_check -= 1;
-  }else if(cont_check == 2){
+  if(group_user == true && group_date == true){
     getDrawTableFirst('firstElement', columsTable, dataTable1, expand=[true, false])
-    cont_check -= 1;
+    group_user = false;
+    group_date = true;
+  }else if(group_user == false && group_date == true){
+    getDrawTableFirst('firstElement', columsTable, dataTable1, expand=[true, true])
+    group_user = false;
+    group_date = false;
+  }else{
+    alert("Expanción completa")
   }
-  console.log(cont_check)
+  console.log(group_user)
+  console.log(group_date)
   console.log("Expandir")
 })
 
-document.getElementById('agrupar').addEventListener('click', (e)=>{
-  if(cont_check == 0){
+document.getElementById('agrupar_fecha').addEventListener('click', (e)=>{
+  if(group_user == false && group_date == false){
     getDrawTableFirst('firstElement', columsTable, dataTable1, expand=[true, false])
-    is_group = true;
-    cont_check += 1;
-  }else if (cont_check == 1 && is_group == true){
-    getDrawTableFirst('firstElement', columsTable, dataTable1, expand=[false, false])
-    cont_check += 1;
+    group_date = true
+    group_user = false;
+  }else {
+    alert('Ya agrupaste por fecha')
   }
-  console.log(cont_check)
+  console.log("Agrupar")
+})
+
+document.getElementById('agrupar_usuario').addEventListener('click', (e)=>{
+  if(group_date == false && group_user == false){
+    getDrawTableFirst('firstElement', columsTable, dataTable1, expand=[false, false])
+    group_date = true;
+    group_user = true;
+  }else if(group_date == true && group_user == false) {
+    getDrawTableFirst('firstElement', columsTable, dataTable1, expand=[false, false])
+    group_date = true;
+    group_user = true;
+  }else{
+    console.log("Agrupación por usuario realizada")
+  }
   console.log("Agrupar")
 })
