@@ -212,8 +212,10 @@ function getFirstElement(dateFrom, dateTo, cadena){
       }
       
       if(res.response.json.listIds){
+        console.log("Solicitud pendiente")
         let array_ids = []
         array_ids = res.response.json.listIds;
+        console.log("Los ids son")
         generar_urls_pdf(array_ids);
       }
 
@@ -419,12 +421,12 @@ function getDrawTableFirst(id, columnsData, tableData, expand=true){
                   'evidencia': elementTwo.url_download
                 }
                 exportData.push(titles)
-                console.log("elementTwo")
-                console.log(elementTwo)
+                /*console.log("elementTwo")
+                console.log(elementTwo)*/
               })
             }
-            console.log("element")
-            console.log(element)
+            /*console.log("element")
+            console.log(element)*/
           })
           //exportData.push(...row._children)
         }
@@ -462,8 +464,8 @@ function getDrawTableFirst(id, columnsData, tableData, expand=true){
     sheet.columns = structureColumns;
 
     sheet.addRows(dataForXLSX);
-    console.log("Data es")
-    console.log(exportData)
+    /*console.log("Data es")
+    console.log(exportData)*/
         //----Generar el archivo y descárgalo
     workbook.xlsx.writeBuffer().then((data) => {
       const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
@@ -660,7 +662,7 @@ function getDownloadPdf(id = 0) {
         body: JSON.stringify({
             script_id: 113904,
             ids: id,
-            template: 411,
+            template: 409,
         }),
         headers: {
             'Content-Type': 'application/json',
@@ -713,7 +715,7 @@ function generar_urls_pdf(ids){
         body: JSON.stringify({
             script_id: 114350,
             ids: ids,
-            template: 411,
+            template: 409,
         }),
         headers: {
             'Content-Type': 'application/json',
@@ -743,7 +745,13 @@ document.getElementById('expandir').addEventListener('click', (e)=>{
     group_user = false;
     group_date = false;
   }else{
-    alert("Expanción completa")
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      text: "Expansión completa",
+      showConfirmButton: false,
+      timer: 1500
+    });
   }
   console.log(group_user)
   console.log(group_date)
@@ -756,7 +764,13 @@ document.getElementById('agrupar_fecha').addEventListener('click', (e)=>{
     group_date = true
     group_user = false;
   }else {
-    alert('Ya agrupaste por fecha')
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      text: "Agrupación por fecha realizada",
+      showConfirmButton: false,
+      timer: 1500
+    });
   }
   console.log("Agrupar")
 })
@@ -771,7 +785,14 @@ document.getElementById('agrupar_usuario').addEventListener('click', (e)=>{
     group_date = true;
     group_user = true;
   }else{
-    console.log("Agrupación por usuario realizada")
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      text: "Agrupación por usuario realizada",
+      showConfirmButton: false,
+      timer: 1500
+    });
   }
+
   console.log("Agrupar")
 })
