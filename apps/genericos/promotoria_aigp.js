@@ -211,14 +211,6 @@ function getFirstElement(dateFrom, dateTo, cadena){
         document.getElementById("ThirdElement").style.removeProperty('display');
       }
       
-      if(res.response.json.listIds){
-        console.log("Solicitud pendiente")
-        let array_ids = []
-        array_ids = res.response.json.listIds;
-        console.log("Los ids son")
-        generar_urls_pdf(array_ids);
-      }
-
       if(res.response.json.thirdElement.data){
         unhideElement("fourthElement");
         unhideElement("fivethElement");
@@ -469,7 +461,7 @@ function getDrawTableFirst(id, columnsData, tableData, expand=true){
         //----Generar el archivo y descárgalo
     workbook.xlsx.writeBuffer().then((data) => {
       const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      saveAs(blob, 'nombre_archivo.xlsx');
+      saveAs(blob, 'download.xlsx');
     });
       });
     }
@@ -691,7 +683,7 @@ function getDownloadPdf(id = 0) {
                 var link = document.createElement('a');
                 link.href = linkR;
                 link.target = "_blank"; // Abrir en una nueva pestaña o ventana
-                link.download = "archivo.pdf"; // Nombre de archivo para descargar
+                link.download = "download.pdf"; // Nombre de archivo para descargar
                 document.body.appendChild(link);
                 link.click();
                 //document.body.removeChild(link);
@@ -705,29 +697,6 @@ function getDownloadPdf(id = 0) {
     .catch(error => {
         Swal.fire('Error', 'Hubo un error en la solicitud: ' + error.message, 'error');
     });
-}
-
-//Generar pds
-function generar_urls_pdf(ids){
-  console.log("Realizando solicitud para crear pdfs");
-  fetch(url + 'infosync/scripts/run/', {
-        method: 'POST',
-        body: JSON.stringify({
-            script_id: 114350,
-            ids: ids,
-            template: 409,
-        }),
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + userJwt
-        },
-    })
-  .then(() => {
-    console.log('Solicitud enviada al servidor sin esperar respuesta');
-  })
-  .catch(error => {
-    console.error('Error al enviar la solicitud:', error);
-  });
 }
 
 var cont_check = 0;
