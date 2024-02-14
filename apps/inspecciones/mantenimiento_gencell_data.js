@@ -146,13 +146,18 @@ var dataTable2 = [
 ];
 
 //Data pora el gráfico de barras
+var labels = ["Preventivos","Diagnóstico"]
 var dataFirstElement = {
-  labels: ["Preventivos","Diagnóstico"],
+  labels: ['Prenventivos finalizados', 'Prenventivos en progreso', 'Diagnóstico finalizados', 'Diagnóstico en progreso'],
   datasets: [
     {
+      backgroundColor: ['#6DF7D5', '#6DC0F7'],
+      data: [55, 25],
+    },
+    {
       
-      backgroundColor: ['#1DD3E1', '#FF8F8F'],
-      data: [80,45],
+      backgroundColor: ['#787FFA', '#C678FA'],
+      data: [20, 25],
     },
     
   ]
