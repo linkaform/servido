@@ -98,7 +98,7 @@ window.onload = function(){
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
-    $("#provincia").multipleSelect('refresh');
+    $("#cliente").multipleSelect('refresh');
     $("#canton").multipleSelect('refresh');
     $("#parroquia").multipleSelect('refresh');
     document.getElementById("firstParameters").style.removeProperty('display');
@@ -155,21 +155,20 @@ loading.style.display = 'none';
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  let provincia = document.getElementById("provincia");  
-  let canton = document.getElementById("canton");  
-  let parroquia = document.getElementById("parroquia");  
+  let cliente = document.getElementById("cliente");
+  console.log("clientes")
+  console.log(cliente.value)  
+  
   getFirstElement(
     date_to.value,
     date_from.value, 
-    provincia.value, 
-    canton.value, 
-    parroquia.value
+    cliente.value, 
   );
 };
 
 
 
-function getFirstElement(dateTo, dateFrom, dateInspeccion, provincia, canton, parroquia){
+function getFirstElement(dateTo, dateFrom, dateInspeccion, cliente){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -181,11 +180,9 @@ function getFirstElement(dateTo, dateFrom, dateInspeccion, provincia, canton, pa
     body: JSON.stringify({
       script_id: scriptId,
       date_to: dateTo,
-      dateFrom: dateFrom,
-      dateInspeccion: dateInspeccion,
-      provincia: provincia,
-      canton: canton,
-      parroquia: parroquia,
+      date_from: dateFrom,
+      cliente: cliente,
+      
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -200,12 +197,25 @@ function getFirstElement(dateTo, dateFrom, dateInspeccion, provincia, canton, pa
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.json.firstElement.data) {
+        console.log(res.response.json.firstElement.data)
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
-      if (res.response.json.secondElement.data) {
-        getDrawTable('secondElement', columsTable2, res.response.json.secondElement.data);
+      if (res.response.json.secondElement.data[0]) {
+        console.log(res.response.json.secondElement.data[0])
+        drawFirstElement(res.response.json.secondElement.data[0]);
         document.getElementById("secondElement").style.removeProperty('display');
+      }
+      if (res.response.json.thirdElement.data) {
+        console.log(res.response.json.thirdElement.data)
+        getDrawTable('thirdElement', columsTable2, res.response.json.thirdElement.data, '380px');
+        document.getElementById("thirdElement").style.removeProperty('display');
+      }
+      if (res.response.json.fourthElement.data) {
+        console.log("Fourth element")
+        console.log(res.response.json.fourthElement.data)
+        drawSecondElement(res.response.json.fourthElement.data);
+        document.getElementById("graphicFourth").style.removeProperty('display');
       }
     } else {
       hideLoading();
@@ -261,24 +271,12 @@ function getDrawTable(id, columnsData, tableData, heightTable='300px'){
 //----- CATALOGS
 function get_catalog(option = 1) 
 {
-  option = option
-  filterArrayA = ''
-  filterArrayB = ''
-  if (option == 2) {
-    filterArrayA = $('#provincia').val();
-    console.log('Valores',filterArrayA)
-  }else if (option == 3){
-    filterArrayA = $('#provincia').val();
-    filterArrayB = $('#canton').val();
-  } 
-
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 100512,
+      script_id: 114449,
       option: option,
-      filter_arrayA:filterArrayA,
-      filter_arrayB:filterArrayB,
+      
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -288,36 +286,17 @@ function get_catalog(option = 1)
   .then(res => res.json())
   .then(res => {
       if (res.response.json.catalog){
-        
+        console.log("Los datos son: ")
+        console.log(res.response.json.catalog)
         if (option == 1){
           //-----FILTER PROVINCIA 
-          $("#provincia").empty();
-          $('#provincia').append('<option value="--">--Seleccione--</option>');
+          $("#cliente").empty();
+          $('#cliente').append('<option value="--">--Seleccione--</option>');
           for (i = 0; i < res.response.json.catalog.length; i++) {
             value = res.response.json.catalog[i]
-            $('#provincia').append('<option value="'+ value +'">'+value+'</option>');
+            $('#cliente').append('<option value="'+ value +'">'+value+'</option>');
           }
-          $("#provincia").multipleSelect('refresh');
-        }else if (option == 2){
-          $("#canton").empty();
-          $('#canton').append('<option value="--">--Seleccione--</option>');
-
-          $("#parroquia").empty();
-          $('#parroquia').append('<option value="--">--Seleccione--</option>');
-
-          for (i = 0; i < res.response.json.catalog.length; i++) {
-            value = res.response.json.catalog[i]
-            $('#canton').append('<option value="'+ value +'">'+value+'</option>');
-          }
-          $("#canton").multipleSelect('refresh');
-        }else if (option == 3){
-          $("#parroquia").empty();
-          $('#parroquia').append('<option value="--">--Seleccione--</option>');
-          for (i = 0; i < res.response.json.catalog.length; i++) {
-            value = res.response.json.catalog[i]
-            $('#parroquia').append('<option value="'+ value +'">'+value+'</option>');
-          }
-          $("#parroquia").multipleSelect('refresh');
+          $("#cliente").multipleSelect('refresh');
         }
 
       }
@@ -326,7 +305,7 @@ function get_catalog(option = 1)
 
 //-----SELECT
 $(function() {
-    $('#provincia').multipleSelect({
+    $('#cliente').multipleSelect({
       filter: true,
       /*
       onClick: function (view) {

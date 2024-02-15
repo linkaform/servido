@@ -22,11 +22,11 @@ var columsTable1 = [
       var bgColor = ''; // Color de fondo por defecto o basado en condiciones
       
       // Definir condiciones para cambiar el color de fondo
-      if (value >= 80) {
+      if (value >= 75) {
         bgColor = 'green'; // Color verde claro para valores >= 80
-      } else if (value >= 60 && value < 80) {
+      } else if (value >= 50 && value < 75) {
         bgColor = 'yellow'; // Color amarillo claro para valores entre 60 y 79
-      } else {
+      } else if (value >= 0 && value < 50) {
         bgColor = 'red'; // Color coral claro para valores < 60
       }
       
@@ -44,9 +44,10 @@ var columsTable2 = [
   { title:"Marca ", field:'marca',hozAlign:"left",width:200, headerWordWrap:true},
   { title:"Modelo", field:'modelo',hozAlign:"left",width:250, headerWordWrap:true},
   { title:"Serie", field:'serie',hozAlign:"left",width:250, headerWordWrap:true},
-  { title:"Proximo mantenimiento", field:'prox_mantenimiento',hozAlign:"left",width:180, headerWordWrap:true},
-  { title:"Orden de trabajo", field:'ord_trabajo',hozAlign:"left",width:170, headerWordWrap:true},
-
+  { title:"Proximo mantenimiento", field:'prox_mantenimiento',hozAlign:"left",width:150, headerWordWrap:true},
+  { title:"Orden de trabajo Mantenimiento", field:'ord_trabajo',hozAlign:"left",width:150, headerWordWrap:true},
+  { title:"Proxima calibración", field:'prox_calibracion',hozAlign:"left",width:150, headerWordWrap:true},
+  { title:"Orden de trabajo Calibración", field:'ord_calibracion',hozAlign:"left",width:150, headerWordWrap:true},
 ];
 
 
@@ -115,6 +116,8 @@ var dataTable2 = [
     serie: 'C2300710220038',
     prox_mantenimiento: '2024-08-08',
     ord_trabajo: 'Sí',
+    prox_calibracion: '2024-08-08',
+    ord_calibracion: 'Sí',
   },
     {
     cliente: 'BIOMEDICA',
@@ -124,6 +127,8 @@ var dataTable2 = [
     serie: 'G26605K',
     prox_mantenimiento: '2024-08-09',
     ord_trabajo: 'No',
+    prox_calibracion: '2024-08-09',
+    ord_calibracion: 'No',
   },
     {
     cliente: 'LABORATORIO DE SALUD PUBLICA',
@@ -133,6 +138,8 @@ var dataTable2 = [
     serie: '1021520100245',
     prox_mantenimiento: '2024-08-10',
     ord_trabajo: 'Si',
+    prox_calibracion: '2024-08-10',
+    ord_calibracion: 'Sí',
   },
     {
     cliente: 'CLINICA IBEROAMERICA',
@@ -142,11 +149,13 @@ var dataTable2 = [
     serie: 'EXI96V4-05N-BXE020',
     prox_mantenimiento: '2024-08-11',
     ord_trabajo: 'Sí',
+    prox_calibracion: '2024-08-11',
+    ord_calibracion: 'Sí',
   },
 ];
 
 //Data pora el gráfico de barras
-var labels = ["Preventivos","Diagnóstico"]
+//var labels = ["Preventivos","Diagnóstico"]
 var dataFirstElement = {
   labels: ['Prenventivos finalizados', 'Prenventivos en progreso', 'Diagnóstico finalizados', 'Diagnóstico en progreso'],
   datasets: [
@@ -157,7 +166,7 @@ var dataFirstElement = {
     {
       
       backgroundColor: ['#787FFA', '#C678FA'],
-      data: [20, 25],
+      data: [20],
     },
     
   ]
