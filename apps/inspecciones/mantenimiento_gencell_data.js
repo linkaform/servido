@@ -2,7 +2,7 @@
 
 //--Table Montajes Por Mes
 var columsTable1 = [
-  { title:"Mantenimiento", field:'mantenimiento',hozAlign:"left",width:200},
+  { title:"Mantenimiento", field:'mantenimiento',hozAlign:"left",width:235},
   { title:"Estatus ", field:'estatus',hozAlign:"left",width:230},
   { title:"Cantidad ", field:'cantidad',hozAlign:"left",width:100,  formatter: function(cell, formatterParams, onRendered) {
       var value = cell.getValue();

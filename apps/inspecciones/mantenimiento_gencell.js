@@ -291,7 +291,7 @@ function get_catalog(option = 1)
         if (option == 1){
           //-----FILTER PROVINCIA 
           $("#cliente").empty();
-          $('#cliente').append('<option value="--">Seleccione el cliente/option>');
+          //$('#cliente').append('<option value="--">Seleccione el cliente</option>');
           for (i = 0; i < res.response.json.catalog.length; i++) {
             value = res.response.json.catalog[i]
             $('#cliente').append('<option value="'+ value +'">'+value+'</option>');
