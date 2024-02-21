@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Green House Inventory Move">
+        <meta name="description" content="Reporte de Preguntas">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
@@ -27,7 +27,7 @@
                     <div class="col-md-6">
                         <a href="index.html">
                             <div class="logo_marca">
-                                <img src="https://preprod.linkaform.com/img/login-linkaform-logo.png" alt="LinkaForm" id="image_log">
+                                <img src="https://app.linkaform.com/img/login-linkaform-logo.png" alt="LinkaForm" id="image_log">
                             </div>
                         </a>
                     </div>
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte de visitas por promotor</h1>
+                    <h1 id="title_report">Reporte de inspecciones</h1>
                 </div>
             </div> 
         </nav>
@@ -78,6 +78,8 @@
                     </center>
                 </div>
 
+
+
                 <!--OPtions FIlter -->
                 <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
@@ -88,81 +90,89 @@
 
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
-
-                    <div class="col-sm-12 col-md-2 col-lg-3">
-                        <h5>Fecha desde: </h5>
-                        <input class="form-control ds-input" type="date" id="dateFrom" name="dateFrom">
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Fecha Desde: </h5>
+                        <input class="form-control ds-input" type="date" id="date_from" name="date_from">
                     </div>
-                   
-                    <div class="col-sm-12 col-md-2 col-lg-3">
-                        <h5>Fecha hasta: </h5>
-                        <input class="form-control ds-input" type="date" id="dateTo" name="dateTo">
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Fecha Hasta: </h5>
+                        <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
 
-                    <div class="col-sm-12 col-md-2 col-lg-2">
-                        <h5>Cadena: </h5>
-                        <select class="form-control" id="cadena" name="cadena">
+
+                    <div class="col-sm-12 col-md-3 col-lg-3" id="divProvincia">
+                        <h5>Cliente: </h5>
+                        <select class="form-control mdb-select md-form" id="cliente" multiple="multiple" style="border:none !important;">
                             <option value="--">Seleccione</option>
+                            
                         </select>
                     </div>
 
-                    <div id="content_button" class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Expanda o agrupe la data: </h5>
-                        <!--<input type="checkbox"  data-toggle="toggle" data-width="130" data-on="Expandir" data-off="Agrupar" id="input_check" data-onstyle="success" data-offstyle="primary">-->
-
-                        <input type="button" name="expandir" id="expandir" class="btn btn-success btn-sm" value="Expandir">
-                        <input type="button" name="expandir" id="agrupar_fecha" class="btn btn-primary btn-sm" value="Agrupar por fecha">
-                        <input type="button" name="expandir" id="agrupar_usuario" class="btn btn-secondary btn-sm" value="Agrupar por usuario">
+                    <!--<div class="col-sm-12 col-md-3 col-lg-3" id="divCanton">
+                        <h5>Canton: </h5>
+                        <select class="form-control mdb-select md-form" id="canton" multiple="multiple" style="border:none !important;" >
+                            <option value="">--Seleccione--</option>
+                        </select>
                     </div>
-                    <!-- 
-                    <div class="col-sm-12 col-md-2 col-lg-2" id="filter_date">
-                        <h5>Filtrado por: </h5>
-                        <input type="checkbox"  data-toggle="toggle" data-width="150" data-on="Move Date" data-off="Created Date" id="input_check" data-onstyle="success" data-offstyle="primary">
-                    </div> -->
-                    
+
+                    <div class="col-sm-12 col-md-3 col-lg-3" id="divParroquia">
+                        <h5>Parroquia: </h5>
+                        <select class="form-control mdb-select md-form" id="parroquia" multiple="multiple" style="border:none !important;" >
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>-->
+
                 </div>
-                <!--Content -->
-                <div class="row" style="margin-top:20px;"  id="divContent" style="align-items: center;overflow-y: scroll;">
-                    <div class="col-sm-12 col-md-10 col-lg-10 row">
-                        <!--Second Elemtent -->
-                        <div class="col-sm-6 col-md-3 col-lg-3" id="fourthElement">
-                            <div class="card w-70 bg-primary text-white">
-                                <div class="card-body text-center mt-3"> <!-- Añadido "text-center" aquí -->
-                                    <h4 class="card-title" id="total_visitas">Total de visitas: </h4>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!--Third Element-->
-                        <div  class="col-sm-6 col-md-3 col-lg-3" id="fivethElement">
-                            <div class="card w-70 bg-primary text-white" > 
-                                <div class="card-body text-center mt-3">
-                                    <h4 class="card-title" id="total_promotores">Total promotores: </h4>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!--First Elemtent -->
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                <!--Content -->
+                <div class="row" style="margin-top:20px;"  id="divContent">
+
+                    <!-- First Time -->
+                    <div class="col-sm-12 col-md-6 col-lg-6" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
-                            <h3 ><span>Visitas por promotor</span>&nbsp;&nbsp;
+                            <h3><span>Mantenimientos por tipo </span>&nbsp;&nbsp;
                                 <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
                                 <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
                             </h3>
-                            <hr class="green-HrsecondElement" >
+                            <hr class="hrFirstElement">
                         </section>
-                        <div id="firstElement" class="promotoria_aigp" > </div>
+                        <div id="firstElement" > </div>
                     </div>
 
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center; overflow-y: scroll;">
-                        <div id="ThirdElement">
-                            <div style="width: 1000px;height: 500px;margin: auto;" > 
+                    <!--Graphic First-->
+                    <div class="col-sm-12 col-md-6 col-lg-6 div_class mt-2" style="align-items: center; overflow-y: scroll;">
+                        
+                        <div id="secondElement" >
+                            <div style="width: 1000px;height: 700px;margin: auto;">
                                 <canvas id="graphicFirst"></canvas>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Second Time -->
+                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                        <section class="title_tables">
+                            <h3><span>Próximos mantenimientos en el periodo  </span>&nbsp;&nbsp;
+                                <button  class="btn btn-primary" id="download_csv_thirdElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_thirdElement"><i class="fa-regular fa-file-excel"></i></button>
+                            </h3>
+                            <hr class="hrThirdElement">
+                        </section>
+                        <div id="thirdElement" > </div>
+                    </div>
+
+                    <!--Graphic Second-->
+                    <div class="col-sm-12 col-md-12 col-lg-12 div_class mt-2" style="align-items: center; overflow-y: scroll;">
+                        
+                        <div id="fourthElement" >
+                            <div style="width: 1000px;height: 500px;margin: auto;">
+                                <canvas id="graphicSecond"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
+            </div>
         </div>
     </body>
 
@@ -206,6 +216,11 @@
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
     crossorigin="anonymous"></script>
 
+    <!-- Multiplke -->
+    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
+    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+
+
     <!-- Utils -->
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
     <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
@@ -214,21 +229,7 @@
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./promotoria_aigp.js"></script>
-    <script type="text/javascript" src="./promotoria_aigp_data.js"></script>
-
-    <!-- <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
-    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script> -->
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"
-        integrity="sha256-qoj3D1oB1r2TAdqKTYuWObh01rIVC1Gmw9vWp1+q5xw=" crossorigin="anonymous"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js" integrity="sha512-UnrKxsCMN9hFk7M56t4I4ckB4N/2HHi0w/7+B/1JsXIX3DmyBcsGpT3/BsuZMZf+6mAr0vP81syWtfynHJ69JA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <!-- SCRIPT SELECT2-->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript" src="./mantenimiento_gencell.js"></script>
+    <script type="text/javascript" src="./mantenimiento_gencell_data.js"></script>
     </body>
 </html>

@@ -9,7 +9,8 @@ var printIcon = function(cell, formatterParams){ //plain text value
 var columsTable = [
   //{title:"Usuario", field:"usuario", width:180, headerWordWrap:true},
   //{title:"Fecha", field:"fecha_registro", width:120, headerWordWrap:true},
-  { title:"Usuario", field:'usuario', hozAlign:"left", formatter:"link", formatterParams:{
+  { title:"Usuario", field:'usuario', width:180, headerWordWrap:true},
+  { title:"Fecha", field:'fecha', hozAlign:"left", formatter:"link", formatterParams:{
     url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
     target:"_blank",}, width:180, headerWordWrap:true},
   {title:"Ciudad", field:"ciudad",  width:250, headerWordWrap:true},
