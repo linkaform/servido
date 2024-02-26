@@ -19,7 +19,7 @@ hideElement("firstElement");
 hideElement("secondElement");
 hideElement("fourthElement");
 hideElement("fivethElement");
-
+hideElement("content_button");
 
 hideElement("ThirdElement");
 
@@ -146,7 +146,7 @@ function loadDemoData(){
 
   //$("#warehouse").multiselect('refresh');
 
-  getDrawTableFirst('firstElement', columsTable, dataTable);
+  getDrawTableFirst('firstElement', columsTable, dataTable, expand=[true, true]);
   document.getElementById("firstElement").style.removeProperty('display');
   
   document.getElementById("firstParameters").style.removeProperty('display');
@@ -165,6 +165,7 @@ function runFirstElement(){
   getFirstElement(dateFrom.value, dateTo.value, cadena.value);
 };
 
+var dataTable1 = []
 function getFirstElement(dateFrom, dateTo, cadena){
   //----Hide Css
   $("#divContent").hide();
@@ -193,27 +194,26 @@ function getFirstElement(dateFrom, dateTo, cadena){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
+      unhideElement("content_button");
       console.log("Implementación pendiente")
       if(res.response.json.firstElement.data){
-        let data = res.response.json.firstElement.data
-        getDrawTableFirst('firstElement', columsTable, data);
+        dataTable1 = res.response.json.firstElement.data
+        getDrawTableFirst('firstElement', columsTable, dataTable1, expand=[true, true]);
         document.getElementById("firstElement").style.removeProperty('display');
         
         document.getElementById("firstParameters").style.removeProperty('display');
       }
 
       if(res.response.json.secondElement.data){
-        console.log(res.response.json.secondElement.data)
         let dataGraphic = {}
         dataGraphic = res.response.json.secondElement.data[0]
         drawFirstElement(dataGraphic)
         document.getElementById("ThirdElement").style.removeProperty('display');
       }
-
+      
       if(res.response.json.thirdElement.data){
         unhideElement("fourthElement");
         unhideElement("fivethElement");
-        console.log(res.response.json.thirdElement.data)
         let data_general = {}
         data_general = res.response.json.thirdElement.data[0]
         $("#total_visitas").empty()
@@ -223,6 +223,7 @@ function getFirstElement(dateFrom, dateTo, cadena){
         drawFirstElement(dataGraphic)
         document.getElementById("ThirdElement").style.removeProperty('display');
       }
+
       /*if(res.response.json.secondElement.data){
         //----Se crea y define una variable que almacene la data de la query para no escribir toda la ruta
         let dataTableTwo = res.response.json.secondElement.data;
@@ -259,7 +260,7 @@ function getFirstElement(dateFrom, dateTo, cadena){
 //-----TABLES
 
 var subData;
-function getDrawTableFirst(id, columnsData, tableData){
+function getDrawTableFirst(id, columnsData, tableData, expand=true){
   var  table = new Tabulator("#" + id, {
     //columnHeaderVertAlign:"top",
     height:"100%",
@@ -269,7 +270,7 @@ function getDrawTableFirst(id, columnsData, tableData){
     },*/
     dataTree: true,
     dataTreeChildIndent:5,
-    dataTreeStartExpanded:false,
+    dataTreeStartExpanded:expand,
     clipboard:true,
     clipboardPasteAction:"replace",
     data:tableData,
@@ -328,13 +329,142 @@ function getDrawTableFirst(id, columnsData, tableData){
     rowGroups: true,
     }
   });
-
+  let structureColumns = [
+      {header:'Usuario', key:"usuario"},
+      {header:'Fecha', key:'fecha'},
+      {header:'Ciudad', key:'ciudad'},
+      {header:'Cadena', key:'cadena'},
+      {header:'Tienda', key:'tienda'},
+      {header:'Fecha inicio', key:'fecha_inicio'},
+      {header:'Hora inicio de jornada', key:'hora_inicio'},
+      {header:'Fecha final', key:'fecha_final'},
+      {header:'Fecha final de jornada', key:'hora_final'},
+      {header:'Duración visita', key:'duracion_visita'},
+      {header:'Total horas x día en traslados', key:'total_hrs_dia'},
+      {header:'Evidencia', key:'evidencia'},
+    ]
   if (document.getElementById("download_xlsx_"+id)){
     document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
     document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
-    table.download("xlsx", "data.xlsx", {sheetName:"data"});
+    //table.download("xlsx", "data.xlsx", {sheetName:"data"});
+      //obtener datos anidados
+      var nestedData = table.getData(true);
+      //Almacena los datos de las tablas anidadas
+      var exportData = [];
+      //Almacena
+      var styleRows = [];
+      let contRow = 1;
+
+      nestedData.forEach(row =>{
+        let titles = {
+          'usuario':row.usuario || " ",
+          'fecha': row.fecha || " ",
+          'ciudad': row.ciudad || " ",
+          'cadena': row.cadena || " ",
+          'tienda': row.tienda || " ",
+          'fecha_inicio': row.fecha_inicio || " ",
+          'hora_inicio': row.hora_inicio || " ",
+          'fecha_final': row.fecha_final || " ",
+          'hora_final': row.hora_final || " ",
+          'duracion_visita': row.duracion_visita || " ",
+          'total_hrs_dia': row.total_hrs_dia || " ",
+          'evidencia': "" 
+        }
+        if (row.hasOwnProperty("_children")){
+          exportData.push(titles)
+          row._children.forEach(element => {
+            titles = {
+              'usuario':element.usuario || " ",
+              'fecha': element.fecha || " ",
+              'ciudad': element.ciudad || " ",
+              'cadena': element.cadena || " ",
+              'tienda': element.tienda || " ",
+              'fecha_inicio': element.fecha_inicio || " ",
+              'hora_inicio': element.hora_inicio || " ",
+              'fecha_final': element.fecha_final || " ",
+              'hora_final': element.hora_final || " ",
+              'duracion_visita': element.duracion_visita || " ",
+              'total_hrs_dia': element.total_hrs_dia || " ",
+              'evidencia': "" 
+            }
+            if(element.hasOwnProperty('_children')){
+              exportData.push(titles)
+              element._children.forEach(elementTwo => {
+                let ciudad = 'element.ciudad'
+                if(typeof elementTwo.ciudad == 'string'){
+                  ciudad = ciudad
+                }
+                if(typeof elementTwo.ciudad == 'object'){
+                  ciudad = elementTwo.ciudad[0]
+                }
+
+                titles = {
+                  'usuario':elementTwo.usuario || " ",
+                  'fecha': elementTwo.fecha || " ",
+                  'ciudad': ciudad || " ",
+                  'cadena': elementTwo.cadena || " ",
+                  'tienda': elementTwo.tienda || " ",
+                  'fecha_inicio': elementTwo.fecha_inicio || " ",
+                  'hora_inicio': elementTwo.hora_inicio || " ",
+                  'fecha_final': elementTwo.fecha_final || " ",
+                  'hora_final': elementTwo.hora_final || " ",
+                  'duracion_visita': elementTwo.duracion_visita || " ",
+                  'total_hrs_dia': elementTwo.total_hrs_dia || " ",
+                  'evidencia': elementTwo.url_download
+                }
+                exportData.push(titles)
+                /*console.log("elementTwo")
+                console.log(elementTwo)*/
+              })
+            }
+            /*console.log("element")
+            console.log(element)*/
+          })
+          //exportData.push(...row._children)
+        }
+      })
+
+    const dataForXLSX = exportData.map(item => {
+    return {
+        'usuario':item.usuario || " ",
+        'fecha': item.fecha || " ",
+        'ciudad': item.ciudad || " ",
+        'cadena': item.cadena || " ",
+        'tienda': item.tienda || " ",
+        'fecha_inicio': item.fecha_inicio || " ",
+        'hora_inicio': item.hora_inicio || " ",
+        'fecha_final': item.fecha_final || " ",
+        'hora_final': item.hora_final || " ",
+        'duracion_visita': item.duracion_visita || " ",
+        'total_hrs_dia': item.total_hrs_dia || " ",
+        'evidencia': item.evidencia || " " 
+      };
     });
-  }
+
+      //----Creación del libro de trabajo
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = 'linkaform';
+    workbook.lastModifiedBy = 'Bot';
+    workbook.created = new Date(2023, 8, 30);
+    workbook.modified = new Date();
+    workbook.lastPrinted = new Date(2023, 7, 27);
+
+    //----Creación de la hoja de trabajo
+    const sheet = workbook.addWorksheet('NestedData');
+
+    //----Creación de columnas
+    sheet.columns = structureColumns;
+
+    sheet.addRows(dataForXLSX);
+    /*console.log("Data es")
+    console.log(exportData)*/
+        //----Generar el archivo y descárgalo
+    workbook.xlsx.writeBuffer().then((data) => {
+      const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      saveAs(blob, 'download.xlsx');
+    });
+      });
+    }
 
   if (document.getElementById("download_csv_"+id)){
     document.getElementById("download_csv_"+id).replaceWith(document.getElementById("download_csv_"+id).cloneNode(true));
@@ -522,9 +652,9 @@ function getDownloadPdf(id = 0) {
     fetch(url + 'infosync/scripts/run/', {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 113918,
+            script_id: 113904,
             ids: id,
-            template: 4,
+            template: 409,
         }),
         headers: {
             'Content-Type': 'application/json',
@@ -553,10 +683,10 @@ function getDownloadPdf(id = 0) {
                 var link = document.createElement('a');
                 link.href = linkR;
                 link.target = "_blank"; // Abrir en una nueva pestaña o ventana
-                link.download = "archivo.pdf"; // Nombre de archivo para descargar
+                link.download = "download.pdf"; // Nombre de archivo para descargar
                 document.body.appendChild(link);
                 link.click();
-                document.body.removeChild(link);
+                //document.body.removeChild(link);
             } else {
                 Swal.fire('Error', 'No se pudo obtener el enlace de descarga', 'error');
             }
@@ -568,3 +698,70 @@ function getDownloadPdf(id = 0) {
         Swal.fire('Error', 'Hubo un error en la solicitud: ' + error.message, 'error');
     });
 }
+
+var cont_check = 0;
+var is_group = false;
+var group_user = false
+var group_date = false
+
+document.getElementById('expandir').addEventListener('click', (e)=>{
+  if(group_user == true && group_date == true){
+    getDrawTableFirst('firstElement', columsTable, dataTable1, expand=[true, false])
+    group_user = false;
+    group_date = true;
+  }else if(group_user == false && group_date == true){
+    getDrawTableFirst('firstElement', columsTable, dataTable1, expand=[true, true])
+    group_user = false;
+    group_date = false;
+  }else{
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      text: "Expansión completa",
+      showConfirmButton: false,
+      timer: 1500
+    });
+  }
+  console.log(group_user)
+  console.log(group_date)
+  console.log("Expandir")
+})
+
+document.getElementById('agrupar_fecha').addEventListener('click', (e)=>{
+  if(group_user == false && group_date == false){
+    getDrawTableFirst('firstElement', columsTable, dataTable1, expand=[true, false])
+    group_date = true
+    group_user = false;
+  }else {
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      text: "Agrupación por fecha realizada",
+      showConfirmButton: false,
+      timer: 1500
+    });
+  }
+  console.log("Agrupar")
+})
+
+document.getElementById('agrupar_usuario').addEventListener('click', (e)=>{
+  if(group_date == false && group_user == false){
+    getDrawTableFirst('firstElement', columsTable, dataTable1, expand=[false, false])
+    group_date = true;
+    group_user = true;
+  }else if(group_date == true && group_user == false) {
+    getDrawTableFirst('firstElement', columsTable, dataTable1, expand=[false, false])
+    group_date = true;
+    group_user = true;
+  }else{
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      text: "Agrupación por usuario realizada",
+      showConfirmButton: false,
+      timer: 1500
+    });
+  }
+
+  console.log("Agrupar")
+})
