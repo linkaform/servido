@@ -227,32 +227,7 @@ function getFirstElement(dateTo, dateFrom, gestores){
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
-    //----Configuración para el tooltip del encabezado
-    //var columnTitleElement = document.querySelector("#"+id+" th.tabulator-col[tabulator-field='llamada_tel']")
-
-    // Agrega el evento mouseover al elemento del título de la columna
-    /*columnTitleElement.addEventListener("mouseover", function () {
-        // Crea un elemento de tooltip personalizado
-        var tooltip = document.createElement("div");
-        tooltip.className = "custom-tooltip";
-        tooltip.textContent = "Texto del tooltip personalizado"; // Personaliza el texto del tooltip
-
-        // Posiciona el tooltip cerca del título de la columna
-        var rect = columnTitleElement.getBoundingClientRect();
-        tooltip.style.top = rect.bottom + "px";
-        tooltip.style.left = rect.left + "px";
-
-        // Agrega el tooltip al cuerpo del documento
-        document.body.appendChild(tooltip);
-    });*/
-
-    // Agrega un evento mouseout para eliminar el tooltip cuando se retira el mouse
-    /*columnTitleElement.addEventListener("mouseout", function () {
-        var tooltip = document.querySelector(".custom-tooltip");
-        if (tooltip) {
-            tooltip.remove();
-        }
-    });*/
+    
 
     height:"400px",
     layout:"fitDataTable",
@@ -268,7 +243,8 @@ function getDrawTable(id, columnsData, tableData){
     
   
   })
-  table.addRow({})
+  
+  table.addRow({numero:"Pruebas"})
   
 
   /*table.on("headerMouseOver", function(e, column){

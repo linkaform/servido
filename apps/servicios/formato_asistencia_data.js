@@ -212,6 +212,24 @@ var dataTable1 = [
 
     "cumplimiento":'MINIMO 70%',
   },
+  {
+    "numero":'Total refrigerios entregados:',
+    
+    "no":'0',
+    "si":"5",
+    "no":'0',
+    "si":"5",
+    "no":'0',
+    "si":"5",
+    "no":'0',
+    "si":"5",
+
+
+  },
+  {
+    "numero":'Firma representante Institución Educativa:',
+
+  },
   
 ];
 
