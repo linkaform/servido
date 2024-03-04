@@ -1,0 +1,135 @@
+
+.header{
+  background: #F2DEBA;
+}
+
+
+/*Styles Div*/
+
+
+.div-card-portal{
+  min-height: 120px !important;
+}
+
+
+.div-search-portal{
+  position: relative;
+  box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+}
+
+
+.div-container-portal{
+  margin-top: 25px !important;
+  border-radius: 10px;
+  border: 1px solid grey;
+}
+
+
+.div-containerTable-portal{
+  min-height: 220px !important;
+  overflow: auto;
+  margin-top: 25px !important;
+  border-radius: 10px;
+  border: 1px solid grey;
+}
+
+#myTabContent{
+  overflow: auto;
+}
+
+/* Styles Input */
+.input-search-portal{
+  margin-left: 10px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.btn-rounded-portal{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;  
+}
+
+.btn-table-bitacora{
+  width: 20px !important;
+  height: 20px !important;
+  margin-left: 10px !important;
+  background: none !important;
+  border: none ;
+  i{
+    margin-left: -5px;
+    margin-top: -5px;
+    font: 15px;
+  }
+}
+
+
+/* Estilos de la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid #ddd; /* Borde de la tabla */
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd; /* Borde de las celdas */
+}
+
+/* Estilos para las filas impares */
+tr:nth-child(odd) {
+  background-color: #f2f2f2; /* Color de fondo para filas impares */
+}
+
+/* Estilos para la primera fila (encabezados) */
+th {
+  background-color: #F2DEBA; /* Color de fondo para los encabezados */
+  color: black; /* Color del texto de los encabezados */
+}
+
+/*Dropdowns COlors*/
+
+/* Estilo para el contenedor del dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Estilo para el botón del dropdown */
+.dropdown button {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Estilo para la lista desplegable */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1;
+}
+
+/* Estilo para las opciones del dropdown */
+.dropdown-content option {
+  display: block;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Mostrar la lista desplegable al pasar el ratón sobre el contenedor del dropdown */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/*Tabulator Styles*/
+.tabulator .tabulator-header .tabulator-col{
+  background: #F2DEBA !important;
+  color: black !important;
+}
