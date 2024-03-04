@@ -80,7 +80,12 @@ var dataTable1B = [
 
 //--Table Montajes Por Mes
 var columsTable1 = [
-  { title:"No.", field:'numero',hozAlign:"center", width:50, headerWordWrap:true},
+  { title:"No.", field:'numero',hozAlign:"center", width:100, headerWordWrap:true, formatter: "textarea", // Esto asegura que el contenido sea tratado como un área de texto
+    cellClick:function(e, cell){
+        // Hacer algo al hacer clic en la celda, si es necesario
+    },
+    whiteSpace: "pre-wrap" // Esto permite saltos de línea dentro de la celda
+  },
   { title:"Tipo Documento",field:'tipo_documento',hozAlign:"center", width:170, headerWordWrap:true },
   { title:"Número identificación", field:'numero_identificacion',hozAlign:"center", width:170, headerWordWrap:true },
   { title:"Nombres y Apellidos del estudiante",field:'nombre',hozAlign:"center", width:200, headerWordWrap:true },
@@ -226,10 +231,7 @@ var dataTable1 = [
 
 
   },
-  {
-    "numero":'Firma representante Institución Educativa:',
-
-  },
+ 
   
 ];
 

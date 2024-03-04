@@ -229,7 +229,7 @@ function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
     
 
-    height:"400px",
+    height:"100%",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
@@ -243,7 +243,7 @@ function getDrawTable(id, columnsData, tableData){
     
   
   })
-  
+
   table.addRow({numero:"Pruebas"})
   
 
