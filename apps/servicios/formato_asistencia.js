@@ -265,27 +265,11 @@ function getDrawTable(id, columnsData, tableData){
     textDirection:"ltr",
     columns:columnsData,
     addRowPos: "bottom",
-    rowFormatter: function(row) {
-        var data = row.getData();
-        var porcentajeEfectividad = data.porcentaje_efectividad;
-        var cell = row.getCell("porcentaje_efectividad"); // Encuentra la celda específica
-
-        if (porcentajeEfectividad <= 49) {
-            cell.getElement().style.backgroundColor = "red";
-        } else if (porcentajeEfectividad >= 50 && porcentajeEfectividad <= 74) {
-            cell.getElement().style.backgroundColor = "orange";
-        }
-        else if (porcentajeEfectividad >= 75 && porcentajeEfectividad <= 100){
-          cell.getElement().style.backgroundColor = "green";
-        }
-    },
-    tableBuilt: function () {
-      // Evento interno cuando la tabla se ha construido
-      table.addRow({numero:"Total refrigerios entregados:", si:"1"}, false)
-    }
+    
   
-  });
-
+  })
+  table.addRow({})
+  
 
   /*table.on("headerMouseOver", function(e, column){
     //e - the mouse event object
@@ -293,11 +277,59 @@ function getDrawTable(id, columnsData, tableData){
     alert("Eres crack");
   });*/
 
+  //---Definición de la estructura de las columnas del archivo xlsx y csv
+
+  let structureColumns = [
+      {header:'No.', key:"numero"},
+      {header:'Tipo Documento', key:'tipo_documento'},
+      {header:'Número identificación"', key:'numero_identificacion'},
+      {header:'Nombres y Apellidos del estudiante', key:'nombre'},
+      {header:'Sí', key:'si'},
+      {header:'No', key:'no'},
+      {header:'Total Asistencias', key:'asistencias'},
+      {header:'Cumplimiento', key:'cumplimiento'},
+    ]
+
   if (document.getElementById("download_xlsx_"+id)){
     //trigger download of data.xlsx file
     document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
     document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
-    table.download("xlsx", "data.xlsx", {sheetName:"data"});
+    //table.download("xlsx", "data.xlsx", {sheetName:"data"});
+    //----Obtener datos anidados
+    var nestedData = table.getData(true);
+    //----Almacena los datos de las tablas anidadas
+    var exportData = [];
+    //----Almacena 
+    var styleRows = [];
+    let contRow = 1;
+
+    //----Creación del libro de trabajo
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = 'linkaform';
+    workbook.lastModifiedBy = 'Bot';
+    workbook.created = new Date(2024, 3, 4);
+    workbook.modified = new Date();
+    workbook.lastPrinted = new Date(2024, 3, 3);
+
+    //----Creación de la hoja de trabajo
+    var sheet = workbook.addWorksheet('NestedData');
+
+    //----Creación de columnas
+    /*var sheet = workbook.addWorksheet('sheet', {
+      headerFooter:{firstHeader: "Hello Exceljs", firstFooter: "Hello World"}
+    });*/
+    const header = ["Formato de asistencia", "Inspiración "]
+
+    sheet.addRow(header)
+
+    sheet.columns = structureColumns;
+
+    //----Generar el archivo y descárgalo
+    workbook.xlsx.writeBuffer().then((data) => {
+      const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      saveAs(blob, 'nombre_archivo.xlsx');
+    });
+
     });
   }
 
