@@ -100,22 +100,16 @@
 
                     <div class="col-sm-12 col-md-3 col-lg-3" id="divnameGestor">
                         <h5>Institución educativa: </h5>
-                        <select class="form-control mdb-select md-form" id="institucion">
+                        <select class="form-control mdb-select md-form" id="institucion" onchange="actualizarGrupo(this.value)">
                            <option value="">Seleccione</option>
-                           <option value="">I.E. La Sierra</option>
-                           <option value="">I.E. Pedro</option>
-                           <option value="">I.E. Botero</option>
-                           <option value="">I.E. Bernardo</option>
+                           
                         </select>
                     </div>
 
                     <div class="col-sm-12 col-md-3 col-lg-3" id="divnameGestor">
                         <h5>Grupo: </h5>
-                        <select class="form-control mdb-select md-form" id="grupo" multiple="multiple">
-                           <option value="">Grupo 1</option>
-                           <option value="">Grupo 2</option>
-                           <option value="">Grupo 3</option>
-                           <option value="">Grupo 4</option>
+                        <select class="form-control mdb-select md-form" id="grupos" multiple="multiple">
+                           <option value="--">Seleccione</option>
                         </select>
                     </div>
 

@@ -93,7 +93,7 @@ window.onload = function(){
     //--Styles
     setSpinner();
     get_catalog(); //Obtener catálogos
-    $('#grupo').multipleSelect('refresh');
+    $("#grupos").multipleSelect('refresh');
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
@@ -152,14 +152,17 @@ loading.style.display = 'none';
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");
-  let gestores = $('#gestor').val()  
+  let institucion = $('#institucion').val()
+  let grupos = $('#grupos').val()    
   
-  getFirstElement(date_to.value, date_from.value, gestores);
+  getFirstElement(date_to.value, date_from.value, institucion, grupos);
 };
 
-function getFirstElement(dateTo, dateFrom, gestores){
+function getFirstElement(dateTo, dateFrom, institucion, grupos){
   console.log(dateTo)
   console.log(dateFrom)
+  console.log(institucion)
+  console.log(grupos)
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -169,10 +172,11 @@ function getFirstElement(dateTo, dateFrom, gestores){
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 110669,
+      script_id: 116153,
       date_to: dateTo,
       date_from: dateFrom,
-      gestores:gestores,
+      institucion:institucion,
+      grupos:grupos,
       option:2
     }),
     headers:{
@@ -188,22 +192,11 @@ function getFirstElement(dateTo, dateFrom, gestores){
       $("#divContent").show();
       $('.title_tables').show();
       console.log(res.response)
-      if (res.response.json.secondElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.secondElement.data);
+      if (res.response.json.firstElement) {
+        getDrawTable('firstElement', res.response.json.firstElement.columns, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
-      if(res.response.json.thirdElement.data){
-        console.log(res.response.json.thirdElement.data)
-        getDrawGraphicFirst(res.response.json.thirdElement.data, options1);
-        document.getElementById("secondElement").style.removeProperty('display');
-        document.getElementById("graphicFirst").style.removeProperty('display');
-      }
-      if(res.response.json.fourtElement.data){
-        console.log(res.response.json.thirdElement.data)
-        getDrawGraphicSecond(res.response.json.fourtElement.data, options2);
-        document.getElementById("ThirdElement").style.removeProperty('display');
-        document.getElementById("graphicSecond").style.removeProperty('display');
-      }
+     
       
     } else {
       hideLoading();
@@ -240,8 +233,22 @@ function getDrawTable(id, columnsData, tableData){
     textDirection:"ltr",
     columns:columnsData,
     addRowPos: "bottom",
+    rowFormatter: function(row) {
+        var data = row.getData();
+        var porcentajeEfectividad = parseFloat(data.cumplimiento) + "%";
+        var cell = row.getCell("cumplimiento"); // Encuentra la celda específica
+
+        if (data.cumplimiento <= 69) {
+            cell.getElement().style.backgroundColor = "red";
+        } else if (data.cumplimiento >= 70 && data.cumplimiento <= 85) {
+            cell.getElement().style.backgroundColor = "orange";
+        } else if (data.cumplimiento >= 86 && data.cumplimiento <= 100) {
+            cell.getElement().style.backgroundColor = "green";
+        }
+        cell.setValue(porcentajeEfectividad);
+        row.reformat();
+    },
     
-  
   })
 
   table.addRow({numero:"Pruebas"})
@@ -270,42 +277,7 @@ function getDrawTable(id, columnsData, tableData){
     //trigger download of data.xlsx file
     document.getElementById("download_xlsx_"+id).replaceWith(document.getElementById("download_xlsx_"+id).cloneNode(true));
     document.getElementById("download_xlsx_"+id).addEventListener("click", function (){
-    //table.download("xlsx", "data.xlsx", {sheetName:"data"});
-    //----Obtener datos anidados
-    var nestedData = table.getData(true);
-    //----Almacena los datos de las tablas anidadas
-    var exportData = [];
-    //----Almacena 
-    var styleRows = [];
-    let contRow = 1;
-
-    //----Creación del libro de trabajo
-    const workbook = new ExcelJS.Workbook();
-    workbook.creator = 'linkaform';
-    workbook.lastModifiedBy = 'Bot';
-    workbook.created = new Date(2024, 3, 4);
-    workbook.modified = new Date();
-    workbook.lastPrinted = new Date(2024, 3, 3);
-
-    //----Creación de la hoja de trabajo
-    var sheet = workbook.addWorksheet('NestedData');
-
-    //----Creación de columnas
-    /*var sheet = workbook.addWorksheet('sheet', {
-      headerFooter:{firstHeader: "Hello Exceljs", firstFooter: "Hello World"}
-    });*/
-    const header = ["Formato de asistencia", "Inspiración "]
-
-    sheet.addRow(header)
-
-    sheet.columns = structureColumns;
-
-    //----Generar el archivo y descárgalo
-    workbook.xlsx.writeBuffer().then((data) => {
-      const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      saveAs(blob, 'nombre_archivo.xlsx');
-    });
-
+    table.download("xlsx", "data.xlsx", {sheetName:"data"});
     });
   }
 
@@ -320,16 +292,17 @@ function getDrawTable(id, columnsData, tableData){
 
 
 //----- CATALOGS
+var obj_instituciones = []
 function get_catalog() 
 {
-  console.log(scriptId)
+  console.log('catalogo')
   arrayPlant = []
   arrayOut = []
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 110669,
+      script_id: 116153,
       option: 1,
     }),
     headers:{
@@ -340,6 +313,8 @@ function get_catalog()
   .then(res => res.json())
   .then(res => {
     if (res.success) {
+      console.log("Respuesta")
+      console.log(res)
       if (res.response.json.firstElement.data){
         /*console.log(res.response.json)
         console.log("----------------")
@@ -380,6 +355,32 @@ function get_catalog()
           $('#gestor').append('<option value="'+ value +'">'+value+'</option>');
         }
         $("#gestor").multipleSelect('refresh');
+      }
+
+      if(res.response.json.catalog){
+        console.log(res.response.json.catalog)
+
+        obj_instituciones = res.response.json.catalog[0];
+        console.log(obj_instituciones);
+
+        let instituciones = []
+
+        Object.keys(obj_instituciones).forEach((clave) => {
+          instituciones.push(clave)
+          console.log(clave)
+        })
+
+        console.log("Listas")
+        console.log(instituciones)
+
+        $("#institucion").empty()
+        //$("#institucion").append('<option value="--"> Seleccione la institución</option>');
+        instituciones.forEach(value => {
+          $("#institucion").append('<option value="' + value + '">' + value + '</option>');
+        })
+
+        actualizarGrupo(instituciones[0])
+        
       }
     } 
   })
@@ -424,3 +425,25 @@ function getDrawGraphicSecond(data, setOptions){
     plugins: [ChartDataLabels],
   });
 }
+
+//Función para actualizar el selecto de grupo
+function actualizarGrupo(value){
+  console.log(value)
+  console.log(obj_instituciones)
+  let grupos = []
+
+  grupos = obj_instituciones[value]
+  console.log(grupos)
+
+  $("#grupos").empty()
+  grupos.forEach(value => {
+    $("#grupos").append('<option value="' + value + '">' + value + '</option>');
+  })
+  $("#grupos").multipleSelect('refresh');
+}
+
+/*document.getElementById('institucion').addEventListener('change', function(){
+  let valor = this.value;
+
+  console.log("El valor seleccionado es = " + valor);
+})*/
