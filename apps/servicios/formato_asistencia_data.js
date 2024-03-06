@@ -78,6 +78,23 @@ var dataTable1B = [
   },
 ];
 
+
+// Define lookup function
+function paramLookup(cell) {
+    // Haz algún procesamiento para obtener las opciones del filtro
+    var options = [
+        { label: "Green", value: "green" },
+        { label: "Red", value: "red" },
+        { label: "Blue", value: "blue" }
+    ];
+
+    // Devuelve un objeto que incluye las opciones del filtro
+    return {
+        // Utiliza el nombre de la columna como clave del objeto
+        [cell.getColumn().getField()]: options
+    };
+}
+
 //--Table Montajes Por Mes
 var columsTable1 = [
   { title:"No.", field:'numero',hozAlign:"center", width:100, headerWordWrap:true, formatter: "textarea", // Esto asegura que el contenido sea tratado como un área de texto
@@ -119,8 +136,9 @@ var columsTable1 = [
   },
   
   { title:"Total Asistencias",  field:'asistencias',hozAlign:"center", width:130, headerFilter: "input", headerWordWrap:true },
-  { title:"Cumplimiento",  field:'cumplimiento',hozAlign:"center", width:130, headerFilter: "input", headerWordWrap:true },
+  { title:"Cumplimiento",  field:'cumplimiento',hozAlign:"center", width:130, headerWordWrap:true, headerFilter:"list",},
 ];
+
 
 function customFormatter(cell){
   var row = cell.getRow().getData();
@@ -168,7 +186,7 @@ var dataTable1 = [
     "si4":"1",
     "asistencias":'4',
 
-    "cumplimiento":70,
+    "cumplimiento":80,
   },
   {
     "numero":'3',
@@ -187,7 +205,7 @@ var dataTable1 = [
     "si4":"1",
     "asistencias":'4',
 
-    "cumplimiento":70,
+    "cumplimiento":90,
   },
   {
     "numero":'4',

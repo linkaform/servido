@@ -242,15 +242,15 @@ function getDrawTable(id, columnsData, tableData){
         var cell = row.getCell("cumplimiento"); // Encuentra la celda específica
 
         if (data.cumplimiento <= 69) {
-            cell.getElement().style.backgroundColor = "red";
+            cell.getElement().style.backgroundColor = "#C0392B ";
         } else if (data.cumplimiento >= 70 && data.cumplimiento <= 85) {
-            cell.getElement().style.backgroundColor = "orange";
+            cell.getElement().style.backgroundColor = "#D4AC0D ";
         } else if (data.cumplimiento >= 86 && data.cumplimiento <= 100) {
-            cell.getElement().style.backgroundColor = "green";
+            cell.getElement().style.backgroundColor = "#45B39D";
         }
         cell.setValue(porcentajeEfectividad);
         row.reformat();
-    },
+    }
     
   })
 
