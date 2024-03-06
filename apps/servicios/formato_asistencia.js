@@ -235,7 +235,10 @@ function getDrawTable(id, columnsData, tableData){
     addRowPos: "bottom",
     rowFormatter: function(row) {
         var data = row.getData();
-        var porcentajeEfectividad = parseFloat(data.cumplimiento) + "%";
+        var porcentajeEfectividad = data.cumplimiento;
+        if(porcentajeEfectividad){
+          var porcentajeEfectividad  = parseFloat(data.cumplimiento) + "%";
+        } 
         var cell = row.getCell("cumplimiento"); // Encuentra la celda específica
 
         if (data.cumplimiento <= 69) {
