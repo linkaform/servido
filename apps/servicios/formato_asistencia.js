@@ -201,11 +201,11 @@ function getFirstElement(dateTo, dateFrom, institucion, grupos){
                 var value = cell.getValue();
                 if(value >= 0){
                   if (value <= 69) {
-                        cell.getElement().style.backgroundColor = "#C0392B ";
+                        cell.getElement().style.backgroundColor = "#EC7063";
                     } else if (value >= 70 && value <= 85) {
-                        cell.getElement().style.backgroundColor = "#D4AC0D ";
+                        cell.getElement().style.backgroundColor = "#F7DC6F";
                     } else if (value >= 86 && value <= 100) {
-                        cell.getElement().style.backgroundColor = "#45B39D";
+                        cell.getElement().style.backgroundColor = "#52BE80";
                     }
                   
                   return value + "%"
