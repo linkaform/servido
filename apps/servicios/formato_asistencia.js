@@ -191,9 +191,31 @@ function getFirstElement(dateTo, dateFrom, institucion, grupos){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log(res.response)
       if (res.response.json.firstElement) {
-        getDrawTable('firstElement', res.response.json.firstElement.columns, res.response.json.firstElement.data);
+        let columns = res.response.json.firstElement.columns;
+        columns.forEach(element => {
+          if(element.field){
+            let field = element.field;
+            if(field == "cumplimiento"){
+              element.formatter = function(cell){
+                var value = cell.getValue();
+                if(value >= 0){
+                  if (value <= 69) {
+                        cell.getElement().style.backgroundColor = "#C0392B ";
+                    } else if (value >= 70 && value <= 85) {
+                        cell.getElement().style.backgroundColor = "#D4AC0D ";
+                    } else if (value >= 86 && value <= 100) {
+                        cell.getElement().style.backgroundColor = "#45B39D";
+                    }
+                  
+                  return value + "%"
+                }
+              }
+            }
+
+          }
+        })
+        getDrawTable('firstElement', columns, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
      
@@ -233,24 +255,6 @@ function getDrawTable(id, columnsData, tableData){
     textDirection:"ltr",
     columns:columnsData,
     addRowPos: "bottom",
-    rowFormatter: function(row) {
-        var data = row.getData();
-        var porcentajeEfectividad = data.cumplimiento;
-        if(porcentajeEfectividad){
-          var porcentajeEfectividad  = parseFloat(data.cumplimiento) + "%";
-        } 
-        var cell = row.getCell("cumplimiento"); // Encuentra la celda específica
-
-        if (data.cumplimiento <= 69) {
-            cell.getElement().style.backgroundColor = "#C0392B ";
-        } else if (data.cumplimiento >= 70 && data.cumplimiento <= 85) {
-            cell.getElement().style.backgroundColor = "#D4AC0D ";
-        } else if (data.cumplimiento >= 86 && data.cumplimiento <= 100) {
-            cell.getElement().style.backgroundColor = "#45B39D";
-        }
-        cell.setValue(porcentajeEfectividad);
-        row.reformat();
-    }
     
   })
 
@@ -298,7 +302,6 @@ function getDrawTable(id, columnsData, tableData){
 var obj_instituciones = []
 function get_catalog() 
 {
-  console.log('catalogo')
   arrayPlant = []
   arrayOut = []
 
@@ -316,8 +319,6 @@ function get_catalog()
   .then(res => res.json())
   .then(res => {
     if (res.success) {
-      console.log("Respuesta")
-      console.log(res)
       if (res.response.json.firstElement.data){
         /*console.log(res.response.json)
         console.log("----------------")
@@ -350,7 +351,6 @@ function get_catalog()
 
         }
 
-        console.log(listGestor)
          //----Pais
         $("#gestor").empty();
         for (i = 0; i < listGestor.length; i++) {
@@ -361,20 +361,14 @@ function get_catalog()
       }
 
       if(res.response.json.catalog){
-        console.log(res.response.json.catalog)
 
         obj_instituciones = res.response.json.catalog[0];
-        console.log(obj_instituciones);
 
         let instituciones = []
 
         Object.keys(obj_instituciones).forEach((clave) => {
           instituciones.push(clave)
-          console.log(clave)
         })
-
-        console.log("Listas")
-        console.log(instituciones)
 
         $("#institucion").empty()
         //$("#institucion").append('<option value="--"> Seleccione la institución</option>');

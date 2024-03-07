@@ -136,7 +136,19 @@ var columsTable1 = [
   },
   
   { title:"Total Asistencias",  field:'asistencias',hozAlign:"center", width:130, headerFilter: "input", headerWordWrap:true },
-  { title:"Cumplimiento",  field:'cumplimiento',hozAlign:"center", width:130, headerWordWrap:true, headerFilter:"list",},
+  { title:"% de Cumplimiento",  field:'cumplimiento',hozAlign:"center", width:130, headerWordWrap:true, headerFilter: "input", formatter:function(cell){
+    var value = cell.getValue();
+
+    if (value <= 69) {
+          cell.getElement().style.backgroundColor = "#C0392B ";
+      } else if (value >= 70 && value <= 85) {
+          cell.getElement().style.backgroundColor = "#D4AC0D ";
+      } else if (value >= 86 && value <= 100) {
+          cell.getElement().style.backgroundColor = "#45B39D";
+      }
+    
+    return value + "%"
+  }},
 ];
 
 
