@@ -17,11 +17,13 @@
             <img src="https://app.linkaform.com/img/login-linkaform-logo.png" height="30" class="d-inline-block align-top" alt="">
         </div>
         <div class="navbar-brand">
-            <button class="btn btn-secondary">Cerrar Sesión</button>   
             <button class="btn btn-secondary" onclick="redirectionUrl('users');return false;" disabled>Accesos</button>   
             <button class="btn btn-secondary" onclick="redirectionUrl('bitacora');return false;">Bitacoras</button>   
             <button class="btn btn-secondary">Incidencias</button>   
             <button class="btn btn-secondary">Rondines</button>   
+            <button class="btn btn-warning" onclick="setCloseSession();return false;">
+            	<i class="fa-solid fa-right-from-bracket"></i>
+            </button>   
         </div>
     </nav>
 	
@@ -123,9 +125,9 @@
 	</section>	
 
 	<!-- Information User-->
-	<section>
+	<section class="section-data">
 		<div class="row justify-content-around">
-			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-7 row div-container-portal p-2">
+			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-7 row div-container-portal p-2 ">
 				<h4>Información personal</h4>
 				<div class="col-sm-12 col-md-6 col-lg-12 col-xl-4">
 					<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-3" alt="Imagen Usuario" style="width:150px;height:150px;" id="imgUser">
@@ -170,7 +172,7 @@
 	</section>
 
 	<!-- Table User-->
-	<section>
+	<section class="section-data">
 		<div class="row p-4">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
 				<div class="div-containerTable-portal p-2">
@@ -249,7 +251,7 @@
 	</section>
 
 	<!-- Tables -->
-	<section>
+	<section class="section-data">
 		<div class="row justify-content-center mt-5">
 			<div class="col-sm-12 col-md-9 col-lg-9">
 				<div class="mt-3 d-flex justify-content-between">
@@ -263,7 +265,7 @@
 		</div>
 	</section>
 
-	<section>
+	<section class="section-data">
 		<div class="row justify-content-center mt-5">
 			<div class="col-sm-12 col-md-9 col-lg-9">
 				<div class="mt-3 d-flex justify-content-between">
@@ -612,9 +614,13 @@
 	</div>
 
 
+	<div id="divSpinner" style="display:none;"></div>
+
+
 </body>
 <!-- Local -->
 <script src="./portal_registro_v2.js"></script>
+<script type="text/javascript" src="../utils/servido_utils.js"></script>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!-- Tabulator -->

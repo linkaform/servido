@@ -57,8 +57,17 @@ const dataTable2 = [
 
 
 window.onload = function(){
-	drawTable('tableEquipo',columsData1,dataTable1);
-	drawTable('tableVehiculos',columsData2,dataTable2);
+	setSpinner(true, 'divSpinner');
+	let user = getCookie("userId");
+	let jw = getCookie("userJwt");
+
+	if(user !='' && jw!=''){
+		drawTable('tableEquipo',columsData1,dataTable1);
+		drawTable('tableVehiculos',columsData2,dataTable2);
+		getDataAlert();
+	}else{
+		redirectionUrl('login',false)
+	}
 }
 
 
@@ -76,24 +85,63 @@ function drawTable(id, columnsData, tableData,){
 
 
 //----Function Redirection
-function redirectionUrl(type = 'null'){
+function redirectionUrl(type = 'null',blank = true){
     let urlNew =  '';
     let protocol = window.location.protocol;
     let host = window.location.host;
-
     if(type == 'users'){
-    	urlNew = `${protocol}//${host}/demo_ragasa/portal_registro_v2.html`
+    	urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
     }else if(type == 'bitacora'){
-    	urlNew = `${protocol}//${host}/demo_ragasa/portal_bitacora_v2.html`
+    	urlNew = `${protocol}//${host}/solucion_accesos/portal_bitacora_v2.html`
+    }else if(type == 'login'){
+    	urlNew = `${protocol}//${host}/solucion_accesos/login.html`
     }
-
     //----Validation
-    if(urlNew !=''){
+    if(urlNew !='' && blank){
     	Object.assign(document.createElement('a'), {
         target: '_blank',
         rel: 'noopener noreferrer',
         href: urlNew,
     	}).click();
+    }else if(urlNew !='' && !blank){
+    	Object.assign(document.createElement('a'), {
+        rel: 'noopener noreferrer',
+        href: urlNew,
+    	}).click();
     }
     
+}
+
+//---Close Sesión
+function setCloseSession() {
+	closeSession();
+	redirectionUrl('login',false);
+}
+
+//-----Function Get Data
+function getDataAlert() {
+	let urlLinkaform = 'https://preprod.linkaform.com/infosync/scripts/run/';
+	let userJwt = getCookie("userJwt");
+	console.log('userJwt',userJwt);
+
+	fetch(urlLinkaform, {
+		method: 'POST',
+		body: JSON.stringify({
+			script_id: 116097,
+			option: 'query_alerts',
+		}),
+		headers:{
+	      'Content-Type': 'application/json',
+	      'Authorization': 'Bearer '+userJwt,
+	      'Access-Control-Request-Headers':'*'
+	    },
+	})
+	.then(res => res.json())
+	.then(res => {
+		if (res.success) {
+			console.log('RES',res);
+
+		} 
+	})
+
 }

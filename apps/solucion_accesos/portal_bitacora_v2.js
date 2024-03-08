@@ -79,8 +79,14 @@ const dataTable2 = [
 ]
 
 window.onload = function(){
-	drawTable('tableEntradas',columsData1,dataTable1);
-	drawTable('tableSalidas',columsData2,dataTable2);
+	let user = getCookie("userId");
+	let jw = getCookie("userJwt");
+	if(user !='' && jw!=''){
+		drawTable('tableEntradas',columsData1,dataTable1);
+		drawTable('tableSalidas',columsData2,dataTable2);
+	}else{
+		redirectionUrl('login',false);
+	}
 }
 
 //-----TABLES
@@ -95,9 +101,7 @@ function drawTable(id, columnsData, tableData,){
   });
 }
 
-
 //-----MODALS
-
 function setModal(type = 'none',id){
 	if(type == 'Tools'){
 		$('#itemsModal').modal('show');
@@ -115,24 +119,34 @@ function setModal(type = 'none',id){
 }
 
 //----Function Redirection
-function redirectionUrl(type = 'null'){
+function redirectionUrl(type = 'null',blank = true){
     let urlNew =  '';
     let protocol = window.location.protocol;
     let host = window.location.host;
-
     if(type == 'users'){
-    	urlNew = `${protocol}//${host}/demo_ragasa/portal_registro_v2.html`
+    	urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
     }else if(type == 'bitacora'){
-    	urlNew = `${protocol}//${host}/demo_ragasa/portal_bitacora_v2.html`
+    	urlNew = `${protocol}//${host}/solucion_accesos/portal_bitacora_v2.html`
+    }else if(type == 'login'){
+    	urlNew = `${protocol}//${host}/solucion_accesos/login.html`
     }
-
     //----Validation
-    if(urlNew !=''){
+    if(urlNew !='' && blank){
     	Object.assign(document.createElement('a'), {
         target: '_blank',
         rel: 'noopener noreferrer',
         href: urlNew,
     	}).click();
+    }else if(urlNew !='' && !blank){
+    	Object.assign(document.createElement('a'), {
+        rel: 'noopener noreferrer',
+        href: urlNew,
+    	}).click();
     }
-    
+}
+
+//---Close Sesión
+function setCloseSession(argument) {
+	closeSession();
+	redirectionUrl('login',false);
 }
