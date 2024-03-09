@@ -17,18 +17,20 @@
             <img src="https://app.linkaform.com/img/login-linkaform-logo.png" height="30" class="d-inline-block align-top" alt="">
         </div>
         <div class="navbar-brand">
-            <button class="btn btn-secondary">Cerrar Sesión</button>   
             <button class="btn btn-secondary" onclick="redirectionUrl('users');return false;" disabled>Accesos</button>   
             <button class="btn btn-secondary" onclick="redirectionUrl('bitacora');return false;">Bitacoras</button>   
             <button class="btn btn-secondary">Incidencias</button>   
             <button class="btn btn-secondary">Rondines</button>   
+            <button class="btn btn-warning" onclick="setCloseSession();return false;">
+            	<i class="fa-solid fa-right-from-bracket"></i>
+            </button>   
         </div>
     </nav>
 	
 	<!-- Information Plant-->
 	<section>
-		<div class="row">
-			<div class="col-sm-12 col-md-6 col-lg-4">
+		<div class="row p-3">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
 				<div class="card m-2 div-card-portal">
 				    <div class="card-body ">
 						<div class="row">
@@ -53,7 +55,7 @@
 				    </div>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-6 col-lg-2">
+			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
 				<div class="card  m-2 div-card-portal">
 				    <div class="card-body p-3">
 				        
@@ -63,7 +65,7 @@
 				    </div>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-6 col-lg-2">
+			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
 				<div class="card  m-2 div-card-portal">
 				    <div class="card-body p-3">
 				        
@@ -73,7 +75,7 @@
 				    </div>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-6 col-lg-2">
+			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
 				<div class="card  m-2 div-card-portal">
 				    <div class="card-body p-3">
 				        
@@ -83,7 +85,7 @@
 				    </div>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-6 col-lg-2">
+			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
 				<div class="card  m-2 div-card-portal">
 				    <div class="card-body p-3">
 				        
@@ -93,23 +95,20 @@
 				    </div>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-6 col-lg-2">
-
-			</div>
 		</div>
 	</section>
 
 	<!-- Filter User-->
 	<section>
-		<div class="row">
-			<div class="col-sm-12 col-md-7 col-lg-8">
+		<div class="row p-3">
+			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mt-2 ">
 				<div class="input-group">
 					<input type="text" class="form-control  input-search-portal" placeholder="Codigo User">
 					<span class="input-group-text bg-warning-subtle cursor-pointer" data-bs-toggle="modal" data-bs-target="#listModal"><i class="fa-solid fa-list"></i></span>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-5 col-lg-4 ">
-				<button type="button" class="mt-1 mb-1 btn btn-success">
+			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mt-2 ">
+				<button type="button" class="mt-1 mb-1 btn btn-success ml-3">
 					<i class="fa-sharp fa-solid fa-address-book"></i> Registrar Ingreso
 				</button>
 				<button type="button" class="mt-1 mb-1 btn btn-primary" data-bs-toggle="modal" data-bs-target="#newVisitModal">
@@ -126,17 +125,17 @@
 	</section>	
 
 	<!-- Information User-->
-	<section>
-		<div class="row   justify-content-around">
-			<div class="col-sm-12 col-md-7 col-lg-7 row div-container-portal p-2">
+	<section class="section-data">
+		<div class="row justify-content-around">
+			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-7 row div-container-portal p-2 ">
 				<h4>Información personal</h4>
-				<div class="col-sm-6 col-lg-3">
+				<div class="col-sm-12 col-md-6 col-lg-12 col-xl-4">
 					<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-3" alt="Imagen Usuario" style="width:150px;height:150px;" id="imgUser">
 				</div>
-				<div class="col-sm-6 col-lg-4">
+				<div class="col-sm-12 col-md-6 col-lg-12 col-xl-4">
 					<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" style="width:320px;height:170px;" id="imgUser">
 				</div>
-				<div class="col-sm-12 col-lg-5">
+				<div class="col-sm-12 col-md-6 col-lg-12 col-xl-4">
 					<p class="mb-0">Nombre del Usuario</p>
 					<small class="text-black-50">Nombre</small>
 
@@ -150,7 +149,7 @@
 					<small class="text-black-50">Status</small>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-4 col-lg-4 row div-container-portal p-2">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4 row div-container-portal p-2">
 				<h4>Información de visita</h4>
 
 				<p><span className='h4'><b>Motivo de Visita:</b></span>&nbsp;&nbsp; Motivo exampleeeee</p>
@@ -168,17 +167,16 @@
 				</div>
 				<p><span className='h4'><b>Autorizado por:</b></span>&nbsp;&nbsp; Autorizado por</p>
 				<p><span className='h4'><b>Teléfono:</b></span>&nbsp;&nbsp; 89921232</p>
-
 			</div>
 		</div>
 	</section>
 
 	<!-- Table User-->
-	<section>
-		<div class="row ">
-			<div class="col-sm-12 col-md-6 col-lg-4 ">
+	<section class="section-data">
+		<div class="row p-4">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
 				<div class="div-containerTable-portal p-2">
-					<h4>Comentarios / Instrucciones de visita</h4>
+					<h4 class="mb-3">Comentarios / Instrucciones de visita</h4>
 					<table>
 						<thead>
 							<tr>
@@ -196,9 +194,9 @@
 					</table>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-6 col-lg-4 ">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
 				<div class="div-containerTable-portal p-2">
-					<h4>Permisos / certificaciones</h4>
+					<h4 class="mb-4">Permisos / certificaciones</h4>
 					<table>
 						<thead>
 							<tr>
@@ -218,9 +216,8 @@
 						</tbody>
 					</table>
 				</div>
-				
 			</div>
-			<div class="col-sm-12 col-md-6 col-lg-4 ">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
 				<div class="div-containerTable-portal p-2">
 					<div class="mt-3 mb-2 d-flex justify-content-between">
 						<h4>Accesos permitidos</h4>
@@ -254,7 +251,7 @@
 	</section>
 
 	<!-- Tables -->
-	<section>
+	<section class="section-data">
 		<div class="row justify-content-center mt-5">
 			<div class="col-sm-12 col-md-9 col-lg-9">
 				<div class="mt-3 d-flex justify-content-between">
@@ -268,7 +265,7 @@
 		</div>
 	</section>
 
-	<section>
+	<section class="section-data">
 		<div class="row justify-content-center mt-5">
 			<div class="col-sm-12 col-md-9 col-lg-9">
 				<div class="mt-3 d-flex justify-content-between">
@@ -617,9 +614,13 @@
 	</div>
 
 
+	<div id="divSpinner" style="display:none;"></div>
+
+
 </body>
 <!-- Local -->
 <script src="./portal_registro_v2.js"></script>
+<script type="text/javascript" src="../utils/servido_utils.js"></script>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!-- Tabulator -->

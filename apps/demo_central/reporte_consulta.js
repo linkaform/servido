@@ -203,7 +203,6 @@ function getInformationRequest() {
 	let cedula = $("#cedula").val();
 	let optionTop = $("#optionTop").val();
 	let period = $("#period").val();
-
 	let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
 
 	$("#divLoad").show();

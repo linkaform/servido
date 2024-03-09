@@ -214,21 +214,39 @@ function getPAlleteColors(pallete,number){
   return arrayColors;
 }
 
-function setSpinner(){
-  if ($("#divContent")){
-    $("#divContent").after(''+
-      ' <div class="load-wrapp">'+
-        '<div class="load-3">'+
-          '<center>'+
-            '<div class="line"></div>'+
-            '<div class="line"></div>'+
-            '<div class="line"></div>'+
-            '<div class="line"></div>'+
-          '</center>'+
-        '</div>'+
-      '</div>'
-    ); 
-    $('.load-wrapp').hide();
+function setSpinner(custom = false, idCustom = ''){
+
+  if(!custom){
+    if ($("#divContent")){
+      $("#divContent").after(''+
+        ' <div class="load-wrapp">'+
+          '<div class="load-3">'+
+            '<center>'+
+              '<div class="line"></div>'+
+              '<div class="line"></div>'+
+              '<div class="line"></div>'+
+              '<div class="line"></div>'+
+            '</center>'+
+          '</div>'+
+        '</div>'
+      ); 
+      $('.load-wrapp').hide();
+    }
+  }else if(custom){
+    if ($("#"+idCustom)){
+      $("#"+idCustom).append(''+
+        ' <div class="load-wrapp">'+
+          '<div class="load-3">'+
+            '<center>'+
+              '<div class="line"></div>'+
+              '<div class="line"></div>'+
+              '<div class="line"></div>'+
+              '<div class="line"></div>'+
+            '</center>'+
+          '</div>'+
+        '</div>'
+      ); 
+    }
   }  
 }
 
