@@ -22,7 +22,6 @@ hideElement("fourthElement");
 hideElement("fivethElement");
 hideElement("sixthElement");
 
-
 window.onload = function(){
   var qs = urlParamstoJson();
   var formNode = document.getElementById("appCont");
