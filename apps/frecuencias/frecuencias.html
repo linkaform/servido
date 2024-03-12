@@ -108,10 +108,18 @@
 
                     <div class="col-sm-12 col-md-3 col-lg-3" id="divLocalidad">
                         <h5>Localidad: </h5>
-                        <select class="form-control mdb-select md-form" id="localidades" multiple="multiple" >
+                        <select class="form-control mdb-select md-form" id="localidades" multiple="multiple" onchange="get_tienda();return false;">
                             <option value="">--Seleccione--</option>
                         </select>
                     </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-3" id="divLocalidad">
+                        <h5>Tienda: </h5>
+                        <select class="form-control mdb-select md-form" id="tienda" multiple="multiple" >
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>
+
                     <div class="col-sm-12 col-md-3 col-lg-3" id="divUsuario">
                         <h5>Usuario: </h5>
                         <select class="form-control" id="usuario" >

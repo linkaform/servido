@@ -31,7 +31,7 @@ var columsTable1 = [
       }
       
       // Devolver el valor de la celda con el color de fondo aplicado
-      if(value){
+      if(value >= 0){
         return '<div style="background-color: ' + bgColor + '"><strong>' + value + '</strong></div>';
       }
     }},
@@ -55,7 +55,7 @@ var dataTable1 = [
   {
     mantenimiento: 'Preventivos',
     cantidad: 80,
-    efectividad: 68.75,
+    efectividad: 0,
     _children:[
     {estatus: 'Pendientes de Asignar',
     cantidad: 1,
