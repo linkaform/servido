@@ -147,7 +147,16 @@ function runFirstElement(){
   let localidad = $('#localidad').val();
   console.log(pais)
   console.log(localidad)
-  getFirstElement(date_to.value, date_from.value, id_forma, pais, localidad);
+  console.log(id_forma)
+  if(id_forma == '--'){
+    Swal.fire({
+      icon:'error',
+      title:'Ojo',
+      text:'Debe seleccionar una forma'
+    })
+  }else{
+    getFirstElement(date_to.value, date_from.value, id_forma, pais, localidad);
+  }  
 
 };
 
@@ -183,7 +192,18 @@ function getFirstElement(dateTo, dateFrom, id_forma, pais, localidad){
       $('.title_tables').show();
       if (res.response.json.firstElement) {
         console.log('Valores',res.response.json.firstElement)
-        setGraphic(res.response.json.firstElement)
+        if(res.response.json.firstElement[0].estandar == 0){
+          Swal.fire({
+            title:'Oops',
+            text:'No se ha establecido un estandar para esta cuenta.',
+            html: res.error
+          })
+        }else{
+          setGraphic(res.response.json.firstElement)
+        }
+
+        /*console.log('Valores',res.response.json.firstElement)
+        setGraphic(res.response.json.firstElement)*/
       }
     } else {
       hideLoading();
