@@ -469,7 +469,7 @@ function get_catalog(option) {
           $("#tienda").multipleSelect('refresh');
           $("#localidad").empty();
           $('#localidad').append('<option value="--">--Seleccione--</option>');
-          $("#localidad").multipleSelect('refresh');
+          //$("#localidad").multipleSelect('refresh');
           for (i = 0; i < res.response.json.array_filters.localidades.length; i++) {
             value = res.response.json.array_filters.localidades[i];
             $('#localidad').append('<option value="'+ value +'">'+value+'</option>');
