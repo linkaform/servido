@@ -155,20 +155,18 @@ loading.style.display = 'none';
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  let cliente = document.getElementById("cliente");
+  let cliente = $("#cliente").val()
   console.log("clientes")
-  console.log(cliente.value)  
+  console.log(cliente)  
   
   getFirstElement(
     date_to.value,
     date_from.value, 
-    cliente.value, 
+    cliente
   );
 };
 
-
-
-function getFirstElement(dateTo, dateFrom, dateInspeccion, cliente){
+function getFirstElement(dateTo, dateFrom, cliente){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
