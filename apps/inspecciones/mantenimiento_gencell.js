@@ -98,9 +98,9 @@ window.onload = function(){
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
-    $("#cliente").multipleSelect('refresh');
-    $("#canton").multipleSelect('refresh');
-    $("#parroquia").multipleSelect('refresh');
+    //$("#cliente").multipleSelect('refresh');
+    /*$("#canton").multipleSelect('refresh');
+    $("#parroquia").multipleSelect('refresh');*/
     document.getElementById("firstParameters").style.removeProperty('display');
     
   } else {
