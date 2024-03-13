@@ -73,7 +73,7 @@ body{
 /* Data */
 
 .section-data{
-  display: none;
+  /*display: none;*/
 }
 
 /* Estilos de la tabla */
@@ -143,6 +143,7 @@ th {
   background: #F2DEBA !important;
   color: black !important;
 }
+
 
 ///----Load
 .load-wrapp{
