@@ -529,8 +529,22 @@ function generarArregloConTonalidades(cantidad) {
   return colores;
 }
 
-/*function formatearUsuarios(){
-  arrayColors.forEach(element => {
-    alert(element);
-  })
-}*/
+//Función para tomar captura del calendario
+function takeScreenshot() {
+    html2canvas(document.body).then(function(canvas) {
+        // Convertir el objeto canvas en una imagen
+        var screenshotImage = canvas.toDataURL("image/png");
+
+        // Crear un enlace de descarga
+        var link = document.createElement('a');
+        link.href = screenshotImage;
+        link.download = 'screenshot.png';
+        document.body.appendChild(link);
+
+        // Simular el clic en el enlace para iniciar la descarga
+        link.click();
+
+        // Eliminar el enlace después de la descarga
+        document.body.removeChild(link);
+    });
+}
