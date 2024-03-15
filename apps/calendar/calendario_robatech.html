@@ -112,7 +112,7 @@
 
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
-                    <div class="col-sm-12 col-md-3 col-lg-3" id="divnameGestor">
+                    <div class="col-sm-12 col-md-2 col-lg-2" id="divnameGestor">
                         <h5>Gestor: </h5>
                         <select class="form-control mdb-select md-form" id="gestor" multiple="multiple">
                             <!--<option value="">--Seleccione--</option>
@@ -122,7 +122,7 @@
                         </select>
                     </div>
                     
-                    <div class="col-sm-12 col-md-3 col-lg-3" id="divActivities">
+                    <div class="col-sm-12 col-md-2 col-lg-2" id="divActivities">
                         <h5>Actividad: </h5>
                         <select class="form-control mdb-select md-form" id="activities" multiple="multiple">
                             <option value="">--Seleccione--</option>
@@ -134,6 +134,10 @@
                     <div class="col-sm-12 col-md-6 col-lg-6" id="divActivities2">
                         <h5> Identificador: R (Realizada), P (Planificada) </h5>
                         <div id="identificador" class="flex row justify-content p-2"></div>
+                    </div>
+
+                    <div class="col-sm-2 col-md-2 col-lg-2" id="divActivities2">
+                        <div class="btn btn-primary" onclick="takeScreenshot()" ><i class="fa-solid fa-camera"></i> Tomar captura</div>
                     </div>
                 </div>
 
@@ -225,6 +229,7 @@
 
     <script type="text/javascript" src="../utils/lkf_utils.js"></script>
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
+    <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
 
     <!-- Template -->
     <script type="text/javascript" src="./calendario_robatech_data.js"></script>
