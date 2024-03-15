@@ -27,6 +27,15 @@ body{
   border: 1px solid grey;
 }
 
+.div-container-table{
+  max-height: 245px !important;
+  overflow: auto;
+}
+
+.div-container-table-comments{
+  max-height: 300px !important;
+  overflow: auto;
+}
 
 .div-containerTable-portal{
   min-height: 220px !important;
@@ -72,9 +81,6 @@ body{
 
 /* Data */
 
-.section-data{
-  /*display: none;*/
-}
 
 /* Estilos de la tabla */
 table {

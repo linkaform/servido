@@ -10,6 +10,7 @@
 	<link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	
 </head>
 <body>
 	<nav class="navbar header">
@@ -19,7 +20,8 @@
         <div class="navbar-brand">
             <button class="btn btn-secondary" onclick="redirectionUrl('users');return false;" disabled>Accesos</button>   
             <button class="btn btn-secondary" onclick="redirectionUrl('bitacora');return false;">Bitacoras</button>   
-            <button class="btn btn-secondary">Incidencias</button>   
+            <button class="btn btn-secondary" onclick="redirectionUrl('incidencias');return false;">Incidencias</button>   
+            <button class="btn btn-secondary" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
             <button class="btn btn-secondary">Rondines</button>   
             <button class="btn btn-warning" onclick="setCloseSession();return false;">
             	<i class="fa-solid fa-right-from-bracket"></i>
@@ -29,24 +31,25 @@
 	
 	<!-- Information Plant-->
 	<section>
-		<div class="row p-3">
+		<div class="row ">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
 				<div class="card m-2 div-card-portal">
 				    <div class="card-body ">
 						<div class="row">
-							<div class="col-12">
+							<div class="col-8">
 								<h5 class="card-title text-uppercase text-dark mb-0">Edificio Planta 1</h5>
 								<small class="text-black-50">Ubicación</small>
 							</div>
-							<div class="col-12">
-								<h5 class="card-title text-uppercase text-dark mb-0">Caseta Vigilancia Sur</h5>
-								<small class="text-black-50">Caseta</small>
-							</div>
-							<div class="col-6">
+							<div class="col-4">
 								<p class="mb-0">Nombre del Jefe</p>
 								<small class="text-black-50">Jefe en Guardia</small>
 							</div>
-							<div class="col-6">
+							<div class="col-8">
+								<h5 class="card-title text-uppercase text-dark mb-0">Caseta Vigilancia Sur</h5>
+								<small class="text-black-50">Caseta</small>
+							</div>
+							
+							<div class="col-4">
 								<p class="mb-0 mt-2">Ayudante 1 </p>
 								<small class="text-black-50">Jefe en Guardia</small>
 							</div>
@@ -60,7 +63,7 @@
 				    <div class="card-body p-3">
 				        
 			            <h5 class="card-title text-center text-uppercase text-dark">Visitas en el Día</h5>
-			            <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert">00</p>
+			            <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert1">00</p>
 				        
 				    </div>
 				</div>
@@ -70,7 +73,7 @@
 				    <div class="card-body p-3">
 				        
 			            <h5 class="card-title text-center text-uppercase text-dark">Personal Dentro</h5>
-			            <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert">00</p>
+			            <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert2">00</p>
 				        
 				    </div>
 				</div>
@@ -80,7 +83,7 @@
 				    <div class="card-body p-3">
 				        
 			            <h5 class="card-title text-center text-uppercase text-dark">Vehículos Dentro</h5>
-			            <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert">00</p>
+			            <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert3">00</p>
 				        
 				    </div>
 				</div>
@@ -90,7 +93,7 @@
 				    <div class="card-body p-3">
 				        
 			            <h5 class="card-title text-center text-uppercase text-dark">Salidas Registradas</h5>
-			            <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert">00</p>
+			            <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert4">00</p>
 				        
 				    </div>
 				</div>
@@ -100,24 +103,28 @@
 
 	<!-- Filter User-->
 	<section>
-		<div class="row p-3">
+		<div class="row ">
 			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mt-2 ">
 				<div class="input-group">
-					<input type="text" class="form-control  input-search-portal" placeholder="Codigo User">
+					<input type="text" class="form-control  input-search-portal" placeholder="Codigo User" value="JER127">
+					<span class="input-group-text bg-warning-subtle cursor-pointer" onclick="getDataUser();return false;"><i class="fa-solid fa-magnifying-glass"></i></span>
 					<span class="input-group-text bg-warning-subtle cursor-pointer" data-bs-toggle="modal" data-bs-target="#listModal"><i class="fa-solid fa-list"></i></span>
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mt-2 ">
-				<button type="button" class="mt-1 mb-1 btn btn-success ml-3">
-					<i class="fa-sharp fa-solid fa-address-book"></i> Registrar Ingreso
+				<button type="button" class="mt-1 mb-1 btn btn-success ml-3" style="display: none;" id="buttonIn" onclick="setDataUser();return false;">
+					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso
 				</button>
-				<button type="button" class="mt-1 mb-1 btn btn-primary" data-bs-toggle="modal" data-bs-target="#newVisitModal">
+				<button type="button" class="mt-1 mb-1 btn btn-danger ml-3" style="display: none;" id="buttonOut" onclick="setDataUser();return false;">
+					<i class="fa-sharp fa-solid fa-door-open"></i> Registrar Salida
+				</button>
+				<button type="button" class="mt-1 mb-1 btn btn-primary" data-bs-toggle="modal" data-bs-target="#newVisitModal" id="buttonNew">
 					<i class="fa-solid fa-plus"></i> Nueva Visita
 				</button>
-				<button type="button" class="mt-1 mb-1 btn btn-info" data-bs-toggle="modal" data-bs-target="#cardModal">
+				<button type="button" class="mt-1 mb-1 btn btn-info" data-bs-toggle="modal" data-bs-target="#cardModal" style="display: none;"id="buttonCard">
 					<i class="fa-sharp fa-solid fa-id-card"></i> Entregar Gafete
 				</button>
-				<button type="button" class="mt-1 mb-1 btn btn-secondary">
+				<button type="button" class="mt-1 mb-1 btn btn-secondary" style="display: none;" id="buttonClean">
 					<i class="fa-solid fa-broom"></i> Limpiar
 				</button>
 			</div>
@@ -126,355 +133,185 @@
 
 	<!-- Information User-->
 	<section class="section-data">
-		<div class="row justify-content-around">
-			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-7 row div-container-portal p-2 ">
-				<h4>Información personal</h4>
-				<div class="col-sm-12 col-md-6 col-lg-12 col-xl-4">
-					<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-3" alt="Imagen Usuario" style="width:150px;height:150px;" id="imgUser">
+		<div class="row">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 row div-container-portal ms-4 ">
+				<h4>Información personal &nbsp;&nbsp;<span class="text-danger" id="textOut">(Salida)</span><span class="text-success" id="textIn">(Entrada)</span></h4>
+				<div class="col-sm-12 col-md-6 col-lg-12 col-xl-3">
+					<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-3" alt="Imagen Usuario" style="width:120px;height:120px;" id="imgUser">
 				</div>
-				<div class="col-sm-12 col-md-6 col-lg-12 col-xl-4">
-					<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" style="width:320px;height:170px;" id="imgUser">
+				<div class="col-sm-12 col-md-6 col-lg-12 col-xl-3">
+					<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" style="width:240px;height:120px;" id="imgCard">
 				</div>
-				<div class="col-sm-12 col-md-6 col-lg-12 col-xl-4">
-					<p class="mb-0">Nombre del Usuario</p>
-					<small class="text-black-50">Nombre</small>
+				<div class="col-sm-12 col-md-6 col-lg-12 col-xl-6">
+					<p><span className='h4'><b>Nombre:</b></span>&nbsp;&nbsp; <span id="name"></span></p>
+					<p><span className='h4'><b>Contratista:</b></span>&nbsp;&nbsp; <span id="rfc"></span></p>
+					<p><span className='h4'><b>Vigencia:</b></span>&nbsp;&nbsp; <span id="validity"></span></p>
+					<p><span className='h4'><b>Status:</b></span>&nbsp;&nbsp; <span id="status"></span></p>
+					
+					<div class="row mb-2">
+						<div class="col-6">
+							<p><span className='h4'><b>A quíen Visita:</b></span>&nbsp;&nbsp;<span id="motivo"></span></p>
+						</div>
+						<div class="col-6">
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneModal">
+								<i class="fa-solid fa-phone"></i>
+							</button>
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#messageModal">
+								<i class="fa-solid fa-message"></i> 
+							</button>
+						</div>
+					</div>
+					<p><span className='h4'><b>Motivo de Visita:</b></span>&nbsp;&nbsp;<span id="motivo"></span></p>
+					
 
-					<p class="mb-0">Nombre del Jefe</p>
-					<small class="text-black-50">Contratista</small>
-
-					<p class="mb-0">Ago-25-2024</p>
-					<small class="text-black-50">Vigencia</small>
-
-					<p class="mb-0">Autorizado</p>
-					<small class="text-black-50">Status</small>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4 row div-container-portal p-2">
-				<h4>Información de visita</h4>
-
-				<p><span className='h4'><b>Motivo de Visita:</b></span>&nbsp;&nbsp; Motivo exampleeeee</p>
-				<div class="col-12 d-flex justify-content-between">
-					<p><span className='h4'><b>A quien visita:</b></span>&nbsp;&nbsp; Motivo exampleeeee</p>
-
-					<div>
-						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneModal">
-							<i class="fa-solid fa-phone"></i>
-						</button>
-						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#messageModal">
-							<i class="fa-solid fa-message"></i> 
-						</button>
-					</div>
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4  div-container-portal div-container-table-comments  ms-5 p-2 ">
+				<div class="d-flex justify-content-between mb-2">
+					<h4>Comentarios / Instrucciones de visita</h4>
+					<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listCommentsModal" id="buttonCommentsModal">
+						<i class="fa-solid fa-eye"></i>
+					</button>
 				</div>
-				<p><span className='h4'><b>Autorizado por:</b></span>&nbsp;&nbsp; Autorizado por</p>
-				<p><span className='h4'><b>Teléfono:</b></span>&nbsp;&nbsp; 89921232</p>
+				<table id="tableInstructions">
+					<thead>
+						<tr>
+							<th>Comentarios / Instrucciones</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
 			</div>
 		</div>
 	</section>
 
 	<!-- Table User-->
 	<section class="section-data">
-		<div class="row p-4">
+		<div class="row p-2">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-				<div class="div-containerTable-portal p-2">
-					<h4 class="mb-3">Comentarios / Instrucciones de visita</h4>
-					<table>
-						<thead>
-							<tr>
-								<th>Comentarios / Instrucciones</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>- Recordar traer el certificado de seguridad.</td>
-							</tr>
-							<tr>
-								<td>- Indicar que pase a la sala de juntas del primer piso</td>
-							</tr>
-						</tbody>
-					</table>
+				<div class="div-containerTable-portal div-container-table p-2">
+					<div class="p-2">
+						<div class="mt-2 mb-2 d-flex justify-content-between">
+							<h4>Ultimos accesos</h4>
+							<button type="button" class="btn btn-info ml-5 btn-sm"  data-bs-toggle="modal" data-bs-target="#listBitacoraModal" id="buttonBitacoraModal">
+								<i class="fa-solid fa-eye"></i>
+							</button>
+						</div>
+						<table id="tableBitacora">
+							<thead>
+								<tr>
+									<th>Visito a</th>
+									<th>Ubicación</th>
+									<th>Duración</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+
+					
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-				<div class="div-containerTable-portal p-2">
-					<h4 class="mb-4">Permisos / certificaciones</h4>
-					<table>
+				<div class="div-containerTable-portal p-2 div-container-table">
+					
+					<div class="mt-3 mb-2 d-flex justify-content-between">
+						<h4>Permisos / certificaciones</h4>
+						<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listAccessModal" id="buttonAccessModal">
+							<i class="fa-solid fa-eye"></i>
+						</button>
+					</div>
+
+					<table id="tableAccess">
 						<thead>
 							<tr>
 								<th>Permiso / Certificaciones</th>
 								<th>Status</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>SUA</td>
-								<td>Vigente</td>
-							</tr>
-							<tr>
-								<td>SUA</td>
-								<td>Vencida</td>
-							</tr>
-						</tbody>
+						<tbody></tbody>
 					</table>
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-				<div class="div-containerTable-portal p-2">
+				<div class="div-containerTable-portal p-2 div-container-table">
 					<div class="mt-3 mb-2 d-flex justify-content-between">
 						<h4>Accesos permitidos</h4>
-						<button type="button" class="btn btn-success ml-5" data-bs-toggle="modal" data-bs-target="#accessModal">
-							<i class="fa-solid fa-plus"></i> Agregar Accesos
+						<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listLocationsModal" id="buttonLocationsModal">
+							<i class="fa-solid fa-eye"></i>
 						</button>
 					</div>
-					<table>
+					<table id="tableLocations">
 						<thead>
 							<tr>
-								<th>Area</th>
-								<th>...</th>
+								<th>Acceso</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>Cuarto de máquinas</td>
-								<td>+</td>
-							</tr>
-							<tr>
-								<td>Edificio principal</td>
-								<td>+</td>
-							</tr>
-							
-						</tbody>
+						<tbody></tbody>
 					</table>
 				</div>
-				
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+				<div class="div-containerTable-portal p-2 div-container-table">
+					<div class="mt-3 mb-2 d-flex justify-content-between">
+						<h4>Equipos Autorizados</h4>
+
+						<div>
+							<button type="button" class="btn btn-success"  data-bs-toggle="modal" data-bs-target="#equipmentModal">
+								<i class="fa-solid fa-plus"></i> Agregar Equipo
+							</button>
+							<button type="button" class="btn btn-primary"  onclick="setViewModalItem();return false">
+								<i class="fa-solid fa-list"></i>
+							</button>
+							<button type="button" class="btn btn-info "  data-bs-toggle="modal" data-bs-target="#listItemsModal" id="buttonItemsModal">
+								<i class="fa-solid fa-eye"></i>
+							</button>
+						</div>
+					</div>
+					<table id="tableItems">
+						<thead>
+							<tr>
+								<th>Tipo</th>
+								<th>Marca</th>
+								<th>Modelo</th>
+								<th style="width: 20%;">Seleccionar</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+				<div class="div-containerTable-portal p-2 div-container-table">
+					<div class="mt-3 mb-2 d-flex justify-content-between">
+						<h4>Vehiculos Autorizados</h4>
+						<div>
+							<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#carModal" id="buttonAddCarModal">
+								<i class="fa-solid fa-plus"></i> Agregar Vehículo
+							</button>
+							<button type="button" class="btn btn-primary" onclick="setViewModalCard();return false" >
+								<i class="fa-solid fa-list"></i>
+							</button>
+							<button type="button" class="btn btn-info "  data-bs-toggle="modal" data-bs-target="#listCarsModal" id="buttonCarsModal">
+								<i class="fa-solid fa-eye"></i>
+							</button>
+						</div>
+					</div>	
+					<table id="tableCars">
+						<thead>
+							<tr>
+								<th>Marca</th>
+								<th>Placas</th>
+								<th>Color</th>
+								<th style="width: 20%;">Seleccionar</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</section>
-
-	<!-- Tables -->
-	<section class="section-data">
-		<div class="row justify-content-center mt-5">
-			<div class="col-sm-12 col-md-9 col-lg-9">
-				<div class="mt-3 d-flex justify-content-between">
-					<h4>Equipo</h4>
-					<button type="button" class="btn btn-success ml-5"  data-bs-toggle="modal" data-bs-target="#equipmentModal">
-						<i class="fa-solid fa-plus"></i> Agregar Equipo
-					</button>
-				</div>
-				<div class="mt-3" id="tableEquipo"></div>
-			</div>
-		</div>
-	</section>
-
-	<section class="section-data">
-		<div class="row justify-content-center mt-5">
-			<div class="col-sm-12 col-md-9 col-lg-9">
-				<div class="mt-3 d-flex justify-content-between">
-					<h4>Vehículos</h4> 
-					<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#carModal">
-						<i class="fa-solid fa-plus"></i> Agregar Vehículo
-					</button>
-				</div>
-				<div class="mt-3 " id="tableVehiculos"></div>
-			</div>
-		</div>
-	</section>
-
-
-	<!-- Modal Mensaje-->
-	<div class="modal fade" id="messageModal" tabindex="-1"  aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5">Mensaje</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div class="mb-3">
-						<label  class="form-label">Mensaje *</label>
-						<textarea class="form-control"  rows="6">Queremos informarle que uno de sus visitantes ha intentado acceder a instalaciones, sin embargo, su acceso ha sido denegado por el momento. Si considera necesario habilitar su ingreso, le sugerimos que se pongas en contacto con nuestro equipo de seguridad para brindar la autorización correspondiente. 
-							Agradecemos su atención y cooperación en este asunto.
-						</textarea>
-					</div>
-					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Enviar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Modal Equipo-->
-	<div class="modal fade" id="equipmentModal" tabindex="-1"  aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5">Equipo</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-
-					<div class="row">
-						<div class="mb-3 col-6">
-							<label class="form-label">Tipo de Equipo *</label>
-							<select class="form-select" aria-label="Default select example">
-								<option selected>Open this select menu</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
-							</select>
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Marca *</label>
-							<input type="text" class="form-control"  placeholder="Marca">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Modelo *</label>
-							<input type="text" class="form-control"  placeholder="Modelo">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Numero de Serie *</label>
-							<input type="text" class="form-control"  placeholder="Serie">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Color *</label>
-							<input type="color" class="form-control">
-						</div>
-					</div>
-					
-					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Enviar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Modal Vehículo-->
-	<div class="modal fade" id="carModal" tabindex="-1"  aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5">Vehículo</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-
-					<div class="row">
-						<div class="mb-3 col-12">
-							<label class="form-label">Tipo de Equipo *</label>
-							<select class="form-select" aria-label="Default select example">
-								<option selected>Open this select menu</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
-							</select>
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Marca *</label>
-							<div class="input-group mb-3">
-								<select class="form-select" aria-label="Default select example">
-									<option selected>Option</option>
-									<option value="1">One</option>
-									<option value="2">Two</option>
-									<option value="3">Three</option>
-								</select>
-							</div>
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Modelo *</label>
-							<select class="form-select" aria-label="Default select example">
-								<option selected>Open this select menu</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
-							</select>
-						</div>
-						<div class="mb-3 col-4">
-							<label class="form-label">Color *</label>
-							<input type="color" class="form-control">
-						</div>
-						<div class="mb-3 col-4">
-							<label class="form-label">Estado *</label>
-							<select class="form-select" aria-label="Default select example">
-								<option selected>Open this select menu</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
-							</select>
-						</div>
-						<div class="mb-3 col-4">
-							<label class="form-label">Numero de placas *</label>
-							<input type="text" class="form-control"  placeholder="Placas">
-						</div>
-						
-					</div>
-					
-					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Enviar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Modal Acceso-->
-	<div class="modal fade" id="accessModal" tabindex="-1"  aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5">Acessos</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-						<div class="mb-3 col-8">
-							<label class="form-label">Area de accesos *</label>
-							<select class="form-select" aria-label="Default select example">
-								<option selected>Open this select menu</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
-							</select>
-						</div>
-					</div>
-					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Enviar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Modal Phone-->
-	<div class="modal fade" id="phoneModal" tabindex="-1"  aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5">Salida</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-						<h3>¿Está seguro de realizar llamada?</h3>
-
-						<p class="mt-3 text-red">Al realizar la llamada, se contactara a el numero registrado en la solicutd de entrada.</p>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success">Llamar</button>
-				</div>
-			</div> 
-		</div>
-	</div>
 
 	<!-- Modal List-->
 	<div class="modal fade" id="listModal" tabindex="-1"  aria-hidden="true">
@@ -486,21 +323,77 @@
 				</div>
 				<div class="modal-body">
 					<div class="row m-3">
-						<div class="card">
-							<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-3" alt="Imagen Usuario" style="width:100px;height:100px;" id="imgUser">
-							<div class="card-body">
-								<h3 class="card-title">JERJSJA</h3>
-								<div class="d-flex justify-content-between">
-									<h5 class="card-title">Empleado 1</h5>
-									<button class="btn btn-success">Seleccionar</button>
+						<ol class="list-group list-group-numbered">
+							<li class="list-group-item d-flex justify-content-between align-items-start">
+								<div class="ms-2 me-auto">
+									<div class="fw-bold">JERJ127</div>
+									Josue De Jesus
 								</div>
-								
-							</div>
-						</div>
+								<span class="badge text-bg-primary rounded-pill"> 
+									<i class="fa-solid fa-check"></i>
+								</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-start">
+								<div class="ms-2 me-auto">
+									<div class="fw-bold">Pato</div>
+										Jose Patricio
+									</div>
+								<span class="badge text-bg-primary rounded-pill">
+									<i class="fa-solid fa-check"></i>
+								</span>
+							</li>
+						</ol>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+				</div>
+			</div> 
+		</div>
+	</div>
+
+	<!-- Modal New Visit-->
+	<div class="modal fade" id="newVisitModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Nueva Visita</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="mb-3 col-12">
+							<label class="form-label">Nombre Completo*</label>
+							<input type="text" class="form-control"  placeholder="Nombre">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Razón Social*</label>
+							<input type="text" class="form-control"  placeholder="Empresa">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Área que visita*</label>
+							<input type="text" class="form-control"  placeholder="Área">
+						</div>
+						<div class="mb-3 col-12">
+							<label class="form-label">Motivo de Visita *</label>
+							<textarea class="form-control"  rows="3"></textarea>
+						</div>
+						<div class="mb-3 col-12">
+							<label class="form-label">Visita a*</label>
+							<select class="form-select">
+								<option selected>--Seleccione--</option>
+								<option value="1">One</option>
+								<option value="2">Two</option>
+								<option value="3">Three</option>
+							</select>
+						</div>
+						
+					</div>
+					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary">Asignar</button>
 				</div>
 			</div> 
 		</div>
@@ -566,57 +459,377 @@
 		</div>
 	</div>
 
-	<!-- Modal Card-->
-	<div class="modal fade" id="newVisitModal" tabindex="-1"  aria-hidden="true">
+	<!-- Modal Message-->
+	<div class="modal fade" id="messageModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Nueva Visita</h1>
+					<h1 class="modal-title fs-5">Mensaje</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<div class="row">
-						<div class="mb-3 col-12">
-							<label class="form-label">Nombre Completo*</label>
-							<input type="text" class="form-control"  placeholder="Nombre">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Razón Social*</label>
-							<input type="text" class="form-control"  placeholder="Empresa">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Área que visita*</label>
-							<input type="text" class="form-control"  placeholder="Área">
-						</div>
-						<div class="mb-3 col-12">
-							<label class="form-label">Motivo de Visita *</label>
-							<textarea class="form-control"  rows="3"></textarea>
-						</div>
-						<div class="mb-3 col-12">
-							<label class="form-label">Visita a*</label>
-							<select class="form-select">
-								<option selected>--Seleccione--</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
-							</select>
-						</div>
-						
+					<div class="mb-3">
+						<label  class="form-label">Mensaje *</label>
+						<textarea class="form-control"  rows="6">Queremos informarle que uno de sus visitantes ha intentado acceder a instalaciones, sin embargo, su acceso ha sido denegado por el momento. Si considera necesario habilitar su ingreso, le sugerimos que se pongas en contacto con nuestro equipo de seguridad para brindar la autorización correspondiente. 
+							Agradecemos su atención y cooperación en este asunto.
+						</textarea>
 					</div>
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Asignar</button>
+					<button type="button" class="btn btn-primary">Enviar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Modal Phone-->
+	<div class="modal fade" id="phoneModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Salida</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<h3>¿Está seguro de realizar llamada?</h3>
+
+						<p class="mt-3 text-red">Al realizar la llamada, se contactara a el numero registrado en la solicutd de entrada.</p>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success">Llamar</button>
 				</div>
 			</div> 
 		</div>
 	</div>
 
+	<!-- Modal Item-->
+	<div class="modal fade" id="equipmentModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Equipo</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="mb-3 col-6">
+							<label class="form-label">Tipo de Equipo *</label>
+							<input type="text" class="form-control form-item"  placeholder="Tipo" id="inputTipoItem">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Marca *</label>
+							<input type="text" class="form-control form-item"  placeholder="Marca" id="inputMarcaItem">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Modelo *</label>
+							<input type="text" class="form-control form-item"  placeholder="Modelo" id="inputModeloItem">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Numero de Serie *</label>
+							<input type="text" class="form-control form-item"  placeholder="Serie" id="inputSerieItem">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Color *</label>
+							<input type="text" class="form-control form-item"  placeholder="Color" id="inputColorItem">
+						</div>
+					</div>
+					
+					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
+					<br/>
+					<small class="text-danger mt-1 mb-3"  id="alertItemModal" style="display:none;">** Faltan campos obligatorios</small>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-warning" onclick="getSaveItem();return false;">Guardar</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-	<div id="divSpinner" style="display:none;"></div>
+	<!-- Modal Car-->
+	<div class="modal fade" id="carModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Vehículo</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+
+					<div class="row">
+						<div class="mb-3 col-12">
+							<label class="form-label">Tipo de Vehiculo *</label>
+							<input type="text" class="form-control form-car"  placeholder="Tipo" id="inputTipoCar">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Marca *</label>
+							<input type="text" class="form-control form-car"  placeholder="Marca" id="inputMarcaCar">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Modelo *</label>
+							<input type="text" class="form-control form-car"  placeholder="Modelo" id="inputModeloCar">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Color *</label>
+							<input type="text" class="form-control form-car"  placeholder="Color" id="inputColorCar">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Numero de placas *</label>
+							<input type="text" class="form-control form-car"  placeholder="Placas" id="inputPlacasCar">
+						</div>
+					</div>
+					
+					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
+					<br/>
+					<small class="text-danger mt-1 mb-3" id="alert_car_modal" style="display:none;">** Faltan campos obligatorios</small>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-warning" onclick="getSaveCar();return false;">Guardar</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
+	
+
+	<!-- Modal List comments-->
+	<div class="modal fade" id="listCommentsModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Lista de Comentarios / Instrucciones de visita</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table" id="tableModalInstructions">
+						<thead class="table-warning">
+							<th>Comentarios / Instrucciones</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Comentario</td>
+							</tr>
+						</tbody>
+					</table>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary">Enviar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal List Bitacora-->
+	<div class="modal fade" id="listBitacoraModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Lista de Accesos</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table" id="tableBitacoraModal">
+						<thead class="table-warning">
+							<th>Visito a</th>
+							<th>Ubicación</th>
+							<th>Fecha</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Jefe 1</td>
+								<td>Ubicación</td>
+								<td>20-03-2024</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal List Access-->
+	<div class="modal fade" id="listAccessModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Lista de Permisos / certificaciones</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table" id="tableModalAccess">
+						<thead class="table-warning">
+							<th>Permiso / Certificación</th>
+							<th>Status</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Permiso de Servidor</td>
+								<td>Valido</td>
+							</tr>
+						</tbody>
+					</table>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary">Enviar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal List Locations-->
+	<div class="modal fade" id="listLocationsModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Lista de Accesos permitidos</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table">
+						<thead class="table-warning">
+							<th>Acceso</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Permiso de Servidor</td>
+							</tr>
+						</tbody>
+					</table>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary">Enviar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal List Items-->
+	<div class="modal fade" id="listItemsModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Lista de Items</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table" id="tableModalItems">
+						<thead class="table-warning">
+							<th>Tipo</th>
+							<th>Marca</th>
+							<th>Modelo</th>
+							<th style="width: 20%;">Añadirlo</th>
+						</thead>
+						<tbody></tbody>
+					</table>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary">Enviar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal List Cars-->
+	<div class="modal fade" id="listCarsModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Lista de Vehiculos</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table" id="tableCarsModal">
+						<thead class="table-warning">
+							<th>Marca</th>
+							<th>Placas</th>
+							<th>Color</th>
+							<th style="width: 20%;">Añadirlo</th>
+						</thead>
+						<tbody></tbody>
+					</table>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary">Enviar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Modal List Add Cars-->
+	<div class="modal fade" id="listAddCarsModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Lista de Vehiculos agregados</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table" id="tableAddCarsModal">
+						<thead class="table-warning">
+							<th>Marca</th>
+							<th>Placas</th>
+							<th>Color</th>
+						</thead>
+						<tbody></tbody>
+					</table>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal List Add Items-->
+	<div class="modal fade" id="listAddItemsModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Lista de Equipo Agregado</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table" id="tableAddItemsModal">
+						<thead class="table-warning">
+							<th>Tipo</th>
+							<th>Marca</th>
+							<th>Modelo</th>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div id="divSpinner" style="display:none;margin-top: 100px;"></div>
 </body>
 <!-- Local -->
 <script src="./portal_registro_v2.js"></script>
@@ -628,4 +841,5 @@
 <!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
+<script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
 </html>
