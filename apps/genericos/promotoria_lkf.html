@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Servido</title>
         <meta name="title" content="Servido">
-        <meta name="description" content="Reporte Auditorias">
+        <meta name="description" content="Green House Inventory Move">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
@@ -12,6 +12,8 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!--Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <!--LIBRARY CHECK -->
+        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -25,7 +27,7 @@
                     <div class="col-md-6">
                         <a href="index.html">
                             <div class="logo_marca">
-                                <img src="https://app.linkaform.com/img/login-linkaform-logo.png" alt="LinkaForm" id="image_log">
+                                <img src="https://preprod.linkaform.com/img/login-linkaform-logo.png" alt="LinkaForm" id="image_log">
                             </div>
                         </a>
                     </div>
@@ -37,7 +39,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h1 id="title_report">Reporte</h1>
+                    <h1 id="title_report">Reporte de visitas por promotor</h1>
                 </div>
             </div> 
         </nav>
@@ -76,8 +78,6 @@
                     </center>
                 </div>
 
-
-
                 <!--OPtions FIlter -->
                 <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
@@ -88,56 +88,88 @@
 
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
-                    <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Fecha Desde: </h5>
-                        <input class="form-control ds-input" type="date" id="date_from" name="date_from">
+
+                    <div class="col-sm-12 col-md-2 col-lg-3">
+                        <h5>Fecha desde: </h5>
+                        <input class="form-control ds-input" type="date" id="dateFrom" name="dateFrom">
                     </div>
-                    <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Fecha Hasta: </h5>
-                        <input class="form-control ds-input" type="date" id="date_to" name="date_to">
+                   
+                    <div class="col-sm-12 col-md-2 col-lg-3">
+                        <h5>Fecha hasta: </h5>
+                        <input class="form-control ds-input" type="date" id="dateTo" name="dateTo">
+                    </div>
+
+                    <div class="col-sm-12 col-md-2 col-lg-2">
+                        <h5>Cadena: </h5>
+                        <select class="form-control" id="cadena" name="cadena">
+                            <option value="--">Seleccione</option>
+                        </select>
+                    </div>
+
+                    <div id="content_button" class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Expanda o agrupe la data: </h5>
+                        <!--<input type="checkbox"  data-toggle="toggle" data-width="130" data-on="Expandir" data-off="Agrupar" id="input_check" data-onstyle="success" data-offstyle="primary">-->
+
+                        <input type="button" name="expandir" id="expandir" class="btn btn-success btn-sm" value="Expandir">
+                        <input type="button" name="expandir" id="agrupar_fecha" class="btn btn-primary btn-sm" value="Agrupar por fecha">
+                        <input type="button" name="expandir" id="agrupar_usuario" class="btn btn-secondary btn-sm" value="Agrupar por usuario">
+                    </div>
+                    <!-- 
+                    <div class="col-sm-12 col-md-2 col-lg-2" id="filter_date">
+                        <h5>Filtrado por: </h5>
+                        <input type="checkbox"  data-toggle="toggle" data-width="150" data-on="Move Date" data-off="Created Date" id="input_check" data-onstyle="success" data-offstyle="primary">
+                    </div> -->
+                    
+                </div>
+                <!--Content -->
+                <div class="row" style="margin-top:20px;"  id="divContent" style="align-items: center;overflow-y: scroll;">
+                    <div class="col-sm-12 col-md-10 col-lg-10 row">
+                        <!--Second Elemtent -->
+                        <div class="col-sm-6 col-md-3 col-lg-3" id="fourthElement">
+                            <div class="card w-70 bg-primary text-white">
+                                <div class="card-body text-center mt-3"> <!-- Añadido "text-center" aquí -->
+                                    <h4 class="card-title" id="total_visitas">Total de visitas: </h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Third Element-->
+                        <div  class="col-sm-6 col-md-3 col-lg-3" id="fivethElement">
+                            <div class="card w-70 bg-primary text-white" > 
+                                <div class="card-body text-center mt-3">
+                                    <h4 class="card-title" id="total_promotores">Total promotores: </h4>
+                              </div>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Formas: </h5>
-                        <select class="form-control mdb-select md-form" id="formas" >
-                            <option value="">Seleccione</option>
-                        </select>
+                    <!--First Elemtent -->
+                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                        <section class="title_tables">
+                            <h3 ><span>Visitas por promotor</span>&nbsp;&nbsp;
+                                <button  class="btn btn-primary" id="download_csv_firstElement"><i class="fa-solid fa-file-csv"></i></button>
+                                <button  class="btn btn-success" id="download_xlsx_firstElement"><i class="fa-regular fa-file-excel"></i></button>
+                            </h3>
+                            <hr class="green-HrsecondElement" >
+                        </section>
+                        <div id="firstElement" class="promotoria_aigp" > </div>
                     </div>
 
-                    <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>País: </h5>
-                        <select class="form-control mdb-select md-form" id="pais" multiple="multiple" style="border:none !important;">
-                            <option value="">--Seleccione--</option>
-                        </select>
+                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center; overflow-y: scroll;">
+                        <div id="ThirdElement">
+                            <div style="width: 1000px;height: 500px;margin: auto;" > 
+                                <canvas id="graphicFirst"></canvas>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Localidad: </h5>
-                        <select class="form-control mdb-select md-form" id="localidad" multiple="multiple" style="border:none !important;" >
-                            <option value="">--Seleccione--</option>
-                        </select>
-                    </div>
-
-                    <div class="col-sm-12 col-md-3 col-lg-3" >
-                        <h5>Tienda: </h5>
-                        <select class="form-control mdb-select md-form" id="tienda" multiple="multiple" >
-                            <option value="">--Seleccione--</option>
-                        </select>
-                    </div>
-
                 </div>
-
-                </div>
-
-                <!--Content -->
-                <div class="row" style="margin-top:20px;"  id="divContent"></div>
-            </div>
         </div>
     </body>
 
+
     <!-- TABULATOR -->
     <!-- tabulator : Excel Downlowd-->
-    <!--<script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>-->
+    <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
     <!-- tabulator : PDF Downlowd-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
@@ -147,6 +179,7 @@
 
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
     
+
     <!-- chartjs -->
     <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
 
@@ -173,23 +206,29 @@
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
     crossorigin="anonymous"></script>
 
-    <!--SweetAlert2-->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <!-- Utils -->
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
     <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
 
     <script type="text/javascript" src="../utils/lkf_utils.js"></script>
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
-    <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
-
-    <!-- Multiplke -->
-    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
-    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
 
     <!-- Template -->
-    <script type="text/javascript" src="./auditoria_food.js"></script>
-    <script type="text/javascript" src="./auditoria_food_data.js"></script>
+    <script type="text/javascript" src="./promotoria_lkf.js"></script>
+    <script type="text/javascript" src="./promotoria_lkf_data.js"></script>
+
+    <!-- <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
+    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script> -->
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"
+        integrity="sha256-qoj3D1oB1r2TAdqKTYuWObh01rIVC1Gmw9vWp1+q5xw=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js" integrity="sha512-UnrKxsCMN9hFk7M56t4I4ckB4N/2HHi0w/7+B/1JsXIX3DmyBcsGpT3/BsuZMZf+6mAr0vP81syWtfynHJ69JA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- SCRIPT SELECT2-->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     </body>
 </html>

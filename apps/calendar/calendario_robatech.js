@@ -525,12 +525,25 @@ function getHours(hourDate) {
 //Generar colores en automático
 function generarArregloConTonalidades(cantidad) {
   var colores = [['#B03A2E','#EC7063'],['#76448A ','#AF7AC5'],['#1F618D','#5499C7'],['#148F77','#48C9B0'],['#B7950B','#F4D03F'],['#FF8B00','#FFAF4F'], ['#F62929','#F77171'], ['#04ABFF','#60CAFF'], ['#6C3483','#8E44AD'], ['#117A65','#16A085'],['#AF601A','#E67E22'], ['#B500FF','#D46AFF'], ['#00AC6B','#52C79B'], ['#1461FF','#4884FF'], ['#00B0CA','#43C4D7'], ['#6B00FF','#8F3EFF'], ['#CE0092','#DF64BB'], ['#3262BE','#698ED6'], ['#B141A9','#C975C3'], ['#DE8900','#DBA54E'] ];
-
   return colores;
 }
 
-/*function formatearUsuarios(){
-  arrayColors.forEach(element => {
-    alert(element);
-  })
-}*/
+//Función para tomar captura del calendario
+function takeScreenshot() {
+  html2canvas(document.body).then(function(canvas) {
+      // Convertir el objeto canvas en una imagen
+      var screenshotImage = canvas.toDataURL("image/png");
+
+      // Crear un enlace de descarga
+      var link = document.createElement('a');
+      link.href = screenshotImage;
+      link.download = 'screenshot.png';
+      document.body.appendChild(link);
+
+      // Simular el clic en el enlace para iniciar la descarga
+      link.click();
+
+      // Eliminar el enlace después de la descarga
+      document.body.removeChild(link);
+  });
+}

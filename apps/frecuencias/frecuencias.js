@@ -103,6 +103,7 @@ window.onload = function(){
     //--Styles
     setSpinner();
     $("#localidades").multipleSelect('refresh');
+    $("#tienda").multipleSelect('refresh');
     $('#divUsuario').hide();
     $('#divOptions').show();
     $('#title_report').show();
@@ -170,6 +171,7 @@ function runFirstElement(flagPrint = false){
   let usuario = document.getElementById("usuario");    
   let paises = $('#paises').val();
   let localidades = $('#localidades').val();
+  let tiendas = $("#tienda").val();
   check = 'on';
   if (document.getElementById('input_check').checked)
   {
@@ -177,11 +179,12 @@ function runFirstElement(flagPrint = false){
   }
   fecha_de = date_from.value
   fecha_hasta = date_to.value
-  getFirstElement(date_to.value, date_from.value, paises, localidades, usuario.value, check, flagPrint);
+  console.log("tiendas = ", tiendas)
+  getFirstElement(date_to.value, date_from.value, paises, localidades, tiendas, usuario.value, check, flagPrint);
 };
 
 
-function getFirstElement(dateTo, dateFrom, paises, localidades, usuario, check, flagPrint = false){
+function getFirstElement(dateTo, dateFrom, paises, localidades, tiendas, usuario, check, flagPrint = false){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -196,6 +199,7 @@ function getFirstElement(dateTo, dateFrom, paises, localidades, usuario, check, 
       date_from: dateFrom,
       paises: paises,
       localidades: localidades,
+      tiendas: tiendas,
       usuario: usuario,
       check: check,
       option: 1,
@@ -445,6 +449,7 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
 }
 
 //----- CATALOGS
+var loc_global = []
 function get_catalog(option) 
 {
   fetch(url + 'infosync/scripts/run/', {
@@ -471,16 +476,33 @@ function get_catalog(option)
           }
         }
         if (res.response.json.array_filters.localidades){
+          //Localidades
+          loc_global = res.response.json.array_filters.localidades
           $("#localidades").empty();
           $('#localidades').append('<option value="--">--Seleccione--</option>');
+          //Tiendas
+          $("#tienda").empty();
+          $("#tienda").append('<option value="--">Seleccione</option>');
           for (i = 0; i < res.response.json.array_filters.localidades.length; i++) {
             value = res.response.json.array_filters.localidades[i].localidad;
             $('#localidades').append('<option value="'+ value +'">'+value+'</option>');
+
+            tiendas = res.response.json.array_filters.localidades[i].tiendas;
+            if(tiendas){
+              tiendas.forEach(tienda => {
+                if(tienda){
+                  $("#tienda").append('<option value="' + tienda + '">'+tienda+'</option>');
+                }
+              })
+            }
           }
           $("#localidades").multipleSelect('refresh');
+          $("#tienda").multipleSelect('refresh');
+
         }
       }else if(option == 2){
         filter = $('#paises').val();
+        get_tienda(pais = filter)
         if (res.response.json.array_filters.localidades){
           $("#localidades").empty();
           $('#localidades').append('<option value="--">--Seleccione--</option>');
@@ -525,4 +547,57 @@ function printPDF() {
     });
   }
   document.querySelector('#buttonDownloadFirst').click();
+}
+
+//Función para actualizar los valores del selector multiple Tienda
+function get_tienda(pais = ''){
+  console.log(pais)
+  let localidades = document.getElementById("localidades");
+  let loc_select = []
+
+  for(var i = 0; i < localidades.options.length; i ++){
+    var option = localidades.options[i];
+
+    //Verificar el valor de la opción seleccionada
+    if(option.selected){
+      loc_select.push(option.value);
+      console.log("option = ", option.value)
+    }
+  }
+
+  console.log("Las localidades seleccionadas son: ", loc_select);
+
+  console.log("Localidades globales")
+  console.log(loc_global)
+
+  //Se ejectua cuando no se ha seleccionado un pais
+  $("#tienda").empty();
+  $("#tienda").append('<option value="--">Seleccione</option>');
+  if(!pais){
+      console.log("Sin tienda")
+      loc_global.forEach(localidad =>{
+        if(loc_select.includes(localidad.localidad)){
+          console.log("La incluye ", localidad.localidad)
+          localidad.tiendas.forEach(tienda => {
+            if(tienda){
+              $("#tienda").append('<option value="' + tienda+ '">'+tienda+'</option>');
+            }
+          })
+        }
+      })
+  }else{
+    console.log("Con pais ", pais)
+    loc_global.forEach(localidad =>{
+      if(pais == localidad.pais){
+        console.log("La incluye ", localidad.localidad)
+        localidad.tiendas.forEach(tienda => {
+          if(tienda){
+            $("#tienda").append('<option value="' + tienda+ '">'+tienda+'</option>');
+          }
+        })
+      }
+    })
+  }
+  $("#tienda").multipleSelect('refresh');
+
 }

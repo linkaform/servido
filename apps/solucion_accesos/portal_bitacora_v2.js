@@ -127,6 +127,10 @@ function redirectionUrl(type = 'null',blank = true){
     	urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
     }else if(type == 'bitacora'){
     	urlNew = `${protocol}//${host}/solucion_accesos/portal_bitacora_v2.html`
+    }else if(type == 'incidencias'){
+    	urlNew = `${protocol}//${host}/solucion_accesos/portal_incidencias_v2.html`
+    }else if(type == 'articulos'){
+    	urlNew = `${protocol}//${host}/solucion_accesos/portal_articulos_v2.html`
     }else if(type == 'login'){
     	urlNew = `${protocol}//${host}/solucion_accesos/login.html`
     }
@@ -143,7 +147,9 @@ function redirectionUrl(type = 'null',blank = true){
         href: urlNew,
     	}).click();
     }
+    
 }
+
 
 //---Close Sesión
 function setCloseSession(argument) {

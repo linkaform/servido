@@ -98,9 +98,9 @@ window.onload = function(){
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
-    $("#cliente").multipleSelect('refresh');
-    $("#canton").multipleSelect('refresh');
-    $("#parroquia").multipleSelect('refresh');
+    //$("#cliente").multipleSelect('refresh');
+    /*$("#canton").multipleSelect('refresh');
+    $("#parroquia").multipleSelect('refresh');*/
     document.getElementById("firstParameters").style.removeProperty('display');
     
   } else {
@@ -155,20 +155,19 @@ loading.style.display = 'none';
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");  
-  let cliente = document.getElementById("cliente");
+  let cliente = $("#cliente").val()
   console.log("clientes")
-  console.log(cliente.value)  
-  
+  console.log(cliente)  
+  console.log(date_from.value)
+  console.log(date_to.value)
   getFirstElement(
     date_to.value,
     date_from.value, 
-    cliente.value, 
+    cliente
   );
 };
 
-
-
-function getFirstElement(dateTo, dateFrom, dateInspeccion, cliente){
+function getFirstElement(dateTo, dateFrom, cliente){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -348,6 +347,25 @@ function  drawFirstElement(data){
     plugins: [ChartDataLabels],
     options: {
     responsive: true,
+    /*plugins: {
+
+      tooltip: {
+        callbacks: {
+          title: function(context) {
+              console.log(context)
+              const labelIndex = (context[0].datasetIndex * 2) + context[0].dataIndex;
+              return context[0].chart.data.labels[labelIndex]
+          },
+
+          label: function(context) {
+            console.log(context)
+            const labelIndex = (context.datasetIndex * 2) + context.dataIndex;
+            return context.chart.data.labels[labelIndex] + ': ' + context.formattedValue;
+          }
+
+        }
+      }
+    }*/
     plugins: {
       legend: {
         labels: {
@@ -387,6 +405,12 @@ function  drawFirstElement(data){
       },
       tooltip: {
         callbacks: {
+          title: function(context) {
+              console.log(context)
+              const labelIndex = (context[0].datasetIndex * 2) + context[0].dataIndex;
+              return context[0].chart.data.labels[labelIndex]
+          },
+          
           label: function(context) {
             const labelIndex = (context.datasetIndex * 2) + context.dataIndex;
             return context.chart.data.labels[labelIndex] + ': ' + context.formattedValue;

@@ -147,7 +147,16 @@ function runFirstElement(){
   let localidad = $('#localidad').val();
   console.log(pais)
   console.log(localidad)
-  getFirstElement(date_to.value, date_from.value, id_forma, pais, localidad);
+  console.log(id_forma)
+  if(id_forma == '--'){
+    Swal.fire({
+      icon:'error',
+      title:'Ojo',
+      text:'Debe seleccionar una forma'
+    })
+  }else{
+    getFirstElement(date_to.value, date_from.value, id_forma, pais, localidad);
+  }  
 
 };
 
@@ -183,7 +192,18 @@ function getFirstElement(dateTo, dateFrom, id_forma, pais, localidad){
       $('.title_tables').show();
       if (res.response.json.firstElement) {
         console.log('Valores',res.response.json.firstElement)
-        setGraphic(res.response.json.firstElement)
+        if(res.response.json.firstElement[0].estandar == 0){
+          Swal.fire({
+            title:'Oops',
+            text:'No se ha establecido un estandar para esta cuenta.',
+            html: res.error
+          })
+        }else{
+          setGraphic(res.response.json.firstElement)
+        }
+
+        /*console.log('Valores',res.response.json.firstElement)
+        setGraphic(res.response.json.firstElement)*/
       }
     } else {
       hideLoading();
@@ -293,6 +313,7 @@ function setGraphic(data) {
   }
 }
 var valuePaisLocalidad = {}
+var tiendasSeleccionadas = {}
 var localidades = []
 //----- CATALOGS
 function get_catalog() 
@@ -346,6 +367,39 @@ function get_catalog()
         }
         $("#pais").multipleSelect('refresh');
         
+        //----Localidad
+        $("#localidad").empty();
+        $('#localidad').append('<option value="--">--Seleccione--</option>');
+
+        //----Tienda
+        $("#tienda").empty();
+        $('#tienda').append('<option value="--">--Seleccione--</option>');
+        /*for (i = 0; i < valuePaisLocalidad.length; i++) {
+          value = list_pais[i]
+          $('#localidad').append('<option value="'+ value +'">'+value+'</option>');
+        }*/
+
+        Object.values(valuePaisLocalidad).forEach(value => {
+          let localidades = Object.keys(value) //Almacena los nombres de las localidades
+          console.log("Localidades = ")
+          console.log(localidades)
+          localidades.forEach(localidad => {
+            $("#localidad").append('<option value="'+localidad+'">'+localidad+'</option>')
+          })
+
+          //Rellenar selectores de tienda
+
+          Object.values(value).forEach(tiendas => {
+            tiendas.forEach(tienda =>{
+              if(tienda){
+                $("#tienda").append('<option value="'+tienda+'">'+tienda+'</option>')
+              }
+            })
+          })
+        })
+
+        $("#localidad").multipleSelect('refresh');
+        $("#tienda").multipleSelect('refresh');
       }
     } 
   })
@@ -353,38 +407,101 @@ function get_catalog()
 
 //Función para obtener las localidades según los paises seleccionados
 $('#pais').multipleSelect({
-  onClick: function (view) {
-    pais = view.value;
-    status = view.selected;
-    
-    actualizar_localidad(pais, status)
+  onClick: function(view){
+    console.log("View:")
+    console.log(view)
+    let paisesSelect = $('#pais').multipleSelect('getSelects')
+    console.log("Paises seleccionados")
+    console.log(paisesSelect)
+    actualizar_localidad_tienda(paisesSelect)
+  }
+})
+
+//Función para obtener las tiendas según las localidades seleccionados
+$('#localidad').multipleSelect({
+  onClick: function(view){
+    console.log("View:")
+    console.log(view)
+    let localidadSelect = $('#localidad').multipleSelect('getSelects')
+    console.log("Localidades seleccionados")
+    console.log(localidadSelect)
+    actualizar_tienda(localidadSelect)
   }
 })
 
 
-function actualizar_localidad(pais, status){
-  
-  Object.entries(valuePaisLocalidad).forEach(([key, value]) => {
-    //console.log("key: ", key, " value: ", value); //Value es un arreglo de localidades
-  if(pais == key && status == 'true'){
-    value.forEach(element => {
-      localidades.push(element)
-    })
-  }else if (pais == key && status == 'false'){
-    var index = 0
-    value.forEach(element => {
-      index = localidades.indexOf(element)
-      localidades.splice(index, 1)
-    })
-  }
 
-  //----Pais
-    $("#localidad").empty();
-    $('#localidad').append('<option value="--">Seleccione</option>');
-    for (i = 0; i < localidades.length; i++) {
-      value = localidades[i]
-      $('#localidad').append('<option value="'+ value +'">'+value+'</option>');
+document.getElementById("pais").addEventListener('change', ()=>{
+  console.log("function")
+  let paises = document.getElementById("pais");
+  let loc_select = []
+
+  for(var i = 0; i < paises.options.length; i ++){
+    var option = paises.options[i];
+
+    //Verificar el valor de la opción seleccionada
+    if(option.selected){
+      loc_select.push(option.value);
+      console.log("Paises = ", option.value)
     }
-    $("#localidad").multipleSelect('refresh');
+  }
+})
+
+
+function actualizar_localidad_tienda(paises){
+    //----Localidad
+    $("#localidad").empty();
+    $('#localidad').append('<option value="--">--Seleccione--</option>');
+
+    //----Tienda
+    $("#tienda").empty();
+    $('#tienda').append('<option value="--">--Seleccione--</option>');
+    paises.forEach(pais => {
+      console.log(pais)
+      console.log(valuePaisLocalidad)
+      let localidades_tienda = valuePaisLocalidad[pais];
+      console.log("Localidades tienda:")
+      console.log(localidades_tienda)
+
+      //Rellenar selectores de Localidad
+      let localidades = Object.keys(localidades_tienda) //Almacena los nombres de las localidades
+      console.log("Localidades = ")
+      console.log(localidades)
+      localidades.forEach(localidad => {
+        $("#localidad").append('<option value="'+localidad+'">'+localidad+'</option>')
+      })
+
+      //Rellenar selectores de tienda
+      Object.entries(localidades_tienda).forEach(([key, tiendas]) => {
+        tiendasSeleccionadas[key] = tiendas; //Creamos una estructura con las tiendas de las localidades de los paises seleccionados.
+        tiendas.forEach(tienda =>{
+          if(tienda){
+            $("#tienda").append('<option value="'+tienda+'">'+tienda+'</option>')
+          }
+        })
+      })
+
+    })
+  $("#localidad").multipleSelect('refresh');
+  $("#tienda").multipleSelect('refresh');
+}
+
+function actualizar_tienda(localidades){
+  //----Tienda
+  $("#tienda").empty();
+  $('#tienda').append('<option value="--">--Seleccione--</option>');
+  console.log("Tiendas selecciondas")
+  console.log(tiendasSeleccionadas)
+
+  Object.entries(tiendasSeleccionadas).forEach(([localidad, tiendas]) =>{ 
+    if(localidades.includes(localidad)){
+      tiendas.forEach(tienda =>{
+          if(tienda){
+            $("#tienda").append('<option value="'+tienda+'">'+tienda+'</option>')
+          }
+        })
+    }
   })
+
+  $("#tienda").multipleSelect('refresh');
 }
