@@ -120,7 +120,7 @@ function setCloseSession() {
 
 //-----Function Get Data
 function getDataAlert() {
-	let urlLinkaform = 'https://preprod.linkaform.com/infosync/scripts/run/';
+	let urlLinkaform = 'https://preprod.linkaform.com/api/infosync/scripts/run/';
 	let userJwt = getCookie("userJwt");
 	console.log('userJwt',userJwt);
 
