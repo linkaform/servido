@@ -5,6 +5,7 @@ let listVehiculesData = []
 let listNewVehicules = []
 let listNewItems = []
 
+let listUserActives = [];
 
 const columsData1 = [
 	{ title:"Tipo", field:'type',hozAlign:"left",headerFilter:true,width:250},
@@ -71,6 +72,7 @@ window.onload = function(){
 	if(user !='' && jw!=''){
 		//----QUery
 		setDataInformation('alerts',data = {})
+		getDataListUser();
 	}else{
 		redirectionUrl('login',false)
 	}
@@ -88,7 +90,6 @@ function drawTable(id, columnsData, tableData,){
     paginationSize:40,
   });
 }
-
 
 //----Function Redirection
 function redirectionUrl(type = 'null',blank = true){
@@ -158,6 +159,8 @@ function getDataUser() {
 	$("#divSpinner").show();
 	setHideElements('dataHide');
 	setHideElements('buttonsOptions');
+	//----Val
+	let codeUser  = $("#inputCodeUser").val();
 	//----Cookie 
 	let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
 	let userJwt = getCookie("userJwt");
@@ -166,7 +169,7 @@ function getDataUser() {
 		body: JSON.stringify({
 			script_id: 116097,
 			option: 'get_users_information',
-			curp: 'JERJ127',
+			curp: codeUser,
 		}),
 		headers:{
 	      'Content-Type': 'application/json',
@@ -188,8 +191,39 @@ function getDataUser() {
 	})
 }
 
+function getDataListUser(){
+	let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
+	let userJwt = getCookie("userJwt");
+	fetch(urlLinkaform, {
+		method: 'POST',
+		body: JSON.stringify({
+			script_id: 116097,
+			option: 'get_list_users',
+			location: 'Planta Monterrey',
+		}),
+		headers:{
+	      'Content-Type': 'application/json',
+	      'Authorization': 'Bearer '+userJwt,
+	      'Access-Control-Request-Headers':'*'
+	    },
+	})
+	.then(res => res.json())
+	.then(res => {
+		if (res.success) {
+			let data = res.response.json;
+			listUserActives = data;
+			setDataInformation('listUsers',data)
+		} 
+	})
+}
+
+
 //-----Function Set Data
 function setDataUser(){
+	//----Val
+	let codeUser  = $("#inputCodeUser").val();
+	$("#buttonIn").hide();
+	$("#buttonOut").hide();
 	//----Cookie 
 	let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
 	let userJwt = getCookie("userJwt");
@@ -200,7 +234,7 @@ function setDataUser(){
 		body: JSON.stringify({
 			script_id: 116097,
 			option: 'set_movement_users',
-			curp: 'JERJ127',
+			curp: codeUser,
 			dataItem: dataItem,
 			dataVehicule: dataVehicule,
 		}),
@@ -229,6 +263,36 @@ function setDataUser(){
 	})
 }
 
+function setDataGafete(data = {}){
+	//----Val
+	let codeUser  = $("#inputCodeUser").val();
+	//----Cookie 
+	let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
+	let userJwt = getCookie("userJwt");
+	//----Fetch
+	fetch(urlLinkaform, {
+		method: 'POST',
+		body: JSON.stringify({
+			script_id: 116097,
+			option: 'set_movement_users',
+			curp: codeUser,
+			dataGafete: data,
+			location: 'Planta Monterrey',
+		}),
+		headers:{
+	      'Content-Type': 'application/json',
+	      'Authorization': 'Bearer '+userJwt,
+	      'Access-Control-Request-Headers':'*'
+	    },
+	})
+	.then(res => res.json())
+	.then(res => {
+		if (res.success) {
+			let data = res.response.json;
+			console.log('Data',data);
+		} 
+	})
+}
 //----Functions Css
 function setDataInformation(option, data = {}){
 	if(option == 'alerts'){
@@ -485,6 +549,30 @@ function setDataInformation(option, data = {}){
 				$('#tableModalInstructions').append(newRow);
 			}
 		}
+	}else if(option == 'listUsers'){
+		for (var i = 0; i < data.length; i++) {
+			let nameUser = data[i].name_user ? data[i].name_user: '';
+			let curpUser = data[i].curp_user ? data[i].curp_user: '';
+			let element = '<li class="list-group-item d-flex justify-content-between align-items-start">';
+			element += '<div class="ms-2 me-auto">';
+			element += '<div class="fw-bold">'+curpUser+'</div>';
+			element += nameUser;
+			element += '</div>';
+			element += '<span class="badge text-bg-primary rounded-pill cursor-pointer" onClick="setCurpSearch(`'+curpUser+'`);return false;"> ';
+			element += 'Seleccionar ';
+			element += '</span>';
+			element += '</li>';
+			$("#listPasaportActive").append(element);
+		}
+	}else if(option == 'checkOtro'){
+		let checkboxMarcado = document.getElementById("checkOtro").checked;
+		if (checkboxMarcado) {
+			$('#inputOtroDescCard').show();
+			$('#inputOtroDescCard').addClass("form-gafete");
+		}else{
+			$('#inputOtroDescCard').hide();
+			$('#inputOtroDescCard').removeClass("form-gafete");
+		}
 	}
 }
 
@@ -577,9 +665,24 @@ function setCleanData(){
 	$('#visit').text('')
 	$('#authorizePase').text('')
 	$('#authorizePhone').text('')
+
 }
 
-
+//----Function Search Data
+function functionSearchList(event) {
+	let textSearch = event.target.value.replace(/\s/g, '').toLowerCase();
+	if(textSearch !== ''){
+		let listUsersSearch = listUserActives.filter((object) => 
+			object.name_user.replace(/\s/g, '').toLowerCase().includes(textSearch) ||
+			object.curp_user.replace(/\s/g, '').toLowerCase().includes(textSearch) 
+		)
+		$("#listPasaportActive").empty();
+		setDataInformation('listUsers',listUsersSearch)
+    }else{
+		$("#listPasaportActive").empty();
+    	setDataInformation('listUsers',listUserActives)
+    }
+}
 
 //----Add data
 function setCheckVehicule(id = 0) {
@@ -742,3 +845,43 @@ function setViewModalItem(){
 	}
 }
 
+//-----Search List
+function setCurpSearch(curp){
+	$("#inputCodeUser").empty();
+	$("#inputCodeUser").val(curp);
+	$('#listModal').modal('hide');
+	getDataUser();
+}
+
+function getFormGafete(){
+	let flaginput = false;
+	let flagcheck = true;
+	let dicData = {};
+	let elements = document.getElementsByClassName('form-gafete');
+	for (let i = 0; i < elements.length; i++) {
+		let id = elements[i].id;
+		let value = elements[i].value;
+		let type = elements[i].type;
+		if(type == 'radio'){
+			let valueCheck = elements[i].checked;
+			if(valueCheck){
+				flagcheck = false;
+				dicData[id] = value;
+			}
+		}else{
+			if(value !=''){
+				dicData[id] = value;
+			}else{
+				flaginput = true;
+			}
+		}
+	}
+
+	if(!flaginput && !flagcheck){
+		console.log('Se manda los datos');
+		setDataGafete(dicData);
+		$("#alert_gafete_modal").hide();
+	}else{
+		$("#alert_gafete_modal").show();
+	}
+}

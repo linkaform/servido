@@ -106,7 +106,7 @@
 		<div class="row ">
 			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mt-2 ">
 				<div class="input-group">
-					<input type="text" class="form-control  input-search-portal" placeholder="Codigo User" value="JER127">
+					<input type="text" class="form-control  input-search-portal" placeholder="Codigo User" value="JERJ127" id="inputCodeUser">
 					<span class="input-group-text bg-warning-subtle cursor-pointer" onclick="getDataUser();return false;"><i class="fa-solid fa-magnifying-glass"></i></span>
 					<span class="input-group-text bg-warning-subtle cursor-pointer" data-bs-toggle="modal" data-bs-target="#listModal"><i class="fa-solid fa-list"></i></span>
 				</div>
@@ -323,26 +323,10 @@
 				</div>
 				<div class="modal-body">
 					<div class="row m-3">
-						<ol class="list-group list-group-numbered">
-							<li class="list-group-item d-flex justify-content-between align-items-start">
-								<div class="ms-2 me-auto">
-									<div class="fw-bold">JERJ127</div>
-									Josue De Jesus
-								</div>
-								<span class="badge text-bg-primary rounded-pill"> 
-									<i class="fa-solid fa-check"></i>
-								</span>
-							</li>
-							<li class="list-group-item d-flex justify-content-between align-items-start">
-								<div class="ms-2 me-auto">
-									<div class="fw-bold">Pato</div>
-										Jose Patricio
-									</div>
-								<span class="badge text-bg-primary rounded-pill">
-									<i class="fa-solid fa-check"></i>
-								</span>
-							</li>
-						</ol>
+						<input type="text" class="form-control" placeholder="Busqueda" onkeyup="functionSearchList(event);return false;">
+					</div>
+					<div class="row m-3">
+						<ol class="list-group list-group-numbered" id="listPasaportActive"></ol>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -400,7 +384,7 @@
 	</div>
 
 	<!-- Modal Card-->
-	<div class="modal fade" id="cardModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="cardModal" tabindex="-1" data-bs-backdrop="static"   aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -411,49 +395,42 @@
 					<div class="row">
 						<div class="mb-3 col-12">
 							<label class="form-label">Numero de gafete *</label>
-							<select class="form-select">
-								<option selected>--Seleccione--</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
-							</select>
+							<input type="text" class="form-control form-gafete"  placeholder="Numero" id="numCard">
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Tipo de documento de garantía *</label>
 							<br>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="inlineRadioOptions" id="checkIne" value="optionIne">
+								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" id="checkIne" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkIne">Ine</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="inlineRadioOptions" id="checkLicencia" value="optionLicencia">
+								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" id="checkLicencia" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkLicencia">Licencia de Conducir</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="inlineRadioOptions" id="checkPase" value="optionPase">
+								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" id="checkPase" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkPase">Pase de estacionamiento</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="inlineRadioOptions" id="checkOtro" value="optionOtro">
+								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" id="checkOtro" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkOtro">Otro</label>
 							</div>
-							
 						</div>
 						<div class="mb-3 col-12">
-							<input type="text" class="form-control"  placeholder="Otro">
+							<input type="text" class="form-control " style="display: none;" id="inputOtroDescCard" placeholder="Otro">
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Locker de Seguridad *</label>
-							<input type="text" class="form-control"  placeholder="Espacio Designado">
+							<input type="text" class="form-control form-gafete"  placeholder="Espacio Designado" id="inputLocker">
 						</div>
 					</div>
-
-
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
+					<small class="text-danger mt-1 mb-3" id="alert_gafete_modal" style="display:none;">** Faltan campos obligatorios</small>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Asignar</button>
+					<button type="button" class="btn btn-primary" onclick="getFormGafete();return false">Asignar</button>
 				</div>
 			</div> 
 		</div>

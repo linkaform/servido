@@ -12,8 +12,6 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-
-
 	<nav class="navbar header">
         <div class="navbar-brand">
             <img src="https://app.linkaform.com/img/login-linkaform-logo.png" height="30" class="d-inline-block align-top" alt="">
@@ -126,13 +124,13 @@
 						</div>
 						<div class="mt-5 row ">
 							<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 offset-md-7 offset-lg-7 offset-xl-7 mt-2">
-								<button type="button" class="btn btn-primary btn-lg">
+								<button type="button" class="btn btn-primary btn-lg" onclick="setModal('NewArticle');">
 									<i class="fa-solid fa-plus"></i>
 									Nuevo Artículo
 								</button>
-								<button type="button" class="btn btn-secondary btn-lg">
+								<button type="button" class="btn btn-secondary btn-lg" onclick="setModal('OutArticle');">
 									<i class="fa-solid fa-clock"></i>
-									Devolución
+									Entrega
 								</button>
 								<button type="button" class="btn btn-success btn-lg">
 									<i class="fa-solid fa-file-arrow-down"></i>
@@ -176,13 +174,9 @@
 						</div>
 						<div class="mt-5 row ">
 							<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 offset-md-7 offset-lg-7 offset-xl-7 mt-2">
-								<button type="button" class="btn btn-primary btn-lg">
+								<button type="button" class="btn btn-primary btn-lg" onclick="setModal('NewArticleConse');">
 									<i class="fa-solid fa-plus"></i>
 									Nuevo Artículo
-								</button>
-								<button type="button" class="btn btn-secondary btn-lg">
-									<i class="fa-solid fa-clock"></i>
-									Devolución
 								</button>
 								<button type="button" class="btn btn-success btn-lg">
 									<i class="fa-solid fa-file-arrow-down"></i>
@@ -205,8 +199,497 @@
 		</div>
 	</section>
 
-
 	<div id="divSpinner" style="display:none;margin-top: 100px;"></div>
+
+	<!-- Modal New Article -->
+	<div class="modal fade" id="newArticleModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Registro de nueva falla</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="mb-3 col-4">
+							<label class="form-label">Ubicación: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-4">
+							<label class="form-label">Fecha: *</label>
+							<input type="date" class="form-control">
+						</div>
+						<div class="mb-3 col-4">
+							<label class="form-label">Hora: *</label>
+							<input type="time" class="form-control">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Tipo: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Fotografía del artículo: *</label>
+							<input type="file" class="form-control" id="avatar" accept="image/png, image/jpeg"/>
+						</div>
+						<div class="mb-3 col-12">
+							<label class="form-label">Seríe/Número/Placa: *</label>
+							<input type="text" class="form-control">
+						</div>
+
+						<div class="mb-3 col-6">
+							<label class="form-label">Entrega: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Departamento: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Recibe: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Departamento: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+
+						<div class="mb-3 col-12">
+							<label class="form-label">Comentarios: *</label>
+							<textarea class="form-control"  rows="3"></textarea>
+						</div>
+					</div>
+					
+					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-warning">Agregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal Edit Article -->
+	<div class="modal fade" id="editArticleModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Registro de nueva falla</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="mb-3 col-4">
+							<label class="form-label">Ubicación: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-4">
+							<label class="form-label">Fecha: *</label>
+							<input type="date" class="form-control">
+						</div>
+						<div class="mb-3 col-4">
+							<label class="form-label">Hora: *</label>
+							<input type="time" class="form-control">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Tipo: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Seríe/Número/Placa: *</label>
+							<input type="text" class="form-control">
+						</div>
+
+
+						<div class="mb-3 col-12">
+							<label class="form-label">Fotografía del artículo: *</label>
+							<input type="file" class="form-control" id="avatar" accept="image/png, image/jpeg"/>
+							<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65779777beef423c6264ac04.jpg" width="350" height="250">						
+						</div>
+					
+						<div class="mb-3 col-6">
+							<label class="form-label">Entrega: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Departamento: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Recibe: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Departamento: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+
+						<div class="mb-3 col-12">
+							<label class="form-label">Comentarios: *</label>
+							<textarea class="form-control"  rows="3"></textarea>
+						</div>
+					</div>
+					
+					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-warning">Agregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal Out Article -->
+	<div class="modal fade" id="outArticleModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Devolución de Articulo</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						
+						<div class="mb-3 col-6">
+							<label class="form-label">Fecha: *</label>
+							<input type="date" class="form-control">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Hora: *</label>
+							<input type="time" class="form-control">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Ubicación del artículo después: *</label>
+							<input type="text" class="form-control" placeholder="Por ejemplo: Bodega">
+						</div>
+						<small class="text-danger mt-3">** Una vez confirmado, la acción no podra ser revertida</small>
+					</div>
+					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-warning">Agregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal View Article -->
+	<div class="modal fade" id="viewArticleModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Detalles de Articulo </h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<h4>Información del artículo</h4>
+						<div class="mb-3 col-6 row">
+							<label class="form-label fw-bold">Tipo:&nbsp;&nbsp; <span class="fw-normal">Entrega</span></label>
+						</div>
+						<div class="mb-3 col-6 row">
+							<label class="form-label fw-bold">Serie/Numero/Placa:&nbsp;&nbsp; <span class="fw-normal">10119</span></label>
+						</div>
+
+
+						<div class="mb-3 col-12">
+							<label class="form-label">Fotografía del artículo: </label><br>
+							<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65779777beef423c6264ac04.jpg" width="350" height="250">						
+						</div>
+						<hr style=" border: 1px solid black;">
+						<h4>Información de la entrega</h4>
+
+						<div class="mb-3 col-6 row">
+							<label class="form-label fw-bold">Ubicación:&nbsp;&nbsp; <span class="fw-normal">Planta Norte</span></label>
+						</div>
+						<div class="mb-3 col-6 row">
+							<label class="form-label fw-bold">Fecha y hora del hallazgo:&nbsp;&nbsp; <span class="fw-normal">02/16/23 12:56 hrs</span></label>
+						</div>
+						<div class="mb-3 col-6 row">
+							<label class="form-label fw-bold">Reporta:&nbsp;&nbsp; <span class="fw-normal">Cristian Felipe Felipe</span></label>
+						</div>
+						<div class="mb-3 col-6 row">
+							<label class="form-label fw-bold">Departamento:&nbsp;&nbsp; <span class="fw-normal">Seguridad</span></label>
+						</div>
+						<div class="mb-3 col-12 row">
+							<label class="form-label fw-bold">Comentario:&nbsp;&nbsp; <span class="fw-normal">Se encontró un termo en el pasillo principal de la jardinera.</span></label>
+						</div>
+						<hr style=" border: 1px solid black;">
+						<h4>Información de la devolución</h4>
+						<div class="mb-3 col-12 row">
+							<label class="form-label fw-bold">Ubicación del Articulo:&nbsp;&nbsp; <span class="fw-normal"></span></label>
+						</div>
+						<div class="mb-3 col-12 row">
+							<label class="form-label fw-bold">Fecha y hora de entrega:&nbsp;&nbsp; <span class="fw-normal"></span></label>
+						</div>
+						<div class="mb-3 col-12 row">
+							<label class="form-label fw-bold">Estado:&nbsp;&nbsp; <span class="fw-normal">Abierto</span></label>
+						</div>
+						
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-warning">Agregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Modal New Article Concessioned-->
+	<div class="modal fade" id="newArticleConModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Nuevo registro de articulo Consecionados</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="mb-3 col-4">
+							<label class="form-label">Ubicación: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-4">
+							<label class="form-label">Fecha: *</label>
+							<input type="date" class="form-control">
+						</div>
+						<div class="mb-3 col-4">
+							<label class="form-label">Hora: *</label>
+							<input type="time" class="form-control">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Artículo: *</label>
+							<input type="text" class="form-control">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Fotografía del artículo: *</label>
+							<input type="file" class="form-control" id="avatar" accept="image/png, image/jpeg"/>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Reporta: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Departamento: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-12">
+							<label class="form-label">Comentarios: *</label>
+							<textarea class="form-control"  rows="3"></textarea>
+						</div>
+					</div>
+					
+					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-warning">Agregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal Edit Article Concessioned-->
+	<div class="modal fade" id="editArticleConModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Actualizar articulo</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="mb-3 col-4">
+							<label class="form-label">Ubicación: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-4">
+							<label class="form-label">Fecha: *</label>
+							<input type="date" class="form-control">
+						</div>
+						<div class="mb-3 col-4">
+							<label class="form-label">Hora: *</label>
+							<input type="time" class="form-control">
+						</div>
+						<div class="mb-3 col-12">
+							<label class="form-label">Artículo: *</label>
+							<input type="text" class="form-control">
+						</div>
+						<div class="mb-3 col-12">
+							<label class="form-label">Fotografía del artículo: *</label>
+							<input type="file" class="form-control" id="avatar" accept="image/png, image/jpeg"/>
+							<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65779777beef423c6264ac04.jpg" width="350" height="250">						
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Reporta: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Departamento: *</label>
+							<select class="form-control">
+								<option>--Seleccione--</option>
+							</select>
+						</div>
+						<div class="mb-3 col-12">
+							<label class="form-label">Comentarios: *</label>
+							<textarea class="form-control"  rows="3"></textarea>
+						</div>
+					</div>
+					
+					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-warning">Agregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal View Article Concessioned-->
+	<div class="modal fade" id="viewArticleConModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Detalles de Articulo Consecionado</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<h4>Información del artículo</h4>
+						<div class="mb-3 col-6 row">
+							<label class="form-label fw-bold">Articulo:&nbsp;&nbsp; <span class="fw-normal">Termo</span></label>
+						</div>
+						<div class="mb-3 col-12">
+							<label class="form-label">Fotografía del artículo: </label><br>
+							<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65779777beef423c6264ac04.jpg" width="350" height="250">						
+						</div>
+						<hr style=" border: 1px solid black;">
+						<h4>Información del hallazgo</h4>
+						<div class="mb-3 col-6 row">
+							<label class="form-label fw-bold">Fecha y hora del hallazgo:&nbsp;&nbsp; <span class="fw-normal">02/16/23 12:56 hrs</span></label>
+						</div>
+						<div class="mb-3 col-6 row">
+							<label class="form-label fw-bold">Ubicación:&nbsp;&nbsp; <span class="fw-normal">Planta Norte</span></label>
+						</div>
+						<div class="mb-3 col-6 row">
+							<label class="form-label fw-bold">Reporta:&nbsp;&nbsp; <span class="fw-normal">Cristian Felipe Felipe</span></label>
+						</div>
+						<div class="mb-3 col-6 row">
+							<label class="form-label fw-bold">Departamento:&nbsp;&nbsp; <span class="fw-normal">Seguridad</span></label>
+						</div>
+						<div class="mb-3 col-12 row">
+							<label class="form-label fw-bold">Comentario:&nbsp;&nbsp; <span class="fw-normal">Se encontró un termo en el pasillo principal de la jardinera.</span></label>
+						</div>
+						<hr style=" border: 1px solid black;">
+						<h4>Información de la entrega</h4>
+						<div class="mb-3 col-12 row">
+							<label class="form-label fw-bold">Recibe:&nbsp;&nbsp; <span class="fw-normal"></span></label>
+						</div>
+						<div class="mb-3 col-12 row">
+							<label class="form-label fw-bold">Fecha y hora de entrega:&nbsp;&nbsp; <span class="fw-normal"></span></label>
+						</div>
+						<div class="mb-3 col-12 row">
+							<label class="form-label fw-bold">Estado:&nbsp;&nbsp; <span class="fw-normal">PENDIENTE</span></label>
+						</div>
+						
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-warning">Agregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal Out Article Concessioned-->
+	<div class="modal fade" id="outArticleConModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Entrega de artículo</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="mb-3 col-6">
+							<label class="form-label">Fecha: *</label>
+							<input type="date" class="form-control">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Hora: *</label>
+							<input type="time" class="form-control">
+						</div>
+						<div class="mb-3 col-12">
+							<label class="form-label">Recibe: *</label>
+							<input type="text" class="form-control">
+						</div>
+						
+						<div class="mb-3 col-6">
+							<label class="form-label">Estado: *</label><br>
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+								<label class="form-check-label" for="flexRadioDefault1">
+								Default radio
+								</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+								<label class="form-check-label" for="flexRadioDefault2">
+								Default checked radio
+								</label>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-warning">Agregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </body>
 <!-- Local -->
 <script src="./portal_articulos_v2.js"></script>
