@@ -54,6 +54,7 @@ body{
 /* Styles Input */
 .input-search-portal{
   margin-left: 10px;
+  border: 1px solid black !important;
 }
 
 .cursor-pointer {

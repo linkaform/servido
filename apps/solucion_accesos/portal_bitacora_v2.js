@@ -35,6 +35,7 @@ const columsData2 = [
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			let divActions = '<div class="row d-flex">';
 			divActions += `<button class="btn-table-bitacora" onClick="setModal('Delivery',${folio})"><i class="fa-solid fa-address-card"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" ><i class="fa-solid fa-print"></i></button>`;
 			divActions += '</div>';
 			return divActions;
 		},

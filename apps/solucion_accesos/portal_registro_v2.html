@@ -32,6 +32,7 @@
 	<!-- Information Plant-->
 	<section>
 		<div class="row ">
+
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
 				<div class="card m-2 div-card-portal">
 				    <div class="card-body ">
@@ -58,6 +59,7 @@
 				    </div>
 				</div>
 			</div>
+			
 			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
 				<div class="card  m-2 div-card-portal">
 				    <div class="card-body p-3">
@@ -110,14 +112,14 @@
 	<!-- Filter User-->
 	<section>
 		<div class="row ">
-			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mt-2 ">
+			<div class="col-sm-12 col-md-12 col-lg-3 col-xl-3 mt-2 offset-lg-6 offset-xl-6">
 				<div class="input-group">
-					<input type="text" class="form-control  input-search-portal" placeholder="Codigo User" value="JERJ127" id="inputCodeUser">
+					<input type="text" class="form-control  input-search-portal " placeholder="Codigo User" value="JERJ127" id="inputCodeUser">
 					<span class="input-group-text bg-warning-subtle cursor-pointer" onclick="getDataUser();return false;"><i class="fa-solid fa-magnifying-glass"></i></span>
 					<span class="input-group-text bg-warning-subtle cursor-pointer" data-bs-toggle="modal" data-bs-target="#listModal"><i class="fa-solid fa-list"></i></span>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mt-2 ">
+			<div class="col-sm-12 col-md-12 col-lg-3 col-xl-3 mt-2 ">
 				<button type="button" class="mt-1 mb-1 btn btn-success ml-3" style="display: none;" id="buttonIn" onclick="setDataUser();return false;">
 					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso
 				</button>
@@ -139,52 +141,54 @@
 
 	<!-- Information User-->
 	<section class="section-data">
-		<div class="row">
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 row div-container-portal ms-4 ">
-				<h4>Información personal &nbsp;&nbsp;</h4>
-				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
-					<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-5" alt="Imagen Usuario" style="width:120px;height:120px;" id="imgUser">
-				</div>
-				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
-					<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" class=" mx-auto  mt-5" style="width:240px;height:120px;" id="imgCard">
-				</div>
-				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
-					<div class="row ">
-						<div class="col-6">
-							<p><span className='h4'><b>Nombre:</b></span>&nbsp;&nbsp; <span id="name"></span></p>
-						</div>
-						<div class="col-6">
-							<h3>
-								<span class="text-danger" id="textOut">Salida</span>
-								<span class="text-success" id="textIn">Entrada</span>
-							</h3>
-						</div>
+		<div class="row p-3">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 ">
+				<div class="row  div-container-portal me-1">
+					<h4>Información personal &nbsp;&nbsp;</h4>
+					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
+						<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-5" alt="Imagen Usuario" style="width:120px;height:120px;" id="imgUser">
 					</div>
-
-					<p><span className='h4'><b>Contratista:</b></span>&nbsp;&nbsp; <span id="rfc"></span></p>
-					<p><span className='h4'><b>Vigencia:</b></span>&nbsp;&nbsp; <span id="validity"></span></p>
-					<p><span className='h4'><b>Status:</b></span>&nbsp;&nbsp; <span id="status"></span></p>
-
-					<div class="row ">
-						<div class="col-6">
-							<p><span className='h4'><b>A quíen Visita:</b></span>&nbsp;&nbsp;<span id="motivo"></span></p>
-						</div>
-						<div class="col-6">
-							<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#phoneModal">
-								<i class="fa-solid fa-phone"></i>
-							</button>
-							<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#messageModal">
-								<i class="fa-solid fa-message"></i> 
-							</button>
-						</div>
+					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
+						<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" class=" mx-auto  mt-5" style="width:240px;height:120px;" id="imgCard">
 					</div>
-					<p><span className='h4'><b>Motivo de Visita:</b></span>&nbsp;&nbsp;<span id="motivo"></span></p>
-					
+					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+						<div class="row ">
+							<div class="col-6">
+								<p><span className='h4'><b>Nombre:</b></span>&nbsp;&nbsp; <span id="name"></span></p>
+							</div>
+							<div class="col-6">
+								<h3>
+									<span class="text-danger" id="textOut">Salida</span>
+									<span class="text-success" id="textIn">Entrada</span>
+								</h3>
+							</div>
+						</div>
 
+						<p><span className='h4'><b>Contratista:</b></span>&nbsp;&nbsp; <span id="rfc"></span></p>
+						<p><span className='h4'><b>Vigencia:</b></span>&nbsp;&nbsp; <span id="validity"></span></p>
+						<p><span className='h4'><b>Status:</b></span>&nbsp;&nbsp; <span id="status"></span></p>
+
+						<div class="row ">
+							<div class="col-6">
+								<p><span className='h4'><b>A quíen Visita:</b></span>&nbsp;&nbsp;<span id="motivo"></span></p>
+							</div>
+							<div class="col-6">
+								<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#phoneModal">
+									<i class="fa-solid fa-phone"></i>
+								</button>
+								<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#messageModal">
+									<i class="fa-solid fa-message"></i> 
+								</button>
+							</div>
+						</div>
+						<p><span className='h4'><b>Motivo de Visita:</b></span>&nbsp;&nbsp;<span id="motivo"></span></p>
+						
+
+					</div>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4  div-container-portal div-container-table-comments  ms-4 p-2 ">
-				<div class="d-flex justify-content-between mb-2">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-5 div-container-portal div-container-table-comments ">
+				<div class="d-flex justify-content-between mb-2 mt-2 ">
 					<h4>Comentarios / Instrucciones de visita</h4>
 					<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listCommentsModal" id="buttonCommentsModal">
 						<i class="fa-solid fa-eye"></i>
