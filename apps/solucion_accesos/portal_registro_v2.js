@@ -472,27 +472,24 @@ function setDataInformation(option, data = {}){
 					newRow.append($('<td>').text(typeItem));
 					newRow.append($('<td>').text(modelItem));
 					newRow.append($('<td>').text(colorItem));
-					newRow.append('<td><input class="form-check-input" type="checkbox"  onChange="setCheckItem('+id+')"></td>');
 					newRow.append('</tr>');
 					$('#tableItems').append(newRow);
 				}
 			}
 			
-			if(listItems.length > 3){
-				$("#buttonItemsModal").show();
-				for (var i = 0; i < listItems.length; i++) {
-					let typeItem = listItems[i].type_item;
-					let modelItem = listItems[i].model_item;
-					let colorItem = listItems[i].color_item;
-					let id = listItems[i].id;
-					var newRow = $('<tr>');
-					newRow.append($('<td>').text(typeItem));
-					newRow.append($('<td>').text(modelItem));
-					newRow.append($('<td>').text(colorItem));
-					newRow.append('<td><input class="form-check-input" type="checkbox"  onChange="setCheckItem('+id+')"></td>');
-					newRow.append('</tr>');
-					$('#tableModalItems').append(newRow);
-				}
+			$("#buttonItemsModal").show();
+			for (var i = 0; i < listItems.length; i++) {
+				let typeItem = listItems[i].type_item;
+				let modelItem = listItems[i].model_item;
+				let colorItem = listItems[i].color_item;
+				let id = listItems[i].id;
+				var newRow = $('<tr>');
+				newRow.append($('<td>').text(typeItem));
+				newRow.append($('<td>').text(modelItem));
+				newRow.append($('<td>').text(colorItem));
+				newRow.append('<td><input class="form-check-input" type="checkbox"  onChange="setCheckItem('+id+')"></td>');
+				newRow.append('</tr>');
+				$('#tableModalItems').append(newRow);
 			}
 			if(listLocations.length == 0){
 				var newRow = $('<tr>');
@@ -521,26 +518,23 @@ function setDataInformation(option, data = {}){
 					newRow.append($('<td>').text(typeCar));
 					newRow.append($('<td>').text(serie_car));
 					newRow.append($('<td>').text(colorCar));
-					newRow.append('<td><input type="radio" name="groupCarList" onChange="setCheckVehicule('+id+')"></td>');
 					newRow.append('</tr>');
 					$('#tableCars').append(newRow);
 				}
 			}
-			if(listCars.length > 3){
-				$("#buttonCarsModal").show();
-				for (var i = 0; i < listCars.length; i++) {
-					let typeCar = listCars[i].type_car;
-					let serie_car = listCars[i].serie_car[0];
-					let colorCar = listCars[i].color_car;
-					let id = listCars[i].id;
-					var newRow = $('<tr>');
-					newRow.append($('<td>').text(typeCar));
-					newRow.append($('<td>').text(serie_car));
-					newRow.append($('<td>').text(colorCar));
-					newRow.append('<td><input type="radio"  name="groupCarList" onChange="setCheckVehicule('+id+')"></td>');
-					newRow.append('</tr>');
-					$('#tableCarsModal').append(newRow);
-				}
+			$("#buttonCarsModal").show();
+			for (var i = 0; i < listCars.length; i++) {
+				let typeCar = listCars[i].type_car;
+				let serie_car = listCars[i].serie_car[0];
+				let colorCar = listCars[i].color_car;
+				let id = listCars[i].id;
+				var newRow = $('<tr>');
+				newRow.append($('<td>').text(typeCar));
+				newRow.append($('<td>').text(serie_car));
+				newRow.append($('<td>').text(colorCar));
+				newRow.append('<td><input type="radio"  name="groupCarList" onChange="setCheckVehicule('+id+')"></td>');
+				newRow.append('</tr>');
+				$('#tableCarsModal').append(newRow);
 			}
 			if(listLocations.length == 0){
 				var newRow = $('<tr>');

@@ -61,29 +61,34 @@
 			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
 				<div class="card  m-2 div-card-portal">
 				    <div class="card-body p-3">
-				        
+				        <div class="d-flex justify-content-evenly">
+			           		<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert1">00</p>
+			            	<i class="fa-solid fa-house"  style="font-size: 40px;"></i>
+			            </div>
 			            <h5 class="card-title text-center text-uppercase text-dark">Visitas en el Día</h5>
-			            <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert1">00</p>
-				        
 				    </div>
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
 				<div class="card  m-2 div-card-portal">
 				    <div class="card-body p-3">
-				        
+				        <div class="d-flex justify-content-evenly">
+			            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert2">00</p>
+			            	<i class="fa-solid fa-users" style="font-size: 40px;"></i>
+			            </div>
 			            <h5 class="card-title text-center text-uppercase text-dark">Personal Dentro</h5>
-			            <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert2">00</p>
-				        
 				    </div>
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
 				<div class="card  m-2 div-card-portal">
 				    <div class="card-body p-3">
-				        
+				        <div class="d-flex justify-content-evenly">
+			            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert3">00</p>
+			            	<i class="fa-solid fa-car" style="font-size: 40px;"></i>
+			            </div>
 			            <h5 class="card-title text-center text-uppercase text-dark">Vehículos Dentro</h5>
-			            <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert3">00</p>
+			           
 				        
 				    </div>
 				</div>
@@ -91,10 +96,11 @@
 			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
 				<div class="card  m-2 div-card-portal">
 				    <div class="card-body p-3">
-				        
+				        <div class="d-flex justify-content-evenly">
+			            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert4">00</p>
+			            	<i class="fa-solid fa-door-open"  style="font-size: 40px;"></i>
+			            </div>
 			            <h5 class="card-title text-center text-uppercase text-dark">Salidas Registradas</h5>
-			            <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert4">00</p>
-				        
 				    </div>
 				</div>
 			</div>
@@ -135,28 +141,39 @@
 	<section class="section-data">
 		<div class="row">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 row div-container-portal ms-4 ">
-				<h4>Información personal &nbsp;&nbsp;<span class="text-danger" id="textOut">(Salida)</span><span class="text-success" id="textIn">(Entrada)</span></h4>
-				<div class="col-sm-12 col-md-6 col-lg-12 col-xl-3">
-					<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-3" alt="Imagen Usuario" style="width:120px;height:120px;" id="imgUser">
+				<h4>Información personal &nbsp;&nbsp;</h4>
+				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
+					<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-5" alt="Imagen Usuario" style="width:120px;height:120px;" id="imgUser">
 				</div>
-				<div class="col-sm-12 col-md-6 col-lg-12 col-xl-3">
-					<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" style="width:240px;height:120px;" id="imgCard">
+				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
+					<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" class=" mx-auto  mt-5" style="width:240px;height:120px;" id="imgCard">
 				</div>
-				<div class="col-sm-12 col-md-6 col-lg-12 col-xl-6">
-					<p><span className='h4'><b>Nombre:</b></span>&nbsp;&nbsp; <span id="name"></span></p>
+				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+					<div class="row ">
+						<div class="col-6">
+							<p><span className='h4'><b>Nombre:</b></span>&nbsp;&nbsp; <span id="name"></span></p>
+						</div>
+						<div class="col-6">
+							<h3>
+								<span class="text-danger" id="textOut">Salida</span>
+								<span class="text-success" id="textIn">Entrada</span>
+							</h3>
+						</div>
+					</div>
+
 					<p><span className='h4'><b>Contratista:</b></span>&nbsp;&nbsp; <span id="rfc"></span></p>
 					<p><span className='h4'><b>Vigencia:</b></span>&nbsp;&nbsp; <span id="validity"></span></p>
 					<p><span className='h4'><b>Status:</b></span>&nbsp;&nbsp; <span id="status"></span></p>
-					
-					<div class="row mb-2">
+
+					<div class="row ">
 						<div class="col-6">
 							<p><span className='h4'><b>A quíen Visita:</b></span>&nbsp;&nbsp;<span id="motivo"></span></p>
 						</div>
 						<div class="col-6">
-							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneModal">
+							<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#phoneModal">
 								<i class="fa-solid fa-phone"></i>
 							</button>
-							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#messageModal">
+							<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#messageModal">
 								<i class="fa-solid fa-message"></i> 
 							</button>
 						</div>
@@ -166,7 +183,7 @@
 
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4  div-container-portal div-container-table-comments  ms-5 p-2 ">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4  div-container-portal div-container-table-comments  ms-4 p-2 ">
 				<div class="d-flex justify-content-between mb-2">
 					<h4>Comentarios / Instrucciones de visita</h4>
 					<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listCommentsModal" id="buttonCommentsModal">
@@ -274,7 +291,6 @@
 								<th>Tipo</th>
 								<th>Marca</th>
 								<th>Modelo</th>
-								<th style="width: 20%;">Seleccionar</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -303,7 +319,6 @@
 								<th>Marca</th>
 								<th>Placas</th>
 								<th>Color</th>
-								<th style="width: 20%;">Seleccionar</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -718,7 +733,6 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Enviar</button>
 				</div>
 			</div>
 		</div>
@@ -746,7 +760,6 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Enviar</button>
 				</div>
 			</div>
 		</div>
