@@ -14,8 +14,8 @@ var scriptId = null;
 
 $('#divOptions').hide();
 $('#title_report').hide();
-$('.div_card').hide();
-$('.title_tables').hide();
+//$('.div_card').hide();
+//$('.title_tables').hide();
 $('.button-chart').hide();
 
 
@@ -26,9 +26,9 @@ hideElement("download_fourthElement")
 hideElement("download_graphicFiveth")
 
 hideElement("title_demo")
+hideElement("firstParameters");
 hideElement("firstElement");
 hideElement("sixthElement");
-hideElement("firstParameters");
 hideElement("secondElement");
 hideElement("thirdElement");
 hideElement("fourthElement");
@@ -44,6 +44,7 @@ window.onload = function(){
   var qs = urlParamstoJson();
 	for(var key in qs){
     if (key === 'script_id' ){
+      console.log("script_id", key)
       scriptId = parseInt(qs[key]);
     }
     if (key === 'env') {
@@ -94,7 +95,9 @@ window.onload = function(){
   us = getCookie("userId");
   jw = getCookie("userJwt");
 
-
+  console.log(us)
+  console.log("++++++")
+  console.log(jw)
   if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
     unhideElement("close_sesion");
@@ -107,12 +110,13 @@ window.onload = function(){
     unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
+      //---MULTIPLE
     }else{
       $('.div_card').hide();
       $('.title_tables').hide();
     }
-    //---MULTIPLE
-    $("#sucursal").multipleSelect('refresh');
+    $("#tienda").multipleSelect('refresh');
+    $("#bodega").multipleSelect('refresh');
     get_catalog();
 
     //---HIDE AND SHOW
@@ -120,13 +124,17 @@ window.onload = function(){
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
+    console.log("Refresh")
 
   } else {
+    console.log("Demo")
+    //loadDemoData()
     unhideElement("inicio_ses");
     hideElement("title_demo");
     $('#divOptions').hide();
     $('#title_report').hide();
     $('.title_tables').hide();
+    $("#tienda").multipleSelect('refresh');
   }
   ///-----HIDE AND SHOW
   for(var key in qs){
@@ -163,8 +171,9 @@ function get_parameters(){
 
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
-  $('.title_tables').show();
+  //$('.title_tables').show();
   unhideElement("firstParameters");
+  unhideElement("close_sesion");
   unhideElement("firstElement");
   unhideElement("secondElement");
   unhideElement("thirdElement");
@@ -194,7 +203,7 @@ function loadDemoData(){
   unhideElement("fivethElement")
   getDrawGauge('gaugeFirst', dataGauge1)
   document.getElementById("firstGauge").style.removeProperty('display');
-  $("#sucursal").multipleSelect('refresh');
+  $("#tienda").multipleSelect('refresh');
 
 }
 
@@ -228,17 +237,29 @@ function runFirstElement(){
   unHideReportElements()
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");
+  let pais = document.getElementById('pais');
   let regional = document.getElementById("regional");
   let transversal = $('#transversal').val();
   let sucursal = $('#tienda').val();
-  
-  firstElement =getFirstElement( 
-    date_from.value, 
-    date_to.value,
-    regional.value,
-    transversal,
-    sucursal,
-    );
+  let bodega = $("#bodega").val();
+  console.log(regional.value)
+  if(regional.value=="--"){
+    Swal.fire({
+          title:"Opps",
+          text:"Necesita seleccionar un regional.",
+        })
+  }else{
+    firstElement =getFirstElement( 
+      date_from.value, 
+      date_to.value,
+      pais.value,
+      regional.value,
+      transversal,
+      sucursal,
+      bodega
+      );
+
+  }
   //--Syle
   unhideElement("div_alert1");
   unhideElement("div_alert2");
@@ -247,7 +268,7 @@ function runFirstElement(){
   document.getElementById("firstParameters").style.removeProperty('display');
 };
 
-function getFirstElement(date_from, date_to, regional, transversal, sucursal){
+function getFirstElement(date_from, date_to, pais, regional, transversal, sucursal, bodega){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -267,9 +288,11 @@ function getFirstElement(date_from, date_to, regional, transversal, sucursal){
       script_id: 113130,
       date_from: date_from,
       date_to: date_to,
+      pais:pais,
       regional: regional,
       transversal: transversal,
       sucursal: sucursal,
+      bodega:bodega,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -838,11 +861,12 @@ function get_catalog()
         list_regional = []
         list_sucursal = []
 
+        //Selector transversal
         if(res.response.json.firstCatalog){
           list_transversal = res.response.json.firstCatalog
           console.log(list_transversal)
           $('#transversal').empty();
-          $('#transversal').append('<option value="--">Seleccione</option>')
+          $('#transversal').append('<option value="--">Seleccione el transversal</option>')
           for(i = 0; i < list_transversal.length; i++){
               email = list_transversal[i]['email']
               transversal = list_transversal[i]['transversal']
@@ -851,20 +875,22 @@ function get_catalog()
               $('#transversal').append('<option value="' + transversal + '">' + transversal + '</option>');
           }
         }
+
+        //Selector regional
         if(res.response.json.secondCatalog){
           list_regional = res.response.json.secondCatalog
           console.log(list_regional)
           $('#regional').empty();
-          $('#regional').append('<option value="--">Seleccione</option>')
+          $('#regional').append('<option value="--">Seleccione los reginales</option>')
           for(i = 0; i < list_regional.length; i++){
               email = list_regional[i]['email']
               regional = list_regional[i]['regional']
               console.log("regional = " , regional);
-              //---REGIONAL
               $('#regional').append('<option value="' + regional + '">' + regional + '</option>');
           }
         }
 
+        //Selector múltiple de sucursal
         if(res.response.json.thirdCatalog){
           list_sucursal = res.response.json.thirdCatalog
           console.log(list_sucursal)
@@ -874,11 +900,31 @@ function get_catalog()
               email = list_sucursal[i]['email']
               sucursal = list_sucursal[i]['sucursal']
               console.log("sucursal = " , sucursal);
-              //---SUCURSAL
               $('#tienda').append('<option value="' + sucursal + '">' + sucursal + '</option>');
           }
 
           $("#tienda").multipleSelect('refresh');
+        }
+
+        //Selector pais
+        if(res.response.json.fourthCatalog){
+          paises = res.response.json.fourthCatalog;
+          $("#pais").empty()
+          $("#pais").append('<option value="--">Seleccione el pais</option>');
+          for(i=0; i<paises.length; i++){
+            $("#pais").append('<option value="'+paises[i]+'">'+paises[i]+'</option>');
+          }
+        }
+
+        //Selector múltiple de bodega
+        if(res.response.json.fifthCatalog){
+          bodegas = res.response.json.fifthCatalog;
+          $("#bodega").empty()
+          $("#bodega").append('<option value"--">Seleccione la bodega</option>');
+          for(i=0; i<bodegas.length; i++){
+            $("#bodega").append('<option value="'+bodegas[i]+'">'+bodegas[i]+'</option>');
+          }
+          $("#bodega").multipleSelect('refresh');
         }
 
 

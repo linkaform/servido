@@ -14,9 +14,9 @@
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
         
         <!--Utils -->    
-        <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
-        <link rel="stylesheet" href="../styles/css/styles.css">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="../../styles/css/sweetalert2.min.css">
+        <link rel="stylesheet" href="../../styles/css/styles.css">
+        <link rel="stylesheet" href="../style.css">
     </head>
 
     <body>
@@ -100,55 +100,8 @@
                         <h5>Fecha Hasta: </h5>
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to" value="">
                     </div>
-                    <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>País: </h5>
-                        <select class="form-control ds-input" id="pais" name="pais" value="">
-                            <option value="--">Seleccione el país</option>
-                            
-                        </select>
-                    </div>
-                    <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Transversal: </h5>
-                        <select class="form-control ds-input" id="transversal" name="transversal" value="">
-                            <option value="--">Seleccione</option>
-                            
-                        </select>
-                    </div>
 
-                    <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Regional: </h5>
-                        <select class="form-control ds-input" id="regional" name="regional" >
-                            <option value="--">Seleccione</option>
-                            
-                        </select>
-                    </div>
-
-                    <!--<div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Sucursal: </h5>
-                        <select class="form-control ds-input" id="tienda" name="tienda" >
-                           <option value="">Seleccione</option>
-                            <option value="--">Las palamas Ciudad de México</option>
-                            <option value="--">Rivera Maya</option>
-                            <option value="--">Guelaguetza Oaxaca</option>
-                        </select>
-                    </div> -->
-
-                    <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Sucursal: </h5>
-                        <select class="form-control mdb-select md-form" id="tienda" multiple="multiple" style="border:none !important;" >
-                            <option value="">--Seleccione--</option>
-                        </select>
-                    </div>
-
-                    <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Bodega: </h5>
-                        <select class="form-control mdb-select md-form" id="bodega" multiple="multiple" style="border:none !important;" >
-                            <option value="">--Seleccione--</option>
-                        </select>
-                    </div>
-
-                    
-
+                
                 </div>
 
                 <!--Content-->
@@ -196,55 +149,18 @@
                         <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('firstElement','chart_screenII');return false;" id="download_firstElement">
                             <i class="fa-sharp fa-solid fa-download"></i>
                         </button >
-                        <div id="firstElement" class="row"></div>
+                        <div id="firstElement" class="row" style="width: 1000px;height: 500px;margin: auto;" >
+                            <canvas id="graphicFirst"></canvas>
+                        </div>
                     </div>
 
-                    <!--Regional-->
-                    <div class="row col-sm-12 col-md-12 col-lg-12 div_class" style="overflow-y: scroll;">
-                        <div class="col-sm-6 col-md-6 col-lg-6 div_class" style="overflow-y: scroll;">
-                            <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('fourthElement','chart_screenII');return false;" id="download_fourthElement"> 
-                                <i class="fa-sharp fa-solid fa-download"></i>
-                            </button >
-                            <div id="fourthElement" ></div>
+                    <!--<div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center; overflow-y: scroll;">
+                        <div id="ThirdElement">
+                            <div style="width: 1000px;height: 500px;margin: auto;" > 
+                                <canvas id="graphicFirst"></canvas>
+                            </div>
                         </div>
-
-                        <div class="col-sm-6 col-md-6 col-lg-6 div_class" style="overflow-y: scroll;">
-                            <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('secondElement','chart_screenV');return false;" id="download_secondElement">
-                                <i class="fa-sharp fa-solid fa-download"></i>
-                            </button >
-                            <div id="secondElement" ></div>
-                        </div>
-
-                    </div>
-
-                    <div class="col-sm-12 col-md-12 col-lg-12 div_class" style="overflow-y: scroll;">
-                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('thirdElement','chart_screenV');return false;"  id="download_thirdElement">
-                            <i class="fa-sharp fa-solid fa-download"></i>
-                        </button >
-                        <div id="thirdElement" ></div>
-                    </div>
-                    <!--<div id="seventhElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
-                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicFiveth','chart_screenIII');return false;" id="download_graphicFiveth">
-                            <i class="fa-sharp fa-solid fa-download"></i>
-                        </button >
-                        <div  style="width: 1400px;height: 600px;margin: auto;">
-                            <canvas id="graphicFiveth" ></canvas>
-                        </div>
-                    </div> -->
-
-                    <div ><h1 id="seventhElement">Historicos</h1> </div>
-                  
-                    <div id="eigthElement" class='col-sm-12 col-md-12 col-lg-12 mt-5 ' style='overflow-y: scroll;'>
-
-                        <h3 style='text-align: center;'>
-                            <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('fivethElement','chart_screenII');return false;" id="download_fivethElement">
-                            <i class="fa-sharp fa-solid fa-download"></i>
-                        </button >
-                        </h3>
-                        <div  style='width: 1800px;height: 800px; margin: auto;'>
-                          <canvas id='fivethElement' class="row"></canvas>
-                        </div>
-                    </div>  
+                    </div>-->
 
                 </div>
             </div>
@@ -256,8 +172,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
 
-    <link href="../utils/tabulator/css/tabulator.min.css" rel="stylesheet">
-    <script type="text/javascript" src="../utils/tabulator/js/tabulator.min.js"></script>
+    <link href="../../utils/tabulator/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="../../utils/tabulator/js/tabulator.min.js"></script>
     <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 
@@ -269,7 +185,7 @@
     src="https://code.jquery.com/jquery-3.6.0.js"
     integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
     crossorigin="anonymous"></script>
-    <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="../../styles/js/sweetalert2.all.min.js"></script>
 
     <!-- chartjs -->
     <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
@@ -299,14 +215,14 @@
     <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
 
     <!-- Utils -->
-    <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
-    <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="../../styles/js/chroma.min.js"></script>
+    <script type="text/javascript" src="../../styles/js/sweetalert2.all.min.js"></script>
 
-    <script type="text/javascript" src="../utils/lkf_utils.js"></script>
-    <script type="text/javascript" src="../utils/servido_utils.js"></script>
-    <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
+    <script type="text/javascript" src="../../utils/lkf_utils.js"></script>
+    <script type="text/javascript" src="../../utils/servido_utils.js"></script>
+    <script type="text/javascript" src="../../utils/librarys/html2canvas.min.js"></script>
 
     <!-- utils js-->
-    <script type="text/javascript" src="./auditoria_sucursales_generica.js"></script>
-    <script type="text/javascript" src="./auditoria_sucursales_generica_data.js"></script>
+    <script type="text/javascript" src="./demo.js"></script>
+    <script type="text/javascript" src="./demo_data.js"></script>
 </html>
