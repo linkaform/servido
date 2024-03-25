@@ -27,6 +27,15 @@ body{
   border: 1px solid grey;
 }
 
+.div-container-table{
+  max-height: 245px !important;
+  overflow: auto;
+}
+
+.div-container-table-comments{
+  max-height: 300px !important;
+  overflow: auto;
+}
 
 .div-containerTable-portal{
   min-height: 220px !important;
@@ -45,6 +54,7 @@ body{
 /* Styles Input */
 .input-search-portal{
   margin-left: 10px;
+  border: 1px solid black !important;
 }
 
 .cursor-pointer {
@@ -72,9 +82,6 @@ body{
 
 /* Data */
 
-.section-data{
-  /*display: none;*/
-}
 
 /* Estilos de la tabla */
 table {

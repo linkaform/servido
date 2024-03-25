@@ -35,6 +35,7 @@ const columsData2 = [
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			let divActions = '<div class="row d-flex">';
 			divActions += `<button class="btn-table-bitacora" onClick="setModal('Delivery',${folio})"><i class="fa-solid fa-address-card"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" ><i class="fa-solid fa-print"></i></button>`;
 			divActions += '</div>';
 			return divActions;
 		},
@@ -127,6 +128,10 @@ function redirectionUrl(type = 'null',blank = true){
     	urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
     }else if(type == 'bitacora'){
     	urlNew = `${protocol}//${host}/solucion_accesos/portal_bitacora_v2.html`
+    }else if(type == 'incidencias'){
+    	urlNew = `${protocol}//${host}/solucion_accesos/portal_incidencias_v2.html`
+    }else if(type == 'articulos'){
+    	urlNew = `${protocol}//${host}/solucion_accesos/portal_articulos_v2.html`
     }else if(type == 'login'){
     	urlNew = `${protocol}//${host}/solucion_accesos/login.html`
     }
@@ -143,7 +148,9 @@ function redirectionUrl(type = 'null',blank = true){
         href: urlNew,
     	}).click();
     }
+    
 }
+
 
 //---Close Sesión
 function setCloseSession(argument) {
