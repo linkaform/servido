@@ -10,7 +10,7 @@
 	<link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
 	<nav class="navbar header">
@@ -33,49 +33,69 @@
 	</section>
 
 
-	<!-- Information User
+	<!-- Information User -->
 	<section>
 		<div class="row p-3">
 			<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-1">
 				<label class="form-label">Nombre Complto: *</label>
 				<input type="text" class="form-control">
 			</div>
-			<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-1">
+			<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-3">
 				<label class="form-label">Identificación: *</label>
-				<input type="file" class="form-control" id="avatar" accept="image/png, image/jpeg"/>
+				<button type="button" class="btn  btn-primary" onclick="getScreenCard();return false;" id="buttonTakeCard">
+					<i class="fa-solid fa-camera-retro"></i>
+				</button>
+				<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveCard">
+					Guardar Foto <i class="fa-solid fa-aperture"></i>
+				</button>
+				<!-- Canvas Foto -->
+				<div id="containerCard" class="mt-2">
+					<canvas id="canvasPhoto" style="display: none;width: 185px;height: 125px;"></canvas>
+					<img id="imgCard" src="" style="display: none;width: 185px;height: 125px;">
+				</div>
 			</div>
-			<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-1">
-				<label class="form-label">Fotografía: *</label>
-				<input type="file" class="form-control" id="avatar" accept="image/png, image/jpeg"/>
+			<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-3">
+				<label class="form-label">Fotografia: *</label>
+				<button type="button" class="btn  btn-primary " onclick="getScreenUser();return false;" id="buttonTakeUser">
+					<i class="fa-solid fa-camera-retro"></i>
+				</button>
+				<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveUser">
+					Guardar Foto <i class="fa-solid fa-aperture"></i>
+				</button>
+				<!-- Canvas Foto -->
+				<div id="containerUser" class="mt-2">
+					<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
+					<img id="imgUser" src="" style="display: none;width: 185px;height: 125px;">
+				</div>
 			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row">
-				<div class="col-10">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row" id="div-item">
+				<div class="col-9 div-item-row-1 div-row-item" >
 					<label class="form-label">Equipo: *</label>
 					<select class="form-control">
-						<option>--Seleccione--</option>
+						<option value="">--Seleccione--</option>
 					</select>
 				</div>
-				<div class="col-2 pt-4 mt-2">
-					<button type="button" class="btn btn-success btn-sm">
+				<div class="col-3 pt-4 mt-2 div-item-row-1 ">
+					<button type="button" class="btn btn-success button-add-register" onclick="setAddItem();return false;">
 						<i class="fa-solid fa-plus"></i>
 					</button>
-					<button type="button" class="btn btn-danger btn-sm">
+					<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteItem(1);return false;">
 						<i class="fa-solid fa-minus"></i>
 					</button>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-1 row">
-				<div class="col-10">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-1 row" id="div-car">
+				<div class="col-9 div-row-car div-car-row-1 div-row-car">
 					<label class="form-label">Vehículo: *</label>
-					<select class="form-control">
-						<option>--Seleccione--</option>
+					<select class="js-example-basic-single js-states form-control" id="id_label_single">
+						<option>Nested option</option>
 					</select>
 				</div>
-				<div class="col-2 pt-4 mt-2">
-					<button type="button" class="btn btn-success btn-sm">
+				<div class="col-3 pt-4 mt-2 div-car-row-1">
+					<button type="button" class="btn btn-success button-add-register" onclick="setAddCar();return false;">
 						<i class="fa-solid fa-plus"></i>
 					</button>
-					<button type="button" class="btn btn-danger btn-sm">
+					<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteCar(1);return false;">
 						<i class="fa-solid fa-minus"></i>
 					</button>
 				</div>
@@ -102,11 +122,7 @@
 			</button>
 		</div>
 	</section>
-	-->
-	<button id="abrirCamara">Abrir Cámara</button>
-
-
-
+	
 	<div id="divSpinner" style="display:none;margin-top: 100px;"></div>
 </body>
 <!-- Local -->
@@ -118,6 +134,8 @@
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 <!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+<!-- Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- Sweet Alert -->
 <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
 </html>
