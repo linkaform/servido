@@ -1,4 +1,16 @@
 window.onload = function(){
+	$(".select-car-register").select2({
+	  tags: true
+	});
+	$(".select-item-register").select2({
+	  tags: true
+	});
+	$("#selectCompany").select2({
+	  tags: true
+	});
+	$("#selectVisit").select2({
+	  tags: true
+	});
 }
 
 //----Function Redirection
@@ -32,7 +44,46 @@ function redirectionUrl(type = 'null',blank = true){
     }
     
 }
-//-----Function Set Data
+//-----Function  Data
+function getDataUser() {
+	let name = $("#inputName").val();
+	let company = $("#selectCompany").val();
+	let visit = $("#selectVisit").val();
+	let listValueCar = [];
+	let listValueItem = [];
+
+	var listCars = document.querySelectorAll('.select-car-register');
+	listCars.forEach(function(select) {
+		let valueElement = select.value;
+		if(valueElement !=''){
+			listValueCar.push(valueElement);
+		}
+	});
+
+	var listItems = document.querySelectorAll('.select-item-register');
+	listItems.forEach(function(select) {
+		let valueElement = select.value;
+		if(valueElement !=''){
+			listValueItem.push(valueElement);
+		}
+	});
+	let dicData = {
+		'nameUser':name,	
+		'companyUser':company,
+		'visitUser':visit,
+		'imgUser':'',	
+		'imgCardUser':'',	
+		'listCarUser':listValueCar,	
+		'listItemUser':listValueItem,	
+	}
+	let flagValidation = getValidation(dicData);
+	if(flagValidation){
+
+	}else{
+		
+	}
+}
+
 function setDataUser(){
 	//----Val
 	let codeUser  = $("#inputCodeUser").val();
@@ -76,6 +127,9 @@ function setDataUser(){
 		} 
 	})
 }
+
+
+
 
 
 //------Photo
@@ -170,9 +224,13 @@ function setAddItem() {
 	//---Structure HTML
 	let newItem = '<div class="col-9 div-item-row-'+randomID+' div-row-item">'
 	newItem += '<label class="form-label">Equipo: *</label>'
-	newItem += '<select class="form-control" id="select-'+randomID+'">'
+	newItem += '<select class="form-control select-item-register" id="select-'+randomID+'">'
 	//--Loop
 	newItem += '<option value="">--Seleccione--</option>'
+	newItem += '<option value="1">Option 1</option>'
+	newItem += '<option value="2">Option 2</option>'
+	newItem += '<option value="3">Option 3</option>'
+	newItem += '<option value="4">Option 4</option>'
 	newItem += '</select>'
 	newItem += '</div>'
 	newItem += '<div class="col-3 pt-4 mt-2 div-item-row-'+randomID+'">'
@@ -180,9 +238,10 @@ function setAddItem() {
 	newItem += '<button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteItem('+randomID+');return false;"><i class="fa-solid fa-minus"></i></button>'
 	newItem += '</div>'
 	$('#div-item').append(newItem)
+	$(".select-item-register").select2({
+	  tags: true
+	});
 }
-
-
 
 function setDeleteCar(id) {
 	const elements = document.querySelectorAll('.div-row-car');
@@ -200,9 +259,13 @@ function setAddCar() {
 	//---Structure HTML
 	let newItem = '<div class="col-9 div-car-row-'+randomID+' div-row-car">'
 	newItem += '<label class="form-label">Vehículo: *</label>'
-	newItem += '<select class="form-control" id="select-'+randomID+'">'
+	newItem += '<select class="form-control select-car-register" id="select-'+randomID+'">'
 	//--Loop
 	newItem += '<option value="">--Seleccione--</option>'
+	newItem += '<option value="1">Option 1</option>'
+	newItem += '<option value="2">Option 2</option>'
+	newItem += '<option value="3">Option 3</option>'
+	newItem += '<option value="4">Option 4</option>'
 	newItem += '</select>'
 	newItem += '</div>'
 	newItem += '<div class="col-3 pt-4 mt-2 div-car-row-'+randomID+'">'
@@ -210,5 +273,8 @@ function setAddCar() {
 	newItem += '<button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteCar('+randomID+');return false;"><i class="fa-solid fa-minus"></i></button>'
 	newItem += '</div>'
 	$('#div-car').append(newItem)
+	$(".select-car-register").select2({
+	  tags: true
+	});
 }
 
