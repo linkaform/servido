@@ -6,8 +6,8 @@ const columsData1 = [
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			let divActions = '<div class="row d-flex">';
 			divActions += ` <input class="form-check-input ms-3" style="height:15px !important;width:2px;" type="checkbox">`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-eye"></i></button>`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-pen"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('ViewIncident',${folio})"><i class="fa-solid fa-eye"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('EditIncident',${folio})"><i class="fa-solid fa-pen"></i></button>`;
 			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-trash"></i></button>`;
 			divActions += '</div>';
 			return divActions;
@@ -30,9 +30,9 @@ const columsData2 = [
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			let divActions = '<div class="row d-flex">';
 			divActions += ` <input class="form-check-input ms-3" style="height:15px !important;width:2px;" type="checkbox">`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-eye"></i></button>`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-circle-check"></i></button>`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-pen"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-eye" onClick="setModal('ViewFail',${folio})"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-circle-check" onClick="setModal('SuccessFail',${folio})"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-pen" onClick="setModal('EditFail',${folio})"></i></button>`;
 			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-trash"></i></button>`;
 			divActions += '</div>';
 			return divActions;
@@ -115,6 +115,7 @@ function drawTable(id, columnsData, tableData,){
   });
 }
 
+//-----Redirection
 function redirectionUrl(type = 'null',blank = true){
     let urlNew =  '';
     let protocol = window.location.protocol;
@@ -144,4 +145,24 @@ function redirectionUrl(type = 'null',blank = true){
     	}).click();
     }
     
+}
+
+
+//-----MODALS
+function setModal(type = 'none',id){
+	if(type == 'NewIncident'){
+		$('#newIncidentModal').modal('show');
+	}else if(type == 'EditIncident'){
+		$('#editIncidentModal').modal('show');
+	}else if(type == 'ViewIncident'){
+		$('#viewIncidentModal').modal('show');
+	}else if(type == 'NewFail'){
+		$('#newFailModal').modal('show');
+	}else if(type == 'EditFail'){
+		$('#editFailModal').modal('show');
+	}else if(type == 'ViewFail'){
+		$('#viewFailModal').modal('show');
+	}else if(type == 'SuccessFail'){
+		$('#successResolveFailModal').modal('show');
+	}
 }

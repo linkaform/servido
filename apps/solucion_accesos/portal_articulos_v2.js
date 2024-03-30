@@ -6,9 +6,9 @@ const columsData1 = [
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			let divActions = '<div class="row d-flex">';
 			divActions += ` <input class="form-check-input ms-3" style="height:15px !important;width:2px;" type="checkbox">`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-eye"></i></button>`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-clock"></i></button>`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-pen"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-eye" onClick="setModal('ViewArticle',${folio})"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-clock" onClick="setModal('OutArticle',${folio})"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-pen" onClick="setModal('EditArticle',${folio})"></i></button>`;
 			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-trash"></i></button>`;
 			divActions += '</div>';
 			return divActions;
@@ -37,9 +37,9 @@ const columsData2 = [
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			let divActions = '<div class="row d-flex">';
 			divActions += ` <input class="form-check-input ms-3" style="height:15px !important;width:2px;" type="checkbox">`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-eye"></i></button>`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-clock"></i></button>`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-pen"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-eye" onClick="setModal('ViewArticleConse',${folio})"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-clock" onClick="setModal('OutArticleConse',${folio})"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-pen" onClick="setModal('EditArticleConse',${folio})"></i></button>`;
 			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-trash"></i></button>`;
 			divActions += '</div>';
 			return divActions;
@@ -154,5 +154,29 @@ function redirectionUrl(type = 'null',blank = true){
         href: urlNew,
     	}).click();
     }
-    
 }
+
+
+//-----MODALS
+function setModal(type = 'none',id){
+	if(type == 'NewArticle'){
+		$('#newArticleModal').modal('show');
+	}else if(type == 'EditArticle'){
+		$('#editArticleModal').modal('show');
+	}else if(type == 'ViewArticle'){
+		$('#viewArticleModal').modal('show');
+	}else if(type == 'OutArticle'){
+		$('#outArticleModal').modal('show');
+	}else if(type == 'NewArticleConse'){
+		$('#newArticleConModal').modal('show');
+	}else if(type == 'ViewArticleConse'){
+		$('#viewArticleConModal').modal('show');
+	}else if(type == 'EditArticleConse'){
+		$('#editArticleConModal').modal('show');
+	}else if(type == 'OutArticleConse'){
+		$('#outArticleConModal').modal('show');
+	}
+}
+
+
+

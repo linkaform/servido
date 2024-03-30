@@ -54,6 +54,7 @@ body{
 /* Styles Input */
 .input-search-portal{
   margin-left: 10px;
+  border: 1px solid black !important;
 }
 
 .cursor-pointer {
@@ -154,8 +155,25 @@ th {
 ///----Load
 .load-wrapp{
   margin-top: 100px;
-
 }
+
+.button-add-register{
+  width: 22.5px !important;
+  height: 22.5px !important;
+  border-radius: 15px !important;
+  padding-top: 0px !important;
+  padding-left: 3px !important;
+}
+
+.button-delete-register{
+  width: 22.5px !important;
+  height: 22.5px !important;
+  border-radius: 15px !important;
+  padding-top: 0px  !important;
+  padding-left: 3px  !important;
+}
+
+
 
 .line {
   display: inline-block;
