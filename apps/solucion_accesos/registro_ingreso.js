@@ -45,6 +45,46 @@ function redirectionUrl(type = 'null',blank = true){
     
 }
 //-----Function  Data
+function isCanvasBlank(canvas) {
+  const context = canvas.getContext('2d');
+
+  const pixelBuffer = new Uint32Array(
+    context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+  );
+
+  return !pixelBuffer.some(color => color !== 0);
+}
+
+function getValidation(dicData) {
+	if(dicData.nameUser !== '' 
+	|| dicData.company !== '' 
+	|| dicData.visit !== ''){
+		if(dicData.imgUser !== '' || dicData.imgUser !== 'Error'){
+			if(dicData.imgCard !== '' || dicData.imgCard !== 'Error'){
+				return true;
+			}else{
+				Swal.fire({
+					title	: "Error!",
+					text: "Error al tomar foto de la identificación",
+					icon: "danger"
+				});
+			}
+		}else{
+			Swal.fire({
+				title	: "Error!",
+				text: "Error al tomar foto de usuario",
+				icon: "danger"
+			});
+		}
+	}else{
+		Swal.fire({
+			title	: "Error!",
+			text: "Faltan Datos, asegurese de llenar correctamente los datos",
+			icon: "danger"
+		});
+	}
+}	
+
 function getDataUser() {
 	let name = $("#inputName").val();
 	let company = $("#selectCompany").val();
@@ -52,6 +92,7 @@ function getDataUser() {
 	let listValueCar = [];
 	let listValueItem = [];
 
+	//-----List
 	var listCars = document.querySelectorAll('.select-car-register');
 	listCars.forEach(function(select) {
 		let valueElement = select.value;
@@ -60,6 +101,7 @@ function getDataUser() {
 		}
 	});
 
+	//-----List
 	var listItems = document.querySelectorAll('.select-item-register');
 	listItems.forEach(function(select) {
 		let valueElement = select.value;
@@ -67,21 +109,31 @@ function getDataUser() {
 			listValueItem.push(valueElement);
 		}
 	});
+	//-----Img
+	const flagBlankCard = isCanvasBlank(document.getElementById('canvasPhoto'));
+	const flagBlankUser = isCanvasBlank(document.getElementById('canvasPhotoUser'));
+
+	let dataURLCard = '';
+	if(!flagBlankCard){
+		dataURLCard = setFilerImg('inputCard')
+	}
+
+	let dataURLUser = '';
+	if(!flagBlankUser){
+		dataURLUser = setFilerImg('inputUser');
+	}
+
+	//-----Dic
 	let dicData = {
 		'nameUser':name,	
 		'companyUser':company,
 		'visitUser':visit,
-		'imgUser':'',	
-		'imgCardUser':'',	
+		'imgUser':dataURLUser,	
+		'imgCardUser':dataURLCard,	
 		'listCarUser':listValueCar,	
 		'listItemUser':listValueItem,	
 	}
 	let flagValidation = getValidation(dicData);
-	if(flagValidation){
-
-	}else{
-		
-	}
 }
 
 function setDataUser(){
@@ -128,9 +180,45 @@ function setDataUser(){
 	})
 }
 
+function setFilerImg(type) {
+	let idInput = '';
+	if(type == 'inputCard'){
+		idInput = 'inputFileCard';
+	}else if(type == 'inputUser'){
+		idInput = 'inputFileUser';
+	}
 
+	const fileInput = document.getElementById('inputFileCard');
+	const file = fileInput.files[0];
 
-
+    if (file) {
+		const formData = new FormData();
+		formData.append('File', file);
+		formData.append('field_id', '660459dde2b2d414bce9cf8f');
+		formData.append('is_image', true);
+		formData.append('form_id', 116852);
+		fetch('https://app.linkaform.com/api/infosync/cloud_upload/', {
+			method: 'POST',
+			body: formData
+		})
+		.then(response => response.json())
+		.then(res => {
+			if(res.file !== undefined && res.file !== null){
+				console.log('Returna file');
+				return res.file;
+			}else{
+				return 'Error';
+				console.log('Error aqui 2');
+			}
+		})
+		.catch(error => {
+			return 'Error';
+			console.log('Error aqui 3');
+		});
+	}else{
+		return 'Error';
+	}
+}
 
 //------Photo
 function getScreenCard(){
@@ -145,7 +233,7 @@ function getScreenCard(){
             video.play();
             let canvas = document.getElementById('canvasPhoto');
             let context = canvas.getContext('2d');
-            //----Take
+            //----Take Photo
             $("#buttonTakeCard").hide();
             $("#buttonSaveCard").show();
             document.getElementById('buttonSaveCard').addEventListener('click', function() {
@@ -158,6 +246,13 @@ function getScreenCard(){
                     track.stop();
                 });
                 video.style.display = 'none';
+                ///-- Save Input
+				canvas.toBlob( (blob) => {
+					const file = new File( [ blob ], "imageCard.png" );
+					const dT = new DataTransfer();
+					dT.items.add( file );
+					document.getElementById("inputFileCard").files = dT.files;
+				} );
                 $("#buttonSaveCard").hide();
             });
         })
@@ -194,6 +289,13 @@ function getScreenUser(){
                     track.stop();
                 });
                 video.style.display = 'none';
+                ///-- Save Input
+				canvas.toBlob( (blob) => {
+					const file = new File( [ blob ], "imageUser.png" );
+					const dT = new DataTransfer();
+					dT.items.add( file );
+					document.getElementById("inputFileUser").files = dT.files;
+				} );
                 $("#buttonSaveUser").hide();
             });
         })
@@ -204,7 +306,6 @@ function getScreenUser(){
         alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
     }
 }
-
 
 //------Elements
 function setDeleteItem(id) {
