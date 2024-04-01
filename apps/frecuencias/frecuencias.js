@@ -179,7 +179,6 @@ function runFirstElement(flagPrint = false){
   }
   fecha_de = date_from.value
   fecha_hasta = date_to.value
-  console.log("tiendas = ", tiendas)
   getFirstElement(date_to.value, date_from.value, paises, localidades, tiendas, usuario.value, check, flagPrint);
 };
 
@@ -350,8 +349,6 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
         html2canvas(document.querySelector("#graphicFourth")).then(canvas => {
         imageTimeout:4500,
         urlGraphicFourth =  canvas.toDataURL();
-        console.log(urlGraphicFourth)
-        console.log()
         });
         
       let urlGraphicFiveth = '';
@@ -359,8 +356,6 @@ function getDrawTable(id, columnsData, tableData, flagPrint){
         html2canvas(document.querySelector("#graphicFiveth")).then(canvas => {
         imageTimeout:4500,
         urlGraphicFiveth = canvas.toDataURL('image/jpeg');
-        console.log(urlGraphicFiveth)
-        console.log()
         
         });
       
@@ -515,7 +510,6 @@ function get_catalog(option)
             }
             else
             {
-              console.log(filter,'==',pais)
               if(filter == pais){
                 $('#localidades').append('<option value="'+ value +'">'+value+'</option>');
               }
@@ -551,7 +545,6 @@ function printPDF() {
 
 //Función para actualizar los valores del selector multiple Tienda
 function get_tienda(pais = ''){
-  console.log(pais)
   let localidades = document.getElementById("localidades");
   let loc_select = []
 
@@ -561,23 +554,14 @@ function get_tienda(pais = ''){
     //Verificar el valor de la opción seleccionada
     if(option.selected){
       loc_select.push(option.value);
-      console.log("option = ", option.value)
     }
   }
-
-  console.log("Las localidades seleccionadas son: ", loc_select);
-
-  console.log("Localidades globales")
-  console.log(loc_global)
-
   //Se ejectua cuando no se ha seleccionado un pais
   $("#tienda").empty();
   $("#tienda").append('<option value="--">Seleccione</option>');
   if(!pais){
-      console.log("Sin tienda")
       loc_global.forEach(localidad =>{
         if(loc_select.includes(localidad.localidad)){
-          console.log("La incluye ", localidad.localidad)
           localidad.tiendas.forEach(tienda => {
             if(tienda){
               $("#tienda").append('<option value="' + tienda+ '">'+tienda+'</option>');
@@ -586,10 +570,8 @@ function get_tienda(pais = ''){
         }
       })
   }else{
-    console.log("Con pais ", pais)
     loc_global.forEach(localidad =>{
       if(pais == localidad.pais){
-        console.log("La incluye ", localidad.localidad)
         localidad.tiendas.forEach(tienda => {
           if(tienda){
             $("#tienda").append('<option value="' + tienda+ '">'+tienda+'</option>');
