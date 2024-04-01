@@ -31,6 +31,9 @@ window.onload = function(){
     if (key === 'env') {
       if (qs[key] === 'test'){
          url = "http://192.168.0.25:8000/api/";
+      }      
+      if (qs[key] === 'local'){
+         url = "http://192.168.0.25:8000/api/";
       }
     }
     if (key ==='title'){
