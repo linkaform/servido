@@ -49,6 +49,25 @@
                 </div>
             </div> 
         </nav>
+        
+        <!--Session -->
+        <div class="row inicio_ses" id="inicio_ses">
+            <div class="errorLogin" id="errorLog"></div>
+            <div class="control">
+                <div class="renglon">
+                    <h3>Usuario: </h3>
+                    <input class="form-control ds-input" id="user" name="user" value="">
+                </div>
+                <div class="renglon">
+                    <h3>Contraseña: </h3>
+                    <input class="form-control ds-input" type="password" id="pass" name="pass" value="">
+                </div>
+                <div class="controlBtn">
+                <div class="btn btn-primary" onclick="login()">Login</div>
+                <div class="btn btn-primary" onclick="reset()">Reset</div>
+                </div>
+            </div>
+        </div>
 
 
         <!-- Content -->
@@ -72,9 +91,14 @@
                     <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                 </div>
                 <div class="col-sm-12 col-md-4 col-lg-4" >
-                    <h5>Slector de tipo: </h5>
-                    <select class="form-control mdb-select md-form" id="period" name="period">
+                    <h5>Selector de empresa: </h5>
+                    <select class="form-control mdb-select md-form" id="company" name="company">
                         <option value="">--Seleccione--</option>
+                        <option value="Cemex">Cemex</option>
+                        <option value="FEMSA">FEMSA</option>
+                        <option value="Linkaform">Linkaform</option>
+                        <option value="ACME">ACME</option>
+                        <option value="Pluto">Pluto</option>
                     </select>
                 </div>
             </div>

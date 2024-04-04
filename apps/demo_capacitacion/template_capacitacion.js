@@ -22,7 +22,6 @@ window.onload = function(){
   var formNode = document.getElementById("appCont");
 	for(var key in qs){
     if (key === 'script_id' ){
-      console.log('script id', key)
       scriptId = parseInt(qs[key]);
     }
     if (key === 'env') {
@@ -77,14 +76,14 @@ window.onload = function(){
 
 
   if(us != "" && jw != "" || scriptId===null){
+
+    console.log('Entro al reporte');
     hideElement("inicio_ses");
     unhideElement("close_sesion");
     getCompanyLogo(userParentId);
     userId = us;
     userJwt = jw;
     userName = getCookie("userName");
-    document.getElementById("firstParameters").style.removeProperty('display');
-    unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
     }
@@ -100,6 +99,7 @@ window.onload = function(){
     $('#divOptions').hide();
     $('#title_report').hide();
     $('.title_tables').hide();
+    unHideReportElements();
     hideElement("firstElement-Buttons");
   }
   ///-----HIDE AND SHOW
@@ -116,10 +116,7 @@ window.onload = function(){
 
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
-  unhideElement("firstElement-Buttons");
-  unhideElement("firstParameters");
-  unhideElement("close_sesion");
-  unhideElement("firstElement");
+  unhideElement("inicio_ses");
 }
 
 function loadDemoData(){
@@ -199,6 +196,80 @@ function getFirstElement(dateTo, dateFrom){
   })
 };
 
+//----Request
+function getInformationRequest(){
+  //---Get filters
+  let date_from = $("#date_from").val();
+  let date_to = $("#date_to").val();
+  let company = $("#company").val();
+
+  if(date_from != '' && date_to!= ''){
+    //----Hide Css
+    $("#divContent").hide();
+    $('.load-wrapp').show();
+    $('.title_tables').hide();
+
+    fetch(url + 'infosync/scripts/run/', {
+      method: 'POST',
+      body: JSON.stringify({
+        script_id: scriptId,
+        date_from: date_from,
+        date_to: date_to,
+        company: company,
+      }),
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+userJwt
+      },
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.success) {
+        //----Hide and show
+        $('.load-wrapp').hide();
+        $("#divContent").show();
+        $('.title_tables').show();
+        //----Data
+        let data = res.response;
+        if(data.response_table){
+          getDrawTable('firstElement', columsData1, data.response_table);
+          document.getElementById("firstElement").style.removeProperty('display');
+        }
+        if(data.response_graphic1){
+          drawGraphicFirst(data.response_graphic1, setOptions1);
+          document.getElementById("graphicFirst").style.removeProperty('display');
+        }
+        if(data.response_graphic2){
+          drawGraphicSecond(data.response_graphic2, setOptions2);
+          document.getElementById("graphicSecond").style.removeProperty('display');
+        }
+      } else {
+        hideLoading();
+        if(res.code == 11){
+          Swal.fire({
+            title: 'Error',
+            html: res.error
+          });
+          $('.load-wrapp').hide();
+        } else {
+          Swal.fire({
+            title: 'Error',
+            html: res.error
+          });
+          $('.load-wrapp').hide();
+        }
+      }
+    })
+  }else{
+    Swal.fire({
+      title: 'Error',
+      html: 'Seleccione el periodo de fechas'
+    });
+  }
+}
+
+
+
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
   var  table = new Tabulator("#" + id, {
@@ -206,6 +277,7 @@ function getDrawTable(id, columnsData, tableData){
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
+    dataTree:true,
     textDirection:"ltr",
     columns:columnsData,
     pagination:true, 
@@ -260,8 +332,8 @@ function drawGraphicSecond(data, setOptions){
   //----Add Color
   let  length = data['labels'].length;
   let list_colors = getPAlleteColors(5,length);
-  data['datasets'][1]['backgroundColor'] = list_colors;
-  data['datasets'][1]['borderColor'] = list_colors;
+  data['datasets'][0]['backgroundColor'] = list_colors;
+  data['datasets'][0]['borderColor'] = list_colors;
   chart2 = new Chart(ctx, {
     type: 'bar',
     data:data,
