@@ -22,7 +22,6 @@ window.onload = function(){
   var formNode = document.getElementById("appCont");
 	for(var key in qs){
     if (key === 'script_id' ){
-      console.log('script id', key)
       scriptId = parseInt(qs[key]);
     }
     if (key === 'env') {

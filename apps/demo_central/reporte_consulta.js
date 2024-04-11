@@ -1,4 +1,18 @@
 let us = null;
+  //Set here all report elements that need to be unHiden on a loggin
+  unhideElement("firstElement-Buttons");
+  unhideElement("firstParameters");
+  unhideElement("close_sesion");
+  unhideElement("firstElement");
+}
+
+function loadDemoData(){
+  unhideElement("title_demo")
+  $('.title_tables').show();
+  document.getElementById("firstParameters").style.removeProperty('display');
+
+  getDrawTable('firstElement', columsData1, dataTable1);
+  document.getElementById("firstElement").style.removeProperty('dis
 let usTy = null;
 let jw = null;
 let userId = null;
@@ -20,9 +34,9 @@ const columsData = [
 ]
 
 const dataTable = [
-	{'columna1':'10','columna2':'20','columna3':'30','columna4':'40'},
-	{'columna1':'10','columna2':'20','columna3':'30','columna4':'40'},
-	{'columna1':'10','columna2':'20','columna3':'30','columna4':'40'},
+	{'folio':'10','date':'20','columna3':'30','columna4':'40'},
+	{'folio':'10','date':'20','columna3':'30','columna4':'40'},
+	{'folio':'10','date':'20','columna3':'30','columna4':'40'},
 ]
 
 var setOptions1 = {
@@ -351,7 +365,6 @@ function drawGraphicThird(data, setOptions){
     plugins: [ChartDataLabels],
   });
 }
-
 
 let chart4;
 function drawGraphicFourth(data, setOptions){

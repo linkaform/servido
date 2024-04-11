@@ -1,3 +1,8 @@
+let urlImgCard = '';
+let urlImgUser = '';
+let flagVideoCard = false;
+let flagVideoUser = false;
+
 window.onload = function(){
 	$(".select-car-register").select2({
 	  tags: true
@@ -47,20 +52,22 @@ function redirectionUrl(type = 'null',blank = true){
 //-----Function  Data
 function isCanvasBlank(canvas) {
   const context = canvas.getContext('2d');
-
   const pixelBuffer = new Uint32Array(
     context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
   );
-
   return !pixelBuffer.some(color => color !== 0);
 }
 
 function getValidation(dicData) {
+	console.log('dicData',dicData);
+	console.log('urlImgCard',urlImgCard);
+	console.log('urlImgUser',urlImgUser);
+
 	if(dicData.nameUser !== '' 
 	|| dicData.company !== '' 
 	|| dicData.visit !== ''){
-		if(dicData.imgUser !== '' || dicData.imgUser !== 'Error'){
-			if(dicData.imgCard !== '' || dicData.imgCard !== 'Error'){
+		if(urlImgUser !== ''){
+			if(urlImgCard !== ''){
 				return true;
 			}else{
 				Swal.fire({
@@ -109,31 +116,19 @@ function getDataUser() {
 			listValueItem.push(valueElement);
 		}
 	});
-	//-----Img
-	const flagBlankCard = isCanvasBlank(document.getElementById('canvasPhoto'));
-	const flagBlankUser = isCanvasBlank(document.getElementById('canvasPhotoUser'));
-
-	let dataURLCard = '';
-	if(!flagBlankCard){
-		dataURLCard = setFilerImg('inputCard')
-	}
-
-	let dataURLUser = '';
-	if(!flagBlankUser){
-		dataURLUser = setFilerImg('inputUser');
-	}
 
 	//-----Dic
 	let dicData = {
 		'nameUser':name,	
 		'companyUser':company,
 		'visitUser':visit,
-		'imgUser':dataURLUser,	
-		'imgCardUser':dataURLCard,	
 		'listCarUser':listValueCar,	
 		'listItemUser':listValueItem,	
 	}
 	let flagValidation = getValidation(dicData);
+	if(flagValidation){
+		console.log('ejecuta la siguiente parte del script');
+	}
 }
 
 function setDataUser(){
@@ -180,7 +175,8 @@ function setDataUser(){
 	})
 }
 
-function setFilerImg(type) {
+function setRequestFileImg(type) {
+	console.log('Entra a la query');
 	let idInput = '';
 	if(type == 'inputCard'){
 		idInput = 'inputFileCard';
@@ -188,7 +184,7 @@ function setFilerImg(type) {
 		idInput = 'inputFileUser';
 	}
 
-	const fileInput = document.getElementById('inputFileCard');
+	const fileInput = document.getElementById(idInput);
 	const file = fileInput.files[0];
 
     if (file) {
@@ -204,8 +200,20 @@ function setFilerImg(type) {
 		.then(response => response.json())
 		.then(res => {
 			if(res.file !== undefined && res.file !== null){
-				console.log('Returna file');
-				return res.file;
+				console.log('RES ',res.file)
+				if(type == 'inputCard'){
+					urlImgCard = res.file;
+					//----Clean Canvas
+					var canvas = document.getElementById('canvasPhoto');
+					var ctx = canvas.getContext('2d');
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+				}else if(type == 'inputUser'){
+					urlImgUser = res.file;
+					//----Clean Canvas
+					var canvas = document.getElementById('canvasPhotoUser');
+					var ctx = canvas.getContext('2d');
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+				}
 			}else{
 				return 'Error';
 				console.log('Error aqui 2');
@@ -222,92 +230,126 @@ function setFilerImg(type) {
 
 //------Photo
 function getScreenCard(){
-	if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
-        .then(function(stream) {
-            let video = document.createElement('video');
-            video.style.width = '200px';
-            video.style.height = '125px';
-            document.getElementById('containerCard').appendChild(video);
-            video.srcObject = stream;
-            video.play();
-            let canvas = document.getElementById('canvasPhoto');
-            let context = canvas.getContext('2d');
-            //----Take Photo
-            $("#buttonTakeCard").hide();
-            $("#buttonSaveCard").show();
-            document.getElementById('buttonSaveCard').addEventListener('click', function() {
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                let photoCard = document.getElementById('imgCard');
-                photoCard.src = canvas.toDataURL('image/png');
-                photoCard.style.display = 'block';
-                video.pause();
-                video.srcObject.getTracks().forEach(function(track) {
-                    track.stop();
-                });
-                video.style.display = 'none';
-                ///-- Save Input
-				canvas.toBlob( (blob) => {
-					const file = new File( [ blob ], "imageCard.png" );
-					const dT = new DataTransfer();
-					dT.items.add( file );
-					document.getElementById("inputFileCard").files = dT.files;
-				} );
-                $("#buttonSaveCard").hide();
-            });
-        })
-        .catch(function(error) {
-            console.error('Error al acceder a la cámara:', error);
-        });
-    } else {
-        alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
+	//-----Save Photo
+	if(!flagVideoCard){
+		flagVideoCard = true;
+		if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+	        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
+	        .then(function(stream) {
+	            let video = document.createElement('video');
+	            video.style.width = '200px';
+	            video.style.height = '125px';
+	            document.getElementById('containerCard').appendChild(video);
+	            video.srcObject = stream;
+	            video.play();
+	            let canvas = document.getElementById('canvasPhoto');
+	            let context = canvas.getContext('2d');
+	            //----Take Photo
+	            $("#buttonTakeCard").attr('disabled','disabled');
+	            $("#buttonTakeCard").hide();
+	            $("#buttonSaveCard").show();
+	            document.getElementById('buttonSaveCard').addEventListener('click', function() {
+	                setTranslateImageCard(context, video, canvas)
+	            });
+	        })
+	        .catch(function(error) {
+	            console.error('Error al acceder a la cámara:', error);
+	        });
+	    } else {
+	        alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
+	    }
     }
 }
 
 function getScreenUser(){
-	if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true })
-        .then(function(stream) {
-            let video = document.createElement('video');
-            video.style.width = '200px';
-            video.style.height = '125px';
-            document.getElementById('containerUser').appendChild(video);
-            video.srcObject = stream;
-            video.play();
-            let canvas = document.getElementById('canvasPhotoUser');
-            let context = canvas.getContext('2d');
-            //----Take
-            $("#buttonTakeUser").hide();
-            $("#buttonSaveUser").show();
-            document.getElementById('buttonSaveUser').addEventListener('click', function() {
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                let photoCard = document.getElementById('imgUser');
-                photoCard.src = canvas.toDataURL('image/png');
-                photoCard.style.display = 'block';
-                video.pause();
-                video.srcObject.getTracks().forEach(function(track) {
-                    track.stop();
-                });
-                video.style.display = 'none';
-                ///-- Save Input
-				canvas.toBlob( (blob) => {
-					const file = new File( [ blob ], "imageUser.png" );
-					const dT = new DataTransfer();
-					dT.items.add( file );
-					document.getElementById("inputFileUser").files = dT.files;
-				} );
-                $("#buttonSaveUser").hide();
-            });
-        })
-        .catch(function(error) {
-            console.error('Error al acceder a la cámara:', error);
-        });
-    } else {
-        alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
-    }
+	//-----Save Photo
+	if(!flagVideoUser){
+		flagVideoUser = true;
+		if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+	        navigator.mediaDevices.getUserMedia({ video: true })
+	        .then(function(stream) {
+	            let video = document.createElement('video');
+	            video.style.width = '200px';
+	            video.style.height = '125px';
+	            document.getElementById('containerUser').appendChild(video);
+	            video.srcObject = stream;
+	            video.play();
+	            let canvas = document.getElementById('canvasPhotoUser');
+	            let context = canvas.getContext('2d');
+	            //----Take
+	            $("#buttonTakeUser").attr('disabled','disabled');
+	            $("#buttonTakeUser").hide();
+	            $("#buttonSaveUser").show();
+	            document.getElementById('buttonSaveUser').addEventListener('click', function() {
+	            	setTranslateImageUser(context, video, canvas);
+	            });
+	        })
+	        .catch(function(error) {
+	            console.error('Error al acceder a la cámara:', error);
+	        });
+	    } else {
+	        alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
+	    }
+	}
 }
 
-//------Elements
+function setTranslateImageUser(context, video, canvas){
+	context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    let photoCard = document.getElementById('imgUser');
+    photoCard.src = canvas.toDataURL('image/png');
+    photoCard.style.display = 'block';
+    video.pause();
+    video.srcObject.getTracks().forEach(function(track) {
+        track.stop();
+    });
+    video.style.display = 'none';
+    ///-- Save Input
+	canvas.toBlob( (blob) => {
+		const file = new File( [ blob ], "imageUser.png" );
+		const dT = new DataTransfer();
+		dT.items.add( file );
+		document.getElementById("inputFileUser").files = dT.files;
+	} );
+	//-----Rquest Photo
+	const flagBlankUser = isCanvasBlank(document.getElementById('canvasPhotoUser'));
+	if(!flagBlankUser){
+		setTimeout(() => {
+			setRequestFileImg('inputUser');
+		}, "1000");
+	}
+	//-----Clean ELement
+    $("#buttonSaveUser").hide();
+}
+
+function setTranslateImageCard(context, video, canvas){
+	context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    let photoCard = document.getElementById('imgCard');
+    photoCard.src = canvas.toDataURL('image/png');
+    photoCard.style.display = 'block';
+    video.pause();
+    video.srcObject.getTracks().forEach(function(track) {
+        track.stop();
+    });
+    video.style.display = 'none';
+    ///-- Save Input
+	canvas.toBlob( (blob) => {
+		const file = new File( [ blob ], "imageCard.png" );
+		const dT = new DataTransfer();
+		dT.items.add( file );
+		document.getElementById("inputFileCard").files = dT.files;
+	} );
+	//-----Rquest Photo
+    const flagBlankCard = isCanvasBlank(document.getElementById('canvasPhoto'));
+	if(!flagBlankCard){
+		setTimeout(() => {
+			setRequestFileImg('inputCard');
+		}, "1000");
+	}
+	//-----Clean ELement
+    $("#buttonSaveCard").hide();
+}
+
+//------Elements List
 function setDeleteItem(id) {
 	const elements = document.querySelectorAll('.div-row-item');
 	const count = elements.length;

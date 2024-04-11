@@ -159,10 +159,6 @@ function runFirstElement(){
 };
 
 function getFirstElement(dateTo, dateFrom, institucion, grupos){
-  console.log(dateTo)
-  console.log(dateFrom)
-  console.log(institucion)
-  console.log(grupos)
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -192,29 +188,10 @@ function getFirstElement(dateTo, dateFrom, institucion, grupos){
       $("#divContent").show();
       $('.title_tables').show();
       if (res.response.json.firstElement) {
+        //---Change Colum
         let columns = res.response.json.firstElement.columns;
-        columns.forEach(element => {
-          if(element.field){
-            let field = element.field;
-            if(field == "cumplimiento"){
-              element.formatter = function(cell){
-                var value = cell.getValue();
-                if(value >= 0){
-                  if (value <= 69) {
-                        cell.getElement().style.backgroundColor = "#EC7063";
-                    } else if (value >= 70 && value <= 85) {
-                        cell.getElement().style.backgroundColor = "#F7DC6F";
-                    } else if (value >= 86 && value <= 100) {
-                        cell.getElement().style.backgroundColor = "#52BE80";
-                    }
-                  
-                  return value + "%"
-                }
-              }
-            }
-
-          }
-        })
+        columns = getColumsFormat(columns);
+        //---Draw Table
         getDrawTable('firstElement', columns, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
@@ -238,6 +215,38 @@ function getFirstElement(dateTo, dateFrom, institucion, grupos){
     }
   })
 };
+
+function getColumsFormat(columns) {
+  columns.forEach(element => {
+    if(element.field){
+      let field = element.field;
+
+      if(field == "cumplimiento"){
+        element.formatter = function(cell){
+          var value = cell.getValue();
+          if(value >= 0){
+            if (value <= 69) {
+              cell.getElement().style.backgroundColor = "#EC7063";
+            } else if (value >= 70 && value <= 85) {
+              cell.getElement().style.backgroundColor = "#F7DC6F";
+            } else if (value >= 86 && value <= 100) {
+              cell.getElement().style.backgroundColor = "#52BE80";
+            }
+            return value + "%"
+          }
+        }
+      }
+      else if(field == "asistencias"){
+        element.headerFilterParams = filterCell;
+
+      }
+    }
+  })
+  console.log('Entra a columas',columns);
+  return columns
+}
+
+
 
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
@@ -425,13 +434,8 @@ function getDrawGraphicSecond(data, setOptions){
 
 //Función para actualizar el selecto de grupo
 function actualizarGrupo(value){
-  console.log(value)
-  console.log(obj_instituciones)
   let grupos = []
-
   grupos = obj_instituciones[value]
-  console.log(grupos)
-
   $("#grupos").empty()
   grupos.forEach(value => {
     $("#grupos").append('<option value="' + value + '">' + value + '</option>');

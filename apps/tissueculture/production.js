@@ -237,21 +237,25 @@ function getFirstElement(dateTo, dateFrom, plantCode, stage){
       }
 
       if (res.response.fourthElement.tabledata) {
+        //----Esta no trae datos
         dataElementFormat = getFormatterFirst(res.response.fourthElement.tabledata);
         getDrawGraphicFirst(dataElementFormat, setOptions1)
         document.getElementById("firstElement").style.removeProperty('display');
       }
       if (res.response.fifthElement.tabledata) {
+        //----Esta no trae datos
         dataElementFormat = getFormatterSecond(res.response.fifthElement.tabledata);
         getDrawGraphicSecond(dataElementFormat, setOptions2)
         document.getElementById("secondElement").style.removeProperty('display');
       }
       if (res.response.sixthElement.tabledata) {
+        //----Esta no trae datos
         dataElementFormat = getFormatterThird(res.response.sixthElement.tabledata);
         getDrawGraphicThird(dataElementFormat, setOptions3)
         document.getElementById("thirdElement").style.removeProperty('display');
       }
       if (res.response.seventhElement.tabledata) {
+        //----Esta no trae datos
         dataElementFormat = getFormatterFourth(res.response.seventhElement.tabledata);
         getDrawGraphicFourth(dataElementFormat, setOptions4)
         document.getElementById("fourthElement").style.removeProperty('display');

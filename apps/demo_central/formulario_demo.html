@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+    <html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Servido</title>
+        <meta name="title" content="Servido">
+        <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+        <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
+        <!--Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    </head>
+    <body>
+
+        <div class="container mt-5" > 
+            <div class="mb-3">
+              <label  class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="inputName" onkeyup="getData('name');return false;">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Fecha</label>
+              <input type="date" class="form-control" id="inputDate" onchange="getData('date');return false;">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Persona que entrega</label>
+                <div class="form-check">
+                    <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="LEXANDRA ARCHILA">
+                    <label class="form-check-label" for="inlineRadio1">LEXANDRA ARCHILA</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="CAMILO LOAIZA">
+                    <label class="form-check-label" for="inlineRadio2">CAMILO LOAIZA</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="SARA GARCIA" >
+                    <label class="form-check-label" for="inlineRadio3">SARA GARCIA</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="Otro" >
+                    <label class="form-check-label" for="inlineRadio3">Otros</label>
+                </div>
+                <div class="mb-3" style="display:none;" id="divInputOther">
+                  <label  class="form-label">Otra persona</label>
+                  <input type="text" class="form-control" id="inputOtro" onkeyup="getData('otro');return false;">
+                </div>
+            </div>
+
+
+
+
+            <div class="row">   
+                <div class="col-auto">
+                    <label for="formFile" class="form-label">Img</label>
+                    <input class="form-control" type="file" id="inputFile">
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-primary mt-4" onclick="setImg();return false;" id="buttonSaveImg">Guardar Foto</button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary mt-4" onclick="setDataRecord();return false;">Enviar Registro</button>
+        </div>
+
+        <div class="container mt-5" style="display:none;"> 
+            <div class="mb-3">
+              <label  class="form-label">Folio</label>
+                <select class="form-control" onchange="getFolioList();return false;" id="selectFolio">
+                    <option value="94-181920">Folio 94-181920</option>
+                    <option value="94-181921">Folio 94-181921</option>
+                    <option value="94-181922">Folio 94-181922</option>
+                    <option value="94-181923">Folio 94-181923</option>
+                    <option value="94-181924">Folio 94-181924</option>
+                    <option value="94-181925">Folio 94-181925</option>
+                    <option value="94-181926">Folio 94-181926</option>
+                    <option value="94-181927">Folio 94-181927</option>
+                </select>
+            </div>
+            <div class="mb-3" id="divDataName" style="display:none;">
+              <label  class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="inputName" onkeyup="getData('name');return false;">
+            </div>
+            <div class="mb-3" id="divDataDate" style="display:none;">
+              <label for="exampleFormControlInput1" class="form-label">Fecha</label>
+              <input type="date" class="form-control" id="inputDate" onchange="getData('date');return false;">
+            </div>  
+            <button type="button" class="btn btn-secondary mt-4" id="buttonUpdateRecord" style="display:none">Actualizar Registro</button>
+        </div>
+
+               
+    </body>
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <!-- Template -->
+    <script type="text/javascript" src="./formulario_demo.js"></script>
+    </body>
+</html>
