@@ -236,10 +236,6 @@ function getColumsFormat(columns) {
           }
         }
       }
-      else if(field == "asistencias"){
-        element.headerFilterParams = filterCell;
-
-      }
     }
   })
   console.log('Entra a columas',columns);

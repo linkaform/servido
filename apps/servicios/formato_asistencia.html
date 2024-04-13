@@ -8,16 +8,18 @@
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
-        <!--Bootstrap -->
+       
+        <!--Utils -->        
+        <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
+        <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+         <link rel="stylesheet" href="../styles/css/styles.css">
+         <!--Bootstrap -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!--Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <!--LIBRARY CHECK -->
+          <!--LIBRARY CHECK -->
         <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
-        <!--Utils -->        
-        <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
-        <link rel="stylesheet" href="../styles/css/styles.css">
-        <!-- <link rel="stylesheet" href="style.css"> -->
     </head>
     <body>
         <!-- Header -->
@@ -108,8 +110,8 @@
 
                     <div class="col-sm-12 col-md-3 col-lg-3" id="divnameGestor">
                         <h5>Grupo: </h5>
-                        <select class="form-control mdb-select md-form" id="grupos" multiple="multiple">
-                           <option value="--">Seleccione</option>
+                        <select class="form-control mdb-select md-form button" id="grupos"  multiple="multiple">
+                           <option  value="--">Seleccione</option>
                         </select>
                     </div>
 
@@ -136,6 +138,7 @@
     </body>
 
 
+
     <!-- TABULATOR -->
     <!-- tabulator : Excel Downlowd-->
     <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
@@ -144,7 +147,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
 
-    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
 
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
     
@@ -187,10 +189,10 @@
     <script type="text/javascript" src="./formato_asistencia.js"></script>
     <script type="text/javascript" src="./formato_asistencia_data.js"></script>
 
-    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
     <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js" integrity="sha512-UnrKxsCMN9hFk7M56t4I4ckB4N/2HHi0w/7+B/1JsXIX3DmyBcsGpT3/BsuZMZf+6mAr0vP81syWtfynHJ69JA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     </body>
 </html>
