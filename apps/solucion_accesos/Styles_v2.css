@@ -213,3 +213,31 @@ th {
     transform: translate(0, 0);
   }
 }
+
+.styleTable{
+  padding: 0px;
+ }
+.buttonIniciarTurno{
+  margin-top:30px;
+  margin-botton:30px;
+  margin-right: 12%;
+}
+
+.nav-link{
+  color: grey;
+}
+.nav-link:hover{
+  color: black;
+}
+
+.form-check-input {
+  width: 1px;
+}
+.tabulator-cell{
+  align-items: center;
+
+}
+.form-check-input{
+  margin-top: 25%;
+  padding: 10px;
+}
