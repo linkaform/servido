@@ -218,7 +218,8 @@ th {
   padding: 0px;
  }
 .buttonIniciarTurno{
-  margin-top:5px;
+  margin-top:30px;
+  margin-botton:30px;
   margin-right: 12%;
 }
 
@@ -234,12 +235,9 @@ th {
 }
 .tabulator-cell{
   align-items: center;
-  justify-content: center !important;
+
 }
 .form-check-input{
-  margin-top: 16px;
-
-  align-items: center;
+  margin-top: 25%;
   padding: 10px;
 }
-

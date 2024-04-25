@@ -2,7 +2,6 @@ let urlImgCard = '';
 let urlImgUser = '';
 let flagVideoCard = false;
 let flagVideoUser = false;
-let dataCatalog='';
 
 window.onload = function(){
 	$(".select-car-register").select2({
@@ -17,60 +16,6 @@ window.onload = function(){
 	$("#selectVisit").select2({
 	  tags: true
 	});
-
-	const urlParams = new URLSearchParams(window.location.search);
-	let ubicacion = urlParams.get('ubicacion');
-	let caseta = urlParams.get('caseta');
-	document.getElementById("textLocation").textContent=ubicacion;
-	document.getElementById("textModule").textContent=caseta;
-
-	let data=[
-		{"value":"vw","label":"volkswagen"},
-		{"value":"mrcs","label":"mercedes"},
-		{"value":"mrcs","label":"mercedes"},
-		{"value":"mrcs","label":"mercedes"}
-	];
-
-	//getCatalogMarca()
-	
-	$(document).ready(function(){
-	    generateOptions(data);
-	});
-
-	function generateOptions(data){
-	var selectList = document.getElementById('selectMarca');
-
-	//Create and append the options
-	for (var i = 0; i < data.length; i++) {
-	    var option = document.createElement("option");
-	    option.value = data[i].value;
-	    option.text = data[i].label;
-	    selectList.appendChild(option);
-	 }
-	}
-
-}
-
-function getCatalogMarca(){
-	fetch(urlLinkaform, {
-		method: 'POST',
-		body: JSON.stringify({
-			script_id: 12344,
-			option: 'query_CatalogMarcas',
-		}),
-		headers:{
-	      'Content-Type': 'application/json',
-	      'Authorization': 'Bearer '+userJwt,
-	      'Access-Control-Request-Headers':'*'
-	    },
-	})
-	.then(res => res.json())
-	.then(res => {
-		if (res.success) {
-			let data = res.response.json;
-			setDataInformation('data',data)
-		} 
-	})
 }
 
 //----Function Redirection
@@ -270,13 +215,13 @@ function setRequestFileImg(type) {
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 				}
 			}else{
-				console.log('Error aqui 2');
 				return 'Error';
+				console.log('Error aqui 2');
 			}
 		})
 		.catch(error => {
-			console.log('Error aqui 3');
 			return 'Error';
+			console.log('Error aqui 3');
 		});
 	}else{
 		return 'Error';

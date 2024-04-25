@@ -53,7 +53,7 @@ const columsDataGuardiasApoyo = [
             let data = cell.getData();
             //----Button Trash
             let folio = cell.getData().folio ? cell.getData().folio : 0;
-            let divActions = '<div class=" d-flex justify-content-center ml-0 ">';
+            let divActions = '<div class="row d-flex justify-content-center ml-0">';
             divActions += ` <input class="form-check-input" style="height:15px !important; width:2px;" type="checkbox">`;
             divActions += '</div>';
             return divActions;
