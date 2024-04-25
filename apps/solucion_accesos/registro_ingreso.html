@@ -24,17 +24,17 @@
 		<div class="row p-3">
 			<h2 class="text-center mb-5">Registro de Ingreso</h2>
 			<div class="col-12">
-				<p><span class="h5"><b>Ubicación:</b></span>&nbsp;&nbsp; <span id="textLocation">Planta Monterrey</span></p>
+				<p><span class="h5"><b>Ubicación:</b></span>&nbsp;&nbsp; <span id="textLocation"></span></p>
 			</div>
 			<div class="col-12">
-				<p><span class="h5"><b>Caseta:</b></span>&nbsp;&nbsp; <span id="textModule">Caseta de Vigilancia Norte</span></p>
+				<p><span class="h5"><b>Caseta:</b></span>&nbsp;&nbsp; <span id="textModule"></span></p>
 			</div>
 		</div>
 	</section>
 
 
 	<!-- Information User -->
-	<section style="display: none;">
+	<section >
 		<div class="row p-3">
 			<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-1">
 				<label class="form-label">Nombre Completo: *</label>
@@ -70,15 +70,23 @@
 				</div>
 				<input type="file" class="form-control mt-2" id="inputFileUser" disabled>
 			</div>
+			<div>
+				<label class="form-label">Nombre del Equipo:</label>
+				<input type="text" class="form-control" id="inputName">
+			</div>
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row" id="div-item">
 				<div class="col-9 div-item-row-1 div-row-item" >
-					<label class="form-label">Equipo: *</label>
+					<label class="form-label">Tipo:</label>
 					<select class="form-control select-item-register"  id="select-1">
 						<option value="">--Seleccione--</option>
 						<option value="1">Option 1</option>
 						<option value="2">Option 2</option>
 						<option value="3">Option 3</option>
 						<option value="4">Option 4</option>
+						<option value="3">Option 5</option>
+						<option value="4">Option 6</option>
+						<option value="3">Option 7</option>
+						<option value="4">Option 8</option>
 					</select>
 				</div>
 				<div class="col-3 pt-4 mt-2 div-item-row-1 ">
@@ -90,15 +98,15 @@
 					</button>
 				</div>
 			</div>
+			<div>
+				<label class="form-label">Matrícula del Vehículo:</label>
+				<input type="text" class="form-control" id="inputName">
+			</div>
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-1 row" id="div-car">
 				<div class="col-9 div-row-car div-car-row-1 div-row-car">
-					<label class="form-label">Vehículo: *</label>
-					<select class="js-example-basic-single js-states form-control select-car-register">
+					<label class="form-label">Marca: *</label>
+					<select class="js-example-basic-single js-states form-control select-car-register" id="selectMarca">
 						<option value="">--Seleccione--</option>
-						<option value="1">Option 1</option>
-						<option value="2">Option 2</option>
-						<option value="3">Option 3</option>
-						<option value="4">Option 4</option>
 					</select>
 				</div>
 				<div class="col-3 pt-4 mt-2 div-car-row-1">
@@ -112,13 +120,7 @@
 			</div>
 			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-1">
 				<label class="form-label">Empresa: *</label>
-				<select class="form-control" id="selectCompany">
-					<option>--Seleccione--</option>
-					<option value="Empresa 1">Empresa 1</option>
-					<option value="Empresa 2">Empresa 2</option>
-					<option value="Empresa 3">Empresa 3</option>
-					<option value="Empresa 4">Empresa 4</option>
-				</select>
+					<input type="text" class="form-control" id="selectCompany">
 			</div>
 			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-1">
 				<label class="form-label">¿A quíen visita?: *</label>
