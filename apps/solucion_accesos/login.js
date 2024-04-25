@@ -37,12 +37,18 @@ function get_login(){
 				let sessionId = res.session_id ? res.session_id: 0;
 				let userName = res.user.first_name ? res.user.first_name : '';
 				let userParentId = res.user.parent_info.id ? res.user.parent_info.id: '';
+				let userEmail = res.user.email ? res.user.email: '';
+				let userPosition = res.user.position ? res.user.position: '';
+				let userImg = res.user.thumb ? res.user.thumb: '';
 
 				setCookie("sessionid", sessionId, 7);
 				setCookie("userId", userId, 7);
 				setCookie("userJwt", userJwt, 7);
 				setCookie("userName", userName, 7);
 				setCookie("userParentId", userParentId,7);
+				setCookie("userEmail", userEmail,7);
+				setCookie("userPosition", userPosition,7);
+				setCookie("userImg", userImg,7);
 
 				//----Url
 				let protocol = window.location.protocol;

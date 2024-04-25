@@ -18,51 +18,10 @@ window.onload = function(){
 	});
 }
 
-//----Function Redirection
-function redirectionUrl(type = 'null',blank = true){
-    let urlNew =  '';
-    let protocol = window.location.protocol;
-    let host = window.location.host;
-    if(type == 'users'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
-    }else if(type == 'bitacora'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_bitacora_v2.html`
-    }else if(type == 'incidencias'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_incidencias_v2.html`
-    }else if(type == 'articulos'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_articulos_v2.html`
-    }else if(type == 'login'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/login.html`
-    }
-    //----Validation
-    if(urlNew !='' && blank){
-    	Object.assign(document.createElement('a'), {
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        href: urlNew,
-    	}).click();
-    }else if(urlNew !='' && !blank){
-    	Object.assign(document.createElement('a'), {
-        rel: 'noopener noreferrer',
-        href: urlNew,
-    	}).click();
-    }
-    
-}
-//-----Function  Data
-function isCanvasBlank(canvas) {
-  const context = canvas.getContext('2d');
-  const pixelBuffer = new Uint32Array(
-    context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
-  );
-  return !pixelBuffer.some(color => color !== 0);
-}
+
+//-----FUNCTION DATA
 
 function getValidation(dicData) {
-	console.log('dicData',dicData);
-	console.log('urlImgCard',urlImgCard);
-	console.log('urlImgUser',urlImgUser);
-
 	if(dicData.nameUser !== '' 
 	|| dicData.company !== '' 
 	|| dicData.visit !== ''){
@@ -131,6 +90,7 @@ function getDataUser() {
 	}
 }
 
+/*
 function setDataUser(){
 	//----Val
 	let codeUser  = $("#inputCodeUser").val();
@@ -174,9 +134,12 @@ function setDataUser(){
 		} 
 	})
 }
+*/
 
+
+
+//------FUNCTION IMG
 function setRequestFileImg(type) {
-	console.log('Entra a la query');
 	let idInput = '';
 	if(type == 'inputCard'){
 		idInput = 'inputFileCard';
@@ -228,7 +191,14 @@ function setRequestFileImg(type) {
 	}
 }
 
-//------Photo
+function isCanvasBlank(canvas) {
+  const context = canvas.getContext('2d');
+  const pixelBuffer = new Uint32Array(
+    context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+  );
+  return !pixelBuffer.some(color => color !== 0);
+}
+
 function getScreenCard(){
 	//-----Save Photo
 	if(!flagVideoCard){
@@ -349,7 +319,9 @@ function setTranslateImageCard(context, video, canvas){
     $("#buttonSaveCard").hide();
 }
 
-//------Elements List
+
+
+//------FUNCTION SET REPETITVE
 function setDeleteItem(id) {
 	const elements = document.querySelectorAll('.div-row-item');
 	const count = elements.length;
