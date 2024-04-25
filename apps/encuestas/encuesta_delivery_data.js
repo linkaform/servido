@@ -1,290 +1,220 @@
 
 var columsTable1 = [
-  { title:"Mes", field:'month',hozAlign:"left",width:200},
-  { title:"Actividad", field:'activity',hozAlign:"left",width:160 },
-  { title:"Cantidad",  field:'total',hozAlign:"left",width:150 },
+  { title:"Mes", field:'mes',hozAlign:"left",width:200},
+  { title:"Actividad", field:'actividad',hozAlign:"left",width:160 },
+  { title:"Cantidad",  field:'cantidad',hozAlign:"left",width:150 },
 ];
 
 
 var dataTable1 = [
   {
-    month: '2023-Junio',
-    total: '22', _children:[
+    mes: '2023-Junio',
+    actividad: '',
+    cantidad: '22', _children:[
       {
-        month: '2023-Junio',
-        activity: 'Reparto',
-        total: '24',
+        mes: '2023-Junio',
+        actividad: 'Reparto',
+        cantidad: '24',
       },
       {
-        month: '2023-Junio',
-        activity: 'Montaje',
-        total: '15',
+        mes: '2023-Junio',
+        actividad: 'Montaje',
+        cantidad: '15',
       },
       {
-        month: '2023-Junio',
-        activity: 'Recolección',
-        total: '18',
+        mes: '2023-Junio',
+        actividad: 'Recolección',
+        cantidad: '18',
       },
       {
-        month: '2023-Junio',
-        activity: 'Compras',
-        total: '15',
+        mes: '2023-Junio',
+        actividad: 'Compras',
+        cantidad: '15',
       },
       {
-        month: '2023-Junio',
-        activity: 'Paquetería',
-        total: '18',
+        mes: '2023-Junio',
+        actividad: 'Paquetería',
+        cantidad: '18',
       },
 
       ]
   },
   {
-    month: '2023-Julio',
-    activity: 'Reparto',
-    total: '2',
+    mes: '2023-Julio',
+    actividad: '2020-10-15',
+    cantidad: '2',
   },
   {
-    month: '2023-Agosto',
-    activity: 'Reparto',
-    total: '10',
+    mes: '2023-Agosto',
+    actividad: '2020-10-15',
+    cantidad: '10',
   }
   ,
   {
-    month: '2023-Septiembre',
-    activity: 'Reparto',
-    total: '24',
+    mes: '2023-Septiembre',
+    actividad: '2020-10-15',
+    cantidad: '24',
   },
   {
-    month: '2023-Octubre',
-    activity: 'Reparto',
-    total: '30',
+    mes: '2023-Octubre',
+    actividad: '2020-10-15',
+    cantidad: '30',
   },
   {
-    month: '2023-Noviembre',
-    activity: 'Reparto',
-    total: '40',
+    mes: '2023-Noviembre',
+    actividad: '2020-10-15',
+    cantidad: '40',
   }
 
 ];
 
 
 var columsTable2 = [
-  { title:"Mes", field:'month',hozAlign:"left",width:200},
-  { title:"Región", field:'region',hozAlign:"left",width:160 },
-  { title:"Usuario",  field:'user',hozAlign:"left",width:150 },
-  { title:"Cantidad",  field:'total',hozAlign:"left",width:150 },
+  { title:"Mes", field:'mes',hozAlign:"left",width:200},
+  { title:"Región", field:'ubicacion',hozAlign:"left",width:160 },
+  { title:"Usuario",  field:'usuario',hozAlign:"left",width:150 },
+  { title:"Cantidad",  field:'cantidad',hozAlign:"left",width:150 },
 ];
 
 
-var dataTable2B = [
+var dataTable2 = [
   {
     mes: '2023-Junio',
-    region: '',
-    user: '', 
-    total: '174',_children:[
+    ubicacion: '',
+    usuario: '', 
+    cantidad: '174',_children:[
         {
           mes: '',
-          region: 'Centro',
-          user: '',
-          total: '137',_children:[
+          ubicacion: 'Centro',
+          usuario: '',
+          cantidad: '137',_children:[
         {
           mes: '',
-          region: '',
-          user: 'Martín Layseca',
-          total: '57',
+          ubicacion: '',
+          usuario: 'Martín Layseca',
+          cantidad: '57',
         },
         {
           mes: '',
-          region: '',
-          user: 'Daniel López',
-          total: '15',
+          ubicacion: '',
+          usuario: 'Daniel López',
+          cantidad: '15',
         },
         {
           mes: '',
-          region: '',
-          user: 'Erick Robledo',
-          total: '20',
+          ubicacion: '',
+          usuario: 'Erick Robledo',
+          cantidad: '20',
         },
         {
           mes: ' ',
-          region: ' ',
-          user: 'Enrique Mata',
-          total: '45',
+          ubicacion: ' ',
+          usuario: 'Enrique Mata',
+          cantidad: '45',
         },
       ],
       },
       {
         mes: '',
-        region: 'Bajío',
-        user: '',
-        total: '37',_children:[
+        ubicacion: 'Bajío',
+        usuario: '',
+        cantidad: '37',_children:[
         {
           mes: '',
-          region: '',
-          user: 'Pedro Layseca',
-          total: '25',
+          ubicacion: '',
+          usuario: 'Pedro Layseca',
+          cantidad: '25',
         },
         {
           mes: '',
-          region: '',
-          user: 'Pablo López',
-          total: '12',
+          ubicacion: '',
+          usuario: 'Pablo López',
+          cantidad: '12',
         },
       ],
       },
       {
         mes: '',
-        region: 'Toluca',
-        user: '',
-        total: '',
+        ubicacion: 'Toluca',
+        usuario: '',
+        cantidad: '',
       },
 
       ],
   },
   {
     mes: '2023-Julio',
-    region: 'Centro',
-    user: 'Martín Layseca',
-    total: '2',
+    ubicacion: '2020-10-15',
+    usuario: 'Martín Layseca',
+    cantidad: '2',
   },
   {
     mes: '2023-Agosto',
-    region: 'Monterrey',
-    user: 'Martín Layseca',
-    total: '10',
+    ubicacion: '2020-10-15',
+    usuario: 'Martín Layseca',
+    cantidad: '10',
   }
   ,
   {
     mes: '2023-Septiembre',
-    region: 'Norte',
-    user: 'Martín Layseca',
-    total: '24',
+
+    ubicacion: '2020-10-15',
+    usuario: 'Martín Layseca',
+    cantidad: '24',
   },
   {
     mes: '2023-Octubre',
-    region: 'Sur',
-    user: 'Martín Layseca',
-    total: '30',
+    ubicacion: '2020-10-15',
+    usuario: 'Martín Layseca',
+    cantidad: '30',
   },
   {
     mes: '2023-Noviembre',
-    region: 'Centro',
-    user: 'Martín Layseca',
-    total: '40',
-  }
-
-];
-
-var dataTable2 = [
-  {
-    month: '2023-Junio',
-    _children:[
-        {
-          region: 'Centro',
-          total: '143',_children:[
-        {
-          user: 'Martín Layseca',
-          total: '57',
-        },
-        {
-          user: 'Daniel López',
-          total: '15',
-        },
-        {
-          user: 'Erick Robledo',
-          total: '20',
-        },
-        {
-          user: 'Enrique Mata',
-          total: '45',
-        },
-      ],
-      },
-      {
-        region: 'Bajío',
-        total: '37',_children:[
-        {
-          user: 'Pedro Layseca',
-          total: '35',
-        },
-        {
-          user: 'Pablo López',
-          total: '12',
-        },
-      ],
-      },
-      ],
-    total: '200',
-  },
-  {
-    month: '2023-Julio',
-    region: '2020-10-15',
-    user: 'Martín Layseca',
-    total: '2',
-  },
-  {
-    month: '2023-Agosto',
-    region: '2020-10-15',
-    user: 'Martín Layseca',
-    total: '10',
-  }
-  ,
-  {
-    month: '2023-Septiembre',
-    region: '2020-10-15',
-    user: 'Martín Layseca',
-    total: '24',
-  },
-  {
-    month: '2023-Octubre',
-    region: '2020-10-15',
-    user: 'Martín Layseca',
-    total: '30',
-  },
-  {
-    month: '2023-Noviembre',
-    region: '2020-10-15',
-    user: 'Martín Layseca',
-    total: '40',
+    ubicacion: '2020-10-15',
+    usuario: 'Martín Layseca',
+    cantidad: '40',
   }
 
 ];
 
 //----- CONFIG GRAPHIC
 var data1 = {
-  labels: ['2021-Enero'],
+
+  labels: ['2021-Enero','2021-Febrero','2021-Marzo','2021-Abril','2021-Mayo','2021-Junio','2021-Julio','2021-Agosto','2021-Septiembre','2021-Octubre','2021-Noviembre','2021-Diciembre','2022-Enero','2022-Febrero'],
   datasets: [
     {
       label: 'Reparto',
-      data: [1],
+      data: [1,28,13,10,25,40,35,40,40,45,50,50,60],
       borderColor: '#1a5276',
       backgroundColor: '#1a5276',
       fill: false
     },
     {
       label: 'Montaje',
-      data: [3],
+      data: [1,10,15,12,12,11,11,15,14,14,12,13,13,14],
       backgroundColor: ' #f39c12',
       borderColor: '#f39c12',
       fill: false
     },
     {
       label: 'Recolección',
-      data: [20],
+
+      data: [1,20,32,19,18,26,36,56,40,60,50,70,80,87],
       backgroundColor: '#2ecc71',
       borderColor: '#2ecc71',
       fill: false
     },
     {
       label: 'Compras',
-      data: [8],
+
+      data: [1,8,13,10,20,25,20,30,28,38,46,50,55,60],
       backgroundColor: '#7d3c98',
       borderColor: '#7d3c98',
       fill: false
     },
     {
       label: 'Paquetería',
-      data: [4],
+      data: [1,5,4,10,9,5,7,5,4,9,10,11,7,10],
       backgroundColor: '#cb4335',
       borderColor: '#cb4335',
       fill: false
@@ -331,21 +261,24 @@ var data2 = {
   datasets: [
     {
       label: 'Centro',
-      data: [28],
+
+      data: [1,28,13,10,25,40,35,40,40,45,50,50,60],
       backgroundColor: '#1a5276',
       borderColor:'#1a5276',
       fill: false
     },
     {
       label: 'Bajío',
-      data: [1],
+
+      data: [1,20,10,5,2,20,4,20,15,10,10,13,8,16],
       backgroundColor: '#117a65',
       borderColor:'#117a65',
       fill: false
     },
     {
       label: 'Toluca',
-      data: [135],
+
+      data: [1,15,16,20,20,40,50,30,38,40,70,90,76,80],
       backgroundColor: '#76448a',
       borderColor:'#76448a',
       fill: false
@@ -374,6 +307,14 @@ var setOptions2 = {
       position:'outside',
       textMargin: 5
     },
+
+    datalabels: {
+      color: 'white',
+      formatter: function (value, context){
+        var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return formato;
+      }
+    }
   },
   scales: {
     x: {
@@ -381,8 +322,8 @@ var setOptions2 = {
     },
     y: {
       min:0,
-      max:200,
+
+      max:120,
     }
   }
 };
-
