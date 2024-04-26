@@ -12,7 +12,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-        
+        <!--LIBRARY CHECK -->
+        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
         <!--Utils -->    
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -123,19 +124,9 @@
                         </select>
                     </div>
 
-                    <!--<div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Sucursal: </h5>
-                        <select class="form-control ds-input" id="tienda" name="tienda" >
-                           <option value="">Seleccione</option>
-                            <option value="--">Las palamas Ciudad de México</option>
-                            <option value="--">Rivera Maya</option>
-                            <option value="--">Guelaguetza Oaxaca</option>
-                        </select>
-                    </div> -->
-
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Sucursal: </h5>
-                        <select class="form-control mdb-select md-form" id="tienda" multiple="multiple" style="border:none !important;" >
+                        <select class="form-control mdb-select md-form" id="sucursal" multiple="multiple" style="border:none !important;" >
                             <option value="">--Seleccione--</option>
                         </select>
                     </div>
@@ -146,14 +137,15 @@
                             <option value="">--Seleccione--</option>
                         </select>
                     </div>
-
-                    
+                    <div class="col-sm-12 col-md-2 col-lg-2">
+                        <h5>Opción: </h5>
+                        <input type="checkbox"  data-toggle="toggle" data-width="130" data-on="Programada" data-off="Terminada" id="input_check" data-onstyle="success" data-offstyle="primary">
+                    </div>
 
                 </div>
 
                 <!--Content-->
                 <div class="row" id="divContent">
-
                     <div class="col-sm-12 col-md-12 col-lg-12 row" style="margin:auto;">
                         <div class="col-sm-12 col-md-4 col-lg-4" id="div_alert1">
                             <div class="card border-info m-2">

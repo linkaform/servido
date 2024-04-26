@@ -44,7 +44,6 @@ window.onload = function(){
   var qs = urlParamstoJson();
 	for(var key in qs){
     if (key === 'script_id' ){
-      console.log("script_id", key)
       scriptId = parseInt(qs[key]);
     }
     if (key === 'env') {
@@ -95,9 +94,6 @@ window.onload = function(){
   us = getCookie("userId");
   jw = getCookie("userJwt");
 
-  console.log(us)
-  console.log("++++++")
-  console.log(jw)
   if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
     unhideElement("close_sesion");
@@ -115,19 +111,15 @@ window.onload = function(){
       $('.div_card').hide();
       $('.title_tables').hide();
     }
-    $("#tienda").multipleSelect('refresh');
+    $("#sucursal").multipleSelect('refresh');
     $("#bodega").multipleSelect('refresh');
-    get_catalog();
-
+    get_catalog_request();
     //---HIDE AND SHOW
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
     document.getElementById("firstParameters").style.removeProperty('display');
-    console.log("Refresh")
-
   } else {
-    console.log("Demo")
     //loadDemoData()
     unhideElement("inicio_ses");
     hideElement("title_demo");
@@ -210,28 +202,6 @@ function loadDemoData(){
 const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
-
-function customCatalogView(res){
-  if (res){
-    $("#sucursalesLista").empty();
-    $('#sucursalesLista').append('<option value="--">--Seleccione--</option>');
-
-    for (i = 0; i < res.rows.length; i++) {
-      $('#sucursalesLista').append('<option value="'+res.rows[i].key+'">'+res.rows[i].key+'</option>');
-    }
-  }
-}
-
-function getRegionales(){
-  regionales = getCatalog(83987, 79950, 1, catalogType='select')
-}
-
-function getSucursales(){
-  sucursales = getCatalog(79975,79950,1,catalogType='custom');
-}
-
-
-
 function runFirstElement(){
   //--show alert
   unHideReportElements()
@@ -240,14 +210,19 @@ function runFirstElement(){
   let pais = document.getElementById('pais');
   let regional = document.getElementById("regional");
   let transversal = $('#transversal').val();
-  let sucursal = $('#tienda').val();
+  let sucursal = $('#sucursal').val();
   let bodega = $("#bodega").val();
-  console.log(regional.value)
+  let option = 'terminada';
+  if (document.getElementById('input_check').checked)
+  {
+    option = 'programada';
+  }
+
   if(regional.value=="--"){
     Swal.fire({
-          title:"Opps",
-          text:"Necesita seleccionar un regional.",
-        })
+      title:"Opps",
+      text:"Necesita seleccionar un regional.",
+    })
   }else{
     firstElement =getFirstElement( 
       date_from.value, 
@@ -256,8 +231,9 @@ function runFirstElement(){
       regional.value,
       transversal,
       sucursal,
-      bodega
-      );
+      bodega,
+      option
+    );
 
   }
   //--Syle
@@ -268,7 +244,7 @@ function runFirstElement(){
   document.getElementById("firstParameters").style.removeProperty('display');
 };
 
-function getFirstElement(date_from, date_to, pais, regional, transversal, sucursal, bodega){
+function getFirstElement(date_from, date_to, pais, regional, transversal, sucursal, bodega, status){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -293,6 +269,7 @@ function getFirstElement(date_from, date_to, pais, regional, transversal, sucurs
       transversal: transversal,
       sucursal: sucursal,
       bodega:bodega,
+      status:status,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -935,3 +912,100 @@ function get_catalog()
     } 
   })
 };
+
+//-----CATALOGS
+function get_catalog_request(){
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: 113130,
+      option: 'get_catalogs',
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      let data = res.response;
+      if ('catalog_country' in data && data['catalog_country'] !== '') {
+        let data_list = data['catalog_country'];
+        set_data_catalog('catalogCountry',data_list);
+      }
+      if ('catalog_transverse' in data && data['catalog_transverse'] !== '') {
+        let data_list = data['catalog_transverse'];
+        set_data_catalog('catalogTransverse',data_list);
+      }
+      if ('catalog_regional' in data && data['catalog_regional'] !== '') {
+        let data_list = data['catalog_regional'];
+        set_data_catalog('catalogRegional',data_list);
+      }
+      if ('catalog_branch_winery' in data) {
+        let data_list_branch = data['catalog_branch_winery']['branch'];
+        let data_list_winery = data['catalog_branch_winery']['winery'];
+        if(data_list_branch != ''){
+          set_data_catalog('catalogBranch',data_list_branch);
+        }
+        if(data_list_winery != ''){
+          set_data_catalog('catalogWinery',data_list_winery);
+        }
+      }
+    } else {
+      console.log('Error',res.error);
+    }
+  })
+}
+
+
+function set_data_catalog(type, data){
+  if(type == 'catalogCountry'){
+    var select = document.getElementById("pais");
+    for (var i = 0; i < data.length; i++) {
+      var element = data[i];
+      var optionElement = document.createElement("option"); 
+      optionElement.text = element; 
+      optionElement.value = element; 
+      select.appendChild(optionElement); 
+    }
+  }else if(type == 'catalogTransverse'){
+    var select = document.getElementById("transversal");
+    for (var i = 0; i < data.length; i++) {
+      var element = data[i];
+      var optionElement = document.createElement("option"); 
+      optionElement.text = element; 
+      optionElement.value = element; 
+      select.appendChild(optionElement); 
+    }
+  }else if(type == 'catalogRegional'){
+    var select = document.getElementById("regional");
+    for (var i = 0; i < data.length; i++) {
+      var element = data[i];
+      var optionElement = document.createElement("option"); 
+      optionElement.text = element; 
+      optionElement.value = element; 
+      select.appendChild(optionElement); 
+    }
+  }else if(type == 'catalogBranch'){
+    var select = document.getElementById("sucursal");
+    for (var i = 0; i < data.length; i++) {
+      var element = data[i];
+      var optionElement = document.createElement("option"); 
+      optionElement.text = element; 
+      optionElement.value = element; 
+      select.appendChild(optionElement); 
+    }
+    $("#sucursal").multipleSelect('refresh');
+  }else if(type == 'catalogWinery'){
+    var select = document.getElementById("bodega");
+    for (var i = 0; i < data.length; i++) {
+      var element = data[i];
+      var optionElement = document.createElement("option"); 
+      optionElement.text = element; 
+      optionElement.value = element; 
+      select.appendChild(optionElement); 
+    }
+    $("#bodega").multipleSelect('refresh');
+  }
+}
