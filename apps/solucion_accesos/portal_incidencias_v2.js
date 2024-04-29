@@ -90,6 +90,7 @@ const dataTable2 = [
 
 
 window.onload = function(){
+	changeValueUserLocation('portal_incidencias_v2');
 	setSpinner(true, 'divSpinner');
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");

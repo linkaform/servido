@@ -19,10 +19,10 @@ var dataTableNotas = [
 ];
 
 const columsDataNotas = [
-	{title:"Guardia", field:"name", width:160, responsive:0}, //never hide this column
+    {title:"Guardia", field:"name", width:160, responsive:0}, //never hide this column
     {title:"Nota", field:"note", width:330},
-	{ title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:110,
-		 formatter: (cell, formatterParams) => {
+    { title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:110,
+         formatter: (cell, formatterParams) => {
             //----Button Trash
             let folio = cell.getData().folio ? cell.getData().folio : 0;
             let divActions = '<div class="row d-flex">';
@@ -32,7 +32,7 @@ const columsDataNotas = [
             divActions += '</div>';
             return divActions;
         },
-	},
+    },
 ];
 
 const columsDataGuardiasApoyo = [
@@ -64,6 +64,9 @@ const columsDataGuardiasApoyo = [
 
 
 window.onload = function(){
+    changeValueUserLocation('portal_turns');
+  
+   
     let user = getCookie("userId");
     let jw = getCookie("userJwt");
 
@@ -71,9 +74,13 @@ window.onload = function(){
        drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
        drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "475px");
     } else{
-		redirectionUrl('login',false);
-	}
-
+        redirectionUrl('login',false);
+    }
+    $("#textName").html(getCookie('userName'));
+    $("#textPosition").text(getCookie('userPosition'));
+    $("#textEmail").text(getCookie('userEmail'));
+    $("#imgProfilePic").attr("src", getCookie('userImg'));
+    $("#textUbicacion").html()
 }
 
 //-----TABLES
@@ -89,43 +96,5 @@ function drawTableNotas(id, columnsData, tableData, height){
   });
 }
 
-//----Function Redirection
-function redirectionUrl(type = 'null',blank = true){
-    let urlNew =  '';
-    let protocol = window.location.protocol;
-    let host = window.location.host;
-    if(type == 'users'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
-    }else if(type == 'bitacora'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_bitacora_v2.html`
-    }else if(type == 'incidencias'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_incidencias_v2.html`
-    }else if(type == 'articulos'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_articulos_v2.html`
-    }else if(type == 'login'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/login.html`
-    }else if(type == 'rondines'){
-        urlNew = `${protocol}//${host}/solucion_accesos/portal_rondines.html`
-    }
-    //----Validation
-    if(urlNew !='' && blank){
-    	Object.assign(document.createElement('a'), {
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        href: urlNew,
-    	}).click();
-    }else if(urlNew !='' && !blank){
-    	Object.assign(document.createElement('a'), {
-        rel: 'noopener noreferrer',
-        href: urlNew,
-    	}).click();
-    }
-    
-}
 
 
-//---Close Sesión
-function setCloseSession(argument) {
-	closeSession();
-	redirectionUrl('login',false);
-}

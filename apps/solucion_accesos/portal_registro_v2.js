@@ -65,6 +65,7 @@ const dataTable2 = [
 
 
 window.onload = function(){
+	changeValueUserLocation('portal_registro_v2');
 	setHideElements('dataHide');
 	setSpinner(true, 'divSpinner');
 	let user = getCookie("userId");

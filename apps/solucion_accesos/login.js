@@ -1,4 +1,7 @@
+
+
 window.onload = function(){
+	changeValueUserLocation('login');
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
 	if(user !='' && jw!=''){
@@ -11,6 +14,7 @@ window.onload = function(){
 			href: urlNew,
 		}).click();
 	}
+
 }
 
 
@@ -49,7 +53,6 @@ function get_login(){
 				setCookie("userEmail", userEmail,7);
 				setCookie("userPosition", userPosition,7);
 				setCookie("userImg", userImg,7);
-
 				//----Url
 				let protocol = window.location.protocol;
 				let host = window.location.host;
@@ -79,3 +82,4 @@ function setCookie(cname, cvalue, exdays) {
 	var expires = "expires="+d.toUTCString();
 	document.cookie = cname + "=" + cvalue + "; " + expires;
 }
+

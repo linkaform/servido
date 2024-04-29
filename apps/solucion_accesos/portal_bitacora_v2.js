@@ -80,6 +80,7 @@ const dataTable2 = [
 ]
 
 window.onload = function(){
+	changeValueUserLocation('portal_bitacora_v2');
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
 	if(user !='' && jw!=''){

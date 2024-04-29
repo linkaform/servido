@@ -12,21 +12,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-	<nav class="navbar header">
-        <div class="navbar-brand">
-            <img src="https://app.linkaform.com/img/login-linkaform-logo.png" height="30" class="d-inline-block align-top" alt="">
-        </div>
-        <div class="navbar-brand">
-            <button class="btn btn-secondary" onclick="redirectionUrl('users');return false;" >Accesos</button>   
-            <button class="btn btn-secondary" onclick="redirectionUrl('bitacora');return false;" >Bitacoras</button>   
-            <button class="btn btn-secondary" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
-            <button class="btn btn-secondary" onclick="redirectionUrl('articulos');return false;" disabled>Articulos</button>   
-            <button class="btn btn-secondary">Rondines</button>   
-            <button class="btn btn-warning" onclick="setCloseSession();return false;">
-            	<i class="fa-solid fa-right-from-bracket"></i>
-            </button>   
-        </div>
-    </nav>
+	<iframe class='customNavbar' src="./navbar.html"></iframe>
 	
 
 	<!-- Information Plant-->
@@ -693,6 +679,7 @@
 </body>
 <!-- Local -->
 <script src="./portal_articulos_v2.js"></script>
+<script src="./functions.js"></script>
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>

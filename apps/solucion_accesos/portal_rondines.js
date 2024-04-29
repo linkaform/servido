@@ -1,5 +1,6 @@
 
 window.onload = function(){
+    changeValueUserLocation('portal_rondines');
     let user = getCookie("userId");
     let jw = getCookie("userJwt");
 

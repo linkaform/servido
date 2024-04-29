@@ -238,6 +238,23 @@ th {
 
 }
 .form-check-input{
-  margin-top: 25%;
-  padding: 10px;
+  margin-top: 9%;
+  padding: 10px; 
+}
+
+.marginSection{
+}
+
+.customNavbar{
+  width: 100% !important;
+  z-index: 999 !important;
+  height: 70px;
+ position:relative !important;
+ margin:0px;
+ padding: 0px;
+
+}
+
+.myCustomDropdown{
+  z-index: 999 !important;
 }

@@ -1,9 +1,17 @@
+let userJwt ="";
+let urlLinkaform='https://app.linkaform.com/api/';
+let urlScripts='infosync/scripts/run/';
+let idScriptCatalog=117935;
+let opScriptCatalog='catalog_brands';
 let urlImgCard = '';
 let urlImgUser = '';
 let flagVideoCard = false;
 let flagVideoUser = false;
 
+let dataCatalogs="";
 window.onload = function(){
+	changeValueUserLocation('registro_ingreso');
+	userJwt = getCookie('userJwt');
 	$(".select-car-register").select2({
 	  tags: true
 	});
@@ -16,9 +24,91 @@ window.onload = function(){
 	$("#selectVisit").select2({
 	  tags: true
 	});
+	const valores = window.location.search;
+	const urlParams = new URLSearchParams(valores);
+
+	let ubicacion = urlParams.get('ubicacion');
+	let caseta = urlParams.get('caseta');
+	$("#textLocation").text(ubicacion);
+	$("#textModule").text(caseta);
+  getCatalogTipoVehiculo()
+}	
+
+
+function getCatalogTipoVehiculo(){
+	$("#selectTipoVehiculo").prop( "disabled", true );
+	$("#divCatalogMarca").hide();
+	$("#divCatalogModelo").hide();
+
+	$("#selectTipoVehiculo").append($('<option></option>').val('cargando').text('Cargando...'));
+	fetch(urlLinkaform + urlScripts, {
+		method: 'POST',
+		body: JSON.stringify({
+			script_id: idScriptCatalog,
+			option: opScriptCatalog,
+		}),
+		headers:{
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer '+userJwt
+			},
+	})
+	.then(res => res.json())
+	.then(res => {
+		if (res.success) {
+			dataCatalogs = res.response.data;
+
+			$("#selectTipoVehiculo").prop( "disabled", false );
+			$("#spinnerTipoVehiculo").css("display", "none");
+			$("#selectTipoVehiculo").find('[value="cargando"]').remove();
+			$("#selectTipoVehiculo").append($('<option disabled selected></option>').val('').text('--Selecione--'));
+
+			dataCatalogs.types_cars.forEach(function(e, i){
+			$("#selectTipoVehiculo").append($('<option></option>').val(e).text(e));
+			});
+
+		} 
+	})
+}
+
+function onChangeTipoVehiculo(){
+	$("#divCatalogMarca").show();
+	$("#selectCatalogMarca").empty();
+	$("#selectCatalogMarca").append($('<option disabled selected></option>').val('').text('--Selecione--'));
+	 let selectedValue = $( "#selectTipoVehiculo option:selected" ).text();
+   let catalogMarca = filterCatalogBy('type', selectedValue);
+	for (let obj in catalogMarca){
+			$("#selectCatalogMarca").append($('<option></option>').val(catalogMarca[obj].brand).text(catalogMarca[obj].brand));
+	}
+
+}
+
+function onChangeMarca(){
+	$("#divCatalogModelo").show();
+	$("#selectCatalogModelo").empty();
+	$("#selectCatalogModelo").append($('<option disabled selected></option>').val('').text('--Selecione--'));
+	 let selectedValue = $( "#selectCatalogMarca option:selected" ).text();
+   let catalogMarca = filterCatalogBy('brand', selectedValue);
+	 console.log("VALORESCOGISDOO MARCAA", catalogMarca);
+
+	for (let obj in catalogMarca){
+			$("#selectCatalogModelo").append($('<option></option>').val(catalogMarca[obj].model).text(catalogMarca[obj].model));
+	}
 }
 
 
+function filterCatalogBy(key, value ){
+		/*INFO: 
+		key: podermos filtrar por 'type' (marca) o 'brand' (modelo)
+		value: valor de type o model segun corresponda
+		*/
+	let dataCatalogChild="";
+	if(key == 'type'){
+		dataCatalogChild = dataCatalogs.brands_cars.filter(obj => obj.type == value);
+	}else{
+		dataCatalogChild = dataCatalogs.model_cars.filter(obj => obj.brand == value);
+	}
+	return dataCatalogChild;
+}
 //-----FUNCTION DATA
 
 function getValidation(dicData) {
@@ -178,13 +268,13 @@ function setRequestFileImg(type) {
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 				}
 			}else{
-				return 'Error';
 				console.log('Error aqui 2');
+				return 'Error';
 			}
 		})
 		.catch(error => {
-			return 'Error';
 			console.log('Error aqui 3');
+			return 'Error';
 		});
 	}else{
 		return 'Error';
@@ -393,3 +483,10 @@ function setAddCar() {
 	});
 }
 
+
+function setCookie(cname, cvalue, exdays) {
+	var d = new Date();
+	d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	var expires = "expires="+d.toUTCString();
+	document.cookie = cname + "=" + cvalue + "; " + expires;
+}
