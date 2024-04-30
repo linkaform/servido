@@ -364,7 +364,7 @@ var setOptions2 = {
       },
       title: {
           display: true,
-          text: 'Evaluaciones por Regional',
+          text: 'Evaluaciones por Transversal',
           font: {
             size: 25
           }
@@ -399,7 +399,7 @@ var setOptions3 = {
       },
       title: {
           display: true,
-          text: 'Evaluaciones por Transversal',
+          text: 'Evaluaciones por Regional ',
           font: {
             size: 25
           }
