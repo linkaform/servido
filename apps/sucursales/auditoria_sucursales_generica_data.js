@@ -329,7 +329,7 @@ var setOptions1 = {
       },
       title: {
           display: true,
-          text: 'Grafica 1',
+          text: 'Evaluaciones por Sucursal',
           font: {
             size: 25
           }
@@ -364,7 +364,7 @@ var setOptions2 = {
       },
       title: {
           display: true,
-          text: 'Grafica 2',
+          text: 'Evaluaciones por Regional',
           font: {
             size: 25
           }
@@ -399,7 +399,7 @@ var setOptions3 = {
       },
       title: {
           display: true,
-          text: 'Grafica 3',
+          text: 'Evaluaciones por Transversal',
           font: {
             size: 25
           }
@@ -434,7 +434,7 @@ var setOptions4 = {
       },
       title: {
           display: true,
-          text: 'Grafica 4',
+          text: 'Evaluaciones por sección',
           font: {
             size: 25
           }
