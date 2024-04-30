@@ -54,6 +54,9 @@ window.onload = function(){
     if (key ==='title'){
       $("#title_report").text(qs[key]);
     }
+    if (key ==='report'){
+      $("#close_sesion").hide();
+    }
     //get_parameters();
     var formNode = document.getElementById("appCont");
 		var elements = getAllElementsWithAttribute(formNode, 'data-infosync-id', key);
