@@ -128,7 +128,6 @@ var setOptions5 = {
 };
 
 
-
 var columsTable1 = [
   { title:"Pregunta", field:'pregunta', hozAlign:"left",dir:"asc", headerFilter:"input",width:650},
   { title:"Item OK" , field:'items_ok', hozAlign:"center", width:250, },
@@ -212,7 +211,6 @@ var dataTable1 = [
 
 
 
-
 var columsTable2 = [
   { title:"Sucursales", field:'sucursal', hozAlign:"left",width:650},
   { title:"Fecha", field:'fecha', hozAlign:"left",width:150},
@@ -232,7 +230,6 @@ var columsTable2 = [
     hozAlign:"right", dir:"asc", width:150 
   },
 ];
-
 
 var dataTable2 = [
   {
@@ -268,6 +265,200 @@ var dataTable2 = [
     "score": 89.8,
   },
 ]
+
+
+let dataGraphic1 = {
+  'labels':['Localización 1','Localización 2','Localización 3','Localización 4','Localización 5'],
+  'datasets':[
+      {
+        'label': 'Puntaje',
+        'data': [10,15,17,19,20],
+        'backgroundColor': '#3C5B6F',
+        'borderColor': '#3C5B6F',
+        'title':['10/15','15/15','17/20','19/20','20/20']
+      },
+  ]
+}
+
+let dataGraphic2 = {
+  'labels':['Localización 1','Localización 2','Localización 3','Localización 4','Localización 5'],
+  'datasets':[
+      {
+        'label': 'Puntaje',
+        'data': [10,15,17,19,20],
+        'backgroundColor': '#3C5B6F',
+        'borderColor': '#3C5B6F',
+        'title':['10/15','15/15','17/20','19/20','20/20']
+      },
+  ]
+}
+
+let dataGraphic3 = {
+  'labels':['Localización 1','Localización 2','Localización 3','Localización 4','Localización 5'],
+  'datasets':[
+      {
+        'label': 'Puntaje',
+        'data': [10,15,17,19,20],
+        'backgroundColor': '#3C5B6F',
+        'borderColor': '#3C5B6F',
+        'title':['10/15','15/15','17/20','19/20','20/20']
+      },
+  ]
+}
+
+let dataGraphic4 = {
+  'labels':['Pagina 1','Pagina 2','Pagina 3','Pagina 4','Pagina 5'],
+  'datasets':[
+      {
+        'label': 'Puntaje',
+        'data': [10,15,17,19,20],
+        'backgroundColor': '#3C5B6F',
+        'borderColor': '#3C5B6F',
+        'title':['10/15','15/15','17/20','19/20','20/20']
+      },
+  ]
+}
+
+//------DATA GRAPHICS
+var setOptions1 = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      title: {
+          display: true,
+          text: 'Grafica 1',
+          font: {
+            size: 25
+          }
+      },
+      datalabels: {
+        color: 'white',
+        font: {
+          size: 25
+        },
+        formatter: function (value, context){
+          let dataIndex = context.dataIndex;
+          let dataTitle = context.dataset.title[dataIndex];
+          return dataTitle;
+        }
+      }
+  },
+    scales: {
+      y: {
+          ticks: {
+            stepSize: 1
+          },
+      }
+    }
+};
+
+var setOptions2 = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      title: {
+          display: true,
+          text: 'Grafica 2',
+          font: {
+            size: 25
+          }
+      },
+      datalabels: {
+        color: 'white',
+        font: {
+          size: 25
+        },
+        formatter: function (value, context){
+          let dataIndex = context.dataIndex;
+          let dataTitle = context.dataset.title[dataIndex];
+          return dataTitle;
+        }
+      },
+    scales: {
+      y: {
+          ticks: {
+            stepSize: 1
+          },
+      }
+    }
+  }
+};
+
+var setOptions3 = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      title: {
+          display: true,
+          text: 'Grafica 3',
+          font: {
+            size: 25
+          }
+      },
+      datalabels: {
+        color: 'white',
+        font: {
+          size: 25
+        },
+        formatter: function (value, context){
+          let dataIndex = context.dataIndex;
+          let dataTitle = context.dataset.title[dataIndex];
+          return dataTitle;
+        }
+      },
+  },
+    scales: {
+      y: {
+          ticks: {
+            stepSize: 1
+          },
+      }
+    }
+};
+
+var setOptions4 = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      title: {
+          display: true,
+          text: 'Grafica 4',
+          font: {
+            size: 25
+          }
+      },
+      datalabels: {
+        color: 'white',
+        font: {
+          size: 25
+        },
+        formatter: function (value, context){
+          let dataIndex = context.dataIndex;
+          let dataTitle = context.dataset.title[dataIndex];
+          return dataTitle;
+        }
+      },
+  },
+    scales: {
+      y: {
+          ticks: {
+            stepSize: 1
+          },
+      }
+    }
+};
 
 //------DATA GRAPHICS
 var setOptions6 = {
@@ -325,7 +516,6 @@ var dataFivethElement = {
 };
 
 //-----DATA GAUGE
-
 var dataGauge1 = [
   {
     domain: { x: [0, 1], y: [0, 1] },

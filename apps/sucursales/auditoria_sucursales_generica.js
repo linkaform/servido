@@ -183,20 +183,23 @@ function loadDemoData(){
 
   document.getElementById("firstParameters").style.removeProperty('display');
 
+  //---Accountans
   document.getElementById("textAlert1").innerText = 10;
   document.getElementById("textAlert2").innerText = 10;
-  drawFirstElement(dataFirstElement);
-  drawSecondElement(dataSecondElement);
-  drawThirdElement(dataThirdElement);
-  drawFourthElement(dataFourthElement);
+  getDrawGauge('gaugeFirst', 80);
+
+  //---Graphic
+
+  drawGraphicFirst(dataGraphic1,setOptions1)
+  drawGraphicSecond(dataGraphic2,setOptions2)
+  drawGraphicThird(dataGraphic3,setOptions3)
+  drawGraphicFourth(dataGraphic4,setOptions4)
   drawFivethElement(dataFivethElement);
+  //----Css
   unhideElement("seventhElement")
   unhideElement("eigthElement");
   unhideElement("fivethElement")
-  getDrawGauge('gaugeFirst', dataGauge1)
-  document.getElementById("firstGauge").style.removeProperty('display');
   $("#tienda").multipleSelect('refresh');
-
 }
 
 const loading = document.querySelector('.loading-container');
@@ -256,7 +259,6 @@ function getFirstElement(date_from, date_to, pais, regional, transversal, sucurs
   $("#secondElement").html("");
   $("#thirdElement").html("");
   $("#fivethElement").html("");
-  console.log('Transversal:',transversal);
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
@@ -302,7 +304,6 @@ function getFirstElement(date_from, date_to, pais, regional, transversal, sucurs
 
       let sucEvaluada = 0
       let numEval = 0
-      let promedio = 0
       if (res.response.json.firstElement)
       {
         document.getElementById("textAlert1").innerText = res.response.json.firstElement.numSucursales[0]['total'];
@@ -313,78 +314,30 @@ function getFirstElement(date_from, date_to, pais, regional, transversal, sucurs
         document.getElementById("textAlert2").innerText = res.response.json.firstElement.numEvaluaciones[0]['total'];
         numEval = res.response.json.firstElement.numEvaluaciones[0]['total'];
       }
-     
       if (res.response.json.thirdElement){
-        console.log("D A T A")
-        //Gráfico de Evaluaciones por sucursal
-        drawFirstElement(res.response.json.thirdElement.data);
-        res.response.json.thirdElement.data.forEach(element =>{
-          promedio += element['score']
-        })
-        promedio = promedio / res.response.json.thirdElement.data.length;
-        unhideElement("firstElement")
-        $("#download_firstElement").show();
-      }
-       if (res.response.json.secondElement)
-      {
-        
-        dataGauge = [
-        {
-          domain: { x: [0, 1], y: [0, 1] },
-          value: promedio,
-          title: { text: "Resultado promedio" , 'font': {'size': 22} },
-          type: "indicator",
-          mode: "gauge+number",
-          gauge: {
-          axis: { range: [null, 100], tickwidth: 1},
-          bar: { color: "#018088" },
-          bgcolor: "white",
-          borderwidth: 2,
-          bordercolor: "gray",
-          steps: [
-
-          { range: [0, 100], color: "#fff" }
-          ],
-          },
-        }
-        ];
-        getDrawGauge('gaugeFirst', dataGauge)
-        //document.getElementById("firstGauge").style.removeProperty('display');
+        let data = res.response.json.thirdElement.data;
+        average = data.datasets[0].data.length > 0 ?  getAverageData(data.datasets[0].data) : 0;
+        drawGraphicFirst(data, setOptions1);
+        getDrawGauge('gaugeFirst', average)
       }
       if (res.response.json.fourthElement){
-        //Grafico de evaluaciones por sucursal
-        unhideElement("fourthElement")
-        $("#download_secondElement").show();
-        drawFourthElement(res.response.json.fourthElement.data);
+        let data = res.response.json.fourthElement.data;
+        drawGraphicSecond(data, setOptions2);
       }
       if (res.response.json.fivethElement){
-        //Grafico para evaluacioens por regional
-        unhideElement("secondElement")
-        $("#download_secondElement").show();
-        drawSecondElement(res.response.json.fivethElement.data);
+        let data = res.response.json.fivethElement.data;
+        drawGraphicThird(data, setOptions3);
       }
       if (res.response.json.sixthElement){
-        //Grafico para evaluaciones por sección
-        unhideElement("thirdElement")
-        $("#download_thirdElement").show();
-        drawThirdElement(res.response.json.sixthElement.data);
+        let data = res.response.json.sixthElement.data;
+        drawGraphicFourth(data, setOptions4);
       }
       if (res.response.json.seventhElement){
-        console.log("------------------------")
-        console.log(res.response.json.seventhElement)
-        console.log("------------------------")
         unhideElement("seventhElement")
         unhideElement("eigthElement");
         unhideElement("fivethElement")
         drawFivethElement(res.response.json.seventhElement);
-        $("#download_fivethElement").show();
-        //drawFivethElement(res.response.json.seventhElement);
       }
-      /*if (res.response.json.fourthElement.length){
-        getDrawTable('fivethElement', columsTable1, res.response.json.fourthElement, 'auto');
-        document.getElementById("fivethElement").style.removeProperty('display');
-      }*/
-      
     } else {
       hideLoading();
       if(res.code == 11){
@@ -404,294 +357,68 @@ function getFirstElement(date_from, date_to, pais, regional, transversal, sucurs
   })
 };
 
-//-----GRAPHIC
-function drawFirstElement(data){
-  console.log("Primer elemento")
-   $('#firstElement').empty();
-   const margin = {top: 30, right: 30, bottom: 150, left: 110},
-       width = 1800 - margin.left - margin.right,
-       height = 650 - margin.top - margin.bottom;
+//-----GRAPICH
+let chart1;
+function drawGraphicFirst(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicFirst').getContext('2d');
+  if (chart1) {
+    chart1.destroy();
+  }
 
-   // append the svg object to the body of the page
-   const svg = d3.select("#firstElement")
-     .append("svg")
-       .attr("width", width + margin.left + margin.right)
-       .attr("height", height + margin.top + margin.bottom)
-     .append("g")
-       .attr("transform", `translate(${margin.left},${margin.top})`);
-
-   // Parse the Data
-   // d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv").then( function(data) {
-   d3.json("https://f001.backblazeb2.com/file/app-linkaform/public-client-126/561/5a7269f5f851c20c1bc7e87a/625de318a5b8b1b47d98bf51.txt").then( function(notUsed) {
-     // data = res.response.json;
-
-   // X axis
-      const x = d3.scaleBand()
-     .range([ 0, width ])
-     .domain(data.map(d => d.sucursal))
-     .padding(0.2);
-
-      svg.append("g")
-      .attr("transform", `translate(0, ${height})`)
-      .call(d3.axisBottom(x))
-      .selectAll("text")
-      .attr("transform", "translate(-10,0)rotate(-45)")
-      .style("font-size", "13px")
-      .style("text-anchor", "end");
-
-    // Add Y axis
-    const y = d3.scaleLinear()
-    .domain([0, 10])
-    .range([ height, 0]);
-
-    svg.append("g")
-    .call(d3.axisLeft(y));
-
-
-    svg.selectAll("mybar")
-      .data(data)
-      .enter()
-      .append('rect')
-      .attr("x", d => x(d.sucursal))
-      .attr("y", d => y(d.score))
-      .attr("fill", function(d) {
-        
-        if (d.score >= 80) {
-          return "#27ae60";
-        } else if (d.score >= 60 && d.score<=79.999) {
-          return "#f1c40f";
-        }
-        else if(d.score<=59.9999)
-        {
-          return " #e74c3c ";
-        }
-      })
-      .attr("width", x.bandwidth())
-      .attr("height", d => height - y(d.score))
-    })
-
-
-   //--Title
-   svg.append("text")
-  .attr("x", (width / 2))
-  .attr("y", 10 - (margin.top / 2))
-  .attr("text-anchor", "middle")
-  .style("font-size", "21px")
-  .text("Evaluaciones por Sucursal");
-
-   //----Toltip
-  const x = d3.scaleBand()
-  .range([ 0, width ])
-  .domain(data.map(d => d.sucursal))
-  .padding(0.2);
-
-  const y = d3.scaleLinear()
-  .domain([0, 10])
-  .range([ height, 0]);
-  svg.append("g")
-  .call(d3.axisLeft(y));
-
-  svg.selectAll(".label")
-  .data(data)
-  .enter()
-  .append('text')
-  .text((data) => (data.score) + '% / ' +data.total)
-  .attr('x', data => x(data.sucursal) + x.bandwidth() / 2)
-  .attr('y', data => y(data.score) - 15)
-  .style('fill','#494949')
-  .style("font-size", "13.5px")
-  .attr('text-anchor','middle');
+  chart1 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
 }
 
-function drawSecondElement(data){
-   $('#secondElement').empty();
-    const margin = {top: 30, right: 30, bottom: 210, left: 90},
-       width = 800 - margin.left - margin.right,
-      //height = 650 - margin.top - margin.bottom;
-      height = 850 - margin.top - margin.bottom;
-
-   // append the svg object to the body of the page
-   const svg = d3.select("#secondElement")
-     .append("svg")
-       .attr("width", width + margin.left + margin.right)
-       .attr("height", height + margin.top + margin.bottom)
-     .append("g")
-       .attr("transform", `translate(${margin.left},${margin.top})`);
-
-   // Parse the Data
-   // d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv").then( function(data) {
-   d3.json("https://f001.backblazeb2.com/file/app-linkaform/public-client-126/561/5a7269f5f851c20c1bc7e87a/625de318a5b8b1b47d98bf51.txt").then( function(notUsed) {
-     // data = res.response.json;
-     console.log('data', data)
-   // X axis
-   const x = d3.scaleBand()
-     .range([ 0, width ])
-     .domain(data.map(d => d.regional))
-     .padding(0.2);
-
-    svg.append("g")
-    .attr("transform", `translate(0, ${height})`)
-    .call(d3.axisBottom(x))
-    .selectAll("text")
-    .attr("transform", "translate(-10,0)rotate(-45)")
-    .style("font-size", "17px")
-    .style("text-anchor", "end");
-
-   // Add Y axis
-   const y = d3.scaleLinear()
-     .domain([0, 10])
-     .range([ height, 0]);
-
-       svg.append("g")
-  .call(d3.axisLeft(y));
-   // Bars
-   svg.selectAll("mybar")
-     .data(data)
-     .join("rect")
-       .attr("x", d => x(d.regional))
-       .attr("y", d => y(d.score))
-       .attr("fill", function(d) {
-          if (d.score >= 80) {
-            return "#27ae60";
-          } else if (d.score >= 60 && d.score<=79.999) {
-            return "#f1c40f";
-          }
-          else if(d.score<=59.999)
-          {
-            return " #e74c3c ";
-          }
-        })
-       .attr("width", x.bandwidth())
-       .attr("height", d => height - y(d.score))
-   })
-
-   //---TItle
-  svg.append("text")
-  .attr("x", (width / 2))
-  .attr("y", 0 - (margin.top / 2))
-  .attr("text-anchor", "middle")
-  .style("font-size", "22px")
-  .text("Evaluaciones por regional");
-
-  //----Toltip
-  const x = d3.scaleBand()
-  .range([ 0, width ])
-  .domain(data.map(d => d.regional))
-  .padding(0.2);
-
-  const y = d3.scaleLinear()
-  .domain([0, 10])
-  .range([ height, 0]);
-
-
-  svg.selectAll(".label")
-  .data(data)
-  .enter()
-  .append('text')
-  .text((data) => (data.score) + '% / ' +data.total)
-  .attr('x', data => x(data.regional) + x.bandwidth() / 2)
-  .attr('y', data => y(data.score) - 15)
-  .style('fill','#494949')
-  .style("font-size", "17px")
-  .style("font-weight", "bold")
-  .attr('text-anchor','middle');
+let chart2;
+function drawGraphicSecond(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicSecond').getContext('2d');
+  if (chart2) {
+    chart2.destroy();
+  }
+  chart2 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
 }
 
-function drawThirdElement(data){
-   $('#thirdElement').empty();
-    const margin = {top: 30, right: 30, bottom: 220, left: 115},
-       width = 1800 - margin.left - margin.right,
-       //height = 650 - margin.top - margin.bottom;
-       height = 850 - margin.top - margin.bottom;
-
-   // append the svg object to the body of the page
-   const svg = d3.select("#thirdElement")
-     .append("svg")
-       .attr("width", width + margin.left + margin.right)
-       .attr("height", height + margin.top + margin.bottom)
-     .append("g")
-       .attr("transform", `translate(${margin.left},${margin.top})`);
-
-   // Parse the Data
-   // d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv").then( function(data) {
-   d3.json("https://f001.backblazeb2.com/file/app-linkaform/public-client-126/561/5a7269f5f851c20c1bc7e87a/625de318a5b8b1b47d98bf51.txt").then( function(notUsed) {
-     // data = res.response.json;
-     console.log('data', data)
-   // X axis
-   const x = d3.scaleBand()
-     .range([ 0, width ])
-     .domain(data.map(d => d.pagina))
-     .padding(0.2);
-
-
-   svg.append("g")
-     .attr("transform", `translate(0, ${height})`)
-     .call(d3.axisBottom(x))
-     .selectAll("text")
-       .attr("transform", "translate(-10,0)rotate(-45)")
-        .style("font-size", "17px")
-       .style("text-anchor", "end");
-
-   // Add Y axis
-   const y = d3.scaleLinear()
-     .domain([0, 100])
-     .range([ height, 0]);
-
-   svg.append("g")
-     .call(d3.axisLeft(y));
-
-
-   // Bars
-    svg.selectAll("mybar")
-      .data(data)
-      .join("rect")
-      .attr("x", d => x(d.pagina))
-      .attr("y", d => y(d.section_grade))
-      .attr("fill", function(d) {
-      if (d.section_grade >= 80) {
-      return "#27ae60";
-      } else if (d.section_grade >= 60 && d.section_grade<=79.999) {
-        return "#f1c40f";
-      }
-      else if(d.section_grade<=59.999)
-      {
-        return " #e74c3c ";
-      }
-      })
-      .attr("width", x.bandwidth())
-      .attr("height", d => height - y(d.section_grade))
-   })
-
-   //---TItulo
-  svg.append("text")
-  .attr("x", (width / 2))
-  .attr("y", 0 - (margin.top / 2))
-  .attr("text-anchor", "middle")
-  .style("font-size", "22px")
-  .text("Evaluaciones por sección");
-
-  const x = d3.scaleBand()
-  .range([ 0, width ])
-  .domain(data.map(d => d.pagina))
-  .padding(0.2);
-
-  const y = d3.scaleLinear()
-  .domain([0, 10])
-  .range([ height, 0]);
-
-
-  svg.selectAll(".label")
-  .data(data)
-  .enter()
-  .append('text')
-  .text((data) =>  data.section_grade + '% / ' +data.total)
-  .attr('x', data => x(data.pagina) + x.bandwidth() / 2)
-  .attr('y', data => y(data.section_grade) - 10)
-  .style('fill','#494949')
-  .style("font-size", "17px")
-  .style("font-weight", "bold")
-  .attr('text-anchor','middle');
+let chart3;
+function drawGraphicThird(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicThird').getContext('2d');
+  if (chart3) {
+    chart3.destroy();
+  }
+  chart3 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
 }
+
+let chart4;
+function drawGraphicFourth(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicFourth').getContext('2d');
+  if (chart4) {
+    chart4.destroy();
+  }
+  chart4 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    options: setOptions,
+    plugins: [ChartDataLabels],
+  });
+}
+
 
 function drawFourthElement(data){
   $('#fourthElement').empty();
@@ -800,8 +527,6 @@ function getDrawGraphicFiveth(data, setOptions, canvas, type, name){
   }
 
   setOptions['plugins']['title']['text'] = name
-  console.log(setOptions)
-
   chart = new Chart(ctx, {
     type: type,
     data:data,
@@ -811,108 +536,43 @@ function getDrawGraphicFiveth(data, setOptions, canvas, type, name){
 }
 
 //-----GAUGE
-function getDrawGauge(id, data){
+function getDrawGauge(id, promedio){
+  dataGauge = [
+    {
+      domain: { x: [0, 1], y: [0, 1] },
+      value: promedio,
+      title: { text: "Resultado promedio" , 'font': {'size': 22} },
+      type: "indicator",
+      mode: "gauge+number",
+      gauge: {
+        axis: { range: [null, 100], tickwidth: 1},
+        bar: { color: "#018088" },
+        bgcolor: "white",
+        borderwidth: 2,
+        bordercolor: "gray",
+        steps: [
+          { range: [0, 100], color: "#fff" }
+        ],
+      },
+    }
+  ];
   var layout = { width: 340, height: 190, margin: { t: 42 , b: 0 } };
-  Plotly.newPlot(id, data, layout);
+  Plotly.newPlot(id, dataGauge, layout);
 }
 
-function get_catalog() 
-{
-  fetch(url + 'infosync/scripts/run/', {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: 113130,
-    }),
-    headers:{
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+userJwt
-    },
-  })
-  .then(res => res.json())
-  .then(res => {
-    if (res.success) {
-      if (res.response.json){
-        hideElement("seventhElement");
+//-----ALERTS
+function getAverageData(data){
+  let average = 0;
+  if( data.length > 0){
+    for (var i = 0; i < data.length; i++) {
+      average += data[i];
+    }
+    average = average/data.length;
+    average = average.toFixed(2);
 
-        list_transversal = []
-        list_regional = []
-        list_sucursal = []
-
-        //Selector transversal
-        if(res.response.json.firstCatalog){
-          list_transversal = res.response.json.firstCatalog
-          console.log(list_transversal)
-          $('#transversal').empty();
-          $('#transversal').append('<option value="--">Seleccione el transversal</option>')
-          for(i = 0; i < list_transversal.length; i++){
-              email = list_transversal[i]['email']
-              transversal = list_transversal[i]['transversal']
-              console.log("Transversal = " , transversal);
-              //---TRANSVERSAL
-              $('#transversal').append('<option value="' + transversal + '">' + transversal + '</option>');
-          }
-        }
-
-        //Selector regional
-        if(res.response.json.secondCatalog){
-          list_regional = res.response.json.secondCatalog
-          console.log(list_regional)
-          $('#regional').empty();
-          $('#regional').append('<option value="--">Seleccione los reginales</option>')
-          for(i = 0; i < list_regional.length; i++){
-              email = list_regional[i]['email']
-              regional = list_regional[i]['regional']
-              console.log("regional = " , regional);
-              $('#regional').append('<option value="' + regional + '">' + regional + '</option>');
-          }
-        }
-
-        //Selector múltiple de sucursal
-        if(res.response.json.thirdCatalog){
-          list_sucursal = res.response.json.thirdCatalog
-          console.log(list_sucursal)
-          $('#tienda').empty();
-          $('#tienda').append('<option value="--">Seleccione</option>')
-          for(i = 0; i < list_sucursal.length; i++){
-              email = list_sucursal[i]['email']
-              sucursal = list_sucursal[i]['sucursal']
-              console.log("sucursal = " , sucursal);
-              $('#tienda').append('<option value="' + sucursal + '">' + sucursal + '</option>');
-          }
-
-          $("#tienda").multipleSelect('refresh');
-        }
-
-        //Selector pais
-        if(res.response.json.fourthCatalog){
-          paises = res.response.json.fourthCatalog;
-          $("#pais").empty()
-          $("#pais").append('<option value="--">Seleccione el pais</option>');
-          for(i=0; i<paises.length; i++){
-            $("#pais").append('<option value="'+paises[i]+'">'+paises[i]+'</option>');
-          }
-        }
-
-        //Selector múltiple de bodega
-        if(res.response.json.fifthCatalog){
-          bodegas = res.response.json.fifthCatalog;
-          $("#bodega").empty()
-          $("#bodega").append('<option value"--">Seleccione la bodega</option>');
-          for(i=0; i<bodegas.length; i++){
-            $("#bodega").append('<option value="'+bodegas[i]+'">'+bodegas[i]+'</option>');
-          }
-          $("#bodega").multipleSelect('refresh');
-        }
-
-
-        //console.log(res.response.json.firstElement)
-      }
-
-      
-    } 
-  })
-};
-
+  }
+  return average;
+}
 //-----CATALOGS
 function get_catalog_request(){
   fetch(url + 'infosync/scripts/run/', {
@@ -957,7 +617,6 @@ function get_catalog_request(){
     }
   })
 }
-
 
 function set_data_catalog(type, data){
   if(type == 'catalogCountry'){
