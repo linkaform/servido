@@ -10,7 +10,10 @@ let userName = null;
 let userParentId = null;
 var scriptId = null;
 
-
+let listDivision = [];
+let listRegion = [];
+let listSucursal = [];
+let listBodega = [];
 
 $('#divOptions').hide();
 $('#title_report').hide();
@@ -104,8 +107,6 @@ window.onload = function(){
     userJwt = jw;
     userName = getCookie("userName");
 
-    //getRegionales();
-    //getSucursales();
     unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
@@ -114,10 +115,13 @@ window.onload = function(){
       $('.div_card').hide();
       $('.title_tables').hide();
     }
-    $("#sucursal").multipleSelect('refresh');
-    $("#bodega").multipleSelect('refresh');
     get_catalog_request();
     //---HIDE AND SHOW
+    $("#pais").select2();
+    $("#division").select2();
+    $("#region").select2();
+    $("#sucursal").select2();
+    $("#bodega").select2();
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
@@ -211,36 +215,35 @@ loading.style.display = 'none';
 function runFirstElement(){
   //--show alert
   unHideReportElements()
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");
-  let pais = document.getElementById('pais');
-  let regional = document.getElementById("regional");
-  let transversal = $('#transversal').val();
-  let sucursal = $('#sucursal').val();
+  let date_from = $("#date_from").val();
+  let date_to = $("#date_to").val(); 
+  let pais = $("#pais").val();
+  let division = $("#division").val(); 
+  let region = $("#region").val(); 
+  let sucursal = $("#sucursal").val(); 
   let bodega = $("#bodega").val();
   let option = 'terminada';
   if (document.getElementById('input_check').checked)
   {
     option = 'programada';
   }
-
-  if(regional.value=="--"){
-    Swal.fire({
-      title:"Opps",
-      text:"Necesita seleccionar un regional.",
-    })
-  }else{
+  if(region != '' && region != '--'){
     firstElement =getFirstElement( 
-      date_from.value, 
-      date_to.value,
-      pais.value,
-      regional.value,
-      transversal,
+      date_from, 
+      date_to,
+      pais,
+      division,
+      region,
       sucursal,
       bodega,
       option
     );
 
+  }else{
+    Swal.fire({
+      title:"Opps",
+      text:"Necesita seleccionar un regional.",
+    })
   }
   //--Syle
   unhideElement("div_alert1");
@@ -250,7 +253,7 @@ function runFirstElement(){
   document.getElementById("firstParameters").style.removeProperty('display');
 };
 
-function getFirstElement(date_from, date_to, pais, regional, transversal, sucursal, bodega, status){
+function getFirstElement(date_from, date_to, pais, division, region, sucursal, bodega, status){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -270,8 +273,8 @@ function getFirstElement(date_from, date_to, pais, regional, transversal, sucurs
       date_from: date_from,
       date_to: date_to,
       pais:pais,
-      regional: regional,
-      transversal: transversal,
+      division: division,
+      region: region,
       sucursal: sucursal,
       bodega:bodega,
       status:status,
@@ -423,97 +426,6 @@ function drawGraphicFourth(data, setOptions){
 }
 
 
-function drawFourthElement(data){
-  $('#fourthElement').empty();
-   const margin = {top: 30, right: 30, bottom: 90, left: 90},
-       width = 800 - margin.left - margin.right,
-       height = 700 - margin.top - margin.bottom;
-
-  // append the svg object to the body of the page
-  const svg = d3.select("#fourthElement")
-  .append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-  .attr("transform", `translate(${margin.left},${margin.top})`);
-
-  d3.json("https://f001.backblazeb2.com/file/app-linkaform/public-client-126/561/5a7269f5f851c20c1bc7e87a/625de318a5b8b1b47d98bf51.txt").then( function(notUsed) {
-
-  // X axis
-  const x = d3.scaleBand()
-  .range([ 0, width ])
-  .domain(data.map(d => d.perfil))
-  .padding(0.2);
-
-  svg.append("g")
-  .attr("transform", `translate(0, ${height})`)
-  .call(d3.axisBottom(x))
-  .selectAll("text")
-  .attr("transform", "translate(-10,0)rotate(-45)")
-  .style("font-size", "14px")
-  .style("text-anchor", "end");
-
-  // Add Y axis
-  const y = d3.scaleLinear()
-  .domain([0, 10])
-  .range([ height, 0]);
-
-  svg.append("g")
-  .call(d3.axisLeft(y));
-
-  // Bars
-  svg.selectAll("mybar")
-    .data(data)
-    .join("rect")
-    .attr("x", d => x(d.perfil))
-    .attr("y", d => y(d.score))
-    .attr("fill", function(d) {
-      if (d.score >= 80) {
-        return "#27ae60";
-      } else if (d.score >= 60 && d.score<=79.999) {
-        return "#f1c40f";
-      }
-      else if(d.score<=59.999)
-      {
-        return " #e74c3c ";
-      }
-    })
-    .attr("width", x.bandwidth())
-    .attr("height", d => height - y(d.score))
-  })
-
-
-
-  //---TItulo
-  svg.append("text")
-  .attr("x", (width / 2))
-  .attr("y", 0 - (margin.top / 2))
-  .attr("text-anchor", "middle")
-  .style("font-size", "18px")
-  .text("Evaluaciones por Transversal");
-
-  const x = d3.scaleBand()
-  .range([ 0, width ])
-  .domain(data.map(d => d.perfil))
-  .padding(0.2);
-
-  const y = d3.scaleLinear()
-  .domain([0, 10])
-  .range([ height, 0]);
-
-
-  svg.selectAll(".label")
-  .data(data)
-  .enter()
-  .append('text')
-  .text((data) => (data.score) + '% / ' +data.total)
-  .attr('x', data => x(data.perfil) + x.bandwidth() / 2)
-  .attr('y', data => y(data.score) - 80)
-  .style('fill','#494949')
-  .style("font-size", "13.5px")
-  .attr('text-anchor','middle');
-}
-
 function drawFivethElement(data){
   name_array = []
   name_array.push(data);
@@ -593,27 +505,9 @@ function get_catalog_request(){
   .then(res => {
     if (res.success) {
       let data = res.response;
+
       if ('catalog_country' in data && data['catalog_country'] !== '') {
-        let data_list = data['catalog_country'];
-        set_data_catalog('catalogCountry',data_list);
-      }
-      if ('catalog_transverse' in data && data['catalog_transverse'] !== '') {
-        let data_list = data['catalog_transverse'];
-        set_data_catalog('catalogTransverse',data_list);
-      }
-      if ('catalog_regional' in data && data['catalog_regional'] !== '') {
-        let data_list = data['catalog_regional'];
-        set_data_catalog('catalogRegional',data_list);
-      }
-      if ('catalog_branch_winery' in data) {
-        let data_list_branch = data['catalog_branch_winery']['branch'];
-        let data_list_winery = data['catalog_branch_winery']['winery'];
-        if(data_list_branch != ''){
-          set_data_catalog('catalogBranch',data_list_branch);
-        }
-        if(data_list_winery != ''){
-          set_data_catalog('catalogWinery',data_list_winery);
-        }
+        set_data_catalog('catalogAll',data);
       }
     } else {
       console.log('Error',res.error);
@@ -621,53 +515,185 @@ function get_catalog_request(){
   })
 }
 
-function set_data_catalog(type, data){
-  if(type == 'catalogCountry'){
+function set_data_catalog(type, data = []){
+  if(type ==  'catalogAll'){
+    //----CLEAN
+    $('#division').empty();
+    $('#division').append($('<option>', {
+      value: '--',
+      text: 'Seleccione una opción'
+    }));
+    $("#division").select2();
+
+    $('#region').empty();
+    $('#region').append($('<option>', {
+      value: '--',
+      text: 'Seleccione una opción'
+    }));
+    $("#region").select2();
+
+    $('#sucursal').empty();
+    $('#sucursal').append($('<option>', {
+      value: '--',
+      text: 'Seleccione una opción'
+    }));
+    $("#sucursal").select2();
+
+    $('#bodega').empty();
+    $('#bodega').append($('<option>', {
+      value: '--',
+      text: 'Seleccione una opción'
+    }));
+    $("#bodega").select2();
+    //----Asigna Values
+    let dataCountry = data.catalog_country.country;
+    let dataDivision = data.catalog_country.division;
+    let dataRegion = data.catalog_country.region;
+    let dataBranch = data.catalog_branch_winery.winery ;
+    let dataWinery = data.catalog_branch_winery.branch;
+    listDivision = dataDivision;
+    listRegion = dataRegion;
+    listSucursal = dataBranch;
+    listBodega = dataWinery;
+    //---Select Country
     var select = document.getElementById("pais");
-    for (var i = 0; i < data.length; i++) {
-      var element = data[i];
+    for (var i = 0; i < dataCountry.length; i++) {
+      var element = dataCountry[i];
       var optionElement = document.createElement("option"); 
       optionElement.text = element; 
       optionElement.value = element; 
       select.appendChild(optionElement); 
     }
-  }else if(type == 'catalogTransverse'){
-    var select = document.getElementById("transversal");
-    for (var i = 0; i < data.length; i++) {
-      var element = data[i];
+    $("#pais").select2();
+  }else if(type == 'catalogDivision'){
+    //----CLEAN
+    $('#division').empty();
+    $('#division').append($('<option>', {
+      value: '--',
+      text: 'Seleccione una opción'
+    }));
+    $("#division").select2();
+
+    $('#region').empty();
+    $('#region').append($('<option>', {
+      value: '--',
+      text: 'Seleccione una opción'
+    }));
+    $("#region").select2();
+
+    $('#sucursal').empty();
+    $('#sucursal').append($('<option>', {
+      value: '--',
+      text: 'Seleccione una opción'
+    }));
+    $("#sucursal").select2();
+
+    $('#bodega').empty();
+    $('#bodega').append($('<option>', {
+      value: '--',
+      text: 'Seleccione una opción'
+    }));
+    $("#bodega").select2();
+
+
+    //----Data
+    let country = $("#pais").val();
+    let listSearch = listDivision.filter(item => item['country'] === country);
+    //---Select Division
+    var select = document.getElementById("division");
+    for (var i = 0; i < listSearch.length; i++) {
+      var element = listSearch[i].division;
       var optionElement = document.createElement("option"); 
       optionElement.text = element; 
       optionElement.value = element; 
       select.appendChild(optionElement); 
     }
-  }else if(type == 'catalogRegional'){
-    var select = document.getElementById("regional");
-    for (var i = 0; i < data.length; i++) {
-      var element = data[i];
+    $("#division").select2();
+  }else if(type == 'catalogRegion'){
+    //----CLEAN
+    $('#region').empty();
+    $('#region').append($('<option>', {
+      value: '--',
+      text: 'Seleccione una opción'
+    }));
+    $("#region").select2();
+
+    $('#sucursal').empty();
+    $('#sucursal').append($('<option>', {
+      value: '--',
+      text: 'Seleccione una opción'
+    }));
+    $("#sucursal").select2();
+
+    $('#bodega').empty();
+    $('#bodega').append($('<option>', {
+      value: '--',
+      text: 'Seleccione una opción'
+    }));
+    $("#bodega").select2();
+    //----Data
+    let division = $("#division").val();
+    let listSearch = listRegion.filter(item => item['division'] === division);
+    //---Select Región
+    var select = document.getElementById("region");
+    for (var i = 0; i < listSearch.length; i++) {
+      var element = listSearch[i].region;
       var optionElement = document.createElement("option"); 
       optionElement.text = element; 
       optionElement.value = element; 
       select.appendChild(optionElement); 
     }
-  }else if(type == 'catalogBranch'){
+    $("#region").select2();
+  }else if(type == 'catalogSucursal'){
+    //----CLEAN
+    $('#sucursal').empty();
+    $('#sucursal').append($('<option>', {
+      value: '--',
+      text: 'Seleccione una opción'
+    }));
+    $("#sucursal").select2();
+ 
+    $('#bodega').empty();
+    $('#bodega').append($('<option>', {
+      value: '--',
+      text: 'Seleccione una opción'
+    }));
+    $("#bodega").select2();
+    //---Data
+    let region = $("#region").val();
+    console.log('Value Region',region);
+    let listSearch = listSucursal.filter(item => region.includes(item['region']));
+    //---Select Región
     var select = document.getElementById("sucursal");
-    for (var i = 0; i < data.length; i++) {
-      var element = data[i];
+    for (var i = 0; i < listSearch.length; i++) {
+      var element = listSearch[i].winery;
       var optionElement = document.createElement("option"); 
       optionElement.text = element; 
       optionElement.value = element; 
       select.appendChild(optionElement); 
     }
-    $("#sucursal").multipleSelect('refresh');
-  }else if(type == 'catalogWinery'){
+    $("#sucursal").select2();
+  }else if(type == 'catalogBodega'){
+    //----CLEAN
+    $('#bodega').empty();
+    $('#bodega').append($('<option>', {
+      value: '--',
+      text: 'Seleccione una opción'
+    }));
+    $("#bodega").select2();
+
+    let sucursal = $("#sucursal").val();
+    let listSearch = listBodega.filter(item => item => sucursal.includes(item['winery']));
+    //---Select Región
     var select = document.getElementById("bodega");
-    for (var i = 0; i < data.length; i++) {
-      var element = data[i];
+    for (var i = 0; i < listSearch.length; i++) {
+      var element = listSearch[i].branch;
       var optionElement = document.createElement("option"); 
       optionElement.text = element; 
       optionElement.value = element; 
       select.appendChild(optionElement); 
     }
-    $("#bodega").multipleSelect('refresh');
+    $("#bodega").select2();
   }
 }
+

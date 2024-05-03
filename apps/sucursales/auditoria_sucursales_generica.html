@@ -14,6 +14,8 @@
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
         <!--LIBRARY CHECK -->
         <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+        <!--LIBRARY SELECT2 -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
         <!--Utils -->    
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -102,38 +104,37 @@
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>País: </h5>
-                        <select class="form-control ds-input" id="pais" name="pais" value="">
-                            <option value="--">Seleccione el país</option>
+                        <select class="form-control ds-input" id="pais" name="pais" value="" onchange="set_data_catalog('catalogDivision');return false;">
+                            <option value="--">Seleccione una opción</option>
                             
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Transversal: </h5>
-                        <select class="form-control ds-input" id="transversal" name="transversal" value="">
-                            <option value="--">Seleccione</option>
+                        <h5>División: </h5>
+                        <select class="form-control ds-input" id="division" name="division" value="" onchange="set_data_catalog('catalogRegion');return false;">
+                            <option value="--">Seleccione una opción</option>
                             
                         </select>
                     </div>
 
                     <div class="col-sm-12 col-md-3 col-lg-3">
-                        <h5>Regional: </h5>
-                        <select class="form-control ds-input" id="regional" name="regional" >
-                            <option value="--">Seleccione</option>
-                            
+                        <h5>Región: </h5>
+                        <select class="form-control ds-input" id="region" name="region"  onchange="set_data_catalog('catalogSucursal');return false;">
+                            <option value="--">Seleccione una opción</option>
                         </select>
                     </div>
 
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Sucursal: </h5>
-                        <select class="form-control mdb-select md-form" id="sucursal" multiple="multiple" style="border:none !important;" >
-                            <option value="">--Seleccione--</option>
+                        <select class="form-control mdb-select md-form" id="sucursal" multiple="multiple" onchange="set_data_catalog('catalogBodega');return false;">
+                            <option value="">Seleccione una opción</option>
                         </select>
                     </div>
 
                     <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Bodega: </h5>
-                        <select class="form-control mdb-select md-form" id="bodega" multiple="multiple" style="border:none !important;" >
-                            <option value="">--Seleccione--</option>
+                        <select class="form-control mdb-select md-form" id="bodega" multiple="multiple" >
+                            <option value="">Seleccione una opción</option>
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-2 col-lg-2">
@@ -272,11 +273,9 @@
 
     <!-- Jquery Gauge-->
     <script src='https://cdn.plot.ly/plotly-2.14.0.min.js'></script>
-    <!-- Multiplke -->
-    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
-    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
-
     <!-- Utils -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
     <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
 
