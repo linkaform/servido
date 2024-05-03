@@ -32,6 +32,10 @@ window.onload = function(){
     if (key ==='title'){
       $("#title_report").text(qs[key]);
     }
+    if (key ==='report'){
+      $("#close_sesion").hide();
+      $("#image_log").hide();
+    }
 		var elements = getAllElementsWithAttribute(formNode, 'data-infosync-id', key);
 		var value = decodeURI(qs[key]);
     if (key === 'infosyncRecordID'){
