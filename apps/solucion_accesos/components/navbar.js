@@ -1,30 +1,24 @@
-let userJwt='';
-
 class lkfNavbarComponent extends HTMLElement{
 	constructor(){
-		super()
+		super();
 	}
 
 	connectedCallback() {
 	this.innerHTML=`
-    <link rel="stylesheet" href="./Styles_v2.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
-    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="./Styles_v2.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
-
-	<nav class="navbar header">
+	<nav class="navbar header" id='myCustomNavBar'>
         <div class=" navbar-brand">
 			<img src="https://app.linkaform.com/img/login-linkaform-logo.png" height="30" class="d-inline-block align-top" alt="">
         </div>
         <div class="navbar-brand navbarShowHide">
-            <button class="btn btn-secondary" onclick="redirectionUrl('users');return false;" >Accesos</button>   
-            <button class="btn btn-secondary" onclick="redirectionUrl('bitacora');return false;" disabled>Bitacoras</button>   
-            <button class="btn btn-secondary" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
-            <button class="btn btn-secondary" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
-            <button class="btn btn-secondary">Rondines</button>   
+            <button id='buttonAccesos' class="btn btn-secondary" onclick="redirectionUrl('users');return false;" >Accesos</button>   
+            <button id='buttonBitacoras' class="btn btn-secondary" onclick="redirectionUrl('bitacora');return false;" disabled>Bitacoras</button>   
+            <button id='buttonIncidencias' class="btn btn-secondary" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
+            <button id='buttonArticulos' class="btn btn-secondary" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
+            <button id='buttonRondines' class="btn btn-secondary" onclick="redirectionUrl('rondines');return false;">Rondines</button>   
             <div class="btn p-0 ">
 			  <button type="button" class=" rounded-circle btn btn-secondary "  data-bs-toggle="dropdown" >
 				<i class="fa fa-user fa-lg" aria-hidden="true"></i>
@@ -41,18 +35,38 @@ class lkfNavbarComponent extends HTMLElement{
 		</div>
     </nav>
 	`;
-	}
+	} 
+
 }
 window.customElements.define('navbar-component', lkfNavbarComponent)
+ 
+
+$('#buttonAccesos').hide(); 
+$('#buttonBitacoras').hide(); 
+$('#buttonIncidencias').hide(); 
+$('#buttonArticulos').hide(); 
+$('#buttonRondines').hide(); 
 
 
 
-
-
-window.onload =function(){
- console.log('page',getValueUserLocation())
-
+function customNavbar(location, turno){
+    console.log('AL CAGAR NAVCBAR TENEMOS : ',location, turno)
+     if(location === 'portal_turns' && turno === 'off'){
+        $('#buttonAccesos').hide(); 
+        $('#buttonBitacoras').hide(); 
+        $('#buttonIncidencias').hide(); 
+        $('#buttonArticulos').hide(); 
+        $('#buttonRondines').hide(); 
+     }else if(location === 'portal_turns' && turno === 'on'){
+        $('#buttonAccesos').show(); 
+        $('#buttonBitacoras').show(); 
+        $('#buttonIncidencias').show(); 
+        $('#buttonArticulos').show(); 
+        $('#buttonRondines').show(); 
+     }
 }
+
+
 
 
 
@@ -61,12 +75,12 @@ function setCloseSession(argument) {
     closeSession();
     redirectionUrl('login',false);
 }
-
 //----Function Redirection
 function redirectionUrl(type = 'null',blank = true){
     let urlNew =  '';
     let protocol = window.location.protocol;
     let host = window.location.host;
+    console.log("DENTOROOO",type)
     if(type == 'users'){
         urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
     }else if(type == 'bitacora'){

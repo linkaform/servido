@@ -238,8 +238,12 @@ th {
 
 }
 .form-check-input{
-  margin-top: 9%;
-  padding: 10px; 
+  margin-top: 20px !important;
+  padding: 7px;
+  padding-left: 7px !important;
+  padding-right:7px !important;
+  width: 5px !important;
+  height: 5px !important; 
 }
 
 .marginSection{

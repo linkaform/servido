@@ -10,7 +10,9 @@ let flagVideoUser = false;
 
 let dataCatalogs="";
 window.onload = function(){
-	changeValueUserLocation('registro_ingreso');
+	setValueUserLocation('registro_ingreso');
+	customNavbar(getValueUserLocation())
+	
 	userJwt = getCookie('userJwt');
 	$(".select-car-register").select2({
 	  tags: true

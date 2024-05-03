@@ -14,14 +14,15 @@
 
 </head>
 <body>
-	<iframe class='customNavbar' src="./navbar.html"></iframe>
+	<navbar-component ></navbar-component>
     <!-- Title -->
 	
 	<!-- Information Plant-->
-<section>
-		<div class="row mt-5 d-flex justify-content-evenly align-items-end m-0 p-0" >
-			<div class="col-sm-6 col-md-6 col-lg-6 col-xl-4" >		
-				<div class="card m-2 div-card-portal mb-0 ">
+<section>		
+		<div class="row mt-2 d-flex justify-content-center align-items-end m-0 p-0" >
+
+			<div class="col-sm-6 col-md-6 col-lg-6 col-xl-4 ml-9 p-0" >		
+				<div class="card m-2 div-card-portal mb-0 ms-0 pl-0">
 				    <div class="card-body m-0">
 						<div class="row" >
 							<div class="col-4 text-center">
@@ -38,7 +39,14 @@
 				    </div>
 				</div>
 			</div>
-			<div class="col-sm-6 col-md-6 col-lg-6 col-xl-4 mt-2 ms-4">
+
+			<div class="col-sm-6 col-md-6 col-lg-6 col-xl-5 mt-2 ms-4">
+				<div class="d-flex justify-content-end m-0 p-0" >
+					<div class="buttonIniciarTurno m-0 p-0 mb-4">
+						<button type="button" class="btn btn-success " onclick="changeStatusTurn()" data-bs-dismiss="modal">Iniciar Turno</button>
+					</div>
+				</div>
+				
 				<div class="d-flex">
 					<div class="flex-grow-1"> <!--ocupa todo el espacio disponible y los demas elementos solo lo necesario-->
 						<b>Notas</b>
@@ -104,7 +112,8 @@
 							</tr>
 							<tr>
 								<td><b>Estatus:</b></td>
-								<td class="text-danger">Turno cerrado</td>
+								<td id='statusTurnText'> 
+									</td>
 							</tr>
 						</tbody>
 					</table>
@@ -144,17 +153,15 @@
 				
 			</div>	
 		</div>
-			<div class="d-flex flex-row-reverse">
-					<div class="buttonIniciarTurno">
-						<button type="button" class="btn btn-success " data-bs-dismiss="modal">Iniciar Turno</button>
-					</div>
-				</div>
+			
 	</section>
 
 </body>
 <!-- Jquery -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script  type="text/javascript" src="./components/navbar.js"></script>
 <script src="./functions.js"></script>
-<script src="./navbar.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!-- Tabulator -->
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>

@@ -1,7 +1,6 @@
 
 
 window.onload = function(){
-	changeValueUserLocation('login');
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
 	if(user !='' && jw!=''){

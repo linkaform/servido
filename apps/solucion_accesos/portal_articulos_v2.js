@@ -100,7 +100,7 @@ const dataTable2 = [
 ]
 
 window.onload = function(){
-	changeValueUserLocation('registro_articulos_v2');
+	setValueUserLocation('registro_articulos_v2');
 	 if(getValueUserLocation()!='login'){
  	$(navbarShowHide).show();
  } else{

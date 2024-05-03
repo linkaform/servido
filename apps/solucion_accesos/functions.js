@@ -1,9 +1,17 @@
-var userActualPage='login';
+var userActualPage=''; //nombres de las paginas
+var userStatusTurn='off'; //'on', 'off'
 
-function changeValueUserLocation(txt){
+function setValueUserLocation(txt){
 	userActualPage=txt;
 }
 
-function getValueUserLocation(txt){
+function getValueUserLocation(){
 	return userActualPage;
+}
+
+function getStatusTurn(){
+	return userStatusTurn;
+}
+function setStatusTurn(txt){
+	userStatusTurn= txt;
 }

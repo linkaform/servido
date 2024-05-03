@@ -63,10 +63,13 @@ const columsDataGuardiasApoyo = [
 ];
 
 
+
 window.onload = function(){
-    changeValueUserLocation('portal_turns');
-  
-   
+    setValueUserLocation('portal_turns');
+    customNavbar(getValueUserLocation(), getStatusTurn());
+
+    initializeStatusTurn()
+    
     let user = getCookie("userId");
     let jw = getCookie("userJwt");
 
@@ -80,8 +83,37 @@ window.onload = function(){
     $("#textPosition").text(getCookie('userPosition'));
     $("#textEmail").text(getCookie('userEmail'));
     $("#imgProfilePic").attr("src", getCookie('userImg'));
-    $("#textUbicacion").html()
+    $("#textUbicacion").html();
 }
+
+
+function changeStatusTurn(){
+
+     let td = $("#statusTurnText");
+        if (td.length > 0) {
+            td.find(".text-danger").remove();
+            td.find(".text-success").remove();
+        }
+    if(getStatusTurn() === 'on'){      
+        setStatusTurn('off')
+        $('#statusTurnText').append($('<div class="text-danger" id="statusOff"> Turno Cerrado</div>'));
+
+    }else if (getStatusTurn() === 'off'){
+        setStatusTurn('on')
+        $('#statusTurnText').append($('<div class="text-success" id="statusOn"> Turno Iniciado</div>'));
+
+    }
+}
+
+function initializeStatusTurn(){
+    if(getStatusTurn() === 'on'){
+         $('#statusTurnText').append($('<div class="text-success" id="statusOn"> Turno Iniciado</div>'));
+    }else if (getStatusTurn() === 'off'){
+         $('#statusTurnText').append($('<div class="text-danger" id="statusOff"> Turno Cerrado</div>'));
+    }
+}
+
+
 
 //-----TABLES
 function drawTableNotas(id, columnsData, tableData, height){
