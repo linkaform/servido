@@ -11,7 +11,7 @@ let flagVideoUser = false;
 let dataCatalogs="";
 window.onload = function(){
 	setValueUserLocation('registro_ingreso');
-	customNavbar(getValueUserLocation())
+	customNavbar(getValueUserLocation(), getStatusTurn())
 	
 	userJwt = getCookie('userJwt');
 	$(".select-car-register").select2({
@@ -24,7 +24,7 @@ window.onload = function(){
 	  tags: true
 	});
 	$("#selectVisit").select2({
-	  tags: true
+	  tags: true 
 	});
 	const valores = window.location.search;
 	const urlParams = new URLSearchParams(valores);
@@ -33,7 +33,7 @@ window.onload = function(){
 	let caseta = urlParams.get('caseta');
 	$("#textLocation").text(ubicacion);
 	$("#textModule").text(caseta);
-  getCatalogTipoVehiculo()
+  getCatalogTipoVehiculo();
 }	
 
 

@@ -9,19 +9,19 @@ class lkfNavbarComponent extends HTMLElement{
     <link rel="stylesheet" href="./Styles_v2.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
-	<nav class="navbar header" id='myCustomNavBar'>
+	<nav class="navbar header m-0 p-0 mb-5" id='myCustomNavBar'>
         <div class=" navbar-brand">
-			<img src="https://app.linkaform.com/img/login-linkaform-logo.png" height="30" class="d-inline-block align-top" alt="">
+			<img src="" height="40" height="60" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
         </div>
         <div class="navbar-brand navbarShowHide">
-            <button id='buttonAccesos' class="btn btn-secondary" onclick="redirectionUrl('users');return false;" >Accesos</button>   
-            <button id='buttonBitacoras' class="btn btn-secondary" onclick="redirectionUrl('bitacora');return false;" disabled>Bitacoras</button>   
-            <button id='buttonIncidencias' class="btn btn-secondary" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
-            <button id='buttonArticulos' class="btn btn-secondary" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
-            <button id='buttonRondines' class="btn btn-secondary" onclick="redirectionUrl('rondines');return false;">Rondines</button>   
+            <button id='buttonAccesos' class="btn btn-sm btn-secondary"  onclick="redirectionUrl('users');return false;" >Accesos</button>   
+            <button id='buttonBitacoras' class="btn btn-sm btn-secondary" onclick="redirectionUrl('bitacora');return false;" >Bitacoras</button>   
+            <button id='buttonIncidencias' class="btn btn-sm btn-secondary" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
+            <button id='buttonArticulos' class="btn btn-sm btn-secondary" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
+            <button id='buttonRondines' class="btn btn-sm btn-secondary" onclick="redirectionUrl('rondines');return false;">Rondines</button>   
             <div class="btn p-0 ">
-			  <button type="button" class=" rounded-circle btn btn-secondary "  data-bs-toggle="dropdown" >
-				<i class="fa fa-user fa-lg" aria-hidden="true"></i>
+			  <button type="button" class=" rounded-circle btn btn-secondary " id="imageUserButton" data-bs-toggle="dropdown" >
+				<img src="" id="imageUserNavbar">
 			  </button>
 			  <ul class="dropdown-menu dropdown-menu-end myCustomDropdown ">
 			    <li><button class="dropdown-item" type="button"> <i class="fa-solid fa-door-open"></i> Turno</button></li>
@@ -41,16 +41,20 @@ class lkfNavbarComponent extends HTMLElement{
 window.customElements.define('navbar-component', lkfNavbarComponent)
  
 
-$('#buttonAccesos').hide(); 
-$('#buttonBitacoras').hide(); 
-$('#buttonIncidencias').hide(); 
-$('#buttonArticulos').hide(); 
-$('#buttonRondines').hide(); 
 
+    //$('#buttonAccesos').hide(); 
+    //$('#buttonBitacoras').hide(); 
+    //$('#buttonIncidencias').hide(); 
+    //$('#buttonArticulos').hide(); 
+    //$('#buttonRondines').hide(); 
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  $("#imageUserNavbar").attr("src", getCookie('userImg')); 
+  $("#imageLinkaform").attr("src", getCookie('lkfLogo'));
+});
 
 
 function customNavbar(location, turno){
-    console.log('AL CAGAR NAVCBAR TENEMOS : ',location, turno)
      if(location === 'portal_turns' && turno === 'off'){
         $('#buttonAccesos').hide(); 
         $('#buttonBitacoras').hide(); 

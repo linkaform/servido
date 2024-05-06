@@ -1,5 +1,5 @@
 var userActualPage=''; //nombres de las paginas
-var userStatusTurn='off'; //'on', 'off'
+var userStatusTurn=''; //'on', 'off'
 
 function setValueUserLocation(txt){
 	userActualPage=txt;

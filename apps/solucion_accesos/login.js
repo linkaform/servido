@@ -34,6 +34,7 @@ function get_login(){
 		})
 		.then((res) => res.json())
 		.then((res) => {
+				console.log('HERLO',res.user.company_logo)
 			if(res.code == 2){
 				let userId = res.user && res.user.id ? res.user.id : 0;
 				let userJwt = res.jwt ? res.jwt:'';
@@ -52,10 +53,12 @@ function get_login(){
 				setCookie("userEmail", userEmail,7);
 				setCookie("userPosition", userPosition,7);
 				setCookie("userImg", userImg,7);
-				//----Url
+				setCookie("lkfLogo", res.user.company_logo.picture, 7)
+				//$("#")
+								//----Url
 				let protocol = window.location.protocol;
 				let host = window.location.host;
-				let url = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`;
+				let url = `${protocol}//${host}/solucion_accesos/portal_turnos.html`;
 				Object.assign(document.createElement('a'), {
 					rel: 'noopener noreferrer',
 					href: url,
@@ -79,6 +82,6 @@ function setCookie(cname, cvalue, exdays) {
 	var d = new Date();
 	d.setTime(d.getTime() + (exdays*24*60*60*1000));
 	var expires = "expires="+d.toUTCString();
-	document.cookie = cname + "=" + cvalue + "; " + expires;
+	document.cookie = cname + "=" + cvalue + "; " + expires+"; SameSite=Strict;"
 }
 
