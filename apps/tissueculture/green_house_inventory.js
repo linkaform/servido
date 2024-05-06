@@ -280,7 +280,7 @@ function get_catalog()
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 107085,
+      script_id: scriptId,
       option: 1,
     }),
     headers:{
@@ -328,7 +328,7 @@ function get_catalog()
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 107085,
+      script_id: scriptId,
       option: 2,
     }),
     headers:{
@@ -341,6 +341,12 @@ function get_catalog()
     if(res.success){
       //console.log("Datos devueltos")
       if(res.response.json.catalogtwo){
+        res.response.json.catalogtwo.forEach((element, index)=>{
+          console.log("FE:"+element)
+          arrayIn.push(element)
+        })
+          arrayIn.push('Scrap')
+          arrayIn.sort()
           //---Warehouse Out
           $("#warehouse_from").select2({
             placeholder: 'Select',

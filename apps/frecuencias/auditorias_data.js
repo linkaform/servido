@@ -199,37 +199,40 @@ var setOptions2 = {
   }
 };
 
-
-
 var setOptions3 = {
-  responsive: true,
-  plugins: {
-    legend: {
-      display: true,
-      position: 'top',
-    },
-    title: {
+    indexAxis: 'y', // Utilizar el eje y para las etiquetas
+    responsive: true,
+    plugins: {
+      legend: {
         display: true,
-        text: 'Reporte Historico Auditoria II',
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Reporte Tendencia Auditoria I',
         font: {
           size: 25
         }
+      },
+      datalabels: {
+        color: 'white',
+        formatter: function (value, context) {
+          return value;
+        }
+      }
     },
-    datalabels: {
-      color: 'black',
-      font:{
-        size: 15,
+    scales: {
+      x: {
+        stacked: false, // No apilar barras en el eje x
+      },
+      y: {
+        stacked: false, // No apilar barras en el eje y
+        ticks: {
+          stepSize: 1
+        },
       }
     }
-  },
-  scales: {
-    y: {
-      ticks: {
-        stepSize: 1
-      },
-    }
-  }
-};
+  };
 
 var setOptions4 = {
   indexAxis: 'y',

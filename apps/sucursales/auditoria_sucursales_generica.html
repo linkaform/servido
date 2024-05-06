@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Linkaform</title>
+        <meta name="title" content="Linkaform">
+        <meta name="description" content="Reportes Linkaform">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+        <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+        
+        <!--Utils -->    
+        <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
+        <link rel="stylesheet" href="../styles/css/styles.css">
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <!-- Header -->
+        <nav class="navbar header">
+            <div class="navbar-brand">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="index.html">
+                            <div class="logo_marca">
+                                <img src="https://app.linkaform.com/img/login-linkaform-logo.png" alt="LinkaForm" id="image_log">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="container">
+                            <div class="back"  id="atras"><i class="fa fa-solid fa-arrow-left"></i>Atras</div>
+                            <div class="close" id="close_sesion"><a onclick="closeSession();"><i class="fa-solid fa-lock"></i>Cerrar Sesión</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" >
+                    <h1 id="title_report">Reportes de Auditoria a Sucursales</h1>
+                </div>
+            </div> 
+        </nav>
+
+        <!-- Loading style -->
+        <div class="loading-container">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div style="width:100%">
+            <div class="app" id="appCont"  style="padding-top: 0px;">
+
+                <!--Session -->
+                <div class="row inicio_ses" id="inicio_ses">
+                    <div class="errorLogin" id="errorLog"></div>
+                    <div class="control">
+                        <div class="renglon">
+                            <h3>Usuario: </h3>
+                            <input class="form-control ds-input" id="user" name="user" value="">
+                        </div>
+                        <div class="renglon">
+                            <h3>Contraseña: </h3>
+                            <input class="form-control ds-input" type="password" id="pass" name="pass" value="">
+                        </div>
+                        <div class="controlBtn">
+                            <div class="btn btn-primary" onclick="login()">Login</div>
+                            <div class="btn btn-primary" onclick="reset()">Reset</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Title Demo -->
+                <div id="title_demo" style="margin-bottom: 20px;">
+                    <center>
+                        <h1><span>Datos demo</span>&nbsp;&nbsp;</h1>
+                    </center>
+                </div>
+
+
+                <!--Options FIlter -->
+                <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
+                        <i class="fa-solid fa-filter"></i>
+                    </button >  &nbsp;  &nbsp;
+                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div> &nbsp;  &nbsp;
+                </div>
+
+                <!--firstParameters -->
+                <div id="firstParameters" class="collapse row show" >
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Fecha Desde: </h5>
+                        <input class="form-control ds-input" type="date" id="date_from" name="date_from" value="">
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Fecha Hasta: </h5>
+                        <input class="form-control ds-input" type="date" id="date_to" name="date_to" value="">
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>País: </h5>
+                        <select class="form-control ds-input" id="pais" name="pais" value="">
+                            <option value="--">Seleccione el país</option>
+                            
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Transversal: </h5>
+                        <select class="form-control ds-input" id="transversal" name="transversal" value="">
+                            <option value="--">Seleccione</option>
+                            
+                        </select>
+                    </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Regional: </h5>
+                        <select class="form-control ds-input" id="regional" name="regional" >
+                            <option value="--">Seleccione</option>
+                            
+                        </select>
+                    </div>
+
+                    <!--<div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Sucursal: </h5>
+                        <select class="form-control ds-input" id="tienda" name="tienda" >
+                           <option value="">Seleccione</option>
+                            <option value="--">Las palamas Ciudad de México</option>
+                            <option value="--">Rivera Maya</option>
+                            <option value="--">Guelaguetza Oaxaca</option>
+                        </select>
+                    </div> -->
+
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Sucursal: </h5>
+                        <select class="form-control mdb-select md-form" id="tienda" multiple="multiple" style="border:none !important;" >
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Bodega: </h5>
+                        <select class="form-control mdb-select md-form" id="bodega" multiple="multiple" style="border:none !important;" >
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>
+
+                    
+
+                </div>
+
+                <!--Content-->
+                <div class="row" id="divContent">
+
+                    <div class="col-sm-12 col-md-12 col-lg-12 row" style="margin:auto;">
+                        <div class="col-sm-12 col-md-4 col-lg-4" id="div_alert1">
+                            <div class="card border-info m-2">
+                                <div class="card-body" style="margin:auto;">
+                                    <center>
+                                        <h2 class="card-title">Sucursales evaluadas</h2>
+                                        <p class="card-text" style="font-size: 25px;" id="textAlert1">0</p>
+                                        <i class="fas fa-building" style="font-size:30px;"></i>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4" id="div_alert2">
+                            <div class="card border-info m-2" >
+                                <div class="card-body" style="margin:auto;">
+                                    <center>
+                                        <h2 class="card-title">Evaluaciones realizadas</h2>
+                                        <p class="card-text" style="font-size: 25px;" id="textAlert2">0</p>
+                                        <i class="fas fa-check" style="font-size:30px;"></i>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4" id="div_alert3">
+                            <div class="card border-info m-2" >
+                                <div class="card card_border_none">
+                                <div id='gaugeFirst' style="margin:auto;align-items: center;"></div>
+                                <div style="text-align:center;">
+                                    <span class="text-dark" id="text_gaugeFirst"></span>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
+                        <!-- Second Element - GAUGE -->
+                        
+                    </div>
+
+                    <div class="col-sm-12 col-md-12 col-lg-12 div_class mt-2" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('firstElement','chart_screenII');return false;" id="download_firstElement">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
+                        <div id="firstElement" class="row"></div>
+                    </div>
+
+                    <!--Regional-->
+                    <div class="row col-sm-12 col-md-12 col-lg-12 div_class" style="overflow-y: scroll;">
+                        <div class="col-sm-6 col-md-6 col-lg-6 div_class" style="overflow-y: scroll;">
+                            <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('fourthElement','chart_screenII');return false;" id="download_fourthElement"> 
+                                <i class="fa-sharp fa-solid fa-download"></i>
+                            </button >
+                            <div id="fourthElement" ></div>
+                        </div>
+
+                        <div class="col-sm-6 col-md-6 col-lg-6 div_class" style="overflow-y: scroll;">
+                            <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('secondElement','chart_screenV');return false;" id="download_secondElement">
+                                <i class="fa-sharp fa-solid fa-download"></i>
+                            </button >
+                            <div id="secondElement" ></div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-12 col-md-12 col-lg-12 div_class" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('thirdElement','chart_screenV');return false;"  id="download_thirdElement">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
+                        <div id="thirdElement" ></div>
+                    </div>
+                    <!--<div id="seventhElement" class="col-sm-12 col-md-12 col-lg-12 mb-5" style="overflow-y: scroll;">
+                        <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('graphicFiveth','chart_screenIII');return false;" id="download_graphicFiveth">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
+                        <div  style="width: 1400px;height: 600px;margin: auto;">
+                            <canvas id="graphicFiveth" ></canvas>
+                        </div>
+                    </div> -->
+
+                    <div ><h1 id="seventhElement">Historicos</h1> </div>
+                  
+                    <div id="eigthElement" class='col-sm-12 col-md-12 col-lg-12 mt-5 ' style='overflow-y: scroll;'>
+
+                        <h3 style='text-align: center;'>
+                            <button class="btn btn-secondary ml-5 button-chart" type="button" onclick="get_chartDownload('fivethElement','chart_screenII');return false;" id="download_fivethElement">
+                            <i class="fa-sharp fa-solid fa-download"></i>
+                        </button >
+                        </h3>
+                        <div  style='width: 1800px;height: 800px; margin: auto;'>
+                          <canvas id='fivethElement' class="row"></canvas>
+                        </div>
+                    </div>  
+
+                </div>
+            </div>
+        </div>
+    </body>
+    <!-- tabulator : Excel Downlowd-->
+    <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
+    <!-- tabulator : PDF Downlowd-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
+
+    <link href="../utils/tabulator/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="../utils/tabulator/js/tabulator.min.js"></script>
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v5.js"></script>
+
+    <!--Librarys -->
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.js"
+    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+    <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+
+    <!-- chartjs -->
+    <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+    <script 
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" 
+    crossorigin="anonymous"></script>
+
+    <script 
+    src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" 
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
+    crossorigin="anonymous"></script>
+
+    <!-- Jquery Gauge-->
+    <script src='https://cdn.plot.ly/plotly-2.14.0.min.js'></script>
+    <!-- Multiplke -->
+    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
+    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+
+    <!-- Utils -->
+    <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
+    <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+
+    <script type="text/javascript" src="../utils/lkf_utils.js"></script>
+    <script type="text/javascript" src="../utils/servido_utils.js"></script>
+    <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
+
+    <!-- utils js-->
+    <script type="text/javascript" src="./auditoria_sucursales_generica.js"></script>
+    <script type="text/javascript" src="./auditoria_sucursales_generica_data.js"></script>
+</html>

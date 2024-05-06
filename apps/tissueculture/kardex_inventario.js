@@ -31,6 +31,9 @@ window.onload = function(){
       if (qs[key] === 'test'){
          url = "https://preprod.linkaform.com/api/";
       }
+      if (qs[key] === 'local'){
+         url = "http://127.0.0.1:8000/api/";
+      }
     }
     if (key ==='title'){
       $("#title_report").text(qs[key]);
@@ -250,6 +253,15 @@ function getFirstElement(dateFrom, dateTo, dateOptions, productCode, lotNumber, 
       $('.title_tables').show();
       console.log("RESPUESTA")
       console.log(res.response.json)
+      //Configuración del actuals
+      if(res.response.json.actuals){
+        let actuals = 0
+        let str_actuals = ''
+        actuals = res.response.json.actuals
+        str_actuals = actuals.toString()
+        $("#actuals").empty()
+        $("#actuals").text("Actuals: " + str_actuals)
+      }
       if(res.response.json.secondElement.data){
         //----Se crea y define una variable que almacene la data de la query para no escribir toda la ruta
         let dataTableTwo = res.response.json.secondElement.data;

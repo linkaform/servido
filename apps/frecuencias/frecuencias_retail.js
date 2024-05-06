@@ -22,7 +22,6 @@ hideElement("fourthElement");
 hideElement("fivethElement");
 hideElement("sixthElement");
 
-
 window.onload = function(){
   var qs = urlParamstoJson();
   var formNode = document.getElementById("appCont");
@@ -164,7 +163,8 @@ loading.style.display = 'none';
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
   let date_to = document.getElementById("date_to");    
-  let usuario = document.getElementById("usuario");    
+  let usuario = document.getElementById("usuario");
+  let id_forma = $("#formas").val()    
   let paises = $('#paises').val();
   let localidades = $('#localidades').val();
   let tiendas = $('#tiendas').val();
@@ -174,11 +174,11 @@ function runFirstElement(){
     check = 'off';
   }
   console.log('TIENDAS :',tiendas);
-  getFirstElement(date_to.value, date_from.value, paises, localidades, tiendas, usuario.value, check);
+  getFirstElement(date_to.value, date_from.value, id_forma, paises, localidades, tiendas, usuario.value, check);
 };
 
 
-function getFirstElement(dateTo, dateFrom, paises, localidades, tiendas, usuario, check){
+function getFirstElement(dateTo, dateFrom, id_forma, paises, localidades, tiendas, usuario, check){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -191,6 +191,7 @@ function getFirstElement(dateTo, dateFrom, paises, localidades, tiendas, usuario
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
+      id_forma: id_forma,
       paises: paises,
       localidades: localidades,
       tiendas: tiendas,
@@ -360,6 +361,18 @@ function get_catalog(option) {
   .then(res => res.json())
   .then(res => {
     if (res.success) {
+      if(res.response.json.array_filters.formas){
+        $("#formas").empty()
+        $("#formas").append('<option value="--">Seleccione la forma</option>');
+        for(i = 0; i < res.response.json.array_filters.formas.length; i++){
+          id_forma = res.response.json.array_filters.formas[i].id;
+          str_id = id_forma.toString()
+          name = res.response.json.array_filters.formas[i].name;
+          value = id_forma + '-' + name;
+          $('#formas').append('<option value="'+value+'">'+name+'</option>');
+        }
+      }
+
       if (option == 1){
         if (res.response.json.array_filters.paises){
           $("#paises").empty();

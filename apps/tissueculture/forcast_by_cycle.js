@@ -33,6 +33,9 @@ window.onload = function(){
       if (qs[key] === 'test'){
          url = "https://preprod.linkaform.com/api/";
       }
+      if (qs[key] === 'local'){
+         url = "http://192.168.0.25:8000/api/";
+      }
     }
     if (key ==='title'){
       $("#title_report").text(qs[key]);
@@ -141,6 +144,7 @@ loading.style.display = 'none';
 
 function runFirstElement(){
   let plant_code = document.getElementById("plant_code");
+  console.log('plant code' , plant_code)
   firstElement =getFirstElement( plant_code.value,);
 };
 
@@ -174,11 +178,13 @@ function getFirstElement(plant_code){
 
       if (res.response.firstElement) {
         console.log('drawFirstElement.........')
+        console.log('drawFirstElement.........',res.response.firstElement.tabledata)
         getDrawTable('firstElement',res.response.firstElement.colsData, res.response.firstElement.tabledata);
         // getDrawPlants(res.response.firstElement.colsData,  res.response.firstElement.tabledata)
 
 
       }
+
     } else {
       hideLoading();
       if(res.code == 11){
@@ -186,11 +192,13 @@ function getFirstElement(plant_code){
           title: 'Error',
           html: res.error
         });
+        $('.load-wrapp').hide();
       } else {
         Swal.fire({
           title: 'Error',
           html: res.error
         });
+        $('.load-wrapp').hide();
       }
     }
   })

@@ -1,3 +1,69 @@
+#firstElement{
+  background-color:#ccc;
+  border: 1px solid #333;
+  border-radius: 10px;
+}
+
+.promotoria_aigp .tabulator-tree-level-0 .tabulator-cell a {
+    /* Estilos que deseas eliminar */
+    color: inherit; /* Heredar el color del texto */
+    text-decoration: inherit !important; /* Heredar la decoración del texto (generalmente subrayado) */
+    pointer-events: none;
+}
+
+.promotoria_aigp .tabulator-tree-level-0 .fa-print{
+  display: none;
+}
+
+.promotoria_aigp .tabulator-tree-level-1 .tabulator-cell a {
+    /* Estilos que deseas eliminar */
+    color: inherit; /* Heredar el color del texto */
+    text-decoration: inherit !important; /* Heredar la decoración del texto (generalmente subrayado) */
+    pointer-events: none;
+}
+
+
+.promotoria_aigp .tabulator-tree-level-1{
+  text-decoration: none;
+}
+
+.promotoria_aigp .tabulator-tree-level-1 .fa-print{
+  display: none;
+}
+
+/*Theme the header*/
+.promotoria_aigp .tabulator-header {
+    background-color:#F3CCEC !important;
+}
+
+/*Allow column header names to wrap lines*/
+#firstElement .tabulator-header .tabulator-col,
+#firstElement .tabulator-header .tabulator-col-row-handle {
+    white-space: normal;
+}
+
+/*Color the table rows*/
+#firstElement .tabulator-tableHolder .tabulator-table .tabulator-row:hover{
+    color:white;
+    background-color: #a9cce3 !important;
+}
+
+.tabulator-tree-level-0 {
+  background-color: #EB91F4 !important;
+}
+
+.tabulator-tree-level-1 {
+  background-color: #5DADE2 !important;
+}
+
+.tabulator-selectable:hover{
+  background-color: #D6EAF8 !important;
+}
+
+.tabulator-cell{
+  font-size: 12px;
+}
+
 
 body{
   font-family: gothambook;

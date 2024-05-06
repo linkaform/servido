@@ -130,6 +130,8 @@ function loadDemoData(){
   getDrawTable('firstElement', columsTable1, dataTable1);
   document.getElementById("firstParameters").style.removeProperty('display');
   document.getElementById("firstElement").style.removeProperty('display');
+
+  
 }
 
 const loading = document.querySelector('.loading-container');

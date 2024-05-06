@@ -1,0 +1,264 @@
+
+.header{
+  background: #F2DEBA;
+}
+
+body{
+  margin: 0px;
+}
+
+/*Styles Div*/
+
+
+.div-card-portal{
+  min-height: 120px !important;
+}
+
+
+.div-search-portal{
+  position: relative;
+  box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+}
+
+
+.div-container-portal{
+  margin-top: 25px !important;
+  border-radius: 10px;
+  border: 1px solid grey;
+}
+
+.div-container-table{
+  max-height: 245px !important;
+  overflow: auto;
+}
+
+.div-container-table-comments{
+  max-height: 300px !important;
+  overflow: auto;
+}
+
+.div-containerTable-portal{
+  min-height: 220px !important;
+  overflow: auto;
+  margin-top: 25px !important;
+  border-radius: 10px;
+  border: 1px solid grey;
+}
+
+
+
+#myTabContent{
+  overflow: auto;
+}
+
+/* Styles Input */
+.input-search-portal{
+  margin-left: 10px;
+  border: 1px solid black !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.btn-rounded-portal{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;  
+}
+
+.btn-table-bitacora{
+  width: 20px !important;
+  height: 20px !important;
+  margin-left: 10px !important;
+  background: none !important;
+  border: none ;
+  i{
+    margin-left: -5px;
+    margin-top: -5px;
+    font: 15px;
+  }
+}
+
+/* Data */
+
+
+/* Estilos de la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid #ddd; /* Borde de la tabla */
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd; /* Borde de las celdas */
+}
+
+/* Estilos para las filas impares */
+tr:nth-child(odd) {
+  background-color: #f2f2f2; /* Color de fondo para filas impares */
+}
+
+/* Estilos para la primera fila (encabezados) */
+th {
+  background-color: #F2DEBA; /* Color de fondo para los encabezados */
+  color: black; /* Color del texto de los encabezados */
+}
+
+/*Dropdowns COlors*/
+
+/* Estilo para el contenedor del dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Estilo para el botón del dropdown */
+.dropdown button {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Estilo para la lista desplegable */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1;
+}
+
+/* Estilo para las opciones del dropdown */
+.dropdown-content option {
+  display: block;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Mostrar la lista desplegable al pasar el ratón sobre el contenedor del dropdown */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/*Tabulator Styles*/
+.tabulator .tabulator-header .tabulator-col{
+  background: #F2DEBA !important;
+  color: black !important;
+}
+
+
+///----Load
+.load-wrapp{
+  margin-top: 100px;
+}
+
+.button-add-register{
+  width: 22.5px !important;
+  height: 22.5px !important;
+  border-radius: 15px !important;
+  padding-top: 0px !important;
+  padding-left: 3px !important;
+}
+
+.button-delete-register{
+  width: 22.5px !important;
+  height: 22.5px !important;
+  border-radius: 15px !important;
+  padding-top: 0px  !important;
+  padding-left: 3px  !important;
+}
+
+
+
+.line {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 100px;
+  margin-right: 5px;
+}
+
+.load-3 .line:nth-last-child(1) {
+  background-color: #E5514B;/* RED*/
+  animation: loadingC 0.6s 0.1s linear infinite;
+}
+.load-3 .line:nth-last-child(2) {
+  background-color: #9B59B6;/* Purple*/
+  /* background-color: #F1C40F;/* yellow*/
+  animation: loadingC 0.6s 0.2s linear infinite;
+}
+ .load-3 .line:nth-last-child(3) {
+   background-color: #3498DC;/* Blue*/
+  animation: loadingC 0.6s 0.3s linear infinite;
+}
+.load-3 .line:nth-last-child(4) {
+  background-color: #2DCC71;/* Green*/
+  animation: loadingC 0.6s 0.4s linear infinite;
+}
+
+
+@keyframes loadingC {
+  0 {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, 15px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.styleTable{
+  padding: 0px;
+ }
+.buttonIniciarTurno{
+  margin-top:30px;
+  margin-botton:30px;
+  margin-right: 12%;
+}
+
+.nav-link{
+  color: grey;
+}
+.nav-link:hover{
+  color: black;
+}
+
+.form-check-input {
+  width: 1px;
+}
+.tabulator-cell{
+  align-items: center;
+
+}
+.form-check-input{
+  margin-top: 20px !important;
+  padding: 7px;
+  padding-left: 7px !important;
+  padding-right:7px !important;
+  width: 5px !important;
+  height: 5px !important; 
+}
+
+.marginSection{
+}
+
+.customNavbar{
+  width: 100% !important;
+  z-index: 999 !important;
+  height: 70px;
+ position:relative !important;
+ margin:0px;
+ padding: 0px;
+
+}
+
+.myCustomDropdown{
+  z-index: 999 !important;
+}

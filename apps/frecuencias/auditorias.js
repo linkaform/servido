@@ -95,10 +95,10 @@ window.onload = function(){
     setSpinner();
     $('#divOptions').show();
     $("#pais").multipleSelect('refresh');
-    $("#localidad").multipleSelect('refresh');
+    /*$("#localidades").multipleSelect('refresh');*/
     $("#tienda").multipleSelect('refresh');
     //---Catalog
-    get_catalog();
+    get_catalog(1);
     document.getElementById("firstParameters").style.removeProperty('display');
     
   } else {
@@ -141,14 +141,25 @@ loading.style.display = 'none';
 
 function runFirstElement(){
   let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  let pais = $('#pais').val();  
-  let localidad = $('#localidad').val();  
-  let tienda = $('#tienda').val();  
-  getFirstElement(date_to.value, date_from.value, pais, localidad, tienda);
+  let date_to = document.getElementById("date_to");
+  let id_forma = $("#formas").val()  
+  let pais = $('#pais').val();
+  let localidad = $('#localidades').val();  
+  let tienda = $('#tienda').val();
+  let option = 1;  
+  //alert(id_forma)
+  if(id_forma == '--'){
+    Swal.fire({
+      icon:'error',
+      title:'Ojo',
+      text:'Debe seleccionar una forma'
+    })
+  }else{
+    getFirstElement(date_to.value, date_from.value, id_forma, pais, localidad, tienda);
+  }  
 };
 
-function getFirstElement(dateTo, dateFrom, pais, localidad, tienda){
+function getFirstElement(dateTo, dateFrom, id_forma, pais, localidad, tienda){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -161,6 +172,7 @@ function getFirstElement(dateTo, dateFrom, pais, localidad, tienda){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
+      id_forma:id_forma,
       pais: pais,
       localidad: localidad,
       tienda: tienda,
@@ -180,7 +192,16 @@ function getFirstElement(dateTo, dateFrom, pais, localidad, tienda){
       $('.title_tables').show();
       if (res.response.json.firstElement) {
         console.log('Valores',res.response.json.firstElement)
-        setGraphic(res.response.json.firstElement)
+        if(res.response.json.firstElement[0].estandar == 0){
+          Swal.fire({
+            title:'Oops',
+            text:'No se ha establecido un estandar para esta cuenta.',
+            html: res.error
+          })
+        }else{
+          setGraphic(res.response.json.firstElement)
+
+        }
       }
     } else {
       hideLoading();
@@ -230,6 +251,16 @@ function setGraphic(data) {
     //---Clean Body
     for (let key in data){
       form = data[key]
+      console.log("Form")
+      console.log(form)
+      //Comprobar que existan registros
+      if(form['tendencia'].length <= 0){
+        Swal.fire({
+          icon:"info",
+          title: "Oops...",
+          text: "No hay registros con tu criterio de busqueda."
+        })
+      }
       if ('historico' in form){
         //-----APPEND
         $("#divContent").append(
@@ -270,14 +301,20 @@ function setGraphic(data) {
         name_array.push('Resultados por sección');
         name_array.push(name_form);
         id = 'tendencia_' + form['id_formulario']
-        getDrawGraphic(form['tendencia'], setOptions2, id,'bar',name_array);
+        let grading = 0
+        grading = parseInt(form['grading'])
+        if(grading == 1){
+          getDrawGraphic(form['tendencia'], setOptions2, id,'bar',name_array);
+        }else{
+          getDrawGraphic(form['tendencia'], setOptions3, id,'bar',name_array);
+        }
       }
     }
   }
 }
 
 //----- CATALOGS
-function get_catalog() 
+/*function get_catalog(options) 
 {
   arrayPais = []
   arrayLocalidad = []
@@ -298,6 +335,22 @@ function get_catalog()
   .then(res => {
     if (res.success) {
       if (res.response.json.catalog){
+        valueFormas = res.response.json.catalogTwo;
+
+        //----Formas
+        $("#formas").empty();
+        $('#formas').append('<option value="--">Seleccione la forma</option>');
+        for (i = 0; i < valueFormas.length; i++) {
+          //id_forma = Id de la forma
+          id_forma = valueFormas[i].id
+          str_id_forma = id_forma.toString();
+          //name = Nombre de la forma
+          name = valueFormas[i].name
+          value = id_forma + '-' + name
+          $('#formas').append('<option value="'+ value +'">'+name+'</option>');
+        }
+
+
         for (i = 0; i < res.response.json.catalog.length; i++) {
           valuePais = res.response.json.catalog[i]['631fccdd844ed53c7d989718'];
           valueLocalidad = res.response.json.catalog[i]['631fc1e48d9fe191da0c3daf'];
@@ -324,13 +377,13 @@ function get_catalog()
         $("#pais").multipleSelect('refresh');
 
         //----Pais
-        $("#localidad").empty();
-        $('#localidad').append('<option value="--">--Seleccione--</option>');
+        $("#localidades").empty();
+        $('#localidades').append('<option value="--">--Seleccione--</option>');
         for (i = 0; i < arrayLocalidad.length; i++) {
           value = arrayLocalidad[i]
-          $('#localidad').append('<option value="'+ value +'">'+value+'</option>');
+          $('#localidades').append('<option value="'+ value +'">'+value+'</option>');
         }
-        $("#localidad").multipleSelect('refresh');
+        $("#localidades").multipleSelect('refresh');
 
         //----Pais
         $("#tienda").empty();
@@ -345,10 +398,114 @@ function get_catalog()
       }
     } 
   })
-};
+};*/
 
-                    
-                        
-                            
-                       
-                    
+
+function get_catalog(option) {
+  pais  = $("#pais").val();
+  localidades = $("#localidades").val();
+  filter_data = ''
+  type_catalog = ''
+  if (option == 1) {
+    type_catalog = 'pais'
+  }
+  if (option == 2) {
+    type_catalog = 'localidad'
+    filter_data = pais
+  }
+  else if(option == 3){
+    type_catalog = 'tienda'
+    filter_data = localidades
+  }
+
+
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: 102558,
+      option: 2,
+      filter: filter_data,
+      type_catalog: type_catalog,
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      if(res.response.json.array_filters.formas){
+        $("#formas").empty()
+        $("#formas").append('<option value="--">Seleccione la forma</option>');
+        for(i = 0; i < res.response.json.array_filters.formas.length; i++){
+          id_forma = res.response.json.array_filters.formas[i].id;
+          str_id = id_forma.toString()
+          name = res.response.json.array_filters.formas[i].name;
+          value = id_forma + '-' + name;
+          $('#formas').append('<option value="'+value+'">'+name+'</option>');
+        }
+      }
+
+      if (option == 1){
+        if (res.response.json.array_filters.paises){
+          console.log("Paises")
+          $("#pais").empty();
+          /*$("#localidades").empty();
+          $("#localidades").multipleSelect('refresh');
+          $("#tienda").empty();
+          $("#tienda").multipleSelect('refresh');*/
+          $('#pais').append('<option value="--">--Seleccione--</option>');
+          for (i = 0; i < res.response.json.array_filters.paises.length; i++) {
+            value = res.response.json.array_filters.paises[i]
+            $('#pais').append('<option value="'+ value +'">'+value+'</option>');
+          }
+          $("#pais").multipleSelect('refresh');
+        }
+      }
+      if (option == 2){
+        if (res.response.json.array_filters.localidades) {
+            $('#localidades').multipleSelect('refresh');
+            console.log(" RefreshLocalidades");
+            $("#localidades").empty(); // Elimina opciones existentes
+            $("#localidades").append('<option value="--">--Seleccione--</option>');
+            for (var i = 0; i < res.response.json.array_filters.localidades.length; i++) {
+                var value = res.response.json.array_filters.localidades[i];
+                $('#localidades').append('<option value="' + value + '">' + value + '</option>');
+            }
+            // Si el selector múltiple ya está inicializado, simplemente refresca
+            if ($('#localidades').multipleSelect) {
+                console.log("refresh")
+                $('#localidades').multipleSelect('refresh');
+            }
+            // Si no está inicializado, inicialízalo
+            else {
+                console.log("Inicializar")
+                $('#localidades').multipleSelect();
+            }
+        }
+      }
+      if (option == 3){
+        if (res.response.json.array_filters.tiendas){
+          $("#tienda").empty();
+          $('#tienda').append('<option value="--">--Seleccione--</option>');
+          //$("#tienda").multipleSelect('refresh');
+          for (i = 0; i < res.response.json.array_filters.tiendas.length; i++) {
+            value = res.response.json.array_filters.tiendas[i];
+            $('#tienda').append('<option value="'+ value +'">'+value+'</option>');
+          }
+          $("#tienda").multipleSelect('refresh');
+        }
+      }
+    } 
+  })
+};
+//----EVENTS FILTERS
+$(function() {
+  $('#localidades').multipleSelect({
+    filter: true,
+    onClose: function () {
+      get_catalog(3);
+    },
+  })
+})
