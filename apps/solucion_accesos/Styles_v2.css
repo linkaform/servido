@@ -246,19 +246,40 @@ th {
   height: 5px !important; 
 }
 
-.marginSection{
+.mainSection{
+  margin-top: 65px !important;
 }
-
-.customNavbar{
-  width: 100% !important;
-  z-index: 999 !important;
-  height: 70px;
- position:relative !important;
- margin:0px;
- padding: 0px;
-
+#myCustomNavBar{
+  z-index: 1 !important;
+  position: fixed !important; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
 }
 
 .myCustomDropdown{
   z-index: 999 !important;
+}
+
+
+#imageUserNavbar{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+
+}
+
+#imageUserButton{
+  padding: 0px !important;
+  margin-top: 0px !important;
+}
+#imgGuardiaApoyo{
+  background-color: white;
+  object-fit:  scale-down;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+#imgProfilePic{
+  object-fit:  scale-down;
+    background-color: white;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
