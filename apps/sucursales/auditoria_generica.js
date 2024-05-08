@@ -202,7 +202,6 @@ function getFirstElement(dateTo, dateFrom, pais, localidad, tienda){
 };
 
 
-
 //-----GRAPICH
 function getDrawGraphic(data, setOptions, canvas, type, name){
   let chart;

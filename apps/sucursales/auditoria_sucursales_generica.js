@@ -553,7 +553,7 @@ function set_data_catalog(type, data = []){
     let dataWinery = data.catalog_branch_winery.branch;
     listDivision = dataDivision;
     listRegion = dataRegion;
-    listSucursal = dataBranch;
+    listSucursal = dataBranch ;
     listBodega = dataWinery;
     //---Select Country
     var select = document.getElementById("pais");
@@ -652,7 +652,6 @@ function set_data_catalog(type, data = []){
       text: 'Seleccione una opción'
     }));
     $("#sucursal").select2();
- 
     $('#bodega').empty();
     $('#bodega').append($('<option>', {
       value: '--',
@@ -661,7 +660,8 @@ function set_data_catalog(type, data = []){
     $("#bodega").select2();
     //---Data
     let region = $("#region").val();
-    console.log('Value Region',region);
+
+    console.log('listSucursal',listSucursal);
     let listSearch = listSucursal.filter(item => region.includes(item['region']));
     //---Select Región
     var select = document.getElementById("sucursal");
