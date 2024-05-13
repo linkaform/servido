@@ -8,6 +8,7 @@ let caseta=""
 let ubicacion=""
 let tables={}
 
+
 let img="https://static.vecteezy.com/system/resources/previews/007/468/567/non_2x/colorful-simple-flat-of-security-guard-icon-or-symbol-people-concept-illustration-vector.jpg";
 
 var dataTableGuardiasApoyo = [];
