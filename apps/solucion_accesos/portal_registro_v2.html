@@ -16,15 +16,15 @@
 	<navbar-component> </navbar-component>
 	
 	<!-- Information Plant-->
-	<section>
+	<section class="mainSection mainSectionMargins">
 		<div class="row ">
 
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-				<div class="card m-2 div-card-portal">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4 ">
+				<div class="card m-2 div-card-portal  customShadow">
 				    <div class="card-body ">
 						<div class="row">
 							<div class="col-8">
-								<h5 class="card-title text-uppercase text-dark mb-0">Edificio Planta 1</h5>
+								<h5 class="card-title text-uppercase text-dark mb-0">Monterrey</h5>
 								<small class="text-black-50">Ubicación</small>
 							</div>
 							<div class="col-4">
@@ -32,7 +32,7 @@
 								<small class="text-black-50">Jefe en Guardia</small>
 							</div>
 							<div class="col-8">
-								<h5 class="card-title text-uppercase text-dark mb-0">Caseta Vigilancia Sur</h5>
+								<h5 class="card-title text-uppercase text-dark mb-0">Caseta 1</h5>
 								<small class="text-black-50">Caseta</small>
 							</div>
 							
@@ -47,7 +47,7 @@
 			</div>
 			
 			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-				<div class="card  m-2 div-card-portal">
+				<div class="card  m-2 div-card-portal customShadow">
 				    <div class="card-body p-3">
 				        <div class="d-flex justify-content-evenly">
 			           		<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert1">00</p>
@@ -58,7 +58,7 @@
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-				<div class="card  m-2 div-card-portal">
+				<div class="card  m-2 div-card-portal customShadow">
 				    <div class="card-body p-3">
 				        <div class="d-flex justify-content-evenly">
 			            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert2">00</p>
@@ -69,7 +69,7 @@
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-				<div class="card  m-2 div-card-portal">
+				<div class="card  m-2 div-card-portal customShadow">
 				    <div class="card-body p-3">
 				        <div class="d-flex justify-content-evenly">
 			            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert3">00</p>
@@ -82,7 +82,7 @@
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-				<div class="card  m-2 div-card-portal">
+				<div class="card  m-2 div-card-portal customShadow">
 				    <div class="card-body p-3">
 				        <div class="d-flex justify-content-evenly">
 			            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert4">00</p>
@@ -96,7 +96,7 @@
 	</section>
 
 	<!-- Filter User-->
-	<section>
+	<section class="mainSectionMargins">
 		<div class="row ">
 			<div class="col-sm-12 col-md-12 col-lg-3 col-xl-3 mt-2 offset-lg-6 offset-xl-6">
 				<div class="input-group">
@@ -126,10 +126,10 @@
 	</section>	
 
 	<!-- Information User-->
-	<section class="section-data">
+	<section class="section-data mainSectionMargins">
 		<div class="row p-3">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 ">
-				<div class="row  div-container-portal me-1">
+				<div class="row  div-container-portal me-1 pt-2 customShadow">
 					<h4>Información personal &nbsp;&nbsp;</h4>
 					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
 						<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-5" alt="Imagen Usuario" style="width:120px;height:120px;" id="imgUser">
@@ -173,17 +173,17 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-5 div-container-portal div-container-table-comments ">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-5 div-container-portal div-container-table-comments customShadow ">
 				<div class="d-flex justify-content-between mb-2 mt-2 ">
 					<h4>Comentarios / Instrucciones de visita</h4>
 					<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listCommentsModal" id="buttonCommentsModal">
 						<i class="fa-solid fa-eye"></i>
 					</button>
 				</div>
-				<table id="tableInstructions">
-					<thead>
+				<table id="tableInstructions" class=" table-borderless" style="border: none;">
+					<thead  >
 						<tr>
-							<th>Comentarios / Instrucciones</th>
+							<th class="headerColor">Comentarios / Instrucciones</th>
 						</tr>
 					</thead>
 					<tbody></tbody>
@@ -193,10 +193,10 @@
 	</section>
 
 	<!-- Table User-->
-	<section class="section-data">
+	<section class="section-data mainSectionMargins">
 		<div class="row p-2">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-				<div class="div-containerTable-portal div-container-table p-2">
+				<div class="div-containerTable-portal div-container-table p-2 customShadow">
 					<div class="p-2">
 						<div class="mt-2 mb-2 d-flex justify-content-between">
 							<h4>Ultimos accesos</h4>
@@ -204,12 +204,12 @@
 								<i class="fa-solid fa-eye"></i>
 							</button>
 						</div>
-						<table id="tableBitacora">
+						<table id="tableBitacora" class=" table-borderless" style="border: none;">
 							<thead>
-								<tr>
-									<th>Visito a</th>
-									<th>Ubicación</th>
-									<th>Duración</th>
+								<tr >
+									<th class="headerColor">Visito a</th>
+									<th class="headerColor">Ubicación</th>
+									<th class="headerColor">Duración</th>
 								</tr>
 							</thead>
 							<tbody></tbody>
@@ -220,7 +220,7 @@
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-				<div class="div-containerTable-portal p-2 div-container-table">
+				<div class="div-containerTable-portal p-2 div-container-table customShadow">
 					
 					<div class="mt-3 mb-2 d-flex justify-content-between">
 						<h4>Permisos / certificaciones</h4>
@@ -229,11 +229,11 @@
 						</button>
 					</div>
 
-					<table id="tableAccess">
+					<table id="tableAccess" class=" table-borderless" style="border: none;">
 						<thead>
 							<tr>
-								<th>Permiso / Certificaciones</th>
-								<th>Status</th>
+								<th class="headerColor">Permiso / Certificaciones</th>
+								<th class="headerColor">Status</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -241,17 +241,17 @@
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-				<div class="div-containerTable-portal p-2 div-container-table">
+				<div class="div-containerTable-portal p-2 div-container-table customShadow" >
 					<div class="mt-3 mb-2 d-flex justify-content-between">
 						<h4>Accesos permitidos</h4>
 						<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listLocationsModal" id="buttonLocationsModal">
 							<i class="fa-solid fa-eye"></i>
 						</button>
 					</div>
-					<table id="tableLocations">
+					<table id="tableLocations" class=" table-borderless" style="border: none;">
 						<thead>
 							<tr>
-								<th>Acceso</th>
+								<th class="headerColor">Acceso</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -259,28 +259,28 @@
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
-				<div class="div-containerTable-portal p-2 div-container-table">
+				<div class="div-containerTable-portal p-2 div-container-table customShadow">
 					<div class="mt-3 mb-2 d-flex justify-content-between">
 						<h4>Equipos Autorizados</h4>
 
 						<div>
-							<button type="button" class="btn btn-success"  data-bs-toggle="modal" data-bs-target="#equipmentModal">
+							<button type="button" class="btn btn-success  btn-sm"  data-bs-toggle="modal" data-bs-target="#equipmentModal">
 								<i class="fa-solid fa-plus"></i> Agregar Equipo
 							</button>
-							<button type="button" class="btn btn-primary"  onclick="setViewModalItem();return false">
+							<button type="button" class="btn btn-primary  btn-sm"  onclick="setViewModalItem();return false">
 								<i class="fa-solid fa-list"></i>
 							</button>
-							<button type="button" class="btn btn-info "  data-bs-toggle="modal" data-bs-target="#listItemsModal" id="buttonItemsModal">
+							<button type="button" class="btn btn-info  btn-sm"  data-bs-toggle="modal" data-bs-target="#listItemsModal" id="buttonItemsModal">
 								<i class="fa-solid fa-eye"></i>
 							</button>
 						</div>
 					</div>
-					<table id="tableItems">
+					<table id="tableItems" class=" table-borderless" style="border: none;">
 						<thead>
 							<tr>
-								<th>Tipo</th>
-								<th>Marca</th>
-								<th>Modelo</th>
+								<th class="headerColor">Tipo</th>
+								<th class="headerColor">Marca</th>
+								<th class="headerColor">Modelo</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -288,17 +288,17 @@
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
-				<div class="div-containerTable-portal p-2 div-container-table">
+				<div class="div-containerTable-portal p-2 div-container-table customShadow">
 					<div class="mt-3 mb-2 d-flex justify-content-between">
 						<h4>Vehiculos Autorizados</h4>
 						<div>
-							<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#carModal" id="buttonAddCarModal">
+							<button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#carModal" id="buttonAddCarModal">
 								<i class="fa-solid fa-plus"></i> Agregar Vehículo
 							</button>
-							<button type="button" class="btn btn-primary" onclick="setViewModalCard();return false" >
+							<button type="button" class="btn btn-primary btn-sm"  onclick="setViewModalCard();return false" >
 								<i class="fa-solid fa-list"></i>
 							</button>
-							<button type="button" class="btn btn-info "  data-bs-toggle="modal" data-bs-target="#listCarsModal" id="buttonCarsModal">
+							<button type="button" class="btn btn-info  btn-sm"  data-bs-toggle="modal" data-bs-target="#listCarsModal" id="buttonCarsModal">
 								<i class="fa-solid fa-eye"></i>
 							</button>
 						</div>
@@ -306,9 +306,9 @@
 					<table id="tableCars">
 						<thead>
 							<tr>
-								<th>Marca</th>
-								<th>Placas</th>
-								<th>Color</th>
+								<th class="headerColor">Marca</th>
+								<th class="headerColor">Placas</th>
+								<th class="headerColor">Color</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -590,7 +590,7 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<table class="table" id="tableModalInstructions">
+					<table class="table table-borderless" style="border: none !important;" id="tableModalInstructions">
 						<thead class="table-warning">
 							<th>Comentarios / Instrucciones</th>
 						</thead>

@@ -68,6 +68,7 @@ window.onload = function(){
 	setValueUserLocation('portal_registro_v2');
 	setHideElements('dataHide');
 	setSpinner(true, 'divSpinner');
+	customNavbar(getValueUserLocation(), getCookie('userTurn'));
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
 	if(user !='' && jw!=''){
