@@ -1,3 +1,7 @@
+let urlNew =  '';
+let protocol = window.location.protocol;
+let host = window.location.host;
+
 class lkfNavbarComponent extends HTMLElement{
 	constructor(){
 		super();
@@ -13,18 +17,18 @@ class lkfNavbarComponent extends HTMLElement{
         <div class=" navbar-brand">
 			<img src="" height="40" height="60" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
         </div>
-        <div class="navbar-brand navbarShowHide">
-            <button id='buttonAccesos' class="btn btn-sm btn-secondary"  onclick="redirectionUrl('users');return false;" >Accesos</button>   
-            <button id='buttonBitacoras' class="btn btn-sm btn-secondary" onclick="redirectionUrl('bitacora');return false;" >Bitacoras</button>   
-            <button id='buttonIncidencias' class="btn btn-sm btn-secondary" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
-            <button id='buttonArticulos' class="btn btn-sm btn-secondary" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
-            <button id='buttonRondines' class="btn btn-sm btn-secondary" onclick="redirectionUrl('rondines');return false;">Rondines</button>   
-            <div class="btn p-0 ">
-			  <button type="button" class=" rounded-circle btn btn-secondary " id="imageUserButton" data-bs-toggle="dropdown" >
+        <div class="navbar-brand navbarShowHide customNoBorder">
+            <button id='buttonAccesos' class="btn btn-sm btn-secondary custom-navbar-button"  onclick="redirectionUrl('users');return false;" >Accesos</button>   
+            <button id='buttonBitacoras' class="btn btn-sm btn-secondary custom-navbar-button" onclick="redirectionUrl('bitacora');return false;" >Bitacoras</button>   
+            <button id='buttonIncidencias' class="btn btn-sm btn-secondary custom-navbar-button" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
+            <button id='buttonArticulos' class="btn btn-sm btn-secondary custom-navbar-button" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
+            <button id='buttonRondines' class="btn btn-sm btn-secondary custom-navbar-button" onclick="redirectionUrl('rondines');return false;">Rondines</button>   
+            <div class="btn p-0 ms-2 customNoBorder">
+			  <button type="button" class=" rounded-circle btn btn-secondary" id="imageUserButton" data-bs-toggle="dropdown" >
 				<img src="" id="imageUserNavbar">
 			  </button>
 			  <ul class="dropdown-menu dropdown-menu-end myCustomDropdown ">
-			    <li><button class="dropdown-item" type="button"> <i class="fa-solid fa-door-open"></i> Turno</button></li>
+			    <li><button class="dropdown-item" type="button" onclick="redirectionUrl('turnos');return false;"> <i class="fa-solid fa-door-open"></i> Turno</button></li>
 			    <li><button class="dropdown-item" type="button"> <i class="fa fa-sticky-note" aria-hidden="true"></i> Notas</button></li>
 			    <li><button class="dropdown-item" type="button"> <i class="fa fa-cog" aria-hidden="true"></i>  Configuracion</button></li>
 			     <li><button class="dropdown-item" onclick="setCloseSession();return false;" type="button"> 
@@ -55,19 +59,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 
 function customNavbar(location, turno){
-     if(location === 'portal_turns' && turno === 'off'){
+     if(location === 'portal_turnos' && turno === 'turno_cerrado' || location === 'portal_registro_v2' && turno === 'turno_cerrado'){
         $('#buttonAccesos').hide(); 
         $('#buttonBitacoras').hide(); 
         $('#buttonIncidencias').hide(); 
         $('#buttonArticulos').hide(); 
         $('#buttonRondines').hide(); 
-     }else if(location === 'portal_turns' && turno === 'on'){
+     }else if(location === 'portal_turnos' && turno === 'turno_abierto' || location === 'portal_registro_v2' && turno === 'turno_abierto'){
         $('#buttonAccesos').show(); 
         $('#buttonBitacoras').show(); 
         $('#buttonIncidencias').show(); 
         $('#buttonArticulos').show(); 
         $('#buttonRondines').show(); 
      }
+
 }
 
 
@@ -81,9 +86,7 @@ function setCloseSession(argument) {
 }
 //----Function Redirection
 function redirectionUrl(type = 'null',blank = true){
-    let urlNew =  '';
-    let protocol = window.location.protocol;
-    let host = window.location.host;
+ 
     console.log("DENTOROOO",type)
     if(type == 'users'){
         urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
@@ -97,6 +100,8 @@ function redirectionUrl(type = 'null',blank = true){
         urlNew = `${protocol}//${host}/solucion_accesos/login.html`
     }else if(type == 'rondines'){
         urlNew = `${protocol}//${host}/solucion_accesos/portal_rondines.html`
+    }else if(type == 'turnos'){
+        urlNew = `${protocol}//${host}/solucion_accesos/portal_turnos.html`
     }
     //----Validation
     if(urlNew !='' && blank){

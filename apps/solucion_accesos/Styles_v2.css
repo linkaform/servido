@@ -98,7 +98,7 @@ th, td {
 
 /* Estilos para las filas impares */
 tr:nth-child(odd) {
-  background-color: #f2f2f2; /* Color de fondo para filas impares */
+  background-color: #ebebeb !important; /* Color de fondo para filas impares */
 }
 
 /* Estilos para la primera fila (encabezados) */
@@ -145,11 +145,47 @@ th {
   display: block;
 }
 
+
+
+
 /*Tabulator Styles*/
-.tabulator .tabulator-header .tabulator-col{
-  background: #F2DEBA !important;
-  color: black !important;
+.tabulator{
+  border: none !important;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.11) 0px 0px 0px 1px !important;
+  border-color: lightgray;
+
+  background-color:#fafafa !important;
 }
+.tabulator-cell{
+  border:none  !important;
+}
+.tabulator .tabulator-header .tabulator-col{
+  background: #ffe99c !important;
+  color: #292929 !important;
+  border:none  !important;
+  padding-left: 5px;
+}
+.tabulator-header {
+  border-bottom: .5px solid;
+  border-color: lightgray !important;
+}
+.tabulator-footer{
+  background: #fafafa !important;
+  border-color: lightgray !important;
+}
+.tabulator-tableholder{
+  border-color: lightgray !important;
+}
+.tabulator-page{
+  border:none !important;
+}
+.tabulator-page:hover{
+  color:#292929 !important;
+}
+.tabulator-row:hover{
+  background-color: lightgray !important;
+}
+
 
 
 ///----Load
@@ -223,12 +259,73 @@ th {
   margin-right: 12%;
 }
 
+
+/*Navbar style*/
+.custom-navbar-button{
+  background-color: #F2DEBA !important;
+  border: none !important;
+  color: darkgray !important;
+}
+
+ .customNoBorder:focus, .customNoBorder:active, .customNoBorder:hover {
+  border: none !important;
+  box-shadow: none !important ;
+}
+
+.custom-navbar-button{
+  color: #292929 !important;
+  background-color: #F2DEBA !important;
+}
+.btn:hover , .btn:focus, .btn:active{
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+
+ .customNoBorder {
+  border: none !important;
+}
+
+ .custom-navbar-button:hover , .custom-navbar-button:focus, .custom-navbar-button:active {
+  background-color: #dcc7a1 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+
+.btn{
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.customButtonSquare{
+  border-radius: 5px !important;
+}
+
 .nav-link{
   color: grey;
 }
 .nav-link:hover{
   color: black;
 }
+
+/*------------------------*/
+
+
+/*Sweet Alert Style*/
+.swal2-styled{
+  padding: 5px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  min-width: 50px;
+}
+.swal2-styled:hover, .swal2-styled:active, .swal2-styled:focus{
+  border: none !important;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+.swal2-confirm{
+  background-color: #198754 !important;
+}
+
+/*-----------------------*/
+
 
 .form-check-input {
   width: 1px;
@@ -246,15 +343,28 @@ th {
   height: 5px !important; 
 }
 
+.buttonTrash{
+  margin-top: 20px !important;
+  margin-left: 0px !important;
+  margin-right: 0px;
+}
 .mainSection{
   margin-top: 65px !important;
 }
+.mainSectionMargins{
+  margin-left:30px !important;
+  margin-right:30px !important;
+  margin-bottom:30px !important;
+}
+
 #myCustomNavBar{
   z-index: 1 !important;
   position: fixed !important; /* Set the navbar to fixed position */
   top: 0; /* Position the navbar at the top of the page */
   width: 100%; /* Full width */
+  border: none !important;
 }
+.
 
 .myCustomDropdown{
   z-index: 999 !important;
@@ -264,14 +374,17 @@ th {
 #imageUserNavbar{
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 50px;
 
 }
 
 #imageUserButton{
   padding: 0px !important;
   margin-top: 0px !important;
+  border: none !important;
 }
+
+
 #imgGuardiaApoyo{
   background-color: white;
   object-fit:  scale-down;
@@ -280,6 +393,29 @@ th {
 
 #imgProfilePic{
   object-fit:  scale-down;
-    background-color: white;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  background-color: white;
+   box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+
+}
+
+.customShadow { 
+  border: none !important;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+input[type=search]{
+  border-radius: 4px;
+  border: 1px solid #c4c4c4;
+  border-color: lightgray;
+}
+
+.customCard{
+ border: none !important;
+ box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+
+.headerColor{
+  background-color: #ffe99c !important;
+}
+#inputCodeUser{
+  border-color: lightgray !important;
 }

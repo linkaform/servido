@@ -15,13 +15,13 @@
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body >
-	<nav class="navbar header">
+	<nav class="navbar header " id="myCustomNavBar">
         <div class=" navbar-brand">
 			<img src="https://app.linkaform.com/img/login-linkaform-logo.png" height="30" class="d-inline-block align-top" alt="">
         </div>
     </nav>
 	<!-- Information Plant-->
-	<section class="marginSection">
+	<section class="marginSection mainSection ms-5 ml-5">
 		<div class="row p-3">
 			<h2 class="text-center mb-5">Registro de Ingreso</h2>
 			<div class="col-12">
@@ -35,7 +35,7 @@
 
 
 	<!-- Information User -->
-	<section  >
+	<section class="m-5 mt-0" >
 		<div class="row p-3">
 			<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-1">
 				<label class="form-label">Nombre Completo:*</label>
@@ -75,93 +75,111 @@
 			</div>
 
 			
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row" id="div-item">
-				
-				<div class="col-9 div-item-row-1 div-row-item" >
-					<label class="form-label">Tipo de Vehiculo: *</label>
-					<span class="input-group-addon" id='spinnerTipoVehiculo'>
-                		<i class="fa fa-refresh fa-spin"></i>
-            		</span>
-					<select class="js-example-basic-single js-states form-control select-car-register dropdown-toggle" 
-					data-loading-text="<p><i class='fa-solid fa-spinner'></i></p>" id="selectTipoVehiculo" onchange='onChangeTipoVehiculo()' >
-					</select>
-					
-				</div>
-				<div class="col-3 pt-4 mt-2 div-item-row-1 ">
-					<button type="button" class="btn btn-success button-add-register" onclick="setAddItem();return false;">
-						<i class="fa-solid fa-plus"></i>
-					</button>
-					<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteItem(1);return false;">
-						<i class="fa-solid fa-minus"></i>
-					</button>
-				</div>
-			</div>
-			<!-- VEHICULOS -->
-
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-1 row" id="div-car">
-				<div class="col-9 div-row-car div-car-row-1 div-row-car">
-					<div id='divCatalogMarca'>
-						<label class="form-label">Marca: *</label>
-						<select class="form-control select-item-register dropdown-toggle"  id="selectCatalogMarca" onchange='onChangeMarca()'>
-						</select>
-					</div>
-					
-					<div id='divCatalogModelo'>
-						<label class="form-label">Modelo: *</label>
-						<select class="form-control select-item-register dropdown-toggle"  id="selectCatalogModelo">
-						</select>
-					</div>
-					
-
-						<label class="form-label">Matricula del Vehiculo:*</label>
-					<input type="text" class="form-control" id="inputName">
-
-						<label class="form-label">Tipo de Equipo:*</label>
-					<select class="form-control select-item-register dropdown-toggle"  id="selectTipoEquipo">
-						<option disabled selected>--Seleccione--</option>
-						<option value="Computo">Computo</option>
-						<option value="Herramienta">Herramienta</option>
-						</select>
-
-						<label class="form-label">Nombre del Equipo:*</label>
-					<input type="text" class="form-control" id="inputNombreEquipo">
-				</div>
-				
-			</div>
-
-
-			
 			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-1">
 				<label class="form-label">Empresa: *</label>
 				<input type="text" class="form-control" id="inputNombreEmpresa">
 			</div>
 			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-1">
 				<label class="form-label">¿A quíen visita?: *</label>
-				<select class="form-control" id="selectVisit">
-					<option>--Seleccione--</option>
-					<option value="Visita 1">Visita 1</option>
-					<option value="Visita 2">Visita 2</option>
-					<option value="Visita 3">Visita 3</option>
-				</select>
+				<input type="text" class="form-control" id="inputAquienVisita">
 			</div>
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-4">
 				<label class="form-label">Motivo de la visita: *</label>
-				<textarea class="form-control"  rows="3"></textarea>
+				<textarea class="form-control"  id="inputMotivoDeLaVisita" rows="3"></textarea>
 			</div>
 
-			<button type="button" class="btn btn-primary btn-lg mx-0" onclick="getDataUser();return false;">
-				Siguiente
-			</button>
+
+
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row div-main-vehiculo" id="div-vehiculo">
+				
+				<div class="col-9 div-vehiculo-row-1 div-row-vehiculo" >
+					<label class="form-label">Tipo de Vehiculo: </label>
+					<span class="input-group-addon" id='spinnerTipoVehiculo'>
+                		<i class="fa fa-refresh fa-spin"></i>
+            		</span>
+
+					<input class="form-control group-vehiculo" list="datalistOptionsTipo" id="selectTipoVehiculo-123" placeholder="Escribe algo para buscar..." onChange='onChangeCatalog("vehiculo",123)'>
+					<datalist id="datalistOptionsTipo">
+				
+					</datalist>
+				</div>
+				<div class="col-3 pt-4 mt-2 div-vehiculo-row-1 ">
+					<button type="button" class="btn btn-success button-add-register" onclick="setAddVehiculo();return false;">
+						<i class="fa-solid fa-plus"></i>
+					</button>
+					<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteVehiculo(123);return false;">
+						<i class="fa-solid fa-minus"></i>
+					</button>
+				</div>
+				<div class="col-9 div-vehiculo-row-1 div-row-vehiculo">
+					<div id='divCatalogMarca123'>
+						<label class="form-label">Marca: </label>
+						<input class="form-control group-vehiculo" list="datalistOptionsMarca123" id="selectCatalogMarca-123" placeholder="Escribe algo para buscar..." onchange='onChangeCatalog("marca",123)'> 
+						<datalist id="datalistOptionsMarca123">
+				
+						</datalist>
+					</div>
+					<div id='divCatalogModelo123'>
+						<label class="form-label">Modelo: </label>
+						<input class="form-control group-vehiculo" list="datalistOptionsModelo123" id="selectCatalogModelo-123" placeholder="Escribe algo para buscar...">
+						<datalist id="datalistOptionsModelo123">
+				
+						</datalist>
+					</div>
+					<div class="div-row-vehiculo">
+						<label class="form-label">Matricula del Vehiculo:</label>
+						<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-123">
+					</div>
+					<div class="div-row-vehiculo">
+						<label class="form-label">Color:</label>
+						<input type="text" class="form-control group-vehiculo" id="inputColor-123">
+						<hr >
+					</div>
+				</div>
+			</div>
+			<!-- VEHICULOS -->
+
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-1 row" id="div-car">
+				
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row" id="div-equipo">
+				
+				<div class="col-9 div-equipo-row-123 div-row-equipo" >
+					<label class="form-label">Tipo de Equipo: *</label>
+
+					<input class="form-control group-equipo" list="datalistOptionsEquipo123" id="selectTipoEquipo-123" placeholder="Escribe algo para buscar..." >
+					<datalist id="datalistOptionsEquipo123">
+						  <option value="Computo">
+						  <option value="Herramientas">
+					</datalist>
+				</div>
+				<div class="col-3 pt-4 mt-2 div-equipo-row-1 ">
+					<button type="button" class="btn btn-success button-add-register" onclick="setAddEquipo();return false;">
+						<i class="fa-solid fa-plus"></i>
+					</button>
+					<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteEquipo(123);return false;">
+						<i class="fa-solid fa-minus"></i>
+					</button>
+				</div>
+					<div class="col-9 div-equipo-row-1 div-row-equipo">
+				<label class="form-label ">Nombre del Equipo:*</label>
+					<input type="text" class="form-control group-equipo" id="inputNombreEquipo-123">
+					<hr>
+			</div>
+			</div>
 		</div>
-	</section>
-	
-	<!-- Summary User -->
-	<section>
+			<div class="d-flex justify-content-center">
+					<button type="button" class="btn btn-primary btn-lg mx-0 mt-1 mb-5" style="width: 30%;" onclick="AlertSendDataUser();return false;">
+					Siguiente
+					</button>
+			</div>
+
 		
 	</section>
 	<div id="divSpinner" style="display:none;margin-top: 100px;"></div>
 </body>
 <!-- Local -->
+<script src="https://unpkg.com/qrious@4.0.2/dist/qrious.js"></script>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script  type="text/javascript" src="./components/navbar.js"></script>
 

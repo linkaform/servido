@@ -7,8 +7,12 @@ let urlImgCard = '';
 let urlImgUser = '';
 let flagVideoCard = false;
 let flagVideoUser = false;
-
+let extraData=[]
 let dataCatalogs="";
+let id ="" 
+let caseta=""
+let ubicacion=""
+
 window.onload = function(){
 	setValueUserLocation('registro_ingreso');
 	customNavbar(getValueUserLocation(), getStatusTurn())
@@ -29,20 +33,52 @@ window.onload = function(){
 	const valores = window.location.search;
 	const urlParams = new URLSearchParams(valores);
 
-	let ubicacion = urlParams.get('ubicacion');
-	let caseta = urlParams.get('caseta');
+	ubicacion = urlParams.get('ubicacion');
+	caseta = urlParams.get('caseta');
+	id = urlParams.get('id');
+	if(id){
+		getExtraInformation()
+	}
 	$("#textLocation").text(ubicacion);
 	$("#textModule").text(caseta);
-  getCatalogTipoVehiculo();
+  getCatalogs();
 }	
 
+function getExtraInformation(){
+	fetch(urlLinkaform + urlScripts, {
+		method: 'POST',
+		body: JSON.stringify({
+			script_id: idScriptCatalog,
+			option: "get_extra_Information",
+			id:id,
+		}),
+		headers:{
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer '+userJwt
+			},
+	})
+	.then(res => res.json())
+	.then(res => {
+		if (res.success) {
+		} 	
+		extraData={ nombre:'Valeria Guadalupe',
+			empresa:"Empresa SCV",
+			visita:"Lider de area de desarrollo"}
+		
+		
+		$("#inputName").val(extraData.nombre)
+		$("#inputNombreEmpresa").val(extraData.empresa)
+		$("#inputAquienVisita").val(extraData.visita)
+	})
+	
+}
 
-function getCatalogTipoVehiculo(){
-	$("#selectTipoVehiculo").prop( "disabled", true );
-	$("#divCatalogMarca").hide();
-	$("#divCatalogModelo").hide();
 
-	$("#selectTipoVehiculo").append($('<option></option>').val('cargando').text('Cargando...'));
+
+function getCatalogs(){
+	$("#selectTipoVehiculo-123").prop( "disabled", true );
+	$("#divCatalogMarca123").hide();
+	$("#divCatalogModelo123").hide();
 	fetch(urlLinkaform + urlScripts, {
 		method: 'POST',
 		body: JSON.stringify({
@@ -59,48 +95,52 @@ function getCatalogTipoVehiculo(){
 		if (res.success) {
 			dataCatalogs = res.response.data;
 
-			$("#selectTipoVehiculo").prop( "disabled", false );
+			$("#selectTipoVehiculo-123").prop( "disabled", false );
 			$("#spinnerTipoVehiculo").css("display", "none");
-			$("#selectTipoVehiculo").find('[value="cargando"]').remove();
-			$("#selectTipoVehiculo").append($('<option disabled selected></option>').val('').text('--Selecione--'));
-
 			dataCatalogs.types_cars.forEach(function(e, i){
-			$("#selectTipoVehiculo").append($('<option></option>').val(e).text(e));
+			$("#datalistOptionsTipo").append($('<option></option>').val(e).text(e));
 			});
-
 		} 
 	})
 }
 
-function onChangeTipoVehiculo(){
-	$("#divCatalogMarca").show();
-	$("#selectCatalogMarca").empty();
-	$("#selectCatalogMarca").append($('<option disabled selected></option>').val('').text('--Selecione--'));
-	 let selectedValue = $( "#selectTipoVehiculo option:selected" ).text();
-   let catalogMarca = filterCatalogBy('type', selectedValue);
-	for (let obj in catalogMarca){
-			$("#selectCatalogMarca").append($('<option></option>').val(catalogMarca[obj].brand).text(catalogMarca[obj].brand));
+function onChangeCatalog(type, id){
+	if(type == "vehiculo"){
+		$("#divCatalogMarca"+id+"").show();
+
+		let inputMarca= document.getElementById("selectCatalogMarca-"+id+"");
+		inputMarca.value="";
+		let datalistMarca= document.getElementById("datalistOptionsMarca"+id+"");
+		datalistMarca.innerHTML=""; 
+		let inputModelo= document.getElementById("selectCatalogModelo-"+id+"");
+		inputModelo.value="";
+		let datalistModelo= document.getElementById("datalistOptionsModelo"+id+"");
+		datalistModelo.innerHTML=""; 
+
+		let selectedValue = $( "#selectTipoVehiculo-"+id+"" ).val();
+	  let catalogMarca = filterCatalogBy('type', selectedValue);
+		for (let obj in catalogMarca){
+				$("#datalistOptionsMarca"+id+"").append($('<option></option>').val(catalogMarca[obj].brand).text(catalogMarca[obj].brand));
+		}
+	}else if (type == "marca"){
+		$("#divCatalogModelo"+id+"").show();
+
+		let inputModelo= document.getElementById("selectCatalogModelo-"+id+"");
+		inputModelo.value="";
+		let datalistModelo= document.getElementById("datalistOptionsModelo"+id+"");
+		datalistModelo.innerHTML=""; 
+
+		 let selectedValue = $( "#selectCatalogMarca-"+id+"" ).val();
+	   let catalogMarca = filterCatalogBy('brand', selectedValue);
+		for (let obj in catalogMarca){
+				$("#datalistOptionsModelo"+id+"").append($('<option></option>').val(catalogMarca[obj].model).text(catalogMarca[obj].model));
+		}
 	}
-
 }
-
-function onChangeMarca(){
-	$("#divCatalogModelo").show();
-	$("#selectCatalogModelo").empty();
-	$("#selectCatalogModelo").append($('<option disabled selected></option>').val('').text('--Selecione--'));
-	 let selectedValue = $( "#selectCatalogMarca option:selected" ).text();
-   let catalogMarca = filterCatalogBy('brand', selectedValue);
-	 console.log("VALORESCOGISDOO MARCAA", catalogMarca);
-
-	for (let obj in catalogMarca){
-			$("#selectCatalogModelo").append($('<option></option>').val(catalogMarca[obj].model).text(catalogMarca[obj].model));
-	}
-}
-
 
 function filterCatalogBy(key, value ){
 		/*INFO: 
-		key: podermos filtrar por 'type' (marca) o 'brand' (modelo)
+		key: podemos filtrar por 'type' (marca) o 'brand' (modelo)
 		value: valor de type o model segun corresponda
 		*/
 	let dataCatalogChild="";
@@ -111,12 +151,14 @@ function filterCatalogBy(key, value ){
 	}
 	return dataCatalogChild;
 }
+
+
 //-----FUNCTION DATA
 
-function getValidation(dicData) {
-	if(dicData.nameUser !== '' 
-	|| dicData.company !== '' 
-	|| dicData.visit !== ''){
+function getValidation(allData) {
+	if(allData.nameUser !== '' || allData.location!==''|| allData.caseta!=='' || allData.visitMotivo!==''
+	|| allData.company !== '' 
+	|| allData.visit !== ''){
 		if(urlImgUser !== ''){
 			if(urlImgCard !== ''){
 				return true;
@@ -143,42 +185,181 @@ function getValidation(dicData) {
 	}
 }	
 
-function getDataUser() {
+//INFO: enviar dialogo de confirmacion
+function AlertSendDataUser() {
+
+	let location= $("#textLocation").text();
+	let caseta= $("#textModule").text(); 
 	let name = $("#inputName").val();
-	let company = $("#selectCompany").val();
-	let visit = $("#selectVisit").val();
-	let listValueCar = [];
-	let listValueItem = [];
-
-	//-----List
-	var listCars = document.querySelectorAll('.select-car-register');
-	listCars.forEach(function(select) {
-		let valueElement = select.value;
-		if(valueElement !=''){
-			listValueCar.push(valueElement);
-		}
-	});
-
-	//-----List
-	var listItems = document.querySelectorAll('.select-item-register');
-	listItems.forEach(function(select) {
-		let valueElement = select.value;
-		if(valueElement !=''){
-			listValueItem.push(valueElement);
-		}
-	});
-
-	//-----Dic
-	let dicData = {
-		'nameUser':name,	
+	let company = $("#inputNombreEmpresa").val();
+	let visit = $("#inputAquienVisita").val();
+	let motivo= $("#inputMotivoDeLaVisita").val();
+	console.log('archivos',document.getElementById("inputFileUser").files) 
+	//INFO: Arrays de objetos
+	let listInputsVehicule={};
+	let listInputsEquipo={};
+	//INFO: Separar elementos por id y ponerlos en arrays
+	let divVehiculos = document.getElementById("div-vehiculo");
+  let inputsV = divVehiculos.querySelectorAll('.group-vehiculo');
+  inputsV.forEach(function(input) {
+    var idV = input.id.split('-')[1];
+    if (!listInputsVehicule[idV]) {
+        listInputsVehicule[idV] = [];
+    	}
+    listInputsVehicule[idV].push(input);
+});
+  let divEquipo = document.getElementById("div-equipo");
+  console.log("DIV",divEquipo)
+  let inputsE = divEquipo.querySelectorAll('.group-equipo');
+  console.log("DSVFJLSSSSSSSSSS",inputsE)
+  inputsE.forEach(function(input) {
+    let idE = input.id.split('-')[1];
+    if (!listInputsEquipo[idE]) {
+        listInputsEquipo[idE] = [];
+    	}
+    listInputsEquipo[idE].push(input);
+});
+	//-----DICCIONARIO
+	let allData = {
+		'location':location,
+		'caseta': caseta,
+		'nameUser':name,
 		'companyUser':company,
 		'visitUser':visit,
-		'listCarUser':listValueCar,	
-		'listItemUser':listValueItem,	
+		'visitMotivo':motivo,
+		'listCarUser':listInputsVehicule,	
+		'listItemUser':listInputsEquipo,
 	}
-	let flagValidation = getValidation(dicData);
+	let flagValidation = getValidation(allData);
 	if(flagValidation){
-		console.log('ejecuta la siguiente parte del script');
+			let htmlAppendEquipos="";
+			for (let equipo in listInputsEquipo) {
+					 htmlAppendEquipos +="<div class='col-sm-12 col-md-12 col-lg-5 col-xl-5'>"
+		  			htmlAppendEquipos+="<table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>"
+						htmlAppendEquipos+="<tbody> <tr> <td><b>Tipo de Equipo:</b></td> <td> <span > "+ listInputsEquipo[equipo][0].value +"</span></td> </tr>"
+						htmlAppendEquipos+="<tr> <td><b>Nombre:</b></td> <td> <span > "+ listInputsEquipo[equipo][1].value +"</span></td> </tr>	</tbody> </table>	</div>"		
+			}
+			let htmlAppendVehiculos="";
+			for (let vehiculo in listInputsVehicule) {
+						htmlAppendVehiculos +="<div class='col-sm-12 col-md-12 col-lg-5 col-xl-5'>"
+						htmlAppendVehiculos +="<table class='table table-borderless customShadow' style='border: none; font-size: .8em; background-color: lightgray!important;'>"
+						htmlAppendVehiculos +="<tbody> <tr> <td><b>Tipo de Vehiculo:</b></td> <td><span > "+ listInputsVehicule[vehiculo][0].value +"</span></td> </tr>"
+						htmlAppendVehiculos +="<tr> <td><b>Marca:</b></td> <td><span > "+ listInputsVehicule[vehiculo][1].value +"</span></td> </tr>"
+						htmlAppendVehiculos +="<tr> <td><b>Modelo:</b></td> <td><span > "+ listInputsVehicule[vehiculo][2].value +"</span></td> </tr>"
+						htmlAppendVehiculos +="<tr> <td><b>Matricula:</b></td> <td><span > "+ listInputsVehicule[vehiculo][3].value +"</span></td> </tr>"
+						htmlAppendVehiculos +="<tr> <td> <b> Color: </b></td> <td><span > "+ listInputsVehicule[vehiculo][4].value +"</span></td> </tr> </tbody> </table> </div>"
+			}
+			Swal.fire({
+		      title:'Confirmación',
+		      html:`
+		      		</section>
+				<div class=-flex flex-column " >
+						<table class="table table-borderless customShadow" >
+								<thead>
+									<tr>
+										<th  style="background-color: lightgray; text-align:left !important;" > Detalle del visitante  </th>
+										<th  style="background-color: lightgray;"> </th>
+									</tr>
+									
+								</thead>
+								<tbody>
+									<tr>
+										<td><b>Ubicacion:</b></td>
+										<td> <span > `+location+`</span></td>
+									</tr>
+									<tr>
+										<td><b>Caseta:</b></td>
+										<td><span > `+caseta+`</span></td>
+									</tr>
+									<tr>
+										<td><b>Nombre:</b></td>
+										<td><span >`+name+`</span></td>
+									</tr>
+									<tr>
+										<td><b>Empresa:</b></td>
+										<td><span > `+company+`</span></td>
+									</tr>
+									<tr>
+										<td><b>Fotografia:</b></td>
+										<td><span > </span></td>
+									</tr>
+								</tbody>
+							</table>
+							<hr>
+							<table class="table table-borderless customShadow" style="border: none;">
+								<thead>
+									<tr>
+										<th scope='row' style="background-color: lightgray; text-align:left !important;" class="m-0"> Detalle de la visita </th>
+										<th scope='row' style="background-color: lightgray;"> </th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><b>Visita a:</b></td>
+										<td> <span > `+visit+`</span></td>
+									</tr>
+								</tbody>
+							</table>
+							<div ><h5> Motivo de la visita:</h5></div>
+							<div style="color:#777777; "> 
+								<span>`+motivo+`</span>
+							</div>
+							<hr>
+							<div class="d-flex justify-content-start" ><h5> Equipos:</h5></div>
+							<div class="d-flex justify-content-between flex-wrap"> 
+							`+ htmlAppendEquipos +`
+							</div>
+
+							<div class="d-flex justify-content-start" ><h5> Vehiculos: </h5></div>
+							<div class="d-flex justify-content-between flex-wrap"> 
+							`+ htmlAppendVehiculos +`
+							</div>
+				</div>
+			<section>
+		      `,
+		      type: "warning",
+		      showCancelButton: true,
+		      imageUrl: "https://app.linkaform.com/img/login-linkaform-logo.png",
+		      confirmButtonColor: "#28a745",
+		      cancelButtonColor: "#dc3545",
+		      confirmButtonText: " Guardar y Generar Qr",
+		      heightAuto:false,
+		      width:750,
+		    }).then((result) => {
+
+		      if (result.value) {
+		      	Swal.fire({
+		      		type:"success",
+		      		imageUrl: "https://app.linkaform.com/img/login-linkaform-logo.png",
+		      		text: "Tu informacion se ha guardado correctamente.",
+				      html:`
+				      	 <div class="mb-3 mt-2" style="font-weight: bold; font-size: 1.1em; color:#8ebd73 !important; "> ¡Tu información fue guardada correctamente! </div>
+				      <div class="d-flex justify-content-center ">
+				      	 <div class='align-items-start m-2'>
+				      	  	<i class="fa-solid fa-street-view"></i>
+				      	 </div>
+				      	 <div class="d-flex flex-column mb-3" >
+					      	<div> `+ location +`</div>
+					      	<div> `+ caseta +`</div> 
+				      </div>
+				      </div>
+
+				     
+				      <img class="mt-1" alt="Código QR" id="codigo">`,
+				      icon: "success",
+				    });
+
+				    new QRious({
+						  element: document.querySelector("#codigo"),
+						  value: 'Te damos la bienvenida ' + name + '\n Registro creado en ' + location + ', ' + caseta, // La URL o el texto
+						  size: 200,
+						  backgroundAlpha: 0, // 0 para fondo transparente
+						  foreground: "#505050", // Color del QR
+						  level: "L", // Puede ser L,M,Q y H (L es el de menor nivel, H el mayor)
+						});
+
+		      }
+			});
 	}
 }
 
@@ -411,80 +592,126 @@ function setTranslateImageCard(context, video, canvas){
     $("#buttonSaveCard").hide();
 }
 
-
-
-//------FUNCTION SET REPETITVE
-function setDeleteItem(id) {
-	const elements = document.querySelectorAll('.div-row-item');
+//------FUNCTIONS SET REPETITVE
+function setDeleteVehiculo(id) {
+	const elements = document.querySelectorAll('.div-row-vehiculo');
 	const count = elements.length;
 	if(count > 1){
-		console.log('Elements count','div-item-row-'+id);
-		const elements = document.getElementsByClassName('div-item-row-'+id);
+		console.log('Elements count','div-vehiculo-row-'+id);
+		const elements = document.getElementsByClassName('div-vehiculo-row-'+id);
+		console.log("sdgfsedfg",elements, elements.length)
 		while(elements.length > 0){
 			elements[0].parentNode.removeChild(elements[0]);
 		}
 	}
 }
 
-function setAddItem() {
+function setAddVehiculo() {
+	console.log("ENTRANDO")
 	let randomID = Date.now();
 	//---Structure HTML
-	let newItem = '<div class="col-9 div-item-row-'+randomID+' div-row-item">'
-	newItem += '<label class="form-label">Equipo: *</label>'
-	newItem += '<select class="form-control select-item-register" id="select-'+randomID+'">'
-	//--Loop
-	newItem += '<option value="">--Seleccione--</option>'
-	newItem += '<option value="1">Option 1</option>'
-	newItem += '<option value="2">Option 2</option>'
-	newItem += '<option value="3">Option 3</option>'
-	newItem += '<option value="4">Option 4</option>'
-	newItem += '</select>'
-	newItem += '</div>'
-	newItem += '<div class="col-3 pt-4 mt-2 div-item-row-'+randomID+'">'
-	newItem += '<button type="button" class="btn btn-success button-add-register" onclick="setAddItem();return false;"><i class="fa-solid fa-plus"></i></button>&nbsp;'
-	newItem += '<button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteItem('+randomID+');return false;"><i class="fa-solid fa-minus"></i></button>'
-	newItem += '</div>'
-	$('#div-item').append(newItem)
+let newItem=`
+			<div class="col-9 div-vehiculo-row-`+randomID+` div-row-vehiculo" >
+				
+					<label class="form-label">Tipo de Vehiculo: </label>
+					<input class="form-control  group-vehiculo" list="datalistOptionsTipo`+randomID+`" id="selectTipoVehiculo-`+randomID+`" placeholder="Escribe algo para buscar..." 
+					onChange='onChangeCatalog("vehiculo",`+ randomID+`)'>
+					<datalist id="datalistOptionsTipo`+randomID+`">
+					</datalist>
+			</div>
+			<div class="col-3 pt-4 mt-2 div-vehiculo-row-`+randomID+`">
+						<button type="button" class="btn btn-success button-add-register" onclick="setAddVehiculo();return false;">
+							<i class="fa-solid fa-plus"></i>
+						</button>
+						<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteVehiculo(`+randomID+`);return false;">
+							<i class="fa-solid fa-minus"></i>
+						</button>
+				</div>  
+			<div class="col-9 div-vehiculo-row-`+randomID+` div-row-vehiculo">
+				<div id='divCatalogMarca`+ randomID+`'>
+						<label class="form-label">Marca: </label>
+						<input class="form-control group-vehiculo" list="datalistOptionsMarca`+randomID+`" id="selectCatalogMarca-`+randomID+`" placeholder="Escribe algo para buscar..." 
+						onchange='onChangeCatalog("marca", `+ randomID+`)'> 
+						<datalist id="datalistOptionsMarca`+ randomID+`">
+				
+						</datalist>
+				</div>
+				
+				<div id='divCatalogModelo`+ randomID+`' class="div-vehiculo-row-`+randomID+`">
+						<label class="form-label">Modelo: </label>
+						<input class="form-control group-vehiculo" list="datalistOptionsModelo`+randomID+`" id="selectCatalogModelo-`+randomID+`" placeholder="Escribe algo para buscar...">
+						<datalist id="datalistOptionsModelo`+ randomID+`">
+				
+						</datalist>
+				</div>
+				<div class="div-row-vehiculo-`+randomID+`">
+						<label class="form-label">Matricula del Vehiculo:</label>
+						<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-`+randomID+`">
+				</div>
+				<div class="div-row-vehiculo-`+randomID+`">
+						<label class="form-label">Color:</label>
+						<input type="text" class="form-control group-vehiculo" id="inputColor-`+randomID+`">
+						<hr >
+					</div>
+			</div>
+`;
+	$('#div-vehiculo').append(newItem)
+	$(".select-item-register").select2({
+	  tags: true
+	});
+	 //INFO: Inicializamos el primer catalago
+	$("#divCatalogMarca"+randomID+"").hide();
+	$("#divCatalogModelo"+randomID+"").hide();
+	dataCatalogs.types_cars.forEach(function(e, i){
+	$("#datalistOptionsTipo"+randomID+"").append($('<option></option>').val(e).text(e));
+	});
+}
+
+function setDeleteEquipo(id) {
+	const elements = document.querySelectorAll('.div-row-equipo');
+	const count = elements.length;
+	console.log("equopososss",count)
+	if(count > 1){
+		console.log('Elements count','div-equipo-row-'+id);
+		const elements = document.getElementsByClassName('div-equipo-row-'+id);
+		while(elements.length > 0){
+			elements[0].parentNode.removeChild(elements[0]);
+		}
+	}
+}
+
+function setAddEquipo() {
+	let randomID = Date.now();
+	//---Structure HTML
+let newItem=`
+				<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo" >
+					<label class="form-label">Tipo de Equipo: *</label>
+
+					<input class="form-control group-equipo" list="datalistOptionsEquipo`+randomID+`" id="selectTipoEquipo-`+randomID+`" placeholder="Escribe algo para buscar..." >
+					<datalist id="datalistOptionsEquipo`+randomID+`">
+						  <option value="Computo">
+						  <option value="Herramientas">
+					</datalist>
+				</div>
+				<div class="col-3 pt-4 mt-2 div-equipo-row-`+randomID+` div-row-equipo ">
+					<button type="button" class="btn btn-success button-add-register" onclick="setAddEquipo();return false;">
+						<i class="fa-solid fa-plus"></i>
+					</button>
+					<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteEquipo(`+randomID+`);return false;">
+						<i class="fa-solid fa-minus"></i>
+					</button>
+				</div>
+				<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
+					<label class="form-label ">Nombre del Equipo:*</label>
+					<input type="text" class="form-control group-equipo" id="inputNombreEquipo-`+randomID+`">
+					<hr >
+				</div>
+`;
+	$('#div-equipo').append(newItem)
 	$(".select-item-register").select2({
 	  tags: true
 	});
 }
-
-function setDeleteCar(id) {
-	const elements = document.querySelectorAll('.div-row-car');
-	const count = elements.length;
-	if(count > 1){
-		const elements = document.getElementsByClassName('div-car-row-'+id);
-		while(elements.length > 0){
-			elements[0].parentNode.removeChild(elements[0]);
-		}
-	}
-}
-
-function setAddCar() {
-	let randomID = Date.now();
-	//---Structure HTML
-	let newItem = '<div class="col-9 div-car-row-'+randomID+' div-row-car">'
-	newItem += '<label class="form-label">Vehículo: *</label>'
-	newItem += '<select class="form-control select-car-register" id="select-'+randomID+'">'
-	//--Loop
-	newItem += '<option value="">--Seleccione--</option>'
-	newItem += '<option value="1">Option 1</option>'
-	newItem += '<option value="2">Option 2</option>'
-	newItem += '<option value="3">Option 3</option>'
-	newItem += '<option value="4">Option 4</option>'
-	newItem += '</select>'
-	newItem += '</div>'
-	newItem += '<div class="col-3 pt-4 mt-2 div-car-row-'+randomID+'">'
-	newItem += '<button type="button" class="btn btn-success button-add-register" onclick="setAddCar();return false;"><i class="fa-solid fa-plus"></i></button>&nbsp;'
-	newItem += '<button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteCar('+randomID+');return false;"><i class="fa-solid fa-minus"></i></button>'
-	newItem += '</div>'
-	$('#div-car').append(newItem)
-	$(".select-car-register").select2({
-	  tags: true
-	});
-}
-
 
 function setCookie(cname, cvalue, exdays) {
 	var d = new Date();
