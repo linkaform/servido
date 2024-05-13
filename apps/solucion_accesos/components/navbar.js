@@ -1,6 +1,4 @@
-let urlNew =  '';
-let protocol = window.location.protocol;
-let host = window.location.host;
+
 
 class lkfNavbarComponent extends HTMLElement{
 	constructor(){
@@ -27,12 +25,20 @@ class lkfNavbarComponent extends HTMLElement{
 			  <button type="button" class=" rounded-circle btn btn-secondary" id="imageUserButton" data-bs-toggle="dropdown" >
 				<img src="" id="imageUserNavbar">
 			  </button>
-			  <ul class="dropdown-menu dropdown-menu-end myCustomDropdown ">
-			    <li><button class="dropdown-item" type="button" onclick="redirectionUrl('turnos');return false;"> <i class="fa-solid fa-door-open"></i> Turno</button></li>
-			    <li><button class="dropdown-item" type="button"> <i class="fa fa-sticky-note" aria-hidden="true"></i> Notas</button></li>
-			    <li><button class="dropdown-item" type="button"> <i class="fa fa-cog" aria-hidden="true"></i>  Configuracion</button></li>
-			     <li><button class="dropdown-item" onclick="setCloseSession();return false;" type="button"> 
-			     	<i class="fa-solid fa-right-from-bracket"> </i>  Salir</button>
+			  <ul class="dropdown-menu dropdown-menu-end  ">
+			    <li>
+                    <button class="dropdown-item"  onclick="redirectionUrl('turnos');return false;" type="button"> 
+                    <i class="fa-solid fa-door-open"></i> Turno</button>
+                    </li>
+			    <li>
+                    <button class="dropdown-item" type="button" onclick="redirectionUrl('accesos');return false;"> <i class="fa fa-sticky-note" aria-hidden="true"></i> Notas</button>
+                    </li>
+			    <li> 
+                    <button class="dropdown-item" type="button"> <i class="fa fa-cog" aria-hidden="true"></i>  Configuracion</button>
+                    </li>
+			     <li>
+                    <button class="dropdown-item" onclick="setCloseSession();return false;" type="button"> 
+			     	<i class="fa-solid fa-right-from-bracket"></i>  Salir</button>
 			 	</li>
 			  </ul>
 			</div>
@@ -86,8 +92,11 @@ function setCloseSession(argument) {
 }
 //----Function Redirection
 function redirectionUrl(type = 'null',blank = true){
- 
-    console.log("DENTOROOO",type)
+    console.log("sdfs")
+    let urlNew =  '';
+    let protocol = window.location.protocol;
+    let host = window.location.host;
+    console.log("entrandoo", protocol, host)
     if(type == 'users'){
         urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
     }else if(type == 'bitacora'){
@@ -102,6 +111,8 @@ function redirectionUrl(type = 'null',blank = true){
         urlNew = `${protocol}//${host}/solucion_accesos/portal_rondines.html`
     }else if(type == 'turnos'){
         urlNew = `${protocol}//${host}/solucion_accesos/portal_turnos.html`
+    }else if(type == 'accesos'){
+        urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
     }
     //----Validation
     if(urlNew !='' && blank){
