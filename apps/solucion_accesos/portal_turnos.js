@@ -1,8 +1,9 @@
 let userJwt ="";
 let user="";
-let urlLinkaform='https://app.linkaform.com/api/';
+//let urlLinkaform='https://app.linkaform.com/api/';
+// let urlLinkaform='http://192.168.0.25:8000/api/';
 let urlScripts='infosync/scripts/run/';
-let idScript= 117936;
+let idScript= 117926;
 let userTurnCookie=''
 let caseta=""
 let ubicacion=""
@@ -59,7 +60,7 @@ const columsDataGuardiasApoyo = [
 ];
 
 function changeImageGuard(){
-     fetch(urlLinkaform + urlScripts, {
+     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: idScript,
@@ -81,7 +82,7 @@ function changeImageGuard(){
 }
 
 function getAllData(){
-    fetch(urlLinkaform + urlScripts, {
+    fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: idScript,
@@ -117,7 +118,7 @@ function getAllData(){
 }
 function getGuardLocationListGuardsNotes(){
 
-    fetch(urlLinkaform + urlScripts, {
+    fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: idScript,
@@ -165,7 +166,7 @@ function getGuardLocationListGuardsNotes(){
         } 
     });
 
- fetch(urlLinkaform + urlScripts, {
+ fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: idScript,
@@ -204,7 +205,7 @@ function getGuardLocationListGuardsNotes(){
     });
 
 
- fetch(urlLinkaform + urlScripts, {
+ fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: idScript,
@@ -308,7 +309,6 @@ function AlertForzarCierre(name){
 
 function changeStatusTurn(buttonClick){
     userTurnCookie= getCookie("userTurn");
-    console.log("asda", getCookie("userTurn"))
     const hour = new Date().toLocaleTimeString();
      let td = $("#statusTurnText");
         if (td.length > 0) {
@@ -319,7 +319,6 @@ function changeStatusTurn(buttonClick){
         // CODE : aqui fetch para modificar el status , meter estos dos if en el response del fetch
     if(userTurnCookie == 'turno_abierto' && buttonClick ){  
         setCookie("userTurn", "turno_cerrado",7)   
-        console.log("aqui esotyyy")
         $('#statusTurnText').append($('<div class="text-danger" id="statusOff"> Turno Cerrado </div>'));
         $('#buttonChangeStatusTurn').text('Iniciar Turno').removeClass('btn-danger').addClass('btn-success');
          customNavbar(getValueUserLocation(), getCookie('userTurn'))
@@ -332,10 +331,9 @@ function changeStatusTurn(buttonClick){
         customNavbar(getValueUserLocation(), getCookie('userTurn'))
 
     } else if(buttonClick== false){
-                console.log("aqui esotyyy");
         // CODE : aqui agregar fetch para cambiar el turno del guardia
         /*
-        fetch(urlLinkaform + urlScripts, {
+        fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: idScript,
