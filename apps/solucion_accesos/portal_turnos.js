@@ -12,8 +12,11 @@ let tables={}
 let img="https://static.vecteezy.com/system/resources/previews/007/468/567/non_2x/colorful-simple-flat-of-security-guard-icon-or-symbol-people-concept-illustration-vector.jpg";
 
 var dataTableGuardiasApoyo = [];
-
 var dataTableNotas = [];
+var dataTableCambiarCaseta = [
+    {name:"Caseta 1 Poniente", ubi:"Cumbres"},{name:"Caseta 1 Sur", ubi:"Santa Catarina"},
+    {name:"Caseta 4 Poniente", ubi:"Monterrey"},{name:"Caseta 3 Sur", ubi:"Escobedo"},
+    {name:"Caseta 6 Poniente", ubi:"San Jeronimo"},{name:"Caseta 6 Sur", ubi:"Monterrey"}];
 
 const columsDataNotas = [
     {title:"Guardia", field:"name", width:160, responsive:0}, //never hide this column
@@ -21,15 +24,24 @@ const columsDataNotas = [
     { title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:110,
          formatter: (cell, formatterParams) => {
             //----Button Trash
+            let data = cell.getData();
             let folio = cell.getData().folio ? cell.getData().folio : 0;
             let divActions = '<div class="row d-flex">';
-            divActions += `<button class="btn-table-bitacora" onClick="setModal('Cars',${folio})" ><i class="fa-regular fa-circle-check"></i></button>`;
-            divActions += `<button class="btn-table-bitacora" onClick="setModal('Tools',${folio})" ><i class="fa-regular fa-eye"></i></button>`;
+            divActions += `<button class="btn-table-bitacora" onclick="cerrarNotaAlert('${data.name}', '${data.note}', ${folio})" ><i class="fa-regular fa-circle-check"></i></button>`;
+            divActions += `<button class="btn-table-bitacora" onclick="verNotasAlert('${data.name}', '${data.note}')" > <i class="fa-regular fa-eye"></i></button>`;
             divActions += '</div>';
             return divActions;
         },
     },
 ];
+
+const columsCambiarCaseta = [
+    {title:"Caseta", field:"name", width:240, responsive:0}, //never hide this column
+    {title:"Ubicacion", field:"ubi", width:330, resizable:true, tooltip:true},
+
+];
+
+
 
 const columsDataGuardiasApoyo = [
     { title:"Guardias de Apoyo", field:'name',hozAlign:"left",headerFilter:true,width:390,
@@ -51,7 +63,8 @@ const columsDataGuardiasApoyo = [
             //----Button Trash
             let folio = cell.getData().folio ? cell.getData().folio : 0;
             let divActions = '<div class="row d-flex justify-content-center ml-0" id="inf2'+data.folio +'">';
-            divActions += `<button class="btn-table-bitacora buttonTrash" onClick="eliminarGuardia('${folio}', '${data.name}');"><i class="fa fa-trash"></i></button>`;
+            divActions += `<button class="btn-table-bitacora buttonTrash" onClick="eliminarGuardia('${folio}', '${data.name}');">
+            <i class="fa-solid fa-door-open"></i></button>`;
             divActions += '</div>';
             return divActions;
         },
@@ -200,6 +213,7 @@ function getGuardLocationListGuardsNotes(){
 
         if(user !='' && userJwt!=''){
             drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
+             drawTableNotas('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"360px");
             }
         } 
     });
@@ -237,12 +251,12 @@ window.onload = function(){
     user = getCookie("userId");
     userJwt = getCookie("userJwt");
     userTurnCookie= getCookie("userTurn");
-
     setValueUserLocation('portal_turnos');
     customNavbar(getValueUserLocation(), getStatusTurn());
     changeStatusTurn(false)
     getGuardLocationListGuardsNotes()
 
+  
     if(user !='' && userJwt!=''){
        drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
        drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "475px");
@@ -320,20 +334,28 @@ function changeStatusTurn(buttonClick){
         // CODE : aqui fetch para modificar el status , meter estos dos if en el response del fetch
     if(userTurnCookie == 'turno_abierto' && buttonClick ){  
         setCookie("userTurn", "turno_cerrado",7)   
-        console.log("aqui esotyyy")
         $('#statusTurnText').append($('<div class="text-danger" id="statusOff"> Turno Cerrado </div>'));
         $('#buttonChangeStatusTurn').text('Iniciar Turno').removeClass('btn-danger').addClass('btn-success');
+           $('#buttonAgregarGuardiaApoyo').attr("disabled", true);
+            $('#buttonCambiarCaseta').attr("disabled", false);
+             $('#buttonForzarCierre').attr("disabled", false);
+             $('#textInfActualCaseta').text('Información actual de la caseta:')
          customNavbar(getValueUserLocation(), getCookie('userTurn'))
+
 
     }else if (userTurnCookie == 'turno_cerrado' && buttonClick){
         setCookie("userTurn", "turno_abierto",7)
         $("#todayHourText").html(hour)
         $('#statusTurnText').append($('<div class="text-success" id="statusOn"> Turno Iniciado</div>'));
         $('#buttonChangeStatusTurn').text('Cerrar Turno').removeClass('btn-success').addClass('btn-danger');
+            $('#buttonAgregarGuardiaApoyo').attr("disabled", false);
+        $('#buttonCambiarCaseta').attr("disabled", true);
+         $('#buttonForzarCierre').attr("disabled", true);
+        $('#textInfActualCaseta').text('Información:');
         customNavbar(getValueUserLocation(), getCookie('userTurn'))
+    
 
     } else if(buttonClick== false){
-                console.log("aqui esotyyy");
         // CODE : aqui agregar fetch para cambiar el turno del guardia
         /*
         fetch(urlLinkaform + urlScripts, {
@@ -349,48 +371,40 @@ function changeStatusTurn(buttonClick){
                 'Authorization': 'Bearer '+userJwt,
 
             },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            console.log('se ha ceerado el turno')
-            }
-        } 
-    });
-    */
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    console.log('se ha ceerado el turno')
+                    }
+                } 
+            });
+            */
         $("#todayHourText").html(hour)
-        console.log('reponses',userTurnCookie)
-        userTurnCookie == 'turno_cerrado'? $('#buttonChangeStatusTurn').text('Iniciar Turno').addClass('btn-success'): 
-        $('#buttonChangeStatusTurn').text('Cerrar Turno').addClass('btn-danger');
-        userTurnCookie == 'turno_cerrado'? $('#statusTurnText').append($('<div class="text-danger" id="statusOff"> Turno Cerrado</div>')):
-        $('#statusTurnText').append($('<div class="text-success" id="statusOn"> Turno Iniciado</div>'));
+        if(userTurnCookie=='turno_cerrado'){ 
+            $('#buttonChangeStatusTurn').text('Iniciar Turno').addClass('btn-success')
+             $('#buttonAgregarGuardiaApoyo').attr("disabled", true);
+            $('#buttonCambiarCaseta').attr("disabled", false);
+            $('#textInfActualCaseta').text('Información actual de la caseta:')
+            $('#statusTurnText').append($('<div class="text-danger" id="statusOff"> Turno Cerrado</div>'))
+            $('#buttonForzarCierre').attr("disabled", false);
+        }else if(userTurnCookie=='turno_abierto'){
+            $('#buttonChangeStatusTurn').text('Cerrar Turno').addClass('btn-danger');
+            $('#statusTurnText').append($('<div class="text-success" id="statusOn"> Turno Iniciado</div>'));
+            $('#buttonAgregarGuardiaApoyo').attr("disabled", false);
+            $('#buttonCambiarCaseta').attr("disabled", true);
+            $('#buttonForzarCierre').attr("disabled", true);
+            $('#textInfActualCaseta').text('Información:');
+        }
          customNavbar(getValueUserLocation(), getCookie('userTurn'))
     }
 }
 
-
-
-//-----TABLES
-function drawTableNotas(id, columnsData, tableData, height){
-  var  table = new Tabulator("#" + id, {
-    layout:"fitDataStretch",
-    height:height,
-    data:tableData,
-    textDirection:"ltr",
-    columns:columnsData,
-    pagination:true, 
-    paginationSize:40,
-  });
-  tables[id]=table;
-}
-
-
-
 function eliminarGuardia(folio, name){
     console.log("helo");
     Swal.fire({
-      title: "Eliminar",
-      text:"¿Seguro que quieres eliminar a "+name+" guardia de apoyo?",
+      title: "Check out",
+      text:"¿Seguro que quieres realizar el check out al guardia de apoyo "+name+" ?",
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -398,7 +412,6 @@ function eliminarGuardia(folio, name){
       confirmButtonText: "Si",
       cancelButtonText: "Cancelar",
     }).then((result) => {
-           console.log("DIV A ELDFSEDFWAE", result, folio);
       if (result.value) {
 
         let divEliminar = document.getElementById("inf"+folio);
@@ -411,12 +424,75 @@ function eliminarGuardia(folio, name){
         }
         console.log("DIV A ELIMINAR", divEliminar);
         Swal.fire({
-          title: "Eliminado!",
-          text: "El guardia ha sido eliminado.",
+          title: "Check out!",
+          text: "Se ha realizado el checko out correctamente.",
           type: "success"
         });
       }
     });
+}
+
+function cerrarNotaAlert(name, note, folio){
+    Swal.fire({
+      title: "Confirmación",
+      type: 'warning',
+      html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
+                <div class="mb-4"><h5>¿Estás seguro que deseas cerrar esta nota?</h5></div>
+        <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
+        <tbody> <tr> <td><b>Nombre:</b></td> <td> <span > `+ name +`</span></td> </tr>
+        <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> </tbody> </table> `,
+      showCancelButton: true,
+      showConfirmButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si",
+      cancelButtonText: "Cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("cerrar nota con el folio:" , folio)
+      }
+    });
+}
+
+function verNotasAlert(name, note){
+    Swal.fire({
+      title: "Nota",
+      text: "Escoje una caseta para continuar...",
+      html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
+      
+        <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
+        <tbody> <tr> <td><b>Nombre:</b></td> <td> <span > `+ name +`</span></td> </tr>
+        <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> </tbody> </table> `,
+      showCancelButton: true,
+      showConfirmButton: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si",
+      cancelButtonText: "Cerrar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+      }
+    });
+}
+
+
+
+
+
+//-----TABLES
+function drawTableNotas(id, columnsData, tableData, height){
+    console.log("sadfsa")
+  var  table = new Tabulator("#" + id, {
+    layout:"fitDataStretch",
+    height:height,
+    data:tableData,
+    textDirection:"ltr",
+    columns:columnsData,
+    pagination:true, 
+    paginationSize:40,
+  });
+  tables[id]=table;
 }
 
 function setCookie(cname, cvalue, exdays) {
@@ -426,4 +502,10 @@ function setCookie(cname, cvalue, exdays) {
     document.cookie = cname + "=" + cvalue + "; " + expires+"; SameSite=Strict";
 }
 
+//-----MODALS
+function setModal(type = 'none',id){
+    if(type == 'cambiarCasetaModal'){
+        $('#cambiarCasetaModal').modal('show');
+    }
+}
 
