@@ -28,8 +28,8 @@
                     <div class="card-body m-0 customCard">
                         <div class="row" >
                             <div class="col-4 text-center">
-                                <img src="" height="100" class="d-inline-block rounded-circle" alt="" id="imgProfilePic"><br>
-                                <input style="display:none" type='file' />
+                                <img src="" height="100px" width="100px" class="d-inline-block rounded-circle" alt="" id="imgProfilePic"><br>
+                                <input style="display:none" type='file' accept="image/*" id='changeImageInputFile'/>
                                 <button type="button" class="btn btn-success btn-sm m-2 " id="buttonChangeImage" onclick='changeImageGuard()' >Cambiar Imagen</button>
                             </div>
                             <div class="col-8">
@@ -57,7 +57,7 @@
                     <div >
                         <button type="button" class="btn btn-success btn-sm mb-1 " data-bs-toggle="modal" data-bs-target="#agregarNotasModal" id="buttonAgregarNotas"><i class="fa-solid fa-plus"></i>
                         </button>
-                        <button type="button" class="btn btn-primary btn-sm mb-1 " data-bs-toggle="modal" onclick="redirectionUrl('notas',true);"><i class="fa-solid fa-list"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm mb-1 " onclick="redirectionUrl('notas',true);"><i class="fa-solid fa-list"></i></button>
                     </div>
                 </div>
                 <div id="tableNotas"></div>
@@ -103,16 +103,16 @@
                     <tbody>
                         <tr>
                             <td><b>Estatus de la caseta: </b></td>
-                            <td> <span id="textEstatusCaseta"> No disponible</span></td>
+                            <td> <span id="textEstatusCaseta"> </span></td>
                         </tr>
                         <tr>
                             <td><b>Guardia en turno:</b></td>
-                            <td><span id="GuardiaEnTurno"> Javier Almanza</span></td>
+                            <td><span id="textGuardiaEnTurno"> </span></td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-danger btn-sm" onclick="AlertForzarCierre('Javier Almanza')" id="buttonForzarCierre">Forzar Cierre</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="AlertForzarCierre(getCookie('userCasetaGuard'))" id="buttonForzarCierre">Forzar Cierre</button>
                 </div>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3 m-1 " >
@@ -178,7 +178,7 @@
     </section>
         <!-- Modal New Incident -->
     <div class="modal fade" id="cambiarCasetaModal" tabindex="-1"  aria-hidden="true" >
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 550px;">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 750px;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">Cambiar Caseta</h1>
@@ -193,7 +193,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cancelar</button>
-                    <button type="button" class="btn btn-success" >Agregar</button>
+                    <button type="button" class="btn btn-success" onclick="cambiarCaseta()">Agregar</button>
                 </div>
             </div>
         </div>
@@ -239,7 +239,7 @@
          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 550px;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5">Abrebar guardia de apoyo</h1>
+                    <h1 class="modal-title fs-5">Agregar guardia de apoyo</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -251,7 +251,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cancelar</button>
-                    <button type="button" class="btn btn-success" >Agregar</button>
+                    <button type="button" class="btn btn-success" onclick="agregarNuevoGuardiaApoyo();">Agregar</button>
                 </div>
             </div>
         </div>

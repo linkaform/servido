@@ -7,28 +7,28 @@ let userTurnCookie=''
 let caseta=""
 let ubicacion=""
 let tables={}
-
-
+let guardiasApoyo={}
+let arraySelectedGuardias=[]
 let img="https://static.vecteezy.com/system/resources/previews/007/468/567/non_2x/colorful-simple-flat-of-security-guard-icon-or-symbol-people-concept-illustration-vector.jpg";
 
 var dataTableGuardiasApoyo = [];
 var dataTableNotas = [];
 var dataTableCambiarCaseta = [
-    {name:"Caseta 1 Poniente", ubi:"Cumbres"},{name:"Caseta 1 Sur", ubi:"Santa Catarina"},
-    {name:"Caseta 4 Poniente", ubi:"Monterrey"},{name:"Caseta 3 Sur", ubi:"Escobedo"},
-    {name:"Caseta 6 Poniente", ubi:"San Jeronimo"},{name:"Caseta 6 Sur", ubi:"Monterrey"}];
+    {name:"Caseta 1 Poniente", ubi:"Cumbres", status: 'Disponible', guard:'Juan Ecobedo' },{name:"Caseta 1 Sur", ubi:"Santa Catarina", status: 'Disponible', guard:'Francisco Flores'},
+    {name:"Caseta 4 Poniente", ubi:"Monterrey", status: 'No disponible', guard:'Javier Almanza' },{name:"Caseta 3 Sur", ubi:"Escobedo", status: 'No disponible', guard:'Valeria Alvarado'},
+    {name:"Caseta 6 Poniente", ubi:"San Jeronimo", status: 'disponible', guard:'Erika Ruiz'},{name:"Caseta 6 Sur", ubi:"Monterrey", status: 'No disponible', guard:'Daniela Cepeda' }];
 
 var dataTableAgregarGuardiaApoyo = [  
-    { name: 'Juan Pérez Gomez', status: 'disponible' }, 
-    { name: 'María Rodríguez Herandez', status: 'no disponible' }, 
-    { name: 'Pedro Gómez Flores', status: 'disponible' }, 
-    { name: 'Ana López Rosales', status: 'disponible' }, 
-    { name: 'David Martínez Alvarado', status: 'disponible' }, 
-    { name: 'Laura Ramírez LLanes', status: 'no disponible' }, 
-    { name: 'Carlos Sánchez Espinosa', status: 'disponible' }, 
-    { name: 'Elena García Garcia', status: 'no disponible' }, 
-    { name: 'Sofía Hernández Campos', status: 'disponible' }, 
-    { name: 'Mario Castillo Hernandez', status: 'no disponible' }
+    { name: 'Juan Pérez Gomez', status: 'Disponible' , img: 'https://img.favpng.com/1/10/3/computer-icons-child-avatar-png-favpng-1KY4gtPN1Fab6LrVpVM8AjtnH.jpg', folio:20}, 
+    { name: 'María Rodríguez Herandez', status: 'Disponible' , img:'https://img.favpng.com/11/2/11/child-computer-icons-avatar-png-favpng-5T7pGsVsca4MQcwET3VPe0X2n.jpg', folio:21}, 
+    { name: 'Pedro Gómez Flores', status: 'Disponible' , img:'https://img.favpng.com/10/24/16/avatar-child-youtube-computer-icons-png-favpng-PTMFwE8vBZBUGaNtVmMJGxrdc.jpg', folio:22}, 
+    { name: 'Ana López Rosales', status: 'Disponible' , img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStDHIGgUTPEb7gYe0oKLLp_AfrnvRgPcCkI2icqmuSU7OIQsrnVLxlRygPK1hn-Za8dlY&usqp=CAU', folio:23},
+    { name: 'David Martínez Alvarado', status: 'Disponible' , img:'https://www.shareicon.net/data/512x512/2016/06/25/786530_people_512x512.png', folio:24}, 
+    { name: 'Laura Ramírez LLanes', status: 'Disponible', img:'https://p7.hiclipart.com/preview/203/105/230/girl-computer-icons-avatar-child-boy-girl-face.jpg', folio:25 }, 
+    { name: 'Carlos Sánchez Espinosa', status: 'Disponible' ,img:'https://www.shareicon.net/data/512x512/2016/06/25/786525_people_512x512.png', folio:26}, 
+    { name: 'Elena García Garcia', status: ' Disponible' ,img:'https://cdn-icons-png.freepik.com/512/163/163813.png', folio:27}, 
+    { name: 'Sofía Hernández Campos', status: 'Disponible' , img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDAdo0KjHLNxkRXKlav2OfZ7KUlwFjyY6WJTH7LrFyfD6rfeBepm5ybnFBwM_Cd7prl0s&usqp=CAU', folio:28}, 
+    { name: 'Mario Castillo Hernandez', status: ' Disponible' , img:"https://www.shareicon.net/data/512x512/2016/06/25/786541_people_512x512.png", folio:29}
 
 ];
 
@@ -53,8 +53,10 @@ const columsDataNotas = [
 ];
 
 const columsCambiarCaseta = [
-    {title:"Caseta", field:"name", width:240, responsive:0}, //never hide this column
-    {title:"Ubicacion", field:"ubi", width:330, resizable:true, tooltip:true},
+    {title:"Caseta", field:"name", width:180, responsive:0}, //never hide this column
+    {title:"Ubicación", field:"ubi", width:180, resizable:true, tooltip:true},
+    {title:"Estatus", field:"status", width:180, resizable:true, tooltip:true},
+    {title:"Guardia en turno", field:"guard", width:180, resizable:true, tooltip:true},
 
 ];
 
@@ -86,8 +88,7 @@ const columsDataGuardiasApoyo = [
             //----Button Trash
             let folio = cell.getData().folio ? cell.getData().folio : 0;
             let divActions = '<div class="row d-flex justify-content-center ml-0" id="inf2'+data.folio +'">';
-            divActions += `<button class="btn-table-bitacora buttonTrash" onClick="eliminarGuardia(${folio}, '${data.name}');">
-            <i class="fa-solid fa-door-open"></i></button>`;
+            divActions += `<input class="form-check-input" type="checkbox" onClick="selectCheckboxGuardia(${data.folio });" value='${data.folio}' style="border-color:darkgray;"></button>`;
             divActions += '</div>';
             return divActions;
         },
@@ -96,7 +97,9 @@ const columsDataGuardiasApoyo = [
 ];
 
 function changeImageGuard(){
-     fetch(urlLinkaform + urlScripts, {
+    document.getElementById("changeImageInputFile").click();
+
+    /* fetch(urlLinkaform + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: idScript,
@@ -114,8 +117,27 @@ function changeImageGuard(){
         if (res.success) {
             //CODE una vez resulta la imagen, cargarla en front
         } 
-    });
+    });*/
 }
+
+document.getElementById("changeImageInputFile").addEventListener("change", function() {
+    let archivoSeleccionado = event.target.files[0]; 
+    if (archivoSeleccionado) {
+        var lector = new FileReader(); // Crear un objeto FileReader
+        lector.onload = function(event) {
+            let urlImagen = event.target.result; // Obtener la URL de datos (data URL) de la imagen cargada
+            localStorage.setItem("imagenURL", String(urlImagen));
+            let imagenMostrada = document.getElementById("imgProfilePic");
+            imagenMostrada.src = urlImagen;
+            imagenMostrada.style.display = "block"; // Mostrar la imagen
+            //setCookie('userImg',String(urlImagen),7)
+            let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
+            imagenMostradaNavbar.src= urlImagen;
+            imagenMostradaNavbar.style.display = "block";
+        };
+        lector.readAsDataURL(archivoSeleccionado);
+    }
+})
 
 function getAllData(){
     fetch(urlLinkaform + urlScripts, {
@@ -188,8 +210,22 @@ function getGuardLocationListGuardsNotes(){
                 $("#textCuidad").text('Apodaca')
                 $("#textEstado").text('Nuevo Leon')
                 $("#textDireccion").text("Colonia Las Puentes 2do Sector")
-                $("#textUbicacion").text("Caseta 1")
-                $("#textCaseta").text('Monterrey')
+                setCookie('userCaseta', caseta)
+                setCookie('userLocation',ubicacion)
+                $("#textCaseta").text(getCookie('userCaseta'))
+                $("#textUbicacion").text(getCookie('userLocation'))
+
+                setCookie('userCasetaStatus', 'No disponible')
+                setCookie('userCasetaGuard','Juan Rios')
+                 $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
+                 $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
+                 $("#textEstatusCaseta").removeClass();
+                 $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== 'No disponible'? "text-success":  "text-danger");
+                 if(getCookie('userCasetaStatus') =="Disponible" ){
+                    $("#buttonForzarCierre").hide();
+                 }else{
+                     $("#buttonForzarCierre").show();
+                 }
                 if(!getCookie('userTurn')){
                     setCookie("userTurn", 'turno_abierto' , 7);
                 }
@@ -231,9 +267,9 @@ function getGuardLocationListGuardsNotes(){
             
 
         if(user !='' && userJwt!=''){
-            drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
-             drawTableNotas('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"360px");
-             drawTableNotas('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px");
+             drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
+             drawTableSelect('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"360px",1);
+             drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px",1000);
             }
         } 
     });
@@ -298,34 +334,53 @@ window.onload = function(){
     $("#textName").html(getCookie('userName'));
     $("#textPosition").text(getCookie('userPosition'));
     $("#textEmail").text(getCookie('userEmail'));
-    $("#imgProfilePic").attr("src", getCookie('userImg'));
+    $("#imgProfilePic").attr("src", localStorage.getItem("imagenURL") /*getCookie('userImg')*/);
     $("#textUbicacion").html();
+
+
 }
 
 function AlertAndActionChangeStatusTurn(){
-    let arrGuard=[];
-    for(guardia of dataTableGuardiasApoyo){
-        arrGuard.push(guardia.name);
+    if(getCookie("userCasetaStatus")!== 'No disponible'){
+        if( getCookie("userTurn")== 'turno_cerrado' && arraySelectedGuardias.length==0) {
+        Swal.fire({
+            title: "Faltan guardias de apoyo",
+            text: "Seleciona guardias de apoyo para iniciar el turno.",
+            type: "warning"
+        });
+        }else {
+             let arrGuard=[];
+                for(guardia of arraySelectedGuardias){
+                    arrGuard.push(guardia.name);
+                }
+                Swal.fire({
+                  title:'Confirmación',
+                  html:getCookie("userTurn")== 'turno_cerrado' ?`
+                ¿Seguro que quieres iniciar el turno en <b>`+ getCookie('userCaseta')+`</b>,
+                en la ubicación <b>`+ getCookie('userLocation')+`</b>,
+                con los siguientes guardias: <b>`+ arrGuard.flat()+`? </b> ` : ` ¿Seguro que quieres cerrar el turno en <b>`+ getCookie('userCaseta')+`</b>,
+                en la ubicación <b>`+ getCookie('userLocation')+`</b>,
+                con los siguientes guardias: <b>`+ arrGuard.flat()+`? </b> `,
+                  type: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#28a745",
+                  cancelButtonColor: "#dc3545",
+                  confirmButtonText: "Si",
+                  heightAuto:false,
+                }).then((result) => {
+                  if (result.value) {
+                     changeStatusTurn(true);
+                  }
+                });
+        }
+    }else{
+        Swal.fire({
+            title: "Caseta no disponible!",
+            text: "La caseta no se encuentra disponible, puedes forzar el cierre para continuar.",
+            type: "warning"
+        });
     }
-    Swal.fire({
-      title:'Confirmación',
-      html:getCookie("userTurn")== 'turno_cerrado' ?`
-    ¿Seguro que quieres iniciar el turno en <b>`+ caseta+`</b>,
-    en la ubicación <b>`+ ubicacion+`</b>,
-    con los siguientes guardias: <b>`+ arrGuard.flat()+`? </b> ` : ` ¿Seguro que quieres cerrar el turno en <b>`+ caseta+`</b>,
-    en la ubicación <b>`+ ubicacion+`</b>,
-    con los siguientes guardias: <b>`+ arrGuard.flat()+`? </b> `,
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#28a745",
-      cancelButtonColor: "#dc3545",
-      confirmButtonText: "Si",
-      heightAuto:false,
-    }).then((result) => {
-      if (result.value) {
-         changeStatusTurn(true);
-      }
-    });
+     
 }
 
 function AlertForzarCierre(name){
@@ -342,7 +397,16 @@ function AlertForzarCierre(name){
       heightAuto:false,
     }).then((result) => {
       if (result.value) {
-         //changeStatusTurn(true);
+        setCookie('userCasetaStatus', 'Disponible',7);
+        $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
+        $("#textEstatusCaseta").removeClass();
+        $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== 'No disponible'? "text-success":  "text-danger");
+
+         if(getCookie('userCasetaStatus') =="Disponible" ){
+            $("#buttonForzarCierre").hide();
+            }else{
+            $("#buttonForzarCierre").show();
+         }
       }
     });
 }
@@ -368,6 +432,10 @@ function changeStatusTurn(buttonClick){
              $('#textInfActualCaseta').text('Información actual de la caseta:')
          customNavbar(getValueUserLocation(), getCookie('userTurn'))
 
+         let elementos = document.querySelectorAll('.form-check-input');
+        elementos.forEach(function(elemento) {
+            elemento.disabled = false;
+        });
 
     }else if (userTurnCookie == 'turno_cerrado' && buttonClick){
         setCookie("userTurn", "turno_abierto",7)
@@ -380,6 +448,10 @@ function changeStatusTurn(buttonClick){
         $('#textInfActualCaseta').text('Información:');
         customNavbar(getValueUserLocation(), getCookie('userTurn'))
     
+        let elementos = document.querySelectorAll('.form-check-input');
+        elementos.forEach(function(elemento) {
+            elemento.disabled = true;
+        });
 
     } else if(buttonClick== false){
         // CODE : aqui agregar fetch para cambiar el turno del guardia
@@ -414,6 +486,11 @@ function changeStatusTurn(buttonClick){
             $('#textInfActualCaseta').text('Información actual de la caseta:')
             $('#statusTurnText').append($('<div class="text-danger" id="statusOff"> Turno Cerrado</div>'))
             $('#buttonForzarCierre').attr("disabled", false);
+            let elementos = document.querySelectorAll('.form-check-input');
+            elementos.forEach(function(elemento) {
+                elemento.disabled = false;
+            });
+
         }else if(userTurnCookie=='turno_abierto'){
             $('#buttonChangeStatusTurn').text('Cerrar Turno').addClass('btn-danger');
             $('#statusTurnText').append($('<div class="text-success" id="statusOn"> Turno Iniciado</div>'));
@@ -421,6 +498,10 @@ function changeStatusTurn(buttonClick){
             $('#buttonCambiarCaseta').attr("disabled", true);
             $('#buttonForzarCierre').attr("disabled", true);
             $('#textInfActualCaseta').text('Información:');
+            let elementos = document.querySelectorAll('.form-check-input');
+            elementos.forEach(function(elemento) {
+                elemento.disabled = true;
+            });
         }
          customNavbar(getValueUserLocation(), getCookie('userTurn'))
     }
@@ -531,19 +612,34 @@ function drawTableNotas(id, columnsData, tableData, height){
   tables[id]=table;
 }
 
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + "; " + expires+"; SameSite=Strict";
+function drawTableSelect(id, columnsData, tableData, height, select){
+  var  table = new Tabulator("#" + id, {
+    layout:"fitDataStretch",
+    height:height,
+    data:tableData,
+    textDirection:"ltr",
+    columns:columnsData,
+    pagination:true, 
+    selectableRows:select,
+    paginationSize:40,
+  });
+  tables[id]=table;
 }
-//-----MODALS
-function setModal(type = 'none',id){
-    if(type == 'cambiarCasetaModal'){
-        $('#cambiarCasetaModal').modal('show');
-    }
 
-}
+
+ function selectCheckboxGuardia(folio){
+     let checkboxes = document.querySelectorAll('.form-check-input');
+    arraySelectedGuardias=[]
+      checkboxes.forEach(function(checkbox) {
+        if (checkbox.checked) {
+            for(guardia of dataTableGuardiasApoyo){
+                if(guardia.folio ==checkbox.value)
+                arraySelectedGuardias.push(guardia)
+            }
+        }
+    });
+ }     
+
 
 function enviarNota(){
     let nota= $("#inputTextNota").val();
@@ -564,4 +660,48 @@ function enviarNota(){
           type: "warning"
         });
     }
+}
+
+function cambiarCaseta(value){
+     let selectedRow = tables["tableCambiarCaseta"].getSelectedData()[0]; // El [0] es para obtener solo la primera fila si hay varias seleccionadas
+     setCookie('userCaseta', selectedRow.name)
+     setCookie('userLocation', selectedRow.ubi)
+     setCookie('userCasetaStatus', selectedRow.status)
+     setCookie('userCasetaGuard', selectedRow.guard)
+     $("#textUbicacion").text(getCookie('userLocation'));
+     $("#textCaseta").text(getCookie('userCaseta'));
+     $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
+     $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
+     $("#textEstatusCaseta").removeClass();
+     $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== 'No disponible'? "text-success":  "text-danger");
+
+
+     $('#cambiarCasetaModal').modal('hide');
+}
+
+function agregarNuevoGuardiaApoyo(){
+   
+    let selectedRow = tables["tableAgregarGuardiaApoyo"].getSelectedData(); 
+    let exclude=[]
+    for(newGuard of selectedRow){
+        let randomFolio = Date.now()+ Math.random();
+        dataTableGuardiasApoyo.push( 
+            {name:newGuard.name, status: newGuard.status, image: newGuard.img, fechaInicio: "31 Enero 2024", folio:randomFolio})
+        exclude.push(newGuard.folio)
+    }
+    let newDataTableAgregarGuardiaApoyo = dataTableAgregarGuardiaApoyo.filter(function(guardia) {
+    return !exclude.includes(guardia.folio);
+    });
+    dataTableAgregarGuardiaApoyo= newDataTableAgregarGuardiaApoyo
+    tables["tableAgregarGuardiaApoyo"].setData(dataTableAgregarGuardiaApoyo);
+    tables["tableGuardiasApoyo"].setData(dataTableGuardiasApoyo);
+    $('#agregarGuardiaApoyoModal').modal('hide');
+}
+// INFO: FUNCIONES GENERALES
+
+function setModal(type = 'none',id){
+    if(type == 'cambiarCasetaModal'){
+        $('#cambiarCasetaModal').modal('show');
+    }
+
 }

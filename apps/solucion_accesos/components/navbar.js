@@ -29,7 +29,7 @@ class lkfNavbarComponent extends HTMLElement{
                     <i class="fa-solid fa-door-open"></i> Turno</button>
                     </li>
 			    <li>
-                    <button class="dropdown-item" type="button" onclick="redirectionUrl('accesos');return false;"> <i class="fa fa-sticky-note" aria-hidden="true"></i> Notas</button>
+                    <button class="dropdown-item" type="button" onclick="redirectionUrl('notas');return false;"> <i class="fa fa-sticky-note" aria-hidden="true"></i> Notas</button>
                     </li>
 			    <li> 
                     <button class="dropdown-item" type="button"> <i class="fa fa-cog" aria-hidden="true"></i>  Configuracion</button>
@@ -57,7 +57,9 @@ window.customElements.define('navbar-component', lkfNavbarComponent)
     //$('#buttonRondines').hide(); 
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  $("#imageUserNavbar").attr("src", getCookie('userImg')); 
+  //$("#imageUserNavbar").attr("src", getCookie('userImg')); 
+   let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
+   imagenMostradaNavbar.src= localStorage.getItem("imagenURL");
   $("#imageLinkaform").attr("src", getCookie('lkfLogo'));
 });
 

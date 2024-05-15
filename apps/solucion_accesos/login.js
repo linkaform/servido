@@ -53,6 +53,7 @@ function get_login(){
 				setCookie("userEmail", userEmail,7);
 				setCookie("userPosition", userPosition,7);
 				setCookie("userImg", userImg,7);
+				 localStorage.setItem("imagenURL", userImg);
 				setCookie("lkfLogo", res.user.company_logo.picture, 7)
 				//$("#")
 								//----Url
