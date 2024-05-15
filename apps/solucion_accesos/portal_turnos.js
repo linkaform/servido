@@ -16,7 +16,7 @@ var dataTableNotas = [];
 var dataTableCambiarCaseta = [
     {name:"Caseta 1 Poniente", ubi:"Cumbres", status: 'Disponible', guard:'Juan Ecobedo' },{name:"Caseta 1 Sur", ubi:"Santa Catarina", status: 'Disponible', guard:'Francisco Flores'},
     {name:"Caseta 4 Poniente", ubi:"Monterrey", status: 'No disponible', guard:'Javier Almanza' },{name:"Caseta 3 Sur", ubi:"Escobedo", status: 'No disponible', guard:'Valeria Alvarado'},
-    {name:"Caseta 6 Poniente", ubi:"San Jeronimo", status: 'disponible', guard:'Erika Ruiz'},{name:"Caseta 6 Sur", ubi:"Monterrey", status: 'No disponible', guard:'Daniela Cepeda' }];
+    {name:"Caseta 6 Poniente", ubi:"San Jeronimo", status: 'Disponible', guard:'Erika Ruiz'},{name:"Caseta 6 Sur", ubi:"Monterrey", status: 'No disponible', guard:'Daniela Cepeda' }];
 
 var dataTableAgregarGuardiaApoyo = [  
     { name: 'Juan Pérez Gomez', status: 'Disponible' , img: 'https://img.favpng.com/1/10/3/computer-icons-child-avatar-png-favpng-1KY4gtPN1Fab6LrVpVM8AjtnH.jpg', folio:20}, 
@@ -341,7 +341,8 @@ window.onload = function(){
 }
 
 function AlertAndActionChangeStatusTurn(){
-    if(getCookie("userCasetaStatus")!== 'No disponible'){
+    if((getCookie("userCasetaStatus")== 'Disponible' && getCookie("userTurn")== 'turno_cerrado' )   || (getCookie("userCasetaStatus")== 'No disponible') && getCookie("userTurn")== 'turno_abierto' 
+        || (getCookie("userCasetaStatus")== 'Disponible'&&  getCookie("userTurn")== 'turno_abierto')){
         if( getCookie("userTurn")== 'turno_cerrado' && arraySelectedGuardias.length==0) {
         Swal.fire({
             title: "Faltan guardias de apoyo",
