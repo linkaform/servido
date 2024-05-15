@@ -16,7 +16,7 @@
 	<navbar-component> </navbar-component>
 	
 	<!-- Information Plant-->
-	<section class="mainSection mainSectionMargins">
+	<section class="mainSection mainSectionMargins mb-3">
 		<div class="row ">
 
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4 ">
@@ -96,16 +96,16 @@
 	</section>
 
 	<!-- Filter User-->
-	<section class="mainSectionMargins">
-		<div class="row ">
-			<div class="col-sm-12 col-md-12 col-lg-3 col-xl-3 mt-2 offset-lg-6 offset-xl-6">
+	<section class="mainSectionMargins ">
+		<div class="row justify-content-end">
+			<div class="col-sm-12 col-md-12 col-lg-3 ">
 				<div class="input-group">
 					<input type="text" class="form-control  input-search-portal " placeholder="Codigo User" value="JERJ127" id="inputCodeUser" onchange="getDataUser();return false;">
 					<span class="input-group-text bg-warning-subtle cursor-pointer" onclick="getDataUser();return false;"><i class="fa-solid fa-magnifying-glass"></i></span>
 					<span class="input-group-text bg-warning-subtle cursor-pointer" data-bs-toggle="modal" data-bs-target="#listModal"><i class="fa-solid fa-list"></i></span>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-12 col-lg-3 col-xl-3 mt-2 ">
+			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-5 mt-6 ">
 				<button type="button" class="mt-1 mb-1 btn btn-success ml-3" style="display: none;" id="buttonIn" onclick="setDataUser();return false;">
 					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso
 				</button>
@@ -127,7 +127,7 @@
 
 	<!-- Information User-->
 	<section class="section-data mainSectionMargins">
-		<div class="row p-3">
+		<div class="row ">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 ">
 				<div class="row  div-container-portal me-1 pt-2 customShadow">
 					<h4>Información personal &nbsp;&nbsp;</h4>

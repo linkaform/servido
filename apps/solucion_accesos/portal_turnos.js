@@ -18,17 +18,34 @@ var dataTableCambiarCaseta = [
     {name:"Caseta 4 Poniente", ubi:"Monterrey"},{name:"Caseta 3 Sur", ubi:"Escobedo"},
     {name:"Caseta 6 Poniente", ubi:"San Jeronimo"},{name:"Caseta 6 Sur", ubi:"Monterrey"}];
 
+var dataTableAgregarGuardiaApoyo = [  
+    { name: 'Juan Pérez Gomez', status: 'disponible' }, 
+    { name: 'María Rodríguez Herandez', status: 'no disponible' }, 
+    { name: 'Pedro Gómez Flores', status: 'disponible' }, 
+    { name: 'Ana López Rosales', status: 'disponible' }, 
+    { name: 'David Martínez Alvarado', status: 'disponible' }, 
+    { name: 'Laura Ramírez LLanes', status: 'no disponible' }, 
+    { name: 'Carlos Sánchez Espinosa', status: 'disponible' }, 
+    { name: 'Elena García Garcia', status: 'no disponible' }, 
+    { name: 'Sofía Hernández Campos', status: 'disponible' }, 
+    { name: 'Mario Castillo Hernandez', status: 'no disponible' }
+
+];
+
+
 const columsDataNotas = [
     {title:"Guardia", field:"name", width:160, responsive:0}, //never hide this column
-    {title:"Nota", field:"note", width:330, resizable:true, tooltip:true},
+    {title:"Nota", field:"note", width:250, resizable:true, tooltip:true},
+    {title:"Estatus", field:"status", width:110, resizable:true, tooltip:true},
+    {title:"Imagen", field:"img", width:140, resizable:true, tooltip:true},
     { title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:110,
          formatter: (cell, formatterParams) => {
             //----Button Trash
             let data = cell.getData();
             let folio = cell.getData().folio ? cell.getData().folio : 0;
             let divActions = '<div class="row d-flex">';
-            divActions += `<button class="btn-table-bitacora" onclick="cerrarNotaAlert('${data.name}', '${data.note}', ${folio})" ><i class="fa-regular fa-circle-check"></i></button>`;
-            divActions += `<button class="btn-table-bitacora" onclick="verNotasAlert('${data.name}', '${data.note}')" > <i class="fa-regular fa-eye"></i></button>`;
+            divActions += `<button class="btn-table-bitacora" onclick="cerrarNotaAlert('${data.name}', '${data.note}', ${folio},'${data.status}')" ><i class="fa-regular fa-circle-check"></i></button>`;
+            divActions += `<button class="btn-table-bitacora" onclick="verNotasAlert('${data.name}', '${data.note}', ${folio}, '${data.status}')" > <i class="fa-regular fa-eye"></i></button>`;
             divActions += '</div>';
             return divActions;
         },
@@ -38,6 +55,12 @@ const columsDataNotas = [
 const columsCambiarCaseta = [
     {title:"Caseta", field:"name", width:240, responsive:0}, //never hide this column
     {title:"Ubicacion", field:"ubi", width:330, resizable:true, tooltip:true},
+
+];
+
+const columsAgregarGuardiaApoyo = [
+    {title:"Nombre", field:"name", width:240, responsive:0}, //never hide this column
+    {title:"Estatus", field:"status", width:330, resizable:true, tooltip:true},
 
 ];
 
@@ -63,7 +86,7 @@ const columsDataGuardiasApoyo = [
             //----Button Trash
             let folio = cell.getData().folio ? cell.getData().folio : 0;
             let divActions = '<div class="row d-flex justify-content-center ml-0" id="inf2'+data.folio +'">';
-            divActions += `<button class="btn-table-bitacora buttonTrash" onClick="eliminarGuardia('${folio}', '${data.name}');">
+            divActions += `<button class="btn-table-bitacora buttonTrash" onClick="eliminarGuardia(${folio}, '${data.name}');">
             <i class="fa-solid fa-door-open"></i></button>`;
             divActions += '</div>';
             return divActions;
@@ -146,13 +169,11 @@ function getGuardLocationListGuardsNotes(){
     })
     .then(res => res.json())
     .then(res => {
-        console.log("res", res.response)
         if (res.success) {
             let { booth, location, folio, status} = res.response.data
             if(booth || location|| folio||  status){
                 caseta=booth;
                 ubicacion=location;
-                console.log("LOCATION INFO", res.response.data)
                 $("#textUbicacion").text();
                 $("#textCuidad").text('')
                 $("#textEstado").text('')
@@ -170,7 +191,6 @@ function getGuardLocationListGuardsNotes(){
                 $("#textUbicacion").text("Caseta 1")
                 $("#textCaseta").text('Monterrey')
                 if(!getCookie('userTurn')){
-                    console.log('sedfw')
                     setCookie("userTurn", 'turno_abierto' , 7);
                 }
                 changeStatusTurn(false)
@@ -196,7 +216,6 @@ function getGuardLocationListGuardsNotes(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            console.log("RESPUESTA EN GFUARDIAS DE APOYOI",res.response.data)
             if(res.response.data.length > 0){
                 for(guardia of res.response.data){
                     dataTableGuardiasApoyo.push({name: guardia.name_guard, status: "Disponible", image: guardia.img_url})
@@ -214,6 +233,7 @@ function getGuardLocationListGuardsNotes(){
         if(user !='' && userJwt!=''){
             drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
              drawTableNotas('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"360px");
+             drawTableNotas('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px");
             }
         } 
     });
@@ -236,10 +256,18 @@ function getGuardLocationListGuardsNotes(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            console.log("NOTES GUARDS", res.response.data)
-             for(nota of res.response.data){
-                dataTableNotas.push({name: nota.catalogo_guardia_nombre, note: nota.notas_nota, check: "red", view:"14/04/1984", edit:""})
-                
+            if(res.response.data.length>0){
+                for(nota of res.response.data){
+                    dataTableNotas.push({name: nota.catalogo_guardia_nombre, note: nota.notas_nota, status: nota.notas_status, img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:""}) 
+                }
+            }else{
+                dataTableNotas.push(
+                    {name: "María Fernanda García", note: "No cerraron bien la puerta al salir", status: "abierta", img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:1},
+                    {name: "Juan Carlos Rodríguez", note: "Favor de revisar sus cosas antes de salir y no dejar toppers o cubiertos en el area comun", status: "cerrada", img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:2},
+                    {name: "Laura Pérez Martínez", note: "No paso la basura favor de apoyarme temprano con eso", status: "abierta" ,img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:3},
+                    //{name: "Alejandro López Sánchez", note: "no cerraron bien la puerta al salir", status: "cerrada", img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:4},
+                    //{name: "Ana María González Ruiz", note:"Favor de revisar sus cosas antes de salir y no dejar toppers o cubiertos en el area comun", status: "abierta", img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:5},
+                    )
             }
             if(user !='' && userJwt!=''){
                  drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");}  
@@ -314,7 +342,6 @@ function AlertForzarCierre(name){
       heightAuto:false,
     }).then((result) => {
       if (result.value) {
-        console.log("VALOR FORZAR CIERRE", result.value)
          //changeStatusTurn(true);
       }
     });
@@ -323,7 +350,6 @@ function AlertForzarCierre(name){
 
 function changeStatusTurn(buttonClick){
     userTurnCookie= getCookie("userTurn");
-    console.log("asda", getCookie("userTurn"))
     const hour = new Date().toLocaleTimeString();
      let td = $("#statusTurnText");
         if (td.length > 0) {
@@ -401,7 +427,6 @@ function changeStatusTurn(buttonClick){
 }
 
 function eliminarGuardia(folio, name){
-    console.log("helo");
     Swal.fire({
       title: "Check out",
       text:"¿Seguro que quieres realizar el check out al guardia de apoyo "+name+" ?",
@@ -413,16 +438,11 @@ function eliminarGuardia(folio, name){
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-
-        let divEliminar = document.getElementById("inf"+folio);
-        let divEliminar2 = document.getElementById("inf2"+folio);
-        divEliminar.parentNode.removeChild(divEliminar);
-        divEliminar2.parentNode.removeChild(divEliminar2);
-        console.log(tables, "a,jsnda")
-        if (tables["tableGuardiasApoyo"]) {
-            tables["tableGuardiasApoyo"].redraw(); // Ejemplo de cómo usar la instancia de la primera tabla
+        let index = dataTableGuardiasApoyo.findIndex(guardia => guardia.folio === folio);
+        if (index !== -1) {
+            dataTableGuardiasApoyo.splice(index, 1);
         }
-        console.log("DIV A ELIMINAR", divEliminar);
+        tables["tableGuardiasApoyo"].setData(dataTableGuardiasApoyo);
         Swal.fire({
           title: "Check out!",
           text: "Se ha realizado el checko out correctamente.",
@@ -432,29 +452,42 @@ function eliminarGuardia(folio, name){
     });
 }
 
-function cerrarNotaAlert(name, note, folio){
-    Swal.fire({
-      title: "Confirmación",
-      type: 'warning',
-      html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
-                <div class="mb-4"><h5>¿Estás seguro que deseas cerrar esta nota?</h5></div>
-        <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
-        <tbody> <tr> <td><b>Nombre:</b></td> <td> <span > `+ name +`</span></td> </tr>
-        <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> </tbody> </table> `,
-      showCancelButton: true,
-      showConfirmButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si",
-      cancelButtonText: "Cancelar"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        console.log("cerrar nota con el folio:" , folio)
-      }
-    });
+function cerrarNotaAlert(name, note, folio, status){
+    if(status=="abierta"){
+        Swal.fire({
+          title: "Confirmación",
+          type: 'warning',
+          html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
+                    <div class="mb-4"><h5>¿Estás seguro que deseas cerrar esta nota?</h5></div>
+            <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
+            <tbody> <tr> <td><b>Nombre:</b></td> <td> <span > `+ name +`</span></td> </tr>
+            <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> </tbody> </table> `,
+          showCancelButton: true,
+          showConfirmButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Si",
+          cancelButtonText: "Cancelar"
+        }).then((result) => {
+          if (result.value) {
+            let selectedNote = dataTableNotas.find(nota => nota.folio === folio);
+            if (selectedNote) {
+              selectedNote.status = "cerrada";
+                tables["tableNotas"].setData(dataTableNotas);
+            }
+          }
+        });
+    }else{
+         Swal.fire({
+          title: "Acción Completada!",
+          text: "Esta nota ya se encuentra cerrada.",
+          type: "warning"
+        });
+    }
+   
 }
 
-function verNotasAlert(name, note){
+function verNotasAlert(name, note, folio, status){
     Swal.fire({
       title: "Nota",
       text: "Escoje una caseta para continuar...",
@@ -462,7 +495,14 @@ function verNotasAlert(name, note){
       
         <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
         <tbody> <tr> <td><b>Nombre:</b></td> <td> <span > `+ name +`</span></td> </tr>
-        <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> </tbody> </table> `,
+        <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> 
+        <tr> <td><b>Estatus:</b></td> <td> <span > `+ status+`</span></td> </tr> 
+        <tr> <td><b>Fecha y hora de creacion:</b></td> <td> <span > 25/02/24 18:00:00 hrs</span></td> </tr>
+        <tr> <td><b>Fotografia:</b></td> <td> <img src="https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ=" class="img-fluid" alt="" width="200px"></td> </tr>
+        <tr> <td><b>Comentarios:</b></td> <td> <span> Este el comentario de prueba de la nota</span> </tr>
+        <tr> <td><b>Fecha y hora de cierre:</b></td> <td> <span>  26/02/24 19:31:00 hrs</span> </tr>
+        <tr> <td><b>Guardia que cierra:</b></td> <td> <span>  Pancracio Felipe</span> </tr>
+        </tbody> </table> `,
       showCancelButton: true,
       showConfirmButton: false,
       confirmButtonColor: "#3085d6",
@@ -477,12 +517,8 @@ function verNotasAlert(name, note){
 }
 
 
-
-
-
 //-----TABLES
 function drawTableNotas(id, columnsData, tableData, height){
-    console.log("sadfsa")
   var  table = new Tabulator("#" + id, {
     layout:"fitDataStretch",
     height:height,
@@ -501,11 +537,31 @@ function setCookie(cname, cvalue, exdays) {
     var expires = "expires="+d.toUTCString();
     document.cookie = cname + "=" + cvalue + "; " + expires+"; SameSite=Strict";
 }
-
 //-----MODALS
 function setModal(type = 'none',id){
     if(type == 'cambiarCasetaModal'){
         $('#cambiarCasetaModal').modal('show');
     }
+
 }
 
+function enviarNota(){
+    let nota= $("#inputTextNota").val();
+    let archivo= $("#fileInputArchivo").val();
+    let fotografia= $("#fileInputFotografia").val();
+    let fileNameFoto = fotografia.substring(fotografia.lastIndexOf('\\') + 1);
+
+    let randomFolio = Date.now();
+    if(nota!=="" && archivo!=="" && fotografia!==""){
+        dataTableNotas.push( {name: getCookie("userName"), note: nota, status: "abierta", img: fileNameFoto, check: "red", view:"14/04/1984", edit:"", folio:randomFolio})
+        tables["tableNotas"].setData(dataTableNotas);
+        $('#agregarNotasModal').modal('hide');
+      
+    }else{
+          Swal.fire({
+          title: "Faltan datos por llenar",
+          text: "Completa la información requerida.",
+          type: "warning"
+        });
+    }
+}

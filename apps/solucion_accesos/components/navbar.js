@@ -1,5 +1,3 @@
-
-
 class lkfNavbarComponent extends HTMLElement{
 	constructor(){
 		super();
@@ -89,14 +87,13 @@ function customNavbar(location, turno){
 function setCloseSession(argument) {
     closeSession();
     redirectionUrl('login',false);
+
 }
 //----Function Redirection
 function redirectionUrl(type = 'null',blank = true){
-    console.log("sdfs")
     let urlNew =  '';
     let protocol = window.location.protocol;
     let host = window.location.host;
-    console.log("entrandoo", protocol, host)
     if(type == 'users'){
         urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
     }else if(type == 'bitacora'){
@@ -113,6 +110,8 @@ function redirectionUrl(type = 'null',blank = true){
         urlNew = `${protocol}//${host}/solucion_accesos/portal_turnos.html`
     }else if(type == 'accesos'){
         urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
+    }else if(type == 'notas'){
+        urlNew = `${protocol}//${host}/solucion_accesos/notas.html`
     }
     //----Validation
     if(urlNew !='' && blank){
