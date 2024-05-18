@@ -1,3 +1,6 @@
+:root {
+  --yellowLKF: #ffe99c;
+}
 
 .header{
   background: #F2DEBA;
@@ -417,4 +420,10 @@ input[type=search]{
 }
 #inputCodeUser{
   border-color: lightgray !important;
+}
+
+.myCustomBtnGroup{
+  background-color: var(--yellowLKF)!important;
+  border-color: lightgray !important;
+
 }

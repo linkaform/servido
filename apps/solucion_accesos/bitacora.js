@@ -1,4 +1,5 @@
 //-----Variables
+let selectLocation;
 const columsData1 = [
 	{ title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:180,
 		formatter: (cell, formatterParams) => {
@@ -79,8 +80,18 @@ const dataTable2 = [
 	{'locker':'Locker 1','status':'Ocupado','visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
 ]
 
+document.addEventListener("DOMContentLoaded", (event) => {
+	setValueUserLocation('bitacora');
+
+	selectLocation= document.getElementById("selectLocation")
+	selectLocation.onchange = function() {
+        console.log("La selección ha cambiado");
+        let response = fetchOnChangeLocation()
+        console.log(response.data)
+    };
+})
+
 window.onload = function(){
-	setValueUserLocation('portal_bitacora_v2');
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
 	if(user !='' && jw!=''){

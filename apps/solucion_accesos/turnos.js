@@ -87,8 +87,9 @@ const columsDataGuardiasApoyo = [
             let data = cell.getData();
             //----Button Trash
             let folio = cell.getData().folio ? cell.getData().folio : 0;
-            let divActions = '<div class="row d-flex justify-content-center ml-0" id="inf2'+data.folio +'">';
-            divActions += `<input class="form-check-input" type="checkbox" onClick="selectCheckboxGuardia(${data.folio });" value='${data.folio}' style="border-color:darkgray;"></button>`;
+            let divActions = '<div class="row d-flex justify-content-center" id="inf2'+data.folio +'">';
+            divActions += `<input class="form-check-input customInputCheckout" type="checkbox" id="inp-${folio}" onClick="selectCheckboxGuardia(${data.folio });" value='${data.folio}' style="border-color:darkgray;">`;
+            divActions += `<button class="btn-table-bitacora mt-3 customButtonCheckout" id="btn-${folio}" onclick="eliminarGuardia(${folio}, '${data.name}')" > <i class="fa solid fa-door-open"></i> </button>`;
             divActions += '</div>';
             return divActions;
         },
@@ -252,29 +253,34 @@ function getGuardLocationListGuardsNotes(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
+
+   
+
+             /*
             if(res.response.data.length > 0){
                 for(guardia of res.response.data){
                     dataTableGuardiasApoyo.push({name: guardia.name_guard, status: "Disponible", image: guardia.img_url})
                 }
             }else{
-                dataTableGuardiasApoyo.push(
+               
+            }
+            */
+       
+        } 
+    });
+
+   dataTableGuardiasApoyo.push(
                     {name:"María Fernanda García", status: "Disponible", image: "https://w7.pngwing.com/pngs/298/171/png-transparent-avatar-face-girl-female-woman-profile-happy-avatar-icon.png", fechaInicio: "31 Enero 2024", folio:1},
                     {name:"Juan Carlos Rodríguez", status: "Disponible", image: "https://w7.pngwing.com/pngs/900/441/png-transparent-avatar-face-man-boy-male-profile-smiley-avatar-icon.png",fechaInicio: "28 Enero 2024",folio:2},
                     {name:"Laura Pérez Martínez", status: "Disponible", image: "https://w7.pngwing.com/pngs/210/236/png-transparent-avatar-face-girl-female-woman-profile-happy-avatar-icon.png",fechaInicio: "12 Febrero 2024",folio:3},
                     {name:"Alejandro López Sánchez", status: "Disponible", image: "https://cdn.icon-icons.com/icons2/2859/PNG/512/avatar_face_man_boy_male_profile_smiley_happy_people_icon_181657.png",fechaInicio: "12 Febrero 2024",folio:4},
                     {name:"Ana María González Ruiz", status: "Disponible", image: "https://cdn.icon-icons.com/icons2/2859/PNG/512/avatar_face_man_boy_male_profile_smiley_happy_people_icon_181661.png",fechaInicio: "10 Marzo 2024",folio:5})
-            }
-            
 
         if(user !='' && userJwt!=''){
              drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
              drawTableSelect('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"360px",1);
              drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px",1000);
             }
-        } 
-    });
-
-
  fetch(urlLinkaform + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -315,12 +321,12 @@ window.onload = function(){
     user = getCookie("userId");
     userJwt = getCookie("userJwt");
     userTurnCookie= getCookie("userTurn");
-    setValueUserLocation('portal_turnos');
-    customNavbar(getValueUserLocation(), getStatusTurn());
-    changeStatusTurn(false)
+ 
+   
     getGuardLocationListGuardsNotes()
 
-  
+   
+   customNavbar(getValueUserLocation(), getStatusTurn());
     if(user !='' && userJwt!=''){
        drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
        drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "475px");
@@ -414,6 +420,14 @@ function AlertForzarCierre(name){
 
 
 function changeStatusTurn(buttonClick){
+    let idGuardiasEnTurno=[]
+    let allGuardiasEnTurno=[]
+    console.log("GUARDIAS SELECIONADOS INICIALMENTE",arraySelectedGuardias,dataTableGuardiasApoyo)
+    for(g of arraySelectedGuardias){
+        idGuardiasEnTurno.push("inp-"+g.folio)
+        idGuardiasEnTurno.push("btn-"+g.folio)
+    }
+    console.log("idGuardiasEnTurno",idGuardiasEnTurno)
     userTurnCookie= getCookie("userTurn");
     const hour = new Date().toLocaleTimeString();
      let td = $("#statusTurnText");
@@ -421,8 +435,18 @@ function changeStatusTurn(buttonClick){
             td.find(".text-danger").remove();
             td.find(".text-success").remove();
         }
-        
-        // CODE : aqui fetch para modificar el status , meter estos dos if en el response del fetch
+     let elementos = document.querySelectorAll('.form-check-input');
+     for(e of elementos){
+        let id=e.getAttribute("id")
+         allGuardiasEnTurno.push(id)
+         allGuardiasEnTurno.push("btn-"+id.slice(4)) 
+     }
+     
+     let idGuardiasRestantes=allGuardiasEnTurno.filter(e => !idGuardiasEnTurno.includes(e))
+     //INFO : idGuardiasRestantes para poder saber que guardias estan en la tabla "Guardias de apoyo" PERO QUE NO INICIARON TURNO
+     //INFO : idGuardiasEnTurno para saber que guardias de los que estan en la tabla "Guardias de apoyo" INICIARON TURNO
+
+     //INFO : aqui fetch para modificar el status , meter estos dos if en el response del fetch
     if(userTurnCookie == 'turno_abierto' && buttonClick ){  
         setCookie("userTurn", "turno_cerrado",7)   
         $('#statusTurnText').append($('<div class="text-danger" id="statusOff"> Turno Cerrado </div>'));
@@ -433,13 +457,22 @@ function changeStatusTurn(buttonClick){
              $('#textInfActualCaseta').text('Información actual de la caseta:')
          customNavbar(getValueUserLocation(), getCookie('userTurn'))
 
-         let elementos = document.querySelectorAll('.form-check-input');
-        elementos.forEach(function(elemento) {
-            elemento.disabled = false;
-        });
-
+         for (g of idGuardiasRestantes){ 
+            if(g.includes("inp-")){
+                $("#"+g).show();
+            } else if(g.includes("btn-")){
+                $("#"+g).hide();
+            }
+         }
+        for (g of idGuardiasEnTurno){
+            if(g.includes("inp-")){
+                $("#"+g).show();
+            } else if(g.includes("btn-")){
+                $("#"+g).hide();
+            }
+         }
     }else if (userTurnCookie == 'turno_cerrado' && buttonClick){
-        setCookie("userTurn", "turno_abierto",7)
+        setCookie("userTurn", "turno_abierto",7); console.log("ENTRNADOsdfsdf");
         $("#todayHourText").html(hour)
         $('#statusTurnText').append($('<div class="text-success" id="statusOn"> Turno Iniciado</div>'));
         $('#buttonChangeStatusTurn').text('Cerrar Turno').removeClass('btn-success').addClass('btn-danger');
@@ -449,11 +482,20 @@ function changeStatusTurn(buttonClick){
         $('#textInfActualCaseta').text('Información:');
         customNavbar(getValueUserLocation(), getCookie('userTurn'))
     
-        let elementos = document.querySelectorAll('.form-check-input');
-        elementos.forEach(function(elemento) {
-            elemento.disabled = true;
-        });
-
+        for (g of idGuardiasRestantes){ 
+            if(g.includes("inp-")){
+                $("#"+g).hide();
+            } else if(g.includes("btn-")){
+                $("#"+g).hide();
+            }
+         }
+        for (g of idGuardiasEnTurno){
+            if(g.includes("inp-")){
+                $("#"+g).hide();
+            } else if(g.includes("btn-")){
+                $("#"+g).show();
+            }
+         }
     } else if(buttonClick== false){
         // CODE : aqui agregar fetch para cambiar el turno del guardia
         /*
@@ -480,29 +522,65 @@ function changeStatusTurn(buttonClick){
             });
             */
         $("#todayHourText").html(hour)
-        if(userTurnCookie=='turno_cerrado'){ 
+        if(userTurnCookie=='turno_cerrado'){
+            console.log("NO CLICK CARGA SOLO 1")
             $('#buttonChangeStatusTurn').text('Iniciar Turno').addClass('btn-success')
              $('#buttonAgregarGuardiaApoyo').attr("disabled", true);
             $('#buttonCambiarCaseta').attr("disabled", false);
             $('#textInfActualCaseta').text('Información actual de la caseta:')
             $('#statusTurnText').append($('<div class="text-danger" id="statusOff"> Turno Cerrado</div>'))
             $('#buttonForzarCierre').attr("disabled", false);
-            let elementos = document.querySelectorAll('.form-check-input');
+             
+            for (g of idGuardiasRestantes){ 
+                console.log(g.includes("inp-"))
+                if(g.includes("inp-")){
+                    console.log("hello")
+                    $("#"+g).show();
+                } else if(g.includes("btn-")){
+                    console.log("hello")
+                    $("#"+g).hide();
+                }
+           }
+            for (g of idGuardiasEnTurno){
+                if(g.includes("inp-")){
+                    $("#"+g).hide();
+                } else if(g.includes("btn-")){
+                    $("#"+g).hide();
+                }
+             }
+           /* let elementos = document.querySelectorAll('.form-check-input');
             elementos.forEach(function(elemento) {
-                elemento.disabled = false;
+                elemento.style.display = "block";
             });
+            let elementosB = document.querySelectorAll('.customButtonCheckout');
+            elementosB.forEach(function(elemento) {
+                console.log("ELEMENTOS", elementosB)
+                elemento.style.display="none";
+            });*/
 
         }else if(userTurnCookie=='turno_abierto'){
+            console.log("NO CLICK CARGA SOLO 2")
             $('#buttonChangeStatusTurn').text('Cerrar Turno').addClass('btn-danger');
             $('#statusTurnText').append($('<div class="text-success" id="statusOn"> Turno Iniciado</div>'));
             $('#buttonAgregarGuardiaApoyo').attr("disabled", false);
             $('#buttonCambiarCaseta').attr("disabled", true);
             $('#buttonForzarCierre').attr("disabled", true);
             $('#textInfActualCaseta').text('Información:');
-            let elementos = document.querySelectorAll('.form-check-input');
-            elementos.forEach(function(elemento) {
-                elemento.disabled = true;
-            });
+
+            for (g of idGuardiasRestantes){
+            if(g.includes("inp-")){
+                $("#"+g).hide();
+                } else if(g.includes("btn-")){
+                    $("#"+g).hide();
+                }
+            }
+            for (g of idGuardiasEnTurno){
+                if(g.includes("inp-")){
+                    $("#"+g).hide();
+                } else if(g.includes("btn-")){
+                    $("#"+g).show();
+                }
+             }
         }
          customNavbar(getValueUserLocation(), getCookie('userTurn'))
     }
@@ -521,13 +599,17 @@ function eliminarGuardia(folio, name){
     }).then((result) => {
       if (result.value) {
         let index = dataTableGuardiasApoyo.findIndex(guardia => guardia.folio === folio);
+        console.log("index",index, folio, name, )
         if (index !== -1) {
+            console.log("emm hola")
             dataTableGuardiasApoyo.splice(index, 1);
         }
+        console.log(dataTableGuardiasApoyo)
         tables["tableGuardiasApoyo"].setData(dataTableGuardiasApoyo);
+        changeStatusTurn(false)
         Swal.fire({
           title: "Check out!",
-          text: "Se ha realizado el checko out correctamente.",
+          text: "Se ha realizado el check out correctamente.",
           type: "success"
         });
       }

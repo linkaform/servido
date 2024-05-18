@@ -63,9 +63,17 @@ const dataTable2 = [
 	{'marca':'Nissan','modelo':'Kicsk','color':'Blanco','placas':'PRC-1265','estado':'Nuevo León'},
 ]
 
+document.addEventListener("DOMContentLoaded", (event) => {
+	setValueUserLocation('accesos');
+	selectLocation= document.getElementById("selectLocation")
+	selectLocation.onchange = function() {
+        console.log("La selección ha cambiado");
+        let response = fetchOnChangeLocation()
+        console.log(response.data)
+    };
+})
 
 window.onload = function(){
-	setValueUserLocation('portal_registro_v2');
 	setHideElements('dataHide');
 	setSpinner(true, 'divSpinner');
 	let user = getCookie("userId");

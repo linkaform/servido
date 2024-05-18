@@ -14,7 +14,7 @@ class lkfNavbarComponent extends HTMLElement{
 			<img src="" height="40" height="60" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
         </div>
         <div class="navbar-brand navbarShowHide customNoBorder">
-            <button id='buttonAccesos' class="btn btn-sm btn-secondary custom-navbar-button"  onclick="redirectionUrl('users');return false;" >Accesos</button>   
+            <button id='buttonAccesos' class="btn btn-sm btn-secondary custom-navbar-button"  onclick="redirectionUrl('accesos');return false;" >Accesos</button>   
             <button id='buttonBitacoras' class="btn btn-sm btn-secondary custom-navbar-button" onclick="redirectionUrl('bitacora');return false;" >Bitacoras</button>   
             <button id='buttonIncidencias' class="btn btn-sm btn-secondary custom-navbar-button" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
             <button id='buttonArticulos' class="btn btn-sm btn-secondary custom-navbar-button" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
@@ -58,20 +58,48 @@ window.customElements.define('navbar-component', lkfNavbarComponent)
 
 document.addEventListener("DOMContentLoaded", (event) => {
   //$("#imageUserNavbar").attr("src", getCookie('userImg')); 
-   let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
-   imagenMostradaNavbar.src= localStorage.getItem("imagenURL");
-  $("#imageLinkaform").attr("src", getCookie('lkfLogo'));
+    let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
+    imagenMostradaNavbar.src= localStorage.getItem("imagenURL");
+    $("#imageLinkaform").attr("src", getCookie('lkfLogo'));
+
+    console.log("dfgse",getValueUserLocation())
+    switch (getValueUserLocation()) {
+      case "accesos":
+         let btn1 = document.getElementById("buttonAccesos");
+         console.log("btn1",getValueUserLocation())
+         btn1.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+        break;
+      case "bitacora":
+        console.log("bityytyt")
+         let btn2 = document.getElementById("buttonBitacoras");
+             console.log("btn122",getValueUserLocation())
+         btn2.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+        break;
+      case "incidencias":
+         let btn3 = document.getElementById("buttonIncidencias");
+         btn3.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+        break;
+      case "articulos":
+         let btn4 = document.getElementById("buttonArticulos");
+         btn4.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+        break;
+      case "rondines":
+         let btn5 = document.getElementById("buttonRondines");
+         btn5.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+        break;
+    }
+
 });
 
 
 function customNavbar(location, turno){
-     if(location === 'portal_turnos' && turno === 'turno_cerrado' || location === 'portal_registro_v2' && turno === 'turno_cerrado'){
+     if(location === 'portal_turnos' && turno === 'turno_cerrado' || location === 'accesos' && turno === 'turno_cerrado'){
         $('#buttonAccesos').hide(); 
         $('#buttonBitacoras').hide(); 
         $('#buttonIncidencias').hide(); 
         $('#buttonArticulos').hide(); 
         $('#buttonRondines').hide(); 
-     }else if(location === 'portal_turnos' && turno === 'turno_abierto' || location === 'portal_registro_v2' && turno === 'turno_abierto'){
+     }else if(location === 'portal_turnos' && turno === 'turno_abierto' || location === 'accesos' && turno === 'turno_abierto'){
         $('#buttonAccesos').show(); 
         $('#buttonBitacoras').show(); 
         $('#buttonIncidencias').show(); 
@@ -80,10 +108,6 @@ function customNavbar(location, turno){
      }
 
 }
-
-
-
-
 
 //---Close Sesión
 function setCloseSession(argument) {
@@ -97,21 +121,22 @@ function redirectionUrl(type = 'null',blank = true){
     let protocol = window.location.protocol;
     let host = window.location.host;
     if(type == 'users'){
-        urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
+        console.log("USERSS")
+        urlNew = `${protocol}//${host}/solucion_accesos/accesos.html`
     }else if(type == 'bitacora'){
-        urlNew = `${protocol}//${host}/solucion_accesos/portal_bitacora_v2.html`
+        urlNew = `${protocol}//${host}/solucion_accesos/bitacora.html`
     }else if(type == 'incidencias'){
-        urlNew = `${protocol}//${host}/solucion_accesos/portal_incidencias_v2.html`
+        urlNew = `${protocol}//${host}/solucion_accesos/incidencias.html`
     }else if(type == 'articulos'){
-        urlNew = `${protocol}//${host}/solucion_accesos/portal_articulos_v2.html`
+        urlNew = `${protocol}//${host}/solucion_accesos/articulos.html`
     }else if(type == 'login'){
         urlNew = `${protocol}//${host}/solucion_accesos/login.html`
     }else if(type == 'rondines'){
-        urlNew = `${protocol}//${host}/solucion_accesos/portal_rondines.html`
+        urlNew = `${protocol}//${host}/solucion_accesos/rondines.html`
     }else if(type == 'turnos'){
-        urlNew = `${protocol}//${host}/solucion_accesos/portal_turnos.html`
+        urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
     }else if(type == 'accesos'){
-        urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
+        urlNew = `${protocol}//${host}/solucion_accesos/accesos.html`
     }else if(type == 'notas'){
         urlNew = `${protocol}//${host}/solucion_accesos/notas.html`
     }
