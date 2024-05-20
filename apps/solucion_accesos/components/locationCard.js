@@ -30,7 +30,7 @@ class lkfLocationCard extends HTMLElement{
                         </select>
                     </div>
                     <div class="col-4 mt-2">
-                    <h6 class="text-black">Jefe en Guardia:</h6>
+                    <h6 class="text-black">Guardia de apoyo:</h6>
                     <h6 class="mb-0 mt-2 text-black-50">Ayudante 1 </h6>
             </div>
         </div>

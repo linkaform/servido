@@ -111,11 +111,15 @@
 					<h4>Información personal &nbsp;&nbsp;</h4>
 					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
 						<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-5" alt="Imagen Usuario" style="width:120px;height:120px;" id="imgUser">
+							<h6 class="m-4 mb-2">Tipo de pase: Empleado</h6>
+
 					</div>
 					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
 						<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" class=" mx-auto  mt-5" style="width:240px;height:120px;" id="imgCard">
 					</div>
+
 					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
 						<div class="row ">
 							<div class="col-6">
 								<p><span className='h4'><b>Nombre:</b></span>&nbsp;&nbsp; <span id="name"></span></p>
@@ -331,36 +335,37 @@
 					<div class="row">
 						<div class="mb-3 col-12">
 							<label class="form-label">Nombre Completo*</label>
-							<input type="text" class="form-control"  placeholder="Nombre">
+							<input type="text" class="form-control" id="inputNombreNV" placeholder="Nombre">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Razón Social*</label>
-							<input type="text" class="form-control"  placeholder="Empresa">
+							<input type="text" class="form-control" id="inputRazonSocialNV"  placeholder="Empresa">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Área que visita*</label>
-							<input type="text" class="form-control"  placeholder="Área">
+							<input type="text" class="form-control" id="inputAreaVisitaNV" placeholder="Área">
 						</div>
-						<div class="mb-3 col-12">
-							<label class="form-label">Motivo de Visita *</label>
-							<textarea class="form-control"  rows="3"></textarea>
-						</div>
-						<div class="mb-3 col-12">
+							<div class="mb-3 col-12">
 							<label class="form-label">Visita a*</label>
-							<select class="form-select">
+							<select class="form-select" id="selectVisitaNV">
 								<option selected>--Seleccione--</option>
 								<option value="1">One</option>
 								<option value="2">Two</option>
 								<option value="3">Three</option>
 							</select>
 						</div>
+						<div class="mb-3 col-12">
+							<label class="form-label">Motivo de Visita *</label>
+							<textarea class="form-control" id="inputMotivoVisitaNV" rows="3"></textarea>
+						</div>
+					
 						
 					</div>
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Asignar</button>
+					<button type="button" class="btn btn-primary" onclick="asignarNuevaVisita()">Asignar</button>
 				</div>
 			</div> 
 		</div>
@@ -472,7 +477,7 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Equipo</h1>
+					<h1 class="modal-title fs-5">Agregar Equipo</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
@@ -789,7 +794,7 @@
 </body>
 <!-- Local -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
- <link rel="stylesheet" href="./Styles_v2.css">
+ <link rel="stylesheet" href="./style.css">
 
 
 <script type="text/javascript" src="../utils/servido_utils.js"></script>

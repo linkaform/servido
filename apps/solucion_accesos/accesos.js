@@ -6,6 +6,8 @@ let listNewVehicules = []
 let listNewItems = []
 
 let listUserActives = [];
+let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
+let userJwt = getCookie("userJwt");
 
 const columsData1 = [
 	{ title:"Tipo", field:'type',hozAlign:"left",headerFilter:true,width:250},
@@ -90,7 +92,92 @@ window.onload = function(){
 
 }
 
+function asignarNuevaVisita(){
+	let nombre=$("#inputNombreNV").val();
+	let razonSocial=$("#inputRazonSocialNV").val();
+	let areaQueVisita=$("#inputAreaVisitaNV").val();
+	let visitaA=$("#selectVisitaNV").val();
+	let motivoVisita=$("#inputMotivoVisitaNV").val();
+	if(nombre!=='' , razonSocial!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
+		console.log("asignar nueva visita",nombre, razonSocial,areaQueVisita, visitaA, motivoVisita);
+	 	fetch(urlLinkaform, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: idScript,
+            option: 'add_new_visit',
+            nombre: nombre,
+            razonSocial:razonSocial,
+            areaQueVisita:areaQueVisita,
+            visitaA:visitaA,
+            motivoVisita:motivoVisita,
 
+        }),
+        headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+jw
+
+            },
+	    })
+	    .then(res => res.json())
+	    .then(res => {
+	        if (res.success) {
+	            //CODE una vez resulta la imagen, cargarla en front
+	            let data={ data: {}}
+	            console.log("RESPONSE", data)
+	        } 
+	    });
+	}else{
+		 Swal.fire({
+          title: "Validación",
+          text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+          type: "warning"
+        });
+	}
+}
+
+
+function agregaEquipo(){
+	let nombre=$("#inputNombreNV").val();
+	let razonSocial=$("#inputRazonSocialNV").val();
+	let areaQueVisita=$("#inputAreaVisitaNV").val();
+	let visitaA=$("#selectVisitaNV").val();
+	let motivoVisita=$("#inputMotivoVisitaNV").val();
+	if(nombre!=='' , razonSocial!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
+		console.log("asignar nuevo equipo",nombre, razonSocial,areaQueVisita, visitaA, motivoVisita);
+	 	fetch(urlLinkaform, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: idScript,
+            option: 'add_new_equip',
+            nombre: nombre,
+            razonSocial:razonSocial,
+            areaQueVisita:areaQueVisita,
+            visitaA:visitaA,
+            motivoVisita:motivoVisita,
+
+        }),
+        headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+jw
+
+            },
+	    })
+	    .then(res => res.json())
+	    .then(res => {
+	        if (res.success) {
+	            //CODE una vez resulta la imagen, cargarla en front
+	            let data={ data: {}}
+	            console.log("RESPONSE", data)
+	        } 
+	    });
+	}else{
+		 Swal.fire({
+          title: "Validación",
+          text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+          type: "warning"
+        });
+	}
+}
 //-----TABLES
 function drawTable(id, columnsData, tableData,){
   var  table = new Tabulator("#" + id, {
@@ -113,8 +200,7 @@ function setCloseSession() {
 
 //-----Function Get Data
 function getDataAlert() {
-	let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
-	let userJwt = getCookie("userJwt");
+	
 	fetch(urlLinkaform, {
 		method: 'POST',
 		body: JSON.stringify({
@@ -701,13 +787,42 @@ function getSaveItem(){
 	});
 
 	if(!validation){
+			fetch(urlLinkaform, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: idScript,
+            option: 'add_new_equip',
+
+        }),
+        headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+jw
+
+            },
+	    })
+	    .then(res => res.json())
+	    .then(res => {
+	        if (res.success) {
+	            //CODE una vez resulta la imagen, cargarla en front
+	            let data={ data: {}}
+	            console.log("RESPONSE", data)
+	        } 
+	    });
+
+
 		listNewItems.push(dicData);
 		$("#buttonAddCarModal").hide();
 		$("#alertItemModal").hide();
 		$('#equipmentModal').modal('hide');
 		
 	}else{
-		$("#alertItemModal").show();
+		 Swal.fire({
+          title: "Validación",
+          text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+          type: "warning"
+        });
+
+		//$("#alertItemModal").show();
 	}
 }
 

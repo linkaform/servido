@@ -139,7 +139,7 @@ function redirectionUrl(type = 'null',blank = true){
     if(type == 'users'){
     	urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
     }else if(type == 'bitacora'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_bitacora_v2.html`
+    	urlNew = `${protocol}//${host}/solucion_accesos/bitaco.html`
     }else if(type == 'incidencias'){
     	urlNew = `${protocol}//${host}/solucion_accesos/portal_incidencias_v2.html`
     }else if(type == 'articulos'){
