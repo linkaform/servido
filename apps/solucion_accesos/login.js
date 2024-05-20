@@ -7,7 +7,7 @@ window.onload = function(){
 		console.log('Entra')
 		let protocol = window.location.protocol;
 		let host = window.location.host;
-		let urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
+		let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
 		Object.assign(document.createElement('a'), {
 			rel: 'noopener noreferrer',
 			href: urlNew,
@@ -59,7 +59,7 @@ function get_login(){
 								//----Url
 				let protocol = window.location.protocol;
 				let host = window.location.host;
-				let url = `${protocol}//${host}/solucion_accesos/portal_turnos.html`;
+				let url = `${protocol}//${host}/solucion_accesos/turnos.html`;
 				Object.assign(document.createElement('a'), {
 					rel: 'noopener noreferrer',
 					href: url,
