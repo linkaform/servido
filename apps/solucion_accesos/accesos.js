@@ -6,6 +6,8 @@ let listNewVehicules = []
 let listNewItems = []
 
 let listUserActives = [];
+let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
+let userJwt = getCookie("userJwt");
 
 const columsData1 = [
 	{ title:"Tipo", field:'type',hozAlign:"left",headerFilter:true,width:250},
@@ -63,9 +65,17 @@ const dataTable2 = [
 	{'marca':'Nissan','modelo':'Kicsk','color':'Blanco','placas':'PRC-1265','estado':'Nuevo León'},
 ]
 
+document.addEventListener("DOMContentLoaded", (event) => {
+	setValueUserLocation('accesos');
+	selectLocation= document.getElementById("selectLocation")
+	selectLocation.onchange = function() {
+        console.log("La selección ha cambiado");
+        let response = fetchOnChangeLocation()
+        console.log(response.data)
+    };
+})
 
 window.onload = function(){
-	setValueUserLocation('portal_registro_v2');
 	setHideElements('dataHide');
 	setSpinner(true, 'divSpinner');
 	let user = getCookie("userId");
@@ -79,10 +89,95 @@ window.onload = function(){
 	}
 
 	customNavbar(getValueUserLocation(), getCookie('userTurn'));
-	
+
+}
+
+function asignarNuevaVisita(){
+	let nombre=$("#inputNombreNV").val();
+	let razonSocial=$("#inputRazonSocialNV").val();
+	let areaQueVisita=$("#inputAreaVisitaNV").val();
+	let visitaA=$("#selectVisitaNV").val();
+	let motivoVisita=$("#inputMotivoVisitaNV").val();
+	if(nombre!=='' , razonSocial!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
+		console.log("asignar nueva visita",nombre, razonSocial,areaQueVisita, visitaA, motivoVisita);
+	 	fetch(urlLinkaform, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: idScript,
+            option: 'add_new_visit',
+            nombre: nombre,
+            razonSocial:razonSocial,
+            areaQueVisita:areaQueVisita,
+            visitaA:visitaA,
+            motivoVisita:motivoVisita,
+
+        }),
+        headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+jw
+
+            },
+	    })
+	    .then(res => res.json())
+	    .then(res => {
+	        if (res.success) {
+	            //CODE una vez resulta la imagen, cargarla en front
+	            let data={ data: {}}
+	            console.log("RESPONSE", data)
+	        } 
+	    });
+	}else{
+		 Swal.fire({
+          title: "Validación",
+          text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+          type: "warning"
+        });
+	}
 }
 
 
+function agregaEquipo(){
+	let nombre=$("#inputNombreNV").val();
+	let razonSocial=$("#inputRazonSocialNV").val();
+	let areaQueVisita=$("#inputAreaVisitaNV").val();
+	let visitaA=$("#selectVisitaNV").val();
+	let motivoVisita=$("#inputMotivoVisitaNV").val();
+	if(nombre!=='' , razonSocial!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
+		console.log("asignar nuevo equipo",nombre, razonSocial,areaQueVisita, visitaA, motivoVisita);
+	 	fetch(urlLinkaform, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: idScript,
+            option: 'add_new_equip',
+            nombre: nombre,
+            razonSocial:razonSocial,
+            areaQueVisita:areaQueVisita,
+            visitaA:visitaA,
+            motivoVisita:motivoVisita,
+
+        }),
+        headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+jw
+
+            },
+	    })
+	    .then(res => res.json())
+	    .then(res => {
+	        if (res.success) {
+	            //CODE una vez resulta la imagen, cargarla en front
+	            let data={ data: {}}
+	            console.log("RESPONSE", data)
+	        } 
+	    });
+	}else{
+		 Swal.fire({
+          title: "Validación",
+          text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+          type: "warning"
+        });
+	}
+}
 //-----TABLES
 function drawTable(id, columnsData, tableData,){
   var  table = new Tabulator("#" + id, {
@@ -95,37 +190,7 @@ function drawTable(id, columnsData, tableData,){
   });
 }
 
-//----Function Redirection
-function redirectionUrl(type = 'null',blank = true){
-    let urlNew =  '';
-    let protocol = window.location.protocol;
-    let host = window.location.host;
-    if(type == 'users'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
-    }else if(type == 'bitacora'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_bitacora_v2.html`
-    }else if(type == 'incidencias'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_incidencias_v2.html`
-    }else if(type == 'articulos'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_articulos_v2.html`
-    }else if(type == 'login'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/login.html`
-    }
-    //----Validation
-    if(urlNew !='' && blank){
-    	Object.assign(document.createElement('a'), {
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        href: urlNew,
-    	}).click();
-    }else if(urlNew !='' && !blank){
-    	Object.assign(document.createElement('a'), {
-        rel: 'noopener noreferrer',
-        href: urlNew,
-    	}).click();
-    }
-    
-}
+
 
 //---Close Sesión
 function setCloseSession() {
@@ -135,8 +200,7 @@ function setCloseSession() {
 
 //-----Function Get Data
 function getDataAlert() {
-	let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
-	let userJwt = getCookie("userJwt");
+	
 	fetch(urlLinkaform, {
 		method: 'POST',
 		body: JSON.stringify({
@@ -293,7 +357,6 @@ function setDataGafete(data = {}){
 	.then(res => {
 		if (res.success) {
 			let data = res.response.json;
-			console.log('Data',data);
 		} 
 	})
 }
@@ -724,13 +787,42 @@ function getSaveItem(){
 	});
 
 	if(!validation){
+			fetch(urlLinkaform, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: idScript,
+            option: 'add_new_equip',
+
+        }),
+        headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+jw
+
+            },
+	    })
+	    .then(res => res.json())
+	    .then(res => {
+	        if (res.success) {
+	            //CODE una vez resulta la imagen, cargarla en front
+	            let data={ data: {}}
+	            console.log("RESPONSE", data)
+	        } 
+	    });
+
+
 		listNewItems.push(dicData);
 		$("#buttonAddCarModal").hide();
 		$("#alertItemModal").hide();
 		$('#equipmentModal').modal('hide');
 		
 	}else{
-		$("#alertItemModal").show();
+		 Swal.fire({
+          title: "Validación",
+          text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+          type: "warning"
+        });
+
+		//$("#alertItemModal").show();
 	}
 }
 
@@ -876,7 +968,6 @@ function getFormGafete(){
 	}
 
 	if(!flaginput && !flagcheck){
-		console.log('Se manda los datos');
 		setDataGafete(dicData);
 		$("#alert_gafete_modal").hide();
 	}else{

@@ -1,3 +1,6 @@
+:root {
+  --yellowLKF: #ffe99c;
+}
 
 .header{
   background: #F2DEBA;
@@ -354,7 +357,6 @@ th {
 .mainSectionMargins{
   margin-left:30px !important;
   margin-right:30px !important;
-  margin-bottom:30px !important;
 }
 
 #myCustomNavBar{
@@ -418,4 +420,10 @@ input[type=search]{
 }
 #inputCodeUser{
   border-color: lightgray !important;
+}
+
+.myCustomBtnGroup{
+  background-color: var(--yellowLKF)!important;
+  border-color: lightgray !important;
+
 }

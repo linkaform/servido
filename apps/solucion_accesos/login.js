@@ -44,32 +44,33 @@ function get_login(){
                 let userPosition = res.user.position ? res.user.position: '';
                 let userImg = res.user.thumb ? res.user.thumb: '';
 
-                setCookie("sessionid", sessionId, 7);
-                setCookie("userId", userId, 7);
-                setCookie("userJwt", userJwt, 7);
-                setCookie("userName", userName, 7);
-                setCookie("userParentId", userParentId,7);
-                setCookie("userEmail", userEmail,7);
-                setCookie("userPosition", userPosition,7);
-                setCookie("userImg", userImg,7);
-                setCookie("lkfLogo", res.user.company_logo.picture, 7)
-                //$("#")
-                                //----Url
-                let protocol = window.location.protocol;
-                let host = window.location.host;
-                let url = `${protocol}//${host}/solucion_accesos/portal_turnos.html`;
-                Object.assign(document.createElement('a'), {
-                    rel: 'noopener noreferrer',
-                    href: url,
-                }).click();
-            }else{
-                Swal.fire({
-                    title: 'Error',
-                    html: res.error
-                })
-            }
-        })
-    }
+				setCookie("sessionid", sessionId, 7);
+				setCookie("userId", userId, 7);
+				setCookie("userJwt", userJwt, 7);
+				setCookie("userName", userName, 7);
+				setCookie("userParentId", userParentId,7);
+				setCookie("userEmail", userEmail,7);
+				setCookie("userPosition", userPosition,7);
+				setCookie("userImg", userImg,7);
+				 localStorage.setItem("imagenURL", userImg);
+				setCookie("lkfLogo", res.user.company_logo.picture, 7)
+				//$("#")
+								//----Url
+				let protocol = window.location.protocol;
+				let host = window.location.host;
+				let url = `${protocol}//${host}/solucion_accesos/portal_turnos.html`;
+				Object.assign(document.createElement('a'), {
+					rel: 'noopener noreferrer',
+					href: url,
+				}).click();
+			}else{
+				Swal.fire({
+					title: 'Error',
+					html: res.error
+				})
+			}
+		})
+	}
 }
 
 function reset() {

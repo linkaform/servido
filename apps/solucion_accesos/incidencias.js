@@ -88,6 +88,15 @@ const dataTable2 = [
 	{'date':'16/04/2024','time':'12:00','location':'Planta Sur','place_accident':'Caseta de vigilancia Sur','incident':'Fallo de energia','comment':'El visitante noestaba autorizado','report':'Miguel Perez','dept':'Seguridad','responsable':'Jose Patricio','state':'Resuelto'},
 ]
 
+document.addEventListener("DOMContentLoaded", (event) => {
+	setValueUserLocation('incidencias');
+	selectLocation= document.getElementById("selectLocation")
+	selectLocation.onchange = function() {
+        console.log("La selección ha cambiado");
+        let response = fetchOnChangeLocation()
+        console.log(response.data)
+    };
+})
 
 window.onload = function(){
 	setValueUserLocation('portal_incidencias_v2');
@@ -122,13 +131,13 @@ function redirectionUrl(type = 'null',blank = true){
     let protocol = window.location.protocol;
     let host = window.location.host;
     if(type == 'users'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
+    	urlNew = `${protocol}//${host}/solucion_accesos/accesos.html`
     }else if(type == 'bitacora'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_bitacora_v2.html`
+    	urlNew = `${protocol}//${host}/solucion_accesos/bitacora.html`
     }else if(type == 'incidencias'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_incidencias_v2.html`
+    	urlNew = `${protocol}//${host}/solucion_accesos/incidencias.html`
     }else if(type == 'articulos'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_articulos_v2.html`
+    	urlNew = `${protocol}//${host}/solucion_accesos/articulos.html`
     }else if(type == 'login'){
     	urlNew = `${protocol}//${host}/solucion_accesos/login.html`
     }

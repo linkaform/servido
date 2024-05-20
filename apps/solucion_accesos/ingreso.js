@@ -194,7 +194,6 @@ function AlertSendDataUser() {
 	let company = $("#inputNombreEmpresa").val();
 	let visit = $("#inputAquienVisita").val();
 	let motivo= $("#inputMotivoDeLaVisita").val();
-	console.log('archivos',document.getElementById("inputFileUser").files) 
 	//INFO: Arrays de objetos
 	let listInputsVehicule={};
 	let listInputsEquipo={};
@@ -209,9 +208,7 @@ function AlertSendDataUser() {
     listInputsVehicule[idV].push(input);
 });
   let divEquipo = document.getElementById("div-equipo");
-  console.log("DIV",divEquipo)
   let inputsE = divEquipo.querySelectorAll('.group-equipo');
-  console.log("DSVFJLSSSSSSSSSS",inputsE)
   inputsE.forEach(function(input) {
     let idE = input.id.split('-')[1];
     if (!listInputsEquipo[idE]) {
@@ -436,7 +433,6 @@ function setRequestFileImg(type) {
 		.then(response => response.json())
 		.then(res => {
 			if(res.file !== undefined && res.file !== null){
-				console.log('RES ',res.file)
 				if(type == 'inputCard'){
 					urlImgCard = res.file;
 					//----Clean Canvas
@@ -597,9 +593,7 @@ function setDeleteVehiculo(id) {
 	const elements = document.querySelectorAll('.div-row-vehiculo');
 	const count = elements.length;
 	if(count > 1){
-		console.log('Elements count','div-vehiculo-row-'+id);
 		const elements = document.getElementsByClassName('div-vehiculo-row-'+id);
-		console.log("sdgfsedfg",elements, elements.length)
 		while(elements.length > 0){
 			elements[0].parentNode.removeChild(elements[0]);
 		}
@@ -607,7 +601,6 @@ function setDeleteVehiculo(id) {
 }
 
 function setAddVehiculo() {
-	console.log("ENTRANDO")
 	let randomID = Date.now();
 	//---Structure HTML
 let newItem=`
@@ -670,9 +663,7 @@ let newItem=`
 function setDeleteEquipo(id) {
 	const elements = document.querySelectorAll('.div-row-equipo');
 	const count = elements.length;
-	console.log("equopososss",count)
 	if(count > 1){
-		console.log('Elements count','div-equipo-row-'+id);
 		const elements = document.getElementsByClassName('div-equipo-row-'+id);
 		while(elements.length > 0){
 			elements[0].parentNode.removeChild(elements[0]);
