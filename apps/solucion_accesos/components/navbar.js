@@ -57,37 +57,42 @@ window.customElements.define('navbar-component', lkfNavbarComponent)
     //$('#buttonRondines').hide(); 
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  //$("#imageUserNavbar").attr("src", getCookie('userImg')); 
-    let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
-    imagenMostradaNavbar.src= localStorage.getItem("imagenURL");
-    $("#imageLinkaform").attr("src", getCookie('lkfLogo'));
+  $("#imageUserNavbar").attr("src", getCookie('userImg'));
+let user = getCookie("userId");
+    let jw = getCookie("userJwt");
+    if(user !='' && jw!=''){
+        let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
+        imagenMostradaNavbar.src= localStorage.getItem("imagenURL");
+        $("#imageLinkaform").attr("src", getCookie('lkfLogo'));
 
-    console.log("dfgse",getValueUserLocation())
-    switch (getValueUserLocation()) {
-      case "accesos":
-         let btn1 = document.getElementById("buttonAccesos");
-         console.log("btn1",getValueUserLocation())
-         btn1.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
-        break;
-      case "bitacora":
-        console.log("bityytyt")
-         let btn2 = document.getElementById("buttonBitacoras");
-             console.log("btn122",getValueUserLocation())
-         btn2.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
-        break;
-      case "incidencias":
-         let btn3 = document.getElementById("buttonIncidencias");
-         btn3.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
-        break;
-      case "articulos":
-         let btn4 = document.getElementById("buttonArticulos");
-         btn4.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
-        break;
-      case "rondines":
-         let btn5 = document.getElementById("buttonRondines");
-         btn5.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
-        break;
-    }
+        console.log("dfgse",getValueUserLocation())
+        switch (getValueUserLocation()) {
+          case "accesos":
+             let btn1 = document.getElementById("buttonAccesos");
+             console.log("btn1",getValueUserLocation())
+             btn1.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+            break;
+          case "bitacora":
+            console.log("bityytyt")
+             let btn2 = document.getElementById("buttonBitacoras");
+                 console.log("btn122",getValueUserLocation())
+             btn2.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+            break;
+          case "incidencias":
+             let btn3 = document.getElementById("buttonIncidencias");
+             btn3.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+            break;
+          case "articulos":
+             let btn4 = document.getElementById("buttonArticulos");
+             btn4.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+            break;
+          case "rondines":
+             let btn5 = document.getElementById("buttonRondines");
+             btn5.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+            break;
+        }
+    } 
+    
 
 });
 
