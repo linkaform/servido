@@ -14,9 +14,9 @@ let img="https://static.vecteezy.com/system/resources/previews/007/468/567/non_2
 var dataTableGuardiasApoyo = [];
 var dataTableNotas = [];
 var dataTableCambiarCaseta = [
-    {name:"Caseta 1 Poniente", ubi:"Cumbres", status: 'Disponible', guard:'Juan Ecobedo' },{name:"Caseta 1 Sur", ubi:"Santa Catarina", status: 'Disponible', guard:'Francisco Flores'},
-    {name:"Caseta 4 Poniente", ubi:"Monterrey", status: 'No disponible', guard:'Javier Almanza' },{name:"Caseta 3 Sur", ubi:"Escobedo", status: 'No disponible', guard:'Valeria Alvarado'},
-    {name:"Caseta 6 Poniente", ubi:"San Jeronimo", status: 'Disponible', guard:'Erika Ruiz'},{name:"Caseta 6 Sur", ubi:"Monterrey", status: 'No disponible', guard:'Daniela Cepeda' }];
+    {name:"Caseta 1 Poniente", ubi:"Cumbres", status: 'Disponible', guard:'Juan Ecobedo' },{name:"Caseta 1 Sur", ubi:"Santa Catarina", status: 'Disponible', guard:'Francisco Flores', comment:'soy uncoment'},
+    {name:"Caseta 4 Poniente", ubi:"Monterrey", status: 'No disponible', guard:'Javier Almanza' },{name:"Caseta 3 Sur", ubi:"Escobedo", status: 'No disponible', guard:'Valeria Alvarado',comment:'comentando squi'},
+    {name:"Caseta 6 Poniente", ubi:"San Jeronimo", status: 'Disponible', guard:'Erika Ruiz'},{name:"Caseta 6 Sur", ubi:"Monterrey", status: 'No disponible', guard:'Daniela Cepeda',comment:'comentsario de ejemplot' }];
 
 var dataTableAgregarGuardiaApoyo = [  
     { name: 'Juan Pérez Gomez', status: 'Disponible' , img: 'https://img.favpng.com/1/10/3/computer-icons-child-avatar-png-favpng-1KY4gtPN1Fab6LrVpVM8AjtnH.jpg', folio:20}, 
@@ -728,6 +728,7 @@ function enviarNota(){
     let nota= $("#inputTextNota").val();
     let archivo= $("#fileInputArchivo").val();
     let fotografia= $("#fileInputFotografia").val();
+    let comentario=$("#inputComentarioNota").val();
     let fileNameFoto = fotografia.substring(fotografia.lastIndexOf('\\') + 1);
 
     let randomFolio = Date.now();

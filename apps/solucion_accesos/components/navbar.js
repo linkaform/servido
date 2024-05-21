@@ -70,25 +70,25 @@ let user = getCookie("userId");
           case "accesos":
              let btn1 = document.getElementById("buttonAccesos");
              console.log("btn1",getValueUserLocation())
-             btn1.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+             btn1.style.boxShadow= "rgba(0, 0, 0, 0.30) 100px -50px 20px -10px inset";
             break;
           case "bitacora":
             console.log("bityytyt")
              let btn2 = document.getElementById("buttonBitacoras");
                  console.log("btn122",getValueUserLocation())
-             btn2.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+             btn2.style.boxShadow= "rgba(0, 0, 0, 0.30) 100px -50px 20px -10px inset";
             break;
           case "incidencias":
              let btn3 = document.getElementById("buttonIncidencias");
-             btn3.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+             btn3.style.boxShadow= "rgba(0, 0, 0, 0.30) 100px -50px 20px -10px inset";
             break;
           case "articulos":
              let btn4 = document.getElementById("buttonArticulos");
-             btn4.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+             btn4.style.boxShadow= "rgba(0, 0, 0, 0.30) 100px -50px 20px -10px inset";
             break;
           case "rondines":
              let btn5 = document.getElementById("buttonRondines");
-             btn5.style.boxShadow= "rgba(0, 0, 0, 0.30) 0px -50px 20px -39px inset";
+             btn5.style.boxShadow= "rgba(0, 0, 0, 0.30) 100px -50px 20px -10px inset";
             break;
         }
     } 
@@ -125,38 +125,47 @@ function redirectionUrl(type = 'null',blank = true){
     let urlNew =  '';
     let protocol = window.location.protocol;
     let host = window.location.host;
-    if(type == 'users'){
-        console.log("USERSS")
-        urlNew = `${protocol}//${host}/solucion_accesos/accesos.html`
-    }else if(type == 'bitacora'){
-        urlNew = `${protocol}//${host}/solucion_accesos/bitacora.html`
-    }else if(type == 'incidencias'){
-        urlNew = `${protocol}//${host}/solucion_accesos/incidencias.html`
-    }else if(type == 'articulos'){
-        urlNew = `${protocol}//${host}/solucion_accesos/articulos.html`
-    }else if(type == 'login'){
-        urlNew = `${protocol}//${host}/solucion_accesos/login.html`
-    }else if(type == 'rondines'){
-        urlNew = `${protocol}//${host}/solucion_accesos/rondines.html`
-    }else if(type == 'turnos'){
-        urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
-    }else if(type == 'accesos'){
-        urlNew = `${protocol}//${host}/solucion_accesos/accesos.html`
-    }else if(type == 'notas'){
-        urlNew = `${protocol}//${host}/solucion_accesos/notas.html`
+
+    let existingTab = window.open('', type); 
+    if (existingTab) {
+        //existingTab.location.href = `${protocol}//${host}/solucion_accesos/${type}.html`;
+        console.dir(window.open(`${protocol}//${host}/solucion_accesos/${type}.html`, type));
+        //console.log('akjsdh',existingTab.location.href )
+    } else {
+        if(type == 'users'){
+            console.log("USERSS")
+            urlNew = `${protocol}//${host}/solucion_accesos/accesos.html`
+        }else if(type == 'bitacora'){
+            urlNew = `${protocol}//${host}/solucion_accesos/bitacora.html`
+        }else if(type == 'incidencias'){
+            urlNew = `${protocol}//${host}/solucion_accesos/incidencias.html`
+        }else if(type == 'articulos'){
+            urlNew = `${protocol}//${host}/solucion_accesos/articulos.html`
+        }else if(type == 'login'){
+            urlNew = `${protocol}//${host}/solucion_accesos/login.html`
+        }else if(type == 'rondines'){
+            urlNew = `${protocol}//${host}/solucion_accesos/rondines.html`
+        }else if(type == 'turnos'){
+            urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
+        }else if(type == 'accesos'){
+            urlNew = `${protocol}//${host}/solucion_accesos/accesos.html`
+        }else if(type == 'notas'){
+            urlNew = `${protocol}//${host}/solucion_accesos/notas.html`
+        }
+        //----Validation
+        if(urlNew !='' && blank){
+            Object.assign(document.createElement('a'), {
+            target: '_blank',
+            rel: 'noopener noreferrer',
+            href: urlNew,
+            }).click();
+        }else if(urlNew !='' && !blank){
+            Object.assign(document.createElement('a'), {
+            rel: 'noopener noreferrer',
+            href: urlNew,
+            }).click();
+        }
     }
-    //----Validation
-    if(urlNew !='' && blank){
-        Object.assign(document.createElement('a'), {
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        href: urlNew,
-        }).click();
-    }else if(urlNew !='' && !blank){
-        Object.assign(document.createElement('a'), {
-        rel: 'noopener noreferrer',
-        href: urlNew,
-        }).click();
-    }
+
     
 }

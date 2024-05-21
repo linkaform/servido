@@ -601,6 +601,7 @@ function setDeleteVehiculo(id) {
 }
 
 function setAddVehiculo() {
+	console.log("ENTRANDO")
 	let randomID = Date.now();
 	//---Structure HTML
 let newItem=`
@@ -663,6 +664,7 @@ let newItem=`
 function setDeleteEquipo(id) {
 	const elements = document.querySelectorAll('.div-row-equipo');
 	const count = elements.length;
+	console.log("equopososss",count)
 	if(count > 1){
 		const elements = document.getElementsByClassName('div-equipo-row-'+id);
 		while(elements.length > 0){

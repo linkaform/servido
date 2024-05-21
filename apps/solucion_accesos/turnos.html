@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Portal De Turnos</title>
+  <link rel="icon" type='image/svg+xml' href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'><path fill='white' d='M320 32c0-9.9-4.5-19.2-12.3-25.2S289.8-1.4 280.2 1l-179.9 45C79 51.3 64 70.5 64 92.5V448H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H96 288h32V480 32zM256 256c0 17.7-10.7 32-24 32s-24-14.3-24-32s10.7-32 24-32s24 14.3 24 32zm96-128h96V480c0 17.7 14.3 32 32 32h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H512V128c0-35.3-28.7-64-64-64H352v64z'%3E%3C/path%3E%3C/svg%3E" />
+
 
     <link rel="stylesheet" type="text/css" href="../styles/css/styles_index.css"/>
 
@@ -215,6 +217,12 @@
                         <div class="mb-3 col-12">
                             <label class="form-label">Cargar un archivo *</label>
                             <input type="file" class="form-control-file" id="fileInputArchivo">
+                            <button type="button" class="btn btn-success button-add-register" onclick="setAddNota();return false;">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteNotas(123);return false;">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
                         </div>
                         <div class="mb-3 col-5">
                              <img src="https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ=" class="img-fluid" alt="" >
@@ -222,6 +230,10 @@
                         <div class="mb-3 col-12">
                             <label class="form-label">Fotografia *</label>
                            <input type="file" class="form-control-file" id="fileInputFotografia">
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Comentario *</label>
+                              <textarea class="form-control" id="inputComentarioNota" rows="3" placeholder="Escribe algo..."></textarea>
                         </div>
                     </div>
                     
