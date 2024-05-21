@@ -24,28 +24,7 @@
 		<div class="row justify-content-between">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4 ">
 				<div class="card m-2 div-card-portal  customShadow">
-				    <div class="card-body ">
-						<div class="row">
-							<div class="col-8">
-								<h5 class="card-title text-uppercase text-dark mb-0">Monterrey</h5>
-								<small class="text-black-50">Ubicación</small>
-							</div>
-							<div class="col-4">
-								<p class="mb-0">Nombre del Jefe</p>
-								<small class="text-black-50">Jefe en Guardia</small>
-							</div>
-							<div class="col-8">
-								<h5 class="card-title text-uppercase text-dark mb-0">Caseta 1</h5>
-								<small class="text-black-50">Caseta</small>
-							</div>
-							
-							<div class="col-4">
-								<p class="mb-0 mt-2">Ayudante 1 </p>
-								<small class="text-black-50">Jefe en Guardia</small>
-							</div>
-						</div>
-
-				    </div>
+				    <locationcard-component> </locationcard-component>
 				</div>
 			</div>
 			
@@ -141,7 +120,7 @@
                             <label class="form-label">Cargar un archivo *</label>
                             <input type="file" class="form-control-file" id="fileInput">
                         </div>
-                   
+
                         <div class="mb-3 col-5">
                              <img src="https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ=" class="img-fluid" alt="" >
                         </div>
@@ -165,13 +144,15 @@
 <!-- Jquery -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-<script  type="text/javascript" src="./components/navbar.js"></script>
-<script type="text/javascript" src="./functions.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!-- Tabulator -->
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 <!-- Local -->
  <script type="text/javascript" src="../utils/servido_utils.js"></script>
+<script type="text/javascript" src="./functions.js"></script>
+ 
+ <script  type="text/javascript" src="./components/locationCard.js"></script>
+<script  type="text/javascript" src="./components/navbar.js"></script>
  <script type="text/javascript" src="./notas.js"></script>
 
 <!-- Bootstrap -->

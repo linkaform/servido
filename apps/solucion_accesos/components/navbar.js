@@ -57,54 +57,55 @@ window.customElements.define('navbar-component', lkfNavbarComponent)
     //$('#buttonRondines').hide(); 
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  $("#imageUserNavbar").attr("src", getCookie('userImg'));
-let user = getCookie("userId");
-    let jw = getCookie("userJwt");
-    if(user !='' && jw!=''){
-        let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
-        imagenMostradaNavbar.src= localStorage.getItem("imagenURL");
-        $("#imageLinkaform").attr("src", getCookie('lkfLogo'));
 
-        console.log("dfgse",getValueUserLocation())
-        switch (getValueUserLocation()) {
-          case "accesos":
-             let btn1 = document.getElementById("buttonAccesos");
-             console.log("btn1",getValueUserLocation())
-             btn1.style.boxShadow= "rgba(0, 0, 0, 0.30) 100px -50px 20px -10px inset";
-            break;
-          case "bitacora":
-            console.log("bityytyt")
-             let btn2 = document.getElementById("buttonBitacoras");
-                 console.log("btn122",getValueUserLocation())
-             btn2.style.boxShadow= "rgba(0, 0, 0, 0.30) 100px -50px 20px -10px inset";
-            break;
-          case "incidencias":
-             let btn3 = document.getElementById("buttonIncidencias");
-             btn3.style.boxShadow= "rgba(0, 0, 0, 0.30) 100px -50px 20px -10px inset";
-            break;
-          case "articulos":
-             let btn4 = document.getElementById("buttonArticulos");
-             btn4.style.boxShadow= "rgba(0, 0, 0, 0.30) 100px -50px 20px -10px inset";
-            break;
-          case "rondines":
-             let btn5 = document.getElementById("buttonRondines");
-             btn5.style.boxShadow= "rgba(0, 0, 0, 0.30) 100px -50px 20px -10px inset";
-            break;
-        }
-    } 
-    
 
 });
 
+function changeButtonColor(){
+      $("#imageUserNavbar").attr("src", getCookie('userImg'));
+    let user = getCookie("userId");
+        let jw = getCookie("userJwt");
+        if(user !='' && jw!=''){
+            let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
+            imagenMostradaNavbar.src= localStorage.getItem("imagenURL");
+            $("#imageLinkaform").attr("src", getCookie('lkfLogo'));
+            console.log("dfgse",getValueUserLocation())
+            switch (getValueUserLocation()) {
+              case "accesos":
+                 let btn1 = document.getElementById("buttonAccesos");
+                 console.log("btn1",getValueUserLocation())
+                 btn1.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
+                break;
+              case "bitacora":
+                console.log("bityytyt")
+                 let btn2 = document.getElementById("buttonBitacoras");
+                     console.log("btn122",getValueUserLocation())
+                 btn2.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
+                break;
+              case "incidencias":
+                 let btn3 = document.getElementById("buttonIncidencias");
+                 btn3.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
+                break;
+              case "articulos":
+                 let btn4 = document.getElementById("buttonArticulos");
+                 btn4.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
+                break;
+              case "rondines":
+                 let btn5 = document.getElementById("buttonRondines");
+                 btn5.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
+                break;
+            }
+        } 
+}
 
 function customNavbar(location, turno){
-     if(location === 'portal_turnos' && turno === 'turno_cerrado' || location === 'accesos' && turno === 'turno_cerrado'){
+     if(location === 'turnos' && turno === 'turno_cerrado' || location === 'accesos' && turno === 'turno_cerrado'){
         $('#buttonAccesos').hide(); 
         $('#buttonBitacoras').hide(); 
         $('#buttonIncidencias').hide(); 
         $('#buttonArticulos').hide(); 
         $('#buttonRondines').hide(); 
-     }else if(location === 'portal_turnos' && turno === 'turno_abierto' || location === 'accesos' && turno === 'turno_abierto'){
+     }else if(location === 'turnos' && turno === 'turno_abierto' || location === 'accesos' && turno === 'turno_abierto'){
         $('#buttonAccesos').show(); 
         $('#buttonBitacoras').show(); 
         $('#buttonIncidencias').show(); 
@@ -136,7 +137,7 @@ function redirectionUrl(type = 'null',blank = true){
             console.log("USERSS")
             urlNew = `${protocol}//${host}/solucion_accesos/accesos.html`
         }else if(type == 'bitacora'){
-            urlNew = `${protocol}//${host}/solucion_accesos/bitacora.html`
+            urlNew = `${protocol}//${host}/solucion_accesos/bitacora.html`            
         }else if(type == 'incidencias'){
             urlNew = `${protocol}//${host}/solucion_accesos/incidencias.html`
         }else if(type == 'articulos'){
@@ -168,4 +169,11 @@ function redirectionUrl(type = 'null',blank = true){
     }
 
     
+}
+
+
+window.onload = function(){
+    
+    
+
 }

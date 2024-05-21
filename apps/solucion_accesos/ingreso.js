@@ -1,6 +1,5 @@
 let userJwt ="";
 let urlLinkaform='https://app.linkaform.com/api/';
-let urlScripts='infosync/scripts/run/';
 let idScriptCatalog=117935;
 let opScriptCatalog='catalog_brands';
 let urlImgCard = '';
@@ -14,7 +13,9 @@ let caseta=""
 let ubicacion=""
 
 window.onload = function(){
-	setValueUserLocation('registro_ingreso');
+	setValueUserLocation('ingreso');
+
+
 	customNavbar(getValueUserLocation(), getStatusTurn())
 	
 	userJwt = getCookie('userJwt');

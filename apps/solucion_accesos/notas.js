@@ -36,7 +36,25 @@ const columnsTableListNotas = [
 
 
 window.onload = function(){
-    setValueUserLocation('portal_notas');
+    setValueUserLocation('notas');
+    
+		changeButtonColor();
+
+		fillCatalogs();
+  selectLocation= document.getElementById("selectLocation")
+    selectLocation.onchange = function() {
+        console.log("La selección ha cambiado");
+        let response = fetchOnChangeLocation()
+        console.log(response.data)
+    };
+     selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta.onchange = function() {
+        console.log("La selección ha cambiado");
+        let response = fetchOnChangeLocation()
+        console.log('hiii',response.data)
+    };
+
+    
     let user = getCookie("userId");
     let jw = getCookie("userJwt");
     console.log("HERLLO", user, jw);

@@ -67,17 +67,28 @@ const dataTable2 = [
     {'marca':'Nissan','modelo':'Kicsk','color':'Blanco','placas':'PRC-1265','estado':'Nuevo León'},
 ]
 
-document.addEventListener("DOMContentLoaded", (event) => {
+
+window.onload = function(){
     setValueUserLocation('accesos');
+
+    changeButtonColor();
+
+    fillCatalogs();
+
     selectLocation= document.getElementById("selectLocation")
     selectLocation.onchange = function() {
         console.log("La selección ha cambiado");
         let response = fetchOnChangeLocation()
-        console.log(response.data)
+        console.log('hiii',response.data)
     };
-})
+   selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta.onchange = function() {
+        console.log("La selección ha cambiado");
+        let response = fetchOnChangeLocation()
+        console.log('hiii',response.data)
+    };
 
-window.onload = function(){
+
     setHideElements('dataHide');
     setSpinner(true, 'divSpinner');
     let user = getCookie("userId");
@@ -89,8 +100,9 @@ window.onload = function(){
     }else{
         redirectionUrl('login',false)
     }
-
+    
     customNavbar(getValueUserLocation(), getCookie('userTurn'));
+
     getCatalogs()
 }
 

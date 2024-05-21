@@ -1,8 +1,5 @@
 let userJwt ="";
-let user="";
 let urlLinkaform='https://app.linkaform.com/api/';
-let urlScripts='infosync/scripts/run/';
-let idScript= 117936;
 let userTurnCookie=''
 let caseta=""
 let ubicacion=""
@@ -65,8 +62,6 @@ const columsAgregarGuardiaApoyo = [
     {title:"Estatus", field:"status", width:330, resizable:true, tooltip:true},
 
 ];
-
-
 
 const columsDataGuardiasApoyo = [
     { title:"Guardias de Apoyo", field:'name',hozAlign:"left",headerFilter:true,width:390,
@@ -206,18 +201,18 @@ function getGuardLocationListGuardsNotes(){
                 setCookie("userTurn", status , 7);
                 changeStatusTurn(false)
             }else{
-                caseta="Caseta 1";
+                caseta="Caseta 1 Sur";
                 ubicacion='Monterrey';
                 $("#textCuidad").text('Apodaca')
                 $("#textEstado").text('Nuevo Leon')
                 $("#textDireccion").text("Colonia Las Puentes 2do Sector")
-                setCookie('userCaseta', caseta)
-                setCookie('userLocation',ubicacion)
+                setCookie('userCaseta', caseta,7)
+                setCookie('userLocation',ubicacion,7)
                 $("#textCaseta").text(getCookie('userCaseta'))
                 $("#textUbicacion").text(getCookie('userLocation'))
 
-                setCookie('userCasetaStatus', 'No disponible')
-                setCookie('userCasetaGuard','Juan Rios')
+                setCookie('userCasetaStatus', 'No disponible',7)
+                setCookie('userCasetaGuard','Juan Rios',7)
                  $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
                  $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
                  $("#textEstatusCaseta").removeClass();
@@ -322,7 +317,9 @@ window.onload = function(){
     userJwt = getCookie("userJwt");
     userTurnCookie= getCookie("userTurn");
  
-   
+    setValueUserLocation('turnos');
+
+    changeButtonColor();
     getGuardLocationListGuardsNotes()
 
    
@@ -349,25 +346,22 @@ window.onload = function(){
 function AlertAndActionChangeStatusTurn(){
     if((getCookie("userCasetaStatus")== 'Disponible' && getCookie("userTurn")== 'turno_cerrado' )   || (getCookie("userCasetaStatus")== 'No disponible') && getCookie("userTurn")== 'turno_abierto' 
         || (getCookie("userCasetaStatus")== 'Disponible'&&  getCookie("userTurn")== 'turno_abierto')){
-        if( getCookie("userTurn")== 'turno_cerrado' && arraySelectedGuardias.length==0) {
-        Swal.fire({
-            title: "Faltan guardias de apoyo",
-            text: "Seleciona guardias de apoyo para iniciar el turno.",
-            type: "warning"
-        });
-        }else {
-             let arrGuard=[];
+      
+         let arrGuard=[];
                 for(guardia of arraySelectedGuardias){
                     arrGuard.push(guardia.name);
                 }
+
+                console.log('aswda',arraySelectedGuardias.length,arraySelectedGuardias.length === 0 )
+                let guardiaText= arraySelectedGuardias.length === 0 ? `?`:`, con los siguientes guardias: <b>`+ arrGuard.flat()+`? </b> ` ;
+
+
                 Swal.fire({
                   title:'Confirmación',
                   html:getCookie("userTurn")== 'turno_cerrado' ?`
                 ¿Seguro que quieres iniciar el turno en <b>`+ getCookie('userCaseta')+`</b>,
-                en la ubicación <b>`+ getCookie('userLocation')+`</b>,
-                con los siguientes guardias: <b>`+ arrGuard.flat()+`? </b> ` : ` ¿Seguro que quieres cerrar el turno en <b>`+ getCookie('userCaseta')+`</b>,
-                en la ubicación <b>`+ getCookie('userLocation')+`</b>,
-                con los siguientes guardias: <b>`+ arrGuard.flat()+`? </b> `,
+                en la ubicación <b>`+ getCookie('userLocation')+`</b>`+guardiaText : ` ¿Seguro que quieres cerrar el turno en <b>`+ getCookie('userCaseta')+`</b>,
+                en la ubicación <b>`+ getCookie('userLocation')+`</b>` + guardiaText,
                   type: "warning",
                   showCancelButton: true,
                   confirmButtonColor: "#28a745",
@@ -379,7 +373,6 @@ function AlertAndActionChangeStatusTurn(){
                      changeStatusTurn(true);
                   }
                 });
-        }
     }else{
         Swal.fire({
             title: "Caseta no disponible!",
@@ -680,7 +673,6 @@ function verNotasAlert(name, note, folio, status){
     });
 }
 
-
 //-----TABLES
 function drawTableNotas(id, columnsData, tableData, height){
   var  table = new Tabulator("#" + id, {
@@ -710,7 +702,7 @@ function drawTableSelect(id, columnsData, tableData, height, select){
 }
 
 
- function selectCheckboxGuardia(folio){
+function selectCheckboxGuardia(folio){
      let checkboxes = document.querySelectorAll('.form-check-input');
     arraySelectedGuardias=[]
       checkboxes.forEach(function(checkbox) {
@@ -721,7 +713,7 @@ function drawTableSelect(id, columnsData, tableData, height, select){
             }
         }
     });
- }     
+}     
 
 
 function enviarNota(){

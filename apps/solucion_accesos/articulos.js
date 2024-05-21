@@ -100,23 +100,30 @@ const dataTable2 = [
 	{'location':'PLanta Sur','date':'14/03/2024 05:00','type':'Entrega de llaves','img':'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65779777beef423c6264ac04.jpg','num_serie':'12244','reporta':'Lucia Carvajal','comment':'Cecilia Gonzales','recibe':'','date_out':'','location':'Estaciónamiento','status':'Abiertod'}
 ]
 document.addEventListener("DOMContentLoaded", (event) => {
-	setValueUserLocation('articulos');
-	console.log("HOLAAA")
-
-
-
-	selectLocation= document.getElementById("selectLocation")
-	//selectLocation = onChangeLocation()
-	selectLocation.onchange = function() {
-        console.log("La selección ha cambiado");
-        let response = fetchOnChangeLocation()
-        console.log(response.data)
-    };
+	
 })
 
 
 window.onload = function(){
-	setValueUserLocation('registro_articulos_v2');
+	setValueUserLocation('articulos');
+
+	changeButtonColor();
+
+	fillCatalogs();
+
+	selectLocation= document.getElementById("selectLocation");
+	selectLocation.onchange = function(){
+    console.log("La selección ha cambiado");
+    let response = fetchOnChangeLocation()
+    console.log(response.data)
+  };
+ selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta.onchange = function() {
+        console.log("La selección ha cambiado");
+        let response = fetchOnChangeLocation()
+        console.log('hiii',response.data)
+    };
+
 	setSpinner(true, 'divSpinner');
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
@@ -128,13 +135,6 @@ window.onload = function(){
 	}else{
 		redirectionUrl('login',false)
 	}
-
-
-
-
-
-
-
 }
 
 
@@ -151,35 +151,6 @@ function drawTable(id, columnsData, tableData,){
   });
 }
 
-function redirectionUrl(type = 'null',blank = true){
-    let urlNew =  '';
-    let protocol = window.location.protocol;
-    let host = window.location.host;
-    if(type == 'users'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
-    }else if(type == 'bitacora'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_bitacora_v2.html`
-    }else if(type == 'incidencias'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_incidencias_v2.html`
-    }else if(type == 'articulos'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/articulos.html`
-    }else if(type == 'login'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/login.html`
-    }
-    //----Validation
-    if(urlNew !='' && blank){
-    	Object.assign(document.createElement('a'), {
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        href: urlNew,
-    	}).click();
-    }else if(urlNew !='' && !blank){
-    	Object.assign(document.createElement('a'), {
-        rel: 'noopener noreferrer',
-        href: urlNew,
-    	}).click();
-    }
-}
 
 
 //-----MODALS
