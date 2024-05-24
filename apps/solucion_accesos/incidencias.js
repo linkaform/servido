@@ -5,7 +5,7 @@ const columsData1 = [
 			//----Button Trash
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			let divActions = '<div class="row d-flex">';
-			divActions += ` <input class="form-check-input ms-3" style="height:15px !important;width:2px;" type="checkbox">`;
+			divActions += ` <input class="form-check-input ms-3 mt-1" style="height:15px !important;width:2px;" type="checkbox">`;
 			divActions += `<button class="btn-table-bitacora" onClick="setModal('ViewIncident',${folio})"><i class="fa-solid fa-eye"></i></button>`;
 			divActions += `<button class="btn-table-bitacora" onClick="setModal('EditIncident',${folio})"><i class="fa-solid fa-pen"></i></button>`;
 			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-trash"></i></button>`;
@@ -29,7 +29,7 @@ const columsData2 = [
 			//----Button Trash
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			let divActions = '<div class="row d-flex">';
-			divActions += ` <input class="form-check-input ms-3" style="height:15px !important;width:2px;" type="checkbox">`;
+			divActions += ` <input class="form-check-input ms-3 mt-1" style="height:15px !important;width:2px;" type="checkbox">`;
 			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-eye" onClick="setModal('ViewFail',${folio})"></i></button>`;
 			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-circle-check" onClick="setModal('SuccessFail',${folio})"></i></button>`;
 			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-pen" onClick="setModal('EditFail',${folio})"></i></button>`;

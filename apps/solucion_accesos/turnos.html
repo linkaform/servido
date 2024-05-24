@@ -107,9 +107,14 @@
                             <td><b>Estatus de la caseta: </b></td>
                             <td> <span id="textEstatusCaseta"> </span></td>
                         </tr>
+                     
                         <tr>
                             <td><b>Guardia en turno:</b></td>
                             <td><span id="textGuardiaEnTurno"> </span></td>
+                        </tr>
+                           <tr>
+                            <td><b>Fecha de inicio de turno: </b></td>
+                            <td> <span id="textFechaInicioCaseta"> 01/12/2024 01:23:2024</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -202,7 +207,7 @@
     </div>
 
     <div class="modal fade" id="agregarNotasModal" tabindex="-1"  aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 500px;">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">Agregar notas</h1>
@@ -214,22 +219,30 @@
                             <label class="form-label">Nota *</label>
                               <textarea class="form-control" id="inputTextNota" rows="3" placeholder="Escribe algo..."></textarea>
                         </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Cargar un archivo *</label>
-                            <input type="file" class="form-control-file" id="fileInputArchivo">
-                            <button type="button" class="btn btn-success button-add-register" onclick="setAddNota();return false;">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteNotas(123);return false;">
-                                <i class="fa-solid fa-minus"></i>
-                            </button>
+                        <div id="archivo-input-form">
+                            <div class="mb-3 col-12 archivo-div div-archivo-123">
+                                <label class="form-label">Cargar un archivo *</label>
+                                <input type="file" class="form-control-file " id="fileInputArchivo">
+                                <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(123);return false;">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div class="mb-3 col-5">
-                             <img src="https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ=" class="img-fluid" alt="" >
+                        
+                       <div id="foto-input-form">
+                            <div class="mb-3 col-12 foto-div div-foto-123">
+                                <label class="form-label">Fotografia *</label>
+                                <input type="file" class="form-control-file " id="fileInputFotografia">
+                                <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(123);return false;">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
                         </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Fotografia *</label>
-                           <input type="file" class="form-control-file" id="fileInputFotografia">
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentario *</label>
@@ -241,7 +254,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="enviarNota()">Agregar</button>
+                    <button type="button" class="btn btn-success" onclick="enviarNota()">Seleccionar</button>
                 </div>
             </div>
         </div>
@@ -263,7 +276,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="agregarNuevoGuardiaApoyo();">Agregar</button>
+                    <button type="button" class="btn btn-success" onclick="agregarNuevoGuardiaApoyo();">Seleccionar</button>
                 </div>
             </div>
         </div>

@@ -157,34 +157,35 @@ function filterCatalogBy(key, value ){
 //-----FUNCTION DATA
 
 function getValidation(allData) {
-	if(allData.nameUser !== '' || allData.location!==''|| allData.caseta!=='' || allData.visitMotivo!==''
-	|| allData.company !== '' 
-	|| allData.visit !== ''){
-		if(urlImgUser !== ''){
-			if(urlImgCard !== ''){
-				return true;
-			}else{
-				Swal.fire({
-					title	: "Error!",
-					text: "Error al tomar foto de la identificación",
-					icon: "danger"
-				});
-			}
+	if(allData.nameUser !== '' ||allData.location!==''||allData.caseta!=='' ||allData.visitMotivo!==''
+	||allData.companyUser !== '' 
+	||allData.visitUser !== ''){
+			if(urlImgUser !== ''){
+						if(urlImgCard !== ''){
+							return true;
+						}else{
+							Swal.fire({
+								title	: "Error",
+								text: "Asegurese de tomar foto de la identificación",
+								type: "warning"
+							});
+						}
+				}else{
+					Swal.fire({
+						title	: "Error",
+						text: "Asegurese de tomar foto de usuario",
+						type: "warning"
+					});
+				}
 		}else{
-			Swal.fire({
-				title	: "Error!",
-				text: "Error al tomar foto de usuario",
-				icon: "danger"
+				Swal.fire({
+				title	: "Error",
+				text: "Faltan datos, asegurese de llenar correctamente los datos",
+				type: "warning"
 			});
 		}
-	}else{
-		Swal.fire({
-			title	: "Error!",
-			text: "Faltan Datos, asegurese de llenar correctamente los datos",
-			icon: "danger"
-		});
+	
 	}
-}	
 
 //INFO: enviar dialogo de confirmacion
 function AlertSendDataUser() {
@@ -235,7 +236,11 @@ function AlertSendDataUser() {
 					 htmlAppendEquipos +="<div class='col-sm-12 col-md-12 col-lg-5 col-xl-5'>"
 		  			htmlAppendEquipos+="<table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>"
 						htmlAppendEquipos+="<tbody> <tr> <td><b>Tipo de Equipo:</b></td> <td> <span > "+ listInputsEquipo[equipo][0].value +"</span></td> </tr>"
-						htmlAppendEquipos+="<tr> <td><b>Nombre:</b></td> <td> <span > "+ listInputsEquipo[equipo][1].value +"</span></td> </tr>	</tbody> </table>	</div>"		
+						htmlAppendEquipos+="<tr> <td><b>Nombre:</b></td> <td> <span > "+ listInputsEquipo[equipo][1].value +"</span></td> </tr>"	
+						htmlAppendEquipos+="<tr> <td><b>Marca:</b></td> <td> <span > "+ listInputsEquipo[equipo][2].value +"</span></td> </tr>"
+						htmlAppendEquipos+="<tr> <td><b>Modelo:</b></td> <td> <span > "+ listInputsEquipo[equipo][3].value +"</span></td> </tr>"
+					  htmlAppendEquipos+="<tr> <td><b>Color:</b></td> <td> <span > "+ listInputsEquipo[equipo][4].value +"</span></td> </tr>"
+						htmlAppendEquipos+="</tbody> </table>	</div>"		
 			}
 			let htmlAppendVehiculos="";
 			for (let vehiculo in listInputsVehicule) {
@@ -278,8 +283,12 @@ function AlertSendDataUser() {
 										<td><span > `+company+`</span></td>
 									</tr>
 									<tr>
+										<td><b>identificación:</b></td>
+										<td> <img src="`+urlImgCard+`" height="100px"  style="object-fit: contain !important;"></td>
+									</tr>
+									<tr>
 										<td><b>Fotografia:</b></td>
-										<td><span > </span></td>
+										<td> <img src="`+urlImgUser+`" height="100px"  style="object-fit: contain !important;"></td>
 									</tr>
 								</tbody>
 							</table>
@@ -470,34 +479,33 @@ function isCanvasBlank(canvas) {
 }
 
 function getScreenCard(){
-	//-----Save Photo
 	if(!flagVideoCard){
-		flagVideoCard = true;
-		if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-	        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
-	        .then(function(stream) {
-	            let video = document.createElement('video');
-	            video.style.width = '200px';
-	            video.style.height = '125px';
-	            document.getElementById('containerCard').appendChild(video);
-	            video.srcObject = stream;
-	            video.play();
-	            let canvas = document.getElementById('canvasPhoto');
-	            let context = canvas.getContext('2d');
-	            //----Take Photo
-	            $("#buttonTakeCard").attr('disabled','disabled');
-	            $("#buttonTakeCard").hide();
-	            $("#buttonSaveCard").show();
-	            document.getElementById('buttonSaveCard').addEventListener('click', function() {
-	                setTranslateImageCard(context, video, canvas)
-	            });
-	        })
-	        .catch(function(error) {
-	            console.error('Error al acceder a la cámara:', error);
-	        });
-	    } else {
-	        alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
-	    }
+    flagVideoCard = true;
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
+          .then(function(stream) {
+              let video = document.createElement('video');
+              video.style.width = '200px';
+              video.style.height = '125px';
+              document.getElementById('containerCard').appendChild(video);
+              video.srcObject = stream;
+              video.play();
+              let canvas = document.getElementById('canvasPhoto');
+              let context = canvas.getContext('2d');
+              //----Take Photo
+              $("#buttonTakeCard").attr('disabled','disabled');
+              $("#buttonTakeCard").hide();
+              $("#buttonSaveCard").show();
+              document.getElementById('buttonSaveCard').addEventListener('click', function() {
+                  setTranslateImageCard(context, video, canvas)
+              });
+          })
+          .catch(function(error) {
+              console.error('Error al acceder a la cámara:', error);
+          });
+      } else {
+          alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
+      }
     }
 }
 
@@ -698,7 +706,22 @@ let newItem=`
 				<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
 					<label class="form-label ">Nombre del Equipo:*</label>
 					<input type="text" class="form-control group-equipo" id="inputNombreEquipo-`+randomID+`">
-					<hr >
+				</div>
+				<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
+					<label class="form-label ">Marca:</label>
+					<input type="text" class="form-control group-equipo" id="inputMarcaEquipo-`+randomID+`">
+				</div>
+				<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
+					<label class="form-label ">Modelo:</label>
+					<input type="text" class="form-control group-equipo" id="inputModeloEquipo-`+randomID+`">
+				</div>
+				<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
+					<label class="form-label ">No. de Serie:</label>
+					<input type="text" class="form-control group-equipo" id="inputNoSerieEquipo-`+randomID+`">
+				</div>
+				<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
+					<label class="form-label ">Color:</label>
+					<input type="text" class="form-control group-equipo" id="inputColorEquipo-`+randomID+`">
 				</div>
 `;
 	$('#div-equipo').append(newItem)

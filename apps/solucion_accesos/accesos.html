@@ -265,6 +265,8 @@
 								<th class="headerColor">Tipo</th>
 								<th class="headerColor">Marca</th>
 								<th class="headerColor">Modelo</th>
+								<th class="headerColor">No.de Serie</th>
+								<th class="headerColor">Color</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -291,8 +293,9 @@
 						<thead>
 							<tr>
 								<th class="headerColor">Marca</th>
-								<th class="headerColor">Placas</th>
+								<th class="headerColor">Matricula</th>
 								<th class="headerColor">Color</th>
+								<th class="headerColor">Modelo</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -339,13 +342,57 @@
 							<label class="form-label">Nombre Completo*</label>
 							<input type="text" class="form-control" id="inputNombreNV" placeholder="Nombre">
 						</div>
+
+
+
+						<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-3">
+							<label class="form-label">Identificación: *</label>
+							<button type="button" class="btn  btn-primary" onclick="getScreenCard();return false;" id="buttonTakeCard">
+								<i class="fa-solid fa-camera-retro"></i>
+							</button>
+							<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveCard">
+								Guardar Foto <i class="fa-solid fa-aperture"></i>
+							</button>
+							<!-- Canvas Foto -->
+							<div id="containerCard" class="mt-2">
+								<canvas id="canvasPhoto" style="display: none;width: 185px;height: 125px;"></canvas>
+								<img id="imgCard" src="" style="display: none;width: 185px;height: 125px;">
+							</div>
+							<input type="file" class="form-control mt-2" id="inputFileCard" >
+						</div>
+
+
+						<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-3">
+							<label class="form-label">Fotografia: *</label>
+							<button type="button" class="btn  btn-primary " onclick="getScreenUser();return false;" id="buttonTakeUser">
+								<i class="fa-solid fa-camera-retro"></i>
+							</button>
+							<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveUser">
+								Guardar Foto <i class="fa-solid fa-aperture"></i>
+							</button>
+							<!-- Canvas Foto -->
+							<div id="containerUser" class="mt-2">
+								<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
+								<img id="imgUser" src="" style="display: none;width: 185px;height: 125px;">
+							</div>
+							<input type="file" class="form-control mt-2" id="inputFileUser" >
+						</div>
+
+
+
+
 						<div class="mb-3 col-6">
 							<label class="form-label">Razón Social*</label>
 							<input type="text" class="form-control" id="inputRazonSocialNV"  placeholder="Empresa">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Área que visita*</label>
-							<input type="text" class="form-control" id="inputAreaVisitaNV" placeholder="Área">
+							<select class="form-select" id="inputAreaVisitaNV">
+								<option selected>--Seleccione--</option>
+								<option value="1">One</option>
+								<option value="2">Two</option>
+								<option value="3">Three</option>
+							</select>
 						</div>
 							<div class="mb-3 col-12">
 							<label class="form-label">Visita a*</label>
@@ -495,6 +542,9 @@
 						<datalist id="datalistOptionsEquipo123">
 							  <option value="Computo">
 							  <option value="Herramientas">
+							  	<option value="laptop">
+							  <option value="PC">
+							  	  <option value="linterna">
 						</datalist>
 					</div>
 					<div class="col-9 div-equipo-row-1 div-row-equipo">
@@ -787,9 +837,10 @@
 				<div class="modal-body">
 					<table class="table" id="tableCarsModal">
 						<thead class="table-warning">
-							<th>Marca</th>
-							<th>Placas</th>
-							<th>Color</th>
+							<th class="headerColor">Marca</th>
+							<th class="headerColor">Matricula</th>
+							<th class="headerColor">Color</th>
+							<th class="headerColor">Modelo</th>
 							<th style="width: 20%;">Añadirlo</th>
 						</thead>
 						<tbody></tbody>
@@ -813,11 +864,12 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<table class="table" id="tableAddCarsModal">
+					<table class="table table-borderless" style="border: none !important;" id="tableAddCarsModal">
 						<thead class="table-warning">
-							<th>Marca</th>
-							<th>Placas</th>
-							<th>Color</th>
+							<th class="headerColor">Marca</th>
+							<th class="headerColor">Matricula</th>
+							<th class="headerColor">Color</th>
+							<th class="headerColor">Modelo</th>
 						</thead>
 						<tbody></tbody>
 					</table>
@@ -839,11 +891,13 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<table class="table" id="tableAddItemsModal">
+					<table class="table table-borderless" style="border: none !important;" id="tableAddItemsModal">
 						<thead class="table-warning">
-							<th>Tipo</th>
-							<th>Marca</th>
-							<th>Modelo</th>
+							<th class="headerColor">Tipo</th>
+							<th class="headerColor">Marca</th>
+							<th class="headerColor">Modelo</th>
+							<th class="headerColor">No. Serie</th>
+							<th class="headerColor">Color</th>
 						</thead>
 						<tbody></tbody>
 					</table>

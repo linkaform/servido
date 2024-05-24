@@ -1,4 +1,5 @@
 let selectLocation;
+
 //-----Variables
 const columsData1 = [
 	{ title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:180,

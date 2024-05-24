@@ -1,6 +1,7 @@
 let userJwt ="";
 let urlLinkaform='https://app.linkaform.com/api/';
 let userTurnCookie=''
+let idScr=117936
 let caseta=""
 let ubicacion=""
 let tables={}
@@ -29,7 +30,6 @@ var dataTableAgregarGuardiaApoyo = [
 
 ];
 
-
 const columsDataNotas = [
     {title:"Guardia", field:"name", width:160, responsive:0}, //never hide this column
     {title:"Nota", field:"note", width:250, resizable:true, tooltip:true},
@@ -42,7 +42,7 @@ const columsDataNotas = [
             let folio = cell.getData().folio ? cell.getData().folio : 0;
             let divActions = '<div class="row d-flex">';
             divActions += `<button class="btn-table-bitacora" onclick="cerrarNotaAlert('${data.name}', '${data.note}', ${folio},'${data.status}')" ><i class="fa-regular fa-circle-check"></i></button>`;
-            divActions += `<button class="btn-table-bitacora" onclick="verNotasAlert('${data.name}', '${data.note}', ${folio}, '${data.status}')" > <i class="fa-regular fa-eye"></i></button>`;
+            divActions += `<button class="btn-table-bitacora" onclick="verNotasAlert('${data.name}', '${data.note}', ${folio}, '${data.status}', '${data.fotos}', '${data.archivos}')" > <i class="fa-regular fa-eye"></i></button>`;
             divActions += '</div>';
             return divActions;
         },
@@ -98,7 +98,7 @@ function changeImageGuard(){
     /* fetch(urlLinkaform + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_id: idScript,
+            script_id: idScr,
             option: 'change_image_guard',
             email : 'guardia1@linkaform.com'
         }),
@@ -139,7 +139,7 @@ function getAllData(){
     fetch(urlLinkaform + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_id: idScript,
+            script_id: idScr,
             option: 'get_all_catalogs',
             email : 'guardia1@linkaform.com',
             booth : 'Caseta Vigilancia Poniente 7',
@@ -171,24 +171,24 @@ function getAllData(){
 
 }
 function getGuardLocationListGuardsNotes(){
-
+    console.log("que pasa",urlLinkaform + urlScripts)
     fetch(urlLinkaform + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_id: idScript,
+            script_id: 117935,
             option: 'location_guard',
             email : 'guardia1@linkaform.com'
         }),
         headers:{
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt
 
             },
     })
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            let { booth, location, folio, status} = res.response.data
+           
+         let { booth, location, folio, status} = res.response.data
             if(booth || location|| folio||  status){
                 caseta=booth;
                 ubicacion=location;
@@ -201,7 +201,14 @@ function getGuardLocationListGuardsNotes(){
                 setCookie("userTurn", status , 7);
                 changeStatusTurn(false)
             }else{
-                caseta="Caseta 1 Sur";
+            
+            }
+           
+        } 
+
+    });
+
+        caseta="Caseta 1 Sur";
                 ubicacion='Monterrey';
                 $("#textCuidad").text('Apodaca')
                 $("#textEstado").text('Nuevo Leon')
@@ -226,15 +233,15 @@ function getGuardLocationListGuardsNotes(){
                     setCookie("userTurn", 'turno_abierto' , 7);
                 }
                 changeStatusTurn(false)
-            }
-           
-        } 
-    });
+
+
+
+
 
  fetch(urlLinkaform + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_id: idScript,
+            script_id: idScr,
             option: 'list_chiken_guards',
             booth : 'Caseta Vigilancia Poniente 7',
             location : 'Planta Monterrey'
@@ -276,10 +283,10 @@ function getGuardLocationListGuardsNotes(){
              drawTableSelect('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"360px",1);
              drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px",1000);
             }
- fetch(urlLinkaform + urlScripts, {
+        fetch(urlLinkaform + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_id: idScript,
+            script_id: idScr,
             location : 'Planta Puebla',
             option: 'notes_guard',
             booth : 'Caseta Vigilancia Norte 8'
@@ -293,23 +300,26 @@ function getGuardLocationListGuardsNotes(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            if(res.response.data.length>0){
+          if(res.response.data.length>0){
                 for(nota of res.response.data){
-                    dataTableNotas.push({name: nota.catalogo_guardia_nombre, note: nota.notas_nota, status: nota.notas_status, img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:""}) 
+                    dataTableNotas.push({name: nota.catalogo_guardia_nombre, note: nota.notas_nota, status: nota.notas_status, img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:1,fotos:["foto.png","foto.jpg"], archivos:["archivo1.pdf", "archivo2.pdf"]}) 
                 }
             }else{
-                dataTableNotas.push(
-                    {name: "María Fernanda García", note: "No cerraron bien la puerta al salir", status: "abierta", img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:1},
-                    {name: "Juan Carlos Rodríguez", note: "Favor de revisar sus cosas antes de salir y no dejar toppers o cubiertos en el area comun", status: "cerrada", img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:2},
-                    {name: "Laura Pérez Martínez", note: "No paso la basura favor de apoyarme temprano con eso", status: "abierta" ,img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:3},
+               
+            }
+           
+        } 
+          
+    });
+     dataTableNotas.push(
+                    {name: "María Fernanda García", note: "No cerraron bien la puerta al salir", status: "abierta", img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:1,fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"]},
+                    {name: "Juan Carlos Rodríguez", note: "Favor de revisar sus cosas antes de salir y no dejar toppers o cubiertos en el area comun", status: "cerrada", img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:2,fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"]},
+                    {name: "Laura Pérez Martínez", note: "No paso la basura favor de apoyarme temprano con eso", status: "abierta" ,img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:3,fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"]},
                     //{name: "Alejandro López Sánchez", note: "no cerraron bien la puerta al salir", status: "cerrada", img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:4},
                     //{name: "Ana María González Ruiz", note:"Favor de revisar sus cosas antes de salir y no dejar toppers o cubiertos en el area comun", status: "abierta", img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:5},
                     )
-            }
-            if(user !='' && userJwt!=''){
+      if(user !='' && userJwt!=''){
                  drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");}  
-        } 
-    });
 }
 
 window.onload = function(){
@@ -339,8 +349,66 @@ window.onload = function(){
     $("#textEmail").text(getCookie('userEmail'));
     $("#imgProfilePic").attr("src", localStorage.getItem("imagenURL") /*getCookie('userImg')*/);
     $("#textUbicacion").html();
+}
 
+function setAddArchivo(){
+    let randomID = Date.now();
+    //---Structure HTML
+    let newItem=`
+                <div class="mb-3 col-12 archivo-div div-archivo-`+randomID+`">
+                                <label class="form-label">Cargar un archivo *</label>
+                                <input type="file" class="form-control-file" id="fileInputArchivo">
+                                <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(`+randomID+`);return false;">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                </div>
+    `;
+    $('#archivo-input-form').append(newItem);
+}
+function setDeleteArchivo(id){
+    const elements = document.querySelectorAll('.archivo-div');
+    console.log("ELEMENTOS", elements)
+    const count = elements.length;
+    console.log(elements, count, "saefdasd")
+    if(count > 1){
+        const elements = document.getElementsByClassName('div-archivo-'+id);
+        while(elements.length > 0){
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+    }
+}
+function setAddFoto(){
+    let randomID = Date.now();
+    //---Structure HTML
+    let newItem=`
+            <div class="mb-3 col-12 foto-div div-foto-`+randomID+`">
+                        <label class="form-label">Fotografia *</label>
+                        <input type="file" class="form-control-file" id="fileInputFotografia">
+                        <div class="col-3">
+                        <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(`+randomID+`);return false;">
+                           <i class="fa-solid fa-minus"></i>
+                        </button>
+             </div>
+    `;
+    $('#foto-input-form').append(newItem)
+  
+}
+function setDeleteFoto(id){
 
+    const elements = document.querySelectorAll('.foto-div');
+    const count = elements.length;
+    if(count > 1){
+        const elements = document.getElementsByClassName('div-foto-'+id);
+        while(elements.length > 0){
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+    }
 }
 
 function AlertAndActionChangeStatusTurn(){
@@ -399,6 +467,7 @@ function AlertForzarCierre(name){
       if (result.value) {
         setCookie('userCasetaStatus', 'Disponible',7);
         $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
+        $('#textFechaInicioCaseta').value('01/12/2024 01:23:2024')
         $("#textEstatusCaseta").removeClass();
         $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== 'No disponible'? "text-success":  "text-danger");
 
@@ -495,7 +564,7 @@ function changeStatusTurn(buttonClick){
         fetch(urlLinkaform + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_id: idScript,
+            script_id: idScr,
             location : 'Planta Puebla',
             option: 'change_turn',
             status : getCookie('userTurn')== 'turno_abierto' ? 'cerrar_turno' : 'turno_abierto'
@@ -644,7 +713,35 @@ function cerrarNotaAlert(name, note, folio, status){
    
 }
 
-function verNotasAlert(name, note, folio, status){
+function verNotasAlert(name, note, folio, status, fotos, archivos){
+    let fotosArray = fotos.split(',');
+    let archivosArray = archivos.split(',');
+    let fotosItem=``;
+    let archivosItem=``;
+    for(let url of fotosArray){
+        fotosItem+=`
+        <div class='m-2'> 
+            <img src="`+url+`" height="145px"style="object-fit: contain;"></td> </tr>
+        </div>`;
+    }
+    let htmlFotos=`
+        <h6>Fotografias</h6>
+        <div class='d-flex flex-row'>
+            `+fotosItem+`
+        </div>`;
+
+
+    for(let url of archivosArray){
+        archivosItem+=`
+        <div><a href="https://www.turnerlibros.com/wp-content/uploads/2021/02/ejemplo.pdf" target="_blank">`+url+`</a>
+        </div>
+        `;
+    }
+    let htmlArchivos=`
+        <h6>Archivos</h6>
+        <div class='d-flex flex-column'>
+            `+archivosItem+`
+        </div>`;
     Swal.fire({
       title: "Nota",
       text: "Escoje una caseta para continuar...",
@@ -655,11 +752,11 @@ function verNotasAlert(name, note, folio, status){
         <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> 
         <tr> <td><b>Estatus:</b></td> <td> <span > `+ status+`</span></td> </tr> 
         <tr> <td><b>Fecha y hora de creacion:</b></td> <td> <span > 25/02/24 18:00:00 hrs</span></td> </tr>
-        <tr> <td><b>Fotografia:</b></td> <td> <img src="https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ=" class="img-fluid" alt="" width="200px"></td> </tr>
+        <tr> <td><b>Estatus:</b></td> <td> <span > `+ status+`</span></td> </tr> 
         <tr> <td><b>Comentarios:</b></td> <td> <span> Este el comentario de prueba de la nota</span> </tr>
         <tr> <td><b>Fecha y hora de cierre:</b></td> <td> <span>  26/02/24 19:31:00 hrs</span> </tr>
         <tr> <td><b>Guardia que cierra:</b></td> <td> <span>  Pancracio Felipe</span> </tr>
-        </tbody> </table> `,
+        </tbody> </table>` + htmlFotos + htmlArchivos,
       showCancelButton: true,
       showConfirmButton: false,
       confirmButtonColor: "#3085d6",
@@ -717,18 +814,53 @@ function selectCheckboxGuardia(folio){
 
 
 function enviarNota(){
+    let fotosArray=[]
+    let archivosArray=[]
     let nota= $("#inputTextNota").val();
     let archivo= $("#fileInputArchivo").val();
+    let elements = document.querySelectorAll('.archivo-div');
+    console.log("ELEMETOS",elements)
+    for (div of elements){
+        console.log("ELEMENTOS",div.value);
+        
+    }
+    let divArchivo = document.getElementById("archivo-input-form");
+    let inputsE = divArchivo.querySelectorAll('.archivo-div');
+    inputsE.forEach(function(input) {
+        fotosArray.push(input.value);
+    });
+    let divFoto = document.getElementById("foto-input-form");
+    let inputsF = divFoto.querySelectorAll('.foto-div');
+    inputsF.forEach(function(input) {
+        archivosArray.push(input.value);
+    });
+
     let fotografia= $("#fileInputFotografia").val();
     let comentario=$("#inputComentarioNota").val();
     let fileNameFoto = fotografia.substring(fotografia.lastIndexOf('\\') + 1);
 
     let randomFolio = Date.now();
-    if(nota!=="" && archivo!=="" && fotografia!==""){
-        dataTableNotas.push( {name: getCookie("userName"), note: nota, status: "abierta", img: fileNameFoto, check: "red", view:"14/04/1984", edit:"", folio:randomFolio})
+        
+
+        //INFO: Agregar la fetch aqui lo que sigue abajo agregarlo en el response del fetch
+        //se enviaran todas las variables y los arrays de fotos y archivos
+
+
+    if(nota!==""){
+        dataTableNotas.push( 
+            {name: getCookie("userName"), note: nota, status: "abierta", img: fileNameFoto, check: "red", view:"14/04/1984", edit:"", folio:randomFolio})
         tables["tableNotas"].setData(dataTableNotas);
+        
         $('#agregarNotasModal').modal('hide');
-      
+        $("#inputTextNota").val('');
+        inputsE.forEach(function(input) {
+            input.value=''
+        });
+        inputsF.forEach(function(input) {
+            input.value=''
+        });
+        $("#fileInputFotografia").val('');
+        $("#inputComentarioNota").val('');
     }else{
           Swal.fire({
           title: "Faltan datos por llenar",

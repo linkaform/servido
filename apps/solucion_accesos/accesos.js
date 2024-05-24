@@ -8,6 +8,11 @@ let idScriptCatalog=117935;
 let opScriptCatalog='catalog_brands';
 let dataCatalogs="";
 let listUserActives = [];
+let urlImgCard = '';
+let urlImgUser = '';
+let flagVideoCard = false;
+let flagVideoUser = false;
+let codeUserVisit=""
 let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
 let userJwt = getCookie("userJwt");
 
@@ -77,17 +82,14 @@ window.onload = function(){
 
     selectLocation= document.getElementById("selectLocation")
     selectLocation.onchange = function() {
-        console.log("La selección ha cambiado");
         let response = fetchOnChangeLocation()
-        console.log('hiii',response.data)
     };
    selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = function() {
-        console.log("La selección ha cambiado");
         let response = fetchOnChangeLocation()
-        console.log('hiii',response.data)
     };
-
+    selectLocation.disabled=true
+    selectCaseta.disabled=true
 
     setHideElements('dataHide');
     setSpinner(true, 'divSpinner');
@@ -140,6 +142,15 @@ function asignarNuevaVisita(){
                 console.log("RESPONSE", data)
             } 
         });
+          Swal.fire({
+          title: "Validación",
+          text: "NUeva visita registrada",
+          type: "success"
+        });
+          codeUserVisit= Date.now();
+          let inputCode = document.getElementById("inputCodeUser");
+          inputCode.value= codeUserVisit
+          $("#newVisitModal").modal('hide')
     }else{
          Swal.fire({
           title: "Validación",
@@ -265,14 +276,16 @@ function getDataUser() {
     .then(res => {
         if (res.success) {
             let data = res.response.json;
-            setHideElements('buttonsModal');
+            
             setDataInformation('informatioUser',data)
             setTimeout(() => {
-                $("#divSpinner").hide();
-                setHideElements('dataShow');
+               
             }, "1000");
         } 
     })
+    setHideElements('buttonsModal');
+    $("#divSpinner").hide();
+    setHideElements('dataShow');
 }
 
 function getDataListUser(){
@@ -837,6 +850,14 @@ function getSaveItem(){
         newRow.append('</tr>');
         console.log("apend", $('#tableAddItemsModal'))
         $('#tableItems').append(newRow);
+         let newRow2 = $('<tr>');
+        newRow2.append($('<td>').text(tipo));
+        newRow2.append($('<td>').text(marca));
+        newRow2.append($('<td>').text(modelo));
+        newRow2.append($('<td>').text(noSerie));
+        newRow2.append($('<td>').text(color));
+        newRow2.append('</tr>');
+        $('#tableAddItemsModal').append(newRow2);
 
         $("#selectTipoEquipo-123").val('');
         $("#inputNombreEquipo-123").val('');
@@ -1008,6 +1029,11 @@ function getFormGafete(){
 
     if(!flaginput && !flagcheck){
         setDataGafete(dicData);
+          Swal.fire({
+            title: "Gafete Entregado",
+            text: "El gafete a sido entregado correctamente.",
+            type: "success"
+        });
         $("#alert_gafete_modal").hide();
     }else{
         $("#alert_gafete_modal").show();
@@ -1090,4 +1116,195 @@ function filterCatalogBy(key, value ){
         dataCatalogChild = dataCatalogs.model_cars.filter(obj => obj.brand == value);
     }
     return dataCatalogChild;
+}
+
+
+//INFO: TOMAR FOTO EN MODAL NUEVA VISITA
+
+function isCanvasBlank(canvas) {
+  const context = canvas.getContext('2d');
+  const pixelBuffer = new Uint32Array(
+    context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+  );
+  return !pixelBuffer.some(color => color !== 0);
+}
+
+function getScreenCard(){
+    console.log("HELLOO")
+    //-----Save Photo
+    if(!flagVideoCard){
+        flagVideoCard = true;
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
+            .then(function(stream) {
+                let video = document.createElement('video');
+                video.style.width = '200px';
+                video.style.height = '125px';
+                document.getElementById('containerCard').appendChild(video);
+                video.srcObject = stream;
+                video.play();
+                let canvas = document.getElementById('canvasPhoto');
+                let context = canvas.getContext('2d');
+                //----Take Photo
+                $("#buttonTakeCard").attr('disabled','disabled');
+                $("#buttonTakeCard").hide();
+                $("#buttonSaveCard").show();
+                document.getElementById('buttonSaveCard').addEventListener('click', function() {
+                    setTranslateImageCard(context, video, canvas)
+                });
+            })
+            .catch(function(error) {
+                console.error('Error al acceder a la cámara:', error);
+            });
+        } else {
+            alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
+        }
+    }
+}
+
+function getScreenUser(){
+    //-----Save Photo
+    if(!flagVideoUser){
+        flagVideoUser = true;
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                let video = document.createElement('video');
+                video.style.width = '200px';
+                video.style.height = '125px';
+                document.getElementById('containerUser').appendChild(video);
+                video.srcObject = stream;
+                video.play();
+                let canvas = document.getElementById('canvasPhotoUser');
+                let context = canvas.getContext('2d');
+                //----Take
+                $("#buttonTakeUser").attr('disabled','disabled');
+                $("#buttonTakeUser").hide();
+                $("#buttonSaveUser").show();
+                document.getElementById('buttonSaveUser').addEventListener('click', function() {
+                    setTranslateImageUser(context, video, canvas);
+                });
+            })
+            .catch(function(error) {
+                console.error('Error al acceder a la cámara:', error);
+            });
+        } else {
+            alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
+        }
+    }
+}
+
+function setTranslateImageUser(context, video, canvas){
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    let photoCard = document.getElementById('imgUser');
+    console.log("PHOTOSS",photoCard)
+    photoCard.src = canvas.toDataURL('image/png');
+    photoCard.style.display = 'block';
+    video.pause();
+    video.srcObject.getTracks().forEach(function(track) {
+        track.stop();
+    });
+    video.style.display = 'none';
+    ///-- Save Input
+    canvas.toBlob( (blob) => {
+        const file = new File( [ blob ], "imageUser.png" );
+        const dT = new DataTransfer();
+        dT.items.add( file );
+        document.getElementById("inputFileUser").files = dT.files;
+    } );
+    //-----Rquest Photo
+    const flagBlankUser = isCanvasBlank(document.getElementById('canvasPhotoUser'));
+    if(!flagBlankUser){
+        setTimeout(() => {
+            setRequestFileImg('inputUser');
+        }, "1000");
+    }
+    //-----Clean ELement
+    $("#buttonSaveUser").hide();
+}
+
+function setTranslateImageCard(context, video, canvas){
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    let photoCard = document.getElementById('imgCard');
+    photoCard.src = canvas.toDataURL('image/png');
+    photoCard.style.display = 'block';
+    video.pause();
+    video.srcObject.getTracks().forEach(function(track) {
+        track.stop();
+    });
+    video.style.display = 'none';
+    ///-- Save Input
+    canvas.toBlob( (blob) => {
+        const file = new File( [ blob ], "imageCard.png" );
+        const dT = new DataTransfer();
+        dT.items.add( file );
+        document.getElementById("inputFileCard").files = dT.files;
+    } );
+    //-----Rquest Photo
+    const flagBlankCard = isCanvasBlank(document.getElementById('canvasPhoto'));
+    console.log("is BLACNK",flagBlankCard)
+    if(!flagBlankCard){
+        setTimeout(() => {
+            setRequestFileImg('inputCard');
+        }, "1000");
+    }
+    //-----Clean ELement
+    $("#buttonSaveCard").hide();
+}
+
+//------FUNCTION IMG
+function setRequestFileImg(type) {
+    let idInput = '';
+    if(type == 'inputCard'){
+        idInput = 'inputFileCard';
+    }else if(type == 'inputUser'){
+        idInput = 'inputFileUser';
+    }
+
+    const fileInput = document.getElementById(idInput);
+    const file = fileInput.files[0];
+
+    if (file) {
+        const formData = new FormData();
+        formData.append('File', file);
+        formData.append('field_id', '660459dde2b2d414bce9cf8f');
+        formData.append('is_image', true);
+        formData.append('form_id', 116852);
+        fetch('https://app.linkaform.com/api/infosync/cloud_upload/', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(res => {
+            if(res.file !== undefined && res.file !== null){
+                if(type == 'inputCard'){
+                    urlImgCard = res.file;
+                    console.log("URLLLLLL",urlImgCard)
+                    //----Clean Canvas
+                    var canvas = document.getElementById('canvasPhoto');
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    let imgC =document.getElementById('imgCard')
+                    imgC.src=urlImgCard
+                }else if(type == 'inputUser'){
+                    urlImgUser = res.file;
+                    //----Clean Canvas
+                    var canvas = document.getElementById('canvasPhotoUser');
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    let imgU =document.getElementById('imgUser')
+                    imgU.src=urlImgCard
+                }
+            }else{
+                console.log('Error aqui 2');
+                return 'Error';
+            }
+        })
+        .catch(error => {
+            console.log('Error aqui 3');
+            return 'Error';
+        });
+    }else{
+        return 'Error';
+    }
 }

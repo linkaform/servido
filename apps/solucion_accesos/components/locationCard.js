@@ -17,8 +17,7 @@ class lkfLocationCard extends HTMLElement{
                     <div class="row">
                         <div class="col-8">
                             <h6 class="text-black">Ubicación: </h6>
-                            <select class="form-select" id="selectLocation">
-                            </select>
+                            <select class="form-select" id="selectLocation"> </select>
                         </div>
                     <div class="col-4 ">
                         <h6 class="text-black">Jefe en Guardia: </h6>

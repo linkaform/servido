@@ -92,7 +92,7 @@ function changeButtonColor(){
                 break;
               case "rondines":
                  let btn5 = document.getElementById("buttonRondines");
-                 btn5.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
+                 btn5.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset"; 
                 break;
             }
         } 
