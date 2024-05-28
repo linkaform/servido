@@ -275,14 +275,16 @@ function getDataUser() {
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            let data = res.response.json;
+           
+        } 
+    })
+
+     let data = {};
             
             setDataInformation('informatioUser',data)
             setTimeout(() => {
                
             }, "1000");
-        } 
-    })
     setHideElements('buttonsModal');
     $("#divSpinner").hide();
     setHideElements('dataShow');
@@ -307,11 +309,13 @@ function getDataListUser(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            let data = res.response.json;
-            listUserActives = data;
-            setDataInformation('listUsers',data)
+           
         } 
     })
+
+     let data = {};
+            listUserActives = data;
+            setDataInformation('listUsers',data)
 }
 
 
@@ -344,7 +348,10 @@ function setDataUser(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            let data = res.response.json;
+           
+        } 
+    })
+            let data = {};
             setHideElements('buttonsModal');
             setDataInformation('informatioUser',data)
             Swal.fire({
@@ -356,8 +363,6 @@ function setDataUser(){
             setHideElements('dataHide');
             setHideElements('buttonsOptions');
             setHideElements('buttonNew');
-        } 
-    })
 }
 
 function setDataGafete(data = {}){
@@ -391,6 +396,27 @@ function setDataGafete(data = {}){
 }
 //----Functions Css
 function setDataInformation(option, data = {}){
+   data={
+        "data_user":{
+            "name":"Josue de Jesus Ramires",
+            "rfc":"FCS24334353",
+            "validity": "Si",
+            "status": "Activo",
+            "motivo": "verificaciones",
+            "visit_name": "un nombre",
+            "authorize_pase":"Si",
+            "authorize_phone":"81203495",
+            "list_instrucctions":["Comentario e instrucciones de ejemplo", "Este es un ejemplo de comentario"],
+            "list_access":[{"name_access":"Puerta principal","status_access":"aprobado"}, {"name_access":"Puerta Trasera","status_access":"aprobado"}],
+            "list_locations":["Monterrey", "Guadalajara"],
+            "list_items":[],
+            "list_cars":[],
+
+        },
+        "movement":{"type":'in'},
+        "bitacora":[]
+    }
+   
     if(option == 'alerts'){
         let count_in = data.count_in ? count_in : 10;
         let count_out = data.count_out ? count_out : 70;
@@ -401,6 +427,7 @@ function setDataInformation(option, data = {}){
         $("#textAlert3").text(count_cars_in);
         $("#textAlert4").text(count_out_register);
     }else if(option == 'informatioUser'){
+        console.log("INFORMATIOUSER")
         if(data.hasOwnProperty('data_user') && data.hasOwnProperty('movement') && data.hasOwnProperty('bitacora')){
             //---Variables
             let dataUser = data.data_user;
@@ -901,6 +928,14 @@ function getSaveCar(){
         newRow.append($('<td>').text(modelo));
         newRow.append('</tr>');
         $('#tableCars').append(newRow);
+        listVehiculesData.push({"marca":marca , "matricula":matricula, "color":color, "modelo": modelo})
+        let newRow2 = $('<tr>');
+        newRow2.append($('<td>').text(marca));
+        newRow2.append($('<td>').text(matricula));
+        newRow2.append($('<td>').text(color));
+        newRow2.append($('<td>').text(modelo));
+        newRow2.append('</tr>');
+        $('#tableAddCarsModal').append(newRow2);
 
         $("#selectTipoVehiculo-123").val('');
         $("#selectCatalogMarca-123").val('');
@@ -920,24 +955,30 @@ function getSaveCar(){
 }
 
 function setViewModalCard(){
+    console.log("vistaaaa",listVehiculesData)
     $('#listAddCarsModal').modal('show');
     var tbody = document.querySelector('#tableAddCarsModal tbody');
     tbody.innerHTML = '';
     if(listVehiculesData.length>0 || listNewVehicules.length>0 ){
         let flag = false;
         for (var i = 0; i < listVehiculesData.length; i++) {
-            let check = listVehiculesData[i].check;
-            if(check){
-                let typeCar = listVehiculesData[i].type_car;
-                let serie_car = listVehiculesData[i].serie_car[0];
-                let colorCar = listVehiculesData[i].color_car;
+            console.log("LISTA DE VEHICULOS" ,listVehiculesData[i])
+            //let check = listVehiculesData[i].check;
+             let marca = listVehiculesData[i].marca;
+                let matricula = listVehiculesData[i].matricula;
+                let color = listVehiculesData[i].color;
+                let modelo = listVehiculesData[i].modelo;
                 var newRow = $('<tr>');
-                newRow.append($('<td>').text(typeCar));
-                newRow.append($('<td>').text(serie_car));
-                newRow.append($('<td>').text(colorCar));
+                newRow.append($('<td>').text(marca));
+                newRow.append($('<td>').text(matricula));
+                newRow.append($('<td>').text(color));
+                newRow.append($('<td>').text(modelo));
                 newRow.append('</tr>');
                 $('#tableAddCarsModal').append(newRow);
-            }
+            
+            /*if(check){
+               
+            }*/
         }
 
         for (var i = 0; i < listNewVehicules.length; i++) {
@@ -1036,6 +1077,7 @@ function getFormGafete(){
             type: "success"
         });
         $("#alert_gafete_modal").hide();
+        $("#cardModal").modal('hide')
     }else{
         $("#alert_gafete_modal").show();
     }
@@ -1056,9 +1098,14 @@ function onChangeCatalog(type, id){
         datalistModelo.innerHTML=""; 
 
         let selectedValue = $( "#selectTipoVehiculo-"+id+"" ).val();
-      let catalogMarca = filterCatalogBy('type', selectedValue);
+        let catalogMarca = filterCatalogBy('type', selectedValue);
+
+
+
+
         for (let obj in catalogMarca){
-                $("#datalistOptionsMarca"+id+"").append($('<option></option>').val(catalogMarca[obj].brand).text(catalogMarca[obj].brand));
+            console.log("OBJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ",catalogMarca[obj].brand)
+            $("#datalistOptionsMarca"+id+"").append($('<option></option>').val(catalogMarca[obj].brand).text(catalogMarca[obj].brand));
         }
     }else if (type == "marca"){
         $("#divCatalogModelo"+id+"").show();
@@ -1068,8 +1115,8 @@ function onChangeCatalog(type, id){
         let datalistModelo= document.getElementById("datalistOptionsModelo"+id+"");
         datalistModelo.innerHTML=""; 
 
-         let selectedValue = $( "#selectCatalogMarca-"+id+"" ).val();
-       let catalogMarca = filterCatalogBy('brand', selectedValue);
+        let selectedValue = $( "#selectCatalogMarca-"+id+"" ).val();
+        let catalogMarca = filterCatalogBy('brand', selectedValue);
         for (let obj in catalogMarca){
                 $("#datalistOptionsModelo"+id+"").append($('<option></option>').val(catalogMarca[obj].model).text(catalogMarca[obj].model));
         }
@@ -1105,26 +1152,24 @@ function getCatalogs(){
 
     let cat=
             {
-                "brands_cars": {
-                    "motocicleta": ["vento", "suzuki", "indian"],
-                    "carro": ["nissan", "chevrolet", "ford"],
-                    "trailer": ["volvo", "mercedes", "kenworth"]
-                },
-                "model_cars": {
-                    "vento": ["35WFAS", "25TTTGS"],
-                    "suzuki": ["veloxs3", "terrsas3"],
-                    "indian": ["model345", "teraafe", "improts4"],
-                    "nissan": ["beliocks", "kicks"],
-                    "chevrolet": ["345ref"],
-                    "ford": ["magic44"],
-                    "volvo": ["ref564"],
-                    "mercedes": ["mobre45", "letops354"],
-                    "kenworth": ["cam213", "cam145"]
-                },
-                "types_cars": ["motocicleta", "carro", "trailer"]
+                "brands_cars": [
+                    {"type": "motocicleta", "brand": ["vento"]},
+                    {"type": "carro", "brand": ["nissan"]},
+                    {"type": "trailer", "brand": ["volvo"]},
+                ],
+                "model_cars": [
+                    {"brand": "vento", "model": ["35WFAS"]},
+                    {"brand":"suzuki", "model":["veloxs3"]},
+                    {"brand":"indian","model": ["model345"]},
+                    {"brand":"nissan", "model":["beliocks"]},
+                    {"brand":"chevrolet", "model":["345ref"]},
+                    {"brand":"ford", "model":["magic44"]},
+                    {"brand":"volvo", "model":["ref564"]},
+                    {"brand":"mercedes", "model":["mobre45"]},
+                    {"brand":"kenworth", "model":["cam213"]},
+                ],
+                "types_cars": ["motocicleta", "carro", "trailer"],
             }
-
-
             //dataCatalogs = res.response.data ==''? cat : res.response.data;
             dataCatalogs=cat
              console.log('DATATAAAAA OMGGG', dataCatalogs)
@@ -1145,6 +1190,7 @@ function filterCatalogBy(key, value ){
     let dataCatalogChild="";
     if(key == 'type'){
         dataCatalogChild = dataCatalogs.brands_cars.filter(obj => obj.type == value);
+        console.log("DATA CATALOG CHILD",dataCatalogChild)
     }else{
         dataCatalogChild = dataCatalogs.model_cars.filter(obj => obj.brand == value);
     }

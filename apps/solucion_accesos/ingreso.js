@@ -15,7 +15,6 @@ let ubicacion=""
 window.onload = function(){
 	setValueUserLocation('ingreso');
 
-
 	customNavbar(getValueUserLocation(), getStatusTurn())
 	
 	userJwt = getCookie('userJwt');
@@ -34,8 +33,9 @@ window.onload = function(){
 	const valores = window.location.search;
 	const urlParams = new URLSearchParams(valores);
 
-	ubicacion = urlParams.get('ubicacion');
-	caseta = urlParams.get('caseta');
+	ubicacion = urlParams.get('ubicacion') !== null ? urlParams.get('ubicacion') : 'Monterrey' ;
+	caseta = urlParams.get('caseta') !== null ? urlParams.get('caseta') : 'Caseta 1' ;
+  console.log("UBICACION Y CASETA",ubicacion, caseta)
 	id = urlParams.get('id');
 	if(id){
 		getExtraInformation()
@@ -77,6 +77,7 @@ function getExtraInformation(){
 
 
 function getCatalogs(){
+   console.log("ENTRANDOOOO",)
 	$("#selectTipoVehiculo-123").prop( "disabled", true );
 	$("#divCatalogMarca123").hide();
 	$("#divCatalogModelo123").hide();
@@ -94,15 +95,37 @@ function getCatalogs(){
 	.then(res => res.json())
 	.then(res => {
 		if (res.success) {
-			dataCatalogs = res.response.data;
 
-			$("#selectTipoVehiculo-123").prop( "disabled", false );
-			$("#spinnerTipoVehiculo").css("display", "none");
-			dataCatalogs.types_cars.forEach(function(e, i){
-			$("#datalistOptionsTipo").append($('<option></option>').val(e).text(e));
-			});
 		} 
 	})
+
+  let cat=
+            {
+                "brands_cars": [
+                    {"type": "motocicleta", "brand": ["vento"]},
+                    {"type": "carro", "brand": ["nissan"]},
+                    {"type": "trailer", "brand": ["volvo"]},
+                ],
+                "model_cars": [
+                    {"brand": "vento", "model": ["35WFAS"]},
+                    {"brand":"suzuki", "model":["veloxs3"]},
+                    {"brand":"indian","model": ["model345"]},
+                    {"brand":"nissan", "model":["beliocks"]},
+                    {"brand":"chevrolet", "model":["345ref"]},
+                    {"brand":"ford", "model":["magic44"]},
+                    {"brand":"volvo", "model":["ref564"]},
+                    {"brand":"mercedes", "model":["mobre45"]},
+                    {"brand":"kenworth", "model":["cam213"]},
+                ],
+                "types_cars": ["motocicleta", "carro", "trailer"],
+            };
+      dataCatalogs =cat// res.response.data;
+      console.log("Catalogosss",dataCatalogs)
+      $("#selectTipoVehiculo-123").prop( "disabled", false );
+      $("#spinnerTipoVehiculo").css("display", "none");
+      dataCatalogs.types_cars.forEach(function(e, i){
+      $("#datalistOptionsTipo").append($('<option></option>').val(e).text(e));
+      });
 }
 
 function onChangeCatalog(type, id){

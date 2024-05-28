@@ -649,14 +649,14 @@ function changeStatusTurn(buttonClick){
         $('#statusTurnText').empty();
         $('#statusTurnText').append($('<div class="text-danger" id="statusOff"> Turno Cerrado </div>'));
         $('#buttonChangeStatusTurn').text('Iniciar Turno').removeClass('btn-danger').addClass('btn-success');
-        $('#buttonAgregarGuardiaApoyo').attr("disabled", true);
+        $('#buttonGuardiaApoyoModal').attr("disabled", true);
         $('#buttonCambiarCaseta').attr("disabled", false);
         $('#buttonForzarCierre').attr("disabled", false);
         $('#agregarGuardiasApoyoButton').attr("disabled", true);
         $('#textInfActualCaseta').text('Información actual de la caseta:')
-         customNavbar(getValueUserLocation(), getCookie('userTurn'))
-
+        customNavbar(getValueUserLocation(), getCookie('userTurn'))
          for (g of idGuardiasRestantes){ 
+            console.log("OMGG",g)
             if(g.includes("inp-")){
                 $("#"+g).show();
             } else if(g.includes("btn-")){
@@ -670,20 +670,24 @@ function changeStatusTurn(buttonClick){
                 $("#"+g).hide();
             }
          }
+        tables["tableGuardiasApoyo"].setData(dataTableGuardiasApoyo);
+
     }else if (getCookie('userTurn') == userTurnCerrado && buttonClick){
         console.log("CLICK Y TURNO CERRADO PARA ABRIR")
+        
+
         setCookie("userTurn", userTurnAbierto,7); console.log("ENTRNADOsdfsdf");
         $("#todayHourText").html(hour)
         $('#statusTurnText').empty();
         $('#statusTurnText').append($('<div class="text-success" id="statusOn"> Turno Iniciado</div>'));
         $('#buttonChangeStatusTurn').text('Cerrar Turno').removeClass('btn-success').addClass('btn-danger');
-        $('#buttonAgregarGuardiaApoyo').attr("disabled", false);
+        $('#buttonGuardiaApoyoModal').attr("disabled", false);
         $('#buttonCambiarCaseta').attr("disabled", true);
          $('#buttonForzarCierre').attr("disabled", true);
         $('#textInfActualCaseta').text('Información:');
          $('#agregarGuardiasApoyoButton').attr("disabled", false);
         customNavbar(getValueUserLocation(), getCookie('userTurn'))
-    
+         
         for (g of idGuardiasRestantes){ 
             if(g.includes("inp-")){
                 $("#"+g).hide();
@@ -727,7 +731,7 @@ function changeStatusTurn(buttonClick){
         if(getCookie('userTurn')==userTurnCerrado){
             console.log("NO CLICK CARGA SOLO 1")
             $('#buttonChangeStatusTurn').text('Iniciar Turno').addClass('btn-success')
-             $('#buttonAgregarGuardiaApoyo').attr("disabled", true);
+             $('#buttonGuardiaApoyoModal').attr("disabled", true);
             $('#buttonCambiarCaseta').attr("disabled", false);
             $('#textInfActualCaseta').text('Información actual de la caseta:')
             $('#statusTurnText').append($('<div class="text-danger" id="statusOff"> Turno Cerrado</div>'))
@@ -764,7 +768,7 @@ function changeStatusTurn(buttonClick){
             console.log("NO CLICK CARGA SOLO 2")
             $('#buttonChangeStatusTurn').text('Cerrar Turno').addClass('btn-danger');
             $('#statusTurnText').append($('<div class="text-success" id="statusOn"> Turno Iniciado</div>'));
-            $('#buttonAgregarGuardiaApoyo').attr("disabled", false);
+            $('#buttonGuardiaApoyoModal').attr("disabled", false);
             $('#buttonCambiarCaseta').attr("disabled", true);
             $('#buttonForzarCierre').attr("disabled", true);
             $('#textInfActualCaseta').text('Información:');
@@ -1056,7 +1060,41 @@ function agregarNuevoGuardiaApoyo(){
     // INFO: Actualizar la tabla guardias de apoyo
     tables["tableGuardiasApoyo"].setData(arraySelectedGuardias);
     $('#agregarGuardiaApoyoModal').modal('hide');
-    console.log(getCookie("userTurn"))
+    
+
+    if (getCookie('userTurn') == userTurnCerrado){
+         for (g of idGuardiasRestantes){ 
+            console.log("OMGG",g)
+            if(g.includes("inp-")){
+                $("#"+g).show();
+            } else if(g.includes("btn-")){
+                $("#"+g).hide();
+            }
+         }
+        for (g of idGuardiasEnTurno){
+            if(g.includes("inp-")){
+                $("#"+g).show();
+            } else if(g.includes("btn-")){
+                $("#"+g).hide();
+            }
+         }
+    }
+    else if(getCookie('userTurn') == userTurnAbierto){
+            for (g of idGuardiasRestantes){ 
+            if(g.includes("inp-")){
+                $("#"+g).hide();
+            } else if(g.includes("btn-")){
+                $("#"+g).hide();
+            }
+             }
+            for (g of idGuardiasEnTurno){
+                if(g.includes("inp-")){
+                    $("#"+g).hide();
+                } else if(g.includes("btn-")){
+                    $("#"+g).show();
+                }
+             }
+    }
 }
 
 
