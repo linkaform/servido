@@ -146,9 +146,10 @@ function runFirstElement(){
   let date_to = document.getElementById("date_to");  
   let dispositivo = document.getElementById("dispositivo");  
   let cliente = document.getElementById("cliente");  
+  let cordon = document.getElementById("cordon");  
   
   if (date_from.value != null && date_from.value!="" && date_to.value != null && date_to.value!=""){
-    getFirstElement(date_to.value, date_from.value, dispositivo.value, cliente.value);
+    getFirstElement(date_to.value, date_from.value, dispositivo.value, cliente.value, cordon.value);
   }
   else
   {
@@ -158,7 +159,7 @@ function runFirstElement(){
   }
 };
 
-function getFirstElement(dateTo, dateFrom, dispositivo, cliente){
+function getFirstElement(dateTo, dateFrom, dispositivo, cliente, cordon){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -175,6 +176,7 @@ function getFirstElement(dateTo, dateFrom, dispositivo, cliente){
       script_id: 119276,
       date_to: dateTo,
       date_from: dateFrom,
+      cordon: cordon,
       dispositivo: dispositivo,
       cliente: cliente,
     }),
@@ -314,9 +316,8 @@ function get_catalog()
 function set_option_dispositivos(){
   let list_options = [];
   let cordon = $("#cordon").val();
-  console.log('cordon',cordon);
   list_options = dispositivos.filter(diccionario => diccionario['cordon'] === cordon);
-  console.log('cordon',list_options);
+  list_options = list_options.sort((a, b) => b - a);
   //-----Set
   $("#dispositivo").empty();
   $('#dispositivo').append('<option value="--">--Seleccione--</option>');

@@ -286,10 +286,12 @@ function get_catalog()
       if (res.success) {
 
         if (res.response.json.array_filters.dispositivo.length){
+          let dataDispositiovos = res.response.json.array_filters.dispositivo;
+          let listSort = dataDispositiovos.sort((a, b) => b - a);
           $("#dispositivo").empty();
           $('#dispositivo').append('<option value="--">--Seleccione--</option>');
-          for (i = 0; i <res.response.json.array_filters.dispositivo.length; i++) {
-            value = res.response.json.array_filters.dispositivo[i]
+          for (i = 0; i <listSort.length; i++) {
+            value = listSort[i];
             $('#dispositivo').append('<option value="'+ value +'"> Dispositivo '+value+'</option>');
           }
         }
