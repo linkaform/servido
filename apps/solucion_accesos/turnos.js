@@ -1,6 +1,6 @@
 let userJwt ="";
 let urlLinkaform='https://app.linkaform.com/api/';
-let userTurnCookie=''
+
 let idScr=117936
 let caseta=""
 let ubicacion=""
@@ -82,6 +82,7 @@ const columsDataGuardiasApoyo = [
             let data = cell.getData();
             //----Button Trash
             let folio = cell.getData().folio ? cell.getData().folio : 0;
+            console.log("FOLIO GUARDIAAAAAA",folio)
             let divActions = '<div class="row d-flex justify-content-center" id="inf2'+data.folio +'">';
             divActions += `<input class="form-check-input customInputCheckout" type="checkbox" id="inp-${folio}" onClick="selectCheckboxGuardia(${data.folio });" value='${data.folio}' style="border-color:darkgray;">`;
             divActions += `<button class="btn-table-bitacora mt-3 customButtonCheckout" id="btn-${folio}" onclick="eliminarGuardia(${folio}, '${data.name}')" > <i class="fa solid fa-door-open"></i> </button>`;
@@ -140,22 +141,14 @@ window.onload = function(){
     user = getCookie("userId");
     userJwt = getCookie("userJwt");
     getAllData();
-
-    userTurnCookie= getCookie("userTurn");
     setValueUserLocation('turnos');
-    console.log("LEOROIK",userTurnCookie)
 
     changeButtonColor();
     //getGuardLocationListGuardsNotes()
 
    
    customNavbar(getValueUserLocation(), getStatusTurn());
-    if(user !='' && userJwt!=''){
-       drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
-       drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "475px");
-    } else{
-        redirectionUrl('login',false);
-    }
+   
     const date = new Date().toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"});
     const hour = new Date().toLocaleTimeString();
 
@@ -183,10 +176,147 @@ function getAllData(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            console.log('RESPONSE',res.response)
-              let loc= res.response.location
-              let notes= res.response.notes
-              let guard= res.response.guard
+
+
+        }
+    });
+            var load_shift_json = {
+            "location":{
+                "name": "Ubicacion Monterrey",
+                "booth": "Caseta Sur 1",
+                "city": "Monterrey",
+                "state": "Nuevo Leon",
+                "address": "Calzada Madero S/N",
+                "boot_stats":{
+                    "in_invitees":11,
+                    "articulos_concesionados":12,
+                    "incidentes_pendites": 13,
+                    "vehiculos_estacionados": 14,
+                    "gefetes_pendientes": 15,
+                },
+                "boot_status":{
+                    "status": "No Disponible", 
+                    "guard_on_duty": "Pancho Villa",
+                    "stated_at": "2024-03-17 13:54"
+                },
+                "support_guards":[
+                    {
+                        "name": "Guardia de Sporte 1",
+                        "status": 'available',
+                        "picture":{ 
+                                    "file_url":"https://w7.pngwing.com/pngs/298/171/png-transparent-avatar-face-girl-female-woman-profile-happy-avatar-icon.png",
+                                    "file_name": "guarida1"
+                                        },
+                    },
+                    {
+                        "name": "Guardia de Sporte 2",
+                        "status": 'available',
+                        "picture":{ 
+                                    "file_url":"https://w7.pngwing.com/pngs/900/441/png-transparent-avatar-face-man-boy-male-profile-smiley-avatar-icon.png",
+                                    "file_name": "guarida2"
+                            }
+                    },
+                    {
+                        "name": "Guardia de Sporte 3",
+                        "status": 'available',
+                        "picture": { 
+                                    "file_url":"https://w7.pngwing.com/pngs/210/236/png-transparent-avatar-face-girl-female-woman-profile-happy-avatar-icon.png",
+                                    "file_name": "guarida3"
+                                        },
+                    },
+                    {
+                        "name": "Guardia de Sporte 4",
+                        "status": 'available',
+                        "picture": { 
+                                    "file_url":"https://cdn.icon-icons.com/icons2/2859/PNG/512/avatar_face_man_boy_male_profile_smiley_happy_people_icon_181661.png",
+                                    "file_name": "guarida4"
+                                        },
+                    }
+                ]
+            },
+            "guard":{
+                "name": "Rondalo Rulfo",
+                "status": "Turno Cerrado",
+                "last_turn_date": "2024-03-15 20:05:13",
+                "id": 126,
+                "email": "josepato@hotmail.com",
+                "picture":{
+                    "file_url":"https://f001.backblazeb2.com/file/lkf-media/profile_pictures/profile_pic_20.thumbnail",
+                    "file_name":"profilepic1"
+
+                },
+            },
+            "notes":[
+                {
+            "created_by": {
+                "name":"Juan Esuctia",
+                "id":12,
+                "email": "juan@esuctia.com",
+                },
+                "note": "Esta es la nota 1",
+                "status": "Abierta",
+                "images":[{
+                    "file_url":"https://b2.linkaform.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg",
+                    "file_name":"foto nota 1"
+                },
+                {
+                    "file_url":"https://b2.linkaform.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/64a5ecbb0f9ef281200b7dba.jpeg",
+                    "file_name":"foto nota 2"
+                }],
+                    "documents":[
+                    {
+                        "file_url":"https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/6650c41a967ad190e6a76dd3/6650c4b5967ad190e6a76dda.pdf",
+                        "file_name":"doc1"
+                    },
+                    {
+                        "file_url":"https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/6650c41a967ad190e6a76dd3/6650c4c503b772fc66a76de4.pdf",
+                        "file_name":"doc1"
+                    }],
+                    "comments":"Comentario 1",
+                    "created_at":1716569749,
+                    "closed_at":"",
+                    "duration":"",
+                    "tz_offset": -300,
+                    "timezone": "America/Monterrey",
+                    "folio": 1234,
+                    "form_id": 1152,
+                    "closed_by":{}
+                },
+                {
+                        "created_by": {
+                            "name":"Juan Enriquez",
+                            "id":123,
+                            "email": "juan@juan.com",
+                        },
+                        "note": "Esta es la nota 2",
+                        "status": "Abierta",
+                        "images":[],
+                    "documents":[
+                    {
+                        "file_url":"https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/6650c41a967ad190e6a76dd3/6650c4d2e93e2a409709552a.pdf",
+                        "file_name":"doc1"
+                    }],
+                    "comments":"Comentario 2",
+                    "created_at":1716569749,
+                    "closed_at":"",
+                    "duration":"",
+                    "tz_offset": -300,
+                    "timezone": "America/Monterrey",
+                    "folio": 1234,
+                    "form_id": 1152,
+                    "closed_by":{}
+                }
+            ]
+            }
+              let loc= load_shift_json.location
+              for(g of loc.support_guards){
+                let folio = new Date().getTime();
+                let aleatorio = Math.floor(Math.random() * 1000000);
+                let numeroUnico = folio.toString() + aleatorio.toString();
+                g.folio= numeroUnico
+              }
+              let notes= load_shift_json.notes
+              let guard= load_shift_json.guard
             //if(booth || address|| folio||  status){
                /* caseta=booth;
                 ubicacion=address;
@@ -225,7 +355,6 @@ function getAllData(){
                  $("#textEstatusCaseta").removeClass();
                  $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
                  setCookie("userTurn", guard.status, 7);
-                 console.log("USERTURN", getCookie('userTurn'))
                 if(getCookie('userCasetaStatus') ==casetaDisponible ){
                     $("#buttonForzarCierre").hide();
                  }else{
@@ -239,7 +368,7 @@ function getAllData(){
                     console.log("GUARDIA SOPORTE",loc.support_guards)
                  for(let guard of loc.support_guards)
                   dataTableGuardiasApoyo.push(
-                    {name:guard.name, status: guard.status,image: guard.picture.file_url, fechaInicio: "31 Enero 2024", folio:guard.id})
+                    {name:guard.name, status: guard.status,image: guard.picture.file_url, fechaInicio: "31 Enero 2024", folio:guard.folio})
 
                 let userN=getCookie('userName')
                 for(let note of notes)
@@ -248,17 +377,14 @@ function getAllData(){
                 
               
             //}
-            console.log('dataTableGuardiasApoyo')
             if(user !='' && userJwt!=''){
              drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
              drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
+             drawTableSelect('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"360px",1);
+             drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px",1000);
             }
-
-        }
-    });
 }
 function getGuardLocationListGuardsNotes(){
-    console.log("que pasa",urlLinkaform + urlScripts)
     fetch(urlLinkaform + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -280,11 +406,6 @@ function getGuardLocationListGuardsNotes(){
         } 
 
     });
-
-       
-
-
-
 
 
  fetch(urlLinkaform + urlScripts, {
@@ -329,8 +450,7 @@ function getGuardLocationListGuardsNotes(){
 
         if(user !='' && userJwt!=''){
              drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
-             drawTableSelect('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"360px",1);
-             drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px",1000);
+            
             }*/
         fetch(urlLinkaform + urlScripts, {
         method: 'POST',
@@ -483,7 +603,7 @@ function AlertForzarCierre(name){
       if (result.value) {
         setCookie('userCasetaStatus', 'Disponible',7);
         $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
-        $('#textFechaInicioCaseta').value('01/12/2024 01:23:2024')
+        $("#textFechaInicioCaseta").val('01/12/2024 01:23:2024')
         $("#textEstatusCaseta").removeClass();
         $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
 
@@ -500,13 +620,11 @@ function AlertForzarCierre(name){
 function changeStatusTurn(buttonClick){
     let idGuardiasEnTurno=[]
     let allGuardiasEnTurno=[]
-    console.log("GUARDIAS SELECIONADOS INICIALMENTE",arraySelectedGuardias,dataTableGuardiasApoyo)
     for(g of arraySelectedGuardias){
         idGuardiasEnTurno.push("inp-"+g.folio)
         idGuardiasEnTurno.push("btn-"+g.folio)
     }
-    console.log("idGuardiasEnTurno",idGuardiasEnTurno)
-    userTurnCookie= getCookie("userTurn");
+
     const hour = new Date().toLocaleTimeString();
      let td = $("#statusTurnText");
         if (td.length > 0) {
@@ -525,15 +643,17 @@ function changeStatusTurn(buttonClick){
      //INFO : idGuardiasEnTurno para saber que guardias de los que estan en la tabla "Guardias de apoyo" INICIARON TURNO
 
      //INFO : aqui fetch para modificar el status , meter estos dos if en el response del fetch
-     console.log("USER TURNO REVISAR ",userTurnCookie, userTurnAbierto)
-    if(userTurnCookie == userTurnAbierto && buttonClick ){  
-        setCookie("userTurn", ss,7)   
+    if(getCookie('userTurn') == userTurnAbierto && buttonClick ){  
+        console.log("CLICK Y TURNO ABIERTO PARA CERRAR")
+        setCookie("userTurn", userTurnCerrado,7) 
+        $('#statusTurnText').empty();
         $('#statusTurnText').append($('<div class="text-danger" id="statusOff"> Turno Cerrado </div>'));
         $('#buttonChangeStatusTurn').text('Iniciar Turno').removeClass('btn-danger').addClass('btn-success');
-           $('#buttonAgregarGuardiaApoyo').attr("disabled", true);
-            $('#buttonCambiarCaseta').attr("disabled", false);
-             $('#buttonForzarCierre').attr("disabled", false);
-             $('#textInfActualCaseta').text('Información actual de la caseta:')
+        $('#buttonAgregarGuardiaApoyo').attr("disabled", true);
+        $('#buttonCambiarCaseta').attr("disabled", false);
+        $('#buttonForzarCierre').attr("disabled", false);
+        $('#agregarGuardiasApoyoButton').attr("disabled", true);
+        $('#textInfActualCaseta').text('Información actual de la caseta:')
          customNavbar(getValueUserLocation(), getCookie('userTurn'))
 
          for (g of idGuardiasRestantes){ 
@@ -550,15 +670,18 @@ function changeStatusTurn(buttonClick){
                 $("#"+g).hide();
             }
          }
-    }else if (userTurnCookie == userTurnCerrado && buttonClick){
+    }else if (getCookie('userTurn') == userTurnCerrado && buttonClick){
+        console.log("CLICK Y TURNO CERRADO PARA ABRIR")
         setCookie("userTurn", userTurnAbierto,7); console.log("ENTRNADOsdfsdf");
         $("#todayHourText").html(hour)
+        $('#statusTurnText').empty();
         $('#statusTurnText').append($('<div class="text-success" id="statusOn"> Turno Iniciado</div>'));
         $('#buttonChangeStatusTurn').text('Cerrar Turno').removeClass('btn-success').addClass('btn-danger');
-            $('#buttonAgregarGuardiaApoyo').attr("disabled", false);
+        $('#buttonAgregarGuardiaApoyo').attr("disabled", false);
         $('#buttonCambiarCaseta').attr("disabled", true);
          $('#buttonForzarCierre').attr("disabled", true);
         $('#textInfActualCaseta').text('Información:');
+         $('#agregarGuardiasApoyoButton').attr("disabled", false);
         customNavbar(getValueUserLocation(), getCookie('userTurn'))
     
         for (g of idGuardiasRestantes){ 
@@ -601,7 +724,7 @@ function changeStatusTurn(buttonClick){
             });
             */
         $("#todayHourText").html(hour)
-        if(userTurnCookie==userTurnCerrado){
+        if(getCookie('userTurn')==userTurnCerrado){
             console.log("NO CLICK CARGA SOLO 1")
             $('#buttonChangeStatusTurn').text('Iniciar Turno').addClass('btn-success')
              $('#buttonAgregarGuardiaApoyo').attr("disabled", true);
@@ -609,7 +732,7 @@ function changeStatusTurn(buttonClick){
             $('#textInfActualCaseta').text('Información actual de la caseta:')
             $('#statusTurnText').append($('<div class="text-danger" id="statusOff"> Turno Cerrado</div>'))
             $('#buttonForzarCierre').attr("disabled", false);
-             
+            $('#agregarGuardiasApoyoButton').attr("disabled", true);
             for (g of idGuardiasRestantes){ 
                 console.log(g.includes("inp-"))
                 if(g.includes("inp-")){
@@ -637,7 +760,7 @@ function changeStatusTurn(buttonClick){
                 elemento.style.display="none";
             });*/
 
-        }else if(userTurnCookie==userTurnAbierto){
+        }else if(getCookie('userTurn')==userTurnAbierto){
             console.log("NO CLICK CARGA SOLO 2")
             $('#buttonChangeStatusTurn').text('Cerrar Turno').addClass('btn-danger');
             $('#statusTurnText').append($('<div class="text-success" id="statusOn"> Turno Iniciado</div>'));
@@ -645,7 +768,7 @@ function changeStatusTurn(buttonClick){
             $('#buttonCambiarCaseta').attr("disabled", true);
             $('#buttonForzarCierre').attr("disabled", true);
             $('#textInfActualCaseta').text('Información:');
-
+            $('#agregarGuardiasApoyoButton').attr("disabled", false);
             for (g of idGuardiasRestantes){
             if(g.includes("inp-")){
                 $("#"+g).hide();
@@ -696,7 +819,7 @@ function eliminarGuardia(folio, name){
 }
 
 function cerrarNotaAlert(name, note, folio, status){
-    if(status=="abierta"){
+    if(status=="Abierta"){
         Swal.fire({
           title: "Confirmación",
           type: 'warning',
@@ -817,7 +940,9 @@ function drawTableSelect(id, columnsData, tableData, height, select){
 
 
 function selectCheckboxGuardia(folio){
+    console.log("ESCOGGIOOGOO",folio)
      let checkboxes = document.querySelectorAll('.form-check-input');
+     console.log("CHECKBOXX", checkboxes)
     arraySelectedGuardias=[]
       checkboxes.forEach(function(checkbox) {
         if (checkbox.checked) {
@@ -827,6 +952,7 @@ function selectCheckboxGuardia(folio){
             }
         }
     });
+      console.log("GUARDIA DE APOYO", arraySelectedGuardias )
 }     
 
 
@@ -909,20 +1035,30 @@ function agregarNuevoGuardiaApoyo(){
     let selectedRow = tables["tableAgregarGuardiaApoyo"].getSelectedData(); 
     let exclude=[]
     for(newGuard of selectedRow){
-        let randomFolio = Date.now()+ Math.random();
-        dataTableGuardiasApoyo.push( 
+
+        let foliog = new Date().getTime();
+        let aleatorio = Math.floor(Math.random() * 1000000);
+        let randomFolio = foliog.toString() + aleatorio.toString();
+
+        arraySelectedGuardias.push( 
             {name:newGuard.name, status: newGuard.status, image: newGuard.img, fechaInicio: "31 Enero 2024", folio:randomFolio})
         exclude.push(newGuard.folio)
     }
-    let newDataTableAgregarGuardiaApoyo = dataTableAgregarGuardiaApoyo.filter(function(guardia) {
-    return !exclude.includes(guardia.folio);
-    });
+
+
+    //INFO: Eliminar los selecionados (en el modal) de la tabla "agregar guardias de apoyo" para que no se puedan
+    //volver a agregar
+    let newDataTableAgregarGuardiaApoyo = dataTableAgregarGuardiaApoyo.filter(function(guardia) { return !exclude.includes(guardia.folio); });
     dataTableAgregarGuardiaApoyo= newDataTableAgregarGuardiaApoyo
     tables["tableAgregarGuardiaApoyo"].setData(dataTableAgregarGuardiaApoyo);
-    tables["tableGuardiasApoyo"].setData(dataTableGuardiasApoyo);
+
+
+    // INFO: Actualizar la tabla guardias de apoyo
+    tables["tableGuardiasApoyo"].setData(arraySelectedGuardias);
     $('#agregarGuardiaApoyoModal').modal('hide');
+    console.log(getCookie("userTurn"))
 }
-// INFO: FUNCIONES GENERALES
+
 
 function setModal(type = 'none',id){
     if(type == 'cambiarCasetaModal'){

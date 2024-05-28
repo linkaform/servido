@@ -1121,13 +1121,13 @@ function getCatalogs(){
                     "mercedes": ["mobre45", "letops354"],
                     "kenworth": ["cam213", "cam145"]
                 },
-                "type_cars": ["motocicleta", "carro", "trailer"]
+                "types_cars": ["motocicleta", "carro", "trailer"]
             }
 
 
             //dataCatalogs = res.response.data ==''? cat : res.response.data;
             dataCatalogs=cat
-             console.log('dataaaa', dataCatalogs)
+             console.log('DATATAAAAA OMGGG', dataCatalogs)
             $("#selectTipoVehiculo-123").prop( "disabled", false );
             $("#spinnerTipoVehiculo").css("display", "none");
             dataCatalogs.types_cars.forEach(function(e, i){
@@ -1137,6 +1137,7 @@ function getCatalogs(){
 }
 
 function filterCatalogBy(key, value ){
+    console.log("QUE ES ESTA LLEGANDO",key, value)
         /*INFO: 
         key: podemos filtrar por 'type' (marca) o 'brand' (modelo)
         value: valor de type o model segun corresponda

@@ -157,35 +157,23 @@ function filterCatalogBy(key, value ){
 //-----FUNCTION DATA
 
 function getValidation(allData) {
-	if(allData.nameUser !== '' ||allData.location!==''||allData.caseta!=='' ||allData.visitMotivo!==''
-	||allData.companyUser !== '' 
-	||allData.visitUser !== ''){
-			if(urlImgUser !== ''){
-						if(urlImgCard !== ''){
-							return true;
-						}else{
-							Swal.fire({
-								title	: "Error",
-								text: "Asegurese de tomar foto de la identificación",
-								type: "warning"
-							});
-						}
-				}else{
-					Swal.fire({
-						title	: "Error",
-						text: "Asegurese de tomar foto de usuario",
-						type: "warning"
-					});
-				}
+  let res= false
+  console.log(allData.nameUser, allData.visitMotivo,allData.companyUser , allData.visitUser,urlImgUser,urlImgCard)
+	if(allData.nameUser == ''  ||allData.visitMotivo==''
+	||allData.companyUser == '' 
+	||allData.visitUser == '' || urlImgUser == '' || urlImgCard == ''){
+		  Swal.fire({
+        title : "Error",
+        text: "Faltan datos, asegurese de llenar correctamente los datos",
+        type: "warning"
+      });
+    res=false
 		}else{
-				Swal.fire({
-				title	: "Error",
-				text: "Faltan datos, asegurese de llenar correctamente los datos",
-				type: "warning"
-			});
-		}
-	
+      res=true
+    }
+  return res
 	}
+
 
 //INFO: enviar dialogo de confirmacion
 function AlertSendDataUser() {
@@ -230,6 +218,7 @@ function AlertSendDataUser() {
 		'listItemUser':listInputsEquipo,
 	}
 	let flagValidation = getValidation(allData);
+  console.log("RESULTTT",flagValidation)
 	if(flagValidation){
 			let htmlAppendEquipos="";
 			for (let equipo in listInputsEquipo) {
@@ -284,11 +273,11 @@ function AlertSendDataUser() {
 									</tr>
 									<tr>
 										<td><b>identificación:</b></td>
-										<td> <img src="`+urlImgCard+`" height="100px"  style="object-fit: contain !important;"></td>
+										<td> <img src="`+urlImgCard+`" width="185px" height="148px" s></td>
 									</tr>
 									<tr>
 										<td><b>Fotografia:</b></td>
-										<td> <img src="`+urlImgUser+`" height="100px"  style="object-fit: contain !important;"></td>
+										<td> <img src="`+urlImgUser+`" width="185px" height="148px"  ></td>
 									</tr>
 								</tbody>
 							</table>
@@ -688,7 +677,7 @@ function setAddEquipo() {
 	//---Structure HTML
 let newItem=`
 				<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo" >
-					<label class="form-label">Tipo de Equipo: *</label>
+					<label class="form-label">Tipo de Equipo: </label>
 
 					<input class="form-control group-equipo" list="datalistOptionsEquipo`+randomID+`" id="selectTipoEquipo-`+randomID+`" placeholder="Escribe algo para buscar..." >
 					<datalist id="datalistOptionsEquipo`+randomID+`">
@@ -705,7 +694,7 @@ let newItem=`
 					</button>
 				</div>
 				<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
-					<label class="form-label ">Nombre del Equipo:*</label>
+					<label class="form-label ">Nombre del Equipo:</label>
 					<input type="text" class="form-control group-equipo" id="inputNombreEquipo-`+randomID+`">
 				</div>
 				<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
