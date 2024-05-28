@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Registro ingreso</title>
+
+  <link rel="icon" type='image/svg+xml' href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'><path  d='M512 80c8.8 0 16 7.2 16 16V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V96c0-8.8 7.2-16 16-16H512zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zM208 256a64 64 0 1 0 0-128 64 64 0 1 0 0 128zm-32 32c-44.2 0-80 35.8-80 80c0 8.8 7.2 16 16 16H304c8.8 0 16-7.2 16-16c0-44.2-35.8-80-80-80H176zM376 144c-13.3 0-24 10.7-24 24s10.7 24 24 24h80c13.3 0 24-10.7 24-24s-10.7-24-24-24H376zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24h80c13.3 0 24-10.7 24-24s-10.7-24-24-24H376z'%3E%3C/path%3E%3C/svg%3E" />
+	
+	<link rel="stylesheet" href="./style.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
+	<link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script> 
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+
+
+<body >
+	<nav class="navbar header " id="myCustomNavBar">
+        <div class=" navbar-brand">
+			<img src="https://app.linkaform.com/img/login-linkaform-logo.png" height="30" class="d-inline-block align-top" alt="">
+        </div>
+    </nav>
+	<!-- Information Plant-->
+	<section class="marginSection mainSection ms-5 ml-5">
+		<div class="row p-3">
+			<h2 class="text-center mb-5">Registro de Ingreso</h2>
+			<div class="col-12">
+				<p><span class="h5"><b>Ubicación:</b></span>&nbsp;&nbsp; <span id="textLocation"> </span></p>
+			</div>
+			<div class="col-12">
+				<p><span class="h5"><b>Caseta:</b></span>&nbsp;&nbsp; <span id="textModule"> </span></p>
+			</div>
+		</div>
+	</section>
+
+
+	<!-- Information User -->
+	<section class="m-5 mt-0" >
+		<div class="row p-3">
+			<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-1">
+				<label class="form-label">Nombre Completo:*</label>
+				<input type="text" class="form-control" id="inputName">
+			</div>
+			<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-3">
+				<label class="form-label">Identificación: *</label>
+				<button type="button" class="btn  btn-primary" onclick="getScreenCard();return false;" id="buttonTakeCard">
+					<i class="fa-solid fa-camera-retro"></i>
+				</button>
+				<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveCard">
+					Guardar Foto <i class="fa-solid fa-aperture"></i>
+				</button>
+				<!-- Canvas Foto -->
+				<div id="containerCard" class="mt-2">
+					<canvas id="canvasPhoto" style="display: none;width: 185px;height: 125px;"></canvas>
+					<img id="imgCard" src="" style="display: none;width: 185px;height: 148px;">
+				</div>
+				<input type="file" class="form-control mt-2" id="inputFileCard" disabled>
+			</div>
+
+			
+			<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-3">
+				<label class="form-label">Fotografia: *</label>
+				<button type="button" class="btn  btn-primary " onclick="getScreenUser();return false;" id="buttonTakeUser">
+					<i class="fa-solid fa-camera-retro"></i>
+				</button>
+				<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveUser">
+					Guardar Foto <i class="fa-solid fa-aperture"></i>
+				</button>
+				<!-- Canvas Foto -->
+				<div id="containerUser" class="mt-2">
+					<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
+					<img id="imgUser" src="" style="display: none;width: 185px;height: 148px;">
+				</div>
+				<input type="file" class="form-control mt-2" id="inputFileUser" disabled>
+			</div>
+
+			
+			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-1">
+				<label class="form-label">Empresa: *</label>
+				<input type="text" class="form-control" id="inputNombreEmpresa">
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-1">
+				<label class="form-label">¿A quíen visita?: *</label>
+				<input type="text" class="form-control" id="inputAquienVisita">
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-4">
+				<label class="form-label">Motivo de la visita: *</label>
+				<textarea class="form-control"  id="inputMotivoDeLaVisita" rows="3"></textarea>
+			</div>
+
+
+
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row div-main-vehiculo" id="div-vehiculo">
+				
+				<div class="col-9 div-vehiculo-row-1 div-row-vehiculo" >
+					<label class="form-label">Tipo de Vehiculo: </label>
+					<span class="input-group-addon" id='spinnerTipoVehiculo'>
+                		<i class="fa fa-refresh fa-spin"></i>
+            		</span>
+
+					<input class="form-control group-vehiculo" list="datalistOptionsTipo" id="selectTipoVehiculo-123" placeholder="Escribe algo para buscar..." onChange='onChangeCatalog("vehiculo",123)'>
+					<datalist id="datalistOptionsTipo">
+				
+					</datalist>
+				</div>
+				<div class="col-3 pt-4 mt-2 div-vehiculo-row-1 ">
+					<button type="button" class="btn btn-success button-add-register" onclick="setAddVehiculo();return false;">
+						<i class="fa-solid fa-plus"></i>
+					</button>
+					<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteVehiculo(123);return false;">
+						<i class="fa-solid fa-minus"></i>
+					</button>
+				</div>
+				<div class="col-9 div-vehiculo-row-1 div-row-vehiculo">
+					<div id='divCatalogMarca123'>
+						<label class="form-label">Marca: </label>
+						<input class="form-control group-vehiculo" list="datalistOptionsMarca123" id="selectCatalogMarca-123" placeholder="Escribe algo para buscar..." onchange='onChangeCatalog("marca",123)'> 
+						<datalist id="datalistOptionsMarca123">
+				
+						</datalist>
+					</div>
+					<div id='divCatalogModelo123'>
+						<label class="form-label">Modelo: </label>
+						<input class="form-control group-vehiculo" list="datalistOptionsModelo123" id="selectCatalogModelo-123" placeholder="Escribe algo para buscar...">
+						<datalist id="datalistOptionsModelo123">
+				
+						</datalist>
+					</div>
+					<div class="div-row-vehiculo">
+						<label class="form-label">Matricula del Vehiculo:</label>
+						<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-123">
+					</div>
+					<div class="div-row-vehiculo">
+						<label class="form-label">Color:</label>
+						<input type="text" class="form-control group-vehiculo" id="inputColor-123">
+						<hr >
+					</div>
+				</div>
+			</div>
+			<!-- VEHICULOS -->
+
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-1 row" id="div-car">
+				
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row" id="div-equipo">
+				
+				<div class="col-9 div-equipo-row-123 div-row-equipo" >
+					<label class="form-label">Tipo de Equipo: </label>
+
+					<input class="form-control group-equipo" list="datalistOptionsEquipo123" id="selectTipoEquipo-123" placeholder="Escribe algo para buscar..." >
+					<datalist id="datalistOptionsEquipo123">
+						  <option value="Computo">
+						  <option value="Herramientas">
+					</datalist>
+				</div>
+				<div class="col-3 pt-4 mt-2 div-equipo-row-1 ">
+					<button type="button" class="btn btn-success button-add-register" onclick="setAddEquipo();return false;">
+						<i class="fa-solid fa-plus"></i>
+					</button>
+					<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteEquipo(123);return false;">
+						<i class="fa-solid fa-minus"></i>
+					</button>
+				</div>
+				<div class="col-9 div-equipo-row-1 div-row-equipo">
+				<label class="form-label ">Nombre del Equipo:</label>
+					<input type="text" class="form-control group-equipo" id="inputNombreEquipo-123">
+				</div>
+				<div class="col-9 div-equipo-row-1 div-row-equipo">
+					<label class="form-label">Marca:</label>
+					<input type="text" class="form-control group-equipo" id="inputMatriculaVehiculo-123">
+				</div>
+				<div class="col-9 div-equipo-row-1 div-row-equipo">
+					<label class="form-label">Modelo:</label>
+					<input type="text" class="form-control group-equipo" id="inputModelo-123">
+				</div>
+				<div class="col-9 div-equipo-row-1 div-row-equipo">
+					<label class="form-label">Color:</label>
+					<input type="text" class="form-control group-equipo" id="inputColor-123">
+					<hr>
+
+				</div>
+			</div>
+		</div>
+			<div class="d-flex justify-content-center">
+					<button type="button" class=" col-6 btn btn-primary btn-lg  mt-1 mb-5"  onclick="AlertSendDataUser();return false;">
+					Siguiente
+					</button>
+			</div>
+
+		
+	</section>
+	<div id="divSpinner" style="display:none;margin-top: 100px;"></div>
+</body>
+<script type="text/javascript" src="../utils/servido_utils.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<!-- Local -->
+<script src="https://unpkg.com/qrious@4.0.2/dist/qrious.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="./functions.js"></script>
+ 
+<script  type="text/javascript" src="./components/locationCard.js"></script>
+<script  type="text/javascript" src="./components/navbar.js"></script>
+
+<script  src="./ingreso.js"></script>
+
+
+<!-- Jquery -->
+
+<!-- Tabulator -->
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- Sweet Alert -->
+<script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+</html>

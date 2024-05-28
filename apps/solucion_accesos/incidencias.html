@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incidencias</title>
+
+    <link rel="icon" type='image/svg+xml' href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z'%3E%3C/path%3E%3C/svg%3E" />
+
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+
+    <navbar-component ></navbar-component>
+    <!-- Information Plant-->
+    <section class="mainSection mainSectionMargins">
+        <div class="row ">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                <div class="card m-2 div-card-portal customShadow">
+                    <locationcard-component> </locationcard-component>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                <div class="card  m-2 div-card-portal customShadow">
+                    <div class="card-body p-3">
+                        
+                        <h5 class="card-title text-center text-uppercase text-dark">Fallas X Día</h5>
+                        <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert1">65</p>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                <div class="card  m-2 div-card-portal customShadow">
+                    <div class="card-body p-3">
+                        <h5 class="card-title text-center text-uppercase text-dark">Fallas por resolver</h5>
+                        <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert2">29</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section >
+
+    <!-- Tablas -->
+    <section class="mainSectionMargins">
+        <div class="row mt-4">
+
+            <h3>Registro de reportes</h3>
+            <div class="col-12">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="in-location-tab" data-bs-toggle="tab" data-bs-target="#div-article-incidencias" type="button" role="tab" aria-controls="div-article-incidencias" aria-selected="true">Incidencias</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="out-location-tab" data-bs-toggle="tab" data-bs-target="#div-fallas" type="button" role="tab" aria-controls="div-fallas" aria-selected="false">Fallas</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="div-article-incidencias" role="tabpanel" aria-labelledby="in-location-tab" tabindex="0">
+                        <div class="mt-3 row ">
+                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                                <h5>Fecha Desde: </h5>
+                                <input class="form-control ds-input" type="date">
+                            </div>
+                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                                <h5>Fecha Hasta: </h5>
+                                <input class="form-control ds-input" type="date">
+                            </div>
+                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                                <h5>Ubicación: </h5>
+                                <select class="form-control ds-input">
+                                <option value="--">--Seleccione--</option>
+                                <option value="--">Ubicación 1</option>
+                                <option value="--">Ubicación 2</option>
+                                <option value="--">Ubicación 3</option>
+                                <option value="--">Ubicación 4</option>
+                                <option value="--">Ubicación 5</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 offset-md-9 offset-lg-9 offset-xl-9 mt-2">
+                                <button type="button" class="btn btn-secondary btn-sm">Filtrar</button>
+                                <button type="button" class="btn btn-secondary btn-sm">Restablecer Filtros</button>
+                            </div>
+                        </div>
+                        <div class="mt-2 row ">
+                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 offset-md-7 offset-lg-7 offset-xl-7 mt-2">
+                                <button type="button" class="btn btn-warning " onclick="setModal('NewIncident');return false;">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Nuevo Incidente
+                                </button>
+                                <button type="button" class="btn btn-success ">
+                                    <i class="fa-solid fa-file-arrow-down"></i>
+                                    Descargar
+                                </button>
+                                <button type="button" class="btn btn-danger ">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Eliminar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-2 ms-2">
+                            <div class="mt-3" id="tableIncidencias"></div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade overflow-hidden" id="div-fallas" role="tabpanel" aria-labelledby="out-location-tab" tabindex="0">
+                        <div class="mt-3 row ">
+                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                                <h5>Fecha Desde: </h5>
+                                <input class="form-control ds-input" type="date">
+                            </div>
+                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                                <h5>Fecha Hasta: </h5>
+                                <input class="form-control ds-input" type="date">
+                            </div>
+                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                                <h5>Ubicación: </h5>
+                                <select class="form-control ds-input">
+                                <option value="--">--Seleccione--</option>
+                                <option value="--">Ubicación 1</option>
+                                <option value="--">Ubicación 2</option>
+                                <option value="--">Ubicación 3</option>
+                                <option value="--">Ubicación 4</option>
+                                <option value="--">Ubicación 5</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 offset-md-9 offset-lg-9 offset-xl-9 mt-2">
+                                <button type="button" class="btn btn-secondary btn-sm">Filtrar</button>
+                                <button type="button" class="btn btn-secondary btn-sm">Restablecer Filtros</button>
+                            </div>
+                        </div>
+                        <div class="mt-2 row ">
+                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 offset-md-7 offset-lg-7 offset-xl-7 mt-2">
+                                <button type="button" class="btn btn-warning " onclick="setModal('NewFail')">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Nueva Falla
+                                </button>
+                                
+                                <button type="button" class="btn btn-success ">
+                                    <i class="fa-solid fa-file-arrow-down"></i>
+                                    Descargar
+                                </button>
+                                <button type="button" class="btn btn-danger ">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Eliminar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-2 ">
+                            <div class="mt-3" id="tableFallas"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="divSpinner" style="display:none;margin-top: 100px;"></div>
+
+    <!-- Modal New Incident -->
+    <div class="modal fade" id="newIncidentModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Registro de nuevo incidente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Fecha: *</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Hora: *</label>
+                            <input type="time" class="form-control">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Ubicación: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Lugar del incidente: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Incidencia: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Comentarios: *</label>
+                            <textarea class="form-control"  rows="3"></textarea>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Reporta: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Departamento: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-warning">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Incident -->
+    <div class="modal fade" id="editIncidentModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Editar incidente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Fecha: *</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Hora: *</label>
+                            <input type="time" class="form-control">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Ubicación: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Lugar del incidente: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Incidencia: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Comentarios: *</label>
+                            <textarea class="form-control"  rows="3"></textarea>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Reporta: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Departamento: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success">Actualizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal View Incident -->
+    <div class="modal fade" id="viewIncidentModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Detalles del incidente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Fecha:&nbsp;&nbsp; <span class="fw-normal">26-04-2024</span></label>
+                        </div>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Hora:&nbsp;&nbsp; <span class="fw-normal">11:56:00 Hrs</span></label>
+                        </div>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Lugar del incidente:&nbsp;&nbsp; <span class="fw-normal">Habitación 23 piso 2</span></label>
+                        </div>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Ubicación:&nbsp;&nbsp; <span class="fw-normal">Planta Sur</span></label>
+                        </div>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Incidente:&nbsp;&nbsp; <span class="fw-normal">Acceso Personal Externo</span></label>
+                        </div>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Comentarios:&nbsp;&nbsp; <span class="fw-normal">El visitante autorizado sergio Perez ingresa con una persona externa, de nombre Miguel Sanchez</span></label>
+                        </div>
+                        <hr style=" border: 1px solid black;">
+                        <h4>Información del personal involucrado</h4>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Reporta:&nbsp;&nbsp; <span class="fw-normal">Miguel Perez Nuñez</span></label>
+                        </div>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Departamento:&nbsp;&nbsp; <span class="fw-normal">Seguridad</span></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal New Fail -->
+    <div class="modal fade" id="newFailModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Registro de nueva falla</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Fecha: *</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Hora: *</label>
+                            <input type="time" class="form-control">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Ubicación: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Lugar de la falla: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Falla: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Descripción: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Comentarios: *</label>
+                            <textarea class="form-control"  rows="3"></textarea>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Reporta: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Departamento: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Responsable asignado de solucionar: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Departamento: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-warning">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Fail -->
+    <div class="modal fade" id="editFailModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Registro de nueva falla</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Fecha: *</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Hora: *</label>
+                            <input type="time" class="form-control">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Ubicación: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Lugar de la falla: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Falla: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Descripción: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Comentarios: *</label>
+                            <textarea class="form-control"  rows="3"></textarea>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Reporta: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Departamento: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Responsable asignado de solucionar: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Departamento: *</label>
+                            <select class="form-control">
+                                <option>--Seleccione--</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-warning">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal View Fail -->
+    <div class="modal fade" id="viewFailModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Detalles de la falla</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Fecha:&nbsp;&nbsp; <span class="fw-normal">26-04-2024</span></label>
+                        </div>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Hora:&nbsp;&nbsp; <span class="fw-normal">11:56:00 Hrs</span></label>
+                        </div>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Lugar del fallo:&nbsp;&nbsp; <span class="fw-normal">Sala de servidores</span></label>
+                        </div>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Ubicación:&nbsp;&nbsp; <span class="fw-normal">Planta Norte</span></label>
+                        </div>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Fallo:&nbsp;&nbsp; <span class="fw-normal">Fallo en el suministro electrico</span></label>
+                        </div>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Comentarios:&nbsp;&nbsp; <span class="fw-normal">Corte de energia repentino</span></label>
+                        </div>
+                        <hr style=" border: 1px solid black;">
+                        <h4>Información del personal involucrado</h4>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Reporta:&nbsp;&nbsp; <span class="fw-normal">Juan  Perez Nuñez</span></label>
+                        </div>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Departamento:&nbsp;&nbsp; <span class="fw-normal">Seguridad</span></label>
+                        </div>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Responsable asignado:&nbsp;&nbsp; <span class="fw-normal">Rodrgio gonzales</span></label>
+                        </div>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Departamento:&nbsp;&nbsp; <span class="fw-normal">Ti</span></label>
+                        </div>
+                        <hr style=" border: 1px solid black;">
+                        <h4>Seguimiento</h4>
+                        <div class="mb-3 col-6 row">
+                            <label class="form-label fw-bold">Estado:&nbsp;&nbsp; <span class="fw-normal">Resuelto</span></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Resolve Fail -->
+    <div class="modal fade" id="successResolveFailModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Detalles de la falla</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <h3>¿Está seguro de que la falla ha sido resuelta?</h3>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+<!-- Local -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="../utils/servido_utils.js"></script>
+<script type="text/javascript" src="./functions.js"></script>
+<script  type="text/javascript" src="./components/locationCard.js"></script>
+<script  type="text/javascript" src="./components/navbar.js"></script>
+
+<script src="./incidencias.js"></script>
+<!-- Jquery -->
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<!-- Tabulator -->
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</html>
