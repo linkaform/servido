@@ -1,3 +1,5 @@
+let idScriptC=119197;
+
 let dataTableListPendientes = [ 
   { status: 'abierto', nameGuard: 'Juan Pérez', dateHourStart: '2024-05-14 09:30', dateHourFin: '2024-05-14 09:30',  ubi: 'Este es un registro de ejemplo',folio:1, nameRoute:'Soy una ruta',pointsRoute:'puntos d ela una ruta',observations:'observaciones de la ruta' ,evidence:'evidencias', durationRoute:'durationRoute'},
   { status: 'cerrado', nameGuard: 'María Rodríguez', dateHourStart: '2024-05-10 14:45', dateHourFin: '2024-05-10 14:45', ubi: 'Otro registro para ilustrar',folio:2, nameRoute:'Soy una ruta',pointsRoute:'puntos d ela una ruta',observations:'Soy una ruta',evidence:'evidencias',durationRoute:'durationRoute'},
@@ -75,12 +77,6 @@ const columnsTableListPendientes = [
     { title:"Duracion del recorrido", field:'durationRoute',hozAlign:"left",headerFilter:true,width:290,headerTooltip:true},
 ];
 
-
-
-document.addEventListener("DOMContentLoaded", (event) => {
-
-})
-
 window.onload = function(){
     setValueUserLocation('rondines');
 
@@ -100,10 +96,6 @@ window.onload = function(){
         let response = fetchOnChangeLocation()
         console.log('hiii',response.data)
     };
-    
-    let user = getCookie("userId");
-    let jw = getCookie("userJwt");
-
     if(user !='' && jw!=''){
             drawTable('tableListPendientes',columnsTableListPendientes, dataTableListPendientes );
             drawTable('tableListRealizados',columnsTableListPendientes, dataTableListPendientes2 );
@@ -116,7 +108,71 @@ window.onload = function(){
 
 }
 
+function onCLickEditarRecorrido(){
+    let ubicacion= $("#inputUbicacionEdit").val();
+    let fecha= $("#inputDateEdit").val();
+    let hora= $("#inputHourEdit").val(); 
+    let nombreGuardia= $("#inputNombreGuardiaEdit").val(); 
+    let puntoRecorrido= $("#inputPuntoRecorrido").val();
 
+    console.log("DATOS",ubicacion,fecha,hora,nombreGuardia, nombreGuardia,puntoRecorrido)
+
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+        script_id: idScriptC,
+        option: "edit_recorrido",
+    }),
+    headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+jw
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            $('#modalEditarRecorrido').modal('hide');
+            Swal.fire({
+              title: "Confirmación",
+              text: "El registro a ha sido editado",
+              icon: "success"
+            });
+        } 
+    })
+}
+
+function onCLickFinalizarRecorrido(){
+    let fecha= $("#inputDateFinalizarRecorrido").val();
+    let hora= $("#inputHoraFinalizarRecorrido").val(); 
+    let comentarios= $("#inputComentarioFinalizarRecorrido").val(); 
+    let firmaGuardia= $("#inputPuntoRecorrido").val();
+
+    console.log("DATOS",fecha,hora,comentarios,firmaGuardia)
+
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+        script_id: idScriptC,
+        option: "finalizar_recorrido",
+    }),
+    headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+jw
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.fire({
+              title: "Confirmación",
+              text: "Recorrido finalizado correctamente",
+              type: "success"
+            });
+            $('#modalFinalizarRecorrido').modal('hide');
+            
+        } 
+    })
+}
 
 //-----MODALS
 function setModal(type = 'none',id){
@@ -143,9 +199,29 @@ function alertCancelarRecorrido(){
       cancelButtonText: "Cancelar"
     }).then((result) => {
       if (result.isConfirmed) {
+
+        fetch(urlLinkaform + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: idScriptC,
+            option: "cancelar_recorrido",
+            id: 2,
+        }),
+        headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+jw
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+               
+            } 
+        })
+
         Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
+          title: "Confirmación",
+          text: "El registro a ha sido cancelado",
           icon: "success"
         });
       }

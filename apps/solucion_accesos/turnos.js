@@ -12,9 +12,9 @@ let img="https://static.vecteezy.com/system/resources/previews/007/468/567/non_2
 var dataTableGuardiasApoyo = [];
 var dataTableNotas = [];
 var dataTableCambiarCaseta = [
-    {name:"Caseta 1 Poniente", ubi:"Cumbres", status: 'Disponible', guard:'Juan Ecobedo' },{name:"Caseta 1 Sur", ubi:"Santa Catarina", status: 'Disponible', guard:'Francisco Flores', comment:'soy uncoment'},
-    {name:"Caseta 4 Poniente", ubi:"Monterrey", status: 'No disponible', guard:'Javier Almanza' },{name:"Caseta 3 Sur", ubi:"Escobedo", status: 'No disponible', guard:'Valeria Alvarado',comment:'comentando squi'},
-    {name:"Caseta 6 Poniente", ubi:"San Jeronimo", status: 'Disponible', guard:'Erika Ruiz'},{name:"Caseta 6 Sur", ubi:"Monterrey", status: 'No disponible', guard:'Daniela Cepeda',comment:'comentsario de ejemplot' }];
+    {name:"Caseta 1 Poniente", ubi:"Cumbres", status: casetaDisponible, guard:'Juan Ecobedo' },{name:"Caseta 1 Sur", ubi:"Santa Catarina",  guard:'Francisco Flores', comment:'soy uncoment'},
+    {name:"Caseta 4 Poniente", ubi:"Monterrey", status: casetaNoDisponible, guard:'Javier Almanza' },{name:"Caseta 3 Sur", ubi:"Escobedo",  guard:'Valeria Alvarado',comment:'comentando squi'},
+    {name:"Caseta 6 Poniente", ubi:"San Jeronimo", status: casetaDisponible, guard:'Erika Ruiz'},{name:"Caseta 6 Sur", ubi:"Monterrey",  guard:'Daniela Cepeda',comment:'comentsario de ejemplot' }];
 
 var dataTableAgregarGuardiaApoyo = [  
     { name: 'Juan Pérez Gomez', status: 'Disponible' , img: 'https://img.favpng.com/1/10/3/computer-icons-child-avatar-png-favpng-1KY4gtPN1Fab6LrVpVM8AjtnH.jpg', folio:20}, 
@@ -135,15 +135,44 @@ document.getElementById("changeImageInputFile").addEventListener("change", funct
     }
 })
 
+
+window.onload = function(){
+    user = getCookie("userId");
+    userJwt = getCookie("userJwt");
+    getAllData();
+
+    userTurnCookie= getCookie("userTurn");
+    setValueUserLocation('turnos');
+    console.log("LEOROIK",userTurnCookie)
+
+    changeButtonColor();
+    //getGuardLocationListGuardsNotes()
+
+   
+   customNavbar(getValueUserLocation(), getStatusTurn());
+    if(user !='' && userJwt!=''){
+       drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
+       drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "475px");
+    } else{
+        redirectionUrl('login',false);
+    }
+    const date = new Date().toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"});
+    const hour = new Date().toLocaleTimeString();
+
+    $('#todayDateText').append($('<div class="myDateClass"> '+ date +'</div>'));
+    $("#textName").html(getCookie('userName'));
+    $("#textPosition").text(getCookie('userPosition'));
+    $("#textEmail").text(getCookie('userEmail'));
+    $("#imgProfilePic").attr("src", localStorage.getItem("imagenURL") /*getCookie('userImg')*/);
+    $("#textUbicacion").html();
+}
+
+
 function getAllData(){
     fetch(urlLinkaform + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_id: idScr,
-            option: 'get_all_catalogs',
-            email : 'guardia1@linkaform.com',
-            booth : 'Caseta Vigilancia Poniente 7',
-            location : 'Planta Monterrey'
+            script_id: 119197,
         }),
         headers:{
                 'Content-Type': 'application/json',
@@ -154,21 +183,79 @@ function getAllData(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-        } 
-        let allcatalogs={
-            notes_guard:{
+            console.log('RESPONSE',res.response)
+              let loc= res.response.location
+              let notes= res.response.notes
+              let guard= res.response.guard
+            //if(booth || address|| folio||  status){
+               /* caseta=booth;
+                ubicacion=address;
+                $("#textUbicacion").text('');
+                $("#textCuidad").text('')
+                $("#textEstado").text('')
+                $("#textDireccion").text('')
+                $("#textUbicacion").text(location)
+                $("#textCaseta").text(booth)
+                setCookie("userTurn", status , 7);
+                changeStatusTurn(false) */
+            //}else{
+                caseta=loc.booth;
+                ubicacion=loc.name;
+                $("#textCuidad").text(loc.city)
+                $("#textEstado").text(loc.state)
+                $("#textDireccion").text(loc.address)
+                setCookie('userCaseta',caseta,7)
+                setCookie('userLocation',ubicacion,7)
+                $("#textCaseta").text(getCookie('userCaseta'))
+                $("#textUbicacion").text(getCookie('userLocation'))
 
-            },
-            location_guard:{
+                setCookie('userCasetaStatus', loc.boot_status.status,7)
+                setCookie('userCasetaGuard',loc.boot_status.guard_on_duty,7)
 
-            },
-            list_chiken_guards:{
+                 $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
+                 $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
+                 $("#textFechaInicioCaseta").text(loc.boot_status.stated_at);
 
-            },
-        };
-        console.log("reemplazar en front")
+                 $("#textPersonalDentro").text(loc.boot_stats.in_invitees);
+                 $("#textArticulosConsesionados").text(loc.boot_stats.articulos_concesionados);
+                 $("#textIncidentesPendientes").text(loc.boot_stats.incidentes_pendites);
+                 $("#textVehiculosEstacionados").text(loc.boot_stats.vehiculos_estacionados);
+                 $("#textGafetesPendientes").text(loc.boot_stats.gefetes_pendientes);
+
+                 $("#textEstatusCaseta").removeClass();
+                 $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
+                 setCookie("userTurn", guard.status, 7);
+                 console.log("USERTURN", getCookie('userTurn'))
+                if(getCookie('userCasetaStatus') ==casetaDisponible ){
+                    $("#buttonForzarCierre").hide();
+                 }else{
+                    $("#buttonForzarCierre").show();
+                 }
+                 changeStatusTurn(false)
+                 $("#statusTurnText").text(guard.status)
+                 $("#statusTurnText").removeClass();
+                 $("#statusTurnText").addClass(getCookie("userTurn") !== userTurnCerrado? "text-success":  "text-danger");
+
+                    console.log("GUARDIA SOPORTE",loc.support_guards)
+                 for(let guard of loc.support_guards)
+                  dataTableGuardiasApoyo.push(
+                    {name:guard.name, status: guard.status,image: guard.picture.file_url, fechaInicio: "31 Enero 2024", folio:guard.id})
+
+                let userN=getCookie('userName')
+                for(let note of notes)
+                  dataTableNotas.push(
+                    {name:userN, note: note.note, status: note.status, img:"", check:"",view:"", edit:"", fotos: [], archivos:[], folio:note.folio})
+                
+              
+            //}
+            console.log('dataTableGuardiasApoyo')
+            if(user !='' && userJwt!=''){
+             drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
+             drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
+            }
+
+        }
     });
-
 }
 function getGuardLocationListGuardsNotes(){
     console.log("que pasa",urlLinkaform + urlScripts)
@@ -188,51 +275,13 @@ function getGuardLocationListGuardsNotes(){
     .then(res => {
         if (res.success) {
            
-         let { booth, location, folio, status} = res.response.data
-            if(booth || location|| folio||  status){
-                caseta=booth;
-                ubicacion=location;
-                $("#textUbicacion").text();
-                $("#textCuidad").text('')
-                $("#textEstado").text('')
-                $("#textDireccion").text('')
-                $("#textUbicacion").text(location)
-                $("#textCaseta").text(booth)
-                setCookie("userTurn", status , 7);
-                changeStatusTurn(false)
-            }else{
-            
-            }
+       
            
         } 
 
     });
 
-        caseta="Caseta 1 Sur";
-                ubicacion='Monterrey';
-                $("#textCuidad").text('Apodaca')
-                $("#textEstado").text('Nuevo Leon')
-                $("#textDireccion").text("Colonia Las Puentes 2do Sector")
-                setCookie('userCaseta', caseta,7)
-                setCookie('userLocation',ubicacion,7)
-                $("#textCaseta").text(getCookie('userCaseta'))
-                $("#textUbicacion").text(getCookie('userLocation'))
-
-                setCookie('userCasetaStatus', 'No disponible',7)
-                setCookie('userCasetaGuard','Juan Rios',7)
-                 $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
-                 $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
-                 $("#textEstatusCaseta").removeClass();
-                 $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== 'No disponible'? "text-success":  "text-danger");
-                 if(getCookie('userCasetaStatus') =="Disponible" ){
-                    $("#buttonForzarCierre").hide();
-                 }else{
-                     $("#buttonForzarCierre").show();
-                 }
-                if(!getCookie('userTurn')){
-                    setCookie("userTurn", 'turno_abierto' , 7);
-                }
-                changeStatusTurn(false)
+       
 
 
 
@@ -261,7 +310,7 @@ function getGuardLocationListGuardsNotes(){
              /*
             if(res.response.data.length > 0){
                 for(guardia of res.response.data){
-                    dataTableGuardiasApoyo.push({name: guardia.name_guard, status: "Disponible", image: guardia.img_url})
+                    dataTableGuardiasApoyo.push({name: guardia.name_guard, status: casetaDisponible, image: guardia.img_url})
                 }
             }else{
                
@@ -270,19 +319,19 @@ function getGuardLocationListGuardsNotes(){
        
         } 
     });
-
+/*
    dataTableGuardiasApoyo.push(
-                    {name:"María Fernanda García", status: "Disponible", image: "https://w7.pngwing.com/pngs/298/171/png-transparent-avatar-face-girl-female-woman-profile-happy-avatar-icon.png", fechaInicio: "31 Enero 2024", folio:1},
-                    {name:"Juan Carlos Rodríguez", status: "Disponible", image: "https://w7.pngwing.com/pngs/900/441/png-transparent-avatar-face-man-boy-male-profile-smiley-avatar-icon.png",fechaInicio: "28 Enero 2024",folio:2},
-                    {name:"Laura Pérez Martínez", status: "Disponible", image: "https://w7.pngwing.com/pngs/210/236/png-transparent-avatar-face-girl-female-woman-profile-happy-avatar-icon.png",fechaInicio: "12 Febrero 2024",folio:3},
-                    {name:"Alejandro López Sánchez", status: "Disponible", image: "https://cdn.icon-icons.com/icons2/2859/PNG/512/avatar_face_man_boy_male_profile_smiley_happy_people_icon_181657.png",fechaInicio: "12 Febrero 2024",folio:4},
-                    {name:"Ana María González Ruiz", status: "Disponible", image: "https://cdn.icon-icons.com/icons2/2859/PNG/512/avatar_face_man_boy_male_profile_smiley_happy_people_icon_181661.png",fechaInicio: "10 Marzo 2024",folio:5})
+                    {name:"María Fernanda García", status: casetaDisponible, image: "https://w7.pngwing.com/pngs/298/171/png-transparent-avatar-face-girl-female-woman-profile-happy-avatar-icon.png", fechaInicio: "31 Enero 2024", folio:1},
+                    {name:"Juan Carlos Rodríguez", status: casetaDisponible, image: "https://w7.pngwing.com/pngs/900/441/png-transparent-avatar-face-man-boy-male-profile-smiley-avatar-icon.png",fechaInicio: "28 Enero 2024",folio:2},
+                    {name:"Laura Pérez Martínez", status: casetaDisponible, image: "https://w7.pngwing.com/pngs/210/236/png-transparent-avatar-face-girl-female-woman-profile-happy-avatar-icon.png",fechaInicio: "12 Febrero 2024",folio:3},
+                    {name:"Alejandro López Sánchez", status: casetaDisponible, image: "https://cdn.icon-icons.com/icons2/2859/PNG/512/avatar_face_man_boy_male_profile_smiley_happy_people_icon_181657.png",fechaInicio: "12 Febrero 2024",folio:4},
+                    {name:"Ana María González Ruiz", status: casetaDisponible, image: "https://cdn.icon-icons.com/icons2/2859/PNG/512/avatar_face_man_boy_male_profile_smiley_happy_people_icon_181661.png",fechaInicio: "10 Marzo 2024",folio:5})
 
         if(user !='' && userJwt!=''){
              drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
              drawTableSelect('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"360px",1);
              drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px",1000);
-            }
+            }*/
         fetch(urlLinkaform + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -311,6 +360,7 @@ function getGuardLocationListGuardsNotes(){
         } 
           
     });
+    /*
      dataTableNotas.push(
                     {name: "María Fernanda García", note: "No cerraron bien la puerta al salir", status: "abierta", img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:1,fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"]},
                     {name: "Juan Carlos Rodríguez", note: "Favor de revisar sus cosas antes de salir y no dejar toppers o cubiertos en el area comun", status: "cerrada", img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:2,fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"]},
@@ -319,38 +369,8 @@ function getGuardLocationListGuardsNotes(){
                     //{name: "Ana María González Ruiz", note:"Favor de revisar sus cosas antes de salir y no dejar toppers o cubiertos en el area comun", status: "abierta", img: "no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg", check: "red", view:"14/04/1984", edit:"", folio:5},
                     )
       if(user !='' && userJwt!=''){
-                 drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");}  
+                 drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");}  */
 }
-
-window.onload = function(){
-    user = getCookie("userId");
-    userJwt = getCookie("userJwt");
-    userTurnCookie= getCookie("userTurn");
- 
-    setValueUserLocation('turnos');
-
-    changeButtonColor();
-    getGuardLocationListGuardsNotes()
-
-   
-   customNavbar(getValueUserLocation(), getStatusTurn());
-    if(user !='' && userJwt!=''){
-       drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
-       drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "475px");
-    } else{
-        redirectionUrl('login',false);
-    }
-    const date = new Date().toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"});
-    const hour = new Date().toLocaleTimeString();
-
-    $('#todayDateText').append($('<div class="myDateClass"> '+ date +'</div>'));
-    $("#textName").html(getCookie('userName'));
-    $("#textPosition").text(getCookie('userPosition'));
-    $("#textEmail").text(getCookie('userEmail'));
-    $("#imgProfilePic").attr("src", localStorage.getItem("imagenURL") /*getCookie('userImg')*/);
-    $("#textUbicacion").html();
-}
-
 function setAddArchivo(){
     let randomID = Date.now();
     //---Structure HTML
@@ -396,8 +416,7 @@ function setAddFoto(){
                         </button>
              </div>
     `;
-    $('#foto-input-form').append(newItem)
-  
+    $('#foto-input-form').append(newItem) 
 }
 function setDeleteFoto(id){
 
@@ -410,10 +429,9 @@ function setDeleteFoto(id){
         }
     }
 }
-
 function AlertAndActionChangeStatusTurn(){
-    if((getCookie("userCasetaStatus")== 'Disponible' && getCookie("userTurn")== 'turno_cerrado' )   || (getCookie("userCasetaStatus")== 'No disponible') && getCookie("userTurn")== 'turno_abierto' 
-        || (getCookie("userCasetaStatus")== 'Disponible'&&  getCookie("userTurn")== 'turno_abierto')){
+    if((getCookie("userCasetaStatus")== casetaDisponible && getCookie("userTurn")== userTurnCerrado )   || (getCookie("userCasetaStatus")== casetaNoDisponible) && getCookie("userTurn")== userTurnAbierto 
+        || (getCookie("userCasetaStatus")== casetaDisponible&&  getCookie("userTurn")== userTurnAbierto)){
       
          let arrGuard=[];
                 for(guardia of arraySelectedGuardias){
@@ -426,7 +444,7 @@ function AlertAndActionChangeStatusTurn(){
 
                 Swal.fire({
                   title:'Confirmación',
-                  html:getCookie("userTurn")== 'turno_cerrado' ?`
+                  html:getCookie("userTurn")== userTurnCerrado ?`
                 ¿Seguro que quieres iniciar el turno en <b>`+ getCookie('userCaseta')+`</b>,
                 en la ubicación <b>`+ getCookie('userLocation')+`</b>`+guardiaText : ` ¿Seguro que quieres cerrar el turno en <b>`+ getCookie('userCaseta')+`</b>,
                 en la ubicación <b>`+ getCookie('userLocation')+`</b>` + guardiaText,
@@ -447,10 +465,8 @@ function AlertAndActionChangeStatusTurn(){
             text: "La caseta no se encuentra disponible, puedes forzar el cierre para continuar.",
             type: "warning"
         });
-    }
-     
+    }    
 }
-
 function AlertForzarCierre(name){
     Swal.fire({
       title:'Confirmación',
@@ -469,7 +485,7 @@ function AlertForzarCierre(name){
         $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
         $('#textFechaInicioCaseta').value('01/12/2024 01:23:2024')
         $("#textEstatusCaseta").removeClass();
-        $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== 'No disponible'? "text-success":  "text-danger");
+        $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
 
          if(getCookie('userCasetaStatus') =="Disponible" ){
             $("#buttonForzarCierre").hide();
@@ -509,8 +525,9 @@ function changeStatusTurn(buttonClick){
      //INFO : idGuardiasEnTurno para saber que guardias de los que estan en la tabla "Guardias de apoyo" INICIARON TURNO
 
      //INFO : aqui fetch para modificar el status , meter estos dos if en el response del fetch
-    if(userTurnCookie == 'turno_abierto' && buttonClick ){  
-        setCookie("userTurn", "turno_cerrado",7)   
+     console.log("USER TURNO REVISAR ",userTurnCookie, userTurnAbierto)
+    if(userTurnCookie == userTurnAbierto && buttonClick ){  
+        setCookie("userTurn", ss,7)   
         $('#statusTurnText').append($('<div class="text-danger" id="statusOff"> Turno Cerrado </div>'));
         $('#buttonChangeStatusTurn').text('Iniciar Turno').removeClass('btn-danger').addClass('btn-success');
            $('#buttonAgregarGuardiaApoyo').attr("disabled", true);
@@ -533,8 +550,8 @@ function changeStatusTurn(buttonClick){
                 $("#"+g).hide();
             }
          }
-    }else if (userTurnCookie == 'turno_cerrado' && buttonClick){
-        setCookie("userTurn", "turno_abierto",7); console.log("ENTRNADOsdfsdf");
+    }else if (userTurnCookie == userTurnCerrado && buttonClick){
+        setCookie("userTurn", userTurnAbierto,7); console.log("ENTRNADOsdfsdf");
         $("#todayHourText").html(hour)
         $('#statusTurnText').append($('<div class="text-success" id="statusOn"> Turno Iniciado</div>'));
         $('#buttonChangeStatusTurn').text('Cerrar Turno').removeClass('btn-success').addClass('btn-danger');
@@ -567,7 +584,7 @@ function changeStatusTurn(buttonClick){
             script_id: idScr,
             location : 'Planta Puebla',
             option: 'change_turn',
-            status : getCookie('userTurn')== 'turno_abierto' ? 'cerrar_turno' : 'turno_abierto'
+            status : getCookie('userTurn')== userTurnAbierto ? 'cerrar_turno' : userTurnAbierto
         }),
         headers:{
                 'Content-Type': 'application/json',
@@ -584,7 +601,7 @@ function changeStatusTurn(buttonClick){
             });
             */
         $("#todayHourText").html(hour)
-        if(userTurnCookie=='turno_cerrado'){
+        if(userTurnCookie==userTurnCerrado){
             console.log("NO CLICK CARGA SOLO 1")
             $('#buttonChangeStatusTurn').text('Iniciar Turno').addClass('btn-success')
              $('#buttonAgregarGuardiaApoyo').attr("disabled", true);
@@ -620,7 +637,7 @@ function changeStatusTurn(buttonClick){
                 elemento.style.display="none";
             });*/
 
-        }else if(userTurnCookie=='turno_abierto'){
+        }else if(userTurnCookie==userTurnAbierto){
             console.log("NO CLICK CARGA SOLO 2")
             $('#buttonChangeStatusTurn').text('Cerrar Turno').addClass('btn-danger');
             $('#statusTurnText').append($('<div class="text-success" id="statusOn"> Turno Iniciado</div>'));
@@ -881,7 +898,7 @@ function cambiarCaseta(value){
      $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
      $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
      $("#textEstatusCaseta").removeClass();
-     $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== 'No disponible'? "text-success":  "text-danger");
+     $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
 
 
      $('#cambiarCasetaModal').modal('hide');

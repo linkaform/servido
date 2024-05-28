@@ -842,19 +842,20 @@ function getSaveItem(){
         });
 
 
-        listNewItems.push({ marca_item: marca, type_item: tipo, model_item: modelo, color_item:color });
+        listNewItems.push({ marca_item: marca, type_item: tipo, model_item: modelo, color_item:color , noserie_item:noserie});
         let newRow = $('<tr>');
         newRow.append($('<td>').text(tipo));
         newRow.append($('<td>').text(marca));
+        newRow.append($('<td>').text(modelo));
+        newRow.append($('<td>').text(noserie));
         newRow.append($('<td>').text(color));
         newRow.append('</tr>');
-        console.log("apend", $('#tableAddItemsModal'))
         $('#tableItems').append(newRow);
          let newRow2 = $('<tr>');
         newRow2.append($('<td>').text(tipo));
         newRow2.append($('<td>').text(marca));
         newRow2.append($('<td>').text(modelo));
-        newRow2.append($('<td>').text(noSerie));
+        newRow2.append($('<td>').text(noserie));
         newRow2.append($('<td>').text(color));
         newRow2.append('</tr>');
         $('#tableAddItemsModal').append(newRow2);
@@ -886,7 +887,7 @@ function getSaveCar(){
     let validation = false;
     let tipoVehiculo= $('#selectTipoVehiculo-123').val();
     let marca= $('#selectCatalogMarca-123').val();
-    let modelo= $('#selectModeloVehiculo-123').val();
+    let modelo= $('#selectCatalogModelo-123').val();
     let matricula= $('#inputMatriculaVehiculo-123').val();
     let color= $('#inputColor-123').val();
       if(tipoVehiculo==''){
@@ -897,8 +898,8 @@ function getSaveCar(){
         newRow.append($('<td>').text(marca));
         newRow.append($('<td>').text(matricula));
         newRow.append($('<td>').text(color));
+        newRow.append($('<td>').text(modelo));
         newRow.append('</tr>');
-        console.log("apend", $('#tableAddItemsModal'))
         $('#tableCars').append(newRow);
 
         $("#selectTipoVehiculo-123").val('');
@@ -1079,10 +1080,10 @@ function getCatalogs(){
     $("#selectTipoVehiculo-123").prop( "disabled", true );
     $("#divCatalogMarca123").hide();
     $("#divCatalogModelo123").hide();
-    fetch(urlLinkaform, {
+    fetch(urlLinkaform ,{
         method: 'POST',
         body: JSON.stringify({
-            script_id: idScriptCatalog,
+            script_id: idScript,
             option: opScriptCatalog,
         }),
         headers:{
@@ -1092,16 +1093,47 @@ function getCatalogs(){
     })
     .then(res => res.json())
     .then(res => {
+        console.log("egohhol")
+
+
         if (res.success) {
-            dataCatalogs = res.response.data;
-            console.log('dataaaa', dataCatalogs)
+            
+
+           
+        } 
+    })
+
+    let cat=
+            {
+                "brands_cars": {
+                    "motocicleta": ["vento", "suzuki", "indian"],
+                    "carro": ["nissan", "chevrolet", "ford"],
+                    "trailer": ["volvo", "mercedes", "kenworth"]
+                },
+                "model_cars": {
+                    "vento": ["35WFAS", "25TTTGS"],
+                    "suzuki": ["veloxs3", "terrsas3"],
+                    "indian": ["model345", "teraafe", "improts4"],
+                    "nissan": ["beliocks", "kicks"],
+                    "chevrolet": ["345ref"],
+                    "ford": ["magic44"],
+                    "volvo": ["ref564"],
+                    "mercedes": ["mobre45", "letops354"],
+                    "kenworth": ["cam213", "cam145"]
+                },
+                "type_cars": ["motocicleta", "carro", "trailer"]
+            }
+
+
+            //dataCatalogs = res.response.data ==''? cat : res.response.data;
+            dataCatalogs=cat
+             console.log('dataaaa', dataCatalogs)
             $("#selectTipoVehiculo-123").prop( "disabled", false );
             $("#spinnerTipoVehiculo").css("display", "none");
             dataCatalogs.types_cars.forEach(function(e, i){
             $("#datalistOptionsTipo").append($('<option></option>').val(e).text(e));
             });
-        } 
-    })
+
 }
 
 function filterCatalogBy(key, value ){

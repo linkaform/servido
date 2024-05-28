@@ -56,10 +56,11 @@ window.customElements.define('navbar-component', lkfNavbarComponent)
     //$('#buttonArticulos').hide(); 
     //$('#buttonRondines').hide(); 
 
-document.addEventListener("DOMContentLoaded", (event) => {
 
-
-});
+let userTurnCerrado="Turno Cerrado";
+let userTurnAbierto="Turno Abierto";
+let casetaDisponible="Disponible";
+let casetaNoDisponible="No Disponible"
 
 function changeButtonColor(){
       $("#imageUserNavbar").attr("src", getCookie('userImg'));
@@ -99,13 +100,13 @@ function changeButtonColor(){
 }
 
 function customNavbar(location, turno){
-     if(location === 'turnos' && turno === 'turno_cerrado' || location === 'accesos' && turno === 'turno_cerrado'){
+     if(location === 'turnos' && turno === userTurnCerrado || location === 'accesos' && turno === userTurnCerrado){
         $('#buttonAccesos').hide(); 
         $('#buttonBitacoras').hide(); 
         $('#buttonIncidencias').hide(); 
         $('#buttonArticulos').hide(); 
         $('#buttonRondines').hide(); 
-     }else if(location === 'turnos' && turno === 'turno_abierto' || location === 'accesos' && turno === 'turno_abierto'){
+     }else if(location === 'turnos' && turno === userTurnAbierto || location === 'accesos' && turno === userTurnAbierto){
         $('#buttonAccesos').show(); 
         $('#buttonBitacoras').show(); 
         $('#buttonIncidencias').show(); 

@@ -1,4 +1,5 @@
 let tables={}
+let idScriptC=119197;
 
 let dataTableListNotas = [ { status: 'abierta', name: 'Juan Pérez', fechaHoraApertura: '2024-05-14 09:30', fechaHoraCierre: '2024-05-14 09:30',  note: 'Este es un registro de ejemplo',folio:1, fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: 'Sin comentarios' },
   { status: 'cerrada', name: 'María Rodríguez', fechaHoraApertura: '2024-05-10 14:45', fechaHoraCierre: '2024-05-10 14:45', note: 'Otro registro para ilustrar',folio:2, fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: 'Se resolvió satisfactoriamente' },
@@ -20,7 +21,7 @@ const columnsTableListNotas = [
 			let divActions = '<div class="row d-flex">';
 			divActions += `<button class="btn-table-bitacora" onClick="cerrarNotaAlert('${data.name}', '${data.note}', ${folio},'${data.status}')"><i class="fa-regular fa-circle-check"></i></button>`;
 			divActions += `<button class="btn-table-bitacora" onClick="verNotasAlert('${data.name}', '${data.note}', ${folio}, '${data.status}', '${data.fotos}', '${data.archivos}')" ><i class="fa-regular fa-eye"></i></button>`;
-			divActions += `<button class="btn-table-bitacora" onClick="verNotasAlert('${data.name}', '${data.note}', ${folio}, '${data.status}', '${data.fotos}', '${data.archivos}')" ><i class="fa-regular fa-edit"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" data-bs-toggle="modal" data-bs-target="#editarNotasModal" id="buttonEditarNotas"  ><i class="fa-regular fa-edit"></i></button>`;
 			divActions += '</div>';
 			return divActions;
 			//`<button  class="btn-table-bitacora" onClick="setModal('Tools',${folio})"><i class="fa-solid fa-car"></i></button> `;
@@ -69,7 +70,35 @@ window.onload = function(){
 	}
 
 }
+function editarNota(){
+	let name= $("inputNotaEditar").val();
+	fetch(url + urlScripts, {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: idScriptC,
+      option: "cancelar_recorrido",
+      id: 2,
+      }),
+        headers:{
+         'Content-Type': 'application/json',
+         'Authorization': 'Bearer '+jw
+        },
+      })
+      .then(res => res.json())
+      .then(res => {
+      if (res.success) {
+        Swal.fire({
+	      title: "Confirmación",
+	      text: "La nota se ha editado correctamente.",
+	      type: "success"
+	      });  
 
+	      $("#editarNotasModal").modal("hide");
+    	} 
+    	
+  })
+
+}
 function cerrarNotaAlert(name, note, folio, status){
 	console.log(status , 'saefdsa')
     if(status=="abierta"){

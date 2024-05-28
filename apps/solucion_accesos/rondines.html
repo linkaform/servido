@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Rondines</title>
 
-	<link rel="icon" type='image/svg+xml' href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'><path fill='white' d='M246.9 14.1C234 15.2 224 26 224 39c0 13.8 11.2 25 25 25H400c8.8 0 16-7.2 16-16V17.4C416 8 408 .7 398.7 1.4L246.9 14.1zM240 112c0 44.2 35.8 80 80 80s80-35.8 80-80c0-5.5-.6-10.8-1.6-16H241.6c-1 5.2-1.6 10.5-1.6 16zM72 224c-22.1 0-40 17.9-40 40s17.9 40 40 40H224v89.4L386.8 230.5c-13.3-4.3-27.3-6.5-41.6-6.5H240 72zm345.7 20.9L246.6 416H416V369.7l53.6 90.6c11.2 19 35.8 25.3 54.8 14.1s25.3-35.8 14.1-54.8L462.3 290.8c-11.2-18.9-26.6-34.5-44.6-45.9zM224 448v32c0 17.7 14.3 32 32 32H384c17.7 0 32-14.3 32-32V448H224z'%3E%3C/path%3E%3C/svg%3E" />
+	<link rel="icon" type='image/svg+xml' href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'><path d='M246.9 14.1C234 15.2 224 26 224 39c0 13.8 11.2 25 25 25H400c8.8 0 16-7.2 16-16V17.4C416 8 408 .7 398.7 1.4L246.9 14.1zM240 112c0 44.2 35.8 80 80 80s80-35.8 80-80c0-5.5-.6-10.8-1.6-16H241.6c-1 5.2-1.6 10.5-1.6 16zM72 224c-22.1 0-40 17.9-40 40s17.9 40 40 40H224v89.4L386.8 230.5c-13.3-4.3-27.3-6.5-41.6-6.5H240 72zm345.7 20.9L246.6 416H416V369.7l53.6 90.6c11.2 19 35.8 25.3 54.8 14.1s25.3-35.8 14.1-54.8L462.3 290.8c-11.2-18.9-26.6-34.5-44.6-45.9zM224 448v32c0 17.7 14.3 32 32 32H384c17.7 0 32-14.3 32-32V448H224z'%3E%3C/path%3E%3C/svg%3E" />
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script> 
@@ -230,10 +230,10 @@
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label">Fecha *</label>
-                             <input id="startDate" class="form-control" type="date" />
+                             <input id="inputDateEdit" class="form-control" type="date" />
 
                                <label class="form-label">Hora *</label>
-                               <input type="time" class="form-control" value="10:05 AM" />
+                               <input type="time" id="inputHourEdit" class="form-control" value="10:05 AM" />
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label">Nombre del Guardia *</label>
@@ -245,7 +245,7 @@
                                   <option>5</option>
                                 </select>
                             <label class="form-label">Punto del recorrido *</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" id="inputPuntoRecorrido" class="form-control"/>
                         </div>
                     </div>
                         
@@ -253,7 +253,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="enviarNota()">Seleccionar</button>
+                    <button type="button" class="btn btn-success" onclick="onCLickEditarRecorrido()">Seleccionar</button>
                 </div>
             </div>
         </div>
@@ -271,19 +271,19 @@
                     <div class="row">
                         <div class="mb-3 col-12">
                             <label class="form-label">Fecha *</label>
-                             <input id="startDate" class="form-control" type="date" />
+                             <input id="inputDateFinalizarRecorrido" class="form-control" type="date" />
 
                                <label class="form-label">Hora *</label>
-                               <input type="time" class="form-control" value="10:05 AM" />
+                               <input type="time" id="inputHoraFinalizarRecorrido" class="form-control" value="10:05 AM" />
                         </div>
                         <hr>
                           <div class="mb-3 col-12">
                             <label class="form-label">Comentarios *</label>
-                              <textarea class="form-control" id="inputComentarioFinalizar" rows="3" placeholder="Escribe algo..."></textarea>
+                              <textarea class="form-control" id="inputComentarioFinalizarRecorrido" rows="3" placeholder="Escribe algo..."></textarea>
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label">Firma del guardia *</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" id="inputFirmaGuardiaFinalizarG" class="form-control"/>
                         </div>
                     </div>
                         
@@ -291,7 +291,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="enviarNota()">Seleccionar</button>
+                    <button type="button" class="btn btn-success" onclick="onCLickFinalizarRecorrido()">Seleccionar</button>
                 </div>
             </div>
         </div>

@@ -513,6 +513,7 @@ function getScreenUser(){
 	//-----Save Photo
 	if(!flagVideoUser){
 		flagVideoUser = true;
+   
 		if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 	        navigator.mediaDevices.getUserMedia({ video: true })
 	        .then(function(stream) {

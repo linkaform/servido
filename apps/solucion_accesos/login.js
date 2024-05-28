@@ -34,7 +34,6 @@ function get_login(){
 		})
 		.then((res) => res.json())
 		.then((res) => {
-				console.log('HERLO',res.user.company_logo)
 			if(res.code == 2){
 				let userId = res.user && res.user.id ? res.user.id : 0;
 				let userJwt = res.jwt ? res.jwt:'';
