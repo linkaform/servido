@@ -298,7 +298,7 @@ function get_catalog()
       if (res.response.json.catalogClient.length){
         let listClients = [];
         let dataRquest = res.response.json.catalogClient;
-        let listSort = dataRquest.sort((a, b) => b - a);
+        let listSort = dataRquest.sort((a, b) => a - b);
         $("#cliente").empty();
         $('#cliente').append('<option value="--">--Seleccione--</option>');
         for (i = 0; i < listSort.length; i++) {
@@ -317,7 +317,7 @@ function set_option_dispositivos(){
   let list_options = [];
   let cordon = $("#cordon").val();
   list_options = dispositivos.filter(diccionario => diccionario['cordon'] === cordon);
-  list_options = list_options.sort((a, b) => b - a);
+  list_options = list_options.sort((a, b) => a - b);
   //-----Set
   $("#dispositivo").empty();
   $('#dispositivo').append('<option value="--">--Seleccione--</option>');

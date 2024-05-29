@@ -287,7 +287,7 @@ function get_catalog()
 
         if (res.response.json.array_filters.dispositivo.length){
           let dataDispositiovos = res.response.json.array_filters.dispositivo;
-          let listSort = dataDispositiovos.sort((a, b) => b - a);
+          let listSort = dataDispositiovos.sort((a, b) => a - b);
           $("#dispositivo").empty();
           $('#dispositivo').append('<option value="--">--Seleccione--</option>');
           for (i = 0; i <listSort.length; i++) {
@@ -299,7 +299,7 @@ function get_catalog()
         if (res.response.json.catalogClient.length){
           let listClients = [];
           let dataRquest = res.response.json.catalogClient;
-          let listSort = dataRquest.sort((a, b) => b - a);
+          let listSort = dataRquest.sort((a, b) => a - b);
           $("#cliente").empty();
           $('#cliente').append('<option value="--">--Seleccione--</option>');
           for (i = 0; i < listSort.length; i++) {

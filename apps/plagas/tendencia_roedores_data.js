@@ -17,10 +17,16 @@ var columsTable1 = [
   { title:"Folio", field:'folio', hozAlign:"left", formatter:"link", formatterParams:{
   url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
   target:"_blank",}, width:150},
+  { title:"Cordon", field:'cordon',hozAlign:"left",width:250},
   { title:"Num Dispositivo", field:'num_dispositivo',hozAlign:"left",width:250},
-  { title:"Status", field:'status',hozAlign:"left",width:250},
+  { title:"Tipo de Control", field:'tipo_control',hozAlign:"left",width:250},
   { title:"Criterio de cambio", field:'criterio_cambio',hozAlign:"left",width:250},
   { title:"Condicion Dispositivo", field:'condicion_dispositivo',hozAlign:"left",width:250},
+  { title:"Actividad", field:'actividad',hozAlign:"left",width:250},
+
+
+
+  
   { title:"Roedor", field:'roedor',hozAlign:"left",width:250},
   { title:"Cucaracha alemana", field:'cucaracha_alemana',hozAlign:"left",width:250},
   { title:"Cucaracha americana", field:'cucaracha_americana',hozAlign:"left",width:250},
