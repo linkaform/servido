@@ -23,14 +23,9 @@ var columsTable1 = [
   { title:"Criterio de cambio", field:'criterio_cambio',hozAlign:"left",width:250},
   { title:"Condicion Dispositivo", field:'condicion_dispositivo',hozAlign:"left",width:250},
   { title:"Actividad", field:'actividad',hozAlign:"left",width:250},
-
-
-
-  
-  { title:"Roedor", field:'roedor',hozAlign:"left",width:250},
-  { title:"Cucaracha alemana", field:'cucaracha_alemana',hozAlign:"left",width:250},
-  { title:"Cucaracha americana", field:'cucaracha_americana',hozAlign:"left",width:250},
-  { title:"Cucaracha oriental", field:'cucaracha_oriental',hozAlign:"left",width:250},
+  { title:"Rata", field:'rata',hozAlign:"left",width:250},
+  { title:"Raton", field:'raton',hozAlign:"left",width:250},
+  { title:"Cucaracha", field:'cucaracha',hozAlign:"left",width:250},
   { title:"Hormiga", field:'hormiga',hozAlign:"left",width:250},
   { title:"Hormiga carpintera", field:'hormiga_carpintera',hozAlign:"left",width:250},
   { title:"Tijerilla", field:'tijerilla',hozAlign:"left",width:250},
