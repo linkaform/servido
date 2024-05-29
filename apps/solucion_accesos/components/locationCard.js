@@ -130,12 +130,13 @@ function fetchOnChangeLocation(){
 
             } 
 
-            setCookie('userCaseta',selectCaseta.value,7)
-            setCookie('userLocation',selectLocation.value,7)
-            selectCaseta.value = getCookie('userCaseta')
-            selectLocation.value =  getCookie('userLocation')
-              console.log('VALORRES', getCookie('userCaseta'), getCookie('userLocation'))
+           
         });
+         setCookie('userCaseta',selectCaseta.value,7)
+         setCookie('userLocation',selectLocation.value,7)
+         selectCaseta.value = getCookie('userCaseta')
+         selectLocation.value =  getCookie('userLocation')
+         console.log('VALORRES', getCookie('userCaseta'), getCookie('userLocation'))
     }
 
     return response
