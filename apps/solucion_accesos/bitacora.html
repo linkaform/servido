@@ -3,9 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Portal De Bitacora</title>
-
-	<link rel="stylesheet" href="./Styles_v2.css">
+	<title>Bitacora</title>
+	<link rel="icon" type='image/svg+xml' href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'><path d='M280 64h40c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128C0 92.7 28.7 64 64 64h40 9.6C121 27.5 153.3 0 192 0s71 27.5 78.4 64H280zM64 112c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320c8.8 0 16-7.2 16-16V128c0-8.8-7.2-16-16-16H304v24c0 13.3-10.7 24-24 24H192 104c-13.3 0-24-10.7-24-24V112H64zm128-8a24 24 0 1 0 0-48 24 24 0 1 0 0 48z'%3E%3C/path%3E%3C/svg%3E" />
+	
+	<link rel="stylesheet" href="./style.css">
 	<link rel="stylesheet" type="text/css" href="../styles/css/styles_index.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
 	<link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
@@ -13,24 +14,10 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-	<nav class="navbar header">
-        <div class="navbar-brand">
-			<img src="https://app.linkaform.com/img/login-linkaform-logo.png" height="30" class="d-inline-block align-top" alt="">
-        </div>
-        <div class="navbar-brand">
-            <button class="btn btn-secondary" onclick="redirectionUrl('users');return false;" >Accesos</button>   
-            <button class="btn btn-secondary" onclick="redirectionUrl('bitacora');return false;" disabled>Bitacoras</button>   
-            <button class="btn btn-secondary" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
-            <button class="btn btn-secondary" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
-            <button class="btn btn-secondary">Rondines</button>   
-            <button class="btn btn-warning" onclick="setCloseSession();return false;">
-            	<i class="fa-solid fa-right-from-bracket"></i>
-            </button>      
-        </div>
-    </nav>
+	<navbar-component ></navbar-component>
 
     <!-- Title -->
-	<section>
+	<section class="mainSection mainSectionMargins">
 		<div class="row mt-4">
 			<div class="col-6 text-center">
 				<h5 class="card-title text-uppercase text-dark mb-0">Información de Usuarios</h5>
@@ -44,33 +31,12 @@
 
 	
 	<!-- Information Plant-->
-	<section>
+	<section class="mainSectionMargins">
 		<div class="row ">
 
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-				<div class="card m-2 div-card-portal">
-				    <div class="card-body ">
-						<div class="row">
-							<div class="col-8">
-								<h5 class="card-title text-uppercase text-dark mb-0">Edificio Planta 1</h5>
-								<small class="text-black-50">Ubicación</small>
-							</div>
-							<div class="col-4">
-								<p class="mb-0">Nombre del Jefe</p>
-								<small class="text-black-50">Jefe en Guardia</small>
-							</div>
-							<div class="col-8">
-								<h5 class="card-title text-uppercase text-dark mb-0">Caseta Vigilancia Sur</h5>
-								<small class="text-black-50">Caseta</small>
-							</div>
-							
-							<div class="col-4">
-								<p class="mb-0 mt-2">Ayudante 1 </p>
-								<small class="text-black-50">Jefe en Guardia</small>
-							</div>
-						</div>
-
-				    </div>
+				<div class="card m-2 div-card-portal customShadow">
+				    <locationcard-component> </locationcard-component>
 				</div>
 			</div>
 			
@@ -124,7 +90,7 @@
 	</section>
 
 	<!-- Tablas -->
-	<section>
+	<section class="mainSectionMargins">
 		<div class="row mt-4">
 			<div class="col-12">
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -139,7 +105,7 @@
 					<div class="tab-pane fade show active" id="in-location-tab-pane" role="tabpanel" aria-labelledby="in-location-tab" tabindex="0">
 						<div class="mt-3 row ">
 							<div class="col-2 ms-4">
-								<button type="button" class="btn btn-primary"><i class="fa-solid fa-file-excel"></i> Descargar</button>
+								<button type="button" class="btn btn-primary btn-sm"><i class="fa-solid fa-file-excel"></i> Descargar</button>
 							</div>
 						</div>
 						<div class="col-12 mt-2 ms-4">
@@ -149,7 +115,7 @@
 					<div class="tab-pane fade overflow-hidden" id="out-location-tab-pane" role="tabpanel" aria-labelledby="out-location-tab" tabindex="0">
 						<div class="mt-3 row ms-5">
 							<div class="col-2 ms-3">
-								<button type="button" class="btn btn-primary"><i class="fa-solid fa-file-excel"></i> Descargar</button>
+								<button type="button" class="btn btn-primary btn-sm"><i class="fa-solid fa-file-excel"></i> Descargar</button>
 							</div>
 						</div>
 						<div class="col-12 mt-2 ms-4">
@@ -537,8 +503,15 @@
 
 </body>
 <!-- Local -->
-<script src="./portal_bitacora_v2.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>\
+
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
+<script type="text/javascript" src="./functions.js"></script>
+<script  type="text/javascript" src="./components/locationCard.js"></script>
+<script  type="text/javascript" src="./components/navbar.js"></script>
+
+<script type="text/javascript" src="./bitacora.js"></script>
+
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!-- Tabulator -->

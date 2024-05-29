@@ -1,4 +1,5 @@
 //-----Variables
+let selectLocation;
 const columsData1 = [
 	{ title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:180,
 		formatter: (cell, formatterParams) => {
@@ -79,7 +80,30 @@ const dataTable2 = [
 	{'locker':'Locker 1','status':'Ocupado','visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
 ]
 
+document.addEventListener("DOMContentLoaded", (event) => {
+	
+})
+
 window.onload = function(){
+	setValueUserLocation('bitacora');
+	console.log(getValueUserLocation())
+	changeButtonColor();
+
+	fillCatalogs();
+
+	selectLocation= document.getElementById("selectLocation")
+	selectLocation.onchange = function() {
+        console.log("La selección ha cambiado");
+        let response = fetchOnChangeLocation()
+        console.log(response.data)
+    };
+ selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta.onchange = function() {
+        console.log("La selección ha cambiado");
+        let response = fetchOnChangeLocation()
+        console.log('hiii',response.data)
+    };
+
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
 	if(user !='' && jw!=''){
@@ -119,37 +143,7 @@ function setModal(type = 'none',id){
 	}
 }
 
-//----Function Redirection
-function redirectionUrl(type = 'null',blank = true){
-    let urlNew =  '';
-    let protocol = window.location.protocol;
-    let host = window.location.host;
-    if(type == 'users'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
-    }else if(type == 'bitacora'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_bitacora_v2.html`
-    }else if(type == 'incidencias'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_incidencias_v2.html`
-    }else if(type == 'articulos'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_articulos_v2.html`
-    }else if(type == 'login'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/login.html`
-    }
-    //----Validation
-    if(urlNew !='' && blank){
-    	Object.assign(document.createElement('a'), {
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        href: urlNew,
-    	}).click();
-    }else if(urlNew !='' && !blank){
-    	Object.assign(document.createElement('a'), {
-        rel: 'noopener noreferrer',
-        href: urlNew,
-    	}).click();
-    }
-    
-}
+
 
 
 //---Close Sesión

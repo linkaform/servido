@@ -5,7 +5,7 @@ const columsData1 = [
 			//----Button Trash
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			let divActions = '<div class="row d-flex">';
-			divActions += ` <input class="form-check-input ms-3" style="height:15px !important;width:2px;" type="checkbox">`;
+			divActions += ` <input class="form-check-input ms-3 mt-1" style="height:15px !important;width:2px;" type="checkbox">`;
 			divActions += `<button class="btn-table-bitacora" onClick="setModal('ViewIncident',${folio})"><i class="fa-solid fa-eye"></i></button>`;
 			divActions += `<button class="btn-table-bitacora" onClick="setModal('EditIncident',${folio})"><i class="fa-solid fa-pen"></i></button>`;
 			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-trash"></i></button>`;
@@ -29,7 +29,7 @@ const columsData2 = [
 			//----Button Trash
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			let divActions = '<div class="row d-flex">';
-			divActions += ` <input class="form-check-input ms-3" style="height:15px !important;width:2px;" type="checkbox">`;
+			divActions += ` <input class="form-check-input ms-3 mt-1" style="height:15px !important;width:2px;" type="checkbox">`;
 			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-eye" onClick="setModal('ViewFail',${folio})"></i></button>`;
 			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-circle-check" onClick="setModal('SuccessFail',${folio})"></i></button>`;
 			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-pen" onClick="setModal('EditFail',${folio})"></i></button>`;
@@ -88,12 +88,35 @@ const dataTable2 = [
 	{'date':'16/04/2024','time':'12:00','location':'Planta Sur','place_accident':'Caseta de vigilancia Sur','incident':'Fallo de energia','comment':'El visitante noestaba autorizado','report':'Miguel Perez','dept':'Seguridad','responsable':'Jose Patricio','state':'Resuelto'},
 ]
 
+document.addEventListener("DOMContentLoaded", (event) => {
+	
+
+
+})
 
 window.onload = function(){
+	setValueUserLocation('incidencias');
+
+	changeButtonColor();
+
+	fillCatalogs();
+
+	setValueUserLocation('incidencias');
+	selectLocation= document.getElementById("selectLocation")
+	selectLocation.onchange = function() {
+        console.log("La selección ha cambiado");
+        let response = fetchOnChangeLocation()
+        console.log(response.data)
+    };
+     selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta.onchange = function() {
+        console.log("La selección ha cambiado");
+        let response = fetchOnChangeLocation()
+        console.log('hiii',response.data)
+    };
 	setSpinner(true, 'divSpinner');
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
-
 	if(user !='' && jw!=''){
 		drawTable('tableIncidencias', columsData1, dataTable1);
 		drawTable('tableFallas', columsData2, dataTable2);
@@ -101,6 +124,9 @@ window.onload = function(){
 	}else{
 		redirectionUrl('login',false)
 	}
+
+
+
 }
 
 //-----TABLES
@@ -115,37 +141,52 @@ function drawTable(id, columnsData, tableData,){
   });
 }
 
-//-----Redirection
-function redirectionUrl(type = 'null',blank = true){
-    let urlNew =  '';
-    let protocol = window.location.protocol;
-    let host = window.location.host;
-    if(type == 'users'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_registro_v2.html`
-    }else if(type == 'bitacora'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_bitacora_v2.html`
-    }else if(type == 'incidencias'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_incidencias_v2.html`
-    }else if(type == 'articulos'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/portal_articulos_v2.html`
-    }else if(type == 'login'){
-    	urlNew = `${protocol}//${host}/solucion_accesos/login.html`
-    }
-    //----Validation
-    if(urlNew !='' && blank){
-    	Object.assign(document.createElement('a'), {
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        href: urlNew,
-    	}).click();
-    }else if(urlNew !='' && !blank){
-    	Object.assign(document.createElement('a'), {
-        rel: 'noopener noreferrer',
-        href: urlNew,
-    	}).click();
-    }
-    
+
+
+function fetchOnChangeLocation(){
+    //INFO: al momento de seleccionar una nueva location se manda la informacion junto con el 
+    //resultado de la fetch a la pagina que lo esta solicitando
+    let selectLocation= document.getElementById("selectLocation")
+    let selectCaseta= document.getElementById("selectCaseta")
+    let response=
+    {"data":{
+         "caseta":{
+            "name": selectLocation.value,
+            "location": selectCaseta.value,
+            "visitsDay":15,
+            "personalInside":75,
+            "vehiclesInside":25,
+            "ouputs":30
+        }
+    }};
+
+    //FETCH AQUI 
+      fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: idScript,
+            option: 'get_caseta_information',
+            email : 'guardia1@linkaform.com'
+        }),
+        headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+jw
+
+            },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            //INFO: Obtener la informacion y formatear los arrays para poder mandarlos como respuesta de esta funcion
+        } 
+    });
+    return response
 }
+
+
+
+
+
 
 
 //-----MODALS
