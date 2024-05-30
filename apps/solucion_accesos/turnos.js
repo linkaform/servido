@@ -5,12 +5,11 @@ let caseta=""
 let ubicacion=""
 let date=""
 let guardiasApoyo={}
-let arraySelectedGuardias=[]
 let img="https://static.vecteezy.com/system/resources/previews/007/468/567/non_2x/colorful-simple-flat-of-security-guard-icon-or-symbol-people-concept-illustration-vector.jpg";
 let tables={}
 let idGuardiasEnTurno=[]
-let allGuardiasEnTurno=[]
 let guardiasEnTurno=[] 
+let arraySelectedGuardias=[]
 
 //FUNCION para cambiar la imagen del localstorage de imagen de perfil imagenURL en todas las pantallas
 document.getElementById("changeImageInputFile").addEventListener("change", function() {
@@ -198,47 +197,50 @@ function setDeleteFoto(id){
 
 //FUNCION forzar el cierre de la caseta cuando tiene estado No disponible, para que otro guardia pueda iniciar turno
 function AlertForzarCierre(name){
-    Swal.fire({
-        title:'Confirmación',
-        html:`
-            La caseta actual no esta disponible. Fue abierta por el guardia <b>`+ name +` el día 10 de Mayo a las 11:03 horas.</b> ¿Desea proceder con el cierre forzado
-            de la caseta? <b>Tenga en cuenta que una vez confirmado, esta accion no podrá deshacerse.</b>
-        ` ,
-        type: "warning",
-        showCancelButton: true,
-        cancelButtonColor: "#dc3545",
-        confirmButtonText: "Si",
-        cancelButtonText: "Cancelar",
-        heightAuto:false,
-    })
-    .then((result) => {
-        if (result.value) {
-            setCookie('userCasetaStatus', 'Disponible',7);
-            $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
-            $("#textFechaInicioCaseta").val('01/12/2024 01:23:2024')
-            $("#textEstatusCaseta").removeClass();
-            $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
-            if(getCookie('userCasetaStatus') =="Disponible" ) {
-                $("#buttonForzarCierre").hide();
-            } else {
-                $("#buttonForzarCierre").show();
+    let statusCaseta = $("#textEstatusCaseta").text()
+    if(statusCaseta == casetaNoDisponible){
+        Swal.fire({
+            title:'Confirmación',
+            html:`
+                La caseta actual no esta disponible. Fue abierta por el guardia <b>`+ name +` el día 10 de Mayo a las 11:03 horas.</b> ¿Desea proceder con el cierre forzado
+                de la caseta? <b>Tenga en cuenta que una vez confirmado, esta accion no podrá deshacerse.</b>
+            ` ,
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonColor: "#dc3545",
+            confirmButtonText: "Si",
+            cancelButtonText: "Cancelar",
+            heightAuto:false,
+        })
+        .then((result) => {
+            if (result.value) {
+                setCookie('userCasetaStatus', 'Disponible',7);
+                $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
+                $("#textFechaInicioCaseta").val('01/12/2024 01:23:2024')
+                $("#textEstatusCaseta").removeClass();
+                $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
+                if(getCookie('userCasetaStatus') =="Disponible" ) {
+                    $("#buttonForzarCierre").hide();
+                } else {
+                    $("#buttonForzarCierre").show();
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 
 //FUNCION para cambiar el estatus del turno y hacer las validaciones correspondientes al dar click al boton, al iniciar la aplicacion, o al refrescar
 function changeStatusTurn(buttonClick){
-    for(g of arraySelectedGuardias){
-        guardiasEnTurno = guardiasEnTurno.concat(dataTableGuardiasApoyo.filter(e => e.id == g.id))
-        idGuardiasEnTurno.push("inp-"+ g.id)
-        idGuardiasEnTurno.push("btn-"+ g.id)
-    } 
     //INFO : idGuardiasEnTurno para saber que guardias de los que estan en la tabla "Guardias de apoyo" INICIARON TURNO
     //INFO : aqui fetch para modificar el status , meter estos este if en el response del fetch
     let estatusActual=getCookie('userTurn');
     if(buttonClick){
+        for(g of arraySelectedGuardias){
+            guardiasEnTurno = guardiasEnTurno.concat(dataTableGuardiasApoyo.filter(e => e.id == g.id))
+            idGuardiasEnTurno.push("inp-"+ g.id)
+            idGuardiasEnTurno.push("btn-"+ g.id)
+        } 
         if(estatusActual == userTurnAbierto ){  
             turnoCerrado(idGuardiasEnTurno)
             tables["tableGuardiasApoyo"].setData(dataTableGuardiasApoyo);
@@ -263,7 +265,7 @@ function changeStatusTurn(buttonClick){
 //FUNCION que muestra un alert de confirmacion y las validaciones necesarias ANTES de cambiar el estatus del turno y despues llama a la funcion changeStatusTurn
 function AlertAndActionChangeStatusTurn(){
     if((getCookie("userCasetaStatus")== casetaDisponible && getCookie("userTurn")== userTurnCerrado ) || (getCookie("userCasetaStatus")== casetaNoDisponible) && getCookie("userTurn")== userTurnAbierto 
-    || (getCookie("userCasetaStatus")== casetaDisponible&&  getCookie("userTurn")== userTurnAbierto)){
+    || (getCookie("userCasetaStatus")== casetaDisponible &&  getCookie("userTurn")== userTurnAbierto)){
         let arrGuard=[];
         for(guardia of arraySelectedGuardias){
             arrGuard.push(guardia.name);
@@ -294,39 +296,6 @@ function AlertAndActionChangeStatusTurn(){
             type: "warning"
         });
     }    
-}
-
-
-//FUNCION muestra un alert para hacer checkout de un guardia cuando se encuentra en turno iniciado
-function eliminarGuardia(id, name){
-    Swal.fire({
-      title: "Check out",
-      text:"¿Seguro que quieres realizar el check out al guardia de apoyo "+name+" ?",
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.value) {
-        let index = dataTableGuardiasApoyo.findIndex(guardia => guardia.id === id);
-        if (index !== -1) {
-            dataTableGuardiasApoyo.splice(index, 1);
-        }
-        let arrGuardiaTurno = idGuardiasEnTurno.filter(e => !e.includes("inp-"+id) && !e.includes("btn-"+id));
-        idGuardiasEnTurno=arrGuardiaTurno
-        let arrayGuard= guardiasEnTurno.filter(e => e.id !== id);
-        guardiasEnTurno=arrayGuard
-        tables["tableGuardiasApoyo"].setData(guardiasEnTurno);
-        changeStatusTurn(false)
-        Swal.fire({
-          title: "Check out!",
-          text: "Se ha realizado el check out correctamente.",
-          type: "success"
-        });
-      }
-    });
 }
 
 
@@ -430,37 +399,6 @@ function verNotasAlert(name, note, folio, status, fotos, archivos){
 }
 
 
-//FUNCION para dibujar las tablas de la pagina y guardar su instancia en el obj tables
-function drawTableNotas(id, columnsData, tableData, height){
-    var  table = new Tabulator("#" + id, {
-        layout:"fitDataStretch",
-        height:height,
-        data:tableData,
-        textDirection:"ltr",
-        columns:columnsData,
-        pagination:true, 
-        paginationSize:40,
-    });
-    tables[id]=table;
-}
-
-
-//FUNCION para dibujar las tablas con opcion select de la pagina y guardar su instancia en el obj tables
-function drawTableSelect(id, columnsData, tableData, height, select){
-    var  table = new Tabulator("#" + id, {
-        layout:"fitDataStretch",
-        height:height,
-        data:tableData,
-        textDirection:"ltr",
-        columns:columnsData,
-        pagination:true, 
-        selectableRows:select,
-        paginationSize:40,
-    });
-    tables[id]=table;
-}
-
-
 //FUNCION para guardar en un array los guardias que fueron seleccionados para iniciar turno
 function selectCheckboxGuardia(id){
     let checkboxes = document.querySelectorAll('.form-check-input');
@@ -542,6 +480,44 @@ function cambiarCaseta(value){
 }
 
 
+//FUNCION muestra un alert para hacer checkout de un guardia cuando se encuentra en turno iniciado
+function eliminarGuardia(id, name){
+    Swal.fire({
+        title:"Check out",
+        text:"¿Seguro que quieres realizar el check out al guardia de apoyo "+name+" ?",
+        type:"warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si",
+        cancelButtonText: "Cancelar",
+    })
+    .then((result) => {
+        if (result.value) {
+             
+            let index = dataTableAgregarGuardiaApoyo.findIndex(guardia => guardia.id === id);
+            if (index !== -1) {
+                dataTableAgregarGuardiaApoyo.splice(index, 1);
+            }
+            let arrGuardiaTurno = idGuardiasEnTurno.filter(e => !e.includes("inp-"+id) && !e.includes("btn-"+id));
+            idGuardiasEnTurno=arrGuardiaTurno
+            let arrayGuard= guardiasEnTurno.filter(e => e.id !== id);
+            guardiasEnTurno=arrayGuard
+            let arrSelectedGuardias = arraySelectedGuardias.filter(e => parseInt(e.id) !== parseInt(id))
+            arraySelectedGuardias=arrSelectedGuardias
+            //tables["tableGuardiasApoyo"].setData(guardiasEnTurno);
+            changeStatusTurn(false)
+              console.log("DESS",idGuardiasEnTurno,guardiasEnTurno,arraySelectedGuardias,id)
+            Swal.fire({
+                title: "Check out!",
+                text: "Se ha realizado el check out correctamente.",
+                type: "success"
+            });
+        }
+    });
+}
+
+
 //FUNCION para agregar nuevo guardia de apoyo cuando tenemos el turno iniciado
 function agregarNuevoGuardiaApoyo(){
     let selectedRow = tables["tableAgregarGuardiaApoyo"].getSelectedData(); 
@@ -569,6 +545,7 @@ function agregarNuevoGuardiaApoyo(){
 //FUNCION que tiene las validaciones necesarias al iniciar turno
 function turnoAbierto(idGuardiasEnTurno){
     if(guardiasEnTurno.length > 0){
+        console.log("ENTRANDO")
         tables["tableGuardiasApoyo"].setData(guardiasEnTurno);
     }else{
         tables["tableGuardiasApoyo"].setData([]);
@@ -600,12 +577,14 @@ function turnoCerrado(idGuardiasEnTurno){
     $('#buttonForzarCierre').attr("disabled", false);
     $('#agregarGuardiasApoyoButton').attr("disabled", true);
     guardiasApoyoValidateOptions()
+    idGuardiasEnTurno=[]
+    guardiasEnTurno=[] 
+    arraySelectedGuardias=[]
 }
 
 
 //FUNCION con validaciones para ocultar botones de guardias de apoyo dependiendo del estatus del turno
 function guardiasApoyoValidateOptions(){
-    
     if (getCookie('userTurn') == userTurnCerrado){
         if(idGuardiasEnTurno.length==0){
             $(document).ready(function() {
@@ -633,7 +612,36 @@ function guardiasApoyoValidateOptions(){
                 $("#"+g).show();
             }
         }
-    }
-    
-    
+    }   
+}
+
+
+//FUNCION para dibujar las tablas de la pagina y guardar su instancia en el obj tables
+function drawTableNotas(id, columnsData, tableData, height){
+    var  table = new Tabulator("#" + id, {
+        layout:"fitDataStretch",
+        height:height,
+        data:tableData,
+        textDirection:"ltr",
+        columns:columnsData,
+        pagination:true, 
+        paginationSize:40,
+    });
+    tables[id]=table;
+}
+
+
+//FUNCION para dibujar las tablas con opcion select de la pagina y guardar su instancia en el obj tables
+function drawTableSelect(id, columnsData, tableData, height, select){
+    var  table = new Tabulator("#" + id, {
+        layout:"fitDataStretch",
+        height:height,
+        data:tableData,
+        textDirection:"ltr",
+        columns:columnsData,
+        pagination:true, 
+        selectableRows:select,
+        paginationSize:40,
+    });
+    tables[id]=table;
 }

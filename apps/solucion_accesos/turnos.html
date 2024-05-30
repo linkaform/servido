@@ -20,50 +20,45 @@
 </head>
 <body>
 <navbar-component ></navbar-component>
-    <!-- Title -->
-    <!-- Information Plant-->
 <section class="mainSection">       
-        <div class="row d-flex justify-content-center align-items-end m-0 p-0" >
-
-            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-4 ml-9 p-0 " >        
-                <div class="card m-2  mb-0 ms-0 pl-0 " style="border:none;">
-                    <div class="card-body m-0 customCard">
-                        <div class="row" >
-                            <div class="col-4 text-center">
-                                <img src="" height="100px" width="100px" class="d-inline-block rounded-circle" alt="" id="imgProfilePic"><br>
-                                <input style="display:none" type='file' accept="image/*" id='changeImageInputFile'/>
-                                <button type="button" class="btn btn-success btn-sm m-2 " id="buttonChangeImage" onclick='changeImageGuard()' >Cambiar Imagen</button>
-                            </div>
-                            <div class="col-8">
-                                <h5 class="card-title text-dark mb-0 " id="textName"> </h5>
-                                <small class="text-black" id="textPosition" > </small><br>
-                                <small class="text-black" id="textEmail" > </small>
-                            </div>
-
+    <div class="row d-flex justify-content-center align-items-end m-0 p-0" >
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-4 ml-9 p-0 " >        
+            <div class="card m-2  mb-0 ms-0 pl-0 " style="border:none;">
+                <div class="card-body m-0 customCard">
+                    <div class="row" >
+                        <div class="col-4 text-center">
+                            <img src="" height="100px" width="100px" class="d-inline-block rounded-circle" alt="" id="imgProfilePic"><br>
+                            <input style="display:none" type='file' accept="image/*" id='changeImageInputFile'/>
+                            <button type="button" class="btn btn-success btn-sm m-2 " id="buttonChangeImage" onclick='changeImageGuard()' >Cambiar Imagen
+                            </button>
+                        </div>
+                        <div class="col-8">
+                            <h5 class="card-title text-dark mb-0 " id="textName"> </h5>
+                            <small class="text-black" id="textPosition" > </small><br>
+                            <small class="text-black" id="textEmail" > </small>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-5 mt-2 ms-4">
-                <div class="d-flex justify-content-end m-0 p-0" >
-                    <div class="buttonIniciarTurno m-0 p-0 mb-4">
-                        <button type="button" class="btn " id="buttonChangeStatusTurn" onclick="AlertAndActionChangeStatusTurn()"> </button>
-                    </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-5 mt-2 ms-4">
+            <div class="d-flex justify-content-end m-0 p-0" >
+                <div class="buttonIniciarTurno m-0 p-0 mb-4">
+                    <button type="button" class="btn " id="buttonChangeStatusTurn" onclick="AlertAndActionChangeStatusTurn()"> </button>
                 </div>
-                
-                <div class="d-flex">
-                    <div class="flex-grow-1"> <!--ocupa todo el espacio disponible y los demas elementos solo lo necesario-->
-                        <b>Notas</b>
-                    </div>
-                    <div >
-                        <button type="button" class="btn btn-success btn-sm mb-1 " data-bs-toggle="modal" data-bs-target="#agregarNotasModal" id="buttonAgregarNotas"><i class="fa-solid fa-plus"></i>
-                        </button>
-                        <button type="button" class="btn btn-primary btn-sm mb-1 " onclick="redirectionUrl('notas',true);"><i class="fa-solid fa-list"></i></button>
-                    </div>
-                </div>
-                <div id="tableNotas"></div>
             </div>
+            <div class="d-flex">
+                <div class="flex-grow-1"> <!--ocupa todo el espacio disponible y los demas elementos solo lo necesario-->
+                    <b>Notas</b>
+                </div>
+                <div >
+                    <button type="button" class="btn btn-success btn-sm mb-1 " data-bs-toggle="modal" data-bs-target="#agregarNotasModal" id="buttonAgregarNotas"><i class="fa-solid fa-plus"></i>
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm mb-1 " onclick="redirectionUrl('notas',true);"><i class="fa-solid fa-list"></i></button>
+                </div>
+            </div>
+            <div id="tableNotas"></div>
+        </div>
         </div>
         <div class="row d-flex flex-row mt-5 justify-content-center mb-5">
             <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3 m-1  customShadow h-auto"  >
@@ -181,107 +176,105 @@
                 </div>
             </div>  
         </div>
-            
-    </section>
-        <!-- Modal New Incident -->
-    <div class="modal fade" id="cambiarCasetaModal" tabindex="-1"  aria-hidden="true" >
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 750px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Cambiar Caseta</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</section>
+<!-- Modales -->
+<div class="modal fade" id="cambiarCasetaModal" tabindex="-1"  aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 750px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Cambiar Caseta</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-center mb-4">
+                    <div><h5>Selecciona una caseta para continuar...</h5></div>
                 </div>
-                <div class="modal-body">
-                    <div class="d-flex justify-content-center mb-4">
-                        <div><h5>Selecciona una caseta para continuar...</h5></div>
-                    </div>
-                    <div id="tableCambiarCaseta"></div>
+                <div id="tableCambiarCaseta"></div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="cambiarCaseta()">Seleccionar</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="cambiarCaseta()">Seleccionar</button>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="agregarNotasModal" tabindex="-1"  aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Agregar notas</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Nota *</label>
-                              <textarea class="form-control" id="inputTextNota" rows="3" placeholder="Escribe algo..."></textarea>
-                        </div>
-                        <div id="archivo-input-form">
-                            <div class="mb-3 col-12 archivo-div div-archivo-123">
-                                <label class="form-label">Cargar un archivo *</label>
-                                <input type="file" class="form-control-file " id="fileInputArchivo">
-                                <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(123);return false;">
-                                    <i class="fa-solid fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                       <div id="foto-input-form">
-                            <div class="mb-3 col-12 foto-div div-foto-123">
-                                <label class="form-label">Fotografia *</label>
-                                <input type="file" class="form-control-file " id="fileInputFotografia">
-                                <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(123);return false;">
-                                    <i class="fa-solid fa-minus"></i>
-                                </button>
-                        </div>
-                        </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Comentario *</label>
-                              <textarea class="form-control" id="inputComentarioNota" rows="3" placeholder="Escribe algo..."></textarea>
+<div class="modal fade" id="agregarNotasModal" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Agregar notas</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Nota *</label>
+                          <textarea class="form-control" id="inputTextNota" rows="3" placeholder="Escribe algo..."></textarea>
+                    </div>
+                    <div id="archivo-input-form">
+                        <div class="mb-3 col-12 archivo-div div-archivo-123">
+                            <label class="form-label">Cargar un archivo *</label>
+                            <input type="file" class="form-control-file " id="fileInputArchivo">
+                            <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(123);return false;">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
                         </div>
                     </div>
                     
-                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="enviarNota()">Seleccionar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-     <div class="modal fade" id="agregarGuardiaApoyoModal" tabindex="-1"  aria-hidden="true">
-         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 550px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Agregar guardia de apoyo</h1>
-                    <button type="button" id="agregarGuardiasApoyoButton" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="d-flex justify-content-center mb-4">
-                        <div><h5>Seleciona un guardia para continuar...</h5></div>
+                   <div id="foto-input-form">
+                        <div class="mb-3 col-12 foto-div div-foto-123">
+                            <label class="form-label">Fotografia *</label>
+                            <input type="file" class="form-control-file " id="fileInputFotografia">
+                            <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(123);return false;">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
                     </div>
-                    <div id="tableAgregarGuardiaApoyo"></div>
-
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Comentario *</label>
+                          <textarea class="form-control" id="inputComentarioNota" rows="3" placeholder="Escribe algo..."></textarea>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="agregarNuevoGuardiaApoyo();">Seleccionar</button>
-                </div>
+                
+                <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="enviarNota()">Seleccionar</button>
             </div>
         </div>
     </div>
+</div>
 
+<div class="modal fade" id="agregarGuardiaApoyoModal" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 550px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Agregar guardia de apoyo</h1>
+                <button type="button" id="agregarGuardiasApoyoButton" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-center mb-4">
+                    <div><h5>Seleciona un guardia para continuar...</h5></div>
+                </div>
+                <div id="tableAgregarGuardiaApoyo"></div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="agregarNuevoGuardiaApoyo();">Seleccionar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 <!-- Jquery -->

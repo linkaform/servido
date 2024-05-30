@@ -47,20 +47,13 @@ class lkfNavbarComponent extends HTMLElement{
 
 }
 window.customElements.define('navbar-component', lkfNavbarComponent)
- 
-
-
-    //$('#buttonAccesos').hide(); 
-    //$('#buttonBitacoras').hide(); 
-    //$('#buttonIncidencias').hide(); 
-    //$('#buttonArticulos').hide(); 
-    //$('#buttonRondines').hide(); 
-
 
 let userTurnCerrado="Turno Cerrado";
 let userTurnAbierto="Turno Abierto";
 let casetaDisponible="Disponible";
-let casetaNoDisponible="No Disponible"
+let casetaNoDisponible="No Disponible";
+let statusAbierto="Abierto";
+let statusCerrado="Cerrado";
 
 function changeButtonColor(){
       $("#imageUserNavbar").attr("src", getCookie('userImg'));
@@ -70,7 +63,6 @@ function changeButtonColor(){
             let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
             imagenMostradaNavbar.src= localStorage.getItem("imagenURL");
             $("#imageLinkaform").attr("src", getCookie('lkfLogo'));
-            console.log("dfgse",getValueUserLocation())
             switch (getValueUserLocation()) {
               case "accesos":
                  let btn1 = document.getElementById("buttonAccesos");
@@ -174,7 +166,4 @@ function redirectionUrl(type = 'null',blank = true){
 
 
 window.onload = function(){
-    
-    
-
 }

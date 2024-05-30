@@ -1,9 +1,12 @@
 let dataTableGuardiasApoyo = [];
 let dataTableNotas = [];
 let dataTableCambiarCaseta = [
-    {name:"Caseta 1 Poniente", ubi:"Cumbres", status: casetaDisponible, guard:'Juan Ecobedo' },{name:"Caseta 1 Sur", ubi:"Santa Catarina",  guard:'Francisco Flores', comment:'soy uncoment'},
-    {name:"Caseta 4 Poniente", ubi:"Monterrey", status: casetaNoDisponible, guard:'Javier Almanza' },{name:"Caseta 3 Sur", ubi:"Escobedo",  guard:'Valeria Alvarado',comment:'comentando squi'},
-    {name:"Caseta 6 Poniente", ubi:"San Jeronimo", status: casetaDisponible, guard:'Erika Ruiz'},{name:"Caseta 6 Sur", ubi:"Monterrey",  guard:'Daniela Cepeda',comment:'comentsario de ejemplot' }
+    {name:"Caseta 1 Poniente", ubi:"Cumbres", status: casetaDisponible, guard:'Juan Ecobedo' ,comment:'comentsario de ejemplot'},
+    {name:"Caseta 1 Sur", ubi:"Santa Catarina",  status: casetaDisponible, guard:'Francisco Flores', comment:'soy uncoment'},
+    {name:"Caseta 4 Poniente", ubi:"Monterrey", status: casetaDisponible, guard:'Javier Almanza' ,comment:'comentsario de ejemplot'},
+    {name:"Caseta 3 Sur", ubi:"Escobedo",  status: casetaDisponible, guard:'Valeria Alvarado',comment:'comentando squi'},
+    {name:"Caseta 6 Poniente", ubi:"San Jeronimo", status: casetaDisponible, guard:'Erika Ruiz',comment:'comentsario de ejemplot'},
+    {name:"Caseta 6 Sur", ubi:"Monterrey",  status: casetaDisponible, guard:'Daniela Cepeda',comment:'comentsario de ejemplot' }
 ];
 let dataTableAgregarGuardiaApoyo = [  
     { name: 'Juan Pérez Gomez', status: 'Disponible' , img: 'https://img.favpng.com/1/10/3/computer-icons-child-avatar-png-favpng-1KY4gtPN1Fab6LrVpVM8AjtnH.jpg', id:20}, 
