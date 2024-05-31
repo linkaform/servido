@@ -1,5 +1,3 @@
-
-//-----Variables
 const columsData1 = [
 	{ title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:180,
 		formatter: (cell, formatterParams) => {
@@ -80,8 +78,6 @@ const dataTable1 = [
 	{'location':'PLanta Sur','date':'14/03/2024 05:00','type':'Articulo sin categoria','img':'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/63f790e5ed1d1d0df47b59bb.jpg','num_serie':'12244','reporta':'Lucia Carvajal','comment':'Cecilia Gonzales','recibe':'','date_out':'','location':'Estaciónamiento','status':'Abiertod'}
 ]
 
-
-
 const dataTable2 = [
 	{'location':'PLanta Sur','date':'14/03/2024 05:00','type':'Entrega de llaves','img':'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65779777beef423c6264ac04.jpg','num_serie':'12244','reporta':'Lucia Carvajal','comment':'Cecilia Gonzales','recibe':'','date_out':'','location':'Estaciónamiento','status':'Abierto'},
 	{'location':'PLanta Sur','date':'14/03/2024 05:00','type':'Entrega de llaves','img':'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65779777beef423c6264ac04.jpg','num_serie':'12244','reporta':'Lucia Carvajal','comment':'Cecilia Gonzales','recibe':'','date_out':'16/04/2024 06:00','location':'Estaciónamiento','status':'Abierto'},
@@ -99,7 +95,6 @@ const dataTable2 = [
 	{'location':'PLanta Sur','date':'14/03/2024 05:00','type':'Entrega de llaves','img':'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65779777beef423c6264ac04.jpg','num_serie':'12244','reporta':'Lucia Carvajal','comment':'Cecilia Gonzales','recibe':'','date_out':'','location':'Estaciónamiento','status':'Abierto'},
 	{'location':'PLanta Sur','date':'14/03/2024 05:00','type':'Entrega de llaves','img':'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65779777beef423c6264ac04.jpg','num_serie':'12244','reporta':'Lucia Carvajal','comment':'Cecilia Gonzales','recibe':'','date_out':'','location':'Estaciónamiento','status':'Abiertod'}
 ]
-
 
 
 //-----TABLES

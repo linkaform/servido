@@ -6,7 +6,7 @@ window.onload = function(){
     setValueUserLocation('notas');
 		changeButtonColor();
 		fillCatalogs();
-  selectLocation= document.getElementById("selectLocation")
+    selectLocation= document.getElementById("selectLocation")
     selectLocation.onchange = function() {
         console.log("La selección ha cambiado");
         let response = fetchOnChangeLocation()
@@ -29,75 +29,78 @@ window.onload = function(){
 }
 
 
-
+//FUNCION para mostrar alert para cerrar un nota en caso que tenga esta abierto
 function editarNota(){
 	let name= $("inputNotaEditar").val();
 	fetch(url + urlScripts, {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: idScriptC,
-      option: "cancelar_recorrido",
-      id: 2,
-      }),
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: idScriptC,
+            option: "cancelar_recorrido",
+            id: 2,
+        }),
         headers:{
-         'Content-Type': 'application/json',
-         'Authorization': 'Bearer '+jw
+           'Content-Type': 'application/json',
+           'Authorization': 'Bearer '+jw
         },
-      })
-      .then(res => res.json())
-      .then(res => {
-      if (res.success) {
-        Swal.fire({
-	      title: "Confirmación",
-	      text: "La nota se ha editado correctamente.",
-	      type: "success"
-	      });  
-
-	      $("#editarNotasModal").modal("hide");
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.fire({
+	            title: "Confirmación",
+	            text: "La nota se ha editado correctamente.",
+	            type: "success"
+	        });  
+	    $("#editarNotasModal").modal("hide");
     	} 
-    	
-  })
+    })
 }
 
 
-
+//FUNCION para mostrar alert para cerrar un nota en caso que tenga esta abierto
 function cerrarNotaAlert(name, note, folio, status){
-	console.log(status , 'saefdsa')
-    if(status=="abierta"){
+    if(status == statusAbierto){
         Swal.fire({
-          title: "Confirmación",
-          type: 'warning',
-          html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
-                    <div class="mb-4"><h5>¿Estás seguro que deseas cerrar esta nota?</h5></div>
-            <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
-            <tbody> <tr> <td><b>Nombre:</b></td> <td> <span > `+ name +`</span></td> </tr>
-            <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> </tbody> </table> `,
-          showCancelButton: true,
-          showConfirmButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Si",
-          cancelButtonText: "Cancelar"
-        }).then((result) => {
-          if (result.value) {
-            let selectedNote = dataTableListNotas.find(nota => nota.folio === folio);
-            if (selectedNote) {
-              selectedNote.status = "cerrada";
-                tables["tableListNotas"].setData(dataTableListNotas);
+            title: "Confirmación",
+            type: 'warning',
+            html: ` 
+                <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
+                <div class="mb-4"><h5>¿Estás seguro que deseas cerrar esta nota?</h5></div>
+                <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
+                    <tbody> 
+                        <tr> <td><b>Nombre:</b></td> <td> <span > `+ name +`</span></td> </tr>
+                        <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> 
+                    </tbody> 
+                </table> 
+            `,
+            showCancelButton: true,
+            showConfirmButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si",
+            cancelButtonText: "Cancelar"
+        })
+        .then((result) => {
+            if (result.value) {
+                let selectedNote = dataTableListNotas.find(nota => nota.folio === folio);
+                if (selectedNote) {
+                    selectedNote.status = "cerrada";
+                    tables["tableListNotas"].setData(dataTableListNotas);
+                }
             }
-          }
         });
     }else{
-         Swal.fire({
-          title: "Acción Completada!",
-          text: "Esta nota ya se encuentra cerrada.",
-          type: "warning"
+        Swal.fire({
+            title: "Acción Completada!",
+            text: "Esta nota ya se encuentra cerrada.",
+            type: "warning"
         });
     }
 }
 
 
-
+//FUNCION para mostrar alert con detalle de la nota
 function verNotasAlert(name, note, folio, status, fotos, archivos){
     let fotosArray = fotos.split(',');
     let archivosArray = archivos.split(',');
@@ -114,8 +117,6 @@ function verNotasAlert(name, note, folio, status, fotos, archivos){
         <div class='d-flex flex-row'>
             `+fotosItem+`
         </div>`;
-
-
     for(let url of archivosArray){
         archivosItem+=`
         <div><a href="https://www.turnerlibros.com/wp-content/uploads/2021/02/ejemplo.pdf" target="_blank">`+url+`</a>
@@ -128,54 +129,55 @@ function verNotasAlert(name, note, folio, status, fotos, archivos){
             `+archivosItem+`
         </div>`;
     Swal.fire({
-      title: "Nota",
-      text: "Escoje una caseta para continuar...",
-      html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
-      
-        <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
-        <tbody> <tr> <td><b>Nombre:</b></td> <td> <span > `+ name +`</span></td> </tr>
-        <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> 
-        <tr> <td><b>Estatus:</b></td> <td> <span > `+ status+`</span></td> </tr> 
-        <tr> <td><b>Fecha y hora de creacion:</b></td> <td> <span > 25/02/24 18:00:00 hrs</span></td> </tr>
-        <tr> <td><b>Comentarios:</b></td> <td> <span> Este el comentario de prueba de la nota</span> </tr>
-        <tr> <td><b>Fecha y hora de cierre:</b></td> <td> <span>  26/02/24 19:31:00 hrs</span> </tr>
-        <tr> <td><b>Guardia que cierra:</b></td> <td> <span>  Pancracio Felipe</span> </tr>
-        </tbody> </table>` + htmlFotos + htmlArchivos,
-      showCancelButton: true,
-      showConfirmButton: false,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si",
-      cancelButtonText: "Cerrar"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        
-      }
+        title: "Nota",
+        text: "Escoje una caseta para continuar...",
+        html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
+            <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
+                <tbody> 
+                    <tr> <td><b>Nombre:</b></td> <td> <span > `+ name +`</span></td> </tr>
+                    <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> 
+                    <tr> <td><b>Estatus:</b></td> <td> <span > `+ status+`</span></td> </tr> 
+                    <tr> <td><b>Fecha y hora de creacion:</b></td> <td> <span > 25/02/24 18:00:00 hrs</span></td> </tr>
+                    <tr> <td><b>Comentarios:</b></td> <td> <span> Este el comentario de prueba de la nota</span> </tr>
+                    <tr> <td><b>Fecha y hora de cierre:</b></td> <td> <span>  26/02/24 19:31:00 hrs</span> </tr>
+                    <tr> <td><b>Guardia que cierra:</b></td> <td> <span>  Pancracio Felipe</span> </tr>
+                </tbody> 
+            </table>` + htmlFotos + htmlArchivos,
+        showCancelButton: true,
+        showConfirmButton: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si",
+        cancelButtonText: "Cerrar"
+    })
+    .then((result) => {
+        if (result.isConfirmed) {
+            
+        }
     });
 } 
 
 
-
+//FUNCION para eliminar archivo en el modal de agregar nota
 function setAddArchivo(){
     let randomID = Date.now();
-    //---Structure HTML
     let newItem=`
-                <div class="mb-3 col-12 archivo-div div-archivo-`+randomID+`">
-                                <label class="form-label">Cargar un archivo *</label>
-                                <input type="file" class="form-control-file" id="fileInputArchivo">
-                                <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(`+randomID+`);return false;">
-                                    <i class="fa-solid fa-minus"></i>
-                                </button>
-                </div>
+        <div class="mb-3 col-12 archivo-div div-archivo-`+randomID+`">
+            <label class="form-label">Cargar un archivo *</label>
+            <input type="file" class="form-control-file" id="fileInputArchivo">
+            <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(`+randomID+`);return false;">
+                <i class="fa-solid fa-minus"></i>
+            </button>
+        </div>
     `;
     $('#archivo-input-form').append(newItem);
 }
 
 
-
+//FUNCION para agregar archivo en el modal de agregar nota
 function setDeleteArchivo(id){
     const elements = document.querySelectorAll('.archivo-div');
     console.log("ELEMENTOS", elements)
@@ -190,30 +192,28 @@ function setDeleteArchivo(id){
 }
 
 
-
+//FUNCION para agregar foto en el modal de agregar nota
 function setAddFoto(){
     let randomID = Date.now();
-    //---Structure HTML
     let newItem=`
-            <div class="mb-3 col-12 foto-div div-foto-`+randomID+`">
-                        <label class="form-label">Fotografia *</label>
-                        <input type="file" class="form-control-file" id="fileInputFotografia">
-                        <div class="col-3">
-                        <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                        <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(`+randomID+`);return false;">
-                           <i class="fa-solid fa-minus"></i>
-                        </button>
-             </div>
+        <div class="mb-3 col-12 foto-div div-foto-`+randomID+`">
+            <label class="form-label">Fotografia *</label>
+            <input type="file" class="form-control-file" id="fileInputFotografia">
+            <div class="col-3">
+            <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(`+randomID+`);return false;">
+               <i class="fa-solid fa-minus"></i>
+            </button>
+        </div>
     `;
     $('#foto-input-form').append(newItem) 
 }
 
 
-
+//FUNCION para elimar foto en el modal de agregar nota
 function setDeleteFoto(id){
-
     const elements = document.querySelectorAll('.foto-div');
     const count = elements.length;
     if(count > 1){
@@ -254,12 +254,8 @@ function enviarNota(){
     let fileNameFoto = fotografia.substring(fotografia.lastIndexOf('\\') + 1);
 
     let randomFolio = Date.now();
-        
-
-        //INFO: Agregar la fetch aqui lo que sigue abajo agregarlo en el response del fetch
-        //se enviaran todas las variables y los arrays de fotos y archivos
-
-
+    //INFO: Agregar la fetch aqui lo que sigue abajo agregarlo en el response del fetch
+    //se enviaran todas las variables y los arrays de fotos y archivos
     if(nota!==""){
         dataTableListNotas.push( 
         	 { status: 'abierta', name: 'Carlos Sánchez', fechaHoraApertura: '2024-05-11 16:50', fechaHoraCierre: '2024-05-11 16:50', note: nota,folio:7, fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: comentario })

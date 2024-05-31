@@ -81,12 +81,12 @@ const dataTable2 = [
 
 //-----TABLES
 function drawTable(id, columnsData, tableData,){
-  var  table = new Tabulator("#" + id, {
-    layout:"fitDataTable",
-    data:tableData,
-    textDirection:"ltr",
-    columns:columnsData,
-    pagination:true, 
-    paginationSize:40,
-  });
+    var  table = new Tabulator("#" + id, {
+	    layout:"fitDataTable",
+	    data:tableData,
+	    textDirection:"ltr",
+	    columns:columnsData,
+	    pagination:true, 
+	    paginationSize:40,
+    });
 }

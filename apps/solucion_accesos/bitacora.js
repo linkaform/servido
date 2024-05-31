@@ -1,32 +1,18 @@
-//-----Variables
 let selectLocation;
 
-document.addEventListener("DOMContentLoaded", (event) => {
-	
-})
-
 window.onload = function(){
-    console.log("hi")
-	
 	setValueUserLocation('bitacora');
 	console.log(getValueUserLocation())
 	changeButtonColor();
-
 	fillCatalogs();
-
 	selectLocation= document.getElementById("selectLocation")
 	selectLocation.onchange = function() {
-        console.log("La selección ha cambiado");
         let response = fetchOnChangeLocation()
-        console.log(response.data)
     };
- selectCaseta= document.getElementById("selectCaseta")
+ 	selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = function() {
-        console.log("La selección ha cambiado");
         let response = fetchOnChangeLocation()
-        console.log('hiii',response.data)
     };
-
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
 	if(user !='' && jw!=''){
@@ -38,8 +24,7 @@ window.onload = function(){
 }
 
 
-
-//-----MODALS
+//FUNCION para abrir modales
 function setModal(type = 'none',id){
 	if(type == 'Tools'){
 		$('#itemsModal').modal('show');
@@ -57,9 +42,7 @@ function setModal(type = 'none',id){
 }
 
 
-
-
-//---Close Sesión
+//---Cerrar Sesión
 function setCloseSession(argument) {
 	closeSession();
 	redirectionUrl('login',false);

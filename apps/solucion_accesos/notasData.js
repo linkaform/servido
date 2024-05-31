@@ -21,7 +21,6 @@ const columnsTableListNotas = [
 			divActions += `<button class="btn-table-bitacora" data-bs-toggle="modal" data-bs-target="#editarNotasModal" id="buttonEditarNotas"  ><i class="fa-regular fa-edit"></i></button>`;
 			divActions += '</div>';
 			return divActions;
-			//`<button  class="btn-table-bitacora" onClick="setModal('Tools',${folio})"><i class="fa-solid fa-car"></i></button> `;
 		},
 	},
 	{ title:"Estatus", field:'status',hozAlign:"left",headerFilter:true,width:100},

@@ -22,9 +22,7 @@
 <body>
 	<navbar-component ></navbar-component>
 <section>
-	
 	<section class="mainSection mainSectionMargins">
-
 		<div class="row justify-content-between">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4 ">
 				<div class="card m-2 div-card-portal  customShadow">
@@ -136,9 +134,9 @@
 				<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoRecorrido" id="buttonNuevoRecorrido"><i class="fa-solid fa-plus"></i>Nuevo recorrido</button>
 				<button type="button" class="btn btn-success"><i class="fa-solid fa-file-arrow-down"></i>Descargar</button>
 			</div>
-		</div>
-		
+		</div>	
 	</section>
+    
 	<nav class="mainSectionMargins">
 	  <div class="nav nav-tabs" id="nav-tab" role="tablist">
 	    <button class="nav-link active" id="nav-pendientes-tab" data-bs-toggle="tab" data-bs-target="#nav-pendientes" type="button" role="tab" aria-controls="nav-menu" aria-selected="true">Pendientes</button>
@@ -163,145 +161,144 @@
         </div>
 </section>
 
-    <div class="modal fade" id="modalNuevoRecorrido" tabindex="-1"  aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Nuevo recorrido</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Ubicacion *</label>
-                               <select class="form-control" id="inputUbicacion">
-                                  <option>1</option>
-                                  <option>2</option>
-                                  <option>3</option>
-                                  <option>4</option>
-                                  <option>5</option>
-                                </select>
-                        </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Fecha *</label>
-                             <input id="startDate" class="form-control" type="date" />
-
-                               <label class="form-label">Hora *</label>
-                               <input type="time" class="form-control" value="10:05 AM" />
-                        </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Nombre del Guardia *</label>
-                             <input id="startDate" class="form-control" type="date" />
-                        </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Comentario *</label>
-                              <textarea class="form-control" id="inputComentarioNota" rows="3" placeholder="Escribe algo..."></textarea>
-                        </div>
+<div class="modal fade" id="modalNuevoRecorrido" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Nuevo recorrido</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Ubicacion *</label>
+                           <select class="form-control" id="inputUbicacion">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                            </select>
                     </div>
-                        
-                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Fecha *</label>
+                         <input id="startDate" class="form-control" type="date" />
+
+                           <label class="form-label">Hora *</label>
+                           <input type="time" class="form-control" value="10:05 AM" />
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Nombre del Guardia *</label>
+                         <input id="startDate" class="form-control" type="date" />
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Comentario *</label>
+                          <textarea class="form-control" id="inputComentarioNota" rows="3" placeholder="Escribe algo..."></textarea>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="enviarNota()">Seleccionar</button>
-                </div>
+                    
+                <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="enviarNota()">Seleccionar</button>
             </div>
         </div>
     </div>
+</div>
 
 <div class="modal fade" id="modalEditarRecorrido" tabindex="-1"  aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Editar recorrido</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Ubicacion *</label>
-                               <select class="form-control" id="inputUbicacionEdit">
-                                  <option>1</option>
-                                  <option>2</option>
-                                  <option>3</option>
-                                  <option>4</option>
-                                  <option>5</option>
-                                </select>
-                        </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Fecha *</label>
-                             <input id="inputDateEdit" class="form-control" type="date" />
-
-                               <label class="form-label">Hora *</label>
-                               <input type="time" id="inputHourEdit" class="form-control" value="10:05 AM" />
-                        </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Nombre del Guardia *</label>
-                               <select class="form-control" id="inputNombreGuardiaEdit">
-                                  <option>1</option>
-                                  <option>2</option>
-                                  <option>3</option>
-                                  <option>4</option>
-                                  <option>5</option>
-                                </select>
-                            <label class="form-label">Punto del recorrido *</label>
-                            <input type="text" id="inputPuntoRecorrido" class="form-control"/>
-                        </div>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Editar recorrido</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Ubicacion *</label>
+                           <select class="form-control" id="inputUbicacionEdit">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                            </select>
                     </div>
-                        
-                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Fecha *</label>
+                         <input id="inputDateEdit" class="form-control" type="date" />
+
+                           <label class="form-label">Hora *</label>
+                           <input type="time" id="inputHourEdit" class="form-control" value="10:05 AM" />
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Nombre del Guardia *</label>
+                           <select class="form-control" id="inputNombreGuardiaEdit">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                            </select>
+                        <label class="form-label">Punto del recorrido *</label>
+                        <input type="text" id="inputPuntoRecorrido" class="form-control"/>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="onCLickEditarRecorrido()">Seleccionar</button>
-                </div>
+                    
+                <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="onCLickEditarRecorrido()">Seleccionar</button>
             </div>
         </div>
     </div>
-
+</div>
 
 <div class="modal fade" id="modalFinalizarRecorrido" tabindex="-1"  aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Finalizar recorrido</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Fecha *</label>
-                             <input id="inputDateFinalizarRecorrido" class="form-control" type="date" />
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Finalizar recorrido</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Fecha *</label>
+                         <input id="inputDateFinalizarRecorrido" class="form-control" type="date" />
 
-                               <label class="form-label">Hora *</label>
-                               <input type="time" id="inputHoraFinalizarRecorrido" class="form-control" value="10:05 AM" />
-                        </div>
-                        <hr>
-                          <div class="mb-3 col-12">
-                            <label class="form-label">Comentarios *</label>
-                              <textarea class="form-control" id="inputComentarioFinalizarRecorrido" rows="3" placeholder="Escribe algo..."></textarea>
-                        </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Firma del guardia *</label>
-                            <input type="text" id="inputFirmaGuardiaFinalizarG" class="form-control"/>
-                        </div>
+                           <label class="form-label">Hora *</label>
+                           <input type="time" id="inputHoraFinalizarRecorrido" class="form-control" value="10:05 AM" />
                     </div>
-                        
-                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+                    <hr>
+                      <div class="mb-3 col-12">
+                        <label class="form-label">Comentarios *</label>
+                          <textarea class="form-control" id="inputComentarioFinalizarRecorrido" rows="3" placeholder="Escribe algo..."></textarea>
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Firma del guardia *</label>
+                        <input type="text" id="inputFirmaGuardiaFinalizarG" class="form-control"/>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="onCLickFinalizarRecorrido()">Seleccionar</button>
-                </div>
+                    
+                <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="onCLickFinalizarRecorrido()">Seleccionar</button>
             </div>
         </div>
     </div>
+</div>
 
 
 </body>
 <!-- Jquery -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
- <script type="text/javascript" src="../utils/servido_utils.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="../utils/servido_utils.js"></script>
 <script type="text/javascript" src="./functions.js"></script>
 <script  type="text/javascript" src="./components/navbar.js"></script>
 <script  type="text/javascript" src="./components/locationCard.js"></script>

@@ -1,31 +1,15 @@
-
-document.addEventListener("DOMContentLoaded", (event) => {
-	
-
-
-})
-
 window.onload = function(){
-    console.log("hi")
-	
 	setValueUserLocation('incidencias');
-
 	changeButtonColor();
-
 	fillCatalogs();
-
 	setValueUserLocation('incidencias');
 	selectLocation= document.getElementById("selectLocation")
 	selectLocation.onchange = function() {
-        console.log("La selección ha cambiado");
         let response = fetchOnChangeLocation()
-        console.log(response.data)
     };
-     selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = function() {
-        console.log("La selección ha cambiado");
         let response = fetchOnChangeLocation()
-        console.log('hiii',response.data)
     };
 	setSpinner(true, 'divSpinner');
 	let user = getCookie("userId");
@@ -33,17 +17,13 @@ window.onload = function(){
 	if(user !='' && jw!=''){
 		drawTable('tableIncidencias', columsData1, dataTable1);
 		drawTable('tableFallas', columsData2, dataTable2);
-
 	}else{
 		redirectionUrl('login',false)
 	}
-
-
-
 }
 
 
-
+//FUNCION al momento de cambiar la caseta o la locacion para traer el resto de informacion sobre la caseta
 function fetchOnChangeLocation(){
     //INFO: al momento de seleccionar una nueva location se manda la informacion junto con el 
     //resultado de la fetch a la pagina que lo esta solicitando
@@ -51,18 +31,18 @@ function fetchOnChangeLocation(){
     let selectCaseta= document.getElementById("selectCaseta")
     let response=
     {"data":{
-         "caseta":{
-            "name": selectLocation.value,
-            "location": selectCaseta.value,
-            "visitsDay":15,
-            "personalInside":75,
-            "vehiclesInside":25,
-            "ouputs":30
+        "caseta":{
+        "name": selectLocation.value,
+        "location": selectCaseta.value,
+        "visitsDay":15,
+        "personalInside":75,
+        "vehiclesInside":25,
+        "ouputs":30
         }
     }};
 
     //FETCH AQUI 
-      fetch(url + urlScripts, {
+    fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: idScript,
@@ -70,10 +50,9 @@ function fetchOnChangeLocation(){
             email : 'guardia1@linkaform.com'
         }),
         headers:{
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+jw
-
-            },
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+jw
+        },
     })
     .then(res => res.json())
     .then(res => {
@@ -85,12 +64,7 @@ function fetchOnChangeLocation(){
 }
 
 
-
-
-
-
-
-//-----MODALS
+//FUNCION para mostrar los modales
 function setModal(type = 'none',id){
 	if(type == 'NewIncident'){
 		$('#newIncidentModal').modal('show');

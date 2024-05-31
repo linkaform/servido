@@ -1,5 +1,5 @@
-var userActualPage=''; //nombres de las paginas
-var userStatusTurn=''; //'on', 'off'
+var userActualPage=''; 
+var userStatusTurn=''; 
 
 function setValueUserLocation(txt){
 	userActualPage=txt;
@@ -18,13 +18,13 @@ function setStatusTurn(txt){
 
 //-----TABLES
 function drawTable(id, columnsData, tableData,){
-  var  table = new Tabulator("#" + id, {
-    layout:"fitDataTable",
-    data:tableData,
-    textDirection:"ltr",
-    columns:columnsData,
-    pagination:true, 
-    paginationSize:40,
+    var  table = new Tabulator("#" + id, {
+        layout:"fitDataTable",
+        data:tableData,
+        textDirection:"ltr",
+        columns:columnsData,
+        pagination:true, 
+        paginationSize:40,
   });
 }
 
