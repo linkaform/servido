@@ -19,12 +19,9 @@
 
 </head>
 <body>
-<navbar-component ></navbar-component>
-    <!-- Title -->
-    <!-- Information Plant-->
-<section class="mainSection">       
+    <navbar-component ></navbar-component>
+    <section class="mainSection">       
         <div class="row d-flex justify-content-center align-items-end m-0 p-0" >
-
             <div class="col-sm-6 col-md-6 col-lg-6 col-xl-4 ml-9 p-0 " >        
                 <div class="card m-2  mb-0 ms-0 pl-0 " style="border:none;">
                     <div class="card-body m-0 customCard">
@@ -32,26 +29,24 @@
                             <div class="col-4 text-center">
                                 <img src="" height="100px" width="100px" class="d-inline-block rounded-circle" alt="" id="imgProfilePic"><br>
                                 <input style="display:none" type='file' accept="image/*" id='changeImageInputFile'/>
-                                <button type="button" class="btn btn-success btn-sm m-2 " id="buttonChangeImage" onclick='changeImageGuard()' >Cambiar Imagen</button>
+                                <button type="button" class="btn btn-success btn-sm m-2 " id="buttonChangeImage" onclick='changeImageGuard()' >Cambiar Imagen
+                                </button>
                             </div>
                             <div class="col-8">
                                 <h5 class="card-title text-dark mb-0 " id="textName"> </h5>
                                 <small class="text-black" id="textPosition" > </small><br>
                                 <small class="text-black" id="textEmail" > </small>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="col-sm-6 col-md-6 col-lg-6 col-xl-5 mt-2 ms-4">
                 <div class="d-flex justify-content-end m-0 p-0" >
                     <div class="buttonIniciarTurno m-0 p-0 mb-4">
                         <button type="button" class="btn " id="buttonChangeStatusTurn" onclick="AlertAndActionChangeStatusTurn()"> </button>
                     </div>
                 </div>
-                
                 <div class="d-flex">
                     <div class="flex-grow-1"> <!--ocupa todo el espacio disponible y los demas elementos solo lo necesario-->
                         <b>Notas</b>
@@ -64,126 +59,126 @@
                 </div>
                 <div id="tableNotas"></div>
             </div>
-        </div>
-        <div class="row d-flex flex-row mt-5 justify-content-center mb-5">
-            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3 m-1  customShadow h-auto"  >
-                <div class="d-flex ms-1 mt-3">
-                    <div class="flex-grow-1">
-                        <b>Informacion de ubicacion:</b>
-                    </div>
-                    <div >
-                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#cambiarCasetaModal" id="buttonCambiarCaseta"
-                        >Cambiar Caseta</button>
-                    </div>
-                </div>
-                <table class="table table-borderless mt-3 w-auto" style="border: none;">
-                    <tbody>
-                        <tr>
-                            <td><b>Ubicacion:</b></td>
-                            <td> <span id="textUbicacion"> </span></td>
-                        </tr>
-                        <tr>
-                            <td><b>Cuidad:</b></td>
-                            <td><span id="textCuidad"> </span></td>
-                        </tr>
-                        <tr>
-                            <td><b>Estado:</b></td>
-                            <td><span id="textEstado"> </span></td>
-                        </tr>
-                        <tr>
-                            <td><b>Direccion:</b></td>
-                            <td><span id="textDireccion"> </span></td>
-                        </tr>
-                        <tr>
-                            <td><b>Caseta:</b></td>
-                            <td><span id="textCaseta"> </span></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr>
-                <table class="table table-borderless mt-3 w-auto" style="border: none;">
-                    <tbody>
-                        <tr>
-                            <td><b>Estatus de la caseta: </b></td>
-                            <td> <span id="textEstatusCaseta"> </span></td>
-                        </tr>
-                     
-                        <tr>
-                            <td><b>Guardia en turno:</b></td>
-                            <td><span id="textGuardiaEnTurno"> </span></td>
-                        </tr>
-                           <tr>
-                            <td><b>Fecha de inicio de turno: </b></td>
-                            <td> <span id="textFechaInicioCaseta"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-danger btn-sm" onclick="AlertForzarCierre(getCookie('userCasetaGuard'))" id="buttonForzarCierre">Forzar Cierre</button>
-                </div>
             </div>
-            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3 m-1 " >
-                <div class="row d-flex flex-row  customShadow" >
-                    <div class=" mt-3 ms-2">
-                        <b>Informacion de ingreso:</b>
+            <div class="row d-flex flex-row mt-5 justify-content-center mb-5">
+                <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3 m-1  customShadow h-auto"  >
+                    <div class="d-flex ms-1 mt-3">
+                        <div class="flex-grow-1">
+                            <b>Informacion de ubicacion:</b>
+                        </div>
+                        <div >
+                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#cambiarCasetaModal" id="buttonCambiarCaseta"
+                            >Cambiar Caseta</button>
+                        </div>
                     </div>
-                    <table class="table table-borderless mt-3 ms-2 w-auto" style="border: none;  height: 100px;">
+                    <table class="table table-borderless mt-3 w-auto" style="border: none;">
                         <tbody>
                             <tr>
-                                <td><b>Fecha:</b></td>
-                                <td id="todayDateText"> </td>
+                                <td><b>Ubicacion:</b></td>
+                                <td> <span id="textUbicacion"> </span></td>
                             </tr>
                             <tr>
-                                <td><b>Hora:</b></td>
-                                <td id="todayHourText"> </td>
+                                <td><b>Cuidad:</b></td>
+                                <td><span id="textCuidad"> </span></td>
                             </tr>
                             <tr>
-                                <td><b>Estatus:</b></td>
-                                <td id='statusTurnText'> </td>
+                                <td><b>Estado:</b></td>
+                                <td><span id="textEstado"> </span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Direccion:</b></td>
+                                <td><span id="textDireccion"> </span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Caseta:</b></td>
+                                <td><span id="textCaseta"> </span></td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class="row d-flex flex-row customShadow mt-2 ">
-                    <div class=" mt-3 ms-2">
-                        <b> <span id= 'textInfActualCaseta'></span></b>
-                    </div>
-                    <table class="table table-borderless mt-3 ms-2 w-auto h-auto" style="border: none; height: 260px!important;">
+                    <hr>
+                    <table class="table table-borderless mt-3 w-auto" style="border: none;">
                         <tbody>
                             <tr>
-                                <td><i class="fa fa-users" ></i> <b> Personal dentro:</b></td>
-                                <td><span id="textPersonalDentro"> </span></td>
+                                <td><b>Estatus de la caseta: </b></td>
+                                <td> <span id="textEstatusCaseta"> </span></td>
                             </tr>
+                         
                             <tr>
-                                <td><i class="fa fa-th" ></i> <b> Articulos consesionados:</b></td>
-                                <td><span id="textArticulosConsesionados"> </span></td>
+                                <td><b>Guardia en turno:</b></td>
+                                <td><span id="textGuardiaEnTurno"> </span></td>
                             </tr>
-                            <tr>
-                                <td><i class="fa fa-question-circle" ></i> <b> Incidentes pedientes:</b></td>
-                                <td><span id="textIncidentesPendientes"> </span></td>
-                            </tr>
-                            <tr>
-                                <td><i class="fa fa-car" ></i> <b> Vehiculos estacionados:</b></td>
-                                <td><span id="textVehiculosEstacionados"> </span></td>
-                            </tr>
-                            <tr>
-                                <td><i class="fa fa-id-card" ></i> <b> Gafetes pendientes:</b></td>
-                                <td><span id="textGafetesPendientes"> </span></td>
+                               <tr>
+                                <td><b>Fecha de inicio de turno: </b></td>
+                                <td> <span id="textFechaInicioCaseta"></span></td>
                             </tr>
                         </tbody>
                     </table>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="AlertForzarCierre(getCookie('userCasetaGuard'))" id="buttonForzarCierre">Forzar Cierre</button>
+                    </div>
                 </div>
+                <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3 m-1 " >
+                    <div class="row d-flex flex-row  customShadow" >
+                        <div class=" mt-3 ms-2">
+                            <b>Informacion de ingreso:</b>
+                        </div>
+                        <table class="table table-borderless mt-3 ms-2 w-auto" style="border: none;  height: 100px;">
+                            <tbody>
+                                <tr>
+                                    <td><b>Fecha:</b></td>
+                                    <td id="todayDateText"> </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Hora:</b></td>
+                                    <td id="todayHourText"> </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Estatus:</b></td>
+                                    <td id='statusTurnText'> </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row d-flex flex-row customShadow mt-2 ">
+                        <div class=" mt-3 ms-2">
+                            <b> <span id= 'textInfActualCaseta'></span></b>
+                        </div>
+                        <table class="table table-borderless mt-3 ms-2 w-auto h-auto" style="border: none; height: 260px!important;">
+                            <tbody>
+                                <tr>
+                                    <td><i class="fa fa-users" ></i> <b> Personal dentro:</b></td>
+                                    <td><span id="textPersonalDentro"> </span></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-th" ></i> <b> Articulos consesionados:</b></td>
+                                    <td><span id="textArticulosConsesionados"> </span></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-question-circle" ></i> <b> Incidentes pedientes:</b></td>
+                                    <td><span id="textIncidentesPendientes"> </span></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-car" ></i> <b> Vehiculos estacionados:</b></td>
+                                    <td><span id="textVehiculosEstacionados"> </span></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-id-card" ></i> <b> Gafetes pendientes:</b></td>
+                                    <td><span id="textGafetesPendientes"> </span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3 m-1 styleTable " >
+                    <div id="tableGuardiasApoyo"></div>
+                    <div class="d-flex justify-content-end align-items-end mt-4">
+                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#agregarGuardiaApoyoModal" id="buttonGuardiaApoyoModal">Agregar guardia de apoyo</button>
+                    </div>
+                </div>  
             </div>
-            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3 m-1 styleTable " >
-                <div id="tableGuardiasApoyo"></div>
-                <div class="d-flex justify-content-end align-items-end mt-4">
-                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#agregarGuardiaApoyoModal" id="buttonGuardiaApoyoModal">Agregar guardia de apoyo</button>
-                </div>
-            </div>  
-        </div>
-            
     </section>
-        <!-- Modal New Incident -->
+
+    <!-- Modales -->
     <div class="modal fade" id="cambiarCasetaModal" tabindex="-1"  aria-hidden="true" >
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 750px;">
             <div class="modal-content">
@@ -200,7 +195,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="cambiarCaseta()">Agregar</button>
+                    <button type="button" class="btn btn-success" onclick="cambiarCaseta()">Seleccionar</button>
                 </div>
             </div>
         </div>
@@ -260,8 +255,8 @@
         </div>
     </div>
 
-     <div class="modal fade" id="agregarGuardiaApoyoModal" tabindex="-1"  aria-hidden="true">
-         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 550px;">
+    <div class="modal fade" id="agregarGuardiaApoyoModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 550px;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">Agregar guardia de apoyo</h1>
@@ -282,15 +277,14 @@
         </div>
     </div>
 
-
 </body>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-
- <script type="text/javascript" src="../utils/servido_utils.js"></script>
+<script type="text/javascript" src="../utils/servido_utils.js"></script>
 <script src="./functions.js"></script>
 <script  type="text/javascript" src="./components/navbar.js"></script>
 <script  type="text/javascript" src="./components/locationCard.js"></script>
+<script src="./turnosData.js"></script>
 <script src="./turnos.js"></script>
 
 <!-- Tabulator -->

@@ -27,21 +27,17 @@
 			</div>
 		</div>
 	</section>
-
-
 	
 	<!-- Information Plant-->
 	<section class="mainSectionMargins">
 		<div class="row ">
-
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
 				<div class="card m-2 div-card-portal customShadow">
 				    <locationcard-component> </locationcard-component>
 				</div>
 			</div>
-			
 			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-				<div class="card  m-2 div-card-portal">
+				<div class="card  m-2 div-card-portal customShadow">
 				    <div class="card-body p-3">
 				        <div class="d-flex justify-content-evenly">
 			           		<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert1">00</p>
@@ -52,7 +48,7 @@
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-				<div class="card  m-2 div-card-portal">
+				<div class="card  m-2 div-card-portal customShadow">
 				    <div class="card-body p-3">
 				        <div class="d-flex justify-content-evenly">
 			            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert2">00</p>
@@ -63,20 +59,18 @@
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-				<div class="card  m-2 div-card-portal">
+				<div class="card  m-2 div-card-portal customShadow">
 				    <div class="card-body p-3">
 				        <div class="d-flex justify-content-evenly">
 			            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert3">00</p>
 			            	<i class="fa-solid fa-car" style="font-size: 40px;"></i>
 			            </div>
 			            <h5 class="card-title text-center text-uppercase text-dark">Vehículos Dentro</h5>
-			           
-				        
 				    </div>
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-				<div class="card  m-2 div-card-portal">
+				<div class="card  m-2 div-card-portal customShadow">
 				    <div class="card-body p-3">
 				        <div class="d-flex justify-content-evenly">
 			            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert4">00</p>
@@ -124,8 +118,6 @@
 					</div>
 				</div>
 			</div>
-		
-			
 		</div>
 	</section>
 
@@ -369,10 +361,10 @@
 						</div>
 						<div class="col-sm-12 col-md-6 col-lg-6 ">
 							<h4>Comentarios / Instrucciones de visita</h4>
-							<table>
-								<thead>
+							<table class="table-borderless customShadow" style="border: none;">
+								<thead >
 									<tr>
-										<th>Comentarios / Instrucciones</th>
+										<th class="headerColor">Comentarios / Instrucciones</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -388,11 +380,11 @@
 					</div>
 					<div class="col-sm-12 col-md-12 col-lg-12 p-2">
 						<h4>Accesos permitidos</h4>
-						<table>
+						<table class="table-borderless customShadow" style="border: none;">
 							<thead>
 								<tr>
-									<th>Area</th>
-									<th>...</th>
+									<th class="headerColor">Area</th>
+									<th class="headerColor">...</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -410,14 +402,14 @@
 					</div>
 					<div class="col-sm-12 col-md-12 col-lg-12 p-2">
 						<h4>Equipo</h4>
-						<table>
+						<table class="table-borderless customShadow" style="border: none;">
 							<thead>
 								<tr>
-									<th>Tipo</th>
-									<th>Marca</th>
-									<th>Modelo</th>
-									<th>Serie</th>
-									<th>COlor</th>
+									<th class="headerColor">Tipo</th>
+									<th class="headerColor">Marca</th>
+									<th class="headerColor">Modelo</th>
+									<th class="headerColor">Serie</th>
+									<th class="headerColor">COlor</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -440,14 +432,14 @@
 					</div>
 					<div class="col-sm-12 col-md-12 col-lg-12 p-2">
 						<h4>Accesos permitidos</h4>
-						<table>
+						<table class="table-borderless customShadow" style="border: none;">
 							<thead>
 								<tr>
-									<th>Marca</th>
-									<th>Modelo</th>
-									<th>COlor</th>
-									<th>Placas</th>
-									<th>Estado</th>
+									<th class="headerColor">Marca</th>
+									<th class="headerColor">Modelo</th>
+									<th class="headerColor">COlor</th>
+									<th class="headerColor">Placas</th>
+									<th class="headerColor">Estado</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -461,13 +453,6 @@
 							</tbody>
 						</table>
 					</div>
-
-
-
-
-
-
-
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -476,7 +461,6 @@
 			</div> 
 		</div>
 	</div>
-
 
 	<!-- Modal Out-->
 	<div class="modal fade" id="deliverModal" tabindex="-1"  aria-hidden="true">
@@ -503,13 +487,13 @@
 
 </body>
 <!-- Local -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>\
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>\
 
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
 <script type="text/javascript" src="./functions.js"></script>
 <script  type="text/javascript" src="./components/locationCard.js"></script>
 <script  type="text/javascript" src="./components/navbar.js"></script>
-
+<script type="text/javascript" src="./bitacoraData.js"></script>
 <script type="text/javascript" src="./bitacora.js"></script>
 
 <!-- Jquery -->

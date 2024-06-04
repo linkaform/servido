@@ -20,10 +20,8 @@
 <body>
 	<navbar-component ></navbar-component>
 <section>
-
 		<!-- Information Plant-->
 	<section class="mainSection mainSectionMargins">
-
 		<div class="row justify-content-between">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4 ">
 				<div class="card m-2 div-card-portal  customShadow">
@@ -61,8 +59,6 @@
 			            	<i class="fa-solid fa-car" style="font-size: 40px;"></i>
 			            </div>
 			            <h5 class="card-title text-center text-uppercase text-dark">Notas Estancadas</h5>
-			           
-				        
 				    </div>
 				</div>
 			</div>
@@ -80,21 +76,21 @@
 				<input class="form-control ds-input" type="date">
 			</div>
 				<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-				<h5>Estatus: </h5>
-				<select class="form-control ds-input">
-				<option value="--">--Seleccione--</option>
-				<option value="--">Ubicación 1</option>
-				<option value="--">Ubicación 2</option>
-				<option value="--">Ubicación 3</option>
-				<option value="--">Ubicación 4</option>
-				<option value="--">Ubicación 5</option>
-				</select>
-			</div>
+    				<h5>Estatus: </h5>
+    				<select class="form-control ds-input">
+    				<option value="--">--Seleccione--</option>
+    				<option value="--">Ubicación 1</option>
+    				<option value="--">Ubicación 2</option>
+    				<option value="--">Ubicación 3</option>
+    				<option value="--">Ubicación 4</option>
+    				<option value="--">Ubicación 5</option>
+    				</select>
+    			</div>
 			<div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 offset-md-9 offset-lg-9 offset-xl-9 mt-2">
 				<button type="button" class="btn btn-secondary btn-sm">Filtrar</button>
 				<button type="button" class="btn btn-secondary btn-sm">Restablecer Filtros</button>
 			</div>
-			</div>
+		</div>
 		<div class="mt-3  justify-content-end">
 			<div class="col-3">
 				<button type="button" class="btn btn-primary button-sm" data-bs-toggle="modal" data-bs-target="#agregarNotasModal" id="buttonAgregarNotas"><i class="fa-solid fa-plus"></i>Nueva Nota</button>
@@ -104,79 +100,131 @@
 		</div>
 	</section>
 
-	    <div class="modal fade" id="editarNotasModal" tabindex="-1"  aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 500px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Editar nota</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Nota *</label>
-                              <textarea class="form-control" id="inputNotaEditar" rows="3" placeholder="Escribe algo..."></textarea>
-                        </div>
-                         <div id="archivo-input-form">
-                            <div class="mb-3 col-12 archivo-div div-archivo-123">
-                                <label class="form-label">Cargar un archivo </label>
-                                <input type="file" class="form-control-file " id="fileInputArchivo">
-                                <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(123);return false;">
-                                    <i class="fa-solid fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                       <div id="foto-input-form">
-                            <div class="mb-3 col-12 foto-div div-foto-123">
-                                <label class="form-label">Fotografia </label>
-                                <input type="file" class="form-control-file " id="fileInputFotografia">
-                                <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(123);return false;">
-                                    <i class="fa-solid fa-minus"></i>
-                                </button>
-                        </div>
+    <div class="modal fade" id="agregarNotasModal" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Agregar notas</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Nota *</label>
+                          <textarea class="form-control" id="commentTextarea" rows="3" placeholder="Escribe algo..."></textarea>
+                    </div>
+                     <div id="archivo-input-form">
+                        <div class="mb-3 col-12 archivo-div div-archivo-123">
+                            <label class="form-label">Cargar un archivo *</label>
+                            <input type="file" class="form-control-file " id="fileInputArchivo">
+                            <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(123);return false;">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
                         </div>
                     </div>
-                    
-                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+                   <div id="foto-input-form">
+                        <div class="mb-3 col-12 foto-div div-foto-123">
+                            <label class="form-label">Fotografia *</label>
+                            <input type="file" class="form-control-file " id="fileInputFotografia">
+                            <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(123);return false;">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Comentario *</label>
+                          <textarea class="form-control" id="inputComentarioNota" rows="3" placeholder="Escribe algo..."></textarea>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="editarNota()">Enviar</button>
-                </div>
+                <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="enviarNota()">Enviar</button>
             </div>
         </div>
-  	    <div id="archivo-input-form">
+    </div>
+  	<div id="archivo-input-form">
         <div class="mb-3 col-12 archivo-div div-archivo-123"> 
-        <label class="form-label">Cargar un archivo *</label>
+            <label class="form-label">Cargar un archivo *</label>
             <input type="file" class="form-control-file " id="fileInputArchivo">
             <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
                 <i class="fa-solid fa-plus"></i>
             </button>
             <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(123);return false;">
                 <i class="fa-solid fa-minus"></i>
-                </button>
-            </div>
-            </div>
-                        
-            <div id="foto-input-form">
-                <div class="mb-3 col-12 foto-div div-foto-123">
-                    <label class="form-label">Fotografia *</label>
-                    <input type="file" class="form-control-file " id="fileInputFotografia">
-                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(123);return false;">
-                    <i class="fa-solid fa-minus"></i>
-                    </button>
+            </button>
         </div>
+    </div>
+                        
+    <div id="foto-input-form">
+        <div class="mb-3 col-12 foto-div div-foto-123">
+            <label class="form-label">Fotografia *</label>
+            <input type="file" class="form-control-file " id="fileInputFotografia">
+            <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(123);return false;">
+            <i class="fa-solid fa-minus"></i>
+            </button>
+        </div>
+    </div>
 
+    <div class="modal fade" id="editarNotasModal" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Editar notas</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Nota *</label>
+                          <textarea class="form-control" id="commentTextarea" rows="3" placeholder="Escribe algo..."></textarea>
+                    </div>
+                     <div id="archivo-input-form">
+                        <div class="mb-3 col-12 archivo-div div-archivo-123">
+                            <label class="form-label">Cargar un archivo *</label>
+                            <input type="file" class="form-control-file " id="fileInputArchivo">
+                            <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(123);return false;">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                   <div id="foto-input-form">
+                        <div class="mb-3 col-12 foto-div div-foto-123">
+                            <label class="form-label">Fotografia *</label>
+                            <input type="file" class="form-control-file " id="fileInputFotografia">
+                            <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(123);return false;">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Comentario *</label>
+                          <textarea class="form-control" id="inputComentarioNota" rows="3" placeholder="Escribe algo..."></textarea>
+                    </div>
+                </div>
+                <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="enviarNota()">Enviar</button>
+            </div>
+        </div>
     </div>
 </section>
 </body>
@@ -192,6 +240,7 @@
  
  <script  type="text/javascript" src="./components/locationCard.js"></script>
 <script  type="text/javascript" src="./components/navbar.js"></script>
+ <script type="text/javascript" src="./notasData.js"></script>
  <script type="text/javascript" src="./notas.js"></script>
 
 <!-- Bootstrap -->
