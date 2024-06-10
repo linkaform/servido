@@ -55,7 +55,8 @@ function getInfoCatalogs(){
         "incident":["Acceso no autorizado", "Fallo de energia", "Incidencia 3"],
         "report":["Miguel Perez","Manuel Gonzales","Erik Lopez"],
         "department":["Seguridad","Departamento 2","Departamento 3"],
-        "responsable":["Jose Patricio","Josue de Jesus","Karina Moreno"]
+        "responsable":["Jose Patricio","Josue de Jesus","Karina Moreno"],
+        "articulos":{"visits_per_day": 15,"staff_indoors":20,"vehicles_inside":13,"registered_exits":14},
     }
 	  dataCatalogs.location.forEach(function(e, i){
         $("#idUbicacionArticles").append($('<option></option>').val(e).text(e));
@@ -170,13 +171,15 @@ function nuevoArticulo(type){
             text: "Incidencia creada correctamente.",
             type: "success"
         });
+        console.log("DATAAA", data)
         let folioRandom = Date.now();
-        dataTableArticles = dataTableArticles.concat({"comment": data.comentariosNuevaIncidencia, "date": data.fechaNuevaIncidencia, "dept": data.departamentoNuevaIncidencia, 
-        "folio": folioRandom, "incident": data.incidenciaNuevaIncidencia, "location": data.ubicacionNuevaIncidencia, "place_accident": data.lugarNuevaIncidencia, 
-        "report": data.reportaNuevaIncidencia, "time": data.timeNuevaIncidencia});
+        dataTableArticles = dataTableArticles.concat({"location": data.idNuevoArticuloUbicacion, "date": data.idNuevoArticuloFecha, "time": data.idNuevoArticuloHora, 
+        "folio": folioRandom, "type": data.idNuevoArticuloTipo, "img": data.idNuevoArticuloFoto, "num_serie": data.idNuevoArticuloSerie, 
+        "reporta": data.idNuevoArticuloEntrega, "comment": data.idNuevoArticuloComentarios, "recibe":data.idNuevoArticuloRecibe, "date_out":data.idNuevoArticuloFecha, 
+        "location":data.idNuevoArticuloUbicacion, "status":"Abierto"});
 
         tables["tableArticles"].setData(dataTableArticles);
-        $("#newIncidentModal").modal('hide')
+        $("#newArticleModal").modal('hide')
     }
 }
 

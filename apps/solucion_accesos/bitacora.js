@@ -20,8 +20,8 @@ window.onload = function(){
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
 	if(user !='' && jw!=''){
-		drawTable('tableEntradas',columsData1,dataTable1);
-		drawTable('tableSalidas',columsData2,dataTable2);
+		drawTable('tableEntradas',columsData1,dataTablePersonal);
+		drawTable('tableSalidas',columsData2,dataTableLocker);
 	}else{
 		redirectionUrl('login',false);
 	}
@@ -56,6 +56,7 @@ function setCloseSession(argument) {
 
 
 function alertSalida(folio){
+    console.log(folio)
 		Swal.fire({
 	    title:'¿Estas seguro de confirmar la salida?',
 	    html:`
@@ -72,29 +73,60 @@ function alertSalida(folio){
 	})
 	.then((result) => {
 	    if (result.value) {
+            let selectedSalida = dataTablePersonal.find(n => n.folio == parseInt(folio));
+           
+            if (selectedSalida) {
+                let fecha=  new Date()
+                let año = fecha.getFullYear();
+                let mes = fecha.getMonth() + 1;
+                let dia = fecha.getDate();
+                let horaFormateada = fecha.getHours() + ':' + fecha.getMinutes();
+                let fechaFormateada = dia + '/' + mes + '/' + año + ' ' + horaFormateada;
+                selectedSalida.salida = fechaFormateada;
+                 console.log(dataTablePersonal)
+                tables["tableEntradas"].setData(dataTablePersonal);
+            }
 	    }
 	});
 }
 
 
 function alertGafete(folio){
-	Swal.fire({
-	    title:'¿Está seguro de entregar gafete?',
-	    html:`
-	    <div class="m-1"> Al entregar el gafete, se desocupara el espacio donde se almacenaba y se retiraran los documentos pertienentes </div>`,
-	    type: "warning",
-	    showCancelButton: true,
-        cancelButtonColor: colors[0],
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: colors[1],
-        confirmButtonText: "Si",
-        heightAuto:false,
-        reverseButtons: true
-	})
-	.then((result) => {
-	    if (result.value) {
-	    }
-	});
+    let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
+    if(selectedSalida.status !='Libre'){
+        Swal.fire({
+            title:'¿Está seguro de entregar gafete?',
+            html:`
+            <div class="m-1"> Al entregar el gafete, se desocupara el espacio donde se almacenaba y se retiraran los documentos pertienentes </div>`,
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonColor: colors[0],
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: colors[1],
+            confirmButtonText: "Si",
+            heightAuto:false,
+            reverseButtons: true
+        })
+        .then((result) => {
+            if (result.value) {
+                let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
+                if (selectedSalida) {
+                    selectedSalida.status = 'Libre';
+                    selectedSalida.visit = '';
+                    selectedSalida.document = '';
+                    selectedSalida.location = '';
+                    tables["tableSalidas"].setData(dataTableLocker);
+                }
+            }
+        });
+    }else{
+         Swal.fire({
+            title: "Acción Completada!",
+            text: "Esta locker ya se encuentra liberado.",
+            type: "warning"
+        });
+    }
+	
 }
 
 

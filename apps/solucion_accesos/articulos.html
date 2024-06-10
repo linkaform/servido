@@ -159,59 +159,61 @@
 					<div class="row">
 						<div class="mb-3 col-4">
 							<label class="form-label">Ubicación: *</label>
-							<select class="form-control contentNuevoArticuloLose" >
+							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloUbicacion">
+								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-4">
 							<label class="form-label">Fecha: *</label>
-							<input type="date" class="form-control contentNuevoArticuloLose">
+							<input type="date" class="form-control contentNuevoArticulo" id="idNuevoArticuloFecha">
 						</div>
 						<div class="mb-3 col-4">
 							<label class="form-label">Hora: *</label>
-							<input type="time" class="form-control contentNuevoArticuloLose">
+							<input type="time" class="form-control contentNuevoArticulo" id="idNuevoArticuloHora">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Tipo: *</label>
-							<select class="form-control contentNuevoArticuloLose">
+							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloTipo">
+								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Fotografía del artículo: *</label>
-							<input type="file" class="form-control contentNuevoArticuloLose" id="avatar" accept="image/png, image/jpeg"/>
+							<input type="file" class="form-control contentNuevoArticulo" id="idNuevoArticuloFoto" accept="image/png, image/jpeg"/>
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Seríe/Número/Placa: *</label>
-							<input type="text" class="form-control contentNuevoArticuloLose">
+							<input type="text" class="form-control contentNuevoArticulo" id="idNuevoArticuloSerie">
 						</div>
 
 						<div class="mb-3 col-6">
 							<label class="form-label">Entrega: *</label>
-							<select class="form-control contentNuevoArticuloLose">
+							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloEntrega">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Departamento: *</label>
-							<select class="form-control contentNuevoArticuloLose">
+							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloDepartamento">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Recibe: *</label>
-							<select class="form-control contentNuevoArticuloLose">
+							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloRecibe">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Departamento: *</label>
-							<select class="form-control contentNuevoArticuloLose">
+							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloDepartamento">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
 
 						<div class="mb-3 col-12">
 							<label class="form-label">Comentarios: *</label>
-							<textarea class="form-control contentNuevoArticuloLose"  rows="3"></textarea>
+							<textarea class="form-control contentNuevoArticulo" id="idNuevoArticuloComentarios" rows="3"></textarea>
 						</div>
 					</div>
 					
@@ -219,7 +221,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-warning" onclick="nuevoArticulo('articleLose')">Agregar</button>
+					<button type="button" class="btn btn-warning" onclick="nuevoArticulo('article')">Agregar</button>
 				</div>
 			</div>
 		</div>
@@ -418,41 +420,41 @@
 					<div class="row">
 						<div class="mb-3 col-4">
 							<label class="form-label">Ubicación: *</label>
-							<select class="form-control contentNuevoArticulo">
+							<select class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConUbicacion">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-4">
 							<label class="form-label">Fecha: *</label>
-							<input type="date" class="form-control contentNuevoArticulo">
+							<input type="date" class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConFecha">
 						</div>
 						<div class="mb-3 col-4">
 							<label class="form-label">Hora: *</label>
-							<input type="time" class="form-control contentNuevoArticulo">
+							<input type="time" class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConHora">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Artículo: *</label>
-							<input type="text" class="form-control contentNuevoArticulo">
+							<input type="text" class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConArticulo">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Fotografía del artículo: *</label>
-							<input type="file" class="form-control contentNuevoArticulo" id="avatar" accept="image/png, image/jpeg"/>
+							<input type="file" class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConFoto" accept="image/png, image/jpeg"/>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Reporta: *</label>
-							<select class="form-control contentNuevoArticulo">
+							<select class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConReporta">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Departamento: *</label>
-							<select class="form-control contentNuevoArticulo">
+							<select class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConDepartamento">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Comentarios: *</label>
-							<textarea class="form-control contentNuevoArticulo"  rows="3"></textarea>
+							<textarea class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConComentarios" rows="3"></textarea>
 						</div>
 					</div>
 					
@@ -460,7 +462,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-warning" onclick="nuevoArticulo('article')">Agregar</button>
+					<button type="button" class="btn btn-warning" onclick="nuevoArticulo('articleLose')">Agregar</button>
 				</div>
 			</div>
 		</div>
