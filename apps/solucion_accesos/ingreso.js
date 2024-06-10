@@ -1,5 +1,4 @@
 let userJwt ="";
-let urlLinkaform='https://app.linkaform.com/api/';
 let idScriptCatalog=117935;
 let opScriptCatalog='catalog_brands';
 let urlImgCard = '';
@@ -48,7 +47,7 @@ window.onload = function(){
 
 //FUNCION para obtener la informacion extra en base a el parametro id mandado por la url
 function getExtraInformation(){
-	fetch(urlLinkaform + urlScripts, {
+	fetch(url + urlScripts, {
 		method: 'POST',
 		body: JSON.stringify({
 			script_id: idScriptCatalog,
@@ -81,7 +80,7 @@ function getCatalogs(){
 	$("#selectTipoVehiculo-123").prop( "disabled", true );
 	$("#divCatalogMarca123").hide();
 	$("#divCatalogModelo123").hide();
-	fetch(urlLinkaform + urlScripts, {
+	fetch(url + urlScripts, {
 		method: 'POST',
 		body: JSON.stringify({
 			script_id: idScriptCatalog,

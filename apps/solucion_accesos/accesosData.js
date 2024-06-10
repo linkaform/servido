@@ -66,3 +66,56 @@ function drawTable(id, columnsData, tableData,){
   });
 }
 
+let load_shift_json_acces={
+	"booth":"Caseta 1",
+	"location":"Monterrey",
+	"booth_stats":{
+		"guard_on_duty": {
+			"name":"Juan Alvarez",
+			"id":100
+		},
+		"support_guard":{
+			"name":"Guardia Soporte 1",
+			"id":101
+		},
+		"visits_per_day": 15,
+		"staff_indoors":20,
+		"vehicles_inside":13,
+		"registered_exits":14,
+	}
+}
+
+
+let load_shift_json = {
+	"booth":"Caseta 1",
+	"location":"Monterrey",
+	"booth_stats":{
+		"guard_on_duty": {
+			"name":"Juan Alvarez",
+			"id":100
+		},
+		"support_guard":{
+			"name":"Guardia Soporte 1",
+			"id":101
+		},
+		"access":{
+			"visits_per_day": 15,
+			"staff_indoors":20,
+			"vehicles_inside":13,
+			"registered_exits":14,
+		},
+		"incidents":{
+			"fails_per_day": 15,
+			"fails_to_resolve":20,
+		},
+		"items":{
+			"concession_items":13,
+			"registered_exits":14,
+		},
+		"patrols":{
+			"pending_tours":13,
+			"guards_on_patrol":12,
+			"guards_on_duty":14
+		}
+	}
+}

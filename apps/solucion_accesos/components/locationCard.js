@@ -42,7 +42,12 @@ window.customElements.define('locationcard-component', lkfLocationCard)
 
 
 
-window.onload = function(){
+window.onload = function(){  
+}
+
+
+
+function initializeCatalogs(){
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -61,16 +66,24 @@ window.onload = function(){
             //INFO: Obtener la informacion y formatear los arrays para poder mandarlos como opciones de los catalogos
         } 
     });
+    console.log("HELLO LOCAtion card")
+    let valueCaseta = getCookie('userCaseta')
+    let valueLocation =  getCookie('userLocation')
+    let selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta.value = valueCaseta
+    let selectLocation= document.getElementById("selectLocation")
+    selectLocation.value = valueLocation
 }
 
 
 
 function fillCatalogs(){
+    console.log("LLENAR CATALOGOS")
     optionsLocation=['Cumbres', 'Monterrey', 'San Jeronimo']
     optionsCaseta=[{name:"Caseta 1 Poniente", ubi:"Cumbres", status: 'Disponible', guard:'Juan Ecobedo' },{name:"Caseta 1 Sur", ubi:"Santa Catarina", status: 'Disponible', guard:'Francisco Flores'},
     {name:"Caseta 4 Poniente", ubi:"Monterrey", status: 'No disponible', guard:'Javier Almanza' },{name:"Caseta 3 Sur", ubi:"Escobedo", status: 'No disponible', guard:'Valeria Alvarado'},
     {name:"Caseta 6 Poniente", ubi:"San Jeronimo", status: 'Disponible', guard:'Erika Ruiz'},{name:"Caseta 6 Sur", ubi:"Monterrey", status: 'No disponible', guard:'Daniela Cepeda' }];
-    console.log("SDFSD", getCookie('userCaseta'), getCookie('userLocation'))
+    console.log("LOCATION CARD", getCookie('userCaseta'), getCookie('userLocation'))
 
     let selectLocation= document.getElementById("selectLocation")
     selectLocation.innerHTML=""; 

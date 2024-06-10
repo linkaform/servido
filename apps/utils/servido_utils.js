@@ -185,7 +185,6 @@ function closeSession(){
 ///-----STYLE
 function getPAlleteColors(pallete,number){
   var arrayColors = new Array();
-
   //----Select Pallete
   if (pallete==1){
       arrayColors = chroma.scale(['#fafa6e','#2A4858']).mode('lch').colors(number);
@@ -209,6 +208,8 @@ function getPAlleteColors(pallete,number){
     arrayColors = chroma.scale(['#264653','#2A9D8F','#216974','#41766F','#E09453','#D1711F','#A34828']).mode('lch').colors(number);
   }else if(pallete==11){
     arrayColors = chroma.scale(['#E63946','#F1FAEE','#A8DADC','#457B9D','#1D3557']).mode('lch').colors(number);
+  }else if(pallete == 12){
+    arrayColors = ["#dc3545", "#28a745"];
   }
 
   return arrayColors;

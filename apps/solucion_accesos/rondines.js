@@ -186,10 +186,3 @@ function alertVerRecorrido(folio,  nameGuard,  status,  dateHourStart,  dateHour
         }
     });
 }
-
-
-//FUNCION CERRAR SESION
-function setCloseSession(argument) {
-	closeSession();
-	redirectionUrl('login',false);
-}

@@ -2,7 +2,7 @@ let listItemsData = []
 let listVehiculesData = []
 let listNewVehicules = []
 let listNewItems = []
-let idScriptCatalog=117935;
+let idScr=119197;
 let opScriptCatalog='catalog_brands';
 let dataCatalogs="";
 let listUserActives = [];
@@ -11,14 +11,14 @@ let urlImgUser = '';
 let flagVideoCard = false;
 let flagVideoUser = false;
 let codeUserVisit=""
-let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
 let userJwt = getCookie("userJwt");
 
 
 window.onload = function(){
     setValueUserLocation('accesos');
     changeButtonColor();
-    fillCatalogs();
+    initializeCatalogs()
+    getInitialData();
     selectLocation= document.getElementById("selectLocation")
     selectLocation.onchange = function() {
         let response = fetchOnChangeLocation()
@@ -27,8 +27,11 @@ window.onload = function(){
     selectCaseta.onchange = function() {
         let response = fetchOnChangeLocation()
     };
-    selectLocation.disabled=true
-    selectCaseta.disabled=true
+    selectLocation.value=getCookie("userLocation")
+    selectCaseta.value=getCookie("userCaseta")
+    //selectLocation.disabled=true
+    //selectCaseta.disabled=true
+    
 
     setHideElements('dataHide');
     setSpinner(true, 'divSpinner');
@@ -45,6 +48,37 @@ window.onload = function(){
 }
 
 
+function getInitialData(){
+    let valueCaseta = getCookie('userCaseta')
+    let valueLocation =  getCookie('userLocation')
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: idScr,
+            option: 'get_initialData',
+            caseta: valueCaseta,
+            location: valueLocation
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+jw
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+        } 
+    });
+
+    let boothStats = load_shift_json.booth_stats.access
+    $("#textVisitasEnElDia").text(boothStats.visits_per_day);
+    $("#textPersonalDentro").text(boothStats.staff_indoors);
+    $("#textVehiculosDentro").text(boothStats.vehicles_inside);
+    $("#textSalidasRegistradas").text(boothStats.registered_exits);
+   
+}
+
+
 //FUNCION para asignar nueva visita
 function asignarNuevaVisita(){
     let nombre=$("#inputNombreNV").val();
@@ -53,7 +87,7 @@ function asignarNuevaVisita(){
     let visitaA=$("#selectVisitaNV").val();
     let motivoVisita=$("#inputMotivoVisitaNV").val();
     if(nombre!=='' , razonSocial!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
-        fetch(urlLinkaform, {
+        fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
                 script_id: idScript,
@@ -105,7 +139,7 @@ function agregaEquipo(){
     let visitaA=$("#selectVisitaNV").val();
     let motivoVisita=$("#inputMotivoVisitaNV").val();
     if(nombre!=='' , razonSocial!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
-        fetch(urlLinkaform, {
+        fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
                 script_id: idScript,
@@ -146,9 +180,8 @@ function getDataUser() {
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
     let codeUser  = $("#inputCodeUser").val();
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
     let userJwt = getCookie("userJwt");
-    fetch(urlLinkaform, {
+    fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: 116097,
@@ -179,9 +212,8 @@ function getDataUser() {
 
 //FUNCION para obtener la lista de usuario
 function getDataListUser(){
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
     let userJwt = getCookie("userJwt");
-    fetch(urlLinkaform, {
+    fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: 116097,
@@ -210,11 +242,10 @@ function setDataUser(){
     let codeUser  = $("#inputCodeUser").val();
     $("#buttonIn").hide();
     $("#buttonOut").hide();
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
     let userJwt = getCookie("userJwt");
     let dataItem = {'listItemsData':listItemsData,'listNewItems':listNewItems}
     let dataVehicule = {'listVehiculesData':listVehiculesData,'listNewVehicules':listNewVehicules}
-    fetch(urlLinkaform, {
+    fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: 116097,
@@ -252,9 +283,8 @@ function setDataUser(){
 //FUNCION para asignar un nuevo gafete
 function setDataGafete(data = {}){
     let codeUser  = $("#inputCodeUser").val();
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
     let userJwt = getCookie("userJwt");
-    fetch(urlLinkaform, {
+    fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: 116097,
@@ -326,7 +356,7 @@ function optionCheckOtro(){
 
 
 //FUNCION al pedir la opcion information user al setear la informacion del usuario
-function dataUser(dataUser){
+function dataUserInf(dataUser){
     let imgUser = dataUser.img != '' ? dataUser.img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
     $('#imgUser').attr('src', imgUser); 
     let imgCard = dataUser.card != '' ? dataUser.card: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg';
@@ -431,11 +461,12 @@ function tableFill(dataUser){
         newRow.append('</tr>');
         $('#tableModalAccess').append(newRow);
     }
+    return listLocations
 }
 
 
 //FUNCION llenar tabla de equipos en la primera carga
-function tableFillEquipos(dataUser){
+function tableFillEquipos(dataUser,listLocations){
     let listItems = dataUser.list_items.length > 0 ? dataUser.list_items: [];
     listItems.forEach(function(dic) {
         dic.id = Math.floor(Math.random() * 1000000);;
@@ -482,7 +513,7 @@ function tableFillEquipos(dataUser){
 
 
 //FUNCION llenar tabla de vehiculos en la primera carga
-function tableFillVehiculos(dataUser){
+function tableFillVehiculos(dataUser,listLocations){
     let listCars = dataUser.list_cars.length > 0 ? dataUser.list_cars: [];
     listCars.forEach(function(dic) {
         dic.id = Math.floor(Math.random() * 1000000);;
@@ -548,7 +579,7 @@ function optionInformationUser(data){
         $("#buttonClean").show();
 
         //---Bitacora
-        
+
         let listBitacora = dataBitacora.length > 0 ? dataBitacora: [];
         for (var i = 0; i < listBitacora.length; i++) {
             if(i < 3){
@@ -579,16 +610,16 @@ function optionInformationUser(data){
         }
         
         // Information User
-        dataUser(dataUser);
+        dataUserInf(dataUser);
 
         // Table INstructions
-        tableFill(dataUser);
+        let listLocations= tableFill(dataUser);
 
         // Table Items
-        tableFillEquipos(dataUser);
+        tableFillEquipos(dataUser,listLocations);
 
         // Table Cars
-        tableFillVehiculos(dataUser);
+        tableFillVehiculos(dataUser,listLocations);
     }
 }
 
@@ -781,7 +812,7 @@ function getSaveItem(){
         validation=true
     }
     if(!validation){
-        fetch(urlLinkaform, {
+        fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
                 script_id: idScript,
@@ -1048,7 +1079,7 @@ function getCatalogs(){
     $("#selectTipoVehiculo-123").prop( "disabled", true );
     $("#divCatalogMarca123").hide();
     $("#divCatalogModelo123").hide();
-    fetch(urlLinkaform ,{
+    fetch(url + urlScripts ,{
         method: 'POST',
         body: JSON.stringify({
             script_id: idScript,
@@ -1085,7 +1116,6 @@ function getCatalogs(){
     }
     //dataCatalogs = res.response.data ==''? cat : res.response.data;
     dataCatalogs=cat
-     console.log('DATATAAAAA OMGGG', dataCatalogs)
     $("#selectTipoVehiculo-123").prop( "disabled", false );
     $("#spinnerTipoVehiculo").css("display", "none");
     dataCatalogs.types_cars.forEach(function(e, i){
