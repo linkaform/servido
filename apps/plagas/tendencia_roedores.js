@@ -23,7 +23,6 @@ window.onload = function(){
   var formNode = document.getElementById("appCont");
   for(var key in qs){
     if (key === 'script_id' ){
-      console.log('script id', key)
       scriptId = parseInt(qs[key]);
     }
     if (key === 'env') {
@@ -165,10 +164,6 @@ function getFirstElement(dateTo, dateFrom, dispositivo, cliente, cordon){
   $('.load-wrapp').show();
   $('.title_tables').hide();
 
-  console.log(dateTo)
-  console.log(dateFrom)
-  console.log(dispositivo)
-  console.log(cliente)
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
@@ -192,10 +187,7 @@ function getFirstElement(dateTo, dateFrom, dispositivo, cliente, cordon){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log("Respuesta")
-      console.log(res)
       if (res.response.json.firstElement.data) {
-        //console.log(res.response.json.firtsElement.data)
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
@@ -317,7 +309,7 @@ function set_option_dispositivos(){
   let list_options = [];
   let cordon = $("#cordon").val();
   list_options = dispositivos.filter(diccionario => diccionario['cordon'] === cordon);
-  list_options = list_options.sort((a, b) => a - b);
+  list_options = list_options.sort((a, b) => a.dispositivo - b.dispositivo);
   //-----Set
   $("#dispositivo").empty();
   $('#dispositivo').append('<option value="--">--Seleccione--</option>');
