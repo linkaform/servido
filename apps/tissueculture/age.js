@@ -139,7 +139,7 @@ function runFirstElement(){
     getFirstElement(plant_code.value, stage.value);
   }else{
     Swal.fire({
-      title: 'Error',
+      title: 'Aviso!',
       html: 'Seleccione el stage'
     });
   }
