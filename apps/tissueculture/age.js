@@ -145,49 +145,55 @@ function getFirstElement(plantCode, stage){
   $('.load-wrapp').show();
   $('.title_tables').hide();
 
-
-  fetch(url + 'infosync/scripts/run/', {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: scriptId,
-      plant_code: plantCode,
-      stage: stage,
-    }),
-    headers:{
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+userJwt
-    },
-  })
-  .then(res => res.json())
-  .then(res => {
-    if (res.success) {
-      //----Hide and show
-      $('.load-wrapp').hide();
-      $("#divContent").show();
-      $('.title_tables').show();
-      if (res.response.firstElement) {
-        formatColums = setFormatCol(res.response.firstElement.colsData)
-        getDrawTable('firstElement', formatColums , res.response.firstElement.tabledata );
-        document.getElementById("firstElement").style.removeProperty('display');
-      }
-      
-    } else {
-      hideLoading();
-      if(res.code == 11){
-        Swal.fire({
-          title: 'Error',
-          html: res.error
-        });
+  if(stage !='' && stage !='--'){
+    fetch(url + 'infosync/scripts/run/', {
+      method: 'POST',
+      body: JSON.stringify({
+        script_id: scriptId,
+        plant_code: plantCode,
+        stage: stage,
+      }),
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+userJwt
+      },
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.success) {
+        //----Hide and show
         $('.load-wrapp').hide();
+        $("#divContent").show();
+        $('.title_tables').show();
+        if (res.response.firstElement) {
+          formatColums = setFormatCol(res.response.firstElement.colsData)
+          getDrawTable('firstElement', formatColums , res.response.firstElement.tabledata );
+          document.getElementById("firstElement").style.removeProperty('display');
+        }
+        
       } else {
-        Swal.fire({
-          title: 'Error',
-          html: res.error
-        });
-        $('.load-wrapp').hide();
+        hideLoading();
+        if(res.code == 11){
+          Swal.fire({
+            title: 'Error',
+            html: res.error
+          });
+          $('.load-wrapp').hide();
+        } else {
+          Swal.fire({
+            title: 'Error',
+            html: res.error
+          });
+          $('.load-wrapp').hide();
+        }
       }
-    }
-  })
+    })
+  }else{
+    Swal.fire({
+      title: 'Error',
+      html: 'Seleccione el stage'
+    });
+  }
 };
 
 //-----TABLES
