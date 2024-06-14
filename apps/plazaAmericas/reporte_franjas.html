@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+    <html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Servido</title>
+        <meta name="title" content="Servido">
+        <meta name="description" content="Forcast by Cicle">
+        <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+        <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
+        <!--Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <!--Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+    <body>
+       <!-- Header -->
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <p class="text-center h1">Reporte Franja Horaria</p>
+            </div>
+        </div> 
+         
+
+        <!-- Content -->
+        <div class="col-12">
+            <!--OPtions FIlter -->
+            <div class="col-sm-12 col-md-12 col-lg-12 row" id="divOptions">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
+                    <i class="fa-solid fa-filter"></i>
+                </button >  &nbsp;  &nbsp;
+                <div class="btn btn-primary" onclick="getInformationRequest();return false;">Run</div>
+            </div>
+
+            <!--Filters -->
+            <div id="firstParameters" class="collapse row show">
+                <div class="col-sm-12 col-md-4 col-lg-4" >
+                    <h5>Mes: </h5>
+                    <select class="form-control mdb-select md-form" id="month" name="month" >
+                        <option value="0">--Seleccione--</option>
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                </div>
+            </div>
+
+            <!--Elements -->
+            <div class="row" style="margin-top:20px;"  id="divContent">
+                <!--Primer Elemento -->
+                <div id="divContentFirst" class="col-sm-12 col-md-12 col-lg-12 mt-5" style="overflow-y: scroll;">
+                    <div  style="width: 1200px;height: 650px;margin: auto;">
+                        <canvas id="graphicFirst" ></canvas>
+                    </div>
+                </div>
+
+                <!--Segundo Elemento -->
+                <div id="divContentSecond" class="col-sm-12 col-md-12 col-lg-12 mt-5" style="overflow-y: scroll;">
+                    <div  style="width: 1200px;height: 650px;margin: auto;">
+                        <canvas id="graphicSecond" ></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script 
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" 
+    crossorigin="anonymous"></script>
+
+    <!-- chartjs -->
+    <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    <!-- Utils -->
+    <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
+    <script type="text/javascript" src="../utils/servido_utils.js"></script>
+
+    <!-- Template -->
+    <script type="text/javascript" src="./reporte_franjas.js"></script>
+    <script type="text/javascript" src="./reporte_franjas_data.js"></script>
+    </body>
+</html>
