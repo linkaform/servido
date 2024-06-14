@@ -126,7 +126,7 @@ function loadDemoData(){
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
 
-  getDrawTable('firstElement', columsData1, dataTable, listJumps, listTitle);
+  getDrawTable('firstElement', columsData1, dataTable1, listTitle);
   document.getElementById("firstElement").style.removeProperty('display');
 
 }
@@ -200,7 +200,7 @@ function getInformationRequest(){
 
 
 //-----TABLES
-function getDrawTable(id, columnsData, tableData, listConteo, listTitles){
+function getDrawTable(id, columnsData, tableData, listTitles){
   let countPosition = 0;
   var  table = new Tabulator("#" + id, {
     height:"500px",
@@ -208,10 +208,11 @@ function getDrawTable(id, columnsData, tableData, listConteo, listTitles){
     resizableRows:false,
     dataTree:true,
     textDirection:"ltr",
-    data:dataTable,
+    data:tableData,
     columns:columnsData,
     rowFormatter:function(row){
-      if(listConteo.includes(row.getPosition(true))){
+      var rowData = row.getData();
+      if(rowData.hasOwnProperty('title')){
         var rowEl = row.getElement();
         //-----NEW ELEMENT
         var colspanCell = document.createElement("td");
