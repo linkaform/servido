@@ -23,7 +23,6 @@ window.onload = function(){
   var formNode = document.getElementById("appCont");
   for(var key in qs){
     if (key === 'script_id' ){
-      console.log('script id', key)
       scriptId = parseInt(qs[key]);
     }
     if (key === 'env') {
@@ -165,15 +164,11 @@ function getFirstElement(dateTo, dateFrom, dispositivo, cliente, cordon){
   $('.load-wrapp').show();
   $('.title_tables').hide();
 
-  console.log(dateTo)
-  console.log(dateFrom)
-  console.log(dispositivo)
-  console.log(cliente)
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
-      script_id: 119276,
+      script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
       cordon: cordon,
@@ -192,10 +187,7 @@ function getFirstElement(dateTo, dateFrom, dispositivo, cliente, cordon){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log("Respuesta")
-      console.log(res)
       if (res.response.json.firstElement.data) {
-        //console.log(res.response.json.firtsElement.data)
         getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
@@ -280,7 +272,7 @@ function get_catalog()
   fetch(url + 'infosync/scripts/run/', {
       method: 'POST',
       body: JSON.stringify({
-        script_id: 119276,
+        script_id: scriptId,
         option: 0,
       }),
       headers:{
@@ -298,7 +290,7 @@ function get_catalog()
       if (res.response.json.catalogClient.length){
         let listClients = [];
         let dataRquest = res.response.json.catalogClient;
-        let listSort = dataRquest.sort((a, b) => b - a);
+        let listSort = dataRquest.sort((a, b) => a - b);
         $("#cliente").empty();
         $('#cliente').append('<option value="--">--Seleccione--</option>');
         for (i = 0; i < listSort.length; i++) {
@@ -317,7 +309,7 @@ function set_option_dispositivos(){
   let list_options = [];
   let cordon = $("#cordon").val();
   list_options = dispositivos.filter(diccionario => diccionario['cordon'] === cordon);
-  list_options = list_options.sort((a, b) => b - a);
+  list_options = list_options.sort((a, b) => a.dispositivo - b.dispositivo);
   //-----Set
   $("#dispositivo").empty();
   $('#dispositivo').append('<option value="--">--Seleccione--</option>');

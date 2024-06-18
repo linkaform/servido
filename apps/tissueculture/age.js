@@ -135,7 +135,14 @@ loading.style.display = 'none';
 function runFirstElement(){
   let plant_code = document.getElementById("plant_code");
   let stage = document.getElementById("stage");
-  getFirstElement(plant_code.value, stage.value);
+  if(stage.value !='' && stage.value !='--'){
+    getFirstElement(plant_code.value, stage.value);
+  }else{
+    Swal.fire({
+      title: 'Aviso!',
+      html: 'Seleccione el stage'
+    });
+  }
 };
 
 //-----PETICION
@@ -144,7 +151,6 @@ function getFirstElement(plantCode, stage){
   $("#divContent").hide();
   $('.load-wrapp').show();
   $('.title_tables').hide();
-
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
