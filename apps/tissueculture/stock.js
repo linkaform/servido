@@ -92,6 +92,7 @@ window.onload = function(){
       loadDemoData();
     }
     //--Styles
+    get_catalog(scriptId); 
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
@@ -136,7 +137,7 @@ const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  let plant_code = document.getElementById("plant_code");
+  let plant_code = document.getElementById("productCode");
   getFirstElement(plant_code.value);
 };
 
@@ -237,3 +238,37 @@ function getDrawTable(id, columnsData, tableData){
     });
   }
 }
+
+//-----CATALOGS
+function get_catalog(scriptId) 
+{
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_name: "get_report_filters.py",
+      filters: ["products"],
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      if (res.response.productCode){
+        $('#productCode').select2({
+          placeholder: 'Select',
+          allowClear: true, 
+          selectionCssClass: "select2-selection",
+        });
+        $("#productCode").empty();
+        $("#productCode").append("<option value=''/></option> ")
+        for (i = 0; i < res.response.productCode.length; i++) {
+          value = res.response.productCode[i]
+          $('#productCode').append('<option value="'+ value +'">'+value+'</option>');
+        }
+      }
+    }
+  })
+};
