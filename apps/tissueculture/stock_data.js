@@ -3,8 +3,8 @@
 //--Table Montajes Por Mes
 
 var columsTable1 = [
-  { title:"Plant Code", field:'plant_code',hozAlign:"left",width:250},
-  { title:"Cut Week", field:'cut_week',hozAlign:"left",width:250},
+  { title:"Plant Code", field:'plant_code',hozAlign:"left",width:250,  headerFilter:"input"},
+  { title:"Cut Week", field:'cut_week',hozAlign:"left",width:250,  headerFilter:"input"},
   {title:"Stage 2", hozAlign:"center",
     columns:[
       {title:"Actuals", field:'stage_2_actuals',hozAlign:"right",formatter: "money",formatterParams: {symbol: "", symbolAfter: "", decimal: ".", thousand: ",", precision: 0},width:250},
