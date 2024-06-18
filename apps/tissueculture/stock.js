@@ -167,9 +167,7 @@ function getFirstElement(plantCode){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      console.log('Data Status',res.code);
       if (res.response.firstElement.tabledata) {
-        console.log('drawFirstElement.........');
         getDrawTable('firstElement', columsTable1, res.response.firstElement.tabledata);
       }
     }
