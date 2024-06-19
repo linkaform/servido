@@ -122,12 +122,9 @@ function redirectionUrl(type = 'null',blank = true){
 
     let existingTab = window.open('', type); 
     if (existingTab) {
-        //existingTab.location.href = `${protocol}//${host}/solucion_accesos/${type}.html`;
         console.dir(window.open(`${protocol}//${host}/solucion_accesos/${type}.html`, type));
-        //console.log('akjsdh',existingTab.location.href )
     } else {
         if(type == 'users'){
-            console.log("USERSS")
             urlNew = `${protocol}//${host}/solucion_accesos/accesos.html`
         }else if(type == 'bitacora'){
             urlNew = `${protocol}//${host}/solucion_accesos/bitacora.html`            

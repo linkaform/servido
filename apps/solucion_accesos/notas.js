@@ -1,31 +1,39 @@
 let tables={}
 let idScriptC=119197;
+let selectLocation=""
+let selectCaseta=""
 
 
 window.onload = function(){
     setValueUserLocation('notas');
-		changeButtonColor();
-		fillCatalogs();
+	fillCatalogs();
     selectLocation= document.getElementById("selectLocation")
     selectLocation.onchange = function() {
-        console.log("La selección ha cambiado");
         let response = fetchOnChangeLocation()
-        console.log(response.data)
     };
-     selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = function() {
-        console.log("La selección ha cambiado");
         let response = fetchOnChangeLocation()
-        console.log('hiii',response.data)
     };
     let user = getCookie("userId");
     let jw = getCookie("userJwt");
-    console.log("HERLLO", user, jw);
     if(user !='' && jw!=''){
     	drawTableNotas('tableListNotas',columnsTableListNotas, dataTableListNotas );
     } else{
 		redirectionUrl('login',false);
 	}
+    $("#descargarListNotas").on("click", function() {
+        descargarExcel(tables, 'tableListNotas')
+    });
+}
+
+//FUNCION para abrir modales
+function setModal(type = 'none',id){
+    if(type == 'Tools'){
+        $('#itemsModal').modal('show');
+    }else if(type == 'filtros'){
+        modalFiltros('tableListNotas','notasFiltersModal')
+    }
 }
 
 
@@ -85,7 +93,7 @@ function cerrarNotaAlert(name, note, folio, status){
             if (result.value) {
                 let selectedNote = dataTableListNotas.find(nota => nota.folio === folio);
                 if (selectedNote) {
-                    selectedNote.status = "cerrada";
+                    selectedNote.status = "Cerrado";
                     tables["tableListNotas"].setData(dataTableListNotas);
                 }
             }
@@ -180,9 +188,7 @@ function setAddArchivo(){
 //FUNCION para agregar archivo en el modal de agregar nota
 function setDeleteArchivo(id){
     const elements = document.querySelectorAll('.archivo-div');
-    console.log("ELEMENTOS", elements)
     const count = elements.length;
-    console.log(elements, count, "saefdasd")
     if(count > 1){
         const elements = document.getElementsByClassName('div-archivo-'+id);
         while(elements.length > 0){
@@ -227,17 +233,12 @@ function setDeleteFoto(id){
 
 //FUNCION para enviar una nueva nota y actualizar la tabla
 function enviarNota(){
-    console.log("ELEMETOS")
     let fotosArray=[]
     let archivosArray=[]
-    let nota= $("#commentTextarea").val(); console.log("NOTA", nota)
+    let nota= $("#commentTextarea").val(); 
     let archivo= $("#fileInputArchivo").val();
     let elements = document.querySelectorAll('.archivo-div');
-    
-    for (div of elements){
-        console.log("ELEMENTOS",div.value);
-        
-    }
+ 
     let divArchivo = document.getElementById("archivo-input-form");
     let inputsE = divArchivo.querySelectorAll('.archivo-div');
     inputsE.forEach(function(input) {
@@ -255,12 +256,43 @@ function enviarNota(){
 
     let randomFolio = Date.now();
     //INFO: Agregar la fetch aqui lo que sigue abajo agregarlo en el response del fetch
+
+    /*
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: add_notas,
+            nota,
+            fotosArray,
+            archivosArray,
+            comentario,
+            fileNameFoto,
+            id: 2,
+        }),
+        headers:{
+           'Content-Type': 'application/json',
+           'Authorization': 'Bearer '+jw
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            //me devuleve succes o el listado de notas actualizado
+        } 
+    })  */
+
+
     //se enviaran todas las variables y los arrays de fotos y archivos
     if(nota!==""){
         dataTableListNotas.push( 
-        	 { status: 'abierta', name: 'Carlos Sánchez', fechaHoraApertura: '2024-05-11 16:50', fechaHoraCierre: '2024-05-11 16:50', note: nota,folio:7, fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: comentario })
+        	 { status: 'Abierta', name: 'Carlos Sánchez', fechaHoraApertura: '2024-05-11 16:50', fechaHoraCierre: '2024-05-11 16:50', note: nota,folio:7, fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: comentario })
         tables["tableListNotas"].setData(dataTableListNotas);
         
+         Swal.fire({
+          title: "Confirmación",
+          text: "La nota se ha creado correctamente.",
+          type: "success"
+        });
         $('#agregarNotasModal').modal('hide');
         $("#inputTextNota").val('');
         inputsE.forEach(function(input) {
@@ -271,6 +303,7 @@ function enviarNota(){
         });
         $("#fileInputFotografia").val('');
         $("#inputComentarioNota").val('');
+        
     }else{
           Swal.fire({
           title: "Faltan datos por llenar",
@@ -281,8 +314,63 @@ function enviarNota(){
 }
 
 
-//---Close Sesión
+//FUNCION FILTROS MODAL
+function modalFiltros(table,modal){
+    $('#'+ modal).modal('show');
+    let columnas = tables[table].getColumns();
+    let nombresColumnas = columnas.map(function(columna) {
+        return columna.getField(); // getField() retorna el nombre del campo o field
+    });
+    let selectTipo= document.getElementById("idFiltrosTipo")
+    let selectColumna= document.getElementById("idFiltrosColumna")
+    selectColumna.innerHTML=""; 
+    for (let col of nombresColumnas){
+            selectColumna.innerHTML += '<option value="'+col+'">'+col+'</option>';
+    }
+    selectColumna.value=""
+    selectTipo.value=""
+}
+
+//FUNCION FILTROS MODAL
+function aplicarFiltros(){
+    $('#notasFiltersModal').modal('hide');
+    let columnas= $("#idFiltrosColumna").val()
+    let tipo= $("#idFiltrosTipo").val()
+    let valor= $("#idFiltrosValor").val();
+    /*
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'turnos',
+            option: "apply_filters",
+            columnas,
+            tipo,
+            valor,
+            id: 2,
+        }),
+        headers:{
+           'Content-Type': 'application/json',
+           'Authorization': 'Bearer '+jw
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+        } 
+    }) */
+
+    Swal.fire({
+        title: "Confirmación",
+        text: "Filtros aplicados correctamente.",
+        type: "success"
+    });
+    let selectTipo= document.getElementById("idFiltrosTipo")
+    selectTipo.value=""
+}
+
+
+//FUNCION cerrar sesion
 function setCloseSession(argument) {
-	closeSession();
-	redirectionUrl('login',false);
+    closeSession();
+    redirectionUrl('login',false);
 }

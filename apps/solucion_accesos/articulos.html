@@ -5,47 +5,66 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Articulos</title>
 	<link rel="icon"  type='image/svg+xml' href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'><path  d='M248 0H208c-26.5 0-48 21.5-48 48V160c0 35.3 28.7 64 64 64H352c35.3 0 64-28.7 64-64V48c0-26.5-21.5-48-48-48H328V80c0 8.8-7.2 16-16 16H264c-8.8 0-16-7.2-16-16V0zM64 256c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H224c35.3 0 64-28.7 64-64V320c0-35.3-28.7-64-64-64H184v80c0 8.8-7.2 16-16 16H120c-8.8 0-16-7.2-16-16V256H64zM352 512H512c35.3 0 64-28.7 64-64V320c0-35.3-28.7-64-64-64H472v80c0 8.8-7.2 16-16 16H408c-8.8 0-16-7.2-16-16V256H352c-15 0-28.8 5.1-39.7 13.8c4.9 10.4 7.7 22 7.7 34.2V464c0 12.2-2.8 23.8-7.7 34.2C323.2 506.9 337 512 352 512z'%3E%3C/path%3E%3C/svg%3E" />
-	<link rel="stylesheet" href="./style.css">
+	
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
 	<link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="./style.css">
 </head>
 <body>
 	<navbar-component> </navbar-component>
 
 	<section class="mainSection mainSectionMargins">
-		<div class="row ">
-			 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-				<div class="card m-2 div-card-portal customShadow">
-					<locationcard-component> </locationcard-component>
-				</div>
-			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-				<div class="card  m-2 div-card-portal customShadow">
-				    <div class="card-body p-3">
-				        
-			            <h5 class="card-title text-center text-uppercase text-dark">Articulos consesionados pendientes</h5>
-			            <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert1">50</p>
-				        
-				    </div>
-				</div>
-			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-				<div class="card  m-2 div-card-portal customShadow">
-				    <div class="card-body p-3">
-			            <h5 class="card-title text-center text-uppercase text-dark">Articulos perdidos</h5>
-			            <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert2">10</p>
-				    </div>
-				</div>
-			</div>
+		<div class="accordion" id="accordionExample">
+		  <div class="accordion-item">
+		    <h2 class="accordion-header">
+		      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+		        <h5 class="m-0">Informacion de caseta</h5>
+		      </button>
+		    </h2>
+		    <div id="collapseOne" class="accordion-collapse collapse show "  data-bs-parent="#accordionExample">
+		      <div class="accordion-body p-0 pt-1" >
+		       		<div class="row ">
+						 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+							<div class="card m-2 div-card-portal customShadow">
+								<locationcard-component> </locationcard-component>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+							<div class="card  m-2 div-card-portal customShadow">
+							    <div class="card-body p-3">	
+
+						            <p class="h1 font-weight-bold mb-0 text-dark text-center" ><span id="textConcessionArticles"> </span> 
+						            	<i class="fa-solid fa-object-group ms-5"></i></p>
+						            <h5 class="card-title text-center text-uppercase text-dark">Articulos consesionados pendientes</h5>
+							    </div>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+							<div class="card  m-2 div-card-portal customShadow">
+							    <div class="card-body p-3">
+						            <p class="h1 font-weight-bold mb-0 text-dark text-center"> <span id="textLostArticles"></span>
+						            	<i class="fa-solid fa-question ms-5"></i></p>
+						            <h5 class="card-title text-center text-uppercase text-dark">Articulos perdidos</h5>
+							    </div>
+							</div>
+						</div>
+					</div>
+		      </div>
+		    </div>
+		  </div>
 		</div>
+		
 	</section>
 
 	<!-- Tablas -->
 	<section class="mainSectionMargins">
-		<div class="row mt-4">
-			<h3 class="mb-3">Registro y seguimiento de artículos</h3>
+		<div class=" mt-1">
+			<div class="d-flex justify-content-center ">
+				<h4 class="m-0 p-0"> Registro y seguimiento de artículos</h4>
+			</div>
+			
 			<div class="col-12">
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
 					<li class="nav-item" role="presentation">
@@ -55,185 +74,147 @@
 						<button class="nav-link" id="out-location-tab" data-bs-toggle="tab" data-bs-target="#div-article-lose" type="button" role="tab" aria-controls="div-article-lose" aria-selected="false">Artículos perdidos</button>
 					</li>
 				</ul>
-				<div class="tab-content" id="myTabContent">
+				<div class="tab-content mb-1" id="myTabContent">
 					<div class="tab-pane fade show active" id="div-article-consecionados" role="tabpanel" aria-labelledby="in-location-tab" tabindex="0">
-						<div class="mt-3 row ">
-							<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-								<h5>Fecha Desde: </h5>
-								<input class="form-control ds-input" type="date">
-							</div>
-							<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-								<h5>Fecha Hasta: </h5>
-								<input class="form-control ds-input" type="date">
-							</div>
-							<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-								<h5>Ubicación: </h5>
-								<select class="form-control ds-input">
-								<option value="--">--Seleccione--</option>
-								<option value="--">Ubicación 1</option>
-								<option value="--">Ubicación 2</option>
-								<option value="--">Ubicación 3</option>
-								<option value="--">Ubicación 4</option>
-								<option value="--">Ubicación 5</option>
-								</select>
-							</div>
-							<div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 offset-md-9 offset-lg-9 offset-xl-9 mt-2">
-								<button type="button" class="btn btn-secondary btn-sm">Filtrar</button>
-								<button type="button" class="btn btn-secondary btn-sm">Restablecer Filtros</button>
-							</div>
+						
+						<div class="d-flex mt-2 mb-2 justify-content-end">
+							<button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticle');">
+								<i class="fa-solid fa-plus"></i>
+								Nuevo Artículo
+							</button>
+							<button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('OutArticle');">
+								<i class="fa-solid fa-clock"></i>
+								Entrega
+							</button>
+							<button type="button" class="btn btn-primary btn-sm ms-1">
+								<i class="fa-solid fa-file-arrow-down" id="descargarArticles" ></i>
+								Descargar
+							</button>
+							<button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
+								<i class="fa-solid fa-magnifying-glass"></i>
+								Filtros
+							</button>
+							<button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('articles')" >
+								<i class="fa-solid fa-trash"></i>
+								Eliminar
+							</button>
 						</div>
-						<div class="mt-5 row ">
-							<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 offset-md-7 offset-lg-7 offset-xl-7 mt-2">
-								<button type="button" class="btn btn-primary" onclick="setModal('NewArticle');">
-									<i class="fa-solid fa-plus"></i>
-									Nuevo Artículo
-								</button>
-								<button type="button" class="btn btn-secondary" onclick="setModal('OutArticle');">
-									<i class="fa-solid fa-clock"></i>
-									Entrega
-								</button>
-								<button type="button" class="btn btn-success">
-									<i class="fa-solid fa-file-arrow-down"></i>
-									Descargar
-								</button>
-								<button type="button" class="btn btn-danger">
-									<i class="fa-solid fa-trash"></i>
-									Eliminar
-								</button>
-							</div>
-						</div>
-						<div class="col-12 mt-2 ms-2">
-							<div class="mt-3" id="tableArticles"></div>
+						<div id="header-placeholder"></div>
+						<div id="table-container">
+							    <div id="table-header"></div>
+							<div class="m-1 mb-2 " id="tableArticles"></div>
 						</div>
 					</div>
 					<div class="tab-pane fade overflow-hidden" id="div-article-lose" role="tabpanel" aria-labelledby="out-location-tab" tabindex="0">
-						<div class="mt-3 row ">
-							<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-								<h5>Fecha Desde: </h5>
-								<input class="form-control ds-input" type="date">
-							</div>
-							<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-								<h5>Fecha Hasta: </h5>
-								<input class="form-control ds-input" type="date">
-							</div>
-							<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-								<h5>Ubicación: </h5>
-								<select class="form-control ds-input">
-								<option value="--">--Seleccione--</option>
-								<option value="--">Ubicación 1</option>
-								<option value="--">Ubicación 2</option>
-								<option value="--">Ubicación 3</option>
-								<option value="--">Ubicación 4</option>
-								<option value="--">Ubicación 5</option>
-								</select>
-							</div>
-							<div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 offset-md-9 offset-lg-9 offset-xl-9 mt-2">
-								<button type="button" class="btn btn-secondary btn-lg">Filtrar</button>
-								<button type="button" class="btn btn-secondary btn-lg">Restablecer Filtros</button>
-							</div>
-						</div>
-						<div class="mt-5 row ">
-							<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 offset-md-7 offset-lg-7 offset-xl-7 mt-2">
-								<button type="button" class="btn btn-primary btn-lg" onclick="setModal('NewArticleConse');">
+							<div class=" d-flex mt-2 mb-2 ms-1 justify-content-end">
+								<button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticleConse');">
 									<i class="fa-solid fa-plus"></i>
 									Nuevo Artículo
 								</button>
-								<button type="button" class="btn btn-success btn-lg">
-									<i class="fa-solid fa-file-arrow-down"></i>
+								<button type="button" class="btn btn-primary btn-sm ms-1" >
+									<i class="fa-solid fa-file-arrow-down " id="descargarArticlesLose" ></i>
 									Descargar
 								</button>
-								<button type="button" class="btn btn-danger btn-lg">
-									<i class="fa-solid fa-trash"></i>
+								<button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
+									<i class="fa-solid fa-magnifying-glass"></i>
+									Filtros
+								</button>
+								<button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('articlesLose')" >
+									<i class="fa-solid fa-trash" ></i>
 									Eliminar
 								</button>
+								
 							</div>
-						</div>
-						<div class="col-12 mt-2 ">
-							<div class="mt-3" id="tableArticlesLose"></div>
-						</div>
+							<div class="m-1 mb-2 tableOverflow" id="tableArticlesLose"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<div id="divSpinner" style="display:none;margin-top: 100px;"></div>
+	<div id="divSpinner" style="display:none; margin-top: 100px;"></div>
 
 	<!-- Modal New Article -->
 	<div class="modal fade" id="newArticleModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Registro de nueva falla</h1>
+					<h1 class="modal-title fs-5">Registro de nuevo articulo</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div class="row">
 						<div class="mb-3 col-4">
 							<label class="form-label">Ubicación: *</label>
-							<select class="form-control">
+							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloUbicacion">
 								<option>--Seleccione--</option>
+								<option>Casa</option>
+								<option>Edificio</option>
+								<option>Bodega</option>
 							</select>
 						</div>
 						<div class="mb-3 col-4">
 							<label class="form-label">Fecha: *</label>
-							<input type="date" class="form-control">
+							<input type="date" class="form-control contentNuevoArticulo" id="idNuevoArticuloFecha">
 						</div>
 						<div class="mb-3 col-4">
 							<label class="form-label">Hora: *</label>
-							<input type="time" class="form-control">
+							<input type="time" class="form-control contentNuevoArticulo" id="idNuevoArticuloHora">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Tipo: *</label>
-							<select class="form-control">
+							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloTipo">
 								<option>--Seleccione--</option>
+								<option>Jugete</option>
+								<option>Electrodomestico</option>
+								<option>Otro</option>
 							</select>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Fotografía del artículo: *</label>
-							<input type="file" class="form-control" id="avatar" accept="image/png, image/jpeg"/>
+							<input type="file" class="form-control contentNuevoArticulo" id="idNuevoArticuloFoto" accept="image/png, image/jpeg"/>
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Seríe/Número/Placa: *</label>
-							<input type="text" class="form-control">
+							<input type="text" class="form-control contentNuevoArticulo" id="idNuevoArticuloSerie">
 						</div>
 
 						<div class="mb-3 col-6">
 							<label class="form-label">Entrega: *</label>
-							<select class="form-control">
+							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloEntrega">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Departamento: *</label>
-							<select class="form-control">
+							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloDepartamento">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Recibe: *</label>
-							<select class="form-control">
+							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloRecibe">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Departamento: *</label>
-							<select class="form-control">
+							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloDepartamento">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
 
 						<div class="mb-3 col-12">
 							<label class="form-label">Comentarios: *</label>
-							<textarea class="form-control"  rows="3"></textarea>
+							<textarea class="form-control contentNuevoArticulo" id="idNuevoArticuloComentarios" rows="3"></textarea>
 						</div>
 					</div>
 					
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-warning">Agregar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="nuevoArticulo('article')">Agregar</button>
 				</div>
 			</div>
 		</div>
@@ -253,6 +234,9 @@
 							<label class="form-label">Ubicación: *</label>
 							<select class="form-control">
 								<option>--Seleccione--</option>
+								<option>Casa</option>
+								<option>Edificio</option>
+								<option>Bodega</option>
 							</select>
 						</div>
 						<div class="mb-3 col-4">
@@ -267,6 +251,9 @@
 							<label class="form-label">Tipo: *</label>
 							<select class="form-control">
 								<option>--Seleccione--</option>
+								<option>Jugete</option>
+								<option>Electrodomestico</option>
+								<option>Otro</option>
 							</select>
 						</div>
 						<div class="mb-3 col-6">
@@ -315,8 +302,8 @@
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-warning">Agregar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm">Agregar</button>
 				</div>
 			</div>
 		</div>
@@ -335,23 +322,23 @@
 						
 						<div class="mb-3 col-6">
 							<label class="form-label">Fecha: *</label>
-							<input type="date" class="form-control">
+							<input type="date" class="form-control outArticle" id="outArticleLoseModalFecha">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Hora: *</label>
-							<input type="time" class="form-control">
+							<input type="time" class="form-control outArticle" id="outArticleLoseModalHora">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Ubicación del artículo después: *</label>
-							<input type="text" class="form-control" placeholder="Por ejemplo: Bodega">
+							<input type="text" class="form-control outArticle" id="outArticleLoseModalLocation" placeholder="Por ejemplo: Bodega">
 						</div>
 						<small class="text-danger mt-3">** Una vez confirmado, la acción no podra ser revertida</small>
 					</div>
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-warning">Agregar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="devolucionArticulo('articleLose')">Agregar</button>
 				</div>
 			</div>
 		</div>
@@ -413,8 +400,8 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-warning">Agregar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm">Agregar</button>
 				</div>
 			</div>
 		</div>
@@ -425,56 +412,56 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Nuevo registro de articulo Consecionados</h1>
+					<h1 class="modal-title fs-5">Registro de nuevo articulo</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div class="row">
 						<div class="mb-3 col-4">
 							<label class="form-label">Ubicación: *</label>
-							<select class="form-control">
+							<select class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConUbicacion">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-4">
 							<label class="form-label">Fecha: *</label>
-							<input type="date" class="form-control">
+							<input type="date" class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConFecha">
 						</div>
 						<div class="mb-3 col-4">
 							<label class="form-label">Hora: *</label>
-							<input type="time" class="form-control">
+							<input type="time" class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConHora">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Artículo: *</label>
-							<input type="text" class="form-control">
+							<input type="text" class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConArticulo">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Fotografía del artículo: *</label>
-							<input type="file" class="form-control" id="avatar" accept="image/png, image/jpeg"/>
+							<input type="file" class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConFoto" accept="image/png, image/jpeg"/>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Reporta: *</label>
-							<select class="form-control">
+							<select class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConReporta">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Departamento: *</label>
-							<select class="form-control">
+							<select class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConDepartamento">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Comentarios: *</label>
-							<textarea class="form-control"  rows="3"></textarea>
+							<textarea class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConComentarios" rows="3"></textarea>
 						</div>
 					</div>
 					
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-warning">Agregar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="nuevoArticulo('articleLose')">Agregar</button>
 				</div>
 			</div>
 		</div>
@@ -492,50 +479,53 @@
 					<div class="row">
 						<div class="mb-3 col-4">
 							<label class="form-label">Ubicación: *</label>
-							<select class="form-control">
-								<option>--Seleccione--</option>
+							<select class="form-control articleCon-edit" id="editArticleConUbicacion">
 							</select>
 						</div>
 						<div class="mb-3 col-4">
 							<label class="form-label">Fecha: *</label>
-							<input type="date" class="form-control">
+							<input type="date" class="form-control articleCon-edit" id="editArticleConFecha">
 						</div>
 						<div class="mb-3 col-4">
 							<label class="form-label">Hora: *</label>
-							<input type="time" class="form-control">
+							<input type="time" class="form-control articleCon-edit" id="editArticleConHora">
 						</div>
-						<div class="mb-3 col-12">
+						<div class="mb-3 col-6">
 							<label class="form-label">Artículo: *</label>
-							<input type="text" class="form-control">
+							<input type="text" class="form-control articleCon-edit" id="editArticleConArticulo">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Tipo: *</label>
+							<select class="form-control articleCon-edit" id="editArticleConTipo">
+							</select>
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Fotografía del artículo: *</label>
-							<input type="file" class="form-control" id="avatar" accept="image/png, image/jpeg"/>
-							<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65779777beef423c6264ac04.jpg" width="350" height="250">						
+							<input type="file" accept="image/png, image/jpeg" id="editArticleFoto" />
+							<div>
+								<img src="" class="articleCon-edit" id="editArticleConFoto"  width="220" height="150">
+							</div>						
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">No. serie: *</label>
+							<input type="text" class="form-control  articleCon-edit" id="editArticleConNoSerie">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Reporta: *</label>
-							<select class="form-control">
-								<option>--Seleccione--</option>
-							</select>
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Departamento: *</label>
-							<select class="form-control">
-								<option>--Seleccione--</option>
+							<select class="form-control  articleCon-edit" id="editArticleConReporta">
 							</select>
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Comentarios: *</label>
-							<textarea class="form-control"  rows="3"></textarea>
+							<textarea class="form-control  articleCon-edit" id="editArticleConComentarios"  rows="3"></textarea>
 						</div>
 					</div>
 					
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-warning">Agregar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="editarArticuloConModal()">Guardar</button>
 				</div>
 			</div>
 		</div>
@@ -591,8 +581,8 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-warning">Agregar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm">Agregar</button>
 				</div>
 			</div>
 		</div>
@@ -610,29 +600,29 @@
 					<div class="row">
 						<div class="mb-3 col-6">
 							<label class="form-label">Fecha: *</label>
-							<input type="date" class="form-control">
+							<input type="date" class="form-control outArticleCon" id="outArticleFecha">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Hora: *</label>
-							<input type="time" class="form-control">
+							<input type="time" class="form-control outArticleCon" id="outArticleHora">
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Recibe: *</label>
-							<input type="text" class="form-control">
+							<input type="text" class="form-control outArticleCon" id="outArticleRecibe">
 						</div>
 						
 						<div class="mb-3 col-6">
 							<label class="form-label">Estado: *</label><br>
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-								<label class="form-check-label" for="flexRadioDefault1">
-								Default radio
+								<input class="form-check-input outArticleCon" type="radio" name="flexRadioDefault" id="outArticleEstado">
+								<label class="form-check-label" for="outArticleEstado">
+								Abierto	
 								</label>
 							</div>
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-								<label class="form-check-label" for="flexRadioDefault2">
-								Default checked radio
+								<input class="form-check-input outArticleCon" type="radio" name="flexRadioDefault" id="outArticleEstado2" checked>
+								<label class="form-check-label" for="outArticleEstado2">
+								Cerrado
 								</label>
 							</div>
 						</div>
@@ -640,20 +630,62 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-warning">Agregar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="devolucionArticulo('article')">Agregar</button>
 				</div>
 			</div>
 		</div>
 	</div>
+
+
+	<!-- Modal Out Article -->
+	<div class="modal fade" id="articleFiltersModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Filtros</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mt-3 row ">
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                             <h5>Columna: </h5>
+                            <select class="form-control ds-input filterArticles" id="idFiltrosColumna">
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <h5>Tipo: </h5>
+                            <select class="form-control ds-input filterArticles" id="idFiltrosTipo" >
+                                <option value="=">=</option>
+                                <option value="<"><</option>
+                                <option value="<="><=</option>
+                                <option value=">">></option>
+                                <option value=">=">>=</option>
+                                <option value="!=">!=</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <h5>Valor: </h5>
+                            <input class="form-control ds-input filterArticles" id="idFiltrosValor" >
+                        </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="aplicarFiltros()">Aplicar</button>
+                </div>
+            </div>
+        </div>
+	</div>
+
 
 </body>
 <!-- Local -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="./functions.js"></script>
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
-<script  type="text/javascript" src="./components/locationCard.js"></script>
-<script  type="text/javascript" src="./components/navbar.js"></script>
+<script type="text/javascript" src="./components/locationCard.js"></script>
+<script type="text/javascript" src="./components/navbar.js"></script>
 <script src="./articulosData.js"></script>
 <script src="./articulos.js"></script>
 
@@ -663,5 +695,5 @@
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 <!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+<script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
 </html>

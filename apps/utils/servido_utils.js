@@ -185,7 +185,6 @@ function closeSession(){
 ///-----STYLE
 function getPAlleteColors(pallete,number){
   var arrayColors = new Array();
-
   //----Select Pallete
   if (pallete==1){
       arrayColors = chroma.scale(['#fafa6e','#2A4858']).mode('lch').colors(number);
@@ -209,6 +208,8 @@ function getPAlleteColors(pallete,number){
     arrayColors = chroma.scale(['#264653','#2A9D8F','#216974','#41766F','#E09453','#D1711F','#A34828']).mode('lch').colors(number);
   }else if(pallete==11){
     arrayColors = chroma.scale(['#E63946','#F1FAEE','#A8DADC','#457B9D','#1D3557']).mode('lch').colors(number);
+  }else if(pallete == 12){
+    arrayColors = ["#dc3545", "#28a745"];
   }
 
   return arrayColors;
@@ -280,3 +281,86 @@ function setDateFilterMonth() {
   $("#date_from").val(primerDia.toISOString().substring(0, 10));
   $("#date_to").val(ultimoDia.toISOString().substring(0, 10));
 }
+
+function getActiveCheckBoxs(instanceTables /*Object with propperties(id) of table instances*/, tableId){
+    let selectedRows=[]
+    let filas = instanceTables[tableId].getSelectedRows()
+    filas.forEach(function(fila) {
+        selectedRows= selectedRows.concat(fila.getData())
+    });
+    return selectedRows
+}
+
+
+let dateFilter = function(headerValue, rowValue, rowData, filterParams){
+    var partes1 = headerValue.split("-");
+    var anio1 = partes1[0];
+    var mes1 = partes1[1] ;
+    var dia1 = partes1[2];
+    let headerValueDate = dia1+'-'+mes1+'-'+anio1
+
+    let rowValueDate = rowValue.split(' ')[0]
+    var partes = rowValueDate.split("-");
+    var anio = partes[2];
+    var mes = partes[1] ;
+    var dia = partes[0];
+    let stringDate= dia+'-'+mes+'-'+anio
+
+    console.log(stringDate, headerValueDate, stringDate == headerValueDate)
+
+    if (stringDate == headerValueDate) {
+        return true;
+    }else{
+        return false;
+    }
+ }
+
+
+//FUNCION descargar excel
+function descargarExcel(tables, table) {
+    let columns = tables[table].getColumns();
+  /*  for(c in columns) {
+        let nombreCOlumnas=""
+        let keys = Object.keys(columns);
+        for (e in columns){
+            console.log("GEELKSN",columns[e])
+            if (e !== keys[keys.length - 1]) {
+                nombreCOlumnas += columns[e] + "\n";
+            }
+            else{
+               nombreCOlumnas += columns[e] + "\t" 
+            }
+        }
+        console.log("nombreCOlumnasAA", nombreCOlumnas)
+        excelContent += nombreCOlumnas
+    };*/
+
+
+    let nombresColumnas = columns.map(function(column) {
+        return column.getField() ; // O puedes usar column.getTitle() para obtener los títulos de las columnas
+    }); 
+    // Crear un archivo Excel básico
+    let excelContent = nombresColumnas+"\n"; // Cabecera
+    tables[table].getData().forEach(function(row) {
+        let fila=""
+        let keys = Object.keys(row);
+        for (e in row){
+            if (e !== keys[keys.length - 1]) {
+                fila += row[e] + "\n";
+                console.log("FILAAA", fila)
+            }
+            else{
+               fila += row[e] + "\t" 
+               console.log("SIUGUEE", fila)
+            }
+        }
+        
+        excelContent += fila 
+    });
+    // Crear un enlace de descarga y simular clic
+    let blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
+    let link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = table +'.xlsx';
+    link.click(); 
+}                                                                                                                                                                                                                                                                                                                                                                                         

@@ -1,6 +1,5 @@
 let userJwt ="";
-let urlLinkaform='https://app.linkaform.com/api/';
-let idScr=117936
+let idScr=119197
 let caseta=""
 let ubicacion=""
 let date=""
@@ -52,10 +51,10 @@ window.onload = function(){
 
 //FUNCION hace el fetch que trae toda la informacion inicial que se llenara en la pantalla de turnos
 function getAllData(){
-    fetch(urlLinkaform + urlScripts, {
+    fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 119197,
+            script_id: idScr,
         }),
         headers:
         {
@@ -98,8 +97,10 @@ function inicializarPagina(loc, notes, guard){
     $("#textCuidad").text(loc.city)
     $("#textEstado").text(loc.state)
     $("#textDireccion").text(loc.address)
+
     setCookie('userCaseta',caseta,7)
     setCookie('userLocation',ubicacion,7)
+
     $("#textCaseta").text(getCookie('userCaseta'))
     $("#textUbicacion").text(getCookie('userLocation'))
     setCookie('userCasetaStatus', loc.boot_status.status,7)
@@ -233,7 +234,7 @@ function AlertForzarCierre(name){
 //FUNCION para cambiar el estatus del turno y hacer las validaciones correspondientes al dar click al boton, al iniciar la aplicacion, o al refrescar
 function changeStatusTurn(buttonClick){
     //INFO : idGuardiasEnTurno para saber que guardias de los que estan en la tabla "Guardias de apoyo" INICIARON TURNO
-    //INFO : aqui fetch para modificar el status , meter estos este if en el response del fetch
+    //INFO : aqui poner fetch para modificar el status , meter estos este if en el response del fetch
     let estatusActual=getCookie('userTurn');
     if(buttonClick){
         for(g of arraySelectedGuardias){
@@ -241,9 +242,8 @@ function changeStatusTurn(buttonClick){
             idGuardiasEnTurno.push("inp-"+ g.id)
             idGuardiasEnTurno.push("btn-"+ g.id)
         } 
-        if(estatusActual == userTurnAbierto ){  
+        if(estatusActual == userTurnAbierto ){
             turnoCerrado(idGuardiasEnTurno)
-            tables["tableGuardiasApoyo"].setData(dataTableGuardiasApoyo);
         }
         else {
             turnoAbierto(idGuardiasEnTurno)
@@ -264,8 +264,10 @@ function changeStatusTurn(buttonClick){
 
 //FUNCION que muestra un alert de confirmacion y las validaciones necesarias ANTES de cambiar el estatus del turno y despues llama a la funcion changeStatusTurn
 function AlertAndActionChangeStatusTurn(){
-    if((getCookie("userCasetaStatus")== casetaDisponible && getCookie("userTurn")== userTurnCerrado ) || (getCookie("userCasetaStatus")== casetaNoDisponible) && getCookie("userTurn")== userTurnAbierto 
-    || (getCookie("userCasetaStatus")== casetaDisponible &&  getCookie("userTurn")== userTurnAbierto)){
+    if(getCookie("userCasetaStatus")== casetaDisponible && getCookie("userTurn")== userTurnCerrado 
+    || getCookie("userCasetaStatus")== casetaNoDisponible && getCookie("userTurn")== userTurnAbierto 
+    || getCookie("userCasetaStatus")== casetaDisponible &&  getCookie("userTurn")== userTurnAbierto){
+
         let arrGuard=[];
         for(guardia of arraySelectedGuardias){
             arrGuard.push(guardia.name);
@@ -303,33 +305,34 @@ function AlertAndActionChangeStatusTurn(){
 function cerrarNotaAlert(name, note, folio, status){
     if(status=="Abierta"){
         Swal.fire({
-          title: "Confirmación",
-          type: 'warning',
-          html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
-                    <div class="mb-4"><h5>¿Estás seguro que deseas cerrar esta nota?</h5></div>
-            <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
-            <tbody> <tr> <td><b>Nombre:</b></td> <td> <span > `+ name +`</span></td> </tr>
-            <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> </tbody> </table> `,
-          showCancelButton: true,
-          showConfirmButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Si",
-          cancelButtonText: "Cancelar"
+            title: "Confirmación",
+            type: 'warning',
+            html: ` 
+                <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
+                <div class="mb-4"><h5>¿Estás seguro que deseas cerrar esta nota?</h5></div>
+                <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
+                <tbody> <tr> <td><b>Nombre:</b></td> <td> <span > `+ name +`</span></td> </tr>
+                <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> </tbody> </table> `,
+            showCancelButton: true,
+            showConfirmButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si",
+            cancelButtonText: "Cancelar"
         }).then((result) => {
-          if (result.value) {
-            let selectedNote = dataTableNotas.find(nota => nota.folio === folio);
-            if (selectedNote) {
-              selectedNote.status = "Cerrada";
-                tables["tableNotas"].setData(dataTableNotas);
+            if (result.value) {
+                let selectedNote = dataTableNotas.find(nota => nota.folio === folio);
+                if (selectedNote) {
+                    selectedNote.status = "Cerrada";
+                    tables["tableNotas"].setData(dataTableNotas);
+                }
             }
-          }
         });
     }else{
-         Swal.fire({
-          title: "Acción Completada!",
-          text: "Esta nota ya se encuentra cerrada.",
-          type: "warning"
+        Swal.fire({
+            title: "Acción Completada!",
+            text: "Esta nota ya se encuentra cerrada.",
+            type: "warning"
         });
     }
    
@@ -505,9 +508,7 @@ function eliminarGuardia(id, name){
             guardiasEnTurno=arrayGuard
             let arrSelectedGuardias = arraySelectedGuardias.filter(e => parseInt(e.id) !== parseInt(id))
             arraySelectedGuardias=arrSelectedGuardias
-            //tables["tableGuardiasApoyo"].setData(guardiasEnTurno);
             changeStatusTurn(false)
-              console.log("DESS",idGuardiasEnTurno,guardiasEnTurno,arraySelectedGuardias,id)
             Swal.fire({
                 title: "Check out!",
                 text: "Se ha realizado el check out correctamente.",
@@ -545,7 +546,6 @@ function agregarNuevoGuardiaApoyo(){
 //FUNCION que tiene las validaciones necesarias al iniciar turno
 function turnoAbierto(idGuardiasEnTurno){
     if(guardiasEnTurno.length > 0){
-        console.log("ENTRANDO")
         tables["tableGuardiasApoyo"].setData(guardiasEnTurno);
     }else{
         tables["tableGuardiasApoyo"].setData([]);
@@ -576,16 +576,18 @@ function turnoCerrado(idGuardiasEnTurno){
     $('#textInfActualCaseta').text('Información actual de la caseta:')
     $('#buttonForzarCierre').attr("disabled", false);
     $('#agregarGuardiasApoyoButton').attr("disabled", true);
-    guardiasApoyoValidateOptions()
     idGuardiasEnTurno=[]
     guardiasEnTurno=[] 
     arraySelectedGuardias=[]
+
+    guardiasApoyoValidateOptions()
 }
 
 
 //FUNCION con validaciones para ocultar botones de guardias de apoyo dependiendo del estatus del turno
 function guardiasApoyoValidateOptions(){
     if (getCookie('userTurn') == userTurnCerrado){
+
         if(idGuardiasEnTurno.length==0){
             $(document).ready(function() {
                 for(obj of dataTableGuardiasApoyo){
