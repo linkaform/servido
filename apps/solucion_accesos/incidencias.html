@@ -17,126 +17,106 @@
     <navbar-component ></navbar-component>
     <!-- Information Plant-->
     <section class="mainSection mainSectionMargins">
-        <div class="row ">
-            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-                <div class="card m-2 div-card-portal customShadow">
-                    <locationcard-component> </locationcard-component>
-                </div>
-            </div>
-            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-                <div class="card  m-2 div-card-portal customShadow">
-                    <div class="card-body p-3">
-                        <h5 class="card-title text-center text-uppercase text-dark">Fallas X Día</h5>
-                        <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert1">65</p>
+
+
+         <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <h5 class="m-0">Informacion de caseta</h5>
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show "  data-bs-parent="#accordionExample">
+              <div class="accordion-body p-0 pt-1" >
+                    <div class="row ">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                            <div class="card m-2 div-card-portal customShadow">
+                                <locationcard-component> </locationcard-component>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                            <div class="card  m-2 div-card-portal customShadow">
+                                <div class="card-body p-3">
+                                    <h5 class="card-title text-center text-uppercase text-dark">Fallas X Día</h5>
+                                    <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert1">65</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                            <div class="card  m-2 div-card-portal customShadow">
+                                <div class="card-body p-3">
+                                    <h5 class="card-title text-center text-uppercase text-dark">Fallas por resolver</h5>
+                                    <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert2">29</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+              </div>
             </div>
-            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-                <div class="card  m-2 div-card-portal customShadow">
-                    <div class="card-body p-3">
-                        <h5 class="card-title text-center text-uppercase text-dark">Fallas por resolver</h5>
-                        <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert2">29</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+          </div>
+        </div>  
+
+
+        
     </section >
 
     <!-- Tablas -->
     <section class="mainSectionMargins">
-        <div class="row mt-4">
-            <h3>Registro de reportes</h3>
-            <div class="col-12">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="in-location-tab" data-bs-toggle="tab" data-bs-target="#div-article-incidencias" type="button" role="tab" aria-controls="div-article-incidencias" aria-selected="true">Incidencias</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="out-location-tab" data-bs-toggle="tab" data-bs-target="#div-fallas" type="button" role="tab" aria-controls="div-fallas" aria-selected="false">Fallas</button>
-                    </li>
-                </ul>
-                <div class="tab-content overflow-hidden" id="myTabContent">
-                    <div class="tab-pane fade show active" id="div-article-incidencias" role="tabpanel" aria-labelledby="in-location-tab" tabindex="0">
-                        <div class="mt-3 row ">
-                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                                <h5>Fecha Desde: </h5>
-                                <input class="form-control ds-input filterIncidencias" id="idFechaDesdeIncidencias" type="date">
-                            </div>
-                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                                <h5>Fecha Hasta: </h5>
-                                <input class="form-control ds-input filterIncidencias" id="idFechaHastaIncidencias" type="date">
-                            </div>
-                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                                <h5>Ubicación: </h5>
-                                <select class="form-control ds-input filterIncidencias" id="idUbicacionIncidencias">
-                                </select>
-                            </div>
-                            <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 offset-md-9 offset-lg-9 offset-xl-9 mt-2">
-                                <button type="button" class="btn btn-secondary btn-sm" onclick="applyFilters('tableIncidencias','filterIncidencias')">Filtrar</button>
-                                <button type="button" class="btn btn-secondary btn-sm" onclick="resetFilters('tableIncidencias','filterIncidencias')">Restablecer Filtros</button>
-                            </div>
-                        </div>
-                        <div class="mt-2 row ">
-                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 offset-md-7 offset-lg-7 offset-xl-7 mt-2">
-                                <button type="button" class="btn btn-warning " onclick="setModal('NewIncident');return false;">
-                                    <i class="fa-solid fa-plus"></i>
-                                    Nuevo Incidente
-                                </button>
-                                <button type="button" class="btn btn-success " onclick="descargarExcel('tableIncidencias')">
-                                    <i class="fa-solid fa-file-arrow-down"></i>
-                                    Descargar
-                                </button>
-                                <button type="button" class="btn btn-danger " onclick="alertEliminarCheckbox('incidencias')">
-                                    <i class="fa-solid fa-trash"></i>
-                                    Eliminar
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-12 m-1 ms-2 mb-5">
-                            <div class="mt-3 " id="tableIncidencias"></div>
-                        </div>
+        <div class="row ">
+            <div class="d-flex justify-content-center mt-1 align-self-center">
+                <h4 class="m-0 p-0">Registro de incidencias y fallas</h4>
+            </div>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="in-location-tab" data-bs-toggle="tab" data-bs-target="#div-article-incidencias" type="button" role="tab" aria-controls="div-article-incidencias" aria-selected="true">Incidencias</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="out-location-tab" data-bs-toggle="tab" data-bs-target="#div-fallas" type="button" role="tab" aria-controls="div-fallas" aria-selected="false">Fallas</button>
+                </li>
+            </ul>
+            <div class="tab-content overflow-hidden" id="myTabContent">
+                <div class="tab-pane fade show active" id="div-article-incidencias" role="tabpanel" aria-labelledby="in-location-tab" tabindex="0">
+                    <div class="d-flex mt-2 mb-2 justify-content-end">
+                            <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewIncident');return false;">
+                                <i class="fa-solid fa-plus"></i>
+                                Nuevo Incidente
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarIncidencias" >
+                                <i class="fa-solid fa-file-arrow-down"></i>
+                                Descargar
+                            </button>
+                             <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                Filtros
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('incidencias')" id="buttonEliminarIncidencias">
+                                <i class="fa-solid fa-trash"></i>
+                                Eliminar
+                            </button>
                     </div>
-                    <div class="tab-pane fade overflow-hidden" id="div-fallas" role="tabpanel" aria-labelledby="out-location-tab" tabindex="0">
-                        <div class="mt-3 row ">
-                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                                <h5>Fecha Desde: </h5>
-                                <input class="form-control ds-input filterFallas" id="idFechaDesdeFallas" type="date">
-                            </div>
-                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                                <h5>Fecha Hasta: </h5>
-                                <input class="form-control ds-input filterFallas" id="idFechaHastaFallas" type="date">
-                            </div>
-                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                                <h5>Ubicación: </h5>
-                                <select class="form-control ds-input filterFallas" id="idUbicacionFallas">
-                                </select>
-                            </div>
-                            <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 offset-md-9 offset-lg-9 offset-xl-9 mt-2">
-                                <button type="button" class="btn btn-secondary btn-sm" onclick="applyFilters('tableFallas','filterFallas')">Filtrar</button>
-                                <button type="button" class="btn btn-secondary btn-sm" onclick="resetFilters('tableFallas','filterFallas')">Restablecer Filtros</button>
-                            </div>
-                        </div>
-                        <div class="mt-2 row ">
-                            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 offset-md-7 offset-lg-7 offset-xl-7 mt-2">
-                                <button type="button" class="btn btn-warning " onclick="setModal('NewFail')">
-                                    <i class="fa-solid fa-plus"></i>
-                                    Nueva Falla
-                                </button>
-                                
-                                <button type="button" class="btn btn-success " onclick="descargarExcel('tableFallas')">
-                                    <i class="fa-solid fa-file-arrow-down"></i>
-                                    Descargar
-                                </button>
-                                <button type="button" class="btn btn-danger " onclick="alertEliminarCheckbox('fallas')">
-                                    <i class="fa-solid fa-trash"></i>
-                                    Eliminar
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-12 mt-2 mb-5">
-                            <div class="mt-3" id="tableFallas"></div>
-                        </div>
+                        <div class="m-1 mb-2" id="tableIncidencias"></div>
+                </div>
+                <div class="tab-pane fade overflow-hidden" id="div-fallas" role="tabpanel" aria-labelledby="out-location-tab" tabindex="0">
+                    <div class="d-flex mt-2 mb-2 justify-content-end">
+                            <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewFail')">
+                                <i class="fa-solid fa-plus"></i>
+                                Nueva Falla
+                            </button>
+                            
+                            <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarFallas" >
+                                <i class="fa-solid fa-file-arrow-down"></i>
+                                Descargar
+                            </button>
+                             <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                Filtros
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('fallas')" id="buttonEliminarFallas" >
+                                <i class="fa-solid fa-trash"></i>
+                                Eliminar
+                            </button>
                     </div>
+                        <div class="m-1 mb-2" id="tableFallas"></div>
                 </div>
             </div>
         </div>
@@ -196,8 +176,8 @@
                     <small class="text-black-50 mt-3">** Campos son obligatorios</small>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-warning" onclick="nuevaIncidencia()">Agregar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="nuevaIncidencia()">Agregar</button>
                 </div>
             </div>
         </div>
@@ -254,8 +234,8 @@
                     <small class="text-black-50 mt-3">** Campos son obligatorios</small>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="editarIncidencia('incidencia')">Actualizar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="editarIncidencia()">Actualizar</button>
                 </div>
             </div>
         </div>
@@ -300,7 +280,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="cerrarModal('viewIncidentModal')">Cerrar</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="cerrarModal('viewIncidentModal')">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -367,8 +347,8 @@
                     <small class="text-black-50 mt-3">** Campos son obligatorios</small>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-warning" onclick="nuevaFalla()">Agregar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="nuevaFalla()">Agregar</button>
                 </div>
             </div>
         </div>
@@ -435,8 +415,8 @@
                     <small class="text-black-50 mt-3">** Campos son obligatorios</small>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-warning" onclick="editarFalla()">Agregar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="editarFalla()">Agregar</button>
                 </div>
             </div>
         </div>
@@ -492,7 +472,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="cerrarModal('viewFailModal')">Cerrar</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="cerrarModal('viewFailModal')">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -512,12 +492,54 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success">Confirmar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm">Confirmar</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal Out Article -->
+    <div class="modal fade" id="incidenciasFiltersModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Filtros</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mt-3 row ">
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                             <h5>Columna: </h5>
+                            <select class="form-control ds-input filterArticles" id="idFiltrosColumna">
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <h5>Tipo: </h5>
+                            <select class="form-control ds-input filterArticles" id="idFiltrosTipo" >
+                                <option value="=">=</option>
+                                <option value="<"><</option>
+                                <option value="<="><=</option>
+                                <option value=">">></option>
+                                <option value=">=">>=</option>
+                                <option value="!=">!=</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <h5>Valor: </h5>
+                            <input class="form-control ds-input filterArticles" id="idFiltrosValor" >
+                        </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="aplicarFiltros()">Aplicar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 </body>
 <!-- Local -->

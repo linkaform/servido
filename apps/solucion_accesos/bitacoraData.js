@@ -1,7 +1,8 @@
 let tables={}
 
+
 const columsData1 = [
-	{ title:"Opciones", field: "actions" , hozAlign: "left", resizable:false,width:180,
+	{ title:"Opciones", field: "actions" , hozAlign: "left", resizable:false,
 		formatter: (cell, formatterParams) => {
 			//----Button Trash
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
@@ -16,21 +17,21 @@ const columsData1 = [
 			//`<button  class="btn-table-bitacora" onClick="setModal('Tools',${folio})"><i class="fa-solid fa-car"></i></button> `;
 		},
 	},
-	{ title:"Folio", field:'folio',hozAlign:"left",headerFilter:true,width:80},
-	{ title:"Visitante", field:'visitante',hozAlign:"left",headerFilter:true,width:250},
-	{ title:"Contratista", field:'contratista',hozAlign:"left",headerFilter:true,width:250},
-	{ title:"Visita a", field:'visita',hozAlign:"left",headerFilter:true,width:250},
-	{ title:"Areá de acceso", field:'area',hozAlign:"left",headerFilter:true,width:250},
-	{ title:"Tipo", field:'tipo',hozAlign:"left",headerFilter:true,width:250},
-	{ title:"Entrada", field:'entrada',hozAlign:"left",headerFilter:true,width:200},
-	{ title:"Salida", field:'salida',hozAlign:"left",headerFilter:true,width:200},
-	{ title:"Estado", field:'estado',hozAlign:"left",headerFilter:true,width:200},
-	{ title:"Punto de acceso", field:'location_access',hozAlign:"left",headerFilter:true,width:200},
-	{ title:"Gafete", field:'credentials',hozAlign:"left",headerFilter:true,width:200},
+	{ title:"Folio", field:'folio',hozAlign:"left",headerFilter:true,},
+	{ title:"Visitante", field:'visitante',hozAlign:"left",headerFilter:true},
+	{ title:"Contratista", field:'contratista',hozAlign:"left",headerFilter:true},
+	{ title:"Visita a", field:'visita',hozAlign:"left",headerFilter:true},
+	{ title:"Areá de acceso", field:'area',hozAlign:"left",headerFilter:true},
+	{ title:"Tipo", field:'tipo',hozAlign:"left",headerFilter:true},
+	{ title:"Entrada", field:'entrada',hozAlign:"left", headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
+	{ title:"Salida", field:'salida',hozAlign:"left",headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
+	{ title:"En turno", field:'estado',hozAlign:"center",tooltip:true, maxWidth:100, formatter:"tickCross",  headerFilter:"tickCross",  headerFilterParams:{'Dentro':true, 'Fuera': false}, headerFilterEmptyCheck:function(value){return value === null}},
+	{ title:"Punto de acceso", field:'location_access',hozAlign:"left",headerFilter:true},
+	{ title:"Gafete", field:'credentials',hozAlign:"left",headerFilter:true},
 ];
 
 const columsData2 = [
-	{ title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:180,
+	{ title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,
 		formatter: (cell, formatterParams) => {
 			//----Button Trash
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
@@ -41,59 +42,81 @@ const columsData2 = [
 			return divActions;
 		},
 	},
-	{ title:"Locker", field:'locker',hozAlign:"left",headerFilter:true,width:200},
-	{ title:"Estatus del locker", field:'status',hozAlign:"left",headerFilter:true,width:200},
-	{ title:"Visitante", field:'visit',hozAlign:"left",headerFilter:true,width:300},
-	{ title:"Documento", field:'document',hozAlign:"left",headerFilter:true,width:200},
-	{ title:"Número Gafete", field:'num_access',hozAlign:"left",headerFilter:true,width:200},
-	{ title:"Planta", field:'location',hozAlign:"left",headerFilter:true,width:200},
+	{ title:"Locker", field:'locker',hozAlign:"left",headerFilter:true},
+	{ title:"Libre", field:'status',hozAlign:"center",tooltip:true,maxWidth:100, formatter:"tickCross",  headerFilter:"tickCross",  headerFilterParams:{'Libre':true, 'Ocupado': false}, headerFilterEmptyCheck:function(value){return value === null}},
+	{ title:"Visitante", field:'visit',hozAlign:"left",headerFilter:true},
+	{ title:"Documento", field:'document',hozAlign:"left",headerFilter:true,tooltip:true,},
+	{ title:"Número Gafete", field:'num_access',hozAlign:"left",headerFilter:true},
+	{ title:"Planta", field:'location',hozAlign:"left",headerFilter:true},
 ];
 
 
 const dataTablePersonal = [
-	{'folio':'1263451','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25/02/2024 08:30','comentario':'Entra temprano con autorización','estado':'Dentro','credentials':'True', 'salida':''},
-	{'folio':'1263452','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25/02/2024 08:30','comentario':'Entra temprano con autorización','estado':'Dentro','credentials':'True', 'salida':''},
-	{'folio':'1263453','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25/02/2024 08:30','comentario':'Entra temprano con autorización','estado':'Dentro','credentials':'True', 'salida':''},
-	{'folio':'1263454','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25/02/2024 08:30','comentario':'Entra temprano con autorización','estado':'Dentro','credentials':'True', 'salida':''},
-	{'folio':'1263455','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25/02/2024 08:30','comentario':'Entra temprano con autorización','estado':'Dentro','credentials':'True', 'salida':''},
-	{'folio':'1263456','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25/02/2024 08:30','comentario':'Entra temprano con autorización','estado':'Dentro','credentials':'True', 'salida':''},
-	{'folio':'1263457','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25/02/2024 08:30','comentario':'Entra temprano con autorización','estado':'Dentro','credentials':'True', 'salida':''},
-	{'folio':'1263458','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25/02/2024 08:30','comentario':'Entra temprano con autorización','estado':'Dentro','credentials':'True', 'salida':''},
-	{'folio':'1263459','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25/02/2024 08:30','comentario':'Entra temprano con autorización','estado':'Dentro','credentials':'True', 'salida':''},
-	{'folio':'1263410','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25/02/2024 08:30','comentario':'Entra temprano con autorización','estado':'Dentro','credentials':'True', 'salida':''},
-	{'folio':'1263411','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25/02/2024 08:30','comentario':'Entra temprano con autorización','estado':'Dentro','credentials':'True', 'salida':''},
-	{'folio':'1263412','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25/02/2024 08:30','comentario':'Entra temprano con autorización','estado':'Dentro','credentials':'True', 'salida':''},
-	{'folio':'1263413','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25/02/2024 08:30','comentario':'Entra temprano con autorización','estado':'Dentro','credentials':'True', 'salida':''},
-	{'folio':'1263414','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25/02/2024 08:30','comentario':'Entra temprano con autorización','estado':'Dentro','credentials':'True', 'salida':''},
+	{'folio':'1263451','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'20-06-2024 08:30','comentario':'Entra temprano con autorización','estado':true,'credentials':'Si', 'salida':''},
+	{'folio':'1263452','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'20-06-2024 08:00','comentario':'Entra temprano con autorización','estado':true,'credentials':'Si', 'salida':''},
+	{'folio':'1263453','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'22-07-2024 08:30','comentario':'Entra temprano con autorización','estado':true,'credentials':'Si', 'salida':''},
+	{'folio':'1263454','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'23-07-2024 08:30','comentario':'Entra temprano con autorización','estado':true,'credentials':'Si', 'salida':''},
+	{'folio':'1263455','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'24-07-2024 08:30','comentario':'Entra temprano con autorización','estado':true,'credentials':'Si', 'salida':''},
+	{'folio':'1263456','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25-07-2024 08:30','comentario':'Entra temprano con autorización','estado':true,'credentials':'Si', 'salida':''},
+	{'folio':'1263457','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'25-07-2024 08:30','comentario':'Entra temprano con autorización','estado':true,'credentials':'Si', 'salida':''},
+	{'folio':'1263458','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'26-07-2024 08:30','comentario':'Entra temprano con autorización','estado':false,'credentials':'Si', 'salida':''},
+	{'folio':'1263459','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'27-06-2024 08:30','comentario':'Entra temprano con autorización','estado':true,'credentials':'Si', 'salida':''},
+	{'folio':'1263410','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'28-06-2024 08:30','comentario':'Entra temprano con autorización','estado':true,'credentials':'Si', 'salida':''},
+	{'folio':'1263411','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'29-06-2024 08:30','comentario':'Entra temprano con autorización','estado':false,'credentials':'Si', 'salida':''},
+	{'folio':'1263412','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'30-02-2024 08:30','comentario':'Entra temprano con autorización','estado':false,'credentials':'Si', 'salida':''},
+	{'folio':'1263413','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'31-02-2024 08:30','comentario':'Entra temprano con autorización','estado':true,'credentials':'Si', 'salida':''},
+	{'folio':'1263414','planta':'PLanta 1','visitante':'Javier Garcia','contratista':'LINKAFORM SA DE CV','visita':'Juan Perez','area':'Refrigeración','tipo':'Nuevo','entrada':'32-02-2024 08:30','comentario':'Entra temprano con autorización','estado':false,'credentials':'Si', 'salida':''},
 ]
 
 const dataTableLocker = [
-	{'folio':'1','locker':'Locker 1','status':'Ocupado','visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
-	{'folio':'2','locker':'Locker 1','status':'Ocupado','visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
-	{'folio':'3','locker':'Locker 1','status':'Ocupado','visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
-	{'folio':'4','locker':'Locker 1','status':'Ocupado','visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
-	{'folio':'5','locker':'Locker 1','status':'Ocupado','visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
-	{'folio':'6','locker':'Locker 1','status':'Ocupado','visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
-	{'folio':'7','locker':'Locker 1','status':'Ocupado','visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
-	{'folio':'8','locker':'Locker 1','status':'Ocupado','visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
-	{'folio':'9','locker':'Locker 1','status':'Ocupado','visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
-	{'folio':'10','locker':'Locker 1','status':'Ocupado','visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
+	{'folio':'1','locker':'Locker 1','status':false,'visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
+	{'folio':'2','locker':'Locker 1','status':true,'visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
+	{'folio':'3','locker':'Locker 1','status':false,'visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
+	{'folio':'4','locker':'Locker 1','status':true,'visit':'Rodolfo Peña Gonzales','document':'Pasaporte','num_access':'A58','location':'PLanta 1'},
+	{'folio':'5','locker':'Locker 1','status':true,'visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
+	{'folio':'6','locker':'Locker 1','status':true,'visit':'Rodolfo Peña Gonzales','document':'Pasaporte','num_access':'A58','location':'PLanta 1'},
+	{'folio':'7','locker':'Locker 1','status':false,'visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
+	{'folio':'8','locker':'Locker 1','status':false,'visit':'Rodolfo Peña Gonzales','document':'Pasaporte','num_access':'A58','location':'PLanta 1'},
+	{'folio':'9','locker':'Locker 1','status':false,'visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
+	{'folio':'10','locker':'Locker 1','status':false,'visit':'Rodolfo Peña Gonzales','document':'INE','num_access':'A58','location':'PLanta 1'},
 ]
 
 
 //-----TABLES
 function drawTable(id, columnsData, tableData,){
     var  table = new Tabulator("#" + id, {
-	    layout:"fitDataTable",
+	    layout:"fitColumns",
 	    data:tableData,
 	    textDirection:"ltr",
 	    columns:columnsData,
 	    pagination:true, 
 	    paginationSize:40,
+        responsiveLayout: "fitDataFill",
     });
     tables[id]=table;
 }
 
+
+let load_shift_json_log={
+	"booth":"Caseta 1",
+	"location":"Monterrey",
+	"booth_stats":{
+		"guard_on_duty": {
+			"name":"Juan Alvarez",
+			"id":100
+		},
+		"support_guard":{
+			"name":"Guardia Soporte 1",
+			"id":101
+		},
+		"log":{
+			"visits_per_day": 8,
+			"staff_indoors":20,
+			"vehicles_inside":36,
+			"registered_exits":14,
+		}
+	}
+}
 
 
 /*

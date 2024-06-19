@@ -17,6 +17,7 @@ let userJwt = getCookie("userJwt");
 window.onload = function(){
     setValueUserLocation('accesos');
     changeButtonColor();
+    fillCatalogs();
     initializeCatalogs()
     getInitialData();
     selectLocation= document.getElementById("selectLocation")
@@ -47,7 +48,7 @@ window.onload = function(){
     getCatalogs()
 }
 
-
+//FUNCION Obtener data inicial informacion de la caseta
 function getInitialData(){
     let valueCaseta = getCookie('userCaseta')
     let valueLocation =  getCookie('userLocation')
@@ -75,7 +76,6 @@ function getInitialData(){
     $("#textPersonalDentro").text(boothStats.staff_indoors);
     $("#textVehiculosDentro").text(boothStats.vehicles_inside);
     $("#textSalidasRegistradas").text(boothStats.registered_exits);
-   
 }
 
 
@@ -176,6 +176,7 @@ function agregaEquipo(){
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
 function getDataUser() {
+    setCleanData();
     $("#divSpinner").show();
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
@@ -747,6 +748,10 @@ function setCleanData(){
     $('#visit').text('')
     $('#authorizePase').text('')
     $('#authorizePhone').text('')
+
+    setHideElements('dataHide');
+    setHideElements('buttonsOptions');
+    setHideElements('buttonNew');
 }
 
 
@@ -785,6 +790,7 @@ function setCheckVehicule(id = 0) {
         $('input[name="groupCarList"]').prop('checked', false);
     }
 }
+
 
 //FUNCION para saber que equipos entas con checkbox
 function setCheckItem(id = 0) {

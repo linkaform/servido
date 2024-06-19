@@ -234,7 +234,7 @@ function AlertForzarCierre(name){
 //FUNCION para cambiar el estatus del turno y hacer las validaciones correspondientes al dar click al boton, al iniciar la aplicacion, o al refrescar
 function changeStatusTurn(buttonClick){
     //INFO : idGuardiasEnTurno para saber que guardias de los que estan en la tabla "Guardias de apoyo" INICIARON TURNO
-    //INFO : aqui fetch para modificar el status , meter estos este if en el response del fetch
+    //INFO : aqui poner fetch para modificar el status , meter estos este if en el response del fetch
     let estatusActual=getCookie('userTurn');
     if(buttonClick){
         for(g of arraySelectedGuardias){
@@ -243,9 +243,7 @@ function changeStatusTurn(buttonClick){
             idGuardiasEnTurno.push("btn-"+ g.id)
         } 
         if(estatusActual == userTurnAbierto ){
-            console.log("HELOO")  
             turnoCerrado(idGuardiasEnTurno)
-            //tables["tableGuardiasApoyo"].setData(dataTableGuardiasApoyo);
         }
         else {
             turnoAbierto(idGuardiasEnTurno)
@@ -510,9 +508,7 @@ function eliminarGuardia(id, name){
             guardiasEnTurno=arrayGuard
             let arrSelectedGuardias = arraySelectedGuardias.filter(e => parseInt(e.id) !== parseInt(id))
             arraySelectedGuardias=arrSelectedGuardias
-            //tables["tableGuardiasApoyo"].setData(guardiasEnTurno);
             changeStatusTurn(false)
-              console.log("DESS",idGuardiasEnTurno,guardiasEnTurno,arraySelectedGuardias,id)
             Swal.fire({
                 title: "Check out!",
                 text: "Se ha realizado el check out correctamente.",
@@ -580,7 +576,6 @@ function turnoCerrado(idGuardiasEnTurno){
     $('#textInfActualCaseta').text('Información actual de la caseta:')
     $('#buttonForzarCierre').attr("disabled", false);
     $('#agregarGuardiasApoyoButton').attr("disabled", true);
-    console.log("turno cerra",dataTableGuardiasApoyo)
     idGuardiasEnTurno=[]
     guardiasEnTurno=[] 
     arraySelectedGuardias=[]
@@ -594,7 +589,6 @@ function guardiasApoyoValidateOptions(){
     if (getCookie('userTurn') == userTurnCerrado){
 
         if(idGuardiasEnTurno.length==0){
-             console.log("cerrado hola")
             $(document).ready(function() {
                 for(obj of dataTableGuardiasApoyo){
                     $("#inp-"+obj.id).show();

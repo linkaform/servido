@@ -1,4 +1,5 @@
 let idScriptC=119197;
+let selectedRondin=""
 
 window.onload = function(){    
     setValueUserLocation('rondines');
@@ -8,7 +9,7 @@ window.onload = function(){
     selectLocation.onchange = function() {
         let response = fetchOnChangeLocation()
     };
-     selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = function() {
         let response = fetchOnChangeLocation()
     };
@@ -21,6 +22,9 @@ window.onload = function(){
     } else{
 		redirectionUrl('login',false);
 	}
+    $("#descargarSalidas").on("click", function() {
+        descargarExcel(tables, 'tableSalidas')
+    });
 }
 
 
@@ -57,7 +61,8 @@ function onCLickEditarRecorrido(){
 
 
 //FUNCION finalizar un recorrido y actualizar la tabla
-function onCLickFinalizarRecorrido(){
+function onClickFinalizarRecorrido(){
+    $('#modalFinalizarRecorrido').modal('show');
     let fecha= $("#inputDateFinalizarRecorrido").val();
     let hora= $("#inputHoraFinalizarRecorrido").val(); 
     let comentarios= $("#inputComentarioFinalizarRecorrido").val(); 
@@ -77,70 +82,97 @@ function onCLickFinalizarRecorrido(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            Swal.fire({
-                title: "Confirmación",
-                text: "Recorrido finalizado correctamente",
-                type: "success"
-            });
-            $('#modalFinalizarRecorrido').modal('hide');
+
         } 
     })
+    let selected = dataTableListPendientes.find(x => x.folio === selectedRondin);
+        if (selected) {
+            let fechaFormat= fecha.split("-")[2] +"-"+ fecha.split("-")[1] +"-"+ fecha.split("-")[0]
+            selected.dateHourFin = fechaFormat+" "+hora;
+            selected.observations = comentarios;
+            tables["tableListPendientes"].setData(dataTableListPendientes);
+        }
+
+    Swal.fire({
+        title: "Confirmación",
+        text: "Recorrido finalizado correctamente",
+        type: "success"
+    });
+    $('#modalFinalizarRecorrido').modal('hide');
 }
 
 
 //FUNCION para abrir los modales
 function setModal(type = 'none',id){
+    selectedRondin=id
     if(type == 'edit'){
         $('#modalEditarRecorrido').modal('show');
     }else if(type == 'bandera'){
         $('#modalFinalizarRecorrido').modal('show');
-    }else if(type == 'ver'){
-      
+    }else if(type == 'filtros'){
+          $('#rondinesFiltersModal').modal('show');
     }else if(type == 'cancelar'){
-        alertCancelarRecorrido()
+        alertCancelarRecorrido(id)
     }
 }
 
 
 //FUNCION para cancelar un recorrido y actualizar la tabla
-function alertCancelarRecorrido(){
-    Swal.fire({
-        title: "Confirmación",
-        text: "Seguro que quieres cancelar este recorrido?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Si",
-        cancelButtonText: "Cancelar"
-    })
-    .then((result) => {
-        if (result.isConfirmed) {
-            fetch(urlLinkaform + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_id: idScriptC,
-                option: "cancelar_recorrido",
-                id: 2,
-            }),
-            headers:{
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+jw
-                },
-            })
-            .then(res => res.json())
-            .then(res => {
-                if (res.success) {
-                   
-                } 
-            })
-            Swal.fire({
-                title: "Confirmación",
-                text: "El registro a ha sido cancelado",
-                icon: "success"
-            });
-        }
-    });
+function alertCancelarRecorrido(folio, status){
+    let dataFiltered = dataTableListPendientes.filter(x => x.folio == folio);
+ 
+    if(status){
+        Swal.fire({
+            title: "Confirmación",
+            text: "Seguro que quieres cancelar este recorrido?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si",
+            cancelButtonText: "Cancelar"
+        })
+        .then((result) => {
+            if (result.value) {
+                /*
+                fetch(urlLinkaform + urlScripts, {
+                method: 'POST',
+                body: JSON.stringify({
+                    script_name: idScriptC,
+                    option: "cancelar_recorrido",
+                    id: 2,
+                }),
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+jw
+                    },
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                       
+                    } 
+                })
+                Swal.fire({
+                    title: "Confirmación",
+                    text: "El registro a ha sido cancelado",
+                    icon: "success"
+                }); 
+
+                */
+                if (dataFiltered) {
+                    dataFiltered[0].status = false;
+                    tables["tableListPendientes"].setData(dataTableListPendientes);
+                }
+            }
+        });
+    }else{
+        Swal.fire({
+            title: "Acción Completada",
+            text: "Este recorrido ya se encuentra cerrado",
+            type: "success"
+        });
+    }
 }
 
 
@@ -185,4 +217,88 @@ function alertVerRecorrido(folio,  nameGuard,  status,  dateHourStart,  dateHour
             });
         }
     });
+}
+
+
+//FUNCION agregar u nuevo recorrido
+function nuevoRecorrido(){
+    let data = getInputsValueByClass("contentNuevaIncidencia")
+   
+    if(!validarObjeto(data)){
+        Swal.fire({
+            title: "Validación",
+            text: "Faltan campos por llenar, los campos marcados con asterisco son obligatorios.",
+            type: "warning"
+        });
+    } else {
+        //INFO: Poner FETCH AQUI para enviar el nuevo registro de incidencia
+        fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name: scriptName,
+            }),
+            headers:
+            {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+jw
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                //INFO devolverme la informacion actualizada o simplemente actualizar el array ya que tenemos response success
+            }
+        });
+
+        Swal.fire({
+            title: "Confirmación",
+            text: "Incidencia creada correctamente.",
+            type: "success"
+        });
+        let folioRandom = Date.now();
+        dataTable1 = dataTable1.concat({"comment": data.comentariosNuevaIncidencia, "date": data.fechaNuevaIncidencia, "dept": data.departamentoNuevaIncidencia, 
+        "folio": folioRandom, "incident": data.incidenciaNuevaIncidencia, "location": data.ubicacionNuevaIncidencia, "place_accident": data.lugarNuevaIncidencia, 
+        "report": data.reportaNuevaIncidencia, "time": data.timeNuevaIncidencia});
+
+        tables["tableIncidencias"].setData(dataTable1);
+        $("#newIncidentModal").modal('hide')
+    }
+}
+
+
+//FUNCION FILTROS MODAL
+function aplicarFiltros(){
+    $('#rondinesFiltersModal').modal('hide');
+    let columnas= $("#idFiltrosColumna").val()
+    let tipo= $("#idFiltrosTipo").val()
+    let valor= $("#idFiltrosValor").val();
+    /*
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'turnos',
+            option: "apply_filters",
+            columnas,
+            tipo,
+            valor,
+            id: 2,
+        }),
+        headers:{
+           'Content-Type': 'application/json',
+           'Authorization': 'Bearer '+jw
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+        } 
+    }) */
+
+    Swal.fire({
+        title: "Confirmación",
+        text: "Filtros aplicados correctamente.",
+        type: "success"
+    });
+    let selectTipo= document.getElementById("idFiltrosTipo")
+    selectTipo.value=""
 }

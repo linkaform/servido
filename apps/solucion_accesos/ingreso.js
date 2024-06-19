@@ -13,9 +13,7 @@ let ubicacion=""
 
 window.onload = function(){
 	setValueUserLocation('ingreso');
-
 	customNavbar(getValueUserLocation(), getStatusTurn())
-	
 	userJwt = getCookie('userJwt');
 	$(".select-car-register").select2({
 	  tags: true
@@ -34,7 +32,6 @@ window.onload = function(){
 
 	ubicacion = urlParams.get('ubicacion') !== null ? urlParams.get('ubicacion') : 'Monterrey' ;
 	caseta = urlParams.get('caseta') !== null ? urlParams.get('caseta') : 'Caseta 1' ;
-  console.log("UBICACION Y CASETA",ubicacion, caseta)
 	id = urlParams.get('id');
 	if(id){
 		getExtraInformation()
@@ -116,7 +113,6 @@ function getCatalogs(){
         "types_cars": ["motocicleta", "carro", "trailer"],
     };
     dataCatalogs =cat// res.response.data;
-    console.log("Catalogosss",dataCatalogs)
     $("#selectTipoVehiculo-123").prop( "disabled", false );
     $("#spinnerTipoVehiculo").css("display", "none");
     dataCatalogs.types_cars.forEach(function(e, i){
@@ -641,7 +637,6 @@ function setAddVehiculo() {
 function setDeleteEquipo(id) {
 	const elements = document.querySelectorAll('.div-row-equipo');
 	const count = elements.length;
-	console.log("equopososss",count)
 	if(count > 1){
 		const elements = document.getElementsByClassName('div-equipo-row-'+id);
 		while(elements.length > 0){

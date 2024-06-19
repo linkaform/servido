@@ -2,7 +2,6 @@ let selectLocation;
 let colors = getPAlleteColors(12,0)
 
 
-
 window.onload = function(){
 	setValueUserLocation('bitacora');
 	console.log(getValueUserLocation())
@@ -25,7 +24,18 @@ window.onload = function(){
 	}else{
 		redirectionUrl('login',false);
 	}
+    $("#descargarEntradas").on("click", function() {
+        descargarExcel(tables, 'tableEntradas')
+    });
+    $("#descargarSalidas").on("click", function() {
+        descargarExcel(tables, 'tableSalidas')
+    });
 
+    let boothStats = load_shift_json_log.booth_stats.log
+    $("#textVisitasEnElDia").text(boothStats.visits_per_day);
+    $("#textPersonalDentro").text(boothStats.staff_indoors);
+    $("#textVehiculosDentro").text(boothStats.vehicles_inside);
+    $("#textSalidasRegistradas").text(boothStats.registered_exits);
 }
 
 
@@ -46,17 +56,8 @@ function setModal(type = 'none',id){
 	}
 }
 
-
-//---Cerrar Sesión
-function setCloseSession(argument) {
-	closeSession();
-	redirectionUrl('login',false);
-}
-
-
-
+//FUNCION confirmar la salida a un registro individual desde la tabla
 function alertSalida(folio){
-    console.log(folio)
 		Swal.fire({
 	    title:'¿Estas seguro de confirmar la salida?',
 	    html:`
@@ -91,6 +92,7 @@ function alertSalida(folio){
 }
 
 
+//FUNCION entregar gafete a un registro individual desde la tabla
 function alertGafete(folio){
     let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
     if(selectedSalida.status !='Libre'){
@@ -126,7 +128,6 @@ function alertGafete(folio){
             type: "warning"
         });
     }
-	
 }
 
 
@@ -343,7 +344,6 @@ function getSaveCar(){
 }
 
 
-
 //FUNCION filtrar los la data de catalogos
 function filterCatalogBy(key, value ){
     /*INFO: 
@@ -438,62 +438,15 @@ function setDataGafete(data = {}){
 }
 
 
-
-function descargarExcel(table) {
-    let columns = tables[table].getColumns();
-  /*  for(c in columns) {
-        let nombreCOlumnas=""
-        let keys = Object.keys(columns);
-        for (e in columns){
-            console.log("GEELKSN",columns[e])
-            if (e !== keys[keys.length - 1]) {
-                nombreCOlumnas += columns[e] + "\n";
-            }
-            else{
-               nombreCOlumnas += columns[e] + "\t" 
-            }
-        }
-        console.log("nombreCOlumnasAA", nombreCOlumnas)
-        excelContent += nombreCOlumnas
-    };*/
-
-
-    let nombresColumnas = columns.map(function(column) {
-        return column.getField() ; // O puedes usar column.getTitle() para obtener los títulos de las columnas
-    }); 
-    console.log("hi", nombresColumnas)
-    // Crear un archivo Excel básico
-    let excelContent = nombresColumnas+"\n"; // Cabecera
-    tables[table].getData().forEach(function(row) {
-        let fila=""
-        let keys = Object.keys(row);
-        for (e in row){
-            if (e !== keys[keys.length - 1]) {
-                fila += row[e] + "\n";
-                console.log("FILAAA", fila)
-            }
-            else{
-               fila += row[e] + "\t" 
-               console.log("SIUGUEE", fila)
-            }
-        }
-        
-        excelContent += fila 
-    });
-    // Crear un enlace de descarga y simular clic
-    let blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
-    let link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = table +'.xlsx';
-    link.click(); 
-}
-
-
-
-//print button
+//FUNCION print button imprimir tbala
 function printTable(table){
-    console.log("print", table)
     let tab = tables[table]
     tab.print(false, true);
 }
 
+
+//---Cerrar Sesión
+function setCloseSession(argument) {
+    closeSession();
+    redirectionUrl('login',false);
+}

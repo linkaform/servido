@@ -1,5 +1,6 @@
 :root {
   --yellowLKF: #ffe99c;
+  --downloadButton:#003285;
 }
 
 .header{
@@ -194,6 +195,11 @@ th {
 .tabulator-row:hover{
   background-color: lightgray !important;
 }
+
+.tableOverflow{
+  width: 100% !important;
+}
+
 
 /* LOAD */
 .load-wrapp{
@@ -436,4 +442,46 @@ input[type=search]{
   background-color: var(--yellowLKF)!important;
   border-color: lightgray !important;
 
+}
+
+.downloadButton{
+  background-color: var(--downloadButton)!important;
+  color: whitesmoke !important;
+}
+
+/* COLLAPSE */
+
+.accordion-item:not(.collapsed){
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.accordion-item{
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.accordion-button{
+  padding: 0px !important;
+  margin: 0px !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.accordion-button{
+  padding: 5px !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  background-color: white !important;
+  color: black !important;
+  border: .5px solid #e0e0e0 !important;
+  border-radius: 5px !important;
+}
+
+.nav-item > button, .nav-tabs > button {
+  padding-top: 2px !important;
+   padding-bottom: 2px !important;
 }

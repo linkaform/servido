@@ -9,6 +9,7 @@ let selectedFallas=[]
 window.onload = function(){
 	setValueUserLocation('incidencias');
 	changeButtonColor();
+    fillCatalogs();
     getInfoAndCatalogos();
 	setValueUserLocation('incidencias');
 	selectLocation= document.getElementById("selectLocation")
@@ -28,37 +29,19 @@ window.onload = function(){
 	}else{
 		redirectionUrl('login',false)
 	}
+    $("#descargarIncidencias").on("click", function() {
+        descargarExcel(tables, 'tableIncidencias')
+    });
+    $("#descargarFallas").on("click", function() {
+        descargarExcel(tables, 'tableFallas')
+    });
+    let selectedIncidencias = getActiveCheckBoxs(tables,'tableIncidencias')
+    let selectedFallas = getActiveCheckBoxs(tables,'tableFallas')
+    let buttonEliminarIncidencias=document.getElementById('buttonEliminarIncidencias');
+    let buttonEliminarFallas=document.getElementById('buttonEliminarFallas');
+    if(selectedIncidencias.length>0) buttonEliminarIncidencias.display= n
 }
 
-
-
-function selectCheckboxIncidencias(folio){
-    let checkboxes = document.querySelectorAll('.checkbox-incidencias');
-    selectedIncidencias=[]
-    checkboxes.forEach(function(checkbox) {
-        if (checkbox.checked) {
-            for(d of dataTable1){
-                if(parseInt(d.folio) === parseInt(checkbox.value)){
-                    selectedIncidencias= selectedIncidencias.concat(d)
-                }
-            }
-        }
-    });
-} 
-
-function selectCheckboxFallas(folio){
-    let checkboxes = document.querySelectorAll('.checkbox-fallas');
-    selectedFallas=[]
-    checkboxes.forEach(function(checkbox) {
-        if (checkbox.checked) {
-            for(d of dataTable2){
-                if(parseInt(d.folio) === parseInt(checkbox.value)){
-                    selectedFallas = selectedFallas.concat(d)
-                }
-            }
-        }
-    });
-} 
 
 //FUNCION al momento de cambiar la caseta o la locacion para traer el resto de informacion sobre la caseta
 function fetchOnChangeLocation(){
@@ -102,7 +85,7 @@ function fetchOnChangeLocation(){
 }
 
 
-
+//FUNCION traer toda la informacion de los inicial y la de los catalogos
 function getInfoAndCatalogos(){
     //INFO: poner aqui FETCH para traer los catalogos y lo sig agregarlo dentro del response
      fetch(url + urlScripts, {
@@ -142,7 +125,7 @@ function getInfoAndCatalogos(){
 }
 
 
-
+//FUNCION una vez traida la informacion llenar todos los catalogso correspondientes
 function initializeCatalogsIncidencias(dataCatalogs){
     dataCatalogs.location.forEach(function(e, i){
         $("#ubicacionEditIncidencia").append($('<option></option>').val(e).text(e));
@@ -172,6 +155,7 @@ function initializeCatalogsIncidencias(dataCatalogs){
 }
 
 
+//FUNCION una vez traida la informacion llenar todos los catalogso correspondientes
 function initializeCatalogsFallas(dataCatalogs){
     dataCatalogs.location.forEach(function(e, i){
         $("#ubicacionEditFalla").append($('<option></option>').val(e).text(e));
@@ -206,7 +190,6 @@ function initializeCatalogsFallas(dataCatalogs){
 }
 
 
-
 //FUNCION para mostrar los modales
 function setModal(type = 'none',id){
 	if(type == 'NewIncident'){
@@ -223,17 +206,19 @@ function setModal(type = 'none',id){
 		$('#viewFailModal').modal('show');
 	}else if(type == 'SuccessFail'){
 		$('#successResolveFailModal').modal('show');
-	}
+	}else if(type == 'filtros'){
+        modalFiltros('tableIncidencias','incidenciasFiltersModal')
+    }
 }
 
 
-//Funcion para modales de vista
+//FUNCION para cerrar modales de vista
 function cerrarModal(id){
     $('#'+ id).modal('hide');
 }
 
 
-
+//FUNCION para elimiinar un registro desde la tabla
 function alertEliminar(folio, type){
     Swal.fire({
         title:'¿Estas seguro de querer eliminar el registro?',
@@ -265,9 +250,8 @@ function alertEliminar(folio, type){
 }
 
 
-
+//FUNCION para eliminar todos los registros seleccionados
 function alertEliminarCheckbox(type){
-    console.log(type)
     Swal.fire({
         title:'¿Estas seguro de querer eliminar los registros selecionados?',
         html:`
@@ -285,7 +269,7 @@ function alertEliminarCheckbox(type){
         //INFO: mandar llamar la FETCH aqui para eliminar esos registros y en el response traer la data actualizada y actualizar la tabla
         if (result.value) {
             if(type=="fallas"){
-                     console.log("FALALS")
+                selectedFallas= getActiveCheckBoxs(tables, 'tableFallas')
                 let ids=[]
                 for (d of selectedFallas){
                     ids.push(d.folio)
@@ -295,7 +279,7 @@ function alertEliminarCheckbox(type){
                 });
                 tables["tableFallas"].setData(dataTable2);
             }else{
-                console.log("INCIDENCIASD")
+                selectedIncidencias= getActiveCheckBoxs(tables, 'tableIncidencias')
                 let ids=[]
                 for (d of selectedIncidencias){
                     ids.push(d.folio)
@@ -311,7 +295,7 @@ function alertEliminarCheckbox(type){
 }
 
 
-
+//FUNCION para cerrar un fallla de manera individual desde la tabla
 function alertFallaResuelta(folio, state){
     if(state== statusAbierto){
         Swal.fire({
@@ -346,12 +330,14 @@ function alertFallaResuelta(folio, state){
 }
 
 
-
+//FUNCION editar incidencia llenar el modal con la informacion
 function editarIncidenciaModal(folio, fecha, hora, ubicacion, lugar, incidente, comentarios, reporta ,departamento){
     $('#editIncidentModal').modal('show');
     selectedRowFolio= folio
-    $("#fechaEditIncidencia").val(fecha)
-    $("#timeEditIncidencia").val(hora)
+    let fechaHora = fecha.split(" ")
+    let fechaStr = fechaHora[0].split("-")
+    $("#fechaEditIncidencia").val(fechaStr[2]+'-'+fechaStr[1]+'-'+fechaStr[0])
+    $("#timeEditIncidencia").val(fechaHora[1])
     $("#ubicacionEditIncidencia").val(ubicacion)
     $("#lugarEditIncidencia").val(lugar)
     $("#incidenciaEditIncidencia").val(incidente)
@@ -361,7 +347,7 @@ function editarIncidenciaModal(folio, fecha, hora, ubicacion, lugar, incidente, 
 }
 
 
-
+//FUNCION editar falla modal llenar el modal con la informacion
 function editarFallaModal(folio, fecha, hora, ubicacion, lugar, falla, descripcion, comentarios, reporta ,departamento, responsable){
     $('#editFailModal').modal('show');
     selectedRowFolio= folio
@@ -378,9 +364,10 @@ function editarFallaModal(folio, fecha, hora, ubicacion, lugar, falla, descripci
 }
 
 
-
+//FUNCION editar y validar la informacion al editar un incidencia
 function editarIncidencia(){
     let fecha= $("#fechaEditIncidencia").val()
+    let fechaFormat= fecha.split("-")[2] +"-"+fecha.split("-")[1] +"-"+fecha.split("-")[0] 
     let hora= $("#timeEditIncidencia").val()
     let ubicacion= $("#ubicacionEditIncidencia").val()
     let lugar= $("#lugarEditIncidencia").val()
@@ -394,9 +381,8 @@ function editarIncidencia(){
         if(d.folio == parseInt(selectedRowFolio))
             selected = d
     }
-    console.log(" BEAMOSSS", selected)
 
-    if(selected.date == fecha && selected.time == hora && selected.location == ubicacion &&
+    if(selected.date == fechaFormat &&  selected.location == ubicacion &&
         selected.place_accident == lugar && selected.incident == incidente && selected.comment == comentarios &&
         selected.report == reporta && selected.dept == departamento ){
         Swal.fire({
@@ -431,8 +417,7 @@ function editarIncidencia(){
         });
         let selectedIncidencia = dataTable1.find(x => x.folio === selected.folio);
         if (selectedIncidencia) {
-            selected.date = fecha
-            selected.time = hora
+            selected.date = fechaFormat +" "+ hora
             selected.location = ubicacion
             selected.place_accident = lugar 
             selected.incident = incidente 
@@ -447,7 +432,7 @@ function editarIncidencia(){
 }
 
 
-
+//FUNCION editar y validar la informacion al editar un falla
 function editarFalla(){
     let fecha= $("#fechaEditFalla").val()
     let hora= $("#timeEditFalla").val()
@@ -519,7 +504,7 @@ function editarFalla(){
 }
 
 
-
+//FUNCION crear nueva incidencia y validar la informacion
 function nuevaIncidencia(){
     let data = getInputsValueByClass("contentNuevaIncidencia")
    
@@ -564,6 +549,8 @@ function nuevaIncidencia(){
     }
 }
 
+
+//FUNCION crear nueva incidencia y validar la informacion
 function nuevaFalla(){
     let data = getInputsValueByClass("contentNuevaFalla")
     if(!validarObjeto(data)){
@@ -607,16 +594,17 @@ function nuevaFalla(){
     }
 }
 
+
+//FUNCION validar un objeto vacio
 function validarObjeto(objeto) {
     return Object.values(objeto).every(valor => valor !== undefined && valor !== null && valor !== '');
 }
 
 
-
+//FUNCION obtener todos los inputs
 function getInputsValueByClass(classInput){
     let data = {};
     let elements = document.getElementsByClassName(classInput)
-    console.log("ELEMENTOS",elements)
     for (let i = 0; i < elements.length; i++) {
         let id = elements[i].id;
         let value = elements[i].value;
@@ -634,57 +622,12 @@ function getInputsValueByClass(classInput){
 }
 
 
-
+//FUNCION cerrar una falla de de forma individual desde la tabla 
 function alertCerrarFalla(status){
 }
 
 
-
-function descargarExcel(table) {
-    let columns = tables[table].getColumns();
-  /*  for(c in columns) {
-        let nombreCOlumnas=""
-        let keys = Object.keys(columns);
-        for (e in columns){
-            console.log("GEELKSN",columns[e])
-            if (e !== keys[keys.length - 1]) {
-                nombreCOlumnas += columns[e] + "\n";
-            }
-            else{
-               nombreCOlumnas += columns[e] + "\t" 
-            }
-        }
-        console.log("nombreCOlumnasAA", nombreCOlumnas)
-        excelContent += nombreCOlumnas
-    };*/
-
-
-    let nombresColumnas = columns.map(function(column) {
-        return column.getField(); // O puedes usar column.getTitle() para obtener los títulos de las columnas
-    }); 
-    // Crear un archivo Excel básico
-    let excelContent = nombresColumnas+"\n"; // Cabecera
-    tables[table].getData().forEach(function(row) {
-        let fila=""
-        let keys = Object.keys(row);
-        for (e in row){
-            if (e !== keys[keys.length - 1]) {
-                fila += row[e] + "\n";
-            }
-            else{
-               fila += row[e] + "\t"; 
-            }
-        }
-        excelContent += fila 
-    });
-    // Crear un enlace de descarga y simular clic
-    let blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
-    let link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = table +'.xlsx';
-    link.click(); 
-}
-
+//FUNCION ver una falla
 function alertViewFalla(folio, fecha, hora, ubicacion, lugar, falla, descripcion, comentarios, reporta ,departamento, responsable){
        Swal.fire({
         title: "Falla",
@@ -725,6 +668,8 @@ function alertViewFalla(folio, fecha, hora, ubicacion, lugar, falla, descripcion
     });
 }
 
+
+//FUNCION ver incidente
 function alertViewIncident(folio, fecha, hora, ubicacion, lugar, incidente, comentarios, reporta ,departamento){
     Swal.fire({
         title: "Incidencia",
@@ -763,33 +708,58 @@ function alertViewIncident(folio, fecha, hora, ubicacion, lugar, incidente, come
     });
 }
 
-function resetFilters(table){
-    let page= getValueUserLocation()
-    console.log("REESTABLECER FILTROS", table)
+
+//FUNCION aplicar los filtros
+function aplicarFiltros(){
+    $('#notasFiltersModal').modal('hide');
+    let columnas= $("#idFiltrosColumna").val()
+    let tipo= $("#idFiltrosTipo").val()
+    let valor= $("#idFiltrosValor").val();
+    /*
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'turnos',
+            option: "apply_filters",
+            columnas,
+            tipo,
+            valor,
+            id: 2,
+        }),
+        headers:{
+           'Content-Type': 'application/json',
+           'Authorization': 'Bearer '+jw
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+        } 
+    }) */
+
+    Swal.fire({
+        title: "Confirmación",
+        text: "Filtros aplicados correctamente.",
+        type: "success"
+    });
+    let selectTipo= document.getElementById("idFiltrosTipo")
+    selectTipo.value=""
 }
 
-function applyFilters(table, classFilter){
-    tables[table].setData([]);
-    let page= getValueUserLocation()
-    let data= getInputsValueByClass(classFilter)
 
-    if(page=='incidencias'){
-        if(table == 'tableIncidencias'){
-            let resultadosFiltrados = dataTable1.filter(function(item) {
-                let rangoFechaDesde = !(data.idFechaDesdeIncidencias != '' && data.idFechaHastaIncidencias != '') || (item.date >= data.idFechaDesdeIncidencias  && item.date <= data.idFechaHastaIncidencias);
-                let rangoUbicacion= !(data.idUbicacionIncidencias != '') || (item.location.toLowerCase() ===  data.idUbicacionIncidencias.toLowerCase());
-                return rangoFechaDesde && rangoUbicacion;
-            });
-            dataTable1 = resultadosFiltrados;
-            tables[table].setData(dataTable1);
-        }else{
-            let resultadosFiltrados = dataTable2.filter(function(item) {
-                let rangoFechaDesde = !(data.idFechaDesdeFallas != '' && data.idFechaHastaFallas != '') || (item.date >= data.idFechaDesdeFallas  && item.date <= data.idFechaHastaFallas);
-                let rangoUbicacion= !(data.idUbicacionFallas != '') || (item.location.toLowerCase() ===  data.idUbicacionFallas.toLowerCase());
-                return rangoFechaDesde && rangoUbicacion;
-            });
-            dataTable2 = resultadosFiltrados;
-            tables[table].setData(dataTable2);
-        }
+//FUNCION rellenar los catalogos de los filtros
+function modalFiltros(table,modal){
+    $('#'+ modal).modal('show');
+    let columnas = tables[table].getColumns();
+    let nombresColumnas = columnas.map(function(columna) {
+        return columna.getField(); // getField() retorna el nombre del campo o field
+    });
+    let selectTipo= document.getElementById("idFiltrosTipo")
+    let selectColumna= document.getElementById("idFiltrosColumna")
+    selectColumna.innerHTML=""; 
+    for (let col of nombresColumnas){
+            selectColumna.innerHTML += '<option value="'+col+'">'+col+'</option>';
     }
+    selectColumna.value=""
+    selectTipo.value=""
 }
