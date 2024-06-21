@@ -102,8 +102,8 @@
                         <i class="fa-solid fa-plus"></i>
                         Nuevo Recorrido
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm ms-1">
-                        <i class="fa-solid fa-file-arrow-down" id="descargarListPendientes" ></i>
+                    <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListPendientes" >
+                        <i class="fa-solid fa-file-arrow-down" ></i>
                         Descargar
                     </button>
                     <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
@@ -115,7 +115,7 @@
                         Eliminar
                     </button>
                 </div>
-                <div class="mt-2 mb-3 tableOverflow"   id="tableListPendientes"></div>
+                <div class="mt-2 mb-3 tableOverflow" id="tableListPendientes"></div>
             </div>
            </div>
           <div class="tab-pane fade" id="nav-realizados" role="tabpanel" aria-labelledby="nav-reslizados-tab">
@@ -124,8 +124,8 @@
                             <i class="fa-solid fa-plus"></i>
                             Nuevo Recorrido
                         </button>
-                        <button type="button" class="btn btn-primary btn-sm ms-1">
-                            <i class="fa-solid fa-file-arrow-down" id="descargarListRealizados" ></i>
+                        <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListRealizados" >
+                            <i class="fa-solid fa-file-arrow-down" ></i>
                             Descargar
                         </button>
                         <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
@@ -137,7 +137,7 @@
                             Eliminar
                         </button>
                     </div>
-                <div class="mt-2 mb-3 tableOverflow"   id="tableListRealizados"></div>
+                <div class="mt-2 mb-3 tableOverflow" id="tableListRealizados"></div>
             </div>
           <div class="tab-pane fade" id="nav-cancelados" role="tabpanel" aria-labelledby="nav-cancelados-tab"> 
                  <div class="d-flex mt-2 mb-1 justify-content-end">
@@ -145,8 +145,8 @@
                             <i class="fa-solid fa-plus"></i>
                             Nuevo Recorrido
                         </button>
-                        <button type="button" class="btn btn-primary btn-sm ms-1">
-                            <i class="fa-solid fa-file-arrow-down" id="descargarListCancelados" ></i>
+                        <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListCancelados" >
+                            <i class="fa-solid fa-file-arrow-down" ></i>
                             Descargar
                         </button>
                         <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
@@ -158,7 +158,7 @@
                             Eliminar
                         </button>
                     </div> 
-                    <div class="mt-2 mb-3 tableOverflow"   id="tableListCancelados"></div>   
+                    <div class="mt-2 mb-3 tableOverflow" id="tableListCancelados"></div>   
             </div>
           <div class="tab-pane fade" id="nav-todos" role="tabpanel" aria-labelledby="nav-todos-tab"> 
             <div class="d-flex mt-2 mb-1 justify-content-end">
@@ -166,8 +166,8 @@
                             <i class="fa-solid fa-plus"></i>
                             Nuevo Recorrido
                         </button>
-                        <button type="button" class="btn btn-primary btn-sm ms-1">
-                            <i class="fa-solid fa-file-arrow-down" id="descargarListTodos" ></i>
+                        <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListTodos" >
+                            <i class="fa-solid fa-file-arrow-down" ></i>
                             Descargar
                         </button>
                         <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
@@ -179,7 +179,7 @@
                             Eliminar
                         </button>
                     </div>
-                 <div class="mt-2 mb-3 tableOverflow"   id="tableListTodos"></div>
+                 <div class="mt-2 mb-3 tableOverflow" id="tableListTodos"></div>
              </div>
         </div>
 </section>
@@ -357,6 +357,7 @@
     </div>
 
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!-- Jquery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
@@ -368,7 +369,6 @@
 <script src="./rondines.js"></script>
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!-- Tabulator -->
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 <!-- Local -->

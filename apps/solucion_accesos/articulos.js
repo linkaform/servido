@@ -36,11 +36,11 @@ window.onload = function(){
         document.querySelector("#table-header").scrollLeft = scrollLeft;
     });
     $("#descargarArticles").on("click", function() {
-        console.log("entrasndo")
         descargarExcel(tables, 'tableArticles')
     });
+
     $("#descargarArticlesLose").on("click", function() {
-        descargarExcel(tables, 'tableArticlesLose')
+    descargarExcel(tables, 'tableArticlesLose')
     });
 
     let fileInput = document.getElementById('editArticleFoto');
@@ -53,6 +53,7 @@ window.onload = function(){
         }
     });
 }
+
 
 //FUNCION Otener informacion inciia
 function getInfoCatalogs(){

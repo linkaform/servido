@@ -1,6 +1,6 @@
 let tables={}
 let columsDataArticles = [
-    {formatter:"rowSelection", field:'checkboxColumn',titleFormatter:"rowSelection",maxWidth:8,hozAlign:"center", headerSort:false, cellClick:function(e, cell){
+    {formatter:"rowSelection", field:'checkboxColumn',titleFormatter:"rowSelection",hozAlign:"center", headerSort:false, cellClick:function(e, cell){
         cell.getRow().toggleSelect();
       }},
 	{ title: "Opciones", field: "actions" , formatter:"rowSelection",hozAlign: "left", resizable:false,minWidth:140,
@@ -35,7 +35,7 @@ let columsDataArticles = [
 ];
 
 let columsDataArticlesLose = [
-    {formatter:"rowSelection", field:'checkboxColumn',titleFormatter:"rowSelection",maxWidth:8, hozAlign:"center", headerSort:false, cellClick:function(e, cell){
+    {formatter:"rowSelection", field:'checkboxColumn',titleFormatter:"rowSelection",hozAlign:"center", headerSort:false, cellClick:function(e, cell){
         cell.getRow().toggleSelect();
       }},
 	{ title: "Opciones", field: "actions" ,formatter:"rowSelection",hozAlign: "left", resizable:false ,

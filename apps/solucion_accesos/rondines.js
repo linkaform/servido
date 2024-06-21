@@ -22,9 +22,19 @@ window.onload = function(){
     } else{
 		redirectionUrl('login',false);
 	}
-    $("#descargarSalidas").on("click", function() {
-        descargarExcel(tables, 'tableSalidas')
+    $("#descargarListPendientes").on("click", function() {
+        descargarExcel(tables, 'tableListPendientes')
     });
+    $("#descargarListRealizados").on("click", function() {
+        descargarExcel(tables, 'tableListRealizados')
+    });
+    $("#descargarListCancelados").on("click", function() {
+        descargarExcel(tables, 'tableListCancelados')
+    });
+    $("#descargarListTodos").on("click", function() {
+        descargarExcel(tables, 'tableListTodos')
+    });
+    
 }
 
 
@@ -272,6 +282,7 @@ function aplicarFiltros(){
     let columnas= $("#idFiltrosColumna").val()
     let tipo= $("#idFiltrosTipo").val()
     let valor= $("#idFiltrosValor").val();
+    
     /*
     fetch(url + urlScripts, {
         method: 'POST',
