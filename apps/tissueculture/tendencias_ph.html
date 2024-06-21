@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <!--LIBRARY CHECK -->
         <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -91,6 +92,16 @@
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
                     <div class="col-sm-12 col-md-3 col-lg-3">
+                        <h5>Plant Code: </h5>
+                        <select class="js-theme-multiple w-100 h-100 select2-selection" id="productCode" name="productCode"></select>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-2">
+                        <h5>Lot Number: </h5>
+                        <select class="js-theme-multiple w-100 h-100 select2-selection" type="text" name="lotNumber" id="lotNumber">
+                            
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3">
                         <h5>Date From: </h5>
                         <input class="form-control ds-input" type="date" id="date_from" name="date_from">
                     </div>
@@ -108,6 +119,13 @@
                     <div id="secondElement" class="col-sm-12 col-md-12 col-lg-12 mt-3" style="overflow-y: scroll;">
                         <div  style="width: 1200px;height: 700px;margin: auto;">
                             <canvas id="graphicFirst" style="width:100%"></canvas>
+                        </div>
+                    </div>
+
+                    <!--Thirth Elemento -->
+                    <div id="thirdElement" class="col-sm-12 col-md-12 col-lg-12 mt-3" style="overflow-y: scroll;">
+                        <div  style="width: 1200px;height: 700px;margin: auto;">
+                            <canvas id="graphicSecond" style="width:100%"></canvas>
                         </div>
                     </div>
 
@@ -147,6 +165,11 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
+   
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+
     <!-- Jquery -->
     <script
     src="https://code.jquery.com/jquery-3.6.0.js"
@@ -165,7 +188,8 @@
     src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" 
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
     crossorigin="anonymous"></script>
-
+    
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <!-- Utils -->
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
