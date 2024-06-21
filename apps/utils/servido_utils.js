@@ -316,51 +316,37 @@ let dateFilter = function(headerValue, rowValue, rowData, filterParams){
  }
 
 
-//FUNCION descargar excel
-function descargarExcel(tables, table) {
+function descargarExcel(tables, table){
     let columns = tables[table].getColumns();
-  /*  for(c in columns) {
-        let nombreCOlumnas=""
-        let keys = Object.keys(columns);
-        for (e in columns){
-            console.log("GEELKSN",columns[e])
-            if (e !== keys[keys.length - 1]) {
-                nombreCOlumnas += columns[e] + "\n";
-            }
-            else{
-               nombreCOlumnas += columns[e] + "\t" 
-            }
+    let nombresColumnas= []
+    let containsFolio=false
+     for(column of columns) {
+        if(column.getField() !== 'actions' && column.getField() !== 'checkboxColumn' && column.getField() !== 'folio') {
+           nombresColumnas.push(column.getField())
         }
-        console.log("nombreCOlumnasAA", nombreCOlumnas)
-        excelContent += nombreCOlumnas
-    };*/
+    };
+    nombresColumnas.unshift("folio");
 
-
-    let nombresColumnas = columns.map(function(column) {
-        return column.getField() ; // O puedes usar column.getTitle() para obtener los títulos de las columnas
-    }); 
-    // Crear un archivo Excel básico
-    let excelContent = nombresColumnas+"\n"; // Cabecera
+    let excelContent = nombresColumnas.join('\t') + '\n'; // Titulos de las columnas
     tables[table].getData().forEach(function(row) {
-        let fila=""
-        let keys = Object.keys(row);
-        for (e in row){
-            if (e !== keys[keys.length - 1]) {
-                fila += row[e] + "\n";
-                console.log("FILAAA", fila)
+        let fila = '';
+        Object.keys(row).forEach(function(key, index) {
+            if(row[key]!==undefined && key !== 'actions' &&  key !== 'checkboxColumn' ) {
+                fila += '"' + row[key].toString().replace(/"/g, '""') + '"';
+                if (index < Object.keys(row).length - 1) {
+                    fila += '\t'; 
+                }
             }
-            else{
-               fila += row[e] + "\t" 
-               console.log("SIUGUEE", fila)
-            }
-        }
-        
-        excelContent += fila 
+            
+        });
+        excelContent += fila + '\n';
     });
-    // Crear un enlace de descarga y simular clic
     let blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
     let link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
-    link.download = table +'.xlsx';
-    link.click(); 
-}                                                                                                                                                                                                                                                                                                                                                                                         
+    link.download = table + '.xlsx';
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}

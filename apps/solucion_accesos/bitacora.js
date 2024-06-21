@@ -185,6 +185,7 @@ function getCatalogs(){
         if (res.success) {
         } 
     })
+    
     let cat={
         "brands_cars": [
             {"type": "motocicleta", "brand": ["vento"]},
