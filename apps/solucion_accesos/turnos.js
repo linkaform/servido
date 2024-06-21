@@ -51,10 +51,12 @@ window.onload = function(){
 
 //FUNCION hace el fetch que trae toda la informacion inicial que se llenara en la pantalla de turnos
 function getAllData(){
+    console.log('-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx merenges....')
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_id: idScr,
+            script_name: "script_turnos.py",
+            option: 'load_shift',
         }),
         headers:
         {
@@ -65,6 +67,8 @@ function getAllData(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
+            //aqui lo pongo...!!!
+            console.log('result...', res)
         }
     });
     let loc = load_shift_json.location

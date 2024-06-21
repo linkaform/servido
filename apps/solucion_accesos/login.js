@@ -20,7 +20,7 @@ window.onload = function(){
 function get_login(){
 	let valueMail = $("#user").val();
 	let valuePassword = $("#password").val();
-	let url = "https://app.linkaform.com/api/";
+	// let url = "https://app.linkaform.com/api/";
 	if(valueMail !='' && valuePassword!=''){
 		fetch(url + 'infosync/user_admin/login/', {
 			method: 'POST',

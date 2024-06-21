@@ -60,10 +60,13 @@ RUN wget http://ftp.us.debian.org/debian/pool/main/libm/libmatheval/libmatheval1
 RUN wget http://ftp.us.debian.org/debian/pool/main/u/uwsgi/uwsgi-core_2.0.18-1_amd64.deb
 RUN wget http://ftp.us.debian.org/debian/pool/main/u/uwsgi/uwsgi_2.0.18-1_amd64.deb
 RUN wget http://ftp.us.debian.org/debian/pool/main/u/uwsgi/uwsgi-plugin-python_2.0.18-1_amd64.deb
-RUN dpkg -i libmatheval1_1.1.11+dfsg-3_amd64.deb
-RUN dpkg -i uwsgi-core_2.0.18-1_amd64.deb
-RUN dpkg -i uwsgi_2.0.18-1_amd64.deb 
-RUN dpkg -i uwsgi-plugin-python_2.0.18-1_amd64.deb
+RUN dpkg -i libmatheval1_1.1.11+dfsg-3_amd64.deb \
+     uwsgi-core_2.0.18-1_amd64.deb \
+     uwsgi_2.0.18-1_amd64.deb \
+     uwsgi-plugin-python_2.0.18-1_amd64.deb
+#RUN dpkg -i uwsgi-core_2.0.18-1_amd64.deb
+#RUN dpkg -i uwsgi_2.0.18-1_amd64.deb 
+#RUN dpkg -i uwsgi-plugin-python_2.0.18-1_amd64.deb
 
 #wget http://ftp.us.debian.org/debian/pool/main/libm/libmatheval/libmatheval1_1.1.11+dfsg-3_amd64.deb
 #wget http://ftp.us.debian.org/debian/pool/main/u/uwsgi/uwsgi-core_2.0.18-1_amd64.deb
@@ -115,6 +118,7 @@ RUN apt-get update && \
     vim \
     less
 
+# RUN apt install --no-install-recommends
 # RUN rm /tmp/uwsgi-2.0.20.tar.gz
 
 
@@ -124,7 +128,7 @@ RUN mkdir -p /srv/servido/servido/
 COPY --chown=www-data:www-data ./docker/uwsgi/servido.ini /etc/uwsgi/apps-enabled/
 
 #NGINX SETUP
-RUN echo testssssssssssss
+#RUN echo testssssssssssss
 RUN rm -rf /etc/nginx/certs/
 RUN rm -rf /etc/nginx/sites-enabled/
 RUN echo testsssssssssssssss
@@ -132,7 +136,6 @@ COPY --chown=www-data:www-data ./nginx /etc/nginx
 COPY --chown=www-data:www-data ./nginx/sites-available/servido.conf /etc/nginx/sites-enabled/servido.conf
 
 #COPY ALL FILES
-RUN echo cacheeeee
 #RUN rm /srv/servido/servido_api/certs/*
 COPY --chown=www-data:www-data ./docker /docker/
 COPY --chown=www-data:www-data ./apps /srv/servido/apps

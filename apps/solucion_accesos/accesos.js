@@ -185,8 +185,8 @@ function getDataUser() {
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 116097,
-            option: 'get_users_information',
+            script_name: "script_turnos.py",
+            option: 'search_access_pass',
             curp: codeUser,
         }),
         headers:{
