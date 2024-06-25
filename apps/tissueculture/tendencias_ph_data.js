@@ -105,7 +105,9 @@ var setOptions1 = {
   scales: {
     y: {
       ticks: {
-        stepSize: 1
+        stepSize: 1,
+        min: 0, 
+        max: 7 ,
       },
     },
     x: {
@@ -172,7 +174,9 @@ var setOptions2 = {
   scales: {
     y: {
       ticks: {
-        stepSize: 1
+        stepSize: 1,
+        min: 0, 
+        max: 5, 
       },
     },
     x: {

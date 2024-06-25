@@ -117,6 +117,11 @@
 
                     <!--Second Elemento -->
                     <div id="secondElement" class="col-sm-12 col-md-12 col-lg-12 mt-3" style="overflow-y: scroll;">
+                        <h3 style="text-align: center;">
+                            <button class="btn btn-secondary button-chart float-right" type="button" onclick="get_chartDownload('graphicFirst','chart_screenIV');return false;" id="download_graphicFirst">
+                                <i class="fa-sharp fa-solid fa-download"></i>
+                            </button >
+                        </h3>
                         <div  style="width: 1350px;height: 800px;margin: auto;">
                             <canvas id="graphicFirst" style="width:100%"></canvas>
                         </div>
@@ -124,6 +129,11 @@
 
                     <!--Thirth Elemento -->
                     <div id="thirdElement" class="col-sm-12 col-md-12 col-lg-12 mt-3" style="overflow-y: scroll;">
+                        <h3 style="text-align: center;">
+                            <button class="btn btn-secondary button-chart float-right" type="button" onclick="get_chartDownload('graphicSecond','chart_screenIV');return false;" id="download_graphicFirst">
+                                <i class="fa-sharp fa-solid fa-download"></i>
+                            </button >
+                        </h3>
                         <div  style="width: 1350px;height: 800px;margin: auto;">
                             <canvas id="graphicSecond" style="width:100%"></canvas>
                         </div>
@@ -192,6 +202,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <!-- Utils -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
     <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
 

@@ -16,6 +16,9 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
+hideElement("secondElement");
+hideElement("thirdElement");
+
 
 window.onload = function(){
   var qs = urlParamstoJson();
