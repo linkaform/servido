@@ -140,13 +140,12 @@ function loadDemoData(){
   getDrawTable('firstElement', columsTable1, dataTable1);
   document.getElementById("firstElement").style.removeProperty('display');
 
-  drawFirstElement(data1, setOptions1)
+  drawFirstElement(data1Example, setOptions1)
   document.getElementById("graphicFirst").style.removeProperty('display');
 
 
   drawSecondElement(data2, setOptions2)
   document.getElementById("graphicSecond").style.removeProperty('display');
-
 
 }
 
@@ -206,6 +205,7 @@ function getFirstElement(dateTo, dateFrom, productCode, lotNumber){
       }
       
       if (res.response.secondElement) {
+        console.log('res.response.secondElement',res.response.secondElement)
         drawFirstElement(res.response.secondElement, setOptions1);
         document.getElementById("secondElement").style.removeProperty('display');
       }
@@ -237,8 +237,11 @@ function setFormatColor(data){
   let array_colors = getPAlleteColors(7,data['datasets'].length);
   if (data['datasets'].length > 0) {
     for (var i = 0; i < data['datasets'].length; i++) {
-     data['datasets'][i]['backgroundColor'] = array_colors[i];
-     data['datasets'][i]['borderColor'] = array_colors[i];
+     let type = data['datasets'][i]['type'];
+     if(type != 'line'){
+       data['datasets'][i]['backgroundColor'] = array_colors[i];
+       data['datasets'][i]['borderColor'] = array_colors[i];
+     }
     }
   }
   return data

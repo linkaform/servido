@@ -77,7 +77,6 @@ var dataTable1 = [
       },
     ],
   },
-
 ];
 
 
@@ -108,620 +107,46 @@ var setOptions1 = {
       ticks: {
         stepSize: 1
       },
-    }
+    },
+    x: {
+      type: 'time',
+      time: {
+        unit: 'day'
+      },
+    },
   }
 };
 
-var data1 = {
-    "labels": [
-        "2024-04-03",
-        "2024-04-30",
-        "2024-05-07",
-        "2024-05-13",
-        "2024-05-14",
-        "2024-05-17",
-        "2024-05-20",
-        "2024-05-22",
-        "2024-05-23",
-        "2024-05-24",
-        "2024-05-29",
-        "2024-05-30",
-        "2024-06-06",
-        "2024-06-10"
-    ],
+
+var data1Example = {
     "datasets": [
         {
-            "label": "LAGBF",
-            "data": [
-                6.59,
-                "Nan",
-                3.46,
-                "Nan",
-                5.15,
-                "Nan",
-                "Nan",
-                5.61,
-                "Nan",
-                5.8375,
-                5.68,
-                "Nan",
-                5.98,
-                4.195
+            type: 'scatter', // Gráfico de dispersión
+            label: 'Scatter Dataset',
+            data: [
+              { x: "2024-06-10", y: 5 },
+              { x: "2024-06-12", y: 15 },
             ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            pointRadius: 6,
+        }, 
         {
-            "label": "LAGBG",
-            "data": [
-                5.99,
-                4.04,
-                5.8,
-                5.38,
-                5.16,
-                5.09,
-                3.59,
-                6.105,
-                5.01625,
-                5.9525,
-                4.404999999999999,
-                "Nan",
-                "Nan",
-                4.8525
+            type: 'line', // Gráfico de línea
+            label: 'Line Dataset',
+            data: [
+              { x: "2024-06-10", y: -10 },
+              { x: "2024-06-11", y: 0 },
+              { x: "2024-06-12", y: 10 }
             ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LAGBW",
-            "data": [
-                6.37,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                4.205,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LALHE",
-            "data": [
-                6.62,
-                "Nan",
-                5.78,
-                "Nan",
-                5.24,
-                "Nan",
-                "Nan",
-                5.5475,
-                "Nan",
-                6.2425,
-                3.185,
-                "Nan",
-                "Nan",
-                3.7275
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LGIVA",
-            "data": [
-                5.12,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LNACO",
-            "data": [
-                5.81,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LNAFP",
-            "data": [
-                6.17,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LNAKA",
-            "data": [
-                6.94,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                6.05,
-                "Nan",
-                "Nan",
-                6.17,
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LNALL",
-            "data": [
-                6.73,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LAGGE",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                5.41,
-                "Nan",
-                "Nan",
-                5.3225,
-                "Nan",
-                6.08,
-                "Nan",
-                "Nan",
-                5.96,
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LAGQV",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                5.99,
-                4.22,
-                "Nan",
-                "Nan",
-                "Nan",
-                6.1825,
-                3.7275,
-                "Nan",
-                "Nan",
-                3.955
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LALBE",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                3.68,
-                "Nan",
-                "Nan",
-                "Nan",
-                5.895,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LAGAM",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                3.6725,
-                "Nan",
-                6.4625,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LAGNO",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                3.9275,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                4.1725
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LAGPA",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                3.3875,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LYUBE",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                5.2775,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LYUCG",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                6.1325,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                6.25,
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LYURC",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                3.6175,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LLOPD",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                4.6775,
-                "Nan",
-                "Nan",
-                "Nan",
-                6.35,
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LAGOC",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                6.109999999999999,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LAGOV",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                5.42,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LALSA",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                5.545,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LNAOB",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                6.043333333333333,
-                "Nan",
-                "Nan",
-                5.83,
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LNAPE",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                5.825,
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LYUSS",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                5.04,
-                "Nan",
-                "Nan",
-                4.842499999999999
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LNATW",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                6.0185,
-                6.12,
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LAGQM",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                6.24,
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
-        },
-        {
-            "label": "LAGTW",
-            "data": [
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                "Nan",
-                5.85,
-                "Nan"
-            ],
-            "backgroundColor": "#EF6262",
-            "borderColor": "#EF6262"
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            fill: false,
+            borderWidth: 2
         }
     ]
 }
-
-
 
 var setOptions2 = {
   responsive: true,
@@ -732,7 +157,7 @@ var setOptions2 = {
     },
     title: {
       display: true,
-      text: 'Scatter PH',
+      text: 'Tendencia EC',
       font: {
         size: 25
       }
@@ -752,7 +177,10 @@ var setOptions2 = {
     },
     x: {
       type: 'time',
-    }
+      time: {
+        unit: 'day'
+      },
+    },
   }
 };
 
