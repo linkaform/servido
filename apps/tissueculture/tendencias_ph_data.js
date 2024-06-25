@@ -107,7 +107,7 @@ var setOptions1 = {
       ticks: {
         stepSize: 1,
         min: 0, 
-        max: 7 ,
+        max: 8,
       },
     },
     x: {

@@ -160,16 +160,7 @@ function runFirstElement(){
   let date_to = document.getElementById("date_to").value;  
   let productCode = document.getElementById("productCode").value;  
   let lotNumber = document.getElementById("lotNumber").value;  
-  console.log('date_from',date_from)
-  console.log('date_to',date_to)
-  if(date_from != '' || date_to != ''){
-    getFirstElement(date_to, date_from, productCode, lotNumber);
-  }else{
-    Swal.fire({
-      title: 'Aviso',
-      html: 'Es necesario seleccionar almenos una fecha , date from o date to'
-    });
-  }
+  getFirstElement(date_to, date_from, productCode, lotNumber);
 };
 
 function getFirstElement(dateTo, dateFrom, productCode, lotNumber){
