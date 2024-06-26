@@ -251,11 +251,15 @@ function setSpinner(custom = false, idCustom = ''){
 }
 
 ///-----DOWNLOAD 
-function get_chartDownload(id,style) 
+function get_chartDownload(id,style, nameFile = null) 
 {
+  let title = 'file-name.png';
+  if(nameFile != null){
+    title = nameFile+'.png';
+  }
   $('#'+id).addClass(style);
   html2canvas(document.querySelector("#"+id)).then(canvas => {
-    getDownload(canvas.toDataURL(), 'file-name.png');
+    getDownload(canvas.toDataURL(), title);
   });
   $("#"+id).removeClass(style);
 }

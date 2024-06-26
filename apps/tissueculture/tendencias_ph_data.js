@@ -104,11 +104,11 @@ var setOptions1 = {
   },
   scales: {
     y: {
-      ticks: {
-        stepSize: 1,
+        ticks: {
+            stepSize: 1,
+        },
         min: 0, 
         max: 8,
-      },
     },
     x: {
       type: 'time',
