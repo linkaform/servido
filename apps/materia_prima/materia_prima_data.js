@@ -15,7 +15,6 @@ const columsData1 = [
 	{ title:"Producto", field:'product',hozAlign:"left",headerFilter:false,width:250},
 ]
 
-var listJumps = [1,11,21,31,41];
 var listTitle = [
 	'Pendientes control de calidad',
 	'Aceptados en control de calidad y pendientes de descarga',
