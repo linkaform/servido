@@ -220,7 +220,7 @@ function getDrawTable(id, columnsData, tableData){
         colspanCell.style.background = "#03AED2";
         colspanCell.style.fontSize = "18px";
         colspanCell.style.fontWeight = "bold";
-        colspanCell.colSpan = 8; 
+        colspanCell.colSpan = 9; 
         colspanCell.textContent = listTitle[countPosition];
         //-----DELETE OLD ELEMENT
         while (rowEl.firstChild) {
@@ -228,6 +228,23 @@ function getDrawTable(id, columnsData, tableData){
         }
         rowEl.appendChild(colspanCell);
         countPosition+= 1;
+      }
+      if(rowData.hasOwnProperty('emptySection')){
+        var rowEl = row.getElement();
+        //-----NEW ELEMENT
+        var colspanCell = document.createElement("td");
+        colspanCell.align = 'center';
+        colspanCell.style.padding = "13px";
+        colspanCell.style.width = "100%";
+        colspanCell.style.display = "block";
+        colspanCell.style.fontWeight = "bold";
+        colspanCell.colSpan = 9; 
+        colspanCell.textContent = rowData['emptySection'];
+        //-----DELETE OLD ELEMENT
+        while (rowEl.firstChild) {
+          rowEl.removeChild(rowEl.firstChild);
+        }
+        rowEl.appendChild(colspanCell);
       }
     },
     persistentFilter:function(row){
