@@ -350,3 +350,31 @@ function descargarExcel(tables, table){
     link.click();
     document.body.removeChild(link);
 }
+
+function validarEmail(email){
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let result = false
+    if (emailRegex.test(email)) {
+        result = true
+    }else{
+        result= false
+    }
+    return result
+}
+
+function getTodayDateTime(){
+    let fecha = new Date();
+    // Obtener los componentes individuales de la fecha
+    let año = fecha.getFullYear();
+    let mes = ('0' + (fecha.getMonth() + 1)).slice(-2); // El mes se ajusta sumando 1 y asegurando que tenga dos dígitos
+    let dia = ('0' + fecha.getDate()).slice(-2); // El día se asegura de tener dos dígitos
+    let horas = ('0' + fecha.getHours()).slice(-2); // Las horas se aseguran de tener dos dígitos
+    let minutos = ('0' + fecha.getMinutes()).slice(-2); // Los minutos se aseguran de tener dos dígitos
+    let segundos = ('0' + fecha.getSeconds()).slice(-2); // Los segundos se aseguran de tener dos dígitos
+
+    // Construir la cadena en el formato deseado
+    let fechaFormateada = `${año}-${mes}-${dia} ${horas}:${minutos}:${segundos}`;
+
+    // Mostrar la fecha formateada
+    return fechaFormateada;
+}

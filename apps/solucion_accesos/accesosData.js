@@ -77,7 +77,8 @@ let load_shift_json = {
 		},
 		"support_guard":{
 			"name":"Guardia Soporte 1",
-			"id":101
+			"status":"Turno Iniciado",
+			"id":101,
 		},
 		"access":{
 			"visits_per_day": 15,
@@ -99,4 +100,134 @@ let load_shift_json = {
 			"guards_on_duty":14
 		}
 	}
+}
+
+
+let search_access_pass_json={
+     "data": {
+          "portador": {
+               "_id": "66563787d2f0b4fb84768be5",
+               "folio": "169-10",
+               "created_at": "2024-05-28",
+               "updated_at": "2024-05-28",
+               "ubicacion": "Planta Monterrey",
+               "nombre_visita": "Roberto Cervantes Lopez",
+               "email_vsita": [
+                    "roberto@gmai.com"
+               ],
+               "curp": [
+                    "ROB3515"
+               ],
+               "foto": [
+                    {
+                         "file_name": "12.png",
+                         "file_url": "https://f001.backblazeb2.com/file/app-linkaform/public-client-10/119228/5ea35de83ab7dad56c66e045/66552183b96aa262efeddb72.png"
+                    }
+               ],
+               "identificacion": [
+                    {
+                         "file_name": "identificaci\u00f3n2.jpg",
+                         "file_url": "https://f001.backblazeb2.com/file/app-linkaform/public-client-10/119228/65ce34985fa9df3dbf9dd2d0/665521acc9a20a1c3688b7f9.jpg"
+                    }
+               ],
+               "status_visita": [
+                    "Autorizado"
+               ],
+               "tipo_visita_pase": "fecha_fija",
+               "fecha_desde_visita": "2024-06-17 13:57:29",
+               "config_dia_de_acceso": "cualquier_d\u00eda"
+          },
+          "comentarios": [
+               {
+                    "msg": "Comentario 1"
+               },
+               {
+                    "msg": "Comentario 2"
+               }
+          ],
+          "accesos": [
+               {
+                    "nombre": "Cuarto de Maquinas",
+                    "location": "Planta Durango",
+                    "area": "Nombre de la area",
+                    "status": "Permitido"
+               },
+               {
+                    "nombre": "Piso 1",
+                    "location": "Planta Durango",
+                    "area": "Nombre de la area",
+                    "status": "Permitido"
+               },
+               {
+                    "nombre": "Piso 2",
+                    "location": "Planta Durango",
+                    "area": "Nombre de la area",
+                    "status": "Permitido"
+               },
+               {
+                    "nombre": "Piso 15-35",
+                    "location": "Planta Durango",
+                    "area": "Nombre de la area",
+                    "status": "Permitido"
+               }
+          ],
+          "certificaiones": [
+               {
+                    "nombre": "Examen de Alturas",
+                    "status": "Aprovado",
+                    "expiracion": "2024-09-15"
+               },
+               {
+                    "nombre": "Licencia de Manejar",
+                    "status": "Expirado",
+                    "expiracion": "2023-09-15"
+               }
+          ],
+          "ultimo_acceso": [
+               {
+                    "nombre_visita": "Juan Rulfo",
+                    "location": "Planta Durango",
+                    "fecha": "2024-09-15T15:05",
+                    "duration": 5683
+               },
+               {
+                    "nombre_visita": "Gabriel Garcia Marquez",
+                    "location": "Planta Durango",
+                    "fecha": "2024-09-15T21:33",
+                    "duration": 600
+               }
+          ],
+          "equipo": [
+               {
+                    "tipo": "Computadora",
+                    "marca": "Lenovo",
+                    "modelo": "T42S",
+                    "serie": "u4568",
+                    "color": "Negra"
+               },
+               {
+                    "tipo": "Herramienta",
+                    "marca": "Truper",
+                    "modelo": "Pinza",
+                    "serie": "N/A",
+                    "color": "Naranja"
+               }
+          ],
+          "vehiculos": [
+               {
+                    "tipo": "Camion",
+                    "marca": "Volvo",
+                    "modelo": "Modelo T",
+                    "placa": "TZ-58996-S",
+                    "color": "Azul"
+               },
+               {
+                    "tipo": "Auto",
+                    "marca": "Ford",
+                    "modelo": "Fiesta",
+                    "placa": "ZF-M4M0N",
+                    "color": "Blanco"
+               }
+          ]
+     }
 }

@@ -18,12 +18,8 @@ window.onload = function(){
     };
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
-	if(user !='' && jw!=''){
-		drawTable('tableEntradas',columsData1,dataTablePersonal);
-		drawTable('tableSalidas',columsData2,dataTableLocker);
-	}else{
-		redirectionUrl('login',false);
-	}
+    loadDataTables();
+
     $("#descargarEntradas").on("click", function() {
         descargarExcel(tables, 'tableEntradas')
     });
@@ -38,6 +34,41 @@ window.onload = function(){
     $("#textSalidasRegistradas").text(boothStats.registered_exits);
 }
 
+
+function loadDataTables(){
+    console.log("LOAD DATA TABLE ",getCookie('userLocation'), getCookie('userCaseta') )
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'script_turnos.py',
+            option: 'list_bitacora',
+            location: getCookie('userLocation'),
+            area: getCookie('userCaseta'),
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+jw
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        console.log("RESPUESTAAAAAA", res)
+        if (res.success) {
+            if(user !='' && jw!=''){
+                let bit= res.response.data
+                for (i of bit){
+                    dataTablePersonal.push({folio:i.folio ,visitante:i.nombre_visita ,contratista:'LINKAFORM SA DE CV',visita:i.nombre_visita,
+                    area:i.caseta_entrada,tipo:i.status_visita, entrada:i.bitacora_entrada, salida:i.bitacora_salida,estado:'', 
+                    punto_acceso:'',credentials:i.gafete,comentario:'',planta:''})
+                }
+                drawTable('tableEntradas',columsData1,dataTablePersonal);
+                drawTable('tableSalidas',columsData2,dataTableLocker);
+            }else{
+                redirectionUrl('login',false);
+            }
+        } 
+    });
+}
 
 //FUNCION para abrir modales
 function setModal(type = 'none',id){

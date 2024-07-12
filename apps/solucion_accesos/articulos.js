@@ -4,32 +4,30 @@ let articulosPerdidos=[]
 let articulosConcesionados=[]
 let colors = getPAlleteColors(12,0)
 let selectedRowFolio=""
-
+let userJwt=""
 
 
 window.onload = function(){
 	setValueUserLocation('articulos');
-	changeButtonColor();
+	let user = getCookie("userId");
+    userJwt = getCookie("userJwt");
+    changeButtonColor();
 	getInfoCatalogs();
     fillCatalogs();
+
+    allDataArticulosCon();
+    allDataArticulosPer();
 	selectLocation= document.getElementById("selectLocation");
 	selectLocation.onchange = function(){
     let response = fetchOnChangeLocation()
   };
- selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = function() {
         let response = fetchOnChangeLocation()
     };
 	setSpinner(true, 'divSpinner');
-	let user = getCookie("userId");
-	let jw = getCookie("userJwt");
-	if(user !='' && jw!=''){
-		//----QUery
-		drawTable('tableArticles', columsDataArticles, dataTableArticles);
-		drawTable('tableArticlesLose', columsDataArticlesLose, dataTableArticlesLose);
-	}else{
-		redirectionUrl('login',false)
-	}
+	
+	
     document.querySelector("#tableArticles").addEventListener("scroll", function(){
         var scrollLeft = this.scrollLeft;
         console.log("SCROOOL",scrollLeft)
@@ -55,6 +53,96 @@ window.onload = function(){
 }
 
 
+function allDataArticulosPer(){
+    console.log("DQTTOS", getCookie('userCaseta'), getCookie('userLocation'),userJwt )
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name:'articulos_perdidos.py',
+            option:'get_articles',
+            location: getCookie('userLocation'),
+            area: getCookie('userCaseta'),
+        }),
+        headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if(res.success){
+            if(user !='' && userJwt!=''){
+                    let data=res.response.data
+                    if(data.length >0){
+                        for(let articulo of data){
+                           console.log('ascfa', articulo)
+                            let dateFormat= articulo.date_hallazgo_perdido.slice(0,-3)
+                            dataTableArticlesLose.push({folio:articulo.folio,ubicacion_perdido:articulo.ubicacion_perdido||"",
+                            articulo_perdido:articulo.articulo_perdido||"", date_hallazgo_perdido:dateFormat||"",type_perdido:"",
+                            photo_perdido: articulo.photo_perdido, guard_perdido: articulo.guard_perdido ,area_perdido:articulo.area_perdido||"", 
+                            comments_perdido:articulo.comments_perdido||"", guard_perdido:articulo.guard_perdido||"",updated_at:articulo.updated_at,
+                            status_perdido:articulo.status_perdido})
+                        }
+                    }else{
+                        dataTableArticlesLose = []
+                    }
+                   
+                    drawTable('tableArticlesLose',  columsDataArticlesLose, dataTableArticlesLose);
+                    $("#buttonEliminarArticulosCon").on("click", function() {
+                        descargarExcel(tables, 'tableArticlesLose')
+                    });
+                    let selectedArticulosCons = getActiveCheckBoxs(tables,'tableArticlesLose')
+                    let buttonEliminarIncidencias=document.getElementById('buttonEliminarArticulosLose');
+                    if(selectedArticulosCons.length>0) buttonEliminarIncidencias.display= 'none'
+            } else{
+                redirectionUrl('login',false);
+            }
+        }
+    })
+}
+function allDataArticulosCon(){
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name:'articulos_consecionados.py',
+            option:'get_articles',
+            location: getCookie('userLocation'),
+        }),
+        headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if(res.success){
+            if(user !='' && userJwt!=''){
+                    let data=res.response.data
+                    if(data.length >0){
+                        for(let articulo of data){
+                            
+                        }
+                    }else{
+                        dataTablearticulosCon = []
+                    }
+                   
+                    drawTable('tableArticles', columsDataArticles, dataTableArticles);
+                    $("#descargarIncidencias").on("click", function() {
+                        descargarExcel(tables, 'tableArticles')
+                    });
+                    let selectedIncidencias = getActiveCheckBoxs(tables,'tableArticles')
+                    let buttonEliminarIncidencias=document.getElementById('buttonEliminarIncidencias');
+                    if(selectedIncidencias.length>0) buttonEliminarIncidencias.display= 'none'
+            } else{
+                redirectionUrl('login',false);
+            }
+        }
+    })
+}
+
+
 //FUNCION Otener informacion inciia
 function getInfoCatalogs(){
 	 //INFO: poner aqui FETCH para traer los catalogos y la informacion de las tablas y lo sig agregarlo dentro del response
@@ -66,7 +154,7 @@ function getInfoCatalogs(){
         headers:
         {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+jw
+            'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
@@ -109,23 +197,23 @@ function getInfoCatalogs(){
 
 //funcion Escojer modales
 function setModal(type = 'none',id){
-	if(type == 'NewArticle'){
-		$('#newArticleModal').modal('show');
-	}else if(type == 'EditArticle'){
-		$('#editArticleConModal').modal('show');
-	}else if(type == 'ViewArticle'){
-		$('#viewArticleModal').modal('show');
-	}else if(type == 'OutArticle'){
-		$('#outArticleModal').modal('show');
-	}else if(type == 'NewArticleConse'){
+	if(type == 'NewArticleCon'){
 		$('#newArticleConModal').modal('show');
-	}else if(type == 'ViewArticleConse'){
-		$('#viewArticleConModal').modal('show');
-	}else if(type == 'EditArticleConse'){
+	}else if(type == 'EditArticleCon'){
 		$('#editArticleConModal').modal('show');
-	}else if(type == 'OutArticleConse'){
-        selectedRowFolio=id
+	}else if(type == 'ViewArticleCon'){
+		$('#viewArticleConModal').modal('show');
+	}else if(type == 'OutArticleCon'){
 		$('#outArticleConModal').modal('show');
+	}else if(type == 'NewArticleLose'){
+		$('#newArticleLoseModal').modal('show');
+	}else if(type == 'ViewArticleLose'){
+		$('#viewArticleLoseModal').modal('show');
+	}else if(type == 'EditArticleLose'){
+		$('#editArticleLoseModal').modal('show');
+	}else if(type == 'OutArticleLose'){
+        selectedRowFolio=id
+		$('#outArticleLoseModal').modal('show');
 	}else if(type== 'filtros'){
         $('#articleFiltersModal').modal('show');
     }
@@ -161,7 +249,9 @@ function getInputsValueByClass(classInput){
 
 //FUNCION agregar nuevo articulo
 function nuevoArticulo(type){
-  let data = getInputsValueByClass("contentNuevoArticulo")
+    $("#loadingButtonAgregarArticleLose").show();
+    $("#buttonAgregarArticleLose").hide();
+    let data = getInputsValueByClass("contentNuevoArticulo")
     if(!validarObjeto(data)){
         Swal.fire({
             title: "Validación",
@@ -173,12 +263,12 @@ function nuevoArticulo(type){
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
-                script_name: scriptName,
+                script_name: 'articulos_consesionados.py',
             }),
             headers:
             {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+jw
+                'Authorization': 'Bearer '+userJwt
             },
         })
         .then(res => res.json())
@@ -212,17 +302,17 @@ function validarObjeto(objeto) {
 
 
 //FUNCION editar un articuloc consesionado
-function editarArticuloCon(folio, location, date, time, name, type, img, num_serie, reporta, comment){
+function editarArticuloCon(folio, location, date, equipo_concesion, type, img, num_serie, nombre_concesion, comment){
     $('#editArticleConModal').modal('show');
     selectedRowFolio= folio
     $("#editArticleConUbicacion").val(location)
     $("#editArticleConFecha").val(date)
     $("#editArticleConHora").val(time)
-    $("#editArticleConArticulo").val(name)
+    $("#editArticleConArticulo").val(equipo_concesion)
     $("#editArticleConTipo").val(type)
     $("#editArticleConFoto").attr('src', img);
     $("#editArticleConNoSerie").val(num_serie)
-    $("#editArticleConReporta").val(reporta)
+    $("#editArticleConReporta").val(nombre_concesion)
     $("#editArticleConComentarios").val(comment)
 }
 
@@ -306,6 +396,12 @@ function alertEliminarCheckbox(type){
 
 //FUNCION eliminar el registro desde la tabla
 function alertEliminarTable(folio, type){
+     let bodyInf={}
+    if(type=='articlesLose'){
+        bodyInf={script_name:"articulos_perdidos.py", option:"delete_article",folio:folio}
+    }else{
+        bodyInf={script_name:"articulos_consesionados.py", option:"delete_article", folio:folio}
+    }
     Swal.fire({
         title:'¿Estas seguro de querer eliminar el registro?',
         html:`
@@ -321,15 +417,68 @@ function alertEliminarTable(folio, type){
     })
     .then((result) => {
         if (result.value) {
-            if(type=='articlesLose'){
-                let dataFiltered = dataTableArticlesLose.filter(x => x.folio !== folio);
-                dataTableArticlesLose = dataFiltered
-                tables["tableArticlesLose"].setData(dataTableArticlesLose);
-            }else{
-                let dataFiltered = dataTableArticles.filter(x => x.folio !== folio);
-                dataTableArticles = dataFiltered
-                tables["tableArticles"].setData(dataTableArticles);
-            }
+            Swal.fire({
+                title: 'Cargando...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading();
+               }
+            });
+            fetch(url + urlScripts, {
+                method: 'POST',
+                body: JSON.stringify({
+                    script_name: bodyInf.script_name,
+                    option: bodyInf.option,
+                    folio: [bodyInf.folio]
+                }),
+                headers:
+                {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+userJwt
+                },
+            })
+            .then(res => res.json())
+            .then(res => {
+                console.log("RESPONSE LIOMPSSSS", res)
+                if (res.success) {
+                    let data=res.response.data
+                    if(data.status_code==400){
+                        let errores=[]
+                        for(let err in data.json){
+                            errores.push(data.json[err].label+': '+data.json[err].msg)
+                        }
+                        Swal.fire({
+                            title: "Error",
+                            text: errores.flat(),
+                            type: "error"
+                        });
+                    }else if(data.status_code==202 ||data.status_code==201){
+                        Swal.close();
+                        Swal.fire({
+                            title: "Success",
+                            text: "Se elimino el articulo correctamente.",
+                            type: "success",
+                            showConfirmButton:false,
+                            timer:1200
+                        });
+                        if(type=='articlesLose'){
+                            let dataFiltered = dataTableArticlesLose.filter(x => x.folio !== folio);
+                            dataTableArticlesLose = dataFiltered
+                            tables["tableArticlesLose"].setData(dataTableArticlesLose);
+                        }else{
+                            let dataFiltered = dataTableArticles.filter(x => x.folio !== folio);
+                            dataTableArticles = dataFiltered
+                            tables["tableArticles"].setData(dataTableArticles);
+                        }
+                    }
+                }else{
+                    Swal.fire({
+                        title: "Error",
+                        text: res.error.msg.msg,
+                        type: res.error.msg.type
+                    });
+                }
+            });
         }
     });
 }
@@ -382,7 +531,6 @@ function alertVerArticuloCon(folio){
 //FUNCION editar el articulo consesionado
 function editarArticuloConModal(){
     let data = getInputsValueByClass('articleCon-edit')
-    console.log("IMAGEN", data)
     let selected=''
     for(d of dataTableArticles){
         if(d.folio == parseInt(selectedRowFolio))

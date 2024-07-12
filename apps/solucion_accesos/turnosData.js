@@ -1,13 +1,15 @@
 let dataTableGuardiasApoyo = [];
 let dataTableNotas = [];
-let dataTableCambiarCaseta = [
+let dataTableCambiarCaseta = []
+/*[
     {name:"Caseta 1 Poniente", ubi:"Cumbres", status: casetaDisponible, guard:'Juan Ecobedo' ,comment:'comentsario de ejemplot'},
     {name:"Caseta 1 Sur", ubi:"Santa Catarina",  status: casetaDisponible, guard:'Francisco Flores', comment:'soy uncoment'},
     {name:"Caseta 4 Poniente", ubi:"Monterrey", status: casetaDisponible, guard:'Javier Almanza' ,comment:'comentsario de ejemplot'},
     {name:"Caseta 3 Sur", ubi:"Escobedo",  status: casetaDisponible, guard:'Valeria Alvarado',comment:'comentando squi'},
     {name:"Caseta 6 Poniente", ubi:"San Jeronimo", status: casetaDisponible, guard:'Erika Ruiz',comment:'comentsario de ejemplot'},
     {name:"Caseta 6 Sur", ubi:"Monterrey",  status: casetaDisponible, guard:'Daniela Cepeda',comment:'comentsario de ejemplot' }
-];
+];*/
+
 let dataTableAgregarGuardiaApoyo = [  
     { name: 'Juan Pérez Gomez', status: 'Disponible' , img: 'https://img.favpng.com/1/10/3/computer-icons-child-avatar-png-favpng-1KY4gtPN1Fab6LrVpVM8AjtnH.jpg', id:20}, 
     { name: 'María Rodríguez Herandez', status: 'Disponible' , img:'https://img.favpng.com/11/2/11/child-computer-icons-avatar-png-favpng-5T7pGsVsca4MQcwET3VPe0X2n.jpg', id:21}, 
@@ -37,16 +39,19 @@ const columsDataNotas = [
         },
     },
 ];
+
 const columsCambiarCaseta = [
-    {title:"Caseta", field:"name", width:180, responsive:0},
-    {title:"Ubicación", field:"ubi", width:180, resizable:true, tooltip:true},
-    {title:"Estatus", field:"status", width:180, resizable:true, tooltip:true},
-    {title:"Guardia en turno", field:"guard", width:180, resizable:true, tooltip:true}
+    {title:"Caseta", field:"name", width:230, responsive:0},
+    {title:"Ubicación", field:"ubi", width:100, resizable:true, tooltip:true},
+    //{title:"Estatus", field:"status", width:180, resizable:true, tooltip:true},
+    //{title:"Guardia en turno", field:"guard", width:180, resizable:true, tooltip:true}
 ];
+
 const columsAgregarGuardiaApoyo = [
     {title:"Nombre", field:"name", width:240, responsive:0},
     {title:"Estatus", field:"status", width:330, resizable:true, tooltip:true},
 ];
+
 const columsDataGuardiasApoyo = [
     {title:"Guardias de Apoyo", field:'name',hozAlign:"left",headerFilter:true,width:390,
          formatter: (cell, formatterParams) => {
@@ -65,7 +70,7 @@ const columsDataGuardiasApoyo = [
             let data = cell.getData();
             let id = cell.getData().id ? cell.getData().id : 0;
             let divActions = '<div class="row d-flex justify-content-center" id="inf2'+data.id +'">';
-            divActions += `<input class="form-check-input customInputCheckout" type="checkbox" id="inp-${id}" onClick="selectCheckboxGuardia(${data.id });" value='${data.id}' style="border-color:darkgray;">`;
+            divActions += `<input class="form-check-input customInputCheckout" type="checkbox" id="inp-${id}" onclick="selectCheckboxGuardia(${data.id})" value=${data.id}  style="border-color:darkgray">`;
             divActions += `<button class="btn-table-bitacora mt-3 customButtonCheckout" id="btn-${id}" onclick="eliminarGuardia(${id}, '${data.name}')" > <i class="fa solid fa-door-open"></i> </button>`;
             divActions += '</div>';
             return divActions;

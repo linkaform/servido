@@ -52,11 +52,11 @@ let userTurnCerrado="Turno Cerrado";
 let userTurnAbierto="Turno Abierto";
 let casetaDisponible="Disponible";
 let casetaNoDisponible="No Disponible";
-let statusAbierto="Abierto";
-let statusCerrado="Cerrado";
+let statusAbierto="abierto";
+let statusCerrado="cerrado";
 
 function changeButtonColor(){
-      $("#imageUserNavbar").attr("src", getCookie('userImg'));
+    $("#imageUserNavbar").attr("src", getCookie('userImg'));
     let user = getCookie("userId");
         let jw = getCookie("userJwt");
         if(user !='' && jw!=''){
@@ -66,13 +66,11 @@ function changeButtonColor(){
             switch (getValueUserLocation()) {
               case "accesos":
                  let btn1 = document.getElementById("buttonAccesos");
-                 console.log("btn1",getValueUserLocation())
                  btn1.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
                 break;
               case "bitacora":
                 console.log("bityytyt")
                  let btn2 = document.getElementById("buttonBitacoras");
-                     console.log("btn122",getValueUserLocation())
                  btn2.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
                 break;
               case "incidencias":

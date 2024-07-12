@@ -1,7 +1,7 @@
 let userJwt ="";
 let idScr=119197
-let caseta=""
-let ubicacion=""
+let caseta="" // caseta actual al iniciar sesion en turnos
+let ubicacion="" // ubicacion actual al iniciar sesion en turnos
 let date=""
 let guardiasApoyo={}
 let img="https://static.vecteezy.com/system/resources/previews/007/468/567/non_2x/colorful-simple-flat-of-security-guard-icon-or-symbol-people-concept-illustration-vector.jpg";
@@ -9,27 +9,18 @@ let tables={}
 let idGuardiasEnTurno=[]
 let guardiasEnTurno=[] 
 let arraySelectedGuardias=[]
-
+let supportGuards=[]
+let checkInId=""
+let thisUserCheckInId=""
 //FUNCION para cambiar la imagen del localstorage de imagen de perfil imagenURL en todas las pantallas
-document.getElementById("changeImageInputFile").addEventListener("change", function() {
-    let archivoSeleccionado = event.target.files[0]; 
-    if (archivoSeleccionado) {
-        var lector = new FileReader(); 
-        lector.onload = function(event) {
-            let urlImagen = event.target.result;
-            localStorage.setItem("imagenURL", String(urlImagen));
-            let imagenMostrada = document.getElementById("imgProfilePic");
-            imagenMostrada.src = urlImagen;
-            imagenMostrada.style.display = "block"; // Mostrar la imagen
-            //setCookie('userImg',String(urlImagen),7)
-            let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
-            imagenMostradaNavbar.src= urlImagen;
-            imagenMostradaNavbar.style.display = "block";
-        };
-        lector.readAsDataURL(archivoSeleccionado);
-    }
-})
 
+
+//FUNCION para abrir modales
+function setModal(type = 'none',id){
+    if(type == 'cambiarCaseta'){
+        loadBooths();
+    }
+}
 
 
 window.onload = function(){
@@ -46,17 +37,70 @@ window.onload = function(){
     $("#textEmail").text(getCookie('userEmail'));
     $("#imgProfilePic").attr("src", localStorage.getItem("imagenURL") /*getCookie('userImg')*/);
     $("#textUbicacion").html();
+    $("#buttonCambiarCaseta").show();
+    $("#loadingButtonCaseta").hide();
 }
 
 
+
+
+function changeImageGuard(){
+    let userId= getCookie('userId')
+    let input = document.getElementById('changeImageInputFile');
+    input.click();
+    
+    input.onchange = function() {
+        let file = event.target.files[0]; 
+        let fileName=event.target.files[0].name
+        let urlImagen=""
+        console.log("QUE ES ESTO", file,fileName)
+        if (file) {
+            let lector = new FileReader(); 
+            lector.onload = function(event) {
+                urlImagen  = event.target.result;
+                localStorage.setItem("imagenURL", String(urlImagen));
+                let imagenMostrada = document.getElementById("imgProfilePic");
+                imagenMostrada.src = urlImagen;
+                imagenMostrada.style.display = "block"; // Mostrar la imagen
+                //setCookie('userImg',String(urlImagen),7)
+                let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
+                imagenMostradaNavbar.src= urlImagen;
+                imagenMostradaNavbar.style.display = "block";
+                
+                let formData = new FormData();
+
+                let blob = new Blob([event.target.result], { type: file.type });
+
+                formData.append('name', 'profile_picture');
+                formData.append('profile_picture', blob, fileName);
+                console.log("FD",formData)
+                let urlChangeImage= `https://app.linkaform.com/api/infosync/user_admin/${userId}/profile_picture/`
+                 fetch(urlChangeImage, {
+                    method: 'POST',
+                    body: formData,
+                    headers:
+                    {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+userJwt
+                    },
+                })
+                .then(res => res.json())
+                .then(res => {
+                    console.log("++++++++++++++++++ CAMBIAR IMAGEN USER RESPONSE +++++++++++++++++++", res);
+                })
+            };
+            lector.readAsDataURL(file);
+        }
+    };
+}
+
 //FUNCION hace el fetch que trae toda la informacion inicial que se llenara en la pantalla de turnos
 function getAllData(){
-    console.log('-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx merenges....')
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_name: "script_turnos.py",
-            option: 'load_shift',
+            script_name:'script_turnos.py',
+            option:'load_shift',
         }),
         headers:
         {
@@ -67,62 +111,125 @@ function getAllData(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            //aqui lo pongo...!!!
-            console.log('result...', res)
+            console.log("+++++++++++++++++++++++  res DATA TURNOS   +++++++++++++++++++++++++++",res)
+            let data=res.response.data
+            let loc= data.location
+            let guard= data.guard
+            let notes= data.notes
+            supportGuards= data.support_guards
+            inicializarPagina(loc, notes, guard, data.booth_status, data.booth_stats);
+            if(user !='' && userJwt!=''){
+                if(data.support_guards.length > 0){
+                    for(let guard of data.support_guards){
+                        dataTableGuardiasApoyo.push({name:guard.employee, status: '', img: guard.picture? guard.picture[0].file_url :'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1', fechaInicio: '', id:guard.user_id})
+                    }  
+                }else{
+                    dataTableGuardiasApoyo = []
+                }
+                let userName=getCookie('userName')
+                if(notes.length > 0){
+                    for(let note of notes){
+                        dataTableNotas.push({name:userName, note: note.note, status: note.status, img:"", check:"",view:"", edit:"", fotos: [], archivos:[], folio:note.folio})
+                    }
+                }else{
+                    dataTableNotas = []
+                }
+                drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
+                guardiasApoyoValidateOptions()
+                drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
+                dataTableCambiarCaseta=[]
+                drawTableSelect('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"300px",1);
+                drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px",1000);
+                tables["tableCambiarCaseta"].on("rowSelectionChanged", function(data, rows){
+                    if (rows.length > 0) {
+                        cambiarCaseta(data[0])
+                    }
+                });
+            }
         }
     });
-    let loc = load_shift_json.location
-    let notes= load_shift_json.notes
-    let guard= load_shift_json.guard
-    
-    inicializarPagina(loc, notes, guard);
+}
 
-    for(let guard of loc.support_guards){
-        dataTableGuardiasApoyo.push({name:guard.name, status: guard.status,img: guard.picture.file_url, fechaInicio: "31 Enero 2024", id:guard.id})
-    }
-    let userName=getCookie('userName')
-    for(let note of notes){
-        dataTableNotas.push({name:userName, note: note.note, status: note.status, img:"", check:"",view:"", edit:"", fotos: [], archivos:[], folio:note.folio})
-    }
-    if(user !='' && userJwt!=''){
-        drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
-        guardiasApoyoValidateOptions()
-        drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
-        drawTableSelect('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"360px",1);
-        drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px",1000);
-    }
+
+function loadBooths(){
+    $("#buttonCambiarCaseta").hide();
+    $("#loadingButtonCaseta").show();
+    fetch(url + urlScripts, {
+    method: 'POST',
+    body: JSON.stringify({
+        script_name: 'script_turnos.py',
+        option:'get_user_booths'
+    }),
+    headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+jw
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        console.log("RESS",res)
+        if (res.success) {
+            if(user !='' && userJwt!=''){
+                dataTableCambiarCaseta=[]
+                let userBooths=res.response.data
+                 if(userBooths.length>0){
+                    for(let booth of userBooths){
+                        console.log("ESTUS DE BOOTH",booth)
+                        dataTableCambiarCaseta.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio})
+                        arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio})
+                    }
+                }else{
+                    dataTableCambiarCaseta=[]
+                }
+                tables["tableCambiarCaseta"].setData(dataTableCambiarCaseta);
+                $('#cambiarCasetaModal').modal('show');
+                $("#buttonCambiarCaseta").show();
+                $("#loadingButtonCaseta").hide();
+                
+            }
+        }
+    });
 }
 
 
 //FUNCION Toda la inciializacion de cookies y variables necesarias para el funcionamiento de la pantalla
-function inicializarPagina(loc, notes, guard){
-    caseta=loc.booth;
+function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
+    caseta=loc.area;
     ubicacion=loc.name;
     $("#textCuidad").text(loc.city)
     $("#textEstado").text(loc.state)
     $("#textDireccion").text(loc.address)
-
-    setCookie('userCaseta',caseta,7)
-    setCookie('userLocation',ubicacion,7)
-
+    setCookie('userCaseta',getCookie('userCaseta')|| caseta,7)
+    setCookie('userLocation',getCookie('userLocation')|| ubicacion,7)
     $("#textCaseta").text(getCookie('userCaseta'))
     $("#textUbicacion").text(getCookie('userLocation'))
-    setCookie('userCasetaStatus', loc.boot_status.status,7)
-    setCookie('userCasetaGuard',loc.boot_status.guard_on_duty,7)
-
+    setCookie('userCasetaStatus', booth_status.status,7)
+    setCookie('userCasetaGuard',booth_status.guard_on_dutty,7)
+    setCookie('checkInId', booth_status.checkin_id,7)
+    checkInId= booth_status.checkin_id || ""
+    
+    if(booth_status.guard_on_dutty== ''){
+        $("#headGuardiaEnTurno").text("")
+        $("#headFechaInicioTurno").text("")
+    }else{
+        $("#headGuardiaEnTurno").text("Guardia en turno: ")
+        $("#headFechaInicioTurno").text("Fecha de inicio de turno: ")
+    }
+    
      $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
      $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
-     $("#textFechaInicioCaseta").text(loc.boot_status.stated_at);
+     $("#textFechaInicioCaseta").text(booth_status.stated_at);
 
-     $("#textPersonalDentro").text(loc.boot_stats.in_invitees);
-     $("#textArticulosConsesionados").text(loc.boot_stats.articulos_concesionados);
-     $("#textIncidentesPendientes").text(loc.boot_stats.incidentes_pendites);
-     $("#textVehiculosEstacionados").text(loc.boot_stats.vehiculos_estacionados);
-     $("#textGafetesPendientes").text(loc.boot_stats.gefetes_pendientes);
-
+     $("#textPersonalDentro").text(booth_stats.in_invitees);
+     $("#textArticulosConsesionados").text(booth_stats.articulos_concesionados);
+     $("#textIncidentesPendientes").text(booth_stats.incidentes_pendites);
+     $("#textVehiculosEstacionados").text(booth_stats.vehiculos_estacionados);
+     $("#textGafetesPendientes").text(booth_stats.gefetes_pendientes);
     $("#textEstatusCaseta").removeClass();
     $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
-    setCookie("userTurn", guard.status, 7);
+    setCookie("userTurn",guard.status_turn, 7);
+
     if(getCookie('userCasetaStatus') ==casetaDisponible ){
         $("#buttonForzarCierre").hide();
     } else{
@@ -202,7 +309,9 @@ function setDeleteFoto(id){
 
 //FUNCION forzar el cierre de la caseta cuando tiene estado No disponible, para que otro guardia pueda iniciar turno
 function AlertForzarCierre(name){
+    console.log("NOMBREE",name)
     let statusCaseta = $("#textEstatusCaseta").text()
+    let inputSelectedGuards=[]
     if(statusCaseta == casetaNoDisponible){
         Swal.fire({
             title:'Confirmación',
@@ -219,16 +328,41 @@ function AlertForzarCierre(name){
         })
         .then((result) => {
             if (result.value) {
-                setCookie('userCasetaStatus', 'Disponible',7);
-                $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
-                $("#textFechaInicioCaseta").val('01/12/2024 01:23:2024')
-                $("#textEstatusCaseta").removeClass();
-                $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
-                if(getCookie('userCasetaStatus') =="Disponible" ) {
-                    $("#buttonForzarCierre").hide();
-                } else {
-                    $("#buttonForzarCierre").show();
-                }
+            fetch(url + urlScripts, {
+                method: 'POST',
+                body: JSON.stringify({
+                script_name: 'script_turnos.py',
+                option: 'checkout',
+                location: ubicacion,
+                area: caseta,
+                checkin_id:checkInId
+            }),
+            headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+jw
+                },
+            })
+            .then(res => res.json())
+            .then(res => {
+                  console.log("Response CHECKOUT",res)
+                if (res.success) {
+                    casetaActualizarEstatus(turnoCerrado, casetaDisponible)
+                    setCookie('userCasetaStatus',casetaDisponible,7)
+                    setCookie('userTurn',turnoCerrado,7)
+                    turnoCerrado(idGuardiasEnTurno)
+                    //setCookie('userCasetaStatus', 'Disponible',7);
+                    $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
+                    $("#textFechaInicioCaseta").val('01/12/2024 01:23:2024')
+                    $("#textEstatusCaseta").removeClass();
+                    $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
+                    if(getCookie('userCasetaStatus') =="Disponible" ) {
+                        $("#buttonForzarCierre").hide();
+                    } else {
+                        $("#buttonForzarCierre").show();
+                    }
+                } 
+            })
+                
             }
         });
     }
@@ -240,17 +374,73 @@ function changeStatusTurn(buttonClick){
     //INFO : idGuardiasEnTurno para saber que guardias de los que estan en la tabla "Guardias de apoyo" INICIARON TURNO
     //INFO : aqui poner fetch para modificar el status , meter estos este if en el response del fetch
     let estatusActual=getCookie('userTurn');
+    let inputSelectedGuards=[];
+
     if(buttonClick){
         for(g of arraySelectedGuardias){
-            guardiasEnTurno = guardiasEnTurno.concat(dataTableGuardiasApoyo.filter(e => e.id == g.id))
-            idGuardiasEnTurno.push("inp-"+ g.id)
-            idGuardiasEnTurno.push("btn-"+ g.id)
+            guardiasEnTurno = guardiasEnTurno.concat(dataTableGuardiasApoyo.filter(e => e.id == g.user_id))
+            idGuardiasEnTurno.push("inp-"+ g.user_id)
+            idGuardiasEnTurno.push("btn-"+ g.user_id)
+            inputSelectedGuards.push({"username":guardia.username,"user_id": guardia.user_id })
         } 
+        //FETCH PARA CMABIAR ESTUS DEL GUARDIA AQUI
         if(estatusActual == userTurnAbierto ){
-            turnoCerrado(idGuardiasEnTurno)
+            console.log("DATAA QUE TENEMOS CHECK OUT",estatusActual)
+            fetch(url + urlScripts, {
+                method: 'POST',
+                body: JSON.stringify({
+                script_name: 'script_turnos.py',
+                option: 'checkout',
+                checkin_id: thisUserCheckInId,
+                location: ubicacion,
+                area: caseta,
+            }),
+            headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+jw
+                },
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    casetaActualizarEstatus(turnoCerrado, casetaDisponible)
+                    setCookie('userCasetaStatus',casetaDisponible,7)
+                    setCookie('userTurn',turnoCerrado,7)
+                    turnoCerrado(idGuardiasEnTurno)
+                    console.log("CHECKOUTTTTTT ",res)
+                } 
+            })
+            
         }
         else {
-            turnoAbierto(idGuardiasEnTurno)
+            fetch(url + urlScripts, {
+                method: 'POST',
+                body: JSON.stringify({
+                script_name: 'script_turnos.py',
+                option: 'checkin',
+                location: ubicacion,
+                area: caseta,
+                employee_list:inputSelectedGuards
+            }),
+            headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+jw
+                },
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    setCookie('userCasetaStatus',casetaNoDisponible,7)
+                    setCookie('userTurn',turnoAbierto,7)
+                    casetaActualizarEstatus(turnoAbierto, casetaNoDisponible)
+                    turnoAbierto(idGuardiasEnTurno)
+                    $("#textGuardiaEnTurno").text(res.response.data.json.boot_status.guard_on_duty)
+                    $("#textFechaInicioCaseta").text(res.response.data.json.created_at)
+                    thisUserCheckInId=res.response.data.json.id
+                    console.log("thisUserCheckInId",thisUserCheckInId, res.response.data.json.boot_status.guard_on_duty)
+                }
+            })
+            
         } 
     }
     else if(!buttonClick){
@@ -268,13 +458,15 @@ function changeStatusTurn(buttonClick){
 
 //FUNCION que muestra un alert de confirmacion y las validaciones necesarias ANTES de cambiar el estatus del turno y despues llama a la funcion changeStatusTurn
 function AlertAndActionChangeStatusTurn(){
+    console.log(getCookie("userCasetaStatus"),getCookie("userTurn"))
     if(getCookie("userCasetaStatus")== casetaDisponible && getCookie("userTurn")== userTurnCerrado 
     || getCookie("userCasetaStatus")== casetaNoDisponible && getCookie("userTurn")== userTurnAbierto 
     || getCookie("userCasetaStatus")== casetaDisponible &&  getCookie("userTurn")== userTurnAbierto){
 
         let arrGuard=[];
         for(guardia of arraySelectedGuardias){
-            arrGuard.push(guardia.name);
+            arrGuard.push(guardia.employee);
+            
         }
         let guardiaText= arraySelectedGuardias.length === 0 ? `?`:`, con los siguientes guardias: <b>`+ arrGuard.flat()+`? </b> ` ;
         Swal.fire({
@@ -293,7 +485,8 @@ function AlertAndActionChangeStatusTurn(){
         .then((result) => {
             if (result.value) {
                 changeStatusTurn(true);
-            }
+            } 
+
         });
     } else {
         Swal.fire({
@@ -411,9 +604,10 @@ function selectCheckboxGuardia(id){
     let checkboxes = document.querySelectorAll('.form-check-input');
     arraySelectedGuardias=[]
     checkboxes.forEach(function(checkbox) {
+
         if (checkbox.checked) {
-            for(guardia of dataTableGuardiasApoyo){
-                if(guardia.id == checkbox.value)
+            for(guardia of supportGuards){
+                if(guardia.user_id == checkbox.value)
                 arraySelectedGuardias.push(guardia)
             }
         }
@@ -433,11 +627,14 @@ function enviarNota(){
     inputsE.forEach(function(input) {
         fotosArray.push(input.value);
     });
+    console.log("TURNOSSS",fotosArray)
     let divFoto = document.getElementById("foto-input-form");
     let inputsF = divFoto.querySelectorAll('.foto-div');
     inputsF.forEach(function(input) {
         archivosArray.push(input.value);
     });
+
+    console.log("tuirnosss archivosArray",archivosArray)
     let fotografia= $("#fileInputFotografia").val();
     let comentario=$("#inputComentarioNota").val();
     let fileNameFoto = fotografia.substring(fotografia.lastIndexOf('\\') + 1);
@@ -471,19 +668,25 @@ function enviarNota(){
 
 
 //FUNCION cambiar la cookie de caseta al selecionar una en el modal 
-function cambiarCaseta(value){
-     let selectedRow = tables["tableCambiarCaseta"].getSelectedData()[0]; // El [0] es para obtener solo la primera fila si hay varias seleccionadas
-     setCookie('userCaseta', selectedRow.name)
-     setCookie('userLocation', selectedRow.ubi)
-     setCookie('userCasetaStatus', selectedRow.status)
-     setCookie('userCasetaGuard', selectedRow.guard)
-     $("#textUbicacion").text(getCookie('userLocation'));
-     $("#textCaseta").text(getCookie('userCaseta'));
-     $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
-     $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
-     $("#textEstatusCaseta").removeClass();
-     $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
-     $('#cambiarCasetaModal').modal('hide');
+function cambiarCaseta(selectedRow){
+    console.log("cambiarCaseta",selectedRow)
+    setCookie('userCaseta', selectedRow.name)
+    setCookie('userLocation', selectedRow.ubi)
+    setCookie('userCasetaStatus', selectedRow.status)
+    setCookie('userCasetaGuard', selectedRow.guard)
+    $("#textUbicacion").text(getCookie('userLocation'));
+    $("#textCaseta").text(getCookie('userCaseta'));
+    $("#textEstatusCaseta").text(getCookie('userCasetaStatus') ||"");
+    if(getCookie('userCasetaStatus') == casetaDisponible){
+        $("#textGuardiaEnTurno").text("");
+        $("#textFechaInicioCaseta").text("")
+    }else if(getCookie('userCasetaStatus')== casetaNoDisponible){
+        $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
+         $("#textFechaInicioCaseta").text("")
+    }
+    $("#textEstatusCaseta").removeClass();
+    $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
+    $('#cambiarCasetaModal').modal('hide');
 }
 
 
@@ -552,7 +755,7 @@ function turnoAbierto(idGuardiasEnTurno){
     if(guardiasEnTurno.length > 0){
         tables["tableGuardiasApoyo"].setData(guardiasEnTurno);
     }else{
-        tables["tableGuardiasApoyo"].setData([]);
+        //tables["tableGuardiasApoyo"].setData([]);
     }
     setCookie("userTurn", userTurnAbierto,7);
     $("#todayHourText").html(new Date().toLocaleTimeString())
@@ -583,8 +786,45 @@ function turnoCerrado(idGuardiasEnTurno){
     idGuardiasEnTurno=[]
     guardiasEnTurno=[] 
     arraySelectedGuardias=[]
-
     guardiasApoyoValidateOptions()
+}
+
+
+//FUNCION para actualizar los estatus 
+function casetaActualizarEstatus(userTurn, userCasetaStatus){
+    $("#textEstatusCaseta").removeClass();
+    console.log(userCasetaStatus, casetaNoDisponible , userCasetaStatus!== casetaNoDisponible)
+    $("#textEstatusCaseta").addClass( userCasetaStatus!== casetaNoDisponible? "text-success":  "text-danger");
+    //setCookie("userTurn",userCasetaStatus == casetaDisponible? userTurnCerrado : userTurnAbierto , 7);
+
+    if(userCasetaStatus== casetaDisponible){
+         console.log("ACTUALIZARRR  TURNO ABIERTO",userCasetaStatus, casetaDisponible)
+        $("#textEstatusCaseta").text(casetaDisponible);
+        $("#headGuardiaEnTurno").text("")
+        $("#headFechaInicioTurno").text("")
+        $("#buttonForzarCierre").hide();
+        $("#textGuardiaEnTurno").text("");
+        $("#textFechaInicioCaseta").text("");
+
+    }else if (userCasetaStatus== casetaNoDisponible){
+         console.log("ACTUALIZARRR  TURNO ABIERTO",userCasetaStatus,casetaNoDisponible)
+        $("#textEstatusCaseta").text(casetaNoDisponible);
+        $("#headGuardiaEnTurno").text("Guardia en turno: ");
+        $("#headFechaInicioTurno").text("Fecha de inicio de turno: ");
+        $("#buttonForzarCierre").show();
+    }
+    if(userTurn== userTurnAbierto && userCasetaStatus== casetaNoDisponible){
+        console.log("ACTUALIZARRR  TURNO ABIERTO")
+        $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
+        $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
+        $("#textFechaInicioCaseta").text(booth_status.stated_at);
+
+    }else if (userTurn== userTurnCerrado && userCasetaStatus== casetaDisponible){
+        console.log("ACTUALIZAR TURNO CERRADOOOO")
+        $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
+        $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
+        $("#textFechaInicioCaseta").text(booth_status.stated_at);
+    }
 }
 
 
@@ -624,7 +864,7 @@ function guardiasApoyoValidateOptions(){
 
 //FUNCION para dibujar las tablas de la pagina y guardar su instancia en el obj tables
 function drawTableNotas(id, columnsData, tableData, height){
-    var  table = new Tabulator("#" + id, {
+    let  table = new Tabulator("#" + id, {
         layout:"fitDataStretch",
         height:height,
         data:tableData,
@@ -639,7 +879,7 @@ function drawTableNotas(id, columnsData, tableData, height){
 
 //FUNCION para dibujar las tablas con opcion select de la pagina y guardar su instancia en el obj tables
 function drawTableSelect(id, columnsData, tableData, height, select){
-    var  table = new Tabulator("#" + id, {
+    let  table = new Tabulator("#" + id, {
         layout:"fitDataStretch",
         height:height,
         data:tableData,

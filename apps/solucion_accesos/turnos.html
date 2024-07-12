@@ -27,7 +27,7 @@
                             <div class="col-4 text-center">
                                 <img src="" height="100px" width="100px" class="d-inline-block rounded-circle" alt="" id="imgProfilePic"><br>
                                 <input style="display:none" type='file' accept="image/*" id='changeImageInputFile'/>
-                                <button type="button" class="btn btn-success btn-sm m-2 " id="buttonChangeImage" onclick='changeImageGuard()' >Cambiar Imagen
+                                <button type="button" class="btn btn-success btn-sm m-2 " id="buttonChangeImage" onclick="changeImageGuard()" >Cambiar Imagen
                                 </button>
                             </div>
                             <div class="col-8">
@@ -65,8 +65,12 @@
                             <b>Informacion de ubicacion:</b>
                         </div>
                         <div >
-                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#cambiarCasetaModal" id="buttonCambiarCaseta"
+                            <button type="button" class="btn btn-success btn-sm" onclick="setModal('cambiarCaseta')" id="buttonCambiarCaseta"
                             >Cambiar Caseta</button>
+                            <button class="btn btn-success btn-sm" type="button" id="loadingButtonCaseta" disabled>
+                                  <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                                  Cargando...
+                            </button>
                         </div>
                     </div>
                     <table class="table table-borderless mt-3 w-auto" style="border: none;">
@@ -102,11 +106,11 @@
                             </tr>
                          
                             <tr>
-                                <td><b>Guardia en turno:</b></td>
+                                <td><b> <span id="headGuardiaEnTurno"></span></b></td>
                                 <td><span id="textGuardiaEnTurno"> </span></td>
                             </tr>
                                <tr>
-                                <td><b>Fecha de inicio de turno: </b></td>
+                                <td><b><span id="headFechaInicioTurno"></span> </b> </td>
                                 <td> <span id="textFechaInicioCaseta"></span></td>
                             </tr>
                         </tbody>
@@ -178,7 +182,7 @@
 
     <!-- Modales -->
     <div class="modal fade" id="cambiarCasetaModal" tabindex="-1"  aria-hidden="true" >
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 750px;">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 500px;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">Cambiar Caseta</h1>
@@ -189,11 +193,10 @@
                         <div><h5>Selecciona una caseta para continuar...</h5></div>
                     </div>
                     <div id="tableCambiarCaseta"></div>
-
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="cambiarCaseta()">Seleccionar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" >Cancelar</button>
+                  <!--  <button type="button" class="btn btn-success btn-sm" onclick="cambiarCaseta()">Seleccionar</button> -->
                 </div>
             </div>
         </div>
@@ -246,8 +249,8 @@
                     <small class="text-black-50 mt-3">** Campos son obligatorios</small>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="enviarNota()">Seleccionar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="enviarNota()">Seleccionar</button>
                 </div>
             </div>
         </div>
@@ -268,8 +271,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="agregarNuevoGuardiaApoyo();">Seleccionar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" >Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="agregarNuevoGuardiaApoyo();">Seleccionar</button>
                 </div>
             </div>
         </div>

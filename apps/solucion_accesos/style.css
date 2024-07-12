@@ -485,3 +485,16 @@ input[type=search]{
   padding-top: 2px !important;
    padding-bottom: 2px !important;
 }
+
+.overflowCustom{
+  overflow-x: auto;
+  border: none!important;
+  max-width:580px; 
+  max-height: 140px;
+}
+
+.overflowCustomHead{
+  position: sticky !important;
+  top: 0 !important; 
+  z-index: 1 !important;
+}

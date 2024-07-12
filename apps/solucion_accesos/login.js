@@ -13,8 +13,23 @@ window.onload = function(){
 			href: urlNew,
 		}).click();
 	}
+	let userInput = document.getElementById('user');
+	let userError = document.getElementById('userError');
 
+	userInput.addEventListener('input', function () {
+		if(userInput.value == ""){
+			userError.style.display = 'none';
+		}else{
+			if (validarEmail(userInput.value)) {
+	        userError.style.display = 'none';
+		    } else {
+		        userError.style.display = 'block';
+		    }
+		}
+	   
+	});
 }
+
 
 
 function get_login(){

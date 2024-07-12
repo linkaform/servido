@@ -1,6 +1,6 @@
 var userActualPage=''; 
 var userStatusTurn=''; 
-
+var arrayUserBoothsLocations=[];
 function setValueUserLocation(txt){
 	userActualPage=txt;
 }
@@ -36,4 +36,33 @@ function setCookie(cname, cvalue, exdays) {
     document.cookie = cname + "=" + cvalue + "; " + expires+"; SameSite=Strict";
 }
 
-
+function loadBoothsLocations(){
+    fetch(url + urlScripts, {
+    method: 'POST',
+    body: JSON.stringify({
+        script_name: 'script_turnos.py',
+        option:'get_user_booths'
+    }),
+    headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+jw
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            if(user !='' && userJwt!=''){
+                arrayUserBoothsLocations=[]
+                let userBooths=res.response.data
+                if(userBooths.length>0){
+                    for(let booth of userBooths){
+                        arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio})
+                    }
+                }else{
+                    arrayUserBoothsLocations=[]
+                }
+            }
+        }
+    });
+}

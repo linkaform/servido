@@ -78,11 +78,11 @@
 					<div class="tab-pane fade show active" id="div-article-consecionados" role="tabpanel" aria-labelledby="in-location-tab" tabindex="0">
 						
 						<div class="d-flex mt-2 mb-2 justify-content-end">
-							<button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticle');">
+							<button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticleCon');">
 								<i class="fa-solid fa-plus"></i>
 								Nuevo Artículo
 							</button>
-							<button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('OutArticle');">
+							<button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('OutArticleCon');">
 								<i class="fa-solid fa-clock"></i>
 								Entrega
 							</button>
@@ -94,7 +94,7 @@
 								<i class="fa-solid fa-magnifying-glass"></i>
 								Filtros
 							</button>
-							<button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('articles')" >
+							<button type="button" class="btn btn-danger btn-sm ms-1" id="buttonEliminarArticulosCon" onclick="alertEliminarCheckbox('articles')" >
 								<i class="fa-solid fa-trash"></i>
 								Eliminar
 							</button>
@@ -107,7 +107,7 @@
 					</div>
 					<div class="tab-pane fade overflow-hidden" id="div-article-lose" role="tabpanel" aria-labelledby="out-location-tab" tabindex="0">
 							<div class=" d-flex mt-2 mb-2 ms-1 justify-content-end">
-								<button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticleConse');">
+								<button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticleLose');">
 									<i class="fa-solid fa-plus"></i>
 									Nuevo Artículo
 								</button>
@@ -119,7 +119,7 @@
 									<i class="fa-solid fa-magnifying-glass"></i>
 									Filtros
 								</button>
-								<button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('articlesLose')" >
+								<button type="button" class="btn btn-danger btn-sm ms-1" id="buttonEliminarArticulosLose" onclick="alertEliminarCheckbox('articlesLose')" >
 									<i class="fa-solid fa-trash" ></i>
 									Eliminar
 								</button>
@@ -135,7 +135,7 @@
 	<div id="divSpinner" style="display:none; margin-top: 100px;"></div>
 
 	<!-- Modal New Article -->
-	<div class="modal fade" id="newArticleModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="newArticleConModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -221,7 +221,7 @@
 	</div>
 
 	<!-- Modal Edit Article -->
-	<div class="modal fade" id="editArticleModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="editArticleConModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -310,7 +310,7 @@
 	</div>
 
 	<!-- Modal Out Article -->
-	<div class="modal fade" id="outArticleModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="outArticleConModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -345,7 +345,7 @@
 	</div>
 
 	<!-- Modal View Article -->
-	<div class="modal fade" id="viewArticleModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="viewArticleConModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -408,20 +408,31 @@
 	</div>
 
 	<!-- Modal New Article Concessioned-->
-	<div class="modal fade" id="newArticleConModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="newArticleLoseModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Registro de nuevo articulo</h1>
+					<h1 class="modal-title fs-5">Registro de nuevo articulo perdido</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div class="row">
 						<div class="mb-3 col-4">
-							<label class="form-label">Ubicación: *</label>
-							<select class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConUbicacion">
-								<option>--Seleccione--</option>
-							</select>
+                            <label class="form-label">Ubicación: *</label>
+                            <select class="form-control contentNuevaArticuloLose" id="ubicacionNuevaIncidencia">
+                            </select>
+						</div>
+						<div class="mb-3 col-4">
+                            <label class="form-label">Area: *</label>
+                            <select class="form-control contentNuevaArticuloLose" id="areaNuevaIncidencia">
+                            </select>
+						</div>
+						<div class="mb-3 col-4">
+                            <label class="form-label">Estatus: *</label>
+                            <select class="form-control contentNuevaArticuloLose" id="statusNuevaIncidencia">
+                            	<option value="cerrado">Cerrado</option>
+                                <option value="abierto">Abierto</option>
+                            </select>
 						</div>
 						<div class="mb-3 col-4">
 							<label class="form-label">Fecha: *</label>
@@ -432,7 +443,7 @@
 							<input type="time" class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConHora">
 						</div>
 						<div class="mb-3 col-6">
-							<label class="form-label">Artículo: *</label>
+							<label class="form-label">Nombre del Artículo: *</label>
 							<input type="text" class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConArticulo">
 						</div>
 						<div class="mb-3 col-6">
@@ -442,13 +453,11 @@
 						<div class="mb-3 col-6">
 							<label class="form-label">Reporta: *</label>
 							<select class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConReporta">
-								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Departamento: *</label>
 							<select class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConDepartamento">
-								<option>--Seleccione--</option>
 							</select>
 						</div>
 						<div class="mb-3 col-12">
@@ -468,7 +477,7 @@
 	</div>
 
 	<!-- Modal Edit Article Concessioned-->
-	<div class="modal fade" id="editArticleConModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="editArticleLoseModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -532,7 +541,7 @@
 	</div>
 
 	<!-- Modal View Article Concessioned-->
-	<div class="modal fade" id="viewArticleConModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="viewArticleLoseModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -589,7 +598,7 @@
 	</div>
 
 	<!-- Modal Out Article Concessioned-->
-	<div class="modal fade" id="outArticleConModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="outArticleLoseModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">

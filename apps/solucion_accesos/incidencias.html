@@ -166,18 +166,17 @@
                             <select class="form-control contentNuevaIncidencia" id="reportaNuevaIncidencia">
                             </select>
                         </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Departamento: *</label>
-                            <select class="form-control contentNuevaIncidencia" id="departamentoNuevaIncidencia">
-                            </select>
-                        </div>
                     </div>
                     
                     <small class="text-black-50 mt-3">** Campos son obligatorios</small>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success btn-sm" onclick="nuevaIncidencia()">Agregar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="buttonAgregarIncidencia" onclick="nuevaIncidencia()">Agregar</button>
+                    <button class="btn btn-success btn-sm" type="button" id="loadingButtonAgregarIncidencia" style="display:none" disabled>
+                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                        Cargando...
+                    </button>
                 </div>
             </div>
         </div>
@@ -195,11 +194,7 @@
                     <div class="row">
                         <div class="mb-3 col-6">
                             <label class="form-label">Fecha: *</label>
-                            <input type="date" class="form-control contentEditIncidencia" id="fechaEditIncidencia">
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Hora: *</label>
-                            <input type="time" class="form-control contentEditIncidencia" id="timeEditIncidencia">
+                            <input type="datetime-local" class="form-control contentEditIncidencia" id="dateEditIncidencia">
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Ubicación: *</label>
@@ -213,8 +208,7 @@
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label">Incidencia: *</label>
-                            <select class="form-control contentEditIncidencia" id="incidenciaEditIncidencia">
-                            </select>
+                            <input type="text" class="form-control contentEditIncidencia" id="incidenciaEditIncidencia">
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentarios: *</label>
@@ -222,12 +216,7 @@
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Reporta: *</label>
-                            <select class="form-control contentEditIncidencia" id="reportaEditIncidencia">
-                            </select>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Departamento: *</label>
-                            <select class="form-control contentEditIncidencia" id="departamentoEditIncidencia">
+                            <select class="form-control contentEditIncidencia" id="guardEditIncidencia">
                             </select>
                         </div>
                     </div>
@@ -235,8 +224,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success btn-sm" onclick="editarIncidencia()">Actualizar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="buttonEditarIncidencia" onclick="editarIncidencia()">Actualizar</button>
+                    <button class="btn btn-success btn-sm" type="button" id="loadingButtonEditarIncidencia" style="display:none" disabled>
+                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                        Cargando...
+                    </button>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -297,12 +291,15 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="mb-3 col-6">
-                            <label class="form-label">Fecha: *</label>
-                            <input type="date" class="form-control contentNuevaFalla" id="fechaNuevaFalla">
+                            <label class="form-label">Fecha de la falla: *</label>
+                            <input type="datetime-local" class="form-control contentNuevaFalla" id="fechaNuevaFalla">
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Hora: *</label>
-                            <input type="time" class="form-control contentNuevaFalla" id="timeNuevaFalla">
+                            <label class="form-label">Estatus: *</label>
+                            <select class="form-control contentNuevaFalla" id="estatusNuevaFalla" value="">
+                                <option value="abierto">Abierto</option>
+                                <option value="cerrado">Cerrado</option>
+                            </select>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Ubicación: *</label>
@@ -319,10 +316,6 @@
                             <select class="form-control contentNuevaFalla" id="fallaNuevaFalla">
                             </select>
                         </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Descripción: *</label>
-                            <input type="text" class="form-control contentNuevaFalla" id="descripcionNuevaFalla">
-                        </div>
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentarios: *</label>
                             <textarea class="form-control contentNuevaFalla" id="comentariosNuevaFalla"  rows="3" ></textarea>
@@ -333,14 +326,13 @@
                             </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Departamento: *</label>
-                            <select class="form-control contentNuevaFalla" id="departamentoNuevaFalla">
-                            </select>
-                        </div>
-                        <div class="mb-3 col-6">
                             <label class="form-label">Responsable asignado de solucionar: *</label>
                             <select class="form-control contentNuevaFalla" id="responsableNuevaFalla">
                             </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Fecha de resolucion: *</label>
+                            <input type="datetime-local" class="form-control contentNuevaFalla" id="fechaResolucionNuevaFalla">
                         </div>
                     </div>
                     
@@ -348,7 +340,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success btn-sm" onclick="nuevaFalla()">Agregar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="buttonAgregarFalla" onclick="nuevaFalla()">Agregar</button>
+                    <button class="btn btn-success btn-sm" type="button" id="loadingButtonAgregarFalla" style="display:none" disabled>
+                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                        Cargando...
+                    </button>
                 </div>
             </div>
         </div>
@@ -366,11 +362,7 @@
                     <div class="row">
                         <div class="mb-3 col-6">
                             <label class="form-label">Fecha: *</label>
-                            <input type="date" class="form-control contentEditFalla" id="fechaEditFalla">
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Hora: *</label>
-                            <input type="time" class="form-control contentEditFalla" id="timeEditFalla">
+                            <input type="datetime-local" class="form-control contentEditFalla" id="fechaEditFalla">
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Ubicación: *</label>
@@ -387,10 +379,6 @@
                             <select class="form-control contentEditFalla" id="fallaEditFalla">
                             </select>
                         </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Descripción: *</label>
-                            <input type="text" class="form-control contentEditFalla" id="descripcionEditFalla">
-                        </div>
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentarios: *</label>
                             <textarea class="form-control contentEditFalla" id="comentariosEditFalla"  rows="3"></textarea>
@@ -401,14 +389,13 @@
                             </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Departamento: *</label>
-                            <select class="form-control contentEditFalla" id="departamentoEditFalla">
-                            </select>
-                        </div>
-                        <div class="mb-3 col-6">
                             <label class="form-label">Responsable asignado de solucionar: *</label>
                             <select class="form-control contentEditFalla" id="responsableEditFalla">
                             </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Fecha de resolucion: *</label>
+                            <input type="datetime-local" class="form-control contentEditFalla" id="fechaResolucionEditFalla">
                         </div>
                     </div>
                     
@@ -416,7 +403,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success btn-sm" onclick="editarFalla()">Agregar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="buttonEditarFalla" onclick="editarFalla()">Agregar</button>
+                    <button class="btn btn-success btn-sm" type="button" id="loadingButtonEditarFalla" style="display:none" disabled>
+                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                        Cargando...
+                    </button>
                 </div>
             </div>
         </div>

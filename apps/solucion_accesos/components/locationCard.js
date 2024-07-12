@@ -42,11 +42,8 @@ class lkfLocationCard extends HTMLElement{
 window.customElements.define('locationcard-component', lkfLocationCard)
 
 
-
 window.onload = function(){  
 }
-
-
 
 function initializeCatalogs(){
     fetch(url + urlScripts, {
@@ -68,6 +65,7 @@ function initializeCatalogs(){
         } 
     });
     let valueCaseta = getCookie('userCaseta')
+    console.log("getCookie('userLocation')", getCookie('userLocation'))
     let valueLocation =  getCookie('userLocation')
     let selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.value = valueCaseta

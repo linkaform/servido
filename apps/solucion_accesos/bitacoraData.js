@@ -1,5 +1,6 @@
 let tables={}
-
+let dataTablePersonal=[]
+let dataTableLocker=[]
 
 const columsData1 = [
 	{ title:"Opciones", field: "actions" , hozAlign: "left", resizable:false,
@@ -50,8 +51,8 @@ const columsData2 = [
 	{ title:"Planta", field:'location',hozAlign:"left",headerFilter:true},
 ];
 
-
-const dataTablePersonal = [
+/*
+dataTablePersonal = [
 	{folio:1263451,visitante:'Javier Garcia',contratista:'LINKAFORM SA DE CV',visita:'Juan Perez',area:'Refrigeración',tipo:'Nuevo',entrada:'20-06-2024 08:30',salida:'',estado:true, punto_acceso:'',credentials:'Si',comentario:'Entra temprano con autorización',planta:'PLanta 1'},
 	{folio:1263452,visitante:'Javier Garcia',contratista:'LINKAFORM SA DE CV',visita:'Juan Perez',area:'Refrigeración',tipo:'Nuevo',entrada:'20-06-2024 08:00',salida:'',estado:true, punto_acceso:'',credentials:'Si',comentario:'Entra temprano con autorización',planta:'PLanta 1'},
 	{folio:1263453,visitante:'Javier Garcia',contratista:'LINKAFORM SA DE CV',visita:'Juan Perez',area:'Refrigeración',tipo:'Nuevo',entrada:'22-07-2024 08:30',salida:'',estado:true, punto_acceso:'',credentials:'Si',comentario:'Entra temprano con autorización',planta:'PLanta 1'},
@@ -66,9 +67,9 @@ const dataTablePersonal = [
 	{folio:1263412,visitante:'Javier Garcia',contratista:'LINKAFORM SA DE CV',visita:'Juan Perez',area:'Refrigeración',tipo:'Nuevo',entrada:'30-02-2024 08:30',salida:'',estado:false, punto_acceso:'',credentials:'Si',comentario:'Entra temprano con autorización',planta:'PLanta 1'},
 	{folio:1263413,visitante:'Javier Garcia',contratista:'LINKAFORM SA DE CV',visita:'Juan Perez',area:'Refrigeración',tipo:'Nuevo',entrada:'31-02-2024 08:30',salida:'',estado:true, punto_acceso:'',credentials:'Si',comentario:'Entra temprano con autorización',planta:'PLanta 1'},
 	{folio:1263414,visitante:'Javier Garcia',contratista:'LINKAFORM SA DE CV',visita:'Juan Perez',area:'Refrigeración',tipo:'Nuevo',entrada:'32-02-2024 08:30',salida:'',estado:false, punto_acceso:'',credentials:'Si',comentario:'Entra temprano con autorización',planta:'PLanta 1'},
-]
+] */
 
-const dataTableLocker = [
+dataTableLocker = [
 	{folio:1,locker:'Locker 1',status:false,visit:'Rodolfo Peña Gonzales',document:'INE',num_access:'A58',location:'PLanta 1'},
 	{folio:2,locker:'Locker 1',status:true,visit:'Rodolfo Peña Gonzales',document:'INE',num_access:'A58',location:'PLanta 1'},
 	{folio:3,locker:'Locker 1',status:false,visit:'Rodolfo Peña Gonzales',document:'INE',num_access:'A58',location:'PLanta 1'},
