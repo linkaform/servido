@@ -22,123 +22,70 @@
 <body>
 	<navbar-component ></navbar-component>
 <section>
-	
 	<section class="mainSection mainSectionMargins">
-
-		<div class="row justify-content-between">
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4 ">
-				<div class="card m-2 div-card-portal  customShadow">
-				    <locationcard-component> </locationcard-component>
-				</div>
-			</div>
-			
-			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-				<div class="card  m-2 div-card-portal customShadow">
-				    <div class="card-body p-3">
-				        <div class="d-flex justify-content-evenly">
-			           		<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert1">00</p>
-			            	<i class=""  style="font-size: 40px;"></i>
-			            </div>
-			            <h5 class="card-title text-center text-uppercase text-dark">Recorridos Pendientes</h5>
-				    </div>
-				</div>
-			</div>
-			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-				<div class="card  m-2 div-card-portal customShadow">
-				    <div class="card-body p-3">
-				        <div class="d-flex justify-content-evenly">
-			            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert2">00</p>
-			            	<i class="" style="font-size: 40px;"></i>
-			            </div>
-			            <h5 class="card-title text-center text-uppercase text-dark">Guardias en recorrido</h5>
-				    </div>
-				</div>
-			</div>
-			<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-				<div class="card  m-2 div-card-portal customShadow">
-				    <div class="card-body p-3">
-				        <div class="d-flex justify-content-evenly">
-			            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert3">00</p>
-			            	<i class="" style="font-size: 40px;"></i>
-			            </div>
-			            <h5 class="card-title text-center text-uppercase text-dark">Guardias disponibles / en turno</h5>
-			           
-				        
-				    </div>
-				</div>
-			</div>
-		</div>
-		<div class="mt-4 mb-4">
-			<h3>Registro y seguimiento de recorridos</h3>
-		</div>
-		<div class="mt-3 row ">
-			<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-				<h5>Fecha Desde: </h5>
-				<input class="form-control ds-input" type="date">
-			</div>
-			<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-				<h5>Fecha Hasta: </h5>
-				<input class="form-control ds-input" type="date">
-			</div>
-			<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-				<h5>Estatus: </h5>
-				<select class="form-control ds-input">
-				<option value="--">--Seleccione--</option>
-				<option value="--">Ubicación 1</option>
-				<option value="--">Ubicación 2</option>
-				<option value="--">Ubicación 3</option>
-				<option value="--">Ubicación 4</option>
-				<option value="--">Ubicación 5</option>
-				</select>
-			</div>
-			<div class="d-flex mt-3 ">
-				<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-				<h5>Recorrido: </h5>
-				<select class="form-control ds-input">
-				<option value="--">--Seleccione--</option>
-				<option value="--">Ubicación 1</option>
-				<option value="--">Ubicación 2</option>
-				<option value="--">Ubicación 3</option>
-				<option value="--">Ubicación 4</option>
-				<option value="--">Ubicación 5</option>
-				</select>
-			</div>
-			<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-				<h5>Punto de visita: </h5>
-				<select class="form-control ds-input">
-				<option value="--">--Seleccione--</option>
-				<option value="--">Ubicación 1</option>
-				<option value="--">Ubicación 2</option>
-				<option value="--">Ubicación 3</option>
-				<option value="--">Ubicación 4</option>
-				<option value="--">Ubicación 5</option>
-				</select>
-			</div>
-			<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-				<h5>Guardia: </h5>
-				<select class="form-control ds-input">
-				<option value="--">--Seleccione--</option>
-				<option value="--">Ubicación 1</option>
-				<option value="--">Ubicación 2</option>
-				<option value="--">Ubicación 3</option>
-				<option value="--">Ubicación 4</option>
-				<option value="--">Ubicación 5</option>
-				</select>
-			</div>
-			</div>
-			<div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 offset-md-9 offset-lg-9 offset-xl-9 mt-2">
-				<button type="button" class="btn btn-secondary btn-sm">Filtrar</button>
-				<button type="button" class="btn btn-secondary btn-sm">Restablecer Filtros</button>
-			</div>
-		</div>
-		<div class="mt-3 mb-2 row justify-content-start">
-			<div class="col-3">
-				<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoRecorrido" id="buttonNuevoRecorrido"><i class="fa-solid fa-plus"></i>Nuevo recorrido</button>
-				<button type="button" class="btn btn-success"><i class="fa-solid fa-file-arrow-down"></i>Descargar</button>
-			</div>
-		</div>
-		
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <h5 class="m-0">Informacion de caseta</h5>
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show "  data-bs-parent="#accordionExample">
+              <div class="accordion-body p-0 pt-1" >
+                    <div class="row justify-content-between">
+                        <div class="d-flex justify-content-between">
+                        <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                            <div class="card m-2 div-card-portal  customShadow">
+                                <locationcard-component> </locationcard-component>
+                            </div>
+                        </div>      
+                        <div class="">
+                            <div class="card  m-2 div-card-portal customShadow" >
+                                <div class="card-body ">
+                                    <div class="d-flex justify-content-evenly">
+                                        <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert1">00</p>
+                                        <i class=""  style="font-size: 40px;"></i>
+                                    </div>
+                                    <h5 class=" text-center text-uppercase text-dark ">Recorridos Pendientes</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="card  m-2 ms-0 div-card-portal customShadow" >
+                                <div class="card-body ">
+                                    <div class="d-flex justify-content-evenly">
+                                        <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert2">00</p>
+                                        <i class="" style="font-size: 40px;"></i>
+                                    </div>
+                                    <h5 class="card-title text-center text-uppercase text-dark">Guardias en recorrido</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="card  m-2 ms-0 div-card-portal customShadow" >
+                                <div class="card-body ">
+                                    <div class="d-flex justify-content-evenly">
+                                        <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert3">00</p>
+                                        <i class="" style="font-size: 40px;"></i>
+                                    </div>
+                                    <h5 class="card-title text-center text-uppercase text-dark">Guardias disponibles / en turno</h5>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>	
 	</section>
+    <section class="mainSectionMargins">
+        <div class="d-flex justify-content-center mt-1 align-self-center">
+            <h4 class="m-0 p-0">Registro y seguimiento de recorridos</h4>
+        </div>
+    </section>
+
+
 	<nav class="mainSectionMargins">
 	  <div class="nav nav-tabs" id="nav-tab" role="tablist">
 	    <button class="nav-link active" id="nav-pendientes-tab" data-bs-toggle="tab" data-bs-target="#nav-pendientes" type="button" role="tab" aria-controls="nav-menu" aria-selected="true">Pendientes</button>
@@ -149,167 +96,279 @@
 	</nav>
         <div class="tab-content mainSectionMargins" id="nav-tabContent">
           <div class="tab-pane fade show active " id="nav-pendientes" role="tabpanel" aria-labelledby="nav-pendientes-tab"> 
-                <div class="mt-3 mb-3" style="width:100%;"  id="tableListPendientes"></div>
+            <div class="tab-content " id="myTabContent" >
+                <div class="d-flex mt-2 mb-0 justify-content-end">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticle');" style="display: none;">
+                        <i class="fa-solid fa-plus"></i>
+                        Nuevo Recorrido
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListPendientes" >
+                        <i class="fa-solid fa-file-arrow-down" ></i>
+                        Descargar
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        Filtros
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('articles')" style="display: none;">
+                        <i class="fa-solid fa-trash"></i>
+                        Eliminar
+                    </button>
+                </div>
+                <div class="mt-2 mb-3 tableOverflow" id="tableListPendientes"></div>
+            </div>
            </div>
           <div class="tab-pane fade" id="nav-realizados" role="tabpanel" aria-labelledby="nav-reslizados-tab">
-                <div class="mt-3 mb-3" style="width:100%;"  id="tableListRealizados"></div>
+                <div class="d-flex mt-2  justify-content-end">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticle');" style="display: none;">
+                            <i class="fa-solid fa-plus"></i>
+                            Nuevo Recorrido
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListRealizados" >
+                            <i class="fa-solid fa-file-arrow-down" ></i>
+                            Descargar
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            Filtros
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('articles')" style="display: none;">
+                            <i class="fa-solid fa-trash"></i>
+                            Eliminar
+                        </button>
+                    </div>
+                <div class="mt-2 mb-3 tableOverflow" id="tableListRealizados"></div>
             </div>
           <div class="tab-pane fade" id="nav-cancelados" role="tabpanel" aria-labelledby="nav-cancelados-tab"> 
-                 <div class="mt-3 mb-3" style="width:100%;"  id="tableListCancelados"></div>    
+                 <div class="d-flex mt-2 mb-1 justify-content-end">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticle');" style="display: none;">
+                            <i class="fa-solid fa-plus"></i>
+                            Nuevo Recorrido
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListCancelados" >
+                            <i class="fa-solid fa-file-arrow-down" ></i>
+                            Descargar
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            Filtros
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('articles')" style="display: none;">
+                            <i class="fa-solid fa-trash"></i>
+                            Eliminar
+                        </button>
+                    </div> 
+                    <div class="mt-2 mb-3 tableOverflow" id="tableListCancelados"></div>   
             </div>
           <div class="tab-pane fade" id="nav-todos" role="tabpanel" aria-labelledby="nav-todos-tab"> 
-                 <div class="mt-3 mb-3" style="width:100%;"  id="tableListTodos"></div>
+            <div class="d-flex mt-2 mb-1 justify-content-end">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticle');" style="display: none;">
+                            <i class="fa-solid fa-plus"></i>
+                            Nuevo Recorrido
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListTodos" >
+                            <i class="fa-solid fa-file-arrow-down" ></i>
+                            Descargar
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            Filtros
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('articles')" style="display: none;">
+                            <i class="fa-solid fa-trash"></i>
+                            Eliminar
+                        </button>
+                    </div>
+                 <div class="mt-2 mb-3 tableOverflow" id="tableListTodos"></div>
              </div>
         </div>
 </section>
 
-    <div class="modal fade" id="modalNuevoRecorrido" tabindex="-1"  aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Nuevo recorrido</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Ubicacion *</label>
-                               <select class="form-control" id="inputUbicacion">
-                                  <option>1</option>
-                                  <option>2</option>
-                                  <option>3</option>
-                                  <option>4</option>
-                                  <option>5</option>
-                                </select>
-                        </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Fecha *</label>
-                             <input id="startDate" class="form-control" type="date" />
-
-                               <label class="form-label">Hora *</label>
-                               <input type="time" class="form-control" value="10:05 AM" />
-                        </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Nombre del Guardia *</label>
-                             <input id="startDate" class="form-control" type="date" />
-                        </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Comentario *</label>
-                              <textarea class="form-control" id="inputComentarioNota" rows="3" placeholder="Escribe algo..."></textarea>
-                        </div>
+<div class="modal fade" id="modalNuevoRecorrido" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Nuevo recorrido</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Ubicacion *</label>
+                           <select class="form-control" id="inputUbicacion">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                            </select>
                     </div>
-                        
-                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Fecha *</label>
+                         <input id="startDate" class="form-control" type="date" />
+
+                           <label class="form-label">Hora *</label>
+                           <input type="time" class="form-control" value="10:05 AM" />
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Nombre del Guardia *</label>
+                         <input id="startDate" class="form-control" type="date" />
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Comentario *</label>
+                          <textarea class="form-control" id="inputComentarioNota" rows="3" placeholder="Escribe algo..."></textarea>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="enviarNota()">Seleccionar</button>
-                </div>
+                    
+                <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="enviarNota()">Seleccionar</button>
             </div>
         </div>
     </div>
+</div>
 
 <div class="modal fade" id="modalEditarRecorrido" tabindex="-1"  aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Editar recorrido</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Ubicacion *</label>
-                               <select class="form-control" id="inputUbicacionEdit">
-                                  <option>1</option>
-                                  <option>2</option>
-                                  <option>3</option>
-                                  <option>4</option>
-                                  <option>5</option>
-                                </select>
-                        </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Fecha *</label>
-                             <input id="inputDateEdit" class="form-control" type="date" />
-
-                               <label class="form-label">Hora *</label>
-                               <input type="time" id="inputHourEdit" class="form-control" value="10:05 AM" />
-                        </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Nombre del Guardia *</label>
-                               <select class="form-control" id="inputNombreGuardiaEdit">
-                                  <option>1</option>
-                                  <option>2</option>
-                                  <option>3</option>
-                                  <option>4</option>
-                                  <option>5</option>
-                                </select>
-                            <label class="form-label">Punto del recorrido *</label>
-                            <input type="text" id="inputPuntoRecorrido" class="form-control"/>
-                        </div>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Editar recorrido</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Ubicacion *</label>
+                           <select class="form-control" id="inputUbicacionEdit">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                            </select>
                     </div>
-                        
-                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Fecha *</label>
+                         <input id="inputDateEdit" class="form-control" type="date" />
+
+                           <label class="form-label">Hora *</label>
+                           <input type="time" id="inputHourEdit" class="form-control" value="10:05 AM" />
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Nombre del Guardia *</label>
+                           <select class="form-control" id="inputNombreGuardiaEdit">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                            </select>
+                        <label class="form-label">Punto del recorrido *</label>
+                        <input type="text" id="inputPuntoRecorrido" class="form-control"/>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="onCLickEditarRecorrido()">Seleccionar</button>
-                </div>
+                    
+                <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success btn-sm" onclick="onCLickEditarRecorrido()">Seleccionar</button>
             </div>
         </div>
     </div>
-
+</div>
 
 <div class="modal fade" id="modalFinalizarRecorrido" tabindex="-1"  aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Finalizar recorrido</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Fecha *</label>
+                         <input id="inputDateFinalizarRecorrido" class="form-control" type="date" />
+
+                           <label class="form-label">Hora *</label>
+                           <input type="time" id="inputHoraFinalizarRecorrido" class="form-control" value="10:05 AM" />
+                    </div>
+                    <hr>
+                      <div class="mb-3 col-12">
+                        <label class="form-label">Comentarios *</label>
+                          <textarea class="form-control" id="inputComentarioFinalizarRecorrido" rows="3" placeholder="Escribe algo..."></textarea>
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Firma del guardia *</label>
+                        <input type="text" id="inputFirmaGuardiaFinalizarG" class="form-control"/>
+                    </div>
+                </div>
+                    
+                <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success btn-sm" onclick="onClickFinalizarRecorrido()">Seleccionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Modal Out Article -->
+    <div class="modal fade" id="rondinesFiltersModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5">Finalizar recorrido</h1>
+                    <h1 class="modal-title fs-5">Filtros</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Fecha *</label>
-                             <input id="inputDateFinalizarRecorrido" class="form-control" type="date" />
-
-                               <label class="form-label">Hora *</label>
-                               <input type="time" id="inputHoraFinalizarRecorrido" class="form-control" value="10:05 AM" />
+                    <div class="mt-3 row ">
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                             <h5>Columna: </h5>
+                            <select class="form-control ds-input filterArticles" id="idFiltrosColumna">
+                            </select>
                         </div>
-                        <hr>
-                          <div class="mb-3 col-12">
-                            <label class="form-label">Comentarios *</label>
-                              <textarea class="form-control" id="inputComentarioFinalizarRecorrido" rows="3" placeholder="Escribe algo..."></textarea>
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <h5>Tipo: </h5>
+                            <select class="form-control ds-input filterArticles" id="idFiltrosTipo" >
+                                <option value="=">=</option>
+                                <option value="<"><</option>
+                                <option value="<="><=</option>
+                                <option value=">">></option>
+                                <option value=">=">>=</option>
+                                <option value="!=">!=</option>
+                            </select>
                         </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Firma del guardia *</label>
-                            <input type="text" id="inputFirmaGuardiaFinalizarG" class="form-control"/>
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <h5>Valor: </h5>
+                            <input class="form-control ds-input filterArticles" id="idFiltrosValor" >
                         </div>
-                    </div>
-                        
-                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+                        </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" onclick="onCLickFinalizarRecorrido()">Seleccionar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="aplicarFiltros()">Aplicar</button>
                 </div>
             </div>
         </div>
     </div>
 
-
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!-- Jquery -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
- <script type="text/javascript" src="../utils/servido_utils.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="../utils/servido_utils.js"></script>
 <script type="text/javascript" src="./functions.js"></script>
-<script  type="text/javascript" src="./components/locationCard.js"></script>
 <script  type="text/javascript" src="./components/navbar.js"></script>
+<script  type="text/javascript" src="./components/locationCard.js"></script>
 
+<script src="./rondinesData.js"></script>
 <script src="./rondines.js"></script>
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!-- Tabulator -->
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 <!-- Local -->

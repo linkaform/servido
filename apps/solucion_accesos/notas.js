@@ -1,162 +1,279 @@
 let tables={}
 let idScriptC=119197;
-
-let dataTableListNotas = [ { status: 'abierta', name: 'Juan Pérez', fechaHoraApertura: '2024-05-14 09:30', fechaHoraCierre: '2024-05-14 09:30',  note: 'Este es un registro de ejemplo',folio:1, fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: 'Sin comentarios' },
-  { status: 'cerrada', name: 'María Rodríguez', fechaHoraApertura: '2024-05-10 14:45', fechaHoraCierre: '2024-05-10 14:45', note: 'Otro registro para ilustrar',folio:2, fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: 'Se resolvió satisfactoriamente' },
-  { status: 'abierta', name: 'Pedro Gómez', fechaHoraApertura: '2024-05-12 11:20', fechaHoraCierre: '2024-05-12 11:20',  note: 'Tercer registro',folio:3,fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: 'En proceso' },
-  { status: 'cerrada', name: 'Ana López', fechaHoraApertura: '2024-05-08 08:00', fechaHoraCierre: '2024-05-08 08:00', note: 'Cuarto registro',folio:4,fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: 'Cerrada por falta de acción' },
-  { status: 'abierta', name: 'David Martínez', fechaHoraApertura: '2024-05-13 15:10', fechaHoraCierre: '2024-05-13 15:10',  note: 'Quinto registro',folio:5,fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: 'Requiere atención urgente' },
-  { status: 'cerrada', name: 'Laura Ramírez', fechaHoraApertura: '2024-05-09 10:30', fechaHoraCierre: '2024-05-09 10:30',  note: 'Sexto registro',folio:6, fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: 'Resuelto con éxito' },
-  { status: 'abierta', name: 'Carlos Sánchez', fechaHoraApertura: '2024-05-11 16:50', fechaHoraCierre: '2024-05-11 16:50', note: 'Séptimo registro',folio:7, fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: 'En espera de confirmación' },
-  { status: 'cerrada', name: 'Elena García', fechaHoraApertura: '2024-05-07 12:15', fechaHoraCierre: '2024-05-07 12:15',  note: 'Octavo registro',folio:8,  fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: 'Cerrada por duplicidad' },
-  { status: 'abierta', name: 'Sofía Hernández', fechaHoraApertura: '2024-05-15 09:00', fechaHoraCierre: '2024-05-15 09:00',  note: 'Noveno registro',folio:9, fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: 'Pendiente de revisión' },
-  { status: 'cerrada', name: 'Mario Castillo', fechaHoraApertura: '2024-05-06 13:40', fechaHoraCierre: '2024-05-06 13:40',  note: 'Décimo registro',folio:10, fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: 'Resuelto por el equipo de soporte' }];
-
-const columnsTableListNotas = [
-	{ title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:180,
-		formatter: (cell, formatterParams) => {
-			//----Button Trash
-			let data = cell.getData();
-			let folio = cell.getData().folio ? cell.getData().folio : 0;
-			let divActions = '<div class="row d-flex">';
-			divActions += `<button class="btn-table-bitacora" onClick="cerrarNotaAlert('${data.name}', '${data.note}', ${folio},'${data.status}')"><i class="fa-regular fa-circle-check"></i></button>`;
-			divActions += `<button class="btn-table-bitacora" onClick="verNotasAlert('${data.name}', '${data.note}', ${folio}, '${data.status}', '${data.fotos}', '${data.archivos}')" ><i class="fa-regular fa-eye"></i></button>`;
-			divActions += `<button class="btn-table-bitacora" data-bs-toggle="modal" data-bs-target="#editarNotasModal" id="buttonEditarNotas"  ><i class="fa-regular fa-edit"></i></button>`;
-			divActions += '</div>';
-			return divActions;
-			//`<button  class="btn-table-bitacora" onClick="setModal('Tools',${folio})"><i class="fa-solid fa-car"></i></button> `;
-		},
-	},
-	{ title:"Estatus", field:'status',hozAlign:"left",headerFilter:true,width:100},
-	{ title:"Empleado", field:'name',hozAlign:"left",headerFilter:true,width:250},
-	{ title:"Fecha y Hora apertura", field:'fechaHoraApertura',hozAlign:"left",headerFilter:true,width:150},
-	{ title:"Fecha y Hora cierre", field:'fechaHoraCierre',hozAlign:"left",headerFilter:true,width:150},
-	{ title:"Nota", field:'note',hozAlign:"left",headerFilter:true,width:330},
-	{ title:"Archivo", field:'archivo',hozAlign:"left",headerFilter:true,width:250},
-	{ title:"Fotografia", field:'fotografia',hozAlign:"left",headerFilter:true,width:250},
-	{ title:"Comentarios", field:'comentarios',hozAlign:"left",headerFilter:true,width:290},
-];
-
-
-
+let selectLocation=""
+let selectCaseta=""
+let userJwt=""
+let arraySuccessFoto=[]
+let arraySuccessArchivo=[]
+let arrayResponses=[]
+let loadingButton=''
+let colors = getPAlleteColors(12,0)
 
 window.onload = function(){
+    userJwt = getCookie("userJwt");
     setValueUserLocation('notas');
-    
-		changeButtonColor();
-
-		fillCatalogs();
-  selectLocation= document.getElementById("selectLocation")
+	fillCatalogs();
+    getAllData();
+    selectLocation= document.getElementById("selectLocation")
     selectLocation.onchange = function() {
-        console.log("La selección ha cambiado");
         let response = fetchOnChangeLocation()
-        console.log(response.data)
     };
-     selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = function() {
-        console.log("La selección ha cambiado");
         let response = fetchOnChangeLocation()
-        console.log('hiii',response.data)
     };
-
-    
     let user = getCookie("userId");
     let jw = getCookie("userJwt");
-    console.log("HERLLO", user, jw);
-    if(user !='' && jw!=''){
-    	drawTableNotas('tableListNotas',columnsTableListNotas, dataTableListNotas );
-    } else{
-		redirectionUrl('login',false);
-	}
-
+    
+    $("#descargarListNotas").on("click", function() {
+        descargarExcel(tables, 'tableListNotas')
+    });
+    $("#idLoadingButtonArchivos").hide();
+    $("#idLoadingButtonEnviarNota").hide();
 }
+
+function getAllData(){
+    console.log("LLALAMARRR",getCookie('userCaseta'), url + urlScripts)
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name:"notes.py",
+            option:"get_notes",
+            area: getCookie('userCaseta')
+        }),
+        headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if(res.success){
+            if(user !='' && jw!=''){
+                let notas=res.response.data
+                if(notas.length > 0){
+                    for(let note of notas){
+                        let dateFormatOpen= note.note_open_date.slice(0,-3)
+                        let dateFormatClose=""
+                        if(note.hasOwnProperty('note_close_date')){
+                            dateFormatClose= note.note_close_date.slice(0,-3)
+                        }
+                        //FALTA EL COMENTARIOO CAMBIAR EL ID ESE POR LETRA
+                        dataTableListNotas.push({folio:note.folio, note_status: note.note_status, note_guard:note.note_guard, 
+                            note_open_date: dateFormatOpen, 
+                            note_close_date:dateFormatClose,  note: note.note, 
+                            note_pic: note.hasOwnProperty('note_pic') && note.note_pic.length>0 ? note.note_pic  : [], 
+                            note_file: note.hasOwnProperty('note_file') &&note.note_file.length>0 ? note.note_file[0].file_name : [], 
+                            note_comments: note.hasOwnProperty('note_comments') && note.note_comments.length>0 ? note.note_comments: [], 
+                            check:"",view:"", edit:""})
+                    }
+                }else{
+                    dataTableListNotas = []
+                }
+                drawTableNotas('tableListNotas',columnsTableListNotas, dataTableListNotas );
+            } else{
+                redirectionUrl('login',false);
+            }
+        }
+    })
+}
+
+//FUNCION para abrir modales
+function setModal(type = 'none',id){
+    if(type == 'Tools'){
+        $('#itemsModal').modal('show');
+    }else if(type == 'filtros'){
+        modalFiltros('tableListNotas','notasFiltersModal')
+    }
+    else if(type == 'addNota'){
+        limpiarEnviaNotaModal()
+        $("#nuevaNotaEstatusSelect").val("abierto"); 
+        $('#agregarNotasModal').modal('show');
+    }
+    else if(type == 'editNota'){
+        limpiarEnviaNotaModal()
+        $('#agregarNotasModal').modal('show');
+    }
+}
+
+
+//FUNCION para mostrar alert para cerrar un nota en caso que tenga esta abierto
 function editarNota(){
 	let name= $("inputNotaEditar").val();
 	fetch(url + urlScripts, {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: idScriptC,
-      option: "cancelar_recorrido",
-      id: 2,
-      }),
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: idScriptC,
+            option: "cancelar_recorrido",
+            id: 2,
+        }),
         headers:{
-         'Content-Type': 'application/json',
-         'Authorization': 'Bearer '+jw
+           'Content-Type': 'application/json',
+           'Authorization': 'Bearer '+jw
         },
-      })
-      .then(res => res.json())
-      .then(res => {
-      if (res.success) {
-        Swal.fire({
-	      title: "Confirmación",
-	      text: "La nota se ha editado correctamente.",
-	      type: "success"
-	      });  
-
-	      $("#editarNotasModal").modal("hide");
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.fire({
+	            title: "Confirmación",
+	            text: "La nota se ha editado correctamente.",
+	            type: "success"
+	        });  
+	    $("#editarNotasModal").modal("hide");
     	} 
-    	
-  })
-
+    })
 }
+
+
+//FUNCION editar un articuloc consesionado
+function editarNotaCargarInfo(folio){
+    let selectedNota = dataTableListNotas.find(x => x.folio == folio);
+    console.log("NOTA SELECIONADA",selectedNota)
+
+    selectedRowFolio= folio
+    $('#editarNotasModal').modal('show');
+    $("#idEditNotaSelect").val(selectedNota.note_status)
+    $("#commentTextarea").val(selectedNota.note)
+    $("#inputComentarioNota").val(selectedNota.no)
+}
+
+
+//FUNCION para mostrar alert para cerrar un nota en caso que tenga esta abierto
 function cerrarNotaAlert(name, note, folio, status){
-	console.log(status , 'saefdsa')
-    if(status=="abierta"){
+    if(status == statusAbierto){
         Swal.fire({
-          title: "Confirmación",
-          type: 'warning',
-          html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
-                    <div class="mb-4"><h5>¿Estás seguro que deseas cerrar esta nota?</h5></div>
-            <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
-            <tbody> <tr> <td><b>Nombre:</b></td> <td> <span > `+ name +`</span></td> </tr>
-            <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> </tbody> </table> `,
-          showCancelButton: true,
-          showConfirmButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Si",
-          cancelButtonText: "Cancelar"
-        }).then((result) => {
-          if (result.value) {
-            let selectedNote = dataTableListNotas.find(nota => nota.folio === folio);
-            if (selectedNote) {
-              selectedNote.status = "cerrada";
-                tables["tableListNotas"].setData(dataTableListNotas);
+            title: "Confirmación",
+            type: 'warning',
+            html: ` 
+                <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
+                <div class="mb-4"><h5>¿Estás seguro que deseas cerrar esta nota?</h5></div>
+                <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
+                    <tbody> 
+                        <tr> <td><b>Nombre:</b></td> <td> <span > `+ name +`</span></td> </tr>
+                        <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> 
+                    </tbody> 
+                </table> 
+            `,
+            showCancelButton: true,
+            showConfirmButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si",
+            cancelButtonText: "Cancelar"
+        })
+        .then((result) => {
+            if (result.value) {
+                let data_update={
+                    'note_status':'cerrado',
+                    'note_close_date': getTodayDateTime()
+                }
+                console.log("DATOS", data_update, folio)
+                 fetch(url + urlScripts, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        script_name:"notes.py",
+                        option:"update_note",
+                        data_update:data_update,
+                        folio:folio
+                    }),
+                    headers:
+                    {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+userJwt
+                    },
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if(res.success){
+                        let data = res.response.data
+                        if (data.status_code==400){
+                            let errores=[]
+                            for(let err in data.json){
+                                errores.push(data.json[err].label+': '+data.json[err].msg)
+                            }
+                            Swal.fire({
+                                title: "Error",
+                                text: errores.flat(),
+                                type: "error"
+                            });
+                        } else if(data.status_code==202 ||data.status_code==201){
+                        
+                            if(user !='' && jw!=''){
+                                let selectedNote = dataTableListNotas.find(nota => nota.folio == folio);
+                                for (let key in data_update){
+                                    if(key=='note_close_date'){
+                                        let formatDate= data_update[key].slice(0,-3)
+                                        data_update[key]= formatDate
+                                    }
+                                    selectedNote[key]= data_update[key]
+                                }
+                                    selectedNote.note_status = data_update.note_status
+                                    tables["tableListNotas"].setData(dataTableListNotas);
+                                Swal.fire({
+                                    title: "Success",
+                                    text: "La nota fue cerrada correctamente",
+                                    type: "success",
+                                    showConfirmButton:false,
+                                    timer:1200
+                                });
+                            }
+                        }
+                        
+                    }else{
+                        Swal.fire({
+                            title: "Error",
+                            text: res.error,
+                            type: "error"
+                        });
+                    }
+                })
             }
-          }
         });
     }else{
-         Swal.fire({
-          title: "Acción Completada!",
-          text: "Esta nota ya se encuentra cerrada.",
-          type: "warning"
+        Swal.fire({
+            title: "Validación",
+            text: "Esta nota ya se encuentra cerrada.",
+            type: "warning"
         });
     }
-   
 }
 
 
-function verNotasAlert(name, note, folio, status, fotos, archivos){
-    let fotosArray = fotos.split(',');
-    let archivosArray = archivos.split(',');
+//FUNCION para mostrar alert con detalle de la nota
+function verNotasAlert(folio){
+    let selectedNota = dataTableListNotas.find(x => x.folio == folio);
     let fotosItem=``;
     let archivosItem=``;
-    for(let url of fotosArray){
+    let commentsItem=``;
+
+    for(let com in selectedNota.note_comments_group){
+        commentsItem+=`
+        <div class='m-2 '> 
+            <span style='font-size: .8em;'>`+selectedNota.note_comments_group[com]['6647fb38da07bf430e273ea2'].comentario+`</span> 
+        </div>`;
+    }
+    let htmlComments=`
+        <h6>Comentarios</h6>
+        <div class='d-flex  flex-column '>
+            `+commentsItem+` 
+        </div>`;
+
+    for(let pic of selectedNota.note_pic){
         fotosItem+=`
         <div class='m-2'> 
-            <img src="`+url+`" height="145px"style="object-fit: contain;"></td> </tr>
+            <img src="`+pic.file_url+`" height="145px"style="object-fit: contain;"></td> </tr> 
         </div>`;
     }
     let htmlFotos=`
         <h6>Fotografias</h6>
-        <div class='d-flex flex-row'>
+        <div class='d-flex  flex-row'>
             `+fotosItem+`
         </div>`;
-
-
-    for(let url of archivosArray){
+    for(let file of selectedNota.note_file){
         archivosItem+=`
-        <div><a href="https://www.turnerlibros.com/wp-content/uploads/2021/02/ejemplo.pdf" target="_blank">`+url+`</a>
+        <div><a href=`+file.file_url+` target="_blank">`+file.file_name+`</a>
         </div>
         `;
     }
@@ -166,54 +283,89 @@ function verNotasAlert(name, note, folio, status, fotos, archivos){
             `+archivosItem+`
         </div>`;
     Swal.fire({
-      title: "Nota",
-      text: "Escoje una caseta para continuar...",
-      html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
-      
-        <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
-        <tbody> <tr> <td><b>Nombre:</b></td> <td> <span > `+ name +`</span></td> </tr>
-        <tr> <td><b>Nota:</b></td> <td> <span > `+ note+`</span></td> </tr> 
-        <tr> <td><b>Estatus:</b></td> <td> <span > `+ status+`</span></td> </tr> 
-        <tr> <td><b>Fecha y hora de creacion:</b></td> <td> <span > 25/02/24 18:00:00 hrs</span></td> </tr>
-        <tr> <td><b>Comentarios:</b></td> <td> <span> Este el comentario de prueba de la nota</span> </tr>
-        <tr> <td><b>Fecha y hora de cierre:</b></td> <td> <span>  26/02/24 19:31:00 hrs</span> </tr>
-        <tr> <td><b>Guardia que cierra:</b></td> <td> <span>  Pancracio Felipe</span> </tr>
-        </tbody> </table>` + htmlFotos + htmlArchivos,
-      showCancelButton: true,
-      showConfirmButton: false,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si",
-      cancelButtonText: "Cerrar"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        
-      }
+        title: "Nota",
+        text: "Escoje una caseta para continuar...",
+        html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
+            <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
+                <tbody> 
+                    <tr> <td><b>Nombre:</b></td> <td> <span > `+ selectedNota.note_guard +`</span></td> </tr>
+                    <tr> <td><b>Nota:</b></td> <td> <span > `+ selectedNota.note+`</span></td> </tr> 
+                    <tr> <td><b>Estatus:</b></td> <td> <span > `+ selectedNota.note_status+`</span></td> </tr> 
+                    <tr> <td><b>Fecha y hora de creacion:</b></td> <td> <span > `+ selectedNota.note_open_date.slice(0,-3)+` hrs</span></td> </tr>
+                    <tr> <td><b>Fecha y hora de cierre:</b></td> <td> <span>  `+ selectedNota.note_close_date.slice(0,-3)+` hrs</span> </tr>
+                    <tr> <td><b>Guardia que cierra:</b></td> <td> <span>    FALTA ESTE DATO NO LO TRAE LA LISTA</span> </tr>
+                </tbody> 
+            </table>` + htmlComments + htmlArchivos + htmlFotos,
+        showCancelButton: true,
+        showConfirmButton: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si",
+        cancelButtonText: "Cerrar"
+    })
+    .then((result) => {
+        if (result.isConfirmed) {
+            
+        }
     });
 } 
 
+
+function setAddComentario(){
+     let randomID = Date.now();
+    let newItem=`
+        <div class="d-flex mb-3 div-comment-`+randomID+`" id="id-comment-div-`+randomID+`">
+            <div class="flex-grow-1">
+                <label class="form-label">Comentario *</label>
+                <textarea class="form-control comment-div" id="inputComentarioNota" rows="3" placeholder="Escribe algo..."></textarea>
+            </div>
+            <div>
+                <button type="button" class="btn btn-success button-add-register " onclick="setAddComment();return false;">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <button type="button" class="btn btn-danger button-delete-register "  onclick="setDeleteComment(`+randomID+`);return false;">
+                    <i class="fa-solid fa-minus"></i></button>
+            </div>
+        </div>
+    `;
+    $('#comment-input-form').append(newItem);
+}
+
+
+function setDeleteComentario(id){
+    const elements = document.querySelectorAll('.comment-div');
+    const count = elements.length;
+    if(count > 1){
+        const elements = document.getElementsByClassName('div-comment-'+id);
+        while(elements.length > 0){
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+    }
+}
+
+//FUNCION para eliminar archivo en el modal de agregar nota
 function setAddArchivo(){
     let randomID = Date.now();
-    //---Structure HTML
     let newItem=`
-                <div class="mb-3 col-12 archivo-div div-archivo-`+randomID+`">
-                                <label class="form-label">Cargar un archivo *</label>
-                                <input type="file" class="form-control-file" id="fileInputArchivo">
-                                <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(`+randomID+`);return false;">
-                                    <i class="fa-solid fa-minus"></i>
-                                </button>
-                </div>
+        <div class="mb-3 col-12  div-archivo-`+randomID+`" id="id-archivo-div-`+randomID+`">
+            <label class="form-label">Cargar un archivo *</label>
+            <input type="file" class="form-control-file archivo-div" id="fileInputArchivo">
+            <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(`+randomID+`);return false;">
+                <i class="fa-solid fa-minus"></i>
+            </button>
+        </div>
     `;
     $('#archivo-input-form').append(newItem);
 }
+
+
+//FUNCION para agregar archivo en el modal de agregar nota
 function setDeleteArchivo(id){
     const elements = document.querySelectorAll('.archivo-div');
-    console.log("ELEMENTOS", elements)
     const count = elements.length;
-    console.log(elements, count, "saefdasd")
     if(count > 1){
         const elements = document.getElementsByClassName('div-archivo-'+id);
         while(elements.length > 0){
@@ -221,27 +373,30 @@ function setDeleteArchivo(id){
         }
     }
 }
+
+
+//FUNCION para agregar foto en el modal de agregar nota
 function setAddFoto(){
     let randomID = Date.now();
-    //---Structure HTML
     let newItem=`
-            <div class="mb-3 col-12 foto-div div-foto-`+randomID+`">
-                        <label class="form-label">Fotografia *</label>
-                        <input type="file" class="form-control-file" id="fileInputFotografia">
-                        <div class="col-3">
-                        <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                        <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(`+randomID+`);return false;">
-                           <i class="fa-solid fa-minus"></i>
-                        </button>
-             </div>
+        <div class="mb-3 col-12  div-foto-`+randomID+`" id="id-foto-div-`+randomID+`">
+            <label class="form-label">Fotografia *</label>
+            <input type="file" class="form-control-file foto-div" id="fileInputFotografia">
+            <div class="col-3">
+            <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(`+randomID+`);return false;">
+               <i class="fa-solid fa-minus"></i>
+            </button>
+        </div>
     `;
-    $('#foto-input-form').append(newItem)
-  
+    $('#foto-input-form').append(newItem) 
 }
-function setDeleteFoto(id){
 
+
+//FUNCION para elimar foto en el modal de agregar nota
+function setDeleteFoto(id){
     const elements = document.querySelectorAll('.foto-div');
     const count = elements.length;
     if(count > 1){
@@ -252,79 +407,331 @@ function setDeleteFoto(id){
     }
 }
 
-function enviarNota(){
-    let fotosArray=[]
-    let archivosArray=[]
-    let nota= $("#commentTextarea").val(); console.log("NOTA", nota)
-    let archivo= $("#fileInputArchivo").val();
-    let elements = document.querySelectorAll('.archivo-div');
-    console.log("ELEMETOS",elements)
-    for (div of elements){
-        console.log("ELEMENTOS",div.value);
-        
-    }
+
+//FUNCION para limpiar el modal de agregar nota
+function limpiarEnviaNotaModal(){
+    arraySuccessFoto=[]
+    arraySuccessArchivo=[]
+    $("#idButtonCargarArchivos").show();
+    $("#commentTextarea").val("")
+    $("#inputComentarioNota").val("")
     let divArchivo = document.getElementById("archivo-input-form");
     let inputsE = divArchivo.querySelectorAll('.archivo-div');
     inputsE.forEach(function(input) {
-        fotosArray.push(input.value);
+        input.value=''
     });
     let divFoto = document.getElementById("foto-input-form");
     let inputsF = divFoto.querySelectorAll('.foto-div');
     inputsF.forEach(function(input) {
-        archivosArray.push(input.value);
+        input.value=''
+    });
+}
+
+
+//FUNCION para enviar una nueva nota y actualizar la tabla
+function enviarNota(){
+    $("#idLoadingButtonEnviarNota").show();
+    $("#idButtonEnviarNota").hide();
+    let nota= $("#commentTextarea").val(); 
+    let archivo= $("#fileInputArchivo").val(); 
+    let status= $("#nuevaNotaEstatusSelect").val(); 
+    let fecha= $("#fechaNuevaNota").val(); 
+    let formatDate= fecha.split("T")[0]+' '+fecha.split("T")[1]
+    let comments=[]
+    let divComentario = document.getElementById("comment-input-form");
+    let inputsG = divComentario.querySelectorAll('.comment-div');
+    inputsG.forEach(function(input) {
+        comments.push(input.value)
     });
 
-    let fotografia= $("#fileInputFotografia").val();
-    let comentario=$("#inputComentarioNota").val();
-    let fileNameFoto = fotografia.substring(fotografia.lastIndexOf('\\') + 1);
+    for(let obj of arrayResponses){
+        if( obj.hasOwnProperty('file_name') && obj.isImage==true){
+            let { isImage, file_name, file  } = obj;
+            arraySuccessFoto.push({file_name: file_name, file_url: file});
+        }
+    }
 
-    let randomFolio = Date.now();
-        
-
-        //INFO: Agregar la fetch aqui lo que sigue abajo agregarlo en el response del fetch
-        //se enviaran todas las variables y los arrays de fotos y archivos
-
-
+    for(let obj of arrayResponses){
+        if( obj.hasOwnProperty('file_name') && obj.isImage==false){
+            let { isImage, file_name, file } = obj;
+            arraySuccessArchivo.push({file_name: file_name, file_url: file});
+        }
+    }
+    let data_notes={
+        'note_status':status,
+        'note_open_date':formatDate+":00",
+        'note_close_date':'',
+        'note':nota,
+        'note_booth':getCookie('userCaseta'),
+        'note_guard':getCookie('userName'),
+        'note_guard_close':'', //este dato no viene en la lista principal...
+        'note_pic':arraySuccessFoto ,
+        'note_file':arraySuccessArchivo ,
+        'note_comments':comments, //note_comments_group no esta igual que en la lista
+    } 
     if(nota!==""){
-        dataTableListNotas.push( 
-        	 { status: 'abierta', name: 'Carlos Sánchez', fechaHoraApertura: '2024-05-11 16:50', fechaHoraCierre: '2024-05-11 16:50', note: nota,folio:7, fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: comentario })
-        tables["tableListNotas"].setData(dataTableListNotas);
-        
-        $('#agregarNotasModal').modal('hide');
-        $("#inputTextNota").val('');
-        inputsE.forEach(function(input) {
-            input.value=''
-        });
-        inputsF.forEach(function(input) {
-            input.value=''
-        });
-        $("#fileInputFotografia").val('');
-        $("#inputComentarioNota").val('');
-    }else{
-          Swal.fire({
-          title: "Faltan datos por llenar",
-          text: "Completa la información requerida.",
-          type: "warning"
+        fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name:"notes.py",
+                option:"new_notes",
+                data_notes:data_notes
+            }),
+            headers:{
+               'Content-Type': 'application/json',
+               'Authorization': 'Bearer '+jw
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            console.log("RES", res, data_notes)
+            if (res.success) {
+                let data = res.response.data
+                    if (data.status_code==400){
+                        let errores=[]
+                        for(let err in data.json){
+                            errores.push(data.json[err].label+': '+data.json[err].msg)
+                        }
+                        Swal.fire({
+                            title: "Error",
+                            text: errores.flat(),
+                            type: "error"
+                        });
+                    } else if(data.status_code==202 ||data.status_code==201){
+                        Swal.fire({
+                            title: "Confirmación",
+                            text: "La nota se ha creado correctamente.",
+                            type: "success",
+                            showConfirmButton:false,
+                            timer:1200
+                        });
+                        $('#agregarNotasModal').modal('hide');
+                        $("#inputTextNota").val('');
+                        inputsG.forEach(function(input) {
+                            input.value=''
+                        });
+                        let divArchivo = document.getElementById("archivo-input-form");
+                        let inputsE = divArchivo.querySelectorAll('.archivo-div');
+                        inputsE.forEach(function(input) {
+                            input.value=''
+                        });
+                        
+                        let divFoto = document.getElementById("foto-input-form");
+                        let inputsF = divFoto.querySelectorAll('.foto-div');
+                        inputsF.forEach(function(input) {
+                            input.value=''
+                        });
+                        for (let key in data_notes){
+                            if(key=='note_open_date'|| key=='note_close_date'){
+                                let formatDate= data_notes[key].slice(0,-3)
+                                data_notes[key]= formatDate
+                                data_notes.folio= data.json.folio
+                            }
+                        }
+                        dataTableListNotas.unshift(data_notes)
+                        tables["tableListNotas"].setData(dataTableListNotas);
+                        $("#idLoadingButtonEnviarNota").hide();
+                        $("#idButtonEnviarNota").show();
+                    }
+            } else{
+                Swal.fire({
+                    title: "Error",
+                    text: res.error,
+                    type: "Error"
+                });
+            }
+        })
+    } else{
+        Swal.fire({
+            title: "Faltan datos por llenar",
+            text: "Completa la información requerida.",
+            type: "warning"
         });
     }
 }
 
 
-//---Close Sesión
-function setCloseSession(argument) {
-	closeSession();
-	redirectionUrl('login',false);
+//FUNCION para guardar los archivos en el server 
+async function guardarArchivos(){
+    $("#idLoadingButtonArchivos").show();
+    $("#idButtonCargarArchivos").hide();
+    let allFiles=[]
+    let divArchivo = document.getElementById("archivo-input-form");
+    let inputsE = divArchivo.querySelectorAll('.archivo-div');
+    inputsE.forEach(function(input) {
+        allFiles.push({'file':input.files[0],'isImage':false})
+    });
+    
+    let divFoto = document.getElementById("foto-input-form");
+    let inputsF = divFoto.querySelectorAll('.foto-div');
+    inputsF.forEach(function(input) {
+        allFiles.push({'file':input.files[0],'isImage':true})
+    });
+
+    if (!allFiles.length>0) {
+        alert('Please select a file before uploading.');
+        return;
+    }
+
+    let data=""
+    for(let f of allFiles){
+        let formData = new FormData();
+        formData.append('File', f.file);
+        formData.append('field_id', '63e65029c0f814cb466658a2');
+        formData.append('is_image', f.isImage);
+        formData.append('form_id', 95435);
+
+        const options = {
+          method: 'POST', 
+          body: formData
+        };
+        let respuesta = await fetch('https://app.linkaform.com/api/infosync/cloud_upload/', options);
+        data = await respuesta.json(); //Obtenemos los datos de la respuesta 
+        data.isImage = f.isImage
+        arrayResponses.push(data); //Agregamos los datos al arreglo
+    }
+    if(data){
+        $("#idLoadingButtonArchivos").hide();
+        $("#idButtonCargarArchivos").hide();
+        Swal.fire({
+            title: "Acción Completada",
+            text: "Los archivos fueron guardados correctamente.",
+            type: "success",
+            showConfirmButton:false,
+            timer:1100
+        });
+    }
 }
 
-function drawTableNotas(id, columnsData, tableData, height){
-  var  table = new Tabulator("#" + id, {
-    layout:"fitDataStretch",
-    height:height,
-    data:tableData,
-    textDirection:"ltr",
-    columns:columnsData,
-    pagination:true, 
-    paginationSize:40,
-  });
-  tables[id]=table;
+
+//FUNCION FILTROS MODAL
+function modalFiltros(table,modal){
+    $('#'+ modal).modal('show');
+    let columnas = tables[table].getColumns();
+    let nombresColumnas = columnas.map(function(columna) {
+        return columna.getField(); // getField() retorna el nombre del campo o field
+    });
+    let selectTipo= document.getElementById("idFiltrosTipo")
+    let selectColumna= document.getElementById("idFiltrosColumna")
+    selectColumna.innerHTML=""; 
+    for (let col of nombresColumnas){
+            selectColumna.innerHTML += '<option value="'+col+'">'+col+'</option>';
+    }
+    selectColumna.value=""
+    selectTipo.value=""
+}
+
+
+//FUNCION FILTROS MODAL
+function aplicarFiltros(){
+    $('#notasFiltersModal').modal('hide');
+    let columnas= $("#idFiltrosColumna").val()
+    let tipo= $("#idFiltrosTipo").val()
+    let valor= $("#idFiltrosValor").val();
+    /*
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'turnos',
+            option: "apply_filters",
+            columnas,
+            tipo,
+            valor,
+            id: 2,
+        }),
+        headers:{
+           'Content-Type': 'application/json',
+           'Authorization': 'Bearer '+jw
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+        } 
+    }) */
+
+    Swal.fire({
+        title: "Confirmación",
+        text: "Filtros aplicados correctamente.",
+        type: "success"
+    });
+    let selectTipo= document.getElementById("idFiltrosTipo")
+    selectTipo.value=""
+}
+
+
+function alertEliminarNota(folio){
+    Swal.fire({
+        title:'¿Estas seguro de querer eliminar la nota?',
+        html:`
+        <div class="m-2"> Esta accion no se puede deshacer. </div>`,
+        type: "warning",
+        showCancelButton: true,
+        cancelButtonColor: colors[0],
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: colors[1],
+        confirmButtonText: "Si",
+        heightAuto:false,
+        reverseButtons: true
+    })
+    .then((result) => {
+        if (result.value) {
+            Swal.fire({
+                title: 'Cargando...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading();
+               }
+            });
+            fetch(url + urlScripts, {
+                method: 'POST',
+                body: JSON.stringify({
+                    script_name: "notes.py",
+                    option: "delete_note",
+                    folio: [folio]
+                }),
+                headers:
+                {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+userJwt
+                },
+            })
+            .then(res => res.json())
+            .then(res => {
+                console.log("RESPONSE LIOMPSSSS", res)
+                if (res.success) {
+                    let data=res.response.data
+                    if(data.status_code==400){
+                        let errores=[]
+                        for(let err in data.json){
+                            errores.push(data.json[err].label+': '+data.json[err].msg)
+                        }
+                        Swal.fire({
+                            title: "Error",
+                            text: errores.flat(),
+                            type: "error"
+                        });
+                    }else if(data.status_code==202 ||data.status_code==201){
+                        Swal.close();
+                        Swal.fire({
+                            title: "Success",
+                            text: "Se elimino la nota correctamente.",
+                            type: "success",
+                            showConfirmButton:false,
+                            timer:1200
+                        });
+                            let dataFiltered = dataTableListNotas.filter(x => x.folio !== folio);
+                            dataTableListNotas = dataFiltered
+                            tables["tableListNotas"].setData(dataTableListNotas);
+                    }
+                }else{
+                    Swal.fire({
+                        title: "Error",
+                        text: res.error.msg,
+                        type: res.error.type
+                    });
+                }
+            });
+        }
+    });
 }

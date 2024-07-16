@@ -1,5 +1,6 @@
 :root {
   --yellowLKF: #ffe99c;
+  --downloadButton:#003285;
 }
 
 .header{
@@ -17,12 +18,10 @@ body{
   min-height: 120px !important;
 }
 
-
 .div-search-portal{
   position: relative;
   box-shadow: 0 0 40px rgba(51, 51, 51, .1);
 }
-
 
 .div-container-portal{
   margin-top: 25px !important;
@@ -47,8 +46,6 @@ body{
   border-radius: 10px;
   border: 1px solid grey;
 }
-
-
 
 #myTabContent{
   overflow: auto;
@@ -83,6 +80,7 @@ body{
   }
 }
 
+
 /* Data */
 
 
@@ -110,7 +108,10 @@ th {
   color: black; /* Color del texto de los encabezados */
 }
 
+
+
 /*Dropdowns COlors*/
+
 
 /* Estilo para el contenedor del dropdown */
 .dropdown {
@@ -149,49 +150,58 @@ th {
 }
 
 
-
-
 /*Tabulator Styles*/
 .tabulator{
   border: none !important;
   box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.11) 0px 0px 0px 1px !important;
   border-color: lightgray;
-
+  overflow-x: auto;
   background-color:#fafafa !important;
 }
+
 .tabulator-cell{
   border:none  !important;
 }
+
 .tabulator .tabulator-header .tabulator-col{
   background: #ffe99c !important;
   color: #292929 !important;
   border:none  !important;
   padding-left: 5px;
 }
+
 .tabulator-header {
   border-bottom: .5px solid;
   border-color: lightgray !important;
 }
+
 .tabulator-footer{
   background: #fafafa !important;
   border-color: lightgray !important;
 }
+
 .tabulator-tableholder{
   border-color: lightgray !important;
 }
+
 .tabulator-page{
   border:none !important;
 }
+
 .tabulator-page:hover{
   color:#292929 !important;
 }
+
 .tabulator-row:hover{
   background-color: lightgray !important;
 }
 
+.tableOverflow{
+  width: 100% !important;
+}
 
 
-///----Load
+/* LOAD */
 .load-wrapp{
   margin-top: 100px;
 }
@@ -212,8 +222,6 @@ th {
   padding-left: 3px  !important;
 }
 
-
-
 .line {
   display: inline-block;
   width: 20px;
@@ -226,15 +234,18 @@ th {
   background-color: #E5514B;/* RED*/
   animation: loadingC 0.6s 0.1s linear infinite;
 }
+
 .load-3 .line:nth-last-child(2) {
   background-color: #9B59B6;/* Purple*/
   /* background-color: #F1C40F;/* yellow*/
   animation: loadingC 0.6s 0.2s linear infinite;
 }
+
  .load-3 .line:nth-last-child(3) {
    background-color: #3498DC;/* Blue*/
   animation: loadingC 0.6s 0.3s linear infinite;
 }
+
 .load-3 .line:nth-last-child(4) {
   background-color: #2DCC71;/* Green*/
   animation: loadingC 0.6s 0.4s linear infinite;
@@ -256,6 +267,7 @@ th {
 .styleTable{
   padding: 0px;
  }
+
 .buttonIniciarTurno{
   margin-top:30px;
   margin-botton:30px;
@@ -279,25 +291,26 @@ th {
   color: #292929 !important;
   background-color: #F2DEBA !important;
 }
+
 .btn:hover ,  {
   box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 }
 
- .customNoBorder {
+.customNoBorder {
   border: none !important;
 }
 
- .custom-navbar-button:hover , {
+.custom-navbar-button:hover , {
   background-color: #dcc7a1 !important;
   border: none !important;
   box-shadow: none !important;
 }
 
-
 .btn{
   padding-left: 5px;
   padding-right: 5px;
 }
+
 .customButtonSquare{
   border-radius: 5px !important;
 }
@@ -305,12 +318,12 @@ th {
 .nav-link{
   color: grey;
 }
+
 .nav-link:hover{
   color: black;
 }
 
 /*------------------------*/
-
 
 /*Sweet Alert Style*/
 .swal2-styled{
@@ -319,24 +332,26 @@ th {
   padding-right: 10px !important;
   min-width: 50px;
 }
+
 .swal2-styled:hover, .swal2-styled:active, .swal2-styled:focus{
   border: none !important;
   box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 }
+
 .swal2-confirm{
   background-color: #198754 !important;
 }
 
 /*-----------------------*/
 
-
 .form-check-input {
   width: 1px;
 }
+
 .tabulator-cell{
   align-items: center;
-
 }
+
 .form-check-input{
   margin-top: 20px !important;
   padding: 7px;
@@ -351,9 +366,11 @@ th {
   margin-left: 0px !important;
   margin-right: 0px;
 }
+
 .mainSection{
   margin-top: 65px !important;
 }
+
 .mainSectionMargins{
   margin-left:30px !important;
   margin-right:30px !important;
@@ -367,11 +384,9 @@ th {
   border: none !important;
 }
 
-
 .myCustomDropdown{
   z-index: 999 !important;
 }
-
 
 #imageUserNavbar{
   width: 40px;
@@ -386,7 +401,6 @@ th {
   border: none !important;
 }
 
-
 #imgGuardiaApoyo{
   background-color: white;
   object-fit:  scale-down;
@@ -396,7 +410,7 @@ th {
 #imgProfilePic{
   object-fit:  scale-down;
   background-color: white;
-   box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 
 }
 
@@ -404,6 +418,7 @@ th {
   border: none !important;
   box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 }
+
 input[type=search]{
   border-radius: 4px;
   border: 1px solid #c4c4c4;
@@ -418,6 +433,7 @@ input[type=search]{
 .headerColor{
   background-color: #ffe99c !important;
 }
+
 #inputCodeUser{
   border-color: lightgray !important;
 }
@@ -426,4 +442,59 @@ input[type=search]{
   background-color: var(--yellowLKF)!important;
   border-color: lightgray !important;
 
+}
+
+.downloadButton{
+  background-color: var(--downloadButton)!important;
+  color: whitesmoke !important;
+}
+
+/* COLLAPSE */
+
+.accordion-item:not(.collapsed){
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.accordion-item{
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.accordion-button{
+  padding: 0px !important;
+  margin: 0px !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.accordion-button{
+  padding: 5px !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  background-color: white !important;
+  color: black !important;
+  border: .5px solid #e0e0e0 !important;
+  border-radius: 5px !important;
+}
+
+.nav-item > button, .nav-tabs > button {
+  padding-top: 2px !important;
+   padding-bottom: 2px !important;
+}
+
+.overflowCustom{
+  overflow-x: auto;
+  border: none!important;
+  max-width:580px; 
+  max-height: 140px;
+}
+
+.overflowCustomHead{
+  position: sticky !important;
+  top: 0 !important; 
+  z-index: 1 !important;
 }

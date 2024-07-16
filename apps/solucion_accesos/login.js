@@ -1,20 +1,35 @@
 
 
 window.onload = function(){
-    let user = getCookie("userId");
-    let jw = getCookie("userJwt");
-    if(user !='' && jw!=''){
-        console.log('Entra')
-        let protocol = window.location.protocol;
-        let host = window.location.host;
-        let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
-        Object.assign(document.createElement('a'), {
-            rel: 'noopener noreferrer',
-            href: urlNew,
-        }).click();
-    }
 
+	let user = getCookie("userId");
+	let jw = getCookie("userJwt");
+	if(user !='' && jw!=''){
+		console.log('Entra')
+		let protocol = window.location.protocol;
+		let host = window.location.host;
+		let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
+		Object.assign(document.createElement('a'), {
+			rel: 'noopener noreferrer',
+			href: urlNew,
+		}).click();
+	}
+	let userInput = document.getElementById('user');
+	let userError = document.getElementById('userError');
+	userInput.addEventListener('input', function () {
+		if(userInput.value == ""){
+			userError.style.display = 'none';
+		}else{
+			if (validarEmail(userInput.value)) {
+	        userError.style.display = 'none';
+		    } else {
+		        userError.style.display = 'block';
+		    }
+		}
+	   
+	});
 }
+
 
 
 function get_login(){

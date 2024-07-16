@@ -185,7 +185,6 @@ function closeSession(){
 ///-----STYLE
 function getPAlleteColors(pallete,number){
   var arrayColors = new Array();
-
   //----Select Pallete
   if (pallete==1){
       arrayColors = chroma.scale(['#fafa6e','#2A4858']).mode('lch').colors(number);
@@ -209,6 +208,8 @@ function getPAlleteColors(pallete,number){
     arrayColors = chroma.scale(['#264653','#2A9D8F','#216974','#41766F','#E09453','#D1711F','#A34828']).mode('lch').colors(number);
   }else if(pallete==11){
     arrayColors = chroma.scale(['#E63946','#F1FAEE','#A8DADC','#457B9D','#1D3557']).mode('lch').colors(number);
+  }else if(pallete == 12){
+    arrayColors = ["#dc3545", "#28a745"];
   }
 
   return arrayColors;
@@ -283,4 +284,101 @@ function setDateFilterMonth() {
   ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   $("#date_from").val(primerDia.toISOString().substring(0, 10));
   $("#date_to").val(ultimoDia.toISOString().substring(0, 10));
+}
+
+function getActiveCheckBoxs(instanceTables /*Object with propperties(id) of table instances*/, tableId){
+    let selectedRows=[]
+    let filas = instanceTables[tableId].getSelectedRows()
+    filas.forEach(function(fila) {
+        selectedRows= selectedRows.concat(fila.getData())
+    });
+    return selectedRows
+}
+
+
+let dateFilter = function(headerValue, rowValue, rowData, filterParams){
+    var partes1 = headerValue.split("-");
+    var anio1 = partes1[0];
+    var mes1 = partes1[1] ;
+    var dia1 = partes1[2];
+    let headerValueDate = dia1+'-'+mes1+'-'+anio1
+
+    let rowValueDate = rowValue.split(' ')[0]
+    var partes = rowValueDate.split("-");
+    var anio = partes[2];
+    var mes = partes[1] ;
+    var dia = partes[0];
+    let stringDate= dia+'-'+mes+'-'+anio
+
+    console.log(stringDate, headerValueDate, stringDate == headerValueDate)
+
+    if (stringDate == headerValueDate) {
+        return true;
+    }else{
+        return false;
+    }
+ }
+
+
+function descargarExcel(tables, table){
+    let columns = tables[table].getColumns();
+    let nombresColumnas= []
+    let containsFolio=false
+     for(column of columns) {
+        if(column.getField() !== 'actions' && column.getField() !== 'checkboxColumn' && column.getField() !== 'folio') {
+           nombresColumnas.push(column.getField())
+        }
+    };
+    nombresColumnas.unshift("folio");
+
+    let excelContent = nombresColumnas.join('\t') + '\n'; // Titulos de las columnas
+    tables[table].getData().forEach(function(row) {
+        let fila = '';
+        Object.keys(row).forEach(function(key, index) {
+            if(row[key]!==undefined && key !== 'actions' &&  key !== 'checkboxColumn' ) {
+                fila += '"' + row[key].toString().replace(/"/g, '""') + '"';
+                if (index < Object.keys(row).length - 1) {
+                    fila += '\t'; 
+                }
+            }
+            
+        });
+        excelContent += fila + '\n';
+    });
+    let blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
+    let link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = table + '.xlsx';
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function validarEmail(email){
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let result = false
+    if (emailRegex.test(email)) {
+        result = true
+    }else{
+        result= false
+    }
+    return result
+}
+
+function getTodayDateTime(){
+    let fecha = new Date();
+    // Obtener los componentes individuales de la fecha
+    let año = fecha.getFullYear();
+    let mes = ('0' + (fecha.getMonth() + 1)).slice(-2); // El mes se ajusta sumando 1 y asegurando que tenga dos dígitos
+    let dia = ('0' + fecha.getDate()).slice(-2); // El día se asegura de tener dos dígitos
+    let horas = ('0' + fecha.getHours()).slice(-2); // Las horas se aseguran de tener dos dígitos
+    let minutos = ('0' + fecha.getMinutes()).slice(-2); // Los minutos se aseguran de tener dos dígitos
+    let segundos = ('0' + fecha.getSeconds()).slice(-2); // Los segundos se aseguran de tener dos dígitos
+
+    // Construir la cadena en el formato deseado
+    let fechaFormateada = `${año}-${mes}-${dia} ${horas}:${minutos}:${segundos}`;
+
+    // Mostrar la fecha formateada
+    return fechaFormateada;
 }

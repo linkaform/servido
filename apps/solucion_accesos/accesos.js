@@ -1,10 +1,8 @@
-//-----Variables
 let listItemsData = []
 let listVehiculesData = []
-
 let listNewVehicules = []
 let listNewItems = []
-let idScriptCatalog=117935;
+let idScr=119197;
 let opScriptCatalog='catalog_brands';
 let dataCatalogs="";
 let listUserActives = [];
@@ -13,101 +11,78 @@ let urlImgUser = '';
 let flagVideoCard = false;
 let flagVideoUser = false;
 let codeUserVisit=""
-let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
 let userJwt = getCookie("userJwt");
-
-const columsData1 = [
-    { title:"Tipo", field:'type',hozAlign:"left",headerFilter:true,width:250},
-    { title:"Marca", field:'marca',hozAlign:"left",headerFilter:true,width:250},
-    { title:"Modelo", field:'modelo',hozAlign:"left",headerFilter:true,width:250},
-    { title:"Serie", field:'serie',hozAlign:"left",headerFilter:true,width:250},
-    { title:"Color", field:'color',hozAlign:"left",headerFilter:true,width:250},
-    { title: "Seleccionar", field: "actions" , hozAlign: "left", resizable:false,
-        formatter: (cell, formatterParams) => {
-            //----Button Trash
-            let modelo = cell.getData().modelo ? cell.getData().modelo : 0;
-            let component = '<div class="d-flex">';
-            component += '  <input class="form-check-input " type="checkbox" id="checkbox'+modelo+'" value="">';
-            component += '</div>';
-            return component;
-        },
-    }
-];
-
-const columsData2 = [
-    { title:"Marca", field:'marca',hozAlign:"left",headerFilter:true,width:250},
-    { title:"Modelo", field:'modelo',hozAlign:"left",headerFilter:true,width:250},
-    { title:"Color", field:'color',hozAlign:"left",headerFilter:true,width:250},
-    { title:"Placas", field:'placas',hozAlign:"left",headerFilter:true,width:250},
-    { title:"Estado", field:'estado',hozAlign:"left",headerFilter:true,width:250},
-    { title: "Seleccionar", field: "actions" , hozAlign: "left", resizable:false,
-        formatter: (cell, formatterParams) => {
-            //----Button Trash
-            let modelo = cell.getData().modelo ? cell.getData().modelo : 0;
-            let component = '<div>';
-            component += '  <input class="form-check-input " type="checkbox" id="checkbox'+modelo+'" value="">';
-            component += '</div>';
-            return component;
-        },
-    }
-];
-
-const dataTable1 = [
-    {'type':'Computo','marca':'Dell','modelo':'ThinkPd X1 Yoga','serie':'DELL5820-12-3452','color':'Negro','check':'True'},
-    {'type':'Computo','marca':'Dell','modelo':'ThinkPd X1 Yoga','serie':'DELL5820-12-3452','color':'Negro','check':'True'},
-    {'type':'Computo','marca':'Dell','modelo':'ThinkPd X1 Yoga','serie':'DELL5820-12-3452','color':'Negro','check':'True'},
-    {'type':'Computo','marca':'Dell','modelo':'ThinkPd X1 Yoga','serie':'DELL5820-12-3452','color':'Negro','check':'True'},
-    {'type':'Computo','marca':'Dell','modelo':'ThinkPd X1 Yoga','serie':'DELL5820-12-3452','color':'Negro','check':'True'},
-    {'type':'Computo','marca':'Dell','modelo':'ThinkPd X1 Yoga','serie':'DELL5820-12-3452','color':'Negro','check':'True'},
-    {'type':'Computo','marca':'Dell','modelo':'ThinkPd X1 Yoga','serie':'DELL5820-12-3452','color':'Negro','check':'True'},
-]
-
-
-const dataTable2 = [
-    {'marca':'Nissan','modelo':'Kicsk','color':'Blanco','placas':'PRC-1265','estado':'Nuevo León'},
-    {'marca':'Nissan','modelo':'Kicsk','color':'Blanco','placas':'PRC-1265','estado':'Nuevo León'},
-    {'marca':'Nissan','modelo':'Kicsk','color':'Blanco','placas':'PRC-1265','estado':'Nuevo León'},
-    {'marca':'Nissan','modelo':'Kicsk','color':'Blanco','placas':'PRC-1265','estado':'Nuevo León'},
-    {'marca':'Nissan','modelo':'Kicsk','color':'Blanco','placas':'PRC-1265','estado':'Nuevo León'},
-    {'marca':'Nissan','modelo':'Kicsk','color':'Blanco','placas':'PRC-1265','estado':'Nuevo León'},
-]
-
+let selectedEquipos=[]
+let selectedVehiculos=[]
+let fullData=""
 
 window.onload = function(){
     setValueUserLocation('accesos');
-
     changeButtonColor();
-
     fillCatalogs();
-
+    initializeCatalogs()
+    getInitialData();
     selectLocation= document.getElementById("selectLocation")
     selectLocation.onchange = function() {
         let response = fetchOnChangeLocation()
     };
-   selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = function() {
         let response = fetchOnChangeLocation()
     };
     selectLocation.disabled=true
     selectCaseta.disabled=true
+    selectLocation.value=getCookie("userLocation")
+    selectCaseta.value=getCookie("userCaseta")
+    //selectLocation.disabled=true
+    //selectCaseta.disabled=true
+    
 
     setHideElements('dataHide');
     setSpinner(true, 'divSpinner');
     let user = getCookie("userId");
     let jw = getCookie("userJwt");
     if(user !='' && jw!=''){
-        //----QUery
         setDataInformation('alerts',data = {})
         getDataListUser();
     }else{
         redirectionUrl('login',false)
     }
-    
     customNavbar(getValueUserLocation(), getCookie('userTurn'));
-
     getCatalogs()
 }
 
+//FUNCION Obtener data inicial informacion de la caseta
+function getInitialData(){
+    let valueCaseta = getCookie('userCaseta')
+    let valueLocation =  getCookie('userLocation')
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: idScr,
+            option: 'get_initialData',
+            caseta: valueCaseta,
+            location: valueLocation
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+jw
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+        } 
+    });
+    let boothStats = load_shift_json.booth_stats.access
+    $("#textVisitasEnElDia").text(boothStats.visits_per_day);
+    $("#textPersonalDentro").text(boothStats.staff_indoors);
+    $("#textVehiculosDentro").text(boothStats.vehicles_inside);
+    $("#textSalidasRegistradas").text(boothStats.registered_exits);
+}
+
+
+//FUNCION para asignar nueva visita
 function asignarNuevaVisita(){
     let nombre=$("#inputNombreNV").val();
     let razonSocial=$("#inputRazonSocialNV").val();
@@ -115,23 +90,21 @@ function asignarNuevaVisita(){
     let visitaA=$("#selectVisitaNV").val();
     let motivoVisita=$("#inputMotivoVisitaNV").val();
     if(nombre!=='' , razonSocial!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
-        console.log("asignar nueva visita",nombre, razonSocial,areaQueVisita, visitaA, motivoVisita);
-        fetch(urlLinkaform, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_id: idScript,
-            option: 'add_new_visit',
-            nombre: nombre,
-            razonSocial:razonSocial,
-            areaQueVisita:areaQueVisita,
-            visitaA:visitaA,
-            motivoVisita:motivoVisita,
+        fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_id: idScript,
+                option: 'add_new_visit',
+                nombre: nombre,
+                razonSocial:razonSocial,
+                areaQueVisita:areaQueVisita,
+                visitaA:visitaA,
+                motivoVisita:motivoVisita,
 
-        }),
-        headers:{
+            }),
+            headers:{
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer '+jw
-
             },
         })
         .then(res => res.json())
@@ -142,27 +115,26 @@ function asignarNuevaVisita(){
                 console.log("RESPONSE", data)
             } 
         });
-          Swal.fire({
-          title: "Validación",
-          text: "NUeva visita registrada",
-          type: "success"
+        Swal.fire({
+            title: "Validación",
+            text: "NUeva visita registrada",
+            type: "success"
         });
-          codeUserVisit= Date.now();
-          let inputCode = document.getElementById("inputCodeUser");
-          inputCode.value= codeUserVisit
-          $("#newVisitModal").modal('hide')
+        codeUserVisit= Date.now();
+        let inputCode = document.getElementById("inputCodeUser");
+        inputCode.value= codeUserVisit
+        $("#newVisitModal").modal('hide')
     }else{
-         Swal.fire({
-          title: "Validación",
-          text: "Faltan campos por llenar, completa los campos marcados con asterisco",
-          type: "warning"
+        Swal.fire({
+            title: "Validación",
+            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+            type: "warning"
         });
     }
 }
 
-function limpiar(){
 
-}
+//FUNCION para agregar un nuevo equipo
 function agregaEquipo(){
     let nombre=$("#inputNombreNV").val();
     let razonSocial=$("#inputRazonSocialNV").val();
@@ -170,23 +142,21 @@ function agregaEquipo(){
     let visitaA=$("#selectVisitaNV").val();
     let motivoVisita=$("#inputMotivoVisitaNV").val();
     if(nombre!=='' , razonSocial!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
-        console.log("asignar nuevo equipo",nombre, razonSocial,areaQueVisita, visitaA, motivoVisita);
-        fetch(urlLinkaform, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_id: idScript,
-            option: 'add_new_equip',
-            nombre: nombre,
-            razonSocial:razonSocial,
-            areaQueVisita:areaQueVisita,
-            visitaA:visitaA,
-            motivoVisita:motivoVisita,
+        fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_id: idScript,
+                option: 'add_new_equip',
+                nombre: nombre,
+                razonSocial:razonSocial,
+                areaQueVisita:areaQueVisita,
+                visitaA:visitaA,
+                motivoVisita:motivoVisita,
 
-        }),
-        headers:{
+            }),
+            headers:{
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer '+jw
-
             },
         })
         .then(res => res.json())
@@ -198,102 +168,58 @@ function agregaEquipo(){
             } 
         });
     }else{
-         Swal.fire({
-          title: "Validación",
-          text: "Faltan campos por llenar, completa los campos marcados con asterisco",
-          type: "warning"
+        Swal.fire({
+            title: "Validación",
+            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+            type: "warning"
         });
     }
 }
-//-----TABLES
-function drawTable(id, columnsData, tableData,){
-  var  table = new Tabulator("#" + id, {
-    layout:"fitDataTable",
-    data:tableData,
-    textDirection:"ltr",
-    columns:columnsData,
-    pagination:true, 
-    paginationSize:40,
-  });
-}
 
-
-
-//---Close Sesión
-function setCloseSession() {
-    closeSession();
-    redirectionUrl('login',false);
-}
-
-//-----Function Get Data
-function getDataAlert() {
-    
-    fetch(urlLinkaform, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_id: 116097,
-            option: 'query_alerts',
-        }),
-        headers:{
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer '+userJwt,
-          'Access-Control-Request-Headers':'*'
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            let data = res.response.json;
-            setDataInformation('alerts',data)
-        } 
-    })
-}
-
+                                                                                                                                         
+//FUNCION para obtener la informacion del usuario
 function getDataUser() {
-    //---Css
+    setCleanData();
     $("#divSpinner").show();
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
-    //----Val
-    let codeUser  = $("#inputCodeUser").val();
-    //----Cookie 
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
+    let codeUser = $("#inputCodeUser").val();
     let userJwt = getCookie("userJwt");
-    fetch(urlLinkaform, {
+ console.log("+++++++++++++++++++++",getCookie('userLocation'), codeUser)
+    fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 116097,
-            option: 'get_users_information',
-            curp: codeUser,
+            script_name: "script_turnos.py",
+            option: 'search_access_pass',
+            location: getCookie('userLocation'),
+            qr_code: codeUser
         }),
         headers:{
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer '+userJwt,
-          'Access-Control-Request-Headers':'*'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+            'Access-Control-Request-Headers':'*'
         },
     })
     .then(res => res.json())
     .then(res => {
+        console.log("+++++++++++++++++++++",res)
         if (res.success) {
-           
+            fullData= res.response.data
+            setCookie('userLocation', res.response.data.ubicacion)
+            console.log("FULL DATA", res.response.data)
+            setDataInformation('informatioUser', res.response.data)
+            setHideElements('buttonsModal');
+            $("#divSpinner").hide();
+            setHideElements('dataShow');
         } 
-    })
-
-     let data = {};
-            
-            setDataInformation('informatioUser',data)
-            setTimeout(() => {
-               
-            }, "1000");
-    setHideElements('buttonsModal');
-    $("#divSpinner").hide();
-    setHideElements('dataShow');
+    }) 
 }
 
+
+//FUNCION para obtener la lista de usuario
 function getDataListUser(){
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
     let userJwt = getCookie("userJwt");
-    fetch(urlLinkaform, {
+    fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: 116097,
@@ -301,56 +227,66 @@ function getDataListUser(){
             location: 'Planta Monterrey',
         }),
         headers:{
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer '+userJwt,
-          'Access-Control-Request-Headers':'*'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+            'Access-Control-Request-Headers':'*'
         },
     })
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-           
         } 
     })
-
-     let data = {};
-            listUserActives = data;
-            setDataInformation('listUsers',data)
+    let data = {};
+    listUserActives = data;
+    setDataInformation('listUsers',data)
 }
 
 
-//-----Function Set Data
+//FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 1
 function setDataUser(){
-    //----Val
+    console.log("=================REGISTRAR INGRESO============================")
     let codeUser  = $("#inputCodeUser").val();
     $("#buttonIn").hide();
     $("#buttonOut").hide();
-    //----Cookie 
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
     let userJwt = getCookie("userJwt");
-    let dataItem = {'listItemsData':listItemsData,'listNewItems':listNewItems}
-    let dataVehicule = {'listVehiculesData':listVehiculesData,'listNewVehicules':listNewVehicules}
-    fetch(urlLinkaform, {
+
+    
+    let location= 'Planta Monterrey'//getCookie('userLocation') 
+    let area='Caseta Vigilancia Norte 3' //getCookie('userCaseta')
+
+    getSelectedCheckbox('tableItems', 'checkboxGroupEquipos', selectedEquipos);
+    let selectedEq= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
+
+    getSelectedCheckbox('tableItems', 'radioGroupItems', selectedVehiculos)
+    let selectedVe= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
+
+    console.log("location area codeuser", location,area,codeUser)
+    console.log("SELECTED EQUIOPOS YU VEHCIULOSS",selectedEq, selectedVe)
+
+    //let dataItem = {'listItemsData':listItemsData,'listNewItems':listNewItems}
+    //let dataVehicule = {'listVehiculesData':listVehiculesData,'listNewVehicules':listNewVehicules}
+    fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 116097,
-            option: 'set_movement_users',
-            curp: codeUser,
-            dataItem: dataItem,
-            dataVehicule: dataVehicule,
+            script_name: 'script_turnos.py',
+            option: 'do_access',
+            qr_code: codeUser,
+            location: location,
+            area: area,
+            vehiculo: selectedVe,
+            equipo: selectedEq,
         }),
         headers:{
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer '+userJwt,
-          'Access-Control-Request-Headers':'*'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+            'Access-Control-Request-Headers':'*'
         },
     })
     .then(res => res.json())
     .then(res => {
+        console.log("RESPONSE",res)
         if (res.success) {
-           
-        } 
-    })
             let data = {};
             setHideElements('buttonsModal');
             setDataInformation('informatioUser',data)
@@ -363,16 +299,73 @@ function setDataUser(){
             setHideElements('dataHide');
             setHideElements('buttonsOptions');
             setHideElements('buttonNew');
+        }else{
+            Swal.fire({
+                title: "Error",
+                text: res.error.msg.msg,
+                type: res.error.msg.type
+            });
+            $("#buttonOut").show();
+        }
+    }).catch(error => {
+        console.error(error)
+    });
 }
 
-function setDataGafete(data = {}){
-    //----Val
+
+function registrarSalida(){
+    console.log("=================REGISTRAR INGRESO============================")
     let codeUser  = $("#inputCodeUser").val();
-    //----Cookie 
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
+   
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'script_turnos.py',
+            option: 'do_out',
+            qr_code: codeUser,
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+            'Access-Control-Request-Headers':'*'
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        console.log("RESPONSE",res)
+        if (res.success) {
+            let data = {};
+            setHideElements('buttonsModal');
+            setDataInformation('informatioUser',data)
+            Swal.fire({
+                title: "Exito!",
+                text: "Salida registrada correctamente",
+                icon: "success"
+            });
+            setCleanData();
+            setHideElements('dataHide');
+            setHideElements('buttonsOptions');
+            setHideElements('buttonNew');
+        }else{
+            Swal.fire({
+                title: "Error",
+                text: res.error.msg.msg,
+                type: res.error.msg.type
+            });
+            $("#buttonOut").show();
+        }
+    }).catch(error => {
+        console.error(error)
+    });
+}
+
+
+
+//FUNCION para asignar un nuevo gafete
+function setDataGafete(data = {}){
+    let codeUser  = $("#inputCodeUser").val();
     let userJwt = getCookie("userJwt");
-    //----Fetch
-    fetch(urlLinkaform, {
+    fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: 116097,
@@ -382,9 +375,9 @@ function setDataGafete(data = {}){
             location: 'Planta Monterrey',
         }),
         headers:{
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer '+userJwt,
-          'Access-Control-Request-Headers':'*'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+            'Access-Control-Request-Headers':'*'
         },
     })
     .then(res => res.json())
@@ -394,8 +387,11 @@ function setDataGafete(data = {}){
         } 
     })
 }
-//----Functions Css
+
+
+//FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 2
 function setDataInformation(option, data = {}){
+    /*
    data={
         "data_user":{
             "name":"Josue de Jesus Ramires",
@@ -415,284 +411,393 @@ function setDataInformation(option, data = {}){
         },
         "movement":{"type":'in'},
         "bitacora":[]
-    }
-   
+    } */
     if(option == 'alerts'){
-        let count_in = data.count_in ? count_in : 10;
-        let count_out = data.count_out ? count_out : 70;
-        let count_cars_in = data.count_cars_in ? count_cars_in : 20;
-        let count_out_register = data.count_out_register ? count_out_register : 30;
-        $("#textAlert1").text(count_in);
-        $("#textAlert2").text(count_out);
-        $("#textAlert3").text(count_cars_in);
-        $("#textAlert4").text(count_out_register);
+        optionAlerts(data);
     }else if(option == 'informatioUser'){
-        console.log("INFORMATIOUSER")
-        if(data.hasOwnProperty('data_user') && data.hasOwnProperty('movement') && data.hasOwnProperty('bitacora')){
-            //---Variables
-            let dataUser = data.data_user;
-            let dataMovement = data.movement;
-            let dataBitacora = data.bitacora;
-            //---Movement
-            if(dataMovement.type == 'in'){
-                $("#buttonIn").show();
-                $("#textIn").show();
-            }else if(dataMovement.type == 'out'){
-                $("#buttonOut").show();
-                $("#textOut").show();
-            }
-            $("#buttonNew").hide();
-            $("#buttonCard").show();
-            $("#buttonClean").show();
-            //---Bitacora
-            
-            let listBitacora = dataBitacora.length > 0 ? dataBitacora: [];
-            for (var i = 0; i < listBitacora.length; i++) {
-                if(i < 3){
-                    var newRow = $('<tr>');
-                    newRow.append($('<td>').text(listBitacora[i].visita ? listBitacora[i].visita : ''));
-                    newRow.append($('<td>').text(listBitacora[i].acceso ? listBitacora[i].acceso : ''));
-                    newRow.append($('<td>').text(listBitacora[i].duration ? listBitacora[i].duration : ''));
-                    newRow.append('</tr>');
-                    $('#tableBitacora').append(newRow);
-                }
-            }
-            if(listBitacora.length > 3){
-                $("#buttonBitacoraModal").show();
-                for (var i = 0; i < listBitacora.length; i++) {
-                    var newRow = $('<tr>');
-                    newRow.append($('<td>').text(listBitacora[i].visita ? listBitacora[i].visita : ''));
-                    newRow.append($('<td>').text(listBitacora[i].acceso ? listBitacora[i].acceso : ''));
-                    newRow.append($('<td>').text(listBitacora[i].duration ? listBitacora[i].duration : ''));
-                    newRow.append('</tr>');
-                    $('#tableBitacoraModal').append(newRow);
-                }
-            }
-            if(listBitacora.length == 0){
-                var newRow = $('<tr>');
-                newRow.append($('<td colspan="3">').text('No existen Registros Recientes'));
-                newRow.append('</tr>');
-                $('#tableBitacora').append(newRow);
-            }
-            //---Information user
-            let imgUser = dataUser.img != '' ? dataUser.img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
-            $('#imgUser').attr('src', imgUser); 
-            let imgCard = dataUser.card != '' ? dataUser.card: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg';
-            $('#imgCard').attr('src', imgCard); 
-            let nameUser = dataUser.name != '' ? dataUser.name: '';
-            $('#name').text(nameUser); 
-            let rfc = dataUser.rfc != '' ? dataUser.rfc: '';
-            $('#rfc').text(rfc);
-            let validity = dataUser.validity != '' ? dataUser.validity: '';
-            $('#validity').text(validity);
-            let status = dataUser.status != '' ? dataUser.status: '';
-            $('#status').text(status);
-            //----Visiti
-            let motivo = dataUser.motivo != '' ? dataUser.motivo: '';
-            $('#motivo').text(motivo);
-            let visit = dataUser.visit_name != '' ? dataUser.visit_name: '';
-            $('#visit').text(visit);
-            let authorizePase = dataUser.authorize_pase != '' ? dataUser.authorize_pase: '';
-            $('#authorizePase').text(authorizePase);
-            let authorizePhone = dataUser.authorize_phone != '' ? dataUser.authorize_phone: '';
-            $('#authorizePhone').text(authorizePhone);
-            //----Table INstructions
-            let listInstructions = dataUser.list_instrucctions.length > 0 ? dataUser.list_instrucctions: [];
-            for (var i = 0; i < listInstructions.length; i++) {
-                if(i < 3){
-                    var newRow = $('<tr>');
-                    newRow.append($('<td>').text(listInstructions[i]));
-                    newRow.append('</tr>');
-                    $('#tableInstructions').append(newRow);
-                }
-            }
-            if(listInstructions.length > 3){
-                $("#buttonCommentsModal").show();
-                for (var i = 0; i < listInstructions.length; i++) {
-                    var newRow = $('<tr>');
-                    newRow.append($('<td>').text(listInstructions[i]));
-                    newRow.append('</tr>');
-                    $('#tableModalInstructions').append(newRow);
-                }
-            }
-            if(listInstructions.length == 0){
-                var newRow = $('<tr>');
-                newRow.append($('<td>').text('No existen Instrucciones'));
-                newRow.append('</tr>');
-                $('#tableModalInstructions').append(newRow);
-            }
-            //----Table INstructions
-            let listAccess = dataUser.list_access.length > 0 ? dataUser.list_access: [];
-            for (var i = 0; i < listAccess.length; i++) {
-                if(i < 3){
-                    let nameAccess = listAccess[i].name_access;
-                    let statusAccess = listAccess[i].status_access;
-                    var newRow = $('<tr>');
-                    newRow.append($('<td>').text(nameAccess));
-                    newRow.append($('<td>').text(statusAccess));
-                    newRow.append('</tr>');
-                    $('#tableAccess').append(newRow);
-                }
-            }
-            if(listAccess.length > 3){
-                $("#buttonAccessModal").show();
-                for (var i = 0; i < listInstructions.length; i++) {
-                    var newRow = $('<tr>');
-                    newRow.append($('<td>').text(nameAccess));
-                    newRow.append($('<td>').text(statusAccess));
-                    newRow.append('</tr>');
-                    $('#tableModalAccess').append(newRow);
-                }
-            }
-            if(listAccess.length == 0){
-                var newRow = $('<tr>');
-                newRow.append($('<td colspan="2">').text('No existen Accesos Recientes'));
-                newRow.append('</tr>');
-                $('#tableModalInstructions').append(newRow);
-            }
-            //----Table Locations
-            let listLocations = dataUser.list_locations.length > 0 ? dataUser.list_locations: [];
-            for (var i = 0; i < listLocations.length; i++) {
-                if(i < 3){
-                    var newRow = $('<tr>');
-                    newRow.append($('<td>').text(listLocations[i]));
-                    newRow.append('</tr>');
-                    $('#tableLocations').append(newRow);
-                }
-            }
-            if(listLocations.length > 3){
-                $("#buttonLocationsModal").show();
-                for (var i = 0; i < listInstructions.length; i++) {
-                    var newRow = $('<tr>');
-                    newRow.append($('<td>').text(listLocations[i]));
-                    newRow.append('</tr>');
-                    $('#tableModalAccess').append(newRow);
-                }
-            }
-            if(listLocations.length == 0){
-                var newRow = $('<tr>');
-                newRow.append($('<td>').text('No existen Accesos'));
-                newRow.append('</tr>');
-                $('#tableModalAccess').append(newRow);
-            }
-            //----Table Items
-            let listItems = dataUser.list_items.length > 0 ? dataUser.list_items: [];
-            listItems.forEach(function(dic) {
-                dic.id = Math.floor(Math.random() * 1000000);;
-            });
-            listItemsData = listItems;
-            listItemsData.forEach(function(dic) {
-                dic.check = false;
-            });
-
-            for (var i = 0; i < listItems.length; i++) {
-                if(i < 3){
-                    let typeItem = listItems[i].type_item;
-                    let modelItem = listItems[i].model_item;
-                    let colorItem = listItems[i].color_item;
-                    let id = listItems[i].id;
-                    var newRow = $('<tr>');
-                    newRow.append($('<td>').text(typeItem));
-                    newRow.append($('<td>').text(modelItem));
-                    newRow.append($('<td>').text(colorItem));
-                    newRow.append('</tr>');
-                    $('#tableItems').append(newRow);
-                }
-            }
-            
-            $("#buttonItemsModal").show();
-            for (var i = 0; i < listItems.length; i++) {
-                let typeItem = listItems[i].type_item;
-                let modelItem = listItems[i].model_item;
-                let colorItem = listItems[i].color_item;
-                let id = listItems[i].id;
-                var newRow = $('<tr>');
-                newRow.append($('<td>').text(typeItem));
-                newRow.append($('<td>').text(modelItem));
-                newRow.append($('<td>').text(colorItem));
-                newRow.append('<td><input class="form-check-input" type="checkbox"  onChange="setCheckItem('+id+')"></td>');
-                newRow.append('</tr>');
-                $('#tableModalItems').append(newRow);
-            }
-            if(listLocations.length == 0){
-                var newRow = $('<tr>');
-                newRow.append($('<td colspan="3">').text('No existen Equipos'));
-                newRow.append('</tr>');
-                $('#tableModalInstructions').append(newRow);
-            }
-            //----Table Cars
-            let listCars = dataUser.list_cars.length > 0 ? dataUser.list_cars: [];
-            listCars.forEach(function(dic) {
-                dic.id = Math.floor(Math.random() * 1000000);;
-            });
-            listVehiculesData = listCars;
-            listVehiculesData.forEach(function(dic) {
-                dic.check = false;
-            });
-
-
-            for (var i = 0; i < listCars.length; i++) {
-                if(i < 3){
-                    let typeCar = listCars[i].type_car;
-                    let serie_car = listCars[i].serie_car[0];
-                    let colorCar = listCars[i].color_car;
-                    let id = listCars[i].id;
-                    var newRow = $('<tr>');
-                    newRow.append($('<td>').text(typeCar));
-                    newRow.append($('<td>').text(serie_car));
-                    newRow.append($('<td>').text(colorCar));
-                    newRow.append('</tr>');
-                    $('#tableCars').append(newRow);
-                }
-            }
-            $("#buttonCarsModal").show();
-            for (var i = 0; i < listCars.length; i++) {
-                let typeCar = listCars[i].type_car;
-                let serie_car = listCars[i].serie_car[0];
-                let colorCar = listCars[i].color_car;
-                let id = listCars[i].id;
-                var newRow = $('<tr>');
-                newRow.append($('<td>').text(typeCar));
-                newRow.append($('<td>').text(serie_car));
-                newRow.append($('<td>').text(colorCar));
-                newRow.append('<td><input type="radio"  name="groupCarList" onChange="setCheckVehicule('+id+')"></td>');
-                newRow.append('</tr>');
-                $('#tableCarsModal').append(newRow);
-            }
-            if(listLocations.length == 0){
-                var newRow = $('<tr>');
-                newRow.append($('<td colspan="3">').text('No existen Vehiculos'));
-                newRow.append('</tr>');
-                $('#tableModalInstructions').append(newRow);
-            }
-        }
+        optionInformationUser(data);
     }else if(option == 'listUsers'){
-        for (var i = 0; i < data.length; i++) {
-            let nameUser = data[i].name_user ? data[i].name_user: '';
-            let curpUser = data[i].curp_user ? data[i].curp_user: '';
-            let element = '<li class="list-group-item d-flex justify-content-between align-items-start">';
-            element += '<div class="ms-2 me-auto">';
-            element += '<div class="fw-bold">'+curpUser+'</div>';
-            element += nameUser;
-            element += '</div>';
-            element += '<span class="badge text-bg-primary rounded-pill cursor-pointer" onClick="setCurpSearch(`'+curpUser+'`);return false;"> ';
-            element += 'Seleccionar ';
-            element += '</span>';
-            element += '</li>';
-            $("#listPasaportActive").append(element);
-        }
+        optionListUsers(data)
     }else if(option == 'checkOtro'){
-        let checkboxMarcado = document.getElementById("checkOtro").checked;
-        if (checkboxMarcado) {
-            $('#inputOtroDescCard').show();
-            $('#inputOtroDescCard').addClass("form-gafete");
-        }else{
-            $('#inputOtroDescCard').hide();
-            $('#inputOtroDescCard').removeClass("form-gafete");
-        }
+        optionCheckOtro()
     }
 }
 
+
+//FUNCION al pedir la opcion check otro user al setear la data
+function optionCheckOtro(){
+    let checkboxMarcado = document.getElementById("checkOtro").checked;
+    if (checkboxMarcado) {
+        $('#inputOtroDescCard').show();
+        $('#inputOtroDescCard').addClass("form-gafete");
+    }else{
+        $('#inputOtroDescCard').hide();
+        $('#inputOtroDescCard').removeClass("form-gafete");
+    }
+}
+
+
+//FUNCION al pedir la opcion information user al setear la informacion del usuario
+function dataUserInf(dataUser){
+    let imgUser = dataUser.portador.foto[0].file_url != '' ? dataUser.portador.foto[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
+    $('#imgUser').attr('src', imgUser); 
+    let imgCard = dataUser.portador.identificacion[0].file_url != '' ? dataUser.portador.identificacion[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg';
+    $('#imgCard').attr('src', imgCard); 
+    let nameUser = dataUser.portador.nombre_visita != '' ? dataUser.portador.nombre_visita: '';
+    $('#name').text(nameUser); 
+    let rfc = dataUser.portador.rfc != '' ? dataUser.portador.rfc: ''; // EL OBJ NO TRAE EL RFC
+    $('#rfc').text(rfc);
+    let validity = dataUser.pass.fecha_expiracion != '' ? dataUser.pass.fecha_expiracion : '';
+    $('#validity').text(validity);
+    let status = dataUser.portador.status_visita[0] != '' ? dataUser.portador.status_visita[0]: '';
+    $('#status').text(status);
+    let tipoPase = dataUser.pass.tipo != '' ? dataUser.pass.tipo: '';
+    $('#tipoPaseText').text(tipoPase);
+    //----Visiti
+    let motivo = dataUser.portador.motivo != '' ? dataUser.portador.motivo: '';
+    $('#motivo').text(motivo);
+    let visit = dataUser.portador.visit_name != '' ? dataUser.portador.visit_name: '';
+    $('#visit').text(visit);
+    let authorizePase = dataUser.authorize_pase != '' ? dataUser.authorize_pase: '';
+    $('#authorizePase').text(authorizePase);
+    let authorizePhone = dataUser.authorize_phone != '' ? dataUser.authorize_phone: '';
+    $('#authorizePhone').text(authorizePhone);
+}
+
+
+//FUNCION al pedir la opcion information user al setear la info de las tablas
+function tableFill(dataUser){
+    //TABLA COMENTARIOS
+    let listInstructions = dataUser.comentarios.length > 0 ? dataUser.comentarios: [];
+    for (var i = 0; i < listInstructions.length; i++) {
+        if(i < 3){
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(listInstructions[i].msg));
+            newRow.append('</tr>');
+            $('#tableInstructions').append(newRow);
+        }
+    }
+    if(listInstructions.length > 3){
+        $("#buttonCommentsModal").show();
+        for (var i = 0; i < listInstructions.length; i++) {
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(listInstructions[i].msg));
+            newRow.append('</tr>');
+            $('#tableModalInstructions').append(newRow);
+        }
+    }
+    if(listInstructions.length == 0){
+        var newRow = $('<tr>');
+        newRow.append($('<td>').text('No existen Instrucciones'));
+        newRow.append('</tr>');
+        $('#tableModalInstructions').append(newRow);
+    }
+    //----TABLA ACCESOS PERMITIDOS
+    let listAccess = dataUser.accesos.length > 0 ? dataUser.accesos: [];
+    for (var i = 0; i < listAccess.length; i++) {
+            let nombre = listAccess[i].nombre;
+            let status = listAccess[i].status;
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(nombre));
+            newRow.append($('<td>').text(status));
+            newRow.append('</tr>');
+            $('#tableAccess').append(newRow);
+    }
+    if(listAccess.length > 3){
+        $("#buttonAccessModal").show();
+        for (var i = 0; i < listInstructions.length; i++) {
+            let nombre = listAccess[i].nombre;
+            let status = listAccess[i].status;
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(nombre));
+            newRow.append($('<td>').text(status));
+            newRow.append('</tr>');
+            $('#tableModalAccess').append(newRow);
+        }
+    }
+    if(listAccess.length == 0){
+        var newRow = $('<tr>');
+        newRow.append($('<td colspan="2">').text('No existen Accesos permitidos'));
+        newRow.append('</tr>');
+        $('#tableAccess').append(newRow);
+    }
+    //----Table CERTIFICACIONES
+    let listLocations = dataUser.certificaiones.length > 0 ? dataUser.certificaiones: [];
+    for (var i = 0; i < listLocations.length; i++) {
+        if(i < 1000){
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(listLocations[i].nombre));
+            newRow.append($('<td>').text(listLocations[i].status));
+            newRow.append('</tr>');
+            $('#tableLocations').append(newRow);
+        }
+    }
+    /*
+    if(listLocations.length > 3){
+        $("#buttonLocationsModal").show();
+        for (var i = 0; i < listInstructions.length; i++) {
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(listLocations[i]));
+            newRow.append('</tr>');
+            $('#tableModalAccess').append(newRow);
+        }
+    } */
+    if(listLocations.length == 0){
+        var newRow = $('<tr>');
+        newRow.append($('<td>').text('No existen Accesos'));
+        newRow.append('</tr>');
+        $('#tableModalAccess').append(newRow);
+    }
+    return listLocations
+}
+
+
+//FUNCION llenar tabla de equipos en la primera carga
+function tableFillEquipos(dataUser){
+    let listItems = dataUser.equipo.length > 0 ? dataUser.equipo: [];
+    listItems.forEach(function(dic) {
+        dic.id = Math.floor(Math.random() * 1000000);
+    });
+    listItemsData = listItems;
+    listItemsData.forEach(function(dic) {
+        dic.check = false;
+    });
+    console.log("LISTA DE EQUIPOSSS",listItems)
+    /*
+    for (var i = 0; i < listItems.length; i++) {
+        if(i < 3){
+            let tipoItem = listItems[i].tipo;
+            let marcaItem = listItems[i].marca;
+            let modeloItem = listItems[i].modelo;
+            let serieItem = listItems[i].serie;
+            let colorItem = listItems[i].color;
+            let id = listItems[i].id;
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(tipoItem));
+            newRow.append($('<td>').text(marcaItem));
+            newRow.append($('<td>').text(modeloItem));
+            newRow.append($('<td>').text(serieItem));
+            newRow.append($('<td>').text(colorItem));
+            newRow.append('</tr>');
+            $('#tableModalItems').append(newRow);
+        }
+    }*/
+    $("#buttonItemsModal").show();
+    console.log("tama;o de lista de equipo",listItems.length)
+    for (var i = 0; i < listItems.length; i++) {
+        let tipoItem = listItems[i].tipo;
+        let marcaItem = listItems[i].marca;
+        let modeloItem = listItems[i].modelo;
+        let serieItem = listItems[i].serie;
+        let colorItem = listItems[i].color;
+        let id = listItems[i].id;
+        var newRow = $('<tr>');
+        newRow.append($('<td>').text(tipoItem));
+        newRow.append($('<td>').text(marcaItem));
+        newRow.append($('<td>').text(modeloItem));
+        newRow.append($('<td>').text(serieItem));
+        newRow.append($('<td>').text(colorItem));
+        let isChecked= listItems[i].check == true ? 'checked' : '';
+        newRow.append('<td ><input class="form-check-input checkboxGroupEquipos" type="checkbox" id='+id+' '+isChecked+'></td>');
+        newRow.append('</tr>');
+        $('#tableItems').append(newRow);
+    }
+    if(listItems.length == 0){
+        var newRow = $('<tr>');
+        newRow.append($('<td colspan="3">').text('No existen Equipos'));
+        newRow.append('</tr>');
+        $('#tableItems').append(newRow);
+    }
+}
+
+function registrarIngreso(){
+    
+    /* fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: idScr,
+            option: 'get_initialData',
+            caseta: valueCaseta,
+            location: valueLocation
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+jw
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+        } 
+    }); */
+
+}
+
+//FUNCION llenar tabla de vehiculos en la primera carga
+function tableFillVehiculos(dataUser){
+    
+    let listCars = dataUser.vehiculos.length > 0 ? dataUser.vehiculos: [];
+    listCars.forEach(function(dic) {
+        dic.id = Math.floor(Math.random() * 1000000);;
+    });
+    listVehiculesData = listCars;
+    listVehiculesData.forEach(function(dic) {
+        dic.check = false;
+    });
+
+    $("#buttonCarsModal").show();
+    console.log("LISTA DE CARROS", listCars.length)
+    for (var i = 0; i < listCars.length; i++) {
+        let tipoCar = listCars[i].tipo;
+        let marcaCar = listCars[i].marca;
+        let modeloCar = listCars[i].modelo;
+        let matriculaCar = listCars[i].placa;
+        let colorCar = listCars[i].color;
+        let id = listCars[i].id;
+        var newRow = $('<tr>');
+        newRow.append($('<td>').text(tipoCar));
+        newRow.append($('<td>').text(marcaCar));
+        newRow.append($('<td>').text(modeloCar));
+        newRow.append($('<td>').text(matriculaCar));
+        newRow.append($('<td>').text(colorCar)); 
+        let isChecked= listCars[i].check == true ? 'checked' : '';
+        newRow.append('<td><input class="form-check-input radioGroupItems" type="radio"  name="groupCarList" id='+id+' '+isChecked+'></td>');
+        newRow.append('</tr>');
+        $('#tableCars').append(newRow);
+    }
+    if(listCars.length == 0){
+        var newRow = $('<tr>');
+        newRow.append($('<td colspan="3">').text('No existen Vehiculos'));
+        newRow.append('</tr>');
+        $('#tableCars').append(newRow);
+    }
+}
+
+
+function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
+    let group= document.querySelectorAll('.'+classCheckbox)
+    group.forEach(checkbox => {
+        if(checkbox.checked){
+            checkboxesSeleccionados.push(parseInt(checkbox.id))
+        }
+  });
+    console.log("INFOO",checkboxesSeleccionados)
+    //return checkboxesSeleccionados
+}
+
+//FUNCION al pedir la opcion information user al setear la data
+function optionInformationUser(data){
+    let { portador,ultimo_acceso, vehiculos, equipo, validaciones}= data
+    console.log("OPTION INFO", portador)
+    data.movement={ "type":"in"}
+    let dataAccion= validaciones
+    if(data.hasOwnProperty('portador') && data.hasOwnProperty('validaciones') && data.hasOwnProperty('ultimo_acceso')){
+        //---Movement
+        if(dataAccion.accion_ingreso == 'Entrada'){
+            $("#buttonIn").show();
+            $("#textIn").show();
+        }else if(dataAccion.accion_ingreso == 'Salida'){
+            $("#buttonOut").show();
+            $("#textOut").show();
+        }
+        $("#buttonNew").hide();
+        $("#buttonCard").show();
+        $("#buttonClean").show();
+
+        //---Bitacora TABLA ULTIMOS ACCESOS
+
+        let listBitacora = ultimo_acceso.length > 0 ? ultimo_acceso: [];
+        for (var i = 0; i < listBitacora.length; i++) {
+            if(i < 3){
+                let duration=segundosAHoras(listBitacora[i].duration)
+                var newRow = $('<tr>');
+                newRow.append($('<td>').text(listBitacora[i].nombre_visita ? listBitacora[i].nombre_visita : ''));
+                newRow.append($('<td>').text(listBitacora[i].location ? listBitacora[i].location : ''));
+                newRow.append($('<td>').text(duration? duration : ''));
+                newRow.append('</tr>');
+                $('#tableBitacora').append(newRow);
+            }
+        }
+        if(listBitacora.length > 3){
+            $("#buttonBitacoraModal").show();
+            for (var i = 0; i < listBitacora.length; i++) {
+                let duration=segundosAHoras(listBitacora[i].duration)
+                var newRow = $('<tr>');
+                newRow.append($('<td>').text(listBitacora[i].nombre_visita ? listBitacora[i].nombre_visita : ''));
+                newRow.append($('<td>').text(listBitacora[i].location ? listBitacora[i].location : ''));
+                newRow.append($('<td>').text(duration ? duration : ''));
+                newRow.append('</tr>');
+                $('#tableBitacoraModal').append(newRow);
+            }
+        }
+        if(listBitacora.length == 0){
+            var newRow = $('<tr>');
+            newRow.append($('<td colspan="3">').text('No existen Registros Recientes'));
+            newRow.append('</tr>');
+            $('#tableBitacora').append(newRow);
+        }
+        
+        // Information User
+        dataUserInf(data);
+
+        // Table INstructions
+        let listLocations= tableFill(data);
+
+        // Table Items
+        tableFillEquipos(data);
+
+        // Table Cars
+        tableFillVehiculos(data);
+    }
+}
+
+
+//convertir segundos a horas
+function segundosAHoras(segundos) {
+    var horas = Math.floor(segundos / 3600);
+    var minutos = Math.floor((segundos % 3600) / 60);
+    var segundosRestantes = segundos % 60;
+    let horaText="hora";
+    let horasText="horas"
+    let minutoText="minuto";
+    let minutosText="minutos";
+    return horas + " horas, " + minutos + " minutos" ;
+}
+
+
+//FUNCION al pedir la opcion alerts al setear la data
+function optionAlerts(data){
+    let count_in = data.count_in ? count_in : 10;
+    let count_out = data.count_out ? count_out : 70;
+    let count_cars_in = data.count_cars_in ? count_cars_in : 20;
+    let count_out_register = data.count_out_register ? count_out_register : 30;
+    $("#textAlert1").text(count_in);
+    $("#textAlert2").text(count_out);
+    $("#textAlert3").text(count_cars_in);
+    $("#textAlert4").text(count_out_register);
+}
+
+
+//FUNCION al pedir la opcion optionListUsers al setear la data
+function optionListUsers(data){
+    for (var i = 0; i < data.length; i++) {
+        let nameUser = data[i].name_user ? data[i].name_user: '';
+        let curpUser = data[i].curp_user ? data[i].curp_user: '';
+        let element = '<li class="list-group-item d-flex justify-content-between align-items-start">';
+        element += '<div class="ms-2 me-auto">';
+        element += '<div class="fw-bold">'+curpUser+'</div>';
+        element += nameUser;
+        element += '</div>';
+        element += '<span class="badge text-bg-primary rounded-pill cursor-pointer" onClick="setCurpSearch(`'+curpUser+'`);return false;"> ';
+        element += 'Seleccionar ';
+        element += '</span>';
+        element += '</li>';
+        $("#listPasaportActive").append(element);
+    }
+}
+
+
+//FUNCION para ocultar mostrar elementos
 function setHideElements(option){
     if (option == 'buttonsModal') {
         $("#buttonCommentsModal").hide();
@@ -710,8 +815,6 @@ function setHideElements(option){
     }else if(option == 'buttonNew'){
         $("#buttonNew").show();
     }else if(option =='dataHide'){
-        console.log('OCULTAR')
-
         $("#textOut").hide();
         $("#textIn").hide();
         var elements = document.getElementsByClassName('section-data');
@@ -726,6 +829,8 @@ function setHideElements(option){
     }
 }
 
+
+//FUNCION para limpiar la vista completa
 function setCleanData(){
     let tbody = document.querySelector('#tableBitacora tbody');
     tbody.innerHTML = '';
@@ -772,7 +877,6 @@ function setCleanData(){
     tbody = document.querySelector('#tableModalInstructions tbody');
     tbody.innerHTML = '';
 
-
     $('#imgUser').attr('src', 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png'); 
     $('#imgCard').attr('src', 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg'); 
     $('#tipoPaseText').text('')
@@ -785,9 +889,13 @@ function setCleanData(){
     $('#authorizePase').text('')
     $('#authorizePhone').text('')
 
+    setHideElements('dataHide');
+    setHideElements('buttonsOptions');
+    setHideElements('buttonNew');
 }
 
-//----Function Search Data
+
+//FUNCION para setear la informacion en la pantalla principal
 function functionSearchList(event) {
     let textSearch = event.target.value.replace(/\s/g, '').toLowerCase();
     if(textSearch !== ''){
@@ -803,7 +911,8 @@ function functionSearchList(event) {
     }
 }
 
-//----Add data
+
+//FUNCION para saber que vehiculos entas con checkbox
 function setCheckVehicule(id = 0) {
     if(listNewVehicules.length == 0){
         for (var i = 0; i < listVehiculesData.length; i++) {
@@ -822,6 +931,8 @@ function setCheckVehicule(id = 0) {
     }
 }
 
+
+//FUNCION para agregar equipos al modal
 function setCheckItem(id = 0) {
     var element = listItemsData.find(function(item) {
         return item.id === id;
@@ -831,7 +942,8 @@ function setCheckItem(id = 0) {
     }
 }
 
-function getSaveItem(){
+//FUNCION para guardar equipos entas con checkbox
+function agregarEquipoAModal(){
     let dicData = {};
     let validation = false;
     let tipo= $("#selectTipoEquipo-123").val();
@@ -840,23 +952,20 @@ function getSaveItem(){
     let modelo=$("#inputModeloItem").val();
     let noserie=$("#inputSerieItem").val();
     let color=$("#inputColorItem").val();
-
-    console.log('console',tipo, nombre)
     if(tipo==''|| nombre=='' ){
         validation=true
     }
     if(!validation){
-            fetch(urlLinkaform, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_id: idScript,
-            option: 'add_new_equip',
+        fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_id: idScript,
+                option: 'add_new_equip',
 
-        }),
-        headers:{
+            }),
+            headers:{
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer '+jw
-
             },
         })
         .then(res => res.json())
@@ -864,27 +973,17 @@ function getSaveItem(){
             if (res.success) {
                 //CODE una vez resulta la imagen, cargarla en front
                 dicData={ data: {}}
-                console.log("RESPONSE", data)
             } 
         });
-
-
         listNewItems.push({ marca_item: marca, type_item: tipo, model_item: modelo, color_item:color , noserie_item:noserie});
-        let newRow = $('<tr>');
-        newRow.append($('<td>').text(tipo));
-        newRow.append($('<td>').text(marca));
-        newRow.append($('<td>').text(modelo));
-        newRow.append($('<td>').text(noserie));
-        newRow.append($('<td>').text(color));
-        newRow.append('</tr>');
-        $('#tableItems').append(newRow);
-         let newRow2 = $('<tr>');
+        let newRow2 = $('<tr>');
         newRow2.append($('<td>').text(tipo));
         newRow2.append($('<td>').text(marca));
         newRow2.append($('<td>').text(modelo));
         newRow2.append($('<td>').text(noserie));
         newRow2.append($('<td>').text(color));
         newRow2.append('</tr>');
+        console.log("NEW ROWWW",newRow2)
         $('#tableAddItemsModal').append(newRow2);
 
         $("#selectTipoEquipo-123").val('');
@@ -895,20 +994,18 @@ function getSaveItem(){
         $("#inputColorItem").val('');
         $("#alertItemModal").hide();
         $('#equipmentModal').modal('hide');
-
-
-        
     }else{
-         Swal.fire({
-          title: "Validación",
-          text: "Faltan campos por llenar, completa los campos marcados con asterisco",
-          type: "warning"
+        Swal.fire({
+            title: "Validación",
+            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+            type: "warning"
         });
-
         //$("#alertItemModal").show();
     }
 }
 
+
+//FUNCION para saber que vehiculos estan con checkbox
 function getSaveCar(){
     let dicData = {};
     let validation = false;
@@ -917,9 +1014,10 @@ function getSaveCar(){
     let modelo= $('#selectCatalogModelo-123').val();
     let matricula= $('#inputMatriculaVehiculo-123').val();
     let color= $('#inputColor-123').val();
-      if(tipoVehiculo==''){
+    if(tipoVehiculo==''){
         validation=true
     }
+    console.log("SAVE CAR")
     if(!validation){
         let newRow = $('<tr>');
         newRow.append($('<td>').text(marca));
@@ -936,63 +1034,49 @@ function getSaveCar(){
         newRow2.append($('<td>').text(modelo));
         newRow2.append('</tr>');
         $('#tableAddCarsModal').append(newRow2);
-
         $("#selectTipoVehiculo-123").val('');
         $("#selectCatalogMarca-123").val('');
         $("#selectModeloVehiculo-123").val('');
         $("#selectMatriculaVehiculo-123").val('');
         $("#selectColorVehiculo-123").val('');
-
         $("#carModal").modal('hide');
     }else{
-          Swal.fire({
-          title: "Validación",
-          text: "Faltan campos por llenar, completa los campos marcados con asterisco",
-          type: "warning"
+        Swal.fire({
+            title: "Validación",
+            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+            type: "warning"
         });
 
     }
 }
 
-function setViewModalCard(){
-    console.log("vistaaaa",listVehiculesData)
-    $('#listAddCarsModal').modal('show');
-    var tbody = document.querySelector('#tableAddCarsModal tbody');
-    tbody.innerHTML = '';
-    if(listVehiculesData.length>0 || listNewVehicules.length>0 ){
-        let flag = false;
-        for (var i = 0; i < listVehiculesData.length; i++) {
-            console.log("LISTA DE VEHICULOS" ,listVehiculesData[i])
-            //let check = listVehiculesData[i].check;
-             let marca = listVehiculesData[i].marca;
-                let matricula = listVehiculesData[i].matricula;
-                let color = listVehiculesData[i].color;
-                let modelo = listVehiculesData[i].modelo;
-                var newRow = $('<tr>');
-                newRow.append($('<td>').text(marca));
-                newRow.append($('<td>').text(matricula));
-                newRow.append($('<td>').text(color));
-                newRow.append($('<td>').text(modelo));
-                newRow.append('</tr>');
-                $('#tableAddCarsModal').append(newRow);
-            
-            /*if(check){
-               
-            }*/
-        }
 
-        for (var i = 0; i < listNewVehicules.length; i++) {
-            let typeCar = listNewVehicules[i].inputTipoCar;
-            let serie_car = listNewVehicules[i].inputPlacasCar;
-            let colorCar = listNewVehicules[i].inputColorCar;
+//FUNCION ver modal para agregar vehiculos
+function setViewModalCard(){
+    selectedVehiculos=[]
+    getSelectedCheckbox('tableItems', 'radioGroupItems', selectedVehiculos)
+    let selectedItems= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
+    $('#listAddCarsModal').modal('show');
+    let tabla = document.getElementById('tableAddCarsModal');
+    let tbody = tabla.getElementsByTagName('tbody')[0];
+    tbody.innerHTML = '';
+    if(selectedItems.length>0 ){
+        for (var i = 0; i < selectedItems.length; i++) {
+            let tipoCar = selectedItems[i].tipo;
+            let marcaCar = selectedItems[i].marca;
+            let modeloCar = selectedItems[i].modelo;
+            let matriculaCar = selectedItems[i].placa;
+            let colorCar = selectedItems[i].color;
             var newRow = $('<tr>');
-            newRow.append($('<td>').text(typeCar));
-            newRow.append($('<td>').text(serie_car));
+            newRow.append($('<td>').text(tipoCar));
+            newRow.append($('<td>').text(marcaCar));
+            newRow.append($('<td>').text(modeloCar));
+            newRow.append($('<td>').text(matriculaCar));
             newRow.append($('<td>').text(colorCar));
             newRow.append('</tr>');
             $('#tableAddCarsModal').append(newRow);
         }
-    }else{
+    } else{
         var newRow = $('<tr>');
         newRow.append($('<td colspan="3">').text('No existen Vehiculos Seleccionados o añadidos'));
         newRow.append('</tr>');
@@ -1000,44 +1084,43 @@ function setViewModalCard(){
     }
 }
 
+
+//FUNCION ver modal para agregar equipos
 function setViewModalItem(){
+    selectedEquipos=[]
+    getSelectedCheckbox('tableItems', 'checkboxGroupEquipos', selectedEquipos)
+    let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
+    console.log("MODAL EQUIPOS", listItemsData, selectedItems)
     $('#listAddItemsModal').modal('show');
-    if(listItemsData.length>0 || listNewItems.length>0){
-        console.log('sefswedfs',listItemsData)
-        for (var i = 0; i < listItemsData.length; i++) {
-            let check = listItemsData[i].check;
-            if(check){
-                let typeItem = listItemsData[i].type_item;
-                let modelItem = listItemsData[i].model_item;
-                let colorItem = listItemsData[i].color_item;
-                var newRow = $('<tr>');
-                newRow.append($('<td>').text(typeItem));
-                newRow.append($('<td>').text(modelItem));
-                newRow.append($('<td>').text(colorItem));
-                newRow.append('</tr>');
-                $('#tableAddItemsModal').append(newRow);
-            }
-        }
-        for (var i = 0; i < listNewItems.length; i++) {
-            let typeItem = listNewItems[i].inputTipoItem;
-            let modelItem = listNewItems[i].inputModeloItem;
-            let colorItem = listNewItems[i].inputColorItem;
+    let tabla = document.getElementById('tableAddItemsModal');
+    let tbody = tabla.getElementsByTagName('tbody')[0];
+    tbody.innerHTML = '';
+    if(selectedItems.length>0){
+        for (var i = 0; i < selectedItems.length; i++) {
+            let tipoItem = selectedItems[i].tipo;
+            let marcaItem = selectedItems[i].marca;
+            let modeloItem = selectedItems[i].modelo;
+            let serieItem = selectedItems[i].serie;
+            let colorItem = selectedItems[i].color;
             var newRow = $('<tr>');
-            newRow.append($('<td>').text(typeItem));
-            newRow.append($('<td>').text(modelItem));
+            newRow.append($('<td>').text(tipoItem));
+            newRow.append($('<td>').text(marcaItem));
+            newRow.append($('<td>').text(modeloItem));
+            newRow.append($('<td>').text(serieItem));
             newRow.append($('<td>').text(colorItem));
             newRow.append('</tr>');
             $('#tableAddItemsModal').append(newRow);
         }
     }else{
         var newRow = $('<tr>');
-        newRow.append($('<td colspan="3">').text('No existen Equipo Seleccionados o añadidos'));
+        newRow.append($('<td colspan="3">').text('No existen equipos seleccionados'));
         newRow.append('</tr>');
         $('#tableAddItemsModal').append(newRow);
     }
 }
 
-//-----Search List
+
+//FUNCION buscar curp
 function setCurpSearch(curp){
     $("#inputCodeUser").empty();
     $("#inputCodeUser").val(curp);
@@ -1045,6 +1128,8 @@ function setCurpSearch(curp){
     getDataUser();
 }
 
+
+//FUNCION ver el modal de gafete
 function getFormGafete(){
     let flaginput = false;
     let flagcheck = true;
@@ -1084,10 +1169,10 @@ function getFormGafete(){
 }
 
 
+//FUNCION rellenar catalogos al momento de escojer una opcion
 function onChangeCatalog(type, id){
     if(type == "vehiculo"){
         $("#divCatalogMarca"+id+"").show();
-
         let inputMarca= document.getElementById("selectCatalogMarca-"+id+"");
         inputMarca.value="";
         let datalistMarca= document.getElementById("datalistOptionsMarca"+id+"");
@@ -1099,22 +1184,15 @@ function onChangeCatalog(type, id){
 
         let selectedValue = $( "#selectTipoVehiculo-"+id+"" ).val();
         let catalogMarca = filterCatalogBy('type', selectedValue);
-
-
-
-
         for (let obj in catalogMarca){
-            console.log("OBJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ",catalogMarca[obj].brand)
             $("#datalistOptionsMarca"+id+"").append($('<option></option>').val(catalogMarca[obj].brand).text(catalogMarca[obj].brand));
         }
     }else if (type == "marca"){
         $("#divCatalogModelo"+id+"").show();
-
         let inputModelo= document.getElementById("selectCatalogModelo-"+id+"");
         inputModelo.value="";
         let datalistModelo= document.getElementById("datalistOptionsModelo"+id+"");
         datalistModelo.innerHTML=""; 
-
         let selectedValue = $( "#selectCatalogMarca-"+id+"" ).val();
         let catalogMarca = filterCatalogBy('brand', selectedValue);
         for (let obj in catalogMarca){
@@ -1123,11 +1201,13 @@ function onChangeCatalog(type, id){
     }
 }
 
+
+//FUNCION obtener data para rellenar los catalogos
 function getCatalogs(){
     $("#selectTipoVehiculo-123").prop( "disabled", true );
     $("#divCatalogMarca123").hide();
     $("#divCatalogModelo123").hide();
-    fetch(urlLinkaform ,{
+    fetch(url + urlScripts ,{
         method: 'POST',
         body: JSON.stringify({
             script_id: idScript,
@@ -1136,61 +1216,51 @@ function getCatalogs(){
         headers:{
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer '+userJwt
-            },
+        },
     })
     .then(res => res.json())
     .then(res => {
-        console.log("egohhol")
-
-
         if (res.success) {
-            
-
-           
         } 
     })
-
-    let cat=
-            {
-                "brands_cars": [
-                    {"type": "motocicleta", "brand": ["vento"]},
-                    {"type": "carro", "brand": ["nissan"]},
-                    {"type": "trailer", "brand": ["volvo"]},
-                ],
-                "model_cars": [
-                    {"brand": "vento", "model": ["35WFAS"]},
-                    {"brand":"suzuki", "model":["veloxs3"]},
-                    {"brand":"indian","model": ["model345"]},
-                    {"brand":"nissan", "model":["beliocks"]},
-                    {"brand":"chevrolet", "model":["345ref"]},
-                    {"brand":"ford", "model":["magic44"]},
-                    {"brand":"volvo", "model":["ref564"]},
-                    {"brand":"mercedes", "model":["mobre45"]},
-                    {"brand":"kenworth", "model":["cam213"]},
-                ],
-                "types_cars": ["motocicleta", "carro", "trailer"],
-            }
-            //dataCatalogs = res.response.data ==''? cat : res.response.data;
-            dataCatalogs=cat
-             console.log('DATATAAAAA OMGGG', dataCatalogs)
-            $("#selectTipoVehiculo-123").prop( "disabled", false );
-            $("#spinnerTipoVehiculo").css("display", "none");
-            dataCatalogs.types_cars.forEach(function(e, i){
-            $("#datalistOptionsTipo").append($('<option></option>').val(e).text(e));
-            });
-
+    let cat={
+        "brands_cars": [
+            {"type": "motocicleta", "brand": ["vento"]},
+            {"type": "carro", "brand": ["nissan"]},
+            {"type": "trailer", "brand": ["volvo"]},
+        ],
+        "model_cars": [
+            {"brand": "vento", "model": ["35WFAS"]},
+            {"brand":"suzuki", "model":["veloxs3"]},
+            {"brand":"indian","model": ["model345"]},
+            {"brand":"nissan", "model":["beliocks"]},
+            {"brand":"chevrolet", "model":["345ref"]},
+            {"brand":"ford", "model":["magic44"]},
+            {"brand":"volvo", "model":["ref564"]},
+            {"brand":"mercedes", "model":["mobre45"]},
+            {"brand":"kenworth", "model":["cam213"]},
+        ],
+        "types_cars": ["motocicleta", "carro", "trailer"],
+    }
+    //dataCatalogs = res.response.data ==''? cat : res.response.data;
+    dataCatalogs=cat
+    $("#selectTipoVehiculo-123").prop( "disabled", false );
+    $("#spinnerTipoVehiculo").css("display", "none");
+    dataCatalogs.types_cars.forEach(function(e, i){
+    $("#datalistOptionsTipo").append($('<option></option>').val(e).text(e));
+    });
 }
 
+
+//FUNCION filtrar los la data de catalogos
 function filterCatalogBy(key, value ){
-    console.log("QUE ES ESTA LLEGANDO",key, value)
-        /*INFO: 
-        key: podemos filtrar por 'type' (marca) o 'brand' (modelo)
-        value: valor de type o model segun corresponda
-        */
+    /*INFO: 
+    key: podemos filtrar por 'type' (marca) o 'brand' (modelo)
+    value: valor de type o model segun corresponda
+    */
     let dataCatalogChild="";
     if(key == 'type'){
         dataCatalogChild = dataCatalogs.brands_cars.filter(obj => obj.type == value);
-        console.log("DATA CATALOG CHILD",dataCatalogChild)
     }else{
         dataCatalogChild = dataCatalogs.model_cars.filter(obj => obj.brand == value);
     }
@@ -1198,18 +1268,18 @@ function filterCatalogBy(key, value ){
 }
 
 
-//INFO: TOMAR FOTO EN MODAL NUEVA VISITA
-
+//FUNCION validar que el canvas esta vacio
 function isCanvasBlank(canvas) {
-  const context = canvas.getContext('2d');
-  const pixelBuffer = new Uint32Array(
-    context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
-  );
+    const context = canvas.getContext('2d');
+    const pixelBuffer = new Uint32Array(
+        context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+    );
   return !pixelBuffer.some(color => color !== 0);
 }
 
+
+//FUNCION obtener la imagen del canvas
 function getScreenCard(){
-    console.log("HELLOO")
     //-----Save Photo
     if(!flagVideoCard){
         flagVideoCard = true;
@@ -1241,6 +1311,8 @@ function getScreenCard(){
     }
 }
 
+
+//FUNCION obtener la imagen del canvas
 function getScreenUser(){
     //-----Save Photo
     if(!flagVideoUser){
@@ -1273,10 +1345,11 @@ function getScreenUser(){
     }
 }
 
+
+//FUNCION obtener la imagen del canvas
 function setTranslateImageUser(context, video, canvas){
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     let photoCard = document.getElementById('imgUser');
-    console.log("PHOTOSS",photoCard)
     photoCard.src = canvas.toDataURL('image/png');
     photoCard.style.display = 'block';
     video.pause();
@@ -1302,6 +1375,8 @@ function setTranslateImageUser(context, video, canvas){
     $("#buttonSaveUser").hide();
 }
 
+
+//FUNCION obtener la imagen del canvas
 function setTranslateImageCard(context, video, canvas){
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     let photoCard = document.getElementById('imgCard');
@@ -1331,7 +1406,8 @@ function setTranslateImageCard(context, video, canvas){
     $("#buttonSaveCard").hide();
 }
 
-//------FUNCTION IMG
+
+//FUNCION obtener la url de la imagen que se subio
 function setRequestFileImg(type) {
     let idInput = '';
     if(type == 'inputCard'){
@@ -1339,10 +1415,8 @@ function setRequestFileImg(type) {
     }else if(type == 'inputUser'){
         idInput = 'inputFileUser';
     }
-
     const fileInput = document.getElementById(idInput);
     const file = fileInput.files[0];
-
     if (file) {
         const formData = new FormData();
         formData.append('File', file);
@@ -1386,4 +1460,11 @@ function setRequestFileImg(type) {
     }else{
         return 'Error';
     }
+}
+
+
+//---Cerrar Sesión
+function setCloseSession() {
+    closeSession();
+    redirectionUrl('login',false);
 }

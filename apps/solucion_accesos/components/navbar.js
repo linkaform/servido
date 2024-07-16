@@ -47,40 +47,30 @@ class lkfNavbarComponent extends HTMLElement{
 
 }
 window.customElements.define('navbar-component', lkfNavbarComponent)
- 
-
-
-    //$('#buttonAccesos').hide(); 
-    //$('#buttonBitacoras').hide(); 
-    //$('#buttonIncidencias').hide(); 
-    //$('#buttonArticulos').hide(); 
-    //$('#buttonRondines').hide(); 
-
 
 let userTurnCerrado="Turno Cerrado";
 let userTurnAbierto="Turno Abierto";
 let casetaDisponible="Disponible";
-let casetaNoDisponible="No Disponible"
+let casetaNoDisponible="No Disponible";
+let statusAbierto="abierto";
+let statusCerrado="cerrado";
 
 function changeButtonColor(){
-      $("#imageUserNavbar").attr("src", getCookie('userImg'));
+    $("#imageUserNavbar").attr("src", getCookie('userImg'));
     let user = getCookie("userId");
         let jw = getCookie("userJwt");
         if(user !='' && jw!=''){
             let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
             imagenMostradaNavbar.src= localStorage.getItem("imagenURL");
             $("#imageLinkaform").attr("src", getCookie('lkfLogo'));
-            console.log("dfgse",getValueUserLocation())
             switch (getValueUserLocation()) {
               case "accesos":
                  let btn1 = document.getElementById("buttonAccesos");
-                 console.log("btn1",getValueUserLocation())
                  btn1.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
                 break;
               case "bitacora":
                 console.log("bityytyt")
                  let btn2 = document.getElementById("buttonBitacoras");
-                     console.log("btn122",getValueUserLocation())
                  btn2.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
                 break;
               case "incidencias":
@@ -130,12 +120,9 @@ function redirectionUrl(type = 'null',blank = true){
 
     let existingTab = window.open('', type); 
     if (existingTab) {
-        //existingTab.location.href = `${protocol}//${host}/solucion_accesos/${type}.html`;
         console.dir(window.open(`${protocol}//${host}/solucion_accesos/${type}.html`, type));
-        //console.log('akjsdh',existingTab.location.href )
     } else {
         if(type == 'users'){
-            console.log("USERSS")
             urlNew = `${protocol}//${host}/solucion_accesos/accesos.html`
         }else if(type == 'bitacora'){
             urlNew = `${protocol}//${host}/solucion_accesos/bitacora.html`            
@@ -174,7 +161,4 @@ function redirectionUrl(type = 'null',blank = true){
 
 
 window.onload = function(){
-    
-    
-
 }
