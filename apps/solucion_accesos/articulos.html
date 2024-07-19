@@ -139,7 +139,7 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Registro de nuevo articulo</h1>
+					<h1 class="modal-title fs-5">Registro de nuevo articulo consecionado</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
@@ -147,10 +147,18 @@
 						<div class="mb-3 col-4">
 							<label class="form-label">Ubicación: *</label>
 							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloUbicacion">
-								<option>--Seleccione--</option>
-								<option>Casa</option>
-								<option>Edificio</option>
-								<option>Bodega</option>
+							</select>
+						</div>
+						<div class="mb-3 col-4">
+                            <label class="form-label">Lugar: *</label>
+                            <select class="form-control contentNuevoArticulo" id="idNuevoArticuloLugar">
+                            </select>
+                        </div>
+                        <div class="mb-3 col-4">
+							<label class="form-label">Estatus: *</label>
+							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloEstatus">
+								<option value="abierto" >Abierto</option>
+								<option value="cerrado" >Cerrado</option>
 							</select>
 						</div>
 						<div class="mb-3 col-4">
@@ -161,52 +169,46 @@
 							<label class="form-label">Hora: *</label>
 							<input type="time" class="form-control contentNuevoArticulo" id="idNuevoArticuloHora">
 						</div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Tipo de concesion: *</label>
+                            <select class="form-control contentNuevoArticulo" id="idNuevoArticuloTipo">
+                            </select>
+                        </div>
 						<div class="mb-3 col-6">
-							<label class="form-label">Tipo: *</label>
-							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloTipo">
-								<option>--Seleccione--</option>
-								<option>Jugete</option>
-								<option>Electrodomestico</option>
-								<option>Otro</option>
-							</select>
+							<label class="form-label">Equipo concesion: *</label>
+							<input type="text" class="form-control  contentNuevoArticulo" id="idNuevoArticuloNombre">
 						</div>
+						<!--
 						<div class="mb-3 col-6">
 							<label class="form-label">Fotografía del artículo: *</label>
 							<input type="file" class="form-control contentNuevoArticulo" id="idNuevoArticuloFoto" accept="image/png, image/jpeg"/>
 						</div>
+
 						<div class="mb-3 col-12">
 							<label class="form-label">Seríe/Número/Placa: *</label>
 							<input type="text" class="form-control contentNuevoArticulo" id="idNuevoArticuloSerie">
-						</div>
-
+						</div> 
 						<div class="mb-3 col-6">
 							<label class="form-label">Entrega: *</label>
 							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloEntrega">
 								<option>--Seleccione--</option>
 							</select>
 						</div>
+						-->
 						<div class="mb-3 col-6">
-							<label class="form-label">Departamento: *</label>
-							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloDepartamento">
-								<option>--Seleccione--</option>
+							<label class="form-label">Area del equipo: *</label>
+							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloArea">
 							</select>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Recibe: *</label>
 							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloRecibe">
-								<option>--Seleccione--</option>
-							</select>
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Departamento: *</label>
-							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloDepartamento">
-								<option>--Seleccione--</option>
 							</select>
 						</div>
 
 						<div class="mb-3 col-12">
-							<label class="form-label">Comentarios: *</label>
-							<textarea class="form-control contentNuevoArticulo" id="idNuevoArticuloComentarios" rows="3"></textarea>
+							<label class="form-label">Observaciones: *</label>
+							<textarea class="form-control contentNuevoArticulo" id="idNuevoArticuloObservaciones" rows="3"></textarea>
 						</div>
 					</div>
 					
@@ -214,7 +216,11 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="nuevoArticulo('article')">Agregar</button>
+					<button type="button" class="btn btn-success btn-sm" id="buttonNuevoArticuloCon" onclick="nuevoArticulo('article')">Agregar</button>
+					<button class="btn btn-success btn-sm" type="button" id="loadingButtonNuevoArticuloCon" style="display:none" disabled>
+                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                        Cargando...
+                    </button>
 				</div>
 			</div>
 		</div>
@@ -225,37 +231,43 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Registro de nueva falla</h1>
+					<h1 class="modal-title fs-5">Editar articulo concesionado</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div class="row">
 						<div class="mb-3 col-4">
 							<label class="form-label">Ubicación: *</label>
-							<select class="form-control">
-								<option>--Seleccione--</option>
-								<option>Casa</option>
-								<option>Edificio</option>
-								<option>Bodega</option>
+							<select class="form-control contentEditArticulo" id="idEditArticuloUbicacion">
+							</select>
+						</div>
+						
+						<div class="mb-3 col-4">
+                            <label class="form-label">Lugar: *</label>
+                            <select class="form-control contentEditArticulo" id="idEditArticuloLugar">
+                            </select>
+                        </div>
+                        <div class="mb-3 col-4">
+							<label class="form-label">Estatus: *</label>
+							<select class="form-control contentEditArticulo" id="idEditArticuloEstatus">
+								<option value="abierto" >Abierto</option>
+								<option value="cerrado" >Cerrado</option>
 							</select>
 						</div>
 						<div class="mb-3 col-4">
 							<label class="form-label">Fecha: *</label>
-							<input type="date" class="form-control">
-						</div>
-						<div class="mb-3 col-4">
-							<label class="form-label">Hora: *</label>
-							<input type="time" class="form-control">
+							<input type="datetime-local" class="form-control contentEditArticulo" id="idEditArticuloFecha">
 						</div>
 						<div class="mb-3 col-6">
-							<label class="form-label">Tipo: *</label>
-							<select class="form-control">
-								<option>--Seleccione--</option>
-								<option>Jugete</option>
-								<option>Electrodomestico</option>
-								<option>Otro</option>
-							</select>
+                            <label class="form-label">Tipo de concesion: *</label>
+                            <select class="form-control contentEditArticulo" id="idEditArticuloTipo">
+                            </select>
+                        </div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Equipo concesion: *</label>
+							<input type="text" class="form-control  contentEditArticulo" id="idEditArticuloNombre">
 						</div>
+						<!--
 						<div class="mb-3 col-6">
 							<label class="form-label">Seríe/Número/Placa: *</label>
 							<input type="text" class="form-control">
@@ -274,28 +286,33 @@
 								<option>--Seleccione--</option>
 							</select>
 						</div>
+
 						<div class="mb-3 col-6">
 							<label class="form-label">Departamento: *</label>
 							<select class="form-control">
 								<option>--Seleccione--</option>
+							</select>
+						</div>
+					-->
+						
+						<div class="mb-3 col-6">
+							<label class="form-label">Area del equipo: *</label>
+							<select class="form-control contentEditArticulo" id="idEditArticuloArea">
 							</select>
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Recibe: *</label>
-							<select class="form-control">
-								<option>--Seleccione--</option>
-							</select>
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Departamento: *</label>
-							<select class="form-control">
-								<option>--Seleccione--</option>
+							<select class="form-control contentEditArticulo" id="idEditArticuloRecibe">
 							</select>
 						</div>
 
 						<div class="mb-3 col-12">
-							<label class="form-label">Comentarios: *</label>
-							<textarea class="form-control"  rows="3"></textarea>
+							<label class="form-label">Observaciones: *</label>
+							<textarea class="form-control contentEditArticulo" id="idEditArticuloObservaciones" rows="3"></textarea>
+						</div>
+						<div class="mb-3 col-4">
+							<label class="form-label">Fecha devolucion consecion: *</label>
+							<input type="datetime-local" class="form-control contentEditArticulo" id="idEditArticuloFechaDevolucion">
 						</div>
 					</div>
 					
@@ -303,7 +320,11 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm">Agregar</button>
+					<button type="button" class="btn btn-success btn-sm" id="buttonEditArticuloCon" onclick="editarArticuloConModal()">Editar</button>
+					<button class="btn btn-success btn-sm" type="button" id="loadingButtonEditArticuloCon" style="display:none" disabled>
+                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                        Cargando...
+                    </button>
 				</div>
 			</div>
 		</div>
@@ -419,50 +440,53 @@
 					<div class="row">
 						<div class="mb-3 col-4">
                             <label class="form-label">Ubicación: *</label>
-                            <select class="form-control contentNuevaArticuloLose" id="ubicacionNuevaIncidencia">
+                            <select class="form-control contentNuevaArticuloLose" id="idUbicacionNuevoArticuloLose">
                             </select>
 						</div>
 						<div class="mb-3 col-4">
-                            <label class="form-label">Area: *</label>
-                            <select class="form-control contentNuevaArticuloLose" id="areaNuevaIncidencia">
+                            <label class="form-label">Area del articulo: *</label>
+                            <select class="form-control contentNuevaArticuloLose" id="idAreaNuevoArticuloLose">
                             </select>
 						</div>
 						<div class="mb-3 col-4">
                             <label class="form-label">Estatus: *</label>
-                            <select class="form-control contentNuevaArticuloLose" id="statusNuevaIncidencia">
-                            	<option value="cerrado">Cerrado</option>
+                            <select class="form-control contentNuevaArticuloLose" id="idStatusNuevoArticuloLose">
                                 <option value="abierto">Abierto</option>
+                            	<option value="cerrado">Cerrado</option>
                             </select>
 						</div>
 						<div class="mb-3 col-4">
 							<label class="form-label">Fecha: *</label>
-							<input type="date" class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConFecha">
-						</div>
-						<div class="mb-3 col-4">
-							<label class="form-label">Hora: *</label>
-							<input type="time" class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConHora">
+							<input type="datetime-local" class="form-control contentNuevoArticuloLose" id="idFechaNuevoArticuloLose">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Nombre del Artículo: *</label>
-							<input type="text" class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConArticulo">
+							<input type="text" class="form-control contentNuevoArticuloLose" id="idNombreNuevoArticuloLose">
 						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Fotografía del artículo: *</label>
-							<input type="file" class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConFoto" accept="image/png, image/jpeg"/>
-						</div>
+						<div id="foto-input-form">
+                            <div class="d-flex mb-3 col-12  div-foto-123" id="id-foto-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Fotografia *</label>
+                                    <input type="file" class="form-control-file foto-div" onchange="guardarArchivos('fileInputFotografia')"  id="fileInputFotografia">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Reporta: *</label>
-							<select class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConReporta">
-							</select>
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Departamento: *</label>
-							<select class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConDepartamento">
+							<select class="form-control contentNuevoArticuloLose" id="idGuardiaNuevoArticuloLose">
 							</select>
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Comentarios: *</label>
-							<textarea class="form-control contentNuevoArticuloLose" id="idNuevoArticuloConComentarios" rows="3"></textarea>
+							<textarea class="form-control contentNuevoArticuloLose" id="idComentarioNuevoArticuloLose" rows="3"></textarea>
 						</div>
 					</div>
 					
@@ -470,7 +494,11 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="nuevoArticulo('articleLose')">Agregar</button>
+					<button type="button" class="btn btn-success btn-sm" id="buttonEditArticuloLose" onclick="nuevoArticulo('articleLose')">Editar</button>
+					<button class="btn btn-success btn-sm" type="button" id="loadingButtonEditArticuloLose" style="display:none" disabled>
+                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                        Cargando...
+                    </button>
 				</div>
 			</div>
 		</div>
@@ -481,31 +509,32 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Actualizar articulo</h1>
+					<h1 class="modal-title fs-5">Actualizar articulo perdido</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div class="row">
 						<div class="mb-3 col-4">
 							<label class="form-label">Ubicación: *</label>
-							<select class="form-control articleCon-edit" id="editArticleConUbicacion">
+							<select class="form-control articleCon-edit" id="idUbicacionEditArticuloLose">
 							</select>
 						</div>
 						<div class="mb-3 col-4">
-							<label class="form-label">Fecha: *</label>
-							<input type="date" class="form-control articleCon-edit" id="editArticleConFecha">
+                            <label class="form-label">Area del articulo: *</label>
+                            <select class="form-control contentNuevaArticuloLose" id="idAreaEditArticuloLose">
+                            </select>
 						</div>
 						<div class="mb-3 col-4">
-							<label class="form-label">Hora: *</label>
-							<input type="time" class="form-control articleCon-edit" id="editArticleConHora">
+							<label class="form-label">Fecha: *</label>
+							<input type="datetime-local" class="form-control articleCon-edit" id="idFechaEditArticuloLose">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Artículo: *</label>
-							<input type="text" class="form-control articleCon-edit" id="editArticleConArticulo">
+							<input type="text" class="form-control articleCon-edit" id="idArticuloEditArticuloLose">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Tipo: *</label>
-							<select class="form-control articleCon-edit" id="editArticleConTipo">
+							<select class="form-control articleCon-edit" id="idTipoEditArticuloLose">
 							</select>
 						</div>
 						<div class="mb-3 col-12">
@@ -515,18 +544,19 @@
 								<img src="" class="articleCon-edit" id="editArticleConFoto"  width="220" height="150">
 							</div>						
 						</div>
+						<!--
 						<div class="mb-3 col-6">
 							<label class="form-label">No. serie: *</label>
 							<input type="text" class="form-control  articleCon-edit" id="editArticleConNoSerie">
-						</div>
+						</div> -->
 						<div class="mb-3 col-6">
 							<label class="form-label">Reporta: *</label>
-							<select class="form-control  articleCon-edit" id="editArticleConReporta">
+							<select class="form-control  articleCon-edit" id="idGuardiaEditArticuloLose">
 							</select>
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Comentarios: *</label>
-							<textarea class="form-control  articleCon-edit" id="editArticleConComentarios"  rows="3"></textarea>
+							<textarea class="form-control  articleCon-edit" id="idCommentarioEditArticuloLose"  rows="3"></textarea>
 						</div>
 					</div>
 					

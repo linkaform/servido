@@ -8,6 +8,7 @@ window.onload = function(){
 	changeButtonColor();
 	fillCatalogs();
 	getCatalogs();
+    customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	selectLocation= document.getElementById("selectLocation")
 	selectLocation.onchange = function() {
         let response = fetchOnChangeLocation()

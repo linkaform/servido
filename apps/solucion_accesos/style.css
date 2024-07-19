@@ -498,3 +498,7 @@ input[type=search]{
   top: 0 !important; 
   z-index: 1 !important;
 }
+
+.ocultar{
+  display: none!important;
+}

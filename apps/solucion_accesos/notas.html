@@ -123,15 +123,11 @@
                                 <option value="abierto">Abierto</option>
                             </select>
                         </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Fecha y hora de creación: *</label>
-                            <input type="datetime-local" class="form-control nueva-nota" id="fechaNuevaNota">
-                        </div>
                          <div id="archivo-input-form">
-                            <div class="d-flex mb-3 col-12  div-archivo-123" id="id-archivo-div-123">
+                            <div class="d-flex mb-3 col-12 div-archivo-123" id="id-archivo-div-123">
                                 <div class="flex-grow-1">
                                     <label class="form-label">Cargar un archivo *</label>
-                                    <input type="file" class="form-control-file archivo-div" id="fileInputArchivo">
+                                    <input type="file" class="form-control-file archivo-div" onchange="guardarArchivos('fileInputArchivo');" id="fileInputArchivo">
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
@@ -147,7 +143,7 @@
                             <div class="d-flex mb-3 col-12  div-foto-123" id="id-foto-div-123">
                                 <div class="flex-grow-1">
                                     <label class="form-label">Fotografia *</label>
-                                    <input type="file" class="form-control-file foto-div" id="fileInputFotografia">
+                                    <input type="file" class="form-control-file foto-div" onchange="guardarArchivos('fileInputFotografia');" id="fileInputFotografia">
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
@@ -159,21 +155,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-success btn-sm" id="idButtonCargarArchivos" onclick="guardarArchivos()">Guardar archivos</button>
-                            <button class="btn btn-success btn-sm" type="button" id="idLoadingButtonArchivos" disabled>
-                                  <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
-                                  Cargando...
-                            </button>
-                        </div>
-                        <div class="mb-3 col-12">
-                            
-                        </div>
                         <div id="comment-input-form">
-                            <div class="d-flex mb-3 div-comment-123 " id="id-comment-div-123">
+                            <div class="d-flex mb-3 div-comment-123 " id="div-comment-123">
                                 <div class="flex-grow-1">
                                     <label class="form-label">Comentario *</label>
-                                    <textarea class="form-control nueva-nota" id="comentarioNuevaNota" rows="3" placeholder="Escribe algo..."></textarea>
+                                    <textarea class="form-control comment-div" id="comentarioNuevaNota" rows="3" placeholder="Escribe algo..."></textarea>
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-success button-add-register " onclick="setAddComentario();return false;">
@@ -253,7 +239,7 @@
                             <div class="mb-3 col-12 archivo-div div-archivo-123">
                                  <div class="flex-grow-1">
                                     <label class="form-label">Cargar un archivo *</label>
-                                    <input type="file" class="form-control-file " id="fileInputArchivo">
+                                    <input type="file" class="form-control-file" id="fileInputArchivo">
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
@@ -285,7 +271,7 @@
                             <div class="d-flex mb-3 div-comment-123 " id="id-comment-div-123">
                                 <div class="flex-grow-1">
                                     <label class="form-label">Comentario *</label>
-                                    <textarea class="form-control edit-nota" id="inputComentarioNota" rows="3" placeholder="Escribe algo..."></textarea>
+                                    <textarea class="form-control comment-nota" id="inputComentarioNota" rows="3" placeholder="Escribe algo..."></textarea>
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-success button-add-register " onclick="setAddComentario();return false;">

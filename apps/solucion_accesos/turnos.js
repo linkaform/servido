@@ -111,8 +111,8 @@ function getAllData(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            console.log("+++++++++++++++++++++++  res DATA TURNOS   +++++++++++++++++++++++++++",res)
             let data=res.response.data
+            console.log("+++++++++++++++++++++++  res DATA TURNOS   +++++++++++++++++++++++++++",data.guard.location)
             let loc= data.location
             let guard= data.guard
             let notes= data.notes
@@ -121,6 +121,7 @@ function getAllData(){
             if(user !='' && userJwt!=''){
                 if(data.support_guards.length > 0){
                     for(let guard of data.support_guards){
+                        if(guard.user_id.toString() !==  getCookie('userId').toString())
                         dataTableGuardiasApoyo.push({name:guard.employee, status: '', img: guard.picture? guard.picture[0].file_url :'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1', fechaInicio: '', id:guard.user_id})
                     }  
                 }else{
@@ -195,13 +196,15 @@ function loadBooths(){
 
 //FUNCION Toda la inciializacion de cookies y variables necesarias para el funcionamiento de la pantalla
 function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
-    caseta=loc.area;
-    ubicacion=loc.name;
+    caseta=guard.area;
+    ubicacion=guard.location;
     $("#textCuidad").text(loc.city)
     $("#textEstado").text(loc.state)
     $("#textDireccion").text(loc.address)
-    setCookie('userCaseta',getCookie('userCaseta')|| caseta,7)
-    setCookie('userLocation',getCookie('userLocation')|| ubicacion,7)
+    console.log("HIII", caseta, ubicacion)
+
+    setCookie('userCaseta',caseta ,7)
+    setCookie('userLocation',ubicacion ,7)
     $("#textCaseta").text(getCookie('userCaseta'))
     $("#textUbicacion").text(getCookie('userLocation'))
     setCookie('userCasetaStatus', booth_status.status,7)
@@ -381,11 +384,10 @@ function changeStatusTurn(buttonClick){
             guardiasEnTurno = guardiasEnTurno.concat(dataTableGuardiasApoyo.filter(e => e.id == g.user_id))
             idGuardiasEnTurno.push("inp-"+ g.user_id)
             idGuardiasEnTurno.push("btn-"+ g.user_id)
-            inputSelectedGuards.push({"username":guardia.username,"user_id": guardia.user_id })
+            inputSelectedGuards.push({"username":g.username,"user_id": g.user_id })
         } 
         //FETCH PARA CMABIAR ESTUS DEL GUARDIA AQUI
         if(estatusActual == userTurnAbierto ){
-            console.log("DATAA QUE TENEMOS CHECK OUT",estatusActual)
             fetch(url + urlScripts, {
                 method: 'POST',
                 body: JSON.stringify({
@@ -404,10 +406,10 @@ function changeStatusTurn(buttonClick){
             .then(res => {
                 if (res.success) {
                     casetaActualizarEstatus(turnoCerrado, casetaDisponible)
+                    customNavbar(getValueUserLocation(), userTurnCerrado);
                     setCookie('userCasetaStatus',casetaDisponible,7)
                     setCookie('userTurn',turnoCerrado,7)
                     turnoCerrado(idGuardiasEnTurno)
-                    console.log("CHECKOUTTTTTT ",res)
                 } 
             })
             
@@ -432,12 +434,12 @@ function changeStatusTurn(buttonClick){
                 if (res.success) {
                     setCookie('userCasetaStatus',casetaNoDisponible,7)
                     setCookie('userTurn',turnoAbierto,7)
+                    customNavbar(getValueUserLocation(),userTurnAbierto);
                     casetaActualizarEstatus(turnoAbierto, casetaNoDisponible)
                     turnoAbierto(idGuardiasEnTurno)
                     $("#textGuardiaEnTurno").text(res.response.data.json.boot_status.guard_on_duty)
                     $("#textFechaInicioCaseta").text(res.response.data.json.created_at)
                     thisUserCheckInId=res.response.data.json.id
-                    console.log("thisUserCheckInId",thisUserCheckInId, res.response.data.json.boot_status.guard_on_duty)
                 }
             })
             
@@ -798,7 +800,6 @@ function casetaActualizarEstatus(userTurn, userCasetaStatus){
     //setCookie("userTurn",userCasetaStatus == casetaDisponible? userTurnCerrado : userTurnAbierto , 7);
 
     if(userCasetaStatus== casetaDisponible){
-         console.log("ACTUALIZARRR  TURNO ABIERTO",userCasetaStatus, casetaDisponible)
         $("#textEstatusCaseta").text(casetaDisponible);
         $("#headGuardiaEnTurno").text("")
         $("#headFechaInicioTurno").text("")
@@ -807,20 +808,17 @@ function casetaActualizarEstatus(userTurn, userCasetaStatus){
         $("#textFechaInicioCaseta").text("");
 
     }else if (userCasetaStatus== casetaNoDisponible){
-         console.log("ACTUALIZARRR  TURNO ABIERTO",userCasetaStatus,casetaNoDisponible)
         $("#textEstatusCaseta").text(casetaNoDisponible);
         $("#headGuardiaEnTurno").text("Guardia en turno: ");
         $("#headFechaInicioTurno").text("Fecha de inicio de turno: ");
         $("#buttonForzarCierre").show();
     }
     if(userTurn== userTurnAbierto && userCasetaStatus== casetaNoDisponible){
-        console.log("ACTUALIZARRR  TURNO ABIERTO")
         $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
         $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
         $("#textFechaInicioCaseta").text(booth_status.stated_at);
 
     }else if (userTurn== userTurnCerrado && userCasetaStatus== casetaDisponible){
-        console.log("ACTUALIZAR TURNO CERRADOOOO")
         $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
         $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
         $("#textFechaInicioCaseta").text(booth_status.stated_at);

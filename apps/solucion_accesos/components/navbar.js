@@ -14,11 +14,11 @@ class lkfNavbarComponent extends HTMLElement{
 			<img src="" height="40" height="60" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
         </div>
         <div class="navbar-brand navbarShowHide customNoBorder">
-            <button id='buttonAccesos' class="btn btn-sm btn-secondary custom-navbar-button"  onclick="redirectionUrl('accesos');return false;" >Accesos</button>   
-            <button id='buttonBitacoras' class="btn btn-sm btn-secondary custom-navbar-button" onclick="redirectionUrl('bitacora');return false;" >Bitacoras</button>   
-            <button id='buttonIncidencias' class="btn btn-sm btn-secondary custom-navbar-button" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
-            <button id='buttonArticulos' class="btn btn-sm btn-secondary custom-navbar-button" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
-            <button id='buttonRondines' class="btn btn-sm btn-secondary custom-navbar-button" onclick="redirectionUrl('rondines');return false;">Rondines</button>   
+            <button id='buttonAccesos' class="btn btn-sm btn-secondary custom-navbar-button ocultar"  onclick="redirectionUrl('accesos');return false;" >Accesos</button>   
+            <button id='buttonBitacoras' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('bitacora');return false;" >Bitacoras</button>   
+            <button id='buttonIncidencias' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
+            <button id='buttonArticulos' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
+            <button id='buttonRondines' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('rondines');return false;">Rondines</button>   
             <div class="btn p-0 ms-2 customNoBorder">
 			  <button type="button" class=" rounded-circle btn btn-secondary" id="imageUserButton" data-bs-toggle="dropdown" >
 				<img src="" id="imageUserNavbar">
@@ -90,20 +90,20 @@ function changeButtonColor(){
 }
 
 function customNavbar(location, turno){
-     if(location === 'turnos' && turno === userTurnCerrado || location === 'accesos' && turno === userTurnCerrado){
-        $('#buttonAccesos').hide(); 
-        $('#buttonBitacoras').hide(); 
-        $('#buttonIncidencias').hide(); 
-        $('#buttonArticulos').hide(); 
-        $('#buttonRondines').hide(); 
-     }else if(location === 'turnos' && turno === userTurnAbierto || location === 'accesos' && turno === userTurnAbierto){
-        $('#buttonAccesos').show(); 
-        $('#buttonBitacoras').show(); 
-        $('#buttonIncidencias').show(); 
-        $('#buttonArticulos').show(); 
-        $('#buttonRondines').show(); 
+    console.log("EN TURNOS",location,turno)
+     if(turno === userTurnCerrado ){
+        $('#buttonAccesos').addClass('ocultar');
+        $('#buttonBitacoras').addClass('ocultar');
+        $('#buttonIncidencias').addClass('ocultar');
+        $('#buttonArticulos').addClass('ocultar');
+        $('#buttonRondines').addClass('ocultar');
+     }else if(turno === userTurnAbierto){
+        $('#buttonAccesos').removeClass("ocultar"); 
+        $('#buttonBitacoras').removeClass("ocultar"); 
+        $('#buttonIncidencias').removeClass("ocultar"); 
+        $('#buttonArticulos').removeClass("ocultar"); 
+        $('#buttonRondines').removeClass("ocultar"); 
      }
-
 }
 
 //---Close Sesión

@@ -10,6 +10,7 @@ window.onload = function(){
 	userJwt = getCookie("userJwt");
     
 	setValueUserLocation('incidencias');
+    customNavbar(getValueUserLocation(), getCookie('userTurn'))
     getAllDataIncidencias();
 
     getAllDataFallas();
@@ -54,19 +55,6 @@ function reemplazarConVacio(obj) {
   }
 }
 
-
-
-function encontrarCambios(objetoOriginal, objetoEditado) {
-  let cambios = {};
-  for (let key in objetoOriginal) {
-    if (objetoOriginal.hasOwnProperty(key) && objetoEditado.hasOwnProperty(key)) {
-      if (objetoOriginal[key] !== objetoEditado[key]) {
-        cambios[key] = objetoEditado[key]
-      }
-    }
-  }
-  return cambios;
-}
 
 //FUNCION que trae la informacion de carga
 function getAllDataIncidencias(){

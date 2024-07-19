@@ -5,14 +5,15 @@ let articulosConcesionados=[]
 let colors = getPAlleteColors(12,0)
 let selectedRowFolio=""
 let userJwt=""
-
+let arrayResponses=[]
 
 window.onload = function(){
 	setValueUserLocation('articulos');
+    customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	let user = getCookie("userId");
     userJwt = getCookie("userJwt");
     changeButtonColor();
-	getInfoCatalogs();
+    getInfoCatalogs();
     fillCatalogs();
 
     allDataArticulosCon();
@@ -54,14 +55,14 @@ window.onload = function(){
 
 
 function allDataArticulosPer(){
-    console.log("DQTTOS", getCookie('userCaseta'), getCookie('userLocation'),userJwt )
+    console.log("DQTTOS", getCookie('userCaseta'), getCookie('userLocation'))
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name:'articulos_perdidos.py',
             option:'get_articles',
             location: getCookie('userLocation'),
-            area: getCookie('userCaseta'),
+            area: getCookie('userCaseta')
         }),
         headers:
         {
@@ -122,10 +123,19 @@ function allDataArticulosCon(){
                     let data=res.response.data
                     if(data.length >0){
                         for(let articulo of data){
-                            
+                            let dateFormat= articulo.fecha_concesion.slice(0,-3)
+                            let dateFormat2=''
+                            if(articulo.hasOwnProperty('fecha_devolucion_concesion')){
+                                dateFormat2= articulo.fecha_devolucion_concesion.slice(0,-3)
+                            }
+                            dataTableArticles.push({folio:articulo.folio,ubicacion_concesion:articulo.ubicacion_concesion||"",
+                            equipo_concesion:articulo.equipo_concesion||"", fecha_concesion:dateFormat||"",caseta_concesion:articulo.caseta_concesion||"",
+                            area_concesion:articulo.area_concesion||"", solicita_concesion: articulo.solicita_concesion,
+                            observacion_concesion:articulo.observacion_concesion||"", nombre_concesion:articulo.nombre_concesion||"",fecha_devolucion_concesion:dateFormat2,
+                            status_concesion:articulo.status_concesion})
                         }
                     }else{
-                        dataTablearticulosCon = []
+                        dataTableArticles = []
                     }
                    
                     drawTable('tableArticles', columsDataArticles, dataTableArticles);
@@ -145,55 +155,161 @@ function allDataArticulosCon(){
 
 //FUNCION Otener informacion inciia
 function getInfoCatalogs(){
-	 //INFO: poner aqui FETCH para traer los catalogos y la informacion de las tablas y lo sig agregarlo dentro del response
      fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_name: scriptName,
-        }),
-        headers:
+    method: 'POST',
+    body: JSON.stringify({
+        script_name: 'script_turnos.py',
+        option:'get_user_booths'
+    }),
+    headers:
         {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt
+            'Authorization': 'Bearer '+jw
         },
     })
     .then(res => res.json())
     .then(res => {
         if (res.success) {
+            if(user !='' && userJwt!=''){
+                arrayUserBoothsLocations=[]
+                let userBooths=res.response.data
+                if(userBooths.length>0){
+                    for(let booth of userBooths){
+                        arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio})
+                    }
+
+                     dataCatalogs={
+                        "persona_nombre_concesion":["Fernando Sntibañez", "Jacinto Sánchez Hil"],
+                        "guard_perdido":["Fernando Sntibañez", "Jacinto Sánchez Hil"],
+                        //"department":["Seguridad","Departamento 2","Departamento 3"],
+                        "solicita_concesion":["compartida", "persona", "area"],
+                        "articulos":{"concession_articles": 15,"lost_articles":20},
+                        "area_concesion":["Recursos eléctricos","Recursos eléctricos"],
+                        "area_perdido":["Recursos eléctricos","Recursos eléctricos"]
+                    }
+                    initializeCatalogsArticulosCon(dataCatalogs,arrayUserBoothsLocations)
+                    initializeCatalogsArticulosLose(dataCatalogs,arrayUserBoothsLocations)
+                }else{
+                    arrayUserBoothsLocations=[]
+                }
+            }
         }
-    });
+    })
+	//INFO: poner aqui FETCH para traer los catalogos y la informacion de las tablas y lo sig agregarlo dentro del response
     //INFO: los array que estan en el archivo incidencias data se llenaran desde esta fetch
     //al igual aqui se llenara la iformacion de la tablas, dataTableArticle y dataTableArticleLose
-    dataCatalogs={
-        "location":["Estacionamiento", "Edificio", "Casa"],
-        "entrega":["Miguel Perez","Manuel Gonzales","Erik Lopez","Lucia Carvajal"],
-        "department":["Seguridad","Departamento 2","Departamento 3"],
-        "recibe":["Jose Patricio","Josue de Jesus","Karina Moreno"],
-        "articulos":{"concession_articles": 15,"lost_articles":20},
-        "type":["Electrodomesticos","Eletronicos","Ropa", "Alimentos", "Hogar y Jardin", "Jugetes y juegos","Articulo sin categoria"]
-    }
-	dataCatalogs.location.forEach(function(e, i){
-        $("#idUbicacionArticles").append($('<option></option>').val(e).text(e));
-        $("#idUbicacionArticlesLose").append($('<option></option>').val(e).text(e));
-        $("#editArticleConUbicacion").append($('<option></option>').val(e).text(e));
-        $("#editArticleConUbicacionA").append($('<option></option>').val(e).text(e));
+}
+
+
+function initializeCatalogsArticulosCon(dataCatalogs,arrayUserBoothsLocations){
+    arrayUserBoothsLocations.forEach(function(e, i){
+        $("#idUbicacionArticles").append($('<option></option>').val(e.ubi).text(e.ubi));
+        $("#idNuevoArticuloUbicacion").append($('<option></option>').val(e.ubi).text(e.ubi));
+        $("#idNuevoArticuloLugar").append($('<option></option>').val(e.name).text(e.name));
+
+        $("#idEditArticuloUbicacion").append($('<option></option>').val(e.ubi).text(e.ubi));
+        $("#idEditArticuloLugar").append($('<option></option>').val(e.name).text(e.name));
+        $("#idEditArticuloUbicacion").val("")
+        $("#idEditArticuloLugar").val("")
+
+        $("#idUbicacionArticlesLose").append($('<option></option>').val(e.ubi).text(e.ubi));
+        $("#editArticleConUbicacion").append($('<option></option>').val(e.ubi).text(e.ubi));
+        $("#editArticleConUbicacionA").append($('<option></option>').val(e.ubi).text(e.ubi));
+
         $("#editArticleConUbicacionA").val("")
         $("#editArticleConUbicacion").val("")
         $("#idUbicacionArticles").val("")
         $("#idUbicacionArticlesLose").val("")
+        $("#idNuevoArticuloUbicacion").val("")
+        $("#idNuevoArticuloLugar").val("")
     });
-    dataCatalogs.type.forEach(function(e, i){
+    dataCatalogs.solicita_concesion.forEach(function(e, i){
+        $("#idNuevoArticuloTipo").append($('<option></option>').val(e).text(e))
         $("#editArticleConTipo").append($('<option></option>').val(e).text(e));
         $("#editArticleConTipo").val("")
+        $("#idNuevoArticuloTipo").val("")
+        $("#idEditArticuloTipo").append($('<option></option>').val(e).text(e));
+        $("#idEditArticuloTipo").val("")
     });
-    dataCatalogs.entrega.forEach(function(e, i){
-        $("#editArticleConReporta").append($('<option></option>').val(e).text(e));
-        $("#editArticleConReporta").val("")
+    dataCatalogs.persona_nombre_concesion.forEach(function(e, i){
+        $("#idEditArticuloRecibe").append($('<option></option>').val(e).text(e));
+        $("#idNuevoArticuloRecibe").append($('<option></option>').val(e).text(e));
+        $("#idEditArticuloRecibe").val("")
+        $("#idNuevoArticuloRecibe").val("")
+
+    });
+    dataCatalogs.area_concesion.forEach(function(e, i){
+        $("#idNuevoArticuloArea").append($('<option></option>').val(e).text(e));
+        $("#idNuevoArticuloArea").val("")
+        $("#idEditArticuloArea").append($('<option></option>').val(e).text(e));
+        $("#idEditArticuloArea").val("")
     });
 
     $("#textConcessionArticles").text(dataCatalogs.articulos.concession_articles)
     $("#textLostArticles").text(dataCatalogs.articulos.lost_articles)
 }
+
+
+function initializeCatalogsArticulosLose(dataCatalogs,arrayUserBoothsLocations){
+    arrayUserBoothsLocations.forEach(function(e, i){
+        $("#idUbicacionNuevoArticuloLose").append($('<option></option>').val(e.ubi).text(e.ubi));
+        $("#idUbicacionNuevoArticuloLose").val("")
+        $("#idUbicacionEditArticuloLose").append($('<option></option>').val(e.ubi).text(e.ubi));
+        $("#idUbicacionEditArticuloLose").val("")
+    });
+    dataCatalogs.guard_perdido.forEach(function(e, i){
+        $("#idGuardiaNuevoArticuloLose").append($('<option></option>').val(e).text(e))
+        $("#idGuardiaNuevoArticuloLose").val("")
+        $("#idGuardiaEditArticuloLose").append($('<option></option>').val(e).text(e))
+        $("#idGuardiaEditArticuloLose").val("")
+    });
+    dataCatalogs.area_perdido.forEach(function(e, i){
+        $("#idAreaNuevoArticuloLose").append($('<option></option>').val(e).text(e));
+        $("#idAreaNuevoArticuloLose").val("")
+        $("#idAreaEditArticuloLose").append($('<option></option>').val(e).text(e));
+        $("#idAreaEditArticuloLose").val("")
+    });
+    $("#textConcessionArticles").text(dataCatalogs.articulos.concession_articles)
+    $("#textLostArticles").text(dataCatalogs.articulos.lost_articles)
+}
+
+//FUNCION para agregar foto en el modal de agregar nota
+function setAddFoto(){
+    let randomID = Date.now();
+    let newItem=`
+        <div class="d-flex mb-3 col-12  div-foto-`+randomID+`" id="id-foto-div-`+randomID+`">
+            <div class="flex-grow-1">
+                <label class="form-label">Fotografia *</label>
+                <input type="file" class="form-control-file foto-div" onchange="guardarArchivos('fileInputFotografia-`+randomID+`')" id="fileInputFotografia-`+randomID+`"">
+                
+            </div>
+            <div>
+                <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(`+randomID+`);return false;">
+                   <i class="fa-solid fa-minus"></i>
+                </button>
+            </div>
+        </div>
+    `;
+    $('#foto-input-form').append(newItem) 
+}
+
+
+//FUNCION para elimar foto en el modal de agregar nota
+function setDeleteFoto(id){
+    const elements = document.querySelectorAll('.foto-div');
+    const count = elements.length;
+    if(count > 1){
+        const elements = document.getElementsByClassName('div-foto-'+id);
+        while(elements.length > 0){
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+    }
+}
+
+
 
 //funcion Escojer modales
 function setModal(type = 'none',id){
@@ -249,21 +365,40 @@ function getInputsValueByClass(classInput){
 
 //FUNCION agregar nuevo articulo
 function nuevoArticulo(type){
-    $("#loadingButtonAgregarArticleLose").show();
-    $("#buttonAgregarArticleLose").hide();
+    $("#loadingButtonNuevoArticuloCon").show();
+    $("#buttonNuevoArticuloCon").hide();
     let data = getInputsValueByClass("contentNuevoArticulo")
+    console.log('data',data)
+
+    let data_article = {
+        'status_concesion':data.idNuevoArticuloEstatus,
+        'ubicacion_concesion':data.idNuevoArticuloUbicacion,
+        'solicita_concesion':data.idNuevoArticuloTipo,
+        'persona_nombre_concesion':data.idNuevoArticuloRecibe,
+        'caseta_concesion':data.idNuevoArticuloLugar,
+        'fecha_concesion':data.idNuevoArticuloFecha +" "+ data.idNuevoArticuloHora+":00",
+        'area_concesion':data.idNuevoArticuloArea,
+        'equipo_concesion':data.idNuevoArticuloNombre,
+        'observacion_concesion':data.idNuevoArticuloObservaciones,
+        'fecha_devolucion_concesion':'', 
+    }
+
     if(!validarObjeto(data)){
         Swal.fire({
             title: "Validación",
             text: "Faltan campos por llenar, los campos marcados con asterisco son obligatorios.",
             type: "warning"
         });
+        $("#loadingButtonNuevoArticuloCon").hide();
+        $("#buttonNuevoArticuloCon").show();
     } else {
         //INFO: Poner FETCH AQUI para enviar el nuevo registro de incidencia
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
-                script_name: 'articulos_consesionados.py',
+                script_name:"articulos_consecionados.py",
+                option:"new_article",
+                data_article: data_article
             }),
             headers:
             {
@@ -274,23 +409,143 @@ function nuevoArticulo(type){
         .then(res => res.json())
         .then(res => {
             if (res.success) {
-                //INFO devolverme la informacion actualizada o simplemente actualizar el array ya que tenemos response success
+              let data=res.response.data
+                if(data.status_code==400){
+                    let errores=[]
+                    for(let err in data.json){
+                        errores.push(data.json[err].label+': '+data.json[err].msg)
+                    }
+                    console.log(res.response.data.json.msg)
+                    Swal.fire({
+                        title: "Error",
+                        text: errores.flat(),
+                        type: "error"
+                    });
+                    $("#loadingButtonNuevoArticuloCon").hide();
+                    $("#buttonNuevoArticuloCon").show();
+                }else if(data.status_code==202 || data.status_code==201){
+                    Swal.fire({
+                        title: "Confirmación",
+                        text: "Articulo consesionado creado correctamente.",
+                        type: "success"
+                    });
+                    
+                    let formatDate= data_article.fecha_concesion.slice(0,-3)
+                    data_article.fecha_concesion= formatDate
+
+                    dataTableArticles.push({folio:data.json.folio,ubicacion_concesion:data_article.ubicacion_concesion||"",
+                            equipo_concesion:data_article.equipo_concesion||"", fecha_concesion:data_article.fecha_concesion||"",
+                            area_concesion:data_article.area_concesion||"", 
+                            observacion_concesion:data_article.observacion_concesion||"", 
+                            nombre_concesion:data_article.nombre_concesion||"",fecha_devolucion_concesion:data_article.fecha_devolucion_concesion||"",
+                            status_concesion:data_article.status_concesion, caseta_conses})
+                    tables["tableArticles"].setData(dataTableArticles);
+                    $("#newArticleConModal").modal('hide')
+                    $("#loadingButtonNuevoArticuloCon").hide();
+                    $("#buttonNuevoArticuloCon").show();
+                }
+            }else{
+                 Swal.fire({
+                    title: "Error",
+                    text: res.error,
+                    type: "error"
+                });
+                $("#loadingButtonAgregarIncidencia").hide();
+                $("#buttonAgregarIncidencia").show();
             }
         });
+    }
+}
 
+//FUNCION agregar nuevo articulo
+function nuevoArticuloLose(type){
+    $("#loadingButtonNuevoArticuloLose").show();
+    $("#buttonNuevoArticuloLose").hide();
+    let data = getInputsValueByClass("contentNuevoArticulo")
+    console.log('data',data)
+
+    let data_article = {
+        'status_perdido':data.idNuevoArticuloEstatus,
+        'date_hallazgo_perdido':data.idNuevoArticuloUbicacion,
+        'ubicacion_perdido':data.idNuevoArticuloTipo,
+        'area_perdido':data.idNuevoArticuloRecibe,
+        'articulo_perdido':data.idNuevoArticuloLugar,
+        'photo_perdido':[],
+        'comments_perdido':data.idNuevoArticuloArea,
+        'guard_perdido':data.idNuevoArticuloNombre,
+    }
+
+    if(!validarObjeto(data)){
         Swal.fire({
-            title: "Confirmación",
-            text: "Incidencia creada correctamente.",
-            type: "success"
+            title: "Validación",
+            text: "Faltan campos por llenar, los campos marcados con asterisco son obligatorios.",
+            type: "warning"
         });
-        let folioRandom = Date.now();
-        dataTableArticles = dataTableArticles.concat({"location": data.idNuevoArticuloUbicacion, "date": data.idNuevoArticuloFecha, "time": data.idNuevoArticuloHora, 
-        "folio": folioRandom, "type": data.idNuevoArticuloTipo, "img": data.idNuevoArticuloFoto, "num_serie": data.idNuevoArticuloSerie, 
-        "reporta": data.idNuevoArticuloEntrega, "comment": data.idNuevoArticuloComentarios, "recibe":data.idNuevoArticuloRecibe, "date_out":data.idNuevoArticuloFecha, 
-        "location":data.idNuevoArticuloUbicacion, "status":"Abierto"});
+        $("#loadingButtonNuevoArticuloCon").hide();
+        $("#buttonNuevoArticuloCon").show();
+    } else {
+        //INFO: Poner FETCH AQUI para enviar el nuevo registro de incidencia
+        fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name:"articulos_consecionados.py",
+                option:"new_article",
+                data_article: data_article
+            }),
+            headers:
+            {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+              let data=res.response.data
+                if(data.status_code==400){
+                    let errores=[]
+                    for(let err in data.json){
+                        errores.push(data.json[err].label+': '+data.json[err].msg)
+                    }
+                    console.log(res.response.data.json.msg)
+                    Swal.fire({
+                        title: "Error",
+                        text: errores.flat(),
+                        type: "error"
+                    });
+                    $("#loadingButtonNuevoArticuloCon").hide();
+                    $("#buttonNuevoArticuloCon").show();
+                }else if(data.status_code==202 || data.status_code==201){
+                    Swal.fire({
+                        title: "Confirmación",
+                        text: "Articulo consesionado creado correctamente.",
+                        type: "success"
+                    });
+                    
+                    let formatDate= data_article.fecha_concesion.slice(0,-3)
+                    data_article.fecha_concesion= formatDate
 
-        tables["tableArticles"].setData(dataTableArticles);
-        $("#newArticleModal").modal('hide')
+                    dataTableArticles.push({folio:data.json.folio,ubicacion_concesion:data_article.ubicacion_concesion||"",
+                            equipo_concesion:data_article.equipo_concesion||"", fecha_concesion:data_article.fecha_concesion||"",
+                            area_concesion:data_article.area_concesion||"", 
+                            observacion_concesion:data_article.observacion_concesion||"", 
+                            nombre_concesion:data_article.nombre_concesion||"",fecha_devolucion_concesion:data_article.fecha_devolucion_concesion||"",
+                            status_concesion:data_article.status_concesion, caseta_conses})
+                    tables["tableArticles"].setData(dataTableArticles);
+                    $("#newArticleConModal").modal('hide')
+                    $("#loadingButtonNuevoArticuloCon").hide();
+                    $("#buttonNuevoArticuloCon").show();
+                }
+            }else{
+                 Swal.fire({
+                    title: "Error",
+                    text: res.error,
+                    type: "error"
+                });
+                $("#loadingButtonAgregarIncidencia").hide();
+                $("#buttonAgregarIncidencia").show();
+            }
+        });
     }
 }
 
@@ -302,7 +557,7 @@ function validarObjeto(objeto) {
 
 
 //FUNCION editar un articuloc consesionado
-function editarArticuloCon(folio, location, date, equipo_concesion, type, img, num_serie, nombre_concesion, comment){
+function editarArticuloCon(folio){
     $('#editArticleConModal').modal('show');
     selectedRowFolio= folio
     $("#editArticleConUbicacion").val(location)
@@ -400,7 +655,8 @@ function alertEliminarTable(folio, type){
     if(type=='articlesLose'){
         bodyInf={script_name:"articulos_perdidos.py", option:"delete_article",folio:folio}
     }else{
-        bodyInf={script_name:"articulos_consesionados.py", option:"delete_article", folio:folio}
+        console.log('wefw')
+        bodyInf={script_name:"articulos_consecionados.py", option:"delete_article", folio:folio}
     }
     Swal.fire({
         title:'¿Estas seguro de querer eliminar el registro?',
@@ -472,11 +728,19 @@ function alertEliminarTable(folio, type){
                         }
                     }
                 }else{
-                    Swal.fire({
-                        title: "Error",
-                        text: res.error.msg.msg,
-                        type: res.error.msg.type
-                    });
+                    if(res.error.hasOwnProperty('msg')){
+                         Swal.fire({
+                            title: "Error",
+                            text: res.error.msg.msg,
+                            type: res.error.msg.type
+                        });
+                    }else{
+                        Swal.fire({
+                            title: "Error",
+                            text: res.error,
+                            type: 'error'
+                        });
+                    }
                 }
             });
         }
@@ -527,63 +791,193 @@ function alertVerArticuloCon(folio){
     });
 }
 
+function loadArticuloConModal(folio){
+    let selectedArticleCons = dataTableArticles.find(x => x.folio === folio);
+    console.log("FOLIO",selectedArticleCons)
+    selectedRowFolio= folio
+    let formatDate1=""
+    let formatDate2=""
+    if(selectedArticleCons.fecha_concesion){
+        let fechaHora = selectedArticleCons.fecha_concesion.split(" ")
+        formatDate1= fechaHora[0]+'T'+fechaHora[1]+":00"
+    }
+    if(selectedArticleCons.fecha_devolucion_concesion){
+        let fechaHora = selectedArticleCons.fecha_devolucion_concesion.split(" ")
+        formatDate2= fechaHora[0]+'T'+fechaHora[1]+":00"
+    }
+    
+    $('#editArticleConModal').modal('show');
+    $("#idEditArticuloUbicacion").val(selectedArticleCons.ubicacion_concesion )
+    $("#idEditArticuloLugar").val(selectedArticleCons.caseta_concesion)
+    $("#idEditArticuloEstatus").val(selectedArticleCons.status_concesion)
+    $("#idEditArticuloFecha").val(formatDate1)
+    $("#idEditArticuloTipo").val(selectedArticleCons.solicita_concesion)
+    $("#idEditArticuloNombre").val(selectedArticleCons.equipo_concesion)
+    $("#idEditArticuloArea").val(selectedArticleCons.area_concesion)
+    $("#idEditArticuloRecibe").val(selectedArticleCons.nombre_concesion)
+    $("#idEditArticuloObservaciones").val(selectedArticleCons.observacion_concesion)
+    $("#idEditArticuloFechaDevolucion").val(formatDate2)
+}
+
+
+//FUNCION para guardar los archivos en el server 
+async function guardarArchivos(id){
+    Swal.fire({
+        title: 'Cargando...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+            Swal.showLoading();
+       }
+    });
+    const fileInput = document.getElementById(id);
+    const file = fileInput.files[0]; // Obtener el archivo seleccionado
+    console.log("ARCHIVO",file)
+
+    if (!file) {
+        alert('Selecciona un archivo para subir');
+        return;
+    }
+    let data=""
+    let formData = new FormData();
+    formData.append('File', file);
+    formData.append('field_id', '63e65029c0f814cb466658a2');
+    formData.append('is_image', true);
+    formData.append('form_id', 95435);
+
+    const options = {
+      method: 'POST', 
+      body: formData
+    };
+    let respuesta = await fetch('https://app.linkaform.com/api/infosync/cloud_upload/', options);
+    data = await respuesta.json(); //Obtenemos los datos de la respuesta 
+    arrayResponses.push(data); //Agregamos los datos al arreglo
+    if(data){
+        Swal.fire({
+            title: "Acción Completada",
+            text: "Los archivos fueron guardados correctamente.",
+            type: "success",
+            showConfirmButton:false,
+            timer:1100
+        });
+    }
+}
 
 //FUNCION editar el articulo consesionado
 function editarArticuloConModal(){
-    let data = getInputsValueByClass('articleCon-edit')
+    $("#loadingButtonEditArticuloCon").show();
+    $("#buttonEditArticuloCon").hide();
+
+    let data = getInputsValueByClass('contentEditArticulo')
     let selected=''
     for(d of dataTableArticles){
-        if(d.folio == parseInt(selectedRowFolio))
+        if(d.folio == selectedRowFolio)
             selected = d
     }
-    if( data.editArticleConArticulo == selected.name && data.editArticleConComentarios == selected.comment && data.editArticleConFecha == selected.date &&
-        data.editArticleConFoto == selected.img && data.editArticleConHora == selected.time && data.editArticleConNoSerie == selected.num_serie &&
-        data.editArticleConReporta == selected.reporta && data.editArticleConTipo == selected.type && data.editArticleConUbicacion== selected.location 
-      ){
+
+    let data_incidence_update={
+        'status_concesion':data.idEditArticuloEstatus,
+        'ubicacion_concesion':data.idEditArticuloUbicacion,
+        'solicita_concesion':data.idEditArticuloTipo,
+        'persona_nombre_concesion':data.idEditArticuloRecibe,
+        'caseta_concesion':data.idEditArticuloLugar,
+        'fecha_concesion':data.idEditArticuloFecha=="" ? "" :data.idEditArticuloFecha+":00",
+        'area_concesion':data.idEditArticuloArea,
+        'equipo_concesion':data.idEditArticuloNombre,
+        'observacion_concesion':data.idEditArticuloObservaciones,
+        'fecha_devolucion_concesion':data.idEditArticuloFechaDevolucion=="" ? "" :data.idEditArticuloFechaDevolucion+":00"
+    }
+
+    let cleanSelected = (({ actions, checkboxColumn, folio,foto_concesion,recibe_concesion,...rest }) => rest)(selected);
+    if(cleanSelected.fecha_concesion){
+
+        let partes=cleanSelected.fecha_concesion.split(" ")
+        let date = partes[0]+'T'+partes[1]+":00"
+        cleanSelected.fecha_concesion= date
+     }
+    if(cleanSelected.fecha_devolucion_concesion){
+        let partes=cleanSelected.fecha_devolucion_concesion.split(" ")
+        let date = partes[0]+'T'+partes[1]+":00"
+        cleanSelected.fecha_devolucion_concesion = date
+    } 
+    console.log("REVISARR",cleanSelected,data_incidence_update)
+    let validateObj = encontrarCambios(cleanSelected,data_incidence_update)
+    if(Object.keys(validateObj).length == 0){
         Swal.fire({
             title: "Validación",
             text: "Edita algo para actualizar la información.",
             type: "warning"
         });
+        $("#loadingButtonEditArticuloCon").hide();
+        $("#buttonEditArticuloCon").show();
     } else {
-         //INFO: Poner FETCH AQUI para enviar los nuevos en caso de que sean diferentes a los existentes
+        if(validateObj.hasOwnProperty('fecha_concesion')){
+            let formatValue= validateObj.fecha_concesion.split('T')
+            validateObj.fecha_concesion=formatValue[0]+' '+formatValue[1]
+        }
+        if(validateObj.hasOwnProperty('fecha_devolucion_concesion')){
+            let formatValue= validateObj.fecha_devolucion_concesion.split('T')
+            validateObj.fecha_devolucion_concesion=formatValue[0]+' '+formatValue[1]
+        }
+        console.log("swdegjknsodnfkjsd",validateObj)
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
-                script_name: scriptName,
+                script_name:"articulos_consecionados.py",
+                option:"update_article",
+                data_article_update: validateObj,
+                folio: selected.folio
             }),
             headers:
             {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+jw
+                'Authorization': 'Bearer '+ userJwt
             },
         })
         .then(res => res.json())
         .then(res => {
             if (res.success) {
-                //INFO devolverme la informacion actualizada o simplemente actualizar el array ya que tenemos response success
+                let data=res.response.data
+                if(data.status_code==400){
+                    let errores=[]
+                    for(let err in data.json){
+                        errores.push(data.json[err].label+': '+data.json[err].msg)
+                    }
+                    Swal.fire({
+                        title: "Error",
+                        text: errores.flat(),
+                        type: "error"
+                    });
+                    $("#loadingButtonEditArticuloCon").hide();
+                    $("#buttonEditArticuloCon").show();
+                }else if(data.status_code==202 && data.json.objects[0][selected.folio].success){
+                     Swal.fire({
+                        title: "Confirmación",
+                        text: "Articulo actualizado correctamente.",
+                        type: "success"
+                    });
+                    let selectedArt = dataTableArticles.find(x => x.folio === selected.folio);
+                    for (let key in validateObj){
+                        if(key=='fecha_devolucion_concesion' || key=='fecha_concesion' ){
+                            let formatDate= validateObj[key].slice(0,-3)
+                            validateObj[key]= formatDate
+                        }
+                        selectedArt[key]= validateObj[key]
+                    }
+                    tables["tableArticles"].setData(dataTableArticles);
+                    $("#editArticleConModal").modal('hide')
+                    $("#loadingButtonEditArticuloCon").hide();
+                    $("#buttonEditArticuloCon").show();
+                }
+            }else{
+                Swal.fire({
+                    title: "Error",
+                    text: res.error,
+                    type: "Error"
+                });
+                $("#loadingButtonEditArticuloCon").hide();
+                $("#buttonEditArticuloCon").show();
             }
         });
-
-        Swal.fire({
-            title: "Confirmación",
-            text: "Incidencia actualizada correctamente.",
-            type: "success"
-        });
-        let selectedArt = dataTableArticles.find(x => x.folio === selected.folio);
-        if (selectedArt) {
-            selected.name =  data.editArticleConArticulo
-            selected.comment = data.editArticleConComentarios
-            selected.date = data.editArticleConFecha
-            selected.img = data.editArticleConFoto 
-            selected.time = data.editArticleConHora 
-            selected.num_serie = data.editArticleConNoSerie 
-            selected.reporta = data.editArticleConReporta 
-            selected.type = data.editArticleConTipo 
-            selected.location = data.editArticleConUbicacion 
-            tables["tableArticles"].setData(dataTableArticles);
-        }
-        $("#editArticleConModal").modal('hide')
     }
 }
 

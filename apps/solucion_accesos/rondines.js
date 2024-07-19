@@ -5,6 +5,7 @@ window.onload = function(){
     setValueUserLocation('rondines');
     changeButtonColor();
     fillCatalogs();
+    customNavbar(getValueUserLocation(), getCookie('userTurn'))
     selectLocation= document.getElementById("selectLocation")
     selectLocation.onchange = function() {
         let response = fetchOnChangeLocation()
