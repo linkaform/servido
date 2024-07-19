@@ -103,6 +103,8 @@ function hideLoading() {
   }, 1000);
 };
 
+
+
 function login() {
   loading.style.display = 'flex';
   var mensage = "Es necesario ingresar:<br /><br />";

@@ -127,7 +127,7 @@
                             <div class="d-flex mb-3 col-12 div-archivo-123" id="id-archivo-div-123">
                                 <div class="flex-grow-1">
                                     <label class="form-label">Cargar un archivo *</label>
-                                    <input type="file" class="form-control-file archivo-div" onchange="guardarArchivos('fileInputArchivo');" id="fileInputArchivo">
+                                    <input type="file" class="form-control-file archivo-div" onchange="guardarArchivos('fileInputArchivo', false);" name="name" id="fileInputArchivo" enctype="multipart/form-data" multiple="multiple">
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
@@ -143,7 +143,7 @@
                             <div class="d-flex mb-3 col-12  div-foto-123" id="id-foto-div-123">
                                 <div class="flex-grow-1">
                                     <label class="form-label">Fotografia *</label>
-                                    <input type="file" class="form-control-file foto-div" onchange="guardarArchivos('fileInputFotografia');" id="fileInputFotografia">
+                                    <input type="file" class="form-control-file foto-div" onchange="guardarArchivos('fileInputFotografia', true);" id="fileInputFotografia">
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
@@ -175,7 +175,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success btn-sm" id="idButtonEnviarNota" onclick="enviarNota()">Enviar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="idButtonEnviarNota" onclick="enviarNota()">Agregar</button>
                     <button class="btn btn-success btn-sm" type="button" id="idLoadingButtonEnviarNota" disabled>
                           <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
                           Cargando...

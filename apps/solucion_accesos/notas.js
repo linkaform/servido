@@ -258,10 +258,10 @@ function verNotasAlert(folio){
     let archivosItem=``;
     let commentsItem=``;
 
-    for(let com in selectedNota.note_comments_group){
+    for(let com in selectedNota.note_comments){
         commentsItem+=`
         <div class='m-2 '> 
-            <span style='font-size: .8em;'>`+selectedNota.note_comments_group[com]['6647fb38da07bf430e273ea2'].comentario+`</span> 
+            <span style='font-size: .8em;'>`+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span> 
         </div>`;
     }
     let htmlComments=`
@@ -360,7 +360,7 @@ function setAddArchivo(){
         <div class="d-flex mb-3 col-12  div-archivo-`+randomID+`" id="id-archivo-div-`+randomID+`">
             <div class="flex-grow-1">
                 <label class="form-label">Cargar un archivo *</label>
-                <input type="file" class="form-control-file archivo-div" onchange="guardarArchivos('fileInputArchivo-`+randomID+`');" id="fileInputArchivo-`+randomID+`">
+                <input type="file" class="form-control-file archivo-div" onchange="guardarArchivos('fileInputArchivo-`+randomID+`', false);" id="fileInputArchivo-`+randomID+`">
             </div>
             <div>
                 <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
@@ -396,7 +396,7 @@ function setAddFoto(){
         <div class="d-flex mb-3 col-12  div-foto-`+randomID+`" id="id-foto-div-`+randomID+`">
             <div class="flex-grow-1">
                 <label class="form-label">Fotografia *</label>
-                <input type="file" class="form-control-file foto-div" onchange="guardarArchivos('fileInputFotografia-`+randomID+`');" id="fileInputFotografia-`+randomID+`">
+                <input type="file" class="form-control-file foto-div" onchange="guardarArchivos('fileInputFotografia-`+randomID+`', true);" id="fileInputFotografia-`+randomID+`">
                 
             </div>
             <div>
@@ -577,7 +577,7 @@ function enviarNota(){
                             note_open_date: note_open_date, 
                             note_close_date:"",  note: data_notes.note, 
                             note_pic: data_notes.hasOwnProperty('note_pic') && data_notes.note_pic.length>0 ? data_notes.note_pic  : [], 
-                            note_file: data_notes.hasOwnProperty('note_file') && data_notes.note_file.length>0 ? data_notes.note_file[0].file_name : [], 
+                            note_file: data_notes.hasOwnProperty('note_file') && data_notes.note_file.length>0 ? data_notes.note_file : [], 
                             note_comments: data_notes.hasOwnProperty('note_comments') && data_notes.note_comments.length > 0 ? data_notes.note_comments: [], 
                             check:"",view:"", edit:""})
 
@@ -606,58 +606,6 @@ function enviarNota(){
     }
 }
 
-
-//FUNCION para guardar los archivos en el server 
-async function guardarArchivos(){
-    $("#idLoadingButtonArchivos").show();
-    $("#idButtonCargarArchivos").hide();
-    let allFiles=[]
-    let divArchivo = document.getElementById("archivo-input-form");
-    let inputsE = divArchivo.querySelectorAll('.archivo-div');
-    inputsE.forEach(function(input) {
-        allFiles.push({'file':input.files[0],'isImage':false})
-    });
-    
-    let divFoto = document.getElementById("foto-input-form");
-    let inputsF = divFoto.querySelectorAll('.foto-div');
-    inputsF.forEach(function(input) {
-        allFiles.push({'file':input.files[0],'isImage':true})
-    });
-
-    if (!allFiles.length>0) {
-        alert('Please select a file before uploading.');
-        return;
-    }
-
-    let data=""
-    for(let f of allFiles){
-        let formData = new FormData();
-        formData.append('File', f.file);
-        formData.append('field_id', '63e65029c0f814cb466658a2');
-        formData.append('is_image', f.isImage);
-        formData.append('form_id', 95435);
-
-        const options = {
-          method: 'POST', 
-          body: formData
-        };
-        let respuesta = await fetch('https://app.linkaform.com/api/infosync/cloud_upload/', options);
-        data = await respuesta.json(); //Obtenemos los datos de la respuesta 
-        data.isImage = f.isImage
-        arrayResponses.push(data); //Agregamos los datos al arreglo
-    }
-    if(data){
-        $("#idLoadingButtonArchivos").hide();
-        $("#idButtonCargarArchivos").hide();
-        Swal.fire({
-            title: "Acción Completada",
-            text: "Los archivos fueron guardados correctamente.",
-            type: "success",
-            showConfirmButton:false,
-            timer:1100
-        });
-    }
-}
 
 
 //FUNCION FILTROS MODAL
@@ -795,7 +743,7 @@ function alertEliminarNota(folio){
 
 
 //FUNCION para guardar los archivos en el server 
-async function guardarArchivos(id){
+async function guardarArchivos(id, isImage){
     Swal.fire({
         title: 'Cargando...',
         allowOutsideClick: false,
@@ -805,7 +753,6 @@ async function guardarArchivos(id){
     });
     const fileInput = document.getElementById(id);
     const file = fileInput.files[0]; // Obtener el archivo seleccionado
-    console.log("ARCHIVO",file)
 
     if (!file) {
         alert('Selecciona un archivo para subir');
@@ -813,26 +760,44 @@ async function guardarArchivos(id){
     }
     let data=""
     let formData = new FormData();
-    formData.append('File', file);
-    formData.append('field_id', '63e65029c0f814cb466658a2');
-    formData.append('is_image', true);
-    formData.append('form_id', 95435);
+    if(isImage){
+        formData.append('File', file);
+        formData.append('field_id', '63e65029c0f814cb466658a2');
+        formData.append('is_image', true);
+        formData.append('form_id', 95435);
+    }else{
+        formData.append('File[0]', file);
+        formData.append('field_id', '63e65029c0f814cb466658a2');
+        formData.append('form_id', 95435);
+
+    }
 
     const options = {
       method: 'POST', 
-      body: formData
+      body: formData,
     };
     let respuesta = await fetch('https://app.linkaform.com/api/infosync/cloud_upload/', options);
     data = await respuesta.json(); //Obtenemos los datos de la respuesta 
-    data.isImage=true
+    data.isImage=isImage
     arrayResponses.push(data); //Agregamos los datos al arreglo
-    if(data){
+    if(data.hasOwnProperty('error')){
+        Swal.fire({
+            title: "Error",
+            text: data.error,
+            type: "error",
+            showConfirmButton:false,
+            timer:1100
+        });
+        
+    }else{
+        let text= isImage? 'Las imagenes fueron guardadas correctamente.': 'Los archivos fueron guardados correctamente.';
         Swal.fire({
             title: "Acción Completada",
-            text: "Los archivos fueron guardados correctamente.",
+            text: text,
             type: "success",
             showConfirmButton:false,
             timer:1100
         });
     }
 }
+
