@@ -8,7 +8,7 @@ var url = "https://app.linkaform.com/api/";
 // Funciones Genericas Servido
 
 
-//Funcion para retornar cambios en dos objetos con la misma key 
+//Funcion para retornar cambios en dos objetos con las mismas keys 
 function encontrarCambios(objetoOriginal, objetoEditado) {
   let cambios = {};
   for (let key in objetoOriginal) {
@@ -341,8 +341,6 @@ let dateFilter = function(headerValue, rowValue, rowData, filterParams){
     var mes = partes[1] ;
     var dia = partes[0];
     let stringDate= dia+'-'+mes+'-'+anio
-
-    console.log(stringDate, headerValueDate, stringDate == headerValueDate)
 
     if (stringDate == headerValueDate) {
         return true;

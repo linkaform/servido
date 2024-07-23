@@ -3,8 +3,8 @@ let optionsCaseta=[]
 let urlScripts='infosync/scripts/run/';
 let idScript= 117936;
 let user = getCookie("userId");
-let jw = getCookie("userJwt");
-
+//let userJwt = getCookie("userJwt");
+//let arrayUserBoothsLocations=[]
 class lkfLocationCard extends HTMLElement{
 	constructor(){
 		super();
@@ -13,25 +13,25 @@ class lkfLocationCard extends HTMLElement{
 	connectedCallback() {
 	this.innerHTML=`
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
-        <div class="card-body d-flex justify-content-start" >
-            <div class="col-6 ">
+        <div class="card-body d-flex justify-content-start " >
+            <div class="">
                 <div class="d-flex align-items-center justify-content-between">
                     <h6 class="text-black ">Ubicación: </h6>
                     <select class="form-select ms-1 " id="selectLocation"> </select>
                 </div>
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center" >
                     <h6 class="text-black" >Caseta: </h6>
                     <select class="form-select ms-4 mt-2" id="selectCaseta"> </select>
                 </div>
             </div>
-            <div class="d-flex flex-column mt-2 ms-2 justify-content-between">
+            <div class=" d-flex flex-column mt-2 ms-2 justify-content-between ">
                 <div class="d-flex justify-content-start ">
-                    <h6 class="text-black">Jefe en Guardia: </h6>
-                    <h6 class="text-black-50 ms-1">Juan Alvarez</h6> 
+                    <h6 class="text-black" id="textJefeGuardia">Jefe en Guardia: </h6>
+                    <h6 class="text-black-50 ms-1" id="textGuardiaApoyo">Solucion Seguridad</h6> 
                 </div>
-                <div class="d-flex justify-content-start">
+                <div class="d-flex  justify-content-start">
                     <h6 class="text-black">Guardia de apoyo: </h6>
-                    <h6 class="text-black-50 ms-1">Josue de Jesus</h6> 
+                    <h6 class="text-black-50 ms-1"></h6> 
                 </div>
             </div>
         </div>
@@ -41,9 +41,6 @@ class lkfLocationCard extends HTMLElement{
 }
 window.customElements.define('locationcard-component', lkfLocationCard)
 
-
-window.onload = function(){  
-}
 
 function initializeCatalogs(){
     fetch(url + urlScripts, {
@@ -55,7 +52,7 @@ function initializeCatalogs(){
         }),
         headers:{
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+jw
+            'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
@@ -65,7 +62,6 @@ function initializeCatalogs(){
         } 
     });
     let valueCaseta = getCookie('userCaseta')
-    console.log("getCookie('userLocation')", getCookie('userLocation'))
     let valueLocation =  getCookie('userLocation')
     let selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.value = valueCaseta
@@ -76,36 +72,131 @@ function initializeCatalogs(){
 
 
 function fillCatalogs(){
-    console.log("Llenar catalogos ubicación y caseta")
-    optionsLocation=['Cumbres', 'Monterrey', 'San Jeronimo']
-    optionsCaseta=[{name:"Caseta 1 Poniente", ubi:"Cumbres", status: 'Disponible', guard:'Juan Ecobedo' },{name:"Caseta 1 Sur", ubi:"Santa Catarina", status: 'Disponible', guard:'Francisco Flores'},
-    {name:"Caseta 4 Poniente", ubi:"Monterrey", status: 'No disponible', guard:'Javier Almanza' },{name:"Caseta 3 Sur", ubi:"Escobedo", status: 'No disponible', guard:'Valeria Alvarado'},
-    {name:"Caseta 6 Poniente", ubi:"San Jeronimo", status: 'Disponible', guard:'Erika Ruiz'},{name:"Caseta 6 Sur", ubi:"Monterrey", status: 'No disponible', guard:'Daniela Cepeda' }];
+     if(getCookie("userUbicaciones") == "" && getCookie("userCasetas")==""){
+        fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'script_turnos.py',
+            option:'get_user_booths'
+        }),
+        headers:
+            {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                if(user !='' && userJwt!=''){
+                    let userBooths=res.response.data
+                    if(userBooths.length>0){
+                        for(let booth of userBooths){
+                            arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, 
+                            address: booth.address, city:booth.city})
+                        }
+                    }else{
+                        arrayUserBoothsLocations=[]
+                    }
 
-    let selectLocation= document.getElementById("selectLocation")
-    selectLocation.innerHTML=""; 
-    for (let obj of optionsLocation){
-            selectLocation.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
-    }
+                    let locationsUnique = new Set();
+                    arrayUserBoothsLocations.forEach(function(booth) {
+                        locationsUnique.add(booth.ubi);
+                    });
+                    optionsLocation = Array.from(locationsUnique);
 
-   selectLocation.value  =  getCookie('userLocation')=='' ?  "Monterrey" : getCookie('userLocation');
-    let selectCaseta= document.getElementById("selectCaseta")
-    selectCaseta.innerHTML=""; 
-    for (let obj of optionsCaseta){
-            selectCaseta.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
+                    let selectLocation= document.getElementById("selectLocation")
+                    selectLocation.innerHTML=""; 
+                    for (let obj of optionsLocation){
+                            selectLocation.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
+                    }
+                    selectLocation.value = getCookie('userLocation');
+
+                    optionsCaseta = arrayUserBoothsLocations.filter(function(booth) {
+                        return booth.ubi == selectLocation.value && booth.status === "Disponible";
+                    });
+
+                    let selectCaseta= document.getElementById("selectCaseta")
+                    selectCaseta.innerHTML=""; 
+                    for (let obj of optionsCaseta){
+                            selectCaseta.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
+                    }
+                    selectCaseta.value = getCookie('userCaseta')
+                    if(getValueUserLocation()=='accesos'){
+                        selectLocation.disabled=true
+                        selectCaseta.disabled=true
+                    }
+                    setCookie("userUbicaciones",  JSON.stringify(optionsLocation),7);
+                    setCookie("userCasetas",  JSON.stringify(optionsCaseta),7);
+                }
+            }
+        });
+    } else{
+        let jsonArrayUbicaciones = JSON.parse(getCookie("userUbicaciones"));
+        let jsonArrayCasetas = JSON.parse(getCookie("userCasetas"));
+
+        let selectLocation= document.getElementById("selectLocation")
+        selectLocation.innerHTML=""; 
+        for (let obj of jsonArrayUbicaciones){
+                selectLocation.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
+        }
+        
+
+
+        
+        //selectLocation.innerHTML += '<option value="'+'Planta Durango'+'">'+'Planta Durango'+'</option>';
+
+
+
+
+        let selectCaseta= document.getElementById("selectCaseta")
+        selectCaseta.innerHTML=""; 
+        for (let obj of jsonArrayCasetas){
+                selectCaseta.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
+        }
+
+
+
+        
+        //selectCaseta.innerHTML += '<option value="'+'Caseta Norte 2'+'">'+'Caseta Norte 2'+'</option>';
+
+
+
+
+        if(getValueUserLocation()=='accesos'){
+            selectLocation.disabled=true
+            selectCaseta.disabled=true
+        }
     }
-    selectCaseta.value = getCookie('userCaseta')=='' ?  "Caseta 1 Poniente" : getCookie('userCaseta');    
 }
 
 
 
-function fetchOnChangeLocation(){
+async function fetchOnChangeLocation(script, option, area, location){
+    Swal.fire({
+        title: 'Cargando...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+            Swal.showLoading();
+       }
+    });
     //INFO: al momento de seleccionar una nueva location se manda la informacion junto con el 
     //resultado de la fetch a la pagina que lo esta solicitando
+    let jsonArrayUbicaciones = JSON.parse(getCookie("userUbicaciones"));
+    let jsonArrayCasetas = JSON.parse(getCookie("userCasetas"));
+
     let selectLocation= document.getElementById("selectLocation")
     let selectCaseta= document.getElementById("selectCaseta")
-    let response=
-    {"data":{
+    let responseData=""
+    /*
+    selectLocation.innerHTML += '<option value="'+'Planta Durango'+'">'+'Planta Durango'+'</option>';
+        let selectCaseta= document.getElementById("selectCaseta")
+        selectCaseta.innerHTML=""; 
+        for (let obj of jsonArrayCasetas){
+                selectCaseta.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
+        }*/
+       
+    let response={ "data":{
          "caseta":{
             "name": selectLocation.value,
             "location": selectCaseta.value,
@@ -115,37 +206,34 @@ function fetchOnChangeLocation(){
             "ouputs":30
         }
     }};
-    if(getCookie('userCaseta') == selectCaseta.value && getCookie('userLocation')==selectLocation.value){
-        console.log('No hubo cambios en caseta o location')
-    }
-    else{
-                //FETCH AQUI 
-    fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_id: idScript,
-            option: 'get_caseta_information',
-            email : 'guardia1@linkaform.com'
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+jw
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            //INFO: Obtener la informacion y formatear los arrays para poder mandarlos como respuesta de esta funcion
-        } 
-    });
-     setCookie('userCaseta',selectCaseta.value,7)
-     setCookie('userLocation',selectLocation.value,7)
-     selectCaseta.value = getCookie('userCaseta')
-     selectLocation.value =  getCookie('userLocation')
-    }
-    return response
-}
 
+        let body={
+            script_name: script,
+            option:option,
+        }
+        if(area){
+            body.area=area
+        }
+        if (location){
+            body.location=location
+        }
+
+        let dataCasetas=[]
+        let fetchData= await fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify(body), 
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+            },
+        })
+        
+        let data = await fetchData.json();
+        if (data){
+            Swal.close()
+        }
+    return data
+}
 
 
 function fetchOnChangeCaseta(){
@@ -175,7 +263,7 @@ function fetchOnChangeCaseta(){
         }),
         headers:{
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+jw
+            'Authorization': 'Bearer '+userJwt
 
         },
     })

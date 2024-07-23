@@ -2,7 +2,6 @@ let tables={}
 let idScriptC=119197;
 let selectLocation=""
 let selectCaseta=""
-let userJwt=""
 let arraySuccessFoto=[]
 let arraySuccessArchivo=[]
 let arrayResponses=[]
@@ -16,12 +15,14 @@ window.onload = function(){
 	fillCatalogs();
     getAllData();
     selectLocation= document.getElementById("selectLocation")
-    selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation()
-    };
     selectCaseta= document.getElementById("selectCaseta")
-    selectCaseta.onchange = function() {
-        let response = fetchOnChangeLocation()
+
+    selectLocation.onchange = function() {
+        let response = fetchOnChangeLocation('notes.py', 'get_notes', selectCaseta.value, '')
+    };
+    selectCaseta.onchange = async function() {
+        let response = await fetchOnChangeLocation('notes.py', 'get_notes', selectCaseta.value, '')
+        reloadTableNotas(response.response.data)
     };
     let user = getCookie("userId");
     let jw = getCookie("userJwt");
@@ -33,10 +34,38 @@ window.onload = function(){
     $("#idLoadingButtonEnviarNota").hide();
 }
 
-
+function reloadTableNotas(data){
+    dataTableListNotas=[]
+    if(user !='' && userJwt!=''){
+        if(data.length > 0){
+            for(let note of data){
+                let dateFormatOpen= note.note_open_date.slice(0,-3)
+                let dateFormatClose=""
+                if(note.hasOwnProperty('note_close_date')){
+                    dateFormatClose= note.note_close_date.slice(0,-3)
+                }
+                dataTableListNotas.push({folio:note.folio, note_status: note.note_status, note_guard:note.note_guard, 
+                    note_open_date: dateFormatOpen, 
+                    note_close_date:dateFormatClose,  note: note.note, 
+                    note_pic: note.hasOwnProperty('note_pic') && note.note_pic.length>0 ? note.note_pic  : [], 
+                    note_file: note.hasOwnProperty('note_file') &&note.note_file.length>0 ? note.note_file : [], 
+                    note_comments: note.hasOwnProperty('note_comments') && note.note_comments.length>0 ? note.note_comments: [], 
+                    check:"",view:"", edit:""})
+            }
+        }else{
+            dataTableListNotas = []
+        }
+        if(tables["tableListNotas"]){
+            tables["tableListNotas"].setData(dataTableListNotas);
+        }else{
+            drawTableNotas('tableListNotas',columnsTableListNotas, dataTableListNotas );
+        }
+    } else{
+        redirectionUrl('login',false);
+    }
+}
 
 function getAllData(){
-    console.log("LLALAMARRR",getCookie('userCaseta'), url + urlScripts)
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -53,7 +82,7 @@ function getAllData(){
     .then(res => res.json())
     .then(res => {
         if(res.success){
-            if(user !='' && jw!=''){
+            if(user !='' && userJwt!=''){
                 let notas=res.response.data
                 if(notas.length > 0){
                     for(let note of notas){
@@ -113,7 +142,7 @@ function editarNota(){
         }),
         headers:{
            'Content-Type': 'application/json',
-           'Authorization': 'Bearer '+jw
+           'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
@@ -133,8 +162,6 @@ function editarNota(){
 //FUNCION editar un articuloc consesionado
 function editarNotaCargarInfo(folio){
     let selectedNota = dataTableListNotas.find(x => x.folio == folio);
-    console.log("NOTA SELECIONADA",selectedNota)
-
     selectedRowFolio= folio
     $('#editarNotasModal').modal('show');
     $("#idEditNotaSelect").val(selectedNota.note_status)
@@ -179,7 +206,6 @@ function cerrarNotaAlert(name, note, folio, status){
                     'note_status':'cerrado',
                     'note_close_date': getTodayDateTime()
                 }
-                console.log("DATOS", data_update, folio)
                  fetch(url + urlScripts, {
                     method: 'POST',
                     body: JSON.stringify({
@@ -485,7 +511,6 @@ function enviarNota(){
     inputsG.forEach(function(input) {
         comments.push(input.value)
     });
-    console.log("RESPUESTAS FOTOS",arrayResponses)
     for(let obj of arrayResponses){
         if( obj.hasOwnProperty('file_name') && obj.isImage==true){
             let { isImage, file_name, file  } = obj;
@@ -509,7 +534,6 @@ function enviarNota(){
         'note_file':arraySuccessArchivo ,
         'note_comments':comments, //note_comments_group no esta igual que en la lista
     } 
-    console.log("data_notes",data_notes)
     if(nota!==""){
         fetch(url + urlScripts, {
             method: 'POST',
@@ -525,7 +549,6 @@ function enviarNota(){
         })
         .then(res => res.json())
         .then(res => {
-            console.log("RES", res, data_notes)
             if (res.success) {
                 let data = res.response.data
                     if (data.status_code==400){
@@ -572,7 +595,6 @@ function enviarNota(){
                             }
                         }
                         let note_open_date= convertDate(data.json.created_at, data.json.timezone)
-                        console.log("KASJFN",data_notes.hasOwnProperty('note_comments') && data_notes.note_comments.length > 0 ? data_notes.note_comments: [])
                         dataTableListNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, note_guard:data_notes.note_guard, 
                             note_open_date: note_open_date, 
                             note_close_date:"",  note: data_notes.note, 
@@ -645,7 +667,7 @@ function aplicarFiltros(){
         }),
         headers:{
            'Content-Type': 'application/json',
-           'Authorization': 'Bearer '+jw
+           'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
@@ -665,7 +687,6 @@ function aplicarFiltros(){
 
 
 function alertEliminarNota(folio){
-    console.log("folio", folio)
     Swal.fire({
         title:'¿Estas seguro de querer eliminar la nota?',
         html:`
@@ -703,7 +724,6 @@ function alertEliminarNota(folio){
             })
             .then(res => res.json())
             .then(res => {
-                console.log("RESPONSE LIOMPSSSS", res)
                 if (res.success) {
                     let data=res.response.data
                     if(data.status_code==400){

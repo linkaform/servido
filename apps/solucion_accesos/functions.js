@@ -1,6 +1,9 @@
 var userActualPage=''; 
 var userStatusTurn=''; 
 var arrayUserBoothsLocations=[];
+let userJwt = getCookie("userJwt");
+
+
 function setValueUserLocation(txt){
 	userActualPage=txt;
 }
@@ -46,7 +49,7 @@ function loadBoothsLocations(){
     headers:
         {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+jw
+            'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())

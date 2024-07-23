@@ -78,7 +78,6 @@ function getAllDataIncidencias(){
         if(res.success){
             if(user !='' && userJwt!=''){
                     let incidencias=res.response.data
-                    console.log("listado incidencias",incidencias)
                     if(incidencias.length >0){
                         for(let incidencia of incidencias){
                             let dateFormat= incidencia.date_incidence.slice(0,-3)

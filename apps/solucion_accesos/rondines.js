@@ -14,7 +14,7 @@ window.onload = function(){
     selectCaseta.onchange = function() {
         let response = fetchOnChangeLocation()
     };
-    if(user !='' && jw!=''){
+    if(user !='' && userJwt!=''){
         drawTable('tableListPendientes',columnsTableListPendientes, dataTableListPendientes );
         drawTable('tableListRealizados',columnsTableListPendientes, dataTableListPendientes2 );
         drawTable('tableListCancelados',columnsTableListPendientes, dataTableListPendientes3 );
@@ -54,7 +54,7 @@ function onCLickEditarRecorrido(){
     }),
     headers:{
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+jw
+            'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
@@ -87,7 +87,7 @@ function onClickFinalizarRecorrido(){
     }),
     headers:{
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+jw
+            'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
@@ -155,7 +155,7 @@ function alertCancelarRecorrido(folio, status){
                 }),
                 headers:{
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer '+jw
+                    'Authorization': 'Bearer '+userJwt
                     },
                 })
                 .then(res => res.json())
@@ -251,7 +251,7 @@ function nuevoRecorrido(){
             headers:
             {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+jw
+                'Authorization': 'Bearer '+userJwt
             },
         })
         .then(res => res.json())
@@ -297,7 +297,7 @@ function aplicarFiltros(){
         }),
         headers:{
            'Content-Type': 'application/json',
-           'Authorization': 'Bearer '+jw
+           'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())

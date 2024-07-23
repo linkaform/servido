@@ -6,7 +6,8 @@ window.onload = function(){
 	setValueUserLocation('bitacora');
 	console.log(getValueUserLocation())
 	changeButtonColor();
-	fillCatalogs();
+    fillCatalogs();
+
 	getCatalogs();
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	selectLocation= document.getElementById("selectLocation")
@@ -14,11 +15,12 @@ window.onload = function(){
         let response = fetchOnChangeLocation()
     };
  	selectCaseta= document.getElementById("selectCaseta")
-    selectCaseta.onchange = function() {
-        let response = fetchOnChangeLocation()
+    selectCaseta.onchange = async function() {
+        let response = await fetchOnChangeLocation('script_turnos.py', 'list_bitacora', selectCaseta.value, selectLocation.value)
+        reloadTableBitacoras(response.response.data)
     };
 	let user = getCookie("userId");
-	let jw = getCookie("userJwt");
+	let userJwt = getCookie("userJwt");
     loadDataTables();
 
     $("#descargarEntradas").on("click", function() {
@@ -35,6 +37,33 @@ window.onload = function(){
     $("#textSalidasRegistradas").text(boothStats.registered_exits);
 }
 
+function reloadTableBitacoras(data){
+    dataTablePersonal=[]
+    dataTableLocker=[]
+    if(user !='' && userJwt!=''){
+        let bit= data
+        for (i of bit){
+            dataTablePersonal.push({folio:i.folio ,visitante:i.nombre_visita ,contratista:'LINKAFORM SA DE CV',visita:i.nombre_visita,
+            area:i.caseta_entrada,tipo:i.status_visita, entrada:i.bitacora_entrada, salida:i.bitacora_salida,estado:'', 
+            punto_acceso:'',credentials:i.gafete,comentario:'',planta:''})
+        }
+        
+        if(tables['tableEntradas']){
+            tables['tableEntradas'].setData(dataTablePersonal)
+        }else{
+            drawTable('tableEntradas',columsData1,dataTablePersonal);
+        }
+
+        if(tables['tableSalidas']){
+            tables['tableSalidas'].setData(dataTableLocker)
+        }else{
+            drawTable('tableSalidas',columsData2,dataTableLocker);
+        }
+    }else{
+        redirectionUrl('login',false);
+    }
+
+}
 
 function loadDataTables(){
     console.log("LOAD DATA TABLE ",getCookie('userLocation'), getCookie('userCaseta') )
@@ -48,14 +77,14 @@ function loadDataTables(){
         }),
         headers:{
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+jw
+            'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
     .then(res => {
         console.log("RESPUESTAAAAAA", res)
         if (res.success) {
-            if(user !='' && jw!=''){
+            if(user !='' && userJwt!=''){
                 let bit= res.response.data
                 for (i of bit){
                     dataTablePersonal.push({folio:i.folio ,visitante:i.nombre_visita ,contratista:'LINKAFORM SA DE CV',visita:i.nombre_visita,
@@ -201,6 +230,7 @@ function getCatalogs(){
     $("#selectTipoVehiculo-123").prop( "disabled", true );
     $("#divCatalogMarca123").hide();
     $("#divCatalogModelo123").hide();
+    /*
     fetch(url + urlScripts ,{
         method: 'POST',
         body: JSON.stringify({
@@ -209,14 +239,14 @@ function getCatalogs(){
         }),
         headers:{
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+jw
+                'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
     .then(res => {
         if (res.success) {
         } 
-    })
+    })*/
     
     let cat={
         "brands_cars": [
@@ -272,7 +302,7 @@ function getSaveItem(){
             }),
             headers:{
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+jw
+                'Authorization': 'Bearer '+userJwt
             },
         })
         .then(res => res.json())

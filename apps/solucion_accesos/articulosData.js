@@ -105,13 +105,14 @@ let dataTableArticlesLose = []
 //-----TABLES
 function drawTable(id, columnsData, tableData){
     let  table = new Tabulator("#" + id, {
-        layout:"fitDataTable",
+        layout:"fitDataStretch",
         data:tableData,
         textDirection:"ltr",
         columns:columnsData,
         pagination:true, 
         paginationSize:40,
         headerVisible: true,
+        placeholder: "No hay registros disponibles", 
     });
     tables[id]=table;
 }

@@ -4,14 +4,13 @@ let articulosPerdidos=[]
 let articulosConcesionados=[]
 let colors = getPAlleteColors(12,0)
 let selectedRowFolio=""
-let userJwt=""
 let arrayResponses=[]
 
 window.onload = function(){
 	setValueUserLocation('articulos');
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	let user = getCookie("userId");
-    userJwt = getCookie("userJwt");
+    
     changeButtonColor();
     getInfoCatalogs();
     fillCatalogs();
@@ -19,19 +18,22 @@ window.onload = function(){
     allDataArticulosCon();
     allDataArticulosPer();
 	selectLocation= document.getElementById("selectLocation");
-	selectLocation.onchange = function(){
-    let response = fetchOnChangeLocation()
-  };
-    selectCaseta= document.getElementById("selectCaseta")
-    selectCaseta.onchange = function() {
+	/*selectLocation.onchange = function(){
         let response = fetchOnChangeLocation()
+    };*/
+    selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta.onchange = async function() {
+        let response = await fetchOnChangeLocation('articulos_consecionados.py', 'get_articles','', selectLocation.value)
+        reloadTableArticulosCon(response.response.data, selectCaseta.value)
+        let response2 = await fetchOnChangeLocation('articulos_perdidos.py', 'get_articles', selectCaseta.value, selectLocation.value)
+        reloadTableArticulosPer(response2.response.data)
+        console.log("RESULTADOS", selectCaseta.value, selectLocation.value)
     };
 	setSpinner(true, 'divSpinner');
 	
 	
     document.querySelector("#tableArticles").addEventListener("scroll", function(){
         var scrollLeft = this.scrollLeft;
-        console.log("SCROOOL",scrollLeft)
         document.querySelector("#table-header").scrollLeft = scrollLeft;
     });
     $("#descargarArticles").on("click", function() {
@@ -54,8 +56,77 @@ window.onload = function(){
 }
 
 
+function reloadTableArticulosCon(data,caseta){
+    dataTableArticles=[]
+    if(user !='' && userJwt!=''){
+        if(data.length >0){
+            for(let articulo of data){
+                let dateFormat= articulo.fecha_concesion.slice(0,-3)
+                let dateFormat2=''
+                if(articulo.hasOwnProperty('fecha_devolucion_concesion')){
+                    dateFormat2= articulo.fecha_devolucion_concesion.slice(0,-3)
+                }
+                console.log(articulo.caseta_concesion , caseta)
+                if(articulo.caseta_concesion == caseta){
+                    dataTableArticles.push({folio:articulo.folio,ubicacion_concesion:articulo.ubicacion_concesion||"",
+                    equipo_concesion:articulo.equipo_concesion||"", fecha_concesion:dateFormat||"",caseta_concesion:articulo.caseta_concesion||"",
+                    area_concesion:articulo.area_concesion||"", solicita_concesion: articulo.solicita_concesion,
+                    observacion_concesion:articulo.observacion_concesion||"", nombre_concesion:articulo.nombre_concesion||"",fecha_devolucion_concesion:dateFormat2,
+                    status_concesion:articulo.status_concesion})
+                }
+            }
+        }else{
+            dataTableArticles = []
+        }
+        if(tables['tableArticles']){
+            console.log("CONSESIO",dataTableArticles)
+            tables['tableArticles'].setData(dataTableArticles)
+        }else{
+            drawTable('tableArticles', columsDataArticles, dataTableArticles);
+        }
+        $("#descargarIncidencias").on("click", function() {
+            descargarExcel(tables, 'tableArticles')
+        });
+        let selectedIncidencias = getActiveCheckBoxs(tables,'tableArticles')
+        let buttonEliminarIncidencias=document.getElementById('buttonEliminarIncidencias');
+        if(selectedIncidencias.length>0) buttonEliminarIncidencias.display= 'none'
+    } else{
+        redirectionUrl('login',false);
+    }
+}
+function reloadTableArticulosPer(data){
+    dataTableArticlesLose=[]
+    if(user !='' && userJwt!=''){
+        if(data.length >0){
+            for(let articulo of data){
+                let dateFormat= articulo.date_hallazgo_perdido.slice(0,-3)
+                dataTableArticlesLose.push({folio:articulo.folio,ubicacion_perdido:articulo.ubicacion_perdido||"",
+                articulo_perdido:articulo.articulo_perdido||"", date_hallazgo_perdido:dateFormat||"",type_perdido:"",
+                photo_perdido: articulo.photo_perdido, guard_perdido: articulo.guard_perdido ,area_perdido:articulo.area_perdido||"", 
+                comments_perdido:articulo.comments_perdido||"", guard_perdido:articulo.guard_perdido||"",updated_at:articulo.updated_at,
+                status_perdido:articulo.status_perdido})
+            }
+        }else{
+            dataTableArticlesLose = []
+        }
+        if(tables['tableArticlesLose']){
+            console.log("act")
+            tables['tableArticlesLose'].setData(dataTableArticlesLose)
+        }else{
+            console.log("crear")
+            drawTable('tableArticlesLose',  columsDataArticlesLose, dataTableArticlesLose);
+        }
+        $("#buttonEliminarArticulosCon").on("click", function() {
+            descargarExcel(tables, 'tableArticlesLose')
+        });
+        let selectedArticulosCons = getActiveCheckBoxs(tables,'tableArticlesLose')
+        let buttonEliminarIncidencias=document.getElementById('buttonEliminarArticulosLose');
+        if(selectedArticulosCons.length>0) buttonEliminarIncidencias.display= 'none'
+} else{
+    redirectionUrl('login',false);
+}
+}
 function allDataArticulosPer(){
-    console.log("DQTTOS", getCookie('userCaseta'), getCookie('userLocation'))
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -77,7 +148,6 @@ function allDataArticulosPer(){
                     let data=res.response.data
                     if(data.length >0){
                         for(let articulo of data){
-                           console.log('ascfa', articulo)
                             let dateFormat= articulo.date_hallazgo_perdido.slice(0,-3)
                             dataTableArticlesLose.push({folio:articulo.folio,ubicacion_perdido:articulo.ubicacion_perdido||"",
                             articulo_perdido:articulo.articulo_perdido||"", date_hallazgo_perdido:dateFormat||"",type_perdido:"",
@@ -128,11 +198,13 @@ function allDataArticulosCon(){
                             if(articulo.hasOwnProperty('fecha_devolucion_concesion')){
                                 dateFormat2= articulo.fecha_devolucion_concesion.slice(0,-3)
                             }
-                            dataTableArticles.push({folio:articulo.folio,ubicacion_concesion:articulo.ubicacion_concesion||"",
-                            equipo_concesion:articulo.equipo_concesion||"", fecha_concesion:dateFormat||"",caseta_concesion:articulo.caseta_concesion||"",
-                            area_concesion:articulo.area_concesion||"", solicita_concesion: articulo.solicita_concesion,
-                            observacion_concesion:articulo.observacion_concesion||"", nombre_concesion:articulo.nombre_concesion||"",fecha_devolucion_concesion:dateFormat2,
-                            status_concesion:articulo.status_concesion})
+                            if(articulo.caseta_concesion == selectCaseta.value){
+                                dataTableArticles.push({folio:articulo.folio,ubicacion_concesion:articulo.ubicacion_concesion||"",
+                                equipo_concesion:articulo.equipo_concesion||"", fecha_concesion:dateFormat||"",caseta_concesion:articulo.caseta_concesion||"",
+                                area_concesion:articulo.area_concesion||"", solicita_concesion: articulo.solicita_concesion,
+                                observacion_concesion:articulo.observacion_concesion||"", nombre_concesion:articulo.nombre_concesion||"",fecha_devolucion_concesion:dateFormat2,
+                                status_concesion:articulo.status_concesion})
+                            }
                         }
                     }else{
                         dataTableArticles = []
@@ -164,7 +236,7 @@ function getInfoCatalogs(){
     headers:
         {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+jw
+            'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
@@ -368,7 +440,6 @@ function nuevoArticulo(type){
     $("#loadingButtonNuevoArticuloCon").show();
     $("#buttonNuevoArticuloCon").hide();
     let data = getInputsValueByClass("contentNuevoArticulo")
-    console.log('data',data)
 
     let data_article = {
         'status_concesion':data.idNuevoArticuloEstatus,
@@ -415,7 +486,6 @@ function nuevoArticulo(type){
                     for(let err in data.json){
                         errores.push(data.json[err].label+': '+data.json[err].msg)
                     }
-                    console.log(res.response.data.json.msg)
                     Swal.fire({
                         title: "Error",
                         text: errores.flat(),
@@ -438,7 +508,7 @@ function nuevoArticulo(type){
                             area_concesion:data_article.area_concesion||"", 
                             observacion_concesion:data_article.observacion_concesion||"", 
                             nombre_concesion:data_article.nombre_concesion||"",fecha_devolucion_concesion:data_article.fecha_devolucion_concesion||"",
-                            status_concesion:data_article.status_concesion, caseta_conses})
+                            status_concesion:data_article.status_concesion})
                     tables["tableArticles"].setData(dataTableArticles);
                     $("#newArticleConModal").modal('hide')
                     $("#loadingButtonNuevoArticuloCon").hide();
@@ -462,7 +532,6 @@ function nuevoArticuloLose(type){
     $("#loadingButtonNuevoArticuloLose").show();
     $("#buttonNuevoArticuloLose").hide();
     let data = getInputsValueByClass("contentNuevoArticulo")
-    console.log('data',data)
 
     let data_article = {
         'status_perdido':data.idNuevoArticuloEstatus,
@@ -507,7 +576,6 @@ function nuevoArticuloLose(type){
                     for(let err in data.json){
                         errores.push(data.json[err].label+': '+data.json[err].msg)
                     }
-                    console.log(res.response.data.json.msg)
                     Swal.fire({
                         title: "Error",
                         text: errores.flat(),
@@ -655,7 +723,6 @@ function alertEliminarTable(folio, type){
     if(type=='articlesLose'){
         bodyInf={script_name:"articulos_perdidos.py", option:"delete_article",folio:folio}
     }else{
-        console.log('wefw')
         bodyInf={script_name:"articulos_consecionados.py", option:"delete_article", folio:folio}
     }
     Swal.fire({
@@ -695,7 +762,6 @@ function alertEliminarTable(folio, type){
             })
             .then(res => res.json())
             .then(res => {
-                console.log("RESPONSE LIOMPSSSS", res)
                 if (res.success) {
                     let data=res.response.data
                     if(data.status_code==400){
@@ -793,7 +859,6 @@ function alertVerArticuloCon(folio){
 
 function loadArticuloConModal(folio){
     let selectedArticleCons = dataTableArticles.find(x => x.folio === folio);
-    console.log("FOLIO",selectedArticleCons)
     selectedRowFolio= folio
     let formatDate1=""
     let formatDate2=""
@@ -831,7 +896,6 @@ async function guardarArchivos(id){
     });
     const fileInput = document.getElementById(id);
     const file = fileInput.files[0]; // Obtener el archivo seleccionado
-    console.log("ARCHIVO",file)
 
     if (!file) {
         alert('Selecciona un archivo para subir');
@@ -899,7 +963,6 @@ function editarArticuloConModal(){
         let date = partes[0]+'T'+partes[1]+":00"
         cleanSelected.fecha_devolucion_concesion = date
     } 
-    console.log("REVISARR",cleanSelected,data_incidence_update)
     let validateObj = encontrarCambios(cleanSelected,data_incidence_update)
     if(Object.keys(validateObj).length == 0){
         Swal.fire({
@@ -918,7 +981,6 @@ function editarArticuloConModal(){
             let formatValue= validateObj.fecha_devolucion_concesion.split('T')
             validateObj.fecha_devolucion_concesion=formatValue[0]+' '+formatValue[1]
         }
-        console.log("swdegjknsodnfkjsd",validateObj)
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -1045,7 +1107,6 @@ function aplicarFiltros(){
     let columnas= $("#idFiltrosColumna").val()
     let tipo= $("#idFiltrosTipo").val()
     let valor= $("#idFiltrosValor").val();
-    console.log(columnas,tipo, valor)
     /*
     fetch(url + urlScripts, {
         method: 'POST',
@@ -1059,7 +1120,7 @@ function aplicarFiltros(){
         }),
         headers:{
            'Content-Type': 'application/json',
-           'Authorization': 'Bearer '+jw
+           'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())

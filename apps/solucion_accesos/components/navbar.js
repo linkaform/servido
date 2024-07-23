@@ -69,7 +69,6 @@ function changeButtonColor(){
                  btn1.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
                 break;
               case "bitacora":
-                console.log("bityytyt")
                  let btn2 = document.getElementById("buttonBitacoras");
                  btn2.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
                 break;
@@ -90,7 +89,6 @@ function changeButtonColor(){
 }
 
 function customNavbar(location, turno){
-    console.log("EN TURNOS",location,turno)
      if(turno === userTurnCerrado ){
         $('#buttonAccesos').addClass('ocultar');
         $('#buttonBitacoras').addClass('ocultar');
