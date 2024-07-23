@@ -1,18 +1,9 @@
 var array_background = getPAlleteColors(4,4);
-console.log(array_background)
 var array_background = getPAlleteColors(6,4);
-console.log(array_background)
 var array_background = getPAlleteColors(7,4);
-console.log(array_background)
-
-
-
 var array_background = getPAlleteColors(10,12);
-console.log(array_background)
 
 //--Table Montajes Por Mes
-
-
 var columsTable1 = [
   { title:"Folio", field:'folio', hozAlign:"left", formatter:"link", formatterParams:{
   url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
@@ -24,19 +15,12 @@ var columsTable1 = [
   { title:"Cambio Trampa", field:'cambio_trampa',hozAlign:"left",width:250},
   { title:"Cambio Bulbo", field:'cambio_bulbo',hozAlign:"left",width:250},
   { title:"Mosca Domestica", field:'mosca_domestica',hozAlign:"left",width:250},
-  { title:"Mosca Fruta", field:'mosca_fruta',hozAlign:"left",width:250},
   { title:"Mosca Drenaje", field:'mosca_drenaje',hozAlign:"left",width:250},
-  { title:"Mosca Metalica", field:'mosca_metalica',hozAlign:"left",width:250},
-  { title:"Mosca foridas", field:'mosca_foridas',hozAlign:"left",width:250},
   { title:"Palomilla almacen", field:'palomilla_almacen',hozAlign:"left",width:250},
   { title:"Otra palomilla", field:'otra_palomilla',hozAlign:"left",width:250},
-  { title:"Gorgojos", field:'gorgojos',hozAlign:"left",width:250},
   { title:"Otros escarabajos", field:'otros_escarabajos',hozAlign:"left",width:250},
   { title:"Abejas", field:'abejas',hozAlign:"left",width:250},
-  { title:"Avispas", field:'avispas',hozAlign:"left",width:250},
   { title:"Mosquitos", field:'mosquitos',hozAlign:"left",width:250},
-  { title:"Insecto area verde", field:'insecto_area_verde',hozAlign:"left",width:250},
-  { title:"Otros voladores", field:'otros_voladores',hozAlign:"left",width:250},
 ];
 
 var dataTable1 = [
@@ -272,7 +256,6 @@ var dataTable1 = [
   },
 ];
 
-
 var data1 = {
   labels: ['2022-12-01','2022-12-08','2022-12-15','2022-12-25','2023-01-03'],
   datasets: [
@@ -302,8 +285,6 @@ var data1 = {
     },
   ]
 };
-
-
 
 var setOptions1 = {
   responsive: true,

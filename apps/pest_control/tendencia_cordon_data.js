@@ -11,8 +11,6 @@ var array_background = getPAlleteColors(10,12);
 console.log(array_background)
 
 //--Table Montajes Por Mes
-
-
 var columsTable1 = [
   { title:"Folio", field:'folio', hozAlign:"left", formatter:"link", formatterParams:{
   url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
@@ -96,7 +94,6 @@ var dataTable1 = [
   }
 ];
 
-
 var data1 = {
   labels: ['Medio','Total','Nulo'],
   datasets: [
@@ -109,8 +106,6 @@ var data1 = {
   ]
 };
 
-
-
 var setOptions1 = {
   responsive: true,
   plugins: {
@@ -120,7 +115,7 @@ var setOptions1 = {
     },
     title: {
         display: true,
-        text: 'Reporte de Consumo',
+        text: 'Consumo',
         font: {
           size: 25
         }
@@ -141,9 +136,7 @@ var setOptions1 = {
   },
 };
 
-
 var data2 = {"labels": ["Roedor"], "datasets": [{"label": "Valor", "data": [1], "backgroundColor": ["#F6FB7A", "#B4E380"], "borderColor": ["#F6FB7A", "#B4E380"]}]}
-
 
 var setOptions2 = {
   responsive: true,
@@ -154,7 +147,7 @@ var setOptions2 = {
     },
     title: {
         display: true,
-        text: 'Reporte de Consumido',
+        text: 'Consumo X Plaga',
         font: {
           size: 25
         }

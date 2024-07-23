@@ -1,18 +1,8 @@
 var array_background = getPAlleteColors(4,4);
-console.log(array_background)
 var array_background = getPAlleteColors(6,4);
-console.log(array_background)
 var array_background = getPAlleteColors(7,4);
-console.log(array_background)
-
-
-
 var array_background = getPAlleteColors(10,12);
-console.log(array_background)
-
 //--Table Montajes Por Mes
-
-
 var columsTable1 = [
   { title:"Folio", field:'folio', hozAlign:"left", formatter:"link", formatterParams:{
   url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
@@ -24,22 +14,11 @@ var columsTable1 = [
   { title:"Roedor", field:'roedor',hozAlign:"left",width:250},
   { title:"Cucaracha alemana", field:'cucaracha_alemana',hozAlign:"left",width:250},
   { title:"Cucaracha americana", field:'cucaracha_americana',hozAlign:"left",width:250},
-  { title:"Cucaracha oriental", field:'cucaracha_oriental',hozAlign:"left",width:250},
   { title:"Hormiga", field:'hormiga',hozAlign:"left",width:250},
-  { title:"Hormiga carpintera", field:'hormiga_carpintera',hozAlign:"left",width:250},
   { title:"Tijerilla", field:'tijerilla',hozAlign:"left",width:250},
   { title:"Grillo", field:'grillo',hozAlign:"left",width:250},
-  { title:"Pescadito plata", field:'pescadito_plata',hozAlign:"left",width:250},
   { title:"Pulga", field:'pulga',hozAlign:"left",width:250},
-  { title:"Chinche cama", field:'chinche_cama',hozAlign:"left",width:250},
-  { title:"Mosca", field:'mosca',hozAlign:"left",width:250},
   { title:"Mosquito", field:'mosquito',hozAlign:"left",width:250},
-  { title:"Palomilla", field:'palomilla',hozAlign:"left",width:250},
-  { title:"Gorgojo", field:'gorgojo',hozAlign:"left",width:250},
-  { title:"Escarabajo", field:'escarabajo',hozAlign:"left",width:250},
-  { title:"Termita subterranea", field:'termita_subterranea',hozAlign:"left",width:250},
-  { title:"Caracol", field:'caracol',hozAlign:"left",width:250},
-  { title:"Otra plaga", field:'otra_plaga',hozAlign:"left",width:250},
 ];
 
 var dataTable1 = [
