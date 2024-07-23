@@ -8,31 +8,28 @@ let columsDataArticles = [
 			let data = cell.getData()
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			let divActions = '<div class="row d-flex">';
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-eye" onClick="alertVerArticuloCon(${folio})"></i></button>`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-clock" onClick="setModal('OutArticleConse', ${folio})"></i></button>`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-pen" onClick="editarArticuloCon(${folio}, '${data.ubicacion_concesion}', 
-			'${data.fecha_concesion}', '${data.date}','${data.equipo_concesion}', '${data.tipo_concesion}', '${data.foto_concesion}','${data.folio}', '${data.nombre_concesion}',
-			'${data.comment}')"></i></button>`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-trash" onClick="alertEliminarTable(${folio}, 'articles')"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-eye" onClick="alertVerArticuloCon('${folio}')"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-clock" onClick="setModal('OutArticleCon', '${folio}')"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-pen" onClick="loadArticuloConModal('${folio}')"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-trash" onClick="alertEliminarTable('${folio}', 'articles')"></i></button>`;
 			divActions += '</div>';
 			return divActions;
 		},
 	},
 	{ title:"Ubicación", field:'ubicacion_concesion',hozAlign:"left",headerFilter:true},
+	{ title:"Caseta", field:'caseta_concesion',hozAlign:"left",headerFilter:true},
 	{ title:"Nombre", field:'equipo_concesion',hozAlign:"left",headerFilter:true},
 	{ title:"Fecha", field:'fecha_concesion',hozAlign:"left",headerFilter:true,headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
-	{ title:"Tipo", field:'tipo_concesion',hozAlign:"left",headerFilter:true, width:200},
-	{ title:"Fotografía", field:'foto_concesion',hozAlign:"left",formatter:"image", width:200 , formatterParams:{height:"120px",width:"180px"},
-		formatter: function(cell) {
-            let data = cell.getData();
-            return data.note_pic.length>0 ? data.note_pic[0].file_name : ""; 
-        }},
+	{ title:"Tipo", field:'solicita_concesion',hozAlign:"left",headerFilter:true, width:200},
+	{ title:"Fotografía", field:'foto_concesion',hozAlign:"left",formatter:"image", width:200 , formatterParams:{height:"120px",width:"180px"}},
+		
 	{ title:"No. Serie", field:'folio',hozAlign:"left",headerFilter:true},
 	{ title:"Reporta", field:'nombre_concesion',hozAlign:"left",headerFilter:true},
 	{ title:"Observaciones", field:'observacion_concesion',hozAlign:"left",headerFilter:true},
 	{ title:"Recibe", field:'recibe_concesion',hozAlign:"left",headerFilter:true},
 	{ title:"Devolución", field:'fecha_devolucion_concesion',hozAlign:"left",headerFilter:true,headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
 	{ title:"Estado", field:'status_concesion',hozAlign:"left",headerFilter:true},
+	{ title:"Area", field:'area_concesion',hozAlign:"left",headerFilter:true},
 ];
 
 let columsDataArticlesLose = [
@@ -115,7 +112,7 @@ function drawTable(id, columnsData, tableData){
         pagination:true, 
         paginationSize:40,
         headerVisible: true,
-        scrollHorizontal: false,
+        placeholder: "No hay registros disponibles", 
     });
     tables[id]=table;
 }

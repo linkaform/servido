@@ -7,6 +7,40 @@ var url = "https://app.linkaform.com/api/";
 
 // Funciones Genericas Servido
 
+
+//Funcion para retornar cambios en dos objetos con las mismas keys 
+function encontrarCambios(objetoOriginal, objetoEditado) {
+  let cambios = {};
+  for (let key in objetoOriginal) {
+    if (objetoOriginal.hasOwnProperty(key) && objetoEditado.hasOwnProperty(key)) {
+      if (objetoOriginal[key] !== objetoEditado[key]) {
+        cambios[key] = objetoEditado[key]
+      }
+    }
+  }
+  return cambios;
+}
+
+
+
+function convertDate(timestamp, timezone){
+    const date = new Date(timestamp * 1000);
+    const options = {
+        timeZone: timezone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+    };
+    let raw=date.toLocaleString('es-MX', options);
+    let [fecha, hora] = raw.split(',');
+    fecha = fecha.replace(/\//g, '-');
+    hora = hora.slice(0, -3);
+    return `${fecha.substr(6,4)}-${fecha.substr(3,2)}-${fecha.substr(0,2)} ${hora.trim()}`;
+}
+
 function urlParamstoJson() {
 	var query_string = {};
 	var query = window.location.search.substring(1);
@@ -68,6 +102,8 @@ function hideLoading() {
     loading.style.display = 'none';
   }, 1000);
 };
+
+
 
 function login() {
   loading.style.display = 'flex';
@@ -309,8 +345,6 @@ let dateFilter = function(headerValue, rowValue, rowData, filterParams){
     var mes = partes[1] ;
     var dia = partes[0];
     let stringDate= dia+'-'+mes+'-'+anio
-
-    console.log(stringDate, headerValueDate, stringDate == headerValueDate)
 
     if (stringDate == headerValueDate) {
         return true;

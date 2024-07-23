@@ -34,17 +34,37 @@ const columnsTableListNotas = [
 	{ title:"Archivo", field:'note_file',hozAlign:"left",headerFilter:true,width:250,
         formatter: function(cell) {
                 let data = cell.getData();
-                return data.note_file.length>0 ? data.note_file[0].file_name: ""; // Mostrar solo el primer nombre del array
+                let link=""
+	            if(data.note_file.length>0){
+	            	link= `<a href="${data.note_file[0].file_url}" target="_blank">${data.note_file[0].file_name}</a>`;
+	            }else{
+	            	link=""
+	            }
+                return link; // Mostrar solo el primer nombre del array
             }},
 	{ title:"Fotografia", field:'note_pic',hozAlign:"left",headerFilter:true,width:250,
-        formatter: function(cell) {
-                let data = cell.getData();
-                return data.note_pic.length>0 ? data.note_pic[0].file_name : ""; 
-            }},
+            formatter: function(cell) {
+		            let data = cell.getData();
+		            let img=""
+		            if(data.note_pic.length>0){
+		            	img= `<img src="${data.note_pic[0].file_url}" alt="Imagen" style="width:120px;height:120px;" class="img-cell"/>`;
+		            }else{
+		            	img=""
+		            }
+		            return img;
+		        }},
 	{ title:"Comentarios", field:'note_comments',hozAlign:"left",headerFilter:true,width:290,
           formatter: function(cell) {
+          		let comment=""
                 let data = cell.getData();
-                return data.note_comments.length>0 ? data.note_comments[0]["6647fb38da07bf430e273ea2"].comentario : "";
+                if(data.note_comments.length>0){
+                	if(data.note_comments[0].hasOwnProperty(["6647fb38da07bf430e273ea2"])){
+                		comment= data.note_comments[0]["6647fb38da07bf430e273ea2"]
+                	}else{
+                		comment= data.note_comments[0]
+                	}
+                }
+                return comment
           }},
 ];
 

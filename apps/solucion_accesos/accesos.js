@@ -11,7 +11,7 @@ let urlImgUser = '';
 let flagVideoCard = false;
 let flagVideoUser = false;
 let codeUserVisit=""
-let userJwt = getCookie("userJwt");
+//let userJwt = getCookie("userJwt");
 let selectedEquipos=[]
 let selectedVehiculos=[]
 let fullData=""
@@ -19,21 +19,22 @@ let fullData=""
 window.onload = function(){
     setValueUserLocation('accesos');
     changeButtonColor();
+    
     fillCatalogs();
-    initializeCatalogs()
+    //initializeCatalogs();
     getInitialData();
     selectLocation= document.getElementById("selectLocation")
-    selectLocation.onchange = function() {
+    /*selectLocation.onchange = function() {
         let response = fetchOnChangeLocation()
-    };
+    };*/
     selectCaseta= document.getElementById("selectCaseta")
-    selectCaseta.onchange = function() {
+    /*selectCaseta.onchange = function() {
         let response = fetchOnChangeLocation()
-    };
-    selectLocation.disabled=true
-    selectCaseta.disabled=true
+    };*/
     selectLocation.value=getCookie("userLocation")
     selectCaseta.value=getCookie("userCaseta")
+    //selectLocation.disabled=true
+    //selectCaseta.disabled=true
     //selectLocation.disabled=true
     //selectCaseta.disabled=true
     
@@ -41,10 +42,9 @@ window.onload = function(){
     setHideElements('dataHide');
     setSpinner(true, 'divSpinner');
     let user = getCookie("userId");
-    let jw = getCookie("userJwt");
-    if(user !='' && jw!=''){
+    if(user !='' && userJwt!=''){
         setDataInformation('alerts',data = {})
-        getDataListUser();
+        //getDataListUser();
     }else{
         redirectionUrl('login',false)
     }
@@ -56,6 +56,7 @@ window.onload = function(){
 function getInitialData(){
     let valueCaseta = getCookie('userCaseta')
     let valueLocation =  getCookie('userLocation')
+    /*
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -66,14 +67,14 @@ function getInitialData(){
         }),
         headers:{
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+jw
+            'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
     .then(res => {
         if (res.success) {
         } 
-    });
+    });*/
     let boothStats = load_shift_json.booth_stats.access
     $("#textVisitasEnElDia").text(boothStats.visits_per_day);
     $("#textPersonalDentro").text(boothStats.staff_indoors);
@@ -104,7 +105,7 @@ function asignarNuevaVisita(){
             }),
             headers:{
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+jw
+                'Authorization': 'Bearer '+userJwt
             },
         })
         .then(res => res.json())
@@ -156,7 +157,7 @@ function agregaEquipo(){
             }),
             headers:{
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+jw
+                'Authorization': 'Bearer '+userJwt
             },
         })
         .then(res => res.json())
@@ -164,7 +165,6 @@ function agregaEquipo(){
             if (res.success) {
                 //CODE una vez resulta la imagen, cargarla en front
                 let data={ data: {}}
-                console.log("RESPONSE", data)
             } 
         });
     }else{
@@ -184,8 +184,6 @@ function getDataUser() {
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
     let codeUser = $("#inputCodeUser").val();
-    let userJwt = getCookie("userJwt");
- console.log("+++++++++++++++++++++",getCookie('userLocation'), codeUser)
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -202,11 +200,9 @@ function getDataUser() {
     })
     .then(res => res.json())
     .then(res => {
-        console.log("+++++++++++++++++++++",res)
         if (res.success) {
             fullData= res.response.data
             setCookie('userLocation', res.response.data.ubicacion)
-            console.log("FULL DATA", res.response.data)
             setDataInformation('informatioUser', res.response.data)
             setHideElements('buttonsModal');
             $("#divSpinner").hide();
@@ -218,7 +214,6 @@ function getDataUser() {
 
 //FUNCION para obtener la lista de usuario
 function getDataListUser(){
-    let userJwt = getCookie("userJwt");
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -249,8 +244,6 @@ function setDataUser(){
     let codeUser  = $("#inputCodeUser").val();
     $("#buttonIn").hide();
     $("#buttonOut").hide();
-    let userJwt = getCookie("userJwt");
-
     
     let location= 'Planta Monterrey'//getCookie('userLocation') 
     let area='Caseta Vigilancia Norte 3' //getCookie('userCaseta')
@@ -285,7 +278,6 @@ function setDataUser(){
     })
     .then(res => res.json())
     .then(res => {
-        console.log("RESPONSE",res)
         if (res.success) {
             let data = {};
             setHideElements('buttonsModal');
@@ -364,7 +356,6 @@ function registrarSalida(){
 //FUNCION para asignar un nuevo gafete
 function setDataGafete(data = {}){
     let codeUser  = $("#inputCodeUser").val();
-    let userJwt = getCookie("userJwt");
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -622,7 +613,7 @@ function registrarIngreso(){
         }),
         headers:{
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+jw
+            'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
@@ -965,7 +956,7 @@ function agregarEquipoAModal(){
             }),
             headers:{
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+jw
+                'Authorization': 'Bearer '+userJwt
             },
         })
         .then(res => res.json())
@@ -1207,6 +1198,7 @@ function getCatalogs(){
     $("#selectTipoVehiculo-123").prop( "disabled", true );
     $("#divCatalogMarca123").hide();
     $("#divCatalogModelo123").hide();
+    /*
     fetch(url + urlScripts ,{
         method: 'POST',
         body: JSON.stringify({
@@ -1222,7 +1214,7 @@ function getCatalogs(){
     .then(res => {
         if (res.success) {
         } 
-    })
+    })*/
     let cat={
         "brands_cars": [
             {"type": "motocicleta", "brand": ["vento"]},

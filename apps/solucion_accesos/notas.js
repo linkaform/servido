@@ -2,7 +2,6 @@ let tables={}
 let idScriptC=119197;
 let selectLocation=""
 let selectCaseta=""
-let userJwt=""
 let arraySuccessFoto=[]
 let arraySuccessArchivo=[]
 let arrayResponses=[]
@@ -12,15 +11,18 @@ let colors = getPAlleteColors(12,0)
 window.onload = function(){
     userJwt = getCookie("userJwt");
     setValueUserLocation('notas');
+    customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	fillCatalogs();
     getAllData();
     selectLocation= document.getElementById("selectLocation")
-    selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation()
-    };
     selectCaseta= document.getElementById("selectCaseta")
-    selectCaseta.onchange = function() {
-        let response = fetchOnChangeLocation()
+
+    selectLocation.onchange = function() {
+        let response = fetchOnChangeLocation('notes.py', 'get_notes', selectCaseta.value, '')
+    };
+    selectCaseta.onchange = async function() {
+        let response = await fetchOnChangeLocation('notes.py', 'get_notes', selectCaseta.value, '')
+        reloadTableNotas(response.response.data)
     };
     let user = getCookie("userId");
     let jw = getCookie("userJwt");
@@ -32,8 +34,38 @@ window.onload = function(){
     $("#idLoadingButtonEnviarNota").hide();
 }
 
+function reloadTableNotas(data){
+    dataTableListNotas=[]
+    if(user !='' && userJwt!=''){
+        if(data.length > 0){
+            for(let note of data){
+                let dateFormatOpen= note.note_open_date.slice(0,-3)
+                let dateFormatClose=""
+                if(note.hasOwnProperty('note_close_date')){
+                    dateFormatClose= note.note_close_date.slice(0,-3)
+                }
+                dataTableListNotas.push({folio:note.folio, note_status: note.note_status, note_guard:note.note_guard, 
+                    note_open_date: dateFormatOpen, 
+                    note_close_date:dateFormatClose,  note: note.note, 
+                    note_pic: note.hasOwnProperty('note_pic') && note.note_pic.length>0 ? note.note_pic  : [], 
+                    note_file: note.hasOwnProperty('note_file') &&note.note_file.length>0 ? note.note_file : [], 
+                    note_comments: note.hasOwnProperty('note_comments') && note.note_comments.length>0 ? note.note_comments: [], 
+                    check:"",view:"", edit:""})
+            }
+        }else{
+            dataTableListNotas = []
+        }
+        if(tables["tableListNotas"]){
+            tables["tableListNotas"].setData(dataTableListNotas);
+        }else{
+            drawTableNotas('tableListNotas',columnsTableListNotas, dataTableListNotas );
+        }
+    } else{
+        redirectionUrl('login',false);
+    }
+}
+
 function getAllData(){
-    console.log("LLALAMARRR",getCookie('userCaseta'), url + urlScripts)
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -50,7 +82,7 @@ function getAllData(){
     .then(res => res.json())
     .then(res => {
         if(res.success){
-            if(user !='' && jw!=''){
+            if(user !='' && userJwt!=''){
                 let notas=res.response.data
                 if(notas.length > 0){
                     for(let note of notas){
@@ -64,7 +96,7 @@ function getAllData(){
                             note_open_date: dateFormatOpen, 
                             note_close_date:dateFormatClose,  note: note.note, 
                             note_pic: note.hasOwnProperty('note_pic') && note.note_pic.length>0 ? note.note_pic  : [], 
-                            note_file: note.hasOwnProperty('note_file') &&note.note_file.length>0 ? note.note_file[0].file_name : [], 
+                            note_file: note.hasOwnProperty('note_file') &&note.note_file.length>0 ? note.note_file : [], 
                             note_comments: note.hasOwnProperty('note_comments') && note.note_comments.length>0 ? note.note_comments: [], 
                             check:"",view:"", edit:""})
                     }
@@ -110,7 +142,7 @@ function editarNota(){
         }),
         headers:{
            'Content-Type': 'application/json',
-           'Authorization': 'Bearer '+jw
+           'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
@@ -130,8 +162,6 @@ function editarNota(){
 //FUNCION editar un articuloc consesionado
 function editarNotaCargarInfo(folio){
     let selectedNota = dataTableListNotas.find(x => x.folio == folio);
-    console.log("NOTA SELECIONADA",selectedNota)
-
     selectedRowFolio= folio
     $('#editarNotasModal').modal('show');
     $("#idEditNotaSelect").val(selectedNota.note_status)
@@ -165,11 +195,17 @@ function cerrarNotaAlert(name, note, folio, status){
         })
         .then((result) => {
             if (result.value) {
+                Swal.fire({
+                    title: 'Cargando...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading();
+                   }
+                });
                 let data_update={
                     'note_status':'cerrado',
                     'note_close_date': getTodayDateTime()
                 }
-                console.log("DATOS", data_update, folio)
                  fetch(url + urlScripts, {
                     method: 'POST',
                     body: JSON.stringify({
@@ -248,10 +284,10 @@ function verNotasAlert(folio){
     let archivosItem=``;
     let commentsItem=``;
 
-    for(let com in selectedNota.note_comments_group){
+    for(let com in selectedNota.note_comments){
         commentsItem+=`
         <div class='m-2 '> 
-            <span style='font-size: .8em;'>`+selectedNota.note_comments_group[com]['6647fb38da07bf430e273ea2'].comentario+`</span> 
+            <span style='font-size: .8em;'>`+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span> 
         </div>`;
     }
     let htmlComments=`
@@ -314,16 +350,16 @@ function verNotasAlert(folio){
 function setAddComentario(){
      let randomID = Date.now();
     let newItem=`
-        <div class="d-flex mb-3 div-comment-`+randomID+`" id="id-comment-div-`+randomID+`">
+        <div class="d-flex mb-3 div-comment-`+randomID+`" id="div-comment-`+randomID+`">
             <div class="flex-grow-1">
                 <label class="form-label">Comentario *</label>
-                <textarea class="form-control comment-div" id="inputComentarioNota" rows="3" placeholder="Escribe algo..."></textarea>
+                <textarea class="form-control comment-div" id="inputComentarioNota-`+randomID+`"" rows="3" placeholder="Escribe algo..."></textarea>
             </div>
             <div>
                 <button type="button" class="btn btn-success button-add-register " onclick="setAddComment();return false;">
                     <i class="fa-solid fa-plus"></i>
                 </button>
-                <button type="button" class="btn btn-danger button-delete-register "  onclick="setDeleteComment(`+randomID+`);return false;">
+                <button type="button" class="btn btn-danger button-delete-register "  onclick="setDeleteComentario(`+randomID+`);return false;">
                     <i class="fa-solid fa-minus"></i></button>
             </div>
         </div>
@@ -347,15 +383,19 @@ function setDeleteComentario(id){
 function setAddArchivo(){
     let randomID = Date.now();
     let newItem=`
-        <div class="mb-3 col-12  div-archivo-`+randomID+`" id="id-archivo-div-`+randomID+`">
-            <label class="form-label">Cargar un archivo *</label>
-            <input type="file" class="form-control-file archivo-div" id="fileInputArchivo">
-            <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
-                <i class="fa-solid fa-plus"></i>
-            </button>
-            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(`+randomID+`);return false;">
-                <i class="fa-solid fa-minus"></i>
-            </button>
+        <div class="d-flex mb-3 col-12  div-archivo-`+randomID+`" id="id-archivo-div-`+randomID+`">
+            <div class="flex-grow-1">
+                <label class="form-label">Cargar un archivo *</label>
+                <input type="file" class="form-control-file archivo-div" onchange="guardarArchivos('fileInputArchivo-`+randomID+`', false);" id="fileInputArchivo-`+randomID+`">
+            </div>
+            <div>
+                <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(`+randomID+`);return false;">
+                    <i class="fa-solid fa-minus"></i>
+                </button>
+            </div>
         </div>
     `;
     $('#archivo-input-form').append(newItem);
@@ -379,16 +419,20 @@ function setDeleteArchivo(id){
 function setAddFoto(){
     let randomID = Date.now();
     let newItem=`
-        <div class="mb-3 col-12  div-foto-`+randomID+`" id="id-foto-div-`+randomID+`">
-            <label class="form-label">Fotografia *</label>
-            <input type="file" class="form-control-file foto-div" id="fileInputFotografia">
-            <div class="col-3">
-            <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
-                <i class="fa-solid fa-plus"></i>
-            </button>
-            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(`+randomID+`);return false;">
-               <i class="fa-solid fa-minus"></i>
-            </button>
+        <div class="d-flex mb-3 col-12  div-foto-`+randomID+`" id="id-foto-div-`+randomID+`">
+            <div class="flex-grow-1">
+                <label class="form-label">Fotografia *</label>
+                <input type="file" class="form-control-file foto-div" onchange="guardarArchivos('fileInputFotografia-`+randomID+`', true);" id="fileInputFotografia-`+randomID+`">
+                
+            </div>
+            <div>
+                <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(`+randomID+`);return false;">
+                   <i class="fa-solid fa-minus"></i>
+                </button>
+            </div>
         </div>
     `;
     $('#foto-input-form').append(newItem) 
@@ -412,15 +456,39 @@ function setDeleteFoto(id){
 function limpiarEnviaNotaModal(){
     arraySuccessFoto=[]
     arraySuccessArchivo=[]
+    arrayResponses=[]
     $("#idButtonCargarArchivos").show();
     $("#commentTextarea").val("")
     $("#inputComentarioNota").val("")
+    $("#comentarioNuevaNota").val("")
     let divArchivo = document.getElementById("archivo-input-form");
+    let divFoto = document.getElementById("foto-input-form");
+    let divComment = document.getElementById("comment-input-form");
+
+    const elementsArchivo = divArchivo.querySelectorAll('.archivo-div');
+    elementsArchivo.forEach(function(input) {
+        if(input.id!=="fileInputArchivo"){
+            input.parentElement.parentElement.remove();
+        }
+    });
+    const elementsFoto = divFoto.querySelectorAll('.foto-div');
+    elementsFoto.forEach(function(input) {
+        if(input.id!=="fileInputFotografia"){
+            input.parentElement.parentElement.remove();
+        }
+    });
+    const elementsComment = divComment.querySelectorAll('.comment-div');
+    elementsComment.forEach(function(input) {
+        if(input.id!=="comentarioNuevaNota"){
+            input.parentElement.parentElement.remove();
+        }
+    });
+
     let inputsE = divArchivo.querySelectorAll('.archivo-div');
     inputsE.forEach(function(input) {
         input.value=''
     });
-    let divFoto = document.getElementById("foto-input-form");
+
     let inputsF = divFoto.querySelectorAll('.foto-div');
     inputsF.forEach(function(input) {
         input.value=''
@@ -435,15 +503,14 @@ function enviarNota(){
     let nota= $("#commentTextarea").val(); 
     let archivo= $("#fileInputArchivo").val(); 
     let status= $("#nuevaNotaEstatusSelect").val(); 
-    let fecha= $("#fechaNuevaNota").val(); 
-    let formatDate= fecha.split("T")[0]+' '+fecha.split("T")[1]
+    //let fecha= $("#fechaNuevaNota").val(); 
+    //let formatDate= fecha.split("T")[0]+' '+fecha.split("T")[1]
     let comments=[]
     let divComentario = document.getElementById("comment-input-form");
     let inputsG = divComentario.querySelectorAll('.comment-div');
     inputsG.forEach(function(input) {
         comments.push(input.value)
     });
-
     for(let obj of arrayResponses){
         if( obj.hasOwnProperty('file_name') && obj.isImage==true){
             let { isImage, file_name, file  } = obj;
@@ -459,8 +526,6 @@ function enviarNota(){
     }
     let data_notes={
         'note_status':status,
-        'note_open_date':formatDate+":00",
-        'note_close_date':'',
         'note':nota,
         'note_booth':getCookie('userCaseta'),
         'note_guard':getCookie('userName'),
@@ -479,12 +544,11 @@ function enviarNota(){
             }),
             headers:{
                'Content-Type': 'application/json',
-               'Authorization': 'Bearer '+jw
+               'Authorization': 'Bearer '+userJwt
             },
         })
         .then(res => res.json())
         .then(res => {
-            console.log("RES", res, data_notes)
             if (res.success) {
                 let data = res.response.data
                     if (data.status_code==400){
@@ -497,7 +561,10 @@ function enviarNota(){
                             text: errores.flat(),
                             type: "error"
                         });
+                        $("#idLoadingButtonEnviarNota").hide();
+                        $("#idButtonEnviarNota").show();
                     } else if(data.status_code==202 ||data.status_code==201){
+                        let date= convertDate(data.json.created_at, data.json.timezone)
                         Swal.fire({
                             title: "Confirmación",
                             text: "La nota se ha creado correctamente.",
@@ -522,13 +589,20 @@ function enviarNota(){
                             input.value=''
                         });
                         for (let key in data_notes){
-                            if(key=='note_open_date'|| key=='note_close_date'){
+                            if(key=='note_open_date'/*|| key=='note_close_date'*/){
                                 let formatDate= data_notes[key].slice(0,-3)
                                 data_notes[key]= formatDate
-                                data_notes.folio= data.json.folio
                             }
                         }
-                        dataTableListNotas.unshift(data_notes)
+                        let note_open_date= convertDate(data.json.created_at, data.json.timezone)
+                        dataTableListNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, note_guard:data_notes.note_guard, 
+                            note_open_date: note_open_date, 
+                            note_close_date:"",  note: data_notes.note, 
+                            note_pic: data_notes.hasOwnProperty('note_pic') && data_notes.note_pic.length>0 ? data_notes.note_pic  : [], 
+                            note_file: data_notes.hasOwnProperty('note_file') && data_notes.note_file.length>0 ? data_notes.note_file : [], 
+                            note_comments: data_notes.hasOwnProperty('note_comments') && data_notes.note_comments.length > 0 ? data_notes.note_comments: [], 
+                            check:"",view:"", edit:""})
+
                         tables["tableListNotas"].setData(dataTableListNotas);
                         $("#idLoadingButtonEnviarNota").hide();
                         $("#idButtonEnviarNota").show();
@@ -539,6 +613,8 @@ function enviarNota(){
                     text: res.error,
                     type: "Error"
                 });
+                $("#idLoadingButtonEnviarNota").hide();
+                $("#idButtonEnviarNota").show();
             }
         })
     } else{
@@ -547,61 +623,11 @@ function enviarNota(){
             text: "Completa la información requerida.",
             type: "warning"
         });
+        $("#idLoadingButtonEnviarNota").hide();
+        $("#idButtonEnviarNota").show();
     }
 }
 
-
-//FUNCION para guardar los archivos en el server 
-async function guardarArchivos(){
-    $("#idLoadingButtonArchivos").show();
-    $("#idButtonCargarArchivos").hide();
-    let allFiles=[]
-    let divArchivo = document.getElementById("archivo-input-form");
-    let inputsE = divArchivo.querySelectorAll('.archivo-div');
-    inputsE.forEach(function(input) {
-        allFiles.push({'file':input.files[0],'isImage':false})
-    });
-    
-    let divFoto = document.getElementById("foto-input-form");
-    let inputsF = divFoto.querySelectorAll('.foto-div');
-    inputsF.forEach(function(input) {
-        allFiles.push({'file':input.files[0],'isImage':true})
-    });
-
-    if (!allFiles.length>0) {
-        alert('Please select a file before uploading.');
-        return;
-    }
-
-    let data=""
-    for(let f of allFiles){
-        let formData = new FormData();
-        formData.append('File', f.file);
-        formData.append('field_id', '63e65029c0f814cb466658a2');
-        formData.append('is_image', f.isImage);
-        formData.append('form_id', 95435);
-
-        const options = {
-          method: 'POST', 
-          body: formData
-        };
-        let respuesta = await fetch('https://app.linkaform.com/api/infosync/cloud_upload/', options);
-        data = await respuesta.json(); //Obtenemos los datos de la respuesta 
-        data.isImage = f.isImage
-        arrayResponses.push(data); //Agregamos los datos al arreglo
-    }
-    if(data){
-        $("#idLoadingButtonArchivos").hide();
-        $("#idButtonCargarArchivos").hide();
-        Swal.fire({
-            title: "Acción Completada",
-            text: "Los archivos fueron guardados correctamente.",
-            type: "success",
-            showConfirmButton:false,
-            timer:1100
-        });
-    }
-}
 
 
 //FUNCION FILTROS MODAL
@@ -641,7 +667,7 @@ function aplicarFiltros(){
         }),
         headers:{
            'Content-Type': 'application/json',
-           'Authorization': 'Bearer '+jw
+           'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
@@ -688,7 +714,7 @@ function alertEliminarNota(folio){
                 body: JSON.stringify({
                     script_name: "notes.py",
                     option: "delete_note",
-                    folio: [folio]
+                    folio: folio
                 }),
                 headers:
                 {
@@ -698,7 +724,6 @@ function alertEliminarNota(folio){
             })
             .then(res => res.json())
             .then(res => {
-                console.log("RESPONSE LIOMPSSSS", res)
                 if (res.success) {
                     let data=res.response.data
                     if(data.status_code==400){
@@ -727,11 +752,72 @@ function alertEliminarNota(folio){
                 }else{
                     Swal.fire({
                         title: "Error",
-                        text: res.error.msg,
-                        type: res.error.type
+                        text: res.error.msg.msg,
+                        type: res.error.msg.type
                     });
                 }
             });
         }
     });
 }
+
+
+//FUNCION para guardar los archivos en el server 
+async function guardarArchivos(id, isImage){
+    Swal.fire({
+        title: 'Cargando...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+            Swal.showLoading();
+       }
+    });
+    const fileInput = document.getElementById(id);
+    const file = fileInput.files[0]; // Obtener el archivo seleccionado
+
+    if (!file) {
+        alert('Selecciona un archivo para subir');
+        return;
+    }
+    let data=""
+    let formData = new FormData();
+    if(isImage){
+        formData.append('File', file);
+        formData.append('field_id', '63e65029c0f814cb466658a2');
+        formData.append('is_image', true);
+        formData.append('form_id', 95435);
+    }else{
+        formData.append('File[0]', file);
+        formData.append('field_id', '63e65029c0f814cb466658a2');
+        formData.append('form_id', 95435);
+
+    }
+
+    const options = {
+      method: 'POST', 
+      body: formData,
+    };
+    let respuesta = await fetch('https://app.linkaform.com/api/infosync/cloud_upload/', options);
+    data = await respuesta.json(); //Obtenemos los datos de la respuesta 
+    data.isImage=isImage
+    arrayResponses.push(data); //Agregamos los datos al arreglo
+    if(data.hasOwnProperty('error')){
+        Swal.fire({
+            title: "Error",
+            text: data.error,
+            type: "error",
+            showConfirmButton:false,
+            timer:1100
+        });
+        
+    }else{
+        let text= isImage? 'Las imagenes fueron guardadas correctamente.': 'Los archivos fueron guardados correctamente.';
+        Swal.fire({
+            title: "Acción Completada",
+            text: text,
+            type: "success",
+            showConfirmButton:false,
+            timer:1100
+        });
+    }
+}
+

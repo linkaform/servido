@@ -1,4 +1,3 @@
-let userJwt ="";
 let idScriptCatalog=117935;
 let opScriptCatalog='catalog_brands';
 let urlImgCard = '';
@@ -30,15 +29,15 @@ window.onload = function(){
 	const valores = window.location.search;
 	const urlParams = new URLSearchParams(valores);
 
-	ubicacion = urlParams.get('ubicacion') !== null ? urlParams.get('ubicacion') : 'Monterrey' ;
-	caseta = urlParams.get('caseta') !== null ? urlParams.get('caseta') : 'Caseta 1' ;
+	ubicacion = urlParams.get('ubicacion') !== null ? urlParams.get('ubicacion') :'' ;
+	caseta = urlParams.get('caseta') !== null ? urlParams.get('caseta') : '' ;
 	id = urlParams.get('id');
 	if(id){
 		getExtraInformation()
 	}
 	$("#textLocation").text(ubicacion);
 	$("#textModule").text(caseta);
-  getCatalogs();
+    getCatalogs();
 }	
 
 
@@ -80,8 +79,9 @@ function getCatalogs(){
 	fetch(url + urlScripts, {
 		method: 'POST',
 		body: JSON.stringify({
-			script_id: idScriptCatalog,
-			option: opScriptCatalog,
+			script_name:"script_turnos.py",
+			option:"get_catalog",
+			id_catalog: '119199',
 		}),
 		headers:{
 			'Content-Type': 'application/json',
@@ -90,6 +90,7 @@ function getCatalogs(){
 	})
 	.then(res => res.json())
 	.then(res => {
+			console.log("ID DEL CATALO", res)
 		if (res.success) {
 		} 
 	})
@@ -225,6 +226,9 @@ function getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
 	}
     let htmlAppendEquipos="";
     let htmlAppendVehiculos="";
+
+    let arrayEquipos=[]
+    let arrayVehiculos=[]
 	let flagValidation = getValidation(allData);
 	if(flagValidation){
 		for (let equipo in listInputsEquipo) {
@@ -233,9 +237,18 @@ function getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
 			htmlAppendEquipos +="<tbody> <tr> <td><b>Tipo de Equipo:</b></td> <td> <span > "+ listInputsEquipo[equipo][0].value +"</span></td> </tr>"
 			htmlAppendEquipos +="<tr> <td><b>Nombre:</b></td> <td> <span > "+ listInputsEquipo[equipo][1].value +"</span></td> </tr>"	
 			htmlAppendEquipos +="<tr> <td><b>Marca:</b></td> <td> <span > "+ listInputsEquipo[equipo][2].value +"</span></td> </tr>"
-			htmlAppendEquipos +="<tr> <td><b>Modelo:</b></td> <td> <span > "+ listInputsEquipo[equipo][3].value +"</span></td> </tr>"
-		    htmlAppendEquipos +="<tr> <td><b>Color:</b></td> <td> <span > "+ listInputsEquipo[equipo][4].value +"</span></td> </tr>"
-			htmlAppendEquipos +="</tbody> </table>	</div>";		
+			htmlAppendEquipos +="<tr> <td><b>Modelo:</b></td> <td> <span > "+ listInputsEquipo[equipo][4].value +"</span></td> </tr>"
+			htmlAppendEquipos +="<tr> <td><b>No. Serie:</b></td> <td> <span > "+ listInputsEquipo[equipo][3].value +"</span></td> </tr>"
+		    htmlAppendEquipos +="<tr> <td><b>Color:</b></td> <td> <span > "+ listInputsEquipo[equipo][5].value +"</span></td> </tr>"
+			htmlAppendEquipos +="</tbody> </table>	</div>";	
+		    let objEquipo={
+                'nombre':listInputsEquipo[equipo][1].value,
+                'marca':listInputsEquipo[equipo][2].value,
+                'color':listInputsEquipo[equipo][5].value,
+                'tipo':listInputsEquipo[equipo][0].value,
+                'serie':listInputsEquipo[equipo][4].value ,
+            }
+		    arrayEquipos.push(objEquipo)
 		}
 		for (let vehiculo in listInputsVehicule) {
 			htmlAppendVehiculos +="<div class='col-sm-12 col-md-12 col-lg-5 col-xl-5'>"
@@ -245,9 +258,19 @@ function getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
 			htmlAppendVehiculos +="<tr> <td><b>Modelo:</b></td> <td><span > "+ listInputsVehicule[vehiculo][2].value +"</span></td> </tr>"
 			htmlAppendVehiculos +="<tr> <td><b>Matricula:</b></td> <td><span > "+ listInputsVehicule[vehiculo][3].value +"</span></td> </tr>"
 			htmlAppendVehiculos +="<tr> <td> <b> Color: </b></td> <td><span > "+ listInputsVehicule[vehiculo][4].value +"</span></td> </tr> </tbody> </table> </div>";
+			let objVehiculo={ 
+				'tipo':listInputsVehicule[vehiculo][0].value,
+                'marca':listInputsVehicule[vehiculo][1].value,
+                'modelo':listInputsVehicule[vehiculo][2].value,
+                'estado':'',
+                'placas':listInputsVehicule[vehiculo][3].value,
+                'color':listInputsVehicule[vehiculo][4].value
+		    }
+		    arrayVehiculos.push(objVehiculo)
 		}
 	}
-	return { htmlAppendEquipos, htmlAppendVehiculos}
+
+	return { htmlAppendEquipos, htmlAppendVehiculos,arrayEquipos,arrayVehiculos}
 }
 
 
@@ -339,6 +362,48 @@ function AlertSendDataUser() {
     })
     .then((result) => {
         if (result.value) {
+        	let data_pase = {
+		        "visitante_pase":'alta_de_nuevo_visitante',
+		        //"ubicacion_pase":location  || '',
+		        "nombre_pase":name|| '',
+		        //"email_pase":'',
+		        //"telefono_pase":'',
+		        "empresa_pase":company|| '',
+		        //"perfil_pase":'',
+		        'visita_a_pase':[{
+		            'nombre_completo':visit|| '',
+		        }],
+		        //'authorized_pase':'',
+		        //'visita_de_pase':'',
+		        //'fecha_desde_pase':'',
+		        //'areas_group_pase':[],
+		        'vehiculos_group_pase': html.arrayVehiculos,
+		        'equipo_group_pase':html.arrayEquipos,
+		        'instrucciones_group_pase':['Sin comentarios'],
+		        'status_pase':'activo'
+		    }
+        	//FETCH PARA CREAR PASE DE ENTRADA
+        	fetch(url + urlScripts, {
+		        method: 'POST',
+		        body: JSON.stringify({
+		            script_name: 'script_turnos.py',
+		            option: 'create_pase',
+		            data_pase:data_pase
+		        }),
+		        headers:{
+		            'Content-Type': 'application/json',
+		            'Authorization': 'Bearer '+userJwt
+		        },
+		    })
+		    .then(res => res.json())
+		    .then(res => {
+		    	console.log("RESS",res)
+		        if (res.success) {
+		           console.log("RESPUESTA SUCSSS", res)
+		        } 
+		    });
+
+
 	      	Swal.fire({
 	      		type:"success",
 	      		imageUrl: "https://app.linkaform.com/img/login-linkaform-logo.png",

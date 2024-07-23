@@ -108,13 +108,13 @@ let dataTableFallas = []
 //-----TABLES
 function drawTable(id, columnsData, tableData){
     var  table = new Tabulator("#" + id, {
-	    layout:"fitColumns",
+	    layout:"fitDataStretch",
 	    data:tableData,
 	    textDirection:"ltr",
 	    columns:columnsData,
 	    pagination:true, 
 	    paginationSize:40,
-        responsiveLayout: "fitDataFill",
+        placeholder: "No hay registros disponibles", 
     });
     tables[id]=table;
 }
