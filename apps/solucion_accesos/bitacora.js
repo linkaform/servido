@@ -12,11 +12,11 @@ window.onload = function(){
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	selectLocation= document.getElementById("selectLocation")
 	selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation()
+        let response = fetchOnChangeLocation(selectLocation.value)
     };
  	selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = async function() {
-        let response = await fetchOnChangeLocation('script_turnos.py', 'list_bitacora', selectCaseta.value, selectLocation.value)
+        let response = await fetchOnChangeCaseta('script_turnos.py', 'list_bitacora', selectCaseta.value, selectLocation.value)
         reloadTableBitacoras(response.response.data)
     };
 	let user = getCookie("userId");
@@ -39,7 +39,7 @@ window.onload = function(){
 
 function reloadTableBitacoras(data){
     dataTablePersonal=[]
-    dataTableLocker=[]
+   //dataTableLocker=[]
     if(user !='' && userJwt!=''){
         let bit= data
         for (i of bit){

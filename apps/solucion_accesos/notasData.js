@@ -79,6 +79,7 @@ function drawTableNotas(id, columnsData, tableData, height){
 	    columns:columnsData,
 	    pagination:true, 
 	    paginationSize:40,
+	    placeholder: "No hay registros disponibles", 
 	});
 	tables[id]=table;
 }

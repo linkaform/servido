@@ -923,7 +923,7 @@ function alertEliminarNota(folio){
                 body: JSON.stringify({
                     script_name: "notes.py",
                     option: "delete_note",
-                    folio: folio
+                    folio: [folio]
                 }),
                 headers:
                 {

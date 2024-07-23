@@ -18,14 +18,14 @@ window.onload = function(){
     allDataArticulosCon();
     allDataArticulosPer();
 	selectLocation= document.getElementById("selectLocation");
-	/*selectLocation.onchange = function(){
-        let response = fetchOnChangeLocation()
-    };*/
+	selectLocation.onchange = function(){
+        let response = fetchOnChangeLocation(selectLocation.value)
+    };
     selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = async function() {
-        let response = await fetchOnChangeLocation('articulos_consecionados.py', 'get_articles','', selectLocation.value)
+        let response = await fetchOnChangeCaseta('articulos_consecionados.py', 'get_articles','', selectLocation.value)
         reloadTableArticulosCon(response.response.data, selectCaseta.value)
-        let response2 = await fetchOnChangeLocation('articulos_perdidos.py', 'get_articles', selectCaseta.value, selectLocation.value)
+        let response2 = await fetchOnChangeCaseta('articulos_perdidos.py', 'get_articles', selectCaseta.value, selectLocation.value)
         reloadTableArticulosPer(response2.response.data)
         console.log("RESULTADOS", selectCaseta.value, selectLocation.value)
     };

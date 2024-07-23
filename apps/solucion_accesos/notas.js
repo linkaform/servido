@@ -18,10 +18,10 @@ window.onload = function(){
     selectCaseta= document.getElementById("selectCaseta")
 
     selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation('notes.py', 'get_notes', selectCaseta.value, '')
+        let response = fetchOnChangeLocation(selectLocation.value)
     };
     selectCaseta.onchange = async function() {
-        let response = await fetchOnChangeLocation('notes.py', 'get_notes', selectCaseta.value, '')
+        let response = await fetchOnChangeCaseta('notes.py', 'get_notes', selectCaseta.value, '')
         reloadTableNotas(response.response.data)
     };
     let user = getCookie("userId");
@@ -56,6 +56,7 @@ function reloadTableNotas(data){
             dataTableListNotas = []
         }
         if(tables["tableListNotas"]){
+            console.log("no hay notas")
             tables["tableListNotas"].setData(dataTableListNotas);
         }else{
             drawTableNotas('tableListNotas',columnsTableListNotas, dataTableListNotas );
@@ -64,6 +65,8 @@ function reloadTableNotas(data){
         redirectionUrl('login',false);
     }
 }
+
+
 
 function getAllData(){
     fetch(url + urlScripts, {
@@ -714,7 +717,7 @@ function alertEliminarNota(folio){
                 body: JSON.stringify({
                     script_name: "notes.py",
                     option: "delete_note",
-                    folio: folio
+                    folio: [folio]
                 }),
                 headers:
                 {

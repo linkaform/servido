@@ -4,10 +4,9 @@ let scriptName="accesos_turnos.py"
 let selectedRowFolio=""
 let selectedIncidencias=[]
 let selectedFallas=[]
-let userJwt=''
+
 window.onload = function(){
 	user= getCookie("userId");
-	userJwt = getCookie("userJwt");
     
 	setValueUserLocation('incidencias');
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
@@ -21,17 +20,83 @@ window.onload = function(){
 
 	selectLocation= document.getElementById("selectLocation")
 	selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation()
+        let response = fetchOnChangeLocation(selectLocation.value)
     };
     selectCaseta= document.getElementById("selectCaseta")
-    selectCaseta.onchange = function() {
-        let response = fetchOnChangeLocation()
+    selectCaseta.onchange = async function() {
+        let response = await fetchOnChangeCaseta('incidencias.py', 'get_incidences', selectCaseta.value, selectLocation.value)
+        reloadTableIncidencias(response.response.data)
+        let response2 = await fetchOnChangeCaseta('fallas.py', 'get_failures', selectCaseta.value, selectLocation.value)
+        reloadTableFallas(response2.response.data)
     };
 	setSpinner(true, 'divSpinner');
 	/*
     if(arrayUserBoothsLocations.length<=0){
         loadBoothsLocations();
     }*/
+}
+
+
+function reloadTableIncidencias(data){
+    if(user !='' && userJwt!=''){
+        let incidencias=data
+        if(incidencias.length >0){
+            for(let incidencia of incidencias){
+                let dateFormat= incidencia.date_incidence.slice(0,-3)
+                dataTableIncidencias.push({folio:incidencia.folio, date_incidence:dateFormat||"",
+                    ubicacion_incidence:incidencia.ubicacion_incidence||"", area_incidence:incidencia.area_incidence||"", 
+                    incidence:incidencia.incidence||"",comments_incidence:incidencia.comments_incidence||"",guard_incident:incidencia.guard_incident||""})
+            }
+        }else{
+            dataTableIncidencias = []
+        }
+        if(tables['tableIncidencias']){
+            tables['tableIncidencias'].setData(dataTableIncidencias)
+        }else{
+            drawTable('tableIncidencias', columsData1, dataTableIncidencias);
+        }
+        $("#descargarIncidencias").on("click", function() {
+            descargarExcel(tables, 'tableIncidencias')
+        });
+        let selectedIncidencias = getActiveCheckBoxs(tables,'tableIncidencias')
+        let buttonEliminarIncidencias=document.getElementById('buttonEliminarIncidencias');
+        if(selectedIncidencias.length>0) buttonEliminarIncidencias.display= 'none'
+    } else{
+        redirectionUrl('login',false);
+    }
+}
+
+
+function reloadTableFallas(data){
+    if(user !='' && userJwt!=''){
+        let fallas= data
+        if(fallas.length >0){
+            for(let falla of fallas){
+                let dateFormat= falla.falla_fecha.slice(0,-3)
+                dataTableFallas.push({folio:falla.folio, falla_fecha:dateFormat,
+                    falla_ubicacion:falla.falla_ubicacion, falla_area:falla.falla_area, 
+                    falla:falla.falla, falla_comments:falla.falla_comments, 
+                    falla_guard:falla.falla_guard, falla_guard_solution:falla.falla_guard_solution, 
+                    falla_status:falla.falla_status})
+            }
+        }else{
+            dataTableFallas = []
+        }
+        if(tables['tableFallas']){
+            tables['tableFallas'].setData(dataTableFallas)
+        }else{
+            drawTable('tableFallas', columsData2, dataTableFallas);
+        }
+        $("#descargarFallas").on("click", function() {
+            descargarExcel(tables, 'tableFallas')
+        });     
+        let selectedFallas = getActiveCheckBoxs(tables,'tableFallas')
+        let buttonEliminarFallas=document.getElementById('buttonEliminarFallas');
+        if(selectedFallas.length>0) buttonEliminarFallas.display= 'none'
+    } else{
+        redirectionUrl('login',false);
+    }
+
 }
 
 //FUNCION para limpiar el modal de agregar nota
@@ -207,7 +272,7 @@ function getInfoAndCatalogos(){
     headers:
         {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+jw
+            'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
@@ -528,7 +593,7 @@ function alertFallaResuelta(folio, state){
                                 type: "error"
                             });
                         } else if(data.status_code==202 ||data.status_code==201){
-                            if(user !='' && jw!=''){
+                            if(user !='' && userJwt!=''){
                                 let fallaSelected = dataTableFallas.find(n => n.folio == folio);
                                 for (let key in data_failure_update){
                                     if(key=='data_failure_update'|| key=='falla_status'){

@@ -8,11 +8,11 @@ window.onload = function(){
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
     selectLocation= document.getElementById("selectLocation")
     selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation()
+        let response = fetchOnChangeCaseta()
     };
     selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = function() {
-        let response = fetchOnChangeLocation()
+        let response = fetchOnChangeCaseta()
     };
     if(user !='' && userJwt!=''){
         drawTable('tableListPendientes',columnsTableListPendientes, dataTableListPendientes );

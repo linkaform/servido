@@ -72,7 +72,8 @@ function initializeCatalogs(){
 
 
 function fillCatalogs(){
-     if(getCookie("userUbicaciones") == "" && getCookie("userCasetas")==""){
+    console.log("arrayUserBoothsLocations",getCookie("arrayUserBoothsLocations"))
+     if(getCookie("arrayUserBoothsLocations") == ""){
         fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -98,107 +99,73 @@ function fillCatalogs(){
                     }else{
                         arrayUserBoothsLocations=[]
                     }
-
-                    let locationsUnique = new Set();
-                    arrayUserBoothsLocations.forEach(function(booth) {
-                        locationsUnique.add(booth.ubi);
-                    });
-                    optionsLocation = Array.from(locationsUnique);
-
-                    let selectLocation= document.getElementById("selectLocation")
-                    selectLocation.innerHTML=""; 
-                    for (let obj of optionsLocation){
-                            selectLocation.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
-                    }
-                    selectLocation.value = getCookie('userLocation');
-
-                    optionsCaseta = arrayUserBoothsLocations.filter(function(booth) {
-                        return booth.ubi == selectLocation.value && booth.status === "Disponible";
-                    });
-
-                    let selectCaseta= document.getElementById("selectCaseta")
-                    selectCaseta.innerHTML=""; 
-                    for (let obj of optionsCaseta){
-                            selectCaseta.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
-                    }
-                    selectCaseta.value = getCookie('userCaseta')
-                    if(getValueUserLocation()=='accesos'){
-                        selectLocation.disabled=true
-                        selectCaseta.disabled=true
-                    }
-                    setCookie("userUbicaciones",  JSON.stringify(optionsLocation),7);
-                    setCookie("userCasetas",  JSON.stringify(optionsCaseta),7);
+                    loadCatalogsLocation(arrayUserBoothsLocations)
+                    loadCatalogsCaseta(getCookie('userLocation') ,arrayUserBoothsLocations)
+                    setCookie("userUbicaciones",  JSON.stringify(arrayUserBoothsLocations),7);
                 }
             }
         });
     } else{
-        let jsonArrayUbicaciones = JSON.parse(getCookie("userUbicaciones"));
-        let jsonArrayCasetas = JSON.parse(getCookie("userCasetas"));
+        loadCatalogsLocation(arrayUserBoothsLocations)
+        loadCatalogsCaseta(getCookie('userLocation') ,arrayUserBoothsLocations)
+        setCookie("userUbicaciones",  JSON.stringify(arrayUserBoothsLocations),7);
 
-        let selectLocation= document.getElementById("selectLocation")
-        selectLocation.innerHTML=""; 
-        for (let obj of jsonArrayUbicaciones){
-                selectLocation.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
-        }
-        
-
-
-        
-        //selectLocation.innerHTML += '<option value="'+'Planta Durango'+'">'+'Planta Durango'+'</option>';
-
-
-
-
-        let selectCaseta= document.getElementById("selectCaseta")
-        selectCaseta.innerHTML=""; 
-        for (let obj of jsonArrayCasetas){
-                selectCaseta.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
-        }
-
-
-
-        
-        //selectCaseta.innerHTML += '<option value="'+'Caseta Norte 2'+'">'+'Caseta Norte 2'+'</option>';
-
-
-
-
-        if(getValueUserLocation()=='accesos'){
-            selectLocation.disabled=true
-            selectCaseta.disabled=true
-        }
     }
 }
 
 
+function loadCatalogsLocation(arrayUserBoothsLocations){
+    let selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta.innerHTML = "";
 
-async function fetchOnChangeLocation(script, option, area, location){
+    let locationsUnique = new Set();
+    arrayUserBoothsLocations.forEach(function(booth) {
+        locationsUnique.add(booth.ubi);
+    });
+    optionsLocation = Array.from(locationsUnique);
+
+    let selectLocation= document.getElementById("selectLocation")
+    selectLocation.innerHTML=""; 
+    for (let obj of optionsLocation){
+            selectLocation.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
+    }
+    selectLocation.value = getCookie('userLocation');
+
+    if(getValueUserLocation()=='accesos'){
+        selectLocation.disabled=true
+    }
+}
+
+
+function loadCatalogsCaseta(location ,arrayUserBoothsLocations){
+    optionsCaseta = arrayUserBoothsLocations.filter(function(booth) {
+        return booth.ubi == location ;
+    });
+    let selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta.innerHTML=""; 
+    for (let obj of optionsCaseta){
+            selectCaseta.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
+    }
+    selectCaseta.value = getCookie('userCaseta')
+    if(getValueUserLocation()=='accesos'){
+        selectCaseta.disabled=true
+    }
+    
+}
+
+
+async function fetchOnChangeCaseta(script, option, area, location){
     Swal.fire({
         title: 'Cargando...',
         allowOutsideClick: false,
         onBeforeOpen: () => {
             Swal.showLoading();
-       }
+        }
     });
-    //INFO: al momento de seleccionar una nueva location se manda la informacion junto con el 
-    //resultado de la fetch a la pagina que lo esta solicitando
-    let jsonArrayUbicaciones = JSON.parse(getCookie("userUbicaciones"));
-    let jsonArrayCasetas = JSON.parse(getCookie("userCasetas"));
-
-    let selectLocation= document.getElementById("selectLocation")
-    let selectCaseta= document.getElementById("selectCaseta")
     let responseData=""
-    /*
-    selectLocation.innerHTML += '<option value="'+'Planta Durango'+'">'+'Planta Durango'+'</option>';
-        let selectCaseta= document.getElementById("selectCaseta")
-        selectCaseta.innerHTML=""; 
-        for (let obj of jsonArrayCasetas){
-                selectCaseta.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
-        }*/
-       
     let response={ "data":{
          "caseta":{
-            "name": selectLocation.value,
+            "name": location,
             "location": selectCaseta.value,
             "visitsDay":15,
             "personalInside":75,
@@ -206,76 +173,40 @@ async function fetchOnChangeLocation(script, option, area, location){
             "ouputs":30
         }
     }};
+    let body={
+        script_name: script,
+        option:option,
+    }
+    if(area){
+        body.area=area
+    }
+    if (location){
+        body.location=location
+    }
 
-        let body={
-            script_name: script,
-            option:option,
-        }
-        if(area){
-            body.area=area
-        }
-        if (location){
-            body.location=location
-        }
-
-        let dataCasetas=[]
-        let fetchData= await fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify(body), 
-            headers:{
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt
-            },
-        })
-        
-        let data = await fetchData.json();
-        if (data){
-            Swal.close()
-        }
+    let dataCasetas=[]
+    let fetchData= await fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify(body), 
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    
+    let data = await fetchData.json();
+    if (data){
+        Swal.close()
+    }
     return data
 }
 
 
-function fetchOnChangeCaseta(){
-    //INFO: al momento de seleccionar una nueva location se manda la informacion junto con el 
-    //resultado de la fetch a la pagina que lo esta solicitando
-    let selectLocation= document.getElementById("selectLocation")
+function fetchOnChangeLocation(location){
+    loadCatalogsCaseta(location,arrayUserBoothsLocations )
     let selectCaseta= document.getElementById("selectCaseta")
-    let response={
-        "data":{
-            "caseta":{
-                "name": selectLocation.value,
-                "location": selectCaseta.value,
-                "visitsDay":15,
-                "personalInside":75,
-                "vehiclesInside":25,
-                "ouputs":30
-            }
-        }
-    };
-    //FETCH AQUI 
-    fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_id: idScript,
-            option: 'get_caseta_information',
-            email : 'guardia1@linkaform.com'
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt
-
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            //INFO: Obtener la informacion y formatear los arrays para poder mandarlos como respuesta de esta funcion
-        } 
-    });
-    return response
+    selectCaseta.value = ""
 }
-
 
 
 function getCasetaActual(){
