@@ -182,41 +182,45 @@ function agregaEquipo(){
 //FUNCION para obtener la informacion del usuario
 function getDataUser() {
     setCleanData();
-    $("#divSpinner").show();
-    setHideElements('dataHide');
-    setHideElements('buttonsOptions');
-    let codeUser = $("#inputCodeUser").val();
-    fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_name: "script_turnos.py",
-            option: 'search_access_pass',
-            location: selectLocation.value,
-            qr_code: codeUser
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt,
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            fullData= res.response.data
-            Swal.close()
-            //setCookie('userLocation', res.response.data.ubicacion)
-            setDataInformation('informatioUser', res.response.data)
-            setHideElements('buttonsModal');
-            $("#divSpinner").hide();
-            setHideElements('dataShow');
-        }else{
-            errorAlert(res)
-            setCleanData();
-            setHideElements('dataHide');
-            $("#buttonNew").show();
-            $("#divSpinner").hide();
-        }
-    }) 
+     let codeUser  = $("#inputCodeUser").val();
+    if(codeUser ==""){
+        successMsg("Validación", "Escribe un codigo para continuar", "warning")
+    }else{
+        $("#divSpinner").show();
+        setHideElements('dataHide');
+        setHideElements('buttonsOptions');
+        fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name: "script_turnos.py",
+                option: 'search_access_pass',
+                location: selectLocation.value,
+                qr_code: codeUser
+            }),
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt,
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                fullData= res.response.data
+                Swal.close()
+                //setCookie('userLocation', res.response.data.ubicacion)
+                setDataInformation('informatioUser', res.response.data)
+                setHideElements('buttonsModal');
+                $("#divSpinner").hide();
+                setHideElements('dataShow');
+            }else{
+                errorAlert(res)
+                setCleanData();
+                setHideElements('dataHide');
+                $("#buttonNew").show();
+                $("#divSpinner").hide();
+            }
+        }) 
+    }
 }
 
 
@@ -248,80 +252,82 @@ function getDataListUser(){
 
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 1
 function setDataUser(){
-    Swal.fire({
-        title: 'Cargando...',
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-            Swal.showLoading();
-       }
-    });
-    console.log("=================REGISTRAR INGRESO============================")
-    let codeUser  = $("#inputCodeUser").val();
-    $("#buttonIn").hide();
-    $("#buttonOut").hide();
+
+        Swal.fire({
+            title: 'Cargando...',
+            allowOutsideClick: false,
+            onBeforeOpen: () => {
+                Swal.showLoading();
+           }
+        });
+        console.log("=================REGISTRAR INGRESO============================")
+        let codeUser  = $("#inputCodeUser").val();
+        $("#buttonIn").hide();
+        $("#buttonOut").hide();
+        
+        let location= selectLocation.value
+        let area=selectCaseta.value 
+
+        getSelectedCheckbox('tableItems', 'checkboxGroupEquipos', selectedEquipos);
+        let selectedEq= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
+
+        getSelectedCheckbox('tableItems', 'radioGroupItems', selectedVehiculos)
+        let selectedVe= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
+        //let dataItem = {'listItemsData':listItemsData,'listNewItems':listNewItems}
+        //let dataVehicule = {'listVehiculesData':listVehiculesData,'listNewVehicules':listNewVehicules}
+        fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name: 'script_turnos.py',
+                option: 'do_access',
+                qr_code: codeUser,
+                location: location,
+                area: area,
+                vehiculo: selectedVe,
+                equipo: selectedEq,
+            }),
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt,
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                let data = {};
+                setHideElements('buttonsModal');
+                setDataInformation('informatioUser',data)
+                Swal.fire({
+                    title   :"Exito!",
+                    text: "Movimiento de usuario registrado",
+                    icon: "success"
+                });
+                //setCleanData();
+                //setHideElements('dataHide');
+                setHideElements('buttonsOptions');
+                setHideElements('buttonNew');
+                $("#buttonCard").show();
+                $("#buttonClean").show();
+                $("#buttonOut").show();
+                $("#buttonNew").hide();
+            }else{
+                console.log("ERROR")
+                Swal.fire({
+                    title: "Error",
+                    text: res.error.msg.msg,
+                    type: res.error.msg.type
+                });
+                $("#buttonOut").show();
+            }
+        }).catch(error => {
+            console.log("soy un err")
+            errorAlert(res)
+            console.error(error)
+            setCleanData();
+            setHideElements('dataHide');
+            $("#buttonNew").show();
+        });
     
-    let location= selectLocation.value
-    let area=selectCaseta.value 
-
-    getSelectedCheckbox('tableItems', 'checkboxGroupEquipos', selectedEquipos);
-    let selectedEq= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
-
-    getSelectedCheckbox('tableItems', 'radioGroupItems', selectedVehiculos)
-    let selectedVe= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
-    //let dataItem = {'listItemsData':listItemsData,'listNewItems':listNewItems}
-    //let dataVehicule = {'listVehiculesData':listVehiculesData,'listNewVehicules':listNewVehicules}
-    fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_name: 'script_turnos.py',
-            option: 'do_access',
-            qr_code: codeUser,
-            location: location,
-            area: area,
-            vehiculo: selectedVe,
-            equipo: selectedEq,
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt,
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            let data = {};
-            setHideElements('buttonsModal');
-            setDataInformation('informatioUser',data)
-            Swal.fire({
-                title   :"Exito!",
-                text: "Movimiento de usuario registrado",
-                icon: "success"
-            });
-            //setCleanData();
-            //setHideElements('dataHide');
-            setHideElements('buttonsOptions');
-            setHideElements('buttonNew');
-            $("#buttonCard").show();
-            $("#buttonClean").show();
-            $("#buttonOut").show();
-            $("#buttonNew").hide();
-        }else{
-            console.log("ERROR")
-            Swal.fire({
-                title: "Error",
-                text: res.error.msg.msg,
-                type: res.error.msg.type
-            });
-            $("#buttonOut").show();
-        }
-    }).catch(error => {
-        console.log("soy un err")
-        errorAlert(res)
-        console.error(error)
-        setCleanData();
-        setHideElements('dataHide');
-        $("#buttonNew").show();
-    });
 }
 
 
