@@ -203,13 +203,19 @@ function getDataUser() {
     .then(res => {
         if (res.success) {
             fullData= res.response.data
-            
+            Swal.close()
             //setCookie('userLocation', res.response.data.ubicacion)
             setDataInformation('informatioUser', res.response.data)
             setHideElements('buttonsModal');
             $("#divSpinner").hide();
             setHideElements('dataShow');
-        } 
+        }else{
+            errorAlert(res)
+            setCleanData();
+            setHideElements('dataHide');
+            $("#buttonNew").show();
+            $("#divSpinner").hide();
+        }
     }) 
 }
 
@@ -242,23 +248,26 @@ function getDataListUser(){
 
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 1
 function setDataUser(){
+    Swal.fire({
+        title: 'Cargando...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+            Swal.showLoading();
+       }
+    });
     console.log("=================REGISTRAR INGRESO============================")
     let codeUser  = $("#inputCodeUser").val();
     $("#buttonIn").hide();
     $("#buttonOut").hide();
     
-    let location= 'Planta Monterrey'//getCookie('userLocation') 
-    let area='Caseta Vigilancia Norte 3' //getCookie('userCaseta')
+    let location= selectLocation.value
+    let area=selectCaseta.value 
 
     getSelectedCheckbox('tableItems', 'checkboxGroupEquipos', selectedEquipos);
     let selectedEq= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
 
     getSelectedCheckbox('tableItems', 'radioGroupItems', selectedVehiculos)
     let selectedVe= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
-
-    console.log("location area codeuser", location,area,codeUser)
-    console.log("SELECTED EQUIOPOS YU VEHCIULOSS",selectedEq, selectedVe)
-
     //let dataItem = {'listItemsData':listItemsData,'listNewItems':listNewItems}
     //let dataVehicule = {'listVehiculesData':listVehiculesData,'listNewVehicules':listNewVehicules}
     fetch(url + urlScripts, {
@@ -275,7 +284,6 @@ function setDataUser(){
         headers:{
             'Content-Type': 'application/json',
             'Authorization': 'Bearer '+userJwt,
-            'Access-Control-Request-Headers':'*'
         },
     })
     .then(res => res.json())
@@ -285,15 +293,20 @@ function setDataUser(){
             setHideElements('buttonsModal');
             setDataInformation('informatioUser',data)
             Swal.fire({
-                title   : "Exito!",
+                title   :"Exito!",
                 text: "Movimiento de usuario registrado",
                 icon: "success"
             });
-            setCleanData();
-            setHideElements('dataHide');
+            //setCleanData();
+            //setHideElements('dataHide');
             setHideElements('buttonsOptions');
             setHideElements('buttonNew');
+            $("#buttonCard").show();
+            $("#buttonClean").show();
+            $("#buttonOut").show();
+            $("#buttonNew").hide();
         }else{
+            console.log("ERROR")
             Swal.fire({
                 title: "Error",
                 text: res.error.msg.msg,
@@ -302,12 +315,24 @@ function setDataUser(){
             $("#buttonOut").show();
         }
     }).catch(error => {
+        console.log("soy un err")
+        errorAlert(res)
         console.error(error)
+        setCleanData();
+        setHideElements('dataHide');
+        $("#buttonNew").show();
     });
 }
 
 
 function registrarSalida(){
+    Swal.fire({
+        title: 'Cargando...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+            Swal.showLoading();
+       }
+    });
     console.log("=================REGISTRAR INGRESO============================")
     let codeUser  = $("#inputCodeUser").val();
    
@@ -362,34 +387,30 @@ function setDataGafete(){
     let codeUser  = $("#inputCodeUser").val();
     let numGafete= $("#numCard").val();
     let otroDoc= $("#inputOtroDescCard").val();
-    let nombre= $("#nameUserInf").val();
+    let nombre= $("#nameUserInf").text();
     
     let radios = document.getElementsByName('radioOptionsDocument');
     console.log("radios selected",radios)
-    let radioSeleccionado = null;
+    let radioSeleccionado = "";
     for (var i = 0; i < radios.length; i++) {
         if (radios[i].checked) {
             radioSeleccionado = radios[i];
             break; 
         }
     }
-    if (radioSeleccionado) {
-        console.log('El radio seleccionado es:', radioSeleccionado.value);
-    } else {
-        console.log('No hay radio seleccionado');
-    }
+    console.log("QUERER",nombre)
     let data_gafete={
         'status_gafete':'asignar_gafete',
         'ubicacion_gafete':selectLocation.value,
         'caseta_gafete':selectCaseta.value,
         'visita_gafete':nombre,
         'id_gafete':numGafete,
-        'documento_gafete':['INE'],
+        'documento_gafete':[radioSeleccionado.value],
     }
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_name: "gafetes_lockers.py",
+            script_name: "gafetes_locker.py",
             option: "new_badge",
             data_gafete: data_gafete,
         }),
@@ -401,26 +422,22 @@ function setDataGafete(){
     })
     .then(res => res.json())
     .then(res => {
-        console.log("RESPONSE", res)
         if (res.success) {
             let data = res.response.data;
-            if(data.status_code==201){
-                Swal.fire({
-                    title: "Gafete Entregado",
-                    text: "El gafete a sido entregado correctamente.",
-                    type: "success"
-                });
+            if(data.status_code==400){
+                errorAlert(data)
+                $("#idLoadingButtonAsignarGafete").hide();
+                $("#idButtonAsignarGafete").show();
+            }
+            else if(data.status_code==201){
+                successMsg("Gafete Entregado", "El gafete a sido entregado correctamente.")
                 $("#idLoadingButtonAsignarGafete").hide();
                 $("#idButtonAsignarGafete").show();
                 $("#alert_gafete_modal").hide();
                 $("#cardModal").modal('hide')
             }
         }else{
-            Swal.fire({
-                title: "Error",
-                text: res.error,
-                type: "Error"
-            });
+            errorAlert(res)
             $("#idLoadingButtonAsignarGafete").hide();
             $("#idButtonAsignarGafete").show();
         } 
@@ -499,7 +516,7 @@ function dataUserInf(dataUser){
     $('#visit').text(visit);
     let authorizePase = dataUser.authorize_pase != '' ? dataUser.authorize_pase: '';
     $('#authorizePase').text(authorizePase);
-    let authorizePhone = dataUser.portador.telefono[0] != '' ? dataUser.portador.telefono[0]: '';
+    let authorizePhone = dataUser.portador.telefono != '' ? dataUser.portador.telefono[0]: '';
     $('#authorizePhone').text(authorizePhone);
 }
 
