@@ -11,7 +11,7 @@ let dataTableCambiarCaseta = []
 ];*/
 
 let dataTableAgregarGuardiaApoyo = [  
-    { name: 'Juan Pérez Gomez', status: 'Disponible' , img: 'https://img.favpng.com/1/10/3/computer-icons-child-avatar-png-favpng-1KY4gtPN1Fab6LrVpVM8AjtnH.jpg', id:20}, 
+    /*{ name: 'Juan Pérez Gomez', status: 'Disponible' , img: 'https://img.favpng.com/1/10/3/computer-icons-child-avatar-png-favpng-1KY4gtPN1Fab6LrVpVM8AjtnH.jpg', id:20}, 
     { name: 'María Rodríguez Herandez', status: 'Disponible' , img:'https://img.favpng.com/11/2/11/child-computer-icons-avatar-png-favpng-5T7pGsVsca4MQcwET3VPe0X2n.jpg', id:21}, 
     { name: 'Pedro Gómez Flores', status: 'Disponible' , img:'https://img.favpng.com/10/24/16/avatar-child-youtube-computer-icons-png-favpng-PTMFwE8vBZBUGaNtVmMJGxrdc.jpg', id:22}, 
     { name: 'Ana López Rosales', status: 'Disponible' , img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStDHIGgUTPEb7gYe0oKLLp_AfrnvRgPcCkI2icqmuSU7OIQsrnVLxlRygPK1hn-Za8dlY&usqp=CAU', id:23},
@@ -20,7 +20,7 @@ let dataTableAgregarGuardiaApoyo = [
     { name: 'Carlos Sánchez Espinosa', status: 'Disponible' ,img:'https://www.shareicon.net/data/512x512/2016/06/25/786525_people_512x512.png', id:26}, 
     { name: 'Elena García Garcia', status: ' Disponible' ,img:'https://cdn-icons-png.freepik.com/512/163/163813.png', id:27}, 
     { name: 'Sofía Hernández Campos', status: 'Disponible' , img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDAdo0KjHLNxkRXKlav2OfZ7KUlwFjyY6WJTH7LrFyfD6rfeBepm5ybnFBwM_Cd7prl0s&usqp=CAU', id:28}, 
-    { name: 'Mario Castillo Hernandez', status: ' Disponible' , img:"https://www.shareicon.net/data/512x512/2016/06/25/786541_people_512x512.png", id:29}
+    { name: 'Mario Castillo Hernandez', status: ' Disponible' , img:"https://www.shareicon.net/data/512x512/2016/06/25/786541_people_512x512.png", id:29}*/
 ];
 const columsDataNotas = [
     { title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:110,

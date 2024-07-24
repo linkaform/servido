@@ -473,7 +473,13 @@ function changeStatusTurn(buttonClick){
                         showConfirmButton:false,
                         timer:1200
                     });
-                } 
+                } else{
+                    Swal.fire({
+                        title: "Error",
+                        text: res.error,
+                        type: "error"
+                    });
+                }
             })
             
         }
@@ -509,6 +515,12 @@ function changeStatusTurn(buttonClick){
                         type: "success",
                         showConfirmButton:false,
                         timer:1200
+                    });
+                } else{
+                    Swal.fire({
+                        title: "Error",
+                        text: res.error,
+                        type: "Error"
                     });
                 }
             })

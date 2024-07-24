@@ -2,7 +2,7 @@
 
 // Settings
 var url = "https://app.linkaform.com/api/";
-//var url = "http://192.168.0.25:8000/api/";
+//var url = "http://127.0.0.1:8011/api/";
 // End Settings
 
 // Funciones Genericas Servido
@@ -415,4 +415,43 @@ function getTodayDateTime(){
 
     // Mostrar la fecha formateada
     return fechaFormateada;
+}
+
+function errorAlert(data){
+    if(data.hasOwnProperty("json")){
+        let errores=[]
+        for(let err in data.json){
+            errores.push(data.json[err].label+': '+data.json[err].msg)
+        }
+        Swal.fire({
+            title: "Error",
+            text: errores.flat(),
+            type: "error"
+        });
+    }else if (data.hasOwnProperty("error")){
+        Swal.fire({
+            title: "Error",
+            text: data.error,
+            type: "error"
+        });
+    }
+}
+
+
+function successMsg(title, text, type = "success"){
+    Swal.fire({
+        title: title,
+        text: text,
+        type: type
+    });
+}
+
+function loadingService(){
+    Swal.fire({
+        title: 'Cargando...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+            Swal.showLoading();
+       }
+    });
 }
