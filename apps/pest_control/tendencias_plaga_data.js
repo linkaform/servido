@@ -16,11 +16,10 @@ var columsTable1 = [
   { title:"Cambio Bulbo", field:'cambio_bulbo',hozAlign:"left",width:250},
   { title:"Mosca Domestica", field:'mosca_domestica',hozAlign:"left",width:250},
   { title:"Mosca Drenaje", field:'mosca_drenaje',hozAlign:"left",width:250},
-  { title:"Palomilla almacen", field:'palomilla_almacen',hozAlign:"left",width:250},
-  { title:"Otra palomilla", field:'otra_palomilla',hozAlign:"left",width:250},
-  { title:"Otros escarabajos", field:'otros_escarabajos',hozAlign:"left",width:250},
-  { title:"Abejas", field:'abejas',hozAlign:"left",width:250},
-  { title:"Mosquitos", field:'mosquitos',hozAlign:"left",width:250},
+  { title:"Palomilla", field:'palomilla_almacen',hozAlign:"left",width:250},
+  { title:"Escarabajo", field:'otros_escarabajos',hozAlign:"left",width:250},
+  { title:"Tijerilla", field:'tijerillas',hozAlign:"left",width:250},
+  { title:"Mosquito", field:'mosquitos',hozAlign:"left",width:250},
 ];
 
 var dataTable1 = [
@@ -33,8 +32,10 @@ var dataTable1 = [
     cambio_trampa:'Cambio',
     cambio_bulbo:'Cambio',
     mosca_domestica:'10',
-    mosca_fruta:'10',
     mosca_drenaje:'10',
+
+    
+    mosca_fruta:'10',
     mosca_metalica:'10',
     mariposa:'10',
     gorgojos:'10',

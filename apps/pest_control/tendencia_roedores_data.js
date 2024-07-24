@@ -14,11 +14,11 @@ var columsTable1 = [
   { title:"Roedor", field:'roedor',hozAlign:"left",width:250},
   { title:"Cucaracha alemana", field:'cucaracha_alemana',hozAlign:"left",width:250},
   { title:"Cucaracha americana", field:'cucaracha_americana',hozAlign:"left",width:250},
+  { title:"Ninfa", field:'ninfa',hozAlign:"left",width:250},
   { title:"Hormiga", field:'hormiga',hozAlign:"left",width:250},
-  { title:"Tijerilla", field:'tijerilla',hozAlign:"left",width:250},
-  { title:"Grillo", field:'grillo',hozAlign:"left",width:250},
-  { title:"Pulga", field:'pulga',hozAlign:"left",width:250},
   { title:"Mosquito", field:'mosquito',hozAlign:"left",width:250},
+  { title:"Alacrán", field:'alacran',hozAlign:"left",width:250},
+  { title:"Araña", field:'spider',hozAlign:"left",width:250},
 ];
 
 var dataTable1 = [

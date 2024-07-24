@@ -289,10 +289,7 @@ function get_catalog()
     .then(res => res.json())
     .then(res => {
     if (res.success) {
-      console.log("CATALOGO")
-      console.log(res)
       if (res.response.json.array_filters.dispositivo.length){
-
         $("#dispositivo").empty();
         $('#dispositivo').append('<option value="--">--Seleccione--</option>');
         for (i = 0; i <res.response.json.array_filters.dispositivo.length; i++) {
@@ -306,8 +303,6 @@ function get_catalog()
           value = res.response.json.catalogClient[i]['653fd525b96022a0f257926f']
           $('#cliente').append('<option value="'+ value +'">'+value+'</option>');
         }
-
-        
       }
     } 
   })
