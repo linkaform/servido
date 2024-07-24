@@ -290,6 +290,7 @@ function get_catalog()
     .then(res => {
     if (res.success) {
       if (res.response.json.array_filters.dispositivo.length){
+
         $("#dispositivo").empty();
         $('#dispositivo').append('<option value="--">--Seleccione--</option>');
         for (i = 0; i <res.response.json.array_filters.dispositivo.length; i++) {
@@ -297,10 +298,18 @@ function get_catalog()
           $('#dispositivo').append('<option value="'+ value +'"> Dispositivo '+value+'</option>');
         }
 
+        data = res.response.json.catalogClient;
+        data.sort((a, b) => {
+          let clientA = (a['653fd525b96022a0f257926f'] || a['653fd525b96022a0f257926f']).toLowerCase();
+          let clientB = (b['653fd525b96022a0f257926f'] || b['653fd525b96022a0f257926f']).toLowerCase();
+          if (clientA < clientB) return -1;
+          if (clientA > clientB) return 1;
+          return 0;
+        });
         $("#cliente").empty();
         $('#cliente').append('<option value="--">--Seleccione--</option>');
-        for (i = 0; i <res.response.json.catalogClient.length; i++) {
-          value = res.response.json.catalogClient[i]['653fd525b96022a0f257926f']
+        for (i = 0; i <data.length; i++) {
+          value = data[i]['653fd525b96022a0f257926f'];
           $('#cliente').append('<option value="'+ value +'">'+value+'</option>');
         }
       }
