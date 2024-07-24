@@ -27,7 +27,7 @@ class lkfLocationCard extends HTMLElement{
             <div class=" d-flex flex-column mt-2 ms-2 justify-content-between ">
                 <div class="d-flex justify-content-start ">
                     <h6 class="text-black" id="textJefeGuardia">Jefe en Guardia: </h6>
-                    <h6 class="text-black-50 ms-1" id="textGuardiaApoyo">Solucion Seguridad</h6> 
+                    <h6 class="text-black-50 ms-1" id="textGuardiaApoyo">`+getCookie('userName')+`</h6> 
                 </div>
                 <div class="d-flex  justify-content-start">
                     <h6 class="text-black">Guardia de apoyo: </h6>
@@ -43,7 +43,7 @@ window.customElements.define('locationcard-component', lkfLocationCard)
 
 
 function initializeCatalogs(){
-    fetch(url + urlScripts, {
+    /*fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_id: idScript,
@@ -60,7 +60,7 @@ function initializeCatalogs(){
         if (res.success) {
             //INFO: Obtener la informacion y formatear los arrays para poder mandarlos como opciones de los catalogos
         } 
-    });
+    }); */
     let valueCaseta = getCookie('userCaseta')
     let valueLocation =  getCookie('userLocation')
     let selectCaseta= document.getElementById("selectCaseta")
@@ -72,7 +72,6 @@ function initializeCatalogs(){
 
 
 function fillCatalogs(){
-    console.log("arrayUserBoothsLocations",getCookie("arrayUserBoothsLocations"))
      if(getCookie("arrayUserBoothsLocations") == ""){
         fetch(url + urlScripts, {
         method: 'POST',
@@ -101,15 +100,14 @@ function fillCatalogs(){
                     }
                     loadCatalogsLocation(arrayUserBoothsLocations)
                     loadCatalogsCaseta(getCookie('userLocation') ,arrayUserBoothsLocations)
-                    setCookie("userUbicaciones",  JSON.stringify(arrayUserBoothsLocations),7);
+                    console.log("ARRAY VIENE VACIO", arrayUserBoothsLocations)
+                    setCookie("arrayUserBoothsLocations", JSON.stringify(arrayUserBoothsLocations),7);
                 }
             }
         });
     } else{
-        loadCatalogsLocation(arrayUserBoothsLocations)
-        loadCatalogsCaseta(getCookie('userLocation') ,arrayUserBoothsLocations)
-        setCookie("userUbicaciones",  JSON.stringify(arrayUserBoothsLocations),7);
-
+        loadCatalogsLocation(JSON.parse(getCookie('arrayUserBoothsLocations')))
+        loadCatalogsCaseta(getCookie('userLocation') ,JSON.parse(getCookie('arrayUserBoothsLocations')))
     }
 }
 
@@ -130,7 +128,7 @@ function loadCatalogsLocation(arrayUserBoothsLocations){
             selectLocation.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
     }
     selectLocation.value = getCookie('userLocation');
-
+    console.log("dfsedf", getCookie('userLocation'))
     if(getValueUserLocation()=='accesos'){
         selectLocation.disabled=true
     }

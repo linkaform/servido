@@ -122,7 +122,7 @@
 					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
 						<div class="row ">
 							<div class="col-6">
-								<p><span className='h4'><b>Nombre:</b></span>&nbsp;&nbsp; <span id="name"></span></p>
+								<p><span className='h4'><b>Nombre:</b></span>&nbsp;&nbsp; <span id="nameUserInf"></span></p>
 							</div>
 							<div class="col-6">
 								<h3>
@@ -437,19 +437,19 @@
 							<label class="form-label">Tipo de documento de garantía *</label>
 							<br>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" id="checkIne" onchange="setDataInformation('checkOtro');return false;">
+								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" value="INE" id="checkIne" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkIne">Ine</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" id="checkLicencia" onchange="setDataInformation('checkOtro');return false;">
+								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" value="LicenciaDeConducir" id="checkLicencia" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkLicencia">Licencia de Conducir</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" id="checkPase" onchange="setDataInformation('checkOtro');return false;">
+								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" value="PaseDeEstacionamiento" id="checkPase" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkPase">Pase de estacionamiento</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" id="checkOtro" onchange="setDataInformation('checkOtro');return false;">
+								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" value="Otro" id="checkOtro" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkOtro">Otro</label>
 							</div>
 						</div>
@@ -465,8 +465,12 @@
 					<small class="text-danger mt-1 mb-3" id="alert_gafete_modal" style="display:none;">** Faltan campos obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary" onclick="getFormGafete();return false">Asignar</button>
+					<button type="button" class="btn btn-success btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-danger btn-sm" id="idButtonAsignarGafete" onclick="setDataGafete();return false">Asignar gafete</button>
+					<button class="btn btn-success btn-sm" type="button" id="idLoadingButtonAsignarGafete" style="display:none" disabled>
+                <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                Cargando...
+          </button>
 				</div>
 			</div> 
 		</div>

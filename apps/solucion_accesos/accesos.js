@@ -15,7 +15,8 @@ let codeUserVisit=""
 let selectedEquipos=[]
 let selectedVehiculos=[]
 let fullData=""
-
+let selectLocation= ""
+let selectCaseta =""
 window.onload = function(){
     setValueUserLocation('accesos');
     changeButtonColor();
@@ -24,15 +25,16 @@ window.onload = function(){
     //initializeCatalogs();
     getInitialData();
     selectLocation= document.getElementById("selectLocation")
-    /*selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation()
-    };*/
     selectCaseta= document.getElementById("selectCaseta")
-    /*selectCaseta.onchange = function() {
+    /*
+    selectLocation.onchange = function() {
+        let response = fetchOnChangeLocation()
+    };
+    selectCaseta.onchange = function() {
         let response = fetchOnChangeLocation()
     };*/
-    selectLocation.value=getCookie("userLocation")
-    selectCaseta.value=getCookie("userCaseta")
+    //selectLocation.value=getCookie("userLocation")
+    //selectCaseta.value=getCookie("userCaseta")
     //selectLocation.disabled=true
     //selectCaseta.disabled=true
     //selectLocation.disabled=true
@@ -189,20 +191,20 @@ function getDataUser() {
         body: JSON.stringify({
             script_name: "script_turnos.py",
             option: 'search_access_pass',
-            location: getCookie('userLocation'),
+            location: selectLocation.value,
             qr_code: codeUser
         }),
         headers:{
             'Content-Type': 'application/json',
             'Authorization': 'Bearer '+userJwt,
-            'Access-Control-Request-Headers':'*'
         },
     })
     .then(res => res.json())
     .then(res => {
         if (res.success) {
             fullData= res.response.data
-            setCookie('userLocation', res.response.data.ubicacion)
+            
+            //setCookie('userLocation', res.response.data.ubicacion)
             setDataInformation('informatioUser', res.response.data)
             setHideElements('buttonsModal');
             $("#divSpinner").hide();
@@ -354,16 +356,42 @@ function registrarSalida(){
 
 
 //FUNCION para asignar un nuevo gafete
-function setDataGafete(data = {}){
+function setDataGafete(){
+    $("#idLoadingButtonAsignarGafete").show();
+    $("#idButtonAsignarGafete").hide();
     let codeUser  = $("#inputCodeUser").val();
+    let numGafete= $("#numCard").val();
+    let otroDoc= $("#inputOtroDescCard").val();
+    let nombre= $("#nameUserInf").val();
+    
+    let radios = document.getElementsByName('radioOptionsDocument');
+    console.log("radios selected",radios)
+    let radioSeleccionado = null;
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            radioSeleccionado = radios[i];
+            break; 
+        }
+    }
+    if (radioSeleccionado) {
+        console.log('El radio seleccionado es:', radioSeleccionado.value);
+    } else {
+        console.log('No hay radio seleccionado');
+    }
+    let data_gafete={
+        'status_gafete':'asignar_gafete',
+        'ubicacion_gafete':selectLocation.value,
+        'caseta_gafete':selectCaseta.value,
+        'visita_gafete':nombre,
+        'id_gafete':numGafete,
+        'documento_gafete':['INE'],
+    }
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 116097,
-            option: 'set_movement_users',
-            curp: codeUser,
-            dataGafete: data,
-            location: 'Planta Monterrey',
+            script_name: "gafetes_lockers.py",
+            option: "new_badge",
+            data_gafete: data_gafete,
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -373,8 +401,28 @@ function setDataGafete(data = {}){
     })
     .then(res => res.json())
     .then(res => {
+        console.log("RESPONSE", res)
         if (res.success) {
-            let data = res.response.json;
+            let data = res.response.data;
+            if(data.status_code==201){
+                Swal.fire({
+                    title: "Gafete Entregado",
+                    text: "El gafete a sido entregado correctamente.",
+                    type: "success"
+                });
+                $("#idLoadingButtonAsignarGafete").hide();
+                $("#idButtonAsignarGafete").show();
+                $("#alert_gafete_modal").hide();
+                $("#cardModal").modal('hide')
+            }
+        }else{
+            Swal.fire({
+                title: "Error",
+                text: res.error,
+                type: "Error"
+            });
+            $("#idLoadingButtonAsignarGafete").hide();
+            $("#idButtonAsignarGafete").show();
         } 
     })
 }
@@ -432,11 +480,11 @@ function optionCheckOtro(){
 function dataUserInf(dataUser){
     let imgUser = dataUser.portador.foto[0].file_url != '' ? dataUser.portador.foto[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
     $('#imgUser').attr('src', imgUser); 
-    let imgCard = dataUser.portador.identificacion[0].file_url != '' ? dataUser.portador.identificacion[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg';
+    let imgCard = dataUser.portador.identificacion_pase[0].file_url != '' ? dataUser.portador.identificacion_pase[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg';
     $('#imgCard').attr('src', imgCard); 
     let nameUser = dataUser.portador.nombre_visita != '' ? dataUser.portador.nombre_visita: '';
-    $('#name').text(nameUser); 
-    let rfc = dataUser.portador.rfc != '' ? dataUser.portador.rfc: ''; // EL OBJ NO TRAE EL RFC
+    $('#nameUserInf').text(nameUser); 
+    let rfc = dataUser.portador.rfc[0] != '' ? dataUser.portador.rfc[0]: ''; // EL OBJ NO TRAE EL RFC
     $('#rfc').text(rfc);
     let validity = dataUser.pass.fecha_expiracion != '' ? dataUser.pass.fecha_expiracion : '';
     $('#validity').text(validity);
@@ -447,11 +495,11 @@ function dataUserInf(dataUser){
     //----Visiti
     let motivo = dataUser.portador.motivo != '' ? dataUser.portador.motivo: '';
     $('#motivo').text(motivo);
-    let visit = dataUser.portador.visit_name != '' ? dataUser.portador.visit_name: '';
+    let visit = dataUser.portador.nombre_visita != '' ? dataUser.portador.nombre_visita: '';
     $('#visit').text(visit);
     let authorizePase = dataUser.authorize_pase != '' ? dataUser.authorize_pase: '';
     $('#authorizePase').text(authorizePase);
-    let authorizePhone = dataUser.authorize_phone != '' ? dataUser.authorize_phone: '';
+    let authorizePhone = dataUser.portador.telefono[0] != '' ? dataUser.portador.telefono[0]: '';
     $('#authorizePhone').text(authorizePhone);
 }
 
@@ -461,13 +509,14 @@ function tableFill(dataUser){
     //TABLA COMENTARIOS
     let listInstructions = dataUser.comentarios.length > 0 ? dataUser.comentarios: [];
     for (var i = 0; i < listInstructions.length; i++) {
-        if(i < 3){
+        //if(i < 3){
             var newRow = $('<tr>');
-            newRow.append($('<td>').text(listInstructions[i].msg));
+            newRow.append($('<td>').text(listInstructions[i]));
             newRow.append('</tr>');
             $('#tableInstructions').append(newRow);
-        }
+        //}
     }
+    /*
     if(listInstructions.length > 3){
         $("#buttonCommentsModal").show();
         for (var i = 0; i < listInstructions.length; i++) {
@@ -476,7 +525,7 @@ function tableFill(dataUser){
             newRow.append('</tr>');
             $('#tableModalInstructions').append(newRow);
         }
-    }
+    }*/
     if(listInstructions.length == 0){
         var newRow = $('<tr>');
         newRow.append($('<td>').text('No existen Instrucciones'));
@@ -486,7 +535,7 @@ function tableFill(dataUser){
     //----TABLA ACCESOS PERMITIDOS
     let listAccess = dataUser.accesos.length > 0 ? dataUser.accesos: [];
     for (var i = 0; i < listAccess.length; i++) {
-            let nombre = listAccess[i].nombre;
+            let nombre = listAccess[i].area;
             let status = listAccess[i].status;
             var newRow = $('<tr>');
             newRow.append($('<td>').text(nombre));
@@ -494,7 +543,7 @@ function tableFill(dataUser){
             newRow.append('</tr>');
             $('#tableAccess').append(newRow);
     }
-    if(listAccess.length > 3){
+    /*if(listAccess.length > 3){
         $("#buttonAccessModal").show();
         for (var i = 0; i < listInstructions.length; i++) {
             let nombre = listAccess[i].nombre;
@@ -505,7 +554,7 @@ function tableFill(dataUser){
             newRow.append('</tr>');
             $('#tableModalAccess').append(newRow);
         }
-    }
+    }*/
     if(listAccess.length == 0){
         var newRow = $('<tr>');
         newRow.append($('<td colspan="2">').text('No existen Accesos permitidos'));
@@ -513,15 +562,16 @@ function tableFill(dataUser){
         $('#tableAccess').append(newRow);
     }
     //----Table CERTIFICACIONES
-    let listLocations = dataUser.certificaiones.length > 0 ? dataUser.certificaiones: [];
+    let listLocations = dataUser.portador.certificacion_pase.length > 0 ? dataUser.portador.certificacion_pase: [];
+
     for (var i = 0; i < listLocations.length; i++) {
-        if(i < 1000){
+        //if(i < 1000){
             var newRow = $('<tr>');
-            newRow.append($('<td>').text(listLocations[i].nombre));
-            newRow.append($('<td>').text(listLocations[i].status));
+            newRow.append($('<td>').text(listLocations[i]/*.nombre*/));
+            newRow.append($('<td>').text('dato dummy'));
             newRow.append('</tr>');
             $('#tableLocations').append(newRow);
-        }
+        //}
     }
     /*
     if(listLocations.length > 3){
@@ -532,13 +582,13 @@ function tableFill(dataUser){
             newRow.append('</tr>');
             $('#tableModalAccess').append(newRow);
         }
-    } */
+    } 
     if(listLocations.length == 0){
         var newRow = $('<tr>');
         newRow.append($('<td>').text('No existen Accesos'));
         newRow.append('</tr>');
         $('#tableModalAccess').append(newRow);
-    }
+    }*/
     return listLocations
 }
 
@@ -679,15 +729,12 @@ function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
 //FUNCION al pedir la opcion information user al setear la data
 function optionInformationUser(data){
     let { portador,ultimo_acceso, vehiculos, equipo, validaciones}= data
-    console.log("OPTION INFO", portador)
-    data.movement={ "type":"in"}
-    let dataAccion= validaciones
     if(data.hasOwnProperty('portador') && data.hasOwnProperty('validaciones') && data.hasOwnProperty('ultimo_acceso')){
         //---Movement
-        if(dataAccion.accion_ingreso == 'Entrada'){
+        if(validaciones.accion_ingreso == 'Entrada'){
             $("#buttonIn").show();
             $("#textIn").show();
-        }else if(dataAccion.accion_ingreso == 'Salida'){
+        }else if(validaciones.accion_ingreso == 'Salida'){
             $("#buttonOut").show();
             $("#textOut").show();
         }
@@ -699,7 +746,7 @@ function optionInformationUser(data){
 
         let listBitacora = ultimo_acceso.length > 0 ? ultimo_acceso: [];
         for (var i = 0; i < listBitacora.length; i++) {
-            if(i < 3){
+            //if(i < 3){
                 let duration=segundosAHoras(listBitacora[i].duration)
                 var newRow = $('<tr>');
                 newRow.append($('<td>').text(listBitacora[i].nombre_visita ? listBitacora[i].nombre_visita : ''));
@@ -707,7 +754,7 @@ function optionInformationUser(data){
                 newRow.append($('<td>').text(duration? duration : ''));
                 newRow.append('</tr>');
                 $('#tableBitacora').append(newRow);
-            }
+            //}
         }
         if(listBitacora.length > 3){
             $("#buttonBitacoraModal").show();

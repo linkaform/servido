@@ -1,5 +1,3 @@
-let idScriptCatalog=117935;
-let opScriptCatalog='catalog_brands';
 let urlImgCard = '';
 let urlImgUser = '';
 let flagVideoCard = false;

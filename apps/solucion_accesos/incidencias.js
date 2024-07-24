@@ -218,48 +218,6 @@ function getAllDataFallas(){
 }
 
 
-//FUNCION al momento de cambiar la caseta o la locacion para traer el resto de informacion sobre la caseta
-function fetchOnChangeLocation(){
-    //INFO: al momento de seleccionar una nueva location se manda la informacion junto con el 
-    //resultado de la fetch a la pagina que lo esta solicitando
-    let selectLocation= document.getElementById("selectLocation")
-    let selectCaseta= document.getElementById("selectCaseta")
-    let response={ 
-        "data":{
-            "caseta":{
-                "name": selectLocation.value,
-                "location": selectCaseta.value,
-                "visitsDay":15,
-                "personalInside":75,
-                "vehiclesInside":25,
-                "ouputs":30
-            }
-        }
-    };
-
-    //FETCH AQUI 
-    fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_id: idScript,
-            option: 'get_caseta_information',
-            email : 'guardia1@linkaform.com'
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            //INFO: Obtener la informacion y formatear los arrays para poder mandarlos como respuesta de esta funcion
-        } 
-    });
-    return response
-}
-
-
 //FUNCION traer toda la informacion de los inicial y la de los catalogos
 function getInfoAndCatalogos(){
     //INFO: poner aqui FETCH para traer los catalogos y lo sig agregarlo dentro del response
