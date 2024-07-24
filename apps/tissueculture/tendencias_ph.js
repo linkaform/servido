@@ -16,6 +16,9 @@ $('.title_tables').hide();
 hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
+hideElement("secondElement");
+hideElement("thirdElement");
+
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -88,6 +91,8 @@ window.onload = function(){
     if (scriptId == null) {
       loadDemoData();
     }
+    //--Catalog
+    get_catalog_productCode();
     //--Styles
     setSpinner();
     $('#divOptions').show();
@@ -111,6 +116,14 @@ window.onload = function(){
       }
     }
   }
+  ///---Selector
+  $(document).ready(function(){
+    //----Función que escucha al selector de params
+    $("#productCode").on('select2:select', function(e){
+      var data = e.params.data;
+      get_lotNumber(data.id);
+    })
+  })
 }
 
 
@@ -130,9 +143,12 @@ function loadDemoData(){
   getDrawTable('firstElement', columsTable1, dataTable1);
   document.getElementById("firstElement").style.removeProperty('display');
 
-  drawFirstElement(data1, setOptions1)
-  document.getElementById("secondElement").style.removeProperty('display');
+  drawFirstElement(data1Example, setOptions1)
   document.getElementById("graphicFirst").style.removeProperty('display');
+
+
+  drawSecondElement(data2, setOptions2)
+  document.getElementById("graphicSecond").style.removeProperty('display');
 
 }
 
@@ -140,12 +156,14 @@ const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  getFirstElement(date_to.value, date_from.value);
+  let date_from = document.getElementById("date_from").value;
+  let date_to = document.getElementById("date_to").value;  
+  let productCode = document.getElementById("productCode").value;  
+  let lotNumber = document.getElementById("lotNumber").value;  
+  getFirstElement(date_to, date_from, productCode, lotNumber);
 };
 
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(dateTo, dateFrom, productCode, lotNumber){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -158,6 +176,8 @@ function getFirstElement(dateTo, dateFrom){
       script_id: scriptId,
       date_to: dateTo,
       date_from: dateFrom,
+      productCode: productCode,
+      lotNumber: lotNumber,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -172,17 +192,22 @@ function getFirstElement(dateTo, dateFrom){
       $("#divContent").show();
       $('.title_tables').show();
 
-      console.log(res.response.json)
 
-      if (res.response.json.firstElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+      if (res.response.firstElement) {
+        getDrawTable('firstElement', columsTable1, res.response.firstElement);
         document.getElementById("firstElement").style.removeProperty('display');
       }
-       if (res.response.json.secondElement) {
-        drawFirstElement(res.response.json.secondElement, setOptions1);
+      
+      if (res.response.secondElement) {
+        console.log('res.response.secondElement',res.response.secondElement)
+        drawFirstElement(res.response.secondElement, setOptions1);
         document.getElementById("secondElement").style.removeProperty('display');
       }
-      
+
+      if (res.response.thirdElement) {
+        drawSecondElement(res.response.thirdElement, setOptions2);
+        document.getElementById("thirdElement").style.removeProperty('display');
+      }
     } else {
       hideLoading();
       if(res.code == 11){
@@ -201,6 +226,21 @@ function getFirstElement(dateTo, dateFrom){
     }
   })
 };
+//-----CHART COLORS
+function setFormatColor(data){
+  let array_colors = getPAlleteColors(7,data['datasets'].length);
+  if (data['datasets'].length > 0) {
+    for (var i = 0; i < data['datasets'].length; i++) {
+     let type = data['datasets'][i]['type'];
+     if(type != 'line'){
+       data['datasets'][i]['backgroundColor'] = array_colors[i];
+       data['datasets'][i]['borderColor'] = array_colors[i];
+     }
+    }
+  }
+  return data
+}
+
 
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
@@ -210,7 +250,7 @@ function getDrawTable(id, columnsData, tableData){
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:false,
+    dataTreeStartExpanded:true,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
@@ -237,20 +277,106 @@ function getDrawTable(id, columnsData, tableData){
 //-----GRAPICH
 let chart1;
 function drawFirstElement(datasets, dataconfig){
-  console.log(datasets.datasets.length)
   //---CHART
   var ctx = document.getElementById('graphicFirst').getContext('2d');
   
   if (chart1) {
     chart1.destroy();
   }
-
+  newDatasets = setFormatColor(datasets)
   chart1 = new Chart(ctx, {
     type: 'line',
-    data: datasets,
-    plugins: [ChartDataLabels],
+    data: newDatasets,
+    //plugins: [ChartDataLabels],
     options: dataconfig
   });
 }
 
 
+let chart2;
+function drawSecondElement(datasets, dataconfig){
+  //---CHART
+  var ctx = document.getElementById('graphicSecond').getContext('2d');
+  
+  if (chart2) {
+    chart2.destroy();
+  }
+  newDatasets = setFormatColor(datasets)
+  chart2 = new Chart(ctx, {
+    type: 'bubble',
+    data: datasets,
+    //plugins: [ChartDataLabels],
+    options: dataconfig
+  });
+}
+
+
+//-----CATALOGS
+function get_catalog_productCode() 
+{
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_name: "get_report_filters.py",
+      filters: ["products"],
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      if (res.response.productCode){
+        $('#productCode').select2({
+          placeholder: 'Select',
+          allowClear: true, 
+          selectionCssClass: "select2-selection",
+        });
+        $("#productCode").empty();
+        $("#productCode").append("<option value=''/></option> ")
+        for (i = 0; i < res.response.productCode.length; i++) {
+          value = res.response.productCode[i]
+          $('#productCode').append('<option value="'+ value +'">'+value+'</option>');
+        }
+      }
+    }
+  })
+};
+
+function get_lotNumber(id)
+{
+  fetch(url + 'infosync/scripts/run/',{
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: 112655,
+      option:"getLotNumber",
+      product_code: id
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.success){
+      if(res.response.json){
+        //----Lot number
+        $('#lotNumber').select2({
+          placeholder: 'Select',
+          allowClear: true,
+          selectionCssClass: "select2-selection",
+        });
+        $("#lotNumber").empty();
+        $("#lotNumber").append("<option value=''/></option> ")
+        let dataLotNumber = res.response.json['lotNumber'];
+        for(let i = 0; i < dataLotNumber.length; i++){
+          value = dataLotNumber[i];
+          $("#lotNumber").append('<option value="' + value + '">'+value+'</option>');
+        }
+      }
+    }
+  })
+}

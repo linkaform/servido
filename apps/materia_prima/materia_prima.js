@@ -115,7 +115,6 @@ window.onload = function(){
   }
 }
 
-
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
   unhideElement("inicio_ses");
@@ -128,7 +127,6 @@ function loadDemoData(){
 
   getDrawTable('firstElement', columsData1, dataTable1, listTitle);
   document.getElementById("firstElement").style.removeProperty('display');
-
 }
 
 const loading = document.querySelector('.loading-container');
@@ -139,69 +137,68 @@ function getInformationRequest(){
   //---Get filters
   let date_from = $("#date_from").val();
   let date_to = $("#date_to").val();
-  let company = $("#company").val();
 
-  if(date_from != '' && date_to!= ''){
     //----Hide Css
     $("#divContent").hide();
     $('.load-wrapp').show();
     $('.title_tables').hide();
 
-    fetch(url + 'infosync/scripts/run/', {
-      method: 'POST',
-      body: JSON.stringify({
-        script_id: scriptId,
-        date_from: date_from,
-        date_to: date_to,
-        company: company,
-      }),
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+userJwt
-      },
-    })
-    .then(res => res.json())
-    .then(res => {
-      if (res.success) {
-        //----Hide and show
-        $('.load-wrapp').hide();
-        $("#divContent").show();
-        $('.title_tables').show();
-        //----Data
-        let data = res.response;
-        if(data.response_table){
-          getDrawTable('firstElement', columsData1, data.response_table);
-          document.getElementById("firstElement").style.removeProperty('display');
-        }
-      } else {
-        hideLoading();
-        if(res.code == 11){
-          Swal.fire({
-            title: 'Error',
-            html: res.error
-          });
-          $('.load-wrapp').hide();
-        } else {
-          Swal.fire({
-            title: 'Error',
-            html: res.error
-          });
-          $('.load-wrapp').hide();
-        }
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: scriptId,
+      date_from: date_from,
+      date_to: date_to,
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      //----Hide and show
+      $('.load-wrapp').hide();
+      $("#divContent").show();
+      $('.title_tables').show();
+      //----Data
+      let data = res.response;
+      if(data.tableData){
+        getDrawTable('firstElement', columsData1, data.tableData);
+        document.getElementById("firstElement").style.removeProperty('display');
       }
-    })
-  }else{
-    Swal.fire({
-      title: 'Error',
-      html: 'Seleccione el periodo de fechas'
-    });
-  }
+    } else {
+      hideLoading();
+      if(res.code == 11){
+        Swal.fire({
+          title: 'Error',
+          html: res.error
+        });
+        $('.load-wrapp').hide();
+      } else {
+        Swal.fire({
+          title: 'Error',
+          html: res.error
+        });
+        $('.load-wrapp').hide();
+      }
+    }
+  })
 }
 
 
 //-----TABLES
-function getDrawTable(id, columnsData, tableData, listTitles){
+function getDrawTable(id, columnsData, tableData){
   let countPosition = 0;
+  let listTitle = [
+    'Pendientes control de calidad',
+    'Aceptados en control de calidad y pendientes de descarga',
+    'Rechazados en control de calidad y pendientes de salida',
+    'Camiones descargados',
+    'Camiones rechazados',
+  ];
+
   var  table = new Tabulator("#" + id, {
     height:"500px",
     layout:"fitDataTable",
@@ -223,14 +220,31 @@ function getDrawTable(id, columnsData, tableData, listTitles){
         colspanCell.style.background = "#03AED2";
         colspanCell.style.fontSize = "18px";
         colspanCell.style.fontWeight = "bold";
-        colspanCell.colSpan = 8; 
-        colspanCell.textContent = listTitles[countPosition];
+        colspanCell.colSpan = 9; 
+        colspanCell.textContent = listTitle[countPosition];
         //-----DELETE OLD ELEMENT
         while (rowEl.firstChild) {
         rowEl.removeChild(rowEl.firstChild);
         }
         rowEl.appendChild(colspanCell);
         countPosition+= 1;
+      }
+      if(rowData.hasOwnProperty('emptySection')){
+        var rowEl = row.getElement();
+        //-----NEW ELEMENT
+        var colspanCell = document.createElement("td");
+        colspanCell.align = 'center';
+        colspanCell.style.padding = "13px";
+        colspanCell.style.width = "100%";
+        colspanCell.style.display = "block";
+        colspanCell.style.fontWeight = "bold";
+        colspanCell.colSpan = 9; 
+        colspanCell.textContent = rowData['emptySection'];
+        //-----DELETE OLD ELEMENT
+        while (rowEl.firstChild) {
+          rowEl.removeChild(rowEl.firstChild);
+        }
+        rowEl.appendChild(colspanCell);
       }
     },
     persistentFilter:function(row){

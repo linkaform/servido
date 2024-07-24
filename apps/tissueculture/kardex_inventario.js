@@ -157,7 +157,6 @@ window.onload = function(){
     //----Función que escucha al selector de params
     $("#productCode").on('select2:select', function(e){
       var data = e.params.data;
-      console.log(data)
       get_lotNumber(data.id);
     })
   })
@@ -712,13 +711,11 @@ function get_lotNumber(id)
   .then(res => {
     if(res.success){
       if(res.response.json){
-        
           //----Lot number
           $('#lotNumber').select2({
-              placeholder: 'Select',
-              allowClear: true, // Opcional, para agregar una "X" para deseleccionar
-              selectionCssClass: "select2-selection",
-
+            placeholder: 'Select',
+            allowClear: true, // Opcional, para agregar una "X" para deseleccionar
+            selectionCssClass: "select2-selection",
           });
           $("#lotNumber").empty();
           $("#lotNumber").append("<option value=''/></option> ")

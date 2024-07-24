@@ -4,18 +4,18 @@ const columsData1 = [
         url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
         target:"_blank",
     },headerFilter:"input", width:150},
-	{ title:"Hora", field:'hour',hozAlign:"left",headerFilter:true,width:250},
-	{ title:"Proveedor", field:'provider',hozAlign:"left",headerFilter:true,width:250},
-	{ title:"Chofer", field:'chauffer',hozAlign:"left",headerFilter:true,width:250},
-	{ title:"Placas tracto", field:'serie_tracto',hozAlign:"left",headerFilter:true,width:250},
-	{ title:"Placas Remolque", field:'serie_remolque',hozAlign:"left",headerFilter:false,width:250},
-	{ title:"Peso Guía", field:'weight',hozAlign:"left",headerFilter:false,width:250},
-	{ title:"Tipo", field:'type',hozAlign:"left",headerFilter:false,width:250},
-	{ title:"Cantidad", field:'amount',hozAlign:"left",headerFilter:false,width:250},
-	{ title:"Producto", field:'product',hozAlign:"left",headerFilter:false,width:250},
+	{ title:"Fecha", field:'hour',hozAlign:"left",headerFilter:true,width:200},
+	{ title:"Fecha Control Calidad", field:'fecha_calidad',hozAlign:"left",headerFilter:true,width:210},
+	{ title:"Proveedor", field:'provider',hozAlign:"left",headerFilter:true,width:320},
+	{ title:"Chofer", field:'chauffer',hozAlign:"left",headerFilter:true,width:220},
+	{ title:"Placas tracto", field:'serie_tracto',hozAlign:"left",headerFilter:true,width:150},
+	{ title:"Placas Remolque", field:'serie_remolque',hozAlign:"left",headerFilter:false,width:150},
+	{ title:"Peso Guía", field:'weight',hozAlign:"left",headerFilter:false,width:100},
+	{ title:"Tipo", field:'type',hozAlign:"left",headerFilter:false,width:100},
+	{ title:"Cantidad", field:'amount',hozAlign:"left",headerFilter:false,width:100},
+	{ title:"Producto", field:'product',hozAlign:"left",headerFilter:false,width:320},
 ]
 
-var listJumps = [1,11,21,31,41];
 var listTitle = [
 	'Pendientes control de calidad',
 	'Aceptados en control de calidad y pendientes de descarga',
