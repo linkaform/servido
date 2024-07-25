@@ -115,7 +115,7 @@
 					<h4 class="m-2">Información personal &nbsp;&nbsp;</h4>
 					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
 						<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-5" alt="Imagen Usuario" style="max-width:120px; max-height:120px; object-fit: cover;" id="imgUser">
-						<h6 class="m-4 mb-2">Tipo de pase: <span id="tipoPaseText" style="font-weight: normal"></span></h6>
+						<h5 class="m-4 mb-2" style="font-size:1.3em">Tipo de pase: <br><span id="tipoPaseText" style="font-weight: normal"></span></h5>
 					</div>
 					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
 						<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" class=" mx-auto  mt-5" style="max-width:240px;max-height:120px; object-fit: cover;" id="imgCard">
@@ -132,7 +132,7 @@
 								</h3>
 							</div>
 						</div>
-						<p><span className='h4'><b>Contratista:</b></span>&nbsp;&nbsp; <span id="rfc"></span></p>
+						<p><span className='h4'><b>Contratista:</b></span>&nbsp;&nbsp; <span id="contratista"></span></p>
 						<p><span className='h4'><b>Vigencia:</b></span>&nbsp;&nbsp; <span id="validity"></span></p>
 						<p><span className='h4'><b>Status:</b></span>&nbsp;&nbsp; <span id="status"></span></p>
 						<div class="row ">
@@ -413,8 +413,8 @@
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-success btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-danger btn-sm" onclick="asignarNuevaVisita()">Asignar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="asignarNuevaVisita()">Asignar</button>
 				</div>
 			</div> 
 		</div>
@@ -466,8 +466,8 @@
 					<small class="text-danger mt-1 mb-3" id="alert_gafete_modal" style="display:none;">** Faltan campos obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-success btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-danger btn-sm" id="idButtonAsignarGafete" onclick="setDataGafete();return false">Asignar gafete</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" id="idButtonAsignarGafete" onclick="setDataGafete();return false">Asignar gafete</button>
 					<button class="btn btn-success btn-sm" type="button" id="idLoadingButtonAsignarGafete" style="display:none" disabled>
                 <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
                 Cargando...
@@ -495,8 +495,8 @@
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Enviar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm">Enviar</button>
 				</div>
 			</div>
 		</div>
@@ -517,8 +517,8 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success">Llamar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm">Llamar</button>
 				</div>
 			</div> 
 		</div>
@@ -571,8 +571,8 @@
 					<small class="text-danger mt-1 mb-3"  id="alertItemModal" style="display:none;">** Faltan campos obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-warning" onclick="agregarEquipoAModal();return false;">Guardar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="agregarEquipoAModal();return false;">Guardar</button>
 				</div>
 			</div>
 		</div>
@@ -651,8 +651,8 @@
 					<small class="text-danger mt-1 mb-3" id="alert_car_modal" style="display:none;">** Faltan campos obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-warning" onclick="getSaveCar();return false;">Guardar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="getSaveCar();return false;">Guardar</button>
 				</div>
 			</div>
 		</div>
@@ -680,8 +680,8 @@
 					
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Enviar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm">Enviar</button>
 				</div>
 			</div>
 		</div>
@@ -712,7 +712,7 @@
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
@@ -742,8 +742,8 @@
 					
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Enviar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm">Enviar</button>
 				</div>
 			</div>
 		</div>
@@ -771,8 +771,8 @@
 					
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Enviar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm">Enviar</button>
 				</div>
 			</div>
 		</div>
@@ -799,7 +799,7 @@
 					
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
@@ -826,7 +826,7 @@
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
@@ -853,7 +853,7 @@
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
@@ -880,7 +880,7 @@
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
