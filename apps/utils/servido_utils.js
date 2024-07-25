@@ -429,11 +429,21 @@ function errorAlert(data){
             type: "error"
         });
     }else if (data.hasOwnProperty("error")){
-        Swal.fire({
-            title: "Error",
-            text: data.error,
-            type: "error"
-        });
+        console.log("TIENE UN ERROR")
+        let error= data.error
+        if(error.hasOwnProperty('msg')){
+            Swal.fire({
+                title: "Error",
+                text: res.error.msg.msg,
+                type: res.error.msg.type
+            });
+        }else{
+            Swal.fire({
+                title: "Error",
+                text: error,
+                type: "error"
+            });
+        }
     }
 }
 

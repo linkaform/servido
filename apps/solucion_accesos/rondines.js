@@ -9,7 +9,7 @@ window.onload = function(){
     selectLocation= document.getElementById("selectLocation")
     selectLocation.onchange = function() {
         let response = fetchOnChangeLocation(selectLocation.value)
-        alert("Esta pendiente traer la lista de back, para que funcione esta parte, el combo caseta vendra vacio hasta agrear el servicio")
+        alert("Esta pendiente traer la lista de back para que funcione en esta pantalla, el combo caseta vendra vacio hasta agrear el servicio")
     };
     selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = function() {

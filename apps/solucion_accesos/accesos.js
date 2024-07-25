@@ -212,14 +212,16 @@ function getDataUser() {
                 setHideElements('buttonsModal');
                 $("#divSpinner").hide();
                 setHideElements('dataShow');
+                $("#inputCodeUser").val("")
             }else{
                 errorAlert(res)
                 setCleanData();
                 setHideElements('dataHide');
                 $("#buttonNew").show();
                 $("#divSpinner").hide();
+                $("#inputCodeUser").val("")
             }
-        }) 
+        })
     }
 }
 
@@ -311,12 +313,8 @@ function setDataUser(){
                 $("#buttonOut").show();
                 $("#buttonNew").hide();
             }else{
-                console.log("ERROR")
-                Swal.fire({
-                    title: "Error",
-                    text: res.error.msg.msg,
-                    type: res.error.msg.type
-                });
+                console.log("HELLOUUU UN ERORR")
+                errorAlert(res)
                 $("#buttonOut").show();
             }
         }).catch(error => {
@@ -499,30 +497,81 @@ function optionCheckOtro(){
 }
 
 
+
 //FUNCION al pedir la opcion information user al setear la informacion del usuario
 function dataUserInf(dataUser){
-    let imgUser = dataUser.portador.foto[0].file_url != '' ? dataUser.portador.foto[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
-    $('#imgUser').attr('src', imgUser); 
-    let imgCard = dataUser.portador.identificacion_pase[0].file_url != '' ? dataUser.portador.identificacion_pase[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg';
+    let imgUser ="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1"
+    if(dataUser.portador.hasOwnProperty('foto')){
+        imgUser =  dataUser.portador.foto[0].file_url !== '' ? dataUser.portador.foto[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
+    }
+    $('#imgUser').attr('src', imgUser);
+
+    let imgCard="https://www.creativefabrica.com/wp-content/uploads/2018/12/Id-card-icon-by-rudezstudio-5-580x386.jpg"
+    if(dataUser.portador.hasOwnProperty('identificacion_pase')){
+        imgCard= dataUser.portador.identificacion_pase[0].file_url !==  '' ? dataUser.portador.identificacion_pase[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg';
+    }
     $('#imgCard').attr('src', imgCard); 
-    let nameUser = dataUser.portador.nombre_visita != '' ? dataUser.portador.nombre_visita: '';
+
+    let nameUser = ""
+    if(dataUser.portador.hasOwnProperty("nombre_visita")){
+        console.log("TENGO nombre_visita")
+        nameUser=dataUser.portador.nombre_visita !==  '' ? dataUser.portador.nombre_visita: '';
+    }
     $('#nameUserInf').text(nameUser); 
-    let rfc = dataUser.portador.rfc[0] != '' ? dataUser.portador.rfc[0]: ''; // EL OBJ NO TRAE EL RFC
-    $('#rfc').text(rfc);
-    let validity = dataUser.pass.fecha_expiracion != '' ? dataUser.pass.fecha_expiracion : '';
+
+    /*let rfc=""
+    if(dataUser.portador.hasOwnProperty('rfc')){
+        console.log("TENGO  rfc")
+        rfc=dataUser.portador.rfc[0]
+    }
+    $('#rfc').text(rfc);*/
+
+    let validity = ""
+    if(dataUser.pass.hasOwnProperty('fecha_expiracion')){
+        console.log("TENGO fecha_expiracion")
+        validity= dataUser.pass.fecha_expiracion !==  '' ? dataUser.pass.fecha_expiracion : '';
+    }
     $('#validity').text(validity);
-    let status = dataUser.portador.status_visita[0] != '' ? dataUser.portador.status_visita[0]: '';
+
+    let status = ""
+    if(dataUser.portador.hasOwnProperty('status_visita')){
+        status=dataUser.portador.status_visita.length>0 ? dataUser.portador.status_visita[0]: '';
+    }
     $('#status').text(status);
-    let tipoPase = dataUser.pass.tipo != '' ? dataUser.pass.tipo: '';
+    
+    let tipoPase = ""
+    if(dataUser.pass.hasOwnProperty("tipo")){
+        console.log("TENGO tipo")
+        tipoPase= dataUser.pass.tipo !==  '' ? dataUser.pass.tipo: '';
+    }
     $('#tipoPaseText').text(tipoPase);
-    //----Visiti
-    let motivo = dataUser.portador.motivo != '' ? dataUser.portador.motivo: '';
+
+    let motivo =""
+    if(dataUser.portador.hasOwnProperty('motivo')){
+        console.log("TENGO motivo")
+        motivo=dataUser.portador.motivo !==  '' ? dataUser.portador.motivo: '';
+    }
     $('#motivo').text(motivo);
-    let visit = dataUser.portador.nombre_visita != '' ? dataUser.portador.nombre_visita: '';
+    
+    let visit=""
+    if(dataUser.portador.hasOwnProperty('nombre_visita')){
+        console.log("TENGO nombre_visita")
+        visit= dataUser.portador.nombre_visita !==  '' ? dataUser.portador.nombre_visita: '';
+    }
     $('#visit').text(visit);
-    let authorizePase = dataUser.authorize_pase != '' ? dataUser.authorize_pase: '';
-    $('#authorizePase').text(authorizePase);
-    let authorizePhone = dataUser.portador.telefono != '' ? dataUser.portador.telefono[0]: '';
+    
+    /*let authorizePase =""
+    if(dataUser.hasOwnProperty("authorize_pase")){
+        console.log("TENGO authorize_pase")
+        authorizePase=dataUser.authorize_pase !==  '' ? dataUser.authorize_pase: '';
+    }
+    $('#authorizePase').text(authorizePase);*/
+
+    let authorizePhone=""
+    if(dataUser.portador.hasOwnProperty('telefono')){
+        console.log("TENGO telefono")
+        authorizePhone=dataUser.portador.telefono.length>0 ? dataUser.portador.telefono[0]:''
+    }
     $('#authorizePhone').text(authorizePhone);
 }
 
@@ -530,7 +579,10 @@ function dataUserInf(dataUser){
 //FUNCION al pedir la opcion information user al setear la info de las tablas
 function tableFill(dataUser){
     //TABLA COMENTARIOS
-    let listInstructions = dataUser.comentarios.length > 0 ? dataUser.comentarios: [];
+    let listInstructions = []
+    if(dataUser.hasOwnProperty('comentarios')){
+        listInstructions = dataUser.comentarios.length > 0 ? dataUser.comentarios: [];
+    }
     for (var i = 0; i < listInstructions.length; i++) {
         //if(i < 3){
             var newRow = $('<tr>');
@@ -551,12 +603,16 @@ function tableFill(dataUser){
     }*/
     if(listInstructions.length == 0){
         var newRow = $('<tr>');
-        newRow.append($('<td>').text('No existen Instrucciones'));
+        newRow.append($('<td>').text('No existen Comentarios/Instrucciones'));
         newRow.append('</tr>');
-        $('#tableModalInstructions').append(newRow);
+        $('#tableInstructions').append(newRow);
     }
     //----TABLA ACCESOS PERMITIDOS
-    let listAccess = dataUser.accesos.length > 0 ? dataUser.accesos: [];
+
+     let listAccess = []
+    if(dataUser.hasOwnProperty('accesos')){
+        listAccess = dataUser.accesos.length > 0 ? dataUser.accesos: [];
+    }
     for (var i = 0; i < listAccess.length; i++) {
             let nombre = listAccess[i].area;
             let status = listAccess[i].status;
@@ -580,12 +636,16 @@ function tableFill(dataUser){
     }*/
     if(listAccess.length == 0){
         var newRow = $('<tr>');
-        newRow.append($('<td colspan="2">').text('No existen Accesos permitidos'));
+        newRow.append($('<td >').text('No existen Accesos permitidos'));
+        newRow.append($('<td>'));
         newRow.append('</tr>');
         $('#tableAccess').append(newRow);
     }
     //----Table CERTIFICACIONES
-    let listLocations = dataUser.portador.certificacion_pase.length > 0 ? dataUser.portador.certificacion_pase: [];
+    let listLocations = []
+    if(dataUser.portador.hasOwnProperty('certificacion_pase')){
+        listLocations = dataUser.portador.certificacion_pase.length > 0 ? dataUser.portador.certificacion_pase: [];
+    }
 
     for (var i = 0; i < listLocations.length; i++) {
         //if(i < 1000){
@@ -606,12 +666,14 @@ function tableFill(dataUser){
             $('#tableModalAccess').append(newRow);
         }
     } 
+    */
     if(listLocations.length == 0){
         var newRow = $('<tr>');
-        newRow.append($('<td>').text('No existen Accesos'));
+        newRow.append($('<td>').text('No existen Accesos/Certificaciones'));
+        newRow.append($('<td>'))
         newRow.append('</tr>');
-        $('#tableModalAccess').append(newRow);
-    }*/
+        $('#tableLocations').append(newRow);
+    }
     return listLocations
 }
 
@@ -648,31 +710,86 @@ function tableFillEquipos(dataUser){
     }*/
     $("#buttonItemsModal").show();
     console.log("tama;o de lista de equipo",listItems.length)
-    for (var i = 0; i < listItems.length; i++) {
+    for (let i = 0; i < listItems.length; i++) {
         let tipoItem = listItems[i].tipo;
         let marcaItem = listItems[i].marca;
         let modeloItem = listItems[i].modelo;
         let serieItem = listItems[i].serie;
         let colorItem = listItems[i].color;
         let id = listItems[i].id;
-        var newRow = $('<tr>');
+        let newRow = $('<tr>');
         newRow.append($('<td>').text(tipoItem));
         newRow.append($('<td>').text(marcaItem));
         newRow.append($('<td>').text(modeloItem));
         newRow.append($('<td>').text(serieItem));
         newRow.append($('<td>').text(colorItem));
+
         let isChecked= listItems[i].check == true ? 'checked' : '';
         newRow.append('<td ><input class="form-check-input checkboxGroupEquipos" type="checkbox" id='+id+' '+isChecked+'></td>');
         newRow.append('</tr>');
         $('#tableItems').append(newRow);
     }
     if(listItems.length == 0){
-        var newRow = $('<tr>');
-        newRow.append($('<td colspan="3">').text('No existen Equipos'));
+        let newRow = $('<tr>');
+        newRow.append($('<td >').text('No existen Equipos'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
         newRow.append('</tr>');
         $('#tableItems').append(newRow);
     }
 }
+
+
+//FUNCION llenar tabla de vehiculos en la primera carga
+function tableFillVehiculos(dataUser){
+    
+    let listCars = dataUser.vehiculos.length > 0 ? dataUser.vehiculos: [];
+    listCars.forEach(function(dic) {
+        dic.id = Math.floor(Math.random() * 1000000);;
+    });
+    listVehiculesData = listCars;
+    listVehiculesData.forEach(function(dic) {
+        dic.check = false;
+    });
+
+    $("#buttonCarsModal").show();
+    console.log("LISTA DE CARROS", listCars.length)
+    $("#tableCars").innerHTML="";
+    for (var i = 0; i < listCars.length; i++) {
+        let tipoCar = listCars[i].tipo;
+        let marcaCar = listCars[i].marca;
+        let modeloCar = listCars[i].modelo;
+        let matriculaCar = listCars[i].placa;
+        let colorCar = listCars[i].color;
+        let id = listCars[i].id;
+        var newRow = $('<tr>');
+        newRow.append($('<td>').text(tipoCar));
+        newRow.append($('<td>').text(marcaCar));
+        newRow.append($('<td>').text(modeloCar));
+        newRow.append($('<td>').text(matriculaCar));
+        newRow.append($('<td>').text(colorCar)); 
+        let isChecked= listCars[i].check == true ? 'checked' : '';
+        newRow.append('<td><input class="form-check-input radioGroupItems" type="radio"  name="groupCarList" id='+id+' '+isChecked+'></td>');
+        newRow.append('</tr>');
+        $('#tableCars').append(newRow);
+    }
+    if(listCars.length == 0){
+        $("#tableCars").innerHTML="";
+        var newRow = $('<tr>');
+        newRow.append($('<td>').text('No existen Vehiculos'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append('</tr>');
+        $('#tableCars').append(newRow);
+    }
+}
+
 
 function registrarIngreso(){
     
@@ -694,49 +811,7 @@ function registrarIngreso(){
         if (res.success) {
         } 
     }); */
-
 }
-
-//FUNCION llenar tabla de vehiculos en la primera carga
-function tableFillVehiculos(dataUser){
-    
-    let listCars = dataUser.vehiculos.length > 0 ? dataUser.vehiculos: [];
-    listCars.forEach(function(dic) {
-        dic.id = Math.floor(Math.random() * 1000000);;
-    });
-    listVehiculesData = listCars;
-    listVehiculesData.forEach(function(dic) {
-        dic.check = false;
-    });
-
-    $("#buttonCarsModal").show();
-    console.log("LISTA DE CARROS", listCars.length)
-    for (var i = 0; i < listCars.length; i++) {
-        let tipoCar = listCars[i].tipo;
-        let marcaCar = listCars[i].marca;
-        let modeloCar = listCars[i].modelo;
-        let matriculaCar = listCars[i].placa;
-        let colorCar = listCars[i].color;
-        let id = listCars[i].id;
-        var newRow = $('<tr>');
-        newRow.append($('<td>').text(tipoCar));
-        newRow.append($('<td>').text(marcaCar));
-        newRow.append($('<td>').text(modeloCar));
-        newRow.append($('<td>').text(matriculaCar));
-        newRow.append($('<td>').text(colorCar)); 
-        let isChecked= listCars[i].check == true ? 'checked' : '';
-        newRow.append('<td><input class="form-check-input radioGroupItems" type="radio"  name="groupCarList" id='+id+' '+isChecked+'></td>');
-        newRow.append('</tr>');
-        $('#tableCars').append(newRow);
-    }
-    if(listCars.length == 0){
-        var newRow = $('<tr>');
-        newRow.append($('<td colspan="3">').text('No existen Vehiculos'));
-        newRow.append('</tr>');
-        $('#tableCars').append(newRow);
-    }
-}
-
 
 function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
     let group= document.querySelectorAll('.'+classCheckbox)
@@ -1005,6 +1080,7 @@ function setCheckItem(id = 0) {
 
 //FUNCION para guardar equipos entas con checkbox
 function agregarEquipoAModal(){
+    console.log("VALORESS")
     let dicData = {};
     let validation = false;
     let tipo= $("#selectTipoEquipo-123").val();
@@ -1268,12 +1344,13 @@ function getCatalogs(){
     $("#selectTipoVehiculo-123").prop( "disabled", true );
     $("#divCatalogMarca123").hide();
     $("#divCatalogModelo123").hide();
-    /*
+    
     fetch(url + urlScripts ,{
         method: 'POST',
         body: JSON.stringify({
-            script_id: idScript,
-            option: opScriptCatalog,
+            script_name: "script_turnos.py",
+            option: "get_catalog",
+            id_catalog: 119186
         }),
         headers:{
                 'Content-Type': 'application/json',
@@ -1282,9 +1359,11 @@ function getCatalogs(){
     })
     .then(res => res.json())
     .then(res => {
+        console.log("REPSUESTA DE LOS CTALOGOS", res)
         if (res.success) {
+
         } 
-    })*/
+    })
     let cat={
         "brands_cars": [
             {"type": "motocicleta", "brand": ["vento"]},
