@@ -537,6 +537,7 @@ function dataUserInf(dataUser){
     if(dataUser.portador.hasOwnProperty('status_visita')){
         status=dataUser.portador.status_visita.length>0 ? dataUser.portador.status_visita[0]: '';
     }
+
     $('#status').text(status);
     
     let tipoPase = ""
