@@ -115,7 +115,6 @@ function asignarNuevaVisita(){
             if (res.success) {
                 //CODE una vez resulta la imagen, cargarla en front
                 let data={ data: {}}
-                console.log("RESPONSE", data)
             } 
         });
         Swal.fire({
@@ -180,9 +179,8 @@ function agregaEquipo(){
 
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
-function getDataUser() {
-    setCleanData();
-     let codeUser  = $("#inputCodeUser").val();
+function buscarPaseEntrada() {
+    let codeUser  = $("#inputCodeUser").val();
     if(codeUser ==""){
         successMsg("Validación", "Escribe un codigo para continuar", "warning")
     }else{
@@ -212,7 +210,7 @@ function getDataUser() {
                 setHideElements('buttonsModal');
                 $("#divSpinner").hide();
                 setHideElements('dataShow');
-                $("#inputCodeUser").val("")
+                //$("#inputCodeUser").val("")
             }else{
                 errorAlert(res)
                 setCleanData();
@@ -253,8 +251,7 @@ function getDataListUser(){
 
 
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 1
-function setDataUser(){
-
+function registrarIngreso(){
         Swal.fire({
             title: 'Cargando...',
             allowOutsideClick: false,
@@ -262,7 +259,6 @@ function setDataUser(){
                 Swal.showLoading();
            }
         });
-        console.log("=================REGISTRAR INGRESO============================")
         let codeUser  = $("#inputCodeUser").val();
         $("#buttonIn").hide();
         $("#buttonOut").hide();
@@ -304,8 +300,6 @@ function setDataUser(){
                     text: "Movimiento de usuario registrado",
                     icon: "success"
                 });
-                //setCleanData();
-                //setHideElements('dataHide');
                 setHideElements('buttonsOptions');
                 setHideElements('buttonNew');
                 $("#buttonCard").show();
@@ -313,19 +307,19 @@ function setDataUser(){
                 $("#buttonOut").show();
                 $("#buttonNew").hide();
             }else{
-                console.log("HELLOUUU UN ERORR")
                 errorAlert(res)
-                $("#buttonOut").show();
+                setCleanData();
+                setHideElements('dataHide');
+                $("#inputCodeUser").val("");
+                $("#buttonNew").show();
             }
         }).catch(error => {
-            console.log("soy un err")
             errorAlert(res)
             console.error(error)
             setCleanData();
             setHideElements('dataHide');
             $("#buttonNew").show();
         });
-    
 }
 
 
@@ -337,7 +331,6 @@ function registrarSalida(){
             Swal.showLoading();
        }
     });
-    console.log("=================REGISTRAR INGRESO============================")
     let codeUser  = $("#inputCodeUser").val();
    
     fetch(url + urlScripts, {
@@ -355,7 +348,6 @@ function registrarSalida(){
     })
     .then(res => res.json())
     .then(res => {
-        console.log("RESPONSE",res)
         if (res.success) {
             let data = {};
             setHideElements('buttonsModal');
@@ -394,7 +386,6 @@ function setDataGafete(){
     let nombre= $("#nameUserInf").text();
     
     let radios = document.getElementsByName('radioOptionsDocument');
-    console.log("radios selected",radios)
     let radioSeleccionado = "";
     for (var i = 0; i < radios.length; i++) {
         if (radios[i].checked) {
@@ -402,7 +393,6 @@ function setDataGafete(){
             break; 
         }
     }
-    console.log("QUERER",nombre)
     let data_gafete={
         'status_gafete':'asignar_gafete',
         'ubicacion_gafete':selectLocation.value,
@@ -514,21 +504,18 @@ function dataUserInf(dataUser){
 
     let nameUser = ""
     if(dataUser.portador.hasOwnProperty("nombre_visita")){
-        console.log("TENGO nombre_visita")
         nameUser=dataUser.portador.nombre_visita !==  '' ? dataUser.portador.nombre_visita: '';
     }
     $('#nameUserInf').text(nameUser); 
 
     /*let rfc=""
     if(dataUser.portador.hasOwnProperty('rfc')){
-        console.log("TENGO  rfc")
         rfc=dataUser.portador.rfc[0]
     }
     $('#rfc').text(rfc);*/
 
     let validity = ""
     if(dataUser.pass.hasOwnProperty('fecha_expiracion')){
-        console.log("TENGO fecha_expiracion")
         validity= dataUser.pass.fecha_expiracion !==  '' ? dataUser.pass.fecha_expiracion : '';
     }
     $('#validity').text(validity);
@@ -542,35 +529,30 @@ function dataUserInf(dataUser){
     
     let tipoPase = ""
     if(dataUser.pass.hasOwnProperty("tipo")){
-        console.log("TENGO tipo")
         tipoPase= dataUser.pass.tipo !==  '' ? dataUser.pass.tipo: '';
     }
     $('#tipoPaseText').text(tipoPase);
 
     let motivo =""
     if(dataUser.portador.hasOwnProperty('motivo')){
-        console.log("TENGO motivo")
         motivo=dataUser.portador.motivo !==  '' ? dataUser.portador.motivo: '';
     }
     $('#motivo').text(motivo);
     
     let visit=""
     if(dataUser.portador.hasOwnProperty('nombre_visita')){
-        console.log("TENGO nombre_visita")
         visit= dataUser.portador.nombre_visita !==  '' ? dataUser.portador.nombre_visita: '';
     }
     $('#visit').text(visit);
     
     /*let authorizePase =""
     if(dataUser.hasOwnProperty("authorize_pase")){
-        console.log("TENGO authorize_pase")
         authorizePase=dataUser.authorize_pase !==  '' ? dataUser.authorize_pase: '';
     }
     $('#authorizePase').text(authorizePase);*/
 
     let authorizePhone=""
     if(dataUser.portador.hasOwnProperty('telefono')){
-        console.log("TENGO telefono")
         authorizePhone=dataUser.portador.telefono.length>0 ? dataUser.portador.telefono[0]:''
     }
     $('#authorizePhone').text(authorizePhone);
@@ -610,9 +592,10 @@ function tableFill(dataUser){
     }
     //----TABLA ACCESOS PERMITIDOS
 
-     let listAccess = []
+    let listAccess = []
     if(dataUser.hasOwnProperty('accesos')){
-        listAccess = dataUser.accesos.length > 0 ? dataUser.accesos: [];
+        let accesos = dataUser.accesos.filter(objeto => !tienePropiedadesVacias(objeto));
+        listAccess = accesos.length > 0 ? accesos: [];
     }
     for (var i = 0; i < listAccess.length; i++) {
             let nombre = listAccess[i].area;
@@ -689,7 +672,6 @@ function tableFillEquipos(dataUser){
     listItemsData.forEach(function(dic) {
         dic.check = false;
     });
-    console.log("LISTA DE EQUIPOSSS",listItems)
     /*
     for (var i = 0; i < listItems.length; i++) {
         if(i < 3){
@@ -710,7 +692,6 @@ function tableFillEquipos(dataUser){
         }
     }*/
     $("#buttonItemsModal").show();
-    console.log("tama;o de lista de equipo",listItems.length)
     for (let i = 0; i < listItems.length; i++) {
         let tipoItem = listItems[i].tipo;
         let marcaItem = listItems[i].marca;
@@ -757,7 +738,6 @@ function tableFillVehiculos(dataUser){
     });
 
     $("#buttonCarsModal").show();
-    console.log("LISTA DE CARROS", listCars.length)
     $("#tableCars").innerHTML="";
     for (var i = 0; i < listCars.length; i++) {
         let tipoCar = listCars[i].tipo;
@@ -792,27 +772,6 @@ function tableFillVehiculos(dataUser){
 }
 
 
-function registrarIngreso(){
-    
-    /* fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_id: idScr,
-            option: 'get_initialData',
-            caseta: valueCaseta,
-            location: valueLocation
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-        } 
-    }); */
-}
 
 function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
     let group= document.querySelectorAll('.'+classCheckbox)
@@ -821,7 +780,6 @@ function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
             checkboxesSeleccionados.push(parseInt(checkbox.id))
         }
   });
-    console.log("INFOO",checkboxesSeleccionados)
     //return checkboxesSeleccionados
 }
 
@@ -1025,7 +983,7 @@ function setCleanData(){
     $('#visit').text('')
     $('#authorizePase').text('')
     $('#authorizePhone').text('')
-
+    $("#inputCodeUser").val('');
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
     setHideElements('buttonNew');
@@ -1081,7 +1039,6 @@ function setCheckItem(id = 0) {
 
 //FUNCION para guardar equipos entas con checkbox
 function agregarEquipoAModal(){
-    console.log("VALORESS")
     let dicData = {};
     let validation = false;
     let tipo= $("#selectTipoEquipo-123").val();
@@ -1121,7 +1078,6 @@ function agregarEquipoAModal(){
         newRow2.append($('<td>').text(noserie));
         newRow2.append($('<td>').text(color));
         newRow2.append('</tr>');
-        console.log("NEW ROWWW",newRow2)
         $('#tableAddItemsModal').append(newRow2);
 
         $("#selectTipoEquipo-123").val('');
@@ -1155,7 +1111,6 @@ function getSaveCar(){
     if(tipoVehiculo==''){
         validation=true
     }
-    console.log("SAVE CAR")
     if(!validation){
         let newRow = $('<tr>');
         newRow.append($('<td>').text(marca));
@@ -1228,7 +1183,6 @@ function setViewModalItem(){
     selectedEquipos=[]
     getSelectedCheckbox('tableItems', 'checkboxGroupEquipos', selectedEquipos)
     let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
-    console.log("MODAL EQUIPOS", listItemsData, selectedItems)
     $('#listAddItemsModal').modal('show');
     let tabla = document.getElementById('tableAddItemsModal');
     let tbody = tabla.getElementsByTagName('tbody')[0];
@@ -1263,7 +1217,7 @@ function setCurpSearch(curp){
     $("#inputCodeUser").empty();
     $("#inputCodeUser").val(curp);
     $('#listModal').modal('hide');
-    getDataUser();
+    buscarPaseEntrada();
 }
 
 
@@ -1360,7 +1314,6 @@ function getCatalogs(){
     })
     .then(res => res.json())
     .then(res => {
-        console.log("REPSUESTA DE LOS CTALOGOS", res)
         if (res.success) {
 
         } 
@@ -1538,7 +1491,6 @@ function setTranslateImageCard(context, video, canvas){
     } );
     //-----Rquest Photo
     const flagBlankCard = isCanvasBlank(document.getElementById('canvasPhoto'));
-    console.log("is BLACNK",flagBlankCard)
     if(!flagBlankCard){
         setTimeout(() => {
             setRequestFileImg('inputCard');
@@ -1574,7 +1526,6 @@ function setRequestFileImg(type) {
             if(res.file !== undefined && res.file !== null){
                 if(type == 'inputCard'){
                     urlImgCard = res.file;
-                    console.log("URLLLLLL",urlImgCard)
                     //----Clean Canvas
                     var canvas = document.getElementById('canvasPhoto');
                     var ctx = canvas.getContext('2d');
@@ -1591,12 +1542,10 @@ function setRequestFileImg(type) {
                     imgU.src=urlImgCard
                 }
             }else{
-                console.log('Error aqui 2');
                 return 'Error';
             }
         })
         .catch(error => {
-            console.log('Error aqui 3');
             return 'Error';
         });
     }else{

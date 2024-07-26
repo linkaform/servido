@@ -128,7 +128,6 @@ function loadCatalogsLocation(arrayUserBoothsLocations){
             selectLocation.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
     }
     selectLocation.value = getCookie('userLocation');
-    console.log("dfsedf", getCookie('userLocation'))
     if(getValueUserLocation()=='accesos'){
         selectLocation.disabled=true
     }
