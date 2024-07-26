@@ -23,6 +23,7 @@ function setModal(type = 'none',id){
     if(type == 'cambiarCaseta'){
         loadBooths();
     }else if(type == 'addNota'){
+        limpiarEnviaNotaModal()
         $("#agregarNotasModal").modal('show');
     }
 }
@@ -93,6 +94,8 @@ function getNotes(){
             } else{
                 redirectionUrl('login',false);
             }
+        }else{
+            errorAlert(res)
         }
     })
 }
@@ -100,32 +103,26 @@ function getNotes(){
 
 function changeImageGuard(){
     let userId= getCookie('userId')
+    userJwt=getCookie('userJwt')
     let input = document.getElementById('inputFileUser');
     input.click();
     
-    input.onchange = function() {
+    input.onchange =  function() {
         let file = event.target.files[0]; 
         let fileName=event.target.files[0].name
         let urlImagen=""
         if (file) {
             let lector = new FileReader(); 
-            lector.onload = function(event) {
-                urlImagen  = event.target.result;
-                localStorage.setItem("imagenURL", String(urlImagen));
-                let imagenMostrada = document.getElementById("imgProfilePic");
-                imagenMostrada.src = urlImagen;
-                imagenMostrada.style.display = "block"; // Mostrar la imagen
-                //setCookie('userImg',String(urlImagen),7)
-                let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
-                imagenMostradaNavbar.src= urlImagen;
-                imagenMostradaNavbar.style.display = "block";
+            lector.onload =  function(event) {
+                
                 let urlChangeImage= `https://preprod.linkaform.com/api/infosync/user_admin/${userId}/profile_picture/`
+                loadingService()
 
                 let formData = new FormData();
                 formData.append('name', 'profile_picture');
                 formData.append('profile_picture', file);
                
-                 fetch(urlChangeImage, {
+                fetch(urlChangeImage, {
                     method: 'POST',
                     body: formData,
                     headers:
@@ -134,7 +131,36 @@ function changeImageGuard(){
                     },
                 })
                 .then(res => res.json())
-                .then(res => {
+                .then(async res => {
+                    if (res.hasOwnProperty('thumb')){
+                        let body={
+                            method:'PATCH',
+                            body: JSON.stringify({
+                                thumb: res.thumb
+                            }),
+                            headers: { 'Authorization': 'Bearer '+userJwt },
+                        }
+                        let responseData = await fetch(url + `infosync/user_admin/${userId}/`,body)
+                        let data = await responseData.json(); 
+                        console.log("RESPUESTA",data)
+                        if(data.hasOwnProperty('error_message')){
+                            console.log("traemos ewrirrees")
+                            errorAlert(data.error_message)
+                        } else{
+                            urlImagen  = event.target.result;
+                            localStorage.setItem("imagenURL", String(urlImagen));
+                            let imagenMostrada = document.getElementById("imgProfilePic");
+                            imagenMostrada.src = urlImagen;
+                            imagenMostrada.style.display = "block"; // Mostrar la imagen
+                            //setCookie('userImg',String(urlImagen),7)
+                            let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
+                            imagenMostradaNavbar.src= urlImagen;
+                            imagenMostradaNavbar.style.display = "block";
+                            Swal.close();
+                        }
+                    }else{
+                        errorAlert(res)
+                    }
                 })
             };
             lector.readAsDataURL(file);
@@ -160,42 +186,49 @@ function getAllData(){
     .then(res => {
         if (res.success) {
             let data=res.response.data
-            let loc= data.location
-            let guard= data.guard
-            let notes= data.notes
-            supportGuards= data.support_guards
-            thisUserCheckInId=data.guard._id
-            inicializarPagina(loc, notes, guard, data.booth_status, data.booth_stats);
-            if(user !='' && userJwt!=''){
-                if(data.support_guards.length > 0){
-                    for(let guard of data.support_guards){
-                        if(guard.user_id.toString() !==  getCookie('userId').toString())
-                        dataTableGuardiasApoyo.push({name:guard.employee, status: '', img: guard.picture? guard.picture[0].file_url :'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1', fechaInicio: '', id:guard.user_id})
-                    }  
-                }else{
-                    dataTableGuardiasApoyo = []
-                }
-                let userName=getCookie('userName')
-                if(notes.length > 0){
-                    for(let note of notes){
-                        dataTableNotas.push({name:userName, note: note.note, status: note.status, img:"", check:"",view:"", edit:"", fotos: [], archivos:[], folio:note.folio})
+            if(res.response){
+                let loc= data.location
+                let guard= data.guard
+                let notes= data.notes
+                supportGuards= data.support_guards
+                thisUserCheckInId=data.guard._id
+                inicializarPagina(loc, notes, guard, data.booth_status, data.booth_stats);
+                if(user !='' && userJwt!=''){
+                    if(data.support_guards.length > 0){
+                        for(let guard of data.support_guards){
+                            if(guard.user_id.toString() !==  getCookie('userId').toString())
+                            dataTableGuardiasApoyo.push({name:guard.employee, status: '', img: guard.picture? guard.picture[0].file_url :'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1', fechaInicio: '', id:guard.user_id})
+                        }  
+                    }else{
+                        dataTableGuardiasApoyo = []
                     }
-                }else{
-                    dataTableNotas = []
-                }
-                drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
-                guardiasApoyoValidateOptions()
-                drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
-                dataTableCambiarCaseta=[]
-                drawTableSelect('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"300px",1);
-                drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px",1000);
-                tables["tableCambiarCaseta"].on("rowSelectionChanged", function(data, rows){
-                    if (rows.length > 0) {
-                        cambiarCaseta(data[0])
+                    let userName=getCookie('userName')
+                    if(notes.length > 0){
+                        for(let note of notes){
+                            dataTableNotas.push({name:userName, note: note.note, status: note.status, img:"", check:"",view:"", edit:"", fotos: [], archivos:[], folio:note.folio})
+                        }
+                    }else{
+                        dataTableNotas = []
                     }
-                });
-                getNotes();
+                    drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
+                    guardiasApoyoValidateOptions()
+                    drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
+                    dataTableCambiarCaseta=[]
+                    drawTableSelect('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"300px",1);
+                    drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px",1000);
+                    tables["tableCambiarCaseta"].on("rowSelectionChanged", function(data, rows){
+                        if (rows.length > 0) {
+                            cambiarCaseta(data[0])
+                        }
+                    });
+                    getNotes();
+                }
             }
+        } else{
+            //errorAlert(res)
+            drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,[], "420px");
+            drawTableNotas('tableNotas',columsDataNotas, [] ,"180px");
+            errorLoginTurnos(res)
         }
     });
 }
@@ -239,6 +272,8 @@ function loadBooths(){
                 $("#loadingButtonCaseta").hide();
                 
             }
+        }else{
+            errorAlert(res)
         }
     });
 }
@@ -422,7 +457,6 @@ function AlertForzarCierre(name){
 
 //FUNCION para cambiar el estatus del turno y hacer las validaciones correspondientes al dar click al boton, al iniciar la aplicacion, o al refrescar
 function changeStatusTurn(buttonClick){
-
     //INFO : idGuardiasEnTurno para saber que guardias de los que estan en la tabla "Guardias de apoyo" INICIARON TURNO
     //INFO : aqui poner fetch para modificar el status , meter estos este if en el response del fetch
     let estatusActual=getCookie('userTurn');
@@ -436,6 +470,7 @@ function changeStatusTurn(buttonClick){
                 Swal.showLoading();
            }
         });
+        console.log("dataTableGuardiasApoyo",dataTableGuardiasApoyo)
         for(g of arraySelectedGuardias){
             guardiasEnTurno = guardiasEnTurno.concat(dataTableGuardiasApoyo.filter(e => e.id == g.user_id))
             idGuardiasEnTurno.push("inp-"+ g.user_id)
@@ -461,24 +496,34 @@ function changeStatusTurn(buttonClick){
             .then(res => res.json())
             .then(res => {
                 if (res.success) {
-                    casetaActualizarEstatus(turnoCerrado, casetaDisponible)
-                    customNavbar(getValueUserLocation(), userTurnCerrado);
-                    setCookie('userCasetaStatus',casetaDisponible,7)
-                    setCookie('userTurn',turnoCerrado,7)
-                    turnoCerrado(idGuardiasEnTurno)
-                    Swal.fire({
-                        title: "Success",
-                        text: "Turno cerrado correctamente",
-                        type: "success",
-                        showConfirmButton:false,
-                        timer:1200
-                    });
+                    let data=res.response.data
+                    console.log("GUARDIAS SELECIONADOS", inputSelectedGuards)
+                    if (data.status_code==400|| data.status_code==401){
+                        let errores=[]
+                        for(let err in data.json){
+                            errores.push(data.json[err].label+': '+data.json[err].msg)
+                        }
+                        Swal.fire({
+                            title: "Error",
+                            text: errores.flat(),
+                            type: "error"
+                        });
+                    }else{
+                        casetaActualizarEstatus(turnoCerrado, casetaDisponible)
+                        customNavbar(getValueUserLocation(), userTurnCerrado);
+                        setCookie('userCasetaStatus',casetaDisponible,7)
+                        setCookie('userTurn',turnoCerrado,7)
+                        turnoCerrado(idGuardiasEnTurno)
+                        Swal.fire({
+                            title: "Success",
+                            text: "Turno cerrado correctamente",
+                            type: "success",
+                            showConfirmButton:false,
+                            timer:1200
+                        });
+                    }
                 } else{
-                    Swal.fire({
-                        title: "Error",
-                        text: res.error,
-                        type: "error"
-                    });
+                    errorAlert(res)
                 }
             })
             
@@ -501,27 +546,36 @@ function changeStatusTurn(buttonClick){
             .then(res => res.json())
             .then(res => {
                 if (res.success) {
-                    setCookie('userCasetaStatus',casetaNoDisponible,7)
-                    setCookie('userTurn',turnoAbierto,7)
-                    customNavbar(getValueUserLocation(),userTurnAbierto);
-                    casetaActualizarEstatus(turnoAbierto, casetaNoDisponible)
-                    turnoAbierto(idGuardiasEnTurno)
-                    $("#textGuardiaEnTurno").text(res.response.data.json.boot_status.guard_on_duty)
-                    $("#textFechaInicioCaseta").text(res.response.data.json.created_at)
-                    thisUserCheckInId=res.response.data.json.id
-                    Swal.fire({
-                        title: "Success",
-                        text: "Truno iniciado correctamente",
-                        type: "success",
-                        showConfirmButton:false,
-                        timer:1200
-                    });
+                       let data=res.response.data
+                    if (data.status_code==400|| data.status_code==401){
+                        let errores=[]
+                        for(let err in data.json){
+                            errores.push(data.json[err].label+': '+data.json[err].msg)
+                        }
+                        Swal.fire({
+                            title: "Error",
+                            text: errores.flat(),
+                            type: "error"
+                        });
+                    }else{
+                        setCookie('userCasetaStatus',casetaNoDisponible,7)
+                        setCookie('userTurn',turnoAbierto,7)
+                        customNavbar(getValueUserLocation(),userTurnAbierto);
+                        casetaActualizarEstatus(turnoAbierto, casetaNoDisponible)
+                        turnoAbierto(idGuardiasEnTurno)
+                        $("#textGuardiaEnTurno").text(res.response.data.json.boot_status.guard_on_duty)
+                        $("#textFechaInicioCaseta").text(res.response.data.json.created_at)
+                        thisUserCheckInId=res.response.data.json.id
+                        Swal.fire({
+                            title: "Success",
+                            text: "Truno iniciado correctamente",
+                            type: "success",
+                            showConfirmButton:false,
+                            timer:1200
+                        });
+                    }
                 } else{
-                    Swal.fire({
-                        title: "Error",
-                        text: res.error,
-                        type: "Error"
-                    });
+                    errorAlert(res)
                 }
             })
             
@@ -695,17 +749,18 @@ function verNotasAlert(folio){
     let archivosItem=``;
     let commentsItem=``;
 
-    for(let com in selectedNota.note_comments){
+    let comments = selectedNota.note_comments.filter(objeto => !tienePropiedadesVacias(objeto));
+    for(let com in comments){
         commentsItem+=`
         <div class='m-2 '> 
             <span style='font-size: .8em;'>`+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span> 
         </div>`;
     }
-    let htmlComments=`
+    let htmlComments = comments.length>0 ? `
         <h6>Comentarios</h6>
         <div class='d-flex  flex-column '>
             `+commentsItem+` 
-        </div>`;
+        </div>`: "";
 
     for(let pic of selectedNota.note_pic){
         fotosItem+=`
@@ -713,22 +768,24 @@ function verNotasAlert(folio){
             <img src="`+pic.file_url+`" height="145px"style="object-fit: contain;"></td> </tr> 
         </div>`;
     }
-    let htmlFotos=`
+    let htmlFotos=selectedNota.note_pic.length>0 ? `
         <h6>Fotografias</h6>
         <div class='d-flex  flex-row'>
             `+fotosItem+`
-        </div>`;
+        </div>`:"";
+
     for(let file of selectedNota.note_file){
         archivosItem+=`
         <div><a href=`+file.file_url+` target="_blank">`+file.file_name+`</a>
         </div>
         `;
     }
-    let htmlArchivos=`
+    let htmlArchivos=selectedNota.note_file.length>0 ? `
         <h6>Archivos</h6>
         <div class='d-flex flex-column'>
             `+archivosItem+`
-        </div>`;
+        </div> <br>`: "";
+
     Swal.fire({
         title: "Nota",
         text: "Escoje una caseta para continuar...",
@@ -740,7 +797,6 @@ function verNotasAlert(folio){
                     <tr> <td><b>Estatus:</b></td> <td> <span > `+ selectedNota.note_status+`</span></td> </tr> 
                     <tr> <td><b>Fecha y hora de creacion:</b></td> <td> <span > `+ selectedNota.note_open_date.slice(0,-3)+` hrs</span></td> </tr>
                     <tr> <td><b>Fecha y hora de cierre:</b></td> <td> <span>  `+ selectedNota.note_close_date.slice(0,-3)+` hrs</span> </tr>
-                    <tr> <td><b>Guardia que cierra:</b></td> <td> <span>    FALTA ESTE DATO NO LO TRAE LA LISTA</span> </tr>
                 </tbody> 
             </table>` + htmlComments + htmlArchivos + htmlFotos,
         showCancelButton: true,
@@ -773,21 +829,65 @@ function selectCheckboxGuardia(id){
     });
 }     
 
+function limpiarEnviaNotaModal(){
+    arraySuccessFoto=[]
+    arraySuccessArchivo=[]
+    arrayResponses=[]
+    //$("#idButtonCargarArchivos").show();
+    $("#textAreaNuevaNotaNota").val("")
+    //$("#inputComentarioNota").val("")
+    $("#comentarioNuevaNota").val("")
+    let divArchivo = document.getElementById("archivo-input-form");
+    let divFoto = document.getElementById("foto-input-form");
+    let divComment = document.getElementById("comment-input-form");
+
+    const elementsArchivo = divArchivo.querySelectorAll('.archivo-div');
+    elementsArchivo.forEach(function(input) {
+        if(input.id!=="fileInputArchivo"){
+            input.parentElement.parentElement.remove();
+        }
+    });
+    const elementsFoto = divFoto.querySelectorAll('.foto-div');
+    elementsFoto.forEach(function(input) {
+        if(input.id!=="fileInputFotografia"){
+            input.parentElement.parentElement.remove();
+        }
+    });
+    const elementsComment = divComment.querySelectorAll('.comment-div');
+    elementsComment.forEach(function(input) {
+        if(input.id!=="comentarioNuevaNota"){
+            input.parentElement.parentElement.remove();
+        }
+    });
+
+    let inputsE = divArchivo.querySelectorAll('.archivo-div');
+    inputsE.forEach(function(input) {
+        input.value=''
+    });
+
+    let inputsF = divFoto.querySelectorAll('.foto-div');
+    inputsF.forEach(function(input) {
+        input.value=''
+    });
+}
 
 //FUNCION para enviar la nueva notra creada
 function enviarNota(){
+    console.log("ESTAMOS ENTRANDO")
     $("#idLoadingButtonEnviarNota").show();
     $("#idButtonEnviarNota").hide();
-    let nota= $("#commentTextarea").val(); 
+    let nota= $("#textAreaNuevaNotaNota").val(); 
     let archivo= $("#fileInputArchivo").val(); 
-    let status= $("#nuevaNotaEstatusSelect").val(); 
+    //let status= $("#nuevaNotaEstatusSelect").val(); 
     //let fecha= $("#fechaNuevaNota").val(); 
     //let formatDate= fecha.split("T")[0]+' '+fecha.split("T")[1]
     let comments=[]
     let divComentario = document.getElementById("comment-input-form");
     let inputsG = divComentario.querySelectorAll('.comment-div');
     inputsG.forEach(function(input) {
-        comments.push(input.value)
+        if(input.value!==""){
+            comments.push(input.value)
+        }
     });
     for(let obj of arrayResponses){
         if( obj.hasOwnProperty('file_name') && obj.isImage==true){
@@ -803,7 +903,7 @@ function enviarNota(){
         }
     }
     let data_notes={
-        'note_status':status,
+        'note_status': statusAbierto,
         'note':nota,
         'note_booth':getCookie('userCaseta'),
         'note_guard':getCookie('userName'),
@@ -884,6 +984,7 @@ function enviarNota(){
                         tables["tableNotas"].setData(dataTableNotas);
                         $("#idLoadingButtonEnviarNota").hide();
                         $("#idButtonEnviarNota").show();
+
                     }
             } else{
                 Swal.fire({
@@ -1022,23 +1123,66 @@ function eliminarGuardia(id, name){
     })
     .then((result) => {
         if (result.value) {
-             
-            let index = dataTableAgregarGuardiaApoyo.findIndex(guardia => guardia.id === id);
-            if (index !== -1) {
-                dataTableAgregarGuardiaApoyo.splice(index, 1);
+            loadingService()
+            fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name:"script_turnos.py",
+                option:"checkout",
+                guards:[id]
+            }),
+            headers:{
+               'Content-Type': 'application/json',
+               'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                let data = res.response.data
+                    if (data.status_code==400 || data.status_code==401 ){
+                        errorAlert(data)
+                    }else{
+                        console.log("salidaaa",dataTableAgregarGuardiaApoyo,id)
+                        let index = dataTableAgregarGuardiaApoyo.findIndex(guardia => guardia.id === id);
+                        if (index !== -1) {
+                            dataTableAgregarGuardiaApoyo.splice(index, 1);
+                        }
+                        console.log("idGuardiasEnTurno",idGuardiasEnTurno)
+                        let arrGuardiaTurno = idGuardiasEnTurno.filter(e => {
+                            console.log("VALIDACION 1 ",e.includes("inp-"+id) || e.includes("btn-"+id))
+                            console.log("VALOR DE E",e)
+                            console.log("VALOR DE E","inp-"+id, "btn-"+id)
+                            if(e.includes("inp-"+id) || e.includes("btn-"+id)){
+                                return e
+                            }
+                        });
+                        idGuardiasEnTurno=arrGuardiaTurno
+                        console.log("arrGuardiaTurno",arrGuardiaTurno)
+
+                        console.log("guardiasEnTurno",idGuardiasEnTurno)
+                                                console.log("guardiasEnTurno",guardiasEnTurno)
+
+                        let arrayGuard= guardiasEnTurno.filter(e => e.id !== id);
+                        guardiasEnTurno=arrayGuard
+                        let arrSelectedGuardias = arraySelectedGuardias.filter(e => parseInt(e.id) !== parseInt(id))
+                        arraySelectedGuardias=arrSelectedGuardias
+                        //tbale["tableAgregarGuardiaApoyo"].setData([])
+                        changeStatusTurn(false)
+                        Swal.fire({
+                            title: "Check out!",
+                            text: "Se ha realizado el check out correctamente.",
+                            type: "success"
+                        });
+                    }
+            }else{
+                errorAlert(res)
             }
-            let arrGuardiaTurno = idGuardiasEnTurno.filter(e => !e.includes("inp-"+id) && !e.includes("btn-"+id));
-            idGuardiasEnTurno=arrGuardiaTurno
-            let arrayGuard= guardiasEnTurno.filter(e => e.id !== id);
-            guardiasEnTurno=arrayGuard
-            let arrSelectedGuardias = arraySelectedGuardias.filter(e => parseInt(e.id) !== parseInt(id))
-            arraySelectedGuardias=arrSelectedGuardias
-            changeStatusTurn(false)
-            Swal.fire({
-                title: "Check out!",
-                text: "Se ha realizado el check out correctamente.",
-                type: "success"
-            });
+        })
+
+
+
+            
         }
     });
 }
@@ -1184,7 +1328,7 @@ function setAddComentario(){
                 <textarea class="form-control comment-div" id="inputComentarioNota-`+randomID+`"" rows="3" placeholder="Escribe algo..."></textarea>
             </div>
             <div>
-                <button type="button" class="btn btn-success button-add-register " onclick="setAddComment();return false;">
+                <button type="button" class="btn btn-success button-add-register " onclick="setAddComentario();return false;">
                     <i class="fa-solid fa-plus"></i>
                 </button>
                 <button type="button" class="btn btn-danger button-delete-register "  onclick="setDeleteComentario(`+randomID+`);return false;">

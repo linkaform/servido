@@ -35,7 +35,6 @@ window.onload = function(){
 function get_login(){
 	let valueMail = $("#user").val();
 	let valuePassword = $("#password").val();
-	// let url = "https://app.linkaform.com/api/";
 	if(valueMail !='' && valuePassword!=''){
 		fetch(url + 'infosync/user_admin/login/', {
 			method: 'POST',
@@ -67,10 +66,9 @@ function get_login(){
 				setCookie("userEmail", userEmail,7);
 				setCookie("userPosition", userPosition,7);
 				setCookie("userImg", userImg,7);
-				 localStorage.setItem("imagenURL", userImg);
+				localStorage.setItem("imagenURL", userImg);
+
 				setCookie("lkfLogo", res.user.company_logo.picture, 7)
-				//$("#")
-								//----Url
 				let protocol = window.location.protocol;
 				let host = window.location.host;
 				let url = `${protocol}//${host}/solucion_accesos/turnos.html`;
@@ -79,12 +77,12 @@ function get_login(){
 					href: url,
 				}).click();
 			}else{
-				Swal.fire({
-					title: 'Error',
-					html: res.error
-				})
+				errorAlert(res, "¡Ups!")
+				$("#password").val('')
 			}
 		})
+	}else{
+		successMsg('Validación',"Faltan datos por llenar.", "warning")
 	}
 }
 

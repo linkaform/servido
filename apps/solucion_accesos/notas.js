@@ -332,7 +332,6 @@ function verNotasAlert(folio){
                     <tr> <td><b>Estatus:</b></td> <td> <span > `+ selectedNota.note_status+`</span></td> </tr> 
                     <tr> <td><b>Fecha y hora de creacion:</b></td> <td> <span > `+ selectedNota.note_open_date.slice(0,-3)+` hrs</span></td> </tr>
                     <tr> <td><b>Fecha y hora de cierre:</b></td> <td> <span>  `+ selectedNota.note_close_date.slice(0,-3)+` hrs</span> </tr>
-                    <tr> <td><b>Guardia que cierra:</b></td> <td> <span>    FALTA ESTE DATO NO LO TRAE LA LISTA</span> </tr>
                 </tbody> 
             </table>` + htmlComments + htmlArchivos + htmlFotos,
         showCancelButton: true,

@@ -413,33 +413,89 @@ function getTodayDateTime(){
     return fechaFormateada;
 }
 
-function errorAlert(data){
+function errorAlert(data, title = "Error"){
     if(data.hasOwnProperty("json")){
         let errores=[]
         for(let err in data.json){
             errores.push(data.json[err].label+': '+data.json[err].msg)
         }
         Swal.fire({
-            title: "Error",
+            title: title,
             text: errores.flat(),
             type: "error"
         });
     }else if (data.hasOwnProperty("error")){
-        console.log("TIENE UN ERROR")
         let error= data.error
         if(error.hasOwnProperty('msg')){
             Swal.fire({
-                title: "Error",
-                text: res.error.msg.msg,
-                type: res.error.msg.type
+                title: title,
+                text: error.msg.msg,
+                type: error.msg.type
             });
         }else{
             Swal.fire({
-                title: "Error",
+                title: title,
                 text: error,
-                type: "error"
+                type: "warning"
             });
         }
+    }else if (typeof data ==='string'){
+        Swal.fire({
+            title: title,
+            text: data,
+            type: "warning"
+        });
+    }
+}
+
+function errorLoginTurnos(data, type="warning"){
+    if (data.hasOwnProperty("error")){
+        let error= data.error
+        if(error.hasOwnProperty('msg')){
+            Swal.fire({
+                title: error.msg.title,
+                text: error.msg.msg,
+                type: error.msg.type,
+                allowOutsideClick: false,
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Salir",
+            }).then((result) => {
+                if (result.value) {
+                    setCloseSession()
+                }
+            });
+        }else{
+            Swal.fire({
+                title: 'Ocurrio un error...',
+                text: error,
+                allowOutsideClick: false,
+                type: type,
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Salir",
+            }).then((result) => {
+                console.log(result)
+                if (result.value) {
+                    setCloseSession()
+                }
+            });
+        }
+    }else if(typeof data ==='string'){
+        Swal.fire({
+            title: 'Ocurrio un error...',
+            text: data,
+            allowOutsideClick: false,
+            type: type,
+            showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Salir",
+        }).then((result) => {
+            console.log(result)
+            if (result.value) {
+                setCloseSession()
+            }
+        });
     }
 }
 
@@ -460,4 +516,25 @@ function loadingService(){
             Swal.showLoading();
        }
     });
+}
+
+function tienePropiedadesVacias(objeto) {
+    for (let key in objeto) {
+        if (objeto.hasOwnProperty(key)) {
+            // Verificar si la propiedad es vacía
+            if (objeto[key] === null ||
+                objeto[key] === undefined ||
+                objeto[key] === '' ||
+                (Array.isArray(objeto[key]) && objeto[key].length === 0)) {
+                return true; // Retorna true si encuentra una propiedad vacía
+            }
+        }
+    }
+    return false; // Retorna false si no encuentra ninguna propiedad vacía
+}
+
+function setCloseSession(argument) {
+    closeSession();
+    redirectionUrl('login',false);
+
 }

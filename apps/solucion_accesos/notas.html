@@ -115,17 +115,18 @@
                             <label class="form-label">Nota *</label>
                               <textarea class="form-control nueva-nota" id="commentTextarea" rows="3" placeholder="Escribe algo..."></textarea>
                         </div>
+                         <!--
                          <div class="mb-3 col-12">
-                            <label class="form-label">Estatus *</label>
+                            <label class="form-label">Estatus </label>
                             <select class="form-select nueva-nota" aria-label="Default select example" id="nuevaNotaEstatusSelect" >
                                 <option value="cerrado">Cerrado</option>
                                 <option value="abierto">Abierto</option>
                             </select>
-                        </div>
+                        </div>-->
                          <div id="archivo-input-form">
                             <div class="d-flex mb-3 col-12 div-archivo-123" id="id-archivo-div-123">
                                 <div class="flex-grow-1">
-                                    <label class="form-label">Cargar un archivo *</label>
+                                    <label class="form-label">Cargar un archivo </label>
                                     <input type="file" class="form-control-file archivo-div" onchange="guardarArchivos('fileInputArchivo', false);" name="name" id="fileInputArchivo" enctype="multipart/form-data" multiple="multiple">
                                 </div>
                                 <div>
@@ -141,7 +142,7 @@
                        <div id="foto-input-form">
                             <div class="d-flex mb-3 col-12  div-foto-123" id="id-foto-div-123">
                                 <div class="flex-grow-1">
-                                    <label class="form-label">Fotografia *</label>
+                                    <label class="form-label">Fotografia </label>
                                     <input type="file" class="form-control-file foto-div" onchange="guardarArchivos('fileInputFotografia', true);" id="fileInputFotografia">
                                 </div>
                                 <div>
@@ -157,7 +158,7 @@
                         <div id="comment-input-form">
                             <div class="d-flex mb-3 div-comment-123 " id="div-comment-123">
                                 <div class="flex-grow-1">
-                                    <label class="form-label">Comentario *</label>
+                                    <label class="form-label">Comentario </label>
                                     <textarea class="form-control comment-div" id="comentarioNuevaNota" rows="3" placeholder="Escribe algo..."></textarea>
                                 </div>
                                 <div>
@@ -170,7 +171,6 @@
                             </div>
                         </div>
                     </div>
-                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>

@@ -86,14 +86,14 @@
 	<section class="d-flex justify-content-center mainSectionMargins">
 			<div>
 				<div class="input-group" role="group">
-					<input type="text" class="form-control  input-search-portal " placeholder="Codigo User" value="" id="inputCodeUser" onchange="getDataUser();return false;">
-					<span class="input-group-text bg-warning-subtle  cursor-pointer myCustomBtnGroup" onclick="getDataUser();return false;"><i class="fa-solid fa-magnifying-glass" ></i></span>
+					<input type="text" class="form-control  input-search-portal " placeholder="Codigo User" value="" id="inputCodeUser" onchange="buscarPaseEntrada();return false;">
+					<span class="input-group-text bg-warning-subtle  cursor-pointer myCustomBtnGroup" onclick="buscarPaseEntrada();return false;"><i class="fa-solid fa-magnifying-glass" ></i></span>
 					<span class="input-group-text bg-warning-subtle cursor-pointer myCustomBtnGroup" data-bs-toggle="modal" data-bs-target="#listModal" ><i class="fa-solid fa-list"></i></span>
 				</div>
 			</div>
 			<div class="ms-2" >
 				<div>
-					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" style="display: none;" id="buttonIn" onclick="setDataUser();return false;">
+					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" style="display: none;" id="buttonIn" onclick="registrarIngreso();return false;">
 					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso</button>
 					<button type="button" class="mt-1 mb-1  btn btn-danger btn-sm p-5 pt-1 pb-1" style="display: none;" id="buttonOut" onclick="registrarSalida();return false;">
 					<i class="fa-sharp fa-solid fa-door-open"></i> Registrar Salida</button>
@@ -355,7 +355,7 @@
 							<label class="form-label">Identificación: *</label>
 							<button type="button" class="btn  btn-primary" onclick="getScreenCard();return false;" id="buttonTakeCard">
 								<i class="fa-solid fa-camera-retro"></i>
-							</button>
+							</button>reg
 							<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveCard">
 								Guardar Foto <i class="fa-solid fa-aperture"></i>
 							</button>

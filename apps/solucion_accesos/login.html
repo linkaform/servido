@@ -29,7 +29,7 @@
                 <div class="card-wrapper">
                     <div class="card fat">
                         <div class="card-body">
-                            <h4 class="card-title">Login</h4>
+                            <h4 class="card-title">Iniciar sesión</h4>
                             <div class="form-group">
                                 <label for="email">Correo electrónico </label>
                                 <input id="user" class="form-control" name="user" type="email" value="" required autofocus>
@@ -41,7 +41,13 @@
                                 <div class="invalid-feedback"> La contraseña es requerida </div>
                             </div>
                             <div class="form-group m-0 ">
-                                <button onclick="get_login()" class="btn btn-warning btn-block mt-4"> Login </button>
+                                <button onclick="get_login()" id="buttonLogin" class="btn btn-warning btn-block mt-4"> Continuar </button>
+                            </div>
+                            <div class="form-group m-0 ">
+                            <button class="btn btn-warning btn-block mt-4" type="button" id="loadingButtonLogin" style="display:none" disabled>
+                                  <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                                  Iniciando sesión...
+                            </button>
                             </div>
                         </div>
                     </div>
