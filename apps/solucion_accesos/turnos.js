@@ -197,7 +197,7 @@ function getAllData(){
                     if(data.support_guards.length > 0){
                         for(let guard of data.support_guards){
                             if(guard.user_id.toString() !==  getCookie('userId').toString())
-                            dataTableGuardiasApoyo.push({name:guard.employee, status: '', img: guard.picture? guard.picture[0].file_url :'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1', fechaInicio: '', id:guard.user_id})
+                            dataTableGuardiasApoyo.push({name:guard.name, status: '', img: guard.picture? guard.picture.file_url :'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1', fechaInicio: '', id:guard.user_id})
                         }  
                     }else{
                         dataTableGuardiasApoyo = []
@@ -286,7 +286,7 @@ function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
     $("#textCuidad").text(loc.city)
     $("#textEstado").text(loc.state)
     $("#textDireccion").text(loc.address)
-    $("#textPosition").text(guard.position[0])
+    $("#textPosition").text(guard.checkin_position)
 
     setCookie('userCaseta',getCookie('userCaseta') ? getCookie('userCaseta'): caseta ,7)
     setCookie('userLocation',getCookie('userLocation') ? getCookie('userLocation'):ubicacion ,7)
@@ -475,7 +475,7 @@ function changeStatusTurn(buttonClick){
             guardiasEnTurno = guardiasEnTurno.concat(dataTableGuardiasApoyo.filter(e => e.id == g.user_id))
             idGuardiasEnTurno.push("inp-"+ g.user_id)
             idGuardiasEnTurno.push("btn-"+ g.user_id)
-            inputSelectedGuards.push({"name":g.employee,"user_id": g.user_id })
+            inputSelectedGuards.push({"name":g.name,"user_id": g.user_id })
         } 
         //FETCH PARA CMABIAR ESTUS DEL GUARDIA AQUI
         if(estatusActual == userTurnAbierto ){
