@@ -215,25 +215,26 @@
             <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5">Editar notas</h1>
-                        <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" id="" aria-label="Close"></button>
                     </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="mb-3 col-12">
                             <label class="form-label">Nota *</label>
-                              <textarea class="form-control edit-nota" id="commentTextarea" rows="3" placeholder="Escribe algo..."></textarea>
+                              <textarea class="form-control editNota" id="notaEditNota" id="notaEditNota" rows="3" placeholder="Escribe algo..."></textarea>
                         </div>
+                        <!--
                         <div class="mb-3 col-12">
                             <label class="form-label">Estatus *</label>
-                            <select class="form-select edit-nota" aria-label="Default select example" id="idEditNotaSelect">
+                            <select class="form-select editNota" aria-label="Default select example" id="idEditNotaSelect">
                                 <option value="cerrado">Cerrado</option>
                                 <option value="abierto">Abierto</option>
                             </select>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Fecha y hora de creación: *</label>
-                            <input type="datetime-local" class="form-control edit-nota" id="fechaNuevaFalla">
-                        </div>
+                            <input type="datetime-local" class="form-control editNota" id="fechaHoraEditNota">
+                        </div> -->
                          <div id="archivo-input-form">
                             <div class="mb-3 col-12 archivo-div div-archivo-123">
                                  <div class="flex-grow-1">
@@ -270,7 +271,7 @@
                             <div class="d-flex mb-3 div-comment-123 " id="id-comment-div-123">
                                 <div class="flex-grow-1">
                                     <label class="form-label">Comentario *</label>
-                                    <textarea class="form-control comment-nota" id="inputComentarioNota" rows="3" placeholder="Escribe algo..."></textarea>
+                                    <textarea class="form-control comment-nota" id="comentarioEditNota" rows="3" placeholder="Escribe algo..."></textarea>
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-success button-add-register " onclick="setAddComentario();return false;">

@@ -48,6 +48,7 @@ window.onload = function(){
 
 
 function getNotes(){
+    console.log("CASETA QUE SE ESTA USANDOA", getCookie('userCaseta'))
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -193,6 +194,7 @@ function getAllData(){
                 supportGuards= data.support_guards
                 thisUserCheckInId=data.guard._id
                 inicializarPagina(loc, notes, guard, data.booth_status, data.booth_stats);
+                console.log("NOTESSS",notes)
                 if(user !='' && userJwt!=''){
                     if(data.support_guards.length > 0){
                         for(let guard of data.support_guards){
@@ -203,13 +205,33 @@ function getAllData(){
                         dataTableGuardiasApoyo = []
                     }
                     let userName=getCookie('userName')
-                    if(notes.length > 0){
-                        for(let note of notes){
-                            dataTableNotas.push({name:userName, note: note.note, status: note.status, img:"", check:"",view:"", edit:"", fotos: [], archivos:[], folio:note.folio})
-                        }
+
+                    if(getCookie('userCaseta') !== data.location.area){
+                        console.log("ENTRANDO AQUI")
+                        getNotes();
                     }else{
-                        dataTableNotas = []
+                        dataTableNotas=[]
+                        if(notes.length > 0){
+                            for(let note of notes){
+                                let dateFormatOpen= note.note_open_date.slice(0,-3)
+                                let dateFormatClose=""
+                                if(note.hasOwnProperty('note_close_date')){
+                                    dateFormatClose= note.note_close_date.slice(0,-3)
+                                }
+                                //FALTA EL COMENTARIOO CAMBIAR EL ID ESE POR LETRA
+                                dataTableNotas.push({folio:note.folio, note_status: note.note_status, note_guard:note.note_guard, 
+                                    note_open_date: dateFormatOpen, 
+                                    note_close_date:dateFormatClose,  note: note.note, 
+                                    note_pic: note.hasOwnProperty('note_pic') && note.note_pic.length>0 ? note.note_pic  : [], 
+                                    note_file: note.hasOwnProperty('note_file') &&note.note_file.length>0 ? note.note_file : [], 
+                                    note_comments: note.hasOwnProperty('note_comments') && note.note_comments.length>0 ? note.note_comments: [], 
+                                    check:"",view:"", edit:""})
+                            }
+                        }else{
+                            dataTableNotas = []
+                        }
                     }
+
                     drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
                     guardiasApoyoValidateOptions()
                     drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
@@ -221,7 +243,7 @@ function getAllData(){
                             cambiarCaseta(data[0])
                         }
                     });
-                    getNotes();
+
                 }
             }
         } else{
@@ -420,7 +442,7 @@ function AlertForzarCierre(name){
                 body: JSON.stringify({
                 script_name: 'script_turnos.py',
                 option: 'checkout',
-                location: ubicacion,
+                location: $("#textUbicacion").text(),
                 area: caseta,
                 checkin_id:checkInId
             }),
@@ -478,6 +500,7 @@ function changeStatusTurn(buttonClick){
             inputSelectedGuards.push({"name":g.name,"user_id": g.user_id })
         } 
         //FETCH PARA CMABIAR ESTUS DEL GUARDIA AQUI
+        console.log("JWSKLEDFK", $("#textUbicacion").text())
         if(estatusActual == userTurnAbierto ){
             fetch(url + urlScripts, {
                 method: 'POST',
@@ -485,8 +508,8 @@ function changeStatusTurn(buttonClick){
                 script_name: 'script_turnos.py',
                 option: 'checkout',
                 checkin_id: thisUserCheckInId,
-                location: ubicacion,
-                area: getCookie('userCaseta'),
+                location: $("#textUbicacion").text(),
+                area: $("#textCaseta").text(),
             }),
             headers:{
                     'Content-Type': 'application/json',
@@ -534,8 +557,8 @@ function changeStatusTurn(buttonClick){
                 body: JSON.stringify({
                 script_name: 'script_turnos.py',
                 option: 'checkin',
-                location: ubicacion,
-                area: getCookie("userCaseta"),
+                location: $("#textUbicacion").text(),
+                area: $("#textCaseta").text(),
                 employee_list:inputSelectedGuards
             }),
             headers:{
@@ -545,18 +568,20 @@ function changeStatusTurn(buttonClick){
             })
             .then(res => res.json())
             .then(res => {
+                /*const error = new Error('Bad Request');
+                error.status = 400;
+                if(error.status==400){
+                    errorAlert(ejemplo)
+                }else{
+                    console.log("ENTRANDOOO")
+                }*/
+
+
                 if (res.success) {
-                       let data=res.response.data
+                    let data=res.response.data
                     if (data.status_code==400|| data.status_code==401){
-                        let errores=[]
-                        for(let err in data.json){
-                            errores.push(data.json[err].label+': '+data.json[err].msg)
-                        }
-                        Swal.fire({
-                            title: "Error",
-                            text: errores.flat(),
-                            type: "error"
-                        });
+                        errorAlert(res)
+                       
                     }else{
                         setCookie('userCasetaStatus',casetaNoDisponible,7)
                         setCookie('userTurn',turnoAbierto,7)
@@ -576,7 +601,7 @@ function changeStatusTurn(buttonClick){
                     }
                 } else{
                     errorAlert(res)
-                }
+                }   
             })
             
         } 
@@ -750,6 +775,7 @@ function verNotasAlert(folio){
     let commentsItem=``;
 
     let comments = selectedNota.note_comments.filter(objeto => !tienePropiedadesVacias(objeto));
+    console.log("COMENTARIOS",comments)
     for(let com in comments){
         commentsItem+=`
         <div class='m-2 '> 
@@ -972,6 +998,7 @@ function enviarNota(){
                                 data_notes[key]= formatDate
                             }
                         }
+                        console.log("COMENTARIOS DE LA NOTA", data_notes.note_comments)
                         let note_open_date= convertDate(data.json.created_at, data.json.timezone)
                         dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, note_guard:data_notes.note_guard, 
                             note_open_date: note_open_date, 
@@ -1168,6 +1195,14 @@ function eliminarGuardia(id, name){
                         let arrSelectedGuardias = arraySelectedGuardias.filter(e => parseInt(e.id) !== parseInt(id))
                         arraySelectedGuardias=arrSelectedGuardias
                         //tbale["tableAgregarGuardiaApoyo"].setData([])
+
+                        casetaActualizarEstatus(turnoCerrado, casetaDisponible)
+                        customNavbar(getValueUserLocation(), userTurnCerrado);
+                        setCookie('userCasetaStatus',casetaDisponible,7)
+                        setCookie('userTurn',turnoCerrado,7)
+                        turnoCerrado(idGuardiasEnTurno)
+
+
                         changeStatusTurn(false)
                         Swal.fire({
                             title: "Check out!",
@@ -1190,6 +1225,26 @@ function eliminarGuardia(id, name){
 
 //FUNCION para agregar nuevo guardia de apoyo cuando tenemos el turno iniciado
 function agregarNuevoGuardiaApoyo(){
+    /*
+    fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name:"script_turnos.py",
+                option:"checkout",
+                guards:[id]
+            }),
+            headers:{
+               'Content-Type': 'application/json',
+               'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+        
+            }
+
+        })*/
     let selectedRow = tables["tableAgregarGuardiaApoyo"].getSelectedData(); 
     let exclude=[]
     for(newGuard of selectedRow){

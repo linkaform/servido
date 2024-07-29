@@ -419,22 +419,63 @@ function getTodayDateTime(){
     return fechaFormateada;
 }
 
+/*
+let ejemplo={"status_code": 400, 
+        "json": {
+            "663fae53fa005c70de59eb95": {
+                "1": {
+                    "663bd466b19b7fb7d9e97cdc": {"msg": ["Este campo es requerido"], "error": [], "label": "ID usuario"}, 
+                    "66a28f3ca6b0f085b1518ca8": {"msg": ["Este campo es requerido"], "error": [], "label": "Status"}
+                }, 
+                "0": {
+                    "663bd466b19b7fb7d9e97cdc": {"msg": ["Este campo es requerido"], "error": [], "label": "ID usuario"}, 
+                    "66a28f3ca6b0f085b1518ca8": {"msg": ["Este campo es requerido"], "error": [], "label": "Status"}
+                }, 
+                "group": {"msg": [], "error": [], "label": "Informaci\u00f3n del guardias de apoyo"}
+            }
+        }
+    }
+*/
+
+function objLength(err,data){
+    let objectCount = 0;
+    const keys = Object.keys(data[err]);
+    if (typeof data === 'object' || data !== null) {
+        for (let key of keys) {
+            if (typeof data[err][key] === 'object' && data[err][key] !== null) {
+              objectCount++;
+            }
+        }
+    }
+    console.log(objectCount)
+    return objectCount
+}
+
 function errorAlert(data, title = "Error"){
     if(data.hasOwnProperty("json")){
         let errores=[]
         for(let err in data.json){
-            errores.push(data.json[err].label+': '+data.json[err].msg)
+            let length=objLength(err, data.json)
+             if(data.json[err].hasOwnProperty('label')){
+                errores.push(data.json[err].label+': '+data.json[err].msg+" ")
+            }else {
+                for (let subKey in err){
+                    for(let subKey2 in data.json[err][subKey]){
+                        errores.push(data.json[err][subKey][subKey2].label+': '+data.json[err][subKey][subKey2].msg+" ")
+                    }
+                }
+            }
         }
         Swal.fire({
             title: title,
             text: errores.flat(),
-            type: "error"
+            type: "warning"
         });
     }else if (data.hasOwnProperty("error")){
         let error= data.error
         if(error.hasOwnProperty('msg')){
             Swal.fire({
-                title: title,
+                title: error.msg.title,
                 text: error.msg.msg,
                 type: error.msg.type
             });
@@ -544,3 +585,4 @@ function setCloseSession(argument) {
     redirectionUrl('login',false);
 
 }
+

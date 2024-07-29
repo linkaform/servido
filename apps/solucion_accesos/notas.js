@@ -25,7 +25,6 @@ window.onload = function(){
         reloadTableNotas(response.response.data)
     };
     let user = getCookie("userId");
-    let jw = getCookie("userJwt");
     
     $("#descargarListNotas").on("click", function() {
         descargarExcel(tables, 'tableListNotas')
@@ -165,11 +164,15 @@ function editarNota(){
 //FUNCION editar un articuloc consesionado
 function editarNotaCargarInfo(folio){
     let selectedNota = dataTableListNotas.find(x => x.folio == folio);
-    selectedRowFolio= folio
-    $('#editarNotasModal').modal('show');
-    $("#idEditNotaSelect").val(selectedNota.note_status)
-    $("#commentTextarea").val(selectedNota.note)
-    $("#inputComentarioNota").val(selectedNota.no)
+    if(selectedNota){
+        selectedRowFolio= folio
+    }else{
+        successMsg("Validación","No se encontro el folio", "warning")
+    }
+    console.log("NOTA SELECIONADA",selectedNota)
+    $('#notaEditNota').modal('show');
+    //$("#fechaHoraEditNota").val(selectedNota.note_status)
+    $("#comentarioEditNota").val(selectedNota.no)
 }
 
 
@@ -228,18 +231,20 @@ function cerrarNotaAlert(name, note, folio, status){
                     if(res.success){
                         let data = res.response.data
                         if (data.status_code==400){
-                            let errores=[]
+                            errorAlert(data)
+                            /*let errores=[]
                             for(let err in data.json){
+                                let length=objLength(err, data.json)
+                                console.log("LARGOOO", data.json[err].hasOwnProperty('label'))
                                 errores.push(data.json[err].label+': '+data.json[err].msg)
                             }
                             Swal.fire({
                                 title: "Error",
                                 text: errores.flat(),
                                 type: "error"
-                            });
+                            }); */
                         } else if(data.status_code==202 ||data.status_code==201){
-                        
-                            if(user !='' && jw!=''){
+                            if(user !='' && userJwt!=''){
                                 let selectedNote = dataTableListNotas.find(nota => nota.folio == folio);
                                 for (let key in data_update){
                                     if(key=='note_close_date'){
@@ -504,7 +509,7 @@ function enviarNota(){
     $("#idButtonEnviarNota").hide();
     let nota= $("#commentTextarea").val(); 
     let archivo= $("#fileInputArchivo").val(); 
-    let status= $("#nuevaNotaEstatusSelect").val(); 
+    //let status= $("#nuevaNotaEstatusSelect").val(); 
     //let fecha= $("#fechaNuevaNota").val(); 
     //let formatDate= fecha.split("T")[0]+' '+fecha.split("T")[1]
     let comments=[]
@@ -527,7 +532,7 @@ function enviarNota(){
         }
     }
     let data_notes={
-        'note_status':status,
+        'note_status': statusAbierto,
         'note':nota,
         'note_booth':getCookie('userCaseta'),
         'note_guard':getCookie('userName'),

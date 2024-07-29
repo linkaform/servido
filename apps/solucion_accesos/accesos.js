@@ -184,6 +184,7 @@ function buscarPaseEntrada() {
     if(codeUser ==""){
         successMsg("Validación", "Escribe un codigo para continuar", "warning")
     }else{
+        setCleanData()
         $("#divSpinner").show();
         setHideElements('dataHide');
         setHideElements('buttonsOptions');
@@ -300,12 +301,16 @@ function registrarIngreso(){
                     text: "Movimiento de usuario registrado",
                     icon: "success"
                 });
+
+                setCleanData();
+                setHideElements('dataHide');
                 setHideElements('buttonsOptions');
                 setHideElements('buttonNew');
-                $("#buttonCard").show();
-                $("#buttonClean").show();
-                $("#buttonOut").show();
-                $("#buttonNew").hide();
+                //$("#buttonCard").show();
+                //$("#buttonClean").show();
+                //$("#buttonOut").show();
+                $("#buttonNew").show();
+                $("#inputCodeUser").val('');
             }else{
                 errorAlert(res)
                 setCleanData();
@@ -318,6 +323,7 @@ function registrarIngreso(){
             console.error(error)
             setCleanData();
             setHideElements('dataHide');
+            $("#inputCodeUser").val('');
             $("#buttonNew").show();
         });
 }
@@ -361,6 +367,8 @@ function registrarSalida(){
             setHideElements('dataHide');
             setHideElements('buttonsOptions');
             setHideElements('buttonNew');
+            $("#inputCodeUser").val('');
+
         }else{
             Swal.fire({
                 title: "Error",
@@ -368,9 +376,12 @@ function registrarSalida(){
                 type: res.error.msg.type
             });
             $("#buttonOut").show();
+            $("#inputCodeUser").val('');
+
         }
     }).catch(error => {
         console.error(error)
+        $("#inputCodeUser").val('');
     });
 }
 
@@ -692,6 +703,7 @@ function tableFillEquipos(dataUser){
         }
     }*/
     $("#buttonItemsModal").show();
+    $("#tableItems").innerHTML="";
     for (let i = 0; i < listItems.length; i++) {
         let tipoItem = listItems[i].tipo;
         let marcaItem = listItems[i].marca;
@@ -712,6 +724,7 @@ function tableFillEquipos(dataUser){
         $('#tableItems').append(newRow);
     }
     if(listItems.length == 0){
+        $("#tableItems").innerHTML="";
         let newRow = $('<tr>');
         newRow.append($('<td >').text('No existen Equipos'));
         newRow.append($('<td>'));
@@ -727,7 +740,6 @@ function tableFillEquipos(dataUser){
 
 //FUNCION llenar tabla de vehiculos en la primera carga
 function tableFillVehiculos(dataUser){
-    
     let listCars = dataUser.vehiculos.length > 0 ? dataUser.vehiculos: [];
     listCars.forEach(function(dic) {
         dic.id = Math.floor(Math.random() * 1000000);;
@@ -983,12 +995,16 @@ function setCleanData(){
     $('#visit').text('')
     $('#authorizePase').text('')
     $('#authorizePhone').text('')
-    $("#inputCodeUser").val('');
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
     setHideElements('buttonNew');
 }
 
+
+function  setCleanData2(){
+    setCleanData();
+    $("#inputCodeUser").val('');
+}
 
 //FUNCION para setear la informacion en la pantalla principal
 function functionSearchList(event) {
@@ -1101,6 +1117,7 @@ function agregarEquipoAModal(){
 
 //FUNCION para saber que vehiculos estan con checkbox
 function getSaveCar(){
+    console.log("GUARDAR VEHICULO")
     let dicData = {};
     let validation = false;
     let tipoVehiculo= $('#selectTipoVehiculo-123').val();
