@@ -14,6 +14,7 @@ const columsData1 = [
 	{ title:"Tipo", field:'type',hozAlign:"left",headerFilter:false,width:100},
 	{ title:"Cantidad", field:'amount',hozAlign:"left",headerFilter:false,width:100},
 	{ title:"Producto", field:'product',hozAlign:"left",headerFilter:false,width:320},
+	//{ title:"Status", field:'title',hozAlign:"left",headerFilter:false,width:150},
 ]
 
 var listTitle = [

@@ -288,6 +288,21 @@ function setSpinner(custom = false, idCustom = ''){
 }
 
 ///-----DOWNLOAD 
+function screenDownload(id,nameFile = null) 
+{
+  let title = 'file-name.png';
+  if(nameFile != null){
+    title = nameFile+'.png';
+  }
+  changeStyleScreen(id,true)
+  html2canvas(document.querySelector("#"+id)).then(canvas => {
+    getDownload(canvas.toDataURL(), title);
+  });
+  changeStyleScreen(id,false)
+}
+
+
+
 function get_chartDownload(id,style, nameFile = null) 
 {
   let title = 'file-name.png';
@@ -313,6 +328,18 @@ function getDownload(uri, filename){
     window.open(uri);
   }
 }
+
+function changeStyleScreen(id, option) {
+  let element = document.getElementById(id);
+  if(option){
+    element.style.width = "2100px";  
+    element.style.height = "95%"; 
+  }else{
+    element.style.width = "95%";  
+    element.style.height = "50%"; 
+  }
+}
+
 
 function setDateFilterMonth() {
   date = new Date();

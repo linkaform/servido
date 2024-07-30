@@ -271,4 +271,8 @@ function getDrawTable(id, columnsData, tableData){
       table.download("csv", "data.csv");
     });
   }
+  if(document.getElementById("download_img_"+id)){
+    document.getElementById("download_img_"+id).replaceWith(document.getElementById("download_img_"+id).cloneNode(true));
+    document.getElementById("download_img_"+id).addEventListener("click", function(){screenDownload(id)});
+  }
 }
