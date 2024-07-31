@@ -102,9 +102,7 @@ function reloadTableFallas(data){
 //FUNCION para limpiar el modal de agregar nota
 function limpiarModal(classInput){
     let elements = document.getElementsByClassName(classInput)
-    console.log("ELEMENTOSSS",elements)
     for (let i = 0; i < elements.length; i++) {
-        console.log("ELEMENTOSSS",elements[i])
         elements[i].value='';
     }
 }
@@ -123,7 +121,6 @@ function reemplazarConVacio(obj) {
 
 //FUNCION que trae la informacion de carga
 function getAllDataIncidencias(){
-    console.log( url + urlScripts)
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -190,7 +187,6 @@ function getAllDataFallas(){
         if(res.success){
             if(user !='' && userJwt!=''){
                     let fallas= res.response.data
-                    console.log("listado de fallas", fallas)
                     if(fallas.length >0){
                         for(let falla of fallas){
                             let dateFormat= falla.falla_fecha.slice(0,-3)
@@ -272,7 +268,6 @@ function getInfoAndCatalogos(){
 
 //FUNCION una vez traida la informacion llenar todos los catalogso correspondientes
 function initializeCatalogsIncidencias(dataCatalogs,boothsLocations){
-    console.log("DAWAW",dataCatalogs)
     boothsLocations.forEach(function(e, i){
         $("#ubicacionEditIncidencia").append($('<option></option>').val(e.ubi).text(e.ubi));
         $("#ubicacionNuevaIncidencia").append($('<option></option>').val(e.ubi).text(e.ubi));

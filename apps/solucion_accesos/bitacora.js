@@ -4,7 +4,6 @@ let colors = getPAlleteColors(12,0)
 
 window.onload = function(){
 	setValueUserLocation('bitacora');
-	console.log(getValueUserLocation())
 	changeButtonColor();
     fillCatalogs();
 
@@ -66,7 +65,6 @@ function reloadTableBitacoras(data){
 }
 
 function loadDataTables(){
-    console.log("LOAD DATA TABLE ",getCookie('userLocation'), getCookie('userCaseta') )
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -82,7 +80,6 @@ function loadDataTables(){
     })
     .then(res => res.json())
     .then(res => {
-        console.log("RESPUESTAAAAAA", res)
         if (res.success) {
             if(user !='' && userJwt!=''){
                 let bit= res.response.data
@@ -145,7 +142,6 @@ function alertSalida(folio){
                 let horaFormateada = fecha.getHours() + ':' + fecha.getMinutes();
                 let fechaFormateada = dia + '/' + mes + '/' + año + ' ' + horaFormateada;
                 selectedSalida.salida = fechaFormateada;
-                 console.log(dataTablePersonal)
                 tables["tableEntradas"].setData(dataTablePersonal);
             }
 	    }
@@ -288,7 +284,6 @@ function getSaveItem(){
     let noserie=$("#inputSerieItem").val();
     let color=$("#inputColorItem").val();
 
-    console.log('console',tipo, nombre)
     if(tipo==''|| nombre=='' ){
         validation=true
     }
@@ -447,12 +442,10 @@ function getFormGafete(){
             }
         }
     }
-    console.log("DATA GAFETE",dicData)
     if(!flaginput && !flagcheck){
         setDataGafete(dicData);
         for(e of elements){
         	e.value=''
-        	console.log("elkemento",e)
         }
         Swal.fire({
         	title: "Gafete Entregado",

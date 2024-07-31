@@ -88,7 +88,6 @@ function getCatalogs(){
 	})
 	.then(res => res.json())
 	.then(res => {
-			console.log("ID DEL CATALO", res)
 		if (res.success) {
 		} 
 	})
@@ -395,9 +394,7 @@ function AlertSendDataUser() {
 		    })
 		    .then(res => res.json())
 		    .then(res => {
-		    	console.log("RESS",res)
 		        if (res.success) {
-		           console.log("RESPUESTA SUCSSS", res)
 		        } 
 		    });
 

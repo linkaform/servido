@@ -14,7 +14,7 @@
 <body>
 	<navbar-component> </navbar-component>
 	<!-- Information Plant-->
-	<section class="mainSection mainSectionMargins mb-3">
+	<section class="mainSection mainSectionMargins mb-3" id="mainSection1" style="display:none">
 
 		<div class="accordion" id="accordionExample">
           <div class="accordion-item">
@@ -83,7 +83,7 @@
 	</section>
 
 	<!-- Filter User-->
-	<section class="d-flex justify-content-center mainSectionMargins">
+	<section class="d-flex justify-content-center mainSectionMargins" id="mainSection2" style="display:none">
 			<div>
 				<div class="input-group" role="group">
 					<input type="text" class="form-control  input-search-portal " placeholder="Codigo User" value="" id="inputCodeUser" onchange="buscarPaseEntrada();return false;">
@@ -108,7 +108,7 @@
 	</section>	
 
 	<!-- Information User-->
-	<section class="section-data mainSectionMargins">
+	<section class="section-data mainSectionMargins" id="mainSection3" style="display:none">
 		<div class="row ">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 ">
 				<div class="row  div-container-portal me-1 pt-0 customShadow">
@@ -131,7 +131,8 @@
 									<span class="text-success" id="textIn">Entrada</span>
 								</h3>
 							</div>
-						</div>
+						
+						<p><span className='h4'><b>Ubicación:</b></span>&nbsp;&nbsp; <span id="ubicacion"></span></p></div>
 						<p><span className='h4'><b>Contratista:</b></span>&nbsp;&nbsp; <span id="contratista"></span></p>
 						<p><span className='h4'><b>Vigencia:</b></span>&nbsp;&nbsp; <span id="validity"></span></p>
 						<p><span className='h4'><b>Status:</b></span>&nbsp;&nbsp; <span id="status"></span></p>
@@ -174,7 +175,7 @@
 	</section>
 
 	<!-- Table User-->
-	<section class="section-data mainSectionMargins">
+	<section class="section-data mainSectionMargins" id="mainSection4" style="display:none">
 		<div class="row p-2">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
 				<div class="div-containerTable-portal div-container-table p-2 customShadow">

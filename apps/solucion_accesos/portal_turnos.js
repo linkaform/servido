@@ -126,7 +126,6 @@ function getAllData(){
 
             },
         };
-        console.log("reemplazar en front")
     });
 
 }
@@ -147,13 +146,11 @@ function getGuardLocationListGuardsNotes(){
     })
     .then(res => res.json())
     .then(res => {
-        console.log("res", res.response)
         if (res.success) {
             let { booth, location, folio, status} = res.response.data
             if(booth || location|| folio||  status){
                 caseta=booth;
                 ubicacion=location;
-                console.log("LOCATION INFO", res.response.data)
                 $("#textUbicacion").text();
                 $("#textCuidad").text('')
                 $("#textEstado").text('')
@@ -171,7 +168,6 @@ function getGuardLocationListGuardsNotes(){
                 $("#textUbicacion").text("Caseta 1")
                 $("#textCaseta").text('Monterrey')
                 if(!getCookie('userTurn')){
-                    console.log('sedfw')
                     setCookie("userTurn", 'turno_abierto' , 7);
                 }
                 changeStatusTurn(false)
@@ -197,7 +193,6 @@ function getGuardLocationListGuardsNotes(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            console.log("RESPUESTA EN GFUARDIAS DE APOYOI",res.response.data)
             if(res.response.data.length > 0){
                 for(guardia of res.response.data){
                     dataTableGuardiasApoyo.push({name: guardia.name_guard, status: "Disponible", image: guardia.img_url})
@@ -237,7 +232,6 @@ function getGuardLocationListGuardsNotes(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            console.log("NOTES GUARDS", res.response.data)
              for(nota of res.response.data){
                 dataTableNotas.push({name: nota.catalogo_guardia_nombre, note: nota.notas_nota, check: "red", view:"14/04/1984", edit:""})
                 
@@ -315,7 +309,6 @@ function AlertForzarCierre(name){
       heightAuto:false,
     }).then((result) => {
       if (result.value) {
-        console.log("VALOR FORZAR CIERRE", result.value)
          //changeStatusTurn(true);
       }
     });
@@ -401,7 +394,6 @@ function changeStatusTurn(buttonClick){
 }
 
 function eliminarGuardia(folio, name){
-    console.log("helo");
     Swal.fire({
       title: "Check out",
       text:"¿Seguro que quieres realizar el check out al guardia de apoyo "+name+" ?",
@@ -418,11 +410,9 @@ function eliminarGuardia(folio, name){
         let divEliminar2 = document.getElementById("inf2"+folio);
         divEliminar.parentNode.removeChild(divEliminar);
         divEliminar2.parentNode.removeChild(divEliminar2);
-        console.log(tables, "a,jsnda")
         if (tables["tableGuardiasApoyo"]) {
             tables["tableGuardiasApoyo"].redraw(); // Ejemplo de cómo usar la instancia de la primera tabla
         }
-        console.log("DIV A ELIMINAR", divEliminar);
         Swal.fire({
           title: "Check out!",
           text: "Se ha realizado el checko out correctamente.",
@@ -449,7 +439,6 @@ function cerrarNotaAlert(name, note, folio){
       cancelButtonText: "Cancelar"
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log("cerrar nota con el folio:" , folio)
       }
     });
 }
@@ -482,7 +471,6 @@ function verNotasAlert(name, note){
 
 //-----TABLES
 function drawTableNotas(id, columnsData, tableData, height){
-    console.log("sadfsa")
   var  table = new Tabulator("#" + id, {
     layout:"fitDataStretch",
     height:height,

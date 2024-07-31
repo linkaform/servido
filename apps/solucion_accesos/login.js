@@ -5,7 +5,6 @@ window.onload = function(){
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
 	if(user !='' && jw!=''){
-		console.log('Entra')
 		let protocol = window.location.protocol;
 		let host = window.location.host;
 		let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
@@ -65,7 +64,7 @@ function get_login(){
 				setCookie("userParentId", userParentId,7);
 				setCookie("userEmail", userEmail,7);
 				setCookie("userPosition", userPosition,7);
-				setCookie("userImg", userImg,7);
+				console.log("userPosition",userPosition)
 				localStorage.setItem("imagenURL", userImg);
 
 				setCookie("lkfLogo", res.user.company_logo.picture, 7)

@@ -27,7 +27,6 @@ window.onload = function(){
         reloadTableArticulosCon(response.response.data, selectCaseta.value)
         let response2 = await fetchOnChangeCaseta('articulos_perdidos.py', 'get_articles', selectCaseta.value, selectLocation.value)
         reloadTableArticulosPer(response2.response.data)
-        console.log("RESULTADOS", selectCaseta.value, selectLocation.value)
     };
 	setSpinner(true, 'divSpinner');
 	
@@ -66,7 +65,6 @@ function reloadTableArticulosCon(data,caseta){
                 if(articulo.hasOwnProperty('fecha_devolucion_concesion')){
                     dateFormat2= articulo.fecha_devolucion_concesion.slice(0,-3)
                 }
-                console.log(articulo.caseta_concesion , caseta)
                 if(articulo.caseta_concesion == caseta){
                     dataTableArticles.push({folio:articulo.folio,ubicacion_concesion:articulo.ubicacion_concesion||"",
                     equipo_concesion:articulo.equipo_concesion||"", fecha_concesion:dateFormat||"",caseta_concesion:articulo.caseta_concesion||"",
@@ -79,7 +77,6 @@ function reloadTableArticulosCon(data,caseta){
             dataTableArticles = []
         }
         if(tables['tableArticles']){
-            console.log("CONSESIO",dataTableArticles)
             tables['tableArticles'].setData(dataTableArticles)
         }else{
             drawTable('tableArticles', columsDataArticles, dataTableArticles);
@@ -110,10 +107,8 @@ function reloadTableArticulosPer(data){
             dataTableArticlesLose = []
         }
         if(tables['tableArticlesLose']){
-            console.log("act")
             tables['tableArticlesLose'].setData(dataTableArticlesLose)
         }else{
-            console.log("crear")
             drawTable('tableArticlesLose',  columsDataArticlesLose, dataTableArticlesLose);
         }
         $("#buttonEliminarArticulosCon").on("click", function() {

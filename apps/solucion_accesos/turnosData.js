@@ -110,7 +110,7 @@ const columsDataGuardiasApoyo = [
             let id = cell.getData().id ? cell.getData().id : 0;
             let divActions = '<div class="row d-flex justify-content-center" id="inf2'+data.id +'">';
             divActions += `<input class="form-check-input customInputCheckout" type="checkbox" id="inp-${id}" onclick="selectCheckboxGuardia(${data.id})" value=${data.id}  style="border-color:darkgray">`;
-            divActions += `<button class="btn-table-bitacora mt-3 customButtonCheckout" id="btn-${id}" onclick="eliminarGuardia(${id}, '${data.name}')" > <i class="fa solid fa-door-open"></i> </button>`;
+            divActions += `<button class="btn-table-bitacora mt-3 customButtonCheckout" id="btn-${id}" onclick="checkoutGuardiaApoyo(${id}, '${data.name}')" > <i class="fa solid fa-door-open"></i> </button>`;
             divActions += '</div>';
             return divActions;
         },

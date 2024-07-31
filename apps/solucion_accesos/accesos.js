@@ -17,6 +17,7 @@ let selectedVehiculos=[]
 let fullData=""
 let selectLocation= ""
 let selectCaseta =""
+let codeUser =""
 window.onload = function(){
     setValueUserLocation('accesos');
     changeButtonColor();
@@ -52,6 +53,8 @@ window.onload = function(){
     }
     customNavbar(getValueUserLocation(), getCookie('userTurn'));
     getCatalogs()
+    $("#mainSection1").show()
+
 }
 
 //FUNCION Obtener data inicial informacion de la caseta
@@ -180,7 +183,7 @@ function agregaEquipo(){
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
 function buscarPaseEntrada() {
-    let codeUser  = $("#inputCodeUser").val();
+    codeUser = $("#inputCodeUser").val();
     if(codeUser ==""){
         successMsg("Validación", "Escribe un codigo para continuar", "warning")
     }else{
@@ -211,7 +214,7 @@ function buscarPaseEntrada() {
                 setHideElements('buttonsModal');
                 $("#divSpinner").hide();
                 setHideElements('dataShow');
-                //$("#inputCodeUser").val("")
+                $("#inputCodeUser").val("")
             }else{
                 errorAlert(res)
                 setCleanData();
@@ -260,7 +263,7 @@ function registrarIngreso(){
                 Swal.showLoading();
            }
         });
-        let codeUser  = $("#inputCodeUser").val();
+        //let codeUser  = $("#inputCodeUser").val();
         $("#buttonIn").hide();
         $("#buttonOut").hide();
         
@@ -337,7 +340,8 @@ function registrarSalida(){
             Swal.showLoading();
        }
     });
-    let codeUser  = $("#inputCodeUser").val();
+    
+    //let codeUser  = $("#inputCodeUser").val();
    
     fetch(url + urlScripts, {
         method: 'POST',
@@ -503,13 +507,15 @@ function optionCheckOtro(){
 function dataUserInf(dataUser){
     let imgUser ="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1"
     if(dataUser.portador.hasOwnProperty('foto')){
-        imgUser =  dataUser.portador.foto[0].file_url !== '' ? dataUser.portador.foto[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
+        imgUser =  dataUser.portador.foto[0].file_url !== '' ? 
+        dataUser.portador.foto[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
     }
     $('#imgUser').attr('src', imgUser);
 
     let imgCard="https://www.creativefabrica.com/wp-content/uploads/2018/12/Id-card-icon-by-rudezstudio-5-580x386.jpg"
-    if(dataUser.portador.hasOwnProperty('identificacion_pase')){
-        imgCard= dataUser.portador.identificacion_pase[0].file_url !==  '' ? dataUser.portador.identificacion_pase[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg';
+    if(dataUser.portador.hasOwnProperty('identificacion')){
+        imgCard= dataUser.portador.identificacion[0].file_url !==  '' ? 
+        dataUser.portador.identificacion[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg';
     }
     $('#imgCard').attr('src', imgCard); 
 
@@ -517,8 +523,8 @@ function dataUserInf(dataUser){
     if(dataUser.portador.hasOwnProperty("nombre_visita")){
         nameUser=dataUser.portador.nombre_visita !==  '' ? dataUser.portador.nombre_visita: '';
     }
-    $('#nameUserInf').text(nameUser); 
-
+    $('#nameUserInf').text(nameUser);
+    $("#ubicacion").text(dataUser.portador.ubicacion)
     /*let rfc=""
     if(dataUser.portador.hasOwnProperty('rfc')){
         rfc=dataUser.portador.rfc[0]
@@ -1117,7 +1123,6 @@ function agregarEquipoAModal(){
 
 //FUNCION para saber que vehiculos estan con checkbox
 function getSaveCar(){
-    console.log("GUARDAR VEHICULO")
     let dicData = {};
     let validation = false;
     let tipoVehiculo= $('#selectTipoVehiculo-123').val();
