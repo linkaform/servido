@@ -264,17 +264,13 @@ function getAllData(){
                         $("#idButtonGuardiasApoyo").prop('disabled', true);    
                     }
                     guardiasApoyoValidateOptions()
-                    //
-
                 }
             }
         } else{
-            //errorAlert(res)
             drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,[], "420px");
             drawTableNotas('tableNotas',columsDataNotas, [] ,"180px");
             errorLoginTurnos(res)
         }
-        Swal.close()
     });
 }
 
@@ -303,7 +299,7 @@ function loadBooths(){
                  if(userBooths.length>0){
                     for(let booth of userBooths){
                         if(booth.status == casetaDisponible){
-                            dataTableCambiarCaseta.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, textEstado: booth.address, city:booth.city})
+                            dataTableCambiarCaseta.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, address: booth.address, city:booth.city})
                             arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, address: booth.address, city:booth.city})
                         }
                     }
@@ -315,7 +311,6 @@ function loadBooths(){
                 $('#cambiarCasetaModal').modal('show');
                 $("#buttonCambiarCaseta").show();
                 $("#loadingButtonCaseta").hide();
-                
             }
         }else{
             errorAlert(res)
@@ -335,7 +330,8 @@ function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
     if(guard.hasOwnProperty('position')){
         pos= guard.position!== null && guard.position!== undefined && guard.position!=="" ? guard.position:"";
     }else if(guard.hasOwnProperty('checkin_position')){
-        pos= guard.checkin_position!== null && guard.checkin_position!== undefined && guard.checkin_position!=="" ? guard.checkin_position :"";
+        pos= guard.checkin_position!== null && guard.checkin_position!== undefined && guard.checkin_position!=="" ? guard.checkin_position :""; 
+        pos= formatText(pos)
     }
     $("#textPosition").text(pos)
 
@@ -386,7 +382,7 @@ function setAddArchivo(){
     let randomID = Date.now();
     let newItem=`
         <div class="mb-3 col-12 archivo-div div-archivo-`+randomID+`">
-            <label class="form-label">Cargar un archivo *</label>
+            <label class="form-label">Cargar un archivo </label>
             <input type="file" class="form-control-file" id="fileInputArchivo">
             <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
                 <i class="fa-solid fa-plus"></i>
@@ -418,7 +414,7 @@ function setAddFoto(){
     let randomID = Date.now();
     let newItem=`
         <div class="mb-3 col-12 foto-div div-foto-`+randomID+`">
-            <label class="form-label">Fotografia *</label>
+            <label class="form-label">Fotografia </label>
             <input type="file" class="form-control-file" id="fileInputFotografia">
             <div class="col-3">
             <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
@@ -810,45 +806,38 @@ function verNotasAlert(folio){
     for(let com in comments){
         if(com .hasOwnProperty(['6647fb38da07bf430e273ea2'])){
             commentsItem+=`
-            <div class='m-2 '> 
-                <span style='font-size: .8em;'>`+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span> 
-            </div>`;
+            <tr> <td> <span > `+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span > </td> </tr>`;
         }else{
+            console.log("COEMTNARIOS",selectedNota.note_comments[com], com)
             commentsItem+=`
-            <div class='m-2 '> 
-                <span style='font-size: .8em;'>`+selectedNota.note_comments[com]+`</span> 
-            </div>`;
+           <tr> <td> <span > `+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span > </td> </tr>`;
         }
     }
     let htmlComments = comments.length>0 ? `
         <h6>Comentarios</h6>
-        <div class='d-flex  flex-column '>
+        <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
             `+commentsItem+` 
-        </div>`: "";
+        </table>`: "";
 
     for(let pic of selectedNota.note_pic){
         fotosItem+=`
-        <div class='m-2'> 
-            <img src="`+pic.file_url+`" height="145px"style="object-fit: contain;"></td> </tr> 
-        </div>`;
+        <div> <img src="`+pic.file_url+`" height="145px"style="object-fit: contain;"></div>`;
     }
     let htmlFotos=selectedNota.note_pic.length>0 ? `
         <h6>Fotografias</h6>
-        <div class='d-flex  flex-row'>
+        <div class="d-flex">
             `+fotosItem+`
         </div>`:"";
 
     for(let file of selectedNota.note_file){
         archivosItem+=`
-        <div><a href=`+file.file_url+` target="_blank">`+file.file_name+`</a>
-        </div>
-        `;
+        <tr> <td> <a href=`+file.file_url+` target="_blank">`+file.file_name+`</td> </tr>`;
     }
     let htmlArchivos=selectedNota.note_file.length>0 ? `
         <h6>Archivos</h6>
-        <div class='d-flex flex-column'>
+        <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
             `+archivosItem+`
-        </div> <br>`: "";
+        </table> <br>`: "";
 
     Swal.fire({
         title: "Nota",
@@ -965,6 +954,7 @@ function enviarNota(){
             arraySuccessArchivo.push({file_name: file_name, file_url: file});
         }
     }
+    console.log("getCookie('userName')",getCookie('userName'))
     let data_notes={
         'note_status': statusAbierto,
         'note':nota,
@@ -981,7 +971,9 @@ function enviarNota(){
             body: JSON.stringify({
                 script_name:"notes.py",
                 option:"new_notes",
-                data_notes:data_notes
+                data_notes:data_notes,
+                location: getCookie('userLocation'),
+                area: getCookie('userCaseta')
             }),
             headers:{
                'Content-Type': 'application/json',
@@ -1153,9 +1145,9 @@ function cambiarCaseta(selectedRow){
     setCookie('userLocation', selectedRow.ubi)
     setCookie('userCasetaStatus', selectedRow.status)
     setCookie('userCasetaGuard', selectedRow.guard)
+    $("#textDireccion").text(selectedRow.address)
     $("#textUbicacion").text(getCookie('userLocation'));
     $("#textCaseta").text(getCookie('userCaseta'));
-    console.log("QUE TIENEEEE",selectedRow)
     if(selectedRow.hasOwnProperty('state')){
         if(selectedRow.state !==undefined && selectedRow.state!== null && selectedRow.state!== ""){
               $("#textEstado").text(selectedRow.state? selectedRow.address: '');
@@ -1164,13 +1156,13 @@ function cambiarCaseta(selectedRow){
 
     if(selectedRow.hasOwnProperty('address')){
         if(selectedRow.address !==undefined && selectedRow.address!== null && selectedRow.address!== ""){
-            $("#textDireccion").text(selectedRow.address[0]? selectedRow.address[0]: '');
+            $("#textDireccion").text(selectedRow.address? selectedRow.address: '');
         }else {$("#textDireccion").text("") }
     }
 
     if(selectedRow.hasOwnProperty('city')){
         if(selectedRow.city !==undefined && selectedRow.city!== null && selectedRow.city!== ""){
-            $("#textCuidad").text(selectedRow.city[0]? selectedRow.city[0]: '')
+            $("#textCuidad").text(selectedRow.city? selectedRow.city: '')
         }else {$("#textCuidad").text("") }
     }
 
@@ -1448,10 +1440,8 @@ function guardiasApoyoValidateOptions(){
     if (getCookie('userTurn') == userTurnCerrado){
 
         if(idGuardiasEnTurno.length==0){
-            console.log("HOLAAA",getCookie('userTurn'),dataTableGuardiasApoyo )
             $(document).ready(function() {
                 for(obj of dataTableGuardiasApoyo){
-                     console.log("HOLAAA",$("#inp-"+obj.id),obj )
                     $("#inp-"+obj.id).show();
                     $("#btn-"+obj.id).hide();
                 }
@@ -1466,7 +1456,6 @@ function guardiasApoyoValidateOptions(){
             }
         }
     }else if(getCookie('userTurn') == userTurnAbierto){
-        console.log("HOLAAA",getCookie('userTurn'),idGuardiasEnTurno )
         $(document).ready(function() {
             for (g of idGuardiasEnTurno){
                 if(g.includes("inp-")){  
@@ -1489,7 +1478,7 @@ function setAddComentario(){
     let newItem=`
         <div class="d-flex mb-3 div-comment-`+randomID+`" id="div-comment-`+randomID+`">
             <div class="flex-grow-1">
-                <label class="form-label">Comentario *</label>
+                <label class="form-label">Comentario </label>
                 <textarea class="form-control comment-div" id="inputComentarioNota-`+randomID+`"" rows="3" placeholder="Escribe algo..."></textarea>
             </div>
             <div>

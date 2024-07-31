@@ -433,7 +433,6 @@ function alertEliminar(folio, type){
                         }else{
                             let dataFiltered = dataTableIncidencias.filter(x => x.folio !== folio);
                             dataTableIncidencias = dataFiltered
-                            console.log(dataFiltered)
                             tables["tableIncidencias"].setData(dataTableIncidencias);
                         }
                     }
@@ -653,7 +652,6 @@ function editarIncidencia(){
             validateObj.date_incidence=formatValue[0]+' '+formatValue[1]+':00'
         }
         //validateObj.ubicacion_incidence=233
-        console.log("ESTA ES LA FECHA",validateObj)
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -675,7 +673,6 @@ function editarIncidencia(){
                 if(data.status_code==400){
                     let errores=[]
                     for(let err in data.json){
-                        console.log("ERORREEE",err)
                         errores.push(data.json[err].label+': '+data.json[err].msg)
                     }
                     Swal.fire({
@@ -846,7 +843,6 @@ function nuevaIncidencia(){
             type: "warning"
         });
     } else {
-        console.log("data_incidence",data_incidence)
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -869,7 +865,6 @@ function nuevaIncidencia(){
                     for(let err in data.json){
                         errores.push(data.json[err].label+': '+data.json[err].msg)
                     }
-                    console.log(res.response.data.json.msg)
                     Swal.fire({
                         title: "Error",
                         text: errores.flat(),
@@ -937,7 +932,6 @@ function nuevaFalla(){
     let date2 = partes2[0]+' '+partes2[1]
     data_failure.falla_fecha_solucion= date2
 
-    console.log(validarObjeto(data_failure), data)
     if(!validarObjeto(data_failure)){
         Swal.fire({
             title: "Validación",
@@ -960,7 +954,6 @@ function nuevaFalla(){
         })
         .then(res => res.json())
         .then(res => {
-            console.log("RESPUESTA PURA", res)
             if (res.success) {
                 let data=res.response.data
                 if(data.status_code==400){
@@ -968,7 +961,6 @@ function nuevaFalla(){
                     for(let err in data.json){
                         errores.push(data.json[err].label+': '+data.json[err].msg)
                     }
-                    console.log(res.response.data.json.msg)
                     Swal.fire({
                         title: "Error",
                         text: errores.flat(),

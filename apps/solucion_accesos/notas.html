@@ -221,24 +221,24 @@
                     <div class="row">
                         <div class="mb-3 col-12">
                             <label class="form-label">Nota *</label>
-                              <textarea class="form-control editNota" id="notaEditNota" id="notaEditNota" rows="3" placeholder="Escribe algo..."></textarea>
+                              <textarea class="form-control editNota" id="notaEditNota" rows="3" placeholder="Escribe algo..."></textarea>
                         </div>
-                        <!--
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Estatus *</label>
-                            <select class="form-select editNota" aria-label="Default select example" id="idEditNotaSelect">
-                                <option value="cerrado">Cerrado</option>
-                                <option value="abierto">Abierto</option>
-                            </select>
+                        <div>
+                            <h6> Archivos Cargados </h6>
+                            <div class="cargarArchivosEditNota">
+                                
+                            </div>
                         </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Fecha y hora de creación: *</label>
-                            <input type="datetime-local" class="form-control editNota" id="fechaHoraEditNota">
-                        </div> -->
+                        <div>
+                            <h6> Fotografías Cargadas </h6>
+                            <div class="cargarFotosEditNota">
+                                
+                            </div>
+                        </div>
                          <div id="archivo-input-form">
                             <div class="mb-3 col-12 archivo-div div-archivo-123">
                                  <div class="flex-grow-1">
-                                    <label class="form-label">Cargar un archivo *</label>
+                                    <label class="form-label">Cargar un archivo </label>
                                     <input type="file" class="form-control-file" id="fileInputArchivo">
                                 </div>
                                 <div>
@@ -254,7 +254,7 @@
                        <div id="foto-input-form">
                             <div class="mb-3 col-12 foto-div div-foto-123">
                                 <div class="flex-grow-1">
-                                    <label class="form-label">Fotografia *</label>
+                                    <label class="form-label">Fotografia </label>
                                     <input type="file" class="form-control-file " id="fileInputFotografia">
                                 </div>
                                 <div>
@@ -267,10 +267,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div>
+                            <h6> Comentarios Cargados </h6>
+                            <div class="cargarComentariosEditNota">
+                                
+                            </div>
+                        </div>
                         <div id="comment-input-form">
                             <div class="d-flex mb-3 div-comment-123 " id="id-comment-div-123">
                                 <div class="flex-grow-1">
-                                    <label class="form-label">Comentario *</label>
+                                    <label class="form-label">Comentario </label>
                                     <textarea class="form-control comment-nota" id="comentarioEditNota" rows="3" placeholder="Escribe algo..."></textarea>
                                 </div>
                                 <div>
@@ -278,7 +284,8 @@
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
                                     <button type="button" class="btn btn-danger button-delete-register "  onclick="setDeleteComentario(123);return false;">
-                                        <i class="fa-solid fa-minus"></i></button>
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>

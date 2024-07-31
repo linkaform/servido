@@ -55,7 +55,6 @@ function reloadTableNotas(data){
             dataTableListNotas = []
         }
         if(tables["tableListNotas"]){
-            console.log("no hay notas")
             tables["tableListNotas"].setData(dataTableListNotas);
         }else{
             drawTableNotas('tableListNotas',columnsTableListNotas, dataTableListNotas );
@@ -169,12 +168,67 @@ function editarNotaCargarInfo(folio){
     }else{
         successMsg("Validación","No se encontro el folio", "warning")
     }
-    console.log("NOTA SELECIONADA",selectedNota)
-    $('#notaEditNota').modal('show');
-    //$("#fechaHoraEditNota").val(selectedNota.note_status)
-    $("#comentarioEditNota").val(selectedNota.no)
+    $('#editarNotasModal').modal('show');
+    let cargarFotosEditNota = document.querySelector('.cargarFotosEditNota')
+    let cargarArchivosEditNota = document.querySelector('.cargarArchivosEditNota')
+    let cargarComentariosEditNota = document.querySelector('.cargarComentariosEditNota')
+    $("#notaEditNota").val(selectedNota.note)
+
+    let archivos=""
+    if(selectedNota.note_file.length>0){
+        for(archivo of selectedNota.note_file){
+            console.log("COMENTARIOSSS randomID",randomID)
+            archivos+= `
+            <div class="d-flex align-items-start">
+                <a href=`+archivo.file_url+` target="_blank">
+                <span>`+archivo.file_name+`</span></a>
+                <button type="button" class="btn-close m-2 mt-0" aria-label="Close" onClick=deleteArchivoCargado(`+randomID+`)></button>
+            </div>`;
+        }
+    }
+    let fotos=""
+    if(selectedNota.note_pic.length>0){
+        for(pic of selectedNota.note_pic){
+            console.log("COMENTARIOSSS randomID",randomID)
+            fotos+= `
+            <div class="d-flex align-items-start">
+                <img src="`+pic.file_url+`" height="130px"style="object-fit: contain;">
+                <button type="button" class="btn-close m-2 mt-0" aria-label="Close" onClick=deleteFotoCargado(`+randomID+`)></button>
+            </div>`;
+        }
+    }
+    let comentarios=""
+    if(selectedNota.note_comments.length>0){
+        for(comm of selectedNota.note_comments){
+            let randomID = uniqueID()
+            console.log("COMENTARIOSSS randomID",randomID)
+            comentarios+= `
+            <div class="d-flex align-items-start" id=`+randomID+`>
+                <span>`+comm['6647fb38da07bf430e273ea2']+`</span>
+                <button type="button" class="btn-close m-2 mt-0" aria-label="Close" onClick=deleteComentarioCargado(`+randomID+`)></button>
+            </div>`;
+        }
+    }
+    cargarArchivosEditNota.innerHTML = `<div class="d-flex">`+ fotos +` </div> <hr>`
+    cargarFotosEditNota.innerHTML = `<div class="d-flex">`+ archivos +` </div> <hr>`
+    cargarComentariosEditNota.innerHTML = ` <hr><div class="d-flex">`+ comentarios +` </div> <hr>`
 }
 
+
+function deleteArchivoCargado(folio){
+    let selectedNota = dataTableListNotas.find(x => x.folio == folio);
+    let objArchivo=""
+}
+function deleteFotoCargado(folio){
+    let selectedNota = dataTableListNotas.find(x => x.folio == folio);
+    let objFoto= ""
+    
+}
+function deleteComentarioCargado(folio){
+    let selectedNota = dataTableListNotas.find(x => x.folio == folio);
+    let objComentario= ""
+    
+}
 
 //FUNCION para mostrar alert para cerrar un nota en caso que tenga esta abierto
 function cerrarNotaAlert(name, note, folio, status){
@@ -292,40 +346,42 @@ function verNotasAlert(folio){
     let archivosItem=``;
     let commentsItem=``;
 
-    for(let com in selectedNota.note_comments){
-        commentsItem+=`
-        <div class='m-2 '> 
-            <span style='font-size: .8em;'>`+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span> 
-        </div>`;
+    let comments = selectedNota.note_comments.filter(objeto => !tienePropiedadesVacias(objeto));
+    for(let com in comments){
+        if(com .hasOwnProperty(['6647fb38da07bf430e273ea2'])){
+            commentsItem+=`
+            <tr> <td> <span > `+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span > </td> </tr>`;
+        }else{
+            commentsItem+=`
+           <tr> <td> <span > `+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span > </td> </tr>`;
+        }
     }
-    let htmlComments=`
+    let htmlComments = comments.length>0 ? `
         <h6>Comentarios</h6>
-        <div class='d-flex  flex-column '>
+        <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
             `+commentsItem+` 
-        </div>`;
+        </table>`: "";
 
     for(let pic of selectedNota.note_pic){
         fotosItem+=`
-        <div class='m-2'> 
-            <img src="`+pic.file_url+`" height="145px"style="object-fit: contain;"></td> </tr> 
-        </div>`;
+        <div> <img src="`+pic.file_url+`" height="145px"style="object-fit: contain;"></div>`;
     }
-    let htmlFotos=`
+    let htmlFotos=selectedNota.note_pic.length>0 ? `
         <h6>Fotografias</h6>
-        <div class='d-flex  flex-row'>
+        <div>
             `+fotosItem+`
-        </div>`;
+        </div>`:"";
+
     for(let file of selectedNota.note_file){
         archivosItem+=`
-        <div><a href=`+file.file_url+` target="_blank">`+file.file_name+`</a>
-        </div>
-        `;
+        <tr> <td> <a href=`+file.file_url+` target="_blank">`+file.file_name+`</td> </tr>`;
     }
-    let htmlArchivos=`
+    let htmlArchivos=selectedNota.note_file.length>0 ? `
         <h6>Archivos</h6>
-        <div class='d-flex flex-column'>
+        <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
             `+archivosItem+`
-        </div>`;
+        </table> <br>`: "";
+
     Swal.fire({
         title: "Nota",
         text: "Escoje una caseta para continuar...",
@@ -353,13 +409,12 @@ function verNotasAlert(folio){
     });
 } 
 
-
 function setAddComentario(){
-     let randomID = Date.now();
+    let randomID = Date.now();
     let newItem=`
         <div class="d-flex mb-3 div-comment-`+randomID+`" id="div-comment-`+randomID+`">
             <div class="flex-grow-1">
-                <label class="form-label">Comentario *</label>
+                <label class="form-label">Comentario </label>
                 <textarea class="form-control comment-div" id="inputComentarioNota-`+randomID+`"" rows="3" placeholder="Escribe algo..."></textarea>
             </div>
             <div>
@@ -392,7 +447,7 @@ function setAddArchivo(){
     let newItem=`
         <div class="d-flex mb-3 col-12  div-archivo-`+randomID+`" id="id-archivo-div-`+randomID+`">
             <div class="flex-grow-1">
-                <label class="form-label">Cargar un archivo *</label>
+                <label class="form-label">Cargar un archivo </label>
                 <input type="file" class="form-control-file archivo-div" onchange="guardarArchivos('fileInputArchivo-`+randomID+`', false);" id="fileInputArchivo-`+randomID+`">
             </div>
             <div>
@@ -428,7 +483,7 @@ function setAddFoto(){
     let newItem=`
         <div class="d-flex mb-3 col-12  div-foto-`+randomID+`" id="id-foto-div-`+randomID+`">
             <div class="flex-grow-1">
-                <label class="form-label">Fotografia *</label>
+                <label class="form-label">Fotografia </label>
                 <input type="file" class="form-control-file foto-div" onchange="guardarArchivos('fileInputFotografia-`+randomID+`', true);" id="fileInputFotografia-`+randomID+`">
                 
             </div>
@@ -547,7 +602,9 @@ function enviarNota(){
             body: JSON.stringify({
                 script_name:"notes.py",
                 option:"new_notes",
-                data_notes:data_notes
+                data_notes:data_notes,
+                location: selectLocation.value,
+                area: selectCaseta.value,
             }),
             headers:{
                'Content-Type': 'application/json',

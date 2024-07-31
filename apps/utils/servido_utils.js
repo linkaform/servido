@@ -495,7 +495,7 @@ function errorAlert(data, title = "Error"){
     }
 }
 
-function errorLoginTurnos(data, type="warning"){
+function errorLoginTurnos(data, type="warning", fn= ()=>{}){
     if (data.hasOwnProperty("error")){
         let error= data.error
         if(error.hasOwnProperty('msg')){
@@ -505,26 +505,42 @@ function errorLoginTurnos(data, type="warning"){
                 type: error.msg.type,
                 allowOutsideClick: false,
                 showDenyButton: true,
-                showCancelButton: false,
+                showCancelButton: true,
+                cancelButtonColor: colors[0],
+                confirmButtonColor: colors[1],
                 confirmButtonText: "Salir",
+                cancelButtonText: "Intentar de nuevo",
+                reverseButtons: true,
+                heightAuto:false,
             }).then((result) => {
                 if (result.value) {
                     setCloseSession()
+                }else{
+                    fn()
+                    location.reload()
                 }
             });
         }else{
             Swal.fire({
                 title: 'Ocurrio un error...',
                 text: error,
-                allowOutsideClick: false,
                 type: type,
+                allowOutsideClick: false,
                 showDenyButton: true,
-                showCancelButton: false,
+                showCancelButton: true,
+                cancelButtonColor: colors[0],
+                confirmButtonColor: colors[1],
                 confirmButtonText: "Salir",
+                cancelButtonText: "Intentar de nuevo",
+                reverseButtons: true,
+                heightAuto:false,
             }).then((result) => {
                 console.log(result)
                 if (result.value) {
                     setCloseSession()
+                }else{
+                    fn()
+                    location.reload()
                 }
             });
         }
@@ -532,15 +548,23 @@ function errorLoginTurnos(data, type="warning"){
         Swal.fire({
             title: 'Ocurrio un error...',
             text: data,
-            allowOutsideClick: false,
             type: type,
+            allowOutsideClick: false,
             showDenyButton: true,
-                showCancelButton: false,
-                confirmButtonText: "Salir",
+            showCancelButton: true,
+            cancelButtonColor: colors[0],
+            confirmButtonColor: colors[1],
+            confirmButtonText: "Salir",
+            cancelButtonText: "Intentar de nuevo",
+            reverseButtons: true,
+            heightAuto:false,
         }).then((result) => {
             console.log(result)
             if (result.value) {
                 setCloseSession()
+            }else{
+                fn()
+                location.reload()
             }
         });
     }
@@ -580,6 +604,17 @@ function tienePropiedadesVacias(objeto) {
     return false; // Retorna false si no encuentra ninguna propiedad vacía
 }
 
+function formatText(text) {
+    let replacedText = text.replace(/_/g, ' ');
+    let formattedText = replacedText.charAt(0).toUpperCase() + replacedText.slice(1).toLowerCase();
+    return formattedText;
+}
+
+function uniqueID(){
+    const timestamp = Date.now(); // Obtiene el timestamp actual en milisegundos
+    const randomPart = Math.floor(Math.random() * 1000000); // Genera un número aleatorio entre 0 y 999999
+    return `${timestamp}-${randomPart}`; // Combina ambos para formar el ID
+}
 function setCloseSession(argument) {
     closeSession();
     redirectionUrl('login',false);
