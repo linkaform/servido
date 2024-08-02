@@ -18,6 +18,8 @@ let fullData=""
 let selectLocation= ""
 let selectCaseta =""
 let codeUser =""
+
+
 window.onload = function(){
     setValueUserLocation('accesos');
     changeButtonColor();
@@ -277,6 +279,7 @@ function registrarIngreso(){
         let selectedVe= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
         //let dataItem = {'listItemsData':listItemsData,'listNewItems':listNewItems}
         //let dataVehicule = {'listVehiculesData':listVehiculesData,'listNewVehicules':listNewVehicules}
+        console.log("QEUIPOS VEHICULOS",selectedVe,selectedEq )
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -818,7 +821,7 @@ function optionInformationUser(data){
         $("#buttonClean").show();
 
         //---Bitacora TABLA ULTIMOS ACCESOS
-
+        console.log()
         let listBitacora = ultimo_acceso.length > 0 ? ultimo_acceso: [];
         for (var i = 0; i < listBitacora.length; i++) {
             //if(i < 3){
@@ -1336,6 +1339,7 @@ function getCatalogs(){
     })
     .then(res => res.json())
     .then(res => {
+        console.log("GET CATALOGS RES", res)
         if (res.success) {
 
         } 

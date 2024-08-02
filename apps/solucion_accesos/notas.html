@@ -223,20 +223,14 @@
                             <label class="form-label">Nota *</label>
                               <textarea class="form-control editNota" id="notaEditNota" rows="3" placeholder="Escribe algo..."></textarea>
                         </div>
-                        <div>
-                            <h6> Archivos Cargados </h6>
-                            <div class="cargarArchivosEditNota">
-                                
-                            </div>
+                        <div id="cargarArchivosEditNotaDiv">
                         </div>
-                        <div>
-                            <h6> Fotografías Cargadas </h6>
-                            <div class="cargarFotosEditNota">
-                                
-                            </div>
+                        <div id="cargarFotosEditNotaDiv">
+                        </div>
+                        <div id="cargarComentariosEditNotaDiv">
                         </div>
                          <div id="archivo-input-form">
-                            <div class="mb-3 col-12 archivo-div div-archivo-123">
+                            <div class="d-flex  mb-3 col-12 archivo-div div-archivo-123">
                                  <div class="flex-grow-1">
                                     <label class="form-label">Cargar un archivo </label>
                                     <input type="file" class="form-control-file" id="fileInputArchivo">
@@ -252,7 +246,7 @@
                             </div>
                         </div>
                        <div id="foto-input-form">
-                            <div class="mb-3 col-12 foto-div div-foto-123">
+                            <div class="d-flex mb-3 col-12 foto-div div-foto-123">
                                 <div class="flex-grow-1">
                                     <label class="form-label">Fotografia </label>
                                     <input type="file" class="form-control-file " id="fileInputFotografia">
@@ -267,12 +261,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <h6> Comentarios Cargados </h6>
-                            <div class="cargarComentariosEditNota">
-                                
-                            </div>
-                        </div>
+                        
                         <div id="comment-input-form">
                             <div class="d-flex mb-3 div-comment-123 " id="id-comment-div-123">
                                 <div class="flex-grow-1">
@@ -294,7 +283,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success btn-sm" onclick="enviarNota()">Enviar</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="editarNota()">Editar</button>
                 </div>
             </div>
         </div>

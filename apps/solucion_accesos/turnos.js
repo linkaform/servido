@@ -74,19 +74,21 @@ function getNotes(){
                 dataTableNotas=[]
                 if(notas.length > 0){
                     for(let note of notas){
-                        let dateFormatOpen= note.note_open_date.slice(0,-3)
-                        let dateFormatClose=""
-                        if(note.hasOwnProperty('note_close_date')){
-                            dateFormatClose= note.note_close_date.slice(0,-3)
+                        if(note.note_status !==statusCerrado){
+                            let dateFormatOpen= note.note_open_date.slice(0,-3)
+                            let dateFormatClose=""
+                            if(note.hasOwnProperty('note_close_date')){
+                                dateFormatClose= note.note_close_date.slice(0,-3)
+                            }
+                            //FALTA EL COMENTARIOO CAMBIAR EL ID ESE POR LETRA
+                            dataTableNotas.push({folio:note.folio, note_status: note.note_status, created_by_name:note.created_by_name, 
+                                note_open_date: dateFormatOpen, 
+                                note_close_date:dateFormatClose,  note: note.note, 
+                                note_pic: note.hasOwnProperty('note_pic') && note.note_pic.length>0 ? note.note_pic  : [], 
+                                note_file: note.hasOwnProperty('note_file') &&note.note_file.length>0 ? note.note_file : [], 
+                                note_comments: note.hasOwnProperty('note_comments') && note.note_comments.length>0 ? note.note_comments: [], 
+                                check:"",view:"", edit:""})
                         }
-                        //FALTA EL COMENTARIOO CAMBIAR EL ID ESE POR LETRA
-                        dataTableNotas.push({folio:note.folio, note_status: note.note_status, note_guard:note.note_guard, 
-                            note_open_date: dateFormatOpen, 
-                            note_close_date:dateFormatClose,  note: note.note, 
-                            note_pic: note.hasOwnProperty('note_pic') && note.note_pic.length>0 ? note.note_pic  : [], 
-                            note_file: note.hasOwnProperty('note_file') &&note.note_file.length>0 ? note.note_file : [], 
-                            note_comments: note.hasOwnProperty('note_comments') && note.note_comments.length>0 ? note.note_comments: [], 
-                            check:"",view:"", edit:""})
                     }
                 }else{
                     dataTableNotas = []
@@ -223,7 +225,7 @@ function getAllData(){
                                     dateFormatClose= note.note_close_date.slice(0,-3)
                                 }
                                 //FALTA EL COMENTARIOO CAMBIAR EL ID ESE POR LETRA
-                                dataTableNotas.push({folio:note.folio, note_status: note.note_status, note_guard:note.note_guard, 
+                                dataTableNotas.push({folio:note.folio, note_status: note.note_status, created_by_name:note.created_by_name, 
                                     note_open_date: dateFormatOpen, 
                                     note_close_date:dateFormatClose,  note: note.note, 
                                     note_pic: note.hasOwnProperty('note_pic') && note.note_pic.length>0 ? note.note_pic  : [], 
@@ -559,7 +561,7 @@ function changeStatusTurn(buttonClick){
                         customNavbar(getValueUserLocation(), userTurnCerrado);
                         setCookie('userCasetaStatus',casetaDisponible,7)
                         setCookie('userTurn',turnoCerrado,7)
-                        turnoCerrado(idGuardiasEnTurno.length >0 ? idGuardiasEnTurno :[])
+                        //turnoCerrado(idGuardiasEnTurno.length >0 ? idGuardiasEnTurno :[])
 
                         Swal.fire({
                             title: "Success",
@@ -569,6 +571,7 @@ function changeStatusTurn(buttonClick){
                             timer:1200
                         });
                         location.reload()
+
                     }
                 } else{
                     errorAlert(res)
@@ -636,8 +639,6 @@ function changeStatusTurn(buttonClick){
         // INFO : aqui agregar fetch para cambiar el turno del guardia
         if(estatusActual==userTurnCerrado){
             turnoCerrado(idGuardiasEnTurno)
-            
-
         } 
         else {
             turnoAbierto(idGuardiasEnTurno)
@@ -845,7 +846,7 @@ function verNotasAlert(folio){
         html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
             <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
                 <tbody> 
-                    <tr> <td><b>Nombre:</b></td> <td> <span > `+ selectedNota.note_guard +`</span></td> </tr>
+                    <tr> <td><b>Nombre:</b></td> <td> <span > `+ selectedNota.created_by_name +`</span></td> </tr>
                     <tr> <td><b>Nota:</b></td> <td> <span > `+ selectedNota.note+`</span></td> </tr> 
                     <tr> <td><b>Estatus:</b></td> <td> <span > `+ selectedNota.note_status+`</span></td> </tr> 
                     <tr> <td><b>Fecha y hora de creacion:</b></td> <td> <span > `+ selectedNota.note_open_date.slice(0,-3)+` hrs</span></td> </tr>
@@ -1028,7 +1029,7 @@ function enviarNota(){
                             }
                         }
                         let note_open_date= convertDate(data.json.created_at, data.json.timezone)
-                        dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, note_guard:data_notes.note_guard, 
+                        dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, created_by_name:data_notes.created_by_name, 
                             note_open_date: note_open_date, 
                             note_close_date:"",  note: data_notes.note, 
                             note_pic: data_notes.hasOwnProperty('note_pic') && data_notes.note_pic.length>0 ? data_notes.note_pic  : [], 
@@ -1201,6 +1202,8 @@ function checkoutGuardiaApoyo(id, name){
             body: JSON.stringify({
                 script_name:"script_turnos.py",
                 option:"checkout",
+                location: getCookie('userLocation'),
+                area: getCookie('userCaseta'),
                 guards:[id]
             }),
             headers:{
@@ -1377,6 +1380,12 @@ function turnoAbierto(idGuardiasEnTurno){
     $('#textInfActualCaseta').text('Información:');
     $('#agregarGuardiasApoyoButton').attr("disabled", false);
     $("#idButtonGuardiasApoyo").prop('disabled', false);
+    console.log(tables['tableGuardiasApoyo'])
+    tables["tableGuardiasApoyo"].updateColumnDefinition("name", {title:"Guardias en Caseta"})
+    let item = document.getElementById('tableGuardiasApoyo')
+    console.log(item)
+    //let text= item.getElementsByClassName(".tabulator-col-title")
+    //text.text("TURNO ABIERTO");
     guardiasApoyoValidateOptions()
 }
 
@@ -1394,6 +1403,8 @@ function turnoCerrado(idGuardiasEnTurno){
     $('#buttonForzarCierre').attr("disabled", false);
     $('#agregarGuardiasApoyoButton').attr("disabled", true);
     $("#idButtonGuardiasApoyo").prop('disabled', true);
+    tables["tableGuardiasApoyo"].updateColumnDefinition("name", {title:"Guardias de Apoyo"})
+
     idGuardiasEnTurno=[]
     guardiasEnTurno=[] 
     arraySelectedGuardias=[]

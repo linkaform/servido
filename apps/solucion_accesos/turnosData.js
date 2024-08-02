@@ -29,14 +29,14 @@ const columsDataNotas = [
             let data = cell.getData();
             let folio = cell.getData().folio ? cell.getData().folio : 0;
             let divActions = '<div class="row d-flex">';
-            divActions += `<button class="btn-table-bitacora" onClick="cerrarNotaAlert('${data.note_guard}', '${data.note}','${folio}','${data.note_status}')"><i class="fa-regular fa-circle-check"></i></button>`;
+            divActions += `<button class="btn-table-bitacora" onClick="cerrarNotaAlert('${data.created_by_name}', '${data.note}','${folio}','${data.note_status}')"><i class="fa-regular fa-circle-check"></i></button>`;
             divActions += `<button class="btn-table-bitacora" onClick="verNotasAlert('${folio}')" ><i class="fa-regular fa-eye"></i></button>`;
             divActions += `<button class="btn-table-bitacora" onClick="alertEliminarNota('${folio}')"><i class="fa-solid fa-trash" ></i></button>`;
             divActions += '</div>';
             return divActions;
         },
     },
-    { title:"Empleado", field:'note_guard',hozAlign:"left",headerFilter:true},
+    { title:"Empleado", field:'created_by_name',hozAlign:"left",headerFilter:true},
     { title:"Estatus", field:'note_status',hozAlign:"left",tooltip:true,headerFilter:true,width:90},
     { title:"Apertura", field:'note_open_date',hozAlign:"left",headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
     { title:"Cierre", field:'note_close_date',hozAlign:"left",headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
@@ -92,7 +92,7 @@ const columsAgregarGuardiaApoyo = [
 ];
 
 const columsDataGuardiasApoyo = [
-    {title:"Guardias de Apoyo", field:'name',hozAlign:"left",headerFilter:true,width:390,
+    {title:"", field:'name',hozAlign:"left",headerFilter:true,width:390, 
          formatter: (cell, formatterParams) => {
             let data = cell.getData();
             let id = cell.getData().id ? cell.getData().id : 0;
