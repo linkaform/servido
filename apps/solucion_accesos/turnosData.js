@@ -88,7 +88,7 @@ const columsCambiarCaseta = [
 
 const columsAgregarGuardiaApoyo = [
     {title:"Nombre", field:"name", width:240, responsive:0},
-    {title:"Estatus", field:"status", width:330, resizable:true, tooltip:true},
+   // {title:"Estatus", field:"status", width:330, resizable:true, tooltip:true},
 ];
 
 const columsDataGuardiasApoyo = [

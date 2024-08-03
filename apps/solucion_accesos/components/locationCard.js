@@ -135,12 +135,9 @@ function loadCatalogsLocation(arrayUserBoothsLocations){
 
 
 function loadCatalogsCaseta(location ,arrayUserBoothsLocations){
-    console.log("CAMBIAR CATALOGO DE CASETA",location, arrayUserBoothsLocations)
     optionsCaseta = arrayUserBoothsLocations.filter(booth => {
-        console.log("WWWWWWWWWWWWWWWWW",booth.ubi, location)
         return booth.ubi == location ;
     });
-        console.log(optionsCaseta)
     let selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.innerHTML=""; 
     for (let obj of optionsCaseta){
@@ -203,7 +200,6 @@ async function fetchOnChangeCaseta(script, option, area, location){
 
 
 function fetchOnChangeLocation(location){
-    console.log("arrayUserBoothsLocations",arrayUserBoothsLocations)
     loadCatalogsCaseta(location,JSON.parse(getCookie('arrayUserBoothsLocations')).length>0? JSON.parse(getCookie('arrayUserBoothsLocations')): arrayUserBoothsLocations )
     let selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.value = ""

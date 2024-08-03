@@ -269,13 +269,22 @@ function getInfoCatalogs(){
 
 
 function initializeCatalogsArticulosCon(dataCatalogs,arrayUserBoothsLocations){
-    arrayUserBoothsLocations.forEach(function(e, i){
+    let idsSet = new Set();
+    let uniqueItems = [];
+    arrayUserBoothsLocations.forEach(item => {
+        // Verifica si el ID del objeto ya está en el Set
+        if (!idsSet.has(item.ubi)) {
+            uniqueItems.push(item); // Añade el objeto al array único
+            idsSet.add(item.ubi);    // Añade el ID al Set
+        }
+    });
+    console.log("uniqueItems",uniqueItems)
+
+
+    uniqueItems.forEach(function(e, i){
         $("#idUbicacionArticles").append($('<option></option>').val(e.ubi).text(e.ubi));
         $("#idNuevoArticuloUbicacion").append($('<option></option>').val(e.ubi).text(e.ubi));
-        $("#idNuevoArticuloLugar").append($('<option></option>').val(e.name).text(e.name));
-
         $("#idEditArticuloUbicacion").append($('<option></option>').val(e.ubi).text(e.ubi));
-        $("#idEditArticuloLugar").append($('<option></option>').val(e.name).text(e.name));
         $("#idEditArticuloUbicacion").val("")
         $("#idEditArticuloLugar").val("")
 
@@ -290,6 +299,11 @@ function initializeCatalogsArticulosCon(dataCatalogs,arrayUserBoothsLocations){
         $("#idNuevoArticuloUbicacion").val("")
         $("#idNuevoArticuloLugar").val("")
     });
+    arrayUserBoothsLocations.forEach(function(e, i){
+        $("#idEditArticuloLugar").append($('<option></option>').val(e.name).text(e.name));
+        $("#idNuevoArticuloLugar").append($('<option></option>').val(e.name).text(e.name));
+    });
+
     dataCatalogs.solicita_concesion.forEach(function(e, i){
         $("#idNuevoArticuloTipo").append($('<option></option>').val(e).text(e))
         $("#editArticleConTipo").append($('<option></option>').val(e).text(e));
@@ -318,7 +332,18 @@ function initializeCatalogsArticulosCon(dataCatalogs,arrayUserBoothsLocations){
 
 
 function initializeCatalogsArticulosLose(dataCatalogs,arrayUserBoothsLocations){
-    arrayUserBoothsLocations.forEach(function(e, i){
+    let idsSet = new Set();
+    let uniqueItems = [];
+    arrayUserBoothsLocations.forEach(item => {
+        // Verifica si el ID del objeto ya está en el Set
+        if (!idsSet.has(item.ubi)) {
+            uniqueItems.push(item); // Añade el objeto al array único
+            idsSet.add(item.ubi);    // Añade el ID al Set
+        }
+    });
+    console.log("uniqueItems",uniqueItems)
+    
+    uniqueItems.forEach(function(e, i){
         $("#idUbicacionNuevoArticuloLose").append($('<option></option>').val(e.ubi).text(e.ubi));
         $("#idUbicacionNuevoArticuloLose").val("")
         $("#idUbicacionEditArticuloLose").append($('<option></option>').val(e.ubi).text(e.ubi));

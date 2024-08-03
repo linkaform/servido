@@ -510,24 +510,33 @@ function optionCheckOtro(){
 function dataUserInf(dataUser){
     let imgUser ="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1"
     if(dataUser.portador.hasOwnProperty('foto')){
-        imgUser =  dataUser.portador.foto[0].file_url !== '' ? 
-        dataUser.portador.foto[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
+        if(dataUser.portador.foto.length>0){
+            imgUser =  dataUser.portador.foto[0].file_url !== '' ? 
+            dataUser.portador.foto[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
+        }else{
+            imgUser= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
+        }
     }
     $('#imgUser').attr('src', imgUser);
 
     let imgCard="https://www.creativefabrica.com/wp-content/uploads/2018/12/Id-card-icon-by-rudezstudio-5-580x386.jpg"
     if(dataUser.portador.hasOwnProperty('identificacion')){
-        imgCard= dataUser.portador.identificacion[0].file_url !==  '' ? 
-        dataUser.portador.identificacion[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg';
+        if(dataUser.portador.identificacion.length>0){
+            imgCard= dataUser.portador.identificacion[0].file_url !==  '' ? 
+            dataUser.portador.identificacion[0].file_url : "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
+        }else{
+            imgCard= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
+        }
+        
     }
     $('#imgCard').attr('src', imgCard); 
 
     let nameUser = ""
     if(dataUser.portador.hasOwnProperty("nombre_visita")){
-        nameUser=dataUser.portador.nombre_visita !==  '' ? dataUser.portador.nombre_visita: '';
+        nameUser=dataUser.portador.nombre_visita !==  '' ? dataUser.portador.nombre_visita : '';
     }
     $('#nameUserInf').text(nameUser);
-    $("#ubicacion").text(dataUser.portador.ubicacion)
+    $("#ubicacion").text(dataUser.portador.ubicacion||"")
     /*let rfc=""
     if(dataUser.portador.hasOwnProperty('rfc')){
         rfc=dataUser.portador.rfc[0]
@@ -542,7 +551,11 @@ function dataUserInf(dataUser){
 
     let status = ""
     if(dataUser.portador.hasOwnProperty('status_visita')){
-        status=dataUser.portador.status_visita.length>0 ? dataUser.portador.status_visita[0]: '';
+        if(dataUser.portador.status_visita.length>0){
+            status=dataUser.portador.status_visita.length>0 ? dataUser.portador.status_visita[0]: '';
+        }else{
+            status=""
+        }
     }
 
     $('#status').text(status);
@@ -573,7 +586,11 @@ function dataUserInf(dataUser){
 
     let authorizePhone=""
     if(dataUser.portador.hasOwnProperty('telefono')){
-        authorizePhone=dataUser.portador.telefono.length>0 ? dataUser.portador.telefono[0]:''
+        if(dataUser.portador.telefono.length>0){
+            authorizePhone=dataUser.portador.telefono.length>0 ? dataUser.portador.telefono[0]:''
+        }else{
+            authorizePhone=""
+        }
     }
     $('#authorizePhone').text(authorizePhone);
 }
@@ -793,7 +810,6 @@ function tableFillVehiculos(dataUser){
 }
 
 
-
 function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
     let group= document.querySelectorAll('.'+classCheckbox)
     group.forEach(checkbox => {
@@ -803,6 +819,7 @@ function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
   });
     //return checkboxesSeleccionados
 }
+
 
 //FUNCION al pedir la opcion information user al setear la data
 function optionInformationUser(data){
@@ -825,11 +842,11 @@ function optionInformationUser(data){
         let listBitacora = ultimo_acceso.length > 0 ? ultimo_acceso: [];
         for (var i = 0; i < listBitacora.length; i++) {
             //if(i < 3){
-                let duration=segundosAHoras(listBitacora[i].duration)
+                //let duration=segundosAHoras(listBitacora[i].duration)
                 var newRow = $('<tr>');
                 newRow.append($('<td>').text(listBitacora[i].nombre_visita ? listBitacora[i].nombre_visita : ''));
                 newRow.append($('<td>').text(listBitacora[i].location ? listBitacora[i].location : ''));
-                newRow.append($('<td>').text(duration? duration : ''));
+                newRow.append($('<td>').text(listBitacora[i].duration ? listBitacora[i].duration +' hrs': ''));
                 newRow.append('</tr>');
                 $('#tableBitacora').append(newRow);
             //}

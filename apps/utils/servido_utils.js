@@ -14,11 +14,33 @@ var url = "https://app.linkaform.com/api/";
 function encontrarCambios(objetoOriginal, objetoEditado) {
   let cambios = {};
   for (let key in objetoOriginal) {
-    if (objetoOriginal.hasOwnProperty(key) && objetoEditado.hasOwnProperty(key)) {
-      if (objetoOriginal[key] !== objetoEditado[key]) {
-        cambios[key] = objetoEditado[key]
-      }
-    }
+        if (objetoOriginal.hasOwnProperty(key) && objetoEditado.hasOwnProperty(key)) {
+            if (objetoOriginal[key] !== objetoEditado[key]) {
+                    cambios[key] = objetoEditado[key]
+                }
+            /*
+            if(objetoEditado[key] instanceof Array && objetoOriginal[key] instanceof Array){
+                    for(let subKey in objetoOriginal[key]){
+                        console.log("subkey",objetoOriginal[key][subKey])
+                        if(objetoOriginal[key][subKey].hasOwnProperty('file_name') && objetoEditado[key][subKey].hasOwnProperty('file_name') ){
+                            console.log(objetoOriginal[key][subKey].file_url !== objetoEditado[key][subKey].file_url)
+                            if (objetoOriginal[key][subKey].file_url !== objetoEditado[key][subKey].file_url) {
+                                cambios[key] = objetoEditado[key]
+                            }
+                        }else{
+                            for(let subKey in objetoEditado[key]){
+                                if (objetoOriginal[key][subKey]['6647fb38da07bf430e273ea2']!== objetoEditado[key][subKey]['6647fb38da07bf430e273ea2']) {
+                                    cambios[key] = objetoEditado[key]
+                                }
+                            }
+                        }
+                    }
+            }else{
+                if (objetoOriginal[key] !== objetoEditado[key]) {
+                    cambios[key] = objetoEditado[key]
+                }
+            }*/
+        }
   }
   return cambios;
 }
@@ -621,3 +643,58 @@ function setCloseSession(argument) {
 
 }
 
+
+
+
+//FUNCION para guardar los archivos en el server 
+async function guardarArchivos(id, isImage){
+    loadingService()
+    const fileInput = document.getElementById(id);
+    const file = fileInput.files[0]; // Obtener el archivo seleccionado
+
+    if (!file) {
+        alert('Selecciona un archivo para subir');
+        return;
+    }
+    let data=""
+    let formData = new FormData();
+    if(isImage){
+        formData.append('File', file);
+        formData.append('field_id', '63e65029c0f814cb466658a2');
+        formData.append('is_image', true);
+        formData.append('form_id', 95435);
+    }else{
+        formData.append('File[0]', file);
+        formData.append('field_id', '63e65029c0f814cb466658a2');
+        formData.append('form_id', 95435);
+
+    }
+
+    const options = {
+      method: 'POST', 
+      body: formData,
+    };
+    let respuesta = await fetch('https://app.linkaform.com/api/infosync/cloud_upload/', options);
+    data = await respuesta.json(); //Obtenemos los datos de la respuesta 
+    data.isImage=isImage
+    arrayResponses.push(data); //Agregamos los datos al arreglo
+    if(data.hasOwnProperty('error')){
+        Swal.fire({
+            title: "Error",
+            text: data.error,
+            type: "error",
+            showConfirmButton:false,
+            timer:1100
+        });
+        
+    }else{
+        let text= isImage? 'Las imagenes fueron guardadas correctamente.': 'Los archivos fueron guardados correctamente.';
+        Swal.fire({
+            title: "Acción Completada",
+            text: text,
+            type: "success",
+            showConfirmButton:false,
+            timer:1100
+        });
+    }
+}

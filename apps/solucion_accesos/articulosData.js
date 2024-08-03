@@ -21,7 +21,7 @@ let columsDataArticles = [
 	{ title:"Nombre", field:'equipo_concesion',hozAlign:"left",headerFilter:true},
 	{ title:"Fecha", field:'fecha_concesion',hozAlign:"left",headerFilter:true,headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
 	{ title:"Tipo", field:'solicita_concesion',hozAlign:"left",headerFilter:true, width:200},
-	{ title:"Fotografía", field:'foto_concesion',hozAlign:"left",formatter:"image", width:200 , formatterParams:{height:"120px",width:"180px"}},
+	//{ title:"Fotografía", field:'foto_concesion',hozAlign:"left",formatter:"image", width:200 , formatterParams:{height:"120px",width:"180px"}},
 		
 	{ title:"No. Serie", field:'folio',hozAlign:"left",headerFilter:true},
 	{ title:"Reporta", field:'nombre_concesion',hozAlign:"left",headerFilter:true},

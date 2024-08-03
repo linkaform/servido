@@ -25,7 +25,7 @@ function setModal(type = 'none',id){
         loadBooths();
     }else if(type == 'addNota'){
         limpiarEnviaNotaModal()
-        $("#agregarNotasModal").modal('show');
+        $("#agregarNotasModalTurnos").modal('show');
     }
 }
 
@@ -380,6 +380,8 @@ function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
 
 
 //FUNCION para agregar nuevo input de archivo al momento de crear una nueva nota
+
+/*
 function setAddArchivo(){
     let randomID = Date.now();
     let newItem=`
@@ -410,9 +412,9 @@ function setDeleteArchivo(id){
     }
 }
 
-
+*/
 //FUNCION para agregar nuevo input de imagen al momento de crear una nueva nota
-function setAddFoto(){
+/*function setAddFoto(){
     let randomID = Date.now();
     let newItem=`
         <div class="mb-3 col-12 foto-div div-foto-`+randomID+`">
@@ -443,7 +445,7 @@ function setDeleteFoto(id){
     }
 }
 
-
+*/
 //FUNCION forzar el cierre de la caseta cuando tiene estado No disponible, para que otro guardia pueda iniciar turno
 function AlertForzarCierre(name){
     let statusCaseta = $("#textEstatusCaseta").text()
@@ -804,14 +806,13 @@ function verNotasAlert(folio){
     let commentsItem=``;
 
     let comments = selectedNota.note_comments.filter(objeto => !tienePropiedadesVacias(objeto));
-    for(let com in comments){
-        if(com .hasOwnProperty(['6647fb38da07bf430e273ea2'])){
+     for(let com in comments){
+        if(selectedNota.note_comments[com].hasOwnProperty(['6647fb38da07bf430e273ea2'])){
             commentsItem+=`
             <tr> <td> <span > `+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span > </td> </tr>`;
         }else{
-            console.log("COEMTNARIOS",selectedNota.note_comments[com], com)
             commentsItem+=`
-           <tr> <td> <span > `+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span > </td> </tr>`;
+           <tr> <td> <span > `+selectedNota.note_comments[com]+`</span > </td> </tr>`;
         }
     }
     let htmlComments = comments.length>0 ? `
@@ -822,11 +823,11 @@ function verNotasAlert(folio){
 
     for(let pic of selectedNota.note_pic){
         fotosItem+=`
-        <div> <img src="`+pic.file_url+`" height="145px"style="object-fit: contain;"></div>`;
+        <div class="m-1 mr-0"> <img src="`+pic.file_url+`" height="145px"style="object-fit: contain;"></div> <br>`;
     }
     let htmlFotos=selectedNota.note_pic.length>0 ? `
         <h6>Fotografias</h6>
-        <div class="d-flex">
+        <div class="d-flex flex-wrap">
             `+fotosItem+`
         </div>`:"";
 
@@ -883,7 +884,7 @@ function selectCheckboxGuardia(id){
     });
 }     
 
-function limpiarEnviaNotaModal(){
+function limpiarEnviaNotaModal(editAdd="nueva"){
     arraySuccessFoto=[]
     arraySuccessArchivo=[]
     arrayResponses=[]
@@ -891,42 +892,42 @@ function limpiarEnviaNotaModal(){
     $("#textAreaNuevaNotaNota").val("")
     //$("#inputComentarioNota").val("")
     $("#comentarioNuevaNota").val("")
-    let divArchivo = document.getElementById("archivo-input-form");
-    let divFoto = document.getElementById("foto-input-form");
-    let divComment = document.getElementById("comment-input-form");
+    let divArchivo = document.getElementById("archivo-input-form-"+editAdd);
+    let divFoto = document.getElementById("foto-input-form-"+editAdd);
+    let divComment = document.getElementById("comment-input-form-"+editAdd);
 
-    const elementsArchivo = divArchivo.querySelectorAll('.archivo-div');
+    const elementsArchivo = divArchivo.querySelectorAll('.archivo-div-'+editAdd);
     elementsArchivo.forEach(function(input) {
-        if(input.id!=="fileInputArchivo"){
+        if(input.id!=="fileInputArchivo-"+editAdd){
             input.parentElement.parentElement.remove();
         }
     });
-    const elementsFoto = divFoto.querySelectorAll('.foto-div');
+    const elementsFoto = divFoto.querySelectorAll('.foto-div-'+editAdd);
     elementsFoto.forEach(function(input) {
-        if(input.id!=="fileInputFotografia"){
+        if(input.id!=="fileInputFotografia-"+editAdd){
             input.parentElement.parentElement.remove();
         }
     });
-    const elementsComment = divComment.querySelectorAll('.comment-div');
+    const elementsComment = divComment.querySelectorAll('.comment-div-'+editAdd);
     elementsComment.forEach(function(input) {
-        if(input.id!=="comentarioNuevaNota"){
+        if(input.id!=="comentarioNuevaNota-"+editAdd){
             input.parentElement.parentElement.remove();
         }
     });
 
-    let inputsE = divArchivo.querySelectorAll('.archivo-div');
+    let inputsE = divArchivo.querySelectorAll('.archivo-div-'+editAdd);
     inputsE.forEach(function(input) {
         input.value=''
     });
 
-    let inputsF = divFoto.querySelectorAll('.foto-div');
+    let inputsF = divFoto.querySelectorAll('.foto-div-'+editAdd);
     inputsF.forEach(function(input) {
         input.value=''
     });
 }
 
 //FUNCION para enviar la nueva notra creada
-function enviarNota(){
+function agregarNuevaNota(){
     $("#idLoadingButtonEnviarNota").show();
     $("#idButtonEnviarNota").hide();
     let nota= $("#textAreaNuevaNotaNota").val(); 
@@ -935,8 +936,8 @@ function enviarNota(){
     //let fecha= $("#fechaNuevaNota").val(); 
     //let formatDate= fecha.split("T")[0]+' '+fecha.split("T")[1]
     let comments=[]
-    let divComentario = document.getElementById("comment-input-form");
-    let inputsG = divComentario.querySelectorAll('.comment-div');
+    let divComentario = document.getElementById("comment-input-form-nueva");
+    let inputsG = divComentario.querySelectorAll('.comment-div-nueva');
     inputsG.forEach(function(input) {
         if(input.value!==""){
             comments.push(input.value)
@@ -960,7 +961,7 @@ function enviarNota(){
         'note_status': statusAbierto,
         'note':nota,
         'note_booth':getCookie('userCaseta'),
-        'note_guard':getCookie('userName'),
+        //'created_by_name':getCookie('userName'),
         'note_guard_close':'', //este dato no viene en la lista principal...
         'note_pic':arraySuccessFoto ,
         'note_file':arraySuccessArchivo ,
@@ -1006,19 +1007,19 @@ function enviarNota(){
                             showConfirmButton:false,
                             timer:1200
                         });
-                        $('#agregarNotasModal').modal('hide');
+                        $('#agregarNotasModalTurnos').modal('hide');
                         $("#inputTextNota").val('');
                         inputsG.forEach(function(input) {
                             input.value=''
                         });
-                        let divArchivo = document.getElementById("archivo-input-form");
-                        let inputsE = divArchivo.querySelectorAll('.archivo-div');
+                        let divArchivo = document.getElementById("archivo-input-form-nueva");
+                        let inputsE = divArchivo.querySelectorAll('.archivo-div-nueva');
                         inputsE.forEach(function(input) {
                             input.value=''
                         });
                         
-                        let divFoto = document.getElementById("foto-input-form");
-                        let inputsF = divFoto.querySelectorAll('.foto-div');
+                        let divFoto = document.getElementById("foto-input-form-nueva");
+                        let inputsF = divFoto.querySelectorAll('.foto-div-nueva');
                         inputsF.forEach(function(input) {
                             input.value=''
                         });
@@ -1029,7 +1030,7 @@ function enviarNota(){
                             }
                         }
                         let note_open_date= convertDate(data.json.created_at, data.json.timezone)
-                        dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, created_by_name:data_notes.created_by_name, 
+                        dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, created_by_name:getCookie('userName'), 
                             note_open_date: note_open_date, 
                             note_close_date:"",  note: data_notes.note, 
                             note_pic: data_notes.hasOwnProperty('note_pic') && data_notes.note_pic.length>0 ? data_notes.note_pic  : [], 
@@ -1317,7 +1318,7 @@ function agregarNuevoGuardiaApoyo(){
         guardiasEnTurno.push(newGuard)
         idGuardiasEnTurno.push("inp-"+ newGuard.id)
         idGuardiasEnTurno.push("btn-"+ newGuard.id)
-        names.push(newGuard.name)
+        names.push({user_id: newGuard.id,name:newGuard.name,})
     }
     fetch(url + urlScripts, {
             method: 'POST',
@@ -1325,7 +1326,9 @@ function agregarNuevoGuardiaApoyo(){
                 script_name:"script_turnos.py",
                 option:"update_guards",
                 support_guards:names,
-                folio:getCookie('casetaFolioTurnoAbierto')
+                checkin_id:checkInId,
+                location:getCookie('userLocation'),
+                area:getCookie('userCaseta')
             }),
             headers:{
                'Content-Type': 'application/json',
@@ -1483,34 +1486,32 @@ function guardiasApoyoValidateOptions(){
     }   
 }
 
-
-function setAddComentario(){
+function setAddComentario(editAdd ="nueva"){
+    console.log("HAY ERORRES?   uqe passaaa")
      let randomID = Date.now();
     let newItem=`
-        <div class="d-flex mb-3 div-comment-`+randomID+`" id="div-comment-`+randomID+`">
+        <div class="d-flex mb-3 div-comment-`+editAdd+`-`+randomID+`" id="div-comment-`+randomID+`">
             <div class="flex-grow-1">
                 <label class="form-label">Comentario </label>
-                <textarea class="form-control comment-div" id="inputComentarioNota-`+randomID+`"" rows="3" placeholder="Escribe algo..."></textarea>
+                <textarea class="form-control comment-div-`+editAdd+`" id="inputComentario-`+randomID+`" rows="3" placeholder="Escribe algo..."></textarea>
             </div>
             <div>
-                <button type="button" class="btn btn-success button-add-register " onclick="setAddComentario();return false;">
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <button type="button" class="btn btn-danger button-delete-register "  onclick="setDeleteComentario(`+randomID+`);return false;">
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteComentario('`+editAdd+`',`+randomID+`);return false;">
                     <i class="fa-solid fa-minus"></i></button>
             </div>
         </div>
     `;
-    $('#comment-input-form').append(newItem);
+    $('#comment-input-form-'+editAdd).append(newItem);
 }
 
 
-function setDeleteComentario(id){
-    const elements = document.querySelectorAll('.comment-div');
+function setDeleteComentario(editAdd ="nueva",id){
+    console.log("HAY ERORRES?")
+    const elements = document.querySelectorAll('.comment-div-'+editAdd);
     const count = elements.length;
     if(count > 1){
-        const elements = document.getElementsByClassName('div-comment-'+id);
-        while(elements.length > 0){
+        const elements = document.getElementsByClassName('div-comment-'+editAdd+'-'+id);
+        while(elements.length > 0&& id !==123){
             elements[0].parentNode.removeChild(elements[0]);
         }
     }
@@ -1518,35 +1519,33 @@ function setDeleteComentario(id){
 
 
 //FUNCION para eliminar archivo en el modal de agregar nota
-function setAddArchivo(){
+function setAddArchivo(editAdd ="nueva"){
+    console.log("editAdd",editAdd)
     let randomID = Date.now();
     let newItem=`
-        <div class="d-flex mb-3 col-12  div-archivo-`+randomID+`" id="id-archivo-div-`+randomID+`">
+        <div class="d-flex mb-3 col-12 div-archivo-`+editAdd+`-`+randomID+`" id="id-archivo-div-`+randomID+`">
             <div class="flex-grow-1">
-                <label class="form-label">Cargar un archivo *</label>
-                <input type="file" class="form-control-file archivo-div" onchange="guardarArchivos('fileInputArchivo-`+randomID+`', false);" id="fileInputArchivo-`+randomID+`">
+                <label class="form-label">Cargar un archivo </label>
+                <input type="file" class="form-control-file archivo-div-`+editAdd+`" onchange="guardarArchivos('fileInputArchivo-`+editAdd+`-`+randomID+`', false);" id="fileInputArchivo-`+editAdd+`-`+randomID+`">
             </div>
             <div>
-                <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(`+randomID+`);return false;">
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo('`+editAdd+`',`+randomID+`);return false;">
                     <i class="fa-solid fa-minus"></i>
                 </button>
             </div>
         </div>
     `;
-    $('#archivo-input-form').append(newItem);
+    $('#archivo-input-form-'+editAdd).append(newItem);
 }
 
 
 //FUNCION para agregar archivo en el modal de agregar nota
-function setDeleteArchivo(id){
-    const elements = document.querySelectorAll('.archivo-div');
+function setDeleteArchivo(editAdd ="nueva", id ){
+    const elements = document.querySelectorAll('.archivo-div-'+editAdd);
     const count = elements.length;
     if(count > 1){
-        const elements = document.getElementsByClassName('div-archivo-'+id);
-        while(elements.length > 0){
+        const elements = document.getElementsByClassName('div-archivo-'+editAdd+'-'+id);
+        while(elements.length > 0&& id !==123){
             elements[0].parentNode.removeChild(elements[0]);
         }
     }
@@ -1554,102 +1553,36 @@ function setDeleteArchivo(id){
 
 
 //FUNCION para agregar foto en el modal de agregar nota
-function setAddFoto(){
+function setAddFoto(editAdd ="nueva"){
     let randomID = Date.now();
     let newItem=`
-        <div class="d-flex mb-3 col-12  div-foto-`+randomID+`" id="id-foto-div-`+randomID+`">
+        <div class="d-flex mb-3 col-12  div-foto-`+editAdd+`-`+randomID+`" id="id-foto-div-`+randomID+`">
             <div class="flex-grow-1">
-                <label class="form-label">Fotografia *</label>
-                <input type="file" class="form-control-file foto-div" onchange="guardarArchivos('fileInputFotografia-`+randomID+`', true);" id="fileInputFotografia-`+randomID+`">
-                
+                <label class="form-label">Fotografia </label>
+                <input type="file" class="form-control-file foto-div-`+editAdd+`" onchange="guardarArchivos('fileInputFotografia-`+editAdd+`-`+randomID+`', true);" id="fileInputFotografia-`+editAdd+`-`+randomID+`">
             </div>
             <div>
-                <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(`+randomID+`);return false;">
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('`+editAdd+`',`+randomID+`);return false;">
                    <i class="fa-solid fa-minus"></i>
                 </button>
             </div>
         </div>
     `;
-    $('#foto-input-form').append(newItem) 
+    $('#foto-input-form-'+editAdd).append(newItem) 
 }
 
 
 //FUNCION para elimar foto en el modal de agregar nota
-function setDeleteFoto(id){
-    const elements = document.querySelectorAll('.foto-div');
+function setDeleteFoto(editAdd ="nueva",id){
+    const elements = document.querySelectorAll('.foto-div-'+editAdd);
     const count = elements.length;
     if(count > 1){
-        const elements = document.getElementsByClassName('div-foto-'+id);
-        while(elements.length > 0){
+        const elements = document.getElementsByClassName('div-foto-'+editAdd+'-'+id);
+        while(elements.length > 0&& id !==123){
             elements[0].parentNode.removeChild(elements[0]);
         }
     }
 }
-
-
-//FUNCION para guardar los archivos en el server 
-async function guardarArchivos(id, isImage){
-    Swal.fire({
-        title: 'Cargando...',
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-            Swal.showLoading();
-       }
-    });
-    const fileInput = document.getElementById(id);
-    const file = fileInput.files[0]; // Obtener el archivo seleccionado
-
-    if (!file) {
-        alert('Selecciona un archivo para subir');
-        return;
-    }
-    let data=""
-    let formData = new FormData();
-    if(isImage){
-        formData.append('File', file);
-        formData.append('field_id', '63e65029c0f814cb466658a2');
-        formData.append('is_image', true);
-        formData.append('form_id', 95435);
-    }else{
-        formData.append('File[0]', file);
-        formData.append('field_id', '63e65029c0f814cb466658a2');
-        formData.append('form_id', 95435);
-
-    }
-
-    const options = {
-      method: 'POST', 
-      body: formData,
-    };
-    let respuesta = await fetch('https://app.linkaform.com/api/infosync/cloud_upload/', options);
-    data = await respuesta.json(); //Obtenemos los datos de la respuesta 
-    data.isImage=isImage
-    arrayResponses.push(data); //Agregamos los datos al arreglo
-    if(data.hasOwnProperty('error')){
-        Swal.fire({
-            title: "Error",
-            text: data.error,
-            type: "error",
-            showConfirmButton:false,
-            timer:1100
-        });
-        
-    }else{
-        let text= isImage? 'Las imagenes fueron guardadas correctamente.': 'Los archivos fueron guardados correctamente.';
-        Swal.fire({
-            title: "Acción Completada",
-            text: text,
-            type: "success",
-            showConfirmButton:false,
-            timer:1100
-        });
-    }
-}
-
-
 
 //FUNCION para dibujar las tablas de la pagina y guardar su instancia en el obj tables
 function drawTableNotas(id, columnsData, tableData, height){
