@@ -823,7 +823,7 @@ function verNotasAlert(folio){
 
     for(let pic of selectedNota.note_pic){
         fotosItem+=`
-        <div class="m-1 mr-0"> <img src="`+pic.file_url+`" height="145px"style="object-fit: contain;"></div> <br>`;
+        <div class="mb-1 mr-1"> <img src="`+pic.file_url+`" height="145px"style="object-fit: contain;"></div> <br>`;
     }
     let htmlFotos=selectedNota.note_pic.length>0 ? `
         <h6>Fotografias</h6>
@@ -925,6 +925,8 @@ function limpiarEnviaNotaModal(editAdd="nueva"){
         input.value=''
     });
 }
+
+
 
 //FUNCION para enviar la nueva notra creada
 function agregarNuevaNota(){
@@ -1290,7 +1292,7 @@ function cargarGuardiasApoyo(){
             for(guard in data){
                 console.log("Guardias",data[guard])
                 dataTableAgregarGuardiaApoyo.push({ name: data[guard].name,  status:'',
-                img: data[guard].img ? data[guard].img:'https://cdn.questionpro.com/userimages/site_media/no-image.png' , id:data[guard].user_id})
+                img: data[guard].picture.file_url ? data[guard].picture.file_url :'https://cdn.questionpro.com/userimages/site_media/no-image.png' , id:data[guard].user_id})
             }
             if(tables['tableAgregarGuardiaApoyo']){
                 tables['tableAgregarGuardiaApoyo'].setData(dataTableAgregarGuardiaApoyo)

@@ -23,7 +23,7 @@ window.onload = function(){
         let response = fetchOnChangeLocation(selectLocation.value)
     };
     selectCaseta.onchange = async function() {
-        let response = await fetchOnChangeCaseta('notes.py', 'get_notes', selectCaseta.value, '')
+        let response = await fetchOnChangeCaseta('notes.py', 'get_notes', selectCaseta.value, selectLocation.value)
         reloadTableNotas(response.response.data)
     };
     fillCatalogs();

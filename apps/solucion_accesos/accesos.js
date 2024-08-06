@@ -185,6 +185,8 @@ function agregaEquipo(){
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
 function buscarPaseEntrada() {
+    $("#buttonBuscarPaseEntrada").prop('disabled', true);
+    $("#buttonNew").prop('disabled', true);
     codeUser = $("#inputCodeUser").val();
     if(codeUser ==""){
         successMsg("Validación", "Escribe un codigo para continuar", "warning")
@@ -217,6 +219,8 @@ function buscarPaseEntrada() {
                 $("#divSpinner").hide();
                 setHideElements('dataShow');
                 $("#inputCodeUser").val("")
+                $("#buttonBuscarPaseEntrada").prop('disabled', false);
+                $("#buttonNew").prop('disabled', false);
             }else{
                 errorAlert(res)
                 setCleanData();
@@ -224,6 +228,8 @@ function buscarPaseEntrada() {
                 $("#buttonNew").show();
                 $("#divSpinner").hide();
                 $("#inputCodeUser").val("")
+                $("#buttonBuscarPaseEntrada").prop('disabled', false);
+                $("#buttonNew").prop('disabled', false);
             }
         })
     }
@@ -254,7 +260,6 @@ function getDataListUser(){
     listUserActives = data;
     setDataInformation('listUsers',data)
 }
-
 
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 1
 function registrarIngreso(){
@@ -483,6 +488,7 @@ function setDataInformation(option, data = {}){
     if(option == 'alerts'){
         optionAlerts(data);
     }else if(option == 'informatioUser'){
+        console.log("DATA", data)
         optionInformationUser(data);
     }else if(option == 'listUsers'){
         optionListUsers(data)
@@ -508,11 +514,18 @@ function optionCheckOtro(){
 
 //FUNCION al pedir la opcion information user al setear la informacion del usuario
 function dataUserInf(dataUser){
+    let dias= dataUser.limitado_a_dias
+    for(let d of dias){
+        $("#"+d+"").removeClass('btn-outline-success');
+        $("#"+d+"").addClass('btn-success');
+    }
+
+
     let imgUser ="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1"
-    if(dataUser.portador.hasOwnProperty('foto')){
-        if(dataUser.portador.foto.length>0){
-            imgUser =  dataUser.portador.foto[0].file_url !== '' ? 
-            dataUser.portador.foto[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
+    if(dataUser.hasOwnProperty('foto')){
+        if(dataUser.foto.length>0){
+            imgUser = dataUser.foto[0].file_url !== '' ? 
+            dataUser.foto[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
         }else{
             imgUser= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
         }
@@ -520,10 +533,10 @@ function dataUserInf(dataUser){
     $('#imgUser').attr('src', imgUser);
 
     let imgCard="https://www.creativefabrica.com/wp-content/uploads/2018/12/Id-card-icon-by-rudezstudio-5-580x386.jpg"
-    if(dataUser.portador.hasOwnProperty('identificacion')){
-        if(dataUser.portador.identificacion.length>0){
-            imgCard= dataUser.portador.identificacion[0].file_url !==  '' ? 
-            dataUser.portador.identificacion[0].file_url : "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
+    if(dataUser.hasOwnProperty('identificacion')){
+        if(dataUser.identificacion.length>0){
+            imgCard= dataUser.identificacion[0].file_url !==  '' ? 
+            dataUser.identificacion[0].file_url : "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
         }else{
             imgCard= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
         }
@@ -532,11 +545,11 @@ function dataUserInf(dataUser){
     $('#imgCard').attr('src', imgCard); 
 
     let nameUser = ""
-    if(dataUser.portador.hasOwnProperty("nombre_visita")){
-        nameUser=dataUser.portador.nombre_visita !==  '' ? dataUser.portador.nombre_visita : '';
+    if(dataUser.hasOwnProperty("nombre")){
+        nameUser=dataUser.nombre !==  '' ? dataUser.nombre : '';
     }
     $('#nameUserInf').text(nameUser);
-    $("#ubicacion").text(dataUser.portador.ubicacion||"")
+    $("#ubicacion").text(dataUser.ubicacion||"")
     /*let rfc=""
     if(dataUser.portador.hasOwnProperty('rfc')){
         rfc=dataUser.portador.rfc[0]
@@ -544,15 +557,15 @@ function dataUserInf(dataUser){
     $('#rfc').text(rfc);*/
 
     let validity = ""
-    if(dataUser.pass.hasOwnProperty('fecha_expiracion')){
-        validity= dataUser.pass.fecha_expiracion !==  '' ? dataUser.pass.fecha_expiracion : '';
+    if(dataUser.hasOwnProperty('fecha_de_caducidad')){
+        validity= dataUser.fecha_de_caducidad !==  '' ? dataUser.fecha_de_caducidad : '';
     }
     $('#validity').text(validity);
 
     let status = ""
-    if(dataUser.portador.hasOwnProperty('status_visita')){
-        if(dataUser.portador.status_visita.length>0){
-            status=dataUser.portador.status_visita.length>0 ? dataUser.portador.status_visita[0]: '';
+    if(dataUser.hasOwnProperty('estatus')){
+        if(dataUser.estatus !=="" ){
+            status=dataUser.estatus !=="" ? dataUser.estatus: '';
         }else{
             status=""
         }
@@ -560,23 +573,23 @@ function dataUserInf(dataUser){
 
     $('#status').text(status);
     
-    let tipoPase = ""
-    if(dataUser.pass.hasOwnProperty("tipo")){
-        tipoPase= dataUser.pass.tipo !==  '' ? dataUser.pass.tipo: '';
+    let tipoDePase = ""
+    if(dataUser.hasOwnProperty("tipo_de_pase")){
+        tipoDePase= dataUser.tipo_de_pase !==  '' ? dataUser.tipo_de_pase: '';
     }
-    $('#tipoPaseText').text(tipoPase);
+    $('#tipoPaseText').text(tipoDePase);
 
     let motivo =""
-    if(dataUser.portador.hasOwnProperty('motivo')){
-        motivo=dataUser.portador.motivo !==  '' ? dataUser.portador.motivo: '';
+    if(dataUser.hasOwnProperty('motivo_visita')){
+        motivo=dataUser.motivo_visita !==  '' ? dataUser.motivo_visita: '';
     }
     $('#motivo').text(motivo);
     
     let visit=""
-    if(dataUser.portador.hasOwnProperty('nombre_visita')){
-        visit= dataUser.portador.nombre_visita !==  '' ? dataUser.portador.nombre_visita: '';
+    if(dataUser.hasOwnProperty('visita_a')){
+        visit= dataUser.visita_a.length>0 ? dataUser.visita_a[0].nombre: '';
     }
-    $('#visit').text(visit);
+    $('#visita').text(visit);
     
     /*let authorizePase =""
     if(dataUser.hasOwnProperty("authorize_pase")){
@@ -585,9 +598,9 @@ function dataUserInf(dataUser){
     $('#authorizePase').text(authorizePase);*/
 
     let authorizePhone=""
-    if(dataUser.portador.hasOwnProperty('telefono')){
-        if(dataUser.portador.telefono.length>0){
-            authorizePhone=dataUser.portador.telefono.length>0 ? dataUser.portador.telefono[0]:''
+    if(dataUser.hasOwnProperty('telefono')){
+        if(dataUser.telefono.length>0){
+            authorizePhone=dataUser.telefono.length>0 ? dataUser.telefono[0]:''
         }else{
             authorizePhone=""
         }
@@ -630,16 +643,18 @@ function tableFill(dataUser){
     //----TABLA ACCESOS PERMITIDOS
 
     let listAccess = []
-    if(dataUser.hasOwnProperty('accesos')){
-        let accesos = dataUser.accesos.filter(objeto => !tienePropiedadesVacias(objeto));
+    if(dataUser.hasOwnProperty('grupo_areas_acceso')){
+        let accesos = dataUser.grupo_areas_acceso.filter(objeto => !tienePropiedadesVacias(objeto));
         listAccess = accesos.length > 0 ? accesos: [];
     }
     for (var i = 0; i < listAccess.length; i++) {
-            let nombre = listAccess[i].area;
+            let nombre = listAccess[i].nombre_area;
             let status = listAccess[i].status;
+            let comentario = listAccess[i]['66af1a77d703592958dca5eb'];
             var newRow = $('<tr>');
             newRow.append($('<td>').text(nombre));
             newRow.append($('<td>').text(status));
+            newRow.append($('<td>').text(comentario));
             newRow.append('</tr>');
             $('#tableAccess').append(newRow);
     }
@@ -663,45 +678,45 @@ function tableFill(dataUser){
         $('#tableAccess').append(newRow);
     }
     //----Table CERTIFICACIONES
-    let listLocations = []
-    if(dataUser.portador.hasOwnProperty('certificacion_pase')){
-        listLocations = dataUser.portador.certificacion_pase.length > 0 ? dataUser.portador.certificacion_pase: [];
+    let listCertificaciones = []
+    if(dataUser.hasOwnProperty('certificaciones')){
+        listCertificaciones = dataUser.certificaciones.length > 0 ? dataUser.certificaciones: [];
     }
 
-    for (var i = 0; i < listLocations.length; i++) {
+    for (var i = 0; i < listCertificaciones.length; i++) {
         //if(i < 1000){
             var newRow = $('<tr>');
-            newRow.append($('<td>').text(listLocations[i]/*.nombre*/));
-            newRow.append($('<td>').text('dato dummy'));
+            newRow.append($('<td>').text(listCertificaciones[i].nombre_certificacion/*.nombre*/));
+            newRow.append($('<td>').text(listCertificaciones[i].status));
             newRow.append('</tr>');
             $('#tableLocations').append(newRow);
         //}
     }
     /*
-    if(listLocations.length > 3){
+    if(listCertificaciones.length > 3){
         $("#buttonLocationsModal").show();
         for (var i = 0; i < listInstructions.length; i++) {
             var newRow = $('<tr>');
-            newRow.append($('<td>').text(listLocations[i]));
+            newRow.append($('<td>').text(listCertificaciones[i]));
             newRow.append('</tr>');
             $('#tableModalAccess').append(newRow);
         }
     } 
     */
-    if(listLocations.length == 0){
+    if(listCertificaciones.length == 0){
         var newRow = $('<tr>');
         newRow.append($('<td>').text('No existen Accesos/Certificaciones'));
         newRow.append($('<td>'))
         newRow.append('</tr>');
         $('#tableLocations').append(newRow);
     }
-    return listLocations
+    return listCertificaciones
 }
 
 
 //FUNCION llenar tabla de equipos en la primera carga
 function tableFillEquipos(dataUser){
-    let listItems = dataUser.equipo.length > 0 ? dataUser.equipo: [];
+    let listItems = dataUser.grupo_equipos.length > 0 ? dataUser.grupo_equipos: [];
     listItems.forEach(function(dic) {
         dic.id = Math.floor(Math.random() * 1000000);
     });
@@ -709,33 +724,14 @@ function tableFillEquipos(dataUser){
     listItemsData.forEach(function(dic) {
         dic.check = false;
     });
-    /*
-    for (var i = 0; i < listItems.length; i++) {
-        if(i < 3){
-            let tipoItem = listItems[i].tipo;
-            let marcaItem = listItems[i].marca;
-            let modeloItem = listItems[i].modelo;
-            let serieItem = listItems[i].serie;
-            let colorItem = listItems[i].color;
-            let id = listItems[i].id;
-            var newRow = $('<tr>');
-            newRow.append($('<td>').text(tipoItem));
-            newRow.append($('<td>').text(marcaItem));
-            newRow.append($('<td>').text(modeloItem));
-            newRow.append($('<td>').text(serieItem));
-            newRow.append($('<td>').text(colorItem));
-            newRow.append('</tr>');
-            $('#tableModalItems').append(newRow);
-        }
-    }*/
     $("#buttonItemsModal").show();
     $("#tableItems").innerHTML="";
     for (let i = 0; i < listItems.length; i++) {
-        let tipoItem = listItems[i].tipo;
-        let marcaItem = listItems[i].marca;
-        let modeloItem = listItems[i].modelo;
-        let serieItem = listItems[i].serie;
-        let colorItem = listItems[i].color;
+        let tipoItem = listItems[i].tipo_equipo;
+        let marcaItem = listItems[i].marca_articulo;
+        let modeloItem = "";
+        let serieItem = listItems[i].numero_serie;
+        let colorItem = listItems[i].color_articulo;
         let id = listItems[i].id;
         let newRow = $('<tr>');
         newRow.append($('<td>').text(tipoItem));
@@ -766,7 +762,7 @@ function tableFillEquipos(dataUser){
 
 //FUNCION llenar tabla de vehiculos en la primera carga
 function tableFillVehiculos(dataUser){
-    let listCars = dataUser.vehiculos.length > 0 ? dataUser.vehiculos: [];
+    let listCars = dataUser.grupo_vehiculos.length > 0 ? dataUser.grupo_vehiculos: [];
     listCars.forEach(function(dic) {
         dic.id = Math.floor(Math.random() * 1000000);;
     });
@@ -778,11 +774,11 @@ function tableFillVehiculos(dataUser){
     $("#buttonCarsModal").show();
     $("#tableCars").innerHTML="";
     for (var i = 0; i < listCars.length; i++) {
-        let tipoCar = listCars[i].tipo;
-        let marcaCar = listCars[i].marca;
-        let modeloCar = listCars[i].modelo;
-        let matriculaCar = listCars[i].placa;
-        let colorCar = listCars[i].color;
+        let tipoCar = listCars[i].tipo_vehiculo;
+        let marcaCar = listCars[i].marca_vechiculo;
+        let modeloCar = listCars[i].modelo_vehiculo;
+        let matriculaCar = listCars[i].placas_vehiculo;
+        let colorCar = listCars[i].color_vehiculo;
         let id = listCars[i].id;
         var newRow = $('<tr>');
         newRow.append($('<td>').text(tipoCar));
@@ -823,16 +819,18 @@ function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
 
 //FUNCION al pedir la opcion information user al setear la data
 function optionInformationUser(data){
-    let { portador,ultimo_acceso, vehiculos, equipo, validaciones}= data
-    if(data.hasOwnProperty('portador') && data.hasOwnProperty('validaciones') && data.hasOwnProperty('ultimo_acceso')){
+    let {ultimo_acceso, grupo_vechivulos, grupo_equipo}= data
+    if(data.hasOwnProperty('ultimo_acceso')){
         //---Movement
-        if(validaciones.accion_ingreso == 'Entrada'){
             $("#buttonIn").show();
             $("#textIn").show();
+        /*
+        if(validaciones.accion_ingreso == 'Entrada'){
+           
         }else if(validaciones.accion_ingreso == 'Salida'){
             $("#buttonOut").show();
             $("#textOut").show();
-        }
+        }  */
         $("#buttonNew").hide();
         $("#buttonCard").show();
         $("#buttonClean").show();
@@ -1021,6 +1019,23 @@ function setCleanData(){
     $('#visit').text('')
     $('#authorizePase').text('')
     $('#authorizePhone').text('')
+
+    $("#lunes").addClass('btn-outline-success');
+    $("#martes").addClass('btn-outline-success');
+    $("#miércoles").addClass('btn-outline-success');
+    $("#jueves").addClass('btn-outline-success');
+    $("#viernes").addClass('btn-outline-success');
+    $("#sábado").addClass('btn-outline-success');
+    $("#domingo").addClass('btn-outline-success');
+
+    $("#lunes").removeClass('btn-success');
+    $("#martes").removeClass('btn-success');
+    $("#miércoles").removeClass('btn-success');
+    $("#jueves").removeClass('btn-success');
+    $("#viernes").removeClass('btn-success');
+    $("#sábado").removeClass('btn-success');
+    $("#domingo").removeClass('btn-success');
+
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
     setHideElements('buttonNew');

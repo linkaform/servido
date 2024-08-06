@@ -31,13 +31,13 @@ const columsDataNotas = [
             let divActions = '<div class="row d-flex">';
             divActions += `<button class="btn-table-bitacora" onClick="cerrarNotaAlert('${data.created_by_name}', '${data.note}','${folio}','${data.note_status}')"><i class="fa-regular fa-circle-check"></i></button>`;
             divActions += `<button class="btn-table-bitacora" onClick="verNotasAlert('${folio}')" ><i class="fa-regular fa-eye"></i></button>`;
-            divActions += `<button class="btn-table-bitacora" onClick="alertEliminarNota('${folio}')"><i class="fa-solid fa-trash" ></i></button>`;
+            //divActions += `<button class="btn-table-bitacora" onClick="alertEliminarNota('${folio}')"><i class="fa-solid fa-trash" ></i></button>`;
             divActions += '</div>';
             return divActions;
         },
     },
     { title:"Empleado", field:'created_by_name',hozAlign:"left",headerFilter:true},
-    { title:"Estatus", field:'note_status',hozAlign:"left",tooltip:true,headerFilter:true,width:90},
+    { title:"Folio", field:'folio',hozAlign:"left",tooltip:true,headerFilter:true,width:90},
     { title:"Apertura", field:'note_open_date',hozAlign:"left",headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
     { title:"Cierre", field:'note_close_date',hozAlign:"left",headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
     { title:"Nota", field:'note',hozAlign:"left",headerFilter:true,width:330},
@@ -87,8 +87,19 @@ const columsCambiarCaseta = [
 ];
 
 const columsAgregarGuardiaApoyo = [
-    {title:"Nombre", field:"name", width:240, responsive:0},
-   // {title:"Estatus", field:"status", width:330, resizable:true, tooltip:true},
+    {title:"Nombre", field:"name", width:240, responsive:0,
+        formatter: (cell, formatterParams) => {
+                let data = cell.getData();
+                console.log("LALAL",data)
+                let id = cell.getData().id ? cell.getData().id : 0;
+                let divActions = '<div id="inf'+data.id +'"><div class="d-flex flex-row" id="listOfGuards">';
+                divActions+= '<div col-sm-12 col-md-12 col-lg-6 col-xl-6> <img id="imgGuardiaApoyo" height="60" width="60" src="'
+                + data.img + '"> </div > <div col-sm-12 col-md-12 col-lg-6 col-xl-6 class="flex-column ms-3"> <div> <b>'
+                + data.name +'</b> </div><div id="idStatusGuardia"> '+ data.status +'</div></div>';
+                divActions += '</div> </div>';
+                return divActions;
+            },
+    },
 ];
 
 const columsDataGuardiasApoyo = [

@@ -11,7 +11,7 @@ let dataTableNotas = [];
   {folio:10, status: 'Cerrado', name: 'Mario Castillo', fechaHoraApertura: '05-06-2024 13:40', fechaHoraCierre: '05-06-2024 13:40',  note: 'Décimo registro', fotos:["https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1409/wavebreakmediamicro140906631/31351694-almac%C3%A9n-equipo-de-trabajo-durante-el-per%C3%ADodo-de-ocupados-en-un-gran-almac%C3%A9n.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchwjNLzL2V8JAcvRxxZbLmNc7cisMCMQkSwRe-1OSkQ&s"], archivos:["archivo1.pdf", "archivo2.pdf"], comentarios: 'Resuelto por el equipo de soporte' }*/
 
 const columnsTableNotas = [
-	{ title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:180,
+	{ title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:110,
 		formatter: (cell, formatterParams) => {
 			//----Button Trash
 			let data = cell.getData();
@@ -21,12 +21,12 @@ const columnsTableNotas = [
 			divActions += `<button class="btn-table-bitacora" onClick="verNotasAlert('${folio}')" ><i class="fa-regular fa-eye"></i></button>`;
 			divActions += `<button class="btn-table-bitacora" onClick="editarNotaCargarInfo('${folio}', '${data.note_status}','${data.note_open_date}',
             '${data.note_close_date}', '${data.note}', '${data.note_comments}')"><i class="fa-regular fa-edit"></i></button>`;
-			divActions += `<button class="btn-table-bitacora" onClick="alertEliminarNota('${folio}')"><i class="fa-solid fa-trash" ></i></button>`;
+			//divActions += `<button class="btn-table-bitacora" onClick="alertEliminarNota('${folio}')"><i class="fa-solid fa-trash" ></i></button>`;
 			divActions += '</div>';
 			return divActions;
 		},
 	},
-	{ title:"Estatus", field:'note_status',hozAlign:"left",tooltip:true,headerFilter:true,width:100},
+	{ title:"Folio", field:'folio',hozAlign:"left",tooltip:true,headerFilter:true,width:100},
 	{ title:"Empleado", field:'created_by_name',hozAlign:"left",headerFilter:true,width:250},
 	{ title:"Apertura", field:'note_open_date',hozAlign:"left",headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
 	{ title:"Cierre", field:'note_close_date',hozAlign:"left",headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
