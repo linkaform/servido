@@ -14,6 +14,7 @@ let selectedNotaActualizado=""
 window.onload = function(){
     userJwt = getCookie("userJwt");
     setValueUserLocation('notas');
+    changeButtonColor();
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	
     selectLocation= document.getElementById("selectLocation")
@@ -138,6 +139,7 @@ function setModal(type = 'none',id){
 
 //FUNCION editar un articuloc consesionado
 function editarNotaCargarInfo(folio){
+    limpiarEnviaNotaModal()
     let selectedNota = dataTableNotas.find(x => x.folio == folio);
     if(selectedNota){
         selectedRowFolio= folio
@@ -153,6 +155,8 @@ function editarNotaCargarInfo(folio){
         successMsg("Validación","No se encontro el folio", "warning")
     }
 }
+
+
 
 function agregarNuevaNota(){
     $("#idLoadingButtonEnviarNota").show();
@@ -295,34 +299,27 @@ function agregarNuevaNota(){
 
 //FUNCION para enviar una nueva nota y actualizar la tabla
 function editarNota(){
+    
     $("#idLoadingButtonEditarNota").show();
     $("#idButtonEditarNota").hide();
     let nota= $("#notaEditNota").val(); 
-
     let comments=[]
-    let divComentario = document.getElementById("comment-input-form-editar");
-    selectedRowNota.note_pic.forEach(item => {
-        delete item.id;
-    });
-    selectedRowNota.note_file.forEach(item => {
-        delete item.id;
-    });
-    selectedRowNota.note_comments.forEach(item => {
-        delete item.id;
-        comments.push(item['6647fb38da07bf430e273ea2'])
-    });
+    selectedRowNota.note_pic=[]
+    selectedRowNota.note_comments=[]
+    selectedRowNota.note_file=[]
 
+    let divComentario = document.getElementById("comment-input-form-editar");
     let inputsG = divComentario.querySelectorAll('.comment-div-editar');
     inputsG.forEach(function(input) {
         if(input.value!==""){
-            comments.push(input.value)
+            console.log("VALORRR",input.value)
+            selectedRowNota.note_comments.push(input.value)
         }
     });
     console.log("COMENTARIOS",comments)
     for(let obj of arrayResponses){
         if( obj.hasOwnProperty('file_name') && obj.isImage==true){
             let { isImage, file_name, file  } = obj;
-            //arraySuccessFoto.push({file_name: file_name, file_url: file});
             selectedRowNota.note_pic.push({file_name: file_name, file_url: file})
         }
     }
@@ -330,79 +327,34 @@ function editarNota(){
     for(let obj of arrayResponses){
         if( obj.hasOwnProperty('file_name') && obj.isImage==false){
             let { isImage, file_name, file } = obj;
-            //arraySuccessArchivo.push({file_name: file_name, file_url: file});
             selectedRowNota.note_file.push({file_name: file_name, file_url: file})
         }
     }
-    //let selected=
-
-    /*for(d of dataTableNotas){
-        if(d.folio == selectedRowFolio)
-            selected = d
-    } */
     let originalNote = dataTableNotas.find(x => x.folio == selectedRowNota.folio);
     let cleanSelected = (({ actions, checkboxColumn, folio, edit,view,check,...rest }) => rest)(originalNote);
+
     let edit_notes={
         'created_by_name':selectedRowNota.created_by_name,
         'note':nota,
         'note_close_date': selectedRowNota.note_close_date,
-        'note_comments':comments, 
+        'note_comments':selectedRowNota.note_comments, 
         'note_file': selectedRowNota.note_file,
         'note_open_date': selectedRowNota.note_open_date,
         'note_pic':selectedRowNota.note_pic,
         'note_status': selectedRowNota.note_status
     } 
-      console.log("cleanSelected",cleanSelected)
-      console.log("edittt",edit_notes)
-    //let data_update = encontrarCambios(cleanSelected,edit_notes)
     let validateObj = encontrarCambios(cleanSelected,edit_notes)
+    if(validateObj.note_file.length==0 ){
+        delete validateObj['note_file'];
+    }
+    if(validateObj.note_comments.length==0 ){
+        delete validateObj['note_comments'];
+    }
+    if(validateObj.note_pic.length==0 ){
+        delete validateObj['note_pic'];
+    }
     console.log("OBJETOS QUE SE MANDARAN A LA PETICION",validateObj)
-    if(Object.keys(validateObj).length == 0){
-        Swal.fire({
-            title: "Validación",
-            text: "Edita algo para actualizar la información.",
-            type: "warning"
-        });
-    } else {
 
-    }
-/*
-
-    let data_notes={
-        "created_by_name": "Efcsd", 
-        "note":"",
-        "note_close_date":"",
-        "note_comments":"",
-        "note_file":"",
-        "note_open":"",
-        "note_pic":"",
-        "note_status":""
-    }
-    let validateObj = encontrarCambios(cleanSelected,data_incidence_update)
-    if(Object.keys(validateObj).length == 0){
-        Swal.fire({
-            title: "Validación",
-            text: "Edita algo para actualizar la información.",
-            type: "warning"
-        });
-    } else {
-        if(validateObj.hasOwnProperty('date_incidence')){
-            let formatValue= validateObj.date_incidence.split('T')
-            validateObj.date_incidence=formatValue[0]+' '+formatValue[1]+':00'
-    }
-
-    
-    let data_notes={
-        'note_status': selectedRowNota.note_status,
-        'note':selectedRowNota.note,
-        'note_booth':selectedRowNota,
-        'note_guard':selectedRowNota.note_guard,
-        'note_guard_close':'', //este dato no viene en la lista principal...
-        'note_pic':selectedRowNota,
-        'note_file':selectedRowNota,
-        'note_comments':selectedRowNota, //note_comments_group no esta igual que en la lista
-    } 
-    */
     if(nota!==""){
         fetch(url + urlScripts, {
             method: 'POST',
@@ -465,7 +417,13 @@ function editarNota(){
                         }
                         let selecNota = dataTableNotas.find(x => x.folio === selectedRowNota.folio);
                         for (let key in validateObj){
-                            selecNota[key]= validateObj[key]
+                            if(key=="note_pic" || key=="note_file" || key=="note_comments"){
+                                for(let newItem of validateObj[key]){
+                                    selecNota[key].push(newItem) 
+                                }
+                            }else{
+                                selecNota[key]= validateObj[key]
+                            }
                         }
                         tables["tableNotas"].setData(dataTableNotas);
                         $("#idLoadingButtonEditarNota").hide();
@@ -500,10 +458,9 @@ function drawArchivosEditNota(selectedRowNota,selectedRowFolio){
             console.log("CAMBIO ID")
             archivo.id= randomID.toString()
             archivos+= `
-            <div class="d-flex align-items-start">
+            <div class="d-flex align-items-start" style="margin-right:15px;">
                 <a href="`+archivo.file_url+`" target="_blank">
                 <span>`+archivo.file_name+`</span></a>
-                <button type="button" class="btn-close m-2 mt-0" aria-label="Close" onClick="deleteItemCargado('`+archivo.id+`','note_file')" ></button>
             </div>`;
         }
         cargarArchivosEditNotaDiv.innerHTML = `
@@ -514,6 +471,9 @@ function drawArchivosEditNota(selectedRowNota,selectedRowFolio){
     }else {
         cargarArchivosEditNotaDiv.innerHTML =""
     }
+
+    //<button type="button" class="btn-close m-2 mt-0" aria-label="Close" onClick="deleteItemCargado('`+archivo.id+`','note_file')" ></button>
+
 }
 
 
@@ -527,9 +487,8 @@ function drawFotosEditNota(selectedRowNota,selectedRowFolio){
             let randomID = uniqueID()
             pic.id= randomID.toString()
             fotos+= `
-            <div class="d-flex align-items-start">
+            <div class="d-flex align-items-start" style="margin-right:15px;">
                 <img src="`+pic.file_url+`" height="130px"style="object-fit: contain;">
-                <button type="button" class="btn-close m-2 mt-0" aria-label="Close" onClick="deleteItemCargado('`+pic.id+`','note_pic')" ></button>
             </div>`;
         }
         cargarFotosEditNotaDiv.innerHTML = `
@@ -540,6 +499,8 @@ function drawFotosEditNota(selectedRowNota,selectedRowFolio){
     }else {
         cargarFotosEditNotaDiv.innerHTML =""
     }
+    //<button type="button" class="btn-close m-2 mt-0" aria-label="Close" onClick="deleteItemCargado('`+pic.id+`','note_pic')" ></button>
+
 }
 
 
@@ -559,9 +520,8 @@ function drawComentariosEditNota(selectedRowNota,selectedRowFolio){
             let randomID = uniqueID()
             comm.id= randomID.toString()
             comentarios+= `
-            <div class="d-flex align-items-start" id=`+randomID+`>
-                <span>`+comentario+`</span>
-                <button type="button" class="btn-close m-2 mt-0" aria-label="Close" onClick="deleteItemCargado('`+comm.id+`','note_comments')"></button>
+            <div class="d-flex align-items-start" style="margin-right:15px;" id=`+randomID+`>
+                <span>`+comentario+` </span>
             </div>`;
         }
         cargarComentariosEditNotaDiv.innerHTML = `
@@ -572,6 +532,8 @@ function drawComentariosEditNota(selectedRowNota,selectedRowFolio){
     }else {
         cargarComentariosEditNotaDiv.innerHTML =""
     }
+    //<button type="button" class="btn-close m-2 mt-0" aria-label="Close" onClick="deleteItemCargado('`+comm.id+`','note_comments')"></button>
+
 }
 
 //FUNCION simplicada para eliminar elementos
@@ -883,6 +845,8 @@ function limpiarEnviaNotaModal(editAdd="nueva"){
     arraySuccessFoto=[]
     arraySuccessArchivo=[]
     arrayResponses=[]
+    $("#notaEditNota").val("");
+    $("#comentarioEditarNota-editar").val("");
     //$("#idButtonCargarArchivos").show();
     $("#textAreaNuevaNotaNota").val("")
     //$("#inputComentarioNota").val("")
@@ -1067,7 +1031,6 @@ function setAddComentario(editAdd ="nueva"){
 
 
 function setDeleteComentario(editAdd ="nueva",id){
-    console.log("HAY ERORRES?")
     const elements = document.querySelectorAll('.comment-div-'+editAdd);
     const count = elements.length;
     if(count > 1){

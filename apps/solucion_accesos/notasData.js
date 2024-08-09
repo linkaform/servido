@@ -34,13 +34,23 @@ const columnsTableNotas = [
 	{ title:"Archivo", field:'note_file',hozAlign:"left",headerFilter:true,width:250,
         formatter: function(cell) {
                 let data = cell.getData();
-                let link=""
+                let html=""
 	            if(data.note_file.length>0){
-	            	link= `<a href="${data.note_file[0].file_url}" target="_blank">${data.note_file[0].file_name}</a>`;
+	            	for(let li of data.note_file){
+	            		if(li.hasOwnProperty(["file_url"])){
+	            			html+= ` <li><a href="${li.file_url}" target="_blank">${li.file_name}</a> </li>`;
+	                	}
+	            	}
 	            }else{
-	            	link=""
+	            	html=""
 	            }
-                return link; // Mostrar solo el primer nombre del array
+                let base=`<div class="lista-container" style="max-height: 100px; overflow-y: auto;">
+    						<ul class="scrollable-list" type="none">
+    							`+html+`
+    						</ul>
+    					</div>
+    			`;
+                return base; // Mostrar solo el primer nombre del array
             }},
 	{ title:"Fotografia", field:'note_pic',hozAlign:"left",headerFilter:true,width:250,
             formatter: function(cell) {
@@ -57,14 +67,25 @@ const columnsTableNotas = [
           formatter: function(cell) {
           		let comment=""
                 let data = cell.getData();
+                let html=""
+
                 if(data.note_comments.length>0){
-                	if(data.note_comments[0].hasOwnProperty(["6647fb38da07bf430e273ea2"])){
-                		comment= data.note_comments[0]["6647fb38da07bf430e273ea2"]
-                	}else{
-                		comment= data.note_comments[0]
+                	for(let com of data.note_comments){
+	                	if(com.hasOwnProperty(["6647fb38da07bf430e273ea2"])){
+	                		comment= com["6647fb38da07bf430e273ea2"]
+	                	}else{
+	                		comment= com
+	                	}
+	                	 html+= `<li>`+ comment+` </li>`
                 	}
                 }
-                return comment
+           		let base=`<div class="lista-container" style="max-height: 100px; overflow-y: auto;">
+    						<ul class="scrollable-list">
+    							`+html+`
+    						</ul>
+    					</div>
+    			`;
+                return base
           }},
 ];
 

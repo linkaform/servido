@@ -4,6 +4,7 @@ let listNewVehicules = []
 let listNewItems = []
 let idScr=119197;
 let opScriptCatalog='catalog_brands';
+let colors = getPAlleteColors(12,0)
 let dataCatalogs="";
 let listUserActives = [];
 let urlImgCard = '';
@@ -54,9 +55,425 @@ window.onload = function(){
         redirectionUrl('login',false)
     }
     customNavbar(getValueUserLocation(), getCookie('userTurn'));
-    getCatalogs()
+    //getCatalogs()
     $("#mainSection1").show()
 
+}
+
+
+//funcion Escojer modales
+function setModal(type = 'none',id){
+    if(type == 'comentarioPaseModal'){
+        $('#commentarioPaseModal').modal('show');
+    }else if(type == 'comentarioAccesoModal'){
+        $('#commentarioAccesoModal').modal('show');
+    }else if(type == 'equiposModal'){
+        showAgregarEquipo()
+    }else if(type == 'vehiculosModal'){
+        showAgregarVehiculo()
+    }
+}
+
+function limpiarModalVehiculos(){
+    let selectVehiculosMarca= document.getElementById("selectVehiculosMarca")
+    selectVehiculosMarca.innerHTML=""
+    selectVehiculosMarca.innerHTML = '<option disabled>Escoge un tipo de vehiculo...</option>';
+    selectVehiculosMarca.value=""
+
+    let selectVehiculosModelo= document.getElementById("selectVehiculosModelo")
+    selectVehiculosModelo.innerHTML=""
+    selectVehiculosModelo.innerHTML = '<option disabled>Escoge una marca...</option>';
+    selectVehiculosModelo.value=""
+    let inputMarca= document.getElementById("selectVehiculos");
+    inputMarca.innerHTML =""
+    inputMarca.value=""
+    $("#inputMatriculaVehiculo").val("");
+    $("#inputColor").val("");
+}
+
+function limpiarModalEquipos(){
+    $("#selectTipoEquipo").val("")
+    $("#inputNombreEquipo").val("")
+    $("#inputMarcaEquipo").val("")
+    $("#inputModeloEquipo").val("")
+    $("#inputSerieEquipo").val("")
+    $("#inputColorEquipo").val("")
+}
+
+//FUNCION rellenar catalogos al momento de escojer una opcion
+async function onChangeCatalog(type, id){
+    if(type == "vehiculo"){
+        console.log("AL CAMBIO",type, id)
+        let inputMarca= document.getElementById("selectVehiculos");
+        const options = {
+            method: 'POST', 
+            body: JSON.stringify({
+                script_name:'script_turnos.py',
+                option:'vehiculo_tipo',
+                tipo:inputMarca.value
+            }),
+             headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+ userJwt}
+        };
+        loadingService();
+        let respuesta = await fetch(url + urlScripts, options);
+        let data = await respuesta.json();
+        if(data.error){
+            errorAlert(data)
+        }else{
+            Swal.close();
+            let list =data.response.data
+            let selectVehiculosMarca= document.getElementById("selectVehiculosMarca")
+            selectVehiculosMarca.innerHTML=""; 
+            for (let obj in list){
+                selectVehiculosMarca.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+            }
+            selectVehiculosMarca.value=""
+        }
+    }else if (type == "marca"){
+        let inputTipo= document.getElementById("selectVehiculos");
+        let inputMarca= document.getElementById("selectVehiculosMarca");
+        console.log("DETALLES",inputTipo.value, inputMarca.value)
+        const options = {
+            method: 'POST', 
+            body: JSON.stringify({
+                script_name:'script_turnos.py',
+                option:'vehiculo_tipo',
+                tipo:inputTipo.value,
+                marca: inputMarca.value
+            }),
+             headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+ userJwt}
+        };
+        loadingService();
+        let respuesta = await fetch(url + urlScripts, options);
+        let data = await respuesta.json();
+        if(data.error){
+            errorAlert(data)
+        }else{
+            Swal.close();
+            let list =data.response.data
+            let selectVehiculosModelo= document.getElementById("selectVehiculosModelo")
+            selectVehiculosModelo.innerHTML=""; 
+            for (let obj in list){
+                console.log("OBJ",list[obj])
+                selectVehiculosModelo.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+            }
+            selectVehiculosModelo.value=""
+        }
+    }
+}
+
+function showAgregarVehiculo(){
+    limpiarModalVehiculos()
+    $("#idLoadingButtonVehiculos").show();
+    $("#idButtonVehiculos").hide();
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: "vehiculo_tipo",
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+        },
+        }).then(res => res.json())
+        .then(res => {
+            if(res.success){
+                let data= res.response.data
+                if(data.status_code ==400 || data.status_code==401){
+                    errorAlert(res)
+                    $("#idLoadingButtonVehiculos").hide();
+                    $("#idButtonVehiculos").show();
+                }else{
+                    Swal.close()
+                    $('#vehiculosModal').modal('show');
+                    $("#idLoadingButtonVehiculos").hide();
+                    $("#idButtonVehiculos").show();
+                    let selectVehiculos= document.getElementById("selectVehiculos")
+                    selectVehiculos.innerHTML=""; 
+                    for (let obj of data){
+                        selectVehiculos.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
+                    }
+                    selectVehiculos.value=""
+                }
+            }else{
+                errorAlert(res)
+                $("#idLoadingButtonVehiculos").hide();
+                $("#idButtonVehiculos").show();
+            }
+        })
+}
+
+//FUNCION para saber que vehiculos estan con checkbox
+function agregarVehiculo(){
+    let dicData = {};
+    let validation = false;
+    let tipoVehiculo= $('#selectVehiculos').val();
+    let marca= $('#selectVehiculosMarca').val();
+    let modelo= $('#selectVehiculosModelo').val();
+    let matricula= $('#inputMatriculaVehiculo').val();
+    let color= $('#inputColor').val();
+    if(tipoVehiculo==''){
+        validation=true
+    }
+    if(!validation){
+        let id= Math.floor(Math.random() * 1000000)
+        let checked='checked'
+        selectedVehiculos.push(id);
+        listVehiculesData.push({"tipo_vehiculo":tipoVehiculo ,"marca_vehiculo":marca , "placas_vehiculo":matricula, "color_vehiculo":color, "modelo_vehiculo": modelo, id: id, check: checked})
+        let newRow2 = $('<tr>');
+        newRow2.append($('<td>').text(tipoVehiculo));
+        newRow2.append($('<td>').text(marca));
+        newRow2.append($('<td>').text(matricula));
+        newRow2.append($('<td>').text(color));
+        newRow2.append($('<td>').text(modelo));
+        newRow2.append('<td><input class="form-check-input radioGroupItems" type="radio"  name="groupCarList" id='+id+' '+checked+'></td>');
+        newRow2.append('</tr>');
+        $('#tableCars').append(newRow2);
+
+        limpiarModalVehiculos()
+        $("#vehiculosModal").modal('hide');
+    }else{
+        Swal.fire({
+            title: "Validación",
+            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+            type: "warning"
+        });
+
+    }
+}
+
+//FUNCION para guardar equipos entas con checkbox
+function agregarEquipo(){
+    let dicData = {};
+    let validation = false;
+    let tipo= $("#selectTipoEquipo").val();
+    let nombre=$("#inputNombreEquipo").val();
+    let marca=$("#inputMarcaEquipo").val();
+    let modelo=$("#inputModeloEquipo").val();
+    let noserie=$("#inputSerieEquipo").val();
+    let color=$("#inputColorEquipo").val();
+    if(tipo==''|| nombre=='' ){
+        validation=true
+    }
+    if(!validation){
+        let id= Math.floor(Math.random() * 1000000)
+        let checked='checked'
+        selectedEquipos.push(id);
+        listItemsData.push({ marca_articulo: marca, tipo_equipo: tipo, model_articulo: modelo, color_articulo:color , numero_serie:noserie, id: id, check:checked});
+        //let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
+        let newRow2 = $('<tr>');
+        newRow2.append($('<td>').text(tipo));
+        newRow2.append($('<td>').text(marca));
+        newRow2.append($('<td>').text(modelo));
+        newRow2.append($('<td>').text(noserie));
+        newRow2.append($('<td>').text(color));
+        newRow2.append('<td ><input class="form-check-input checkboxGroupEquipos" type="checkbox" id='+id+' '+checked+'></td>');
+        newRow2.append('</tr>');
+        $('#listAddItemsModal').append(newRow2);
+        //successMsg("Success", "Equipo agregado correctamente, da click en la lista para ver tus equipos agregados.")
+        limpiarModalEquipos();
+        successMsg("Confirmación","Equipo agregado correctamente, da click en la lista para ver todos los equipos selecionados." )
+        $('#equiposModal').modal('hide');
+    }else{
+        Swal.fire({
+            title: "Validación",
+            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+            type: "warning"
+        });
+    }
+}
+
+function verListaDeEquiposAgregados(){
+    selectedEquipos=[]
+    getSelectedCheckbox('tableEquipos', 'checkboxGroupEquipos', selectedEquipos)
+    let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
+    $('#listAddItemsModal').modal('show');
+    let tabla = document.getElementById('tableAddItemsModal');
+    let tbody = tabla.getElementsByTagName('tbody')[0];
+    tbody.innerHTML = '';
+    if(selectedItems.length>0 ){
+        for (var i = 0; i < selectedItems.length; i++) {
+            let tipoCar = selectedItems[i].tipo_equipo;
+            let marcaCar = selectedItems[i].marca_articulo;
+            let modeloCar = selectedItems[i].modelo_articulo;
+            let numeroSerie = selectedItems[i].numero_serie;
+            let colorCar = selectedItems[i].color_articulo;
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(tipoCar));
+            newRow.append($('<td>').text(marcaCar));
+            newRow.append($('<td>').text(modeloCar));
+            newRow.append($('<td>').text(numeroSerie));
+            newRow.append($('<td>').text(colorCar));
+            newRow.append('</tr>');
+            $('#tableAddItemsModal').append(newRow);
+        }
+    } else if(selectedItems.length==0){
+        var newRow = $('<tr>');
+        newRow.append($('<td colspan="3">').text('No existen equipos seleccionados.'));
+        newRow.append('</tr>');
+        $('#tableAddItemsModal').append(newRow);
+    }
+    $("#listAddItemsModal").modal('show');
+}
+
+function verListaDeVehiculosAgregados(){
+    selectedVehiculos=[]
+    getSelectedCheckbox('tableCars', 'radioGroupItems', selectedVehiculos)
+    let selectedVehiculo= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
+    console.log("selectedVehiculo", selectedVehiculo,listVehiculesData)
+    $('#listAddCarsModal').modal('show');
+    let tabla = document.getElementById('tableAddCarsModal');
+    let tbody = tabla.getElementsByTagName('tbody')[0];
+    tbody.innerHTML = '';
+    if(selectedVehiculo.length>0 ){
+        for (var i = 0; i < selectedVehiculo.length; i++) {
+            let tipoCar = selectedVehiculo[i].tipo_vehiculo;
+            let marcaCar = selectedVehiculo[i].marca_vehiculo;
+            let modeloCar = selectedVehiculo[i].modelo_vehiculo;
+            let matriculaCar = selectedVehiculo[i].placas_vehiculo;
+            let colorCar = selectedVehiculo[i].color_vehiculo;
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(tipoCar));
+            newRow.append($('<td>').text(marcaCar));
+            newRow.append($('<td>').text(modeloCar));
+            newRow.append($('<td>').text(matriculaCar));
+            newRow.append($('<td>').text(colorCar));
+            newRow.append('</tr>');
+            $('#tableAddCarsModal').append(newRow);
+        }
+    } else if(selectedVehiculo.length==0){
+        var newRow = $('<tr>');
+        newRow.append($('<td colspan="3">').text('No hay vehículo seleccionado.'));
+        newRow.append('</tr>');
+        $('#tableAddCarsModal').append(newRow);
+    }
+    $("#listAddCarsModal").modal('show');
+}
+
+
+function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
+    let group= document.querySelectorAll('.'+classCheckbox)
+    group.forEach(checkbox => {
+        if(checkbox.checked){
+            checkboxesSeleccionados.push(parseInt(checkbox.id))
+        }
+  });
+    //return checkboxesSeleccionados
+}
+
+//FUNCION ver modal para agregar vehiculos
+/*function agregarVehiculo(){
+    selectedVehiculos=[]
+    getSelectedCheckbox('tableEquipos', 'radioGroupItems', selectedVehiculos)
+    let selectedItems= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
+    $('#listAddCarsModal').modal('show');
+    let tabla = document.getElementById('tableAddCarsModal');
+    let tbody = tabla.getElementsByTagName('tbody')[0];
+    tbody.innerHTML = '';
+    if(selectedItems.length>0 ){
+        for (var i = 0; i < selectedItems.length; i++) {
+            let tipoCar = selectedItems[i].tipo;
+            let marcaCar = selectedItems[i].marca;
+            let modeloCar = selectedItems[i].modelo;
+            let matriculaCar = selectedItems[i].placa;
+            let colorCar = selectedItems[i].color;
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(tipoCar));
+            newRow.append($('<td>').text(marcaCar));
+            newRow.append($('<td>').text(modeloCar));
+            newRow.append($('<td>').text(matriculaCar));
+            newRow.append($('<td>').text(colorCar));
+            newRow.append('</tr>');
+            $('#tableAddCarsModal').append(newRow);
+        }
+    } else{
+        var newRow = $('<tr>');
+        newRow.append($('<td colspan="3">').text('No existen Vehiculos Seleccionados o añadidos'));
+        newRow.append('</tr>');
+        $('#tableAddCarsModal').append(newRow);
+    }
+}
+*/
+
+function showAgregarEquipo(){
+    limpiarModalEquipos()
+    $('#equiposModal').modal('show');
+}
+
+
+//FUNCION ver modal para agregar equipos
+/*
+function agregarEquipo(){
+    selectedEquipos=[]
+    getSelectedCheckbox('tableEquipos', 'checkboxGroupEquipos', selectedEquipos)
+    let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
+    $('#listAddItemsModal').modal('show');
+    let tabla = document.getElementById('tableAddItemsModal');
+    let tbody = tabla.getElementsByTagName('tbody')[0];
+    tbody.innerHTML = '';
+    if(selectedItems.length>0){
+        for (var i = 0; i < selectedItems.length; i++) {
+            let tipoItem = selectedItems[i].tipo;
+            let marcaItem = selectedItems[i].marca;
+            let modeloItem = selectedItems[i].modelo;
+            let serieItem = selectedItems[i].serie;
+            let colorItem = selectedItems[i].color;
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(tipoItem));
+            newRow.append($('<td>').text(marcaItem));
+            newRow.append($('<td>').text(modeloItem));
+            newRow.append($('<td>').text(serieItem));
+            newRow.append($('<td>').text(colorItem));
+            newRow.append('</tr>');
+            $('#tableAddItemsModal').append(newRow);
+        }
+    }else{
+        var newRow = $('<tr>');
+        newRow.append($('<td colspan="3">').text('No existen equipos seleccionados'));
+        newRow.append('</tr>');
+        $('#tableAddItemsModal').append(newRow);
+    }
+}
+*/
+function agregarComentarioPase(type){
+    if(type== "acceso"){
+        $("#commentarioAccesoModal").modal('hide')
+        successMsg("Confirmación", "Comentario listo para agregar al registro de ingreso")
+    }else{
+        $("#commentarioPaseModal").modal('hide')
+        successMsg("Confirmación", "Comentario listo para agregar al registro de ingreso")
+    }
+}
+
+function showCommentarioAccesoModal(){
+    loadingService()
+    fetch(url + urlScripts ,{
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: "vehiculo_tipo",
+            tipo :"Automóvil",
+            //marca :"CHEVROLET"
+        }),
+        headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        console.log("GET CATALOGS RES", res)
+        if (res.success) {
+
+        } else{
+            errorAlert(res)
+        }
+    })
+}
+ 
+function showCommentarioPaseModal(){
+    loadingService()   
 }
 
 //FUNCION Obtener data inicial informacion de la caseta
@@ -139,49 +556,6 @@ function asignarNuevaVisita(){
         });
     }
 }
-
-
-//FUNCION para agregar un nuevo equipo
-function agregaEquipo(){
-    let nombre=$("#inputNombreNV").val();
-    let razonSocial=$("#inputRazonSocialNV").val();
-    let areaQueVisita=$("#inputAreaVisitaNV").val();
-    let visitaA=$("#selectVisitaNV").val();
-    let motivoVisita=$("#inputMotivoVisitaNV").val();
-    if(nombre!=='' , razonSocial!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
-        fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_id: idScript,
-                option: 'add_new_equip',
-                nombre: nombre,
-                razonSocial:razonSocial,
-                areaQueVisita:areaQueVisita,
-                visitaA:visitaA,
-                motivoVisita:motivoVisita,
-
-            }),
-            headers:{
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt
-            },
-        })
-        .then(res => res.json())
-        .then(res => {
-            if (res.success) {
-                //CODE una vez resulta la imagen, cargarla en front
-                let data={ data: {}}
-            } 
-        });
-    }else{
-        Swal.fire({
-            title: "Validación",
-            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
-            type: "warning"
-        });
-    }
-}
-
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
 function buscarPaseEntrada() {
@@ -219,6 +593,8 @@ function buscarPaseEntrada() {
                 $("#divSpinner").hide();
                 setHideElements('dataShow');
                 $("#inputCodeUser").val("")
+                $("#idComentarioPase").val('')
+                $("#idComentarioAcceso").val('')
                 $("#buttonBuscarPaseEntrada").prop('disabled', false);
                 $("#buttonNew").prop('disabled', false);
             }else{
@@ -228,13 +604,14 @@ function buscarPaseEntrada() {
                 $("#buttonNew").show();
                 $("#divSpinner").hide();
                 $("#inputCodeUser").val("")
+                $("#idComentarioPase").val('')
+                $("#idComentarioAcceso").val('')
                 $("#buttonBuscarPaseEntrada").prop('disabled', false);
                 $("#buttonNew").prop('disabled', false);
             }
         })
     }
 }
-
 
 //FUNCION para obtener la lista de usuario
 function getDataListUser(){
@@ -263,82 +640,81 @@ function getDataListUser(){
 
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 1
 function registrarIngreso(){
-        Swal.fire({
-            title: 'Cargando...',
-            allowOutsideClick: false,
-            onBeforeOpen: () => {
-                Swal.showLoading();
-           }
-        });
-        //let codeUser  = $("#inputCodeUser").val();
-        $("#buttonIn").hide();
-        $("#buttonOut").hide();
-        
-        let location= selectLocation.value
-        let area=selectCaseta.value 
+    loadingService()
+    //let codeUser  = $("#inputCodeUser").val();
+    $("#buttonIn").hide();
+    $("#buttonOut").hide();
+    
+    let location= selectLocation.value
+    let area=selectCaseta.value 
 
-        getSelectedCheckbox('tableItems', 'checkboxGroupEquipos', selectedEquipos);
-        let selectedEq= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
+    getSelectedCheckbox('tableEquipos', 'checkboxGroupEquipos', selectedEquipos);
+    let selectedEq= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id)).map(({ check, id, ...rest }) => rest)
 
-        getSelectedCheckbox('tableItems', 'radioGroupItems', selectedVehiculos)
-        let selectedVe= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
-        //let dataItem = {'listItemsData':listItemsData,'listNewItems':listNewItems}
-        //let dataVehicule = {'listVehiculesData':listVehiculesData,'listNewVehicules':listNewVehicules}
-        console.log("QEUIPOS VEHICULOS",selectedVe,selectedEq )
-        fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_name: 'script_turnos.py',
-                option: 'do_access',
-                qr_code: codeUser,
-                location: location,
-                area: area,
-                vehiculo: selectedVe,
-                equipo: selectedEq,
-            }),
-            headers:{
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt,
-            },
-        })
-        .then(res => res.json())
-        .then(res => {
-            if (res.success) {
-                let data = {};
-                setHideElements('buttonsModal');
-                setDataInformation('informatioUser',data)
-                Swal.fire({
-                    title   :"Exito!",
-                    text: "Movimiento de usuario registrado",
-                    icon: "success"
-                });
+    getSelectedCheckbox('tableEquipos', 'radioGroupItems', selectedVehiculos)
+    let selectedVe= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id)).map(({ check, id, ...rest }) => rest);
+       
+    console.log(selectedVe,selectedEq )
+    //let dataItem = {'listItemsData':listItemsData,'listNewItems':listNewItems}
+    //let dataVehicule = {'listVehiculesData':listVehiculesData,'listNewVehicules':listNewVehicules}
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'script_turnos.py',
+            option: 'do_access',
+            qr_code: codeUser,
+            location: location,
+            area: area,
+            vehiculo: selectedVe,
+            equipo: selectedEq,
+            comentario_pase: $("#idComentarioPase").val(),
+            comentario_acceso:$("#idComentarioAcceso").val()
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            let data = {};
+            setHideElements('buttonsModal');
+            setDataInformation('informatioUser',data)
+            Swal.fire({
+                title   :"Exito!",
+                text: "Movimiento de usuario registrado",
+                icon: "success"
+            });
 
-                setCleanData();
-                setHideElements('dataHide');
-                setHideElements('buttonsOptions');
-                setHideElements('buttonNew');
-                //$("#buttonCard").show();
-                //$("#buttonClean").show();
-                //$("#buttonOut").show();
-                $("#buttonNew").show();
-                $("#inputCodeUser").val('');
-            }else{
-                errorAlert(res)
-                setCleanData();
-                setHideElements('dataHide');
-                $("#inputCodeUser").val("");
-                $("#buttonNew").show();
-            }
-        }).catch(error => {
-            errorAlert(res)
-            console.error(error)
             setCleanData();
             setHideElements('dataHide');
-            $("#inputCodeUser").val('');
+            setHideElements('buttonsOptions');
+            setHideElements('buttonNew');
+            //$("#buttonCard").show();
+            //$("#buttonClean").show();
+            //$("#buttonOut").show();
             $("#buttonNew").show();
-        });
+            $("#inputCodeUser").val('');
+            $("#buttonAddCommentarioAccesoModal").hide();
+        }else{
+            errorAlert(res)
+            setCleanData();
+            setHideElements('dataHide');
+            $("#inputCodeUser").val("");
+            $("#buttonNew").show();
+            $("#buttonAddCommentarioAccesoModal").hide();
+        }
+    }).catch(error => {
+        errorAlert(res)
+        console.error(error)
+        setCleanData();
+        setHideElements('dataHide');
+        $("#inputCodeUser").val('');
+        $("#buttonNew").show();
+        $("#buttonAddCommentarioAccesoModal").hide();
+    });
 }
-
 
 function registrarSalida(){
     Swal.fire({
@@ -348,9 +724,6 @@ function registrarSalida(){
             Swal.showLoading();
        }
     });
-    
-    //let codeUser  = $("#inputCodeUser").val();
-   
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -380,7 +753,7 @@ function registrarSalida(){
             setHideElements('buttonsOptions');
             setHideElements('buttonNew');
             $("#inputCodeUser").val('');
-
+            $("#buttonAddCommentarioAccesoModal").hide();
         }else{
             Swal.fire({
                 title: "Error",
@@ -389,15 +762,14 @@ function registrarSalida(){
             });
             $("#buttonOut").show();
             $("#inputCodeUser").val('');
-
+            $("#buttonAddCommentarioAccesoModal").hide();
         }
     }).catch(error => {
         console.error(error)
         $("#inputCodeUser").val('');
+        $("#buttonAddCommentarioAccesoModal").hide();
     });
 }
-
-
 
 //FUNCION para asignar un nuevo gafete
 function setDataGafete(){
@@ -461,7 +833,6 @@ function setDataGafete(){
     })
 }
 
-
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 2
 function setDataInformation(option, data = {}){
     /*
@@ -488,7 +859,6 @@ function setDataInformation(option, data = {}){
     if(option == 'alerts'){
         optionAlerts(data);
     }else if(option == 'informatioUser'){
-        console.log("DATA", data)
         optionInformationUser(data);
     }else if(option == 'listUsers'){
         optionListUsers(data)
@@ -496,7 +866,6 @@ function setDataInformation(option, data = {}){
         optionCheckOtro()
     }
 }
-
 
 //FUNCION al pedir la opcion check otro user al setear la data
 function optionCheckOtro(){
@@ -510,16 +879,18 @@ function optionCheckOtro(){
     }
 }
 
-
-
 //FUNCION al pedir la opcion information user al setear la informacion del usuario
 function dataUserInf(dataUser){
-    let dias= dataUser.limitado_a_dias
-    for(let d of dias){
-        $("#"+d+"").removeClass('btn-outline-success');
-        $("#"+d+"").addClass('btn-success');
+    if(dataUser.hasOwnProperty('limitado_a_dias')){
+        let dias= dataUser.limitado_a_dias
+        if(dias.length>0){
+            for(let d of dias){
+                $("#"+d+"").removeClass('btn-outline-success');
+                $("#"+d+"").addClass('btn-success');
+            }
+        }
     }
-
+    $("#folio").text(dataUser.folio !==""? dataUser.folio: "")
 
     let imgUser ="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1"
     if(dataUser.hasOwnProperty('foto')){
@@ -533,6 +904,7 @@ function dataUserInf(dataUser){
     $('#imgUser').attr('src', imgUser);
 
     let imgCard="https://www.creativefabrica.com/wp-content/uploads/2018/12/Id-card-icon-by-rudezstudio-5-580x386.jpg"
+
     if(dataUser.hasOwnProperty('identificacion')){
         if(dataUser.identificacion.length>0){
             imgCard= dataUser.identificacion[0].file_url !==  '' ? 
@@ -570,7 +942,6 @@ function dataUserInf(dataUser){
             status=""
         }
     }
-
     $('#status').text(status);
     
     let tipoDePase = ""
@@ -614,12 +985,13 @@ function tableFill(dataUser){
     //TABLA COMENTARIOS
     let listInstructions = []
     if(dataUser.hasOwnProperty('comentarios')){
-        listInstructions = dataUser.comentarios.length > 0 ? dataUser.comentarios: [];
+        listInstructions = dataUser.grupo_instrucciones_pase.length > 0 ? dataUser.grupo_instrucciones_pase: [];
     }
     for (var i = 0; i < listInstructions.length; i++) {
         //if(i < 3){
             var newRow = $('<tr>');
             newRow.append($('<td>').text(listInstructions[i]));
+            newRow.append($('<td>').text(listInstructions[i]).tipo_comentario);
             newRow.append('</tr>');
             $('#tableInstructions').append(newRow);
         //}
@@ -636,7 +1008,8 @@ function tableFill(dataUser){
     }*/
     if(listInstructions.length == 0){
         var newRow = $('<tr>');
-        newRow.append($('<td>').text('No existen Comentarios/Instrucciones'));
+        newRow.append($('<td>').text('No existen Comentarios/ Instrucciones'));
+        newRow.append($('<td>'));
         newRow.append('</tr>');
         $('#tableInstructions').append(newRow);
     }
@@ -705,7 +1078,7 @@ function tableFill(dataUser){
     */
     if(listCertificaciones.length == 0){
         var newRow = $('<tr>');
-        newRow.append($('<td>').text('No existen Accesos/Certificaciones'));
+        newRow.append($('<td>').text('No existen Accesos/ Certificaciones'));
         newRow.append($('<td>'))
         newRow.append('</tr>');
         $('#tableLocations').append(newRow);
@@ -722,14 +1095,14 @@ function tableFillEquipos(dataUser){
     });
     listItemsData = listItems;
     listItemsData.forEach(function(dic) {
-        dic.check = false;
+        dic.check = true;
     });
-    $("#buttonItemsModal").show();
-    $("#tableItems").innerHTML="";
+    //$("#buttonItemsModal").show();
+    $("#tableEquipos").innerHTML="";
     for (let i = 0; i < listItems.length; i++) {
         let tipoItem = listItems[i].tipo_equipo;
         let marcaItem = listItems[i].marca_articulo;
-        let modeloItem = "";
+        let modeloItem = listItems[i].modelo_articulo;
         let serieItem = listItems[i].numero_serie;
         let colorItem = listItems[i].color_articulo;
         let id = listItems[i].id;
@@ -740,13 +1113,13 @@ function tableFillEquipos(dataUser){
         newRow.append($('<td>').text(serieItem));
         newRow.append($('<td>').text(colorItem));
 
-        let isChecked= listItems[i].check == true ? 'checked' : '';
+        let isChecked= listItems[i].check == true || listItems[i].check == "checked" ? 'checked' : '';
         newRow.append('<td ><input class="form-check-input checkboxGroupEquipos" type="checkbox" id='+id+' '+isChecked+'></td>');
         newRow.append('</tr>');
-        $('#tableItems').append(newRow);
+        $('#tableEquipos').append(newRow);
     }
     if(listItems.length == 0){
-        $("#tableItems").innerHTML="";
+        $("#tableEquipos").innerHTML="";
         let newRow = $('<tr>');
         newRow.append($('<td >').text('No existen Equipos'));
         newRow.append($('<td>'));
@@ -755,7 +1128,7 @@ function tableFillEquipos(dataUser){
         newRow.append($('<td>'));
         newRow.append($('<td>'));
         newRow.append('</tr>');
-        $('#tableItems').append(newRow);
+        $('#tableEquipos').append(newRow);
     }
 }
 
@@ -768,14 +1141,14 @@ function tableFillVehiculos(dataUser){
     });
     listVehiculesData = listCars;
     listVehiculesData.forEach(function(dic) {
-        dic.check = false;
+        dic.check = true;
     });
 
     $("#buttonCarsModal").show();
     $("#tableCars").innerHTML="";
     for (var i = 0; i < listCars.length; i++) {
         let tipoCar = listCars[i].tipo_vehiculo;
-        let marcaCar = listCars[i].marca_vechiculo;
+        let marcaCar = listCars[i].marca_vehiculo;
         let modeloCar = listCars[i].modelo_vehiculo;
         let matriculaCar = listCars[i].placas_vehiculo;
         let colorCar = listCars[i].color_vehiculo;
@@ -787,7 +1160,7 @@ function tableFillVehiculos(dataUser){
         newRow.append($('<td>').text(matriculaCar));
         newRow.append($('<td>').text(colorCar)); 
         let isChecked= listCars[i].check == true ? 'checked' : '';
-        newRow.append('<td><input class="form-check-input radioGroupItems" type="radio"  name="groupCarList" id='+id+' '+isChecked+'></td>');
+        newRow.append('<td> <input class="form-check-input radioGroupItems" type="radio"  name="groupCarList" id='+id+' '+isChecked+'> </td>');
         newRow.append('</tr>');
         $('#tableCars').append(newRow);
     }
@@ -805,32 +1178,20 @@ function tableFillVehiculos(dataUser){
     }
 }
 
-
-function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
-    let group= document.querySelectorAll('.'+classCheckbox)
-    group.forEach(checkbox => {
-        if(checkbox.checked){
-            checkboxesSeleccionados.push(parseInt(checkbox.id))
-        }
-  });
-    //return checkboxesSeleccionados
-}
-
-
 //FUNCION al pedir la opcion information user al setear la data
 function optionInformationUser(data){
-    let {ultimo_acceso, grupo_vechivulos, grupo_equipo}= data
+    let { ultimo_acceso }= data
     if(data.hasOwnProperty('ultimo_acceso')){
         //---Movement
-            $("#buttonIn").show();
+        if(data.tipo_movimiento == 'Entrada'){
+           $("#buttonIn").show();
+           $("#buttonAddCommentarioAccesoModal").show()
             $("#textIn").show();
-        /*
-        if(validaciones.accion_ingreso == 'Entrada'){
-           
-        }else if(validaciones.accion_ingreso == 'Salida'){
+        }else if(data.tipo_movimiento == 'Salida'){
             $("#buttonOut").show();
+            $("#buttonAddCommentarioAccesoModal").hide()
             $("#textOut").show();
-        }  */
+        } 
         $("#buttonNew").hide();
         $("#buttonCard").show();
         $("#buttonClean").show();
@@ -842,28 +1203,35 @@ function optionInformationUser(data){
             //if(i < 3){
                 //let duration=segundosAHoras(listBitacora[i].duration)
                 var newRow = $('<tr>');
-                newRow.append($('<td>').text(listBitacora[i].nombre_visita ? listBitacora[i].nombre_visita : ''));
-                newRow.append($('<td>').text(listBitacora[i].location ? listBitacora[i].location : ''));
+                newRow.append($('<td>').text(listBitacora[i].visita_a ? listBitacora[i].visita_a : ''));
+                newRow.append($('<td>').text(listBitacora[i].fecha ? listBitacora[i].fecha : ''));
                 newRow.append($('<td>').text(listBitacora[i].duration ? listBitacora[i].duration +' hrs': ''));
+                if(listBitacora[i].hasOwnProperty('comentario')){
+                    newRow.append('<td ><button style="border:none; background-color:transparent;" onclick="mostrarComentarioUltimoAcceso('+ listBitacora[i].comentario+')"> <i class="fa-solid fa-message"></i> </button> </td>');
+                }else{
+                    newRow.append('<td > </td>');
+                }
                 newRow.append('</tr>');
                 $('#tableBitacora').append(newRow);
             //}
         }
+        /*
         if(listBitacora.length > 3){
             $("#buttonBitacoraModal").show();
             for (var i = 0; i < listBitacora.length; i++) {
                 let duration=segundosAHoras(listBitacora[i].duration)
                 var newRow = $('<tr>');
-                newRow.append($('<td>').text(listBitacora[i].nombre_visita ? listBitacora[i].nombre_visita : ''));
+                newRow.append($('<td>').text(listBitacora[i].nombre_visita ? listBitacora[i].visita_a : ''));
                 newRow.append($('<td>').text(listBitacora[i].location ? listBitacora[i].location : ''));
                 newRow.append($('<td>').text(duration ? duration : ''));
                 newRow.append('</tr>');
                 $('#tableBitacoraModal').append(newRow);
             }
-        }
+        }*/
         if(listBitacora.length == 0){
             var newRow = $('<tr>');
-            newRow.append($('<td colspan="3">').text('No existen Registros Recientes'));
+            newRow.append($('<td colspan="3">').text('No existen registros recientes'));
+            newRow.append($('<td>'));
             newRow.append('</tr>');
             $('#tableBitacora').append(newRow);
         }
@@ -880,6 +1248,33 @@ function optionInformationUser(data){
         // Table Cars
         tableFillVehiculos(data);
     }
+}
+
+function mostrarComentarioUltimoAcceso(comentario){
+    let comm=""
+    if(comentario !=+"" && comentario !==undefined){
+        comm=comentario
+    }else{
+        comm="No hay comentario disponible"
+    }
+    Swal.fire({
+        text: "Comentario",
+        title: "Comentario",
+        html: ` <div class="d-flex justify-content-center mt-2">
+            <span> `+comm+` </span></div>
+           `,
+        showCancelButton: true,
+        showConfirmButton:false,
+        cancelButtonColor: colors[0],
+        cancelButtonText: "Cerrar",
+        heightAuto:false,
+        reverseButtons: true
+    })
+    .then((result) => {
+        if (result.isConfirmed) {
+            
+        }
+    });
 }
 
 
@@ -990,7 +1385,7 @@ function setCleanData(){
     tbody = document.querySelector('#tableModalAccess tbody');
     tbody.innerHTML = '';
 
-    tbody = document.querySelector('#tableItems tbody');
+    tbody = document.querySelector('#tableEquipos tbody');
     tbody.innerHTML = '';
 
     tbody = document.querySelector('#tableModalItems tbody');
@@ -1019,6 +1414,9 @@ function setCleanData(){
     $('#visit').text('')
     $('#authorizePase').text('')
     $('#authorizePhone').text('')
+    $("#folio").text("")
+    $("#idComentarioPase").val('')
+    $("#idComentarioAcceso").val('')
 
     $("#lunes").addClass('btn-outline-success');
     $("#martes").addClass('btn-outline-success');
@@ -1094,179 +1492,14 @@ function setCheckItem(id = 0) {
     }
 }
 
-//FUNCION para guardar equipos entas con checkbox
-function agregarEquipoAModal(){
-    let dicData = {};
-    let validation = false;
-    let tipo= $("#selectTipoEquipo-123").val();
-    let nombre=$("#inputNombreEquipo-123").val();
-    let marca=$("#inputMarcaItem").val();
-    let modelo=$("#inputModeloItem").val();
-    let noserie=$("#inputSerieItem").val();
-    let color=$("#inputColorItem").val();
-    if(tipo==''|| nombre=='' ){
-        validation=true
-    }
-    if(!validation){
-        fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_id: idScript,
-                option: 'add_new_equip',
-
-            }),
-            headers:{
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt
-            },
-        })
-        .then(res => res.json())
-        .then(res => {
-            if (res.success) {
-                //CODE una vez resulta la imagen, cargarla en front
-                dicData={ data: {}}
-            } 
-        });
-        listNewItems.push({ marca_item: marca, type_item: tipo, model_item: modelo, color_item:color , noserie_item:noserie});
-        let newRow2 = $('<tr>');
-        newRow2.append($('<td>').text(tipo));
-        newRow2.append($('<td>').text(marca));
-        newRow2.append($('<td>').text(modelo));
-        newRow2.append($('<td>').text(noserie));
-        newRow2.append($('<td>').text(color));
-        newRow2.append('</tr>');
-        $('#tableAddItemsModal').append(newRow2);
-
-        $("#selectTipoEquipo-123").val('');
-        $("#inputNombreEquipo-123").val('');
-        $("#inputMarcaItem").val('');
-        $("#inputModeloItem").val('');
-        $("#inputSerieItem").val('');
-        $("#inputColorItem").val('');
-        $("#alertItemModal").hide();
-        $('#equipmentModal').modal('hide');
-    }else{
-        Swal.fire({
-            title: "Validación",
-            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
-            type: "warning"
-        });
-        //$("#alertItemModal").show();
-    }
-}
 
 
-//FUNCION para saber que vehiculos estan con checkbox
-function getSaveCar(){
-    let dicData = {};
-    let validation = false;
-    let tipoVehiculo= $('#selectTipoVehiculo-123').val();
-    let marca= $('#selectCatalogMarca-123').val();
-    let modelo= $('#selectCatalogModelo-123').val();
-    let matricula= $('#inputMatriculaVehiculo-123').val();
-    let color= $('#inputColor-123').val();
-    if(tipoVehiculo==''){
-        validation=true
-    }
-    if(!validation){
-        let newRow = $('<tr>');
-        newRow.append($('<td>').text(marca));
-        newRow.append($('<td>').text(matricula));
-        newRow.append($('<td>').text(color));
-        newRow.append($('<td>').text(modelo));
-        newRow.append('</tr>');
-        $('#tableCars').append(newRow);
-        listVehiculesData.push({"marca":marca , "matricula":matricula, "color":color, "modelo": modelo})
-        let newRow2 = $('<tr>');
-        newRow2.append($('<td>').text(marca));
-        newRow2.append($('<td>').text(matricula));
-        newRow2.append($('<td>').text(color));
-        newRow2.append($('<td>').text(modelo));
-        newRow2.append('</tr>');
-        $('#tableAddCarsModal').append(newRow2);
-        $("#selectTipoVehiculo-123").val('');
-        $("#selectCatalogMarca-123").val('');
-        $("#selectModeloVehiculo-123").val('');
-        $("#selectMatriculaVehiculo-123").val('');
-        $("#selectColorVehiculo-123").val('');
-        $("#carModal").modal('hide');
-    }else{
-        Swal.fire({
-            title: "Validación",
-            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
-            type: "warning"
-        });
-
-    }
-}
 
 
-//FUNCION ver modal para agregar vehiculos
-function setViewModalCard(){
-    selectedVehiculos=[]
-    getSelectedCheckbox('tableItems', 'radioGroupItems', selectedVehiculos)
-    let selectedItems= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
-    $('#listAddCarsModal').modal('show');
-    let tabla = document.getElementById('tableAddCarsModal');
-    let tbody = tabla.getElementsByTagName('tbody')[0];
-    tbody.innerHTML = '';
-    if(selectedItems.length>0 ){
-        for (var i = 0; i < selectedItems.length; i++) {
-            let tipoCar = selectedItems[i].tipo;
-            let marcaCar = selectedItems[i].marca;
-            let modeloCar = selectedItems[i].modelo;
-            let matriculaCar = selectedItems[i].placa;
-            let colorCar = selectedItems[i].color;
-            var newRow = $('<tr>');
-            newRow.append($('<td>').text(tipoCar));
-            newRow.append($('<td>').text(marcaCar));
-            newRow.append($('<td>').text(modeloCar));
-            newRow.append($('<td>').text(matriculaCar));
-            newRow.append($('<td>').text(colorCar));
-            newRow.append('</tr>');
-            $('#tableAddCarsModal').append(newRow);
-        }
-    } else{
-        var newRow = $('<tr>');
-        newRow.append($('<td colspan="3">').text('No existen Vehiculos Seleccionados o añadidos'));
-        newRow.append('</tr>');
-        $('#tableAddCarsModal').append(newRow);
-    }
-}
 
 
-//FUNCION ver modal para agregar equipos
-function setViewModalItem(){
-    selectedEquipos=[]
-    getSelectedCheckbox('tableItems', 'checkboxGroupEquipos', selectedEquipos)
-    let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
-    $('#listAddItemsModal').modal('show');
-    let tabla = document.getElementById('tableAddItemsModal');
-    let tbody = tabla.getElementsByTagName('tbody')[0];
-    tbody.innerHTML = '';
-    if(selectedItems.length>0){
-        for (var i = 0; i < selectedItems.length; i++) {
-            let tipoItem = selectedItems[i].tipo;
-            let marcaItem = selectedItems[i].marca;
-            let modeloItem = selectedItems[i].modelo;
-            let serieItem = selectedItems[i].serie;
-            let colorItem = selectedItems[i].color;
-            var newRow = $('<tr>');
-            newRow.append($('<td>').text(tipoItem));
-            newRow.append($('<td>').text(marcaItem));
-            newRow.append($('<td>').text(modeloItem));
-            newRow.append($('<td>').text(serieItem));
-            newRow.append($('<td>').text(colorItem));
-            newRow.append('</tr>');
-            $('#tableAddItemsModal').append(newRow);
-        }
-    }else{
-        var newRow = $('<tr>');
-        newRow.append($('<td colspan="3">').text('No existen equipos seleccionados'));
-        newRow.append('</tr>');
-        $('#tableAddItemsModal').append(newRow);
-    }
-}
+
+
 
 
 //FUNCION buscar curp
@@ -1318,51 +1551,21 @@ function getFormGafete(){
 }
 
 
-//FUNCION rellenar catalogos al momento de escojer una opcion
-function onChangeCatalog(type, id){
-    if(type == "vehiculo"){
-        $("#divCatalogMarca"+id+"").show();
-        let inputMarca= document.getElementById("selectCatalogMarca-"+id+"");
-        inputMarca.value="";
-        let datalistMarca= document.getElementById("datalistOptionsMarca"+id+"");
-        datalistMarca.innerHTML=""; 
-        let inputModelo= document.getElementById("selectCatalogModelo-"+id+"");
-        inputModelo.value="";
-        let datalistModelo= document.getElementById("datalistOptionsModelo"+id+"");
-        datalistModelo.innerHTML=""; 
-
-        let selectedValue = $( "#selectTipoVehiculo-"+id+"" ).val();
-        let catalogMarca = filterCatalogBy('type', selectedValue);
-        for (let obj in catalogMarca){
-            $("#datalistOptionsMarca"+id+"").append($('<option></option>').val(catalogMarca[obj].brand).text(catalogMarca[obj].brand));
-        }
-    }else if (type == "marca"){
-        $("#divCatalogModelo"+id+"").show();
-        let inputModelo= document.getElementById("selectCatalogModelo-"+id+"");
-        inputModelo.value="";
-        let datalistModelo= document.getElementById("datalistOptionsModelo"+id+"");
-        datalistModelo.innerHTML=""; 
-        let selectedValue = $( "#selectCatalogMarca-"+id+"" ).val();
-        let catalogMarca = filterCatalogBy('brand', selectedValue);
-        for (let obj in catalogMarca){
-                $("#datalistOptionsModelo"+id+"").append($('<option></option>').val(catalogMarca[obj].model).text(catalogMarca[obj].model));
-        }
-    }
-}
 
 
 //FUNCION obtener data para rellenar los catalogos
 function getCatalogs(){
-    $("#selectTipoVehiculo-123").prop( "disabled", true );
-    $("#divCatalogMarca123").hide();
-    $("#divCatalogModelo123").hide();
+    //$("#selectTipoVehiculo-123").prop( "disabled", true );
+    //$("#divCatalogMarca123").hide();
+    //$("#divCatalogModelo123").hide();
     
     fetch(url + urlScripts ,{
         method: 'POST',
         body: JSON.stringify({
             script_name: "script_turnos.py",
-            option: "get_catalog",
-            id_catalog: 119186
+            option: "vehiculo_tipo",
+            tipo :"Automóvil",
+            //marca :"CHEVROLET"
         }),
         headers:{
                 'Content-Type': 'application/json',
@@ -1374,7 +1577,9 @@ function getCatalogs(){
         console.log("GET CATALOGS RES", res)
         if (res.success) {
 
-        } 
+        } else{
+            errorAlert(res)
+        }
     })
     let cat={
         "brands_cars": [
@@ -1397,8 +1602,8 @@ function getCatalogs(){
     }
     //dataCatalogs = res.response.data ==''? cat : res.response.data;
     dataCatalogs=cat
-    $("#selectTipoVehiculo-123").prop( "disabled", false );
-    $("#spinnerTipoVehiculo").css("display", "none");
+    //$("#selectTipoVehiculo-123").prop( "disabled", false );
+    //$("#spinnerTipoVehiculo").css("display", "none");
     dataCatalogs.types_cars.forEach(function(e, i){
     $("#datalistOptionsTipo").append($('<option></option>').val(e).text(e));
     });

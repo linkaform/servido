@@ -91,7 +91,7 @@
 					<button class="input-group-text bg-warning-subtle cursor-pointer myCustomBtnGroup" data-bs-toggle="modal" data-bs-target="#listModal" ><i class="fa-solid fa-list"></i></button>
 				</div>
 			</div>
-			<div class="ms-2" >
+			<div class="ms-2 d-flex" >
 				<div>
 					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" style="display: none;" id="buttonIn" onclick="registrarIngreso();return false;">
 					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso</button>
@@ -101,7 +101,12 @@
 					<button type="button" class="mt-1 mb-1 btn btn-warning btn-sm p-3 pt-1 pb-1" style="display: none;" id="buttonClean" onclick="setCleanData2()">
 					<i class="fa-solid fa-broom"></i> Limpiar</button>
 					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" data-bs-toggle="modal" data-bs-target="#newVisitModal" id="buttonNew">
-				<i class="fa-solid fa-plus"></i> Nueva Visita</button>
+					<i class="fa-solid fa-plus"></i> Nueva Visita</button>
+				</div>
+				<div >
+					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" onclick="setModal('comentarioAccesoModal')" id="buttonAddCommentarioAccesoModal" style="display: none; margin-left: 3px;">
+						<i class="fa-solid fa-plus"></i> Agregar comentario
+					</button>
 				</div>
 				
 			</div>
@@ -112,14 +117,18 @@
 		<div class="row ">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 ">
 				<div class="row  div-container-portal m-1 pt-0 customShadow">
-					<h4 class="m-2 mb-0">Información personal &nbsp;&nbsp;</h4>
+					<h4 class="m-2 mb-0">Folio: &nbsp;&nbsp; <span id="folio"></span></h4>
 					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3" >
-						<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-5" alt="Imagen Usuario" style="max-width:120px; max-height:120px; object-fit: cover;" id="imgUser">
+						<div style="min-height:120px;">
+							<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-5" alt="Imagen Usuario" style="max-width:120px; max-height:120px; object-fit: cover;" id="imgUser">
+						</div>
 						<h5 class="m-4 mb-2" style="font-size:1.3em">Tipo de pase: <br><span id="tipoPaseText" style="font-weight: normal"></span></h5>
 					</div>
 					
 					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3" >
-						<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" class=" mx-auto  mt-5" style="max-width:240px;max-height:120px; object-fit: cover;" id="imgCard">
+						<div style="min-height:120px;">
+								<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" class=" mx-auto  mt-5" style="max-width:240px;max-height:120px; object-fit: cover;" id="imgCard">
+						</div>
 					<div class="mt-4" >
 						<h6>Disponible los días:</h6>
 						<div class="d-flex justify-content-around" >
@@ -154,7 +163,7 @@
 								<p><span className='h4'><b>A quíen Visita:</b></span>&nbsp;&nbsp;<span id="visita"></span></p>
 							</div>
 							<div class="col-3 d-flex justify-content-end p-0" >
-								<button type="button" class="btn btn-primary btn-sm m-1 p-0" data-bs-toggle="modal" data-bs-target="#phoneModal">
+								<button type="button" class="btn btn-primary btn-sm m-1 " data-bs-toggle="modal" data-bs-target="#phoneModal">
 									<i class="fa-solid fa-phone"></i>
 								</button>
 								<button type="button" class="btn btn-primary btn-sm m-1" data-bs-toggle="modal" data-bs-target="#messageModal">
@@ -168,13 +177,17 @@
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-5">
-				<div class="row div-container-portal m-1 pt-0 customShadow" >
+				<div class="row div-container-portal  customShadow" >
 
 					<div class="d-flex justify-content-between mb-2 mt-2">
-							<h4>Comentarios / Instrucciones de visita</h4>
-							<button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#listAddCommentarios" id="buttonAddCarModal">
-								<i class="fa-solid fa-plus"></i> Agregar comentario
-							</button>
+							<div>
+								<h4>Comentarios / Instrucciones de visita</h4>
+							</div> 
+							<div class="flex-nowrap">
+								<button type="button" class="btn btn-success btn-sm" onclick="setModal('comentarioPaseModal')" id="buttonAddCommentarioPaseModal">
+										<i class="fa-solid fa-plus"></i> Agregar comentario
+								</button>
+							</div>
 							<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listCommentsModal" id="buttonCommentsModal">
 								<i class="fa-solid fa-eye"></i>
 							</button>
@@ -184,6 +197,7 @@
 								<thead class="overflowCustomHead">
 									<tr>
 										<th class="headerColor">Comentarios / Instrucciones</th>
+										<th class="headerColor">Tipo de comentario</th>
 									</tr>
 								</thead>
 							<tbody></tbody>
@@ -213,8 +227,9 @@
 								<thead class="overflowCustomHead">
 									<tr >
 										<th class="headerColor">Visito a</th>
-										<th class="headerColor">Ubicación</th>
+										<th class="headerColor">Fecha</th>
 										<th class="headerColor">Duración</th>
+										<th class="headerColor"></th>
 									</tr>
 								</thead>
 								<tbody></tbody>
@@ -254,7 +269,7 @@
 						</button>
 					</div>
 					<div class="overflowCustom" >
-						<table id="tableAccess" class="table-borderless" >
+						<table id="tableAccess" class="table-borderless" style="border: none;">
 						<thead class="overflowCustomHead" >
 							<tr>
 								<th class="headerColor">Acceso</th>
@@ -274,10 +289,10 @@
 						<h4>Equipos Autorizados</h4>
 
 						<div>
-							<button type="button" class="btn btn-success  btn-sm"  data-bs-toggle="modal" data-bs-target="#equipmentModal">
+							<button type="button" class="btn btn-success  btn-sm" onclick="setModal('equiposModal')" id="idButtonEquipoNota" data-bs-target="#equipmentModal">
 								<i class="fa-solid fa-plus"></i> Agregar Equipo
 							</button>
-							<button type="button" class="btn btn-primary  btn-sm"  onclick="setViewModalItem();return false">
+							<button type="button" class="btn btn-primary  btn-sm"  onclick="verListaDeEquiposAgregados();return false">
 								<i class="fa-solid fa-list"></i>
 							</button>
 							<button type="button" class="btn btn-info  btn-sm"  data-bs-toggle="modal" data-bs-target="#listItemsModal" id="buttonItemsModal">
@@ -286,7 +301,7 @@
 						</div>
 					</div>
 					<div class="overflowCustom" style="max-width:900px !important; ">
-						<table id="tableItems" class=" table-borderless" style="border: none;">
+						<table id="tableEquipos" class=" table-borderless" style="border: none;">
 							<thead class="overflowCustomHead">
 								<tr>
 									<th class="headerColor">Tipo</th>
@@ -307,10 +322,14 @@
 					<div class="mt-3 mb-2 d-flex justify-content-between">
 						<h4>Vehiculos Autorizados</h4>
 						<div>
-							<button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#carModal" id="buttonAddCarModal">
-								<i class="fa-solid fa-plus"></i> Agregar Vehículo
+							<button type="button" class="btn btn-success btn-sm" onclick="setModal('vehiculosModal')" data-bs-target="#carModal" id="idButtonVehiculos">
+							  Agregar Vehículo
 							</button>
-							<button type="button" class="btn btn-primary btn-sm"  onclick="setViewModalCard();return false" >
+							<button class="btn btn-success btn-sm" type="button" id="idLoadingButtonVehiculos" style="display:none;" disabled>
+			                    <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+			                    Cargando...
+			                </button>
+							<button type="button" class="btn btn-primary btn-sm"  onclick="verListaDeVehiculosAgregados();return false" >
 								<i class="fa-solid fa-list"></i>
 							</button>
 							<button type="button" class="btn btn-info  btn-sm"  data-bs-toggle="modal" data-bs-target="#listCarsModal" id="buttonCarsModal">
@@ -549,7 +568,7 @@
 	</div>
 
 	<!-- Modal Item-->
-	<div class="modal fade" id="equipmentModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="equiposModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -559,35 +578,33 @@
 				<div class="modal-body">
 					<div class="col-9 div-equipo-row-123 div-row-equipo" >
 						<label class="form-label">Tipo de Equipo: *</label>
-						<input class="form-control group-equipo" list="datalistOptionsEquipo123" id="selectTipoEquipo-123" placeholder="Escribe algo para buscar..." >
-						<datalist id="datalistOptionsEquipo123">
-							<option value="Computo">
-							<option value="Herramientas">
-							<option value="laptop">
-							<option value="PC">
-							<option value="linterna">
-						</datalist>
+						<select class="form-select" aria-label="Default select example" value="" id="selectTipoEquipo">
+							<option value="Herramienta">Herramienta</option>
+							<option value="Computo">Computo</option>
+							<option value="Tablet">Tablet</option>
+							<option value="Otra">Otra</option>
+						</select>
 					</div>
 					<div class="col-9 div-equipo-row-1 div-row-equipo">
 					<label class="form-label ">Nombre del Equipo:*</label>
-						<input type="text" class="form-control group-equipo" id="inputNombreEquipo-123">
+						<input type="text" class="form-control group-equipo" id="inputNombreEquipo">
 					</div>
 					<div class="row">
 						<div class="mb-3 col-6">
 							<label class="form-label">Marca </label>
-							<input type="text" class="form-control form-item"  placeholder="Marca" id="inputMarcaItem">
+							<input type="text" class="form-control form-item"  placeholder="Marca" id="inputMarcaEquipo">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Modelo </label>
-							<input type="text" class="form-control form-item"  placeholder="Modelo" id="inputModeloItem">
+							<input type="text" class="form-control form-item"  placeholder="Modelo" id="inputModeloEquipo">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Numero de Serie </label>
-							<input type="text" class="form-control form-item"  placeholder="Serie" id="inputSerieItem">
+							<input type="text" class="form-control form-item"  placeholder="Serie" id="inputSerieEquipo">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Color </label>
-							<input type="text" class="form-control form-item"  placeholder="Color" id="inputColorItem">
+							<input type="text" class="form-control form-item"  placeholder="Color" id="inputColorEquipo">
 						</div>
 					</div>
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
@@ -596,87 +613,56 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="agregarEquipoAModal();return false;">Guardar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="agregarEquipo();return false;">Agregar</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!-- Modal Car-->
-	<div class="modal fade" id="carModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="vehiculosModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Vehículo</h1>
+					<h1 class="modal-title fs-5">Agregar vehiculo</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 				<div class="col-9 div-vehiculo-row-1 div-row-vehiculo" >
-					<label class="form-label">Tipo de Vehiculo*: </label>
-					<span class="input-group-addon" id='spinnerTipoVehiculo'>
-                		<i class="fa fa-refresh fa-spin"></i>
-            		</span>
-					<input class="form-control group-vehiculo" list="datalistOptionsTipo" id="selectTipoVehiculo-123" placeholder="Escribe algo para buscar..." onChange='onChangeCatalog("vehiculo",123)'>
-					<datalist id="datalistOptionsTipo">
-				
-					</datalist>
+					<label class="form-label">Tipo de Vehiculo: </label>
+					<select class="form-select" aria-label="Default select example" id="selectVehiculos" onChange='onChangeCatalog("vehiculo",123)'>
+					</select>
 				</div>
 					<div class="col-9 div-vehiculo-row-1 div-row-vehiculo">
 						<div id='divCatalogMarca123'>
 							<label class="form-label">Marca: </label>
-							<input class="form-control group-vehiculo" list="datalistOptionsMarca123" id="selectCatalogMarca-123" placeholder="Escribe algo para buscar..." onchange='onChangeCatalog("marca",123)'> 
-							<datalist id="datalistOptionsMarca123">
-					
-							</datalist>
+							<select class="form-select" aria-label="Default select example" id="selectVehiculosMarca" onChange='onChangeCatalog("marca",123)'>
+								<option disabled>Escoge un tipo de vehiculo...</option>
+							</select>
 						</div>
 						<div id='divCatalogModelo123'>
 							<label class="form-label">Modelo: </label>
-							<input class="form-control group-vehiculo" list="datalistOptionsModelo123" id="selectCatalogModelo-123" placeholder="Escribe algo para buscar...">
-							<datalist id="datalistOptionsModelo123">
-					
-							</datalist>
+								<select class="form-select" aria-label="Default select example" id="selectVehiculosModelo" >
+									<option disabled>Escoge una marca...</option>
+								</select>
 						</div>
 						<div class="div-row-vehiculo">
-							<label class="form-label">Matricula del Vehiculo:</label>
-							<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-123">
+							<label class="form-label">Matrícula del Vehiculo:</label>
+							<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo">
 						</div>
 						<div class="div-row-vehiculo">
 							<label class="form-label">Color:</label>
-							<input type="text" class="form-control group-vehiculo" id="inputColor-123">
+							<input type="text" class="form-control group-vehiculo" id="inputColor">
 							<hr >
 						</div>
 					</div>
-					<!--
-					<div class="row">
-						<div class="mb-3 col-12">
-							<label class="form-label">Tipo de Vehiculo *</label>
-							<input type="text" class="form-control form-car"  placeholder="Tipo" id="inputTipoCar">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Marca *</label>
-							<input type="text" class="form-control form-car"  placeholder="Marca" id="inputMarcaCar">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Modelo *</label>
-							<input type="text" class="form-control form-car"  placeholder="Modelo" id="inputModeloCar">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Color *</label>
-							<input type="text" class="form-control form-car"  placeholder="Color" id="inputColorCar">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Numero de placas *</label>
-							<input type="text" class="form-control form-car"  placeholder="Placas" id="inputPlacasCar">
-						</div>
-					</div>
-					-->
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 					<br/>
 					<small class="text-danger mt-1 mb-3" id="alert_car_modal" style="display:none;">** Faltan campos obligatorios</small>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="getSaveCar();return false;">Guardar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="agregarVehiculo();return false;">Agregar</button>
 				</div>
 			</div>
 		</div>
@@ -861,7 +847,7 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Lista de Vehiculos</h1>
+					<h1 class="modal-title fs-5">Vehículo seleccionado</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
@@ -870,7 +856,7 @@
 							<th class="headerColor">Tipo</th>
 							<th class="headerColor">Marca</th>
 							<th class="headerColor">Modelo</th>
-							<th class="headerColor">Matricula</th>
+							<th class="headerColor">Matrícula</th>
 							<th class="headerColor">Color</th>
 						</thead>
 						<tbody></tbody>
@@ -888,7 +874,7 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Lista de Equipo</h1>
+					<h1 class="modal-title fs-5">Lista de equipos selecionados</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
@@ -911,20 +897,40 @@
 	</div>
 
 		<!-- Modal List Add Items-->
-	<div class="modal fade" id="listAddCommentarios" tabindex="-1"  aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+	<div class="modal fade" id="commentarioPaseModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Agregar comentario</h1>
+					<h1 class="modal-title fs-5">Agregar comentario a pase</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<div class="mb-3 col-6 m-4 mr-0">
+				<div class="mb-3 m-4 mr-0">
 							<label class="form-label">Comentario:</label>
-							<input type="text" class="form-control outArticleCon" id="outArticleFecha">
+							<textarea class="form-control comment-div-nueva" id="idComentarioPase" rows="3" placeholder="Escribe algo..."></textarea>
 						</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-success btn-sm" data-bs-dismiss="modal">Agregar</button>
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="agregarComentarioPase('pase')">Agregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+		<!-- Modal List Add Items-->
+	<div class="modal fade" id="commentarioAccesoModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Agregar comentario a acceso</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="mb-3 m-4 mr-0">
+							<label class="form-label">Comentario:</label>
+							<textarea class="form-control comment-div-nueva" id="idComentarioAcceso" rows="3" placeholder="Escribe algo..."></textarea>
+						</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="agregarComentarioPase('acceso')" >Agregar</button>
 				</div>
 			</div>
 		</div>

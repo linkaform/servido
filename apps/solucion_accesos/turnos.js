@@ -9,7 +9,6 @@ let idGuardiasEnTurno=[]
 let guardiasEnTurno=[] 
 let arraySelectedGuardias=[]
 let supportGuards=[]
-let checkInId=""
 let thisUserCheckInId=""
 let arrayResponses=[]
 let arraySuccessArchivo=[]
@@ -174,12 +173,17 @@ function changeImageGuard(){
 }
 
 //FUNCION hace el fetch que trae toda la informacion inicial que se llenara en la pantalla de turnos
-function getAllData(){
+function getAllData(area="", location="", loading=false){
+    if(loading){
+        loadingService();
+    }
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name:'script_turnos.py',
             option:'load_shift',
+            area:area,
+            location:location
         }),
         headers:
         {
@@ -198,8 +202,10 @@ function getAllData(){
                 let notes= data.notes
                 supportGuards= data.support_guards
                 thisUserCheckInId=data.guard._id
+
                 inicializarPagina(loc, notes, guard, data.booth_status, data.booth_stats);
                 if(user !='' && userJwt!=''){
+                    dataTableGuardiasApoyo=[]
                     if(data.support_guards.length > 0){
                         for(let guard of data.support_guards){
                             if(guard.user_id.toString() !==  getCookie('userId').toString()){
@@ -267,6 +273,9 @@ function getAllData(){
                     }
                     guardiasApoyoValidateOptions()
                 }
+            }
+            if(loading){
+                Swal.close();
             }
         } else{
             drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,[], "420px");
@@ -343,8 +352,8 @@ function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
     $("#textUbicacion").text(getCookie('userLocation'))
     setCookie('userCasetaStatus', booth_status.status,7)
     setCookie('userCasetaGuard',booth_status.guard_on_dutty,7)
-    setCookie('checkInId', booth_status.checkin_id,7)
-    checkInId= booth_status.checkin_id || ""
+    setCookie('thisUserCheckInId', booth_status.checkin_id,7)
+    thisUserCheckInId= booth_status.checkin_id || ""
     
     if(booth_status.guard_on_dutty== ''){
         $("#headGuardiaEnTurno").text("")
@@ -473,7 +482,7 @@ function AlertForzarCierre(name){
                 option: 'checkout',
                 location: $("#textUbicacion").text(),
                 area: caseta,
-                checkin_id:checkInId
+                checkin_id:thisUserCheckInId
             }),
             headers:{
                     'Content-Type': 'application/json',
@@ -884,6 +893,7 @@ function selectCheckboxGuardia(id){
     });
 }     
 
+
 function limpiarEnviaNotaModal(editAdd="nueva"){
     arraySuccessFoto=[]
     arraySuccessArchivo=[]
@@ -1181,7 +1191,8 @@ function cambiarCaseta(selectedRow){
     $("#textEstatusCaseta").removeClass();
     $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
     $('#cambiarCasetaModal').modal('hide');
-    getNotes()
+    getAllData(getCookie("userCaseta"),getCookie("userLocation"),true)
+    //getNotes()
 }
 
 
@@ -1328,7 +1339,7 @@ function agregarNuevoGuardiaApoyo(){
                 script_name:"script_turnos.py",
                 option:"update_guards",
                 support_guards:names,
-                checkin_id:checkInId,
+                checkin_id:thisUserCheckInId,
                 location:getCookie('userLocation'),
                 area:getCookie('userCaseta')
             }),
