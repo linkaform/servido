@@ -56,7 +56,6 @@ let statusAbierto="abierto";
 let statusCerrado="cerrado";
 
 function changeButtonColor(){
-    console.log("IMAGEN DEL USER", getCookie('userImg'))
     $("#imageUserNavbar").attr("src", getCookie('userImg'));
     let user = getCookie("userId");
         let jw = getCookie("userJwt");

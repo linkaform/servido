@@ -32,7 +32,7 @@ function setModal(type = 'none',id){
 window.onload = function(){
     user = getCookie("userId");
     setValueUserLocation('turnos');
-    getAllData();
+    getAllData(getCookie("userCaseta"),getCookie("userLocation"),false);
     changeButtonColor();
     customNavbar(getValueUserLocation(), getStatusTurn());
     drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,[], "420px");
@@ -107,7 +107,7 @@ function getNotes(){
 }
 
 
-function changeImageGuard(){
+function cambiarImagenGuardia(){
     let userId= getCookie('userId')
     userJwt=getCookie('userJwt')
     let input = document.getElementById('inputFileUser');
@@ -121,7 +121,7 @@ function changeImageGuard(){
             let lector = new FileReader(); 
             lector.onload =  function(event) {
                 
-                let urlChangeImage= `https://preprod.linkaform.com/api/infosync/user_admin/${userId}/profile_picture/`
+                let urlChangeImage= `https://app.linkaform.com/api/infosync/user_admin/${userId}/profile_picture/`
                 loadingService()
 
                 let formData = new FormData();
@@ -138,19 +138,17 @@ function changeImageGuard(){
                 })
                 .then(res => res.json())
                 .then(async res => {
+                    Swal.close();
                     if (res.hasOwnProperty('thumb')){
                         let body={
                             method:'PATCH',
                             body: JSON.stringify({
                                 thumb: res.thumb
                             }),
-                            headers: { 'Authorization': 'Bearer '+userJwt },
+                            headers: { 'Content-Type': 'application/json','Authorization': 'Bearer '+userJwt },
                         }
-                        let responseData = await fetch(url + `infosync/user_admin/${userId}/`,body)
-                        let data = await responseData.json(); 
-                        if(data.hasOwnProperty('error_message')){
-                            errorAlert(data.error_message)
-                        } else{
+                        let responseData = await fetch(url + `infosync/user_admin/${userId}/`, body)
+                        if(responseData.status == 200 || responseData.status == 202 || responseData.status == 201){
                             urlImagen  = event.target.result;
                             localStorage.setItem("imagenURL", String(urlImagen));
                             let imagenMostrada = document.getElementById("imgProfilePic");
@@ -160,7 +158,10 @@ function changeImageGuard(){
                             let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
                             imagenMostradaNavbar.src= urlImagen;
                             imagenMostradaNavbar.style.display = "block";
-                            Swal.close();
+                        
+                        }else{
+                            responseData.error_message="Ocurrio un error, intentalo de nuevo mas tarde."
+                            errorAlert(responseData.error_message)
                         }
                     }else{
                         errorAlert(res)

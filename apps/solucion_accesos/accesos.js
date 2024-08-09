@@ -1183,6 +1183,7 @@ function optionInformationUser(data){
     let { ultimo_acceso }= data
     if(data.hasOwnProperty('ultimo_acceso')){
         //---Movement
+        data.tipo_movimiento="Salida"
         if(data.tipo_movimiento == 'Entrada'){
            $("#buttonIn").show();
            $("#buttonAddCommentarioAccesoModal").show()
