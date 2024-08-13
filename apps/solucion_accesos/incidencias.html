@@ -56,8 +56,6 @@
           </div>
         </div>  
 
-
-        
     </section >
 
     <!-- Tablas -->
@@ -144,20 +142,37 @@
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Ubicación: *</label>
-                            <select class="form-control contentNuevaIncidencia" id="ubicacionNuevaIncidencia">
+                            <select class="form-control contentNuevaIncidencia" id="ubicacionNuevaIncidencia" onchange="onChangeLocation()">
                             </select>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Lugar del incidente: *</label>
-                            <input type="text" class="form-control contentNuevaIncidencia" id="lugarNuevaIncidencia">
+                            <select class="form-control contentNuevaIncidencia" id="lugarNuevaIncidencia">
+                            </select>
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label">Incidencia: *</label>
                             <textarea class="form-control contentNuevaIncidencia" id="incidenciaNuevaIncidencia"></textarea>
                             </input>
                         </div>
+                        <div id="foto-input-form-nueva" >
+                            <div class="d-flex mb-3 col-12 div-foto-nueva-123" id="id-foto-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Fotografia </label>
+                                    <input type="file" class="form-control-file foto-div-nueva" onchange="guardarArchivos('fileInputFotografia-nueva',true);" id="fileInputFotografia-nueva">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('nueva');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('nueva',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="mb-3 col-12">
-                            <label class="form-label">Comentarios: *</label>
+                            <label class="form-label">Comentario:</label>
                             <textarea class="form-control contentNuevaIncidencia"  rows="3" id="comentariosNuevaIncidencia"></textarea>
                         </div>
                         <div class="mb-3 col-6">
@@ -294,13 +309,6 @@
                             <input type="datetime-local" class="form-control contentNuevaFalla" id="fechaNuevaFalla">
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Estatus: *</label>
-                            <select class="form-control contentNuevaFalla" id="estatusNuevaFalla" value="">
-                                <option value="abierto">Abierto</option>
-                                <option value="cerrado">Cerrado</option>
-                            </select>
-                        </div>
-                        <div class="mb-3 col-6">
                             <label class="form-label">Ubicación: *</label>
                             <select class="form-control contentNuevaFalla" id="ubicacionNuevaFalla">
                             </select>
@@ -313,6 +321,22 @@
                         <div class="mb-3 col-12">
                             <label class="form-label">Falla: *</label>
                               <textarea class="form-control contentNuevaFalla" id="fallaNuevaFalla" ></textarea>
+                        </div>
+                        <div id="foto-input-form-nuevaFalla" >
+                            <div class="d-flex mb-3 col-12 div-foto-nuevaFalla-123" id="id-foto-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Fotografia </label>
+                                    <input type="file" class="form-control-file foto-div-nuevaFalla" onchange="guardarArchivos('fileInputFotografia-nuevaFalla',true);" id="fileInputFotografia-nuevaFalla">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('nuevaFalla');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('nuevaFalla',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentarios: *</label>

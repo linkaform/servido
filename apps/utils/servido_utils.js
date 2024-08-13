@@ -567,6 +567,7 @@ function errorLoginTurnos(data, type="warning", fn= ()=>{}){
             });
         }
     }else if(typeof data ==='string'){
+        console.log(data)
         Swal.fire({
             title: 'Ocurrio un error...',
             text: data,
@@ -646,55 +647,6 @@ function setCloseSession(argument) {
 
 
 
-//FUNCION para guardar los archivos en el server 
-async function guardarArchivos(id, isImage){
-    loadingService()
-    const fileInput = document.getElementById(id);
-    const file = fileInput.files[0]; // Obtener el archivo seleccionado
 
-    if (!file) {
-        alert('Selecciona un archivo para subir');
-        return;
-    }
-    let data=""
-    let formData = new FormData();
-    if(isImage){
-        formData.append('File', file);
-        formData.append('field_id', '63e65029c0f814cb466658a2');
-        formData.append('is_image', true);
-        formData.append('form_id', 95435);
-    }else{
-        formData.append('File[0]', file);
-        formData.append('field_id', '63e65029c0f814cb466658a2');
-        formData.append('form_id', 95435);
 
-    }
 
-    const options = {
-      method: 'POST', 
-      body: formData,
-    };
-    let respuesta = await fetch('https://app.linkaform.com/api/infosync/cloud_upload/', options);
-    data = await respuesta.json(); //Obtenemos los datos de la respuesta 
-    data.isImage=isImage
-    arrayResponses.push(data); //Agregamos los datos al arreglo
-    if(data.hasOwnProperty('error')){
-        Swal.fire({
-            title: "Error",
-            text: data.error,
-            type: "error",
-            showConfirmButton:false,
-            timer:1100
-        });
-        
-    }else{
-        let text= isImage? 'Las imagenes fueron guardadas correctamente.': 'Los archivos fueron guardados correctamente.';
-        Swal.fire({
-            title: "Acción Completada",
-            text: text,
-            type: "success",
-            showConfirmButton:false,
-            timer:1100
-        });
-    }
-}

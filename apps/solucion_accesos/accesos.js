@@ -15,47 +15,31 @@ let codeUserVisit=""
 //let userJwt = getCookie("userJwt");
 let selectedEquipos=[]
 let selectedVehiculos=[]
+let comentariosPase=[]
+let comentariosAcceso=[]
 let fullData=""
 let selectLocation= ""
 let selectCaseta =""
 let codeUser =""
+let listInstructions = []
 
 
 window.onload = function(){
     setValueUserLocation('accesos');
-    changeButtonColor();
-    
+    changeButtonColor(); 
     fillCatalogs();
-    //initializeCatalogs();
     getInitialData();
     selectLocation= document.getElementById("selectLocation")
     selectCaseta= document.getElementById("selectCaseta")
-    /*
-    selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation()
-    };
-    selectCaseta.onchange = function() {
-        let response = fetchOnChangeLocation()
-    };*/
-    //selectLocation.value=getCookie("userLocation")
-    //selectCaseta.value=getCookie("userCaseta")
-    //selectLocation.disabled=true
-    //selectCaseta.disabled=true
-    //selectLocation.disabled=true
-    //selectCaseta.disabled=true
-    
-
     setHideElements('dataHide');
     setSpinner(true, 'divSpinner');
     let user = getCookie("userId");
     if(user !='' && userJwt!=''){
         setDataInformation('alerts',data = {})
-        //getDataListUser();
     }else{
         redirectionUrl('login',false)
     }
     customNavbar(getValueUserLocation(), getCookie('userTurn'));
-    //getCatalogs()
     $("#mainSection1").show()
 
 }
@@ -64,8 +48,10 @@ window.onload = function(){
 //funcion Escojer modales
 function setModal(type = 'none',id){
     if(type == 'comentarioPaseModal'){
+        $("#idComentarioPase").val("")
         $('#commentarioPaseModal').modal('show');
     }else if(type == 'comentarioAccesoModal'){
+        $("#idComentarioAcceso").val("")
         $('#commentarioAccesoModal').modal('show');
     }else if(type == 'equiposModal'){
         showAgregarEquipo()
@@ -247,7 +233,7 @@ function agregarVehiculo(){
 function agregarEquipo(){
     let dicData = {};
     let validation = false;
-    let tipo= $("#selectTipoEquipo").val();
+    let tipo= $("#selectTipoEquipo").val() ;
     let nombre=$("#inputNombreEquipo").val();
     let marca=$("#inputMarcaEquipo").val();
     let modelo=$("#inputModeloEquipo").val();
@@ -260,8 +246,9 @@ function agregarEquipo(){
         let id= Math.floor(Math.random() * 1000000)
         let checked='checked'
         selectedEquipos.push(id);
-        listItemsData.push({ marca_articulo: marca, tipo_equipo: tipo, model_articulo: modelo, color_articulo:color , numero_serie:noserie, id: id, check:checked});
+        listItemsData.push({ marca_articulo: marca, tipo_equipo: tipo, modelo_articulo: modelo, color_articulo:color , numero_serie:noserie, id: id, check:checked});
         //let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
+        console.log("AGREGAR", listItemsData)
         let newRow2 = $('<tr>');
         newRow2.append($('<td>').text(tipo));
         newRow2.append($('<td>').text(marca));
@@ -436,11 +423,54 @@ function agregarEquipo(){
     }
 }
 */
-function agregarComentarioPase(type){
+function agregarComentarioPaseAcceso(type){
+        
     if(type== "acceso"){
+        let comentario = $("#idComentarioAcceso").val()
+        comentariosAcceso.push({comentario_pase:comentario ,tipo_de_comentario:"acceso"})
+        let tabla = document.getElementById("tableComentariosAcceso");
+        let tbody = tabla.getElementsByTagName("tbody")[0];
+        tbody.innerHTML="";
+        
+        for (var i = 0; i < comentariosAcceso.length; i++) {
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(comentariosAcceso[i].comentario_pase));
+            newRow.append($('<td>').text(comentariosAcceso[i].tipo_de_comentario));
+            newRow.append('</tr>');
+            $('#tableComentariosAcceso').append(newRow);
+        }
+            console.log("holaaa", comentariosAcceso)
+        
         $("#commentarioAccesoModal").modal('hide')
         successMsg("Confirmación", "Comentario listo para agregar al registro de ingreso")
     }else{
+        let comentario = $("#idComentarioPase").val()
+        let tabla = document.getElementById("tableInstructions");
+        let tbody = tabla.getElementsByTagName("tbody")[0];
+        tbody.innerHTML="";
+
+        for (var i = 0; i < listInstructions.length; i++) {
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(listInstructions[i].comentario_pase));
+            newRow.append($('<td>').text(listInstructions[i].tipo_de_comentario));
+            newRow.append('</tr>');
+            $('#tableInstructions').append(newRow);
+        }
+        comentariosPase.push({comentario_pase:comentario ,tipo_de_comentario:"pase"})
+        for (let i = 0; i < comentariosPase.length; i++) {
+            let newRow = $('<tr>');
+            newRow.append($('<td>').text(comentariosPase[i].comentario_pase));
+            newRow.append($('<td>').text(comentariosPase[i].tipo_de_comentario));
+            newRow.append('</tr>');
+            $('#tableInstructions').append(newRow);
+        }
+        if(comentariosPase.length == 0){
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text('No existen comentarios/ instrucciones'));
+            newRow.append($('<td>'));
+            newRow.append('</tr>');
+            $('#tableInstructions').append(newRow);
+        }
         $("#commentarioPaseModal").modal('hide')
         successMsg("Confirmación", "Comentario listo para agregar al registro de ingreso")
     }
@@ -575,6 +605,7 @@ function buscarPaseEntrada() {
                 script_name: "script_turnos.py",
                 option: 'search_access_pass',
                 location: selectLocation.value,
+                area: selectCaseta.value,
                 qr_code: codeUser
             }),
             headers:{
@@ -667,8 +698,8 @@ function registrarIngreso(){
             area: area,
             vehiculo: selectedVe,
             equipo: selectedEq,
-            comentario_pase: $("#idComentarioPase").val(),
-            comentario_acceso:$("#idComentarioAcceso").val()
+            comentario_pase: comentariosPase,
+            comentario_acceso: comentariosAcceso
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -717,6 +748,8 @@ function registrarIngreso(){
 }
 
 function registrarSalida(){
+    let location= selectLocation.value
+    let area=selectCaseta.value 
     Swal.fire({
         title: 'Cargando...',
         allowOutsideClick: false,
@@ -730,6 +763,8 @@ function registrarSalida(){
             script_name: 'script_turnos.py',
             option: 'do_out',
             qr_code: codeUser,
+            location: location,
+            area: area
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -755,17 +790,13 @@ function registrarSalida(){
             $("#inputCodeUser").val('');
             $("#buttonAddCommentarioAccesoModal").hide();
         }else{
-            Swal.fire({
-                title: "Error",
-                text: res.error.msg.msg,
-                type: res.error.msg.type
-            });
+            errorAlert(res)
             $("#buttonOut").show();
             $("#inputCodeUser").val('');
             $("#buttonAddCommentarioAccesoModal").hide();
         }
     }).catch(error => {
-        console.error(error)
+
         $("#inputCodeUser").val('');
         $("#buttonAddCommentarioAccesoModal").hide();
     });
@@ -982,16 +1013,23 @@ function dataUserInf(dataUser){
 
 //FUNCION al pedir la opcion information user al setear la info de las tablas
 function tableFill(dataUser){
+    //TABLE COMENTARIOS ACCESOS
+    if(comentariosAcceso.length == 0){
+        let newRow = $('<tr>');
+        newRow.append($('<td>').text('No existen comentarios'));
+        newRow.append($('<td>'));
+        newRow.append('</tr>');
+        $('#tableComentariosAcceso').append(newRow);
+    }
     //TABLA COMENTARIOS
-    let listInstructions = []
-    if(dataUser.hasOwnProperty('comentarios')){
+    if(dataUser.hasOwnProperty('grupo_instrucciones_pase')){
         listInstructions = dataUser.grupo_instrucciones_pase.length > 0 ? dataUser.grupo_instrucciones_pase: [];
     }
     for (var i = 0; i < listInstructions.length; i++) {
         //if(i < 3){
             var newRow = $('<tr>');
-            newRow.append($('<td>').text(listInstructions[i]));
-            newRow.append($('<td>').text(listInstructions[i]).tipo_comentario);
+            newRow.append($('<td>').text(listInstructions[i].comentario_pase));
+            newRow.append($('<td>').text(listInstructions[i].tipo_de_comentario));
             newRow.append('</tr>');
             $('#tableInstructions').append(newRow);
         //}
@@ -1008,7 +1046,7 @@ function tableFill(dataUser){
     }*/
     if(listInstructions.length == 0){
         var newRow = $('<tr>');
-        newRow.append($('<td>').text('No existen Comentarios/ Instrucciones'));
+        newRow.append($('<td>').text('No existen comentarios/ instrucciones'));
         newRow.append($('<td>'));
         newRow.append('</tr>');
         $('#tableInstructions').append(newRow);
@@ -1045,7 +1083,7 @@ function tableFill(dataUser){
     }*/
     if(listAccess.length == 0){
         var newRow = $('<tr>');
-        newRow.append($('<td >').text('No existen Accesos permitidos'));
+        newRow.append($('<td >').text('No existen accesos permitidos'));
         newRow.append($('<td>'));
         newRow.append('</tr>');
         $('#tableAccess').append(newRow);
@@ -1183,7 +1221,7 @@ function optionInformationUser(data){
     let { ultimo_acceso }= data
     if(data.hasOwnProperty('ultimo_acceso')){
         //---Movement
-        data.tipo_movimiento="Salida"
+        //data.tipo_movimiento="Salida"
         if(data.tipo_movimiento == 'Entrada'){
            $("#buttonIn").show();
            $("#buttonAddCommentarioAccesoModal").show()
@@ -1435,6 +1473,10 @@ function setCleanData(){
     $("#sábado").removeClass('btn-success');
     $("#domingo").removeClass('btn-success');
 
+    selectedEquipos=[]
+    selectedVehiculos=[]
+    comentariosPase=[]
+    comentariosAcceso=[]
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
     setHideElements('buttonNew');

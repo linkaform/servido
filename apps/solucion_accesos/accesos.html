@@ -193,16 +193,16 @@
 							</button>
 					</div>
 					<div class="overflowCustom div-containerTable-portal div-container-table mt-1" style="max-width:1200px !important; ">
-							<table id="tableInstructions" class=" table-borderless" style="border: none;">
-								<thead class="overflowCustomHead">
-									<tr>
-										<th class="headerColor">Comentarios / Instrucciones</th>
-										<th class="headerColor">Tipo de comentario</th>
-									</tr>
-								</thead>
-							<tbody></tbody>
-					</table>
-				  </div>
+						<table id="tableInstructions" class=" table-borderless" style="border: none;">
+							<thead class="overflowCustomHead">
+								<tr>
+									<th class="headerColor">Comentarios / Instrucciones</th>
+									<th class="headerColor">Tipo de comentario</th>
+								</tr>
+							</thead>
+						<tbody></tbody>
+						</table>
+				  	</div>
 				</div>
 
 			</div>
@@ -902,15 +902,15 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h1 class="modal-title fs-5">Agregar comentario a pase</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
+
 				<div class="mb-3 m-4 mr-0">
 							<label class="form-label">Comentario:</label>
 							<textarea class="form-control comment-div-nueva" id="idComentarioPase" rows="3" placeholder="Escribe algo..."></textarea>
 						</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="agregarComentarioPase('pase')">Agregar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="agregarComentarioPaseAcceso('pase')">Agregar</button>
 				</div>
 			</div>
 		</div>
@@ -922,15 +922,28 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h1 class="modal-title fs-5">Agregar comentario a acceso</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<div class="mb-3 m-4 mr-0">
+				<div class="d-flex justify-content-center">
+					<div class="overflowCustom div-containerTable-portal div-container-table mt-1" style="min-width:750px!important; min-height: 150px !important; ">
+						<table id="tableComentariosAcceso" class=" table-borderless" style="border: none;">
+							<thead class="overflowCustomHead">
+								<tr>
+									<th class="headerColor">Comentarios</th>
+									<th class="headerColor">Tipo de comentario</th>
+								</tr>
+							</thead>
+						<tbody></tbody>
+						</table>
+				  	</div>
+				</div>
+				
+				<div class="mb-3 m-4 mr-0 mt-4">
 							<label class="form-label">Comentario:</label>
 							<textarea class="form-control comment-div-nueva" id="idComentarioAcceso" rows="3" placeholder="Escribe algo..."></textarea>
 						</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="agregarComentarioPase('acceso')" >Agregar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="agregarComentarioPaseAcceso('acceso')" >Agregar</button>
 				</div>
 			</div>
 		</div>
