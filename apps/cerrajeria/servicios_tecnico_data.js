@@ -16,6 +16,7 @@ var columsTable1 = [
 let dataTable1 =  [
     {
         tecnico: "Juan Pérez",
+        servicio:'4',
         hora_total: 16,
         color: '#7FA1C3',
         _children : [
@@ -55,6 +56,7 @@ let dataTable1 =  [
     },
     {
         tecnico: "Ana López",
+        servicio:'4',
         hora_total: 16,
         color: '#E2DAD6',
         _children : [
@@ -94,6 +96,7 @@ let dataTable1 =  [
     },
     {
         tecnico: "Carlos Gómez",
+        servicio:'4',
         hora_total: 20,
         color: '#7FA1C3',
         _children : [
@@ -133,6 +136,7 @@ let dataTable1 =  [
     },
     {
         tecnico: "María Sánchez",
+        servicio:'2',
         hora_total: 8,
         color: '#E2DAD6',
         _children : [
@@ -156,6 +160,7 @@ let dataTable1 =  [
     },
     {
         tecnico: "Luis Martínez",
+        servicio:'3',
         hora_total: 11,
         color: '#7FA1C3',
         _children : [
@@ -211,13 +216,16 @@ var setOptions1 = {
          }
       }
 	},
-  	scales: {
+	responsive: true, 
+    maintainAspectRatio: false ,
+	scales: {
+	    x: {
+	        stacked: true,
+	    },
 	    y: {
-	      	ticks: {
-	        	stepSize: 1
-	      	},
+	        stacked: true,
 	    }
-  	}
+	},
 };
 
 var dataChart1 = {
