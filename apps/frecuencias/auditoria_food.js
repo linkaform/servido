@@ -145,9 +145,6 @@ function runFirstElement(){
   let id_forma = $('#formas').val();
   let pais = $('#pais').val();  
   let localidad = $('#localidad').val();
-  console.log(pais)
-  console.log(localidad)
-  console.log(id_forma)
   if(id_forma == '--'){
     Swal.fire({
       icon:'error',

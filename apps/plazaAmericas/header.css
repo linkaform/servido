@@ -1,0 +1,55 @@
+.headermercadeo {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  header {
+    background-color: #ffffff; /* Cambia el color de fondo según tu preferencia */
+    color: #000000; /* Cambia el color del texto según tu preferencia */
+    padding: 20px 0;
+    font-size: 35px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+
+  img {
+    max-width: 100%;
+    height: 100px;
+  }
+  
+  nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav ul li {
+    display: inline;
+    margin-left: 20px; /* Espaciado entre elementos del menú */
+  }
+  
+  nav ul li a {
+    color: #040404; /* Cambia el color de los enlaces según tu preferencia */
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  nav ul li a:hover {
+    color: #ffd700; /* Cambia el color al pasar el cursor sobre los enlaces según tu preferencia */
+  }
+
+
+
+
+  body {
+    font-size:large; /* Cambia el tamaño de la letra según tu preferencia */
+    font-family: Arial, Helvetica, sans-serif; /* Cambia la fuente según tu preferencia */
+  }
+  
+  .btn-lg {
+    padding: 20px 5px; /* Ajusta el padding según tu preferencia */
+}
+
