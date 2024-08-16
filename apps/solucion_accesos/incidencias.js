@@ -20,7 +20,7 @@ window.onload = function(){
 	changeButtonColor();
 
     fillCatalogs();
-    getInfoAndCatalogos();
+    //getInfoAndCatalogos();
 
 	selectLocation= document.getElementById("selectLocation")
 	selectLocation.onchange = function() {
@@ -35,6 +35,7 @@ window.onload = function(){
     };
 	setSpinner(true, 'divSpinner');
 
+    /*
     selectLocIncidencias= document.getElementById("ubicacionNuevaIncidencia")
 	selectLocIncidencias.onchange = function(){
         let response = onChangeLocation(selectLocIncidencias.value,"lugarNuevaIncidencia")
@@ -42,9 +43,18 @@ window.onload = function(){
 
     selectLocFallas= document.getElementById("ubicacionNuevaFalla")
     selectLocFallas.onchange = function(){
-        let response = onChangeLocation(selectLocFallas.value,"lugarNuevaIncidencia")
-    };
+        let response = onChangeLocation(selectLocFallas.value,"lugarNuevaFalla")
+    };*/
 }
+
+
+window.addEventListener('storage', function(event) {
+    if (event.key === 'cerrarSesion') {
+        let protocol = window.location.protocol;
+        let host = window.location.host;
+        window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+    }
+});
 
 
 function reloadTableIncidencias(data){
@@ -411,6 +421,8 @@ function initializeCatalogsFallas(dataCatalogs,boothsLocations){
 function setModal(type = 'none',id){
 	if(type == 'NewIncident'){
         limpiarModal("contentNuevaIncidencia", "nueva")
+        $("#ubicacionNuevaIncidencia").text(selectLocation.value)
+        $("#casetaNuevaIncidencia").text(selectCaseta.value)
 		$('#newIncidentModal').modal('show');
 	}else if(type == 'EditIncident'){
         limpiarModal("editIncidentModal", "edit")
@@ -419,6 +431,8 @@ function setModal(type = 'none',id){
 		$('#viewIncidentModal').modal('show');
 	}else if(type == 'NewFail'){
         limpiarModal("contentNuevaFalla", "nueva")
+        $("#ubicacionNuevaFalla").text(selectLocation.value)
+        $("#casetaNuevaFalla").text(selectCaseta.value)
 		$('#newFailModal').modal('show');
 	}else if(type == 'EditFail'){
         limpiarModal("contentEditFalla", "edit")

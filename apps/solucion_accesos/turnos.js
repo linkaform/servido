@@ -14,20 +14,7 @@ let arrayResponses=[]
 let arraySuccessArchivo=[]
 let arraySuccessFoto=[]
 let colors = getPAlleteColors(12,0)
-
-//FUNCION para cambiar la imagen del localstorage de imagen de perfil imagenURL en todas las pantallas
-
-
-//FUNCION para abrir modales
-function setModal(type = 'none',id){
-    if(type == 'cambiarCaseta'){
-        loadBooths();
-    }else if(type == 'addNota'){
-        limpiarEnviaNotaModal()
-        $("#agregarNotasModalTurnos").modal('show');
-    }
-}
-
+let casetaOcupadaFecha =""
 
 window.onload = function(){
     user = getCookie("userId");
@@ -49,6 +36,25 @@ window.onload = function(){
     $("#loadingButtonCaseta").hide();
 }
 
+
+window.addEventListener('storage', function(event) {
+    if (event.key === 'cerrarSesion') {
+        let protocol = window.location.protocol;
+        let host = window.location.host;
+        window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+    }
+});
+
+
+//FUNCION para abrir modales
+function setModal(type = 'none',id){
+    if(type == 'cambiarCaseta'){
+        loadBooths();
+    }else if(type == 'addNota'){
+        limpiarEnviaNotaModal()
+        $("#agregarNotasModalTurnos").modal('show');
+    }
+}
 
 function getNotes(){
     fetch(url + urlScripts, {
@@ -154,11 +160,9 @@ function cambiarImagenGuardia(){
                             let imagenMostrada = document.getElementById("imgProfilePic");
                             imagenMostrada.src = urlImagen;
                             imagenMostrada.style.display = "block"; // Mostrar la imagen
-                            //setCookie('userImg',String(urlImagen),7)
                             let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
                             imagenMostradaNavbar.src= urlImagen;
                             imagenMostradaNavbar.style.display = "block";
-                        
                         }else{
                             responseData.error_message="Ocurrio un error, intentalo de nuevo mas tarde."
                             errorAlert(responseData.error_message)
@@ -310,10 +314,8 @@ function loadBooths(){
                 let userBooths=res.response.data
                  if(userBooths.length>0){
                     for(let booth of userBooths){
-                        if(booth.status == casetaDisponible){
-                            dataTableCambiarCaseta.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, address: booth.address, city:booth.city})
-                            arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, address: booth.address, city:booth.city})
-                        }
+                        dataTableCambiarCaseta.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, address: booth.address, city:booth.city})
+                        arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, address: booth.address, city:booth.city})
                     }
                 }else{
                     dataTableCambiarCaseta=[]
@@ -366,7 +368,12 @@ function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
     
      $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
      $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
-     $("#textFechaInicioCaseta").text(booth_status.stated_at);
+     if(booth_status.stated_at ==""){
+        casetaOcupadaFecha=""
+     }else{
+        casetaOcupadaFecha=formatearFechaHora(booth_status.stated_at)
+     }
+     $("#textFechaInicioCaseta").text(casetaOcupadaFecha);
 
      $("#textPersonalDentro").text(booth_stats.in_invitees);
      $("#textArticulosConsesionados").text(booth_stats.articulos_concesionados);
@@ -464,7 +471,7 @@ function AlertForzarCierre(name){
         Swal.fire({
             title:'Confirmación',
             html:`
-                La caseta actual no esta disponible. Fue abierta por el guardia <b>`+ name +` el día 10 de Mayo a las 11:03 horas.</b> ¿Desea proceder con el cierre forzado
+                La caseta actual no esta disponible. Fue abierta por el guardia <b>`+ name +` el día ${casetaOcupadaFecha}.</b> ¿Desea proceder con el cierre forzado
                 de la caseta? <b>Tenga en cuenta que una vez confirmado, esta accion no podrá deshacerse.</b>
             ` ,
             type: "warning",
@@ -493,21 +500,28 @@ function AlertForzarCierre(name){
             .then(res => res.json())
             .then(res => {
                 if (res.success) {
-                    casetaActualizarEstatus(turnoCerrado, casetaDisponible)
-                    setCookie('userCasetaStatus',casetaDisponible,7)
-                    setCookie('userTurn',turnoCerrado,7)
-                    turnoCerrado(idGuardiasEnTurno)
-                    //setCookie('userCasetaStatus', 'Disponible',7);
-                    $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
-                    $("#textFechaInicioCaseta").val('01/12/2024 01:23:2024')
-                    $("#textEstatusCaseta").removeClass();
-                    $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
-                    if(getCookie('userCasetaStatus') =="Disponible" ) {
-                        $("#buttonForzarCierre").hide();
-                    } else {
-                        $("#buttonForzarCierre").show();
+                    let data= res.response.data
+                    if(data.status_code == 400 || data.status_code == 401){
+                        errorAlert(data)
+                    }else{
+                        casetaActualizarEstatus(turnoCerrado, casetaDisponible)
+                        setCookie('userCasetaStatus',casetaDisponible,7)
+                        setCookie('userTurn',turnoCerrado,7)
+                        turnoCerrado(idGuardiasEnTurno)
+                        //setCookie('userCasetaStatus', 'Disponible',7);
+                        $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
+                        $("#textFechaInicioCaseta").val('01/12/2024 01:23:2024')
+                        $("#textEstatusCaseta").removeClass();
+                        $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
+                        if(getCookie('userCasetaStatus') =="Disponible" ) {
+                            $("#buttonForzarCierre").hide();
+                        } else {
+                            $("#buttonForzarCierre").show();
+                        }
                     }
-                } 
+                }else{
+                    errorAlert(res)
+                }
             })
                 
             }
@@ -582,8 +596,9 @@ function changeStatusTurn(buttonClick){
                             showConfirmButton:false,
                             timer:1200
                         });
+                        //cerrarPestanas()
                         location.reload()
-
+                        setCloseSession()
                     }
                 } else{
                     errorAlert(res)
@@ -755,7 +770,7 @@ function cerrarNotaAlert(name, note, folio, status){
                 .then(res => {
                     if(res.success){
                         let data = res.response.data
-                        if (data.status_code==400){
+                        if (data.status_code==400||data.status_code==401){
                             let errores=[]
                             for(let err in data.json){
                                 errores.push(data.json[err].label+': '+data.json[err].msg)
@@ -965,7 +980,6 @@ function agregarNuevaNota(){
             arraySuccessArchivo.push({file_name: file_name, file_url: file});
         }
     }
-    console.log("getCookie('userName')",getCookie('userName'))
     let data_notes={
         'note_status': statusAbierto,
         'note':nota,
@@ -1189,7 +1203,6 @@ function cambiarCaseta(selectedRow){
     $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
     $('#cambiarCasetaModal').modal('hide');
     getAllData(getCookie("userCaseta"),getCookie("userLocation"),true)
-    //getNotes()
 }
 
 
@@ -1296,9 +1309,7 @@ function cargarGuardiasApoyo(){
         if(res.success){
             Swal.close()
             let data= res.response.data.guardia_de_apoyo
-            console.log("dataTableGuardiasApoyo",dataTableGuardiasApoyo)
             for(guard in data){
-                console.log("Guardias",data[guard])
                 dataTableAgregarGuardiaApoyo.push({ name: data[guard].name,  status:'',
                 img: data[guard].picture.file_url ? data[guard].picture.file_url :'https://cdn.questionpro.com/userimages/site_media/no-image.png' , id:data[guard].user_id})
             }
@@ -1347,14 +1358,11 @@ function agregarNuevoGuardiaApoyo(){
         })
         .then(res => res.json())
         .then(res => {
-            console.log("AGREGAR GUARDIAS DE APOYO A TURNO ABIERTO ", res)
             if (res.success) {
                 let data= res.response.data
                 if (data.status_code==400|| data.status_code==401){
                     errorAlert(data)
                 }else{
-                    console.log("RESSS", data)
-                    
                     //let exclude=[]
                     //INFO: Eliminar los selecionados (en el modal) de la tabla "agregar guardias de apoyo" para que no se puedan
                     //volver a agregar
@@ -1393,10 +1401,8 @@ function turnoAbierto(idGuardiasEnTurno){
     $('#textInfActualCaseta').text('Información:');
     $('#agregarGuardiasApoyoButton').attr("disabled", false);
     $("#idButtonGuardiasApoyo").prop('disabled', false);
-    console.log(tables['tableGuardiasApoyo'])
     tables["tableGuardiasApoyo"].updateColumnDefinition("name", {title:"Guardias en Caseta"})
     let item = document.getElementById('tableGuardiasApoyo')
-    console.log(item)
     //let text= item.getElementsByClassName(".tabulator-col-title")
     //text.text("TURNO ABIERTO");
     guardiasApoyoValidateOptions()
@@ -1483,7 +1489,6 @@ function guardiasApoyoValidateOptions(){
         $(document).ready(function() {
             for (g of idGuardiasEnTurno){
                 if(g.includes("inp-")){  
-                        console.log($("#"+g))
                         $("#"+g).css('display', 'none');
                 } 
                 else if(g.includes("btn-")){
@@ -1497,7 +1502,6 @@ function guardiasApoyoValidateOptions(){
 }
 
 function setAddComentario(editAdd ="nueva"){
-    console.log("HAY ERORRES?   uqe passaaa")
      let randomID = Date.now();
     let newItem=`
         <div class="d-flex mb-3 div-comment-`+editAdd+`-`+randomID+`" id="div-comment-`+randomID+`">
@@ -1516,7 +1520,6 @@ function setAddComentario(editAdd ="nueva"){
 
 
 function setDeleteComentario(editAdd ="nueva",id){
-    console.log("HAY ERORRES?")
     const elements = document.querySelectorAll('.comment-div-'+editAdd);
     const count = elements.length;
     if(count > 1){
@@ -1530,7 +1533,6 @@ function setDeleteComentario(editAdd ="nueva",id){
 /*
 //FUNCION para eliminar archivo en el modal de agregar nota
 function setAddArchivo(editAdd ="nueva"){
-    console.log("editAdd",editAdd)
     let randomID = Date.now();
     let newItem=`
         <div class="d-flex mb-3 col-12 div-archivo-`+editAdd+`-`+randomID+`" id="id-archivo-div-`+randomID+`">
@@ -1713,7 +1715,6 @@ function setDeleteFoto(editAdd ="nueva",id){
 
 //FUNCION para eliminar archivo en el modal de agregar nota
 function setAddArchivo(editAdd ="nueva"){
-    console.log("editAdd",editAdd)
     let randomID = Date.now();
     let newItem=`
         <div class="d-flex mb-3 col-12 div-archivo-`+editAdd+`-`+randomID+`" id="id-archivo-div-`+randomID+`">

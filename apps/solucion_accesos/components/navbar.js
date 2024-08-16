@@ -104,22 +104,28 @@ function customNavbar(location, turno){
      }
 }
 
-//---Close Sesión
 function setCloseSession(argument) {
     closeSession();
-    redirectionUrl('login',false);
+    localStorage.setItem('cerrarSesion', Date.now());
+    //redirectionUrl('login',false, true);
+    let protocol = window.location.protocol;
+    let host = window.location.host;
+    window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
 
 }
+
 //----Function Redirection
-function redirectionUrl(type = 'null',blank = true){
+function redirectionUrl(type = 'null',blank = false, logout=false){
     let urlNew =  '';
     let protocol = window.location.protocol;
     let host = window.location.host;
-
     let existingTab = window.open('', type); 
-    if (existingTab) {
-        console.dir(window.open(`${protocol}//${host}/solucion_accesos/${type}.html`, type));
-    } else {
+    const pestanas = JSON.parse(localStorage.getItem("pestanas_key")) || [];
+    agregarPestana(type)
+    if (existingTab && type !=="login") {
+        console.log("ya existe")
+        window.open(`${protocol}//${host}/solucion_accesos/${type}.html`, type)
+    }/* else {
         if(type == 'users'){
             urlNew = `${protocol}//${host}/solucion_accesos/accesos.html`
         }else if(type == 'bitacora'){
@@ -141,22 +147,43 @@ function redirectionUrl(type = 'null',blank = true){
         }
         //----Validation
         if(urlNew !='' && blank){
+             console.log("OTRA PESTANA")
             Object.assign(document.createElement('a'), {
             target: '_blank',
             rel: 'noopener noreferrer',
             href: urlNew,
             }).click();
         }else if(urlNew !='' && !blank){
+            console.log("MISMA PERSTANA")
             Object.assign(document.createElement('a'), {
             rel: 'noopener noreferrer',
             href: urlNew,
             }).click();
         }
-    }
-
-    
+    } */
 }
 
 
-window.onload = function(){
+
+function agregarPestana(type){
+    const pestanas = JSON.parse(localStorage.getItem("pestanas_key")) || [];
+    if(!pestanas.includes(type)){
+        console.log("TRUEEEE")
+        pestanas.push(type);
+        localStorage.setItem("pestanas_key", JSON.stringify(pestanas));
+    }
+}
+
+
+function cerrarPestanas() {
+    const pestanas = JSON.parse(localStorage.getItem("pestanas_key")) || [];
+    //console.log("PESTANAS", pestanas)
+    pestanas.forEach(name => {
+        const pestana = window.open('', name);
+        if (pestana && !pestana.closed) {
+            pestana.close();
+        }
+    });
+    // Limpia la lista de pestañas en localStorage
+    localStorage.removeItem("pestanas_key");
 }

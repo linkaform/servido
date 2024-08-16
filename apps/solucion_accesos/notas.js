@@ -38,6 +38,16 @@ window.onload = function(){
     $("#idLoadingButtonEnviarNota").hide();
 }
 
+
+window.addEventListener('storage', function(event) {
+    if (event.key === 'cerrarSesion') {
+        let protocol = window.location.protocol;
+        let host = window.location.host;
+        window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+    }
+});
+
+
 function reloadTableNotas(data){
     dataTableNotas=[]
     if(user !='' && userJwt!=''){

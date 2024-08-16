@@ -237,7 +237,11 @@ function getCookie(cname) {
 }
 
 function closeSession(){
-  var cookies = document.cookie.split(";"); for (var i = 0; i < cookies.length; i++){ var spcook = cookies[i].split("="); document.cookie = spcook[0] + "=;expires=Thu, 21 Sep 1979 00:00:01 UTC;"; }
+    var cookies = document.cookie.split(";"); 
+    for (var i = 0; i < cookies.length; i++){ 
+        var spcook = cookies[i].split("="); 
+        document.cookie = spcook[0] + "=;expires=Thu, 21 Sep 1979 00:00:01 UTC;"; 
+    }
   location.reload();
 }
 
@@ -638,15 +642,27 @@ function uniqueID(){
     const randomPart = Math.floor(Math.random() * 1000000); // Genera un número aleatorio entre 0 y 999999
     return `${timestamp}-${randomPart}`; // Combina ambos para formar el ID
 }
-function setCloseSession(argument) {
-    closeSession();
-    redirectionUrl('login',false);
 
+
+
+function formatearFechaHora(fechaHora) {
+    // Crear un objeto Date a partir de la fecha y hora proporcionada
+    const fechaObj = new Date(fechaHora);
+    
+    // Crear arrays con los nombres de los meses
+    const meses = [
+        'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+        'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+    ];
+    
+    // Obtener el día, mes, año, hora, minuto y segundo
+    const dia = fechaObj.getDate();
+    const mes = meses[fechaObj.getMonth()];
+    const año = fechaObj.getFullYear();
+    const hora = fechaObj.getHours().toString().padStart(2, '0'); // Añadir ceros a la izquierda si es necesario
+    const minuto = fechaObj.getMinutes().toString().padStart(2, '0');
+    const segundo = fechaObj.getSeconds().toString().padStart(2, '0');
+    
+    // Formatear la fecha y hora en el formato deseado
+    return `${dia} de ${mes} de ${año}, ${hora}:${minuto}:${segundo} hrs`;
 }
-
-
-
-
-
-
-

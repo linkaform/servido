@@ -8,10 +8,14 @@ window.onload = function(){
 		let protocol = window.location.protocol;
 		let host = window.location.host;
 		let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
+		window.location.href =urlNew
+		//window.open(`${protocol}//${host}/solucion_accesos/turnos.html`, "turnos")
+		/*let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
 		Object.assign(document.createElement('a'), {
 			rel: 'noopener noreferrer',
 			href: urlNew,
-		}).click();
+		}).click();*/
+		agregarPestana('turnos')
 	}
 	let userInput = document.getElementById('user');
 	let userError = document.getElementById('userError');
@@ -68,13 +72,24 @@ function get_login(){
 				localStorage.setItem("imagenURL", userImg);
 
 				setCookie("lkfLogo", res.user.company_logo.picture, 7)
+				//redirectionUrl("turnos",false)
+				
 				let protocol = window.location.protocol;
 				let host = window.location.host;
 				let url = `${protocol}//${host}/solucion_accesos/turnos.html`;
+				
+				window.location.reload();
+				//window.open(`${protocol}//${host}/solucion_accesos/turnos.html`, "turnos")
+				//window.location.href =url
+				/*
 				Object.assign(document.createElement('a'), {
 					rel: 'noopener noreferrer',
 					href: url,
 				}).click();
+				*/	
+
+				//agregarPestana("turnos")
+				
 			}else{
 				errorAlert(res, "¡Ups!")
 				$("#password").val('')

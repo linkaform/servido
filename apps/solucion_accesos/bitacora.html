@@ -168,7 +168,6 @@
 			</div> 
 		</div>
 	</div>
-	
 
 	<!-- Modal Out-->
 	<div class="modal fade" id="outModal" tabindex="-1"  aria-hidden="true">
@@ -211,120 +210,83 @@
 						</div>
 						<div class="col-3">
 							<p class="mb-0">Nombre del Usuario</p>
-							<small class="text-black-50">Nombre</small>
+							<small class="text-black-50"><span id="nombreDelUsuario"></span></small>
 
 							<p class="mb-0">Nombre del Jefe</p>
-							<small class="text-black-50">Contratista</small>
+							<small class="text-black-50"> <span id="nombreDelJefe"></span></small>
 
-							<p class="mb-0">Ago-25-2024</p>
-							<small class="text-black-50">Vigencia</small>
+							<p class="mb-0">Vigencia</p>
+							<small class="text-black-50" id="vigencia"></small>
 
 							<p class="mb-0">Autorizado</p>
-							<small class="text-black-50">Status</small>
+							<small class="text-black-50"><span id="status"></span></small>
 						</div>
 					</div>
 					<div class="col-sm-12 col-md-12 col-lg-12 row  p-2">
 						<div class="col-sm-12 col-md-6 col-lg-6 p-2">
 							<h4>Información de visita</h4>
-							<p><span className='h4'><b>Motivo de Visita:</b></span>&nbsp;&nbsp; Motivo exampleeeee</p>
+							<p><span className='h4'><b>Motivo de Visita:</b></span> <span id="motivoDeVisita"></span></p>
 							<div class="col-12 d-flex justify-content-between">
-								<p><span className='h4'><b>A quien visita:</b></span>&nbsp;&nbsp; Motivo exampleeeee</p>
+								<p><span className='h4'><b>A quien visita:</b></span> <span id="aQuienVisita"></span> </p>
 							</div>
-							<p><span className='h4'><b>Autorizado por:</b></span>&nbsp;&nbsp; Autorizado por</p>
-							<p><span className='h4'><b>Teléfono:</b></span>&nbsp;&nbsp; 89921232</p>
+							<p><span className='h4'><b>Autorizado por:</b></span> <span id="autorizadoPor"></span></p>
+							<p><span className='h4'><b>Teléfono:</b></span> <span id="telefono"></span></p>
 
 						</div>
 						<div class="col-sm-12 col-md-6 col-lg-6 ">
 							<h4>Comentarios / Instrucciones de visita</h4>
-							<table class="table-borderless customShadow" style="border: none;">
+							<table class="table-borderless customShadow" id="tableComentarios" style="border: none;">
 								<thead >
 									<tr>
 										<th class="headerColor">Comentarios / Instrucciones</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>- Recordar traer el certificado de seguridad.</td>
-									</tr>
-									<tr>
-										<td>- Indicar que pase a la sala de juntas del primer piso</td>
-									</tr>
 								</tbody>
 							</table>
 						</div>
 					</div>
 					<div class="col-sm-12 col-md-12 col-lg-12 p-2">
 						<h4>Accesos permitidos</h4>
-						<table class="table-borderless customShadow" style="border: none;">
+						<table class="table-borderless customShadow" id="tableAccesos" style="border: none;">
 							<thead>
 								<tr>
 									<th class="headerColor">Area</th>
-									<th class="headerColor">...</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>Cuarto de máquinas</td>
-									<td>+</td>
-								</tr>
-								<tr>
-									<td>Edificio principal</td>
-									<td>+</td>
-								</tr>
-								
 							</tbody>
 						</table>
 					</div>
 					<div class="col-sm-12 col-md-12 col-lg-12 p-2">
 						<h4>Equipo</h4>
-						<table class="table-borderless customShadow" style="border: none;">
+						<table class="table-borderless customShadow" id="tableEquipos" style="border: none;">
 							<thead>
 								<tr>
 									<th class="headerColor">Tipo</th>
 									<th class="headerColor">Marca</th>
 									<th class="headerColor">Modelo</th>
 									<th class="headerColor">Serie</th>
-									<th class="headerColor">COlor</th>
+									<th class="headerColor">Color</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>Computo</td>
-									<td>Dell</td>
-									<td>Precision 8520</td>
-									<td>Dell 5820-12-3452</td>
-									<td>Negro</td>
-								</tr>
-								<tr>
-									<td>Computo</td>
-									<td>Dell</td>
-									<td>Precision 8520</td>
-									<td>Dell 5820-12-3452</td>
-									<td>Negro</td>
-								</tr>
 							</tbody>
 						</table>
 					</div>
 					<div class="col-sm-12 col-md-12 col-lg-12 p-2">
-						<h4>Accesos permitidos</h4>
-						<table class="table-borderless customShadow" style="border: none;">
+						<h4>Vehiculos</h4>
+						<table class="table-borderless customShadow" id="tableVehiculos" style="border: none;">
 							<thead>
 								<tr>
+									<th class="headerColor">Tipo</th>
 									<th class="headerColor">Marca</th>
 									<th class="headerColor">Modelo</th>
-									<th class="headerColor">COlor</th>
+									<th class="headerColor">Color</th>
 									<th class="headerColor">Placas</th>
-									<th class="headerColor">Estado</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>Nissan</td>
-									<td>Kicks</td>
-									<td>Blanco</td>
-									<td>PRC-1265</td>
-									<td>Nuevo León</td>
-								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -360,7 +322,7 @@
 	</div>
 
 	<!-- Modal Item-->
-	<div class="modal fade" id="itemsModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="equiposModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -370,35 +332,33 @@
 				<div class="modal-body">
 					<div class="col-9 div-equipo-row-123 div-row-equipo" >
 						<label class="form-label">Tipo de Equipo: *</label>
-						<input class="form-control group-equipo" list="datalistOptionsEquipo123" id="selectTipoEquipo-123" placeholder="Escribe algo para buscar..." >
-						<datalist id="datalistOptionsEquipo123">
-							<option value="Computo">
-							<option value="Herramientas">
-							<option value="laptop">
-							<option value="PC">
-							<option value="linterna">
-						</datalist>
+						<select class="form-select" aria-label="Default select example" value="" id="selectTipoEquipo">
+							<option value="Herramienta">Herramienta</option>
+							<option value="Computo">Computo</option>
+							<option value="Tablet">Tablet</option>
+							<option value="Otra">Otra</option>
+						</select>
 					</div>
 					<div class="col-9 div-equipo-row-1 div-row-equipo">
 					<label class="form-label ">Nombre del Equipo:*</label>
-						<input type="text" class="form-control group-equipo" id="inputNombreEquipo-123">
+						<input type="text" class="form-control group-equipo" id="inputNombreEquipo">
 					</div>
 					<div class="row">
 						<div class="mb-3 col-6">
 							<label class="form-label">Marca </label>
-							<input type="text" class="form-control form-item"  placeholder="Marca" id="inputMarcaItem">
+							<input type="text" class="form-control form-item"  placeholder="Marca" id="inputMarcaEquipo">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Modelo </label>
-							<input type="text" class="form-control form-item"  placeholder="Modelo" id="inputModeloItem">
+							<input type="text" class="form-control form-item"  placeholder="Modelo" id="inputModeloEquipo">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Numero de Serie </label>
-							<input type="text" class="form-control form-item"  placeholder="Serie" id="inputSerieItem">
+							<input type="text" class="form-control form-item"  placeholder="Serie" id="inputSerieEquipo">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Color </label>
-							<input type="text" class="form-control form-item"  placeholder="Color" id="inputColorItem">
+							<input type="text" class="form-control form-item"  placeholder="Color" id="inputColorEquipo">
 						</div>
 					</div>
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
@@ -407,87 +367,56 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="getSaveItem();return false;">Guardar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="agregarEquipo();return false;">Agregar</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!-- Modal Car-->
-	<div class="modal fade" id="carsModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="vehiculosModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Vehículo</h1>
+					<h1 class="modal-title fs-5">Agregar Vehiculo</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 				<div class="col-9 div-vehiculo-row-1 div-row-vehiculo" >
-					<label class="form-label">Tipo de Vehiculo*: </label>
-					<span class="input-group-addon" id='spinnerTipoVehiculo'>
-                		<i class="fa fa-refresh fa-spin"></i>
-            		</span>
-					<input class="form-control group-vehiculo" list="datalistOptionsTipo" id="selectTipoVehiculo-123" placeholder="Escribe algo para buscar..." onChange='onChangeCatalog("vehiculo",123)'>
-					<datalist id="datalistOptionsTipo">
-				
-					</datalist>
+					<label class="form-label">Tipo de Vehiculo: </label>
+					<select class="form-select" aria-label="Default select example" id="selectVehiculos" onChange='onChangeCatalog("vehiculo",123)'>
+					</select>
 				</div>
 					<div class="col-9 div-vehiculo-row-1 div-row-vehiculo">
 						<div id='divCatalogMarca123'>
 							<label class="form-label">Marca: </label>
-							<input class="form-control group-vehiculo" list="datalistOptionsMarca123" id="selectCatalogMarca-123" placeholder="Escribe algo para buscar..." onchange='onChangeCatalog("marca",123)'> 
-							<datalist id="datalistOptionsMarca123">
-					
-							</datalist>
+							<select class="form-select" aria-label="Default select example" id="selectVehiculosMarca" onChange='onChangeCatalog("marca",123)'>
+								<option disabled>Escoge un tipo de vehiculo...</option>
+							</select>
 						</div>
 						<div id='divCatalogModelo123'>
 							<label class="form-label">Modelo: </label>
-							<input class="form-control group-vehiculo" list="datalistOptionsModelo123" id="selectCatalogModelo-123" placeholder="Escribe algo para buscar...">
-							<datalist id="datalistOptionsModelo123">
-					
-							</datalist>
+								<select class="form-select" aria-label="Default select example" id="selectVehiculosModelo" >
+									<option disabled>Escoge una marca...</option>
+								</select>
 						</div>
 						<div class="div-row-vehiculo">
-							<label class="form-label">Matricula del Vehiculo:</label>
-							<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-123">
+							<label class="form-label">Matrícula del Vehiculo:</label>
+							<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo">
 						</div>
 						<div class="div-row-vehiculo">
 							<label class="form-label">Color:</label>
-							<input type="text" class="form-control group-vehiculo" id="inputColor-123">
+							<input type="text" class="form-control group-vehiculo" id="inputColor">
 							<hr >
 						</div>
 					</div>
-					<!--
-					<div class="row">
-						<div class="mb-3 col-12">
-							<label class="form-label">Tipo de Vehiculo *</label>
-							<input type="text" class="form-control form-car"  placeholder="Tipo" id="inputTipoCar">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Marca *</label>
-							<input type="text" class="form-control form-car"  placeholder="Marca" id="inputMarcaCar">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Modelo *</label>
-							<input type="text" class="form-control form-car"  placeholder="Modelo" id="inputModeloCar">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Color *</label>
-							<input type="text" class="form-control form-car"  placeholder="Color" id="inputColorCar">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Numero de placas *</label>
-							<input type="text" class="form-control form-car"  placeholder="Placas" id="inputPlacasCar">
-						</div>
-					</div>
-					-->
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 					<br/>
 					<small class="text-danger mt-1 mb-3" id="alert_car_modal" style="display:none;">** Faltan campos obligatorios</small>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="getSaveCar();return false;">Guardar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="agregarVehiculo();return false;">Agregar</button>
 				</div>
 			</div>
 		</div>

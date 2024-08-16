@@ -22,7 +22,7 @@ let selectLocation= ""
 let selectCaseta =""
 let codeUser =""
 let listInstructions = []
-
+let tipoMovimiento=""
 
 window.onload = function(){
     setValueUserLocation('accesos');
@@ -41,9 +41,15 @@ window.onload = function(){
     }
     customNavbar(getValueUserLocation(), getCookie('userTurn'));
     $("#mainSection1").show()
-
 }
 
+window.addEventListener('storage', function(event) {
+    if (event.key === 'cerrarSesion') {
+        let protocol = window.location.protocol;
+        let host = window.location.host;
+        window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+    }
+});
 
 //funcion Escojer modales
 function setModal(type = 'none',id){
@@ -427,7 +433,7 @@ function agregarComentarioPaseAcceso(type){
         
     if(type== "acceso"){
         let comentario = $("#idComentarioAcceso").val()
-        comentariosAcceso.push({comentario_pase:comentario ,tipo_de_comentario:"acceso"})
+        comentariosAcceso.push({comentario_pase:comentario ,tipo_de_comentario:tipoMovimiento})
         let tabla = document.getElementById("tableComentariosAcceso");
         let tbody = tabla.getElementsByTagName("tbody")[0];
         tbody.innerHTML="";
@@ -456,7 +462,7 @@ function agregarComentarioPaseAcceso(type){
             newRow.append('</tr>');
             $('#tableInstructions').append(newRow);
         }
-        comentariosPase.push({comentario_pase:comentario ,tipo_de_comentario:"pase"})
+        comentariosPase.push({comentario_pase:comentario ,tipo_de_comentario:tipoMovimiento})
         for (let i = 0; i < comentariosPase.length; i++) {
             let newRow = $('<tr>');
             newRow.append($('<td>').text(comentariosPase[i].comentario_pase));
@@ -688,6 +694,14 @@ function registrarIngreso(){
     console.log(selectedVe,selectedEq )
     //let dataItem = {'listItemsData':listItemsData,'listNewItems':listNewItems}
     //let dataVehicule = {'listVehiculesData':listVehiculesData,'listNewVehicules':listNewVehicules}
+    let comPase=[]
+    let comAcc=[]
+    for (let comP of comentariosPase ){
+        comPase.push(comP.comentario_pase)
+    }
+    for (let comA of comentariosAcceso ){
+        comAcc.push("a", comA.comentario_pase)
+    }
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -1015,6 +1029,9 @@ function dataUserInf(dataUser){
 function tableFill(dataUser){
     //TABLE COMENTARIOS ACCESOS
     if(comentariosAcceso.length == 0){
+        let tabla = document.getElementById("tableComentariosAcceso");
+        let tbody = tabla.getElementsByTagName("tbody")[0];
+        tbody.innerHTML="";
         let newRow = $('<tr>');
         newRow.append($('<td>').text('No existen comentarios'));
         newRow.append($('<td>'));
@@ -1223,10 +1240,12 @@ function optionInformationUser(data){
         //---Movement
         //data.tipo_movimiento="Salida"
         if(data.tipo_movimiento == 'Entrada'){
+            tipoMovimiento="Entrada" 
            $("#buttonIn").show();
            $("#buttonAddCommentarioAccesoModal").show()
             $("#textIn").show();
         }else if(data.tipo_movimiento == 'Salida'){
+            tipoMovimiento="Salida" 
             $("#buttonOut").show();
             $("#buttonAddCommentarioAccesoModal").hide()
             $("#textOut").show();
@@ -1477,6 +1496,7 @@ function setCleanData(){
     selectedVehiculos=[]
     comentariosPase=[]
     comentariosAcceso=[]
+    tipoMovimiento=""
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
     setHideElements('buttonNew');
@@ -1534,15 +1554,6 @@ function setCheckItem(id = 0) {
         element.check = !element.check;
     }
 }
-
-
-
-
-
-
-
-
-
 
 
 //FUNCION buscar curp

@@ -54,6 +54,13 @@ window.onload = function(){
     });
 }
 
+window.addEventListener('storage', function(event) {
+    if (event.key === 'cerrarSesion') {
+        let protocol = window.location.protocol;
+        let host = window.location.host;
+        window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+    }
+});
 
 function reloadTableArticulosCon(data,caseta){
     dataTableArticles=[]
