@@ -68,13 +68,35 @@
 			<div class="col-12">
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
 					<li class="nav-item" role="presentation">
-						<button class="nav-link active" id="in-location-tab" data-bs-toggle="tab" data-bs-target="#div-article-consecionados" type="button" role="tab" aria-controls="div-article-consecionados" aria-selected="true">Articulos consesionados</button>
+						<button class="nav-link active" id="out-location-tab" data-bs-toggle="tab" data-bs-target="#div-article-lose" type="button" role="tab" aria-controls="div-article-lose" aria-selected="true">Artículos perdidos</button>
 					</li>
 					<li class="nav-item" role="presentation">
-						<button class="nav-link" id="out-location-tab" data-bs-toggle="tab" data-bs-target="#div-article-lose" type="button" role="tab" aria-controls="div-article-lose" aria-selected="false">Artículos perdidos</button>
+						<button class="nav-link " id="in-location-tab" data-bs-toggle="tab" data-bs-target="#div-article-consecionados" type="button" role="tab" aria-controls="div-article-consecionados" aria-selected="false">Articulos consesionados</button>
 					</li>
 				</ul>
 				<div class="tab-content mb-1" id="myTabContent">
+					<div class="tab-pane fade overflow-hidden" id="div-article-lose" role="tabpanel" aria-labelledby="out-location-tab" tabindex="0">
+							<div class=" d-flex mt-2 mb-2 ms-1 justify-content-end">
+								<button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticleLose');">
+									<i class="fa-solid fa-plus"></i>
+									Nuevo Artículo
+								</button>
+								<button type="button" class="btn btn-primary btn-sm ms-1" id="descargarArticlesLose" >
+									<i class="fa-solid fa-file-arrow-down "  ></i>
+									Descargar
+								</button>
+								<button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
+									<i class="fa-solid fa-magnifying-glass"></i>
+									Filtros
+								</button>
+								<button type="button" class="btn btn-danger btn-sm ms-1" id="buttonEliminarArticulosLose" onclick="alertEliminarCheckbox('articlesLose')" >
+									<i class="fa-solid fa-trash" ></i>
+									Eliminar
+								</button>
+								
+							</div>
+							<div class="m-1 mb-2 tableOverflow" id="tableArticlesLose"></div>
+					</div>
 					<div class="tab-pane fade show active" id="div-article-consecionados" role="tabpanel" aria-labelledby="in-location-tab" tabindex="0">
 						
 						<div class="d-flex mt-2 mb-2 justify-content-end">
@@ -105,28 +127,7 @@
 							<div class="m-1 mb-2 " id="tableArticles"></div>
 						</div>
 					</div>
-					<div class="tab-pane fade overflow-hidden" id="div-article-lose" role="tabpanel" aria-labelledby="out-location-tab" tabindex="0">
-							<div class=" d-flex mt-2 mb-2 ms-1 justify-content-end">
-								<button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticleLose');">
-									<i class="fa-solid fa-plus"></i>
-									Nuevo Artículo
-								</button>
-								<button type="button" class="btn btn-primary btn-sm ms-1" id="descargarArticlesLose" >
-									<i class="fa-solid fa-file-arrow-down "  ></i>
-									Descargar
-								</button>
-								<button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
-									<i class="fa-solid fa-magnifying-glass"></i>
-									Filtros
-								</button>
-								<button type="button" class="btn btn-danger btn-sm ms-1" id="buttonEliminarArticulosLose" onclick="alertEliminarCheckbox('articlesLose')" >
-									<i class="fa-solid fa-trash" ></i>
-									Eliminar
-								</button>
-								
-							</div>
-							<div class="m-1 mb-2 tableOverflow" id="tableArticlesLose"></div>
-					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -144,30 +145,41 @@
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<div class="mb-3 col-4">
-							<label class="form-label">Ubicación: *</label>
-							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloUbicacion">
-							</select>
-						</div>
-						<div class="mb-3 col-4">
-                            <label class="form-label">Lugar: *</label>
-                            <select class="form-control contentNuevoArticulo" id="idNuevoArticuloLugar">
-                            </select>
+						<div class="mb-3 col-6">
+                            <h6 class="form-label">Ubicación: <span id="ubicacionNuevoArticuloPerdido" style="font-weight: normal"> </span> </h6>
                         </div>
+                        <div class="mb-3 col-6">
+                            <h6 class="form-label">Caseta: <span id="casetaNuevoArticuloPerdido" style="font-weight: normal"> </span> </h6>
+                        </div>
+                        <!--
                         <div class="mb-3 col-4">
 							<label class="form-label">Estatus: *</label>
 							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloEstatus">
 								<option value="abierto" >Abierto</option>
 								<option value="cerrado" >Cerrado</option>
 							</select>
+						</div> -->
+						<div class="d-flex justify-content-between mt-2 mb-3">
+							<div class="">
+								<label class="form-label">Foto del Articulo: *</label>
+								<button type="button" class="btn  btn-primary " onclick="getScreenUser();return false;" id="buttonTakeUser">
+									<i class="fa-solid fa-camera-retro"></i>
+								</button>
+								<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveUser">
+									Guardar Foto <i class="fa-solid fa-aperture"></i>
+								</button>
+								<!-- Canvas Foto -->
+								<div id="containerUser" class="mt-2">
+									<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
+									<img id="imgUser" src="" style="display: none;width: 185px;height: 148px;">
+								</div>
+								<input type="file" class="form-control mt-2" id="inputFileUser" disabled>
+							</div>
+							
 						</div>
 						<div class="mb-3 col-4">
 							<label class="form-label">Fecha: *</label>
-							<input type="date" class="form-control contentNuevoArticulo" id="idNuevoArticuloFecha">
-						</div>
-						<div class="mb-3 col-4">
-							<label class="form-label">Hora: *</label>
-							<input type="time" class="form-control contentNuevoArticulo" id="idNuevoArticuloHora">
+							<input type="datetime-local" class="form-control contentNuevoArticulo" id="idNuevoArticuloFecha">
 						</div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Tipo de concesion: *</label>
@@ -175,7 +187,7 @@
                             </select>
                         </div>
 						<div class="mb-3 col-6">
-							<label class="form-label">Equipo concesion: *</label>
+							<label class="form-label">Articulo: *</label>
 							<input type="text" class="form-control  contentNuevoArticulo" id="idNuevoArticuloNombre">
 						</div>
 						<!--
@@ -196,7 +208,7 @@
 						</div>
 						-->
 						<div class="mb-3 col-6">
-							<label class="form-label">Area del equipo: *</label>
+							<label class="form-label">Area: *</label>
 							<select class="form-control contentNuevoArticulo" id="idNuevoArticuloArea">
 							</select>
 						</div>
@@ -438,31 +450,55 @@
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<div class="mb-3 col-4">
-                            <label class="form-label">Ubicación: *</label>
-                            <select class="form-control contentNuevaArticuloLose" id="idUbicacionNuevoArticuloLose">
-                            </select>
+						<div class="mb-3 col-6">
+                            <h6 class="form-label">Ubicación: <span id="ubicacionNuevoArticuloPerdido" style="font-weight: normal"> </span> </h6>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <h6 class="form-label">Caseta: <span id="casetaNuevoArticuloPerdido" style="font-weight: normal"> </span> </h6>
+                        </div>
+
+						<div class="d-flex justify-content-between mm-2 ml-0">
+							<div class="">
+								<label class="form-label">Foto del Articulo: *</label>
+								<button type="button" class="btn  btn-primary " onclick="getScreenUser();return false;" id="buttonTakeUser">
+									<i class="fa-solid fa-camera-retro"></i>
+								</button>
+								<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveUser">
+									Guardar Foto <i class="fa-solid fa-aperture"></i>
+								</button>
+								<!-- Canvas Foto -->
+								<div id="containerUser" class="mt-2">
+									<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
+									<img id="imgUser" src="" style="display: none;width: 185px;height: 148px;">
+								</div>
+								<input type="file" class="form-control mt-2" id="inputFileUser" disabled>
+							</div>
+							<div class="">
+								<label class="form-label">Persona que registro: *</label>
+								<button type="button" class="btn  btn-primary " onclick="getScreenUser();return false;" id="buttonTakeUser">
+									<i class="fa-solid fa-camera-retro"></i>
+								</button>
+								<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveUser">
+									Guardar Foto <i class="fa-solid fa-aperture"></i>
+								</button>
+								<!-- Canvas Foto -->
+								<div id="containerUser" class="mt-2">
+									<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
+									<img id="imgUser" src="" style="display: none;width: 185px;height: 148px;">
+								</div>
+								<input type="file" class="form-control mt-2" id="inputFileUser" disabled>
+							</div>
 						</div>
-						<div class="mb-3 col-4">
-                            <label class="form-label">Area del articulo: *</label>
-                            <select class="form-control contentNuevaArticuloLose" id="idAreaNuevoArticuloLose">
-                            </select>
-						</div>
-						<div class="mb-3 col-4">
-                            <label class="form-label">Estatus: *</label>
-                            <select class="form-control contentNuevaArticuloLose" id="idStatusNuevoArticuloLose">
-                                <option value="abierto">Abierto</option>
-                            	<option value="cerrado">Cerrado</option>
-                            </select>
-						</div>
-						<div class="mb-3 col-4">
-							<label class="form-label">Fecha: *</label>
+
+						<div class="mb-3 col-6 mt-3">
+							<label class="form-label">Fecha en que se encontro: *</label>
 							<input type="datetime-local" class="form-control contentNuevoArticuloLose" id="idFechaNuevoArticuloLose">
 						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Nombre del Artículo: *</label>
+						<div class="mb-3 col-6 mt-3">
+							<label class="form-label">Artículo: *</label>
 							<input type="text" class="form-control contentNuevoArticuloLose" id="idNombreNuevoArticuloLose">
 						</div>
+						<!--
 						<div id="foto-input-form">
                             <div class="d-flex mb-3 col-12  div-foto-123" id="id-foto-div-123">
                                 <div class="flex-grow-1">
@@ -478,7 +514,16 @@
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
+                        <div class="mb-3 col-6 ">
+							<label class="form-label">Color: *</label>
+							<input type="text" class="form-control contentNuevoArticuloLose" id="idNombreNuevoArticuloLose">
+						</div>
+                        <div class="mb-3 col-6">
+							<label class="form-label">Categoria: *</label>
+							<select class="form-control contentNuevoArticuloLose" id="idGuardiaNuevoArticuloLose">
+							</select>
+						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Reporta: *</label>
 							<select class="form-control contentNuevoArticuloLose" id="idGuardiaNuevoArticuloLose">

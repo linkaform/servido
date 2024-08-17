@@ -197,48 +197,50 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Información del Usuario</h1>
+					<h1 class="modal-title fs-5">Información de visita</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<div class="col-sm-12 col-md-12 col-lg-12 row  p-2">
+					<div class="d-flex  p-2">
+						<div class="flex-grow-1">
+							
+							<p><span className='h4'><b>Nombre:</b></span> <span id="motivoDeVisita"></span></p>
+							<p><span className='h4'><b>Motivo de Visita:</b></span> <span id="motivoDeVisita"></span></p>
+							<div class="col-12 d-flex justify-content-between">
+								<p><span className='h4'><b>A quien visita:</b></span> <span id="aQuienVisita"></span> </p>
+							</div>
+							<p><span className='h4'><b>Autorizado por:</b></span> <span id="autorizadoPor"></span></p>
+
+						</div>
 						<div class="col-4">
 							<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-3" alt="Imagen Usuario" style="width:150px;height:150px;" id="imgUser">
 						</div>
 						<div class="col-5">
 							<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" style="width:320px;height:170px;" id="imgUser">
 						</div>
-						<div class="col-3">
-							<p class="mb-0">Nombre del Usuario</p>
-							<small class="text-black-50"><span id="nombreDelUsuario"></span></small>
-
-							<p class="mb-0">Nombre del Jefe</p>
-							<small class="text-black-50"> <span id="nombreDelJefe"></span></small>
-
-							<p class="mb-0">Vigencia</p>
-							<small class="text-black-50" id="vigencia"></small>
-
-							<p class="mb-0">Autorizado</p>
-							<small class="text-black-50"><span id="status"></span></small>
-						</div>
+						
 					</div>
-					<div class="col-sm-12 col-md-12 col-lg-12 row  p-2">
-						<div class="col-sm-12 col-md-6 col-lg-6 p-2">
-							<h4>Información de visita</h4>
-							<p><span className='h4'><b>Motivo de Visita:</b></span> <span id="motivoDeVisita"></span></p>
-							<div class="col-12 d-flex justify-content-between">
-								<p><span className='h4'><b>A quien visita:</b></span> <span id="aQuienVisita"></span> </p>
-							</div>
-							<p><span className='h4'><b>Autorizado por:</b></span> <span id="autorizadoPor"></span></p>
-							<p><span className='h4'><b>Teléfono:</b></span> <span id="telefono"></span></p>
-
-						</div>
-						<div class="col-sm-12 col-md-6 col-lg-6 ">
+					<div class="d-flex justify-content-between mt-4">
+						
+						<div class="col-5 mr-1">
 							<h4>Comentarios / Instrucciones de visita</h4>
 							<table class="table-borderless customShadow" id="tableComentarios" style="border: none;">
 								<thead >
 									<tr>
 										<th class="headerColor">Comentarios / Instrucciones</th>
+										<th class="headerColor">Tipo</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-5">
+							<h4>Accesos permitidos</h4>
+							<table class="table-borderless customShadow" id="tableAccesos" style="border: none;  max-height: 150px !important; ">
+								<thead>
+									<tr>
+										<th class="headerColor">Area</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -246,18 +248,20 @@
 							</table>
 						</div>
 					</div>
-					<div class="col-sm-12 col-md-12 col-lg-12 p-2">
-						<h4>Accesos permitidos</h4>
-						<table class="table-borderless customShadow" id="tableAccesos" style="border: none;">
+					<div class="col-sm-12 col-md-12 col-lg-12 p-2 mt-1">
+						<h4>Documentos</h4>
+						<table class="table-borderless customShadow" id="tableDocumentos" style="border: none;">
 							<thead>
 								<tr>
-									<th class="headerColor">Area</th>
+									<th class="headerColor">Documento</th>
+									<th class="headerColor"></th>
 								</tr>
 							</thead>
 							<tbody>
 							</tbody>
 						</table>
 					</div>
+
 					<div class="col-sm-12 col-md-12 col-lg-12 p-2">
 						<h4>Equipo</h4>
 						<table class="table-borderless customShadow" id="tableEquipos" style="border: none;">

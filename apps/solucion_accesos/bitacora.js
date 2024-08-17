@@ -401,8 +401,14 @@ function openDataModal(folio){
     $("#nombreDelUsuario").text(registroSeleccionado.nombre_visitante)
     let listaAccesos=[]
     let listaComentarios=[]
+    let listaDocumentos=[]
     let listaEquipos=[]
     let listaVehiculos=[]
+
+    let tableDocumentos = document.getElementById("tableDocumentos");
+    let tbody5 = tableDocumentos.getElementsByTagName("tbody")[0];
+    tbody5.innerHTML="";
+
     let tableComentarios = document.getElementById("tableComentarios");
     let tbody1 = tableComentarios.getElementsByTagName("tbody")[0];
     tbody1.innerHTML="";
@@ -418,19 +424,42 @@ function openDataModal(folio){
     let tableVehiculos = document.getElementById("tableVehiculos");
     let tbody4 = tableVehiculos.getElementsByTagName("tbody")[0];
     tbody4.innerHTML="";
+
     $('#tableComentarios').innerHTML=""
     $('#tableAccesos').innerHTML=""
     $('#tableEquipos').innerHTML=""
     $('#tableVehiculos').innerHTML=""
 
+
+//tabla comentarios
+    if(registroSeleccionado.hasOwnProperty('documentos')){
+        listaDocumentos = registroSeleccionado.documentos.length > 0 ? registroSeleccionado.documentos  : [];
+    }
+    for (var i = 0; i < listaDocumentos.length; i++) {
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(listaDocumentos[i].file_name));
+            newRow.append($('<td>').text(`<a href="${listaDocumentos[i].file_url}" target="_blank">${listaDocumentos[i].file_name}</a> <td>"`));
+            
+            newRow.append('</tr>');
+            $('#tableDocumentos').append(newRow);
+    }
+    console.log("LISYTAASDO",listaDocumentos)
+    if(listaDocumentos.length==0){
+        let newRow = $('<tr>');
+        newRow.append($('<td>').text("No existen documentos"));
+        newRow.append($('<td>'));
+        newRow.append('</tr>');
+        $('#tableDocumentos').append(newRow);
+    }
+
     //tabla comentarios
-    if(registroSeleccionado.hasOwnProperty('grupo_comentarios')){
-        tableComentarios = registroSeleccionado.grupo_comentarios.length > 0 ? registroSeleccionado.grupo_comentarios: [];
+    if(registroSeleccionado.hasOwnProperty('comentarios')){
+        tableComentarios = registroSeleccionado.comentarios.length > 0 ? registroSeleccionado.comentarios  : [];
     }
     for (var i = 0; i < tableComentarios.length; i++) {
             var newRow = $('<tr>');
             newRow.append($('<td>').text(tableComentarios[i].comentario));
-            newRow.append($('<td>'));
+            newRow.append($('<td>').text(tableComentarios[i].tipo_comentario));
             newRow.append('</tr>');
             $('#tableComentarios').append(newRow);
     }

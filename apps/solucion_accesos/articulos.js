@@ -5,6 +5,9 @@ let articulosConcesionados=[]
 let colors = getPAlleteColors(12,0)
 let selectedRowFolio=""
 let arrayResponses=[]
+let flagVideoCard = false;
+let flagVideoUser = false;
+
 
 window.onload = function(){
 	setValueUserLocation('articulos');
@@ -1163,4 +1166,127 @@ function aplicarFiltros(){
     });
     let selectTipo= document.getElementById("idFiltrosTipo")
     selectTipo.value=""
+}
+
+
+//FUNCION obtener la imagen del canvas
+function getScreenUser(){
+    //-----Save Photo
+    if(!flagVideoUser){
+        flagVideoUser = true;
+   
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                let video = document.createElement('video');
+                video.style.width = '200px';
+                video.style.height = '125px';
+                document.getElementById('containerUser').appendChild(video);
+                video.srcObject = stream;
+                video.play();
+                let canvas = document.getElementById('canvasPhotoUser');
+                let context = canvas.getContext('2d');
+                //----Take
+                $("#buttonTakeUser").attr('disabled','disabled');
+                $("#buttonTakeUser").hide();
+                $("#buttonSaveUser").show();
+                document.getElementById('buttonSaveUser').addEventListener('click', function() {
+                    setTranslateImageUser(context, video, canvas);
+                });
+            })
+            .catch(function(error) {
+                console.error('Error al acceder a la cámara:', error);
+            });
+        } else {
+            alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
+        }
+    }
+}
+
+//FUNCION obtener la imagen del canvas parte2
+function setTranslateImageUser(context, video, canvas){
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    let photoCard = document.getElementById('imgUser');
+    photoCard.src = canvas.toDataURL('image/png');
+    photoCard.style.display = 'block';
+    video.pause();
+    video.srcObject.getTracks().forEach(function(track) {
+        track.stop();
+    });
+    video.style.display = 'none';
+    ///-- Save Input
+    canvas.toBlob( (blob) => {
+        const file = new File( [ blob ], "imageUser.png" );
+        const dT = new DataTransfer();
+        dT.items.add( file );
+        document.getElementById("inputFileUser").files = dT.files;
+    } );
+    //-----Rquest Photo
+    const flagBlankUser = isCanvasBlank(document.getElementById('canvasPhotoUser'));
+    if(!flagBlankUser){
+        setTimeout(() => {
+            setRequestFileImg('inputUser');
+        }, "1000");
+    }
+    //-----Clean ELement
+    $("#buttonSaveUser").hide();
+}
+
+//FUNCION validar que el canvas este limpio
+function isCanvasBlank(canvas) {
+    const context = canvas.getContext('2d');
+    const pixelBuffer = new Uint32Array(
+        context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+    );
+    return !pixelBuffer.some(color => color !== 0);
+}
+
+//FUNCION obtener la url de la imagen despues de gurdarla
+function setRequestFileImg(type) {
+    let idInput = '';
+    if(type == 'inputCard'){
+        idInput = 'inputFileCard';
+    }else if(type == 'inputUser'){
+        idInput = 'inputFileUser';
+    }
+    const fileInput = document.getElementById(idInput);
+    const file = fileInput.files[0];
+    if (file) {
+        const formData = new FormData();
+        formData.append('File', file);
+        formData.append('field_id', '660459dde2b2d414bce9cf8f');
+        formData.append('is_image', true);
+        formData.append('form_id', 116852);
+        fetch('https://app.linkaform.com/api/infosync/cloud_upload/', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(res => {
+            if(res.file !== undefined && res.file !== null){
+                if(type == 'inputCard'){
+                    urlImgCard = res.file;
+                    //----Clean Canvas
+                    var canvas = document.getElementById('canvasPhoto');
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }else if(type == 'inputUser'){
+                    urlImgUser = res.file;
+                    //----Clean Canvas
+                    var canvas = document.getElementById('canvasPhotoUser');
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }else{
+                console.log('Error aqui 2');
+                return 'Error';
+            }
+        })
+        .catch(error => {
+            console.log('Error aqui 3');
+            return 'Error';
+        });
+    }else{
+        return 'Error';
+    }
 }
