@@ -63,8 +63,62 @@ function setModal(type = 'none',id){
         showAgregarEquipo()
     }else if(type == 'vehiculosModal'){
         showAgregarVehiculo()
+    }else if('listaPases'){
+        verListaPasesActivos()
     }
 }
+
+function verListaPasesActivos(){
+    setCleanData()
+    loadingService()
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: 'lista_pases',
+            caseta: selectCaseta.value,
+            location: selectLocation.value,
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        console.log("REPSONSEE", res)
+        if (res.success) {
+            Swal.close();
+            let listPases = res.response.data
+            let formatedList=[]
+            for(let obj of listPases){
+                formatedList.push({nombre: obj.nombre, folio: obj.folio, qr_code: obj.qr_code, ubicacion: obj.ubicacion, foto: obj.foto})
+            }
+
+            if(user!="" && userJwt!=""){
+                drawTableSelect('tableListaPases',columsListaPases, formatedList,"500px",1);
+                $("#listModal").modal('show');
+            }
+
+            tables["tableListaPases"].on("rowSelectionChanged", function(data, rows){
+                if (rows.length > 0) {
+                    console.log("DATAA", data[0])
+                    $("#inputCodeUser").val(data[0].qr_code);
+                    if(data[0].qr_code!==""){
+                        //setSpinner(true, 'divSpinner');
+                        $("#divSpinner").show();
+                        buscarPaseEntrada();
+                    }
+                    $("#listModal").modal('hide');
+
+                    //console.log("ESCOGIDOO", data)
+                    //cambiarCaseta(data[0])
+                }
+            });
+        } 
+    });
+}
+
 
 function limpiarModalVehiculos(){
     let selectVehiculosMarca= document.getElementById("selectVehiculosMarca")
@@ -252,11 +306,12 @@ function agregarEquipo(){
         let id= Math.floor(Math.random() * 1000000)
         let checked='checked'
         selectedEquipos.push(id);
-        listItemsData.push({ marca_articulo: marca, tipo_equipo: tipo, modelo_articulo: modelo, color_articulo:color , numero_serie:noserie, id: id, check:checked});
+        listItemsData.push({ marca_articulo: marca, nombre_articulo: nombre, tipo_equipo: tipo, modelo_articulo: modelo, color_articulo:color , numero_serie:noserie, id: id, check:checked});
         //let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
         console.log("AGREGAR", listItemsData)
         let newRow2 = $('<tr>');
         newRow2.append($('<td>').text(tipo));
+        newRow2.append($('<td>').text(nombre));
         newRow2.append($('<td>').text(marca));
         newRow2.append($('<td>').text(modelo));
         newRow2.append($('<td>').text(noserie));
@@ -288,12 +343,14 @@ function verListaDeEquiposAgregados(){
     if(selectedItems.length>0 ){
         for (var i = 0; i < selectedItems.length; i++) {
             let tipoCar = selectedItems[i].tipo_equipo;
+            let nombreEquipo = selectedItems[i].nombre_articulo;
             let marcaCar = selectedItems[i].marca_articulo;
             let modeloCar = selectedItems[i].modelo_articulo;
             let numeroSerie = selectedItems[i].numero_serie;
             let colorCar = selectedItems[i].color_articulo;
             var newRow = $('<tr>');
             newRow.append($('<td>').text(tipoCar));
+            newRow.append($('<td>').text(nombreEquipo));
             newRow.append($('<td>').text(marcaCar));
             newRow.append($('<td>').text(modeloCar));
             newRow.append($('<td>').text(numeroSerie));
@@ -1156,6 +1213,7 @@ function tableFillEquipos(dataUser){
     $("#tableEquipos").innerHTML="";
     for (let i = 0; i < listItems.length; i++) {
         let tipoItem = listItems[i].tipo_equipo;
+        let nombreItem = listItems[i].nombre_articulo;
         let marcaItem = listItems[i].marca_articulo;
         let modeloItem = listItems[i].modelo_articulo;
         let serieItem = listItems[i].numero_serie;
@@ -1163,6 +1221,7 @@ function tableFillEquipos(dataUser){
         let id = listItems[i].id;
         let newRow = $('<tr>');
         newRow.append($('<td>').text(tipoItem));
+        newRow.append($('<td>').text(nombreItem));
         newRow.append($('<td>').text(marcaItem));
         newRow.append($('<td>').text(modeloItem));
         newRow.append($('<td>').text(serieItem));
@@ -1177,6 +1236,7 @@ function tableFillEquipos(dataUser){
         $("#tableEquipos").innerHTML="";
         let newRow = $('<tr>');
         newRow.append($('<td >').text('No existen Equipos'));
+        newRow.append($('<td>'));
         newRow.append($('<td>'));
         newRow.append($('<td>'));
         newRow.append($('<td>'));

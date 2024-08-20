@@ -88,7 +88,7 @@
 				<div class="input-group" role="group">
 					<input type="text" class="form-control  input-search-portal " placeholder="Codigo User" value="" id="inputCodeUser" onchange="buscarPaseEntrada();return false;">
 					<button class="input-group-text bg-warning-subtle  cursor-pointer myCustomBtnGroup" id="buttonBuscarPaseEntrada" onclick="buscarPaseEntrada();return false;" disabled><i class="fa-solid fa-magnifying-glass" ></i></button>
-					<button class="input-group-text bg-warning-subtle cursor-pointer myCustomBtnGroup" data-bs-toggle="modal" data-bs-target="#listModal" ><i class="fa-solid fa-list"></i></button>
+					<button class="input-group-text bg-warning-subtle cursor-pointer myCustomBtnGroup" onclick="setModal('listaPases')" ><i class="fa-solid fa-list"></i></button>
 				</div>
 			</div>
 			<div class="ms-2 d-flex" >
@@ -305,6 +305,7 @@
 							<thead class="overflowCustomHead">
 								<tr>
 									<th class="headerColor">Tipo</th>
+									<th class="headerColor">Nombre</th>
 									<th class="headerColor">Marca</th>
 									<th class="headerColor">Modelo</th>
 									<th class="headerColor">No.de Serie</th>
@@ -358,20 +359,20 @@
 	</section>
 
 	<!-- Modal List-->
-	<div class="modal fade" id="listModal" tabindex="-1"  aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+	<div class="modal fade" id="listModal" tabindex="-1"  aria-hidden="true" >
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width:600px">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h1 class="modal-title fs-5">Lista de Pases Activos</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<div class="row m-3">
+					<!--<div class="row m-3">
 						<input type="text" class="form-control" placeholder="Busqueda" onkeyup="functionSearchList(event);return false;">
-					</div>
-					<div class="row m-3">
-						<ol class="list-group list-group-numbered" id="listPasaportActive"></ol>
-					</div>
+					</div> -->
+					<div class="m-3 mt-0" style="max-height: 500px; width: 530px;">
+						<div id="tableListaPases"></div>
+						
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
@@ -749,7 +750,6 @@
 							</tr>
 						</tbody>
 					</table>
-					
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
@@ -881,6 +881,7 @@
 					<table class="table table-borderless" style="border: none !important;" id="tableAddItemsModal">
 						<thead class="table-warning">
 							<th class="headerColor">Tipo</th>
+							<th class="headerColor">Nombre</th>
 							<th class="headerColor">Marca</th>
 							<th class="headerColor">Modelo</th>
 							<th class="headerColor">No. Serie</th>
@@ -924,7 +925,7 @@
 					<h1 class="modal-title fs-5">Comentario de pase</h1>
 				</div>
 				<div class="d-flex justify-content-center">
-					<div class="overflowCustom div-containerTable-portal div-container-table mt-1" style="min-width:750px!important; min-height: 150px !important; ">
+					<div class="overflowCustom div-containerTable-portal div-container-table mt-1" style="min-width:750px!important; min-height: 150px !important;">
 						<table id="tableComentariosAcceso" class=" table-borderless" style="border: none;">
 							<thead class="overflowCustomHead">
 								<tr>
@@ -949,7 +950,8 @@
 		</div>
 	</div>
 
-	<div id="divSpinner" style="display:none;margin-top: 100px;"></div>
+	<div id="divSpinner" style="display:none;margin-top: 100px;">
+	</div>
 </body>
 <!-- Local -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

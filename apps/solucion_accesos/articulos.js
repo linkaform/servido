@@ -1,4 +1,3 @@
-let selectLocation;
 let scriptName=''
 let articulosPerdidos=[]
 let articulosConcesionados=[]
@@ -7,30 +6,38 @@ let selectedRowFolio=""
 let arrayResponses=[]
 let flagVideoCard = false;
 let flagVideoUser = false;
-
+let selectCaseta=""
+let selectLocation=""
 
 window.onload = function(){
 	setValueUserLocation('articulos');
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	let user = getCookie("userId");
-    
+    selectLocation= document.getElementById("selectLocation");
+    selectLocation.onchange = async function(){
+        let response = fetchOnChangeLocation(selectLocation.value)
+        if($("#checkboxTodasLasCasetas").is(':checked')){
+            let response2 = await fetchOnChangeCaseta('articulos_consecionados.py', 'get_articles',selectCaseta.value, selectLocation.value)
+            reloadTableArticulosCon(response2.response.data, selectCaseta.value)
+            let response3 = await fetchOnChangeCaseta('articulos_perdidos.py', 'get_articles', selectCaseta.value, selectLocation.value)
+            reloadTableArticulosPer(response3.response.data)
+        }
+    };
+
+    selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta.onchange = async function() {
+        let response = await fetchOnChangeCaseta('articulos_consecionados.py', 'get_articles',selectCaseta.value, selectLocation.value)
+        reloadTableArticulosCon(response.response.data, selectCaseta.value)
+        let response2 = await fetchOnChangeCaseta('articulos_perdidos.py', 'get_articles', selectCaseta.value, selectLocation.value)
+        reloadTableArticulosPer(response2.response.data)
+    };
     changeButtonColor();
     getInfoCatalogs();
     fillCatalogs();
 
     allDataArticulosCon();
     allDataArticulosPer();
-	selectLocation= document.getElementById("selectLocation");
-	selectLocation.onchange = function(){
-        let response = fetchOnChangeLocation(selectLocation.value)
-    };
-    selectCaseta= document.getElementById("selectCaseta")
-    selectCaseta.onchange = async function() {
-        let response = await fetchOnChangeCaseta('articulos_consecionados.py', 'get_articles','', selectLocation.value)
-        reloadTableArticulosCon(response.response.data, selectCaseta.value)
-        let response2 = await fetchOnChangeCaseta('articulos_perdidos.py', 'get_articles', selectCaseta.value, selectLocation.value)
-        reloadTableArticulosPer(response2.response.data)
-    };
+	
 	setSpinner(true, 'divSpinner');
 	
 	
@@ -55,6 +62,24 @@ window.onload = function(){
             imagen.src = imageUrl;
         }
     });
+     if(getValueUserLocation()=='articulos'){
+         $(document).ready(function() {
+            $('#divTodasLasCasetas').show();
+            $('#labelGuardiaDeApoyo').remove();
+        })
+    }
+    $("#checkboxTodasLasCasetas").on("click",async function()  {
+         if ($(this).is(':checked')) {
+            selectCaseta.value=""
+            selectCaseta.disabled=true
+            let response = await fetchOnChangeCaseta('articulos_consecionados.py', 'get_articles','', selectLocation.value)
+            reloadTableArticulosCon(response.response.data, selectCaseta.value)
+            let response2 = await fetchOnChangeCaseta('articulos_perdidos.py', 'get_articles', '', selectLocation.value)
+            reloadTableArticulosPer(response2.response.data)
+        } else {
+            selectCaseta.disabled=false
+        }
+    })
 }
 
 window.addEventListener('storage', function(event) {
@@ -137,8 +162,8 @@ function allDataArticulosPer(){
         body: JSON.stringify({
             script_name:'articulos_perdidos.py',
             option:'get_articles',
-            location: getCookie('userLocation'),
-            area: getCookie('userCaseta')
+            location: selectLocation.value,
+            area: selectCaseta.value
         }),
         headers:
         {
@@ -168,6 +193,8 @@ function allDataArticulosPer(){
                     $("#buttonEliminarArticulosCon").on("click", function() {
                         descargarExcel(tables, 'tableArticlesLose')
                     });
+
+                    
                     let selectedArticulosCons = getActiveCheckBoxs(tables,'tableArticlesLose')
                     let buttonEliminarIncidencias=document.getElementById('buttonEliminarArticulosLose');
                     if(selectedArticulosCons.length>0) buttonEliminarIncidencias.display= 'none'
@@ -184,6 +211,7 @@ function allDataArticulosCon(){
             script_name:'articulos_consecionados.py',
             option:'get_articles',
             location: getCookie('userLocation'),
+            area:selectCaseta.value
         }),
         headers:
         {

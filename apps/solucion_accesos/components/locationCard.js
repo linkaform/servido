@@ -29,7 +29,13 @@ class lkfLocationCard extends HTMLElement{
                     <h6 class="text-black" id="textJefeGuardia">Jefe en Guardia: </h6>
                     <h6 class="text-black-50 ms-1" id="textGuardiaApoyo">`+getCookie('userName')+`</h6> 
                 </div>
-                <div class="d-flex  justify-content-start">
+                <div id="divTodasLasCasetas" style="display:none;">
+                    <input class="form-check-input mt-1"  type="checkbox" id="checkboxTodasLasCasetas">
+                    <label class="form-check-label" style="margin-left:5px" for="flexCheckDefault" id="flexCheckDefault">
+                    <h6>Todas las casetas</h6>
+                    </label>
+                </div>
+                <div id="labelGuardiaDeApoyo" class="d-flex justify-content-start">
                     <h6 class="text-black">Guardia de apoyo: </h6>
                     <h6 class="text-black-50 ms-1"></h6> 
                 </div>
@@ -152,6 +158,7 @@ function loadCatalogsCaseta(location ,arrayUserBoothsLocations){
 
 
 async function fetchOnChangeCaseta(script, option, area, location){
+    console.log("CAMBIOOS",script, option, area, location)
     Swal.fire({
         title: 'Cargando...',
         allowOutsideClick: false,
@@ -180,7 +187,7 @@ async function fetchOnChangeCaseta(script, option, area, location){
     if (location){
         body.location=location
     }
-
+    console.log(body)
     let dataCasetas=[]
     let fetchData= await fetch(url + urlScripts, {
         method: 'POST',

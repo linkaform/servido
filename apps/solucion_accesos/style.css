@@ -530,3 +530,18 @@ input[type=search]{
   line-height: 1.33;
   border-radius: 35px;
 }
+
+#tableListaPasesActivos{
+  overflow: auto !important;
+  border: none !important; 
+  width: 735px; 
+  margin-left: 15px; 
+  max-height: 50px !important;
+}
+
+.tabulator-col .tabulator-col-content input {
+          width: 100px; /* Ajusta el ancho del filtro */
+          height: 40px; /* Ajusta la altura del filtro */
+          padding: 5px; /* Añade relleno al filtro */
+          font-size: 14px; /* Ajusta el tamaño de la fuente del filtro */
+      }
