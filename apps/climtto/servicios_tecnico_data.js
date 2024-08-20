@@ -31,17 +31,7 @@ let dataTable1  = [
 		        hora_inicio: "14:15",
 		        hora_fin: "16:45",
 		        horas_totales: 2.5,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "e7c5b",
@@ -49,17 +39,7 @@ let dataTable1  = [
 		        hora_inicio: "07:45",
 		        hora_fin: "10:00",
 		        horas_totales: 2.25,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "f8d6c",
@@ -67,17 +47,7 @@ let dataTable1  = [
 		        hora_inicio: "13:30",
 		        hora_fin: "15:30",
 		        horas_totales: 2,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
         ]
     },
@@ -94,17 +64,7 @@ let dataTable1  = [
 		        hora_inicio: "08:00",
 		        hora_fin: "09:45",
 		        horas_totales: 1.75,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 
 		    },
 		    {
@@ -113,17 +73,7 @@ let dataTable1  = [
 		        hora_inicio: "10:15",
 		        hora_fin: "12:30",
 		        horas_totales: 2.25,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 
 		    },
 		    {
@@ -132,17 +82,7 @@ let dataTable1  = [
 		        hora_inicio: "09:00",
 		        hora_fin: "11:30",
 		        horas_totales: 2.5,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 
 		    },
         ]
@@ -160,17 +100,7 @@ let dataTable1  = [
 		        hora_inicio: "12:45",
 		        hora_fin: "15:15",
 		        horas_totales: 2.5,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "e3c1b",
@@ -178,17 +108,7 @@ let dataTable1  = [
 		        hora_inicio: "14:00",
 		        hora_fin: "16:00",
 		        horas_totales: 2,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "f4d2c",
@@ -196,17 +116,7 @@ let dataTable1  = [
 		        hora_inicio: "08:30",
 		        hora_fin: "10:15",
 		        horas_totales: 1.75,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
         ]
     },
@@ -223,17 +133,7 @@ let dataTable1  = [
 			    hora_inicio: "11:45",
 			    hora_fin: "14:00",
 			    horas_totales: 2.25,
-			    _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+			    equipo:5
 			},
 			{
 			    servicio: "b6f4e",
@@ -241,17 +141,7 @@ let dataTable1  = [
 			    hora_inicio: "07:15",
 			    hora_fin: "09:30",
 			    horas_totales: 2.25,
-			    _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+			    equipo:5
 			},
 			{
 			    servicio: "c7a5f",
@@ -259,17 +149,7 @@ let dataTable1  = [
 			    hora_inicio: "10:30",
 			    hora_fin: "12:45",
 			    horas_totales: 2.25,
-			    _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+			    equipo:5
 			},
         ]
     },
@@ -286,17 +166,7 @@ let dataTable1  = [
 		        hora_inicio: "13:15",
 		        hora_fin: "15:15",
 		        horas_totales: 2,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "e9c7b",
@@ -304,17 +174,7 @@ let dataTable1  = [
 		        hora_inicio: "08:45",
 		        hora_fin: "11:00",
 		        horas_totales: 2.25,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "f0d8c",
@@ -322,17 +182,7 @@ let dataTable1  = [
 		        hora_inicio: "14:30",
 		        hora_fin: "16:00",
 		        horas_totales: 1.5,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
         ]
     },
@@ -349,17 +199,7 @@ let dataTable1  = [
 		        hora_inicio: "09:15",
 		        hora_fin: "11:15",
 		        horas_totales: 2,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "b2f0e",
@@ -367,17 +207,7 @@ let dataTable1  = [
 		        hora_inicio: "11:30",
 		        hora_fin: "13:45",
 		        horas_totales: 2.25,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "c3f1b",
@@ -385,17 +215,7 @@ let dataTable1  = [
 		        hora_inicio: "08:30",
 		        hora_fin: "10:30",
 		        horas_totales: 2,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
         ]
     },
@@ -412,17 +232,7 @@ let dataTable1  = [
 		        hora_inicio: "12:00",
 		        hora_fin: "14:30",
 		        horas_totales: 2.5,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "e5b3d",
@@ -430,17 +240,7 @@ let dataTable1  = [
 		        hora_inicio: "15:00",
 		        hora_fin: "17:00",
 		        horas_totales: 2,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "f6c4e",
@@ -448,17 +248,7 @@ let dataTable1  = [
 		        hora_inicio: "09:45",
 		        hora_fin: "12:15",
 		        horas_totales: 2.5,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
         ]
     },
@@ -475,17 +265,7 @@ let dataTable1  = [
 		        hora_inicio: "13:00",
 		        hora_fin: "15:15",
 		        horas_totales: 2.25,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "b8e6a",
@@ -493,17 +273,7 @@ let dataTable1  = [
 		        hora_inicio: "10:15",
 		        hora_fin: "12:30",
 		        horas_totales: 2.25,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "c9f7b",
@@ -511,17 +281,7 @@ let dataTable1  = [
 		        hora_inicio: "14:30",
 		        hora_fin: "16:30",
 		        horas_totales: 2,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
         ]
     },
@@ -538,17 +298,7 @@ let dataTable1  = [
 		        hora_inicio: "08:00",
 		        hora_fin: "10:00",
 		        horas_totales: 2,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "e1b9d",
@@ -556,17 +306,7 @@ let dataTable1  = [
 		        hora_inicio: "11:00",
 		        hora_fin: "13:30",
 		        horas_totales: 2.5,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "f2c0e",
@@ -574,17 +314,7 @@ let dataTable1  = [
 		        hora_inicio: "15:30",
 		        hora_fin: "17:30",
 		        horas_totales: 2,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
         ]
     },
@@ -601,17 +331,7 @@ let dataTable1  = [
 		        hora_inicio: "09:00",
 		        hora_fin: "11:15",
 		        horas_totales: 2.25,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "b4e2a",
@@ -619,17 +339,7 @@ let dataTable1  = [
 		        hora_inicio: "07:30",
 		        hora_fin: "09:30",
 		        horas_totales: 2,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "c5f3b",
@@ -637,17 +347,7 @@ let dataTable1  = [
 		        hora_inicio: "10:45",
 		        hora_fin: "13:00",
 		        horas_totales: 2.25,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
         ]
     },
@@ -664,17 +364,7 @@ let dataTable1  = [
 		        hora_inicio: "13:30",
 		        hora_fin: "15:45",
 		        horas_totales: 2.25,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "e7b5d",
@@ -682,17 +372,7 @@ let dataTable1  = [
 		        hora_inicio: "08:15",
 		        hora_fin: "10:45",
 		        horas_totales: 2.5,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "f8c6e",
@@ -700,17 +380,7 @@ let dataTable1  = [
 		        hora_inicio: "14:00",
 		        hora_fin: "16:15",
 		        horas_totales: 2.25,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
         ]
     },
@@ -727,17 +397,7 @@ let dataTable1  = [
 		        hora_inicio: "07:45",
 		        hora_fin: "09:45",
 		        horas_totales: 2,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    },
 		    {
 		        servicio: "b0e8a",
@@ -745,17 +405,7 @@ let dataTable1  = [
 		        hora_inicio: "12:00",
 		        hora_fin: "14:30",
 		        horas_totales: 2.5,
-		        _children:[
-		        	{
-				        equipo: "CNC-M1000"
-				    },
-				    {
-				        equipo: "LaserCut-500X"
-				    },
-				    {
-				        equipo: "PressMaster-P200"
-				    }
-		        ]
+		        equipo:5
 		    }
         ]
     },
