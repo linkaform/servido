@@ -56,7 +56,7 @@ let dataTable1  = [
     {
         tecnico: "Laura Martínez",
         color: '#b2babb',
-        cliente: "Ana López",
+        cliente : 5,	
         horas_totales: 6.5,
         servicio : 3,
         _children:[
@@ -95,7 +95,7 @@ let dataTable1  = [
     {
         tecnico: "Miguel Torres",
         color: '#b2babb',
-        cliente: "Carlos Ramírez",
+        cliente : 5,	
         horas_totales:7.25,
         servicio : 3,
         _children:[
@@ -131,7 +131,7 @@ let dataTable1  = [
     {
         tecnico: "María Fernández",
         color: '#b2babb',
-        cliente: "Laura Sánchez",
+        cliente : 5,	
         horas_totales: 6.75,
         servicio : 3,
         _children:[
@@ -167,7 +167,7 @@ let dataTable1  = [
     {
         tecnico: "Jorge Díaz",
         color: '#b2babb',
-        cliente: "Pedro Gómez",
+        cliente : 5,	
         horas_totales: 5.75,
         servicio : 3,
         _children:[
@@ -203,7 +203,7 @@ let dataTable1  = [
     {
         tecnico: "Sofía Herrera",
         color: '#b2babb',
-        cliente: "Marta Ruiz",
+        cliente : 5,	
         horas_totales: 6.25,
         servicio : 3,
         _children:[
@@ -239,7 +239,7 @@ let dataTable1  = [
     {
         tecnico: "Antonio Pérez",
         color: '#b2babb',
-        cliente: "Luis García",
+        cliente : 5,	
         horas_totales: 7,
         servicio : 3,
         _children:[
@@ -275,7 +275,7 @@ let dataTable1  = [
     {
         tecnico: "Elena López",
         color: '#b2babb',
-        cliente: "Rosa Méndez",
+        cliente : 5,	
         horas_totales: 6.5,
         servicio : 3,
         _children:[
@@ -311,7 +311,7 @@ let dataTable1  = [
     {
         tecnico: "Fernando Martínez",
         color: '#b2babb',
-        cliente: "Javier Ortega",
+        cliente : 5,	
         horas_totales: 6.5,
         servicio : 3,
         _children:[
@@ -347,7 +347,7 @@ let dataTable1  = [
     {
         tecnico: "Ana Torres",
         color: '#b2babb',
-        cliente: "Isabel Paredes",
+        cliente : 5,	
         horas_totales: 6.5,
         servicio : 3,
         _children:[
@@ -383,7 +383,7 @@ let dataTable1  = [
     {
         tecnico: "Luis Sánchez",
         color: '#b2babb',
-        cliente: "Alejandro Silva",
+        cliente : 5,	
         horas_totales: 7,
         servicio : 3,
         _children:[
@@ -419,7 +419,7 @@ let dataTable1  = [
     {
         tecnico: "Patricia Gómez",
         color: '#b2babb',
-        cliente: "Carmen Vázquez",
+        cliente : 5,	
         horas_totales: 4.5,
         servicio : 3,
         _children:[
