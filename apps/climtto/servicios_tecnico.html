@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!--Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
         <!--Utils -->        
         <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
         <link rel="stylesheet" href="../styles/css/styles.css">
@@ -88,23 +89,34 @@
 
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
-                    <div class="col-sm-12 col-md-3 col-lg-3">
+                    <div class="col-sm-12 col-md-3 col-lg-3 mt-1">
                         <h5>Fecha Desde: </h5>
                         <input class="form-control ds-input" type="date" id="date_from" name="date_from">
                     </div>
-                    <div class="col-sm-12 col-md-3 col-lg-3">
+                    <div class="col-sm-12 col-md-3 col-lg-3 mt-1">
                         <h5>Fecha Hasta: </h5>
                         <input class="form-control ds-input" type="date" id="date_to" name="date_to">
                     </div>
-                    <div class="col-sm-12 col-md-3 col-lg-3">
+                    <div class="col-sm-12 col-md-3 col-lg-3 mt-1">
                         <h5>Edificio: </h5>
-                        <select class="form-control mdb-select md-form" id="activities" >
+                        <select class="form-control mdb-select md-form" id="edificio" >
                             <option value="">--Seleccione--</option>
                             <option value="">Edificio 1</option>
                             <option value="">Edificio 2</option>
                         </select>
                     </div>
-                    
+                    <div class="col-sm-12 col-md-3 col-lg-3 mt-1">
+                        <h5>Cliente: </h5>
+                        <select class="form-control mdb-select md-form" id="cliente" >
+                            <option value="">--Seleccione--</option>
+                            <option value="">Cliente 1</option>
+                            <option value="">Cliente 2</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-2 col-lg-3 mt-1">
+                        <h5>Expandir: </h5>
+                        <input type="checkbox"  data-toggle="toggle" data-width="130" data-on="No" data-off="Si" id="input_check" data-onstyle="success" data-offstyle="primary" onchange="changeTableExpanded();return false;">
+                    </div>
                 </div>
 
                 <!--Content -->

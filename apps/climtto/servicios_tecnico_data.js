@@ -3,14 +3,14 @@
 
 //--TABLE
 var columsTable1 = [
-  { title:"Técnico", field:'tecnico',hozAlign:"left", headerFilter:"input",width:200},
-  { title:"Servicios Realizados",field:'servicio',hozAlign:"left", headerFilter:"input",width:300 },
-  { title:"Clientes",field:'cliente',hozAlign:"left", headerFilter:"input",width:300 },
-  { title:"Tipo",field:'tipo_trabajo',hozAlign:"left", headerFilter:"input",width:300 },
-  { title:"Equipos Realizados",field:'equipo',hozAlign:"left", headerFilter:"input",width:300 },
-  { title:"Hora Inicio",  field:'hora_inicio',hozAlign:"left", headerFilter:"input",width:150 },
-  { title:"Hora Fin",  field:'hora_fin',hozAlign:"left", headerFilter:"input",width:150 },
-  { title:"Hras Efectivas",  field:'horas_totales',hozAlign:"left", headerFilter:"input",width:150 },
+  	{ title:"Técnico", field:'tecnico',hozAlign:"left", headerFilter:"input",width:200},
+  	{ title:"Servicios Realizados",field:'servicio',hozAlign:"left", headerFilter:"input",width:300 },
+  	{ title:"Cliente",field:'cliente',hozAlign:"left", headerFilter:"input",width:300 },
+  	{ title:"Tipo",field:'tipo_trabajo',hozAlign:"left", headerFilter:"input",width:300 },
+  	{ title:"Equipos Realizados",field:'equipo',hozAlign:"left", headerFilter:"input",width:300 },
+  	{ title:"Hora Inicio",  field:'hora_inicio',hozAlign:"left", headerFilter:"input",width:150 },
+  	{ title:"Hora Fin",  field:'hora_fin',hozAlign:"left", headerFilter:"input",width:150 },
+  	{ title:"Hras Efectivas",  field:'horas_totales',hozAlign:"left", headerFilter:"input",width:150 },
 ];
 
 
@@ -20,12 +20,12 @@ var columsTable1 = [
 let dataTable1  = [
     {
         tecnico: "Carlos Gómez",
-        color: '#0378A6',
-        cliente: "Juan Pérez",
+        color: '#b2babb',
         horas_totales: 7.5,
         servicio : 3,
         _children:[
         	{
+        		cliente: "Juan Pérez",
 		        servicio: "d6b4e",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "14:15",
@@ -34,6 +34,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "María García",
 		        servicio: "e7c5b",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "07:45",
@@ -42,6 +43,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "María García",
 		        servicio: "f8d6c",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "13:30",
@@ -53,12 +55,13 @@ let dataTable1  = [
     },
     {
         tecnico: "Laura Martínez",
-        color: '#0378A6',
+        color: '#b2babb',
         cliente: "Ana López",
         horas_totales: 6.5,
         servicio : 3,
         _children:[
         	{
+        		cliente: "Carlos Rodríguez",
 		        servicio: "a9e7d",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "08:00",
@@ -68,6 +71,7 @@ let dataTable1  = [
 
 		    },
 		    {
+		    	cliente: "Sofía Martínez",
 		        servicio: "b0f8e",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "10:15",
@@ -77,6 +81,7 @@ let dataTable1  = [
 
 		    },
 		    {
+		    	cliente: "Sofía Martínez",
 		        servicio: "c1a9f",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "09:00",
@@ -89,12 +94,13 @@ let dataTable1  = [
     },
     {
         tecnico: "Miguel Torres",
-        color: '#0378A6',
+        color: '#b2babb',
         cliente: "Carlos Ramírez",
         horas_totales:7.25,
         servicio : 3,
         _children:[
         	{
+        		cliente: "Luis Hernández",
 		        servicio: "d2b0a",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "12:45",
@@ -103,6 +109,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "Elena López",
 		        servicio: "e3c1b",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "14:00",
@@ -111,6 +118,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "Elena López",
 		        servicio: "f4d2c",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "08:30",
@@ -122,12 +130,13 @@ let dataTable1  = [
     },
     {
         tecnico: "María Fernández",
-        color: '#0378A6',
+        color: '#b2babb',
         cliente: "Laura Sánchez",
         horas_totales: 6.75,
         servicio : 3,
         _children:[
 			{
+				cliente: "Pedro Sánchez",
 			    servicio: "a5e3d",
 			    tipo_trabajo: "Preventivo",
 			    hora_inicio: "11:45",
@@ -136,6 +145,7 @@ let dataTable1  = [
 			    equipo:5
 			},
 			{
+				cliente: "Ana Fernández",
 			    servicio: "b6f4e",
 			    tipo_trabajo: "Correctivo",
 			    hora_inicio: "07:15",
@@ -144,6 +154,7 @@ let dataTable1  = [
 			    equipo:5
 			},
 			{
+				cliente: "Ana Fernández",
 			    servicio: "c7a5f",
 			    tipo_trabajo: "Preventivo",
 			    hora_inicio: "10:30",
@@ -155,12 +166,13 @@ let dataTable1  = [
     },
     {
         tecnico: "Jorge Díaz",
-        color: '#0378A6',
+        color: '#b2babb',
         cliente: "Pedro Gómez",
         horas_totales: 5.75,
         servicio : 3,
         _children:[
         	{
+        		cliente: "Miguel Gómez",
 		        servicio: "d8b6a",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "13:15",
@@ -169,6 +181,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "José Torres",
 		        servicio: "e9c7b",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "08:45",
@@ -177,6 +190,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "Laura Ruiz",
 		        servicio: "f0d8c",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "14:30",
@@ -188,12 +202,13 @@ let dataTable1  = [
     },
     {
         tecnico: "Sofía Herrera",
-        color: '#0378A6',
+        color: '#b2babb',
         cliente: "Marta Ruiz",
         horas_totales: 6.25,
         servicio : 3,
         _children:[
         	{
+        		cliente: "Laura Ruiz",
 		        servicio: "a1e9d",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "09:15",
@@ -202,6 +217,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "Laura Ruiz",
 		        servicio: "b2f0e",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "11:30",
@@ -210,6 +226,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "Laura Ruiz",
 		        servicio: "c3f1b",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "08:30",
@@ -221,12 +238,13 @@ let dataTable1  = [
     },
     {
         tecnico: "Antonio Pérez",
-        color: '#0378A6',
+        color: '#b2babb',
         cliente: "Luis García",
         horas_totales: 7,
         servicio : 3,
         _children:[
         	{
+        		cliente: "José Torres",
 		        servicio: "d4a2c",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "12:00",
@@ -235,6 +253,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "José Torres",
 		        servicio: "e5b3d",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "15:00",
@@ -243,6 +262,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "José Torres",
 		        servicio: "f6c4e",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "09:45",
@@ -254,12 +274,13 @@ let dataTable1  = [
     },
     {
         tecnico: "Elena López",
-        color: '#0378A6',
+        color: '#b2babb',
         cliente: "Rosa Méndez",
         horas_totales: 6.5,
         servicio : 3,
         _children:[
         	{
+        		cliente: "Antonio Jiménez",
 		        servicio: "a7d5f",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "13:00",
@@ -268,6 +289,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "Antonio Jiménez",
 		        servicio: "b8e6a",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "10:15",
@@ -276,6 +298,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "Antonio Jiménez",
 		        servicio: "c9f7b",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "14:30",
@@ -287,12 +310,13 @@ let dataTable1  = [
     },
     {
         tecnico: "Fernando Martínez",
-        color: '#0378A6',
+        color: '#b2babb',
         cliente: "Javier Ortega",
         horas_totales: 6.5,
         servicio : 3,
         _children:[
         	{
+        		cliente: "Rafael Díaz",
 		        servicio: "d0a8c",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "08:00",
@@ -301,6 +325,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "Rafael Díaz",
 		        servicio: "e1b9d",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "11:00",
@@ -309,6 +334,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "Rafael Díaz",
 		        servicio: "f2c0e",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "15:30",
@@ -320,12 +346,13 @@ let dataTable1  = [
     },
     {
         tecnico: "Ana Torres",
-        color: '#0378A6',
+        color: '#b2babb',
         cliente: "Isabel Paredes",
         horas_totales: 6.5,
         servicio : 3,
         _children:[
         	{
+        		cliente: "Silvia Vargas",
 		        servicio: "a3d1f",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "09:00",
@@ -334,6 +361,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "Silvia Vargas",
 		        servicio: "b4e2a",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "07:30",
@@ -342,6 +370,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "Silvia Vargas",
 		        servicio: "c5f3b",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "10:45",
@@ -353,12 +382,13 @@ let dataTable1  = [
     },
     {
         tecnico: "Luis Sánchez",
-        color: '#0378A6',
+        color: '#b2babb',
         cliente: "Alejandro Silva",
         horas_totales: 7,
         servicio : 3,
         _children:[
         	{
+        		cliente: "Francisco Muñoz",
 		        servicio: "d6a4c",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "13:30",
@@ -367,6 +397,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "Francisco Muñoz",
 		        servicio: "e7b5d",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "08:15",
@@ -375,6 +406,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "Francisco Muñoz",
 		        servicio: "f8c6e",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "14:00",
@@ -386,12 +418,13 @@ let dataTable1  = [
     },
     {
         tecnico: "Patricia Gómez",
-        color: '#0378A6',
+        color: '#b2babb',
         cliente: "Carmen Vázquez",
         horas_totales: 4.5,
         servicio : 3,
         _children:[
         	{
+        		cliente: "Lucía Castro",
 		        servicio: "a9d7f",
 		        tipo_trabajo: "Preventivo",
 		        hora_inicio: "07:45",
@@ -400,6 +433,7 @@ let dataTable1  = [
 		        equipo:5
 		    },
 		    {
+		    	cliente: "Lucía Castro",
 		        servicio: "b0e8a",
 		        tipo_trabajo: "Correctivo",
 		        hora_inicio: "12:00",
@@ -453,13 +487,13 @@ var dataChart1 = {
 	      	label: 'Preventivo',
 	      	data: [2,1,1,1],
 	      	fill: false,
-    		backgroundColor: '#F23847',
+    		backgroundColor: '#007CB3',
 	    },
 	    {
 	      	label: 'Correctivo',
 	      	data: [1,1,2,1],
 	      	fill: false,
-    		backgroundColor: '#0378A6',
+    		backgroundColor: '#EFB03B',
 	    },
   	]
 };
@@ -493,8 +527,8 @@ var dataChart2 = {
 	    {
 	      	label: 'Porcentaje',
 	      	data: [60,40],
-	      	backgroundColor: ['#F23847','#0378A6'],
-	      	borderColor: ['#F23847','#0378A6'],
+	      	backgroundColor: ['#007CB3','#EFB03B'],
+	      	borderColor: ['#007CB3','#EFB03B'],
 	    },
 
   	]

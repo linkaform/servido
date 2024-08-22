@@ -9,6 +9,8 @@ let userJwt = null;
 let userName = null;
 let userParentId = null;
 let scriptId = null;
+let isExpanded = false;
+
 
 $('#divOptions').hide();
 $('#title_report').hide();
@@ -115,7 +117,6 @@ window.onload = function(){
   }
 }
 
-
 function unHideReportElements(){
   //Set here all report elements that need to be unHiden on a loggin
   unhideElement("firstElement-Buttons");
@@ -212,14 +213,14 @@ function getFirstElement(dateTo, dateFrom){
 };
 
 //-----TABLES
-function getDrawTable(id, columnsData, tableData, height){
-  var  table = new Tabulator("#" + id, {
+function getDrawTable(id, columnsData, tableData, height, expanded = false){
+    let table = new Tabulator("#" + id, {
     height: height+"px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:true,
+    dataTreeStartExpanded:expanded,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
@@ -229,7 +230,7 @@ function getDrawTable(id, columnsData, tableData, height){
       var data = row.getData();
       if(data.tecnico !== undefined ){
         row.getElement().style.backgroundColor = data.color;
-        row.getElement().style.color = '#FFFFFF';
+        //row.getElement().style.color = '#FFFFFF';
       }
     },
   });
@@ -249,6 +250,13 @@ function getDrawTable(id, columnsData, tableData, height){
       table.download("csv", "data.csv");
     });
   }
+}
+
+function changeTableExpanded(){
+  isExpanded = !isExpanded; 
+  getDrawTable('firstElement', columsTable1, dataTable1, 350, expanded = isExpanded);
+  document.getElementById("divContentFirst").style.removeProperty('display');
+  document.getElementById("firstElement").style.removeProperty('display');
 }
 
 //-----GRAPICH
