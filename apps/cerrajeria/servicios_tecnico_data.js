@@ -7,7 +7,7 @@ var columsTable1 = [
   { title:"Servicios Realizados",field:'servicio',hozAlign:"left", headerFilter:"input",width:300,formatter: function(cell, formatterParams) {
 	   	let value = cell.getValue();
 	    if (cell.getRow().getData().id_record) {
-	        return `<a href="https://app.linkaform.com/#/records/detail/${cell.getRow().getData().record_id}">${value}</a>`;
+	        return `<a href="https://app.linkaform.com/#/records/detail/${cell.getRow().getData().id_record}">${value}</a>`;
 	    } else {
 	        return value;
 	    }
@@ -234,7 +234,7 @@ var setOptions1 = {
 	    },
 	    title: {
 	        display: true,
-	        text: 'Rendimiento monetario por Técnico',
+	        text: 'Servicio  por Técnico',
 	        font: {
 	          size: 20
 	        }
