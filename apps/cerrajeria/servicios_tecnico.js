@@ -9,7 +9,8 @@ let userJwt = null;
 let userName = null;
 let userParentId = null;
 let scriptId = null;
-
+let isExpanded = false;
+let dataTableGlobal = null;
 $('#divOptions').hide();
 $('#title_report').hide();
 $('.title_tables').hide();
@@ -89,6 +90,7 @@ window.onload = function(){
     unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
+      dataTableGlobal = dataTable1;
     }
     //--Styles
     setSpinner();
@@ -140,6 +142,11 @@ function loadDemoData(){
   drawSecondElement(dataChart2, setOptions2)
   document.getElementById("divContentThird").style.removeProperty('display');
   document.getElementById("graphicSecond").style.removeProperty('display');
+
+
+  drawThirdElement(dataChart3, setOptions3)
+  document.getElementById("divContentFourth").style.removeProperty('display');
+  document.getElementById("graphicThird").style.removeProperty('display');
 }
 
 const loading = document.querySelector('.loading-container');
@@ -176,22 +183,33 @@ function getFirstElement(dateTo, dateFrom){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
+      let data = res.response.data;
 
-      if (res.response.json.firstElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data, 350);
+      if(data.dataTable ){
+        dataTableGlobal = data.dataTable ;
+        getDrawTable('firstElement', columsTable1, data.dataTable, 350);
+        document.getElementById("divContentFirst").style.removeProperty('display');
         document.getElementById("firstElement").style.removeProperty('display');
       }
-      if (res.response.json.secondElement) {
-        drawFirstElement(res.response.json.secondElement, setOptions1)
-        document.getElementById("secondElement").style.removeProperty('display');
+      
+      if(data.graphicFirst ){
+        drawFirstElement(data.graphicFirst, setOptions1)
+        document.getElementById("divContentSecond").style.removeProperty('display');
         document.getElementById("graphicFirst").style.removeProperty('display');
       }
-      if (res.response.json.thirdElement) {
-        console.log(res.response.json.thirdElement)
-        drawSecondElement(res.response.json.thirdElement, setOptions2)
-        document.getElementById("thirdElement").style.removeProperty('display');
+      
+      if(data.graphicSecond ){
+        drawSecondElement(data.graphicSecond, setOptions2)
+        document.getElementById("divContentThird").style.removeProperty('display');
         document.getElementById("graphicSecond").style.removeProperty('display');
       }
+
+      if(data.graphicThird ){
+        drawThirdElement(data.graphicThird, setOptions3)
+        document.getElementById("divContentFourth").style.removeProperty('display');
+        document.getElementById("graphicThird").style.removeProperty('display');
+      }
+
     } else {
       hideLoading();
       if(res.code == 11){
@@ -212,14 +230,14 @@ function getFirstElement(dateTo, dateFrom){
 };
 
 //-----TABLES
-function getDrawTable(id, columnsData, tableData, height){
+function getDrawTable(id, columnsData, tableData, height, expanded = false){
   var  table = new Tabulator("#" + id, {
     height: height+"px",
     layout:"fitDataTable",
     data:tableData,
     resizableRows:false,
     dataTree:true,
-    dataTreeStartExpanded:true,
+    dataTreeStartExpanded:expanded,
     clipboard:true,
     clipboardPasteAction:"replace",
     textDirection:"ltr",
@@ -248,6 +266,14 @@ function getDrawTable(id, columnsData, tableData, height){
       table.download("csv", "data.csv");
     });
   }
+}
+
+
+function changeTableExpanded(){
+  isExpanded = !isExpanded; 
+  getDrawTable('firstElement', columsTable1, dataTableGlobal, 350, expanded = isExpanded);
+  document.getElementById("divContentFirst").style.removeProperty('display');
+  document.getElementById("firstElement").style.removeProperty('display');
 }
 
 //-----GRAPICH
@@ -289,6 +315,29 @@ function drawSecondElement(datasets, dataconfig){
 
   chart2 = new Chart(ctx, {
     type: 'pie',
+    data: datasets,
+    plugins: [ChartDataLabels],
+    options: dataconfig
+  });
+}
+
+
+let chart3;
+function drawThirdElement(datasets, dataconfig){
+
+  //---CHART
+  var ctx = document.getElementById('graphicThird').getContext('2d');
+  
+  if (chart3) {
+    chart3.destroy();
+  }
+  //---COLORS
+  //array_colors = getPAlleteColors(6, datasets['labels'].length);
+  //datasets['datasets'][0]['backgroundColor'] = array_colors
+  //datasets['datasets'][0]['borderColor'] =  array_colors
+
+  chart3 = new Chart(ctx, {
+    type: 'bar',
     data: datasets,
     plugins: [ChartDataLabels],
     options: dataconfig

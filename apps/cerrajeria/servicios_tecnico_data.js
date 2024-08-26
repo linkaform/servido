@@ -5,11 +5,12 @@
 var columsTable1 = [
   { title:"Técnico", field:'tecnico',hozAlign:"left", headerFilter:"input",width:200},
   { title:"Servicios Realizados",field:'servicio',hozAlign:"left", headerFilter:"input",width:300 },
-  { title:"Tipo de trabajo",field:'tipo_trabajo',hozAlign:"left", headerFilter:"input",width:300 },
+  { title:"Tipo de Servicio",field:'tipo_trabajo',hozAlign:"left", headerFilter:"input",width:300 },
   { title:"Requirió apoyo",field:'apoyo',hozAlign:"left", headerFilter:"input",width:300 },
   { title:"Hora Inicio",  field:'hora_inicio',hozAlign:"left", headerFilter:"input",width:150 },
   { title:"Hora Fin",  field:'hora_fin',hozAlign:"left", headerFilter:"input",width:150 },
   { title:"Hras Efectivas",  field:'hora_total',hozAlign:"left", headerFilter:"input",width:150 },
+  { title:"Total Cobrado",  field:'total_cobrado',hozAlign:"left", headerFilter:"input",width:150 },
 ];
 
 
@@ -19,6 +20,7 @@ let dataTable1 =  [
         servicio:'4',
         hora_total: 16,
         color: '#7FA1C3',
+        total_cobrado:680,
         _children : [
         	{
 				servicio: "AB123",
@@ -26,7 +28,8 @@ let dataTable1 =  [
 				apoyo: "Sí",
 				hora_inicio: "08:00",
 				hora_fin: "12:00",
-				hora_total: 4
+				hora_total: 4,
+				total_cobrado: 170,
         	},
         	{
 		        servicio: "KL678",
@@ -34,7 +37,8 @@ let dataTable1 =  [
 		        apoyo: "No",
 		        hora_inicio: "14:00",
 		        hora_fin: "18:00",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado: 170,
 		    },
 		    {
 		        servicio: "MN901",
@@ -42,7 +46,8 @@ let dataTable1 =  [
 		        apoyo: "Sí",
 		        hora_inicio: "08:30",
 		        hora_fin: "12:30",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado: 170,
 		    },
 		    {
 		        servicio: "OP234",
@@ -50,7 +55,8 @@ let dataTable1 =  [
 		        apoyo: "No",
 		        hora_inicio: "09:30",
 		        hora_fin: "13:30",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado: 170,
 		    },
         ]
     },
@@ -59,6 +65,7 @@ let dataTable1 =  [
         servicio:'4',
         hora_total: 16,
         color: '#E2DAD6',
+        total_cobrado:400,
         _children : [
         	{
         		servicio: "CD456",
@@ -66,7 +73,8 @@ let dataTable1 =  [
 		        apoyo: "No",
 		        hora_inicio: "09:00",
 		        hora_fin: "13:00",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado:100
         	},
 		    {
 		        servicio: "QR567",
@@ -74,7 +82,8 @@ let dataTable1 =  [
 		        apoyo: "Sí",
 		        hora_inicio: "10:30",
 		        hora_fin: "14:30",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado:100
 		    },
 		    {
 		        servicio: "ST890",
@@ -82,7 +91,8 @@ let dataTable1 =  [
 		        apoyo: "No",
 		        hora_inicio: "11:00",
 		        hora_fin: "15:00",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado:100
 		    },
 		    {
 		        servicio: "UV123",
@@ -90,7 +100,8 @@ let dataTable1 =  [
 		        apoyo: "Sí",
 		        hora_inicio: "12:30",
 		        hora_fin: "16:30",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado:100
 		    },
         ]
     },
@@ -99,6 +110,7 @@ let dataTable1 =  [
         servicio:'4',
         hora_total: 20,
         color: '#7FA1C3',
+        total_cobrado:480,
         _children : [
         	{
         		servicio: "EF789",
@@ -106,7 +118,8 @@ let dataTable1 =  [
 		        apoyo: "Sí",
 		        hora_inicio: "10:00",
 		        hora_fin: "14:00",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado:120
         	},
         	{
 		        servicio: "CD567",
@@ -114,7 +127,8 @@ let dataTable1 =  [
 		        apoyo: "Sí",
 		        hora_inicio: "10:00",
 		        hora_fin: "14:00",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado:120
 		    },
 		    {
 		        servicio: "EF890",
@@ -122,7 +136,8 @@ let dataTable1 =  [
 		        apoyo: "No",
 		        hora_inicio: "11:00",
 		        hora_fin: "15:00",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado:120
 		    },
 		    {
 		        servicio: "GH123",
@@ -130,7 +145,8 @@ let dataTable1 =  [
 		        apoyo: "Sí",
 		        hora_inicio: "12:00",
 		        hora_fin: "16:00",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado:120
 		    },
         ]
     },
@@ -139,6 +155,7 @@ let dataTable1 =  [
         servicio:'2',
         hora_total: 8,
         color: '#E2DAD6',
+        total_cobrado:700,
         _children : [
         	{
         		servicio: "GH012",
@@ -146,7 +163,8 @@ let dataTable1 =  [
 		        apoyo: "No",
 		        hora_inicio: "07:00",
 		        hora_fin: "11:00",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado:350
         	},
         	{
 		        servicio: "IJ456",
@@ -154,7 +172,8 @@ let dataTable1 =  [
 		        apoyo: "No",
 		        hora_inicio: "07:00",
 		        hora_fin: "11:00",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado:350
 		    },
         ]
     },
@@ -163,6 +182,7 @@ let dataTable1 =  [
         servicio:'3',
         hora_total: 11,
         color: '#7FA1C3',
+        total_cobrado:963,
         _children : [
         	{
 		        servicio: "KL789",
@@ -170,7 +190,8 @@ let dataTable1 =  [
 		        apoyo: "Sí",
 		        hora_inicio: "08:30",
 		        hora_fin: "12:30",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado:263
 		    },
 		    {
 		        servicio: "MN012",
@@ -178,7 +199,8 @@ let dataTable1 =  [
 		        apoyo: "No",
 		        hora_inicio: "09:30",
 		        hora_fin: "13:30",
-		        hora_total: 4
+		        hora_total: 4,
+		        total_cobrado:200
 		    },
 		    {
 				servicio: "IJ345",
@@ -186,7 +208,8 @@ let dataTable1 =  [
 				apoyo: "Sí",
 				hora_inicio: "12:00",
 				hora_fin: "16:00",
-				hora_total: 3
+				hora_total: 3,
+				total_cobrado:500
 		    }
         ]
     },
@@ -204,7 +227,7 @@ var setOptions1 = {
 	    },
 	    title: {
 	        display: true,
-	        text: 'Servicios X Técnico',
+	        text: 'Rendimiento monetario por Técnico',
 	        font: {
 	          size: 20
 	        }
@@ -285,5 +308,43 @@ var dataChart2 = {
 	      	borderColor: ['#6482AD','#7FA1C3','#E2DAD6'],
 	    },
 
+  	]
+};
+
+var setOptions3 = {
+  	responsive: true,
+  	plugins: {
+	    legend: {
+	      display: true,
+	      position: 'top',
+	    },
+	    title: {
+	        display: true,
+	        text: 'Rendimiento monetario por Técnico',
+	        font: {
+	          size: 20
+	        }
+	    },
+	    datalabels: {
+        color: 'black',
+        font: {
+            size: 15
+         }
+      }
+	},
+	responsive: true, 
+    maintainAspectRatio: false ,
+};
+
+
+var dataChart3 = {
+  	labels: ['Juan Pérez','Ana López','María Sánchez','Luis Martínez'],
+  	datasets: [
+	    {
+	      	label: 'Total',
+	      	data: [680,400,700,963],
+	      	fill: false,
+    		backgroundColor: '#7FA1C3',
+	    },
   	]
 };
