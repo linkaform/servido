@@ -60,7 +60,7 @@ function get_login(){
 				let userEmail = res.user.email ? res.user.email: '';
 				let userPosition = res.user.position ? res.user.position: '';
 				let userImg = res.user.thumb ? res.user.thumb: '';
-
+				console.log("REESPUESTA LOGIN",res)
 				setCookie("sessionid", sessionId, 7);
 				setCookie("userId", userId, 7);
 				setCookie("userJwt", userJwt, 7);
@@ -79,6 +79,8 @@ function get_login(){
 				let url = `${protocol}//${host}/solucion_accesos/turnos.html`;
 				
 				window.location.reload();
+
+				skdjnfs
 				//window.open(`${protocol}//${host}/solucion_accesos/turnos.html`, "turnos")
 				//window.location.href =url
 				/*

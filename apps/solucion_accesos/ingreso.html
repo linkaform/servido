@@ -90,15 +90,11 @@
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row div-main-vehiculo" id="div-vehiculo">
 				
 				<div class="col-9 div-vehiculo-row-1 div-row-vehiculo" >
-					<label class="form-label">Tipo de Vehiculo: </label>
-					<span class="input-group-addon" id='spinnerTipoVehiculo'>
-                		<i class="fa fa-refresh fa-spin"></i>
-            		</span>
-
-					<input class="form-control group-vehiculo" list="datalistOptionsTipo" id="selectTipoVehiculo-123" placeholder="Escribe algo para buscar..." onChange='onChangeCatalog("vehiculo",123)'>
-					<datalist id="datalistOptionsTipo">
-				
-					</datalist>
+					<div class="div-vehiculo-row-1 div-row-vehiculo" >
+						<label class="form-label">Tipo de Vehiculo: </label>
+						<select class="form-select" aria-label="Default select example" id="selectTipoVehiculo-123" onChange='onChangeCatalog("vehiculo",123)'>
+						</select>
+					</div>
 				</div>
 				<div class="col-3 pt-4 mt-2 div-vehiculo-row-1 ">
 					<button type="button" class="btn btn-success button-add-register" onclick="setAddVehiculo();return false;">
@@ -111,25 +107,23 @@
 				<div class="col-9 div-vehiculo-row-1 div-row-vehiculo">
 					<div id='divCatalogMarca123'>
 						<label class="form-label">Marca: </label>
-						<input class="form-control group-vehiculo" list="datalistOptionsMarca123" id="selectCatalogMarca-123" placeholder="Escribe algo para buscar..." onchange='onChangeCatalog("marca",123)'> 
-						<datalist id="datalistOptionsMarca123">
-				
-						</datalist>
+						<select class="form-select" aria-label="Default select example" id="selectCatalogMarca-123" onChange='onChangeCatalog("marca",123)'>
+							<option disabled>Escoge un tipo de vehiculo...</option>
+						</select>
 					</div>
 					<div id='divCatalogModelo123'>
 						<label class="form-label">Modelo: </label>
-						<input class="form-control group-vehiculo" list="datalistOptionsModelo123" id="selectCatalogModelo-123" placeholder="Escribe algo para buscar...">
-						<datalist id="datalistOptionsModelo123">
-				
-						</datalist>
+							<select class="form-select" aria-label="Default select example" id="selectCatalogModelo-123" >
+								<option disabled>Escoge una marca...</option>
+							</select>
 					</div>
 					<div class="div-row-vehiculo">
-						<label class="form-label">Matricula del Vehiculo:</label>
-						<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-123">
+						<label class="form-label">Matrícula del Vehiculo:</label>
+						<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo">
 					</div>
 					<div class="div-row-vehiculo">
 						<label class="form-label">Color:</label>
-						<input type="text" class="form-control group-vehiculo" id="inputColor-123">
+						<input type="text" class="form-control group-vehiculo" id="inputColor">
 						<hr >
 					</div>
 				</div>
@@ -138,15 +132,17 @@
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row" id="div-equipo">
 				
 				<div class="col-9 div-equipo-row-123 div-row-equipo" >
-					<label class="form-label">Tipo de Equipo: </label>
-
-					<input class="form-control group-equipo" list="datalistOptionsEquipo123" id="selectTipoEquipo-123" placeholder="Escribe algo para buscar..." >
-					<datalist id="datalistOptionsEquipo123">
-						  <option value="Computo">
-						  <option value="Herramientas">
-					</datalist>
+					<div class="div-equipo-row-123 div-row-equipo mb-2" >
+						<label class="form-label">Tipo de Equipo: *</label>
+						<select class="form-select group-equipo" aria-label="Default select example" value="" id="selectTipoEquipo-123">
+							<option value="Herramienta">Herramienta</option>
+							<option value="Computo">Computo</option>
+							<option value="Tablet">Tablet</option>
+							<option value="Otra">Otra</option>
+						</select>
+					</div>
 				</div>
-				<div class="col-3 pt-4 mt-2 div-equipo-row-1 ">
+				<div class="col-3 pt-4 mt-2 div-equipo-row-1 mb-2">
 					<button type="button" class="btn btn-success button-add-register" onclick="setAddEquipo();return false;">
 						<i class="fa-solid fa-plus"></i>
 					</button>
@@ -154,25 +150,21 @@
 						<i class="fa-solid fa-minus"></i>
 					</button>
 				</div>
-				<div class="col-9 div-equipo-row-1 div-row-equipo">
+				<div class="col-9 div-equipo-row-1 div-row-equipo mb-2">
 				<label class="form-label ">Nombre del Equipo:</label>
 					<input type="text" class="form-control group-equipo" id="inputNombreEquipo-123">
 				</div>
-				<div class="col-9 div-equipo-row-1 div-row-equipo">
+				<div class="col-9 div-equipo-row-1 div-row-equipo mb-2">
 					<label class="form-label">Marca:</label>
-					<input type="text" class="form-control group-equipo" id="inputMarcaEquipo-123">
+					<input type="text" class="form-control group-equipo" id="inputMatriculaVehiculo-123">
 				</div>
-				<div class="col-9 div-equipo-row-1 div-row-equipo">
-					<label class="form-label">No.Serie:</label>
-					<input type="text" class="form-control group-equipo" id="inputNoSerieEquipo-123">
-				</div>
-				<div class="col-9 div-equipo-row-1 div-row-equipo">
+				<div class="col-9 div-equipo-row-1 div-row-equipo mb-2">
 					<label class="form-label">Modelo:</label>
-					<input type="text" class="form-control group-equipo" id="inputModeloEquipo-123">
+					<input type="text" class="form-control group-equipo" id="inputModelo-123">
 				</div>
 				<div class="col-9 div-equipo-row-1 div-row-equipo">
 					<label class="form-label">Color:</label>
-					<input type="text" class="form-control group-equipo" id="inputColorEquipo-123">
+					<input type="text" class="form-control group-equipo" id="inputColor-123">
 					<hr>
 
 				</div>

@@ -23,6 +23,8 @@ let selectCaseta =""
 let codeUser =""
 let listInstructions = []
 let tipoMovimiento=""
+let fotosNuevaVisita={foto:[], identificacion:[]}
+let paseDeAccesoScript= "pase_de_acceso.py"
 
 window.onload = function(){
     setValueUserLocation('accesos');
@@ -52,7 +54,7 @@ window.addEventListener('storage', function(event) {
 });
 
 //funcion Escojer modales
-function setModal(type = 'none',id){
+function setModal(type = 'none',id =""){
     if(type == 'comentarioPaseModal'){
         $("#idComentarioPase").val("")
         $('#commentarioPaseModal').modal('show');
@@ -63,10 +65,25 @@ function setModal(type = 'none',id){
         showAgregarEquipo()
     }else if(type == 'vehiculosModal'){
         showAgregarVehiculo()
-    }else if('listaPases'){
+    }else if(type== "listaPases"){
         verListaPasesActivos()
+    }else if(type=="newVisitModal"){
+        abrirModalNuevaVisita()
     }
 }
+
+function abrirModalNuevaVisita(){
+    $("#inputFileCard").val("")
+    $("#inputFileUser").val("")
+    $("#buttonTakeCard").show()
+    $("#buttonTakeUser").show()
+    $("#buttonTakeCard").prop('disabled', false);
+    $("#buttonTakeUser").prop('disabled', false);
+    //$("#imgCard").val()
+    //$("#imgUser").val()
+    $("#newVisitModal").modal('show');
+}
+
 
 function verListaPasesActivos(){
     setCleanData()
@@ -102,7 +119,6 @@ function verListaPasesActivos(){
 
             tables["tableListaPases"].on("rowSelectionChanged", function(data, rows){
                 if (rows.length > 0) {
-                    console.log("DATAA", data[0])
                     $("#inputCodeUser").val(data[0].qr_code);
                     if(data[0].qr_code!==""){
                         //setSpinner(true, 'divSpinner');
@@ -110,9 +126,6 @@ function verListaPasesActivos(){
                         buscarPaseEntrada();
                     }
                     $("#listModal").modal('hide');
-
-                    //console.log("ESCOGIDOO", data)
-                    //cambiarCaseta(data[0])
                 }
             });
         } 
@@ -209,6 +222,7 @@ async function onChangeCatalog(type, id){
 }
 
 function showAgregarVehiculo(){
+    console.log("HIII")
     limpiarModalVehiculos()
     $("#idLoadingButtonVehiculos").show();
     $("#idButtonVehiculos").hide();
@@ -231,16 +245,15 @@ function showAgregarVehiculo(){
                     $("#idLoadingButtonVehiculos").hide();
                     $("#idButtonVehiculos").show();
                 }else{
-                    Swal.close()
+                    //Swal.close()
                     $('#vehiculosModal').modal('show');
-                    $("#idLoadingButtonVehiculos").hide();
-                    $("#idButtonVehiculos").show();
-                    let selectVehiculos= document.getElementById("selectVehiculos")
-                    selectVehiculos.innerHTML=""; 
-                    for (let obj of data){
-                        selectVehiculos.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
+                     let selectVehiculos= document.getElementById("selectVehiculos");
+                     let list = data
+                     for (let obj in list){
+                        console.log("OBJ",list[obj])
+                        selectVehiculos.innerHTML += '<option value="'+list[obj].key[0]+'">'+list[obj].key[0]+'</option>';
+                        selectVehiculos.value=""
                     }
-                    selectVehiculos.value=""
                 }
             }else{
                 errorAlert(res)
@@ -602,23 +615,34 @@ function getInitialData(){
 
 //FUNCION para asignar nueva visita
 function asignarNuevaVisita(){
+    loadingService()
     let nombre=$("#inputNombreNV").val();
     let razonSocial=$("#inputRazonSocialNV").val();
     let areaQueVisita=$("#inputAreaVisitaNV").val();
     let visitaA=$("#selectVisitaNV").val();
     let motivoVisita=$("#inputMotivoVisitaNV").val();
     if(nombre!=='' , razonSocial!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
+        console.log("QUE TIENEN LOS ARRAY", fotosNuevaVisita)
+        let access_pass={
+            nombre: nombre,
+            perfil_pase:"Walkin",
+            telefono: "",
+            visita_a:visitaA,
+            email: getCookie("userEmail"),
+            empresa: "",
+            foto:fotosNuevaVisita.foto,
+            identificacion: fotosNuevaVisita.identificacion
+            //areaQueVisita:areaQueVisita,
+            //motivoVisita:motivoVisita,
+        }
+        console.log("QUE TRAE", access_pass)
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
-                script_id: idScript,
-                option: 'add_new_visit',
-                nombre: nombre,
-                razonSocial:razonSocial,
-                areaQueVisita:areaQueVisita,
-                visitaA:visitaA,
-                motivoVisita:motivoVisita,
-
+                script_name: paseDeAccesoScript,
+                option: 'create_access_pass',
+                location:selectLocation.value,
+                access_pass: access_pass
             }),
             headers:{
                 'Content-Type': 'application/json',
@@ -627,20 +651,31 @@ function asignarNuevaVisita(){
         })
         .then(res => res.json())
         .then(res => {
+            console.log("CREADO PASE DE ENTRADA")
             if (res.success) {
+                let data= res.response.data
+                if(data.status_code ==400 || data.status_code==401){
+                    errorAlert(res)
+                    //$("#idLoadingButtonVehiculos").hide();
+                    //$("#idButtonVehiculos").show();
+                }else{
+                    Swal.close()
+                    Swal.fire({
+                        title: "Validación",
+                        text: "NUeva visita registrada",
+                        type: "success"
+                    });
+                    codeUserVisit= Date.now();
+                    let inputCode = document.getElementById("inputCodeUser");
+                    inputCode.value= codeUserVisit
+                    $("#newVisitModal").modal('hide')
+                }
+                    //
                 //CODE una vez resulta la imagen, cargarla en front
-                let data={ data: {}}
+                
             } 
         });
-        Swal.fire({
-            title: "Validación",
-            text: "NUeva visita registrada",
-            type: "success"
-        });
-        codeUserVisit= Date.now();
-        let inputCode = document.getElementById("inputCodeUser");
-        inputCode.value= codeUserVisit
-        $("#newVisitModal").modal('hide')
+        
     }else{
         Swal.fire({
             title: "Validación",
@@ -901,7 +936,7 @@ function setDataGafete(){
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_name: "gafetes_locker.py",
+            script_name: "gafetes_lockers.py",
             option: "new_badge",
             data_gafete: data_gafete,
         }),
@@ -1324,8 +1359,13 @@ function optionInformationUser(data){
                 newRow.append($('<td>').text(listBitacora[i].visita_a ? listBitacora[i].visita_a : ''));
                 newRow.append($('<td>').text(listBitacora[i].fecha ? listBitacora[i].fecha : ''));
                 newRow.append($('<td>').text(listBitacora[i].duration ? listBitacora[i].duration +' hrs': ''));
-                if(listBitacora[i].hasOwnProperty('comentario')){
-                    newRow.append('<td ><button style="border:none; background-color:transparent;" onclick="mostrarComentarioUltimoAcceso('+ listBitacora[i].comentario+')"> <i class="fa-solid fa-message"></i> </button> </td>');
+                if(listBitacora[i].hasOwnProperty('comentarios')){
+                    if(listBitacora[i].comentarios.length>0){
+                        let stringArray= encodeURIComponent(JSON.stringify(listBitacora[i].comentarios))
+                        newRow.append(`<td ><button style="border:none; background-color:transparent;" onclick="mostrarComentarioUltimoAcceso(decodeURIComponent('${stringArray}'));"> <i class="fa-solid fa-message"></i> </button> </td>`);
+                    }else{
+                        newRow.append('<td > </td>');
+                    }
                 }else{
                     newRow.append('<td > </td>');
                 }
@@ -1368,18 +1408,29 @@ function optionInformationUser(data){
     }
 }
 
-function mostrarComentarioUltimoAcceso(comentario){
-    let comm=""
-    if(comentario !=+"" && comentario !==undefined){
-        comm=comentario
-    }else{
-        comm="No hay comentario disponible"
+function mostrarComentarioUltimoAcceso(comentarios){
+    let comentariosArray=JSON.parse(comentarios)
+    let objCom=""
+    for(let com of comentariosArray){
+        objCom +=`<tr>
+                    <td>${com.comentario}</td>
+                    <td>${com.tipo_comentario}</td>
+                </tr>`
+
     }
     Swal.fire({
-        text: "Comentario",
-        title: "Comentario",
-        html: ` <div class="d-flex justify-content-center mt-2">
-            <span> `+comm+` </span></div>
+        text: "Comentarios",
+        title: `<h4 style="color:black;">Comentarios</h4>`,
+        html: ` 
+        <table class="table table-borderless table-striped" style="border: none !important; font-size:0.9em; font-weight:normal;" id="tableComentariosUltimosAccesos" >
+                    <thead class="table-warning">
+                <th class="headerColor">Comentario</th>
+                <th class="headerColor">Tipo</th>
+            </thead>
+            <tbody>
+                ${objCom}
+            </tbody>
+        </table>
            `,
         showCancelButton: true,
         showConfirmButton:false,
@@ -1828,7 +1879,8 @@ function setTranslateImageUser(context, video, canvas){
     video.srcObject.getTracks().forEach(function(track) {
         track.stop();
     });
-    video.style.display = 'none';
+    //video.style.display = 'none';
+    //sdjkfns
     ///-- Save Input
     canvas.toBlob( (blob) => {
         const file = new File( [ blob ], "imageUser.png" );
@@ -1858,7 +1910,7 @@ function setTranslateImageCard(context, video, canvas){
     video.srcObject.getTracks().forEach(function(track) {
         track.stop();
     });
-    video.style.display = 'none';
+    //video.style.display = 'none';
     ///-- Save Input
     canvas.toBlob( (blob) => {
         const file = new File( [ blob ], "imageCard.png" );
@@ -1880,6 +1932,7 @@ function setTranslateImageCard(context, video, canvas){
 
 //FUNCION obtener la url de la imagen que se subio
 function setRequestFileImg(type) {
+    console.log("TIPOOO",type)
     let idInput = '';
     if(type == 'inputCard'){
         idInput = 'inputFileCard';
@@ -1903,26 +1956,31 @@ function setRequestFileImg(type) {
             if(res.file !== undefined && res.file !== null){
                 if(type == 'inputCard'){
                     urlImgCard = res.file;
+                    fotosNuevaVisita.identificacion.push({"file_name":res.file_name, "file_url":res.file})
                     //----Clean Canvas
                     var canvas = document.getElementById('canvasPhoto');
                     var ctx = canvas.getContext('2d');
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     let imgC =document.getElementById('imgCard')
-                    imgC.src=urlImgCard
+                    imgC.css('display', 'block');
+                    imgC.attr('src', urlImgCard);
                 }else if(type == 'inputUser'){
                     urlImgUser = res.file;
+                    fotosNuevaVisita.foto.push({"file_name":res.file_name, "file_url":res.file})
                     //----Clean Canvas
                     var canvas = document.getElementById('canvasPhotoUser');
                     var ctx = canvas.getContext('2d');
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     let imgU =document.getElementById('imgUser')
-                    imgU.src=urlImgCard
+                    imgU.css('display', 'block');
+                    imgU.attr('src', urlImgUser);
                 }
             }else{
                 return 'Error';
             }
         })
         .catch(error => {
+            errorAlert(error)
             return 'Error';
         });
     }else{

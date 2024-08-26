@@ -7,6 +7,8 @@ let dataCatalogs="";
 let id ="" 
 let caseta=""
 let ubicacion=""
+let paseDeAccesoScript= "pase_de_acceso.py"
+let fotosNuevaVisita={foto:[], identificacion:[]}
 
 window.onload = function(){
 	setValueUserLocation('ingreso');
@@ -71,26 +73,36 @@ function getExtraInformation(){
 
 //FUNCION para obtener los catalogos
 function getCatalogs(){
-	$("#selectTipoVehiculo-123").prop( "disabled", true );
-	$("#divCatalogMarca123").hide();
-	$("#divCatalogModelo123").hide();
 	fetch(url + urlScripts, {
-		method: 'POST',
-		body: JSON.stringify({
-			script_name:"script_turnos.py",
-			option:"get_catalog",
-			id_catalog: '119199',
-		}),
-		headers:{
-			'Content-Type': 'application/json',
-			'Authorization': 'Bearer '+userJwt
-		},
-	})
-	.then(res => res.json())
-	.then(res => {
-		if (res.success) {
-		} 
-	})
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: "vehiculo_tipo",
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+        },
+        }).then(res => res.json())
+        .then(res => {
+            if(res.success){
+                let data= res.response.data
+                if(data.status_code ==400 || data.status_code==401){
+                    errorAlert(res)
+                }else{
+                    let selectVehiculos= document.getElementById("selectTipoVehiculo-123")
+                    selectVehiculos.innerHTML=""; 
+                    for (let obj of data){
+                    	console.log(obj)
+                        selectVehiculos.innerHTML += '<option value="'+obj.key+'">'+obj.key+'</option>';
+                    }
+                    selectVehiculos.value=""
+                } 
+            }else{
+                errorAlert(res)
+            }
+        })
+
     let cat={
         "brands_cars": [
             {"type": "motocicleta", "brand": ["vento"]},
@@ -119,37 +131,68 @@ function getCatalogs(){
 }
 
 
-//FUNCION para obtener activar y rellenar catalagos en la seccion de agregar vehiculo
-function onChangeCatalog(type, id){
-	if(type == "vehiculo"){
-		$("#divCatalogMarca"+id+"").show();
+//FUNCION rellenar catalogos al momento de escojer una opcion
+async function onChangeCatalog(type, id){
+    if(type == "vehiculo"){
+        console.log("AL CAMBIO",type, id)
+        let inputMarca= document.getElementById("selectTipoVehiculo-123");
+        const options = {
+            method: 'POST', 
+            body: JSON.stringify({
+                script_name:'script_turnos.py',
+                option:'vehiculo_tipo',
+                tipo:inputMarca.value
+            }),
+             headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+ userJwt}
+        };
+        loadingService();
+        let respuesta = await fetch(url + urlScripts, options);
+        let data = await respuesta.json();
+        if(data.error){
+            errorAlert(data)
+        }else{
+            Swal.close();
+            let list =data.response.data
+            let selectVehiculosMarca= document.getElementById("selectCatalogMarca-123")
+            selectVehiculosMarca.innerHTML=""; 
+            for (let obj in list){
+            console.log(list[obj])
 
-		let inputMarca= document.getElementById("selectCatalogMarca-"+id+"");
-		inputMarca.value="";
-		let datalistMarca= document.getElementById("datalistOptionsMarca"+id+"");
-		datalistMarca.innerHTML=""; 
-		let inputModelo= document.getElementById("selectCatalogModelo-"+id+"");
-		inputModelo.value="";
-		let datalistModelo= document.getElementById("datalistOptionsModelo"+id+"");
-		datalistModelo.innerHTML=""; 
-
-		let selectedValue = $( "#selectTipoVehiculo-"+id+"" ).val();
-	    let catalogMarca = filterCatalogBy('type', selectedValue);
-		for (let obj in catalogMarca){
-			$("#datalistOptionsMarca"+id+"").append($('<option></option>').val(catalogMarca[obj].brand).text(catalogMarca[obj].brand));
-		}
-	} else if (type == "marca"){
-		$("#divCatalogModelo"+id+"").show();
-		let inputModelo= document.getElementById("selectCatalogModelo-"+id+"");
-		inputModelo.value="";
-		let datalistModelo= document.getElementById("datalistOptionsModelo"+id+"");
-		datalistModelo.innerHTML=""; 
-		let selectedValue = $( "#selectCatalogMarca-"+id+"" ).val();
-	    let catalogMarca = filterCatalogBy('brand', selectedValue);
-		for (let obj in catalogMarca){
-			$("#datalistOptionsModelo"+id+"").append($('<option></option>').val(catalogMarca[obj].model).text(catalogMarca[obj].model));
-		}
-	}
+                selectVehiculosMarca.innerHTML += '<option value="'+list[obj].key[1]+'">'+list[obj].key[1]+'</option>';
+            }
+            selectVehiculosMarca.value=""
+        }
+    }else if (type == "marca"){
+        let inputTipo= document.getElementById("selectTipoVehiculo-123");
+        let inputMarca= document.getElementById("selectCatalogMarca-123");
+        console.log("DETALLES",inputTipo.value, inputMarca.value)
+        const options = {
+            method: 'POST', 
+            body: JSON.stringify({
+                script_name:'script_turnos.py',
+                option:'vehiculo_tipo',
+                tipo:inputTipo.value,
+                marca: inputMarca.value
+            }),
+             headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+ userJwt}
+        };
+        loadingService();
+        let respuesta = await fetch(url + urlScripts, options);
+        let data = await respuesta.json();
+        if(data.error){
+            errorAlert(data)
+        }else{
+            Swal.close();
+            let list =data.response.data
+            let selectVehiculosModelo= document.getElementById("selectCatalogModelo-123")
+            selectVehiculosModelo.innerHTML=""; 
+                console.log("OBJ",selectVehiculosModelo.value)
+            for (let obj in list){
+                selectVehiculosModelo.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+            }
+            selectVehiculosModelo.value=""
+        }
+    }
 }
 
 
@@ -227,8 +270,10 @@ function getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
     let arrayEquipos=[]
     let arrayVehiculos=[]
 	let flagValidation = getValidation(allData);
+	/*
 	if(flagValidation){
 		for (let equipo in listInputsEquipo) {
+			console.log(listInputsEquipo[equipo])
 		    htmlAppendEquipos +="<div class='col-sm-12 col-md-12 col-lg-5 col-xl-5'>"
 			htmlAppendEquipos +="<table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>"
 			htmlAppendEquipos +="<tbody> <tr> <td><b>Tipo de Equipo:</b></td> <td> <span > "+ listInputsEquipo[equipo][0].value +"</span></td> </tr>"
@@ -266,7 +311,7 @@ function getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
 		    arrayVehiculos.push(objVehiculo)
 		}
 	}
-
+*/
 	return { htmlAppendEquipos, htmlAppendVehiculos,arrayEquipos,arrayVehiculos}
 }
 
@@ -359,7 +404,22 @@ function AlertSendDataUser() {
     })
     .then((result) => {
         if (result.value) {
-        	let data_pase = {
+	        let access_pass={
+	            nombre: name,
+	            perfil_pase:"Walkin",
+	            telefono: "",
+	            visita_a:visit,
+	            email: getCookie("userEmail"),
+	            empresa: company,
+	            foto:fotosNuevaVisita.foto,
+	            identificacion: fotosNuevaVisita.identificacion,
+	            //motivo_visita:motivo,
+	            //areaQueVisita:areaQueVisita,
+	            //equipos:arrayEquipos,
+	            //vehiculos: html.arrayVehiculos
+	        }
+        	
+        	/*let data_pase = {
 		        "visitante_pase":'alta_de_nuevo_visitante',
 		        //"ubicacion_pase":location  || '',
 		        "nombre_pase":name|| '',
@@ -378,14 +438,15 @@ function AlertSendDataUser() {
 		        'equipo_group_pase':html.arrayEquipos,
 		        'instrucciones_group_pase':['Sin comentarios'],
 		        'status_pase':'activo'
-		    }
+		    }*/
         	//FETCH PARA CREAR PASE DE ENTRADA
         	fetch(url + urlScripts, {
 		        method: 'POST',
 		        body: JSON.stringify({
-		            script_name: 'script_turnos.py',
-		            option: 'create_pase',
-		            data_pase:data_pase
+		            script_name: paseDeAccesoScript,
+	                option: 'create_access_pass',
+	                location:location,
+	                access_pass: access_pass
 		        }),
 		        headers:{
 		            'Content-Type': 'application/json',
@@ -395,36 +456,39 @@ function AlertSendDataUser() {
 		    .then(res => res.json())
 		    .then(res => {
 		        if (res.success) {
-		        } 
+		        	Swal.fire({
+			      		type:"success",
+			      		imageUrl: "https://app.linkaform.com/img/login-linkaform-logo.png",
+			      		text: "Tu informacion se ha guardado correctamente.",
+					    html:`
+					      	<div class="mb-3 mt-2" style="font-weight: bold; font-size: 1.1em; color:#8ebd73 !important; "> ¡Tu información fue guardada correctamente! </div>
+					        <div class="d-flex justify-content-center ">
+		    			      	<div class='align-items-start m-2'>
+		    			      	  	<i class="fa-solid fa-street-view"></i>
+		    			    </div>
+					      	<div class="d-flex flex-column mb-3" >
+						        <div> `+ location +`</div>
+						        <div> `+ caseta +`</div> 
+		    			    </div>
+					        </div>
+		                    <img class="mt-1" alt="Código QR" id="codigo">`,
+					      icon: "success",
+					 });
+				    new QRious({
+						element: document.querySelector("#codigo"),
+						value: 'Te damos la bienvenida ' + name + '\n Registro creado en ' + location + ', ' + caseta, // La URL o el texto
+						size: 200,
+						backgroundAlpha: 0, 
+						foreground: "#505050", 
+						level: "L", 
+					});
+		        }else{
+
+		        }
 		    });
 
 
-	      	Swal.fire({
-	      		type:"success",
-	      		imageUrl: "https://app.linkaform.com/img/login-linkaform-logo.png",
-	      		text: "Tu informacion se ha guardado correctamente.",
-			    html:`
-			      	<div class="mb-3 mt-2" style="font-weight: bold; font-size: 1.1em; color:#8ebd73 !important; "> ¡Tu información fue guardada correctamente! </div>
-			        <div class="d-flex justify-content-center ">
-    			      	<div class='align-items-start m-2'>
-    			      	  	<i class="fa-solid fa-street-view"></i>
-    			    </div>
-			      	<div class="d-flex flex-column mb-3" >
-				        <div> `+ location +`</div>
-				        <div> `+ caseta +`</div> 
-    			    </div>
-			        </div>
-                    <img class="mt-1" alt="Código QR" id="codigo">`,
-			      icon: "success",
-			 });
-		    new QRious({
-				element: document.querySelector("#codigo"),
-				value: 'Te damos la bienvenida ' + name + '\n Registro creado en ' + location + ', ' + caseta, // La URL o el texto
-				size: 200,
-				backgroundAlpha: 0, 
-				foreground: "#505050", 
-				level: "L", 
-			});
+	      	
         }
 	});
 }
@@ -455,12 +519,14 @@ function setRequestFileImg(type) {
 			if(res.file !== undefined && res.file !== null){
 				if(type == 'inputCard'){
 					urlImgCard = res.file;
+					fotosNuevaVisita.identificacion.push({"file_name":res.file_name, "file_url":res.file})
 					//----Clean Canvas
 					var canvas = document.getElementById('canvasPhoto');
 					var ctx = canvas.getContext('2d');
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 				}else if(type == 'inputUser'){
 					urlImgUser = res.file;
+					fotosNuevaVisita.identificacion.push({"file_name":res.file_name, "file_url":res.file})
 					//----Clean Canvas
 					var canvas = document.getElementById('canvasPhotoUser');
 					var ctx = canvas.getContext('2d');
@@ -637,45 +703,41 @@ function setAddVehiculo() {
 	let randomID = Date.now();
 	//---Structure HTML
     let newItem=`
-		<div class="col-9 div-vehiculo-row-`+randomID+` div-row-vehiculo" >
-			<label class="form-label">Tipo de Vehiculo: </label>
-			<input class="form-control  group-vehiculo" list="datalistOptionsTipo`+randomID+`" id="selectTipoVehiculo-`+randomID+`" placeholder="Escribe algo para buscar..." 
-			onChange='onChangeCatalog("vehiculo",`+ randomID+`)'>
-			<datalist id="datalistOptionsTipo`+randomID+`">
-			</datalist>
+    <div class="col-9 div-vehiculo-row-1 div-row-vehiculo" >
+			<div class="div-vehiculo-row-1 div-row-vehiculo" >
+				<label class="form-label">Tipo de Vehiculo: </label>
+				<select class="form-select" aria-label="Default select example" id="selectTipoVehiculo-`+randomID+`" onChange='onChangeCatalog("vehiculo",`+ randomID+`)'>
+				</select>
+			</div>
 		</div>
-		<div class="col-3 pt-4 mt-2 div-vehiculo-row-`+randomID+`">
+		<div class="col-3 pt-4 mt-2 div-vehiculo-row-1 ">
 			<button type="button" class="btn btn-success button-add-register" onclick="setAddVehiculo();return false;">
 				<i class="fa-solid fa-plus"></i>
 			</button>
-			<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteVehiculo(`+randomID+`);return false;">
+			<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteVehiculo(`+ randomID+`);return false;">
 				<i class="fa-solid fa-minus"></i>
 			</button>
-		</div>  
-		<div class="col-9 div-vehiculo-row-`+randomID+` div-row-vehiculo">
-			<div id='divCatalogMarca`+ randomID+`'>
+		</div>
+		<div class="col-9 div-vehiculo-row-1 div-row-vehiculo">
+			<div id='divCatalogMarca123'>
 				<label class="form-label">Marca: </label>
-				<input class="form-control group-vehiculo" list="datalistOptionsMarca`+randomID+`" id="selectCatalogMarca-`+randomID+`" placeholder="Escribe algo para buscar..." 
-				onchange='onChangeCatalog("marca", `+ randomID+`)'> 
-				<datalist id="datalistOptionsMarca`+ randomID+`">
-		
-				</datalist>
+				<select class="form-select" aria-label="Default select example" id="selectCatalogMarca-`+randomID+`" onChange='onChangeCatalog("marca",`+ randomID+`)'>
+					<option disabled>Escoge un tipo de vehiculo...</option>
+				</select>
 			</div>
-			
-			<div id='divCatalogModelo`+ randomID+`' class="div-vehiculo-row-`+randomID+`">
+			<div id='divCatalogModelo123'>
 				<label class="form-label">Modelo: </label>
-				<input class="form-control group-vehiculo" list="datalistOptionsModelo`+randomID+`" id="selectCatalogModelo-`+randomID+`" placeholder="Escribe algo para buscar...">
-				<datalist id="datalistOptionsModelo`+ randomID+`">
-		
-				</datalist>
+					<select class="form-select" aria-label="Default select example" id="selectCatalogModelo-`+randomID+`" >
+						<option disabled>Escoge una marca...</option>
+					</select>
 			</div>
-			<div class="div-row-vehiculo-`+randomID+`">
-				<label class="form-label">Matricula del Vehiculo:</label>
-				<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-`+randomID+`">
+			<div class="div-row-vehiculo">
+				<label class="form-label">Matrícula del Vehiculo:</label>
+				<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-`+ randomID+`>
 			</div>
-			<div class="div-row-vehiculo-`+randomID+`">
+			<div class="div-row-vehiculo">
 				<label class="form-label">Color:</label>
-				<input type="text" class="form-control group-vehiculo" id="inputColor-`+randomID+`">
+				<input type="text" class="form-control group-vehiculo" id="inputColor-`+ randomID+`>
 				<hr >
 			</div>
 		</div>
@@ -711,13 +773,16 @@ function setAddEquipo() {
 	let randomID = Date.now();
     let newItem=`
 		<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo" >
-			<label class="form-label">Tipo de Equipo: </label>
 
-			<input class="form-control group-equipo" list="datalistOptionsEquipo`+randomID+`" id="selectTipoEquipo-`+randomID+`" placeholder="Escribe algo para buscar..." >
-			<datalist id="datalistOptionsEquipo`+randomID+`">
-				  <option value="Computo">
-				  <option value="Herramientas">
-			</datalist>
+		<div class="div-equipo-row-123 div-row-equipo mb-2" >
+			<label class="form-label">Tipo de Equipo: *</label>
+			<select class="form-select group-equipo" aria-label="Default select example" value="" id="selectTipoEquipo-`+randomID+`">
+				<option value="Herramienta">Herramienta</option>
+				<option value="Computo">Computo</option>
+				<option value="Tablet">Tablet</option>
+				<option value="Otra">Otra</option>
+			</select>
+		</div>
 		</div>
 		<div class="col-3 pt-4 mt-2 div-equipo-row-`+randomID+` div-row-equipo ">
 			<button type="button" class="btn btn-success button-add-register" onclick="setAddEquipo();return false;">
