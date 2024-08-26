@@ -4,7 +4,14 @@
 //--TABLE
 var columsTable1 = [
   { title:"Técnico", field:'tecnico',hozAlign:"left", headerFilter:"input",width:200},
-  { title:"Servicios Realizados",field:'servicio',hozAlign:"left", headerFilter:"input",width:300 },
+  { title:"Servicios Realizados",field:'servicio',hozAlign:"left", headerFilter:"input",width:300,formatter: function(cell, formatterParams) {
+	   	let value = cell.getValue();
+	    if (cell.getRow().getData().id_record) {
+	        return `<a href="https://app.linkaform.com/#/records/detail/${cell.getRow().getData().record_id}">${value}</a>`;
+	    } else {
+	        return value;
+	    }
+   }},
   { title:"Tipo de Servicio",field:'tipo_trabajo',hozAlign:"left", headerFilter:"input",width:300 },
   { title:"Requirió apoyo",field:'apoyo',hozAlign:"left", headerFilter:"input",width:300 },
   { title:"Hora Inicio",  field:'hora_inicio',hozAlign:"left", headerFilter:"input",width:150 },
