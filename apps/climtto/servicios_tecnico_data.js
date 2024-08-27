@@ -3,18 +3,15 @@
 
 //--TABLE
 var columsTable1 = [
-  	{ title:"Técnico", field:'tecnico',hozAlign:"left", headerFilter:"input",width:200},
   	{ title:"Servicios Realizados",field:'servicio',hozAlign:"left", headerFilter:"input",width:300 },
   	{ title:"Cliente",field:'cliente',hozAlign:"left", headerFilter:"input",width:300 },
   	{ title:"Tipo",field:'tipo_trabajo',hozAlign:"left", headerFilter:"input",width:300 },
-  	{ title:"Equipos Realizados",field:'equipo',hozAlign:"left", headerFilter:"input",width:300 },
   	{ title:"Hora Inicio",  field:'hora_inicio',hozAlign:"left", headerFilter:"input",width:150 },
   	{ title:"Hora Fin",  field:'hora_fin',hozAlign:"left", headerFilter:"input",width:150 },
   	{ title:"Hras Efectivas",  field:'horas_totales',hozAlign:"left", headerFilter:"input",width:150 },
+  	{ title:"Técnico", field:'tecnico',hozAlign:"left", headerFilter:"input",width:200},
+  	{ title:"Equipos Realizados",field:'equipo',hozAlign:"left", headerFilter:"input",width:300 },
 ];
-
-
-
 
 
 let dataTable1  = [
@@ -445,7 +442,6 @@ let dataTable1  = [
     },
 ];
 
-
 //-----Configuiración de la grafica
 var setOptions1 = {
   	responsive: true,
@@ -456,7 +452,7 @@ var setOptions1 = {
 	    },
 	    title: {
 	        display: true,
-	        text: 'Servicios X Técnico',
+	        text: 'Equipos X Técnico',
 	        font: {
 	          size: 20
 	        }
@@ -484,13 +480,13 @@ var dataChart1 = {
   	labels: ['Juan Pérez','Ana López','María Sánchez','Patricia Gómez'],
   	datasets: [
 	    {
-	      	label: 'Preventivo',
+	      	label: 'Equipo 5',
 	      	data: [2,1,1,1],
 	      	fill: false,
     		backgroundColor: '#007CB3',
 	    },
 	    {
-	      	label: 'Correctivo',
+	      	label: 'Equipo 6',
 	      	data: [1,1,2,1],
 	      	fill: false,
     		backgroundColor: '#EFB03B',
