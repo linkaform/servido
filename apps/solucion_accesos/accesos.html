@@ -98,8 +98,8 @@
 					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso</button>
 					<button type="button" class="mt-1 mb-1  btn btn-danger btn-sm p-5 pt-1 pb-1" style="display: none;" id="buttonOut" onclick="registrarSalida();return false;">
 					<i class="fa-sharp fa-solid fa-door-open"></i> Registrar Salida</button>
-					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1" data-bs-toggle="modal" data-bs-target="#cardModal" style="display: none;"id="buttonCard">  <i class="fa-sharp fa-solid fa-id-card"></i> Entregar Gafete</button>
-					<button type="button" class="mt-1 mb-1 btn btn-warning btn-sm p-3 pt-1 pb-1" style="display: none;" id="buttonClean" onclick="setCleanData2()">
+					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1"  style="display: none;"id="buttonCard">  <i class="fa-sharp fa-solid fa-id-card"></i> Entregar Gafete</button>
+					<button type="button" class="mt-1 mb-1 btn btn-warning btn-sm p-3 pt-1 pb-1" onclick="setModal('gefeteModal');" style="display: none;" id="buttonClean" onclick="setCleanData2()">
 					<i class="fa-solid fa-broom"></i> Limpiar</button>
 					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" id="nuevavisita" onclick="setModal('newVisitModal');">
 					<i class="fa-solid fa-plus"></i> Nueva Visita</button>
@@ -134,13 +134,13 @@
 						<div class="mt-4" >
 							<h6>Disponible los días:</h6>
 							<div class="d-flex justify-content-around" >
-								<button type="button" class="btn btn-outline-success btn-circle" id="lunes">L</button>
-								<button type="button" class="btn btn-outline-success btn-circle" id="martes">M</button>
-								<button type="button" class="btn btn-outline-success btn-circle" id="miércoles">M</button>
-								<button type="button" class="btn btn-outline-success btn-circle" id="jueves">J</button>
-								<button type="button" class="btn btn-outline-success btn-circle" id="viernes">V</button>
-								<button type="button" class="btn btn-outline-success btn-circle" id="sabado">S</button>
-								<button type="button" class="btn btn-outline-success btn-circle" id="domingo">D</button>
+								<button type="button" class="btn btn-outline-success btn-circle no-hover" style="" id="lunes">L</button>
+								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="martes">M</button>
+								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="miércoles">M</button>
+								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="jueves">J</button>
+								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="viernes">V</button>
+								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="sabado">S</button>
+								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="domingo">D</button>
 							</div>
 						</div>
 					</div>
@@ -464,7 +464,7 @@
 	</div>
 	
 	<!-- Modal Card-->
-	<div class="modal fade" id="cardModal" tabindex="-1" data-bs-backdrop="static"   aria-hidden="true">
+	<div class="modal fade" id="gafeteModal" tabindex="-1" data-bs-backdrop="static"   aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -475,7 +475,9 @@
 					<div class="row">
 						<div class="mb-3 col-12">
 							<label class="form-label">Numero de gafete *</label>
-							<input type="text" class="form-control form-gafete"  placeholder="Numero" id="numCard">
+							<select class="form-select" id="selectGafete">
+							</select>
+							
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Tipo de documento de garantía *</label>
@@ -510,7 +512,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" id="idButtonAsignarGafete" onclick="setDataGafete();return false">Asignar gafete</button>
+					<button type="button" class="btn btn-success btn-sm" id="idButtonAsignarGafete" onclick="entregarGafete();return false">Asignar gafete</button>
 					<button class="btn btn-success btn-sm" type="button" id="idLoadingButtonAsignarGafete" style="display:none" disabled>
                 <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
                 Cargando...

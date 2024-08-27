@@ -13,6 +13,10 @@ window.onload = function(){
 	setValueUserLocation('articulos');
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	let user = getCookie("userId");
+    let checkboxCasetas = document.getElementById('checkboxTodasLasCasetas');
+    checkboxCasetas.checked = true; 
+    
+
     selectLocation= document.getElementById("selectLocation");
     selectLocation.onchange = async function(){
         let response = fetchOnChangeLocation(selectLocation.value)
@@ -68,19 +72,23 @@ window.onload = function(){
             $('#labelGuardiaDeApoyo').remove();
         })
     }
-    $("#checkboxTodasLasCasetas").on("click",async function()  {
-         if ($(this).is(':checked')) {
-            selectCaseta.value=""
-            selectCaseta.disabled=true
-            let response = await fetchOnChangeCaseta('articulos_consecionados.py', 'get_articles','', selectLocation.value)
-            reloadTableArticulosCon(response.response.data, selectCaseta.value)
-            let response2 = await fetchOnChangeCaseta('articulos_perdidos.py', 'get_articles', '', selectLocation.value)
-            reloadTableArticulosPer(response2.response.data)
-        } else {
-            selectCaseta.disabled=false
-        }
-    })
+
+    selectCaseta.value=""
+        selectCaseta.disabled=true
 }
+
+$("#checkboxTodasLasCasetas").on("click",async function()  {
+    if ($(this).is(':checked')) {
+        selectCaseta.value=""
+        selectCaseta.disabled=true
+        let response = await fetchOnChangeCaseta('articulos_consecionados.py', 'get_articles','', selectLocation.value)
+        reloadTableArticulosCon(response.response.data, selectCaseta.value)
+        let response2 = await fetchOnChangeCaseta('articulos_perdidos.py', 'get_articles', '', selectLocation.value)
+        reloadTableArticulosPer(response2.response.data)
+    } else {
+        selectCaseta.disabled=false
+    }
+})
 
 window.addEventListener('storage', function(event) {
     if (event.key === 'cerrarSesion') {
@@ -157,14 +165,18 @@ function reloadTableArticulosPer(data){
 }
 }
 function allDataArticulosPer(){
+    let checkboxCasetas = document.getElementById('checkboxTodasLasCasetas');
+    let body={
+        script_name:'articulos_perdidos.py',
+        option:'get_articles',
+        location: selectLocation.value,
+    }
+    if(!checkboxCasetas.checked){
+        body.area= selectCaseta.value
+    }
     fetch(url + urlScripts, {
         method: 'POST',
-        body: JSON.stringify({
-            script_name:'articulos_perdidos.py',
-            option:'get_articles',
-            location: selectLocation.value,
-            area: selectCaseta.value
-        }),
+        body: JSON.stringify(body),
         headers:
         {
             'Content-Type': 'application/json',
@@ -205,14 +217,21 @@ function allDataArticulosPer(){
     })
 }
 function allDataArticulosCon(){
+    let checkboxCasetas = document.getElementById('checkboxTodasLasCasetas');
+   
+    let body={
+        script_name:'articulos_consecionados.py',
+        option:'get_articles',
+        location: getCookie('userLocation'),
+    }
+
+    if(!checkboxCasetas.checked){
+        body.area= selectCaseta.value
+    }
+
     fetch(url + urlScripts, {
         method: 'POST',
-        body: JSON.stringify({
-            script_name:'articulos_consecionados.py',
-            option:'get_articles',
-            location: getCookie('userLocation'),
-            area:selectCaseta.value
-        }),
+        body: JSON.stringify(body),
         headers:
         {
             'Content-Type': 'application/json',

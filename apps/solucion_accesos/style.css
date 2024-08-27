@@ -505,15 +505,7 @@ input[type=search]{
 
 
 /* Botones circulares */
-.btn-circle {
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  padding: 0; // changed
-  font-size: 12px;
-  line-height: 1.428571429;
-  border-radius: 15px;
-}
+
 .btn-circle.btn-lg {
   width: 50px;
   height: 50px;
@@ -541,11 +533,18 @@ input[type=search]{
 
 
 .btn-circle {
-            width: 50px!important; /* Tamaño del botón */
-            height: 20px!important; /* Tamaño del botón */
-            border-radius: 50%!important; /* Hace el botón circular */
-            display: flex!important; /* Alineación del texto */
-            align-items: center!important; /* Alineación vertical */
-            justify-content: center!important; /* Alineación horizontal */
-            padding: 0!important; /* Elimina el padding por defecto */
-        }
+    width: 40px!important; /* Tamaño del botón */
+    height: 30px!important;
+    margin-right: 5px !important; /* Tamaño del botón */
+    border-radius: 50%!important; /* Hace el botón circular */
+    display: flex!important; /* Alineación del texto */
+    align-items: center!important; /* Alineación vertical */
+    justify-content: center!important; /* Alineación horizontal */
+    padding: 0!important; /* Elimina el padding por defecto */
+}
+
+.no-hover:hover{
+    color: none !important;
+    background-color: none !important;
+    border-color: none !important;
+}

@@ -69,7 +69,40 @@ function setModal(type = 'none',id =""){
         verListaPasesActivos()
     }else if(type=="newVisitModal"){
         abrirModalNuevaVisita()
+    }else if("gafeteModal"){
+        abrirGafeteModal()
     }
+}
+
+function abrirGafeteModal(){
+    $("gafeteModal").modal("show")
+    loadingService()
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "gafetes_lockers.py",
+            option: 'get_badge',
+            location: "Planta Monterrey"
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        console.log("REPSONSEE", res)
+        if (res.success) {
+            Swal.close();
+            let data= res.response.data
+            let selectGaf= document.getElementById("selectGafete") 
+            selectGaf.innerHTML=""; 
+            for(let gaf of data){
+                selectVehiculosMarca.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+            }
+            selectVehiculosMarca.value=""
+        } 
+    });
 }
 
 function abrirModalNuevaVisita(){
@@ -909,7 +942,7 @@ function registrarSalida(){
 }
 
 //FUNCION para asignar un nuevo gafete
-function setDataGafete(){
+function entregarGafete(){
     $("#idLoadingButtonAsignarGafete").show();
     $("#idButtonAsignarGafete").hide();
     let codeUser  = $("#inputCodeUser").val();
@@ -1261,11 +1294,15 @@ function tableFillEquipos(dataUser){
         newRow.append($('<td>').text(modeloItem));
         newRow.append($('<td>').text(serieItem));
         newRow.append($('<td>').text(colorItem));
-
+        //dataUser.tipo_movimiento == 'Entrada'
+       
         let isChecked= listItems[i].check == true || listItems[i].check == "checked" ? 'checked' : '';
         newRow.append('<td ><input class="form-check-input checkboxGroupEquipos" type="checkbox" id='+id+' '+isChecked+'></td>');
         newRow.append('</tr>');
         $('#tableEquipos').append(newRow);
+        if( dataUser.tipo_movimiento){
+            $('#'+id).prop('disabled', true);
+        }
     }
     if(listItems.length == 0){
         $("#tableEquipos").innerHTML="";
@@ -1313,6 +1350,7 @@ function tableFillVehiculos(dataUser){
         newRow.append('<td> <input class="form-check-input radioGroupItems" type="radio"  name="groupCarList" id='+id+' '+isChecked+'> </td>');
         newRow.append('</tr>');
         $('#tableCars').append(newRow);
+        $('#'+id).prop('disabled', true);
     }
     if(listCars.length == 0){
         $("#tableCars").innerHTML="";
@@ -1702,7 +1740,7 @@ function getFormGafete(){
     }
 
     if(!flaginput && !flagcheck){
-        setDataGafete(dicData);
+        entregarGafete(dicData);
           Swal.fire({
             title: "Gafete Entregado",
             text: "El gafete a sido entregado correctamente.",

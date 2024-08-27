@@ -35,10 +35,10 @@ class lkfLocationCard extends HTMLElement{
                     <h6>Todas las casetas</h6>
                     </label>
                 </div>
-                <div id="labelGuardiaDeApoyo" class="d-flex justify-content-start">
+                <!--<div id="labelGuardiaDeApoyo" class="d-flex justify-content-start">
                     <h6 class="text-black">Guardia de apoyo: </h6>
                     <h6 class="text-black-50 ms-1"></h6> 
-                </div>
+                </div> -->
             </div>
         </div>
 	`;

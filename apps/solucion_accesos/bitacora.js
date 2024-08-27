@@ -123,7 +123,6 @@ async function onChangeCatalog(type, id){
             let selectVehiculosMarca= document.getElementById("selectVehiculosMarca")
             selectVehiculosMarca.innerHTML=""; 
             for (let obj in list){
-                console.log("MARCAAAA", list[obj].key[1])
                 selectVehiculosMarca.innerHTML += '<option value="'+list[obj].key[1]+'">'+list[obj].key[1]+'</option>';
             }
             selectVehiculosMarca.value=""
@@ -195,7 +194,6 @@ function showAgregarVehiculo(id){
                 let selectVehiculos= document.getElementById("selectVehiculos");
                 let list = data
                 for (let obj in list){
-                    console.log("OBJ",list[obj].key[0])
                     selectVehiculos.innerHTML += '<option value="'+list[obj].key[0]+'">'+list[obj].key[0]+'</option>';
                     selectVehiculos.value=""
                 }
