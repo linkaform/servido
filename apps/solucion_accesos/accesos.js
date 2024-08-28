@@ -62,27 +62,35 @@ function setModal(type = 'none',id =""){
         $("#idComentarioAcceso").val("")
         $('#commentarioAccesoModal').modal('show');
     }else if(type == 'equiposModal'){
-        showAgregarEquipo()
+        abrirAgregarEquipo()
     }else if(type == 'vehiculosModal'){
-        showAgregarVehiculo()
+        abrirAgregarVehiculo()
     }else if(type== "listaPases"){
         verListaPasesActivos()
-    }else if(type=="newVisitModal"){
+    }else if(type=="nuevaVisitaModal"){
         abrirModalNuevaVisita()
     }else if("gafeteModal"){
         abrirGafeteModal()
     }
 }
 
+function abrirNuevaVisita(){
+    console.log("NUEVA VISITA ENTRANDO")
+}
+
+
 function abrirGafeteModal(){
-    $("gafeteModal").modal("show")
     loadingService()
+    $("#selectGafete").val("")
+    $("#inputLocker").val("")
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name: "gafetes_lockers.py",
-            option: 'get_badge',
-            location: "Planta Monterrey"
+            option: 'get_gafetes',
+            location: selectLocation.value,
+            area: selectCaseta.value,
+            status: statusDisponible
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -91,21 +99,25 @@ function abrirGafeteModal(){
     })
     .then(res => res.json())
     .then(res => {
-        console.log("REPSONSEE", res)
         if (res.success) {
             Swal.close();
+            $("#gafeteModal").modal("show")
             let data= res.response.data
             let selectGaf= document.getElementById("selectGafete") 
             selectGaf.innerHTML=""; 
             for(let gaf of data){
-                selectVehiculosMarca.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+                    selectGaf.innerHTML += '<option value="'+gaf.id_gafete+'">'+gaf.id_gafete+'</option>';
             }
-            selectVehiculosMarca.value=""
+            if(data.length==0){
+                 selectGaf.innerHTML += '<option disabled> No hay gafetes disponibles </option>';
+            }
+            selectGaf.value=""
         } 
     });
 }
 
 function abrirModalNuevaVisita(){
+    loadingService()
     $("#inputFileCard").val("")
     $("#inputFileUser").val("")
     $("#buttonTakeCard").show()
@@ -114,7 +126,42 @@ function abrirModalNuevaVisita(){
     $("#buttonTakeUser").prop('disabled', false);
     //$("#imgCard").val()
     //$("#imgUser").val()
-    $("#newVisitModal").modal('show');
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: "assets_access_pass",
+            location: selectLocation.value
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+        },
+        }).then(res => res.json())
+        .then(res => {
+            if(res.success){
+                let data= res.response.data
+                Swal.close()
+                $("#newVisitModal").modal('show');
+                let selectVisita= document.getElementById("selectVisitaNV");
+                let selectAreaVisita= document.getElementById("inputAreaVisitaNV");
+                let selectMotivo= document.getElementById("selectMotivoVisitaNV");
+                for (let str of data.Visita_a){
+                    selectVisita.innerHTML += '<option value="'+str+'">'+str+'</option>';
+                }
+                selectVisita.value=""
+                for (let str of data.Areas){
+                    selectAreaVisita.innerHTML += '<option value="'+str+'">'+str+'</option>';
+                }
+                selectAreaVisita.value=""
+                for (let str of data.Perfiles){
+                    selectMotivo.innerHTML += '<option value="'+str+'">'+str+'</option>';
+                }
+                selectMotivo.value=""
+            }else{
+                errorAlert(res)
+            }
+        })
 }
 
 
@@ -136,7 +183,6 @@ function verListaPasesActivos(){
     })
     .then(res => res.json())
     .then(res => {
-        console.log("REPSONSEE", res)
         if (res.success) {
             Swal.close();
             let listPases = res.response.data
@@ -195,7 +241,6 @@ function limpiarModalEquipos(){
 //FUNCION rellenar catalogos al momento de escojer una opcion
 async function onChangeCatalog(type, id){
     if(type == "vehiculo"){
-        console.log("AL CAMBIO",type, id)
         let inputMarca= document.getElementById("selectVehiculos");
         const options = {
             method: 'POST', 
@@ -224,7 +269,6 @@ async function onChangeCatalog(type, id){
     }else if (type == "marca"){
         let inputTipo= document.getElementById("selectVehiculos");
         let inputMarca= document.getElementById("selectVehiculosMarca");
-        console.log("DETALLES",inputTipo.value, inputMarca.value)
         const options = {
             method: 'POST', 
             body: JSON.stringify({
@@ -246,7 +290,6 @@ async function onChangeCatalog(type, id){
             let selectVehiculosModelo= document.getElementById("selectVehiculosModelo")
             selectVehiculosModelo.innerHTML=""; 
             for (let obj in list){
-                console.log("OBJ",list[obj])
                 selectVehiculosModelo.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
             }
             selectVehiculosModelo.value=""
@@ -254,9 +297,14 @@ async function onChangeCatalog(type, id){
     }
 }
 
-function showAgregarVehiculo(){
-    console.log("HIII")
+
+function abrirAgregarVehiculo(){
     limpiarModalVehiculos()
+    let selectColores = document.getElementById("inputColor")
+    for(let color of coloresArray){
+        selectColores.innerHTML += '<option value="'+color.toLowerCase()+'">'+color+'</option>';
+    }
+    selectColores.value=""
     $("#idLoadingButtonVehiculos").show();
     $("#idButtonVehiculos").hide();
     fetch(url + urlScripts, {
@@ -280,13 +328,14 @@ function showAgregarVehiculo(){
                 }else{
                     //Swal.close()
                     $('#vehiculosModal').modal('show');
-                     let selectVehiculos= document.getElementById("selectVehiculos");
-                     let list = data
-                     for (let obj in list){
-                        console.log("OBJ",list[obj])
-                        selectVehiculos.innerHTML += '<option value="'+list[obj].key[0]+'">'+list[obj].key[0]+'</option>';
-                        selectVehiculos.value=""
+                    $("#idLoadingButtonVehiculos").hide();
+                    $("#idButtonVehiculos").show();
+                    let selectVehiculos= document.getElementById("selectVehiculos");
+                    let list = data
+                    for (let obj in list){
+                        selectVehiculos.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
                     }
+                    selectVehiculos.value=""
                 }
             }else{
                 errorAlert(res)
@@ -296,6 +345,16 @@ function showAgregarVehiculo(){
         })
 }
 
+
+function abrirAgregarEquipo(){
+    limpiarModalEquipos()
+    $('#equiposModal').modal('show');
+    let selectColores = document.getElementById("inputColorEquipo")
+    for(let color of coloresArray){
+        selectColores.innerHTML += '<option value="'+color.toLowerCase()+'">'+color+'</option>';
+    }
+    selectColores.value=""
+}
 //FUNCION para saber que vehiculos estan con checkbox
 function agregarVehiculo(){
     let dicData = {};
@@ -313,13 +372,18 @@ function agregarVehiculo(){
         let checked='checked'
         selectedVehiculos.push(id);
         listVehiculesData.push({"tipo_vehiculo":tipoVehiculo ,"marca_vehiculo":marca , "placas_vehiculo":matricula, "color_vehiculo":color, "modelo_vehiculo": modelo, id: id, check: checked})
+        console.log("VWEHICULOOSSS", listVehiculesData)
+        if(listVehiculesData.length==1){
+            let tbody = document.querySelector('#tableCars tbody');
+            tbody.innerHTML = '';
+        }
         let newRow2 = $('<tr>');
         newRow2.append($('<td>').text(tipoVehiculo));
         newRow2.append($('<td>').text(marca));
         newRow2.append($('<td>').text(matricula));
         newRow2.append($('<td>').text(color));
         newRow2.append($('<td>').text(modelo));
-        newRow2.append('<td><input class="form-check-input radioGroupItems" type="radio"  name="groupCarList" id='+id+' '+checked+'></td>');
+        newRow2.append('<td><input class="form-check-input radioGroupItems" style="margin: auto!important; display: block!important;" type="radio"  name="groupCarList" id='+id+' '+checked+'></td>');
         newRow2.append('</tr>');
         $('#tableCars').append(newRow2);
 
@@ -354,7 +418,10 @@ function agregarEquipo(){
         selectedEquipos.push(id);
         listItemsData.push({ marca_articulo: marca, nombre_articulo: nombre, tipo_equipo: tipo, modelo_articulo: modelo, color_articulo:color , numero_serie:noserie, id: id, check:checked});
         //let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
-        console.log("AGREGAR", listItemsData)
+        if(listItemsData.length==1){
+            let tbodyEq = document.querySelector('#tableEquipos tbody');
+            tbodyEq.innerHTML = '';
+        }
         let newRow2 = $('<tr>');
         newRow2.append($('<td>').text(tipo));
         newRow2.append($('<td>').text(nombre));
@@ -362,9 +429,10 @@ function agregarEquipo(){
         newRow2.append($('<td>').text(modelo));
         newRow2.append($('<td>').text(noserie));
         newRow2.append($('<td>').text(color));
-        newRow2.append('<td ><input class="form-check-input checkboxGroupEquipos" type="checkbox" id='+id+' '+checked+'></td>');
+        newRow2.append('<td><input class="form-check-input checkboxGroupEquipos" style="margin: auto !important; display: block !important;"type="checkbox" id='+id+' '+checked+'></td>');
         newRow2.append('</tr>');
         $('#listAddItemsModal').append(newRow2);
+        $("#tableEquipos").append(newRow2)
         //successMsg("Success", "Equipo agregado correctamente, da click en la lista para ver tus equipos agregados.")
         limpiarModalEquipos();
         successMsg("Confirmación","Equipo agregado correctamente, da click en la lista para ver todos los equipos selecionados." )
@@ -417,7 +485,6 @@ function verListaDeVehiculosAgregados(){
     selectedVehiculos=[]
     getSelectedCheckbox('tableCars', 'radioGroupItems', selectedVehiculos)
     let selectedVehiculo= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
-    console.log("selectedVehiculo", selectedVehiculo,listVehiculesData)
     $('#listAddCarsModal').modal('show');
     let tabla = document.getElementById('tableAddCarsModal');
     let tbody = tabla.getElementsByTagName('tbody')[0];
@@ -458,80 +525,6 @@ function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
     //return checkboxesSeleccionados
 }
 
-//FUNCION ver modal para agregar vehiculos
-/*function agregarVehiculo(){
-    selectedVehiculos=[]
-    getSelectedCheckbox('tableEquipos', 'radioGroupItems', selectedVehiculos)
-    let selectedItems= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
-    $('#listAddCarsModal').modal('show');
-    let tabla = document.getElementById('tableAddCarsModal');
-    let tbody = tabla.getElementsByTagName('tbody')[0];
-    tbody.innerHTML = '';
-    if(selectedItems.length>0 ){
-        for (var i = 0; i < selectedItems.length; i++) {
-            let tipoCar = selectedItems[i].tipo;
-            let marcaCar = selectedItems[i].marca;
-            let modeloCar = selectedItems[i].modelo;
-            let matriculaCar = selectedItems[i].placa;
-            let colorCar = selectedItems[i].color;
-            var newRow = $('<tr>');
-            newRow.append($('<td>').text(tipoCar));
-            newRow.append($('<td>').text(marcaCar));
-            newRow.append($('<td>').text(modeloCar));
-            newRow.append($('<td>').text(matriculaCar));
-            newRow.append($('<td>').text(colorCar));
-            newRow.append('</tr>');
-            $('#tableAddCarsModal').append(newRow);
-        }
-    } else{
-        var newRow = $('<tr>');
-        newRow.append($('<td colspan="3">').text('No existen Vehiculos Seleccionados o añadidos'));
-        newRow.append('</tr>');
-        $('#tableAddCarsModal').append(newRow);
-    }
-}
-*/
-
-function showAgregarEquipo(){
-    limpiarModalEquipos()
-    $('#equiposModal').modal('show');
-}
-
-
-//FUNCION ver modal para agregar equipos
-/*
-function agregarEquipo(){
-    selectedEquipos=[]
-    getSelectedCheckbox('tableEquipos', 'checkboxGroupEquipos', selectedEquipos)
-    let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
-    $('#listAddItemsModal').modal('show');
-    let tabla = document.getElementById('tableAddItemsModal');
-    let tbody = tabla.getElementsByTagName('tbody')[0];
-    tbody.innerHTML = '';
-    if(selectedItems.length>0){
-        for (var i = 0; i < selectedItems.length; i++) {
-            let tipoItem = selectedItems[i].tipo;
-            let marcaItem = selectedItems[i].marca;
-            let modeloItem = selectedItems[i].modelo;
-            let serieItem = selectedItems[i].serie;
-            let colorItem = selectedItems[i].color;
-            var newRow = $('<tr>');
-            newRow.append($('<td>').text(tipoItem));
-            newRow.append($('<td>').text(marcaItem));
-            newRow.append($('<td>').text(modeloItem));
-            newRow.append($('<td>').text(serieItem));
-            newRow.append($('<td>').text(colorItem));
-            newRow.append('</tr>');
-            $('#tableAddItemsModal').append(newRow);
-        }
-    }else{
-        var newRow = $('<tr>');
-        newRow.append($('<td colspan="3">').text('No existen equipos seleccionados'));
-        newRow.append('</tr>');
-        $('#tableAddItemsModal').append(newRow);
-    }
-}
-*/
 function agregarComentarioPaseAcceso(type){
         
     if(type== "acceso"){
@@ -548,7 +541,6 @@ function agregarComentarioPaseAcceso(type){
             newRow.append('</tr>');
             $('#tableComentariosAcceso').append(newRow);
         }
-            console.log("holaaa", comentariosAcceso)
         
         $("#commentarioAccesoModal").modal('hide')
         successMsg("Confirmación", "Comentario listo para agregar al registro de ingreso")
@@ -602,7 +594,6 @@ function showCommentarioAccesoModal(){
     })
     .then(res => res.json())
     .then(res => {
-        console.log("GET CATALOGS RES", res)
         if (res.success) {
 
         } else{
@@ -647,28 +638,26 @@ function getInitialData(){
 
 
 //FUNCION para asignar nueva visita
-function asignarNuevaVisita(){
+function crearNuevaVisita(){
     loadingService()
     let nombre=$("#inputNombreNV").val();
-    let razonSocial=$("#inputRazonSocialNV").val();
+    let empresa=$("#inputRazonSocialNV").val();
     let areaQueVisita=$("#inputAreaVisitaNV").val();
     let visitaA=$("#selectVisitaNV").val();
-    let motivoVisita=$("#inputMotivoVisitaNV").val();
-    if(nombre!=='' , razonSocial!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
-        console.log("QUE TIENEN LOS ARRAY", fotosNuevaVisita)
+    let motivoVisita=$("#selectMotivoVisitaNV").val();
+    if(nombre!=='' , empresa!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
         let access_pass={
             nombre: nombre,
             perfil_pase:"Walkin",
             telefono: "",
             visita_a:visitaA,
             email: getCookie("userEmail"),
-            empresa: "",
+            empresa: empresa,
             foto:fotosNuevaVisita.foto,
-            identificacion: fotosNuevaVisita.identificacion
-            //areaQueVisita:areaQueVisita,
-            //motivoVisita:motivoVisita,
+            identificacion: fotosNuevaVisita.identificacion,
+            //area_que_visita:areaQueVisita,
+            //motivo_visita:motivoVisita,
         }
-        console.log("QUE TRAE", access_pass)
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -684,7 +673,6 @@ function asignarNuevaVisita(){
         })
         .then(res => res.json())
         .then(res => {
-            console.log("CREADO PASE DE ENTRADA")
             if (res.success) {
                 let data= res.response.data
                 if(data.status_code ==400 || data.status_code==401){
@@ -720,11 +708,16 @@ function asignarNuevaVisita(){
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
 function buscarPaseEntrada() {
+    console.log("ENTRANDOOO")
     $("#buttonBuscarPaseEntrada").prop('disabled', true);
     $("#buttonNew").prop('disabled', true);
+    $("#buttonNew").hide();
     codeUser = $("#inputCodeUser").val();
     if(codeUser ==""){
         successMsg("Validación", "Escribe un codigo para continuar", "warning")
+        $("#buttonNew").show();
+        $("#buttonBuscarPaseEntrada").prop('disabled', false);
+        $("#buttonNew").prop('disabled', false);
     }else{
         setCleanData()
         $("#divSpinner").show();
@@ -816,7 +809,6 @@ function registrarIngreso(){
     getSelectedCheckbox('tableEquipos', 'radioGroupItems', selectedVehiculos)
     let selectedVe= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id)).map(({ check, id, ...rest }) => rest);
        
-    console.log(selectedVe,selectedEq )
     //let dataItem = {'listItemsData':listItemsData,'listNewItems':listNewItems}
     //let dataVehicule = {'listVehiculesData':listVehiculesData,'listNewVehicules':listNewVehicules}
     let comPase=[]
@@ -1297,10 +1289,15 @@ function tableFillEquipos(dataUser){
         //dataUser.tipo_movimiento == 'Entrada'
        
         let isChecked= listItems[i].check == true || listItems[i].check == "checked" ? 'checked' : '';
-        newRow.append('<td ><input class="form-check-input checkboxGroupEquipos" type="checkbox" id='+id+' '+isChecked+'></td>');
+        newRow.append('<td ><input class="form-check-input checkboxGroupEquipos" style="margin: auto!important; display: block!important;" type="checkbox" id='+id+' '+isChecked+'></td>');
         newRow.append('</tr>');
         $('#tableEquipos').append(newRow);
-        if( dataUser.tipo_movimiento){
+        console.log(dataUser.tipo_movimiento)
+        if(dataUser.tipo_movimiento =="Entrada"){
+            $('#'+id).prop('disabled', false);
+            $("#idButtonEquipoNota").prop('disabled', false);
+        }else{
+            $("#idButtonEquipoNota").prop('disabled', true);
             $('#'+id).prop('disabled', true);
         }
     }
@@ -1332,6 +1329,8 @@ function tableFillVehiculos(dataUser){
     });
 
     $("#buttonCarsModal").show();
+    let tbody = document.querySelector('#tableBitacora tbody');
+    tbody.innerHTML = '';
     $("#tableCars").innerHTML="";
     for (var i = 0; i < listCars.length; i++) {
         let tipoCar = listCars[i].tipo_vehiculo;
@@ -1347,10 +1346,16 @@ function tableFillVehiculos(dataUser){
         newRow.append($('<td>').text(matriculaCar));
         newRow.append($('<td>').text(colorCar)); 
         let isChecked= listCars[i].check == true ? 'checked' : '';
-        newRow.append('<td> <input class="form-check-input radioGroupItems" type="radio"  name="groupCarList" id='+id+' '+isChecked+'> </td>');
+        newRow.append('<td ><input class="form-check-input radioGroupItems" style="margin: auto !important; display: block !important;" type="radio" name="groupCarList" id='+id+' '+isChecked+'></td>');
         newRow.append('</tr>');
         $('#tableCars').append(newRow);
-        $('#'+id).prop('disabled', true);
+        if(dataUser.tipo_movimiento =="Entrada"){
+            $('#'+id).prop('disabled', false);
+            $("#idButtonVehiculos").prop('disabled', false);
+        }else{
+            $("#idButtonVehiculos").prop('disabled', true);
+            $('#'+id).prop('disabled', true);
+        }
     }
     if(listCars.length == 0){
         $("#tableCars").innerHTML="";
@@ -1386,52 +1391,57 @@ function optionInformationUser(data){
         $("#buttonNew").hide();
         $("#buttonCard").show();
         $("#buttonClean").show();
-
-        //---Bitacora TABLA ULTIMOS ACCESOS
-        console.log()
-        let listBitacora = ultimo_acceso.length > 0 ? ultimo_acceso: [];
-        for (var i = 0; i < listBitacora.length; i++) {
-            //if(i < 3){
-                //let duration=segundosAHoras(listBitacora[i].duration)
-                var newRow = $('<tr>');
-                newRow.append($('<td>').text(listBitacora[i].visita_a ? listBitacora[i].visita_a : ''));
-                newRow.append($('<td>').text(listBitacora[i].fecha ? listBitacora[i].fecha : ''));
-                newRow.append($('<td>').text(listBitacora[i].duration ? listBitacora[i].duration +' hrs': ''));
-                if(listBitacora[i].hasOwnProperty('comentarios')){
-                    if(listBitacora[i].comentarios.length>0){
-                        let stringArray= encodeURIComponent(JSON.stringify(listBitacora[i].comentarios))
-                        newRow.append(`<td ><button style="border:none; background-color:transparent;" onclick="mostrarComentarioUltimoAcceso(decodeURIComponent('${stringArray}'));"> <i class="fa-solid fa-message"></i> </button> </td>`);
+        $(document).ready(function() {
+            //---Bitacora TABLA ULTIMOS ACCESOS
+            let listBitacora = ultimo_acceso.length > 0 ? ultimo_acceso: [];
+            console.log("LISTA BOTACOPRAAA",listBitacora)
+            for (let i = 0; i < listBitacora.length; i++) {
+                console.log("QUE PASAAAA", listBitacora[i])
+                //if(i < 3){
+                    //let duration=segundosAHoras(listBitacora[i].duration)
+                    let newRow = $('<tr>');
+                    newRow.append($('<td>').text(listBitacora[i].visita_a ? listBitacora[i].visita_a : ''));
+                    newRow.append($('<td>').text(listBitacora[i].fecha ? listBitacora[i].fecha : ''));
+                    newRow.append($('<td>').text(listBitacora[i].duration ? listBitacora[i].duration +' hrs': ''));
+                    if(listBitacora[i].hasOwnProperty('comentarios')){
+                        if(listBitacora[i].comentarios.length>0){
+                            let stringArray= encodeURIComponent(JSON.stringify(listBitacora[i].comentarios))
+                            newRow.append(`<td ><button style="border:none; background-color:transparent;" onclick="mostrarComentarioUltimoAcceso(decodeURIComponent('${stringArray}'));"> <i class="fa-solid fa-message"></i> </button> </td>`);
+                        }else{
+                            newRow.append('<td > </td>');
+                        }
                     }else{
                         newRow.append('<td > </td>');
                     }
-                }else{
-                    newRow.append('<td > </td>');
+                    newRow.append('</tr>');
+                    $('#tableBitacora').append(newRow);
+                //}
+            }
+            /*
+            if(listBitacora.length > 3){
+                $("#buttonBitacoraModal").show();
+                for (var i = 0; i < listBitacora.length; i++) {
+                    let duration=segundosAHoras(listBitacora[i].duration)
+                    var newRow = $('<tr>');
+                    newRow.append($('<td>').text(listBitacora[i].nombre_visita ? listBitacora[i].visita_a : ''));
+                    newRow.append($('<td>').text(listBitacora[i].location ? listBitacora[i].location : ''));
+                    newRow.append($('<td>').text(duration ? duration : ''));
+                    newRow.append('</tr>');
+                    $('#tableBitacoraModal').append(newRow);
                 }
+            }*/
+        
+
+            if(listBitacora.length == 0){
+                let newRow = $('<tr>');
+                newRow.append($('<td colspan="3">').text('No existen registros recientes'));
+                newRow.append($('<td>'));
                 newRow.append('</tr>');
                 $('#tableBitacora').append(newRow);
-            //}
-        }
-        /*
-        if(listBitacora.length > 3){
-            $("#buttonBitacoraModal").show();
-            for (var i = 0; i < listBitacora.length; i++) {
-                let duration=segundosAHoras(listBitacora[i].duration)
-                var newRow = $('<tr>');
-                newRow.append($('<td>').text(listBitacora[i].nombre_visita ? listBitacora[i].visita_a : ''));
-                newRow.append($('<td>').text(listBitacora[i].location ? listBitacora[i].location : ''));
-                newRow.append($('<td>').text(duration ? duration : ''));
-                newRow.append('</tr>');
-                $('#tableBitacoraModal').append(newRow);
+                console.log("listBitacora", listBitacora)
             }
-        }*/
-        if(listBitacora.length == 0){
-            var newRow = $('<tr>');
-            newRow.append($('<td colspan="3">').text('No existen registros recientes'));
-            newRow.append($('<td>'));
-            newRow.append('</tr>');
-            $('#tableBitacora').append(newRow);
-        }
-        
+            
+        })
         // Information User
         dataUserInf(data);
 
@@ -1640,19 +1650,22 @@ function setCleanData(){
     $("#viernes").removeClass('btn-success');
     $("#sábado").removeClass('btn-success');
     $("#domingo").removeClass('btn-success');
-
+    $("#buttonAddCommentarioAccesoModal").hide()
     selectedEquipos=[]
     selectedVehiculos=[]
     comentariosPase=[]
     comentariosAcceso=[]
     tipoMovimiento=""
+    $("#buttonNew").show();
+    $("#idButtonEquipoNota").prop('disabled', false);
+    $("#idButtonVehiculos").prop('disabled', false);
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
     setHideElements('buttonNew');
 }
 
 
-function  setCleanData2(){
+function setCleanData2(){
     setCleanData();
     $("#inputCodeUser").val('');
 }
@@ -1777,7 +1790,6 @@ function getCatalogs(){
     })
     .then(res => res.json())
     .then(res => {
-        console.log("GET CATALOGS RES", res)
         if (res.success) {
 
         } else{
@@ -1970,7 +1982,6 @@ function setTranslateImageCard(context, video, canvas){
 
 //FUNCION obtener la url de la imagen que se subio
 function setRequestFileImg(type) {
-    console.log("TIPOOO",type)
     let idInput = '';
     if(type == 'inputCard'){
         idInput = 'inputFileCard';

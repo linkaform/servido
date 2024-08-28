@@ -29,7 +29,31 @@ const columsData1 = [
 	{ title:"Caseta Entrada", field:'caseta_entrada',hozAlign:"left",headerFilter:true},
 	{ title:"Caseta Salida", field:'caseta_salida',hozAlign:"center",tooltip:true},
 	{ title:"Salida", field:'fecha_salida',hozAlign:"left",headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
-	{ title:"Comentarios", field:'comentarios',hozAlign:"left",headerFilter:true},
+	{ title:"Comentarios", field:'comentarios',hozAlign:"left",headerFilter:true ,
+	formatter: function(cell) {
+  		let comment=""
+  		let tipo=""
+        let data = cell.getData();
+        let arrayComentarios= data.comentarios
+        let html=""
+
+        if(arrayComentarios.length>0){
+        	for(let com of arrayComentarios){
+            	comment= com.comentario
+            	tipo= com.tipo_comentario
+            	html+= `<li>`+ capitalizeFirstLetter(tipo)+`: `+comment+` </li>`
+        	}
+        }
+   		let base=`<div class="lista-container" style="max-height: 100px; overflow-y: auto;">
+					<ul class="scrollable-list">
+						`+html+`
+					</ul>
+				</div>
+		`;
+        return base
+	    }
+	},
+     
 ];
 
 const columsData2 = [

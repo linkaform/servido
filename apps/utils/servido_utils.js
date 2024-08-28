@@ -666,3 +666,11 @@ function formatearFechaHora(fechaHora) {
     // Formatear la fecha y hora en el formato deseado
     return `${dia} de ${mes} de ${año}, ${hora}:${minuto}:${segundo} hrs`;
 }
+
+
+function capitalizeFirstLetter(text) {
+    if (text.length > 0) {
+        const capitalizedText = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+        return capitalizedText
+    }
+}

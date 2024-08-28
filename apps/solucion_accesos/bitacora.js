@@ -3,6 +3,8 @@ let colors = getPAlleteColors(12,0)
 let selectedEquipos=[]
 let selectedVehiculos=[]
 let idNuevoEquipoVehiculo=""
+
+
 window.onload = function(){
 	setValueUserLocation('bitacora');
 	changeButtonColor();
@@ -36,7 +38,6 @@ window.onload = function(){
     $("#textVehiculosDentro").text(boothStats.vehicles_inside);
     $("#textSalidasRegistradas").text(boothStats.registered_exits);
 }
-
 
 //FUNCION para abrir modales
 function setModal(type = 'none',id){
@@ -97,9 +98,7 @@ function limpiarModalVehiculos(){
 
 //FUNCION rellenar catalogos al momento de escojer una opcion
 async function onChangeCatalog(type, id){
-    console.log("cambio de catalogo")
     if(type == "vehiculo"){
-     console.log("VWEHICULO")
         let inputMarca= document.getElementById("selectVehiculos");
         const options = {
             method: 'POST', 
@@ -113,8 +112,6 @@ async function onChangeCatalog(type, id){
         loadingService();
         let respuesta = await fetch(url + urlScripts, options);
         let data = await respuesta.json();
-        console.log("DATAA RESPONSEE",data)
-
         if(data.error){
             errorAlert(data)
         }else{
@@ -123,14 +120,13 @@ async function onChangeCatalog(type, id){
             let selectVehiculosMarca= document.getElementById("selectVehiculosMarca")
             selectVehiculosMarca.innerHTML=""; 
             for (let obj in list){
-                selectVehiculosMarca.innerHTML += '<option value="'+list[obj].key[1]+'">'+list[obj].key[1]+'</option>';
+                selectVehiculosMarca.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
             }
             selectVehiculosMarca.value=""
         }
     }else if (type == "marca"){
         let inputTipo= document.getElementById("selectVehiculos");
         let inputMarca= document.getElementById("selectVehiculosMarca");
-        console.log("DETALLES",inputTipo.value, inputMarca.value)
         const options = {
             method: 'POST', 
             body: JSON.stringify({
@@ -152,8 +148,7 @@ async function onChangeCatalog(type, id){
             let selectVehiculosModelo= document.getElementById("selectVehiculosModelo")
             selectVehiculosModelo.innerHTML=""; 
             for (let obj in list){
-                console.log("MODELOSSS",list[obj].key[2])
-                selectVehiculosModelo.innerHTML += '<option value="'+list[obj].key[2]+'">'+list[obj].key[2]+'</option>';
+                selectVehiculosModelo.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
             }
             selectVehiculosModelo.value=""
         }
@@ -163,6 +158,11 @@ async function onChangeCatalog(type, id){
 function showAgregarEquipo(id){
     limpiarModalEquipos()
     idNuevoEquipoVehiculo=id
+    let selectColor= document.getElementById("selectColorEquipo")
+    for(let color of coloresArray){
+        selectColor.innerHTML+= '<option value="'+color+'">'+color+'</option>';
+    }
+    selectColor.value=""
     $('#equiposModal').modal('show');
 }
 
@@ -172,6 +172,12 @@ function showAgregarVehiculo(id){
     idNuevoEquipoVehiculo=id
     $("#idLoadingButtonVehiculos").show();
     $("#idButtonVehiculos").hide();
+
+    let selectColor= document.getElementById("selectColor")
+    for(let color of coloresArray){
+        selectColor.innerHTML+= '<option value="'+color+'">'+color+'</option>';
+    }
+    selectColor.value=""
 
     fetch(url + urlScripts, {
     method: 'POST',
@@ -194,7 +200,7 @@ function showAgregarVehiculo(id){
                 let selectVehiculos= document.getElementById("selectVehiculos");
                 let list = data
                 for (let obj in list){
-                    selectVehiculos.innerHTML += '<option value="'+list[obj].key[0]+'">'+list[obj].key[0]+'</option>';
+                    selectVehiculos.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
                     selectVehiculos.value=""
                 }
                 Swal.close()
@@ -231,16 +237,13 @@ function agregarEquipo(){
     if(tipo==''|| nombre=='' ){
         validation=true
     }
-    console.log("el iddd",idNuevoEquipoVehiculo)
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             option: "update_bitacora_entrada",
-            record_id: idNuevoEquipoVehiculo,
             script_name:"script_turnos.py",
-            action:"create", // create or edit
-            vehiculo: {}, 
             equipo: equipo, 
+            record_id: idNuevoEquipoVehiculo,
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -268,7 +271,6 @@ function agregarEquipo(){
         selectedEquipos.push(id);
         listItemsData.push({ marca_articulo: marca, tipo_equipo: tipo, modelo_articulo: modelo, color_articulo:color , numero_serie:noserie, id: id, check:checked});
         //let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
-        console.log("AGREGAR", listItemsData)
         let newRow2 = $('<tr>');
         newRow2.append($('<td>').text(tipo));
         newRow2.append($('<td>').text(marca));
@@ -370,8 +372,6 @@ function agregarVehiculo(){
     }*/
 }
 
-
-
 function reloadTableBitacoras(data){
     dataTableBitacora=[]
    //dataTableLocker=[]
@@ -450,12 +450,10 @@ function openDataModal(folio){
         })
         .then(res => res.json())
         .then(res => {
-            console.log("RESPUESTAAA", res)
         })
     */
 
     let registroSeleccionado = dataTableBitacora.find(x => x.folio == folio);
-    console.log("registroSeleccionado",registroSeleccionado.a_quien_visita, registroSeleccionado)
     $("#nombredevisitante").text(registroSeleccionado.nombre_visitante ||"")
     $("#motivodevisita").text(registroSeleccionado.motivo_visita||"" )
     if(registroSeleccionado.documento !==""){
@@ -537,6 +535,7 @@ function openDataModal(folio){
     */
     //tabla comentarios
     if(registroSeleccionado.hasOwnProperty('comentarios')){
+        console.log("REGISTRO SELECIONADO", registroSeleccionado)
         tableComentarios = registroSeleccionado.comentarios.length > 0 ? registroSeleccionado.comentarios  : [];
     }
     for (var i = 0; i < tableComentarios.length; i++) {
@@ -558,7 +557,6 @@ function openDataModal(folio){
     if(registroSeleccionado.hasOwnProperty('grupo_areas_acceso')){
         listaAccesos = registroSeleccionado.grupo_areas_acceso.length > 0 ? registroSeleccionado.grupo_areas_acceso: [];
     }
-    console.log("listaAccesos",listaAccesos)
     for (let i = 0; i < listaAccesos.length; i++) {
         let newRow = $('<tr>');
         newRow.append($('<td>').text(listaAccesos[i].nombre_area||""));
@@ -716,7 +714,6 @@ function alertGafete(folio){
 /*
 async function onChangeCatalog(type, id){
     if(type == "vehiculo"){
-        console.log("AL CAMBIO",type, id)
         let inputMarca= document.getElementById("selectVehiculos");
         const options = {
             method: 'POST', 
@@ -745,7 +742,6 @@ async function onChangeCatalog(type, id){
     }else if (type == "marca"){
         let inputTipo= document.getElementById("selectVehiculos");
         let inputMarca= document.getElementById("selectVehiculosMarca");
-        console.log("DETALLES",inputTipo.value, inputMarca.value)
         const options = {
             method: 'POST', 
             body: JSON.stringify({
@@ -767,7 +763,6 @@ async function onChangeCatalog(type, id){
             let selectVehiculosModelo= document.getElementById("selectVehiculosModelo")
             selectVehiculosModelo.innerHTML=""; 
             for (let obj in list){
-                console.log("OBJ",list[obj])
                 selectVehiculosModelo.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
             }
             selectVehiculosModelo.value=""

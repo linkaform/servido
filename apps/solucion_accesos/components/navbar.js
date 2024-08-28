@@ -54,6 +54,9 @@ let casetaDisponible="Disponible";
 let casetaNoDisponible="No Disponible";
 let statusAbierto="abierto";
 let statusCerrado="cerrado";
+let statusDisponible="Disponible";
+let statusEnUso="En Uso";
+
 
 function changeButtonColor(){
     $("#imageUserNavbar").attr("src", getCookie('userImg'));

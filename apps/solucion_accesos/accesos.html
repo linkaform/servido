@@ -98,10 +98,10 @@
 					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso</button>
 					<button type="button" class="mt-1 mb-1  btn btn-danger btn-sm p-5 pt-1 pb-1" style="display: none;" id="buttonOut" onclick="registrarSalida();return false;">
 					<i class="fa-sharp fa-solid fa-door-open"></i> Registrar Salida</button>
-					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1"  style="display: none;"id="buttonCard">  <i class="fa-sharp fa-solid fa-id-card"></i> Entregar Gafete</button>
-					<button type="button" class="mt-1 mb-1 btn btn-warning btn-sm p-3 pt-1 pb-1" onclick="setModal('gefeteModal');" style="display: none;" id="buttonClean" onclick="setCleanData2()">
+					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1" onclick="setModal('gafeteModal');" style="display: none;"id="buttonCard">  <i class="fa-sharp fa-solid fa-id-card"></i> Entregar Gafete</button>
+					<button type="button" class="mt-1 mb-1 btn btn-warning btn-sm p-3 pt-1 pb-1" style="display: none;" id="buttonClean" onclick="setCleanData2()">
 					<i class="fa-solid fa-broom"></i> Limpiar</button>
-					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" id="nuevavisita" onclick="setModal('newVisitModal');">
+					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" id="buttonNew" onclick="setModal('nuevaVisitaModal');">
 					<i class="fa-solid fa-plus"></i> Nueva Visita</button>
 				</div>
 				<div >
@@ -222,9 +222,9 @@
 							</button>
 						</div>
 						<div class="overflowCustom" >
-							<table id="tableBitacora" class=" table-borderless" style="border: none;">
+							<table id="tableBitacora" class="table-borderless" style="border: none;">
 								<thead class="overflowCustomHead">
-									<tr >
+									<tr>
 										<th class="headerColor">Visito a</th>
 										<th class="headerColor">Fecha</th>
 										<th class="headerColor">Duración</th>
@@ -388,7 +388,7 @@
 				<div class="modal-body">
 					<div class="row">
 						<div class="mb-3 col-12">
-							<label class="form-label">Nombre Completo*</label>
+							<label class="form-label">Nombre Completo *</label>
 							<input type="text" class="form-control" id="inputNombreNV" placeholder="Nombre">
 						</div>
 
@@ -427,44 +427,37 @@
 						</div>
 
 						<div class="mb-3 col-6">
-							<label class="form-label">Razón Social*</label>
+							<label class="form-label">Empresa *</label>
 							<input type="text" class="form-control" id="inputRazonSocialNV"  placeholder="Empresa">
 						</div>
 						<div class="mb-3 col-6">
-							<label class="form-label">Área que visita*</label>
+							<label class="form-label">Área que visita *</label>
 							<select class="form-select" id="inputAreaVisitaNV">
-								<option selected>--Seleccione--</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
 							</select>
 						</div>
 						<div class="mb-3 col-12">
-							<label class="form-label">Visita a*</label>
+							<label class="form-label">Visita a *</label>
 							<select class="form-select" id="selectVisitaNV">
-								<option selected>--Seleccione--</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
 							</select>
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Motivo de Visita *</label>
-							<textarea class="form-control" id="inputMotivoVisitaNV" rows="3"></textarea>
+							<select class="form-select" id="selectMotivoVisitaNV">
+							</select>
 						</div>
 					</div>
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="asignarNuevaVisita()">Crear</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="crearNuevaVisita()">Crear</button>
 				</div>
 			</div> 
 		</div>
 	</div>
 	
 	<!-- Modal Card-->
-	<div class="modal fade" id="gafeteModal" tabindex="-1" data-bs-backdrop="static"   aria-hidden="true">
+	<div class="modal fade" id="gafeteModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -477,25 +470,24 @@
 							<label class="form-label">Numero de gafete *</label>
 							<select class="form-select" id="selectGafete">
 							</select>
-							
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Tipo de documento de garantía *</label>
 							<br>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" value="INE" id="checkIne" onchange="setDataInformation('checkOtro');return false;">
+								<input class="form-check-input form-gafete mt-1" style="margin-right: 2px" type="radio" name="radioOptionsDocument" value="INE" id="checkIne" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkIne">Ine</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" value="Licencia de conducir" id="checkLicencia" onchange="setDataInformation('checkOtro');return false;">
+								<input class="form-check-input form-gafete mt-1" style="margin-right: 2px" type="radio" name="radioOptionsDocument" value="Licencia de conducir" id="checkLicencia" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkLicencia">Licencia de Conducir</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" value="Pase de Estacionamiento" id="checkPase" onchange="setDataInformation('checkOtro');return false;">
+								<input class="form-check-input form-gafete mt-1" style="margin-right: 2px" type="radio" name="radioOptionsDocument" value="Pase de Estacionamiento" id="checkPase" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkPase">Pase de estacionamiento</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" value="Otro" id="checkOtro" onchange="setDataInformation('checkOtro');return false;">
+								<input class="form-check-input form-gafete mt-1" style="margin-right: 2px" type="radio" name="radioOptionsDocument" value="Otro" id="checkOtro" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkOtro">Otro</label>
 							</div>
 						</div>
@@ -514,9 +506,9 @@
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
 					<button type="button" class="btn btn-success btn-sm" id="idButtonAsignarGafete" onclick="entregarGafete();return false">Asignar gafete</button>
 					<button class="btn btn-success btn-sm" type="button" id="idLoadingButtonAsignarGafete" style="display:none" disabled>
-                <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
-                Cargando...
-          </button>
+		                <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+		                Cargando...
+		            </button>
 				</div>
 			</div> 
 		</div>
@@ -606,7 +598,8 @@
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Color </label>
-							<input type="text" class="form-control form-item"  placeholder="Color" id="inputColorEquipo">
+							<select class="form-select" aria-label="Default select example" id="inputColorEquipo" style="height: 40px !important; overflow: auto !important;">
+							</select>
 						</div>
 					</div>
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
@@ -654,7 +647,8 @@
 						</div>
 						<div class="div-row-vehiculo">
 							<label class="form-label">Color:</label>
-							<input type="text" class="form-control group-vehiculo" id="inputColor">
+							<select class="form-select" aria-label="Default select example" id="inputColor" style="height: 40px !important; overflow: auto !important;">
+							</select>
 							<hr>
 						</div>
 					</div>
