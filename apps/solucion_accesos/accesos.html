@@ -98,7 +98,8 @@
 					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso</button>
 					<button type="button" class="mt-1 mb-1  btn btn-danger btn-sm p-5 pt-1 pb-1" style="display: none;" id="buttonOut" onclick="registrarSalida();return false;">
 					<i class="fa-sharp fa-solid fa-door-open"></i> Registrar Salida</button>
-					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1" onclick="setModal('gafeteModal');" style="display: none;"id="buttonCard">  <i class="fa-sharp fa-solid fa-id-card"></i> Entregar Gafete</button>
+					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1" onclick="setModal('gafeteModal');" style="display: none;"id="buttonAsignarGafete">  <i class="fa-sharp fa-solid fa-id-card"></i> Asignar Gafete</button>
+					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1" onclick="setModal('recibirGafete');" style="display: none;"id="buttonRecibirGafete">  <i class="fa-sharp fa-solid fa-id-card"></i> Recibir Gafete</button>
 					<button type="button" class="mt-1 mb-1 btn btn-warning btn-sm p-3 pt-1 pb-1" style="display: none;" id="buttonClean" onclick="setCleanData2()">
 					<i class="fa-solid fa-broom"></i> Limpiar</button>
 					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" id="buttonNew" onclick="setModal('nuevaVisitaModal');">
@@ -468,7 +469,7 @@
 					<div class="row">
 						<div class="mb-3 col-12">
 							<label class="form-label">Numero de gafete *</label>
-							<select class="form-select" id="selectGafete">
+							<select class="form-select form-gafete" id="selectGafete">
 							</select>
 						</div>
 						<div class="mb-3 col-12">
@@ -496,7 +497,8 @@
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Locker de Seguridad *</label>
-							<input type="text" class="form-control form-gafete"  placeholder="Espacio Designado" id="inputLocker">
+							<select class="form-select form-gafete" id="inputLocker">
+							</select>
 						</div>
 					</div>
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>

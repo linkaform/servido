@@ -66,7 +66,7 @@ window.onload = function(){
             imagen.src = imageUrl;
         }
     });
-     if(getValueUserLocation()=='articulos'){
+    if(getValueUserLocation()=='articulos'){
          $(document).ready(function() {
             $('#divTodasLasCasetas').show();
             $('#labelGuardiaDeApoyo').remove();
@@ -74,7 +74,7 @@ window.onload = function(){
     }
 
     selectCaseta.value=""
-        selectCaseta.disabled=true
+    selectCaseta.disabled=true
 }
 
 $("#checkboxTodasLasCasetas").on("click",async function()  {

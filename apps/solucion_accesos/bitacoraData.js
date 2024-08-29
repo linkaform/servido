@@ -8,11 +8,12 @@ const columsData1 = [
 			//----Button Trash
 			let data=cell.getData()
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
+			console.log("DATAAA", data)
 			let divActions = '<div class="row d-flex">';
-			divActions += `<button class="btn-table-bitacora" onClick="setModal('equiposModal','${data.id}')"><i class="fa-solid fa-hammer"></i></button>`;
-			divActions += `<button class="btn-table-bitacora" onClick="setModal('vehiculosModal','${data.id}')" ><i class="fa-solid fa-car"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('equiposModal','${data.id}', '${folio}')"><i class="fa-solid fa-hammer"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('vehiculosModal','${data.id}', '${folio}')" ><i class="fa-solid fa-car"></i></button>`;
 			divActions += `<button class="btn-table-bitacora" onClick="setModal('Card','${folio}')"><i class="fa-solid fa-address-card"></i></button>`;
-			divActions += `<button class="btn-table-bitacora" onClick="alertSalida('${folio}')" ><i class="fa-solid fa-arrow-right-from-bracket"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="alertSalida('${data.codigo_qr}', '${data.status_visita}')" ><i class="fa-solid fa-arrow-right-from-bracket"></i></button>`;
 			divActions += `<button class="btn-table-bitacora" onClick="setModal('Data','${folio}')" ><i class="fa-solid fa-user"></i></button>`;
 			divActions += '</div>';
 			return divActions;
@@ -34,10 +35,18 @@ const columsData1 = [
   		let comment=""
   		let tipo=""
         let data = cell.getData();
-        let arrayComentarios= data.comentarios
+        let arrayComentarios=[]
+        if(data.hasOwnProperty('comentarios')){
+        	console.log("valorerr",data)
+        	if(data.comentarios.length>0){
+				arrayComentarios = data.comentarios
+        	}else{
+        		arrayComentarios=[]
+        	}
+        }
         let html=""
 
-        if(arrayComentarios.length>0){
+        if( arrayComentarios.length > 0 ){
         	for(let com of arrayComentarios){
             	comment= com.comentario
             	tipo= com.tipo_comentario

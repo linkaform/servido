@@ -56,7 +56,8 @@ let statusAbierto="abierto";
 let statusCerrado="cerrado";
 let statusDisponible="Disponible";
 let statusEnUso="En Uso";
-
+let statusVisitaEntrada="Entrada"
+let statusVisitaSalida="Salida"
 
 function changeButtonColor(){
     $("#imageUserNavbar").attr("src", getCookie('userImg'));

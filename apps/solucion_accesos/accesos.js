@@ -25,6 +25,7 @@ let listInstructions = []
 let tipoMovimiento=""
 let fotosNuevaVisita={foto:[], identificacion:[]}
 let paseDeAccesoScript= "pase_de_acceso.py"
+let gafeteRegistroIngreso={}
 
 window.onload = function(){
     setValueUserLocation('accesos');
@@ -69,20 +70,153 @@ function setModal(type = 'none',id =""){
         verListaPasesActivos()
     }else if(type=="nuevaVisitaModal"){
         abrirModalNuevaVisita()
-    }else if("gafeteModal"){
-        abrirGafeteModal()
+    }else if(type=="gafeteModal"){
+        abrirAsignarGafeteModal()
+    }else if(type=="recibirGafete"){
+        abrirRecibirGafeteModal()
     }
 }
+
+function abrirRecibirGafeteModal(){
+    console.log("todaaa la data",fullData)
+
+    //let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
+    
+        Swal.fire({
+            title:'¿Está seguro de recibir gafete?',
+            html:`
+            <div class="m-1"> Al recibir el gafete, se desocupara el gafete y el locker y se retiraran los documentos pertienentes </div>`,
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonColor: colors[0],
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: colors[1],
+            confirmButtonText: "Si",
+            heightAuto:false,
+            reverseButtons: true
+        })
+        .then((result) => {
+            if (result.value) {
+                console.log("SERVICIO PARA RECIBIR EL GAFETE")
+                /*
+                let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
+                if (selectedSalida) {
+                    selectedSalida.status = 'Libre';
+                    selectedSalida.visit = '';
+                    selectedSalida.document = '';
+                    selectedSalida.location = '';
+                    tables["tableSalidas"].setData(dataTableLocker);
+                } */
+            }
+        });
+    /*}else{
+        successMsg()
+         Swal.fire({
+            title: "Acción Completada!",
+            text: "Esta locker ya se encuentra liberado.",
+            type: "warning"
+        });
+    } */
+
+    /*
+    if(status_visita== statusVisitaEntrada){
+        Swal.fire({
+            title:`¿Estas seguro de liberar el gafete ${} y el locker ${}?`,
+            html:`
+            <div class="m-2"> La salida no puede ser confirmada en este momento. Aún hay documentos 
+            en el locker correspondiente que deben ser desocupados antes de proceder. </div>`,
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonColor: colors[0],
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: colors[1],
+            confirmButtonText: "Si",
+            heightAuto:false,
+            reverseButtons: true
+        })
+        .then((result) => {
+            if (result.value) {
+            console.log("SDFSS",result)
+                fetch(url + urlScripts, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        script_name: 'script_turnos.py',
+                        option: 'do_out',
+                        qr_code: folio,
+                        location: selectLocation.value,
+                        area: selectCaseta.value
+                    }),
+                    headers:{
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+userJwt
+                    },
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                    } 
+                });
+
+                let selectedSalida = dataTableBitacora.find(n => n.folio == parseInt(folio));
+               
+                if (selectedSalida) {
+                    let fecha=  new Date()
+                    let año = fecha.getFullYear();
+                    let mes = fecha.getMonth() + 1;
+                    let dia = fecha.getDate();
+                    let horaFormateada = fecha.getHours() + ':' + fecha.getMinutes();
+                    let fechaFormateada = dia + '/' + mes + '/' + año + ' ' + horaFormateada;
+                    selectedSalida.salida = fechaFormateada;
+                    tables["tableEntradas"].setData(dataTableBitacora);
+                }
+            }
+        });
+    }else{
+        successMsg("Validación", "Este ya registro ya tiene registrada la salida", "warning")
+    } */
+}
+
 
 function abrirNuevaVisita(){
     console.log("NUEVA VISITA ENTRANDO")
 }
 
 
-function abrirGafeteModal(){
+function abrirAsignarGafeteModal(){
     loadingService()
     $("#selectGafete").val("")
     $("#inputLocker").val("")
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            option: "get_lockers",
+            script_name: "gafetes_lockers.py",
+            location: selectLocation.value,
+            area: selectCaseta.value,
+            status: statusDisponible
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close();
+            let data= res.response.data
+            let selectLockers= document.getElementById("inputLocker") 
+            selectLockers.innerHTML=""; 
+            for(let gaf of data){
+                    selectLockers.innerHTML += '<option value="'+gaf.id_gafete+'">'+gaf.id_gafete+'</option>';
+            }
+            if(data.length==0){
+                 selectLockers.innerHTML += '<option disabled> No hay lockers disponibles </option>';
+            }
+            selectLockers.value="" 
+        } 
+    });
+
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -708,7 +842,6 @@ function crearNuevaVisita(){
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
 function buscarPaseEntrada() {
-    console.log("ENTRANDOOO")
     $("#buttonBuscarPaseEntrada").prop('disabled', true);
     $("#buttonNew").prop('disabled', true);
     $("#buttonNew").hide();
@@ -743,15 +876,11 @@ function buscarPaseEntrada() {
                 fullData= res.response.data
                 Swal.close()
                 //setCookie('userLocation', res.response.data.ubicacion)
-                setDataInformation('informatioUser', res.response.data)
+                setDataInformation('informatioUser', res.response.data);
                 setHideElements('buttonsModal');
-                $("#divSpinner").hide();
                 setHideElements('dataShow');
-                $("#inputCodeUser").val("")
-                $("#idComentarioPase").val('')
-                $("#idComentarioAcceso").val('')
-                $("#buttonBuscarPaseEntrada").prop('disabled', false);
-                $("#buttonNew").prop('disabled', false);
+
+                setHideElements(fullData.tipo_movimiento) //Oculta o muestra los botones correspondientes dependiendo de si es Entrada o Salida
             }else{
                 errorAlert(res)
                 setCleanData();
@@ -819,6 +948,7 @@ function registrarIngreso(){
     for (let comA of comentariosAcceso ){
         comAcc.push("a", comA.comentario_pase)
     }
+    console.log("comentariosPase",comentariosPase,comentariosAcceso )
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -830,7 +960,8 @@ function registrarIngreso(){
             vehiculo: selectedVe,
             equipo: selectedEq,
             comentario_pase: comentariosPase,
-            comentario_acceso: comentariosAcceso
+            comentario_acceso: comentariosAcceso,
+            gafete:gafeteRegistroIngreso
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -853,7 +984,7 @@ function registrarIngreso(){
             setHideElements('dataHide');
             setHideElements('buttonsOptions');
             setHideElements('buttonNew');
-            //$("#buttonCard").show();
+            //$("#buttonAsignarGafete").show();
             //$("#buttonClean").show();
             //$("#buttonOut").show();
             $("#buttonNew").show();
@@ -920,6 +1051,8 @@ function registrarSalida(){
             setHideElements('buttonNew');
             $("#inputCodeUser").val('');
             $("#buttonAddCommentarioAccesoModal").hide();
+            //setHideElements(fullData.tipo_movimiento)
+            $("#buttonRecibirGafete").hide()
         }else{
             errorAlert(res)
             $("#buttonOut").show();
@@ -938,10 +1071,10 @@ function entregarGafete(){
     $("#idLoadingButtonAsignarGafete").show();
     $("#idButtonAsignarGafete").hide();
     let codeUser  = $("#inputCodeUser").val();
-    let numGafete= $("#numCard").val();
+    let numGafete= $("#selectGafete").val();
     let otroDoc= $("#inputOtroDescCard").val();
     let nombre= $("#nameUserInf").text();
-    
+    let locker= $("#inputLocker").val();
     let radios = document.getElementsByName('radioOptionsDocument');
     let radioSeleccionado = "";
     for (var i = 0; i < radios.length; i++) {
@@ -950,15 +1083,30 @@ function entregarGafete(){
             break; 
         }
     }
-    let data_gafete={
-        'status_gafete':'asignar_gafete',
-        'ubicacion_gafete':selectLocation.value,
-        'caseta_gafete':selectCaseta.value,
-        'visita_gafete':nombre,
-        'id_gafete':numGafete,
-        'documento_gafete':[radioSeleccionado.value],
+    if(numGafete !=="" && radioSeleccionado.value!=="" && locker!==""){
+        gafeteRegistroIngreso={
+            "id_gafete":numGafete,
+            "documento_garantia": radioSeleccionado.value, // Opciones "licencia_de_conducir","carnet_de_identidad", "ine"
+            "id_locker":locker
+            /*'status_gafete':'asignar_gafete',
+            'ubicacion_gafete':selectLocation.value,
+            'caseta_gafete':selectCaseta.value,
+            'visita_gafete':nombre,
+            'id_gafete':numGafete,
+            'documento_gafete':[radioSeleccionado.value],*/
+        }
+
+        $("#gafeteModal").modal('hide')
+        successMsg("Gafete Entregado", "El gafete asignado para el registro de ingreso.")
+        $("#idLoadingButtonAsignarGafete").hide();
+        $("#idButtonAsignarGafete").show();
+        $("#alert_gafete_modal").hide();
+    }else{
+        successMsg("Validación", "Faltan datos por llenar")
+        $("#idLoadingButtonAsignarGafete").hide();
+        $("#idButtonAsignarGafete").show();
     }
-    fetch(url + urlScripts, {
+    /*fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name: "gafetes_lockers.py",
@@ -992,7 +1140,7 @@ function entregarGafete(){
             $("#idLoadingButtonAsignarGafete").hide();
             $("#idButtonAsignarGafete").show();
         } 
-    })
+    }) */
 }
 
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 2
@@ -1389,7 +1537,7 @@ function optionInformationUser(data){
             $("#textOut").show();
         } 
         $("#buttonNew").hide();
-        $("#buttonCard").show();
+        $("#buttonAsignarGafete").show();
         $("#buttonClean").show();
         $(document).ready(function() {
             //---Bitacora TABLA ULTIMOS ACCESOS
@@ -1542,6 +1690,7 @@ function optionListUsers(data){
 
 //FUNCION para ocultar mostrar elementos
 function setHideElements(option){
+         console.log("QUE TENEM,OSSS", option)
     if (option == 'buttonsModal') {
         $("#buttonCommentsModal").hide();
         $("#buttonBitacoraModal").hide();
@@ -1553,7 +1702,7 @@ function setHideElements(option){
         $("#buttonIn").hide();
         $("#buttonOut").hide();
         $("#buttonNew").hide();
-        $("#buttonCard").hide();
+        $("#buttonAsignarGafete").hide();
         $("#buttonClean").hide();
     }else if(option == 'buttonNew'){
         $("#buttonNew").show();
@@ -1568,6 +1717,23 @@ function setHideElements(option){
         var elements = document.getElementsByClassName('section-data');
         for (var i = 0; i < elements.length; i++) {
             elements[i].style.display = 'block';
+        }
+        
+    }else if(option==statusVisitaEntrada || option == statusVisitaSalida){
+        console.log("QUE ONDAAA", option)
+        $("#divSpinner").hide();
+        $("#inputCodeUser").val("")
+        $("#idComentarioPase").val('')
+        $("#idComentarioAcceso").val('')
+        $("#buttonBuscarPaseEntrada").prop('disabled', false);
+        $("#buttonNew").prop('disabled', false);
+
+        if(option==statusVisitaEntrada){
+            $("#buttonAsignarGafete").show()
+            $("#buttonRecibirGafete").hide()
+        }else{
+            $("#buttonAsignarGafete").hide()
+            $("#buttonRecibirGafete").show()
         }
     }
 }
@@ -1657,6 +1823,8 @@ function setCleanData(){
     comentariosAcceso=[]
     tipoMovimiento=""
     $("#buttonNew").show();
+    $("#buttonAsignarGafete").hide()
+    $("#buttonRecibirGafete").hide()
     $("#idButtonEquipoNota").prop('disabled', false);
     $("#idButtonVehiculos").prop('disabled', false);
     setHideElements('dataHide');

@@ -3,7 +3,7 @@ let colors = getPAlleteColors(12,0)
 let selectedEquipos=[]
 let selectedVehiculos=[]
 let idNuevoEquipoVehiculo=""
-
+let seleccionadoBitacora={}
 
 window.onload = function(){
 	setValueUserLocation('bitacora');
@@ -31,7 +31,12 @@ window.onload = function(){
     $("#descargarSalidas").on("click", function() {
         descargarExcel(tables, 'tableSalidas')
     });
-
+    if(getValueUserLocation()=='bitacora'){
+         $(document).ready(function() {
+            $('#divTodasLasCasetas').show();
+            $('#labelGuardiaDeApoyo').remove();
+        })
+    }
     let boothStats = load_shift_json_log.booth_stats.log
     $("#textVisitasEnElDia").text(boothStats.visits_per_day);
     $("#textPersonalDentro").text(boothStats.staff_indoors);
@@ -39,14 +44,27 @@ window.onload = function(){
     $("#textSalidasRegistradas").text(boothStats.registered_exits);
 }
 
+$("#checkboxTodasLasCasetas").on("click",async function()  {
+    if ($(this).is(':checked')) {
+        selectCaseta.value=""
+        selectCaseta.disabled=true
+        let response = await fetchOnChangeCaseta('script_turnos.py', 'list_bitacora','', selectLocation.value)
+        reloadTableBitacoras(response.response.data, selectCaseta.value)
+        let response2 = await fetchOnChangeCaseta('script_turnos.py', 'get_lockers', '', selectLocation.value)
+        reloadTableLockers(response2.response.data)
+    } else {
+        selectCaseta.disabled=false
+    }
+})
+
 //FUNCION para abrir modales
-function setModal(type = 'none',id){
+function setModal(type = 'none',id=0, folio=0){
     if(type == 'Tools'){
         $('#itemsModal').modal('show');
     }else if(type == 'Cars'){
         $('#carsModal').modal('show');
     }else if(type == 'Card'){
-        $('#cardModal').modal('show');
+        abrirGafeteModal(id)
     }else if(type == 'Out'){
         $('#outModal').modal('show');
     }else if(type == 'Data'){
@@ -54,9 +72,9 @@ function setModal(type = 'none',id){
     }else if(type == 'Delivery'){
         $('#deliverModal').modal('show');
     }else if(type == 'equiposModal'){
-        showAgregarEquipo(id)
+        showAgregarEquipo(id, folio)
     }else if(type == 'vehiculosModal'){
-        showAgregarVehiculo(id)
+        showAgregarVehiculo(id, folio)
     }
 }
 
@@ -67,6 +85,46 @@ window.addEventListener('storage', function(event) {
         window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
     }
 });
+
+function abrirGafeteModal(folio){
+    loadingService()
+    seleccionadoBitacora= dataTableBitacora.find(x => x.folio == folio);
+    console.log("SOY EL ESCOGIDOOO", seleccionadoBitacora)
+    $("#selectGafete").val("")
+    $("#inputLocker").val("")
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "gafetes_lockers.py",
+            option: 'get_gafetes',
+            location: selectLocation.value,
+            area: selectCaseta.value,
+            status: statusDisponible
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close();
+            $('#cardModal').modal('show');
+            let data= res.response.data
+            let selectGaf= document.getElementById("selectGafete") 
+            selectGaf.innerHTML=""; 
+            for(let gaf of data){
+                    selectGaf.innerHTML += '<option value="'+gaf.id_gafete+'">'+gaf.id_gafete+'</option>';
+            }
+            if(data.length==0){
+                 selectGaf.innerHTML += '<option disabled> No hay gafetes disponibles </option>';
+            }
+            selectGaf.value=""
+        } 
+    });
+}
+
 
 function limpiarModalEquipos(){
     idNuevoEquipoVehiculo=""
@@ -155,9 +213,10 @@ async function onChangeCatalog(type, id){
     }
 }
 
-function showAgregarEquipo(id){
+function showAgregarEquipo(id, folio){
     limpiarModalEquipos()
     idNuevoEquipoVehiculo=id
+    seleccionadoBitacora= dataTableBitacora.find(x => x.folio == folio);
     let selectColor= document.getElementById("selectColorEquipo")
     for(let color of coloresArray){
         selectColor.innerHTML+= '<option value="'+color+'">'+color+'</option>';
@@ -166,10 +225,11 @@ function showAgregarEquipo(id){
     $('#equiposModal').modal('show');
 }
 
-function showAgregarVehiculo(id){
+function showAgregarVehiculo(id,folio){
     loadingService()
     limpiarModalVehiculos()
     idNuevoEquipoVehiculo=id
+    seleccionadoBitacora= dataTableBitacora.find(x => x.folio == folio);
     $("#idLoadingButtonVehiculos").show();
     $("#idButtonVehiculos").hide();
 
@@ -223,7 +283,7 @@ function agregarEquipo(){
     let marca=$("#inputMarcaEquipo").val();
     let modelo=$("#inputModeloEquipo").val();
     let noserie=$("#inputSerieEquipo").val();
-    let color=$("#inputColorEquipo").val();
+    let color=$("#selectColorEquipo").val();
 
     let equipo={
         color_articulo: color, 
@@ -257,6 +317,8 @@ function agregarEquipo(){
             if(data.status_code ==400 || data.status_code==401){
                     errorAlert(res)
             }else{
+                seleccionadoBitacora.equipos.push(equipo)
+                tables["tableEntradas"].setData(dataTableBitacora);
                 successMsg("Confirmación", "Vehículo agregado correctamente.")
             }
         }else{
@@ -302,27 +364,25 @@ function agregarVehiculo(){
     let marca= $('#selectVehiculosMarca').val();
     let modelo= $('#selectVehiculosModelo').val();
     let matricula= $('#inputMatriculaVehiculo').val();
-    let color= $('#inputColor').val();
+    let color= $('#selectColor').val();
     if(tipoVehiculo==''){
         validation=true
     }
     let vehiculo={
-        tipo: tipoVehiculo, 
-        modelo_vehiculo: modelo, 
-        color: color, 
-        placas: matricula, 
-        marca_vehiculo: tipoVehiculo, 
-        nombre_estado: ""
+        "tipo": tipoVehiculo, 
+        "modelo_vehiculo": modelo, 
+        "color": color, 
+        "placas": matricula, 
+        "marca_vehiculo": tipoVehiculo, 
+        "nombre_estado": ""
     }
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             option: "update_bitacora_entrada",
-            record_id: idNuevoEquipoVehiculo,
             script_name:"script_turnos.py",
-            action:"create", // create or edit
             vehiculo: vehiculo, 
-            equipo:{}, 
+            record_id: idNuevoEquipoVehiculo,
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -337,6 +397,11 @@ function agregarVehiculo(){
                     errorAlert(res)
             }else{
                 $('#vehiculosModal').modal('hide');
+                seleccionadoBitacora.vehiculos.push(vehiculo)
+                //dataTableBitacora
+                //seleccionadoBitacora= dataTableBitacora.find(x => x.folio == folio);
+                //vehiculos.push(vehiculo)
+                tables["tableEntradas"].setData(dataTableBitacora);
                 successMsg("Confirmación", "Vehículo agregado correctamente.")
             }
         }else{
@@ -376,11 +441,16 @@ function reloadTableBitacoras(data){
     dataTableBitacora=[]
    //dataTableLocker=[]
     if(user !='' && userJwt!=''){
-        let bit= data
-        for (i of bit){
-            dataTableBitacora.push({folio:i.folio ,visitante:i.nombre_visita ,contratista:'LINKAFORM SA DE CV',visita:i.nombre_visita,
-            area:i.caseta_entrada,tipo:i.status_visita, entrada:i.bitacora_entrada, salida:i.bitacora_salida,estado:'', 
-            punto_acceso:'',credentials:i.gafete,comentario:'',planta:''})
+        let lista= data
+        if(lista>0){
+            for (bitacora of lista){
+                dataTableBitacora.push({
+                folio:bitacora.folio ,fecha_entrada:bitacora.fecha_entrada ,nombre_visitante:bitacora.nombre_visitante, perfil_visita:bitacora.perfil_visita,
+                contratista:bitacora.contratista,status_gafete:bitacora.status_gafete, visita_a:bitacora.visita_a, caseta_entrada:bitacora.caseta_entrada,caseta_salida:bitacora.caseta_salida, 
+                fecha_salida:bitacora.fecha_salida,comentarios:bitacora.comentarios||[] , equipos: bitacora.equipos, vehiculos: bitacora.vehiculos, foto: bitacora.foto, 
+                identificacion: bitacora.identificacion, documento: bitacora.documento||"" , a_quien_visita: bitacora.a_quien_visita||"" , perfil_visita: bitacora.perfil_visita||"" ,
+                id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso, codigo_qr: bitacora.codigo_qr})
+            }
         }
         
         if(tables['tableEntradas']){
@@ -388,7 +458,27 @@ function reloadTableBitacoras(data){
         }else{
             drawTable('tableEntradas',columsData1,dataTableBitacora);
         }
+        /*
+        if(tables['tableSalidas']){
+            tables['tableSalidas'].setData(dataTableLocker)
+        }else{
+            drawTable('tableSalidas',columsData2,dataTableLocker);
+        }*/
+    }else{
+        redirectionUrl('login',false);
+    }
+}
 
+function reloadTableLockers(data){
+    //dataTableBitacora=[]
+    dataTableLocker=[]
+    if(user !='' && userJwt!=''){
+        let lista= data
+        if(lista>0){
+            for (bitacora of lista){
+                dataTableLocker.push({})
+            }
+        }
         if(tables['tableSalidas']){
             tables['tableSalidas'].setData(dataTableLocker)
         }else{
@@ -398,6 +488,7 @@ function reloadTableBitacoras(data){
         redirectionUrl('login',false);
     }
 }
+
 
 function loadDataTables(){
     fetch(url + urlScripts, {
@@ -421,9 +512,9 @@ function loadDataTables(){
                 for (bitacora of lista){
                     dataTableBitacora.push({folio:bitacora.folio ,fecha_entrada:bitacora.fecha_entrada ,nombre_visitante:bitacora.nombre_visitante, perfil_visita:bitacora.perfil_visita,
                     contratista:bitacora.contratista,status_gafete:bitacora.status_gafete, visita_a:bitacora.visita_a, caseta_entrada:bitacora.caseta_entrada,caseta_salida:bitacora.caseta_salida, 
-                    fecha_salida:bitacora.fecha_salida,comentarios:bitacora.comentarios, equipos: bitacora.equipos, vehiculos: bitacora.vehiculos, foto: bitacora.foto, 
+                    fecha_salida:bitacora.fecha_salida,comentarios:bitacora.comentarios||[] , equipos: bitacora.equipos, vehiculos: bitacora.vehiculos, foto: bitacora.foto, 
                     identificacion: bitacora.identificacion, documento: bitacora.documento||"" , a_quien_visita: bitacora.a_quien_visita||"" , perfil_visita: bitacora.perfil_visita||"" ,
-                    id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso })
+                    id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso , codigo_qr: bitacora.codigo_qr})
                 }
                 drawTable('tableEntradas',columsData1,dataTableBitacora);
                 drawTable('tableSalidas',columsData2,dataTableLocker);
@@ -636,37 +727,62 @@ function llenarTablasInfoUsuario(){
 }
 
 //FUNCION confirmar la salida a un registro individual desde la tabla
-function alertSalida(folio){
+function alertSalida(folio, status_visita){
+    if(status_visita== statusVisitaEntrada){
 		Swal.fire({
-	    title:'¿Estas seguro de confirmar la salida?',
-	    html:`
-	    <div class="m-2"> La salida no puede ser confirmada en este momento. Aún hay documentos 
-	    en el locker correspondiente que deben ser desocupados antes de proceder. </div>`,
-	    type: "warning",
-	    showCancelButton: true,
-	    cancelButtonColor: colors[0],
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: colors[1],
-	    confirmButtonText: "Si",
-	    heightAuto:false,
-        reverseButtons: true
-	})
-	.then((result) => {
-	    if (result.value) {
-            let selectedSalida = dataTableBitacora.find(n => n.folio == parseInt(folio));
-           
-            if (selectedSalida) {
-                let fecha=  new Date()
-                let año = fecha.getFullYear();
-                let mes = fecha.getMonth() + 1;
-                let dia = fecha.getDate();
-                let horaFormateada = fecha.getHours() + ':' + fecha.getMinutes();
-                let fechaFormateada = dia + '/' + mes + '/' + año + ' ' + horaFormateada;
-                selectedSalida.salida = fechaFormateada;
-                tables["tableEntradas"].setData(dataTableBitacora);
-            }
-	    }
-	});
+    	    title:'¿Estas seguro de confirmar la salida?',
+    	    html:`
+    	    <div class="m-2"> La salida no puede ser confirmada en este momento. Aún hay documentos 
+    	    en el locker correspondiente que deben ser desocupados antes de proceder. </div>`,
+    	    type: "warning",
+    	    showCancelButton: true,
+    	    cancelButtonColor: colors[0],
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: colors[1],
+    	    confirmButtonText: "Si",
+    	    heightAuto:false,
+            reverseButtons: true
+    	})
+    	.then((result) => {
+    	    if (result.value) {
+            console.log("SDFSS",result)
+                fetch(url + urlScripts, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        script_name: 'script_turnos.py',
+                        option: 'do_out',
+                        qr_code: folio,
+                        location: selectLocation.value,
+                        area: selectCaseta.value
+                    }),
+                    headers:{
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+userJwt
+                    },
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                    } 
+                });
+
+                let selectedSalida = dataTableBitacora.find(n => n.folio == parseInt(folio));
+               
+                if (selectedSalida) {
+                    let fecha=  new Date()
+                    let año = fecha.getFullYear();
+                    let mes = fecha.getMonth() + 1;
+                    let dia = fecha.getDate();
+                    let horaFormateada = fecha.getHours() + ':' + fecha.getMinutes();
+                    let fechaFormateada = dia + '/' + mes + '/' + año + ' ' + horaFormateada;
+                    selectedSalida.salida = fechaFormateada;
+                    tables["tableEntradas"].setData(dataTableBitacora);
+                }
+    	    }
+    	});
+    }else{
+        successMsg("Validación", "Este ya registro ya tiene registrada la salida", "warning")
+    }
 }
 
 
@@ -970,7 +1086,67 @@ function filterCatalogBy(key, value ){
 
 //FUNCION ver el modal de gafete
 function asignarGafete(){
-    let flaginput = false;
+    $("#idLoadingButtonAsignarGafete").show();
+    $("#idButtonAsignarGafete").hide();
+    let numGafete= $("#selectGafete").val();
+    console.log("VALOR GAFFF",numGafete)
+    let otroDoc= $("#inputOtroDescCard").val();
+    //let nombre= $("#nameUserInf").text();
+    
+    let radios = document.getElementsByName('radioOptionsDocument');
+    let radioSeleccionado = "";
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            radioSeleccionado = radios[i];
+            break; 
+        }
+    }
+    let data_gafete={
+        'status_gafete':'asignar_gafete',
+        'ubicacion_gafete':selectLocation.value,
+        'caseta_gafete':selectCaseta.value,
+        'visita_gafete':seleccionadoBitacora.nombre_visitante,
+        'id_gafete':numGafete,
+        'documento_gafete':[radioSeleccionado.value],
+    }
+    console.log(data_gafete)
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "gafetes_lockers.py",
+            option: "new_badge",
+            data_gafete: data_gafete,
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+            'Access-Control-Request-Headers':'*'
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            let data = res.response.data;
+            if(data.status_code==400){
+                errorAlert(data)
+                $("#idLoadingButtonAsignarGafete").hide();
+                $("#idButtonAsignarGafete").show();
+            }
+            else if(data.status_code==201){
+                successMsg("Gafete Entregado", "El gafete a sido entregado correctamente.")
+                $("#idLoadingButtonAsignarGafete").hide();
+                $("#idButtonAsignarGafete").show();
+                $("#alert_gafete_modal").hide();
+                $("#cardModal").modal('hide')
+            }
+        }else{
+            errorAlert(res)
+            $("#idLoadingButtonAsignarGafete").hide();
+            $("#idButtonAsignarGafete").show();
+        } 
+    })
+
+    /*let flaginput = false;
     let flagcheck = true;
     let dicData = {};
     let elements = document.getElementsByClassName('form-gafete');
@@ -1011,7 +1187,7 @@ function asignarGafete(){
             type: "warning"
         });
         //$("#alert_gafete_modal").show();
-    }
+    }*/
 }
 
 
