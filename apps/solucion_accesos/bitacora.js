@@ -49,7 +49,7 @@ $("#checkboxTodasLasCasetas").on("click",async function()  {
         selectCaseta.value=""
         selectCaseta.disabled=true
         let response = await fetchOnChangeCaseta('script_turnos.py', 'list_bitacora','', selectLocation.value)
-        reloadTableBitacoras(response.response.data, selectCaseta.value)
+        reloadTableBitacoras(response.response.data)
         let response2 = await fetchOnChangeCaseta('script_turnos.py', 'get_lockers', '', selectLocation.value)
         reloadTableLockers(response2.response.data)
     } else {
@@ -91,7 +91,39 @@ function abrirGafeteModal(folio){
     seleccionadoBitacora= dataTableBitacora.find(x => x.folio == folio);
     console.log("SOY EL ESCOGIDOOO", seleccionadoBitacora)
     $("#selectGafete").val("")
-    $("#inputLocker").val("")
+    $("#selectLocker").val("")
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "gafetes_lockers.py",
+            option: 'get_lockers',
+            location: selectLocation.value,
+            area: selectCaseta.value,
+            status: statusDisponible
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close();
+            $('#cardModal').modal('show');
+            let data= res.response.data
+            let selectGaf= document.getElementById("selectLocker") 
+            selectGaf.innerHTML=""; 
+            for(let loc of data){
+                    selectGaf.innerHTML += '<option value="'+loc.id_locker+'">'+loc.id_locker+'</option>';
+            }
+            if(data.length==0){
+                 selectGaf.innerHTML += '<option disabled> No hay gafetes disponibles </option>';
+            }
+            selectGaf.value=""
+        } 
+    });
+
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -438,12 +470,13 @@ function agregarVehiculo(){
 }
 
 function reloadTableBitacoras(data){
+    console.log("DATATA",data)
     dataTableBitacora=[]
    //dataTableLocker=[]
     if(user !='' && userJwt!=''){
         let lista= data
-        if(lista>0){
-            for (bitacora of lista){
+        if(lista.length>0){
+            for (let bitacora of lista){
                 dataTableBitacora.push({
                 folio:bitacora.folio ,fecha_entrada:bitacora.fecha_entrada ,nombre_visitante:bitacora.nombre_visitante, perfil_visita:bitacora.perfil_visita,
                 contratista:bitacora.contratista,status_gafete:bitacora.status_gafete, visita_a:bitacora.visita_a, caseta_entrada:bitacora.caseta_entrada,caseta_salida:bitacora.caseta_salida, 
@@ -668,6 +701,7 @@ function openDataModal(folio){
     for (var i = 0; i < listaEquipos.length; i++) {
         var newRow = $('<tr>');
         newRow.append($('<td>').text(listaEquipos[i].tipo_equipo));
+        newRow.append($('<td>').text(listaEquipos[i].nombre_articulo));
         newRow.append($('<td>').text(listaEquipos[i].marca_articulo));
         newRow.append($('<td>').text(listaEquipos[i].modelo_articulo));
         newRow.append($('<td>').text(listaEquipos[i].numero_serie));
@@ -678,6 +712,7 @@ function openDataModal(folio){
     if(listaEquipos.length==0){
         let newRow = $('<tr>');
         newRow.append($('<td>').text("No existen equipos"));
+        newRow.append($('<td>'));
         newRow.append($('<td>'));
         newRow.append($('<td>'));
         newRow.append($('<td>'));

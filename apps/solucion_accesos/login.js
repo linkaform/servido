@@ -79,8 +79,6 @@ function get_login(){
 				let url = `${protocol}//${host}/solucion_accesos/turnos.html`;
 				
 				window.location.reload();
-
-				skdjnfs
 				//window.open(`${protocol}//${host}/solucion_accesos/turnos.html`, "turnos")
 				//window.location.href =url
 				/*

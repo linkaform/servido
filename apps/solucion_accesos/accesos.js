@@ -185,7 +185,7 @@ function abrirNuevaVisita(){
 function abrirAsignarGafeteModal(){
     loadingService()
     $("#selectGafete").val("")
-    $("#inputLocker").val("")
+    $("#selectLocker").val("")
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -205,10 +205,10 @@ function abrirAsignarGafeteModal(){
         if (res.success) {
             Swal.close();
             let data= res.response.data
-            let selectLockers= document.getElementById("inputLocker") 
+            let selectLockers= document.getElementById("selectLocker") 
             selectLockers.innerHTML=""; 
-            for(let gaf of data){
-                    selectLockers.innerHTML += '<option value="'+gaf.id_gafete+'">'+gaf.id_gafete+'</option>';
+            for(let loc of data){
+                    selectLockers.innerHTML += '<option value="'+loc.id_locker  +'">'+loc.id_locker+'</option>';
             }
             if(data.length==0){
                  selectLockers.innerHTML += '<option disabled> No hay lockers disponibles </option>';
@@ -252,6 +252,13 @@ function abrirAsignarGafeteModal(){
 
 function abrirModalNuevaVisita(){
     loadingService()
+    $("#inputNombreNV").val("")
+    $("#selectVisitaNV").val("")
+    $("#inputAreaVisitaNV").val("")
+    $("#selectMotivoVisitaNV").val("")
+    $("#imgUser").val("")
+    $("#imgCard").val("")
+    $("#selectVisitaNV").val("")
     $("#inputFileCard").val("")
     $("#inputFileUser").val("")
     $("#buttonTakeCard").show()
@@ -820,9 +827,17 @@ function crearNuevaVisita(){
                         text: "NUeva visita registrada",
                         type: "success"
                     });
+                    successMsg("Confirmación","Nueva visita registrada exitosamente" )
                     codeUserVisit= Date.now();
                     let inputCode = document.getElementById("inputCodeUser");
-                    inputCode.value= codeUserVisit
+                     $("#inputCodeUser").val(data.json.id);
+                    if(data.json.id!==""){
+                        //setSpinner(true, 'divSpinner');
+                        $("#divSpinner").show();
+                        buscarPaseEntrada();
+                    }
+                    //$("#listModal").modal('hide');
+                    //inputCode.value= codeUserVisit
                     $("#newVisitModal").modal('hide')
                 }
                     //

@@ -342,7 +342,9 @@ function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
     $("#textDireccion").text(loc.address)
     let pos=''
     if(guard.hasOwnProperty('position')){
-        pos= guard.position!== null && guard.position!== undefined && guard.position!=="" ? guard.position:"";
+        if(guard.position!== undefined){
+            pos= guard.position!== null && guard.position!== undefined && guard.position!=="" ? guard.position:"";
+        }
     }else if(guard.hasOwnProperty('checkin_position')){
         pos= guard.checkin_position!== null && guard.checkin_position!== undefined && guard.checkin_position!=="" ? guard.checkin_position :""; 
         pos= formatText(pos)

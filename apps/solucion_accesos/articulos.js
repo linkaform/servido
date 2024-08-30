@@ -406,11 +406,11 @@ function initializeCatalogsArticulosLose(dataCatalogs,arrayUserBoothsLocations){
         $("#idUbicacionEditArticuloLose").append($('<option></option>').val(e.ubi).text(e.ubi));
         $("#idUbicacionEditArticuloLose").val("")
     });
-    dataCatalogs.guard_perdido.forEach(function(e, i){
-        $("#idGuardiaNuevoArticuloLose").append($('<option></option>').val(e).text(e))
-        $("#idGuardiaNuevoArticuloLose").val("")
-        $("#idGuardiaEditArticuloLose").append($('<option></option>').val(e).text(e))
-        $("#idGuardiaEditArticuloLose").val("")
+    dataCatalogs.categoria.forEach(function(e, i){
+        $("#idCategoriaArticuloLose").append($('<option></option>').val(e).text(e))
+        $("#idCategoriaArticuloLose").val("")
+        $("#idCategoriaEditArticuloLose").append($('<option></option>').val(e).text(e))
+        $("#idCategoriaEditArticuloLose").val("")
     });
     dataCatalogs.area_perdido.forEach(function(e, i){
         $("#idAreaNuevoArticuloLose").append($('<option></option>').val(e).text(e));
