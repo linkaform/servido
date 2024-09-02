@@ -75,7 +75,7 @@ var setOptions2 = {
 	    },
 	    title: {
 	        display: true,
-	        text: 'Grafica Franjas Horarias X Mes especifico',
+	        text: 'Grafica Control de Hurtos y Robos X Mes especifico X Años',
 	        font: {
 	          size: 20
 	        }
