@@ -502,3 +502,54 @@ input[type=search]{
 .ocultar{
   display: none!important;
 }
+
+
+/* Botones circulares */
+
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 0; // changed
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 0; // changed
+  font-size: 24px;
+  line-height: 1.33;
+  border-radius: 35px;
+}
+
+#tableListaPasesActivos{
+  overflow: auto !important;
+  border: none !important; 
+  width: 735px; 
+  margin-left: 15px; 
+  max-height: 50px !important;
+}
+
+
+.btn-circle {
+    width: 40px!important; /* Tamaño del botón */
+    height: 30px!important;
+    margin-right: 5px !important; /* Tamaño del botón */
+    border-radius: 50%!important; /* Hace el botón circular */
+    display: flex!important; /* Alineación del texto */
+    align-items: center!important; /* Alineación vertical */
+    justify-content: center!important; /* Alineación horizontal */
+    padding: 0!important; /* Elimina el padding por defecto */
+}
+
+.no-hover:hover{
+    color: none !important;
+    background-color: none !important;
+    border-color: none !important;
+}
+
+.checkboxBottom{
+    margin-bottom: 20px !important;
+    align-items: center;
+}

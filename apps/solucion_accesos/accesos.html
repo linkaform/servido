@@ -5,16 +5,17 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Accesos</title>
 	<link rel="icon" type='image/svg+xml' href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 512'><path  d='M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c1.8 0 3.5-.2 5.3-.5c-76.3-55.1-99.8-141-103.1-200.2c-16.1-4.8-33.1-7.3-50.7-7.3H178.3zm308.8-78.3l-120 48C358 277.4 352 286.2 352 296c0 63.3 25.9 168.8 134.8 214.2c5.9 2.5 12.6 2.5 18.5 0C614.1 464.8 640 359.3 640 296c0-9.8-6-18.6-15.1-22.3l-120-48c-5.7-2.3-12.1-2.3-17.8 0zM591.4 312c-3.9 50.7-27.2 116.7-95.4 149.7V273.8L591.4 312z'%3E%3C/path%3E%3C/svg%3E" />
+
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
 	<link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	
+ 	<link rel="stylesheet" href="./style.css">
 </head>
 <body>
 	<navbar-component> </navbar-component>
 	<!-- Information Plant-->
-	<section class="mainSection mainSectionMargins mb-3">
+	<section class="mainSection mainSectionMargins mb-3" id="mainSection1" style="display:none">
 
 		<div class="accordion" id="accordionExample">
           <div class="accordion-item">
@@ -83,97 +84,134 @@
 	</section>
 
 	<!-- Filter User-->
-	<section class="d-flex justify-content-center mainSectionMargins">
+	<section class="d-flex justify-content-center mainSectionMargins" id="mainSection2" style="display:none">
 			<div>
 				<div class="input-group" role="group">
-					<input type="text" class="form-control  input-search-portal " placeholder="Codigo User" value="" id="inputCodeUser" onchange="getDataUser();return false;">
-					<span class="input-group-text bg-warning-subtle  cursor-pointer myCustomBtnGroup" onclick="getDataUser();return false;"><i class="fa-solid fa-magnifying-glass" ></i></span>
-					<span class="input-group-text bg-warning-subtle cursor-pointer myCustomBtnGroup" data-bs-toggle="modal" data-bs-target="#listModal" ><i class="fa-solid fa-list"></i></span>
+					<input type="text" class="form-control  input-search-portal " placeholder="Codigo User" value="" id="inputCodeUser" onchange="buscarPaseEntrada();return false;">
+					<button class="input-group-text bg-warning-subtle  cursor-pointer myCustomBtnGroup" id="buttonBuscarPaseEntrada" onclick="buscarPaseEntrada();return false;" disabled><i class="fa-solid fa-magnifying-glass" ></i></button>
+					<button class="input-group-text bg-warning-subtle cursor-pointer myCustomBtnGroup" onclick="setModal('listaPases')" ><i class="fa-solid fa-list"></i></button>
 				</div>
 			</div>
-			<div class="ms-2" >
+			<div class="ms-2 d-flex" >
 				<div>
-					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" style="display: none;" id="buttonIn" onclick="setDataUser();return false;">
+					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" style="display: none;" id="buttonIn" onclick="registrarIngreso();return false;">
 					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso</button>
 					<button type="button" class="mt-1 mb-1  btn btn-danger btn-sm p-5 pt-1 pb-1" style="display: none;" id="buttonOut" onclick="registrarSalida();return false;">
 					<i class="fa-sharp fa-solid fa-door-open"></i> Registrar Salida</button>
-					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1" data-bs-toggle="modal" data-bs-target="#cardModal" style="display: none;"id="buttonCard">  <i class="fa-sharp fa-solid fa-id-card"></i> Entregar Gafete</button>
-					<button type="button" class="mt-1 mb-1 btn btn-warning btn-sm p-3 pt-1 pb-1" style="display: none;" id="buttonClean" onclick="setCleanData()">
+					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1" onclick="setModal('gafeteModal');" style="display: none;"id="buttonAsignarGafete">  <i class="fa-sharp fa-solid fa-id-card"></i> Asignar Gafete</button>
+					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1" onclick="setModal('recibirGafete');" style="display: none;"id="buttonRecibirGafete">  <i class="fa-sharp fa-solid fa-id-card"></i> Recibir Gafete</button>
+					<button type="button" class="mt-1 mb-1 btn btn-warning btn-sm p-3 pt-1 pb-1" style="display: none;" id="buttonClean" onclick="setCleanData2()">
 					<i class="fa-solid fa-broom"></i> Limpiar</button>
+					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" id="buttonNew" onclick="setModal('nuevaVisitaModal');">
+					<i class="fa-solid fa-plus"></i> Nueva Visita</button>
 				</div>
-				<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" data-bs-toggle="modal" data-bs-target="#newVisitModal" id="buttonNew">
-				<i class="fa-solid fa-plus"></i> Nueva Visita</button>
+				<div >
+					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" onclick="setModal('comentarioAccesoModal')" 
+					id="buttonAddCommentarioAccesoModal" style="display: none; margin-left: 3px;">
+						<i class="fa-solid fa-plus"></i> Agregar comentario
+					</button>
+				</div>
+				
 			</div>
 	</section>	
 
 	<!-- Information User-->
-	<section class="section-data mainSectionMargins">
+	<section class="section-data mainSectionMargins" id="mainSection3" style="display:none">
 		<div class="row ">
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 ">
-				<div class="row  div-container-portal me-1 pt-0 customShadow">
-					<h4 class="m-2">Información personal &nbsp;&nbsp;</h4>
-					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
-						<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-5" alt="Imagen Usuario" style="max-width:120px; max-height:120px; object-fit: cover;" id="imgUser">
-						<h6 class="m-4 mb-2">Tipo de pase: <span id="tipoPaseText" style="font-weight: normal"></span></h6>
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 mt-3">
+				<div class="row  div-container-portal m-1 pt-0 customShadow">
+					<h4 class="m-2 mb-0">Folio: &nbsp;&nbsp; <span id="folio"></span></h4>
+					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3" >
+						<div style="min-height:120px;">
+							<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-5" alt="Imagen Usuario" style="max-width:120px; max-height:120px; object-fit: cover;" id="imgUser">
+						</div>
+						<h5 class="m-4 mb-2" style="font-size:1.3em">Tipo de pase: <br><span id="tipoPaseText" style="font-weight: normal"></span></h5>
 					</div>
-					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
-						<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" class=" mx-auto  mt-5" style="max-width:240px;max-height:120px; object-fit: cover;" id="imgCard">
+					
+					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3" >
+						<div style="min-height:120px;">
+								<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" class=" mx-auto  mt-5" style="max-width:240px;max-height:120px; object-fit: cover;" id="imgCard">
+						</div>
+						<div class="mt-4" >
+							<h6>Disponible los días:</h6>
+							<div class="d-flex justify-content-around" >
+								<button type="button" class="btn btn-outline-success btn-circle no-hover" style="" id="lunes">L</button>
+								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="martes">M</button>
+								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="miércoles">M</button>
+								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="jueves">J</button>
+								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="viernes">V</button>
+								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="sabado">S</button>
+								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="domingo">D</button>
+							</div>
+						</div>
 					</div>
-					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+					<div class="col-sm-12 col-md-12 col-lg-11 col-xl-5" style="margin-left:30px; margin-bottom: 10px;" >
 						<div class="row ">
 							<div class="col-6">
-								<p><span className='h4'><b>Nombre:</b></span>&nbsp;&nbsp; <span id="name"></span></p>
+								<p><span className='h4'><b>Nombre:</b></span>&nbsp;&nbsp; <span id="nameUserInf"></span></p>
 							</div>
-							<div class="col-6">
+							<div class="col-6 d-flex justify-content-end" >
 								<h3>
 									<span class="text-danger" id="textOut">Salida</span>
 									<span class="text-success" id="textIn">Entrada</span>
 								</h3>
 							</div>
+							<p><span className='h4'><b>Ubicación:</b></span>&nbsp;&nbsp; <span id="ubicacion"></span></p>
 						</div>
-						<p><span className='h4'><b>Contratista:</b></span>&nbsp;&nbsp; <span id="rfc"></span></p>
+						<p><span className='h4'><b>Contratista:</b></span>&nbsp;&nbsp; <span id="contratista"></span></p>
 						<p><span className='h4'><b>Vigencia:</b></span>&nbsp;&nbsp; <span id="validity"></span></p>
 						<p><span className='h4'><b>Status:</b></span>&nbsp;&nbsp; <span id="status"></span></p>
-						<div class="row ">
-							<div class="col-6">
-								<p><span className='h4'><b>A quíen Visita:</b></span>&nbsp;&nbsp;<span id="motivo"></span></p>
+						<div class="row" >
+							<div class="col-9">
+								<p><span className='h4'><b>A quíen Visita:</b></span>&nbsp;&nbsp;<span id="visita"></span></p>
 							</div>
-							<div class="col-6">
-								<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#phoneModal">
+							<div class="col-3 d-flex justify-content-end p-0" >
+								<button type="button" class="btn btn-primary btn-sm m-1 " data-bs-toggle="modal" data-bs-target="#phoneModal">
 									<i class="fa-solid fa-phone"></i>
 								</button>
-								<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#messageModal">
+								<button type="button" class="btn btn-primary btn-sm m-1" data-bs-toggle="modal" data-bs-target="#messageModal">
 									<i class="fa-solid fa-message"></i> 
 								</button>
 							</div>
 						</div>
 						<p><span className='h4'><b>Motivo de Visita:</b></span>&nbsp;&nbsp;<span id="motivo"></span></p>
 					</div>
+
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-5 div-container-portal div-container-table-comments customShadow ">
-				<div class="d-flex justify-content-between mb-2 mt-2 ">
-					<h4>Comentarios / Instrucciones de visita</h4>
-					<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listCommentsModal" id="buttonCommentsModal">
-						<i class="fa-solid fa-eye"></i>
-					</button>
-				</div>
-				<div class="overflowCustom" style="max-width:760px !important; ">
-					<table id="tableInstructions" class=" table-borderless" style="border: none;">
-						<thead class="overflowCustomHead">
-							<tr>
-								<th class="headerColor">Comentarios / Instrucciones</th>
-							</tr>
-						</thead>
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-5">
+				<div class="row div-container-portal  customShadow" >
+					<div class="d-flex justify-content-between mb-2 mt-2">
+							<div>
+								<h4>Comentarios / Instrucciones de visita</h4>
+							</div> 
+							<div class="flex-nowrap">
+								<button type="button" class="btn btn-success btn-sm" onclick="setModal('comentarioPaseModal')" id="buttonAddCommentarioPaseModal">
+										<i class="fa-solid fa-plus"></i> Agregar comentario
+								</button>
+							</div>
+							<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listCommentsModal" id="buttonCommentsModal">
+								<i class="fa-solid fa-eye"></i>
+							</button>
+					</div>
+					<div class="overflowCustom div-containerTable-portal div-container-table mt-1" style="max-width:1200px !important; ">
+						<table id="tableInstructions" class=" table-borderless" style="border: none;">
+							<thead class="overflowCustomHead">
+								<tr>
+									<th class="headerColor">Comentarios / Instrucciones</th>
+									<th class="headerColor">Tipo de comentario</th>
+								</tr>
+							</thead>
 						<tbody></tbody>
-					</table>
-			    </div>
+						</table>
+				  	</div>
+				</div>
 			</div>
 		</div>
 	</section>
 
 	<!-- Table User-->
-	<section class="section-data mainSectionMargins">
+	<section class="section-data mainSectionMargins" id="mainSection4" style="display:none">
 		<div class="row p-2">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
 				<div class="div-containerTable-portal div-container-table p-2 customShadow">
@@ -185,12 +223,13 @@
 							</button>
 						</div>
 						<div class="overflowCustom" >
-							<table id="tableBitacora" class=" table-borderless" style="border: none;">
+							<table id="tableBitacora" class="table-borderless" style="border: none;">
 								<thead class="overflowCustomHead">
-									<tr >
+									<tr>
 										<th class="headerColor">Visito a</th>
-										<th class="headerColor">Ubicación</th>
+										<th class="headerColor">Fecha</th>
 										<th class="headerColor">Duración</th>
+										<th class="headerColor"></th>
 									</tr>
 								</thead>
 								<tbody></tbody>
@@ -230,29 +269,28 @@
 						</button>
 					</div>
 					<div class="overflowCustom" >
-						<table id="tableAccess" class="table-borderless" >
-						<thead class="overflowCustomHead" >
-							<tr>
-								<th class="headerColor">Acceso</th>
-								<th class="headerColor">Status</th>
-							</tr>
-						</thead>
-						<tbody ></tbody>
-					</table>
+						<table id="tableAccess" class="table-borderless" style="border: none;">
+							<thead class="overflowCustomHead" >
+								<tr>
+									<th class="headerColor">Acceso</th>
+									<th class="headerColor">Status</th>
+									<th class="headerColor">Comentario</th>
+								</tr>
+							</thead>
+							<tbody ></tbody>
+						</table>
 					</div>
-					
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
 				<div class="div-containerTable-portal p-2 div-container-table customShadow">
 					<div class="mt-3 mb-2 d-flex justify-content-between">
 						<h4>Equipos Autorizados</h4>
-
 						<div>
-							<button type="button" class="btn btn-success  btn-sm"  data-bs-toggle="modal" data-bs-target="#equipmentModal">
+							<button type="button" class="btn btn-success  btn-sm" onclick="setModal('equiposModal')" id="idButtonEquipoNota" data-bs-target="#equipmentModal">
 								<i class="fa-solid fa-plus"></i> Agregar Equipo
 							</button>
-							<button type="button" class="btn btn-primary  btn-sm"  onclick="setViewModalItem();return false">
+							<button type="button" class="btn btn-primary  btn-sm"  onclick="verListaDeEquiposAgregados();return false">
 								<i class="fa-solid fa-list"></i>
 							</button>
 							<button type="button" class="btn btn-info  btn-sm"  data-bs-toggle="modal" data-bs-target="#listItemsModal" id="buttonItemsModal">
@@ -261,10 +299,11 @@
 						</div>
 					</div>
 					<div class="overflowCustom" style="max-width:900px !important; ">
-						<table id="tableItems" class=" table-borderless" style="border: none;">
+						<table id="tableEquipos" class=" table-borderless" style="border: none;">
 							<thead class="overflowCustomHead">
 								<tr>
 									<th class="headerColor">Tipo</th>
+									<th class="headerColor">Nombre</th>
 									<th class="headerColor">Marca</th>
 									<th class="headerColor">Modelo</th>
 									<th class="headerColor">No.de Serie</th>
@@ -282,10 +321,14 @@
 					<div class="mt-3 mb-2 d-flex justify-content-between">
 						<h4>Vehiculos Autorizados</h4>
 						<div>
-							<button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#carModal" id="buttonAddCarModal">
-								<i class="fa-solid fa-plus"></i> Agregar Vehículo
+							<button type="button" class="btn btn-success btn-sm" onclick="setModal('vehiculosModal')" data-bs-target="#carModal" id="idButtonVehiculos">
+							  Agregar Vehículo
 							</button>
-							<button type="button" class="btn btn-primary btn-sm"  onclick="setViewModalCard();return false" >
+							<button class="btn btn-success btn-sm" type="button" id="idLoadingButtonVehiculos" style="display:none;" disabled>
+			                    <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+			                    Cargando...
+			                </button>
+							<button type="button" class="btn btn-primary btn-sm"  onclick="verListaDeVehiculosAgregados();return false" >
 								<i class="fa-solid fa-list"></i>
 							</button>
 							<button type="button" class="btn btn-info  btn-sm"  data-bs-toggle="modal" data-bs-target="#listCarsModal" id="buttonCarsModal">
@@ -314,28 +357,27 @@
 	</section>
 
 	<!-- Modal List-->
-	<div class="modal fade" id="listModal" tabindex="-1"  aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+	<div class="modal fade" id="listModal" tabindex="-1"  aria-hidden="true" >
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width:600px">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Lista de Pasaportes Activos</h1>
+					<h1 class="modal-title fs-5">Lista de Pases Activos</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<div class="row m-3">
+					<!--<div class="row m-3">
 						<input type="text" class="form-control" placeholder="Busqueda" onkeyup="functionSearchList(event);return false;">
+					</div> -->
+					<div class="m-3 mt-0" style="max-height: 500px; width: 530px;">
+						<div id="tableListaPases"></div>
 					</div>
-					<div class="row m-3">
-						<ol class="list-group list-group-numbered" id="listPasaportActive"></ol>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
 					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-				</div>
-			</div> 
+				</div> 
+			</div>
 		</div>
 	</div>
-
 	<!-- Modal New Visit-->
 	<div class="modal fade" id="newVisitModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -347,80 +389,76 @@
 				<div class="modal-body">
 					<div class="row">
 						<div class="mb-3 col-12">
-							<label class="form-label">Nombre Completo*</label>
+							<label class="form-label">Nombre Completo *</label>
 							<input type="text" class="form-control" id="inputNombreNV" placeholder="Nombre">
 						</div>
-						<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-3">
-							<label class="form-label">Identificación: *</label>
-							<button type="button" class="btn  btn-primary" onclick="getScreenCard();return false;" id="buttonTakeCard">
-								<i class="fa-solid fa-camera-retro"></i>
-							</button>
-							<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveCard">
-								Guardar Foto <i class="fa-solid fa-aperture"></i>
-							</button>
-							<!-- Canvas Foto -->
-							<div id="containerCard" class="mt-2">
-								<canvas id="canvasPhoto" style="display: none;width: 185px;height: 125px;"></canvas>
-								<img id="imgCard" src="" style="display: none;width: 185px;height: 125px;">
+
+						<div class="d-flex justify-content-evenly">
+							<div class="mb-3">
+								<label class="form-label">Fotografia: *</label>
+								<button type="button" class="btn  btn-primary " onclick="getScreenUser();return false;" id="buttonTakeUser">
+									<i class="fa-solid fa-camera-retro"></i>
+								</button>
+								<button type="button" class="btn btn-success btn-sm"  style="display: none;" id="buttonSaveUser">
+									Guardar Foto <i class="fa-solid fa-aperture"></i>
+								</button>
+								<!-- Canvas Foto -->
+								<div id="containerUser" class="mt-2">
+									<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
+									<img id="imgUser" src="" style="display: none;width: 185px;height: 125px;">
+								</div>
+								<input type="file" class="form-control mt-2" id="inputFileUser" >
 							</div>
-							<input type="file" class="form-control mt-2" id="inputFileCard" >
-						</div>
-						<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-3">
-							<label class="form-label">Fotografia: *</label>
-							<button type="button" class="btn  btn-primary " onclick="getScreenUser();return false;" id="buttonTakeUser">
-								<i class="fa-solid fa-camera-retro"></i>
-							</button>
-							<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveUser">
-								Guardar Foto <i class="fa-solid fa-aperture"></i>
-							</button>
-							<!-- Canvas Foto -->
-							<div id="containerUser" class="mt-2">
-								<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
-								<img id="imgUser" src="" style="display: none;width: 185px;height: 125px;">
+
+							<div class="mb-3">
+								<label class="form-label">Identificación: *</label>
+								<button type="button" class="btn  btn-primary" onclick="getScreenCard();return false;" id="buttonTakeCard">
+									<i class="fa-solid fa-camera-retro"></i>
+								</button>
+								<button type="button" class="btn  btn-success btn-sm"  style="display: none;" id="buttonSaveCard">
+									Guardar Foto <i class="fa-solid fa-aperture"></i>
+								</button>
+								<!-- Canvas Foto -->
+								<div id="containerCard" class="mt-2">
+									<canvas id="canvasPhoto" style="display: none;width: 185px;height: 125px;"></canvas>
+									<img id="imgCard" src="" style="display: none;width: 185px;height: 125px;">
+								</div>
+								<input type="file" class="form-control mt-2" id="inputFileCard" >
 							</div>
-							<input type="file" class="form-control mt-2" id="inputFileUser" >
 						</div>
+
 						<div class="mb-3 col-6">
-							<label class="form-label">Razón Social*</label>
+							<label class="form-label">Empresa *</label>
 							<input type="text" class="form-control" id="inputRazonSocialNV"  placeholder="Empresa">
 						</div>
 						<div class="mb-3 col-6">
-							<label class="form-label">Área que visita*</label>
+							<label class="form-label">Área que visita *</label>
 							<select class="form-select" id="inputAreaVisitaNV">
-								<option selected>--Seleccione--</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
 							</select>
 						</div>
-							<div class="mb-3 col-12">
-							<label class="form-label">Visita a*</label>
+						<div class="mb-3 col-12">
+							<label class="form-label">Visita a *</label>
 							<select class="form-select" id="selectVisitaNV">
-								<option selected>--Seleccione--</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
 							</select>
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Motivo de Visita *</label>
-							<textarea class="form-control" id="inputMotivoVisitaNV" rows="3"></textarea>
+							<select class="form-select" id="selectMotivoVisitaNV">
+							</select>
 						</div>
-					
-						
 					</div>
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary" onclick="asignarNuevaVisita()">Asignar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="crearNuevaVisita()">Crear</button>
 				</div>
 			</div> 
 		</div>
 	</div>
-
+	
 	<!-- Modal Card-->
-	<div class="modal fade" id="cardModal" tabindex="-1" data-bs-backdrop="static"   aria-hidden="true">
+	<div class="modal fade" id="gafeteModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -431,25 +469,26 @@
 					<div class="row">
 						<div class="mb-3 col-12">
 							<label class="form-label">Numero de gafete *</label>
-							<input type="text" class="form-control form-gafete"  placeholder="Numero" id="numCard">
+							<select class="form-select form-gafete" id="selectGafete">
+							</select>
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Tipo de documento de garantía *</label>
 							<br>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" id="checkIne" onchange="setDataInformation('checkOtro');return false;">
+								<input class="form-check-input form-gafete mt-1" style="margin-right: 2px" type="radio" name="radioOptionsDocument" value="INE" id="checkIne" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkIne">Ine</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" id="checkLicencia" onchange="setDataInformation('checkOtro');return false;">
+								<input class="form-check-input form-gafete mt-1" style="margin-right: 2px" type="radio" name="radioOptionsDocument" value="Licencia de conducir" id="checkLicencia" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkLicencia">Licencia de Conducir</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" id="checkPase" onchange="setDataInformation('checkOtro');return false;">
+								<input class="form-check-input form-gafete mt-1" style="margin-right: 2px" type="radio" name="radioOptionsDocument" value="Pase de Estacionamiento" id="checkPase" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkPase">Pase de estacionamiento</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input form-gafete" type="radio" name="radioOptionsDocument" id="checkOtro" onchange="setDataInformation('checkOtro');return false;">
+								<input class="form-check-input form-gafete mt-1" style="margin-right: 2px" type="radio" name="radioOptionsDocument" value="Otro" id="checkOtro" onchange="setDataInformation('checkOtro');return false;">
 								<label class="form-check-label" for="checkOtro">Otro</label>
 							</div>
 						</div>
@@ -458,15 +497,20 @@
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">Locker de Seguridad *</label>
-							<input type="text" class="form-control form-gafete"  placeholder="Espacio Designado" id="inputLocker">
+							<select class="form-select form-gafete" id="selectLocker">
+							</select>
 						</div>
 					</div>
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 					<small class="text-danger mt-1 mb-3" id="alert_gafete_modal" style="display:none;">** Faltan campos obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary" onclick="getFormGafete();return false">Asignar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" id="idButtonAsignarGafete" onclick="entregarGafete();return false">Asignar gafete</button>
+					<button class="btn btn-success btn-sm" type="button" id="idLoadingButtonAsignarGafete" style="display:none" disabled>
+		                <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+		                Cargando...
+		            </button>
 				</div>
 			</div> 
 		</div>
@@ -490,8 +534,8 @@
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Enviar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm">Enviar</button>
 				</div>
 			</div>
 		</div>
@@ -512,15 +556,15 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success">Llamar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm">Llamar</button>
 				</div>
 			</div> 
 		</div>
 	</div>
 
 	<!-- Modal Item-->
-	<div class="modal fade" id="equipmentModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="equiposModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -528,126 +572,95 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<div class="col-9 div-equipo-row-123 div-row-equipo" >
+					<div class="col-9 div-equipo-row-123 div-row-equipo mb-2" >
 						<label class="form-label">Tipo de Equipo: *</label>
-						<input class="form-control group-equipo" list="datalistOptionsEquipo123" id="selectTipoEquipo-123" placeholder="Escribe algo para buscar..." >
-						<datalist id="datalistOptionsEquipo123">
-							<option value="Computo">
-							<option value="Herramientas">
-							<option value="laptop">
-							<option value="PC">
-							<option value="linterna">
-						</datalist>
+						<select class="form-select" aria-label="Default select example" value="" id="selectTipoEquipo">
+							<option value="Herramienta">Herramienta</option>
+							<option value="Computo">Computo</option>
+							<option value="Tablet">Tablet</option>
+							<option value="Otra">Otra</option>
+						</select>
 					</div>
 					<div class="col-9 div-equipo-row-1 div-row-equipo">
-					<label class="form-label ">Nombre del Equipo:*</label>
-						<input type="text" class="form-control group-equipo" id="inputNombreEquipo-123">
+						<label class="form-label ">Nombre del Equipo:*</label>
+						<input type="text" class="form-control group-equipo" id="inputNombreEquipo">
 					</div>
 					<div class="row">
 						<div class="mb-3 col-6">
 							<label class="form-label">Marca </label>
-							<input type="text" class="form-control form-item"  placeholder="Marca" id="inputMarcaItem">
+							<input type="text" class="form-control form-item"  placeholder="Marca" id="inputMarcaEquipo">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Modelo </label>
-							<input type="text" class="form-control form-item"  placeholder="Modelo" id="inputModeloItem">
+							<input type="text" class="form-control form-item"  placeholder="Modelo" id="inputModeloEquipo">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Numero de Serie </label>
-							<input type="text" class="form-control form-item"  placeholder="Serie" id="inputSerieItem">
+							<input type="text" class="form-control form-item"  placeholder="Serie" id="inputSerieEquipo">
 						</div>
 						<div class="mb-3 col-6">
 							<label class="form-label">Color </label>
-							<input type="text" class="form-control form-item"  placeholder="Color" id="inputColorItem">
+							<select class="form-select" aria-label="Default select example" id="inputColorEquipo" style="height: 40px !important; overflow: auto !important;">
+							</select>
 						</div>
 					</div>
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
-					<br/>
+					<br>
 					<small class="text-danger mt-1 mb-3"  id="alertItemModal" style="display:none;">** Faltan campos obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-warning" onclick="agregarEquipoAModal();return false;">Guardar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="agregarEquipo();return false;">Agregar</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!-- Modal Car-->
-	<div class="modal fade" id="carModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="vehiculosModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Vehículo</h1>
+					<h1 class="modal-title fs-5">Agregar vehiculo</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-				<div class="col-9 div-vehiculo-row-1 div-row-vehiculo" >
-					<label class="form-label">Tipo de Vehiculo*: </label>
-					<span class="input-group-addon" id='spinnerTipoVehiculo'>
-                		<i class="fa fa-refresh fa-spin"></i>
-            		</span>
-					<input class="form-control group-vehiculo" list="datalistOptionsTipo" id="selectTipoVehiculo-123" placeholder="Escribe algo para buscar..." onChange='onChangeCatalog("vehiculo",123)'>
-					<datalist id="datalistOptionsTipo">
-				
-					</datalist>
-				</div>
+					<div class="col-9 div-vehiculo-row-1 div-row-vehiculo" >
+						<label class="form-label">Tipo de Vehiculo: </label>
+						<select class="form-select" aria-label="Default select example" id="selectVehiculos" onChange='onChangeCatalog("vehiculo",123)'>
+						</select>
+					</div>
 					<div class="col-9 div-vehiculo-row-1 div-row-vehiculo">
 						<div id='divCatalogMarca123'>
 							<label class="form-label">Marca: </label>
-							<input class="form-control group-vehiculo" list="datalistOptionsMarca123" id="selectCatalogMarca-123" placeholder="Escribe algo para buscar..." onchange='onChangeCatalog("marca",123)'> 
-							<datalist id="datalistOptionsMarca123">
-					
-							</datalist>
+							<select class="form-select" aria-label="Default select example" id="selectVehiculosMarca" onChange='onChangeCatalog("marca",123)'>
+								<option disabled>Escoge un tipo de vehiculo...</option>
+							</select>
 						</div>
 						<div id='divCatalogModelo123'>
 							<label class="form-label">Modelo: </label>
-							<input class="form-control group-vehiculo" list="datalistOptionsModelo123" id="selectCatalogModelo-123" placeholder="Escribe algo para buscar...">
-							<datalist id="datalistOptionsModelo123">
-					
-							</datalist>
+								<select class="form-select" aria-label="Default select example" id="selectVehiculosModelo" >
+									<option disabled>Escoge una marca...</option>
+								</select>
 						</div>
 						<div class="div-row-vehiculo">
-							<label class="form-label">Matricula del Vehiculo:</label>
-							<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-123">
+							<label class="form-label">Matrícula del Vehiculo:</label>
+							<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo">
 						</div>
 						<div class="div-row-vehiculo">
 							<label class="form-label">Color:</label>
-							<input type="text" class="form-control group-vehiculo" id="inputColor-123">
-							<hr >
+							<select class="form-select" aria-label="Default select example" id="inputColor" style="height: 40px !important; overflow: auto !important;">
+							</select>
+							<hr>
 						</div>
 					</div>
-					<!--
-					<div class="row">
-						<div class="mb-3 col-12">
-							<label class="form-label">Tipo de Vehiculo *</label>
-							<input type="text" class="form-control form-car"  placeholder="Tipo" id="inputTipoCar">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Marca *</label>
-							<input type="text" class="form-control form-car"  placeholder="Marca" id="inputMarcaCar">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Modelo *</label>
-							<input type="text" class="form-control form-car"  placeholder="Modelo" id="inputModeloCar">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Color *</label>
-							<input type="text" class="form-control form-car"  placeholder="Color" id="inputColorCar">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Numero de placas *</label>
-							<input type="text" class="form-control form-car"  placeholder="Placas" id="inputPlacasCar">
-						</div>
-					</div>
-					-->
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
-					<br/>
+					<br>
 					<small class="text-danger mt-1 mb-3" id="alert_car_modal" style="display:none;">** Faltan campos obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-warning" onclick="getSaveCar();return false;">Guardar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="agregarVehiculo();return false;">Agregar</button>
 				</div>
 			</div>
 		</div>
@@ -675,8 +688,8 @@
 					
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Enviar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm">Enviar</button>
 				</div>
 			</div>
 		</div>
@@ -707,7 +720,7 @@
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
@@ -734,11 +747,10 @@
 							</tr>
 						</tbody>
 					</table>
-					
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Enviar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm">Enviar</button>
 				</div>
 			</div>
 		</div>
@@ -766,8 +778,8 @@
 					
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Enviar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm">Enviar</button>
 				</div>
 			</div>
 		</div>
@@ -794,7 +806,7 @@
 					
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
@@ -821,7 +833,7 @@
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
@@ -832,7 +844,7 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Lista de Vehiculos</h1>
+					<h1 class="modal-title fs-5">Vehículo seleccionado</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
@@ -841,14 +853,14 @@
 							<th class="headerColor">Tipo</th>
 							<th class="headerColor">Marca</th>
 							<th class="headerColor">Modelo</th>
-							<th class="headerColor">Matricula</th>
+							<th class="headerColor">Matrícula</th>
 							<th class="headerColor">Color</th>
 						</thead>
 						<tbody></tbody>
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
@@ -859,13 +871,14 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Lista de Equipo</h1>
+					<h1 class="modal-title fs-5">Lista de equipos selecionados</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<table class="table table-borderless" style="border: none !important;" id="tableAddItemsModal">
 						<thead class="table-warning">
 							<th class="headerColor">Tipo</th>
+							<th class="headerColor">Nombre</th>
 							<th class="headerColor">Marca</th>
 							<th class="headerColor">Modelo</th>
 							<th class="headerColor">No. Serie</th>
@@ -875,17 +888,73 @@
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div id="divSpinner" style="display:none;margin-top: 100px;"></div>
+		<!-- Modal List Add Items-->
+	<div class="modal fade" id="commentarioPaseModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Comentario de acceso</h1>
+				</div>
+
+				<div class="mb-3 m-4 mr-0">
+							<label class="form-label">Comentario:</label>
+							<textarea class="form-control comment-div-nueva" id="idComentarioPase" rows="3" placeholder="Escribe algo..."></textarea>
+						</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="agregarComentarioPaseAcceso('pase')">Agregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+		<!-- Modal List Add Items-->
+	<div class="modal fade" id="commentarioAccesoModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Comentario de pase</h1>
+				</div>
+				<div class="d-flex justify-content-center">
+					<div class="overflowCustom div-containerTable-portal div-container-table mt-1" style="min-width:750px!important; min-height: 150px !important;">
+						<table id="tableComentariosAcceso" class=" table-borderless" style="border: none;">
+							<thead class="overflowCustomHead">
+								<tr>
+									<th class="headerColor">Comentarios</th>
+									<th class="headerColor">Tipo de comentario</th>
+								</tr>
+							</thead>
+						<tbody></tbody>
+						</table>
+				  	</div>
+				</div>
+				
+				<div class="mb-3 m-4 mr-0 mt-4">
+							<label class="form-label">Comentario:</label>
+							<textarea class="form-control comment-div-nueva" id="idComentarioAcceso" rows="3" placeholder="Escribe algo..."></textarea>
+						</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="agregarComentarioPaseAcceso('acceso')" >Agregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="divSpinner" style="display:none;margin-top:100px;"></div>
+
 </body>
 <!-- Local -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
- <link rel="stylesheet" href="./style.css">
+<!-- Jquery -->
+
+
+
 
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
 <script type="text/javascript" src="./functions.js"></script>
@@ -894,12 +963,8 @@
 <script  src="./accesosData.js"></script>
 <script  src="./accesos.js"></script>
 
-
-<!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<!-- Tabulator -->
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
-<!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>

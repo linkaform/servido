@@ -16,12 +16,12 @@ let columsDataArticles = [
 			return divActions;
 		},
 	},
-	{ title:"Ubicación", field:'ubicacion_concesion',hozAlign:"left",headerFilter:true},
-	{ title:"Caseta", field:'caseta_concesion',hozAlign:"left",headerFilter:true},
-	{ title:"Nombre", field:'equipo_concesion',hozAlign:"left",headerFilter:true},
+	//{ title:"Ubicación", field:'ubicacion_concesion',hozAlign:"left",headerFilter:true},
+	//{ title:"Caseta", field:'caseta_concesion',hozAlign:"left",headerFilter:true},
+	{ title:"Artículo", field:'equipo_concesion',hozAlign:"left",headerFilter:true},
 	{ title:"Fecha", field:'fecha_concesion',hozAlign:"left",headerFilter:true,headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
 	{ title:"Tipo", field:'solicita_concesion',hozAlign:"left",headerFilter:true, width:200},
-	{ title:"Fotografía", field:'foto_concesion',hozAlign:"left",formatter:"image", width:200 , formatterParams:{height:"120px",width:"180px"}},
+	//{ title:"Fotografía", field:'foto_concesion',hozAlign:"left",formatter:"image", width:200 , formatterParams:{height:"120px",width:"180px"}},
 		
 	{ title:"No. Serie", field:'folio',hozAlign:"left",headerFilter:true},
 	{ title:"Reporta", field:'nombre_concesion',hozAlign:"left",headerFilter:true},
@@ -48,21 +48,23 @@ let columsDataArticlesLose = [
 			return divActions;
 		},
 	},
-	{ title:"Ubicación", field:'ubicacion_perdido',hozAlign:"left",headerFilter:true},
-	{ title:"Nombre", field:'articulo_perdido',hozAlign:"left",headerFilter:true},
-	{ title:"Fecha", field:'date_hallazgo_perdido',hozAlign:"left",headerFilter:true,headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
-	{ title:"Articulo", field:'tipo_perdido',hozAlign:"left",headerFilter:true},
+	//{ title:"Ubicación", field:'ubicacion_perdido',hozAlign:"left",headerFilter:true},
+	{ title:"Artículo", field:'articulo_perdido',hozAlign:"left",headerFilter:true},
+	{ title:"Estado", field:'status_perdido',hozAlign:"left",headerFilter:true},
+	//{ title:"Articulo", field:'tipo_perdido',hozAlign:"left",headerFilter:true},
 	{ title:"Fotografía", field:'photo_perdido',hozAlign:"left",formatter:"image", formatterParams:{height:"150px",width:"200px"},
 		formatter: function(cell) {
 		            let data = cell.getData();
 		            return `<img src="${data.photo_perdido.length>0 ? data.photo_perdido[0].file_url : ""}" alt="Imagen" style="width:120px;height:120px;" class="img-cell"/>`;
 		        }},
-	{ title:"Numero Seríe", field:'folio',hozAlign:"left",headerFilter:true},
+    { title:"Color", field:'color',hozAlign:"left",headerFilter:true},
+	{ title:"Categoria", field:'categoria_perdido',hozAlign:"left",headerFilter:true},
+    { title:"Fecha", field:'date_hallazgo_perdido',hozAlign:"left",headerFilter:true,headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
+	//{ title:"Numero Seríe", field:'folio',hozAlign:"left",headerFilter:true},
 	{ title:"Reporta", field:'guard_perdido',hozAlign:"left",headerFilter:true},
+	{ title:"Fecha Devolución", field:'date_entrega_perdido',hozAlign:"left",headerFilter:true,headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
+	{ title:"Recibe", field:'recibe_perdido',hozAlign:"left",formatter:"image", formatterParams:{height:"150px",width:"200px"},},
 	{ title:"Comentarios", field:'comments_perdido',hozAlign:"left",headerFilter:true},
-	{ title:"Recibe", field:'recibe_perdido',hozAlign:"left",headerFilter:true},
-	{ title:"Devolución", field:'date_entrega_perdido',hozAlign:"left",headerFilter:true,headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
-	{ title:"Estado", field:'status_perdido',hozAlign:"left",headerFilter:true},
 ];
 
 let dataTableArticles = []

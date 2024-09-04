@@ -29,7 +29,7 @@
                 <div class="card-wrapper">
                     <div class="card fat">
                         <div class="card-body">
-                            <h4 class="card-title">Login</h4>
+                            <h4 class="card-title">Iniciar sesión</h4>
                             <div class="form-group">
                                 <label for="email">Correo electrónico </label>
                                 <input id="user" class="form-control" name="user" type="email" value="" required autofocus>
@@ -41,7 +41,13 @@
                                 <div class="invalid-feedback"> La contraseña es requerida </div>
                             </div>
                             <div class="form-group m-0 ">
-                                <button onclick="get_login()" class="btn btn-warning btn-block mt-4"> Login </button>
+                                <button onclick="get_login()" id="buttonLogin" class="btn btn-warning btn-block mt-4"> Continuar </button>
+                            </div>
+                            <div class="form-group m-0 ">
+                            <button class="btn btn-warning btn-block mt-4" type="button" id="loadingButtonLogin" style="display:none" disabled>
+                                  <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                                  Iniciando sesión...
+                            </button>
                             </div>
                         </div>
                     </div>
@@ -60,6 +66,7 @@
 <!-- Local -->
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
 <script  type="text/javascript" src="./functions.js"></script>
+<script  type="text/javascript" src="./components/navbar.js"></script>
 <script  type="text/javascript" src="./login.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <!-- Jquery -->

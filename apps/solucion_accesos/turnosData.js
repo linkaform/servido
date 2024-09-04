@@ -11,7 +11,7 @@ let dataTableCambiarCaseta = []
 ];*/
 
 let dataTableAgregarGuardiaApoyo = [  
-    { name: 'Juan Pérez Gomez', status: 'Disponible' , img: 'https://img.favpng.com/1/10/3/computer-icons-child-avatar-png-favpng-1KY4gtPN1Fab6LrVpVM8AjtnH.jpg', id:20}, 
+    /*{ name: 'Juan Pérez Gomez', status: 'Disponible' , img: 'https://img.favpng.com/1/10/3/computer-icons-child-avatar-png-favpng-1KY4gtPN1Fab6LrVpVM8AjtnH.jpg', id:20}, 
     { name: 'María Rodríguez Herandez', status: 'Disponible' , img:'https://img.favpng.com/11/2/11/child-computer-icons-avatar-png-favpng-5T7pGsVsca4MQcwET3VPe0X2n.jpg', id:21}, 
     { name: 'Pedro Gómez Flores', status: 'Disponible' , img:'https://img.favpng.com/10/24/16/avatar-child-youtube-computer-icons-png-favpng-PTMFwE8vBZBUGaNtVmMJGxrdc.jpg', id:22}, 
     { name: 'Ana López Rosales', status: 'Disponible' , img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStDHIGgUTPEb7gYe0oKLLp_AfrnvRgPcCkI2icqmuSU7OIQsrnVLxlRygPK1hn-Za8dlY&usqp=CAU', id:23},
@@ -20,7 +20,7 @@ let dataTableAgregarGuardiaApoyo = [
     { name: 'Carlos Sánchez Espinosa', status: 'Disponible' ,img:'https://www.shareicon.net/data/512x512/2016/06/25/786525_people_512x512.png', id:26}, 
     { name: 'Elena García Garcia', status: ' Disponible' ,img:'https://cdn-icons-png.freepik.com/512/163/163813.png', id:27}, 
     { name: 'Sofía Hernández Campos', status: 'Disponible' , img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDAdo0KjHLNxkRXKlav2OfZ7KUlwFjyY6WJTH7LrFyfD6rfeBepm5ybnFBwM_Cd7prl0s&usqp=CAU', id:28}, 
-    { name: 'Mario Castillo Hernandez', status: ' Disponible' , img:"https://www.shareicon.net/data/512x512/2016/06/25/786541_people_512x512.png", id:29}
+    { name: 'Mario Castillo Hernandez', status: ' Disponible' , img:"https://www.shareicon.net/data/512x512/2016/06/25/786541_people_512x512.png", id:29}*/
 ];
 const columsDataNotas = [
     { title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:110,
@@ -29,15 +29,15 @@ const columsDataNotas = [
             let data = cell.getData();
             let folio = cell.getData().folio ? cell.getData().folio : 0;
             let divActions = '<div class="row d-flex">';
-            divActions += `<button class="btn-table-bitacora" onClick="cerrarNotaAlert('${data.note_guard}', '${data.note}','${folio}','${data.note_status}')"><i class="fa-regular fa-circle-check"></i></button>`;
+            divActions += `<button class="btn-table-bitacora" onClick="cerrarNotaAlert('${data.created_by_name}', '${data.note}','${folio}','${data.note_status}')"><i class="fa-regular fa-circle-check"></i></button>`;
             divActions += `<button class="btn-table-bitacora" onClick="verNotasAlert('${folio}')" ><i class="fa-regular fa-eye"></i></button>`;
-            divActions += `<button class="btn-table-bitacora" onClick="alertEliminarNota('${folio}')"><i class="fa-solid fa-trash" ></i></button>`;
+            //divActions += `<button class="btn-table-bitacora" onClick="alertEliminarNota('${folio}')"><i class="fa-solid fa-trash" ></i></button>`;
             divActions += '</div>';
             return divActions;
         },
     },
-    { title:"Empleado", field:'note_guard',hozAlign:"left",headerFilter:true},
-    { title:"Estatus", field:'note_status',hozAlign:"left",tooltip:true,headerFilter:true,width:90},
+    { title:"Empleado", field:'created_by_name',hozAlign:"left",headerFilter:true},
+    { title:"Folio", field:'folio',hozAlign:"left",tooltip:true,headerFilter:true,width:90},
     { title:"Apertura", field:'note_open_date',hozAlign:"left",headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
     { title:"Cierre", field:'note_close_date',hozAlign:"left",headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
     { title:"Nota", field:'note',hozAlign:"left",headerFilter:true,width:330},
@@ -87,12 +87,23 @@ const columsCambiarCaseta = [
 ];
 
 const columsAgregarGuardiaApoyo = [
-    {title:"Nombre", field:"name", width:240, responsive:0},
-    {title:"Estatus", field:"status", width:330, resizable:true, tooltip:true},
+    {title:"Nombre", field:"name", width:240, responsive:0,
+        formatter: (cell, formatterParams) => {
+                let data = cell.getData();
+                console.log("LALAL",data)
+                let id = cell.getData().id ? cell.getData().id : 0;
+                let divActions = '<div id="inf'+data.id +'"><div class="d-flex flex-row" id="listOfGuards">';
+                divActions+= '<div col-sm-12 col-md-12 col-lg-6 col-xl-6> <img id="imgGuardiaApoyo" height="60" width="60" src="'
+                + data.img + '"> </div > <div col-sm-12 col-md-12 col-lg-6 col-xl-6 class="flex-column ms-3"> <div> <b>'
+                + data.name +'</b> </div><div id="idStatusGuardia"> '+ data.status +'</div></div>';
+                divActions += '</div> </div>';
+                return divActions;
+            },
+    },
 ];
 
 const columsDataGuardiasApoyo = [
-    {title:"Guardias de Apoyo", field:'name',hozAlign:"left",headerFilter:true,width:390,
+    {title:"", field:'name',hozAlign:"left",headerFilter:true,width:390, 
          formatter: (cell, formatterParams) => {
             let data = cell.getData();
             let id = cell.getData().id ? cell.getData().id : 0;
@@ -110,7 +121,7 @@ const columsDataGuardiasApoyo = [
             let id = cell.getData().id ? cell.getData().id : 0;
             let divActions = '<div class="row d-flex justify-content-center" id="inf2'+data.id +'">';
             divActions += `<input class="form-check-input customInputCheckout" type="checkbox" id="inp-${id}" onclick="selectCheckboxGuardia(${data.id})" value=${data.id}  style="border-color:darkgray">`;
-            divActions += `<button class="btn-table-bitacora mt-3 customButtonCheckout" id="btn-${id}" onclick="eliminarGuardia(${id}, '${data.name}')" > <i class="fa solid fa-door-open"></i> </button>`;
+            divActions += `<button class="btn-table-bitacora mt-3 customButtonCheckout" id="btn-${id}" onclick="checkoutGuardiaApoyo(${id}, '${data.name}')" > <i class="fa solid fa-door-open"></i> </button>`;
             divActions += '</div>';
             return divActions;
         },

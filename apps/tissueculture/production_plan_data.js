@@ -2,7 +2,7 @@ var array_background = getPAlleteColors(4,8);
 
 //--Table Montajes Por Mes
 var columsTable1 = [
-  { title:"Plant Code", field:'plant_code',hozAlign:"left",width:150},
+  { title:"Plant Code", field:'plant_code',hozAlign:"left",width:150, },
   { title:"Plant Name", field:'plant_name',hozAlign:"left",width:350},
   { title:"Container Type", field:'container',hozAlign:"left",width:250},
   { title:"Stage", field:'stage',hozAlign:"right",width:250},

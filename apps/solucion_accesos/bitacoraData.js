@@ -1,34 +1,68 @@
 let tables={}
-let dataTablePersonal=[]
+let dataTableBitacora=[]
 let dataTableLocker=[]
 
 const columsData1 = [
-	{ title:"Opciones", field: "actions" , hozAlign: "left", resizable:false,
+	{ title:"Opciones", field: "actions" , hozAlign: "left", resizable:false,width:180,
 		formatter: (cell, formatterParams) => {
 			//----Button Trash
+			let data=cell.getData()
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
+			console.log("DATAAA", data)
 			let divActions = '<div class="row d-flex">';
-			divActions += `<button class="btn-table-bitacora" onClick="setModal('Tools',${folio})"><i class="fa-solid fa-hammer"></i></button>`;
-			divActions += `<button class="btn-table-bitacora" onClick="setModal('Cars',${folio})" ><i class="fa-solid fa-car"></i></button>`;
-			divActions += `<button class="btn-table-bitacora" onClick="setModal('Card',${folio})"><i class="fa-solid fa-address-card"></i></button>`;
-			divActions += `<button class="btn-table-bitacora" onClick="alertSalida(${folio})" ><i class="fa-solid fa-arrow-right-from-bracket"></i></button>`;
-			divActions += `<button class="btn-table-bitacora" onClick="setModal('Data',${folio})" ><i class="fa-solid fa-user"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('equiposModal','${data.id}', '${folio}')"><i class="fa-solid fa-hammer"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('vehiculosModal','${data.id}', '${folio}')" ><i class="fa-solid fa-car"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('Card','${folio}')"><i class="fa-solid fa-address-card"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="alertSalida('${data.codigo_qr}', '${data.status_visita}')" ><i class="fa-solid fa-arrow-right-from-bracket"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('Data','${folio}')" ><i class="fa-solid fa-user"></i></button>`;
 			divActions += '</div>';
 			return divActions;
 			//`<button  class="btn-table-bitacora" onClick="setModal('Tools',${folio})"><i class="fa-solid fa-car"></i></button> `;
 		},
 	},
 	{ title:"Folio", field:'folio',hozAlign:"left",headerFilter:true,},
-	{ title:"Visitante", field:'visitante',hozAlign:"left",headerFilter:true},
+	{ title:"Entrada", field:'fecha_entrada',hozAlign:"left", headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
+	{ title:"Visitante", field:'nombre_visitante',hozAlign:"left",headerFilter:true},
+	{ title:"Tipo", field:'perfil_visita',hozAlign:"left",headerFilter:true},
 	{ title:"Contratista", field:'contratista',hozAlign:"left",headerFilter:true},
-	{ title:"Visita a", field:'visita',hozAlign:"left",headerFilter:true},
-	{ title:"Areá de acceso", field:'area',hozAlign:"left",headerFilter:true},
-	{ title:"Tipo", field:'tipo',hozAlign:"left",headerFilter:true},
-	{ title:"Entrada", field:'entrada',hozAlign:"left", headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
-	{ title:"Salida", field:'salida',hozAlign:"left",headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
-	{ title:"En turno", field:'estado',hozAlign:"center",tooltip:true, maxWidth:100, formatter:"tickCross",  headerFilter:"tickCross",  headerFilterParams:{'Dentro':true, 'Fuera': false}, headerFilterEmptyCheck:function(value){return value === null}},
-	{ title:"Punto de acceso", field:'location_access',hozAlign:"left",headerFilter:true},
-	{ title:"Gafete", field:'credentials',hozAlign:"left",headerFilter:true},
+	{ title:"Gafete", field:'status_gafete',hozAlign:"left",headerFilter:true},
+	{ title:"Visita a", field:'visita_a',hozAlign:"left",headerFilter:true},
+	{ title:"Caseta Entrada", field:'caseta_entrada',hozAlign:"left",headerFilter:true},
+	{ title:"Caseta Salida", field:'caseta_salida',hozAlign:"center",tooltip:true},
+	{ title:"Salida", field:'fecha_salida',hozAlign:"left",headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
+	{ title:"Comentarios", field:'comentarios',hozAlign:"left",headerFilter:true ,
+	formatter: function(cell) {
+  		let comment=""
+  		let tipo=""
+        let data = cell.getData();
+        let arrayComentarios=[]
+        if(data.hasOwnProperty('comentarios')){
+        	console.log("valorerr",data)
+        	if(data.comentarios.length>0){
+				arrayComentarios = data.comentarios
+        	}else{
+        		arrayComentarios=[]
+        	}
+        }
+        let html=""
+
+        if( arrayComentarios.length > 0 ){
+        	for(let com of arrayComentarios){
+            	comment= com.comentario
+            	tipo= com.tipo_comentario
+            	html+= `<li>`+ capitalizeFirstLetter(tipo)+`: `+comment+` </li>`
+        	}
+        }
+   		let base=`<div class="lista-container" style="max-height: 100px; overflow-y: auto;">
+					<ul class="scrollable-list">
+						`+html+`
+					</ul>
+				</div>
+		`;
+        return base
+	    }
+	},
+     
 ];
 
 const columsData2 = [
@@ -52,7 +86,7 @@ const columsData2 = [
 ];
 
 /*
-dataTablePersonal = [
+dataTableBitacora = [
 	{folio:1263451,visitante:'Javier Garcia',contratista:'LINKAFORM SA DE CV',visita:'Juan Perez',area:'Refrigeración',tipo:'Nuevo',entrada:'20-06-2024 08:30',salida:'',estado:true, punto_acceso:'',credentials:'Si',comentario:'Entra temprano con autorización',planta:'PLanta 1'},
 	{folio:1263452,visitante:'Javier Garcia',contratista:'LINKAFORM SA DE CV',visita:'Juan Perez',area:'Refrigeración',tipo:'Nuevo',entrada:'20-06-2024 08:00',salida:'',estado:true, punto_acceso:'',credentials:'Si',comentario:'Entra temprano con autorización',planta:'PLanta 1'},
 	{folio:1263453,visitante:'Javier Garcia',contratista:'LINKAFORM SA DE CV',visita:'Juan Perez',area:'Refrigeración',tipo:'Nuevo',entrada:'22-07-2024 08:30',salida:'',estado:true, punto_acceso:'',credentials:'Si',comentario:'Entra temprano con autorización',planta:'PLanta 1'},

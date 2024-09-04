@@ -28,7 +28,7 @@
                                 <img src="" height="100px" width="100px" class="d-inline-block rounded-circle" alt="" id="imgProfilePic"><br>
 
                                 <input type="file" accept="image/*" variant="danger" id="inputFileUser" class="button-img-users" style="display: none;">
-                                <button type="button" class="btn btn-success btn-sm m-2 " id="buttonChangeImage" onclick="changeImageGuard()" >Cambiar Imagen
+                                <button type="button" class="btn btn-success btn-sm m-2 " id="buttonChangeImage" onclick="cambiarImagenGuardia()" >Cambiar Imagen
                                 </button>
                             </div>
                             <div class="col-8">
@@ -174,8 +174,12 @@
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3 m-1 styleTable " >
                     <div id="tableGuardiasApoyo"></div>
-                    <div class="d-flex justify-content-end align-items-end mt-4">
-                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#agregarGuardiaApoyoModal" id="buttonGuardiaApoyoModal">Agregar guardia de apoyo</button>
+                    <div class="d-flex justify-content-end align-items-end mt-4">                        
+                        <button type="button" class="btn btn-success btn-sm" id="idButtonGuardiasApoyo" disabled onclick="cargarGuardiasApoyo()">Agregar guardia de apoyo</button>
+                        <button class="btn btn-success btn-sm" type="button" id="idLoadingButtonGuardiasApoyo" style="display:none;" disabled>
+                            <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                            Cargando...
+                        </button>
                     </div>
                 </div>  
             </div>
@@ -203,7 +207,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="agregarNotasModal" tabindex="-1"  aria-hidden="true">
+    <div class="modal fade" id="agregarNotasModalTurnos" tabindex="-1"  aria-hidden="true">
          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -214,59 +218,55 @@
                     <div class="row">
                         <div class="mb-3 col-12">
                             <label class="form-label">Nota *</label>
-                              <textarea class="form-control nueva-nota" id="commentTextarea" rows="3" placeholder="Escribe algo..."></textarea>
+                              <textarea class="form-control nueva-nota" id="textAreaNuevaNotaNota" rows="3" placeholder="Escribe algo..."></textarea>
                         </div>
-                         <div class="mb-3 col-12">
-                            <label class="form-label">Estatus *</label>
-                            <select class="form-select nueva-nota" aria-label="Default select example" id="nuevaNotaEstatusSelect" >
-                                <option value="abierto">Abierto</option>
-                                <option value="cerrado">Cerrado</option>
-                            </select>
-                        </div>
-                         <div id="archivo-input-form">
-                            <div class="d-flex mb-3 col-12 div-archivo-123" id="id-archivo-div-123">
+                        <div id="archivo-input-form-nueva">
+                            <div class="d-flex mb-3 col-12 div-archivo-nueva-123" id="id-archivo-div-123">
                                 <div class="flex-grow-1">
-                                    <label class="form-label">Cargar un archivo *</label>
-                                    <input type="file" class="form-control-file archivo-div" onchange="guardarArchivos('fileInputArchivo', false);" id="fileInputArchivo">
+                                    <label class="form-label">Cargar un archivo </label>
+                                    <input type="file" class="form-control-file archivo-div-nueva" onchange="guardarArchivos('fileInputArchivo-nueva', false);" id="fileInputArchivo-nueva">
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('nueva');return false;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(123);return false;">
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('nueva',123);return false;">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                       <div id="foto-input-form">
-                            <div class="d-flex mb-3 col-12  div-foto-123" id="id-foto-div-123">
+
+                        <div id="foto-input-form-nueva" >
+                            <div class="d-flex mb-3 col-12 div-foto-nueva-123" id="id-foto-div-123">
                                 <div class="flex-grow-1">
-                                    <label class="form-label">Fotografia *</label>
-                                    <input type="file" class="form-control-file foto-div" onchange="guardarArchivos('fileInputFotografia',true);" id="fileInputFotografia">
+                                    <label class="form-label">Fotografia </label>
+                                    <input type="file" class="form-control-file foto-div-nueva" onchange="guardarArchivos('fileInputFotografia-nueva',true);" id="fileInputFotografia-nueva">
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('nueva');return false;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(123);return false;">
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('nueva',123);return false;">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <div id="comment-input-form">
-                            <div class="d-flex mb-3 div-comment-123 " id="div-comment-123">
+
+                        <div id="comment-input-form-nueva">
+                            <div class="d-flex mb-3 div-comment-nueva-123" id="div-comment-123">
                                 <div class="flex-grow-1">
-                                    <label class="form-label">Comentario *</label>
-                                    <textarea class="form-control comment-div" id="comentarioNuevaNota" rows="3" placeholder="Escribe algo..."></textarea>
+                                    <label class="form-label">Comentario </label>
+                                    <textarea class="form-control comment-div-nueva" id="comentarioNuevaNota-nueva" rows="3" placeholder="Escribe algo..."></textarea>
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-success button-add-register " onclick="setAddComentario();return false;">
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddComentario('nueva');return false;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger button-delete-register "  onclick="setDeleteComentario(123);return false;">
-                                        <i class="fa-solid fa-minus"></i></button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteComentario('nueva',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -275,7 +275,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success btn-sm" id="idButtonEnviarNota" onclick="enviarNota()">Agregar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="idButtonEnviarNota" onclick="agregarNuevaNota()">Agregar</button>
                     <button class="btn btn-success btn-sm" type="button" id="idLoadingButtonEnviarNota" style="display:none;" disabled>
                           <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
                           Cargando...
@@ -286,7 +286,7 @@
     </div>
 
     <div class="modal fade" id="agregarGuardiaApoyoModal" tabindex="-1"  aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 550px;">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 440px;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">Agregar guardia de apoyo</h1>
@@ -301,7 +301,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" >Cancelar</button>
-                    <button type="button" class="btn btn-success btn-sm" onclick="agregarNuevoGuardiaApoyo();">Seleccionar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="idButtonAgregarGuardiaApoyoTurno" onclick="agregarNuevoGuardiaApoyo();">Seleccionar</button>
+                    <button class="btn btn-success btn-sm" type="button" id="idLoadingButtonAgregarGuardiaApoyoTurno" style="display:none;" disabled>
+                          <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                          Cargando...
+                    </button>
                 </div>
             </div>
         </div>
@@ -310,16 +314,18 @@
 </body>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
 <script src="./functions.js"></script>
-<script type="text/javascript" src="./components/navbar.js"></script>
 <script type="text/javascript" src="./components/locationCard.js"></script>
+<script type="text/javascript" src="./components/navbar.js"></script>
 <script src="./turnosData.js"></script>
 <script src="./turnos.js"></script>
 
 <!-- Tabulator -->
 
-<script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+
 <!-- Local -->
 
 

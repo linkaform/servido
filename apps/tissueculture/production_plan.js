@@ -49,6 +49,11 @@ window.onload = function(){
          url = "https://preprod.linkaform.com/api/";
       }
     }
+    if (key === 'local') {
+      if (qs[key] === 'test'){
+         url = "http://127.0.0.1:8000/api/";
+      }
+    }
     if (key ==='title'){
       $("#title_report").text(qs[key]);
     }

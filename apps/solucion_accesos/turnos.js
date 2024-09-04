@@ -9,35 +9,26 @@ let idGuardiasEnTurno=[]
 let guardiasEnTurno=[] 
 let arraySelectedGuardias=[]
 let supportGuards=[]
-let checkInId=""
 let thisUserCheckInId=""
 let arrayResponses=[]
 let arraySuccessArchivo=[]
 let arraySuccessFoto=[]
 let colors = getPAlleteColors(12,0)
-//FUNCION para cambiar la imagen del localstorage de imagen de perfil imagenURL en todas las pantallas
-
-
-//FUNCION para abrir modales
-function setModal(type = 'none',id){
-    if(type == 'cambiarCaseta'){
-        loadBooths();
-    }else if(type == 'addNota'){
-        $("#agregarNotasModal").modal('show');
-    }
-}
-
+let casetaOcupadaFecha =""
 
 window.onload = function(){
     user = getCookie("userId");
     setValueUserLocation('turnos');
-    getAllData();
+    getAllData(getCookie("userCaseta"),getCookie("userLocation"),false);
     changeButtonColor();
     customNavbar(getValueUserLocation(), getStatusTurn());
+    drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,[], "420px");
+    drawTableNotas('tableNotas',columsDataNotas, [] ,"180px");
+    drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, [],"360px",1000);
     date = new Date().toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"});
     $('#todayDateText').append($('<div class="myDateClass"> '+ date +'</div>'));
     $("#textName").html(getCookie('userName'));
-    $("#textPosition").text(getCookie('userPosition'));
+    //$("#textPosition").text(getCookie('userPosition'));
     $("#textEmail").text(getCookie('userEmail'));
     $("#imgProfilePic").attr("src", localStorage.getItem("imagenURL") /*getCookie('userImg')*/);
     $("#textUbicacion").html();
@@ -46,13 +37,33 @@ window.onload = function(){
 }
 
 
+window.addEventListener('storage', function(event) {
+    if (event.key === 'cerrarSesion') {
+        let protocol = window.location.protocol;
+        let host = window.location.host;
+        window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+    }
+});
+
+
+//FUNCION para abrir modales
+function setModal(type = 'none',id){
+    if(type == 'cambiarCaseta'){
+        loadBooths();
+    }else if(type == 'addNota'){
+        limpiarEnviaNotaModal()
+        $("#agregarNotasModalTurnos").modal('show');
+    }
+}
+
 function getNotes(){
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name:"notes.py",
             option:"get_notes",
-            area: getCookie('userCaseta')
+            area: getCookie('userCaseta'),
+            location: getCookie('userLocation')
         }),
         headers:
         {
@@ -68,19 +79,21 @@ function getNotes(){
                 dataTableNotas=[]
                 if(notas.length > 0){
                     for(let note of notas){
-                        let dateFormatOpen= note.note_open_date.slice(0,-3)
-                        let dateFormatClose=""
-                        if(note.hasOwnProperty('note_close_date')){
-                            dateFormatClose= note.note_close_date.slice(0,-3)
+                        if(note.note_status !==statusCerrado){
+                            let dateFormatOpen= note.note_open_date.slice(0,-3)
+                            let dateFormatClose=""
+                            if(note.hasOwnProperty('note_close_date')){
+                                dateFormatClose= note.note_close_date.slice(0,-3)
+                            }
+                            //FALTA EL COMENTARIOO CAMBIAR EL ID ESE POR LETRA
+                            dataTableNotas.push({folio:note.folio, note_status: note.note_status, created_by_name:note.created_by_name, 
+                                note_open_date: dateFormatOpen, 
+                                note_close_date:dateFormatClose,  note: note.note, 
+                                note_pic: note.hasOwnProperty('note_pic') && note.note_pic.length>0 ? note.note_pic  : [], 
+                                note_file: note.hasOwnProperty('note_file') &&note.note_file.length>0 ? note.note_file : [], 
+                                note_comments: note.hasOwnProperty('note_comments') && note.note_comments.length>0 ? note.note_comments: [], 
+                                check:"",view:"", edit:""})
                         }
-                        //FALTA EL COMENTARIOO CAMBIAR EL ID ESE POR LETRA
-                        dataTableNotas.push({folio:note.folio, note_status: note.note_status, note_guard:note.note_guard, 
-                            note_open_date: dateFormatOpen, 
-                            note_close_date:dateFormatClose,  note: note.note, 
-                            note_pic: note.hasOwnProperty('note_pic') && note.note_pic.length>0 ? note.note_pic  : [], 
-                            note_file: note.hasOwnProperty('note_file') &&note.note_file.length>0 ? note.note_file : [], 
-                            note_comments: note.hasOwnProperty('note_comments') && note.note_comments.length>0 ? note.note_comments: [], 
-                            check:"",view:"", edit:""})
                     }
                 }else{
                     dataTableNotas = []
@@ -93,39 +106,35 @@ function getNotes(){
             } else{
                 redirectionUrl('login',false);
             }
+        }else{
+            errorAlert(res)
         }
     })
 }
 
 
-function changeImageGuard(){
+function cambiarImagenGuardia(){
     let userId= getCookie('userId')
+    userJwt=getCookie('userJwt')
     let input = document.getElementById('inputFileUser');
     input.click();
     
-    input.onchange = function() {
+    input.onchange =  function() {
         let file = event.target.files[0]; 
         let fileName=event.target.files[0].name
         let urlImagen=""
         if (file) {
             let lector = new FileReader(); 
-            lector.onload = function(event) {
-                urlImagen  = event.target.result;
-                localStorage.setItem("imagenURL", String(urlImagen));
-                let imagenMostrada = document.getElementById("imgProfilePic");
-                imagenMostrada.src = urlImagen;
-                imagenMostrada.style.display = "block"; // Mostrar la imagen
-                //setCookie('userImg',String(urlImagen),7)
-                let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
-                imagenMostradaNavbar.src= urlImagen;
-                imagenMostradaNavbar.style.display = "block";
-                let urlChangeImage= `https://preprod.linkaform.com/api/infosync/user_admin/${userId}/profile_picture/`
+            lector.onload =  function(event) {
+                
+                let urlChangeImage= `https://app.linkaform.com/api/infosync/user_admin/${userId}/profile_picture/`
+                loadingService()
 
                 let formData = new FormData();
                 formData.append('name', 'profile_picture');
                 formData.append('profile_picture', file);
                
-                 fetch(urlChangeImage, {
+                fetch(urlChangeImage, {
                     method: 'POST',
                     body: formData,
                     headers:
@@ -134,7 +143,33 @@ function changeImageGuard(){
                     },
                 })
                 .then(res => res.json())
-                .then(res => {
+                .then(async res => {
+                    Swal.close();
+                    if (res.hasOwnProperty('thumb')){
+                        let body={
+                            method:'PATCH',
+                            body: JSON.stringify({
+                                thumb: res.thumb
+                            }),
+                            headers: { 'Content-Type': 'application/json','Authorization': 'Bearer '+userJwt },
+                        }
+                        let responseData = await fetch(url + `infosync/user_admin/${userId}/`, body)
+                        if(responseData.status == 200 || responseData.status == 202 || responseData.status == 201){
+                            urlImagen  = event.target.result;
+                            localStorage.setItem("imagenURL", String(urlImagen));
+                            let imagenMostrada = document.getElementById("imgProfilePic");
+                            imagenMostrada.src = urlImagen;
+                            imagenMostrada.style.display = "block"; // Mostrar la imagen
+                            let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
+                            imagenMostradaNavbar.src= urlImagen;
+                            imagenMostradaNavbar.style.display = "block";
+                        }else{
+                            responseData.error_message="Ocurrio un error, intentalo de nuevo mas tarde."
+                            errorAlert(responseData.error_message)
+                        }
+                    }else{
+                        errorAlert(res)
+                    }
                 })
             };
             lector.readAsDataURL(file);
@@ -143,12 +178,17 @@ function changeImageGuard(){
 }
 
 //FUNCION hace el fetch que trae toda la informacion inicial que se llenara en la pantalla de turnos
-function getAllData(){
+function getAllData(area="", location="", loading=false){
+    if(loading){
+        loadingService();
+    }
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name:'script_turnos.py',
             option:'load_shift',
+            area:area,
+            location:location
         }),
         headers:
         {
@@ -160,42 +200,92 @@ function getAllData(){
     .then(res => {
         if (res.success) {
             let data=res.response.data
-            let loc= data.location
-            let guard= data.guard
-            let notes= data.notes
-            supportGuards= data.support_guards
-            thisUserCheckInId=data.guard._id
-            inicializarPagina(loc, notes, guard, data.booth_status, data.booth_stats);
-            if(user !='' && userJwt!=''){
-                if(data.support_guards.length > 0){
-                    for(let guard of data.support_guards){
-                        if(guard.user_id.toString() !==  getCookie('userId').toString())
-                        dataTableGuardiasApoyo.push({name:guard.employee, status: '', img: guard.picture? guard.picture[0].file_url :'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1', fechaInicio: '', id:guard.user_id})
-                    }  
-                }else{
-                    dataTableGuardiasApoyo = []
-                }
-                let userName=getCookie('userName')
-                if(notes.length > 0){
-                    for(let note of notes){
-                        dataTableNotas.push({name:userName, note: note.note, status: note.status, img:"", check:"",view:"", edit:"", fotos: [], archivos:[], folio:note.folio})
+            if(res.response){
+                setCookie('oneLoad',false,7)
+                let loc= data.location
+                let guard= data.guard
+                let notes= data.notes
+                supportGuards= data.support_guards
+                thisUserCheckInId=data.guard._id
+
+                inicializarPagina(loc, notes, guard, data.booth_status, data.booth_stats);
+                if(user !='' && userJwt!=''){
+                    dataTableGuardiasApoyo=[]
+                    if(data.support_guards.length > 0){
+                        for(let guard of data.support_guards){
+                            if(guard.user_id.toString() !==  getCookie('userId').toString()){
+                                dataTableGuardiasApoyo.push({name:guard.name, status: '', img: guard.picture? guard.picture.file_url :'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1', 
+                                fechaInicio: '', id:guard.user_id})
+
+                            }
+                        }  
+                    }else{
+                        dataTableGuardiasApoyo = []
                     }
-                }else{
-                    dataTableNotas = []
-                }
-                drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
-                guardiasApoyoValidateOptions()
-                drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
-                dataTableCambiarCaseta=[]
-                drawTableSelect('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"300px",1);
-                drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px",1000);
-                tables["tableCambiarCaseta"].on("rowSelectionChanged", function(data, rows){
-                    if (rows.length > 0) {
-                        cambiarCaseta(data[0])
+                    let userName=getCookie('userName')
+
+                    if(getCookie('userCaseta') !== data.location.area){
+                        getNotes();
+                    }else{
+                        dataTableNotas=[]
+                        if(notes.length > 0){
+                            for(let note of notes){
+                                let dateFormatOpen= note.note_open_date.slice(0,-3)
+                                let dateFormatClose=""
+                                if(note.hasOwnProperty('note_close_date')){
+                                    dateFormatClose= note.note_close_date.slice(0,-3)
+                                }
+                                //FALTA EL COMENTARIOO CAMBIAR EL ID ESE POR LETRA
+                                dataTableNotas.push({folio:note.folio, note_status: note.note_status, created_by_name:note.created_by_name, 
+                                    note_open_date: dateFormatOpen, 
+                                    note_close_date:dateFormatClose,  note: note.note, 
+                                    note_pic: note.hasOwnProperty('note_pic') && note.note_pic.length>0 ? note.note_pic  : [], 
+                                    note_file: note.hasOwnProperty('note_file') &&note.note_file.length>0 ? note.note_file : [], 
+                                    note_comments: note.hasOwnProperty('note_comments') && note.note_comments.length>0 ? note.note_comments: [], 
+                                    check:"",view:"", edit:""})
+                            }
+                        }else{
+                            dataTableNotas = []
+                        }
                     }
-                });
-                getNotes();
+                    if(tables['tableGuardiasApoyo']){
+                        tables['tableGuardiasApoyo'].setData(dataTableGuardiasApoyo)
+                    }else{
+                        drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,dataTableGuardiasApoyo, "420px");
+                    }
+                    if(tables['tableNotas']){
+                        tables['tableNotas'].setData(dataTableNotas)
+                    }else{
+                        drawTableNotas('tableNotas',columsDataNotas, dataTableNotas ,"180px");
+                    }
+                    dataTableCambiarCaseta=[]
+                    drawTableSelect('tableCambiarCaseta',columsCambiarCaseta, dataTableCambiarCaseta ,"300px",1);
+                    //drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px",1000);
+                    tables["tableCambiarCaseta"].on("rowSelectionChanged", function(data, rows){
+                        if (rows.length > 0) {
+                            cambiarCaseta(data[0])
+                        }
+                    });
+                    if(guard.status_turn == userTurnAbierto){
+                        $("#idButtonGuardiasApoyo").prop('disabled', false);
+                        for(g of dataTableGuardiasApoyo){
+                            idGuardiasEnTurno.push("inp-"+ g.id)
+                            idGuardiasEnTurno.push("btn-"+ g.id)
+                            guardiasEnTurno.push(g)
+                        }
+                    }else{
+                        $("#idButtonGuardiasApoyo").prop('disabled', true);    
+                    }
+                    guardiasApoyoValidateOptions()
+                }
             }
+            if(loading){
+                Swal.close();
+            }
+        } else{
+            drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,[], "420px");
+            drawTableNotas('tableNotas',columsDataNotas, [] ,"180px");
+            errorLoginTurnos(res)
         }
     });
 }
@@ -224,10 +314,8 @@ function loadBooths(){
                 let userBooths=res.response.data
                  if(userBooths.length>0){
                     for(let booth of userBooths){
-                        if(booth.status == casetaDisponible){
-                            dataTableCambiarCaseta.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, address: booth.address, city:booth.city})
-                            arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, address: booth.address, city:booth.city})
-                        }
+                        dataTableCambiarCaseta.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, address: booth.address, city:booth.city})
+                        arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, address: booth.address, city:booth.city})
                     }
                 }else{
                     dataTableCambiarCaseta=[]
@@ -237,8 +325,9 @@ function loadBooths(){
                 $('#cambiarCasetaModal').modal('show');
                 $("#buttonCambiarCaseta").show();
                 $("#loadingButtonCaseta").hide();
-                
             }
+        }else{
+            errorAlert(res)
         }
     });
 }
@@ -251,7 +340,16 @@ function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
     $("#textCuidad").text(loc.city)
     $("#textEstado").text(loc.state)
     $("#textDireccion").text(loc.address)
-    $("#textPosition").text(guard.position[0])
+    let pos=''
+    if(guard.hasOwnProperty('position')){
+        if(guard.position!== undefined){
+            pos= guard.position!== null && guard.position!== undefined && guard.position!=="" ? guard.position:"";
+        }
+    }else if(guard.hasOwnProperty('checkin_position')){
+        pos= guard.checkin_position!== null && guard.checkin_position!== undefined && guard.checkin_position!=="" ? guard.checkin_position :""; 
+        pos= formatText(pos)
+    }
+    $("#textPosition").text(pos)
 
     setCookie('userCaseta',getCookie('userCaseta') ? getCookie('userCaseta'): caseta ,7)
     setCookie('userLocation',getCookie('userLocation') ? getCookie('userLocation'):ubicacion ,7)
@@ -259,8 +357,8 @@ function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
     $("#textUbicacion").text(getCookie('userLocation'))
     setCookie('userCasetaStatus', booth_status.status,7)
     setCookie('userCasetaGuard',booth_status.guard_on_dutty,7)
-    setCookie('checkInId', booth_status.checkin_id,7)
-    checkInId= booth_status.checkin_id || ""
+    setCookie('thisUserCheckInId', booth_status.checkin_id,7)
+    thisUserCheckInId= booth_status.checkin_id || ""
     
     if(booth_status.guard_on_dutty== ''){
         $("#headGuardiaEnTurno").text("")
@@ -272,7 +370,12 @@ function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
     
      $("#textGuardiaEnTurno").text(getCookie('userCasetaGuard'));
      $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
-     $("#textFechaInicioCaseta").text(booth_status.stated_at);
+     if(booth_status.stated_at ==""){
+        casetaOcupadaFecha=""
+     }else{
+        casetaOcupadaFecha=formatearFechaHora(booth_status.stated_at)
+     }
+     $("#textFechaInicioCaseta").text(casetaOcupadaFecha);
 
      $("#textPersonalDentro").text(booth_stats.in_invitees);
      $("#textArticulosConsesionados").text(booth_stats.articulos_concesionados);
@@ -289,18 +392,20 @@ function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
         $("#buttonForzarCierre").show();
     }
     changeStatusTurn(false)
-    $("#statusTurnText").text(guard.status)
+    $("#statusTurnText").text(guard.status_turn)
     $("#statusTurnText").removeClass();
     $("#statusTurnText").addClass(getCookie("userTurn") !== userTurnCerrado? "text-success":  "text-danger");
 }
 
 
 //FUNCION para agregar nuevo input de archivo al momento de crear una nueva nota
+
+/*
 function setAddArchivo(){
     let randomID = Date.now();
     let newItem=`
         <div class="mb-3 col-12 archivo-div div-archivo-`+randomID+`">
-            <label class="form-label">Cargar un archivo *</label>
+            <label class="form-label">Cargar un archivo </label>
             <input type="file" class="form-control-file" id="fileInputArchivo">
             <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
                 <i class="fa-solid fa-plus"></i>
@@ -326,13 +431,13 @@ function setDeleteArchivo(id){
     }
 }
 
-
+*/
 //FUNCION para agregar nuevo input de imagen al momento de crear una nueva nota
-function setAddFoto(){
+/*function setAddFoto(){
     let randomID = Date.now();
     let newItem=`
         <div class="mb-3 col-12 foto-div div-foto-`+randomID+`">
-            <label class="form-label">Fotografia *</label>
+            <label class="form-label">Fotografia </label>
             <input type="file" class="form-control-file" id="fileInputFotografia">
             <div class="col-3">
             <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
@@ -359,7 +464,7 @@ function setDeleteFoto(id){
     }
 }
 
-
+*/
 //FUNCION forzar el cierre de la caseta cuando tiene estado No disponible, para que otro guardia pueda iniciar turno
 function AlertForzarCierre(name){
     let statusCaseta = $("#textEstatusCaseta").text()
@@ -368,7 +473,7 @@ function AlertForzarCierre(name){
         Swal.fire({
             title:'Confirmación',
             html:`
-                La caseta actual no esta disponible. Fue abierta por el guardia <b>`+ name +` el día 10 de Mayo a las 11:03 horas.</b> ¿Desea proceder con el cierre forzado
+                La caseta actual no esta disponible. Fue abierta por el guardia <b>`+ name +` el día ${casetaOcupadaFecha}.</b> ¿Desea proceder con el cierre forzado
                 de la caseta? <b>Tenga en cuenta que una vez confirmado, esta accion no podrá deshacerse.</b>
             ` ,
             type: "warning",
@@ -385,9 +490,9 @@ function AlertForzarCierre(name){
                 body: JSON.stringify({
                 script_name: 'script_turnos.py',
                 option: 'checkout',
-                location: ubicacion,
+                location: $("#textUbicacion").text(),
                 area: caseta,
-                checkin_id:checkInId
+                checkin_id:thisUserCheckInId
             }),
             headers:{
                     'Content-Type': 'application/json',
@@ -397,21 +502,28 @@ function AlertForzarCierre(name){
             .then(res => res.json())
             .then(res => {
                 if (res.success) {
-                    casetaActualizarEstatus(turnoCerrado, casetaDisponible)
-                    setCookie('userCasetaStatus',casetaDisponible,7)
-                    setCookie('userTurn',turnoCerrado,7)
-                    turnoCerrado(idGuardiasEnTurno)
-                    //setCookie('userCasetaStatus', 'Disponible',7);
-                    $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
-                    $("#textFechaInicioCaseta").val('01/12/2024 01:23:2024')
-                    $("#textEstatusCaseta").removeClass();
-                    $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
-                    if(getCookie('userCasetaStatus') =="Disponible" ) {
-                        $("#buttonForzarCierre").hide();
-                    } else {
-                        $("#buttonForzarCierre").show();
+                    let data= res.response.data
+                    if(data.status_code == 400 || data.status_code == 401){
+                        errorAlert(data)
+                    }else{
+                        casetaActualizarEstatus(turnoCerrado, casetaDisponible)
+                        setCookie('userCasetaStatus',casetaDisponible,7)
+                        setCookie('userTurn',turnoCerrado,7)
+                        turnoCerrado(idGuardiasEnTurno)
+                        //setCookie('userCasetaStatus', 'Disponible',7);
+                        $("#textEstatusCaseta").text(getCookie('userCasetaStatus'));
+                        $("#textFechaInicioCaseta").val('01/12/2024 01:23:2024')
+                        $("#textEstatusCaseta").removeClass();
+                        $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
+                        if(getCookie('userCasetaStatus') =="Disponible" ) {
+                            $("#buttonForzarCierre").hide();
+                        } else {
+                            $("#buttonForzarCierre").show();
+                        }
                     }
-                } 
+                }else{
+                    errorAlert(res)
+                }
             })
                 
             }
@@ -422,13 +534,13 @@ function AlertForzarCierre(name){
 
 //FUNCION para cambiar el estatus del turno y hacer las validaciones correspondientes al dar click al boton, al iniciar la aplicacion, o al refrescar
 function changeStatusTurn(buttonClick){
-
     //INFO : idGuardiasEnTurno para saber que guardias de los que estan en la tabla "Guardias de apoyo" INICIARON TURNO
     //INFO : aqui poner fetch para modificar el status , meter estos este if en el response del fetch
     let estatusActual=getCookie('userTurn');
     let inputSelectedGuards=[];
 
     if(buttonClick){
+        setCookie('oneLoad',true,7)
         Swal.fire({
             title: 'Cargando...',
             allowOutsideClick: false,
@@ -440,7 +552,7 @@ function changeStatusTurn(buttonClick){
             guardiasEnTurno = guardiasEnTurno.concat(dataTableGuardiasApoyo.filter(e => e.id == g.user_id))
             idGuardiasEnTurno.push("inp-"+ g.user_id)
             idGuardiasEnTurno.push("btn-"+ g.user_id)
-            inputSelectedGuards.push({"name":g.employee,"user_id": g.user_id })
+            inputSelectedGuards.push({"name":g.name,"user_id": g.user_id })
         } 
         //FETCH PARA CMABIAR ESTUS DEL GUARDIA AQUI
         if(estatusActual == userTurnAbierto ){
@@ -450,8 +562,8 @@ function changeStatusTurn(buttonClick){
                 script_name: 'script_turnos.py',
                 option: 'checkout',
                 checkin_id: thisUserCheckInId,
-                location: ubicacion,
-                area: getCookie('userCaseta'),
+                location: $("#textUbicacion").text(),
+                area: $("#textCaseta").text(),
             }),
             headers:{
                     'Content-Type': 'application/json',
@@ -461,19 +573,38 @@ function changeStatusTurn(buttonClick){
             .then(res => res.json())
             .then(res => {
                 if (res.success) {
-                    casetaActualizarEstatus(turnoCerrado, casetaDisponible)
-                    customNavbar(getValueUserLocation(), userTurnCerrado);
-                    setCookie('userCasetaStatus',casetaDisponible,7)
-                    setCookie('userTurn',turnoCerrado,7)
-                    turnoCerrado(idGuardiasEnTurno)
-                    Swal.fire({
-                        title: "Success",
-                        text: "Turno cerrado correctamente",
-                        type: "success",
-                        showConfirmButton:false,
-                        timer:1200
-                    });
-                } 
+                    let data=res.response.data
+                    if (data.status_code==400|| data.status_code==401){
+                        let errores=[]
+                        for(let err in data.json){
+                            errores.push(data.json[err].label+': '+data.json[err].msg)
+                        }
+                        Swal.fire({
+                            title: "Error",
+                            text: errores.flat(),
+                            type: "error"
+                        });
+                    }else{
+                        casetaActualizarEstatus(turnoCerrado, casetaDisponible)
+                        customNavbar(getValueUserLocation(), userTurnCerrado);
+                        setCookie('userCasetaStatus',casetaDisponible,7)
+                        setCookie('userTurn',turnoCerrado,7)
+                        //turnoCerrado(idGuardiasEnTurno.length >0 ? idGuardiasEnTurno :[])
+
+                        Swal.fire({
+                            title: "Success",
+                            text: "Turno cerrado correctamente",
+                            type: "success",
+                            showConfirmButton:false,
+                            timer:1200
+                        });
+                        //cerrarPestanas()
+                        location.reload()
+                        setCloseSession()
+                    }
+                } else{
+                    errorAlert(res)
+                }
             })
             
         }
@@ -483,8 +614,8 @@ function changeStatusTurn(buttonClick){
                 body: JSON.stringify({
                 script_name: 'script_turnos.py',
                 option: 'checkin',
-                location: ubicacion,
-                area: getCookie("userCaseta"),
+                location: $("#textUbicacion").text(),
+                area: $("#textCaseta").text(),
                 employee_list:inputSelectedGuards
             }),
             headers:{
@@ -494,26 +625,44 @@ function changeStatusTurn(buttonClick){
             })
             .then(res => res.json())
             .then(res => {
+                /*const error = new Error('Bad Request');
+                error.status = 400;
+                if(error.status==400){
+                    errorAlert(ejemplo)
+                }else{
+                }*/
+
+
                 if (res.success) {
-                    setCookie('userCasetaStatus',casetaNoDisponible,7)
-                    setCookie('userTurn',turnoAbierto,7)
-                    customNavbar(getValueUserLocation(),userTurnAbierto);
-                    casetaActualizarEstatus(turnoAbierto, casetaNoDisponible)
-                    turnoAbierto(idGuardiasEnTurno)
-                    $("#textGuardiaEnTurno").text(res.response.data.json.boot_status.guard_on_duty)
-                    $("#textFechaInicioCaseta").text(res.response.data.json.created_at)
-                    thisUserCheckInId=res.response.data.json.id
-                    Swal.fire({
-                        title: "Success",
-                        text: "Truno iniciado correctamente",
-                        type: "success",
-                        showConfirmButton:false,
-                        timer:1200
-                    });
-                }
+                    let data=res.response.data
+                    if (data.status_code==400|| data.status_code==401){
+                        errorAlert(res)
+                       
+                    }else{
+                        setCookie('userCasetaStatus',casetaNoDisponible,7)
+                        setCookie('userTurn',turnoAbierto,7)
+                        customNavbar(getValueUserLocation(),userTurnAbierto);
+                        casetaActualizarEstatus(turnoAbierto, casetaNoDisponible)
+                        turnoAbierto(idGuardiasEnTurno.length >0 ? idGuardiasEnTurno :[])
+                        $("#textGuardiaEnTurno").text(res.response.data.json.boot_status.guard_on_duty)
+                        $("#textFechaInicioCaseta").text(res.response.data.json.created_at)
+                        thisUserCheckInId=res.response.data.json.id
+                        setCookie('casetaFolioTurnoAbierto',data.json.folio , 7)
+                        Swal.fire({
+                            title: "Success",
+                            text: "Truno iniciado correctamente",
+                            type: "success",
+                            showConfirmButton:false,
+                            timer:1200
+                        });
+                    }
+                } else{
+                    errorAlert(res)
+                }   
             })
             
         } 
+
     }
     else if(!buttonClick){
         // INFO : aqui agregar fetch para cambiar el turno del guardia
@@ -536,7 +685,7 @@ function AlertAndActionChangeStatusTurn(){
 
         let arrGuard=[];
         for(guardia of arraySelectedGuardias){
-            arrGuard.push(guardia.employee);
+            arrGuard.push(guardia.name);
             
         }
         let guardiaText= arraySelectedGuardias.length === 0 ? `?`:`, con los siguientes guardias: <b>`+ arrGuard.flat()+`? </b> ` ;
@@ -605,7 +754,7 @@ function cerrarNotaAlert(name, note, folio, status){
                     'note_status':'cerrado',
                     'note_close_date': getTodayDateTime()
                 }
-                 fetch(url + urlScripts, {
+                fetch(url + urlScripts, {
                     method: 'POST',
                     body: JSON.stringify({
                         script_name:"notes.py",
@@ -623,7 +772,7 @@ function cerrarNotaAlert(name, note, folio, status){
                 .then(res => {
                     if(res.success){
                         let data = res.response.data
-                        if (data.status_code==400){
+                        if (data.status_code==400||data.status_code==401){
                             let errores=[]
                             for(let err in data.json){
                                 errores.push(data.json[err].label+': '+data.json[err].msg)
@@ -657,11 +806,7 @@ function cerrarNotaAlert(name, note, folio, status){
                         }
                         
                     }else{
-                        Swal.fire({
-                            title: "Error",
-                            text: res.error,
-                            type: "error"
-                        });
+                        errorAlert(res)
                     }
                 })
             }
@@ -683,52 +828,53 @@ function verNotasAlert(folio){
     let archivosItem=``;
     let commentsItem=``;
 
-    for(let com in selectedNota.note_comments){
-        commentsItem+=`
-        <div class='m-2 '> 
-            <span style='font-size: .8em;'>`+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span> 
-        </div>`;
+    let comments = selectedNota.note_comments.filter(objeto => !tienePropiedadesVacias(objeto));
+     for(let com in comments){
+        if(selectedNota.note_comments[com].hasOwnProperty(['6647fb38da07bf430e273ea2'])){
+            commentsItem+=`
+            <tr> <td> <span > `+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span > </td> </tr>`;
+        }else{
+            commentsItem+=`
+           <tr> <td> <span > `+selectedNota.note_comments[com]+`</span > </td> </tr>`;
+        }
     }
-    let htmlComments=`
+    let htmlComments = comments.length>0 ? `
         <h6>Comentarios</h6>
-        <div class='d-flex  flex-column '>
+        <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
             `+commentsItem+` 
-        </div>`;
+        </table>`: "";
 
     for(let pic of selectedNota.note_pic){
         fotosItem+=`
-        <div class='m-2'> 
-            <img src="`+pic.file_url+`" height="145px"style="object-fit: contain;"></td> </tr> 
-        </div>`;
+        <div class="mb-1 mr-1"> <img src="`+pic.file_url+`" height="145px"style="object-fit: contain;"></div> <br>`;
     }
-    let htmlFotos=`
+    let htmlFotos=selectedNota.note_pic.length>0 ? `
         <h6>Fotografias</h6>
-        <div class='d-flex  flex-row'>
+        <div class="d-flex flex-wrap">
             `+fotosItem+`
-        </div>`;
+        </div>`:"";
+
     for(let file of selectedNota.note_file){
         archivosItem+=`
-        <div><a href=`+file.file_url+` target="_blank">`+file.file_name+`</a>
-        </div>
-        `;
+        <tr> <td> <a href=`+file.file_url+` target="_blank">`+file.file_name+`</td> </tr>`;
     }
-    let htmlArchivos=`
+    let htmlArchivos=selectedNota.note_file.length>0 ? `
         <h6>Archivos</h6>
-        <div class='d-flex flex-column'>
+        <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
             `+archivosItem+`
-        </div>`;
+        </table> <br>`: "";
+
     Swal.fire({
         title: "Nota",
         text: "Escoje una caseta para continuar...",
         html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
             <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
                 <tbody> 
-                    <tr> <td><b>Nombre:</b></td> <td> <span > `+ selectedNota.note_guard +`</span></td> </tr>
+                    <tr> <td><b>Nombre:</b></td> <td> <span > `+ selectedNota.created_by_name +`</span></td> </tr>
                     <tr> <td><b>Nota:</b></td> <td> <span > `+ selectedNota.note+`</span></td> </tr> 
                     <tr> <td><b>Estatus:</b></td> <td> <span > `+ selectedNota.note_status+`</span></td> </tr> 
                     <tr> <td><b>Fecha y hora de creacion:</b></td> <td> <span > `+ selectedNota.note_open_date.slice(0,-3)+` hrs</span></td> </tr>
                     <tr> <td><b>Fecha y hora de cierre:</b></td> <td> <span>  `+ selectedNota.note_close_date.slice(0,-3)+` hrs</span> </tr>
-                    <tr> <td><b>Guardia que cierra:</b></td> <td> <span>    FALTA ESTE DATO NO LO TRAE LA LISTA</span> </tr>
                 </tbody> 
             </table>` + htmlComments + htmlArchivos + htmlFotos,
         showCancelButton: true,
@@ -762,20 +908,66 @@ function selectCheckboxGuardia(id){
 }     
 
 
+function limpiarEnviaNotaModal(editAdd="nueva"){
+    arraySuccessFoto=[]
+    arraySuccessArchivo=[]
+    arrayResponses=[]
+    //$("#idButtonCargarArchivos").show();
+    $("#textAreaNuevaNotaNota").val("")
+    //$("#inputComentarioNota").val("")
+    $("#comentarioNuevaNota").val("")
+    let divArchivo = document.getElementById("archivo-input-form-"+editAdd);
+    let divFoto = document.getElementById("foto-input-form-"+editAdd);
+    let divComment = document.getElementById("comment-input-form-"+editAdd);
+
+    const elementsArchivo = divArchivo.querySelectorAll('.archivo-div-'+editAdd);
+    elementsArchivo.forEach(function(input) {
+        if(input.id!=="fileInputArchivo-"+editAdd){
+            input.parentElement.parentElement.remove();
+        }
+    });
+    const elementsFoto = divFoto.querySelectorAll('.foto-div-'+editAdd);
+    elementsFoto.forEach(function(input) {
+        if(input.id!=="fileInputFotografia-"+editAdd){
+            input.parentElement.parentElement.remove();
+        }
+    });
+    const elementsComment = divComment.querySelectorAll('.comment-div-'+editAdd);
+    elementsComment.forEach(function(input) {
+        if(input.id!=="comentarioNuevaNota-"+editAdd){
+            input.parentElement.parentElement.remove();
+        }
+    });
+
+    let inputsE = divArchivo.querySelectorAll('.archivo-div-'+editAdd);
+    inputsE.forEach(function(input) {
+        input.value=''
+    });
+
+    let inputsF = divFoto.querySelectorAll('.foto-div-'+editAdd);
+    inputsF.forEach(function(input) {
+        input.value=''
+    });
+}
+
+
+
 //FUNCION para enviar la nueva notra creada
-function enviarNota(){
+function agregarNuevaNota(){
     $("#idLoadingButtonEnviarNota").show();
     $("#idButtonEnviarNota").hide();
-    let nota= $("#commentTextarea").val(); 
+    let nota= $("#textAreaNuevaNotaNota").val(); 
     let archivo= $("#fileInputArchivo").val(); 
-    let status= $("#nuevaNotaEstatusSelect").val(); 
+    //let status= $("#nuevaNotaEstatusSelect").val(); 
     //let fecha= $("#fechaNuevaNota").val(); 
     //let formatDate= fecha.split("T")[0]+' '+fecha.split("T")[1]
     let comments=[]
-    let divComentario = document.getElementById("comment-input-form");
-    let inputsG = divComentario.querySelectorAll('.comment-div');
+    let divComentario = document.getElementById("comment-input-form-nueva");
+    let inputsG = divComentario.querySelectorAll('.comment-div-nueva');
     inputsG.forEach(function(input) {
-        comments.push(input.value)
+        if(input.value!==""){
+            comments.push(input.value)
+        }
     });
     for(let obj of arrayResponses){
         if( obj.hasOwnProperty('file_name') && obj.isImage==true){
@@ -791,10 +983,10 @@ function enviarNota(){
         }
     }
     let data_notes={
-        'note_status':status,
+        'note_status': statusAbierto,
         'note':nota,
         'note_booth':getCookie('userCaseta'),
-        'note_guard':getCookie('userName'),
+        //'created_by_name':getCookie('userName'),
         'note_guard_close':'', //este dato no viene en la lista principal...
         'note_pic':arraySuccessFoto ,
         'note_file':arraySuccessArchivo ,
@@ -806,7 +998,9 @@ function enviarNota(){
             body: JSON.stringify({
                 script_name:"notes.py",
                 option:"new_notes",
-                data_notes:data_notes
+                data_notes:data_notes,
+                location: getCookie('userLocation'),
+                area: getCookie('userCaseta')
             }),
             headers:{
                'Content-Type': 'application/json',
@@ -838,19 +1032,19 @@ function enviarNota(){
                             showConfirmButton:false,
                             timer:1200
                         });
-                        $('#agregarNotasModal').modal('hide');
+                        $('#agregarNotasModalTurnos').modal('hide');
                         $("#inputTextNota").val('');
                         inputsG.forEach(function(input) {
                             input.value=''
                         });
-                        let divArchivo = document.getElementById("archivo-input-form");
-                        let inputsE = divArchivo.querySelectorAll('.archivo-div');
+                        let divArchivo = document.getElementById("archivo-input-form-nueva");
+                        let inputsE = divArchivo.querySelectorAll('.archivo-div-nueva');
                         inputsE.forEach(function(input) {
                             input.value=''
                         });
                         
-                        let divFoto = document.getElementById("foto-input-form");
-                        let inputsF = divFoto.querySelectorAll('.foto-div');
+                        let divFoto = document.getElementById("foto-input-form-nueva");
+                        let inputsF = divFoto.querySelectorAll('.foto-div-nueva');
                         inputsF.forEach(function(input) {
                             input.value=''
                         });
@@ -861,7 +1055,7 @@ function enviarNota(){
                             }
                         }
                         let note_open_date= convertDate(data.json.created_at, data.json.timezone)
-                        dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, note_guard:data_notes.note_guard, 
+                        dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, created_by_name:getCookie('userName'), 
                             note_open_date: note_open_date, 
                             note_close_date:"",  note: data_notes.note, 
                             note_pic: data_notes.hasOwnProperty('note_pic') && data_notes.note_pic.length>0 ? data_notes.note_pic  : [], 
@@ -872,6 +1066,7 @@ function enviarNota(){
                         tables["tableNotas"].setData(dataTableNotas);
                         $("#idLoadingButtonEnviarNota").hide();
                         $("#idButtonEnviarNota").show();
+
                     }
             } else{
                 Swal.fire({
@@ -923,7 +1118,7 @@ function alertEliminarNota(folio){
                 body: JSON.stringify({
                     script_name: "notes.py",
                     option: "delete_note",
-                    folio: folio
+                    folio: [folio]
                 }),
                 headers:
                 {
@@ -970,16 +1165,33 @@ function alertEliminarNota(folio){
     });
 }
 
+
 //FUNCION cambiar la cookie de caseta al selecionar una en el modal 
 function cambiarCaseta(selectedRow){
     setCookie('userCaseta', selectedRow.name)
     setCookie('userLocation', selectedRow.ubi)
     setCookie('userCasetaStatus', selectedRow.status)
     setCookie('userCasetaGuard', selectedRow.guard)
+    $("#textDireccion").text(selectedRow.address)
     $("#textUbicacion").text(getCookie('userLocation'));
     $("#textCaseta").text(getCookie('userCaseta'));
-    $("#textDireccion").text(selectedRow.address[0]);
-    $("#textCuidad").text(selectedRow.city[0])
+    if(selectedRow.hasOwnProperty('state')){
+        if(selectedRow.state !==undefined && selectedRow.state!== null && selectedRow.state!== ""){
+              $("#textEstado").text(selectedRow.state? selectedRow.address: '');
+        }else { $("#textEstado").text("")}
+    }
+
+    if(selectedRow.hasOwnProperty('address')){
+        if(selectedRow.address !==undefined && selectedRow.address!== null && selectedRow.address!== ""){
+            $("#textDireccion").text(selectedRow.address? selectedRow.address: '');
+        }else {$("#textDireccion").text("") }
+    }
+
+    if(selectedRow.hasOwnProperty('city')){
+        if(selectedRow.city !==undefined && selectedRow.city!== null && selectedRow.city!== ""){
+            $("#textCuidad").text(selectedRow.city? selectedRow.city: '')
+        }else {$("#textCuidad").text("") }
+    }
 
     $("#textEstatusCaseta").text(getCookie('userCasetaStatus') ||"");
     if(getCookie('userCasetaStatus') == casetaDisponible){
@@ -992,12 +1204,12 @@ function cambiarCaseta(selectedRow){
     $("#textEstatusCaseta").removeClass();
     $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
     $('#cambiarCasetaModal').modal('hide');
-    getNotes()
+    getAllData(getCookie("userCaseta"),getCookie("userLocation"),true)
 }
 
 
 //FUNCION muestra un alert para hacer checkout de un guardia cuando se encuentra en turno iniciado
-function eliminarGuardia(id, name){
+function checkoutGuardiaApoyo(id, name){
     Swal.fire({
         title:"Check out",
         text:"¿Seguro que quieres realizar el check out al guardia de apoyo "+name+" ?",
@@ -1010,49 +1222,166 @@ function eliminarGuardia(id, name){
     })
     .then((result) => {
         if (result.value) {
-             
-            let index = dataTableAgregarGuardiaApoyo.findIndex(guardia => guardia.id === id);
-            if (index !== -1) {
-                dataTableAgregarGuardiaApoyo.splice(index, 1);
+            loadingService()
+            fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name:"script_turnos.py",
+                option:"checkout",
+                location: getCookie('userLocation'),
+                area: getCookie('userCaseta'),
+                guards:[id]
+            }),
+            headers:{
+               'Content-Type': 'application/json',
+               'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                let data = res.response.data
+                    if (data.status_code==400 || data.status_code==401 ){
+                        errorAlert(data)
+                    }else{
+                        /*
+                        let index = dataTableAgregarGuardiaApoyo.findIndex(guardia => guardia.id === id);
+                        if (index !== -1) {
+                            dataTableAgregarGuardiaApoyo.splice(index, 1);
+                        }
+                        let arrGuardiaTurno = idGuardiasEnTurno.filter(e => {
+                            if(e.includes("inp-"+id) || e.includes("btn-"+id)){
+                                return e
+                            }
+                        });
+                        idGuardiasEnTurno=arrGuardiaTurno
+                        let arrayGuard= guardiasEnTurno.filter(e => e.id !== id);
+                        guardiasEnTurno=arrayGuard
+                        let arrSelectedGuardias = arraySelectedGuardias.filter(e => parseInt(e.id) !== parseInt(id))
+                        arraySelectedGuardias=arrSelectedGuardias
+                        //tbale["tableAgregarGuardiaApoyo"].setData([])
+
+                        casetaActualizarEstatus(turnoCerrado, casetaDisponible)
+                        customNavbar(getValueUserLocation(), userTurnCerrado);
+                        setCookie('userCasetaStatus',casetaDisponible,7)
+                        setCookie('userTurn',turnoCerrado,7)
+                        turnoCerrado(idGuardiasEnTurno)
+                         */
+                        changeStatusTurn(false)
+                        Swal.fire({
+                            title: "Check out!",
+                            text: "Se ha realizado el check out correctamente.",
+                            type: "success"
+                        });
+                    }
+                    location.reload()
+            }else{
+                errorAlert(res)
             }
-            let arrGuardiaTurno = idGuardiasEnTurno.filter(e => !e.includes("inp-"+id) && !e.includes("btn-"+id));
-            idGuardiasEnTurno=arrGuardiaTurno
-            let arrayGuard= guardiasEnTurno.filter(e => e.id !== id);
-            guardiasEnTurno=arrayGuard
-            let arrSelectedGuardias = arraySelectedGuardias.filter(e => parseInt(e.id) !== parseInt(id))
-            arraySelectedGuardias=arrSelectedGuardias
-            changeStatusTurn(false)
-            Swal.fire({
-                title: "Check out!",
-                text: "Se ha realizado el check out correctamente.",
-                type: "success"
-            });
+        })
+
+
+
+            
         }
     });
 }
 
 
+function cargarGuardiasApoyo(){
+    dataTableAgregarGuardiaApoyo=[]
+    $("#idButtonGuardiasApoyo").hide()
+    $("#idLoadingButtonGuardiasApoyo").show()
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name:"script_turnos.py",
+            option:"guardias_de_apoyo",
+            location:getCookie('userLocation'),
+            area:getCookie('userCaseta')
+        }),
+        headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if(res.success){
+            Swal.close()
+            let data= res.response.data.guardia_de_apoyo
+            for(guard in data){
+                dataTableAgregarGuardiaApoyo.push({ name: data[guard].name,  status:'',
+                img: data[guard].picture.file_url ? data[guard].picture.file_url :'https://cdn.questionpro.com/userimages/site_media/no-image.png' , id:data[guard].user_id})
+            }
+            if(tables['tableAgregarGuardiaApoyo']){
+                tables['tableAgregarGuardiaApoyo'].setData(dataTableAgregarGuardiaApoyo)
+            }else{
+                drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, dataTableAgregarGuardiaApoyo,"360px",1000);
+            }
+            $("#agregarGuardiaApoyoModal").modal('show')
+            $("#idButtonGuardiasApoyo").show()
+            $("#idLoadingButtonGuardiasApoyo").hide()
+        }else{
+            errorAlert(res)
+            $("#idButtonGuardiasApoyo").show()
+            $("#idLoadingButtonGuardiasApoyo").hide()
+        }
+    })
+}
+
 //FUNCION para agregar nuevo guardia de apoyo cuando tenemos el turno iniciado
 function agregarNuevoGuardiaApoyo(){
+    let names=[]
     let selectedRow = tables["tableAgregarGuardiaApoyo"].getSelectedData(); 
-    let exclude=[]
     for(newGuard of selectedRow){
-        arraySelectedGuardias.push({name:newGuard.name, status: newGuard.status, img: newGuard.img, fechaInicio: "31 Enero 2024", id:newGuard.id})
-        exclude.push(newGuard.id)
+        arraySelectedGuardias.push({name:newGuard.name,status:'', img: newGuard.img, id:newGuard.id})
+        //exclude.push(newGuard.id)
         guardiasEnTurno.push(newGuard)
         idGuardiasEnTurno.push("inp-"+ newGuard.id)
         idGuardiasEnTurno.push("btn-"+ newGuard.id)
+        names.push({user_id: newGuard.id,name:newGuard.name,})
     }
-    //INFO: Eliminar los selecionados (en el modal) de la tabla "agregar guardias de apoyo" para que no se puedan
-    //volver a agregar
-    let newDataTableAgregarGuardiaApoyo = dataTableAgregarGuardiaApoyo.filter(function(guardia) { return !exclude.includes(guardia.id); });
-    dataTableAgregarGuardiaApoyo= newDataTableAgregarGuardiaApoyo
-    tables["tableAgregarGuardiaApoyo"].setData(dataTableAgregarGuardiaApoyo);
+    fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name:"script_turnos.py",
+                option:"update_guards",
+                support_guards:names,
+                checkin_id:thisUserCheckInId,
+                location:getCookie('userLocation'),
+                area:getCookie('userCaseta')
+            }),
+            headers:{
+               'Content-Type': 'application/json',
+               'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                let data= res.response.data
+                if (data.status_code==400|| data.status_code==401){
+                    errorAlert(data)
+                }else{
+                    //let exclude=[]
+                    //INFO: Eliminar los selecionados (en el modal) de la tabla "agregar guardias de apoyo" para que no se puedan
+                    //volver a agregar
+                    //let newDataTableAgregarGuardiaApoyo = dataTableAgregarGuardiaApoyo.filter(function(guardia) { return !exclude.includes(guardia.id); });
+                    //dataTableAgregarGuardiaApoyo= newDataTableAgregarGuardiaApoyo
+                    //tables["tableAgregarGuardiaApoyo"].setData(dataTableAgregarGuardiaApoyo);
+                    // INFO: Actualizar la tabla guardias de apoyo
+                    tables["tableGuardiasApoyo"].setData(guardiasEnTurno);
+                    guardiasApoyoValidateOptions()
+                    $('#agregarGuardiaApoyoModal').modal('hide'); 
+                }
+            }else{
+                errorAlert(res)
+            }
 
-    // INFO: Actualizar la tabla guardias de apoyo
-    tables["tableGuardiasApoyo"].setData(guardiasEnTurno);
-    guardiasApoyoValidateOptions()
-    $('#agregarGuardiaApoyoModal').modal('hide');  
+        })
+     
 }
 
 
@@ -1061,7 +1390,7 @@ function turnoAbierto(idGuardiasEnTurno){
     if(guardiasEnTurno.length > 0){
         tables["tableGuardiasApoyo"].setData(guardiasEnTurno);
     }else{
-        //tables["tableGuardiasApoyo"].setData([]);
+        tables["tableGuardiasApoyo"].setData([]);
     }
     setCookie("userTurn", userTurnAbierto,7);
     $("#todayHourText").html(new Date().toLocaleTimeString())
@@ -1073,6 +1402,11 @@ function turnoAbierto(idGuardiasEnTurno){
     $('#buttonForzarCierre').attr("disabled", true);
     $('#textInfActualCaseta').text('Información:');
     $('#agregarGuardiasApoyoButton').attr("disabled", false);
+    $("#idButtonGuardiasApoyo").prop('disabled', false);
+    tables["tableGuardiasApoyo"].updateColumnDefinition("name", {title:"Guardias en Caseta"})
+    let item = document.getElementById('tableGuardiasApoyo')
+    //let text= item.getElementsByClassName(".tabulator-col-title")
+    //text.text("TURNO ABIERTO");
     guardiasApoyoValidateOptions()
 }
 
@@ -1089,10 +1423,14 @@ function turnoCerrado(idGuardiasEnTurno){
     $('#textInfActualCaseta').text('Información actual de la caseta:')
     $('#buttonForzarCierre').attr("disabled", false);
     $('#agregarGuardiasApoyoButton').attr("disabled", true);
+    $("#idButtonGuardiasApoyo").prop('disabled', true);
+    tables["tableGuardiasApoyo"].updateColumnDefinition("name", {title:"Guardias de Apoyo"})
+
     idGuardiasEnTurno=[]
     guardiasEnTurno=[] 
     arraySelectedGuardias=[]
     guardiasApoyoValidateOptions()
+
 }
 
 
@@ -1149,82 +1487,79 @@ function guardiasApoyoValidateOptions(){
                 $("#"+g).hide();
             }
         }
-    }
-    else if(getCookie('userTurn') == userTurnAbierto){
-        for (g of idGuardiasEnTurno){
-            if(g.includes("inp-")){
-                $("#"+g).hide();
-            } 
-            else if(g.includes("btn-")){
-                $("#"+g).show();
+    }else if(getCookie('userTurn') == userTurnAbierto){
+        $(document).ready(function() {
+            for (g of idGuardiasEnTurno){
+                if(g.includes("inp-")){  
+                        $("#"+g).css('display', 'none');
+                } 
+                else if(g.includes("btn-")){
+                        $("#"+g).show(); 
+                }
             }
-        }
+
+        })
+
     }   
 }
 
-
-function setAddComentario(){
+function setAddComentario(editAdd ="nueva"){
      let randomID = Date.now();
     let newItem=`
-        <div class="d-flex mb-3 div-comment-`+randomID+`" id="div-comment-`+randomID+`">
+        <div class="d-flex mb-3 div-comment-`+editAdd+`-`+randomID+`" id="div-comment-`+randomID+`">
             <div class="flex-grow-1">
-                <label class="form-label">Comentario *</label>
-                <textarea class="form-control comment-div" id="inputComentarioNota-`+randomID+`"" rows="3" placeholder="Escribe algo..."></textarea>
+                <label class="form-label">Comentario </label>
+                <textarea class="form-control comment-div-`+editAdd+`" id="inputComentario-`+randomID+`" rows="3" placeholder="Escribe algo..."></textarea>
             </div>
             <div>
-                <button type="button" class="btn btn-success button-add-register " onclick="setAddComment();return false;">
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <button type="button" class="btn btn-danger button-delete-register "  onclick="setDeleteComentario(`+randomID+`);return false;">
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteComentario('`+editAdd+`',`+randomID+`);return false;">
                     <i class="fa-solid fa-minus"></i></button>
             </div>
         </div>
     `;
-    $('#comment-input-form').append(newItem);
+    $('#comment-input-form-'+editAdd).append(newItem);
 }
 
 
-function setDeleteComentario(id){
-    const elements = document.querySelectorAll('.comment-div');
+function setDeleteComentario(editAdd ="nueva",id){
+    const elements = document.querySelectorAll('.comment-div-'+editAdd);
     const count = elements.length;
     if(count > 1){
-        const elements = document.getElementsByClassName('div-comment-'+id);
-        while(elements.length > 0){
+        const elements = document.getElementsByClassName('div-comment-'+editAdd+'-'+id);
+        while(elements.length > 0&& id !==123){
             elements[0].parentNode.removeChild(elements[0]);
         }
     }
 }
 
+/*
 //FUNCION para eliminar archivo en el modal de agregar nota
-function setAddArchivo(){
+function setAddArchivo(editAdd ="nueva"){
     let randomID = Date.now();
     let newItem=`
-        <div class="d-flex mb-3 col-12  div-archivo-`+randomID+`" id="id-archivo-div-`+randomID+`">
+        <div class="d-flex mb-3 col-12 div-archivo-`+editAdd+`-`+randomID+`" id="id-archivo-div-`+randomID+`">
             <div class="flex-grow-1">
-                <label class="form-label">Cargar un archivo *</label>
-                <input type="file" class="form-control-file archivo-div" onchange="guardarArchivos('fileInputArchivo-`+randomID+`', false);" id="fileInputArchivo-`+randomID+`">
+                <label class="form-label">Cargar un archivo </label>
+                <input type="file" class="form-control-file archivo-div-`+editAdd+`" onchange="guardarArchivos('fileInputArchivo-`+editAdd+`-`+randomID+`', false);" id="fileInputArchivo-`+editAdd+`-`+randomID+`">
             </div>
             <div>
-                <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo();return false;">
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo(`+randomID+`);return false;">
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo('`+editAdd+`',`+randomID+`);return false;">
                     <i class="fa-solid fa-minus"></i>
                 </button>
             </div>
         </div>
     `;
-    $('#archivo-input-form').append(newItem);
+    $('#archivo-input-form-'+editAdd).append(newItem);
 }
 
 
 //FUNCION para agregar archivo en el modal de agregar nota
-function setDeleteArchivo(id){
-    const elements = document.querySelectorAll('.archivo-div');
+function setDeleteArchivo(editAdd ="nueva", id ){
+    const elements = document.querySelectorAll('.archivo-div-'+editAdd);
     const count = elements.length;
     if(count > 1){
-        const elements = document.getElementsByClassName('div-archivo-'+id);
-        while(elements.length > 0){
+        const elements = document.getElementsByClassName('div-archivo-'+editAdd+'-'+id);
+        while(elements.length > 0&& id !==123){
             elements[0].parentNode.removeChild(elements[0]);
         }
     }
@@ -1232,51 +1567,72 @@ function setDeleteArchivo(id){
 
 
 //FUNCION para agregar foto en el modal de agregar nota
-function setAddFoto(){
+function setAddFoto(editAdd ="nueva"){
     let randomID = Date.now();
     let newItem=`
-        <div class="d-flex mb-3 col-12  div-foto-`+randomID+`" id="id-foto-div-`+randomID+`">
+        <div class="d-flex mb-3 col-12  div-foto-`+editAdd+`-`+randomID+`" id="id-foto-div-`+randomID+`">
             <div class="flex-grow-1">
-                <label class="form-label">Fotografia *</label>
-                <input type="file" class="form-control-file foto-div" onchange="guardarArchivos('fileInputFotografia-`+randomID+`', true);" id="fileInputFotografia-`+randomID+`">
-                
+                <label class="form-label">Fotografia </label>
+                <input type="file" class="form-control-file foto-div-`+editAdd+`" onchange="guardarArchivos('fileInputFotografia-`+editAdd+`-`+randomID+`', true);" id="fileInputFotografia-`+editAdd+`-`+randomID+`">
             </div>
             <div>
-                <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(`+randomID+`);return false;">
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('`+editAdd+`',`+randomID+`);return false;">
                    <i class="fa-solid fa-minus"></i>
                 </button>
             </div>
         </div>
     `;
-    $('#foto-input-form').append(newItem) 
+    $('#foto-input-form-'+editAdd).append(newItem) 
 }
 
 
 //FUNCION para elimar foto en el modal de agregar nota
-function setDeleteFoto(id){
-    const elements = document.querySelectorAll('.foto-div');
+function setDeleteFoto(editAdd ="nueva",id){
+    const elements = document.querySelectorAll('.foto-div-'+editAdd);
     const count = elements.length;
     if(count > 1){
-        const elements = document.getElementsByClassName('div-foto-'+id);
-        while(elements.length > 0){
+        const elements = document.getElementsByClassName('div-foto-'+editAdd+'-'+id);
+        while(elements.length > 0&& id !==123){
             elements[0].parentNode.removeChild(elements[0]);
         }
     }
 }
+*/
+//FUNCION para dibujar las tablas de la pagina y guardar su instancia en el obj tables
+function drawTableNotas(id, columnsData, tableData, height){
+    var  table = new Tabulator("#" + id, {
+        layout:"fitDataStretch",
+        height:height,
+        data:tableData,
+        textDirection:"ltr",
+        columns:columnsData,
+        pagination:true, 
+        paginationSize:40,
+        placeholder: "No hay registros disponibles", 
+    });
+    tables[id]=table;
+}
 
+
+//FUNCION para dibujar las tablas con opcion select de la pagina y guardar su instancia en el obj tables
+function drawTableSelect(id, columnsData, tableData, height, select){
+    let  table = new Tabulator("#" + id, {
+        layout:"fitDataStretch",
+        height:height,
+        data:tableData,
+        textDirection:"ltr",
+        columns:columnsData,
+        pagination:true, 
+        selectableRows:select,
+        paginationSize:40,
+        placeholder: "No hay registros disponibles", 
+    });
+    tables[id]=table;
+}
 
 //FUNCION para guardar los archivos en el server 
 async function guardarArchivos(id, isImage){
-    Swal.fire({
-        title: 'Cargando...',
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-            Swal.showLoading();
-       }
-    });
+    loadingService()
     const fileInput = document.getElementById(id);
     const file = fileInput.files[0]; // Obtener el archivo seleccionado
 
@@ -1327,36 +1683,66 @@ async function guardarArchivos(id, isImage){
     }
 }
 
-
-
-//FUNCION para dibujar las tablas de la pagina y guardar su instancia en el obj tables
-function drawTableNotas(id, columnsData, tableData, height){
-    var  table = new Tabulator("#" + id, {
-        layout:"fitDataStretch",
-        height:height,
-        data:tableData,
-        textDirection:"ltr",
-        columns:columnsData,
-        pagination:true, 
-        paginationSize:40,
-        placeholder: "No hay registros disponibles", 
-    });
-    tables[id]=table;
+//FUNCION para agregar foto en el modal de agregar nota
+function setAddFoto(editAdd ="nueva"){
+    let randomID = Date.now();
+    let newItem=`
+        <div class="d-flex mb-3 col-12  div-foto-`+editAdd+`-`+randomID+`" id="id-foto-div-`+randomID+`">
+            <div class="flex-grow-1">
+                <label class="form-label">Fotografia </label>
+                <input type="file" class="form-control-file foto-div-`+editAdd+`" onchange="guardarArchivos('fileInputFotografia-`+editAdd+`-`+randomID+`', true);" id="fileInputFotografia-`+editAdd+`-`+randomID+`">
+            </div>
+            <div>
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('`+editAdd+`',`+randomID+`);return false;">
+                   <i class="fa-solid fa-minus"></i>
+                </button>
+            </div>
+        </div>
+    `;
+    $('#foto-input-form-'+editAdd).append(newItem) 
 }
 
 
-//FUNCION para dibujar las tablas con opcion select de la pagina y guardar su instancia en el obj tables
-function drawTableSelect(id, columnsData, tableData, height, select){
-    let  table = new Tabulator("#" + id, {
-        layout:"fitDataStretch",
-        height:height,
-        data:tableData,
-        textDirection:"ltr",
-        columns:columnsData,
-        pagination:true, 
-        selectableRows:select,
-        paginationSize:40,
-        placeholder: "No hay registros disponibles", 
-    });
-    tables[id]=table;
+//FUNCION para elimar foto en el modal de agregar nota
+function setDeleteFoto(editAdd ="nueva",id){
+    const elements = document.querySelectorAll('.foto-div-'+editAdd);
+    const count = elements.length;
+    if(count > 1){
+        const elements = document.getElementsByClassName('div-foto-'+editAdd+'-'+id);
+        while(elements.length > 0 && id !==123){
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+    }
+}
+
+//FUNCION para eliminar archivo en el modal de agregar nota
+function setAddArchivo(editAdd ="nueva"){
+    let randomID = Date.now();
+    let newItem=`
+        <div class="d-flex mb-3 col-12 div-archivo-`+editAdd+`-`+randomID+`" id="id-archivo-div-`+randomID+`">
+            <div class="flex-grow-1">
+                <label class="form-label">Cargar un archivo </label>
+                <input type="file" class="form-control-file archivo-div-`+editAdd+`" onchange="guardarArchivos('fileInputArchivo-`+editAdd+`-`+randomID+`', false);" id="fileInputArchivo-`+editAdd+`-`+randomID+`">
+            </div>
+            <div>
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo('`+editAdd+`',`+randomID+`);return false;">
+                    <i class="fa-solid fa-minus"></i>
+                </button>
+            </div>
+        </div>
+    `;
+    $('#archivo-input-form-'+editAdd).append(newItem);
+}
+
+
+//FUNCION para agregar archivo en el modal de agregar nota
+function setDeleteArchivo(editAdd ="nueva", id ){
+    const elements = document.querySelectorAll('.archivo-div-'+editAdd);
+    const count = elements.length;
+    if(count > 1){
+        const elements = document.getElementsByClassName('div-archivo-'+editAdd+'-'+id);
+        while(elements.length > 0 && id !==123){
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+    }
 }

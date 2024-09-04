@@ -1,34 +1,47 @@
-let selectLocation;
 let scriptName=''
 let articulosPerdidos=[]
 let articulosConcesionados=[]
 let colors = getPAlleteColors(12,0)
 let selectedRowFolio=""
 let arrayResponses=[]
+let flagVideoCard = false;
+let flagVideoUser = false;
+let selectCaseta=""
+let selectLocation=""
 
 window.onload = function(){
 	setValueUserLocation('articulos');
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	let user = getCookie("userId");
+    let checkboxCasetas = document.getElementById('checkboxTodasLasCasetas');
+    checkboxCasetas.checked = true; 
     
+
+    selectLocation= document.getElementById("selectLocation");
+    selectLocation.onchange = async function(){
+        let response = fetchOnChangeLocation(selectLocation.value)
+        if($("#checkboxTodasLasCasetas").is(':checked')){
+            let response2 = await fetchOnChangeCaseta('articulos_consecionados.py', 'get_articles',selectCaseta.value, selectLocation.value)
+            reloadTableArticulosCon(response2.response.data, selectCaseta.value)
+            let response3 = await fetchOnChangeCaseta('articulos_perdidos.py', 'get_articles', selectCaseta.value, selectLocation.value)
+            reloadTableArticulosPer(response3.response.data)
+        }
+    };
+
+    selectCaseta= document.getElementById("selectCaseta")
+    selectCaseta.onchange = async function() {
+        let response = await fetchOnChangeCaseta('articulos_consecionados.py', 'get_articles',selectCaseta.value, selectLocation.value)
+        reloadTableArticulosCon(response.response.data, selectCaseta.value)
+        let response2 = await fetchOnChangeCaseta('articulos_perdidos.py', 'get_articles', selectCaseta.value, selectLocation.value)
+        reloadTableArticulosPer(response2.response.data)
+    };
     changeButtonColor();
     getInfoCatalogs();
     fillCatalogs();
 
     allDataArticulosCon();
     allDataArticulosPer();
-	selectLocation= document.getElementById("selectLocation");
-	/*selectLocation.onchange = function(){
-        let response = fetchOnChangeLocation()
-    };*/
-    selectCaseta= document.getElementById("selectCaseta")
-    selectCaseta.onchange = async function() {
-        let response = await fetchOnChangeLocation('articulos_consecionados.py', 'get_articles','', selectLocation.value)
-        reloadTableArticulosCon(response.response.data, selectCaseta.value)
-        let response2 = await fetchOnChangeLocation('articulos_perdidos.py', 'get_articles', selectCaseta.value, selectLocation.value)
-        reloadTableArticulosPer(response2.response.data)
-        console.log("RESULTADOS", selectCaseta.value, selectLocation.value)
-    };
+	
 	setSpinner(true, 'divSpinner');
 	
 	
@@ -53,8 +66,37 @@ window.onload = function(){
             imagen.src = imageUrl;
         }
     });
+    if(getValueUserLocation()=='articulos'){
+         $(document).ready(function() {
+            $('#divTodasLasCasetas').show();
+            $('#labelGuardiaDeApoyo').remove();
+        })
+    }
+
+    selectCaseta.value=""
+    selectCaseta.disabled=true
 }
 
+$("#checkboxTodasLasCasetas").on("click",async function()  {
+    if ($(this).is(':checked')) {
+        selectCaseta.value=""
+        selectCaseta.disabled=true
+        let response = await fetchOnChangeCaseta('articulos_consecionados.py', 'get_articles','', selectLocation.value)
+        reloadTableArticulosCon(response.response.data, selectCaseta.value)
+        let response2 = await fetchOnChangeCaseta('articulos_perdidos.py', 'get_articles', '', selectLocation.value)
+        reloadTableArticulosPer(response2.response.data)
+    } else {
+        selectCaseta.disabled=false
+    }
+})
+
+window.addEventListener('storage', function(event) {
+    if (event.key === 'cerrarSesion') {
+        let protocol = window.location.protocol;
+        let host = window.location.host;
+        window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+    }
+});
 
 function reloadTableArticulosCon(data,caseta){
     dataTableArticles=[]
@@ -66,7 +108,6 @@ function reloadTableArticulosCon(data,caseta){
                 if(articulo.hasOwnProperty('fecha_devolucion_concesion')){
                     dateFormat2= articulo.fecha_devolucion_concesion.slice(0,-3)
                 }
-                console.log(articulo.caseta_concesion , caseta)
                 if(articulo.caseta_concesion == caseta){
                     dataTableArticles.push({folio:articulo.folio,ubicacion_concesion:articulo.ubicacion_concesion||"",
                     equipo_concesion:articulo.equipo_concesion||"", fecha_concesion:dateFormat||"",caseta_concesion:articulo.caseta_concesion||"",
@@ -79,7 +120,6 @@ function reloadTableArticulosCon(data,caseta){
             dataTableArticles = []
         }
         if(tables['tableArticles']){
-            console.log("CONSESIO",dataTableArticles)
             tables['tableArticles'].setData(dataTableArticles)
         }else{
             drawTable('tableArticles', columsDataArticles, dataTableArticles);
@@ -110,10 +150,8 @@ function reloadTableArticulosPer(data){
             dataTableArticlesLose = []
         }
         if(tables['tableArticlesLose']){
-            console.log("act")
             tables['tableArticlesLose'].setData(dataTableArticlesLose)
         }else{
-            console.log("crear")
             drawTable('tableArticlesLose',  columsDataArticlesLose, dataTableArticlesLose);
         }
         $("#buttonEliminarArticulosCon").on("click", function() {
@@ -127,14 +165,18 @@ function reloadTableArticulosPer(data){
 }
 }
 function allDataArticulosPer(){
+    let checkboxCasetas = document.getElementById('checkboxTodasLasCasetas');
+    let body={
+        script_name:'articulos_perdidos.py',
+        option:'get_articles',
+        location: selectLocation.value,
+    }
+    if(!checkboxCasetas.checked){
+        body.area= selectCaseta.value
+    }
     fetch(url + urlScripts, {
         method: 'POST',
-        body: JSON.stringify({
-            script_name:'articulos_perdidos.py',
-            option:'get_articles',
-            location: getCookie('userLocation'),
-            area: getCookie('userCaseta')
-        }),
+        body: JSON.stringify(body),
         headers:
         {
             'Content-Type': 'application/json',
@@ -163,6 +205,8 @@ function allDataArticulosPer(){
                     $("#buttonEliminarArticulosCon").on("click", function() {
                         descargarExcel(tables, 'tableArticlesLose')
                     });
+
+                    
                     let selectedArticulosCons = getActiveCheckBoxs(tables,'tableArticlesLose')
                     let buttonEliminarIncidencias=document.getElementById('buttonEliminarArticulosLose');
                     if(selectedArticulosCons.length>0) buttonEliminarIncidencias.display= 'none'
@@ -173,13 +217,21 @@ function allDataArticulosPer(){
     })
 }
 function allDataArticulosCon(){
+    let checkboxCasetas = document.getElementById('checkboxTodasLasCasetas');
+   
+    let body={
+        script_name:'articulos_consecionados.py',
+        option:'get_articles',
+        location: getCookie('userLocation'),
+    }
+
+    if(!checkboxCasetas.checked){
+        body.area= selectCaseta.value
+    }
+
     fetch(url + urlScripts, {
         method: 'POST',
-        body: JSON.stringify({
-            script_name:'articulos_consecionados.py',
-            option:'get_articles',
-            location: getCookie('userLocation'),
-        }),
+        body: JSON.stringify(body),
         headers:
         {
             'Content-Type': 'application/json',
@@ -274,13 +326,22 @@ function getInfoCatalogs(){
 
 
 function initializeCatalogsArticulosCon(dataCatalogs,arrayUserBoothsLocations){
-    arrayUserBoothsLocations.forEach(function(e, i){
+    let idsSet = new Set();
+    let uniqueItems = [];
+    arrayUserBoothsLocations.forEach(item => {
+        // Verifica si el ID del objeto ya está en el Set
+        if (!idsSet.has(item.ubi)) {
+            uniqueItems.push(item); // Añade el objeto al array único
+            idsSet.add(item.ubi);    // Añade el ID al Set
+        }
+    });
+    console.log("uniqueItems",uniqueItems)
+
+
+    uniqueItems.forEach(function(e, i){
         $("#idUbicacionArticles").append($('<option></option>').val(e.ubi).text(e.ubi));
         $("#idNuevoArticuloUbicacion").append($('<option></option>').val(e.ubi).text(e.ubi));
-        $("#idNuevoArticuloLugar").append($('<option></option>').val(e.name).text(e.name));
-
         $("#idEditArticuloUbicacion").append($('<option></option>').val(e.ubi).text(e.ubi));
-        $("#idEditArticuloLugar").append($('<option></option>').val(e.name).text(e.name));
         $("#idEditArticuloUbicacion").val("")
         $("#idEditArticuloLugar").val("")
 
@@ -295,6 +356,11 @@ function initializeCatalogsArticulosCon(dataCatalogs,arrayUserBoothsLocations){
         $("#idNuevoArticuloUbicacion").val("")
         $("#idNuevoArticuloLugar").val("")
     });
+    arrayUserBoothsLocations.forEach(function(e, i){
+        $("#idEditArticuloLugar").append($('<option></option>').val(e.name).text(e.name));
+        $("#idNuevoArticuloLugar").append($('<option></option>').val(e.name).text(e.name));
+    });
+
     dataCatalogs.solicita_concesion.forEach(function(e, i){
         $("#idNuevoArticuloTipo").append($('<option></option>').val(e).text(e))
         $("#editArticleConTipo").append($('<option></option>').val(e).text(e));
@@ -323,17 +389,28 @@ function initializeCatalogsArticulosCon(dataCatalogs,arrayUserBoothsLocations){
 
 
 function initializeCatalogsArticulosLose(dataCatalogs,arrayUserBoothsLocations){
-    arrayUserBoothsLocations.forEach(function(e, i){
+    let idsSet = new Set();
+    let uniqueItems = [];
+    arrayUserBoothsLocations.forEach(item => {
+        // Verifica si el ID del objeto ya está en el Set
+        if (!idsSet.has(item.ubi)) {
+            uniqueItems.push(item); // Añade el objeto al array único
+            idsSet.add(item.ubi);    // Añade el ID al Set
+        }
+    });
+    console.log("uniqueItems",uniqueItems)
+    
+    uniqueItems.forEach(function(e, i){
         $("#idUbicacionNuevoArticuloLose").append($('<option></option>').val(e.ubi).text(e.ubi));
         $("#idUbicacionNuevoArticuloLose").val("")
         $("#idUbicacionEditArticuloLose").append($('<option></option>').val(e.ubi).text(e.ubi));
         $("#idUbicacionEditArticuloLose").val("")
     });
-    dataCatalogs.guard_perdido.forEach(function(e, i){
-        $("#idGuardiaNuevoArticuloLose").append($('<option></option>').val(e).text(e))
-        $("#idGuardiaNuevoArticuloLose").val("")
-        $("#idGuardiaEditArticuloLose").append($('<option></option>').val(e).text(e))
-        $("#idGuardiaEditArticuloLose").val("")
+    dataCatalogs.categoria.forEach(function(e, i){
+        $("#idCategoriaArticuloLose").append($('<option></option>').val(e).text(e))
+        $("#idCategoriaArticuloLose").val("")
+        $("#idCategoriaEditArticuloLose").append($('<option></option>').val(e).text(e))
+        $("#idCategoriaEditArticuloLose").val("")
     });
     dataCatalogs.area_perdido.forEach(function(e, i){
         $("#idAreaNuevoArticuloLose").append($('<option></option>').val(e).text(e));
@@ -1136,4 +1213,127 @@ function aplicarFiltros(){
     });
     let selectTipo= document.getElementById("idFiltrosTipo")
     selectTipo.value=""
+}
+
+
+//FUNCION obtener la imagen del canvas
+function getScreenUser(){
+    //-----Save Photo
+    if(!flagVideoUser){
+        flagVideoUser = true;
+   
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                let video = document.createElement('video');
+                video.style.width = '200px';
+                video.style.height = '125px';
+                document.getElementById('containerUser').appendChild(video);
+                video.srcObject = stream;
+                video.play();
+                let canvas = document.getElementById('canvasPhotoUser');
+                let context = canvas.getContext('2d');
+                //----Take
+                $("#buttonTakeUser").attr('disabled','disabled');
+                $("#buttonTakeUser").hide();
+                $("#buttonSaveUser").show();
+                document.getElementById('buttonSaveUser').addEventListener('click', function() {
+                    setTranslateImageUser(context, video, canvas);
+                });
+            })
+            .catch(function(error) {
+                console.error('Error al acceder a la cámara:', error);
+            });
+        } else {
+            alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
+        }
+    }
+}
+
+//FUNCION obtener la imagen del canvas parte2
+function setTranslateImageUser(context, video, canvas){
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    let photoCard = document.getElementById('imgUser');
+    photoCard.src = canvas.toDataURL('image/png');
+    photoCard.style.display = 'block';
+    video.pause();
+    video.srcObject.getTracks().forEach(function(track) {
+        track.stop();
+    });
+    video.style.display = 'none';
+    ///-- Save Input
+    canvas.toBlob( (blob) => {
+        const file = new File( [ blob ], "imageUser.png" );
+        const dT = new DataTransfer();
+        dT.items.add( file );
+        document.getElementById("inputFileUser").files = dT.files;
+    } );
+    //-----Rquest Photo
+    const flagBlankUser = isCanvasBlank(document.getElementById('canvasPhotoUser'));
+    if(!flagBlankUser){
+        setTimeout(() => {
+            setRequestFileImg('inputUser');
+        }, "1000");
+    }
+    //-----Clean ELement
+    $("#buttonSaveUser").hide();
+}
+
+//FUNCION validar que el canvas este limpio
+function isCanvasBlank(canvas) {
+    const context = canvas.getContext('2d');
+    const pixelBuffer = new Uint32Array(
+        context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+    );
+    return !pixelBuffer.some(color => color !== 0);
+}
+
+//FUNCION obtener la url de la imagen despues de gurdarla
+function setRequestFileImg(type) {
+    let idInput = '';
+    if(type == 'inputCard'){
+        idInput = 'inputFileCard';
+    }else if(type == 'inputUser'){
+        idInput = 'inputFileUser';
+    }
+    const fileInput = document.getElementById(idInput);
+    const file = fileInput.files[0];
+    if (file) {
+        const formData = new FormData();
+        formData.append('File', file);
+        formData.append('field_id', '660459dde2b2d414bce9cf8f');
+        formData.append('is_image', true);
+        formData.append('form_id', 116852);
+        fetch('https://app.linkaform.com/api/infosync/cloud_upload/', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(res => {
+            if(res.file !== undefined && res.file !== null){
+                if(type == 'inputCard'){
+                    urlImgCard = res.file;
+                    //----Clean Canvas
+                    var canvas = document.getElementById('canvasPhoto');
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }else if(type == 'inputUser'){
+                    urlImgUser = res.file;
+                    //----Clean Canvas
+                    var canvas = document.getElementById('canvasPhotoUser');
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }else{
+                console.log('Error aqui 2');
+                return 'Error';
+            }
+        })
+        .catch(error => {
+            console.log('Error aqui 3');
+            return 'Error';
+        });
+    }else{
+        return 'Error';
+    }
 }

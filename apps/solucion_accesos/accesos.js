@@ -4,6 +4,7 @@ let listNewVehicules = []
 let listNewItems = []
 let idScr=119197;
 let opScriptCatalog='catalog_brands';
+let colors = getPAlleteColors(12,0)
 let dataCatalogs="";
 let listUserActives = [];
 let urlImgCard = '';
@@ -14,42 +15,736 @@ let codeUserVisit=""
 //let userJwt = getCookie("userJwt");
 let selectedEquipos=[]
 let selectedVehiculos=[]
+let comentariosPase=[]
+let comentariosAcceso=[]
 let fullData=""
+let selectLocation= ""
+let selectCaseta =""
+let codeUser =""
+let listInstructions = []
+let tipoMovimiento=""
+let fotosNuevaVisita={foto:[], identificacion:[]}
+let paseDeAccesoScript= "pase_de_acceso.py"
+let gafeteRegistroIngreso={}
 
 window.onload = function(){
     setValueUserLocation('accesos');
-    changeButtonColor();
-    
+    changeButtonColor(); 
     fillCatalogs();
-    //initializeCatalogs();
     getInitialData();
     selectLocation= document.getElementById("selectLocation")
-    /*selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation()
-    };*/
     selectCaseta= document.getElementById("selectCaseta")
-    /*selectCaseta.onchange = function() {
-        let response = fetchOnChangeLocation()
-    };*/
-    selectLocation.value=getCookie("userLocation")
-    selectCaseta.value=getCookie("userCaseta")
-    //selectLocation.disabled=true
-    //selectCaseta.disabled=true
-    //selectLocation.disabled=true
-    //selectCaseta.disabled=true
-    
-
     setHideElements('dataHide');
     setSpinner(true, 'divSpinner');
     let user = getCookie("userId");
     if(user !='' && userJwt!=''){
         setDataInformation('alerts',data = {})
-        //getDataListUser();
     }else{
         redirectionUrl('login',false)
     }
     customNavbar(getValueUserLocation(), getCookie('userTurn'));
-    getCatalogs()
+    $("#mainSection1").show()
+}
+
+window.addEventListener('storage', function(event) {
+    if (event.key === 'cerrarSesion') {
+        let protocol = window.location.protocol;
+        let host = window.location.host;
+        window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+    }
+});
+
+//funcion Escojer modales
+function setModal(type = 'none',id =""){
+    if(type == 'comentarioPaseModal'){
+        $("#idComentarioPase").val("")
+        $('#commentarioPaseModal').modal('show');
+    }else if(type == 'comentarioAccesoModal'){
+        $("#idComentarioAcceso").val("")
+        $('#commentarioAccesoModal').modal('show');
+    }else if(type == 'equiposModal'){
+        abrirAgregarEquipo()
+    }else if(type == 'vehiculosModal'){
+        abrirAgregarVehiculo()
+    }else if(type== "listaPases"){
+        verListaPasesActivos()
+    }else if(type=="nuevaVisitaModal"){
+        abrirModalNuevaVisita()
+    }else if(type=="gafeteModal"){
+        abrirAsignarGafeteModal()
+    }else if(type=="recibirGafete"){
+        abrirRecibirGafeteModal()
+    }
+}
+
+function abrirRecibirGafeteModal(){
+    console.log("todaaa la data",fullData)
+
+    //let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
+    
+        Swal.fire({
+            title:'¿Está seguro de recibir gafete?',
+            html:`
+            <div class="m-1"> Al recibir el gafete, se desocupara el gafete y el locker y se retiraran los documentos pertienentes </div>`,
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonColor: colors[0],
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: colors[1],
+            confirmButtonText: "Si",
+            heightAuto:false,
+            reverseButtons: true
+        })
+        .then((result) => {
+            if (result.value) {
+                console.log("SERVICIO PARA RECIBIR EL GAFETE")
+                /*
+                let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
+                if (selectedSalida) {
+                    selectedSalida.status = 'Libre';
+                    selectedSalida.visit = '';
+                    selectedSalida.document = '';
+                    selectedSalida.location = '';
+                    tables["tableSalidas"].setData(dataTableLocker);
+                } */
+            }
+        });
+    /*}else{
+        successMsg()
+         Swal.fire({
+            title: "Acción Completada!",
+            text: "Esta locker ya se encuentra liberado.",
+            type: "warning"
+        });
+    } */
+
+    /*
+    if(status_visita== statusVisitaEntrada){
+        Swal.fire({
+            title:`¿Estas seguro de liberar el gafete ${} y el locker ${}?`,
+            html:`
+            <div class="m-2"> La salida no puede ser confirmada en este momento. Aún hay documentos 
+            en el locker correspondiente que deben ser desocupados antes de proceder. </div>`,
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonColor: colors[0],
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: colors[1],
+            confirmButtonText: "Si",
+            heightAuto:false,
+            reverseButtons: true
+        })
+        .then((result) => {
+            if (result.value) {
+            console.log("SDFSS",result)
+                fetch(url + urlScripts, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        script_name: 'script_turnos.py',
+                        option: 'do_out',
+                        qr_code: folio,
+                        location: selectLocation.value,
+                        area: selectCaseta.value
+                    }),
+                    headers:{
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+userJwt
+                    },
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                    } 
+                });
+
+                let selectedSalida = dataTableBitacora.find(n => n.folio == parseInt(folio));
+               
+                if (selectedSalida) {
+                    let fecha=  new Date()
+                    let año = fecha.getFullYear();
+                    let mes = fecha.getMonth() + 1;
+                    let dia = fecha.getDate();
+                    let horaFormateada = fecha.getHours() + ':' + fecha.getMinutes();
+                    let fechaFormateada = dia + '/' + mes + '/' + año + ' ' + horaFormateada;
+                    selectedSalida.salida = fechaFormateada;
+                    tables["tableEntradas"].setData(dataTableBitacora);
+                }
+            }
+        });
+    }else{
+        successMsg("Validación", "Este ya registro ya tiene registrada la salida", "warning")
+    } */
+}
+
+
+function abrirNuevaVisita(){
+    console.log("NUEVA VISITA ENTRANDO")
+}
+
+
+function abrirAsignarGafeteModal(){
+    loadingService()
+    $("#selectGafete").val("")
+    $("#selectLocker").val("")
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            option: "get_lockers",
+            script_name: "gafetes_lockers.py",
+            location: selectLocation.value,
+            area: selectCaseta.value,
+            status: statusDisponible
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close();
+            let data= res.response.data
+            let selectLockers= document.getElementById("selectLocker") 
+            selectLockers.innerHTML=""; 
+            for(let loc of data){
+                    selectLockers.innerHTML += '<option value="'+loc.id_locker  +'">'+loc.id_locker+'</option>';
+            }
+            if(data.length==0){
+                 selectLockers.innerHTML += '<option disabled> No hay lockers disponibles </option>';
+            }
+            selectLockers.value="" 
+        } 
+    });
+
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "gafetes_lockers.py",
+            option: 'get_gafetes',
+            location: selectLocation.value,
+            area: selectCaseta.value,
+            status: statusDisponible
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close();
+            $("#gafeteModal").modal("show")
+            let data= res.response.data
+            let selectGaf= document.getElementById("selectGafete") 
+            selectGaf.innerHTML=""; 
+            for(let gaf of data){
+                    selectGaf.innerHTML += '<option value="'+gaf.id_gafete+'">'+gaf.id_gafete+'</option>';
+            }
+            if(data.length==0){
+                 selectGaf.innerHTML += '<option disabled> No hay gafetes disponibles </option>';
+            }
+            selectGaf.value=""
+        } 
+    });
+}
+
+function abrirModalNuevaVisita(){
+    loadingService()
+    $("#inputNombreNV").val("")
+    $("#selectVisitaNV").val("")
+    $("#inputAreaVisitaNV").val("")
+    $("#selectMotivoVisitaNV").val("")
+    $("#imgUser").val("")
+    $("#imgCard").val("")
+    $("#selectVisitaNV").val("")
+    $("#inputFileCard").val("")
+    $("#inputFileUser").val("")
+    $("#buttonTakeCard").show()
+    $("#buttonTakeUser").show()
+    $("#buttonTakeCard").prop('disabled', false);
+    $("#buttonTakeUser").prop('disabled', false);
+    //$("#imgCard").val()
+    //$("#imgUser").val()
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: "assets_access_pass",
+            location: selectLocation.value
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+        },
+        }).then(res => res.json())
+        .then(res => {
+            if(res.success){
+                let data= res.response.data
+                Swal.close()
+                $("#newVisitModal").modal('show');
+                let selectVisita= document.getElementById("selectVisitaNV");
+                let selectAreaVisita= document.getElementById("inputAreaVisitaNV");
+                let selectMotivo= document.getElementById("selectMotivoVisitaNV");
+                for (let str of data.Visita_a){
+                    selectVisita.innerHTML += '<option value="'+str+'">'+str+'</option>';
+                }
+                selectVisita.value=""
+                for (let str of data.Areas){
+                    selectAreaVisita.innerHTML += '<option value="'+str+'">'+str+'</option>';
+                }
+                selectAreaVisita.value=""
+                for (let str of data.Perfiles){
+                    selectMotivo.innerHTML += '<option value="'+str+'">'+str+'</option>';
+                }
+                selectMotivo.value=""
+            }else{
+                errorAlert(res)
+            }
+        })
+}
+
+
+function verListaPasesActivos(){
+    setCleanData()
+    loadingService()
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: 'lista_pases',
+            caseta: selectCaseta.value,
+            location: selectLocation.value,
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close();
+            let listPases = res.response.data
+            let formatedList=[]
+            for(let obj of listPases){
+                formatedList.push({nombre: obj.nombre, folio: obj.folio, qr_code: obj.qr_code, ubicacion: obj.ubicacion, foto: obj.foto})
+            }
+
+            if(user!="" && userJwt!=""){
+                drawTableSelect('tableListaPases',columsListaPases, formatedList,"500px",1);
+                $("#listModal").modal('show');
+            }
+
+            tables["tableListaPases"].on("rowSelectionChanged", function(data, rows){
+                if (rows.length > 0) {
+                    $("#inputCodeUser").val(data[0].qr_code);
+                    if(data[0].qr_code!==""){
+                        //setSpinner(true, 'divSpinner');
+                        $("#divSpinner").show();
+                        buscarPaseEntrada();
+                    }
+                    $("#listModal").modal('hide');
+                }
+            });
+        } 
+    });
+}
+
+
+function limpiarModalVehiculos(){
+    let selectVehiculosMarca= document.getElementById("selectVehiculosMarca")
+    selectVehiculosMarca.innerHTML=""
+    selectVehiculosMarca.innerHTML = '<option disabled>Escoge un tipo de vehiculo...</option>';
+    selectVehiculosMarca.value=""
+
+    let selectVehiculosModelo= document.getElementById("selectVehiculosModelo")
+    selectVehiculosModelo.innerHTML=""
+    selectVehiculosModelo.innerHTML = '<option disabled>Escoge una marca...</option>';
+    selectVehiculosModelo.value=""
+    let inputMarca= document.getElementById("selectVehiculos");
+    inputMarca.innerHTML =""
+    inputMarca.value=""
+    $("#inputMatriculaVehiculo").val("");
+    $("#inputColor").val("");
+}
+
+function limpiarModalEquipos(){
+    $("#selectTipoEquipo").val("")
+    $("#inputNombreEquipo").val("")
+    $("#inputMarcaEquipo").val("")
+    $("#inputModeloEquipo").val("")
+    $("#inputSerieEquipo").val("")
+    $("#inputColorEquipo").val("")
+}
+
+//FUNCION rellenar catalogos al momento de escojer una opcion
+async function onChangeCatalog(type, id){
+    if(type == "vehiculo"){
+        let inputMarca= document.getElementById("selectVehiculos");
+        const options = {
+            method: 'POST', 
+            body: JSON.stringify({
+                script_name:'script_turnos.py',
+                option:'vehiculo_tipo',
+                tipo:inputMarca.value
+            }),
+             headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+ userJwt}
+        };
+        loadingService();
+        let respuesta = await fetch(url + urlScripts, options);
+        let data = await respuesta.json();
+        if(data.error){
+            errorAlert(data)
+        }else{
+            Swal.close();
+            let list =data.response.data
+            let selectVehiculosMarca= document.getElementById("selectVehiculosMarca")
+            selectVehiculosMarca.innerHTML=""; 
+            for (let obj in list){
+                selectVehiculosMarca.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+            }
+            selectVehiculosMarca.value=""
+        }
+    }else if (type == "marca"){
+        let inputTipo= document.getElementById("selectVehiculos");
+        let inputMarca= document.getElementById("selectVehiculosMarca");
+        const options = {
+            method: 'POST', 
+            body: JSON.stringify({
+                script_name:'script_turnos.py',
+                option:'vehiculo_tipo',
+                tipo:inputTipo.value,
+                marca: inputMarca.value
+            }),
+             headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+ userJwt}
+        };
+        loadingService();
+        let respuesta = await fetch(url + urlScripts, options);
+        let data = await respuesta.json();
+        if(data.error){
+            errorAlert(data)
+        }else{
+            Swal.close();
+            let list =data.response.data
+            let selectVehiculosModelo= document.getElementById("selectVehiculosModelo")
+            selectVehiculosModelo.innerHTML=""; 
+            for (let obj in list){
+                selectVehiculosModelo.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+            }
+            selectVehiculosModelo.value=""
+        }
+    }
+}
+
+
+function abrirAgregarVehiculo(){
+    limpiarModalVehiculos()
+    let selectColores = document.getElementById("inputColor")
+    for(let color of coloresArray){
+        selectColores.innerHTML += '<option value="'+color.toLowerCase()+'">'+color+'</option>';
+    }
+    selectColores.value=""
+    $("#idLoadingButtonVehiculos").show();
+    $("#idButtonVehiculos").hide();
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: "vehiculo_tipo",
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+        },
+        }).then(res => res.json())
+        .then(res => {
+            if(res.success){
+                let data= res.response.data
+                if(data.status_code ==400 || data.status_code==401){
+                    errorAlert(res)
+                    $("#idLoadingButtonVehiculos").hide();
+                    $("#idButtonVehiculos").show();
+                }else{
+                    //Swal.close()
+                    $('#vehiculosModal').modal('show');
+                    $("#idLoadingButtonVehiculos").hide();
+                    $("#idButtonVehiculos").show();
+                    let selectVehiculos= document.getElementById("selectVehiculos");
+                    let list = data
+                    for (let obj in list){
+                        selectVehiculos.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+                    }
+                    selectVehiculos.value=""
+                }
+            }else{
+                errorAlert(res)
+                $("#idLoadingButtonVehiculos").hide();
+                $("#idButtonVehiculos").show();
+            }
+        })
+}
+
+
+function abrirAgregarEquipo(){
+    limpiarModalEquipos()
+    $('#equiposModal').modal('show');
+    let selectColores = document.getElementById("inputColorEquipo")
+    for(let color of coloresArray){
+        selectColores.innerHTML += '<option value="'+color.toLowerCase()+'">'+color+'</option>';
+    }
+    selectColores.value=""
+}
+//FUNCION para saber que vehiculos estan con checkbox
+function agregarVehiculo(){
+    let dicData = {};
+    let validation = false;
+    let tipoVehiculo= $('#selectVehiculos').val();
+    let marca= $('#selectVehiculosMarca').val();
+    let modelo= $('#selectVehiculosModelo').val();
+    let matricula= $('#inputMatriculaVehiculo').val();
+    let color= $('#inputColor').val();
+    if(tipoVehiculo==''){
+        validation=true
+    }
+    if(!validation){
+        let id= Math.floor(Math.random() * 1000000)
+        let checked='checked'
+        selectedVehiculos.push(id);
+        listVehiculesData.push({"tipo_vehiculo":tipoVehiculo ,"marca_vehiculo":marca , "placas_vehiculo":matricula, "color_vehiculo":color, "modelo_vehiculo": modelo, id: id, check: checked})
+        console.log("VWEHICULOOSSS", listVehiculesData)
+        if(listVehiculesData.length==1){
+            let tbody = document.querySelector('#tableCars tbody');
+            tbody.innerHTML = '';
+        }
+        let newRow2 = $('<tr>');
+        newRow2.append($('<td>').text(tipoVehiculo));
+        newRow2.append($('<td>').text(marca));
+        newRow2.append($('<td>').text(matricula));
+        newRow2.append($('<td>').text(color));
+        newRow2.append($('<td>').text(modelo));
+        newRow2.append('<td><input class="form-check-input radioGroupItems" style="margin: auto!important; display: block!important;" type="radio"  name="groupCarList" id='+id+' '+checked+'></td>');
+        newRow2.append('</tr>');
+        $('#tableCars').append(newRow2);
+
+        limpiarModalVehiculos()
+        $("#vehiculosModal").modal('hide');
+    }else{
+        Swal.fire({
+            title: "Validación",
+            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+            type: "warning"
+        });
+
+    }
+}
+
+//FUNCION para guardar equipos entas con checkbox
+function agregarEquipo(){
+    let dicData = {};
+    let validation = false;
+    let tipo= $("#selectTipoEquipo").val() ;
+    let nombre=$("#inputNombreEquipo").val();
+    let marca=$("#inputMarcaEquipo").val();
+    let modelo=$("#inputModeloEquipo").val();
+    let noserie=$("#inputSerieEquipo").val();
+    let color=$("#inputColorEquipo").val();
+    if(tipo==''|| nombre=='' ){
+        validation=true
+    }
+    if(!validation){
+        let id= Math.floor(Math.random() * 1000000)
+        let checked='checked'
+        selectedEquipos.push(id);
+        listItemsData.push({ marca_articulo: marca, nombre_articulo: nombre, tipo_equipo: tipo, modelo_articulo: modelo, color_articulo:color , numero_serie:noserie, id: id, check:checked});
+        //let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
+        if(listItemsData.length==1){
+            let tbodyEq = document.querySelector('#tableEquipos tbody');
+            tbodyEq.innerHTML = '';
+        }
+        let newRow2 = $('<tr>');
+        newRow2.append($('<td>').text(tipo));
+        newRow2.append($('<td>').text(nombre));
+        newRow2.append($('<td>').text(marca));
+        newRow2.append($('<td>').text(modelo));
+        newRow2.append($('<td>').text(noserie));
+        newRow2.append($('<td>').text(color));
+        newRow2.append('<td><input class="form-check-input checkboxGroupEquipos" style="margin: auto !important; display: block !important;"type="checkbox" id='+id+' '+checked+'></td>');
+        newRow2.append('</tr>');
+        $('#listAddItemsModal').append(newRow2);
+        $("#tableEquipos").append(newRow2)
+        //successMsg("Success", "Equipo agregado correctamente, da click en la lista para ver tus equipos agregados.")
+        limpiarModalEquipos();
+        successMsg("Confirmación","Equipo agregado correctamente, da click en la lista para ver todos los equipos selecionados." )
+        $('#equiposModal').modal('hide');
+    }else{
+        Swal.fire({
+            title: "Validación",
+            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+            type: "warning"
+        });
+    }
+}
+
+function verListaDeEquiposAgregados(){
+    selectedEquipos=[]
+    getSelectedCheckbox('tableEquipos', 'checkboxGroupEquipos', selectedEquipos)
+    let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
+    $('#listAddItemsModal').modal('show');
+    let tabla = document.getElementById('tableAddItemsModal');
+    let tbody = tabla.getElementsByTagName('tbody')[0];
+    tbody.innerHTML = '';
+    if(selectedItems.length>0 ){
+        for (var i = 0; i < selectedItems.length; i++) {
+            let tipoCar = selectedItems[i].tipo_equipo;
+            let nombreEquipo = selectedItems[i].nombre_articulo;
+            let marcaCar = selectedItems[i].marca_articulo;
+            let modeloCar = selectedItems[i].modelo_articulo;
+            let numeroSerie = selectedItems[i].numero_serie;
+            let colorCar = selectedItems[i].color_articulo;
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(tipoCar));
+            newRow.append($('<td>').text(nombreEquipo));
+            newRow.append($('<td>').text(marcaCar));
+            newRow.append($('<td>').text(modeloCar));
+            newRow.append($('<td>').text(numeroSerie));
+            newRow.append($('<td>').text(colorCar));
+            newRow.append('</tr>');
+            $('#tableAddItemsModal').append(newRow);
+        }
+    } else if(selectedItems.length==0){
+        var newRow = $('<tr>');
+        newRow.append($('<td colspan="3">').text('No existen equipos seleccionados.'));
+        newRow.append('</tr>');
+        $('#tableAddItemsModal').append(newRow);
+    }
+    $("#listAddItemsModal").modal('show');
+}
+
+function verListaDeVehiculosAgregados(){
+    selectedVehiculos=[]
+    getSelectedCheckbox('tableCars', 'radioGroupItems', selectedVehiculos)
+    let selectedVehiculo= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
+    $('#listAddCarsModal').modal('show');
+    let tabla = document.getElementById('tableAddCarsModal');
+    let tbody = tabla.getElementsByTagName('tbody')[0];
+    tbody.innerHTML = '';
+    if(selectedVehiculo.length>0 ){
+        for (var i = 0; i < selectedVehiculo.length; i++) {
+            let tipoCar = selectedVehiculo[i].tipo_vehiculo;
+            let marcaCar = selectedVehiculo[i].marca_vehiculo;
+            let modeloCar = selectedVehiculo[i].modelo_vehiculo;
+            let matriculaCar = selectedVehiculo[i].placas_vehiculo;
+            let colorCar = selectedVehiculo[i].color_vehiculo;
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(tipoCar));
+            newRow.append($('<td>').text(marcaCar));
+            newRow.append($('<td>').text(modeloCar));
+            newRow.append($('<td>').text(matriculaCar));
+            newRow.append($('<td>').text(colorCar));
+            newRow.append('</tr>');
+            $('#tableAddCarsModal').append(newRow);
+        }
+    } else if(selectedVehiculo.length==0){
+        var newRow = $('<tr>');
+        newRow.append($('<td colspan="3">').text('No hay vehículo seleccionado.'));
+        newRow.append('</tr>');
+        $('#tableAddCarsModal').append(newRow);
+    }
+    $("#listAddCarsModal").modal('show');
+}
+
+
+function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
+    let group= document.querySelectorAll('.'+classCheckbox)
+    group.forEach(checkbox => {
+        if(checkbox.checked){
+            checkboxesSeleccionados.push(parseInt(checkbox.id))
+        }
+  });
+    //return checkboxesSeleccionados
+}
+
+function agregarComentarioPaseAcceso(type){
+        
+    if(type== "acceso"){
+        let comentario = $("#idComentarioAcceso").val()
+        comentariosAcceso.push({comentario_pase:comentario ,tipo_de_comentario:tipoMovimiento})
+        let tabla = document.getElementById("tableComentariosAcceso");
+        let tbody = tabla.getElementsByTagName("tbody")[0];
+        tbody.innerHTML="";
+        
+        for (var i = 0; i < comentariosAcceso.length; i++) {
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(comentariosAcceso[i].comentario_pase));
+            newRow.append($('<td>').text(comentariosAcceso[i].tipo_de_comentario));
+            newRow.append('</tr>');
+            $('#tableComentariosAcceso').append(newRow);
+        }
+        
+        $("#commentarioAccesoModal").modal('hide')
+        successMsg("Confirmación", "Comentario listo para agregar al registro de ingreso")
+    }else{
+        let comentario = $("#idComentarioPase").val()
+        let tabla = document.getElementById("tableInstructions");
+        let tbody = tabla.getElementsByTagName("tbody")[0];
+        tbody.innerHTML="";
+
+        for (var i = 0; i < listInstructions.length; i++) {
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text(listInstructions[i].comentario_pase));
+            newRow.append($('<td>').text(listInstructions[i].tipo_de_comentario));
+            newRow.append('</tr>');
+            $('#tableInstructions').append(newRow);
+        }
+        comentariosPase.push({comentario_pase:comentario ,tipo_de_comentario:tipoMovimiento})
+        for (let i = 0; i < comentariosPase.length; i++) {
+            let newRow = $('<tr>');
+            newRow.append($('<td>').text(comentariosPase[i].comentario_pase));
+            newRow.append($('<td>').text(comentariosPase[i].tipo_de_comentario));
+            newRow.append('</tr>');
+            $('#tableInstructions').append(newRow);
+        }
+        if(comentariosPase.length == 0){
+            var newRow = $('<tr>');
+            newRow.append($('<td>').text('No existen comentarios/ instrucciones'));
+            newRow.append($('<td>'));
+            newRow.append('</tr>');
+            $('#tableInstructions').append(newRow);
+        }
+        $("#commentarioPaseModal").modal('hide')
+        successMsg("Confirmación", "Comentario listo para agregar al registro de ingreso")
+    }
+}
+
+function showCommentarioAccesoModal(){
+    loadingService()
+    fetch(url + urlScripts ,{
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: "vehiculo_tipo",
+            tipo :"Automóvil",
+            //marca :"CHEVROLET"
+        }),
+        headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+
+        } else{
+            errorAlert(res)
+        }
+    })
+}
+ 
+function showCommentarioPaseModal(){
+    loadingService()   
 }
 
 //FUNCION Obtener data inicial informacion de la caseta
@@ -84,24 +779,33 @@ function getInitialData(){
 
 
 //FUNCION para asignar nueva visita
-function asignarNuevaVisita(){
+function crearNuevaVisita(){
+    loadingService()
     let nombre=$("#inputNombreNV").val();
-    let razonSocial=$("#inputRazonSocialNV").val();
+    let empresa=$("#inputRazonSocialNV").val();
     let areaQueVisita=$("#inputAreaVisitaNV").val();
     let visitaA=$("#selectVisitaNV").val();
-    let motivoVisita=$("#inputMotivoVisitaNV").val();
-    if(nombre!=='' , razonSocial!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
+    let motivoVisita=$("#selectMotivoVisitaNV").val();
+    if(nombre!=='' , empresa!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
+        let access_pass={
+            nombre: nombre,
+            perfil_pase:"Walkin",
+            telefono: "",
+            visita_a:visitaA,
+            email: getCookie("userEmail"),
+            empresa: empresa,
+            foto:fotosNuevaVisita.foto,
+            identificacion: fotosNuevaVisita.identificacion,
+            //area_que_visita:areaQueVisita,
+            //motivo_visita:motivoVisita,
+        }
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
-                script_id: idScript,
-                option: 'add_new_visit',
-                nombre: nombre,
-                razonSocial:razonSocial,
-                areaQueVisita:areaQueVisita,
-                visitaA:visitaA,
-                motivoVisita:motivoVisita,
-
+                script_name: paseDeAccesoScript,
+                option: 'create_access_pass',
+                location:selectLocation.value,
+                access_pass: access_pass
             }),
             headers:{
                 'Content-Type': 'application/json',
@@ -111,20 +815,37 @@ function asignarNuevaVisita(){
         .then(res => res.json())
         .then(res => {
             if (res.success) {
+                let data= res.response.data
+                if(data.status_code ==400 || data.status_code==401){
+                    errorAlert(res)
+                    //$("#idLoadingButtonVehiculos").hide();
+                    //$("#idButtonVehiculos").show();
+                }else{
+                    Swal.close()
+                    Swal.fire({
+                        title: "Validación",
+                        text: "NUeva visita registrada",
+                        type: "success"
+                    });
+                    successMsg("Confirmación","Nueva visita registrada exitosamente" )
+                    codeUserVisit= Date.now();
+                    let inputCode = document.getElementById("inputCodeUser");
+                     $("#inputCodeUser").val(data.json.id);
+                    if(data.json.id!==""){
+                        //setSpinner(true, 'divSpinner');
+                        $("#divSpinner").show();
+                        buscarPaseEntrada();
+                    }
+                    //$("#listModal").modal('hide');
+                    //inputCode.value= codeUserVisit
+                    $("#newVisitModal").modal('hide')
+                }
+                    //
                 //CODE una vez resulta la imagen, cargarla en front
-                let data={ data: {}}
-                console.log("RESPONSE", data)
+                
             } 
         });
-        Swal.fire({
-            title: "Validación",
-            text: "NUeva visita registrada",
-            type: "success"
-        });
-        codeUserVisit= Date.now();
-        let inputCode = document.getElementById("inputCodeUser");
-        inputCode.value= codeUserVisit
-        $("#newVisitModal").modal('hide')
+        
     }else{
         Swal.fire({
             title: "Validación",
@@ -133,84 +854,63 @@ function asignarNuevaVisita(){
         });
     }
 }
-
-
-//FUNCION para agregar un nuevo equipo
-function agregaEquipo(){
-    let nombre=$("#inputNombreNV").val();
-    let razonSocial=$("#inputRazonSocialNV").val();
-    let areaQueVisita=$("#inputAreaVisitaNV").val();
-    let visitaA=$("#selectVisitaNV").val();
-    let motivoVisita=$("#inputMotivoVisitaNV").val();
-    if(nombre!=='' , razonSocial!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
-        fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_id: idScript,
-                option: 'add_new_equip',
-                nombre: nombre,
-                razonSocial:razonSocial,
-                areaQueVisita:areaQueVisita,
-                visitaA:visitaA,
-                motivoVisita:motivoVisita,
-
-            }),
-            headers:{
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt
-            },
-        })
-        .then(res => res.json())
-        .then(res => {
-            if (res.success) {
-                //CODE una vez resulta la imagen, cargarla en front
-                let data={ data: {}}
-            } 
-        });
-    }else{
-        Swal.fire({
-            title: "Validación",
-            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
-            type: "warning"
-        });
-    }
-}
-
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
-function getDataUser() {
-    setCleanData();
-    $("#divSpinner").show();
-    setHideElements('dataHide');
-    setHideElements('buttonsOptions');
-    let codeUser = $("#inputCodeUser").val();
-    fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_name: "script_turnos.py",
-            option: 'search_access_pass',
-            location: getCookie('userLocation'),
-            qr_code: codeUser
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt,
-            'Access-Control-Request-Headers':'*'
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            fullData= res.response.data
-            setCookie('userLocation', res.response.data.ubicacion)
-            setDataInformation('informatioUser', res.response.data)
-            setHideElements('buttonsModal');
-            $("#divSpinner").hide();
-            setHideElements('dataShow');
-        } 
-    }) 
-}
+function buscarPaseEntrada() {
+    $("#buttonBuscarPaseEntrada").prop('disabled', true);
+    $("#buttonNew").prop('disabled', true);
+    $("#buttonNew").hide();
+    codeUser = $("#inputCodeUser").val();
+    if(codeUser ==""){
+        successMsg("Validación", "Escribe un codigo para continuar", "warning")
+        $("#buttonNew").show();
+        $("#buttonBuscarPaseEntrada").prop('disabled', false);
+        $("#buttonNew").prop('disabled', false);
+    }else{
+        setCleanData()
+        $("#divSpinner").show();
+        setHideElements('dataHide');
+        setHideElements('buttonsOptions');
+        fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name: "script_turnos.py",
+                option: 'search_access_pass',
+                location: selectLocation.value,
+                area: selectCaseta.value,
+                qr_code: codeUser
+            }),
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt,
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                fullData= res.response.data
+                Swal.close()
+                //setCookie('userLocation', res.response.data.ubicacion)
+                setDataInformation('informatioUser', res.response.data);
+                setHideElements('buttonsModal');
+                setHideElements('dataShow');
 
+                setHideElements(fullData.tipo_movimiento) //Oculta o muestra los botones correspondientes dependiendo de si es Entrada o Salida
+            }else{
+                errorAlert(res)
+                setCleanData();
+                setHideElements('dataHide');
+                $("#buttonNew").show();
+                $("#divSpinner").hide();
+                $("#inputCodeUser").val("")
+                $("#idComentarioPase").val('')
+                $("#idComentarioAcceso").val('')
+                $("#buttonBuscarPaseEntrada").prop('disabled', false);
+                $("#buttonNew").prop('disabled', false);
+            }
+        })
+    }
+}
 
 //FUNCION para obtener la lista de usuario
 function getDataListUser(){
@@ -237,28 +937,33 @@ function getDataListUser(){
     setDataInformation('listUsers',data)
 }
 
-
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 1
-function setDataUser(){
-    console.log("=================REGISTRAR INGRESO============================")
-    let codeUser  = $("#inputCodeUser").val();
+function registrarIngreso(){
+    loadingService()
+    //let codeUser  = $("#inputCodeUser").val();
     $("#buttonIn").hide();
     $("#buttonOut").hide();
     
-    let location= 'Planta Monterrey'//getCookie('userLocation') 
-    let area='Caseta Vigilancia Norte 3' //getCookie('userCaseta')
+    let location= selectLocation.value
+    let area=selectCaseta.value 
 
-    getSelectedCheckbox('tableItems', 'checkboxGroupEquipos', selectedEquipos);
-    let selectedEq= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
+    getSelectedCheckbox('tableEquipos', 'checkboxGroupEquipos', selectedEquipos);
+    let selectedEq= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id)).map(({ check, id, ...rest }) => rest)
 
-    getSelectedCheckbox('tableItems', 'radioGroupItems', selectedVehiculos)
-    let selectedVe= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
-
-    console.log("location area codeuser", location,area,codeUser)
-    console.log("SELECTED EQUIOPOS YU VEHCIULOSS",selectedEq, selectedVe)
-
+    getSelectedCheckbox('tableEquipos', 'radioGroupItems', selectedVehiculos)
+    let selectedVe= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id)).map(({ check, id, ...rest }) => rest);
+       
     //let dataItem = {'listItemsData':listItemsData,'listNewItems':listNewItems}
     //let dataVehicule = {'listVehiculesData':listVehiculesData,'listNewVehicules':listNewVehicules}
+    let comPase=[]
+    let comAcc=[]
+    for (let comP of comentariosPase ){
+        comPase.push(comP.comentario_pase)
+    }
+    for (let comA of comentariosAcceso ){
+        comAcc.push("a", comA.comentario_pase)
+    }
+    console.log("comentariosPase",comentariosPase,comentariosAcceso )
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -269,11 +974,13 @@ function setDataUser(){
             area: area,
             vehiculo: selectedVe,
             equipo: selectedEq,
+            comentario_pase: comentariosPase,
+            comentario_acceso: comentariosAcceso,
+            gafete:gafeteRegistroIngreso
         }),
         headers:{
             'Content-Type': 'application/json',
             'Authorization': 'Bearer '+userJwt,
-            'Access-Control-Request-Headers':'*'
         },
     })
     .then(res => res.json())
@@ -283,38 +990,58 @@ function setDataUser(){
             setHideElements('buttonsModal');
             setDataInformation('informatioUser',data)
             Swal.fire({
-                title   : "Exito!",
+                title   :"Exito!",
                 text: "Movimiento de usuario registrado",
                 icon: "success"
             });
+
             setCleanData();
             setHideElements('dataHide');
             setHideElements('buttonsOptions');
             setHideElements('buttonNew');
+            //$("#buttonAsignarGafete").show();
+            //$("#buttonClean").show();
+            //$("#buttonOut").show();
+            $("#buttonNew").show();
+            $("#inputCodeUser").val('');
+            $("#buttonAddCommentarioAccesoModal").hide();
         }else{
-            Swal.fire({
-                title: "Error",
-                text: res.error.msg.msg,
-                type: res.error.msg.type
-            });
-            $("#buttonOut").show();
+            errorAlert(res)
+            setCleanData();
+            setHideElements('dataHide');
+            $("#inputCodeUser").val("");
+            $("#buttonNew").show();
+            $("#buttonAddCommentarioAccesoModal").hide();
         }
     }).catch(error => {
+        errorAlert(res)
         console.error(error)
+        setCleanData();
+        setHideElements('dataHide');
+        $("#inputCodeUser").val('');
+        $("#buttonNew").show();
+        $("#buttonAddCommentarioAccesoModal").hide();
     });
 }
 
-
 function registrarSalida(){
-    console.log("=================REGISTRAR INGRESO============================")
-    let codeUser  = $("#inputCodeUser").val();
-   
+    let location= selectLocation.value
+    let area=selectCaseta.value 
+    Swal.fire({
+        title: 'Cargando...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+            Swal.showLoading();
+       }
+    });
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name: 'script_turnos.py',
             option: 'do_out',
             qr_code: codeUser,
+            location: location,
+            area: area
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -324,7 +1051,6 @@ function registrarSalida(){
     })
     .then(res => res.json())
     .then(res => {
-        console.log("RESPONSE",res)
         if (res.success) {
             let data = {};
             setHideElements('buttonsModal');
@@ -338,32 +1064,69 @@ function registrarSalida(){
             setHideElements('dataHide');
             setHideElements('buttonsOptions');
             setHideElements('buttonNew');
+            $("#inputCodeUser").val('');
+            $("#buttonAddCommentarioAccesoModal").hide();
+            //setHideElements(fullData.tipo_movimiento)
+            $("#buttonRecibirGafete").hide()
         }else{
-            Swal.fire({
-                title: "Error",
-                text: res.error.msg.msg,
-                type: res.error.msg.type
-            });
+            errorAlert(res)
             $("#buttonOut").show();
+            $("#inputCodeUser").val('');
+            $("#buttonAddCommentarioAccesoModal").hide();
         }
     }).catch(error => {
-        console.error(error)
+
+        $("#inputCodeUser").val('');
+        $("#buttonAddCommentarioAccesoModal").hide();
     });
 }
 
-
-
 //FUNCION para asignar un nuevo gafete
-function setDataGafete(data = {}){
+function entregarGafete(){
+    $("#idLoadingButtonAsignarGafete").show();
+    $("#idButtonAsignarGafete").hide();
     let codeUser  = $("#inputCodeUser").val();
-    fetch(url + urlScripts, {
+    let numGafete= $("#selectGafete").val();
+    let otroDoc= $("#inputOtroDescCard").val();
+    let nombre= $("#nameUserInf").text();
+    let locker= $("#inputLocker").val();
+    let radios = document.getElementsByName('radioOptionsDocument');
+    let radioSeleccionado = "";
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            radioSeleccionado = radios[i];
+            break; 
+        }
+    }
+    if(numGafete !=="" && radioSeleccionado.value!=="" && locker!==""){
+        gafeteRegistroIngreso={
+            "id_gafete":numGafete,
+            "documento_garantia": radioSeleccionado.value, // Opciones "licencia_de_conducir","carnet_de_identidad", "ine"
+            "id_locker":locker
+            /*'status_gafete':'asignar_gafete',
+            'ubicacion_gafete':selectLocation.value,
+            'caseta_gafete':selectCaseta.value,
+            'visita_gafete':nombre,
+            'id_gafete':numGafete,
+            'documento_gafete':[radioSeleccionado.value],*/
+        }
+
+        $("#gafeteModal").modal('hide')
+        successMsg("Gafete Entregado", "El gafete asignado para el registro de ingreso.")
+        $("#idLoadingButtonAsignarGafete").hide();
+        $("#idButtonAsignarGafete").show();
+        $("#alert_gafete_modal").hide();
+    }else{
+        successMsg("Validación", "Faltan datos por llenar")
+        $("#idLoadingButtonAsignarGafete").hide();
+        $("#idButtonAsignarGafete").show();
+    }
+    /*fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 116097,
-            option: 'set_movement_users',
-            curp: codeUser,
-            dataGafete: data,
-            location: 'Planta Monterrey',
+            script_name: "gafetes_lockers.py",
+            option: "new_badge",
+            data_gafete: data_gafete,
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -374,11 +1137,26 @@ function setDataGafete(data = {}){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            let data = res.response.json;
+            let data = res.response.data;
+            if(data.status_code==400){
+                errorAlert(data)
+                $("#idLoadingButtonAsignarGafete").hide();
+                $("#idButtonAsignarGafete").show();
+            }
+            else if(data.status_code==201){
+                successMsg("Gafete Entregado", "El gafete a sido entregado correctamente.")
+                $("#idLoadingButtonAsignarGafete").hide();
+                $("#idButtonAsignarGafete").show();
+                $("#alert_gafete_modal").hide();
+                $("#cardModal").modal('hide')
+            }
+        }else{
+            errorAlert(res)
+            $("#idLoadingButtonAsignarGafete").hide();
+            $("#idButtonAsignarGafete").show();
         } 
-    })
+    }) */
 }
-
 
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 2
 function setDataInformation(option, data = {}){
@@ -414,7 +1192,6 @@ function setDataInformation(option, data = {}){
     }
 }
 
-
 //FUNCION al pedir la opcion check otro user al setear la data
 function optionCheckOtro(){
     let checkboxMarcado = document.getElementById("checkOtro").checked;
@@ -427,47 +1204,134 @@ function optionCheckOtro(){
     }
 }
 
-
 //FUNCION al pedir la opcion information user al setear la informacion del usuario
 function dataUserInf(dataUser){
-    let imgUser = dataUser.portador.foto[0].file_url != '' ? dataUser.portador.foto[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
-    $('#imgUser').attr('src', imgUser); 
-    let imgCard = dataUser.portador.identificacion[0].file_url != '' ? dataUser.portador.identificacion[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg';
+    if(dataUser.hasOwnProperty('limitado_a_dias')){
+        let dias= dataUser.limitado_a_dias
+        if(dias.length>0){
+            for(let d of dias){
+                $("#"+d+"").removeClass('btn-outline-success');
+                $("#"+d+"").addClass('btn-success');
+            }
+        }
+    }
+    $("#folio").text(dataUser.folio !==""? dataUser.folio: "")
+
+    let imgUser ="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1"
+    if(dataUser.hasOwnProperty('foto')){
+        if(dataUser.foto.length>0){
+            imgUser = dataUser.foto[0].file_url !== '' ? 
+            dataUser.foto[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
+        }else{
+            imgUser= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
+        }
+    }
+    $('#imgUser').attr('src', imgUser);
+
+    let imgCard="https://www.creativefabrica.com/wp-content/uploads/2018/12/Id-card-icon-by-rudezstudio-5-580x386.jpg"
+
+    if(dataUser.hasOwnProperty('identificacion')){
+        if(dataUser.identificacion.length>0){
+            imgCard= dataUser.identificacion[0].file_url !==  '' ? 
+            dataUser.identificacion[0].file_url : "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
+        }else{
+            imgCard= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
+        }
+        
+    }
     $('#imgCard').attr('src', imgCard); 
-    let nameUser = dataUser.portador.nombre_visita != '' ? dataUser.portador.nombre_visita: '';
-    $('#name').text(nameUser); 
-    let rfc = dataUser.portador.rfc != '' ? dataUser.portador.rfc: ''; // EL OBJ NO TRAE EL RFC
-    $('#rfc').text(rfc);
-    let validity = dataUser.pass.fecha_expiracion != '' ? dataUser.pass.fecha_expiracion : '';
+
+    let nameUser = ""
+    if(dataUser.hasOwnProperty("nombre")){
+        nameUser=dataUser.nombre !==  '' ? dataUser.nombre : '';
+    }
+    $('#nameUserInf').text(nameUser);
+    $("#ubicacion").text(dataUser.ubicacion||"")
+    /*let rfc=""
+    if(dataUser.portador.hasOwnProperty('rfc')){
+        rfc=dataUser.portador.rfc[0]
+    }
+    $('#rfc').text(rfc);*/
+
+    let validity = ""
+    if(dataUser.hasOwnProperty('fecha_de_caducidad')){
+        validity= dataUser.fecha_de_caducidad !==  '' ? dataUser.fecha_de_caducidad : '';
+    }
     $('#validity').text(validity);
-    let status = dataUser.portador.status_visita[0] != '' ? dataUser.portador.status_visita[0]: '';
+
+    let status = ""
+    if(dataUser.hasOwnProperty('estatus')){
+        if(dataUser.estatus !=="" ){
+            status=dataUser.estatus !=="" ? dataUser.estatus: '';
+        }else{
+            status=""
+        }
+    }
     $('#status').text(status);
-    let tipoPase = dataUser.pass.tipo != '' ? dataUser.pass.tipo: '';
-    $('#tipoPaseText').text(tipoPase);
-    //----Visiti
-    let motivo = dataUser.portador.motivo != '' ? dataUser.portador.motivo: '';
+    
+    let tipoDePase = ""
+    if(dataUser.hasOwnProperty("tipo_de_pase")){
+        tipoDePase= dataUser.tipo_de_pase !==  '' ? dataUser.tipo_de_pase: '';
+    }
+    $('#tipoPaseText').text(tipoDePase);
+
+    let motivo =""
+    if(dataUser.hasOwnProperty('motivo_visita')){
+        motivo=dataUser.motivo_visita !==  '' ? dataUser.motivo_visita: '';
+    }
     $('#motivo').text(motivo);
-    let visit = dataUser.portador.visit_name != '' ? dataUser.portador.visit_name: '';
-    $('#visit').text(visit);
-    let authorizePase = dataUser.authorize_pase != '' ? dataUser.authorize_pase: '';
-    $('#authorizePase').text(authorizePase);
-    let authorizePhone = dataUser.authorize_phone != '' ? dataUser.authorize_phone: '';
+    
+    let visit=""
+    if(dataUser.hasOwnProperty('visita_a')){
+        visit= dataUser.visita_a.length>0 ? dataUser.visita_a[0].nombre: '';
+    }
+    $('#visita').text(visit);
+    
+    /*let authorizePase =""
+    if(dataUser.hasOwnProperty("authorize_pase")){
+        authorizePase=dataUser.authorize_pase !==  '' ? dataUser.authorize_pase: '';
+    }
+    $('#authorizePase').text(authorizePase);*/
+
+    let authorizePhone=""
+    if(dataUser.hasOwnProperty('telefono')){
+        if(dataUser.telefono.length>0){
+            authorizePhone=dataUser.telefono.length>0 ? dataUser.telefono[0]:''
+        }else{
+            authorizePhone=""
+        }
+    }
     $('#authorizePhone').text(authorizePhone);
 }
 
 
 //FUNCION al pedir la opcion information user al setear la info de las tablas
 function tableFill(dataUser){
+    //TABLE COMENTARIOS ACCESOS
+    if(comentariosAcceso.length == 0){
+        let tabla = document.getElementById("tableComentariosAcceso");
+        let tbody = tabla.getElementsByTagName("tbody")[0];
+        tbody.innerHTML="";
+        let newRow = $('<tr>');
+        newRow.append($('<td>').text('No existen comentarios'));
+        newRow.append($('<td>'));
+        newRow.append('</tr>');
+        $('#tableComentariosAcceso').append(newRow);
+    }
     //TABLA COMENTARIOS
-    let listInstructions = dataUser.comentarios.length > 0 ? dataUser.comentarios: [];
+    if(dataUser.hasOwnProperty('grupo_instrucciones_pase')){
+        listInstructions = dataUser.grupo_instrucciones_pase.length > 0 ? dataUser.grupo_instrucciones_pase: [];
+    }
     for (var i = 0; i < listInstructions.length; i++) {
-        if(i < 3){
+        //if(i < 3){
             var newRow = $('<tr>');
-            newRow.append($('<td>').text(listInstructions[i].msg));
+            newRow.append($('<td>').text(listInstructions[i].comentario_pase));
+            newRow.append($('<td>').text(listInstructions[i].tipo_de_comentario));
             newRow.append('</tr>');
             $('#tableInstructions').append(newRow);
-        }
+        //}
     }
+    /*
     if(listInstructions.length > 3){
         $("#buttonCommentsModal").show();
         for (var i = 0; i < listInstructions.length; i++) {
@@ -476,25 +1340,33 @@ function tableFill(dataUser){
             newRow.append('</tr>');
             $('#tableModalInstructions').append(newRow);
         }
-    }
+    }*/
     if(listInstructions.length == 0){
         var newRow = $('<tr>');
-        newRow.append($('<td>').text('No existen Instrucciones'));
+        newRow.append($('<td>').text('No existen comentarios/ instrucciones'));
+        newRow.append($('<td>'));
         newRow.append('</tr>');
-        $('#tableModalInstructions').append(newRow);
+        $('#tableInstructions').append(newRow);
     }
     //----TABLA ACCESOS PERMITIDOS
-    let listAccess = dataUser.accesos.length > 0 ? dataUser.accesos: [];
+
+    let listAccess = []
+    if(dataUser.hasOwnProperty('grupo_areas_acceso')){
+        let accesos = dataUser.grupo_areas_acceso.filter(objeto => !tienePropiedadesVacias(objeto));
+        listAccess = accesos.length > 0 ? accesos: [];
+    }
     for (var i = 0; i < listAccess.length; i++) {
-            let nombre = listAccess[i].nombre;
+            let nombre = listAccess[i].nombre_area;
             let status = listAccess[i].status;
+            let comentario = listAccess[i]['66af1a77d703592958dca5eb'];
             var newRow = $('<tr>');
             newRow.append($('<td>').text(nombre));
             newRow.append($('<td>').text(status));
+            newRow.append($('<td>').text(comentario));
             newRow.append('</tr>');
             $('#tableAccess').append(newRow);
     }
-    if(listAccess.length > 3){
+    /*if(listAccess.length > 3){
         $("#buttonAccessModal").show();
         for (var i = 0; i < listInstructions.length; i++) {
             let nombre = listAccess[i].nombre;
@@ -505,145 +1377,130 @@ function tableFill(dataUser){
             newRow.append('</tr>');
             $('#tableModalAccess').append(newRow);
         }
-    }
+    }*/
     if(listAccess.length == 0){
         var newRow = $('<tr>');
-        newRow.append($('<td colspan="2">').text('No existen Accesos permitidos'));
+        newRow.append($('<td >').text('No existen accesos permitidos'));
+        newRow.append($('<td>'));
         newRow.append('</tr>');
         $('#tableAccess').append(newRow);
     }
     //----Table CERTIFICACIONES
-    let listLocations = dataUser.certificaiones.length > 0 ? dataUser.certificaiones: [];
-    for (var i = 0; i < listLocations.length; i++) {
-        if(i < 1000){
+    let listCertificaciones = []
+    if(dataUser.hasOwnProperty('certificaciones')){
+        listCertificaciones = dataUser.certificaciones.length > 0 ? dataUser.certificaciones: [];
+    }
+
+    for (var i = 0; i < listCertificaciones.length; i++) {
+        //if(i < 1000){
             var newRow = $('<tr>');
-            newRow.append($('<td>').text(listLocations[i].nombre));
-            newRow.append($('<td>').text(listLocations[i].status));
+            newRow.append($('<td>').text(listCertificaciones[i].nombre_certificacion/*.nombre*/));
+            newRow.append($('<td>').text(listCertificaciones[i].status));
             newRow.append('</tr>');
             $('#tableLocations').append(newRow);
-        }
+        //}
     }
     /*
-    if(listLocations.length > 3){
+    if(listCertificaciones.length > 3){
         $("#buttonLocationsModal").show();
         for (var i = 0; i < listInstructions.length; i++) {
             var newRow = $('<tr>');
-            newRow.append($('<td>').text(listLocations[i]));
+            newRow.append($('<td>').text(listCertificaciones[i]));
             newRow.append('</tr>');
             $('#tableModalAccess').append(newRow);
         }
-    } */
-    if(listLocations.length == 0){
+    } 
+    */
+    if(listCertificaciones.length == 0){
         var newRow = $('<tr>');
-        newRow.append($('<td>').text('No existen Accesos'));
+        newRow.append($('<td>').text('No existen Accesos/ Certificaciones'));
+        newRow.append($('<td>'))
         newRow.append('</tr>');
-        $('#tableModalAccess').append(newRow);
+        $('#tableLocations').append(newRow);
     }
-    return listLocations
+    return listCertificaciones
 }
 
 
 //FUNCION llenar tabla de equipos en la primera carga
 function tableFillEquipos(dataUser){
-    let listItems = dataUser.equipo.length > 0 ? dataUser.equipo: [];
+    let listItems = dataUser.grupo_equipos.length > 0 ? dataUser.grupo_equipos: [];
     listItems.forEach(function(dic) {
         dic.id = Math.floor(Math.random() * 1000000);
     });
     listItemsData = listItems;
     listItemsData.forEach(function(dic) {
-        dic.check = false;
+        dic.check = true;
     });
-    console.log("LISTA DE EQUIPOSSS",listItems)
-    /*
-    for (var i = 0; i < listItems.length; i++) {
-        if(i < 3){
-            let tipoItem = listItems[i].tipo;
-            let marcaItem = listItems[i].marca;
-            let modeloItem = listItems[i].modelo;
-            let serieItem = listItems[i].serie;
-            let colorItem = listItems[i].color;
-            let id = listItems[i].id;
-            var newRow = $('<tr>');
-            newRow.append($('<td>').text(tipoItem));
-            newRow.append($('<td>').text(marcaItem));
-            newRow.append($('<td>').text(modeloItem));
-            newRow.append($('<td>').text(serieItem));
-            newRow.append($('<td>').text(colorItem));
-            newRow.append('</tr>');
-            $('#tableModalItems').append(newRow);
-        }
-    }*/
-    $("#buttonItemsModal").show();
-    console.log("tama;o de lista de equipo",listItems.length)
-    for (var i = 0; i < listItems.length; i++) {
-        let tipoItem = listItems[i].tipo;
-        let marcaItem = listItems[i].marca;
-        let modeloItem = listItems[i].modelo;
-        let serieItem = listItems[i].serie;
-        let colorItem = listItems[i].color;
+    //$("#buttonItemsModal").show();
+    $("#tableEquipos").innerHTML="";
+    for (let i = 0; i < listItems.length; i++) {
+        let tipoItem = listItems[i].tipo_equipo;
+        let nombreItem = listItems[i].nombre_articulo;
+        let marcaItem = listItems[i].marca_articulo;
+        let modeloItem = listItems[i].modelo_articulo;
+        let serieItem = listItems[i].numero_serie;
+        let colorItem = listItems[i].color_articulo;
         let id = listItems[i].id;
-        var newRow = $('<tr>');
+        let newRow = $('<tr>');
         newRow.append($('<td>').text(tipoItem));
+        newRow.append($('<td>').text(nombreItem));
         newRow.append($('<td>').text(marcaItem));
         newRow.append($('<td>').text(modeloItem));
         newRow.append($('<td>').text(serieItem));
         newRow.append($('<td>').text(colorItem));
-        let isChecked= listItems[i].check == true ? 'checked' : '';
-        newRow.append('<td ><input class="form-check-input checkboxGroupEquipos" type="checkbox" id='+id+' '+isChecked+'></td>');
+        //dataUser.tipo_movimiento == 'Entrada'
+       
+        let isChecked= listItems[i].check == true || listItems[i].check == "checked" ? 'checked' : '';
+        newRow.append('<td ><input class="form-check-input checkboxGroupEquipos" style="margin: auto!important; display: block!important;" type="checkbox" id='+id+' '+isChecked+'></td>');
         newRow.append('</tr>');
-        $('#tableItems').append(newRow);
+        $('#tableEquipos').append(newRow);
+        console.log(dataUser.tipo_movimiento)
+        if(dataUser.tipo_movimiento =="Entrada"){
+            $('#'+id).prop('disabled', false);
+            $("#idButtonEquipoNota").prop('disabled', false);
+        }else{
+            $("#idButtonEquipoNota").prop('disabled', true);
+            $('#'+id).prop('disabled', true);
+        }
     }
     if(listItems.length == 0){
-        var newRow = $('<tr>');
-        newRow.append($('<td colspan="3">').text('No existen Equipos'));
+        $("#tableEquipos").innerHTML="";
+        let newRow = $('<tr>');
+        newRow.append($('<td >').text('No existen Equipos'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
         newRow.append('</tr>');
-        $('#tableItems').append(newRow);
+        $('#tableEquipos').append(newRow);
     }
 }
 
-function registrarIngreso(){
-    
-    /* fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_id: idScr,
-            option: 'get_initialData',
-            caseta: valueCaseta,
-            location: valueLocation
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-        } 
-    }); */
-
-}
 
 //FUNCION llenar tabla de vehiculos en la primera carga
 function tableFillVehiculos(dataUser){
-    
-    let listCars = dataUser.vehiculos.length > 0 ? dataUser.vehiculos: [];
+    let listCars = dataUser.grupo_vehiculos.length > 0 ? dataUser.grupo_vehiculos: [];
     listCars.forEach(function(dic) {
         dic.id = Math.floor(Math.random() * 1000000);;
     });
     listVehiculesData = listCars;
     listVehiculesData.forEach(function(dic) {
-        dic.check = false;
+        dic.check = true;
     });
 
     $("#buttonCarsModal").show();
-    console.log("LISTA DE CARROS", listCars.length)
+    let tbody = document.querySelector('#tableBitacora tbody');
+    tbody.innerHTML = '';
+    $("#tableCars").innerHTML="";
     for (var i = 0; i < listCars.length; i++) {
-        let tipoCar = listCars[i].tipo;
-        let marcaCar = listCars[i].marca;
-        let modeloCar = listCars[i].modelo;
-        let matriculaCar = listCars[i].placa;
-        let colorCar = listCars[i].color;
+        let tipoCar = listCars[i].tipo_vehiculo;
+        let marcaCar = listCars[i].marca_vehiculo;
+        let modeloCar = listCars[i].modelo_vehiculo;
+        let matriculaCar = listCars[i].placas_vehiculo;
+        let colorCar = listCars[i].color_vehiculo;
         let id = listCars[i].id;
         var newRow = $('<tr>');
         newRow.append($('<td>').text(tipoCar));
@@ -652,82 +1509,102 @@ function tableFillVehiculos(dataUser){
         newRow.append($('<td>').text(matriculaCar));
         newRow.append($('<td>').text(colorCar)); 
         let isChecked= listCars[i].check == true ? 'checked' : '';
-        newRow.append('<td><input class="form-check-input radioGroupItems" type="radio"  name="groupCarList" id='+id+' '+isChecked+'></td>');
+        newRow.append('<td ><input class="form-check-input radioGroupItems" style="margin: auto !important; display: block !important;" type="radio" name="groupCarList" id='+id+' '+isChecked+'></td>');
         newRow.append('</tr>');
         $('#tableCars').append(newRow);
+        if(dataUser.tipo_movimiento =="Entrada"){
+            $('#'+id).prop('disabled', false);
+            $("#idButtonVehiculos").prop('disabled', false);
+        }else{
+            $("#idButtonVehiculos").prop('disabled', true);
+            $('#'+id).prop('disabled', true);
+        }
     }
     if(listCars.length == 0){
+        $("#tableCars").innerHTML="";
         var newRow = $('<tr>');
-        newRow.append($('<td colspan="3">').text('No existen Vehiculos'));
+        newRow.append($('<td>').text('No existen Vehiculos'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
         newRow.append('</tr>');
         $('#tableCars').append(newRow);
     }
-}
-
-
-function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
-    let group= document.querySelectorAll('.'+classCheckbox)
-    group.forEach(checkbox => {
-        if(checkbox.checked){
-            checkboxesSeleccionados.push(parseInt(checkbox.id))
-        }
-  });
-    console.log("INFOO",checkboxesSeleccionados)
-    //return checkboxesSeleccionados
 }
 
 //FUNCION al pedir la opcion information user al setear la data
 function optionInformationUser(data){
-    let { portador,ultimo_acceso, vehiculos, equipo, validaciones}= data
-    console.log("OPTION INFO", portador)
-    data.movement={ "type":"in"}
-    let dataAccion= validaciones
-    if(data.hasOwnProperty('portador') && data.hasOwnProperty('validaciones') && data.hasOwnProperty('ultimo_acceso')){
+    let { ultimo_acceso }= data
+    if(data.hasOwnProperty('ultimo_acceso')){
         //---Movement
-        if(dataAccion.accion_ingreso == 'Entrada'){
-            $("#buttonIn").show();
+        //data.tipo_movimiento="Salida"
+        if(data.tipo_movimiento == 'Entrada'){
+            tipoMovimiento="Entrada" 
+           $("#buttonIn").show();
+           $("#buttonAddCommentarioAccesoModal").show()
             $("#textIn").show();
-        }else if(dataAccion.accion_ingreso == 'Salida'){
+        }else if(data.tipo_movimiento == 'Salida'){
+            tipoMovimiento="Salida" 
             $("#buttonOut").show();
+            $("#buttonAddCommentarioAccesoModal").hide()
             $("#textOut").show();
-        }
+        } 
         $("#buttonNew").hide();
-        $("#buttonCard").show();
+        $("#buttonAsignarGafete").show();
         $("#buttonClean").show();
+        $(document).ready(function() {
+            //---Bitacora TABLA ULTIMOS ACCESOS
+            let listBitacora = ultimo_acceso.length > 0 ? ultimo_acceso: [];
+            console.log("LISTA BOTACOPRAAA",listBitacora)
+            for (let i = 0; i < listBitacora.length; i++) {
+                console.log("QUE PASAAAA", listBitacora[i])
+                //if(i < 3){
+                    //let duration=segundosAHoras(listBitacora[i].duration)
+                    let newRow = $('<tr>');
+                    newRow.append($('<td>').text(listBitacora[i].visita_a ? listBitacora[i].visita_a : ''));
+                    newRow.append($('<td>').text(listBitacora[i].fecha ? listBitacora[i].fecha : ''));
+                    newRow.append($('<td>').text(listBitacora[i].duration ? listBitacora[i].duration +' hrs': ''));
+                    if(listBitacora[i].hasOwnProperty('comentarios')){
+                        if(listBitacora[i].comentarios.length>0){
+                            let stringArray= encodeURIComponent(JSON.stringify(listBitacora[i].comentarios))
+                            newRow.append(`<td ><button style="border:none; background-color:transparent;" onclick="mostrarComentarioUltimoAcceso(decodeURIComponent('${stringArray}'));"> <i class="fa-solid fa-message"></i> </button> </td>`);
+                        }else{
+                            newRow.append('<td > </td>');
+                        }
+                    }else{
+                        newRow.append('<td > </td>');
+                    }
+                    newRow.append('</tr>');
+                    $('#tableBitacora').append(newRow);
+                //}
+            }
+            /*
+            if(listBitacora.length > 3){
+                $("#buttonBitacoraModal").show();
+                for (var i = 0; i < listBitacora.length; i++) {
+                    let duration=segundosAHoras(listBitacora[i].duration)
+                    var newRow = $('<tr>');
+                    newRow.append($('<td>').text(listBitacora[i].nombre_visita ? listBitacora[i].visita_a : ''));
+                    newRow.append($('<td>').text(listBitacora[i].location ? listBitacora[i].location : ''));
+                    newRow.append($('<td>').text(duration ? duration : ''));
+                    newRow.append('</tr>');
+                    $('#tableBitacoraModal').append(newRow);
+                }
+            }*/
+        
 
-        //---Bitacora TABLA ULTIMOS ACCESOS
-
-        let listBitacora = ultimo_acceso.length > 0 ? ultimo_acceso: [];
-        for (var i = 0; i < listBitacora.length; i++) {
-            if(i < 3){
-                let duration=segundosAHoras(listBitacora[i].duration)
-                var newRow = $('<tr>');
-                newRow.append($('<td>').text(listBitacora[i].nombre_visita ? listBitacora[i].nombre_visita : ''));
-                newRow.append($('<td>').text(listBitacora[i].location ? listBitacora[i].location : ''));
-                newRow.append($('<td>').text(duration? duration : ''));
+            if(listBitacora.length == 0){
+                let newRow = $('<tr>');
+                newRow.append($('<td colspan="3">').text('No existen registros recientes'));
+                newRow.append($('<td>'));
                 newRow.append('</tr>');
                 $('#tableBitacora').append(newRow);
+                console.log("listBitacora", listBitacora)
             }
-        }
-        if(listBitacora.length > 3){
-            $("#buttonBitacoraModal").show();
-            for (var i = 0; i < listBitacora.length; i++) {
-                let duration=segundosAHoras(listBitacora[i].duration)
-                var newRow = $('<tr>');
-                newRow.append($('<td>').text(listBitacora[i].nombre_visita ? listBitacora[i].nombre_visita : ''));
-                newRow.append($('<td>').text(listBitacora[i].location ? listBitacora[i].location : ''));
-                newRow.append($('<td>').text(duration ? duration : ''));
-                newRow.append('</tr>');
-                $('#tableBitacoraModal').append(newRow);
-            }
-        }
-        if(listBitacora.length == 0){
-            var newRow = $('<tr>');
-            newRow.append($('<td colspan="3">').text('No existen Registros Recientes'));
-            newRow.append('</tr>');
-            $('#tableBitacora').append(newRow);
-        }
-        
+            
+        })
         // Information User
         dataUserInf(data);
 
@@ -740,6 +1617,44 @@ function optionInformationUser(data){
         // Table Cars
         tableFillVehiculos(data);
     }
+}
+
+function mostrarComentarioUltimoAcceso(comentarios){
+    let comentariosArray=JSON.parse(comentarios)
+    let objCom=""
+    for(let com of comentariosArray){
+        objCom +=`<tr>
+                    <td>${com.comentario}</td>
+                    <td>${com.tipo_comentario}</td>
+                </tr>`
+
+    }
+    Swal.fire({
+        text: "Comentarios",
+        title: `<h4 style="color:black;">Comentarios</h4>`,
+        html: ` 
+        <table class="table table-borderless table-striped" style="border: none !important; font-size:0.9em; font-weight:normal;" id="tableComentariosUltimosAccesos" >
+                    <thead class="table-warning">
+                <th class="headerColor">Comentario</th>
+                <th class="headerColor">Tipo</th>
+            </thead>
+            <tbody>
+                ${objCom}
+            </tbody>
+        </table>
+           `,
+        showCancelButton: true,
+        showConfirmButton:false,
+        cancelButtonColor: colors[0],
+        cancelButtonText: "Cerrar",
+        heightAuto:false,
+        reverseButtons: true
+    })
+    .then((result) => {
+        if (result.isConfirmed) {
+            
+        }
+    });
 }
 
 
@@ -790,6 +1705,7 @@ function optionListUsers(data){
 
 //FUNCION para ocultar mostrar elementos
 function setHideElements(option){
+         console.log("QUE TENEM,OSSS", option)
     if (option == 'buttonsModal') {
         $("#buttonCommentsModal").hide();
         $("#buttonBitacoraModal").hide();
@@ -801,7 +1717,7 @@ function setHideElements(option){
         $("#buttonIn").hide();
         $("#buttonOut").hide();
         $("#buttonNew").hide();
-        $("#buttonCard").hide();
+        $("#buttonAsignarGafete").hide();
         $("#buttonClean").hide();
     }else if(option == 'buttonNew'){
         $("#buttonNew").show();
@@ -816,6 +1732,23 @@ function setHideElements(option){
         var elements = document.getElementsByClassName('section-data');
         for (var i = 0; i < elements.length; i++) {
             elements[i].style.display = 'block';
+        }
+        
+    }else if(option==statusVisitaEntrada || option == statusVisitaSalida){
+        console.log("QUE ONDAAA", option)
+        $("#divSpinner").hide();
+        $("#inputCodeUser").val("")
+        $("#idComentarioPase").val('')
+        $("#idComentarioAcceso").val('')
+        $("#buttonBuscarPaseEntrada").prop('disabled', false);
+        $("#buttonNew").prop('disabled', false);
+
+        if(option==statusVisitaEntrada){
+            $("#buttonAsignarGafete").show()
+            $("#buttonRecibirGafete").hide()
+        }else{
+            $("#buttonAsignarGafete").hide()
+            $("#buttonRecibirGafete").show()
         }
     }
 }
@@ -850,7 +1783,7 @@ function setCleanData(){
     tbody = document.querySelector('#tableModalAccess tbody');
     tbody.innerHTML = '';
 
-    tbody = document.querySelector('#tableItems tbody');
+    tbody = document.querySelector('#tableEquipos tbody');
     tbody.innerHTML = '';
 
     tbody = document.querySelector('#tableModalItems tbody');
@@ -879,12 +1812,46 @@ function setCleanData(){
     $('#visit').text('')
     $('#authorizePase').text('')
     $('#authorizePhone').text('')
+    $("#folio").text("")
+    $("#idComentarioPase").val('')
+    $("#idComentarioAcceso").val('')
 
+    $("#lunes").addClass('btn-outline-success');
+    $("#martes").addClass('btn-outline-success');
+    $("#miércoles").addClass('btn-outline-success');
+    $("#jueves").addClass('btn-outline-success');
+    $("#viernes").addClass('btn-outline-success');
+    $("#sábado").addClass('btn-outline-success');
+    $("#domingo").addClass('btn-outline-success');
+
+    $("#lunes").removeClass('btn-success');
+    $("#martes").removeClass('btn-success');
+    $("#miércoles").removeClass('btn-success');
+    $("#jueves").removeClass('btn-success');
+    $("#viernes").removeClass('btn-success');
+    $("#sábado").removeClass('btn-success');
+    $("#domingo").removeClass('btn-success');
+    $("#buttonAddCommentarioAccesoModal").hide()
+    selectedEquipos=[]
+    selectedVehiculos=[]
+    comentariosPase=[]
+    comentariosAcceso=[]
+    tipoMovimiento=""
+    $("#buttonNew").show();
+    $("#buttonAsignarGafete").hide()
+    $("#buttonRecibirGafete").hide()
+    $("#idButtonEquipoNota").prop('disabled', false);
+    $("#idButtonVehiculos").prop('disabled', false);
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
     setHideElements('buttonNew');
 }
 
+
+function setCleanData2(){
+    setCleanData();
+    $("#inputCodeUser").val('');
+}
 
 //FUNCION para setear la informacion en la pantalla principal
 function functionSearchList(event) {
@@ -933,190 +1900,13 @@ function setCheckItem(id = 0) {
     }
 }
 
-//FUNCION para guardar equipos entas con checkbox
-function agregarEquipoAModal(){
-    let dicData = {};
-    let validation = false;
-    let tipo= $("#selectTipoEquipo-123").val();
-    let nombre=$("#inputNombreEquipo-123").val();
-    let marca=$("#inputMarcaItem").val();
-    let modelo=$("#inputModeloItem").val();
-    let noserie=$("#inputSerieItem").val();
-    let color=$("#inputColorItem").val();
-    if(tipo==''|| nombre=='' ){
-        validation=true
-    }
-    if(!validation){
-        fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_id: idScript,
-                option: 'add_new_equip',
-
-            }),
-            headers:{
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt
-            },
-        })
-        .then(res => res.json())
-        .then(res => {
-            if (res.success) {
-                //CODE una vez resulta la imagen, cargarla en front
-                dicData={ data: {}}
-            } 
-        });
-        listNewItems.push({ marca_item: marca, type_item: tipo, model_item: modelo, color_item:color , noserie_item:noserie});
-        let newRow2 = $('<tr>');
-        newRow2.append($('<td>').text(tipo));
-        newRow2.append($('<td>').text(marca));
-        newRow2.append($('<td>').text(modelo));
-        newRow2.append($('<td>').text(noserie));
-        newRow2.append($('<td>').text(color));
-        newRow2.append('</tr>');
-        console.log("NEW ROWWW",newRow2)
-        $('#tableAddItemsModal').append(newRow2);
-
-        $("#selectTipoEquipo-123").val('');
-        $("#inputNombreEquipo-123").val('');
-        $("#inputMarcaItem").val('');
-        $("#inputModeloItem").val('');
-        $("#inputSerieItem").val('');
-        $("#inputColorItem").val('');
-        $("#alertItemModal").hide();
-        $('#equipmentModal').modal('hide');
-    }else{
-        Swal.fire({
-            title: "Validación",
-            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
-            type: "warning"
-        });
-        //$("#alertItemModal").show();
-    }
-}
-
-
-//FUNCION para saber que vehiculos estan con checkbox
-function getSaveCar(){
-    let dicData = {};
-    let validation = false;
-    let tipoVehiculo= $('#selectTipoVehiculo-123').val();
-    let marca= $('#selectCatalogMarca-123').val();
-    let modelo= $('#selectCatalogModelo-123').val();
-    let matricula= $('#inputMatriculaVehiculo-123').val();
-    let color= $('#inputColor-123').val();
-    if(tipoVehiculo==''){
-        validation=true
-    }
-    console.log("SAVE CAR")
-    if(!validation){
-        let newRow = $('<tr>');
-        newRow.append($('<td>').text(marca));
-        newRow.append($('<td>').text(matricula));
-        newRow.append($('<td>').text(color));
-        newRow.append($('<td>').text(modelo));
-        newRow.append('</tr>');
-        $('#tableCars').append(newRow);
-        listVehiculesData.push({"marca":marca , "matricula":matricula, "color":color, "modelo": modelo})
-        let newRow2 = $('<tr>');
-        newRow2.append($('<td>').text(marca));
-        newRow2.append($('<td>').text(matricula));
-        newRow2.append($('<td>').text(color));
-        newRow2.append($('<td>').text(modelo));
-        newRow2.append('</tr>');
-        $('#tableAddCarsModal').append(newRow2);
-        $("#selectTipoVehiculo-123").val('');
-        $("#selectCatalogMarca-123").val('');
-        $("#selectModeloVehiculo-123").val('');
-        $("#selectMatriculaVehiculo-123").val('');
-        $("#selectColorVehiculo-123").val('');
-        $("#carModal").modal('hide');
-    }else{
-        Swal.fire({
-            title: "Validación",
-            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
-            type: "warning"
-        });
-
-    }
-}
-
-
-//FUNCION ver modal para agregar vehiculos
-function setViewModalCard(){
-    selectedVehiculos=[]
-    getSelectedCheckbox('tableItems', 'radioGroupItems', selectedVehiculos)
-    let selectedItems= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
-    $('#listAddCarsModal').modal('show');
-    let tabla = document.getElementById('tableAddCarsModal');
-    let tbody = tabla.getElementsByTagName('tbody')[0];
-    tbody.innerHTML = '';
-    if(selectedItems.length>0 ){
-        for (var i = 0; i < selectedItems.length; i++) {
-            let tipoCar = selectedItems[i].tipo;
-            let marcaCar = selectedItems[i].marca;
-            let modeloCar = selectedItems[i].modelo;
-            let matriculaCar = selectedItems[i].placa;
-            let colorCar = selectedItems[i].color;
-            var newRow = $('<tr>');
-            newRow.append($('<td>').text(tipoCar));
-            newRow.append($('<td>').text(marcaCar));
-            newRow.append($('<td>').text(modeloCar));
-            newRow.append($('<td>').text(matriculaCar));
-            newRow.append($('<td>').text(colorCar));
-            newRow.append('</tr>');
-            $('#tableAddCarsModal').append(newRow);
-        }
-    } else{
-        var newRow = $('<tr>');
-        newRow.append($('<td colspan="3">').text('No existen Vehiculos Seleccionados o añadidos'));
-        newRow.append('</tr>');
-        $('#tableAddCarsModal').append(newRow);
-    }
-}
-
-
-//FUNCION ver modal para agregar equipos
-function setViewModalItem(){
-    selectedEquipos=[]
-    getSelectedCheckbox('tableItems', 'checkboxGroupEquipos', selectedEquipos)
-    let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
-    console.log("MODAL EQUIPOS", listItemsData, selectedItems)
-    $('#listAddItemsModal').modal('show');
-    let tabla = document.getElementById('tableAddItemsModal');
-    let tbody = tabla.getElementsByTagName('tbody')[0];
-    tbody.innerHTML = '';
-    if(selectedItems.length>0){
-        for (var i = 0; i < selectedItems.length; i++) {
-            let tipoItem = selectedItems[i].tipo;
-            let marcaItem = selectedItems[i].marca;
-            let modeloItem = selectedItems[i].modelo;
-            let serieItem = selectedItems[i].serie;
-            let colorItem = selectedItems[i].color;
-            var newRow = $('<tr>');
-            newRow.append($('<td>').text(tipoItem));
-            newRow.append($('<td>').text(marcaItem));
-            newRow.append($('<td>').text(modeloItem));
-            newRow.append($('<td>').text(serieItem));
-            newRow.append($('<td>').text(colorItem));
-            newRow.append('</tr>');
-            $('#tableAddItemsModal').append(newRow);
-        }
-    }else{
-        var newRow = $('<tr>');
-        newRow.append($('<td colspan="3">').text('No existen equipos seleccionados'));
-        newRow.append('</tr>');
-        $('#tableAddItemsModal').append(newRow);
-    }
-}
-
 
 //FUNCION buscar curp
 function setCurpSearch(curp){
     $("#inputCodeUser").empty();
     $("#inputCodeUser").val(curp);
     $('#listModal').modal('hide');
-    getDataUser();
+    buscarPaseEntrada();
 }
 
 
@@ -1146,7 +1936,7 @@ function getFormGafete(){
     }
 
     if(!flaginput && !flagcheck){
-        setDataGafete(dicData);
+        entregarGafete(dicData);
           Swal.fire({
             title: "Gafete Entregado",
             text: "El gafete a sido entregado correctamente.",
@@ -1160,50 +1950,21 @@ function getFormGafete(){
 }
 
 
-//FUNCION rellenar catalogos al momento de escojer una opcion
-function onChangeCatalog(type, id){
-    if(type == "vehiculo"){
-        $("#divCatalogMarca"+id+"").show();
-        let inputMarca= document.getElementById("selectCatalogMarca-"+id+"");
-        inputMarca.value="";
-        let datalistMarca= document.getElementById("datalistOptionsMarca"+id+"");
-        datalistMarca.innerHTML=""; 
-        let inputModelo= document.getElementById("selectCatalogModelo-"+id+"");
-        inputModelo.value="";
-        let datalistModelo= document.getElementById("datalistOptionsModelo"+id+"");
-        datalistModelo.innerHTML=""; 
-
-        let selectedValue = $( "#selectTipoVehiculo-"+id+"" ).val();
-        let catalogMarca = filterCatalogBy('type', selectedValue);
-        for (let obj in catalogMarca){
-            $("#datalistOptionsMarca"+id+"").append($('<option></option>').val(catalogMarca[obj].brand).text(catalogMarca[obj].brand));
-        }
-    }else if (type == "marca"){
-        $("#divCatalogModelo"+id+"").show();
-        let inputModelo= document.getElementById("selectCatalogModelo-"+id+"");
-        inputModelo.value="";
-        let datalistModelo= document.getElementById("datalistOptionsModelo"+id+"");
-        datalistModelo.innerHTML=""; 
-        let selectedValue = $( "#selectCatalogMarca-"+id+"" ).val();
-        let catalogMarca = filterCatalogBy('brand', selectedValue);
-        for (let obj in catalogMarca){
-                $("#datalistOptionsModelo"+id+"").append($('<option></option>').val(catalogMarca[obj].model).text(catalogMarca[obj].model));
-        }
-    }
-}
 
 
 //FUNCION obtener data para rellenar los catalogos
 function getCatalogs(){
-    $("#selectTipoVehiculo-123").prop( "disabled", true );
-    $("#divCatalogMarca123").hide();
-    $("#divCatalogModelo123").hide();
-    /*
+    //$("#selectTipoVehiculo-123").prop( "disabled", true );
+    //$("#divCatalogMarca123").hide();
+    //$("#divCatalogModelo123").hide();
+    
     fetch(url + urlScripts ,{
         method: 'POST',
         body: JSON.stringify({
-            script_id: idScript,
-            option: opScriptCatalog,
+            script_name: "script_turnos.py",
+            option: "vehiculo_tipo",
+            tipo :"Automóvil",
+            //marca :"CHEVROLET"
         }),
         headers:{
                 'Content-Type': 'application/json',
@@ -1213,8 +1974,11 @@ function getCatalogs(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-        } 
-    })*/
+
+        } else{
+            errorAlert(res)
+        }
+    })
     let cat={
         "brands_cars": [
             {"type": "motocicleta", "brand": ["vento"]},
@@ -1236,8 +2000,8 @@ function getCatalogs(){
     }
     //dataCatalogs = res.response.data ==''? cat : res.response.data;
     dataCatalogs=cat
-    $("#selectTipoVehiculo-123").prop( "disabled", false );
-    $("#spinnerTipoVehiculo").css("display", "none");
+    //$("#selectTipoVehiculo-123").prop( "disabled", false );
+    //$("#spinnerTipoVehiculo").css("display", "none");
     dataCatalogs.types_cars.forEach(function(e, i){
     $("#datalistOptionsTipo").append($('<option></option>').val(e).text(e));
     });
@@ -1348,7 +2112,8 @@ function setTranslateImageUser(context, video, canvas){
     video.srcObject.getTracks().forEach(function(track) {
         track.stop();
     });
-    video.style.display = 'none';
+    //video.style.display = 'none';
+    //sdjkfns
     ///-- Save Input
     canvas.toBlob( (blob) => {
         const file = new File( [ blob ], "imageUser.png" );
@@ -1378,7 +2143,7 @@ function setTranslateImageCard(context, video, canvas){
     video.srcObject.getTracks().forEach(function(track) {
         track.stop();
     });
-    video.style.display = 'none';
+    //video.style.display = 'none';
     ///-- Save Input
     canvas.toBlob( (blob) => {
         const file = new File( [ blob ], "imageCard.png" );
@@ -1388,7 +2153,6 @@ function setTranslateImageCard(context, video, canvas){
     } );
     //-----Rquest Photo
     const flagBlankCard = isCanvasBlank(document.getElementById('canvasPhoto'));
-    console.log("is BLACNK",flagBlankCard)
     if(!flagBlankCard){
         setTimeout(() => {
             setRequestFileImg('inputCard');
@@ -1424,29 +2188,31 @@ function setRequestFileImg(type) {
             if(res.file !== undefined && res.file !== null){
                 if(type == 'inputCard'){
                     urlImgCard = res.file;
-                    console.log("URLLLLLL",urlImgCard)
+                    fotosNuevaVisita.identificacion.push({"file_name":res.file_name, "file_url":res.file})
                     //----Clean Canvas
                     var canvas = document.getElementById('canvasPhoto');
                     var ctx = canvas.getContext('2d');
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     let imgC =document.getElementById('imgCard')
-                    imgC.src=urlImgCard
+                    imgC.css('display', 'block');
+                    imgC.attr('src', urlImgCard);
                 }else if(type == 'inputUser'){
                     urlImgUser = res.file;
+                    fotosNuevaVisita.foto.push({"file_name":res.file_name, "file_url":res.file})
                     //----Clean Canvas
                     var canvas = document.getElementById('canvasPhotoUser');
                     var ctx = canvas.getContext('2d');
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     let imgU =document.getElementById('imgUser')
-                    imgU.src=urlImgCard
+                    imgU.css('display', 'block');
+                    imgU.attr('src', urlImgUser);
                 }
             }else{
-                console.log('Error aqui 2');
                 return 'Error';
             }
         })
         .catch(error => {
-            console.log('Error aqui 3');
+            errorAlert(error)
             return 'Error';
         });
     }else{

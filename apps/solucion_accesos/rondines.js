@@ -8,11 +8,13 @@ window.onload = function(){
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
     selectLocation= document.getElementById("selectLocation")
     selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation()
+        let response = fetchOnChangeLocation(selectLocation.value)
+        alert("Esta pendiente traer la lista de back para que funcione en esta pantalla, el combo caseta vendra vacio hasta agrear el servicio")
     };
     selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = function() {
-        let response = fetchOnChangeLocation()
+
+        //let response = fetchOnChangeCaseta('rondines.py', 'get_failures', selectCaseta.value, selectLocation.value)
     };
     if(user !='' && userJwt!=''){
         drawTable('tableListPendientes',columnsTableListPendientes, dataTableListPendientes );
@@ -37,6 +39,14 @@ window.onload = function(){
     });
     
 }
+
+window.addEventListener('storage', function(event) {
+    if (event.key === 'cerrarSesion') {
+        let protocol = window.location.protocol;
+        let host = window.location.host;
+        window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+    }
+});
 
 
 //FUNCION editar un recorrido y actualizar la tabla

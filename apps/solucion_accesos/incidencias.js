@@ -4,10 +4,13 @@ let scriptName="accesos_turnos.py"
 let selectedRowFolio=""
 let selectedIncidencias=[]
 let selectedFallas=[]
-let userJwt=''
+let arraySuccessFoto=[]
+let arrayResponses=[]
+let selectLocIncidencias=""
+let selectLocFallas=""
+
 window.onload = function(){
 	user= getCookie("userId");
-	userJwt = getCookie("userJwt");
     
 	setValueUserLocation('incidencias');
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
@@ -17,31 +20,123 @@ window.onload = function(){
 	changeButtonColor();
 
     fillCatalogs();
-    getInfoAndCatalogos();
+    //getInfoAndCatalogos();
 
 	selectLocation= document.getElementById("selectLocation")
 	selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation()
+        let response = fetchOnChangeLocation(selectLocation.value )
     };
     selectCaseta= document.getElementById("selectCaseta")
-    selectCaseta.onchange = function() {
-        let response = fetchOnChangeLocation()
+    selectCaseta.onchange = async function() {
+        let response = await fetchOnChangeCaseta('incidencias.py', 'get_incidences', selectCaseta.value, selectLocation.value)
+        reloadTableIncidencias(response.response.data)
+        let response2 = await fetchOnChangeCaseta('fallas.py', 'get_failures', selectCaseta.value, selectLocation.value)
+        reloadTableFallas(response2.response.data)
     };
 	setSpinner(true, 'divSpinner');
-	/*
-    if(arrayUserBoothsLocations.length<=0){
-        loadBoothsLocations();
-    }*/
+
+    /*
+    selectLocIncidencias= document.getElementById("ubicacionNuevaIncidencia")
+	selectLocIncidencias.onchange = function(){
+        let response = onChangeLocation(selectLocIncidencias.value,"lugarNuevaIncidencia")
+    };
+
+    selectLocFallas= document.getElementById("ubicacionNuevaFalla")
+    selectLocFallas.onchange = function(){
+        let response = onChangeLocation(selectLocFallas.value,"lugarNuevaFalla")
+    };*/
+}
+
+
+window.addEventListener('storage', function(event) {
+    if (event.key === 'cerrarSesion') {
+        let protocol = window.location.protocol;
+        let host = window.location.host;
+        window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+    }
+});
+
+
+function reloadTableIncidencias(data){
+    if(user !='' && userJwt!=''){
+        let incidencias=data
+        if(incidencias.length >0){
+            for(let incidencia of incidencias){
+                let dateFormat= incidencia.date_incidence.slice(0,-3)
+                dataTableIncidencias.push({folio:incidencia.folio, date_incidence:dateFormat||"",
+                    ubicacion_incidence:incidencia.ubicacion_incidence||"", area_incidence:incidencia.area_incidence||"", 
+                    incidence:incidencia.incidence||"",comments_incidence:incidencia.comments_incidence||"",guard_incident:incidencia.guard_incident||""})
+            }
+        }else{
+            dataTableIncidencias = []
+        }
+        if(tables['tableIncidencias']){
+            tables['tableIncidencias'].setData(dataTableIncidencias)
+        }else{
+            drawTable('tableIncidencias', columsData1, dataTableIncidencias);
+        }
+        $("#descargarIncidencias").on("click", function() {
+            descargarExcel(tables, 'tableIncidencias')
+        });
+        let selectedIncidencias = getActiveCheckBoxs(tables,'tableIncidencias')
+        let buttonEliminarIncidencias=document.getElementById('buttonEliminarIncidencias');
+        if(selectedIncidencias.length>0) buttonEliminarIncidencias.display= 'none'
+    } else{
+        redirectionUrl('login',false);
+    }
+}
+
+
+function reloadTableFallas(data){
+    if(user !='' && userJwt!=''){
+        let fallas= data
+        if(fallas.length >0){
+            for(let falla of fallas){
+                let dateFormat= falla.falla_fecha.slice(0,-3)
+                dataTableFallas.push({folio:falla.folio, falla_fecha:dateFormat,
+                    falla_ubicacion:falla.falla_ubicacion, falla_area:falla.falla_area, 
+                    falla:falla.falla, falla_comments:falla.falla_comments, 
+                    falla_guard:falla.falla_guard, falla_guard_solution:falla.falla_guard_solution, 
+                    falla_status:falla.falla_status})
+            }
+        }else{
+            dataTableFallas = []
+        }
+        if(tables['tableFallas']){
+            tables['tableFallas'].setData(dataTableFallas)
+        }else{
+            drawTable('tableFallas', columsData2, dataTableFallas);
+        }
+        $("#descargarFallas").on("click", function() {
+            descargarExcel(tables, 'tableFallas')
+        });     
+        let selectedFallas = getActiveCheckBoxs(tables,'tableFallas')
+        let buttonEliminarFallas=document.getElementById('buttonEliminarFallas');
+        if(selectedFallas.length>0) buttonEliminarFallas.display= 'none'
+    } else{
+        redirectionUrl('login',false);
+    }
+
 }
 
 //FUNCION para limpiar el modal de agregar nota
-function limpiarModal(classInput){
+function limpiarModal(classInput, editAdd){
+    arrayResponses=[]
     let elements = document.getElementsByClassName(classInput)
-    console.log("ELEMENTOSSS",elements)
     for (let i = 0; i < elements.length; i++) {
-        console.log("ELEMENTOSSS",elements[i])
         elements[i].value='';
     }
+    let divFoto = document.getElementById("foto-input-form-"+editAdd);
+    const elementsFoto = divFoto.querySelectorAll('.foto-div-'+editAdd);
+    elementsFoto.forEach(function(input) {
+        if(input.id!=="fileInputFotografia-"+editAdd){
+            input.parentElement.parentElement.remove();
+        }
+    });
+  let inputsF = divFoto.querySelectorAll('.foto-div-'+editAdd);
+    inputsF.forEach(function(input) {
+        input.value=''
+    });
 }
 
 
@@ -58,7 +153,6 @@ function reemplazarConVacio(obj) {
 
 //FUNCION que trae la informacion de carga
 function getAllDataIncidencias(){
-    console.log( url + urlScripts)
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -125,7 +219,6 @@ function getAllDataFallas(){
         if(res.success){
             if(user !='' && userJwt!=''){
                     let fallas= res.response.data
-                    console.log("listado de fallas", fallas)
                     if(fallas.length >0){
                         for(let falla of fallas){
                             let dateFormat= falla.falla_fecha.slice(0,-3)
@@ -153,103 +246,114 @@ function getAllDataFallas(){
 }
 
 
-//FUNCION al momento de cambiar la caseta o la locacion para traer el resto de informacion sobre la caseta
-function fetchOnChangeLocation(){
-    //INFO: al momento de seleccionar una nueva location se manda la informacion junto con el 
-    //resultado de la fetch a la pagina que lo esta solicitando
-    let selectLocation= document.getElementById("selectLocation")
-    let selectCaseta= document.getElementById("selectCaseta")
-    let response={ 
-        "data":{
-            "caseta":{
-                "name": selectLocation.value,
-                "location": selectCaseta.value,
-                "visitsDay":15,
-                "personalInside":75,
-                "vehiclesInside":25,
-                "ouputs":30
-            }
-        }
-    };
-
-    //FETCH AQUI 
-    fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_id: idScript,
-            option: 'get_caseta_information',
-            email : 'guardia1@linkaform.com'
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            //INFO: Obtener la informacion y formatear los arrays para poder mandarlos como respuesta de esta funcion
-        } 
-    });
-    return response
-}
-
-
 //FUNCION traer toda la informacion de los inicial y la de los catalogos
 function getInfoAndCatalogos(){
     //INFO: poner aqui FETCH para traer los catalogos y lo sig agregarlo dentro del response
-    fetch(url + urlScripts, {
-    method: 'POST',
-    body: JSON.stringify({
-        script_name: 'script_turnos.py',
-        option:'get_user_booths'
-    }),
-    headers:
-        {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+jw
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            if(user !='' && userJwt!=''){
-                arrayUserBoothsLocations=[]
-                let userBooths=res.response.data
-                if(userBooths.length>0){
-                    for(let booth of userBooths){
-                        arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio})
-                    }
-                }else{
+    if(getCookie("arrayUserBoothsLocations") == ""){
+        fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'script_turnos.py',
+            option:'get_user_booths'
+        }),
+        headers:
+            {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                if(user !='' && userJwt!=''){
                     arrayUserBoothsLocations=[]
+                    let userBooths=res.response.data
+                    if(userBooths.length>0){
+                        for(let booth of userBooths){
+                            arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio})
+                        }
+                    }else{
+                        arrayUserBoothsLocations=[]
+                    }
                 }
-            }
-            //INFO: los array que estan en el archivo incidencias data se llenaran desde esta fetch
+                //INFO: los array que estan en el archivo incidencias data se llenaran desde esta fetch
 
-            dataCatalogs={
-                "location":["Cumbres", "Monterrey", "San Jeronimo"],
-                "incident_location":["Caseta 1 Poniente","Caseta 2 Sur","Caseta 3 Poniente"],
-                "incident":["Acceso no autorizado", "Fallo de energia", "Incidencia 3"],
-                "report":["Jacinto Sánchez Hil", "Jacinto Sánchez Hil"],
-                "department":["Seguridad","Departamento 2","Departamento 3"],
-                "responsable":["Jacinto Sánchez Hil","Jacinto Sánchez Hil"]
+                dataCatalogs={
+                    "location":["Cumbres", "Monterrey", "San Jeronimo"],
+                    "incident_location":["Caseta 1 Poniente","Caseta 2 Sur","Caseta 3 Poniente"],
+                    "incident":["Acceso no autorizado", "Fallo de energia", "Incidencia 3"],
+                    "report":["Jacinto Sánchez Hil", "Jacinto Sánchez Hil"],
+                    "department":["Seguridad","Departamento 2","Departamento 3"],
+                    "responsable":["Jacinto Sánchez Hil","Jacinto Sánchez Hil"]
+                }
+                initializeCatalogsIncidencias(dataCatalogs, arrayUserBoothsLocations)
+                initializeCatalogsFallas(dataCatalogs,arrayUserBoothsLocations)
+                dataCatalogs.location.forEach(function(e, i){
+                    $("#idUbicacionIncidencias").append($('<option></option>').val(e).text(e));
+                    $("#idUbicacionFallas").append($('<option></option>').val(e).text(e))
+                    $("#idUbicacionIncidencias").val("")
+                    $("#idUbicacionFallas").val("")
+                });
             }
-            initializeCatalogsIncidencias(dataCatalogs, arrayUserBoothsLocations)
-            initializeCatalogsFallas(dataCatalogs,arrayUserBoothsLocations)
-            dataCatalogs.location.forEach(function(e, i){
-                $("#idUbicacionIncidencias").append($('<option></option>').val(e).text(e));
-                $("#idUbicacionFallas").append($('<option></option>').val(e).text(e))
-                $("#idUbicacionIncidencias").val("")
-                $("#idUbicacionFallas").val("")
-            });
-        }
-    });   
+        });   
+    }else{
+        let booths=JSON.parse(getCookie("arrayUserBoothsLocations"))
+        console.log("BOOTH", booths)
+        
+        loadCatUbicacion(booths, "lugarNuevaIncidencia", "ubicacionNuevaIncidencia")
+        loadCatCaseta("" ,booths,"lugarNuevaIncidencia")
+        $("#ubicacionNuevaIncidencia").val()
+        $("#lugarNuevaIncidencia").val()
+    }
 }
 
+function onChangeLocation(location, idCaseta){
+    loadCatCaseta(location,JSON.parse(getCookie('arrayUserBoothsLocations')).length>0? JSON.parse(getCookie('arrayUserBoothsLocations')): arrayUserBoothsLocations, idCaseta)
+    let selectCaseta= document.getElementById(idCaseta)
+    selectCaseta.value = ""
+}
+
+function loadCatUbicacion(arrayUserBoothsLocations, idCaseta, idLocation ){
+    console.log("ENTRADO",arrayUserBoothsLocations, idCaseta, idLocation )
+    let selectCaseta= document.getElementById(idCaseta)
+    selectCaseta.innerHTML = "";
+
+    let locationsUnique = new Set();
+    arrayUserBoothsLocations.forEach(function(booth) {
+        locationsUnique.add(booth.ubi);
+    });
+    let ubicacionesUnique = Array.from(locationsUnique);
+
+    let selectLocation= document.getElementById(idLocation)
+    selectLocation.innerHTML=""; 
+    for (let obj of ubicacionesUnique){
+            selectLocation.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
+    }
+    selectLocation.value = "";
+}
+
+function loadCatCaseta(location ,arrayUserBoothsLocations, idCaseta){
+    let selectCaseta= document.getElementById(idCaseta)
+    if(location==""){
+        selectCaseta.innerHTML += '<option disabled> Escoge una ubicación </option>';
+    }else{
+        let opcionesCaseta = arrayUserBoothsLocations.filter(booth => {
+            return booth.ubi == location ;
+        });
+        console.log("CASETAAA", opcionesCaseta)
+        selectCaseta.innerHTML=""; 
+        for (let obj of opcionesCaseta){
+                selectCaseta.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
+        }
+        selectCaseta.value = getCookie('userCaseta')
+        if(getValueUserLocation()=='accesos'){
+            selectCaseta.disabled=true
+        }
+    }
+}
 
 //FUNCION una vez traida la informacion llenar todos los catalogso correspondientes
 function initializeCatalogsIncidencias(dataCatalogs,boothsLocations){
-    console.log("DAWAW",dataCatalogs)
     boothsLocations.forEach(function(e, i){
         $("#ubicacionEditIncidencia").append($('<option></option>').val(e.ubi).text(e.ubi));
         $("#ubicacionNuevaIncidencia").append($('<option></option>').val(e.ubi).text(e.ubi));
@@ -316,15 +420,22 @@ function initializeCatalogsFallas(dataCatalogs,boothsLocations){
 //FUNCION para mostrar los modales
 function setModal(type = 'none',id){
 	if(type == 'NewIncident'){
-        limpiarModal("contentNuevaIncidencia")
+        limpiarModal("contentNuevaIncidencia", "nueva")
+        $("#ubicacionNuevaIncidencia").text(selectLocation.value)
+        $("#casetaNuevaIncidencia").text(selectCaseta.value)
 		$('#newIncidentModal').modal('show');
 	}else if(type == 'EditIncident'){
+        limpiarModal("editIncidentModal", "edit")
 		$('#editIncidentModal').modal('show');
 	}else if(type == 'ViewIncident'){
 		$('#viewIncidentModal').modal('show');
 	}else if(type == 'NewFail'){
+        limpiarModal("contentNuevaFalla", "nueva")
+        $("#ubicacionNuevaFalla").text(selectLocation.value)
+        $("#casetaNuevaFalla").text(selectCaseta.value)
 		$('#newFailModal').modal('show');
 	}else if(type == 'EditFail'){
+        limpiarModal("contentEditFalla", "edit")
 		$('#editFailModal').modal('show');
 	}else if(type == 'ViewFail'){
 		$('#viewFailModal').modal('show');
@@ -415,7 +526,6 @@ function alertEliminar(folio, type){
                         }else{
                             let dataFiltered = dataTableIncidencias.filter(x => x.folio !== folio);
                             dataTableIncidencias = dataFiltered
-                            console.log(dataFiltered)
                             tables["tableIncidencias"].setData(dataTableIncidencias);
                         }
                     }
@@ -528,7 +638,7 @@ function alertFallaResuelta(folio, state){
                                 type: "error"
                             });
                         } else if(data.status_code==202 ||data.status_code==201){
-                            if(user !='' && jw!=''){
+                            if(user !='' && userJwt!=''){
                                 let fallaSelected = dataTableFallas.find(n => n.folio == folio);
                                 for (let key in data_failure_update){
                                     if(key=='data_failure_update'|| key=='falla_status'){
@@ -634,8 +744,6 @@ function editarIncidencia(){
             let formatValue= validateObj.date_incidence.split('T')
             validateObj.date_incidence=formatValue[0]+' '+formatValue[1]+':00'
         }
-        //validateObj.ubicacion_incidence=233
-        console.log("ESTA ES LA FECHA",validateObj)
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -657,7 +765,6 @@ function editarIncidencia(){
                 if(data.status_code==400){
                     let errores=[]
                     for(let err in data.json){
-                        console.log("ERORREEE",err)
                         errores.push(data.json[err].label+': '+data.json[err].msg)
                     }
                     Swal.fire({
@@ -665,6 +772,8 @@ function editarIncidencia(){
                         text: errores.flat(),
                         type: "error"
                     });
+                    $("#buttonEditarIncidencia").show();
+                    $("#loadingButtonEditarIncidencia").hide();
                 }else if(data.status_code==202 && data.json.objects[0][selected.folio].success){
                      Swal.fire({
                         title: "Confirmación",
@@ -694,10 +803,7 @@ function editarIncidencia(){
                 $("#buttonEditarIncidencia").show();
                 $("#loadingButtonEditarIncidencia").hide();
             }
-        });
-
-        
-        
+        });       
     }
 }
 
@@ -794,11 +900,7 @@ function editarFalla(){
                     $("#buttonEditarFalla").show();
                 }
             }else{
-                Swal.fire({
-                    title: "Error",
-                    text: res.error,
-                    type: "Error"
-                });
+                errorAlert(res)
                 $("#loadingButtonEditarFalla").hide();
                 $("#buttonEditarFalla").show();
             }
@@ -809,6 +911,13 @@ function editarFalla(){
 
 //FUNCION crear nueva incidencia y validar la informacion
 function nuevaIncidencia(){
+    for(let obj of arrayResponses){
+        if( obj.hasOwnProperty('file_name') && obj.isImage==true){
+            let { isImage, file_name, file  } = obj;
+            arraySuccessFoto.push({file_name: file_name, file_url: file});
+        }
+    }
+
     $("#loadingButtonAgregarIncidencia").show();
     $("#buttonAgregarIncidencia").hide();
     let data = getInputsValueByClass("contentNuevaIncidencia")
@@ -816,19 +925,20 @@ function nuevaIncidencia(){
         'date_incidence':data.fechaNuevaIncidencia+' '+data.timeNuevaIncidencia+':00',
         'ubicacion_incidence':data.ubicacionNuevaIncidencia,
         'area_incidence':data.lugarNuevaIncidencia,
+        //'foto_incidence':arraySuccessFoto,
         'incidence':data.incidenciaNuevaIncidencia,
         'guard_incident':data.reportaNuevaIncidencia,
         'comments_incidence':data.comentariosNuevaIncidencia,
     };
 
-    if(!validarObjeto(data)){
+    console.log("DATA INCIDENCIA", data_incidence)
+    /*if(!validarObjeto(data)){
         Swal.fire({
             title: "Validación",
             text: "Faltan campos por llenar, los campos marcados con asterisco son obligatorios.",
             type: "warning"
         });
-    } else {
-        console.log("data_incidence",data_incidence)
+    } else {*/
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -846,12 +956,11 @@ function nuevaIncidencia(){
         .then(res => {
             if(res.success){
                 let data=res.response.data
-                if(data.status_code==400){
+                if(data.status_code==400 || data.status_code==401){
                     let errores=[]
                     for(let err in data.json){
                         errores.push(data.json[err].label+': '+data.json[err].msg)
                     }
-                    console.log(res.response.data.json.msg)
                     Swal.fire({
                         title: "Error",
                         text: errores.flat(),
@@ -890,12 +999,19 @@ function nuevaIncidencia(){
         });
 
         
-    }
+    //}
 }
 
 
 //FUNCION crear nueva incidencia y validar la informacion
 function nuevaFalla(){
+    for(let obj of arrayResponses){
+        if( obj.hasOwnProperty('file_name') && obj.isImage==true){
+            let { isImage, file_name, file  } = obj;
+            arraySuccessFoto.push({file_name: file_name, file_url: file});
+        }
+    }
+
     $("#loadingButtonAgregarFalla").show();
     $("#buttonAgregarFalla").hide();
     let data = getInputsValueByClass("contentNuevaFalla")
@@ -905,6 +1021,7 @@ function nuevaFalla(){
         'falla_ubicacion':data.ubicacionNuevaFalla,
         'falla_area':data.lugarNuevaFalla,
         'falla':data.fallaNuevaFalla,
+        'falla_fotos': arraySuccessFoto, //NUEVA KEY
         'falla_comments':data.comentariosNuevaFalla,
         'falla_guard':data.reportaNuevaFalla,
         'falla_guard_solution':data.responsableNuevaFalla,
@@ -919,14 +1036,14 @@ function nuevaFalla(){
     let date2 = partes2[0]+' '+partes2[1]
     data_failure.falla_fecha_solucion= date2
 
-    console.log(validarObjeto(data_failure), data)
+    /*
     if(!validarObjeto(data_failure)){
         Swal.fire({
             title: "Validación",
             text: "Faltan campos por llenar, los campos marcados con asterisco son obligatorios.",
             type: "warning"
         });
-    } else {
+    } else { */
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -942,7 +1059,6 @@ function nuevaFalla(){
         })
         .then(res => res.json())
         .then(res => {
-            console.log("RESPUESTA PURA", res)
             if (res.success) {
                 let data=res.response.data
                 if(data.status_code==400){
@@ -950,7 +1066,6 @@ function nuevaFalla(){
                     for(let err in data.json){
                         errores.push(data.json[err].label+': '+data.json[err].msg)
                     }
-                    console.log(res.response.data.json.msg)
                     Swal.fire({
                         title: "Error",
                         text: errores.flat(),
@@ -990,7 +1105,7 @@ function nuevaFalla(){
         });
 
         
-    }
+   // }
 }
 
 
@@ -1156,4 +1271,122 @@ function modalFiltros(table,modal){
     }
     selectColumna.value=""
     selectTipo.value=""
+}
+
+//FUNCION para guardar los archivos en el server 
+async function guardarArchivos(id, isImage){
+    loadingService()
+    const fileInput = document.getElementById(id);
+    const file = fileInput.files[0]; // Obtener el archivo seleccionado
+
+    if (!file) {
+        alert('Selecciona un archivo para subir');
+        return;
+    }
+    let data=""
+    let formData = new FormData();
+    if(isImage){
+        formData.append('File', file);
+        formData.append('field_id', '63e65029c0f814cb466658a2');
+        formData.append('is_image', true);
+        formData.append('form_id', 95435);
+    }else{
+        formData.append('File[0]', file);
+        formData.append('field_id', '63e65029c0f814cb466658a2');
+        formData.append('form_id', 95435);
+
+    }
+
+    const options = {
+      method: 'POST', 
+      body: formData,
+    };
+    let respuesta = await fetch('https://app.linkaform.com/api/infosync/cloud_upload/', options);
+    data = await respuesta.json(); //Obtenemos los datos de la respuesta 
+    data.isImage=isImage
+    arrayResponses.push(data); //Agregamos los datos al arreglo
+    if(data.hasOwnProperty('error')){
+        Swal.fire({
+            title: "Error",
+            text: data.error,
+            type: "error",
+            showConfirmButton:false,
+            timer:1100
+        });
+        
+    }else{
+        let text= isImage? 'Las imagenes fueron guardadas correctamente.': 'Los archivos fueron guardados correctamente.';
+        Swal.fire({
+            title: "Acción Completada",
+            text: text,
+            type: "success",
+            showConfirmButton:false,
+            timer:1100
+        });
+    }
+}
+
+//FUNCION para agregar foto en el modal de agregar nota
+function setAddFoto(editAdd ="nueva"){
+    let randomID = Date.now();
+    let newItem=`
+        <div class="d-flex mb-3 col-12  div-foto-`+editAdd+`-`+randomID+`" id="id-foto-div-`+randomID+`">
+            <div class="flex-grow-1">
+                <label class="form-label">Fotografia </label>
+                <input type="file" class="form-control-file foto-div-`+editAdd+`" onchange="guardarArchivos('fileInputFotografia-`+editAdd+`-`+randomID+`', true);" id="fileInputFotografia-`+editAdd+`-`+randomID+`">
+            </div>
+            <div>
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('`+editAdd+`',`+randomID+`);return false;">
+                   <i class="fa-solid fa-minus"></i>
+                </button>
+            </div>
+        </div>
+    `;
+    $('#foto-input-form-'+editAdd).append(newItem) 
+}
+
+
+//FUNCION para elimar foto en el modal de agregar nota
+function setDeleteFoto(editAdd ="nueva",id){
+    const elements = document.querySelectorAll('.foto-div-'+editAdd);
+    const count = elements.length;
+    if(count > 1){
+        const elements = document.getElementsByClassName('div-foto-'+editAdd+'-'+id);
+        while(elements.length > 0 && id !==123){
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+    }
+}
+
+//FUNCION para eliminar archivo en el modal de agregar nota
+function setAddArchivo(editAdd ="nueva"){
+    console.log("editAdd",editAdd)
+    let randomID = Date.now();
+    let newItem=`
+        <div class="d-flex mb-3 col-12 div-archivo-`+editAdd+`-`+randomID+`" id="id-archivo-div-`+randomID+`">
+            <div class="flex-grow-1">
+                <label class="form-label">Cargar un archivo </label>
+                <input type="file" class="form-control-file archivo-div-`+editAdd+`" onchange="guardarArchivos('fileInputArchivo-`+editAdd+`-`+randomID+`', false);" id="fileInputArchivo-`+editAdd+`-`+randomID+`">
+            </div>
+            <div>
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo('`+editAdd+`',`+randomID+`);return false;">
+                    <i class="fa-solid fa-minus"></i>
+                </button>
+            </div>
+        </div>
+    `;
+    $('#archivo-input-form-'+editAdd).append(newItem);
+}
+
+
+//FUNCION para agregar archivo en el modal de agregar nota
+function setDeleteArchivo(editAdd ="nueva", id ){
+    const elements = document.querySelectorAll('.archivo-div-'+editAdd);
+    const count = elements.length;
+    if(count > 1){
+        const elements = document.getElementsByClassName('div-archivo-'+editAdd+'-'+id);
+        while(elements.length > 0 && id !==123){
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+    }
 }

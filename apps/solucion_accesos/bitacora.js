@@ -1,22 +1,24 @@
 let selectLocation;
 let colors = getPAlleteColors(12,0)
-
+let selectedEquipos=[]
+let selectedVehiculos=[]
+let idNuevoEquipoVehiculo=""
+let seleccionadoBitacora={}
 
 window.onload = function(){
 	setValueUserLocation('bitacora');
-	console.log(getValueUserLocation())
 	changeButtonColor();
     fillCatalogs();
 
-	getCatalogs();
+	//getCatalogs();
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	selectLocation= document.getElementById("selectLocation")
 	selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation()
+        let response = fetchOnChangeLocation(selectLocation.value)
     };
  	selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = async function() {
-        let response = await fetchOnChangeLocation('script_turnos.py', 'list_bitacora', selectCaseta.value, selectLocation.value)
+        let response = await fetchOnChangeCaseta('script_turnos.py', 'list_bitacora', selectCaseta.value, selectLocation.value)
         reloadTableBitacoras(response.response.data)
     };
 	let user = getCookie("userId");
@@ -29,7 +31,12 @@ window.onload = function(){
     $("#descargarSalidas").on("click", function() {
         descargarExcel(tables, 'tableSalidas')
     });
-
+    if(getValueUserLocation()=='bitacora'){
+         $(document).ready(function() {
+            $('#divTodasLasCasetas').show();
+            $('#labelGuardiaDeApoyo').remove();
+        })
+    }
     let boothStats = load_shift_json_log.booth_stats.log
     $("#textVisitasEnElDia").text(boothStats.visits_per_day);
     $("#textPersonalDentro").text(boothStats.staff_indoors);
@@ -37,23 +44,474 @@ window.onload = function(){
     $("#textSalidasRegistradas").text(boothStats.registered_exits);
 }
 
+$("#checkboxTodasLasCasetas").on("click",async function()  {
+    if ($(this).is(':checked')) {
+        selectCaseta.value=""
+        selectCaseta.disabled=true
+        let response = await fetchOnChangeCaseta('script_turnos.py', 'list_bitacora','', selectLocation.value)
+        reloadTableBitacoras(response.response.data)
+        let response2 = await fetchOnChangeCaseta('script_turnos.py', 'get_lockers', '', selectLocation.value)
+        reloadTableLockers(response2.response.data)
+    } else {
+        selectCaseta.disabled=false
+    }
+})
+
+//FUNCION para abrir modales
+function setModal(type = 'none',id=0, folio=0){
+    if(type == 'Tools'){
+        $('#itemsModal').modal('show');
+    }else if(type == 'Cars'){
+        $('#carsModal').modal('show');
+    }else if(type == 'Card'){
+        abrirGafeteModal(id)
+    }else if(type == 'Out'){
+        $('#outModal').modal('show');
+    }else if(type == 'Data'){
+        openDataModal(id)
+    }else if(type == 'Delivery'){
+        $('#deliverModal').modal('show');
+    }else if(type == 'equiposModal'){
+        showAgregarEquipo(id, folio)
+    }else if(type == 'vehiculosModal'){
+        showAgregarVehiculo(id, folio)
+    }
+}
+
+window.addEventListener('storage', function(event) {
+    if (event.key === 'cerrarSesion') {
+        let protocol = window.location.protocol;
+        let host = window.location.host;
+        window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+    }
+});
+
+function abrirGafeteModal(folio){
+    loadingService()
+    seleccionadoBitacora= dataTableBitacora.find(x => x.folio == folio);
+    console.log("SOY EL ESCOGIDOOO", seleccionadoBitacora)
+    $("#selectGafete").val("")
+    $("#selectLocker").val("")
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "gafetes_lockers.py",
+            option: 'get_lockers',
+            location: selectLocation.value,
+            area: selectCaseta.value,
+            status: statusDisponible
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close();
+            $('#cardModal').modal('show');
+            let data= res.response.data
+            let selectGaf= document.getElementById("selectLocker") 
+            selectGaf.innerHTML=""; 
+            for(let loc of data){
+                    selectGaf.innerHTML += '<option value="'+loc.id_locker+'">'+loc.id_locker+'</option>';
+            }
+            if(data.length==0){
+                 selectGaf.innerHTML += '<option disabled> No hay gafetes disponibles </option>';
+            }
+            selectGaf.value=""
+        } 
+    });
+
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "gafetes_lockers.py",
+            option: 'get_gafetes',
+            location: selectLocation.value,
+            area: selectCaseta.value,
+            status: statusDisponible
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close();
+            $('#cardModal').modal('show');
+            let data= res.response.data
+            let selectGaf= document.getElementById("selectGafete") 
+            selectGaf.innerHTML=""; 
+            for(let gaf of data){
+                    selectGaf.innerHTML += '<option value="'+gaf.id_gafete+'">'+gaf.id_gafete+'</option>';
+            }
+            if(data.length==0){
+                 selectGaf.innerHTML += '<option disabled> No hay gafetes disponibles </option>';
+            }
+            selectGaf.value=""
+        } 
+    });
+}
+
+
+function limpiarModalEquipos(){
+    idNuevoEquipoVehiculo=""
+    $("#selectTipoEquipo").val("")
+    $("#inputNombreEquipo").val("")
+    $("#inputMarcaEquipo").val("")
+    $("#inputModeloEquipo").val("")
+    $("#inputSerieEquipo").val("")
+    $("#inputColorEquipo").val("")
+}
+
+function limpiarModalVehiculos(){
+    idNuevoEquipoVehiculo=""
+    let selectVehiculosMarca= document.getElementById("selectVehiculosMarca")
+    selectVehiculosMarca.innerHTML=""
+    selectVehiculosMarca.innerHTML = '<option disabled>Escoge un tipo de vehiculo...</option>';
+    selectVehiculosMarca.value=""
+
+    let selectVehiculosModelo= document.getElementById("selectVehiculosModelo")
+    selectVehiculosModelo.innerHTML=""
+    selectVehiculosModelo.innerHTML = '<option disabled>Escoge una marca...</option>';
+    selectVehiculosModelo.value=""
+    let inputMarca= document.getElementById("selectVehiculos");
+    inputMarca.innerHTML =""
+    inputMarca.value=""
+    $("#inputMatriculaVehiculo").val("");
+    $("#inputColor").val("");
+}
+
+//FUNCION rellenar catalogos al momento de escojer una opcion
+async function onChangeCatalog(type, id){
+    if(type == "vehiculo"){
+        let inputMarca= document.getElementById("selectVehiculos");
+        const options = {
+            method: 'POST', 
+            body: JSON.stringify({
+                script_name:'script_turnos.py',
+                option:'vehiculo_tipo',
+                tipo:inputMarca.value
+            }),
+             headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+ userJwt}
+        };
+        loadingService();
+        let respuesta = await fetch(url + urlScripts, options);
+        let data = await respuesta.json();
+        if(data.error){
+            errorAlert(data)
+        }else{
+            Swal.close();
+            let list =data.response.data
+            let selectVehiculosMarca= document.getElementById("selectVehiculosMarca")
+            selectVehiculosMarca.innerHTML=""; 
+            for (let obj in list){
+                selectVehiculosMarca.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+            }
+            selectVehiculosMarca.value=""
+        }
+    }else if (type == "marca"){
+        let inputTipo= document.getElementById("selectVehiculos");
+        let inputMarca= document.getElementById("selectVehiculosMarca");
+        const options = {
+            method: 'POST', 
+            body: JSON.stringify({
+                script_name:'script_turnos.py',
+                option:'vehiculo_tipo',
+                tipo:inputTipo.value,
+                marca: inputMarca.value
+            }),
+             headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+ userJwt}
+        };
+        loadingService();
+        let respuesta = await fetch(url + urlScripts, options);
+        let data = await respuesta.json();
+        if(data.error){
+            errorAlert(data)
+        }else{
+            Swal.close();
+            let list =data.response.data
+            let selectVehiculosModelo= document.getElementById("selectVehiculosModelo")
+            selectVehiculosModelo.innerHTML=""; 
+            for (let obj in list){
+                selectVehiculosModelo.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+            }
+            selectVehiculosModelo.value=""
+        }
+    }
+}
+
+function showAgregarEquipo(id, folio){
+    limpiarModalEquipos()
+    idNuevoEquipoVehiculo=id
+    seleccionadoBitacora= dataTableBitacora.find(x => x.folio == folio);
+    let selectColor= document.getElementById("selectColorEquipo")
+    for(let color of coloresArray){
+        selectColor.innerHTML+= '<option value="'+color+'">'+color+'</option>';
+    }
+    selectColor.value=""
+    $('#equiposModal').modal('show');
+}
+
+function showAgregarVehiculo(id,folio){
+    loadingService()
+    limpiarModalVehiculos()
+    idNuevoEquipoVehiculo=id
+    seleccionadoBitacora= dataTableBitacora.find(x => x.folio == folio);
+    $("#idLoadingButtonVehiculos").show();
+    $("#idButtonVehiculos").hide();
+
+    let selectColor= document.getElementById("selectColor")
+    for(let color of coloresArray){
+        selectColor.innerHTML+= '<option value="'+color+'">'+color+'</option>';
+    }
+    selectColor.value=""
+
+    fetch(url + urlScripts, {
+    method: 'POST',
+    body: JSON.stringify({
+        script_name: "script_turnos.py",
+        option: "vehiculo_tipo",
+    }),
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+userJwt,
+    },
+    }).then(res => res.json())
+    .then(res => {
+        if(res.success){
+            let data= res.response.data
+            if(data.status_code ==400 || data.status_code==401){
+                errorAlert(res)
+            }else{
+                Swal.close()
+                let selectVehiculos= document.getElementById("selectVehiculos");
+                let list = data
+                for (let obj in list){
+                    selectVehiculos.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+                    selectVehiculos.value=""
+                }
+                Swal.close()
+                $('#vehiculosModal').modal('show');
+            }
+        }else{
+            errorAlert(res)
+        }
+    })
+}
+
+//FUNCION para guardar equipos entas con checkbox
+function agregarEquipo(){
+    loadingService()
+    $('#equiposModal').modal('hide');
+    let dicData = {};
+    let validation = false;
+    let tipo= $("#selectTipoEquipo").val() ;
+    let nombre=$("#inputNombreEquipo").val();
+    let marca=$("#inputMarcaEquipo").val();
+    let modelo=$("#inputModeloEquipo").val();
+    let noserie=$("#inputSerieEquipo").val();
+    let color=$("#selectColorEquipo").val();
+
+    let equipo={
+        color_articulo: color, 
+        numero_serie: noserie, 
+        modelo_articulo: modelo, 
+        marca_articulo: marca, 
+        tipo_equipo: tipo, 
+        nombre_articulo:nombre
+    }
+
+    if(tipo==''|| nombre=='' ){
+        validation=true
+    }
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            option: "update_bitacora_entrada",
+            script_name:"script_turnos.py",
+            equipo: equipo, 
+            record_id: idNuevoEquipoVehiculo,
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if(res.success){
+            let data= res.response.data
+            if(data.status_code ==400 || data.status_code==401){
+                    errorAlert(res)
+            }else{
+                seleccionadoBitacora.equipos.push(equipo)
+                tables["tableEntradas"].setData(dataTableBitacora);
+                successMsg("Confirmación", "Vehículo agregado correctamente.")
+            }
+        }else{
+            errorAlert(res)
+        }
+
+    })
+    /*
+    if(!validation){
+        let id= Math.floor(Math.random() * 1000000)
+        let checked='checked'
+        selectedEquipos.push(id);
+        listItemsData.push({ marca_articulo: marca, tipo_equipo: tipo, modelo_articulo: modelo, color_articulo:color , numero_serie:noserie, id: id, check:checked});
+        //let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
+        let newRow2 = $('<tr>');
+        newRow2.append($('<td>').text(tipo));
+        newRow2.append($('<td>').text(marca));
+        newRow2.append($('<td>').text(modelo));
+        newRow2.append($('<td>').text(noserie));
+        newRow2.append($('<td>').text(color));
+        newRow2.append('<td ><input class="form-check-input checkboxGroupEquipos" type="checkbox" id='+id+' '+checked+'></td>');
+        newRow2.append('</tr>');
+        $('#listAddItemsModal').append(newRow2);
+        //successMsg("Success", "Equipo agregado correctamente, da click en la lista para ver tus equipos agregados.")
+        limpiarModalEquipos();
+        successMsg("Confirmación","Equipo agregado correctamente, da click en la lista para ver todos los equipos selecionados." )
+        $('#equiposModal').modal('hide');
+    }else{
+        Swal.fire({
+            title: "Validación",
+            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+            type: "warning"
+        });
+    } */
+}
+
+//FUNCION para saber que vehiculos estan con checkbox
+function agregarVehiculo(){
+    loadingService()
+    let dicData = {};
+    let validation = false;
+    let tipoVehiculo= $('#selectVehiculos').val();
+    let marca= $('#selectVehiculosMarca').val();
+    let modelo= $('#selectVehiculosModelo').val();
+    let matricula= $('#inputMatriculaVehiculo').val();
+    let color= $('#selectColor').val();
+    if(tipoVehiculo==''){
+        validation=true
+    }
+    let vehiculo={
+        "tipo": tipoVehiculo, 
+        "modelo_vehiculo": modelo, 
+        "color": color, 
+        "placas": matricula, 
+        "marca_vehiculo": tipoVehiculo, 
+        "nombre_estado": ""
+    }
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            option: "update_bitacora_entrada",
+            script_name:"script_turnos.py",
+            vehiculo: vehiculo, 
+            record_id: idNuevoEquipoVehiculo,
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if(res.success){
+            let data= res.response.data
+            if(data.status_code ==400 || data.status_code==401){
+                    errorAlert(res)
+            }else{
+                $('#vehiculosModal').modal('hide');
+                seleccionadoBitacora.vehiculos.push(vehiculo)
+                //dataTableBitacora
+                //seleccionadoBitacora= dataTableBitacora.find(x => x.folio == folio);
+                //vehiculos.push(vehiculo)
+                tables["tableEntradas"].setData(dataTableBitacora);
+                successMsg("Confirmación", "Vehículo agregado correctamente.")
+            }
+        }else{
+            errorAlert(res)
+        }
+
+    })
+    /*
+    if(!validation){
+        let id= Math.floor(Math.random() * 1000000)
+        let checked='checked'
+        selectedVehiculos.push(id);
+        listVehiculesData.push({"tipo_vehiculo":tipoVehiculo ,"marca_vehiculo":marca , "placas_vehiculo":matricula, "color_vehiculo":color, "modelo_vehiculo": modelo, id: id, check: checked})
+        let newRow2 = $('<tr>');
+        newRow2.append($('<td>').text(tipoVehiculo));
+        newRow2.append($('<td>').text(marca));
+        newRow2.append($('<td>').text(matricula));
+        newRow2.append($('<td>').text(color));
+        newRow2.append($('<td>').text(modelo));
+        newRow2.append('<td><input class="form-check-input radioGroupItems" type="radio"  name="groupCarList" id='+id+' '+checked+'></td>');
+        newRow2.append('</tr>');
+        $('#tableCars').append(newRow2);
+
+        limpiarModalVehiculos()
+        $("#vehiculosModal").modal('hide');
+    }else{
+        Swal.fire({
+            title: "Validación",
+            text: "Faltan campos por llenar, completa los campos marcados con asterisco",
+            type: "warning"
+        });
+
+    }*/
+}
+
 function reloadTableBitacoras(data){
-    dataTablePersonal=[]
-    dataTableLocker=[]
+    console.log("DATATA",data)
+    dataTableBitacora=[]
+   //dataTableLocker=[]
     if(user !='' && userJwt!=''){
-        let bit= data
-        for (i of bit){
-            dataTablePersonal.push({folio:i.folio ,visitante:i.nombre_visita ,contratista:'LINKAFORM SA DE CV',visita:i.nombre_visita,
-            area:i.caseta_entrada,tipo:i.status_visita, entrada:i.bitacora_entrada, salida:i.bitacora_salida,estado:'', 
-            punto_acceso:'',credentials:i.gafete,comentario:'',planta:''})
+        let lista= data
+        if(lista.length>0){
+            for (let bitacora of lista){
+                dataTableBitacora.push({
+                folio:bitacora.folio ,fecha_entrada:bitacora.fecha_entrada ,nombre_visitante:bitacora.nombre_visitante, perfil_visita:bitacora.perfil_visita,
+                contratista:bitacora.contratista,status_gafete:bitacora.status_gafete, visita_a:bitacora.visita_a, caseta_entrada:bitacora.caseta_entrada,caseta_salida:bitacora.caseta_salida, 
+                fecha_salida:bitacora.fecha_salida,comentarios:bitacora.comentarios||[] , equipos: bitacora.equipos, vehiculos: bitacora.vehiculos, foto: bitacora.foto, 
+                identificacion: bitacora.identificacion, documento: bitacora.documento||"" , a_quien_visita: bitacora.a_quien_visita||"" , perfil_visita: bitacora.perfil_visita||"" ,
+                id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso, codigo_qr: bitacora.codigo_qr})
+            }
         }
         
         if(tables['tableEntradas']){
-            tables['tableEntradas'].setData(dataTablePersonal)
+            tables['tableEntradas'].setData(dataTableBitacora)
         }else{
-            drawTable('tableEntradas',columsData1,dataTablePersonal);
+            drawTable('tableEntradas',columsData1,dataTableBitacora);
         }
+        /*
+        if(tables['tableSalidas']){
+            tables['tableSalidas'].setData(dataTableLocker)
+        }else{
+            drawTable('tableSalidas',columsData2,dataTableLocker);
+        }*/
+    }else{
+        redirectionUrl('login',false);
+    }
+}
 
+function reloadTableLockers(data){
+    //dataTableBitacora=[]
+    dataTableLocker=[]
+    if(user !='' && userJwt!=''){
+        let lista= data
+        if(lista>0){
+            for (bitacora of lista){
+                dataTableLocker.push({})
+            }
+        }
         if(tables['tableSalidas']){
             tables['tableSalidas'].setData(dataTableLocker)
         }else{
@@ -62,11 +520,10 @@ function reloadTableBitacoras(data){
     }else{
         redirectionUrl('login',false);
     }
-
 }
 
+
 function loadDataTables(){
-    console.log("LOAD DATA TABLE ",getCookie('userLocation'), getCookie('userCaseta') )
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -82,16 +539,17 @@ function loadDataTables(){
     })
     .then(res => res.json())
     .then(res => {
-        console.log("RESPUESTAAAAAA", res)
         if (res.success) {
             if(user !='' && userJwt!=''){
-                let bit= res.response.data
-                for (i of bit){
-                    dataTablePersonal.push({folio:i.folio ,visitante:i.nombre_visita ,contratista:'LINKAFORM SA DE CV',visita:i.nombre_visita,
-                    area:i.caseta_entrada,tipo:i.status_visita, entrada:i.bitacora_entrada, salida:i.bitacora_salida,estado:'', 
-                    punto_acceso:'',credentials:i.gafete,comentario:'',planta:''})
+                let lista= res.response.data
+                for (bitacora of lista){
+                    dataTableBitacora.push({folio:bitacora.folio ,fecha_entrada:bitacora.fecha_entrada ,nombre_visitante:bitacora.nombre_visitante, perfil_visita:bitacora.perfil_visita,
+                    contratista:bitacora.contratista,status_gafete:bitacora.status_gafete, visita_a:bitacora.visita_a, caseta_entrada:bitacora.caseta_entrada,caseta_salida:bitacora.caseta_salida, 
+                    fecha_salida:bitacora.fecha_salida,comentarios:bitacora.comentarios||[] , equipos: bitacora.equipos, vehiculos: bitacora.vehiculos, foto: bitacora.foto, 
+                    identificacion: bitacora.identificacion, documento: bitacora.documento||"" , a_quien_visita: bitacora.a_quien_visita||"" , perfil_visita: bitacora.perfil_visita||"" ,
+                    id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso , codigo_qr: bitacora.codigo_qr})
                 }
-                drawTable('tableEntradas',columsData1,dataTablePersonal);
+                drawTable('tableEntradas',columsData1,dataTableBitacora);
                 drawTable('tableSalidas',columsData2,dataTableLocker);
             }else{
                 redirectionUrl('login',false);
@@ -100,56 +558,266 @@ function loadDataTables(){
     });
 }
 
-//FUNCION para abrir modales
-function setModal(type = 'none',id){
-	if(type == 'Tools'){
-		$('#itemsModal').modal('show');
-	}else if(type == 'Cars'){
-		$('#carsModal').modal('show');
-	}else if(type == 'Card'){
-		$('#cardModal').modal('show');
-	}else if(type == 'Out'){
-		$('#outModal').modal('show');
-	}else if(type == 'Data'){
-		$('#dataModal').modal('show');
-	}else if(type == 'Delivery'){
-		$('#deliverModal').modal('show');
-	}
+function openDataModal(folio){
+    /*
+    fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name:"script_turnos.py",
+                option:"get_detail_user",
+                curp_code:"JDUC78946456464"
+            }),
+            headers:{
+               'Content-Type': 'application/json',
+               'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+        })
+    */
+
+    let registroSeleccionado = dataTableBitacora.find(x => x.folio == folio);
+    $("#nombredevisitante").text(registroSeleccionado.nombre_visitante ||"")
+    $("#motivodevisita").text(registroSeleccionado.motivo_visita||"" )
+    if(registroSeleccionado.documento !==""){
+        $("#tituloDocumento").show()
+        $("#documento").text(registroSeleccionado.documento ||"")
+    }else{
+        $("#tituloDocumento").hide()
+    }
+
+     if(registroSeleccionado.a_quien_visita !==""){
+        $("#tituloaquienvisita").show()
+        $("#aquienvisita").text(registroSeleccionado.a_quien_visita||"" )
+    }else{
+        $("#tituloaquienvisita").hide()
+    }
+
+    if(registroSeleccionado.hasOwnProperty('foto')){
+        if(registroSeleccionado.foto !== null && registroSeleccionado.foto !== undefined &&  registroSeleccionado.foto.length>0){
+            $("#imgUser").attr('src',registroSeleccionado.foto[0].file_url);
+        }else{
+            $("#imgUser").attr('src',"https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png");
+        }
+    }
+    if(registroSeleccionado.hasOwnProperty('identificacion')){
+        if(registroSeleccionado.identificacion !== null && registroSeleccionado.identificacion !== undefined && registroSeleccionado.identificacion.length>0){
+            $("#imgIdentificacion").attr('src',registroSeleccionado.identificacion[0].file_url);
+        }else{
+            $("#imgIdentificacion").attr('src',"https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg");
+        }
+    }
+    let listaAccesos=[]
+    let listaComentarios=[]
+    //let listaDocumentos=[]
+    let listaEquipos=[]
+    let listaVehiculos=[]
+    /*
+    let tableDocumentos = document.getElementById("tableDocumentos");
+    let tbody5 = tableDocumentos.getElementsByTagName("tbody")[0];
+    tbody5.innerHTML="";*/
+
+    let tableComentarios = document.getElementById("tableComentarios");
+    let tbody1 = tableComentarios.getElementsByTagName("tbody")[0];
+    tbody1.innerHTML="";
+
+    let tableAccesos = document.getElementById("tableAccesos");
+    let tbody2 = tableAccesos.getElementsByTagName("tbody")[0];
+    tbody2.innerHTML="";
+
+    let tableEquipos = document.getElementById("tableEquipos");
+    let tbody3 = tableEquipos.getElementsByTagName("tbody")[0];
+    tbody3.innerHTML="";
+
+    let tableVehiculos = document.getElementById("tableVehiculos");
+    let tbody4 = tableVehiculos.getElementsByTagName("tbody")[0];
+    tbody4.innerHTML="";
+
+    $('#tableComentarios').innerHTML=""
+    $('#tableAccesos').innerHTML=""
+    $('#tableEquipos').innerHTML=""
+    $('#tableVehiculos').innerHTML=""
+    //$('#tableDocumentos').innerHTML=""
+
+//tabla comentarios
+    /*let docu=""
+    if(registroSeleccionado.hasOwnProperty('documento')){
+        docu = registroSeleccionado.documento !==""? registroSeleccionado.documento : ""
+    }
+    if(docu==""){
+        let newRow = $('<tr>');
+        newRow.append($('<td>').text("No existen documentos"));
+        newRow.append('</tr>');
+        $('#tableDocumentos').append(newRow);
+    }else{
+        let newRow1 = $('<tr>');
+        newRow1.append($('<td>').text(docu));
+        newRow1.append('</tr>');
+        $('#tableDocumentos').append(newRow1);
+    }
+    */
+    //tabla comentarios
+    if(registroSeleccionado.hasOwnProperty('comentarios')){
+        console.log("REGISTRO SELECIONADO", registroSeleccionado)
+        tableComentarios = registroSeleccionado.comentarios.length > 0 ? registroSeleccionado.comentarios  : [];
+    }
+    for (var i = 0; i < tableComentarios.length; i++) {
+            let newRow = $('<tr>');
+            newRow.append($('<td>').text(tableComentarios[i].comentario));
+            newRow.append($('<td>').text(tableComentarios[i].tipo_comentario));
+            newRow.append('</tr>');
+            $('#tableComentarios').append(newRow);
+    }
+    if(tableComentarios.length==0){
+        let newRow = $('<tr>');
+        newRow.append($('<td>').text("No existen comentarios"));
+        newRow.append($('<td>'));
+        newRow.append('</tr>');
+        $('#tableComentarios').append(newRow);
+    }
+
+    //tabla accesos
+    if(registroSeleccionado.hasOwnProperty('grupo_areas_acceso')){
+        listaAccesos = registroSeleccionado.grupo_areas_acceso.length > 0 ? registroSeleccionado.grupo_areas_acceso: [];
+    }
+    for (let i = 0; i < listaAccesos.length; i++) {
+        let newRow = $('<tr>');
+        newRow.append($('<td>').text(listaAccesos[i].nombre_area||""));
+        newRow.append('</tr>');
+        $('#tableAccesos').append(newRow);
+    }
+    if(listaAccesos.length==0){
+        let newRow = $('<tr>');
+        newRow.append($('<td>').text("No existen accesos permitidos"));
+        newRow.append('</tr>');
+        $('#tableAccesos').append(newRow);
+    }
+
+    //tabla equipo
+    if(registroSeleccionado.hasOwnProperty('equipos')){
+        listaEquipos = registroSeleccionado.equipos.length > 0 ? registroSeleccionado.equipos: [];
+    }
+    for (var i = 0; i < listaEquipos.length; i++) {
+        var newRow = $('<tr>');
+        newRow.append($('<td>').text(listaEquipos[i].tipo_equipo));
+        newRow.append($('<td>').text(listaEquipos[i].nombre_articulo));
+        newRow.append($('<td>').text(listaEquipos[i].marca_articulo));
+        newRow.append($('<td>').text(listaEquipos[i].modelo_articulo));
+        newRow.append($('<td>').text(listaEquipos[i].numero_serie));
+        newRow.append($('<td>').text(listaEquipos[i].color_articulo));
+        newRow.append('</tr>');
+        $('#tableEquipos').append(newRow);
+    }
+    if(listaEquipos.length==0){
+        let newRow = $('<tr>');
+        newRow.append($('<td>').text("No existen equipos"));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append('</tr>');
+        $('#tableEquipos').append(newRow);
+    }
+
+    //tabla vehiculos
+    if(registroSeleccionado.hasOwnProperty('vehiculos')){
+        listaVehiculos = registroSeleccionado.vehiculos.length > 0 ? registroSeleccionado.vehiculos: [];
+    }
+    for (let i = 0; i < listaVehiculos.length; i++) {
+        let newRow = $('<tr>');
+        newRow.append($('<td>').text(listaVehiculos[i].tipo));
+        newRow.append($('<td>').text(listaVehiculos[i].marca_vehiculo));
+        newRow.append($('<td>').text(listaVehiculos[i].modelo_vehiculo));
+        newRow.append($('<td>').text(listaVehiculos[i].color));
+        newRow.append($('<td>').text(listaVehiculos[i].placas));
+        newRow.append('</tr>');
+        $('#tableVehiculos').append(newRow);
+    }
+    if(listaVehiculos.length==0){
+        let newRow = $('<tr>');
+        newRow.append($('<td>').text("No existen vehiculos"));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append($('<td>'));
+        newRow.append('</tr>');
+        $('#tableVehiculos').append(newRow);
+    }
+
+    $("#nombreDelJefe").text("")
+    $("#vigencia").text("")
+    $("#status").text("")
+    $("#motivoDeVisita").text("")
+    $("#aQuienVisita").text("")
+    $("#autorizadoPor").text("")
+    $("#telefono").text("")
+
+    $('#dataModal').modal('show');
+}
+
+function llenarTablasInfoUsuario(){
+
 }
 
 //FUNCION confirmar la salida a un registro individual desde la tabla
-function alertSalida(folio){
+function alertSalida(folio, status_visita){
+    if(status_visita== statusVisitaEntrada){
 		Swal.fire({
-	    title:'¿Estas seguro de confirmar la salida?',
-	    html:`
-	    <div class="m-2"> La salida no puede ser confirmada en este momento. Aún hay documentos 
-	    en el locker correspondiente que deben ser desocupados antes de proceder. </div>`,
-	    type: "warning",
-	    showCancelButton: true,
-	    cancelButtonColor: colors[0],
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: colors[1],
-	    confirmButtonText: "Si",
-	    heightAuto:false,
-        reverseButtons: true
-	})
-	.then((result) => {
-	    if (result.value) {
-            let selectedSalida = dataTablePersonal.find(n => n.folio == parseInt(folio));
-           
-            if (selectedSalida) {
-                let fecha=  new Date()
-                let año = fecha.getFullYear();
-                let mes = fecha.getMonth() + 1;
-                let dia = fecha.getDate();
-                let horaFormateada = fecha.getHours() + ':' + fecha.getMinutes();
-                let fechaFormateada = dia + '/' + mes + '/' + año + ' ' + horaFormateada;
-                selectedSalida.salida = fechaFormateada;
-                 console.log(dataTablePersonal)
-                tables["tableEntradas"].setData(dataTablePersonal);
-            }
-	    }
-	});
+    	    title:'¿Estas seguro de confirmar la salida?',
+    	    html:`
+    	    <div class="m-2"> La salida no puede ser confirmada en este momento. Aún hay documentos 
+    	    en el locker correspondiente que deben ser desocupados antes de proceder. </div>`,
+    	    type: "warning",
+    	    showCancelButton: true,
+    	    cancelButtonColor: colors[0],
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: colors[1],
+    	    confirmButtonText: "Si",
+    	    heightAuto:false,
+            reverseButtons: true
+    	})
+    	.then((result) => {
+    	    if (result.value) {
+            console.log("SDFSS",result)
+                fetch(url + urlScripts, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        script_name: 'script_turnos.py',
+                        option: 'do_out',
+                        qr_code: folio,
+                        location: selectLocation.value,
+                        area: selectCaseta.value
+                    }),
+                    headers:{
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+userJwt
+                    },
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                    } 
+                });
+
+                let selectedSalida = dataTableBitacora.find(n => n.folio == parseInt(folio));
+               
+                if (selectedSalida) {
+                    let fecha=  new Date()
+                    let año = fecha.getFullYear();
+                    let mes = fecha.getMonth() + 1;
+                    let dia = fecha.getDate();
+                    let horaFormateada = fecha.getHours() + ':' + fecha.getMinutes();
+                    let fechaFormateada = dia + '/' + mes + '/' + año + ' ' + horaFormateada;
+                    selectedSalida.salida = fechaFormateada;
+                    tables["tableEntradas"].setData(dataTableBitacora);
+                }
+    	    }
+    	});
+    }else{
+        successMsg("Validación", "Este ya registro ya tiene registrada la salida", "warning")
+    }
 }
 
 
@@ -193,44 +861,73 @@ function alertGafete(folio){
 
 
 //FUNCION rellenar catalogos al momento de escojer una opcion
-function onChangeCatalog(type, id){
+//FUNCION rellenar catalogos al momento de escojer una opcion
+/*
+async function onChangeCatalog(type, id){
     if(type == "vehiculo"){
-        $("#divCatalogMarca"+id+"").show();
-        let inputMarca= document.getElementById("selectCatalogMarca-"+id+"");
-        inputMarca.value="";
-        let datalistMarca= document.getElementById("datalistOptionsMarca"+id+"");
-        datalistMarca.innerHTML=""; 
-        let inputModelo= document.getElementById("selectCatalogModelo-"+id+"");
-        inputModelo.value="";
-        let datalistModelo= document.getElementById("datalistOptionsModelo"+id+"");
-        datalistModelo.innerHTML=""; 
-
-        let selectedValue = $( "#selectTipoVehiculo-"+id+"" ).val();
-        let catalogMarca = filterCatalogBy('type', selectedValue);
-        for (let obj in catalogMarca){
-            $("#datalistOptionsMarca"+id+"").append($('<option></option>').val(catalogMarca[obj].brand).text(catalogMarca[obj].brand));
+        let inputMarca= document.getElementById("selectVehiculos");
+        const options = {
+            method: 'POST', 
+            body: JSON.stringify({
+                script_name:'script_turnos.py',
+                option:'vehiculo_tipo',
+                tipo:inputMarca.value
+            }),
+             headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+ userJwt}
+        };
+        loadingService();
+        let respuesta = await fetch(url + urlScripts, options);
+        let data = await respuesta.json();
+        if(data.error){
+            errorAlert(data)
+        }else{
+            Swal.close();
+            let list =data.response.data
+            let selectVehiculosMarca= document.getElementById("selectVehiculosMarca")
+            selectVehiculosMarca.innerHTML=""; 
+            for (let obj in list){
+                selectVehiculosMarca.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+            }
+            selectVehiculosMarca.value=""
         }
     }else if (type == "marca"){
-        $("#divCatalogModelo"+id+"").show();
-        let inputModelo= document.getElementById("selectCatalogModelo-"+id+"");
-        inputModelo.value="";
-        let datalistModelo= document.getElementById("datalistOptionsModelo"+id+"");
-        datalistModelo.innerHTML=""; 
-        let selectedValue = $( "#selectCatalogMarca-"+id+"" ).val();
-        let catalogMarca = filterCatalogBy('brand', selectedValue);
-        for (let obj in catalogMarca){
-            $("#datalistOptionsModelo"+id+"").append($('<option></option>').val(catalogMarca[obj].model).text(catalogMarca[obj].model));
+        let inputTipo= document.getElementById("selectVehiculos");
+        let inputMarca= document.getElementById("selectVehiculosMarca");
+        const options = {
+            method: 'POST', 
+            body: JSON.stringify({
+                script_name:'script_turnos.py',
+                option:'vehiculo_tipo',
+                tipo:inputTipo.value,
+                marca: inputMarca.value
+            }),
+             headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+ userJwt}
+        };
+        loadingService();
+        let respuesta = await fetch(url + urlScripts, options);
+        let data = await respuesta.json();
+        if(data.error){
+            errorAlert(data)
+        }else{
+            Swal.close();
+            let list =data.response.data
+            let selectVehiculosModelo= document.getElementById("selectVehiculosModelo")
+            selectVehiculosModelo.innerHTML=""; 
+            for (let obj in list){
+                selectVehiculosModelo.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+            }
+            selectVehiculosModelo.value=""
         }
     }
 }
-
+*/
 
 //FUNCION obtener data para rellenar los catalogos
 function getCatalogs(){
-    $("#selectTipoVehiculo-123").prop( "disabled", true );
+   /* $("#selectTipoVehiculo-123").prop( "disabled", true );
     $("#divCatalogMarca123").hide();
     $("#divCatalogModelo123").hide();
-    /*
+    
     fetch(url + urlScripts ,{
         method: 'POST',
         body: JSON.stringify({
@@ -246,7 +943,7 @@ function getCatalogs(){
     .then(res => {
         if (res.success) {
         } 
-    })*/
+    })
     
     let cat={
         "brands_cars": [
@@ -273,7 +970,7 @@ function getCatalogs(){
     $("#spinnerTipoVehiculo").css("display", "none");
     dataCatalogs.types_cars.forEach(function(e, i){
     $("#datalistOptionsTipo").append($('<option></option>').val(e).text(e));
-    });
+    });*/
 }
 
 
@@ -288,7 +985,6 @@ function getSaveItem(){
     let noserie=$("#inputSerieItem").val();
     let color=$("#inputColorItem").val();
 
-    console.log('console',tipo, nombre)
     if(tipo==''|| nombre=='' ){
         validation=true
     }
@@ -424,8 +1120,68 @@ function filterCatalogBy(key, value ){
 
 
 //FUNCION ver el modal de gafete
-function getFormGafete(){
-    let flaginput = false;
+function asignarGafete(){
+    $("#idLoadingButtonAsignarGafete").show();
+    $("#idButtonAsignarGafete").hide();
+    let numGafete= $("#selectGafete").val();
+    console.log("VALOR GAFFF",numGafete)
+    let otroDoc= $("#inputOtroDescCard").val();
+    //let nombre= $("#nameUserInf").text();
+    
+    let radios = document.getElementsByName('radioOptionsDocument');
+    let radioSeleccionado = "";
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            radioSeleccionado = radios[i];
+            break; 
+        }
+    }
+    let data_gafete={
+        'status_gafete':'asignar_gafete',
+        'ubicacion_gafete':selectLocation.value,
+        'caseta_gafete':selectCaseta.value,
+        'visita_gafete':seleccionadoBitacora.nombre_visitante,
+        'id_gafete':numGafete,
+        'documento_gafete':[radioSeleccionado.value],
+    }
+    console.log(data_gafete)
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "gafetes_lockers.py",
+            option: "new_badge",
+            data_gafete: data_gafete,
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+            'Access-Control-Request-Headers':'*'
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            let data = res.response.data;
+            if(data.status_code==400){
+                errorAlert(data)
+                $("#idLoadingButtonAsignarGafete").hide();
+                $("#idButtonAsignarGafete").show();
+            }
+            else if(data.status_code==201){
+                successMsg("Gafete Entregado", "El gafete a sido entregado correctamente.")
+                $("#idLoadingButtonAsignarGafete").hide();
+                $("#idButtonAsignarGafete").show();
+                $("#alert_gafete_modal").hide();
+                $("#cardModal").modal('hide')
+            }
+        }else{
+            errorAlert(res)
+            $("#idLoadingButtonAsignarGafete").hide();
+            $("#idButtonAsignarGafete").show();
+        } 
+    })
+
+    /*let flaginput = false;
     let flagcheck = true;
     let dicData = {};
     let elements = document.getElementsByClassName('form-gafete');
@@ -447,12 +1203,10 @@ function getFormGafete(){
             }
         }
     }
-    console.log("DATA GAFETE",dicData)
     if(!flaginput && !flagcheck){
         setDataGafete(dicData);
         for(e of elements){
         	e.value=''
-        	console.log("elkemento",e)
         }
         Swal.fire({
         	title: "Gafete Entregado",
@@ -468,7 +1222,7 @@ function getFormGafete(){
             type: "warning"
         });
         //$("#alert_gafete_modal").show();
-    }
+    }*/
 }
 
 

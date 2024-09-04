@@ -2,6 +2,8 @@
 
 // Settings
 var url = "https://app.linkaform.com/api/";
+//var url = "http://127.0.0.1:8011/api/";
+// var url = "https://app.linkaform.com/api/";
 //var url = "http://192.168.0.25:8000/api/";
 // End Settings
 
@@ -12,11 +14,33 @@ var url = "https://app.linkaform.com/api/";
 function encontrarCambios(objetoOriginal, objetoEditado) {
   let cambios = {};
   for (let key in objetoOriginal) {
-    if (objetoOriginal.hasOwnProperty(key) && objetoEditado.hasOwnProperty(key)) {
-      if (objetoOriginal[key] !== objetoEditado[key]) {
-        cambios[key] = objetoEditado[key]
-      }
-    }
+        if (objetoOriginal.hasOwnProperty(key) && objetoEditado.hasOwnProperty(key)) {
+            if (objetoOriginal[key] !== objetoEditado[key]) {
+                    cambios[key] = objetoEditado[key]
+                }
+            /*
+            if(objetoEditado[key] instanceof Array && objetoOriginal[key] instanceof Array){
+                    for(let subKey in objetoOriginal[key]){
+                        console.log("subkey",objetoOriginal[key][subKey])
+                        if(objetoOriginal[key][subKey].hasOwnProperty('file_name') && objetoEditado[key][subKey].hasOwnProperty('file_name') ){
+                            console.log(objetoOriginal[key][subKey].file_url !== objetoEditado[key][subKey].file_url)
+                            if (objetoOriginal[key][subKey].file_url !== objetoEditado[key][subKey].file_url) {
+                                cambios[key] = objetoEditado[key]
+                            }
+                        }else{
+                            for(let subKey in objetoEditado[key]){
+                                if (objetoOriginal[key][subKey]['6647fb38da07bf430e273ea2']!== objetoEditado[key][subKey]['6647fb38da07bf430e273ea2']) {
+                                    cambios[key] = objetoEditado[key]
+                                }
+                            }
+                        }
+                    }
+            }else{
+                if (objetoOriginal[key] !== objetoEditado[key]) {
+                    cambios[key] = objetoEditado[key]
+                }
+            }*/
+        }
   }
   return cambios;
 }
@@ -213,7 +237,11 @@ function getCookie(cname) {
 }
 
 function closeSession(){
-  var cookies = document.cookie.split(";"); for (var i = 0; i < cookies.length; i++){ var spcook = cookies[i].split("="); document.cookie = spcook[0] + "=;expires=Thu, 21 Sep 1979 00:00:01 UTC;"; }
+    var cookies = document.cookie.split(";"); 
+    for (var i = 0; i < cookies.length; i++){ 
+        var spcook = cookies[i].split("="); 
+        document.cookie = spcook[0] + "=;expires=Thu, 21 Sep 1979 00:00:01 UTC;"; 
+    }
   location.reload();
 }
 
@@ -442,4 +470,234 @@ function getTodayDateTime(){
 
     // Mostrar la fecha formateada
     return fechaFormateada;
+}
+
+/*
+let ejemplo={"status_code": 400, 
+        "json": {
+            "663fae53fa005c70de59eb95": {
+                "1": {
+                    "663bd466b19b7fb7d9e97cdc": {"msg": ["Este campo es requerido"], "error": [], "label": "ID usuario"}, 
+                    "66a28f3ca6b0f085b1518ca8": {"msg": ["Este campo es requerido"], "error": [], "label": "Status"}
+                }, 
+                "0": {
+                    "663bd466b19b7fb7d9e97cdc": {"msg": ["Este campo es requerido"], "error": [], "label": "ID usuario"}, 
+                    "66a28f3ca6b0f085b1518ca8": {"msg": ["Este campo es requerido"], "error": [], "label": "Status"}
+                }, 
+                "group": {"msg": [], "error": [], "label": "Informaci\u00f3n del guardias de apoyo"}
+            }
+        }
+    }
+*/
+
+function objLength(err,data){
+    let objectCount = 0;
+    const keys = Object.keys(data[err]);
+    if (typeof data === 'object' || data !== null) {
+        for (let key of keys) {
+            if (typeof data[err][key] === 'object' && data[err][key] !== null) {
+              objectCount++;
+            }
+        }
+    }
+    console.log(objectCount)
+    return objectCount
+}
+
+function errorAlert(data, title = "Error"){
+    if(data.hasOwnProperty("json")){
+        let errores=[]
+        for(let err in data.json){
+            let length=objLength(err, data.json)
+             if(data.json[err].hasOwnProperty('label')){
+                errores.push(data.json[err].label+': '+data.json[err].msg+" ")
+            }else {
+                for (let subKey in err){
+                    for(let subKey2 in data.json[err][subKey]){
+                        errores.push(data.json[err][subKey][subKey2].label+': '+data.json[err][subKey][subKey2].msg+" ")
+                    }
+                }
+            }
+        }
+        Swal.fire({
+            title: title,
+            text: errores.flat(),
+            type: "warning"
+        });
+    }else if (data.hasOwnProperty("error")){
+        let error= data.error
+        if(error.hasOwnProperty('msg')){
+            Swal.fire({
+                title: error.msg.title,
+                text: error.msg.msg,
+                type: error.msg.type
+            });
+        }else{
+            Swal.fire({
+                title: title,
+                text: error,
+                type: "warning"
+            });
+        }
+    }else if (typeof data ==='string'){
+        Swal.fire({
+            title: title,
+            text: data,
+            type: "warning"
+        });
+    }
+}
+
+function errorLoginTurnos(data, type="warning", fn= ()=>{}){
+    if (data.hasOwnProperty("error")){
+        let error= data.error
+        if(error.hasOwnProperty('msg')){
+            Swal.fire({
+                title: error.msg.title,
+                text: error.msg.msg,
+                type: error.msg.type,
+                allowOutsideClick: false,
+                showDenyButton: true,
+                showCancelButton: true,
+                cancelButtonColor: colors[0],
+                confirmButtonColor: colors[1],
+                confirmButtonText: "Salir",
+                cancelButtonText: "Intentar de nuevo",
+                reverseButtons: true,
+                heightAuto:false,
+            }).then((result) => {
+                if (result.value) {
+                    setCloseSession()
+                }else{
+                    fn()
+                    location.reload()
+                }
+            });
+        }else{
+            Swal.fire({
+                title: 'Ocurrio un error...',
+                text: error,
+                type: type,
+                allowOutsideClick: false,
+                showDenyButton: true,
+                showCancelButton: true,
+                cancelButtonColor: colors[0],
+                confirmButtonColor: colors[1],
+                confirmButtonText: "Salir",
+                cancelButtonText: "Intentar de nuevo",
+                reverseButtons: true,
+                heightAuto:false,
+            }).then((result) => {
+                console.log(result)
+                if (result.value) {
+                    setCloseSession()
+                }else{
+                    fn()
+                    location.reload()
+                }
+            });
+        }
+    }else if(typeof data ==='string'){
+        console.log(data)
+        Swal.fire({
+            title: 'Ocurrio un error...',
+            text: data,
+            type: type,
+            allowOutsideClick: false,
+            showDenyButton: true,
+            showCancelButton: true,
+            cancelButtonColor: colors[0],
+            confirmButtonColor: colors[1],
+            confirmButtonText: "Salir",
+            cancelButtonText: "Intentar de nuevo",
+            reverseButtons: true,
+            heightAuto:false,
+        }).then((result) => {
+            console.log(result)
+            if (result.value) {
+                setCloseSession()
+            }else{
+                fn()
+                location.reload()
+            }
+        });
+    }
+}
+
+
+function successMsg(title, text, type = "success"){
+    Swal.fire({
+        title: title,
+        text: text,
+        type: type
+    });
+}
+
+function loadingService(){
+    Swal.fire({
+        title: 'Cargando...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+            Swal.showLoading();
+       }
+    });
+}
+
+function tienePropiedadesVacias(objeto) {
+    for (let key in objeto) {
+        if (objeto.hasOwnProperty(key)) {
+            // Verificar si la propiedad es vacía
+            if (objeto[key] === null ||
+                objeto[key] === undefined ||
+                objeto[key] === '' ||
+                (Array.isArray(objeto[key]) && objeto[key].length === 0)) {
+                return true; // Retorna true si encuentra una propiedad vacía
+            }
+        }
+    }
+    return false; // Retorna false si no encuentra ninguna propiedad vacía
+}
+
+function formatText(text) {
+    let replacedText = text.replace(/_/g, ' ');
+    let formattedText = replacedText.charAt(0).toUpperCase() + replacedText.slice(1).toLowerCase();
+    return formattedText;
+}
+
+function uniqueID(){
+    const timestamp = Date.now(); // Obtiene el timestamp actual en milisegundos
+    const randomPart = Math.floor(Math.random() * 1000000); // Genera un número aleatorio entre 0 y 999999
+    return `${timestamp}-${randomPart}`; // Combina ambos para formar el ID
+}
+
+
+
+function formatearFechaHora(fechaHora) {
+    // Crear un objeto Date a partir de la fecha y hora proporcionada
+    const fechaObj = new Date(fechaHora);
+    
+    // Crear arrays con los nombres de los meses
+    const meses = [
+        'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+        'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+    ];
+    
+    // Obtener el día, mes, año, hora, minuto y segundo
+    const dia = fechaObj.getDate();
+    const mes = meses[fechaObj.getMonth()];
+    const año = fechaObj.getFullYear();
+    const hora = fechaObj.getHours().toString().padStart(2, '0'); // Añadir ceros a la izquierda si es necesario
+    const minuto = fechaObj.getMinutes().toString().padStart(2, '0');
+    const segundo = fechaObj.getSeconds().toString().padStart(2, '0');
+    
+    // Formatear la fecha y hora en el formato deseado
+    return `${dia} de ${mes} de ${año}, ${hora}:${minuto}:${segundo} hrs`;
+}
+
+
+function capitalizeFirstLetter(text) {
+    if (text.length > 0) {
+        const capitalizedText = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+        return capitalizedText
+    }
 }
