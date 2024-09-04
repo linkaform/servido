@@ -98,6 +98,26 @@ function abrirRecibirGafeteModal(){
         .then((result) => {
             if (result.value) {
                 console.log("SERVICIO PARA RECIBIR EL GAFETE")
+                fetch(url + urlScripts, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        script_name: 'gafetes_lockers.py',
+                        option: 'update_status',
+                        gafete_id:"MTY-11",
+                        tipo_movimiento : fullData.tipo_movimiento
+                    }),
+                    headers:{
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+userJwt
+                    },
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                    } 
+                });
+            }
+        });
                 /*
                 let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
                 if (selectedSalida) {
@@ -107,8 +127,8 @@ function abrirRecibirGafeteModal(){
                     selectedSalida.location = '';
                     tables["tableSalidas"].setData(dataTableLocker);
                 } */
-            }
-        });
+            
+       // });
     /*}else{
         successMsg()
          Swal.fire({
@@ -205,10 +225,11 @@ function abrirAsignarGafeteModal(){
         if (res.success) {
             Swal.close();
             let data= res.response.data
+            console.log("data", data)
             let selectLockers= document.getElementById("selectLocker") 
             selectLockers.innerHTML=""; 
-            for(let loc of data){
-                    selectLockers.innerHTML += '<option value="'+loc.id_locker  +'">'+loc.id_locker+'</option>';
+            for(let loc of data){ 
+                    selectLockers.innerHTML += '<option value="'+loc.locker_id  +'">'+loc.locker_id+'</option>';
             }
             if(data.length==0){
                  selectLockers.innerHTML += '<option disabled> No hay lockers disponibles </option>';
@@ -217,6 +238,9 @@ function abrirAsignarGafeteModal(){
         } 
     });
 
+
+// lkf_api.update_catalog_multi_record( {'647fd66741b60713bacded7e': days}, 102885, record_id=[record_catalog['_id']])
+// self.lkf_api.search_catalog( self.GAFETES_CAT_ID, mango_query)
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -237,10 +261,11 @@ function abrirAsignarGafeteModal(){
             Swal.close();
             $("#gafeteModal").modal("show")
             let data= res.response.data
+            console.log("data gafete", data)
             let selectGaf= document.getElementById("selectGafete") 
             selectGaf.innerHTML=""; 
             for(let gaf of data){
-                    selectGaf.innerHTML += '<option value="'+gaf.id_gafete+'">'+gaf.id_gafete+'</option>';
+                    selectGaf.innerHTML += '<option value="'+gaf.gafete_id+'">'+gaf.gafete_id+'</option>';
             }
             if(data.length==0){
                  selectGaf.innerHTML += '<option disabled> No hay gafetes disponibles </option>';
@@ -1089,7 +1114,7 @@ function entregarGafete(){
     let numGafete= $("#selectGafete").val();
     let otroDoc= $("#inputOtroDescCard").val();
     let nombre= $("#nameUserInf").text();
-    let locker= $("#inputLocker").val();
+    let locker= $("#selectLocker").val();
     let radios = document.getElementsByName('radioOptionsDocument');
     let radioSeleccionado = "";
     for (var i = 0; i < radios.length; i++) {
@@ -1100,16 +1125,17 @@ function entregarGafete(){
     }
     if(numGafete !=="" && radioSeleccionado.value!=="" && locker!==""){
         gafeteRegistroIngreso={
-            "id_gafete":numGafete,
+            "gafete_id":numGafete,
             "documento_garantia": radioSeleccionado.value, // Opciones "licencia_de_conducir","carnet_de_identidad", "ine"
-            "id_locker":locker
+            "locker_id":locker
             /*'status_gafete':'asignar_gafete',
             'ubicacion_gafete':selectLocation.value,
             'caseta_gafete':selectCaseta.value,
             'visita_gafete':nombre,
-            'id_gafete':numGafete,
+            'gafete_id':numGafete,
             'documento_gafete':[radioSeleccionado.value],*/
         }
+
 
         $("#gafeteModal").modal('hide')
         successMsg("Gafete Entregado", "El gafete asignado para el registro de ingreso.")
@@ -1381,6 +1407,7 @@ function tableFill(dataUser){
     if(listAccess.length == 0){
         var newRow = $('<tr>');
         newRow.append($('<td >').text('No existen accesos permitidos'));
+        newRow.append($('<td>'));
         newRow.append($('<td>'));
         newRow.append('</tr>');
         $('#tableAccess').append(newRow);

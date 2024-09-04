@@ -89,7 +89,6 @@ window.addEventListener('storage', function(event) {
 function abrirGafeteModal(folio){
     loadingService()
     seleccionadoBitacora= dataTableBitacora.find(x => x.folio == folio);
-    console.log("SOY EL ESCOGIDOOO", seleccionadoBitacora)
     $("#selectGafete").val("")
     $("#selectLocker").val("")
     fetch(url + urlScripts, {
@@ -482,7 +481,7 @@ function reloadTableBitacoras(data){
                 contratista:bitacora.contratista,status_gafete:bitacora.status_gafete, visita_a:bitacora.visita_a, caseta_entrada:bitacora.caseta_entrada,caseta_salida:bitacora.caseta_salida, 
                 fecha_salida:bitacora.fecha_salida,comentarios:bitacora.comentarios||[] , equipos: bitacora.equipos, vehiculos: bitacora.vehiculos, foto: bitacora.foto, 
                 identificacion: bitacora.identificacion, documento: bitacora.documento||"" , a_quien_visita: bitacora.a_quien_visita||"" , perfil_visita: bitacora.perfil_visita||"" ,
-                id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso, codigo_qr: bitacora.codigo_qr})
+                id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso, codigo_qr: bitacora.codigo_qr , status_visita:bitacora.status_visita})
             }
         }
         
@@ -547,7 +546,7 @@ function loadDataTables(){
                     contratista:bitacora.contratista,status_gafete:bitacora.status_gafete, visita_a:bitacora.visita_a, caseta_entrada:bitacora.caseta_entrada,caseta_salida:bitacora.caseta_salida, 
                     fecha_salida:bitacora.fecha_salida,comentarios:bitacora.comentarios||[] , equipos: bitacora.equipos, vehiculos: bitacora.vehiculos, foto: bitacora.foto, 
                     identificacion: bitacora.identificacion, documento: bitacora.documento||"" , a_quien_visita: bitacora.a_quien_visita||"" , perfil_visita: bitacora.perfil_visita||"" ,
-                    id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso , codigo_qr: bitacora.codigo_qr})
+                    id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso , codigo_qr: bitacora.codigo_qr, status_visita:bitacora.status_visita})
                 }
                 drawTable('tableEntradas',columsData1,dataTableBitacora);
                 drawTable('tableSalidas',columsData2,dataTableLocker);
@@ -763,6 +762,7 @@ function llenarTablasInfoUsuario(){
 
 //FUNCION confirmar la salida a un registro individual desde la tabla
 function alertSalida(folio, status_visita){
+    console.log(status_visita, statusVisitaEntrada)
     if(status_visita== statusVisitaEntrada){
 		Swal.fire({
     	    title:'¿Estas seguro de confirmar la salida?',
