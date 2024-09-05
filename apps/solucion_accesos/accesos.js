@@ -27,6 +27,7 @@ let fotosNuevaVisita={foto:[], identificacion:[]}
 let paseDeAccesoScript= "pase_de_acceso.py"
 let gafeteRegistroIngreso={}
 
+
 window.onload = function(){
     setValueUserLocation('accesos');
     changeButtonColor(); 
@@ -79,45 +80,40 @@ function setModal(type = 'none',id =""){
 
 function abrirRecibirGafeteModal(){
     console.log("todaaa la data",fullData)
-
     //let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
-    
-        Swal.fire({
-            title:'¿Está seguro de recibir gafete?',
-            html:`
-            <div class="m-1"> Al recibir el gafete, se desocupara el gafete y el locker y se retiraran los documentos pertienentes </div>`,
-            type: "warning",
-            showCancelButton: true,
-            cancelButtonColor: colors[0],
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: colors[1],
-            confirmButtonText: "Si",
-            heightAuto:false,
-            reverseButtons: true
-        })
-        .then((result) => {
-            if (result.value) {
-                console.log("SERVICIO PARA RECIBIR EL GAFETE")
-                fetch(url + urlScripts, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        script_name: 'gafetes_lockers.py',
-                        option: 'update_status',
-                        gafete_id:"MTY-11",
-                        tipo_movimiento : fullData.tipo_movimiento
-                    }),
-                    headers:{
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer '+userJwt
-                    },
-                })
-                .then(res => res.json())
-                .then(res => {
-                    if (res.success) {
-                    } 
-                });
-            }
-        });
+    Swal.fire({
+        title:'¿Está seguro de recibir gafete?',
+        html:`
+        <div class="m-1"> Al recibir el gafete, se desocupara el gafete y el locker y se retiraran los documentos pertienentes </div>`,
+        type: "warning",
+        showCancelButton: true,
+        cancelButtonColor: colors[0],
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: colors[1],
+        confirmButtonText: "Si",
+        heightAuto:false,
+        reverseButtons: true
+    })
+    .then((result) => {
+        if (result.value) {
+            fetch(url + urlScripts, {
+                method: 'POST',
+                body: JSON.stringify({
+                    script_name: 'gafetes_lockers.py',
+                    option: 'update_status',
+                }),
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+userJwt
+                },
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                } 
+            });
+        }
+    });
                 /*
                 let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
                 if (selectedSalida) {
@@ -213,7 +209,8 @@ function abrirAsignarGafeteModal(){
             script_name: "gafetes_lockers.py",
             location: selectLocation.value,
             area: selectCaseta.value,
-            status: statusDisponible
+            status: statusDisponible,
+            tipo_locker:"Identificaciones"
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -225,7 +222,6 @@ function abrirAsignarGafeteModal(){
         if (res.success) {
             Swal.close();
             let data= res.response.data
-            console.log("data", data)
             let selectLockers= document.getElementById("selectLocker") 
             selectLockers.innerHTML=""; 
             for(let loc of data){ 
@@ -1066,7 +1062,8 @@ function registrarSalida(){
             option: 'do_out',
             qr_code: codeUser,
             location: location,
-            area: area
+            area: area,
+            gafete_id: $("#gafete").text()
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -1578,6 +1575,8 @@ function optionInformationUser(data){
             $("#buttonAddCommentarioAccesoModal").hide()
             $("#textOut").show();
         } 
+        $("#gafete").text(data.gafete_id)
+        $("#locker").text(data.locker_id)
         $("#buttonNew").hide();
         $("#buttonAsignarGafete").show();
         $("#buttonClean").show();

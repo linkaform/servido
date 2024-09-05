@@ -527,11 +527,19 @@ function errorAlert(data, title = "Error"){
     }else if (data.hasOwnProperty("error")){
         let error= data.error
         if(error.hasOwnProperty('msg')){
-            Swal.fire({
-                title: error.msg.title,
-                text: error.msg.msg,
-                type: error.msg.type
-            });
+            if(typeof error.msg ==='string'){
+                Swal.fire({
+                    title: title,
+                    text: error.msg,
+                    type: "warning"
+                });
+            }else{
+                Swal.fire({
+                    title: error.msg.title,
+                    text: error.msg.msg,
+                    type: error.msg.type
+                });
+            }
         }else{
             Swal.fire({
                 title: title,
