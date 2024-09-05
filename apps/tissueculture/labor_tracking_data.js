@@ -52,7 +52,7 @@ var setOptions2 = {
 	    },
 	    title: {
 	        display: true,
-	        text: 'Hours project per week',
+	        text: 'Hours per Project / Horas por Proyecto',
 	        font: {
 	          size: 20
 	        }
@@ -87,7 +87,7 @@ var setOptions3 = {
 	    },
 	    title: {
 	        display: true,
-	        text: 'Percentage Projects Doing',
+	        text: 'Records per Project / Registros por Proyecto',
 	        font: {
 	          size: 20
 	        }
