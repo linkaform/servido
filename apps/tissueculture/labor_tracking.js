@@ -160,7 +160,7 @@ function getFirstElement(dateTo, dateFrom){
   $("#divContent").hide();
   $('.load-wrapp').show();
   $('.title_tables').hide();
-
+  console.log('url',url)
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
@@ -182,28 +182,21 @@ function getFirstElement(dateTo, dateFrom){
       $('.title_tables').show();
       let data = res.response.data;
 
-      if(data.dataTable ){
-        dataTableGlobal = data.dataTable ;
-        getDrawTable('firstElement', columsTable1, data.dataTable, 350);
-        document.getElementById("divContentFirst").style.removeProperty('display');
-        document.getElementById("firstElement").style.removeProperty('display');
-      }
-      
       if(data.graphicFirst ){
         drawFirstElement(data.graphicFirst, setOptions1)
-        document.getElementById("divContentSecond").style.removeProperty('display');
+        document.getElementById("divContentFirst").style.removeProperty('display');
         document.getElementById("graphicFirst").style.removeProperty('display');
       }
       
       if(data.graphicSecond ){
         drawSecondElement(data.graphicSecond, setOptions2)
-        document.getElementById("divContentThird").style.removeProperty('display');
+        document.getElementById("divContentSecond").style.removeProperty('display');
         document.getElementById("graphicSecond").style.removeProperty('display');
       }
 
       if(data.graphicThird ){
         drawThirdElement(data.graphicThird, setOptions3)
-        document.getElementById("divContentFourth").style.removeProperty('display');
+        document.getElementById("divContentThird").style.removeProperty('display');
         document.getElementById("graphicThird").style.removeProperty('display');
       }
 
