@@ -305,7 +305,7 @@ function drawSecondElement(datasets, dataconfig){
   datasets['datasets'][0]['borderColor'] =  array_colors
 
   chart2 = new Chart(ctx, {
-    type: 'pie',
+    type: 'bar',
     data: datasets,
     plugins: [ChartDataLabels],
     options: dataconfig
