@@ -1,0 +1,106 @@
+:root{
+	--main-color:#090619;
+	--main-color-light: #edeafa;
+	--main-color-hover: #cac1f0;
+
+	--text-gray:#808080;
+
+	--text-link: #000000;
+	--text-link-hover: #090619;
+
+	--button-main-color: #090619;
+	--button-main-color-hover: #cac1f0;
+
+	--text-button-main-color: #FFFFFF;
+	--text-button-main-color-hover: #000000;
+
+}
+
+html, body {
+  height: 100%; /* EL body ocupe toda la altura de la ventana */
+  margin: 0;    /* Elimina márgenes por defecto */
+  overflow: hidden;
+}
+
+.full{
+	height: 100vh;
+}
+
+/* ANIMACIONES
+*/
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.fade-out {
+    animation: fadeOut 0.5s forwards; /* La animación durará 0.5 segundos */
+}
+
+
+/* TIPO DE CUENTA
+*/
+
+.login-size{
+	min-height: 200px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+/*	EFECTOS PRINCIPALES color y texto
+*/
+
+.customShadow{
+	border: none !important;
+  	box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+  	border-radius: 10px;
+}
+
+.custom-link{
+	text-decoration: none;
+}
+
+.custom-link:hover{
+	text-decoration: none;
+}
+
+/*	BOTONES PRINCIPALES color y texto
+*/
+
+.button-radio{
+	display:flex;
+}
+.button-radio .button-radio-margin{
+	margin: 20px;
+}
+
+.button-radio:hover{
+	background-color: var(--main-color-light);
+}
+
+
+.button-main-color{
+	background-color: var(--main-color);
+	color: var(--text-button-main-color);
+}
+.button-main-color:hover, .button-main-color:active, .button-main-color:focus{
+	box-shadow: none;
+	cursor: pointer;
+}
+
+/*	LOGIN
+*/
+
+#buttonLogin:hover{
+	color: var(--text-button-main-color-hover);
+	background-color: var(--button-main-color-hover);
+}
+
+.text-gray{
+	color: var(--text-gray);
+}

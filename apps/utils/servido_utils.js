@@ -127,8 +127,6 @@ function hideLoading() {
   }, 1000);
 };
 
-
-
 function login() {
   loading.style.display = 'flex';
   var mensage = "Es necesario ingresar:<br /><br />";
@@ -504,7 +502,7 @@ function objLength(err,data){
     return objectCount
 }
 
-function errorAlert(data, title = "Error"){
+function errorAlert(data, title = "Error", type="warning"){
     if(data.hasOwnProperty("json")){
         let errores=[]
         for(let err in data.json){
@@ -544,14 +542,14 @@ function errorAlert(data, title = "Error"){
             Swal.fire({
                 title: title,
                 text: error,
-                type: "warning"
+                type: type
             });
         }
     }else if (typeof data ==='string'){
         Swal.fire({
             title: title,
             text: data,
-            type: "warning"
+            type: type
         });
     }
 }
@@ -666,6 +664,23 @@ function tienePropiedadesVacias(objeto) {
     return false; // Retorna false si no encuentra ninguna propiedad vacía
 }
 
+function propiedadesVacias(objeto) {
+    let array=[]
+    for (let key in objeto) {
+        if (objeto.hasOwnProperty(key)) {
+            // Verificar si la propiedad es vacía
+            if (objeto[key] === null ||
+                objeto[key] === undefined ||
+                objeto[key] === '' ||
+                (Array.isArray(objeto[key]) && objeto[key].length === 0)) {
+                array.push(key)
+            }
+        }
+    }
+    return array; // Retorna false si no encuentra ninguna propiedad vacía
+}
+
+
 function formatText(text) {
     let replacedText = text.replace(/_/g, ' ');
     let formattedText = replacedText.charAt(0).toUpperCase() + replacedText.slice(1).toLowerCase();
@@ -708,4 +723,30 @@ function capitalizeFirstLetter(text) {
         const capitalizedText = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
         return capitalizedText
     }
+}
+
+//FUNCION obtener los valores de los inputs de un modal
+function getInputsValueByClass(classInput){
+    let data = {};
+    let elements = document.getElementsByClassName(classInput)
+    for (let i = 0; i < elements.length; i++) {
+        let id = elements[i].id;
+        let value = elements[i].value;
+        let type = elements[i].type;
+        let tag = elements[i].tagName.toLowerCase()
+        if(type == 'radio'){
+            let valueCheck = elements[i].checked;
+            if(valueCheck){
+                data[id] = value;
+            }
+        } else if(tag == 'img'){
+            data[id]=elements[i].src
+            
+
+        }
+        else{
+            data[id] = value;
+        }
+    }
+    return data
 }

@@ -1,5 +1,7 @@
-window.onload = function(){
+let colors = getPAlleteColors(12,0)
 
+window.onload = function(){
+	/*
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
 	if(user !='' && jw!=''){
@@ -13,8 +15,9 @@ window.onload = function(){
 			rel: 'noopener noreferrer',
 			href: urlNew,
 		}).click();*/
-		agregarPestana('turnos')
-	}
+	//	agregarPestana('turnos')
+	//}
+	/*
 	let userInput = document.getElementById('user');
 	let userError = document.getElementById('userError');
 	userInput.addEventListener('input', function () {
@@ -28,8 +31,53 @@ window.onload = function(){
 		    }
 		}
 	   
-	});
+	});  */
 }
+
+
+function changeLoginView(view){
+	let res= getInputsValueByClass("login-form")
+	let emptyProp=propiedadesVacias(res)
+	if(view=="login"){
+		const div = document.getElementById('accountTypeView');
+		div.classList.add('fade-out');
+
+        // Esperar a que la animación termine antes de eliminar el contenido
+        setTimeout(() => {
+            $("#loginView").show();
+			$("#accountTypeView").hide();
+        }, 500);
+	}else if (view=="accountTypeView"){
+
+	}else if(view=="continue"){
+		let protocol = window.location.protocol;
+		let host = window.location.host;
+		let urlNew = `${protocol}//${host}/solucion_accesos/contratos.html`
+	}
+	if(emptyProp.length == 0){
+		if(validarEmail(res.email)){
+			console.log(res)
+			const div = document.getElementById('loginViewFade');
+			div.classList.add('fade-out');
+
+            // Esperar a que la animación termine antes de eliminar el contenido
+            setTimeout(() => {
+                $("#loginView").hide();
+				$("#accountTypeView").show();
+            }, 500); // El tiempo debe coincidir con la duración de la animación
+
+			
+		}else{
+			successMsg("Validación","Escribe un email valido", "warning")
+		}
+	}else if(emptyProp.length > 0){
+		successMsg("Validación","Faltan campos por llenar", "warning")
+	}
+}
+
+function selectRadio(){
+}
+
 
 function get_login(){
 	let valueMail = $("#user").val();
@@ -48,6 +96,7 @@ function get_login(){
 		.then((res) => res.json())
 		.then((res) => {
 			if(res.code == 2){
+				/*
 				let userId = res.user && res.user.id ? res.user.id : 0;
 				let userJwt = res.jwt ? res.jwt:'';
 				let sessionId = res.session_id ? res.session_id: 0;
@@ -74,7 +123,10 @@ function get_login(){
 				let host = window.location.host;
 				let url = `${protocol}//${host}/solucion_accesos/turnos.html`;
 				
-				window.location.reload();
+				window.location.reload(); */
+
+
+
 				//window.open(`${protocol}//${host}/solucion_accesos/turnos.html`, "turnos")
 				//window.location.href =url
 				/*
@@ -99,11 +151,4 @@ function get_login(){
 function reset() {
     $("#user").val('');
     $("#password").val('');
-}
-
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + "; " + expires+"; SameSite=Strict;"
 }
