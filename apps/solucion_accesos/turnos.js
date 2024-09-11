@@ -846,7 +846,7 @@ function verNotasAlert(folio){
 
     for(let pic of selectedNota.note_pic){
         fotosItem+=`
-        <div class="mb-1 mr-1"> <img src="`+pic.file_url+`" height="145px"style="object-fit: contain;"></div> <br>`;
+        <div class="mb-1 ms-2"> <img src="`+pic.file_url+`" height="110px"style="object-fit: contain;"></div> <br>`;
     }
     let htmlFotos=selectedNota.note_pic.length>0 ? `
         <h6>Fotografias</h6>

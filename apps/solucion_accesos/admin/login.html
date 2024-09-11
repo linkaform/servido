@@ -31,7 +31,7 @@
                             <div class="d-flex justify-content-center align-items-center mb-5">
                                 <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/66d9f0619d7676ba27417e58.png" alt="" width="70%">
                             </div>
-                            <h4 class="m-3 mx-0">Iniciar sesión</h4>
+                            <h4 class="m-3 mx-0" id="title">Iniciar sesión</h4>
                             <div class="login-size" id="loginViewFade">
                                 <div class="d-flex flex-column">
                                     <label for="email">Correo electrónico </label>
@@ -51,14 +51,10 @@
                                 <button onclick="changeLoginView('accountTypeView')" id="buttonLogin" class="btn btn-block mt-4 button-main-color "> Continuar </button>
                             </div>
 
-                            <div class="form-group m-0 ">
-                            <button class="btn btn-warning btn-block mt-4 button-main-color" type="button" id="loadingButtonLogin" style="display:none" disabled>
-                                  <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
-                                  Iniciando sesión...
-                            </button>
-                            </div> 
                             <div class="d-flex justify-content-center align-items-center mt-3">
-                                <a href="https://example.com" class="custom-link"> Crea nueva cuenta</a>
+                                <button class="btn btn-transparent" id="createAccountButton" onclick="changeLoginView('createAccountView')">
+                                    Crear cuenta nueva
+                                </button>
                             </div>
                         </div>
 
@@ -68,25 +64,27 @@
                             </div>
                             <h4 class="m-3 mx-0">Tipo de cuenta</h4>
                             <div class="login-size" id="accountTypeViewFade">
-                                    <div class="button-radio customShadow " onclick="selectRadio()">
+                                    <button type="button" class="d-flex flex-row btn btn-outline btn-lg button-type-custom" onclick="selectRadio('companyRadio')">
                                         <div class="button-radio-margin">
-                                            <input type="radio" class="radio-group" aria-label="Radio button for following text input">
+                                            <input type="radio" class="radio-group" name="radio-group" id="companyRadio" aria-label="Radio button for following text input">
                                         </div>
-                                        <div class="d-flex flex-column justify-content-center">
-                                            <h5 class="m-0"> Empresa </h5>
-                                            <small class="text-gray">Administra empleados y contratistas</small>
+                                        <div class="d-flex flex-column align-items-start mx-3 p-0">
+                                            <h5 class="m-0 p-0"> Empresa </h5>
+                                            <small class="text-gray small-size mx-0">Administra empleados y contratistas</small>
                                         </div>
-                                    </div>
+                                    </button>
 
-                                    <div class="button-radio customShadow" onclick="selectRadio()">
-                                        <div class="button-radio-margin ">
-                                            <input type="radio" class="radio-group" aria-label="Radio button for following text input">
+                                    <button type="button" class="d-flex flex-row btn btn-outline btn-lg button-type-custom" onclick="selectRadio('userRadio')">
+                                        <div class="button-radio-margin">
+                                            <input type="radio" class="radio-group" name="radio-group" id="userRadio" aria-label="Radio button for following text input">
                                         </div>
-                                        <div class="d-flex flex-column justify-content-center">
-                                            <h5 class="m-0"> Usuario </h5>
-                                            <small class="text-gray">Uso personal</small>
+                                        <div class="d-flex flex-column align-items-start mx-3 p-0">
+                                            <h5 class="m-0 p-0"> Usuario </h5>
+                                            <small class="text-gray small-size mx-0">Uso personal</small>
                                         </div>
-                                    </div>
+                                    </button>
+
+
                                 </div>
                                 <div>
                                     <button onclick="changeLoginView('continue')" id="buttonLogin" class="btn btn-block mt-4 button-main-color "> Continuar </button>
@@ -99,7 +97,9 @@
                                 </button>
                             </div> 
                             <div class="d-flex justify-content-center align-items-center mt-3">
-                                <a href="https://example.com" class="custom-link" onclick="changeLoginView('loginView')">Iniciar sesión</a>
+                                <button class="btn btn-transparent" onclick="changeLoginView('loginView')">
+                                    Iniciar sesión
+                                </button>
                             </div>
                         </div>
                     </div>

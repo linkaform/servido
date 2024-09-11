@@ -1,8 +1,8 @@
 let tables={}
 let columsDataArticles = [
-    {formatter:"rowSelection", field:'checkboxColumn',titleFormatter:"rowSelection",hozAlign:"center", headerSort:false, cellClick:function(e, cell){
+    /*{formatter:"rowSelection", field:'checkboxColumn',titleFormatter:"rowSelection",hozAlign:"center", headerSort:false, cellClick:function(e, cell){
         cell.getRow().toggleSelect();
-      }},
+      }},*/
 	{ title: "Opciones", field: "actions" , formatter:"rowSelection",hozAlign: "left", resizable:false,minWidth:140,
 		formatter: (cell, formatterParams) => {
 			let data = cell.getData()
@@ -33,38 +33,47 @@ let columsDataArticles = [
 ];
 
 let columsDataArticlesLose = [
-    {formatter:"rowSelection", field:'checkboxColumn',titleFormatter:"rowSelection",hozAlign:"center", headerSort:false, cellClick:function(e, cell){
+    /*{formatter:"rowSelection", field:'checkboxColumn',titleFormatter:"rowSelection",hozAlign:"center", headerSort:false, cellClick:function(e, cell){
         cell.getRow().toggleSelect();
-      }},
+      }},*/
 	{ title: "Opciones", field: "actions" ,formatter:"rowSelection",hozAlign: "left", resizable:false ,
 		formatter: (cell, formatterParams) => {
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			let divActions = '<div class="row d-flex">';
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-eye" onClick="setModal('ViewArticleConse',${folio})"></i></button>`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-clock" onClick="devolucionArticulo(${folio}, 'articuloLose')"></i></button>`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-pen" onClick="setModal('EditArticleConse',${folio})"></i></button>`;
-			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-trash" onClick="alertEliminarTable('${folio}', 'articlesLose')"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-eye" onClick="setModal('ViewArticleLose','${folio}')"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-right-left" onClick="devolucionArticulo('${folio}', 'articuloLose')"></i></button>`;
+			divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-pen" onClick="setModal('EditArticleLose','${folio}')"></i></button>`;
+			//divActions += `<button class="btn-table-bitacora"><i class="fa-solid fa-trash" onClick="alertEliminarTable('${folio}', 'articlesLose')"></i></button>`;
 			divActions += '</div>';
 			return divActions;
 		},
 	},
 	//{ title:"Ubicación", field:'ubicacion_perdido',hozAlign:"left",headerFilter:true},
 	{ title:"Artículo", field:'articulo_perdido',hozAlign:"left",headerFilter:true},
-	{ title:"Estado", field:'status_perdido',hozAlign:"left",headerFilter:true},
+	//{ title:"Estado", field:'status_perdido',hozAlign:"left",headerFilter:true},
 	//{ title:"Articulo", field:'tipo_perdido',hozAlign:"left",headerFilter:true},
 	{ title:"Fotografía", field:'photo_perdido',hozAlign:"left",formatter:"image", formatterParams:{height:"150px",width:"200px"},
 		formatter: function(cell) {
 		            let data = cell.getData();
-		            return `<img src="${data.photo_perdido.length>0 ? data.photo_perdido[0].file_url : ""}" alt="Imagen" style="width:120px;height:120px;" class="img-cell"/>`;
+		            return `<img src="${data.photo_perdido.length>0 ? data.photo_perdido[0].file_url : ""}" alt="Imagen" style="width:120px;height:120px; object-fit:cover;" class="img-cell"/>`;
 		        }},
     { title:"Color", field:'color',hozAlign:"left",headerFilter:true},
 	{ title:"Categoria", field:'categoria_perdido',hozAlign:"left",headerFilter:true},
-    { title:"Fecha", field:'date_hallazgo_perdido',hozAlign:"left",headerFilter:true,headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
-	//{ title:"Numero Seríe", field:'folio',hozAlign:"left",headerFilter:true},
+    { title:"Fecha del hallazgo", field:'date_hallazgo_perdido',hozAlign:"left",headerFilter:true,headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
+	{ title:"Locker", field:'locker',hozAlign:"left",headerFilter:true},
 	{ title:"Reporta", field:'guard_perdido',hozAlign:"left",headerFilter:true},
 	{ title:"Fecha Devolución", field:'date_entrega_perdido',hozAlign:"left",headerFilter:true,headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
-	{ title:"Recibe", field:'recibe_perdido',hozAlign:"left",formatter:"image", formatterParams:{height:"150px",width:"200px"},},
-	{ title:"Comentarios", field:'comments_perdido',hozAlign:"left",headerFilter:true},
+	{ title:"Recibe", field:'recibe_perdido',hozAlign:"left",formatter:"image", formatterParams:{height:"120px",width:"120px"},
+		formatter: function(cell) {
+            let data = cell.getData();
+            if(data.hasOwnProperty('photo_recibe')){
+	            if(data.photo_recibe.length>0){
+	            	return `<img src="${data.photo_perdido.length>0 ? data.photo_perdido[0].file_url : ""}" alt="Imagen" style="width:120px;height:120px; object-fit:cover;" class="img-cell"/>`;
+	            }
+            }
+        }},
+
+	{ title:"Comentarios", field:'comments_perdido',hozAlign:"left"},
 ];
 
 let dataTableArticles = []

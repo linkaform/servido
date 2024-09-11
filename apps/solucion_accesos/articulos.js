@@ -59,13 +59,13 @@ window.onload = function(){
 
     let fileInput = document.getElementById('editArticleFoto');
     let imagen = document.getElementById('editArticleConFoto');
-    fileInput.addEventListener('change', function(event) {
+    /*/fileInput.addEventListener('change', function(event) {
         let file = event.target.files[0]; 
         if (file) {
             let imageUrl = URL.createObjectURL(file);
             imagen.src = imageUrl;
         }
-    });
+    }); */
     if(getValueUserLocation()=='articulos'){
          $(document).ready(function() {
             $('#divTodasLasCasetas').show();
@@ -77,18 +77,6 @@ window.onload = function(){
     selectCaseta.disabled=true
 }
 
-$("#checkboxTodasLasCasetas").on("click",async function()  {
-    if ($(this).is(':checked')) {
-        selectCaseta.value=""
-        selectCaseta.disabled=true
-        let response = await fetchOnChangeCaseta('articulos_consecionados.py', 'get_articles','', selectLocation.value)
-        reloadTableArticulosCon(response.response.data, selectCaseta.value)
-        let response2 = await fetchOnChangeCaseta('articulos_perdidos.py', 'get_articles', '', selectLocation.value)
-        reloadTableArticulosPer(response2.response.data)
-    } else {
-        selectCaseta.disabled=false
-    }
-})
 
 window.addEventListener('storage', function(event) {
     if (event.key === 'cerrarSesion') {
@@ -263,18 +251,70 @@ function allDataArticulosCon(){
                     }
                    
                     drawTable('tableArticles', columsDataArticles, dataTableArticles);
-                    $("#descargarIncidencias").on("click", function() {
+                    $("#descargarArticles").on("click", function() {
                         descargarExcel(tables, 'tableArticles')
                     });
-                    let selectedIncidencias = getActiveCheckBoxs(tables,'tableArticles')
-                    let buttonEliminarIncidencias=document.getElementById('buttonEliminarIncidencias');
-                    if(selectedIncidencias.length>0) buttonEliminarIncidencias.display= 'none'
+                    //let selectedIncidencias = getActiveCheckBoxs(tables,'tableArticles')
             } else{
                 redirectionUrl('login',false);
             }
         }
     })
 }
+
+function verArticulosPerdidosAlert(folio){
+    console.log("folio",folio)
+    let selectedArticle = dataTableArticlesLose.find(x => x.folio == folio);
+    let fotosItem=``;
+    let archivosItem=``;
+    let commentsItem=``;
+
+    if(selectedArticle.hasOwnProperty('comments_perdido')){
+         commentsItem+=`
+            <tr> <td> <span > `+selectedArticle.comments_perdido+`</span > </td> </tr>`;
+    }
+    let htmlComments = selectedArticle.comments_perdido !== "" ? `
+        <h6>Comentarios</h6>
+        <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
+            `+commentsItem+` 
+        </table>`: "";
+
+    for(let pic of selectedArticle.photo_perdido){
+        fotosItem+=`
+        <div class="m-1 mr-0"> <img src="`+pic.file_url+`" height="150px"style="object-fit: contain;"></div> `;
+    }
+    let htmlFotos=selectedArticle.photo_perdido.length>0 ? `
+        <h6>Fotografias</h6>
+        <div class="d-flex flex-wrap">
+            `+fotosItem+`
+        </div>`:"";
+
+    Swal.fire({
+        title: "Artículo",
+        text: "Escoje una caseta para continuar...",
+        html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div> `+htmlFotos+`
+            <table class='table table-borderless customShadow mt-3' style='font-size: .8em; background-color: lightgray !important; '>
+                <tbody> 
+                    <tr> <td><b>Articulo:</b></td> <td> <span > `+ selectedArticle.articulo_perdido +`</span></td> </tr>
+                    <tr> <td><b>Estatus:</b></td> <td> <span > `+ selectedArticle.status_perdido+`</span></td> </tr> 
+                    <tr> <td><b>Color:</b></td> <td> <span > `+ selectedArticle.color+`</span></td> </tr> 
+                    <tr> <td><b>Categoria:</b></td> <td> <span > `+` hrs</span></td> </tr>
+                    <tr> <td><b>Locker:</b></td> <td> <span>  `+` hrs</span> </tr>
+                </tbody> 
+            </table>` + htmlComments,
+        showCancelButton: true,
+        showConfirmButton: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si",
+        cancelButtonText: "Cerrar"
+    })
+    .then((result) => {
+        if (result.isConfirmed) {
+            
+        }
+    });
+} 
 
 
 //FUNCION Otener informacion inciia
@@ -406,12 +446,12 @@ function initializeCatalogsArticulosLose(dataCatalogs,arrayUserBoothsLocations){
         $("#idUbicacionEditArticuloLose").append($('<option></option>').val(e.ubi).text(e.ubi));
         $("#idUbicacionEditArticuloLose").val("")
     });
-    dataCatalogs.categoria.forEach(function(e, i){
+    /*dataCatalogs.categoria.forEach(function(e, i){
         $("#idCategoriaArticuloLose").append($('<option></option>').val(e).text(e))
         $("#idCategoriaArticuloLose").val("")
         $("#idCategoriaEditArticuloLose").append($('<option></option>').val(e).text(e))
         $("#idCategoriaEditArticuloLose").val("")
-    });
+    });*/
     dataCatalogs.area_perdido.forEach(function(e, i){
         $("#idAreaNuevoArticuloLose").append($('<option></option>').val(e).text(e));
         $("#idAreaNuevoArticuloLose").val("")
@@ -473,9 +513,10 @@ function setModal(type = 'none',id){
 	}else if(type == 'NewArticleLose'){
 		$('#newArticleLoseModal').modal('show');
 	}else if(type == 'ViewArticleLose'){
-		$('#viewArticleLoseModal').modal('show');
+        //verArticulosPerdidosAlert(id)
+        verArticuloPerdido(id)
 	}else if(type == 'EditArticleLose'){
-		$('#editArticleLoseModal').modal('show');
+        verEditArticuloPerdido(id)
 	}else if(type == 'OutArticleLose'){
         selectedRowFolio=id
 		$('#outArticleLoseModal').modal('show');
@@ -484,6 +525,45 @@ function setModal(type = 'none',id){
     }
 }
 
+function verEditArticuloPerdido(folio){
+    let selectedArticulo = dataTableArticlesLose.find(x => x.folio == folio);
+    $("#idFechaNuevoArticuloLose").val(selectedArticulo.date_hallazgo_perdido);
+    $("#articleEditArticuloLose").text(capitalizeFirstLetter(selectedArticulo.articulo_perdido));
+    $("#lockerEditArticuloLose").text(capitalizeFirstLetter(""));
+    $("#colorEditArticuloLose").text(capitalizeFirstLetter(""));
+    $("#categoryEditArticuloLose").text(capitalizeFirstLetter(""));
+    $("#comentarioEditArticuloLose").text(capitalizeFirstLetter(selectedArticulo.comments_perdido));
+    $('#editArticleLoseModal').modal('show');
+}
+
+
+function verArticuloPerdido(folio){
+    let selectedArticulo = dataTableArticlesLose.find(x => x.folio == folio);
+    $("#nombreArticuloPerdido").text(capitalizeFirstLetter(selectedArticulo.articulo_perdido))
+    $("#colorArticuloPerdido").text(capitalizeFirstLetter(selectedArticulo.status_perdido))
+    $("#categoriaArticuloPerdido").text(capitalizeFirstLetter(selectedArticulo.status_perdido))
+    $("#estadoArticuloPerdido").text(capitalizeFirstLetter(selectedArticulo.status_perdido))
+    $("#fechaHallazgoArticuloPerdido").text(selectedArticulo.date_hallazgo_perdido)
+    $("#ubicacionArticuloPerdido").text(capitalizeFirstLetter(selectedArticulo.status_perdido))
+    $("#reportaArticuloPerdido").text(capitalizeFirstLetter(selectedArticulo.status_perdido))
+    $("#departamentoArticuloPerdido").text(capitalizeFirstLetter(selectedArticulo.status_perdido))
+    $("#comentarioArticuloPerdido").text(capitalizeFirstLetter(selectedArticulo.comments_perdido))
+    $("#recibeArticuloPerdido").text(capitalizeFirstLetter(selectedArticulo.status_perdido))
+    $("#fechaEntregaArticuloPerdido").text(selectedArticulo.status_perdido)
+    $("#estadoArticuloPerdido").text(capitalizeFirstLetter(selectedArticulo.status_perdido))
+
+    let divFotos = document.getElementById("verFotosArticuloPerdido")
+    divFotos.innerHTML=""
+    let fotos=""
+    if(selectedArticulo.hasOwnProperty('photo_perdido')){
+        for(let foto of selectedArticulo.photo_perdido){
+            fotos += `<img id="imgArticuloPerdido" src=`+ foto.file_url +` style="object-fit: contain;" height="180" class="me-2">`
+        }
+    }
+    divFotos.innerHTML = fotos
+    $("#imgArticuloPerdido").attr('src',selectedArticulo.photo_perdido[0].file_url)
+    $("#viewArticleLoseModal").modal('show');
+}
 
 //FUNCION obtener los valores de los inputs de un modal
 function getInputsValueByClass(classInput){
@@ -935,6 +1015,7 @@ function alertVerArticuloCon(folio){
 }
 
 function loadArticuloConModal(folio){
+    console.log("folio", folio)
     let selectedArticleCons = dataTableArticles.find(x => x.folio === folio);
     selectedRowFolio= folio
     let formatDate1=""
@@ -1122,25 +1203,28 @@ function editarArticuloConModal(){
 
 
 //FUNCION devolver el articulo desde la tabla
-function devolucionArticulo(type){
+function devolucionArticulo(folio, type){
     if(type =='article'){
         let data= getInputsValueByClass('outArticleCon')
-        let selectedArt = dataTableArticles.find(e => e.folio == selectedRowFolio)
+        let selectedArt = dataTableArticles.find(e => e.folio == folio)
         selectedArt.date = data.outArticleFecha
         selectedArt.time = data.outArticleHora
         selectedArt.recibe = data.outArticleRecibe
         selectedArt.status = data.hasOwnProperty("outArticleEstado2") ? 'Cerrado': 'Abierto'
         tables["tableArticles"].setData(dataTableArticles);
-        $("#outArticleModal").modal('hide')
+        $("#outArticleModal").modal('show')
     }else {
         let data= getInputsValueByClass('outArticle')
-        let selectedArtLose = dataTableArticlesLose.find(e => e.folio == selectedRowFolio)
-        selectedArtLose.date = data.outArticleFecha
-        selectedArtLose.time = data.outArticleHora
-        selectedArtLose.recibe = data.outArticleRecibe
-        selectedArtLose.status = data.hasOwnProperty("outArticleEstado2") ? 'Cerrado': 'Abierto'
-        tables["tableArticlesLose"].setData(dataTableArticlesLose);
-        $("#outArticleConModal").modal('hide')
+        let selectedArtLose = dataTableArticlesLose.find(e => e.folio == folio)
+        console.log("sazdf",selectedArtLose)
+
+        //selectedArtLose.date = data.outArticleFecha
+        //selectedArtLose.time = data.outArticleHora
+        //selectedArtLose.recibe = data.outArticleRecibe
+        //console.log(selectedArtLose, folio)
+        //selectedArtLose.status = data.hasOwnProperty("outArticleEstado2") ? 'Cerrado': 'Abierto'
+        //tables["tableArticlesLose"].setData(dataTableArticlesLose);
+        $("#outArticleModal").modal('show')
     }
 }
 
@@ -1221,13 +1305,12 @@ function getScreenUser(){
     //-----Save Photo
     if(!flagVideoUser){
         flagVideoUser = true;
-   
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function(stream) {
+            .then(function(stream) {                
                 let video = document.createElement('video');
-                video.style.width = '200px';
-                video.style.height = '125px';
+                video.style.width = '130px';
+                video.style.height = '130px';
                 document.getElementById('containerUser').appendChild(video);
                 video.srcObject = stream;
                 video.play();
@@ -1249,6 +1332,7 @@ function getScreenUser(){
         }
     }
 }
+
 
 //FUNCION obtener la imagen del canvas parte2
 function setTranslateImageUser(context, video, canvas){
@@ -1278,6 +1362,7 @@ function setTranslateImageUser(context, video, canvas){
     //-----Clean ELement
     $("#buttonSaveUser").hide();
 }
+
 
 //FUNCION validar que el canvas este limpio
 function isCanvasBlank(canvas) {

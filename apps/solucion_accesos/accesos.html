@@ -98,12 +98,14 @@
 					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso</button>
 					<button type="button" class="mt-1 mb-1  btn btn-danger btn-sm p-5 pt-1 pb-1" style="display: none;" id="buttonOut" onclick="registrarSalida();return false;">
 					<i class="fa-sharp fa-solid fa-door-open"></i> Registrar Salida</button>
-					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1" onclick="setModal('gafeteModal');" style="display: none;"id="buttonAsignarGafete">  <i class="fa-sharp fa-solid fa-id-card"></i> Asignar Gafete</button>
-					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1" onclick="setModal('recibirGafete');" style="display: none;"id="buttonRecibirGafete">  <i class="fa-sharp fa-solid fa-id-card"></i> Recibir Gafete</button>
+					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1" onclick="setModal('gafeteModal');" style="display: none;" id="buttonAsignarGafete">  <i class="fa-sharp fa-solid fa-id-card"></i> Asignar Gafete</button>
+					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1" onclick="setModal('recibirGafete');" style="display: none;" id="buttonRecibirGafete">  <i class="fa-sharp fa-solid fa-id-card"></i> Recibir Gafete</button>
 					<button type="button" class="mt-1 mb-1 btn btn-warning btn-sm p-3 pt-1 pb-1" style="display: none;" id="buttonClean" onclick="setCleanData2()">
 					<i class="fa-solid fa-broom"></i> Limpiar</button>
 					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" id="buttonNew" onclick="setModal('nuevaVisitaModal');">
 					<i class="fa-solid fa-plus"></i> Nueva Visita</button>
+					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm p-3 pt-1 pb-1" id="pasesTemporales" onclick="setModal('listaPasesTemporales')">
+					 <i class="fa-solid fa-list me-2"></i>Pases temporales</button>
 				</div>
 				<div >
 					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" onclick="setModal('comentarioAccesoModal')" 
@@ -116,64 +118,58 @@
 	</section>	
 
 	<!-- Information User-->
-	<section class="section-data mainSectionMargins" id="mainSection3" style="display:none">
-		<div class="row ">
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 mt-3">
-				<div class="row  div-container-portal m-1 pt-0 customShadow">
-					<h4 class="m-2 mb-0">Folio: &nbsp;&nbsp; <span id="folio"></span></h4>
-					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3" >
-						<div style="min-height:120px;">
-							<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded-circle border-4 shadow-4-strong mx-auto d-block mt-5" alt="Imagen Usuario" style="max-width:120px; max-height:120px; object-fit: cover;" id="imgUser">
-						</div>
-						<h5 class="m-4 mb-2" style="font-size:1.3em">Tipo de pase: <br><span id="tipoPaseText" style="font-weight: normal"></span></h5>
-					</div>
-					
-					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3" >
-						<div style="min-height:120px;">
-								<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Usuario" class=" mx-auto  mt-5" style="max-width:240px;max-height:120px; object-fit: cover;" id="imgCard">
-						</div>
-						<div class="mt-4" >
-							<h6>Disponible los días:</h6>
-							<div class="d-flex justify-content-around" >
-								<button type="button" class="btn btn-outline-success btn-circle no-hover" style="" id="lunes">L</button>
-								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="martes">M</button>
-								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="miércoles">M</button>
-								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="jueves">J</button>
-								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="viernes">V</button>
-								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="sabado">S</button>
-								<button type="button" class="btn btn-outline-success btn-circle no-hover" id="domingo">D</button>
+	<section class="section-data mainSectionMargins" id="mainSection3" >
+		<div class="col-12 d-flex flex-wrap justify-content-start">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 customShadow mt-4 me-2" >
+				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex m-1 pt-0 ">
+					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-5">
+						<h4 class="m-2 mb-0">Folio: &nbsp;&nbsp; <span id="folio"></span></h4>
+						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-between">
+							<div class=" col-sm-12 col-md-12 col-lg-12 col-xl-6 d-flex flex-column ms-3 me-3 justify-content-center align-items-center" style="min-height:120px;">
+									<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" 			class="rounded mt-4" alt="Imagen Usuario" id="imgUser">
+								<h5 class="mt-4 ms-2 mb-2" style="font-size:1.3em">Tipo de pase: <br><span id="tipoPaseText" style="font-weight: normal"></span></h5>
+							</div>
+							<div class=" col-sm-12 col-md-12 col-lg-12 col-xl-6 d-flex flex-column ms-3" style="min-height:120px;">
+									<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Card" class="recta mt-4" id="imgCard">
+								<div class="mt-4">
+									<h6>Disponible los días:</h6>
+									<div class="d-flex justify-content-around">
+										<button type="button" class="btn btn-outline-success btn-circle no-hover" id="lunes">L</button>
+										<button type="button" class="btn btn-outline-success btn-circle no-hover" id="martes">M</button>
+										<button type="button" class="btn btn-outline-success btn-circle no-hover" id="miércoles">M</button>
+										<button type="button" class="btn btn-outline-success btn-circle no-hover" id="jueves">J</button>
+										<button type="button" class="btn btn-outline-success btn-circle no-hover" id="viernes">V</button>
+										<button type="button" class="btn btn-outline-success btn-circle no-hover" id="sabado">S</button>
+										<button type="button" class="btn btn-outline-success btn-circle no-hover" id="domingo">D</button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-12 col-md-12 col-lg-11 col-xl-5" style="margin-left:30px; margin-bottom: 10px;" >
-						<div class="row ">
-							<div class="col-6">
-								<p><span className='h4'><b>Nombre:</b></span>&nbsp;&nbsp; <span id="nameUserInf"></span></p>
+					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 d-flex justify-content-center align-items-start mt-3" style=" margin-bottom: 10px;" >
+						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">							
+							<div class="col-12">
+									<p><span className='h4'><b>Nombre:</b></span>&nbsp;&nbsp; <span id="nameUserInf"></span></p>
+									<p><span className='h4'><b>Ubicación:</b></span>&nbsp;&nbsp; <span id="ubicacion"></span></p> 
+									<p><span className='h4'><b>Contratista:</b></span>&nbsp;&nbsp; <span id="contratista"></span></p>
+									<p><span className='h4'><b>Vigencia:</b></span>&nbsp;&nbsp; <span id="validity"></span></p>
+									<p><span className='h4'><b>Status:</b></span>&nbsp;&nbsp; <span id="status"></span></p>
+									<p><span className='h4'><b>A quíen Visita:</b></span>&nbsp;&nbsp;<span id="visita"></span></p>
+									<p><span className='h4'><b>Motivo de Visita:</b></span>&nbsp;&nbsp;<span id="motivo"></span></p>
 							</div>
-							<div class="col-6 d-flex justify-content-end" >
+						</div>
+						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3 d-flex flex-column" >
+							<div class="d-flex flex-column">
 								<h3>
 									<span class="text-danger" id="textOut">Salida</span>
 									<span class="text-success" id="textIn">Entrada</span>
-									<div class="d-flex flex-column">
 								</h3>
-								
 							</div>
-							<p><span className='h4'><b>Ubicación:</b></span>&nbsp;&nbsp; <span id="ubicacion"></span></p> <div class="d-flex">
+							<div class="mt-3">
+								<p><span className='h4' id="gafeteText"><b>Gafete:</b></span>&nbsp;&nbsp; <b><span class="text-success" id="gafete"></span></b></p>
+								<p><span className='h4' id="lockerText"><b>Locker:</b></span>&nbsp;&nbsp; <b><span class="text-success" id="locker"></span></b></p>
 							</div>
-						</div>
-
-						<div>
-									<p><span className='h4'><b>Gafete:</b></span>&nbsp;&nbsp; <span id="gafete"></span></p>
-									<p><span className='h4'><b>Locker:</b></span>&nbsp;&nbsp; <span id="locker"></span></p>
-								</div>
-						<p><span className='h4'><b>Contratista:</b></span>&nbsp;&nbsp; <span id="contratista"></span></p>
-						<p><span className='h4'><b>Vigencia:</b></span>&nbsp;&nbsp; <span id="validity"></span></p>
-						<p><span className='h4'><b>Status:</b></span>&nbsp;&nbsp; <span id="status"></span></p>
-						<div class="row" >
-							<div class="col-9">
-								<p><span className='h4'><b>A quíen Visita:</b></span>&nbsp;&nbsp;<span id="visita"></span></p>
-							</div>							
-							<div class="col-3 d-flex justify-content-end p-0" >
+							<div class="d-flex justify-content-start p-0" >
 								<button type="button" class="btn btn-primary btn-sm m-1 " data-bs-toggle="modal" data-bs-target="#phoneModal">
 									<i class="fa-solid fa-phone"></i>
 								</button>
@@ -182,12 +178,11 @@
 								</button>
 							</div>
 						</div>
-						<p><span className='h4'><b>Motivo de Visita:</b></span>&nbsp;&nbsp;<span id="motivo"></span></p>
 					</div>
-
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-5">
+
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-5" >
 				<div class="row div-container-portal  customShadow" >
 					<div class="d-flex justify-content-between mb-2 mt-2">
 							<div>
@@ -195,14 +190,14 @@
 							</div> 
 							<div class="flex-nowrap">
 								<button type="button" class="btn btn-success btn-sm" onclick="setModal('comentarioPaseModal')" id="buttonAddCommentarioPaseModal">
-										<i class="fa-solid fa-plus"></i> Agregar comentario
+									<i class="fa-solid fa-plus"></i> Agregar comentario
 								</button>
 							</div>
 							<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listCommentsModal" id="buttonCommentsModal">
 								<i class="fa-solid fa-eye"></i>
 							</button>
 					</div>
-					<div class="overflowCustom div-containerTable-portal div-container-table mt-1" style="max-width:1200px !important; ">
+					<div class="overflowCustom div-containerTable-portal div-container-table mt-1">
 						<table id="tableInstructions" class=" table-borderless" style="border: none;">
 							<thead class="overflowCustomHead">
 								<tr>
@@ -369,7 +364,7 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width:600px">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Lista de Pases Activos</h1>
+					<h1 class="modal-title fs-5"><span id=listaPasesTitulo></span></h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
@@ -412,8 +407,8 @@
 								</button>
 								<!-- Canvas Foto -->
 								<div id="containerUser" class="mt-2">
-									<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
-									<img id="imgUser" src="" style="display: none;width: 185px;height: 125px;">
+									<canvas id="canvasPhotoUser" style="display: none;width: 125px;height: 125px;"></canvas>
+									<img id="imgUser" src="" style="display: none;width: 125px;height: 125px;">
 								</div>
 								<input type="file" class="form-control mt-2" id="inputFileUser" >
 							</div>
@@ -428,8 +423,8 @@
 								</button>
 								<!-- Canvas Foto -->
 								<div id="containerCard" class="mt-2">
-									<canvas id="canvasPhoto" style="display: none;width: 185px;height: 125px;"></canvas>
-									<img id="imgCard" src="" style="display: none;width: 185px;height: 125px;">
+									<canvas id="canvasPhoto" style="display: none;width: 125px;height: 125px;"></canvas>
+									<img id="imgCard" src="" style="display: none;width: 125px;height: 125px;">
 								</div>
 								<input type="file" class="form-control mt-2" id="inputFileCard" >
 							</div>

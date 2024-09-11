@@ -26,7 +26,7 @@ let tipoMovimiento=""
 let fotosNuevaVisita={foto:[], identificacion:[]}
 let paseDeAccesoScript= "pase_de_acceso.py"
 let gafeteRegistroIngreso={}
-
+let gafeteId=""
 
 window.onload = function(){
     setValueUserLocation('accesos');
@@ -75,8 +75,61 @@ function setModal(type = 'none',id =""){
         abrirAsignarGafeteModal()
     }else if(type=="recibirGafete"){
         abrirRecibirGafeteModal()
+    }else if(type== "listaPasesTemporales"){
+        verListaPasesTemporales()
     }
+     
 }
+
+function verListaPasesTemporales(){
+    setCleanData()
+    loadingService()
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: 'lista_pases_temporales',
+            caseta: selectCaseta.value,
+            location: selectLocation.value,
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close();
+            let listPases = res.response.data || []
+            let formatedList=[]
+            if(listPases.length >0){
+                for(let obj of listPases){
+                    formatedList.push({nombre: obj.nombre, folio: obj.folio, qr_code: obj.qr_code, ubicacion: obj.ubicacion, foto: obj.foto})
+                }
+            }
+
+            if(user!="" && userJwt!=""){
+                drawTableSelect('tableListaPases',columsListaPases, [],"500px",1);
+                $("#listaPasesTitulo").text("Lista de Pases Temporales")
+                $("#listModal").modal('show');
+            }
+
+            tables["tableListaPases"].on("rowSelectionChanged", function(data, rows){
+                if (rows.length > 0) {
+                    $("#inputCodeUser").val(data[0].qr_code);
+                    if(data[0].qr_code!==""){
+                        //setSpinner(true, 'divSpinner');
+                        $("#divSpinner").show();
+                        buscarPaseEntrada();
+                    }
+                    $("#listModal").modal('hide');
+                }
+            });
+        } 
+    });
+}
+
 
 function abrirRecibirGafeteModal(){
     console.log("todaaa la data",fullData)
@@ -96,100 +149,10 @@ function abrirRecibirGafeteModal(){
     })
     .then((result) => {
         if (result.value) {
-            fetch(url + urlScripts, {
-                method: 'POST',
-                body: JSON.stringify({
-                    script_name: 'gafetes_lockers.py',
-                    option: 'update_status',
-                }),
-                headers:{
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer '+userJwt
-                },
-            })
-            .then(res => res.json())
-            .then(res => {
-                if (res.success) {
-                } 
-            });
+            gafeteId= $("#gafete").text()
+            successMsg("Confirmación", "Gafete recibido correctamente.", "success")
         }
-    });
-                /*
-                let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
-                if (selectedSalida) {
-                    selectedSalida.status = 'Libre';
-                    selectedSalida.visit = '';
-                    selectedSalida.document = '';
-                    selectedSalida.location = '';
-                    tables["tableSalidas"].setData(dataTableLocker);
-                } */
-            
-       // });
-    /*}else{
-        successMsg()
-         Swal.fire({
-            title: "Acción Completada!",
-            text: "Esta locker ya se encuentra liberado.",
-            type: "warning"
-        });
-    } */
-
-    /*
-    if(status_visita== statusVisitaEntrada){
-        Swal.fire({
-            title:`¿Estas seguro de liberar el gafete ${} y el locker ${}?`,
-            html:`
-            <div class="m-2"> La salida no puede ser confirmada en este momento. Aún hay documentos 
-            en el locker correspondiente que deben ser desocupados antes de proceder. </div>`,
-            type: "warning",
-            showCancelButton: true,
-            cancelButtonColor: colors[0],
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: colors[1],
-            confirmButtonText: "Si",
-            heightAuto:false,
-            reverseButtons: true
-        })
-        .then((result) => {
-            if (result.value) {
-            console.log("SDFSS",result)
-                fetch(url + urlScripts, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        script_name: 'script_turnos.py',
-                        option: 'do_out',
-                        qr_code: folio,
-                        location: selectLocation.value,
-                        area: selectCaseta.value
-                    }),
-                    headers:{
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer '+userJwt
-                    },
-                })
-                .then(res => res.json())
-                .then(res => {
-                    if (res.success) {
-                    } 
-                });
-
-                let selectedSalida = dataTableBitacora.find(n => n.folio == parseInt(folio));
-               
-                if (selectedSalida) {
-                    let fecha=  new Date()
-                    let año = fecha.getFullYear();
-                    let mes = fecha.getMonth() + 1;
-                    let dia = fecha.getDate();
-                    let horaFormateada = fecha.getHours() + ':' + fecha.getMinutes();
-                    let fechaFormateada = dia + '/' + mes + '/' + año + ' ' + horaFormateada;
-                    selectedSalida.salida = fechaFormateada;
-                    tables["tableEntradas"].setData(dataTableBitacora);
-                }
-            }
-        });
-    }else{
-        successMsg("Validación", "Este ya registro ya tiene registrada la salida", "warning")
-    } */
+    })
 }
 
 
@@ -355,6 +318,7 @@ function verListaPasesActivos(){
 
             if(user!="" && userJwt!=""){
                 drawTableSelect('tableListaPases',columsListaPases, formatedList,"500px",1);
+                $("#listaPasesTitulo").text("Lista de Pases Activos")
                 $("#listModal").modal('show');
             }
 
@@ -687,8 +651,7 @@ function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
     //return checkboxesSeleccionados
 }
 
-function agregarComentarioPaseAcceso(type){
-        
+function agregarComentarioPaseAcceso(type){  
     if(type== "acceso"){
         let comentario = $("#idComentarioAcceso").val()
         comentariosAcceso.push({comentario_pase:comentario ,tipo_de_comentario:tipoMovimiento})
@@ -862,8 +825,7 @@ function crearNuevaVisita(){
                     $("#newVisitModal").modal('hide')
                 }
                     //
-                //CODE una vez resulta la imagen, cargarla en front
-                
+                //CODE una vez resulta la imagen, cargarla en front                
             } 
         });
         
@@ -878,17 +840,22 @@ function crearNuevaVisita(){
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
 function buscarPaseEntrada() {
-    $("#buttonBuscarPaseEntrada").prop('disabled', true);
-    $("#buttonNew").prop('disabled', true);
-    $("#buttonNew").hide();
+    setCleanData()
+    $(document).ready(function() {
+        $("#buttonBuscarPaseEntrada").prop('disabled', true);
+        $("#buttonNew").prop('disabled', true);
+        $("#pasesTemporales").prop('disabled', true);
+    })
     codeUser = $("#inputCodeUser").val();
     if(codeUser ==""){
         successMsg("Validación", "Escribe un codigo para continuar", "warning")
-        $("#buttonNew").show();
-        $("#buttonBuscarPaseEntrada").prop('disabled', false);
-        $("#buttonNew").prop('disabled', false);
+        $(document).ready(function() {
+            $("#buttonBuscarPaseEntrada").prop('disabled', false);
+            $("#buttonNew").prop('disabled', false);
+            $("#pasesTemporales").prop('disabled', false);
+        })
     }else{
-        setCleanData()
+        
         $("#divSpinner").show();
         setHideElements('dataHide');
         setHideElements('buttonsOptions');
@@ -915,7 +882,6 @@ function buscarPaseEntrada() {
                 setDataInformation('informatioUser', res.response.data);
                 setHideElements('buttonsModal');
                 setHideElements('dataShow');
-
                 setHideElements(fullData.tipo_movimiento) //Oculta o muestra los botones correspondientes dependiendo de si es Entrada o Salida
             }else{
                 errorAlert(res)
@@ -928,6 +894,8 @@ function buscarPaseEntrada() {
                 $("#idComentarioAcceso").val('')
                 $("#buttonBuscarPaseEntrada").prop('disabled', false);
                 $("#buttonNew").prop('disabled', false);
+                $("#pasesTemporales").prop('disabled', false);
+                $("#pasesTemporales").show();
             }
         })
     }
@@ -1048,70 +1016,69 @@ function registrarIngreso(){
 function registrarSalida(){
     let location= selectLocation.value
     let area=selectCaseta.value 
-    Swal.fire({
-        title: 'Cargando...',
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-            Swal.showLoading();
-       }
-    });
-    fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_name: 'script_turnos.py',
-            option: 'do_out',
-            qr_code: codeUser,
-            location: location,
-            area: area,
-            gafete_id: $("#gafete").text()
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt,
-            'Access-Control-Request-Headers':'*'
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            let data = {};
-            setHideElements('buttonsModal');
-            setDataInformation('informatioUser',data)
-            Swal.fire({
-                title: "Exito!",
-                text: "Salida registrada correctamente",
-                icon: "success"
-            });
-            setCleanData();
-            setHideElements('dataHide');
-            setHideElements('buttonsOptions');
-            setHideElements('buttonNew');
-            $("#inputCodeUser").val('');
-            $("#buttonAddCommentarioAccesoModal").hide();
-            //setHideElements(fullData.tipo_movimiento)
-            $("#buttonRecibirGafete").hide()
-        }else{
-            errorAlert(res)
-            $("#buttonOut").show();
-            $("#inputCodeUser").val('');
-            $("#buttonAddCommentarioAccesoModal").hide();
-        }
-    }).catch(error => {
+    console.log("GAFETE",gafeteId)
+    if(gafeteId==""){
+        errorAlert("¡Debes recibir el gafete antes de registrar la salida!","Validación","warning" )
+    }else{
+        loadingService()
+        fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name: 'script_turnos.py',
+                option: 'do_out',
+                qr_code: codeUser,
+                location: location,
+                area: area,
+                gafete_id: gafeteId 
+            }),
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt,
+                'Access-Control-Request-Headers':'*'
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                let data = {};
+                setHideElements('buttonsModal');
+                setDataInformation('informatioUser',data)
+                Swal.fire({
+                    title: "Exito!",
+                    text: "Salida registrada correctamente",
+                    icon: "success"
+                });
+                setCleanData();
+                setHideElements('dataHide');
+                setHideElements('buttonsOptions');
+                setHideElements('buttonNew');
+                $("#inputCodeUser").val('');
+                $("#buttonAddCommentarioAccesoModal").hide();
+                //setHideElements(fullData.tipo_movimiento)
+                $("#buttonRecibirGafete").hide()
+            }else{
+                errorAlert(res)
+                $("#buttonOut").show();
+                $("#inputCodeUser").val('');
+                $("#buttonAddCommentarioAccesoModal").hide();
+            }
+        }).catch(error => {
 
-        $("#inputCodeUser").val('');
-        $("#buttonAddCommentarioAccesoModal").hide();
-    });
+            $("#inputCodeUser").val('');
+            $("#buttonAddCommentarioAccesoModal").hide();
+        });
+    }
 }
 
 //FUNCION para asignar un nuevo gafete
 function entregarGafete(){
     $("#idLoadingButtonAsignarGafete").show();
     $("#idButtonAsignarGafete").hide();
-    let codeUser  = $("#inputCodeUser").val();
-    let numGafete= $("#selectGafete").val();
-    let otroDoc= $("#inputOtroDescCard").val();
-    let nombre= $("#nameUserInf").text();
-    let locker= $("#selectLocker").val();
+    let codeUser = $("#inputCodeUser").val();
+    let numGafete = $("#selectGafete").val();
+    let otroDoc = $("#inputOtroDescCard").val();
+    let nombre = $("#nameUserInf").text();
+    let locker = $("#selectLocker").val();
     let radios = document.getElementsByName('radioOptionsDocument');
     let radioSeleccionado = "";
     for (var i = 0; i < radios.length; i++) {
@@ -1120,8 +1087,8 @@ function entregarGafete(){
             break; 
         }
     }
-    if(numGafete !=="" && radioSeleccionado.value!=="" && locker!==""){
-        gafeteRegistroIngreso={
+    if(numGafete !== "" && radioSeleccionado.value !== "" && locker !== ""){
+        gafeteRegistroIngreso = {
             "gafete_id":numGafete,
             "documento_garantia": radioSeleccionado.value, // Opciones "licencia_de_conducir","carnet_de_identidad", "ine"
             "locker_id":locker
@@ -1135,6 +1102,10 @@ function entregarGafete(){
 
 
         $("#gafeteModal").modal('hide')
+        $("#gafeteText").show();
+        $("#lockerText").show();
+        $("#gafete").text(gafeteRegistroIngreso.gafete_id);
+        $("#locker").text(gafeteRegistroIngreso.locker_id)
         successMsg("Gafete Entregado", "El gafete asignado para el registro de ingreso.")
         $("#idLoadingButtonAsignarGafete").hide();
         $("#idButtonAsignarGafete").show();
@@ -1564,17 +1535,54 @@ function optionInformationUser(data){
     if(data.hasOwnProperty('ultimo_acceso')){
         //---Movement
         //data.tipo_movimiento="Salida"
+        let tieneGafete=false
+        let tieneLocker=false
+        if(data.hasOwnProperty("gafete_id")){
+            if(data.gafete_id==''|| data.gafete_id==null || data.locker_id==undefined){
+                $("#gafeteText").hide()
+            }else{
+                $("#gafeteText").show()
+                tieneGafete=true
+            }
+        }else{
+            $("#gafeteText").hide()
+        }
+        if(data.hasOwnProperty("locker_id")){
+            if(data.locker_id=='' || data.locker_id==null || data.locker_id==undefined){
+                $("#lockerText").hide()
+            }else{
+                $("#lockerText").show()
+                tieneLocker=true
+            }
+        }else{
+            $("#lockerText").hide()
+        }
+
         if(data.tipo_movimiento == 'Entrada'){
             tipoMovimiento="Entrada" 
            $("#buttonIn").show();
            $("#buttonAddCommentarioAccesoModal").show()
-            $("#textIn").show();
+           $("#textIn").show();
+           if(tieneGafete || tieneLocker){
+                console.log(tieneGafete, tieneLocker)
+                $(document).ready(function() {
+                    $("#buttonAsignarGafete").hide()
+                })
+           }else{
+                $("#buttonAsignarGafete").show()
+           }
         }else if(data.tipo_movimiento == 'Salida'){
             tipoMovimiento="Salida" 
             $("#buttonOut").show();
             $("#buttonAddCommentarioAccesoModal").hide()
             $("#textOut").show();
+            if(tieneGafete || tieneLocker){
+                $("#buttonRecibirGafete").show()
+            }else{
+                $("#buttonRecibirGafete").hide()
+            }
         } 
+        
         $("#gafete").text(data.gafete_id)
         $("#locker").text(data.locker_id)
         $("#buttonNew").hide();
@@ -1583,9 +1591,7 @@ function optionInformationUser(data){
         $(document).ready(function() {
             //---Bitacora TABLA ULTIMOS ACCESOS
             let listBitacora = ultimo_acceso.length > 0 ? ultimo_acceso: [];
-            console.log("LISTA BOTACOPRAAA",listBitacora)
             for (let i = 0; i < listBitacora.length; i++) {
-                console.log("QUE PASAAAA", listBitacora[i])
                 //if(i < 3){
                     //let duration=segundosAHoras(listBitacora[i].duration)
                     let newRow = $('<tr>');
@@ -1731,7 +1737,6 @@ function optionListUsers(data){
 
 //FUNCION para ocultar mostrar elementos
 function setHideElements(option){
-         console.log("QUE TENEM,OSSS", option)
     if (option == 'buttonsModal') {
         $("#buttonCommentsModal").hide();
         $("#buttonBitacoraModal").hide();
@@ -1740,6 +1745,8 @@ function setHideElements(option){
         $("#buttonItemsModal").hide();
         $("#buttonCarsModal").hide();
     }else if(option == 'buttonsOptions'){
+        $("#pasesTemporales").hide();
+        $("#buttonNew").hide()
         $("#buttonIn").hide();
         $("#buttonOut").hide();
         $("#buttonNew").hide();
@@ -1761,14 +1768,16 @@ function setHideElements(option){
         }
         
     }else if(option==statusVisitaEntrada || option == statusVisitaSalida){
-        console.log("QUE ONDAAA", option)
         $("#divSpinner").hide();
         $("#inputCodeUser").val("")
         $("#idComentarioPase").val('')
         $("#idComentarioAcceso").val('')
         $("#buttonBuscarPaseEntrada").prop('disabled', false);
         $("#buttonNew").prop('disabled', false);
-
+        $("#pasesTemporales").hide()
+        $("#buttonNew").hide()
+        $("#pasesTemporales").prop('disabled', false);
+        $("#pasesTemporales").hide();
         if(option==statusVisitaEntrada){
             $("#buttonAsignarGafete").show()
             $("#buttonRecibirGafete").hide()
@@ -1863,11 +1872,12 @@ function setCleanData(){
     comentariosPase=[]
     comentariosAcceso=[]
     tipoMovimiento=""
-    $("#buttonNew").show();
     $("#buttonAsignarGafete").hide()
     $("#buttonRecibirGafete").hide()
     $("#idButtonEquipoNota").prop('disabled', false);
     $("#idButtonVehiculos").prop('disabled', false);
+    $("#pasesTemporales").prop('disabled', false);
+    $("#pasesTemporales").show();
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
     setHideElements('buttonNew');
@@ -2069,8 +2079,8 @@ function getScreenCard(){
             navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
             .then(function(stream) {
                 let video = document.createElement('video');
-                video.style.width = '200px';
-                video.style.height = '125px';
+                video.style.width = '130px';
+                video.style.height = '130px';
                 document.getElementById('containerCard').appendChild(video);
                 video.srcObject = stream;
                 video.play();
@@ -2103,8 +2113,8 @@ function getScreenUser(){
             navigator.mediaDevices.getUserMedia({ video: true })
             .then(function(stream) {
                 let video = document.createElement('video');
-                video.style.width = '200px';
-                video.style.height = '125px';
+                video.style.width = '130px';
+                video.style.height = '130px';
                 document.getElementById('containerUser').appendChild(video);
                 video.srcObject = stream;
                 video.play();

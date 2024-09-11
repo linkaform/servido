@@ -742,13 +742,13 @@ function verNotasAlert(folio){
     }
     let htmlComments = comments.length>0 ? `
         <h6>Comentarios</h6>
-        <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
+        <table class='table table-borderless customShadow ' style=' font-size: .8em; background-color: lightgray !important;'>
             `+commentsItem+` 
         </table>`: "";
 
     for(let pic of selectedNota.note_pic){
         fotosItem+=`
-        <div class="m-1 mr-0"> <img src="`+pic.file_url+`" height="145px"style="object-fit: contain;"></div> `;
+        <div class="m-1 mr-0"> <img src="`+pic.file_url+`" height="110px"style="object-fit: contain;"></div> `;
     }
     let htmlFotos=selectedNota.note_pic.length>0 ? `
         <h6>Fotografias</h6>
@@ -762,7 +762,7 @@ function verNotasAlert(folio){
     }
     let htmlArchivos=selectedNota.note_file.length>0 ? `
         <h6>Archivos</h6>
-        <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
+        <table class='table table-borderless customShadow ' style=' font-size: .8em; background-color: lightgray !important; width:220px !important;'>
             `+archivosItem+`
         </table> <br>`: "";
 
@@ -770,7 +770,7 @@ function verNotasAlert(folio){
         title: "Nota",
         text: "Escoje una caseta para continuar...",
         html: ` <div class="d-flex justify-content-center mt-2" id="tableCambiarCaseta"></div>
-            <table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>
+            <table class='table table-borderless customShadow' style='font-size: .8em; background-color: lightgray !important; '>
                 <tbody> 
                     <tr> <td><b>Nombre:</b></td> <td> <span > `+ selectedNota.created_by_name +`</span></td> </tr>
                     <tr> <td><b>Nota:</b></td> <td> <span > `+ selectedNota.note+`</span></td> </tr> 
@@ -778,13 +778,15 @@ function verNotasAlert(folio){
                     <tr> <td><b>Fecha y hora de creacion:</b></td> <td> <span > `+ selectedNota.note_open_date.slice(0,-3)+` hrs</span></td> </tr>
                     <tr> <td><b>Fecha y hora de cierre:</b></td> <td> <span>  `+ selectedNota.note_close_date.slice(0,-3)+` hrs</span> </tr>
                 </tbody> 
-            </table>` + htmlComments + htmlArchivos + htmlFotos,
+            </table>` +`<div class="d-flex justify-content-between"><div class="col-6 d-flex flex-column me-2" >`
+            + htmlComments +`</div><div class="col-6 d-flex flex-column ms-2 " >`+ htmlArchivos + `</div></div>`+ htmlFotos,
         showCancelButton: true,
         showConfirmButton: false,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Si",
-        cancelButtonText: "Cerrar"
+        cancelButtonText: "Cerrar",
+
     })
     .then((result) => {
         if (result.isConfirmed) {

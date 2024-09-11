@@ -34,45 +34,54 @@ window.onload = function(){
 	});  */
 }
 
+function selectRadio(type){
+	console.log("CLICK", type)
+}
+
 
 function changeLoginView(view){
 	let res= getInputsValueByClass("login-form")
 	let emptyProp=propiedadesVacias(res)
-	if(view=="login"){
-		const div = document.getElementById('accountTypeView');
-		div.classList.add('fade-out');
+	if(view=="loginView"){
+		$("#email").val("");
+		$("#password").val("");
+        $('#email').css('background-color', 'white !important');
+		$('#password').css('background-color', 'white !important');
 
-        // Esperar a que la animación termine antes de eliminar el contenido
-        setTimeout(() => {
-            $("#loginView").show();
-			$("#accountTypeView").hide();
-        }, 500);
+		$("#loginView").show();
+        $("#loginViewFade").show(); 
+
+        $("#accountTypeView").hide(); 
+		$("#accountTypeViewFade").hide(); 
 	}else if (view=="accountTypeView"){
+		if(emptyProp.length == 0){
+			if(validarEmail(res.email)){
+                $("#loginView").hide();
+                $("#loginViewFade").hide();
+				$("#accountTypeView").show();
+				$("#accountTypeViewFade").show(); 
 
-	}else if(view=="continue"){
+				//LLAMAR FUNCION DE LOGIN
+
+			}else{
+					successMsg("Validación","Escribe un email valido", "warning")
+				}
+		}else if(emptyProp.length > 0){
+			successMsg("Validación","Faltan campos por llenar", "warning")
+		}
+	}else if (createAccountView= 'createAccountView'){
+		console.log("HELLO")
 		let protocol = window.location.protocol;
 		let host = window.location.host;
-		let urlNew = `${protocol}//${host}/solucion_accesos/contratos.html`
+		let urlNew = `${protocol}//${host}/solucion_accesos/admin/crearCuenta.html`
+		window.location.href =urlNew
+	}if(view=="continue"){
+		let protocol = window.location.protocol;
+		let host = window.location.host;
+		let urlNew = `${protocol}//${host}/solucion_accesos/admin/contratos.html`
+		window.location.href =urlNew
 	}
-	if(emptyProp.length == 0){
-		if(validarEmail(res.email)){
-			console.log(res)
-			const div = document.getElementById('loginViewFade');
-			div.classList.add('fade-out');
-
-            // Esperar a que la animación termine antes de eliminar el contenido
-            setTimeout(() => {
-                $("#loginView").hide();
-				$("#accountTypeView").show();
-            }, 500); // El tiempo debe coincidir con la duración de la animación
-
-			
-		}else{
-			successMsg("Validación","Escribe un email valido", "warning")
-		}
-	}else if(emptyProp.length > 0){
-		successMsg("Validación","Faltan campos por llenar", "warning")
-	}
+	
 }
 
 function selectRadio(){
