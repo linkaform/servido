@@ -590,3 +590,31 @@ input[type=search]{
   display: inline-block; /* Muestra las imágenes en línea */
   object-fit: cover;
 }
+
+
+
+/* Ancho de columna para pantallas extra grandes */
+@media (min-width: 1200px) { /* 'xl' en Bootstrap 5 corresponde a min-width: 1200px */
+    .col-xl-custom {
+      flex: 0 0 38%; /* Ajusta este valor según sea necesario */
+      max-width: 40%;
+      min-width: 40% !important;
+    }
+    .custom-responsive{
+      display: flex;
+      flex-direction: row;
+    }
+}
+
+/* Ancho de columna para pantallas más pequeñas */
+@media (max-width: 1199px) {
+    .col-xl-custom {
+      flex: 0 0 38%; /* Ajusta este valor según sea necesario */
+      max-width: 40%;
+      min-width: 100% !important;
+    }
+    .custom-responsive{
+      display: flex;
+      flex-direction: column;
+    }
+}

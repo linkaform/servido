@@ -118,20 +118,20 @@
 	</section>	
 
 	<!-- Information User-->
-	<section class="section-data mainSectionMargins" id="mainSection3" >
-		<div class="col-12 d-flex flex-wrap justify-content-start">
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 customShadow mt-4 me-2" >
-				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex m-1 pt-0 ">
+	<section class="section-data mainSectionMargins" id="mainSection3" style="display:none">
+		<div class="d-flex flex-wrap justify-content-between p-2">
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 flex-wrap customShadow mt-4 me-2 " style="border-radius: 1%;">
+				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex custom-responsive m-1 pt-0 flex-wrap">
 					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-5">
 						<h4 class="m-2 mb-0">Folio: &nbsp;&nbsp; <span id="folio"></span></h4>
-						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-between">
-							<div class=" col-sm-12 col-md-12 col-lg-12 col-xl-6 d-flex flex-column ms-3 me-3 justify-content-center align-items-center" style="min-height:120px;">
+						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-evenly">
+							<div class=" col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex flex-column ms-3 me-3 justify-content-center align-items-center" style="min-height:120px;">
 									<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" 			class="rounded mt-4" alt="Imagen Usuario" id="imgUser">
 								<h5 class="mt-4 ms-2 mb-2" style="font-size:1.3em">Tipo de pase: <br><span id="tipoPaseText" style="font-weight: normal"></span></h5>
 							</div>
-							<div class=" col-sm-12 col-md-12 col-lg-12 col-xl-6 d-flex flex-column ms-3" style="min-height:120px;">
+							<div class=" col-sm-12 col-md-12 col-lg-4 col-xl-6 d-flex flex-column ms-3" style="min-height:120px;">
 									<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg" alt="Imagen Card" class="recta mt-4" id="imgCard">
-								<div class="mt-4">
+								<div class=" mt-4">
 									<h6>Disponible los días:</h6>
 									<div class="d-flex justify-content-around">
 										<button type="button" class="btn btn-outline-success btn-circle no-hover" id="lunes">L</button>
@@ -147,18 +147,18 @@
 						</div>
 					</div>
 					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 d-flex justify-content-center align-items-start mt-3" style=" margin-bottom: 10px;" >
-						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">							
+						<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">							
 							<div class="col-12">
 									<p><span className='h4'><b>Nombre:</b></span>&nbsp;&nbsp; <span id="nameUserInf"></span></p>
 									<p><span className='h4'><b>Ubicación:</b></span>&nbsp;&nbsp; <span id="ubicacion"></span></p> 
 									<p><span className='h4'><b>Contratista:</b></span>&nbsp;&nbsp; <span id="contratista"></span></p>
 									<p><span className='h4'><b>Vigencia:</b></span>&nbsp;&nbsp; <span id="validity"></span></p>
-									<p><span className='h4'><b>Status:</b></span>&nbsp;&nbsp; <span id="status"></span></p>
+									<p><span className='h4'><b>Estatus:</b></span>&nbsp;&nbsp; <span id="status"></span></p>
 									<p><span className='h4'><b>A quíen Visita:</b></span>&nbsp;&nbsp;<span id="visita"></span></p>
 									<p><span className='h4'><b>Motivo de Visita:</b></span>&nbsp;&nbsp;<span id="motivo"></span></p>
 							</div>
 						</div>
-						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3 d-flex flex-column" >
+						<div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 d-flex flex-column" >
 							<div class="d-flex flex-column">
 								<h3>
 									<span class="text-danger" id="textOut">Salida</span>
@@ -182,8 +182,8 @@
 				</div>
 			</div>
 
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-5" >
-				<div class="row div-container-portal  customShadow" >
+			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-custom" >
+				<div class="row div-container-portal customShadow me-2" >
 					<div class="d-flex justify-content-between mb-2 mt-2">
 							<div>
 								<h4>Comentarios / Instrucciones de visita</h4>
@@ -197,7 +197,7 @@
 								<i class="fa-solid fa-eye"></i>
 							</button>
 					</div>
-					<div class="overflowCustom div-containerTable-portal div-container-table mt-1">
+					<div class="overflowCustom div-containerTable-portal div-container-table mt-1" style="max-width:900px !important;">
 						<table id="tableInstructions" class=" table-borderless" style="border: none;">
 							<thead class="overflowCustomHead">
 								<tr>
@@ -225,7 +225,7 @@
 								<i class="fa-solid fa-eye"></i>
 							</button>
 						</div>
-						<div class="overflowCustom" >
+						<div class="overflowCustom" style="max-width:900px !important;" >
 							<table id="tableBitacora" class="table-borderless" style="border: none;">
 								<thead class="overflowCustomHead">
 									<tr>
@@ -250,7 +250,7 @@
 							<i class="fa-solid fa-eye"></i>
 						</button>
 					</div>
-					<div class="overflowCustom" >
+					<div class="overflowCustom" style="max-width:900px !important;">
 						<table id="tableLocations" class=" table-borderless" style="border: none;">
 							<thead class="overflowCustomHead">
 								<tr>
@@ -271,7 +271,7 @@
 							<i class="fa-solid fa-eye"></i>
 						</button>
 					</div>
-					<div class="overflowCustom" >
+					<div class="overflowCustom" style="max-width:900px !important;">
 						<table id="tableAccess" class="table-borderless" style="border: none;">
 							<thead class="overflowCustomHead" >
 								<tr>
@@ -407,8 +407,8 @@
 								</button>
 								<!-- Canvas Foto -->
 								<div id="containerUser" class="mt-2">
-									<canvas id="canvasPhotoUser" style="display: none;width: 125px;height: 125px;"></canvas>
-									<img id="imgUser" src="" style="display: none;width: 125px;height: 125px;">
+									<canvas id="canvasPhotoUser" style="display: none;width: 150px;height: 150px;"></canvas>
+									<img id="imgUser" src="" style="display: none;width: 150px;height: 150px;">
 								</div>
 								<input type="file" class="form-control mt-2" id="inputFileUser" >
 							</div>
@@ -423,8 +423,8 @@
 								</button>
 								<!-- Canvas Foto -->
 								<div id="containerCard" class="mt-2">
-									<canvas id="canvasPhoto" style="display: none;width: 125px;height: 125px;"></canvas>
-									<img id="imgCard" src="" style="display: none;width: 125px;height: 125px;">
+									<canvas id="canvasPhoto" style="display: none;width: 150px;height: 150px;"></canvas>
+									<img id="imgCard" src="" style="display: none;width: 150px;height: 150px;">
 								</div>
 								<input type="file" class="form-control mt-2" id="inputFileCard" >
 							</div>
@@ -453,7 +453,7 @@
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" id="cancelVideo">Cancelar</button>
 					<button type="button" class="btn btn-success btn-sm" onclick="crearNuevaVisita()">Crear</button>
 				</div>
 			</div> 
@@ -653,6 +653,11 @@
 						<div class="div-row-vehiculo">
 							<label class="form-label">Color:</label>
 							<select class="form-select" aria-label="Default select example" id="inputColor" style="height: 40px !important; overflow: auto !important;">
+							</select>
+						</div>
+						<div class="div-row-vehiculo">
+							<label class="form-label">Estado:</label>
+							<select class="form-select" aria-label="Default select example" id="selectEstadoVehiculo" style="height: 40px !important; overflow: auto !important;">
 							</select>
 							<hr>
 						</div>

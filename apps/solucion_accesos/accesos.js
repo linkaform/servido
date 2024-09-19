@@ -27,7 +27,7 @@ let fotosNuevaVisita={foto:[], identificacion:[]}
 let paseDeAccesoScript= "pase_de_acceso.py"
 let gafeteRegistroIngreso={}
 let gafeteId=""
-
+let currentStream = null;
 window.onload = function(){
     setValueUserLocation('accesos');
     changeButtonColor(); 
@@ -132,7 +132,6 @@ function verListaPasesTemporales(){
 
 
 function abrirRecibirGafeteModal(){
-    console.log("todaaa la data",fullData)
     //let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
     Swal.fire({
         title:'¿Está seguro de recibir gafete?',
@@ -157,7 +156,6 @@ function abrirRecibirGafeteModal(){
 
 
 function abrirNuevaVisita(){
-    console.log("NUEVA VISITA ENTRANDO")
 }
 
 
@@ -220,7 +218,6 @@ function abrirAsignarGafeteModal(){
             Swal.close();
             $("#gafeteModal").modal("show")
             let data= res.response.data
-            console.log("data gafete", data)
             let selectGaf= document.getElementById("selectGafete") 
             selectGaf.innerHTML=""; 
             for(let gaf of data){
@@ -428,11 +425,45 @@ function abrirAgregarVehiculo(){
     limpiarModalVehiculos()
     let selectColores = document.getElementById("inputColor")
     for(let color of coloresArray){
-        selectColores.innerHTML += '<option value="'+color.toLowerCase()+'">'+color+'</option>';
+        selectColores.innerHTML += '<option value="'+capitalizeFirstLetter(color.toLowerCase()) +'">'+color+'</option>';
     }
     selectColores.value=""
     $("#idLoadingButtonVehiculos").show();
     $("#idButtonVehiculos").hide();
+
+     fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: "catalog_estado",
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+        },
+        }).then(res => res.json())
+        .then(res => {
+            if(res.success){
+                let data= res.response.data
+                if(data.status_code ==400 || data.status_code==401){
+                    errorAlert(res)
+                    $("#idLoadingButtonVehiculos").hide();
+                    $("#idButtonVehiculos").show();
+                }else{
+                    let selectEstadoVehiculos= document.getElementById("selectEstadoVehiculo");
+                    let list = data
+                    for (let obj in list){
+                        selectEstadoVehiculos.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+                    }
+                    selectEstadoVehiculos.value=""
+                }
+            }else{
+                errorAlert(res)
+                $("#idLoadingButtonVehiculos").hide();
+                $("#idButtonVehiculos").show();
+            }
+        })
+
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -490,6 +521,7 @@ function agregarVehiculo(){
     let modelo= $('#selectVehiculosModelo').val();
     let matricula= $('#inputMatriculaVehiculo').val();
     let color= $('#inputColor').val();
+    let nombreEstado= $("#selectEstadoVehiculo").val();
     if(tipoVehiculo==''){
         validation=true
     }
@@ -497,8 +529,8 @@ function agregarVehiculo(){
         let id= Math.floor(Math.random() * 1000000)
         let checked='checked'
         selectedVehiculos.push(id);
-        listVehiculesData.push({"tipo_vehiculo":tipoVehiculo ,"marca_vehiculo":marca , "placas_vehiculo":matricula, "color_vehiculo":color, "modelo_vehiculo": modelo, id: id, check: checked})
-        console.log("VWEHICULOOSSS", listVehiculesData)
+        listVehiculesData.push({"tipo_vehiculo":tipoVehiculo ,"marca_vehiculo":marca , "placas_vehiculo":matricula, 
+            "color_vehiculo":color, "modelo_vehiculo": modelo, "nombre_estado": nombreEstado, id: id, check: checked})
         if(listVehiculesData.length==1){
             let tbody = document.querySelector('#tableCars tbody');
             tbody.innerHTML = '';
@@ -841,6 +873,8 @@ function crearNuevaVisita(){
 //FUNCION para obtener la informacion del usuario
 function buscarPaseEntrada() {
     setCleanData()
+    gafeteId=""
+    gafeteRegistroIngreso={}
     $(document).ready(function() {
         $("#buttonBuscarPaseEntrada").prop('disabled', true);
         $("#buttonNew").prop('disabled', true);
@@ -862,7 +896,7 @@ function buscarPaseEntrada() {
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
-                script_name: "script_turnos.py",
+                script_name: "script_turnospy",
                 option: 'search_access_pass',
                 location: selectLocation.value,
                 area: selectCaseta.value,
@@ -952,7 +986,13 @@ function registrarIngreso(){
     for (let comA of comentariosAcceso ){
         comAcc.push("a", comA.comentario_pase)
     }
-    console.log("comentariosPase",comentariosPase,comentariosAcceso )
+    for (let veh of selectedVe){
+        veh.color_vehiculo= veh.color_vehiculo.toLowerCase();
+        veh.nombre_estado= veh.nombre_estado.toLowerCase();
+    }
+    for (let eq of selectedEq){
+        eq.color_articulo= eq.color_articulo.toLowerCase();
+    }
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -1016,10 +1056,21 @@ function registrarIngreso(){
 function registrarSalida(){
     let location= selectLocation.value
     let area=selectCaseta.value 
-    console.log("GAFETE",gafeteId)
-    if(gafeteId==""){
+    let tieneGafeteLocker= fullData.gafete_id !==null || fullData.locker_id !==null
+    let salida=false
+    if(gafeteId=="" &&  tieneGafeteLocker == true){
+        salida=false
+    }else if(gafeteId !=="" && tieneGafeteLocker == true){
+        salida=true
+    }else if (gafeteId =="" && tieneGafeteLocker == false){
+        salida=true
+    }
+
+    if(!salida){
+        console.log("FULL NOOOOO",fullData.gafete_id,fullData.locker_id, gafeteId)
         errorAlert("¡Debes recibir el gafete antes de registrar la salida!","Validación","warning" )
-    }else{
+    } else{
+        console.log("FULL DATA",fullData.gafete_id,fullData.locker_id, gafeteId)
         loadingService()
         fetch(url + urlScripts, {
             method: 'POST',
@@ -1450,7 +1501,6 @@ function tableFillEquipos(dataUser){
         newRow.append('<td ><input class="form-check-input checkboxGroupEquipos" style="margin: auto!important; display: block!important;" type="checkbox" id='+id+' '+isChecked+'></td>');
         newRow.append('</tr>');
         $('#tableEquipos').append(newRow);
-        console.log(dataUser.tipo_movimiento)
         if(dataUser.tipo_movimiento =="Entrada"){
             $('#'+id).prop('disabled', false);
             $("#idButtonEquipoNota").prop('disabled', false);
@@ -1510,8 +1560,10 @@ function tableFillVehiculos(dataUser){
         if(dataUser.tipo_movimiento =="Entrada"){
             $('#'+id).prop('disabled', false);
             $("#idButtonVehiculos").prop('disabled', false);
+            $("#idButtonEquipoNota").prop('disabled', false);
         }else{
             $("#idButtonVehiculos").prop('disabled', true);
+            $("#idButtonEquipoNota").prop('disabled', true);
             $('#'+id).prop('disabled', true);
         }
     }
@@ -1557,19 +1609,20 @@ function optionInformationUser(data){
         }else{
             $("#lockerText").hide()
         }
-
+        console.log("TIENE GAFETE LOCKER", tieneGafete, tieneLocker)
         if(data.tipo_movimiento == 'Entrada'){
             tipoMovimiento="Entrada" 
            $("#buttonIn").show();
            $("#buttonAddCommentarioAccesoModal").show()
            $("#textIn").show();
            if(tieneGafete || tieneLocker){
-                console.log(tieneGafete, tieneLocker)
                 $(document).ready(function() {
                     $("#buttonAsignarGafete").hide()
                 })
            }else{
-                $("#buttonAsignarGafete").show()
+                $(document).ready(function() {
+                    $("#buttonAsignarGafete").show()
+                })
            }
         }else if(data.tipo_movimiento == 'Salida'){
             tipoMovimiento="Salida" 
@@ -1579,7 +1632,9 @@ function optionInformationUser(data){
             if(tieneGafete || tieneLocker){
                 $("#buttonRecibirGafete").show()
             }else{
-                $("#buttonRecibirGafete").hide()
+                $(document).ready(function() {
+                    $("#buttonRecibirGafete").hide()
+                })
             }
         } 
         
@@ -1633,7 +1688,6 @@ function optionInformationUser(data){
                 newRow.append($('<td>'));
                 newRow.append('</tr>');
                 $('#tableBitacora').append(newRow);
-                console.log("listBitacora", listBitacora)
             }
             
         })
@@ -1872,6 +1926,8 @@ function setCleanData(){
     comentariosPase=[]
     comentariosAcceso=[]
     tipoMovimiento=""
+    gafeteId=""
+    gafeteRegistroIngreso={}
     $("#buttonAsignarGafete").hide()
     $("#buttonRecibirGafete").hide()
     $("#idButtonEquipoNota").prop('disabled', false);
@@ -2070,6 +2126,11 @@ function isCanvasBlank(canvas) {
 }
 
 
+function stopStream(stream) {
+    const tracks = stream.getTracks();
+    tracks.forEach(track => track.stop());
+}
+
 //FUNCION obtener la imagen del canvas
 function getScreenCard(){
     //-----Save Photo
@@ -2079,8 +2140,8 @@ function getScreenCard(){
             navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
             .then(function(stream) {
                 let video = document.createElement('video');
-                video.style.width = '130px';
-                video.style.height = '130px';
+                video.style.width = '150px';
+                video.style.height = '150px';
                 document.getElementById('containerCard').appendChild(video);
                 video.srcObject = stream;
                 video.play();
@@ -2092,6 +2153,16 @@ function getScreenCard(){
                 $("#buttonSaveCard").show();
                 document.getElementById('buttonSaveCard').addEventListener('click', function() {
                     setTranslateImageCard(context, video, canvas)
+                });
+                 // Añadir código para detener el stream si es necesario
+                window.addEventListener('beforeunload', function() {
+                    stopStream(stream);
+                });
+                // Manejo del evento de cierre del modal o botón de cancelar
+                document.getElementById('cancelVideo').addEventListener('click', function() {
+                    stopStream(currentStream);
+                    currentStream = null;  // Limpia la referencia al stream
+                    flagVideoUser = false; // Resetea el flag si es necesario
                 });
             })
             .catch(function(error) {
@@ -2113,8 +2184,8 @@ function getScreenUser(){
             navigator.mediaDevices.getUserMedia({ video: true })
             .then(function(stream) {
                 let video = document.createElement('video');
-                video.style.width = '130px';
-                video.style.height = '130px';
+                video.style.width = '150px';
+                video.style.height = '150px';
                 document.getElementById('containerUser').appendChild(video);
                 video.srcObject = stream;
                 video.play();
@@ -2127,6 +2198,15 @@ function getScreenUser(){
                 document.getElementById('buttonSaveUser').addEventListener('click', function() {
                     setTranslateImageUser(context, video, canvas);
                 });
+               // Evento para detener el stream al cerrar el modal o al cancelar
+                document.getElementById('buttonCancel').addEventListener('click', function() {
+                    stopStream(currentStream);
+                    currentStream = null;
+                    flagVideoUser = false;
+                });
+
+                // Enviar un mensaje a otras pestañas para que sepan que el stream está en uso
+                localStorage.setItem('cameraInUse', 'true');
             })
             .catch(function(error) {
                 console.error('Error al acceder a la cámara:', error);

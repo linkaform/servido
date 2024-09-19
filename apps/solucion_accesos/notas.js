@@ -47,7 +47,6 @@ window.addEventListener('storage', function(event) {
     }
 });
 
-
 function reloadTableNotas(data){
     dataTableNotas=[]
     if(user !='' && userJwt!=''){

@@ -641,7 +641,7 @@ function successMsg(title, text, type = "success"){
 
 function loadingService(){
     Swal.fire({
-        title: 'Cargando...',
+        title: 'Procesando...',
         allowOutsideClick: false,
         onBeforeOpen: () => {
             Swal.showLoading();
@@ -677,7 +677,7 @@ function propiedadesVacias(objeto) {
             }
         }
     }
-    return array; // Retorna false si no encuentra ninguna propiedad vacía
+    return array; // Retorna las propiedades vacias
 }
 
 
@@ -749,4 +749,23 @@ function getInputsValueByClass(classInput){
         }
     }
     return data
+}
+
+
+function cleanCatalag(catalogsId){
+    for (let cat of catalogsId){
+        let selectCat = document.getElementById(cat)
+        selectCat.innerHTML=""
+        selectCat.value=""
+    }
+}
+
+
+function eliminarPropiedadesVacias(obj) {
+    for (const key in obj) {
+        if (obj[key] === null || obj[key] === undefined || obj[key] === '') {
+            delete obj[key];
+        }
+    }
+    return obj;
 }
