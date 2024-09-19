@@ -896,7 +896,7 @@ function buscarPaseEntrada() {
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
-                script_name: "script_turnospy",
+                script_name: "script_turnos.py",
                 option: 'search_access_pass',
                 location: selectLocation.value,
                 area: selectCaseta.value,
