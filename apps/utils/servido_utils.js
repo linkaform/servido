@@ -273,7 +273,9 @@ function getPAlleteColors(pallete,number){
   }else if(pallete==11){
     arrayColors = chroma.scale(['#E63946','#F1FAEE','#A8DADC','#457B9D','#1D3557']).mode('lch').colors(number);
   }else if(pallete == 12){
-    arrayColors = ["#dc3545", "#28a745"];
+    arrayColors = chroma.scale(["#dc3545", "#28a745"]).mode('lch').colors(number);
+  }else if(pallete == 13){
+    arrayColors = chroma.scale(["#007CB3", "#EFB03B"]).mode('lch').colors(number);
   }
 
   return arrayColors;
