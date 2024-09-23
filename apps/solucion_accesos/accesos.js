@@ -26,7 +26,8 @@ let tipoMovimiento=""
 let fotosNuevaVisita={foto:[], identificacion:[]}
 let paseDeAccesoScript= "pase_de_acceso.py"
 let gafeteRegistroIngreso={}
-
+let gafeteId=""
+let currentStream = null;
 window.onload = function(){
     setValueUserLocation('accesos');
     changeButtonColor(); 
@@ -74,111 +75,87 @@ function setModal(type = 'none',id =""){
         abrirAsignarGafeteModal()
     }else if(type=="recibirGafete"){
         abrirRecibirGafeteModal()
+    }else if(type== "listaPasesTemporales"){
+        verListaPasesTemporales()
     }
+     
 }
 
-function abrirRecibirGafeteModal(){
-    console.log("todaaa la data",fullData)
-
-    //let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
-    
-        Swal.fire({
-            title:'¿Está seguro de recibir gafete?',
-            html:`
-            <div class="m-1"> Al recibir el gafete, se desocupara el gafete y el locker y se retiraran los documentos pertienentes </div>`,
-            type: "warning",
-            showCancelButton: true,
-            cancelButtonColor: colors[0],
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: colors[1],
-            confirmButtonText: "Si",
-            heightAuto:false,
-            reverseButtons: true
-        })
-        .then((result) => {
-            if (result.value) {
-                console.log("SERVICIO PARA RECIBIR EL GAFETE")
-                /*
-                let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
-                if (selectedSalida) {
-                    selectedSalida.status = 'Libre';
-                    selectedSalida.visit = '';
-                    selectedSalida.document = '';
-                    selectedSalida.location = '';
-                    tables["tableSalidas"].setData(dataTableLocker);
-                } */
-            }
-        });
-    /*}else{
-        successMsg()
-         Swal.fire({
-            title: "Acción Completada!",
-            text: "Esta locker ya se encuentra liberado.",
-            type: "warning"
-        });
-    } */
-
-    /*
-    if(status_visita== statusVisitaEntrada){
-        Swal.fire({
-            title:`¿Estas seguro de liberar el gafete ${} y el locker ${}?`,
-            html:`
-            <div class="m-2"> La salida no puede ser confirmada en este momento. Aún hay documentos 
-            en el locker correspondiente que deben ser desocupados antes de proceder. </div>`,
-            type: "warning",
-            showCancelButton: true,
-            cancelButtonColor: colors[0],
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: colors[1],
-            confirmButtonText: "Si",
-            heightAuto:false,
-            reverseButtons: true
-        })
-        .then((result) => {
-            if (result.value) {
-            console.log("SDFSS",result)
-                fetch(url + urlScripts, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        script_name: 'script_turnos.py',
-                        option: 'do_out',
-                        qr_code: folio,
-                        location: selectLocation.value,
-                        area: selectCaseta.value
-                    }),
-                    headers:{
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer '+userJwt
-                    },
-                })
-                .then(res => res.json())
-                .then(res => {
-                    if (res.success) {
-                    } 
-                });
-
-                let selectedSalida = dataTableBitacora.find(n => n.folio == parseInt(folio));
-               
-                if (selectedSalida) {
-                    let fecha=  new Date()
-                    let año = fecha.getFullYear();
-                    let mes = fecha.getMonth() + 1;
-                    let dia = fecha.getDate();
-                    let horaFormateada = fecha.getHours() + ':' + fecha.getMinutes();
-                    let fechaFormateada = dia + '/' + mes + '/' + año + ' ' + horaFormateada;
-                    selectedSalida.salida = fechaFormateada;
-                    tables["tableEntradas"].setData(dataTableBitacora);
+function verListaPasesTemporales(){
+    setCleanData()
+    loadingService()
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: 'lista_pases_temporales',
+            caseta: selectCaseta.value,
+            location: selectLocation.value,
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close();
+            let listPases = res.response.data || []
+            let formatedList=[]
+            if(listPases.length >0){
+                for(let obj of listPases){
+                    formatedList.push({nombre: obj.nombre, folio: obj.folio, qr_code: obj.qr_code, ubicacion: obj.ubicacion, foto: obj.foto})
                 }
             }
-        });
-    }else{
-        successMsg("Validación", "Este ya registro ya tiene registrada la salida", "warning")
-    } */
+
+            if(user!="" && userJwt!=""){
+                drawTableSelect('tableListaPases',columsListaPases, [],"500px",1);
+                $("#listaPasesTitulo").text("Lista de Pases Temporales")
+                $("#listModal").modal('show');
+            }
+
+            tables["tableListaPases"].on("rowSelectionChanged", function(data, rows){
+                if (rows.length > 0) {
+                    $("#inputCodeUser").val(data[0].qr_code);
+                    if(data[0].qr_code!==""){
+                        //setSpinner(true, 'divSpinner');
+                        $("#divSpinner").show();
+                        buscarPaseEntrada();
+                    }
+                    $("#listModal").modal('hide');
+                }
+            });
+        } 
+    });
+}
+
+
+function abrirRecibirGafeteModal(){
+    //let selectedSalida = dataTableLocker.find(n => n.folio == parseInt(folio));
+    Swal.fire({
+        title:'¿Está seguro de recibir gafete?',
+        html:`
+        <div class="m-1"> Al recibir el gafete, se desocupara el gafete y el locker y se retiraran los documentos pertienentes </div>`,
+        type: "warning",
+        showCancelButton: true,
+        cancelButtonColor: colors[0],
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: colors[1],
+        confirmButtonText: "Si",
+        heightAuto:false,
+        reverseButtons: true
+    })
+    .then((result) => {
+        if (result.value) {
+            gafeteId= $("#gafete").text()
+            successMsg("Confirmación", "Gafete recibido correctamente.", "success")
+        }
+    })
 }
 
 
 function abrirNuevaVisita(){
-    console.log("NUEVA VISITA ENTRANDO")
 }
 
 
@@ -193,7 +170,8 @@ function abrirAsignarGafeteModal(){
             script_name: "gafetes_lockers.py",
             location: selectLocation.value,
             area: selectCaseta.value,
-            status: statusDisponible
+            status: statusDisponible,
+            tipo_locker:"Identificaciones"
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -207,8 +185,8 @@ function abrirAsignarGafeteModal(){
             let data= res.response.data
             let selectLockers= document.getElementById("selectLocker") 
             selectLockers.innerHTML=""; 
-            for(let loc of data){
-                    selectLockers.innerHTML += '<option value="'+loc.id_locker  +'">'+loc.id_locker+'</option>';
+            for(let loc of data){ 
+                    selectLockers.innerHTML += '<option value="'+loc.locker_id  +'">'+loc.locker_id+'</option>';
             }
             if(data.length==0){
                  selectLockers.innerHTML += '<option disabled> No hay lockers disponibles </option>';
@@ -217,6 +195,9 @@ function abrirAsignarGafeteModal(){
         } 
     });
 
+
+// lkf_api.update_catalog_multi_record( {'647fd66741b60713bacded7e': days}, 102885, record_id=[record_catalog['_id']])
+// self.lkf_api.search_catalog( self.GAFETES_CAT_ID, mango_query)
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -240,7 +221,7 @@ function abrirAsignarGafeteModal(){
             let selectGaf= document.getElementById("selectGafete") 
             selectGaf.innerHTML=""; 
             for(let gaf of data){
-                    selectGaf.innerHTML += '<option value="'+gaf.id_gafete+'">'+gaf.id_gafete+'</option>';
+                    selectGaf.innerHTML += '<option value="'+gaf.gafete_id+'">'+gaf.gafete_id+'</option>';
             }
             if(data.length==0){
                  selectGaf.innerHTML += '<option disabled> No hay gafetes disponibles </option>';
@@ -334,6 +315,7 @@ function verListaPasesActivos(){
 
             if(user!="" && userJwt!=""){
                 drawTableSelect('tableListaPases',columsListaPases, formatedList,"500px",1);
+                $("#listaPasesTitulo").text("Lista de Pases Activos")
                 $("#listModal").modal('show');
             }
 
@@ -443,11 +425,45 @@ function abrirAgregarVehiculo(){
     limpiarModalVehiculos()
     let selectColores = document.getElementById("inputColor")
     for(let color of coloresArray){
-        selectColores.innerHTML += '<option value="'+color.toLowerCase()+'">'+color+'</option>';
+        selectColores.innerHTML += '<option value="'+capitalizeFirstLetter(color.toLowerCase()) +'">'+color+'</option>';
     }
     selectColores.value=""
     $("#idLoadingButtonVehiculos").show();
     $("#idButtonVehiculos").hide();
+
+     fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: "catalog_estado",
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt,
+        },
+        }).then(res => res.json())
+        .then(res => {
+            if(res.success){
+                let data= res.response.data
+                if(data.status_code ==400 || data.status_code==401){
+                    errorAlert(res)
+                    $("#idLoadingButtonVehiculos").hide();
+                    $("#idButtonVehiculos").show();
+                }else{
+                    let selectEstadoVehiculos= document.getElementById("selectEstadoVehiculo");
+                    let list = data
+                    for (let obj in list){
+                        selectEstadoVehiculos.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+                    }
+                    selectEstadoVehiculos.value=""
+                }
+            }else{
+                errorAlert(res)
+                $("#idLoadingButtonVehiculos").hide();
+                $("#idButtonVehiculos").show();
+            }
+        })
+
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -505,6 +521,7 @@ function agregarVehiculo(){
     let modelo= $('#selectVehiculosModelo').val();
     let matricula= $('#inputMatriculaVehiculo').val();
     let color= $('#inputColor').val();
+    let nombreEstado= $("#selectEstadoVehiculo").val();
     if(tipoVehiculo==''){
         validation=true
     }
@@ -512,8 +529,8 @@ function agregarVehiculo(){
         let id= Math.floor(Math.random() * 1000000)
         let checked='checked'
         selectedVehiculos.push(id);
-        listVehiculesData.push({"tipo_vehiculo":tipoVehiculo ,"marca_vehiculo":marca , "placas_vehiculo":matricula, "color_vehiculo":color, "modelo_vehiculo": modelo, id: id, check: checked})
-        console.log("VWEHICULOOSSS", listVehiculesData)
+        listVehiculesData.push({"tipo_vehiculo":tipoVehiculo ,"marca_vehiculo":marca , "placas_vehiculo":matricula, 
+            "color_vehiculo":color, "modelo_vehiculo": modelo, "nombre_estado": nombreEstado, id: id, check: checked})
         if(listVehiculesData.length==1){
             let tbody = document.querySelector('#tableCars tbody');
             tbody.innerHTML = '';
@@ -666,8 +683,7 @@ function getSelectedCheckbox(tableId, classCheckbox, checkboxesSeleccionados){
     //return checkboxesSeleccionados
 }
 
-function agregarComentarioPaseAcceso(type){
-        
+function agregarComentarioPaseAcceso(type){  
     if(type== "acceso"){
         let comentario = $("#idComentarioAcceso").val()
         comentariosAcceso.push({comentario_pase:comentario ,tipo_de_comentario:tipoMovimiento})
@@ -841,8 +857,7 @@ function crearNuevaVisita(){
                     $("#newVisitModal").modal('hide')
                 }
                     //
-                //CODE una vez resulta la imagen, cargarla en front
-                
+                //CODE una vez resulta la imagen, cargarla en front                
             } 
         });
         
@@ -857,17 +872,24 @@ function crearNuevaVisita(){
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
 function buscarPaseEntrada() {
-    $("#buttonBuscarPaseEntrada").prop('disabled', true);
-    $("#buttonNew").prop('disabled', true);
-    $("#buttonNew").hide();
+    setCleanData()
+    gafeteId=""
+    gafeteRegistroIngreso={}
+    $(document).ready(function() {
+        $("#buttonBuscarPaseEntrada").prop('disabled', true);
+        $("#buttonNew").prop('disabled', true);
+        $("#pasesTemporales").prop('disabled', true);
+    })
     codeUser = $("#inputCodeUser").val();
     if(codeUser ==""){
         successMsg("Validación", "Escribe un codigo para continuar", "warning")
-        $("#buttonNew").show();
-        $("#buttonBuscarPaseEntrada").prop('disabled', false);
-        $("#buttonNew").prop('disabled', false);
+        $(document).ready(function() {
+            $("#buttonBuscarPaseEntrada").prop('disabled', false);
+            $("#buttonNew").prop('disabled', false);
+            $("#pasesTemporales").prop('disabled', false);
+        })
     }else{
-        setCleanData()
+        
         $("#divSpinner").show();
         setHideElements('dataHide');
         setHideElements('buttonsOptions');
@@ -894,7 +916,6 @@ function buscarPaseEntrada() {
                 setDataInformation('informatioUser', res.response.data);
                 setHideElements('buttonsModal');
                 setHideElements('dataShow');
-
                 setHideElements(fullData.tipo_movimiento) //Oculta o muestra los botones correspondientes dependiendo de si es Entrada o Salida
             }else{
                 errorAlert(res)
@@ -907,6 +928,8 @@ function buscarPaseEntrada() {
                 $("#idComentarioAcceso").val('')
                 $("#buttonBuscarPaseEntrada").prop('disabled', false);
                 $("#buttonNew").prop('disabled', false);
+                $("#pasesTemporales").prop('disabled', false);
+                $("#pasesTemporales").show();
             }
         })
     }
@@ -963,7 +986,13 @@ function registrarIngreso(){
     for (let comA of comentariosAcceso ){
         comAcc.push("a", comA.comentario_pase)
     }
-    console.log("comentariosPase",comentariosPase,comentariosAcceso )
+    for (let veh of selectedVe){
+        veh.color_vehiculo= veh.color_vehiculo.toLowerCase();
+        veh.nombre_estado= veh.nombre_estado.toLowerCase();
+    }
+    for (let eq of selectedEq){
+        eq.color_articulo= eq.color_articulo.toLowerCase();
+    }
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -1027,69 +1056,80 @@ function registrarIngreso(){
 function registrarSalida(){
     let location= selectLocation.value
     let area=selectCaseta.value 
-    Swal.fire({
-        title: 'Cargando...',
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-            Swal.showLoading();
-       }
-    });
-    fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_name: 'script_turnos.py',
-            option: 'do_out',
-            qr_code: codeUser,
-            location: location,
-            area: area
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt,
-            'Access-Control-Request-Headers':'*'
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            let data = {};
-            setHideElements('buttonsModal');
-            setDataInformation('informatioUser',data)
-            Swal.fire({
-                title: "Exito!",
-                text: "Salida registrada correctamente",
-                icon: "success"
-            });
-            setCleanData();
-            setHideElements('dataHide');
-            setHideElements('buttonsOptions');
-            setHideElements('buttonNew');
-            $("#inputCodeUser").val('');
-            $("#buttonAddCommentarioAccesoModal").hide();
-            //setHideElements(fullData.tipo_movimiento)
-            $("#buttonRecibirGafete").hide()
-        }else{
-            errorAlert(res)
-            $("#buttonOut").show();
-            $("#inputCodeUser").val('');
-            $("#buttonAddCommentarioAccesoModal").hide();
-        }
-    }).catch(error => {
+    let tieneGafeteLocker= fullData.gafete_id !==null || fullData.locker_id !==null
+    let salida=false
+    if(gafeteId=="" &&  tieneGafeteLocker == true){
+        salida=false
+    }else if(gafeteId !=="" && tieneGafeteLocker == true){
+        salida=true
+    }else if (gafeteId =="" && tieneGafeteLocker == false){
+        salida=true
+    }
 
-        $("#inputCodeUser").val('');
-        $("#buttonAddCommentarioAccesoModal").hide();
-    });
+    if(!salida){
+        console.log("FULL NOOOOO",fullData.gafete_id,fullData.locker_id, gafeteId)
+        errorAlert("¡Debes recibir el gafete antes de registrar la salida!","Validación","warning" )
+    } else{
+        console.log("FULL DATA",fullData.gafete_id,fullData.locker_id, gafeteId)
+        loadingService()
+        fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name: 'script_turnos.py',
+                option: 'do_out',
+                qr_code: codeUser,
+                location: location,
+                area: area,
+                gafete_id: gafeteId 
+            }),
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt,
+                'Access-Control-Request-Headers':'*'
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                let data = {};
+                setHideElements('buttonsModal');
+                setDataInformation('informatioUser',data)
+                Swal.fire({
+                    title: "Exito!",
+                    text: "Salida registrada correctamente",
+                    icon: "success"
+                });
+                setCleanData();
+                setHideElements('dataHide');
+                setHideElements('buttonsOptions');
+                setHideElements('buttonNew');
+                $("#inputCodeUser").val('');
+                $("#buttonAddCommentarioAccesoModal").hide();
+                //setHideElements(fullData.tipo_movimiento)
+                $("#buttonRecibirGafete").hide()
+            }else{
+                errorAlert(res)
+                $("#buttonOut").show();
+                $("#inputCodeUser").val('');
+                $("#buttonAddCommentarioAccesoModal").hide();
+            }
+        }).catch(error => {
+
+            $("#inputCodeUser").val('');
+            $("#buttonAddCommentarioAccesoModal").hide();
+        });
+    }
 }
 
 //FUNCION para asignar un nuevo gafete
 function entregarGafete(){
     $("#idLoadingButtonAsignarGafete").show();
     $("#idButtonAsignarGafete").hide();
-    let codeUser  = $("#inputCodeUser").val();
-    let numGafete= $("#selectGafete").val();
-    let otroDoc= $("#inputOtroDescCard").val();
-    let nombre= $("#nameUserInf").text();
-    let locker= $("#inputLocker").val();
+    let codeUser = $("#inputCodeUser").val();
+    let numGafete = $("#selectGafete").val();
+    let otroDoc = $("#inputOtroDescCard").val();
+    let nombre = $("#nameUserInf").text();
+    let locker = $("#selectLocker").val();
     let radios = document.getElementsByName('radioOptionsDocument');
     let radioSeleccionado = "";
     for (var i = 0; i < radios.length; i++) {
@@ -1098,20 +1138,25 @@ function entregarGafete(){
             break; 
         }
     }
-    if(numGafete !=="" && radioSeleccionado.value!=="" && locker!==""){
-        gafeteRegistroIngreso={
-            "id_gafete":numGafete,
+    if(numGafete !== "" && radioSeleccionado.value !== "" && locker !== ""){
+        gafeteRegistroIngreso = {
+            "gafete_id":numGafete,
             "documento_garantia": radioSeleccionado.value, // Opciones "licencia_de_conducir","carnet_de_identidad", "ine"
-            "id_locker":locker
+            "locker_id":locker
             /*'status_gafete':'asignar_gafete',
             'ubicacion_gafete':selectLocation.value,
             'caseta_gafete':selectCaseta.value,
             'visita_gafete':nombre,
-            'id_gafete':numGafete,
+            'gafete_id':numGafete,
             'documento_gafete':[radioSeleccionado.value],*/
         }
 
+
         $("#gafeteModal").modal('hide')
+        $("#gafeteText").show();
+        $("#lockerText").show();
+        $("#gafete").text(gafeteRegistroIngreso.gafete_id);
+        $("#locker").text(gafeteRegistroIngreso.locker_id)
         successMsg("Gafete Entregado", "El gafete asignado para el registro de ingreso.")
         $("#idLoadingButtonAsignarGafete").hide();
         $("#idButtonAsignarGafete").show();
@@ -1382,6 +1427,7 @@ function tableFill(dataUser){
         var newRow = $('<tr>');
         newRow.append($('<td >').text('No existen accesos permitidos'));
         newRow.append($('<td>'));
+        newRow.append($('<td>'));
         newRow.append('</tr>');
         $('#tableAccess').append(newRow);
     }
@@ -1455,7 +1501,6 @@ function tableFillEquipos(dataUser){
         newRow.append('<td ><input class="form-check-input checkboxGroupEquipos" style="margin: auto!important; display: block!important;" type="checkbox" id='+id+' '+isChecked+'></td>');
         newRow.append('</tr>');
         $('#tableEquipos').append(newRow);
-        console.log(dataUser.tipo_movimiento)
         if(dataUser.tipo_movimiento =="Entrada"){
             $('#'+id).prop('disabled', false);
             $("#idButtonEquipoNota").prop('disabled', false);
@@ -1515,8 +1560,10 @@ function tableFillVehiculos(dataUser){
         if(dataUser.tipo_movimiento =="Entrada"){
             $('#'+id).prop('disabled', false);
             $("#idButtonVehiculos").prop('disabled', false);
+            $("#idButtonEquipoNota").prop('disabled', false);
         }else{
             $("#idButtonVehiculos").prop('disabled', true);
+            $("#idButtonEquipoNota").prop('disabled', true);
             $('#'+id).prop('disabled', true);
         }
     }
@@ -1540,26 +1587,66 @@ function optionInformationUser(data){
     if(data.hasOwnProperty('ultimo_acceso')){
         //---Movement
         //data.tipo_movimiento="Salida"
+        let tieneGafete=false
+        let tieneLocker=false
+        if(data.hasOwnProperty("gafete_id")){
+            if(data.gafete_id==''|| data.gafete_id==null || data.locker_id==undefined){
+                $("#gafeteText").hide()
+            }else{
+                $("#gafeteText").show()
+                tieneGafete=true
+            }
+        }else{
+            $("#gafeteText").hide()
+        }
+        if(data.hasOwnProperty("locker_id")){
+            if(data.locker_id=='' || data.locker_id==null || data.locker_id==undefined){
+                $("#lockerText").hide()
+            }else{
+                $("#lockerText").show()
+                tieneLocker=true
+            }
+        }else{
+            $("#lockerText").hide()
+        }
+        console.log("TIENE GAFETE LOCKER", tieneGafete, tieneLocker)
         if(data.tipo_movimiento == 'Entrada'){
             tipoMovimiento="Entrada" 
            $("#buttonIn").show();
            $("#buttonAddCommentarioAccesoModal").show()
-            $("#textIn").show();
+           $("#textIn").show();
+           if(tieneGafete || tieneLocker){
+                $(document).ready(function() {
+                    $("#buttonAsignarGafete").hide()
+                })
+           }else{
+                $(document).ready(function() {
+                    $("#buttonAsignarGafete").show()
+                })
+           }
         }else if(data.tipo_movimiento == 'Salida'){
             tipoMovimiento="Salida" 
             $("#buttonOut").show();
             $("#buttonAddCommentarioAccesoModal").hide()
             $("#textOut").show();
+            if(tieneGafete || tieneLocker){
+                $("#buttonRecibirGafete").show()
+            }else{
+                $(document).ready(function() {
+                    $("#buttonRecibirGafete").hide()
+                })
+            }
         } 
+        
+        $("#gafete").text(data.gafete_id)
+        $("#locker").text(data.locker_id)
         $("#buttonNew").hide();
         $("#buttonAsignarGafete").show();
         $("#buttonClean").show();
         $(document).ready(function() {
             //---Bitacora TABLA ULTIMOS ACCESOS
             let listBitacora = ultimo_acceso.length > 0 ? ultimo_acceso: [];
-            console.log("LISTA BOTACOPRAAA",listBitacora)
             for (let i = 0; i < listBitacora.length; i++) {
-                console.log("QUE PASAAAA", listBitacora[i])
                 //if(i < 3){
                     //let duration=segundosAHoras(listBitacora[i].duration)
                     let newRow = $('<tr>');
@@ -1601,7 +1688,6 @@ function optionInformationUser(data){
                 newRow.append($('<td>'));
                 newRow.append('</tr>');
                 $('#tableBitacora').append(newRow);
-                console.log("listBitacora", listBitacora)
             }
             
         })
@@ -1705,7 +1791,6 @@ function optionListUsers(data){
 
 //FUNCION para ocultar mostrar elementos
 function setHideElements(option){
-         console.log("QUE TENEM,OSSS", option)
     if (option == 'buttonsModal') {
         $("#buttonCommentsModal").hide();
         $("#buttonBitacoraModal").hide();
@@ -1714,6 +1799,8 @@ function setHideElements(option){
         $("#buttonItemsModal").hide();
         $("#buttonCarsModal").hide();
     }else if(option == 'buttonsOptions'){
+        $("#pasesTemporales").hide();
+        $("#buttonNew").hide()
         $("#buttonIn").hide();
         $("#buttonOut").hide();
         $("#buttonNew").hide();
@@ -1735,14 +1822,16 @@ function setHideElements(option){
         }
         
     }else if(option==statusVisitaEntrada || option == statusVisitaSalida){
-        console.log("QUE ONDAAA", option)
         $("#divSpinner").hide();
         $("#inputCodeUser").val("")
         $("#idComentarioPase").val('')
         $("#idComentarioAcceso").val('')
         $("#buttonBuscarPaseEntrada").prop('disabled', false);
         $("#buttonNew").prop('disabled', false);
-
+        $("#pasesTemporales").hide()
+        $("#buttonNew").hide()
+        $("#pasesTemporales").prop('disabled', false);
+        $("#pasesTemporales").hide();
         if(option==statusVisitaEntrada){
             $("#buttonAsignarGafete").show()
             $("#buttonRecibirGafete").hide()
@@ -1837,11 +1926,14 @@ function setCleanData(){
     comentariosPase=[]
     comentariosAcceso=[]
     tipoMovimiento=""
-    $("#buttonNew").show();
+    gafeteId=""
+    gafeteRegistroIngreso={}
     $("#buttonAsignarGafete").hide()
     $("#buttonRecibirGafete").hide()
     $("#idButtonEquipoNota").prop('disabled', false);
     $("#idButtonVehiculos").prop('disabled', false);
+    $("#pasesTemporales").prop('disabled', false);
+    $("#pasesTemporales").show();
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
     setHideElements('buttonNew');
@@ -2034,6 +2126,11 @@ function isCanvasBlank(canvas) {
 }
 
 
+function stopStream(stream) {
+    const tracks = stream.getTracks();
+    tracks.forEach(track => track.stop());
+}
+
 //FUNCION obtener la imagen del canvas
 function getScreenCard(){
     //-----Save Photo
@@ -2043,8 +2140,8 @@ function getScreenCard(){
             navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
             .then(function(stream) {
                 let video = document.createElement('video');
-                video.style.width = '200px';
-                video.style.height = '125px';
+                video.style.width = '150px';
+                video.style.height = '150px';
                 document.getElementById('containerCard').appendChild(video);
                 video.srcObject = stream;
                 video.play();
@@ -2056,6 +2153,16 @@ function getScreenCard(){
                 $("#buttonSaveCard").show();
                 document.getElementById('buttonSaveCard').addEventListener('click', function() {
                     setTranslateImageCard(context, video, canvas)
+                });
+                 // Añadir código para detener el stream si es necesario
+                window.addEventListener('beforeunload', function() {
+                    stopStream(stream);
+                });
+                // Manejo del evento de cierre del modal o botón de cancelar
+                document.getElementById('cancelVideo').addEventListener('click', function() {
+                    stopStream(currentStream);
+                    currentStream = null;  // Limpia la referencia al stream
+                    flagVideoUser = false; // Resetea el flag si es necesario
                 });
             })
             .catch(function(error) {
@@ -2077,8 +2184,8 @@ function getScreenUser(){
             navigator.mediaDevices.getUserMedia({ video: true })
             .then(function(stream) {
                 let video = document.createElement('video');
-                video.style.width = '200px';
-                video.style.height = '125px';
+                video.style.width = '150px';
+                video.style.height = '150px';
                 document.getElementById('containerUser').appendChild(video);
                 video.srcObject = stream;
                 video.play();
@@ -2091,6 +2198,15 @@ function getScreenUser(){
                 document.getElementById('buttonSaveUser').addEventListener('click', function() {
                     setTranslateImageUser(context, video, canvas);
                 });
+               // Evento para detener el stream al cerrar el modal o al cancelar
+                document.getElementById('buttonCancel').addEventListener('click', function() {
+                    stopStream(currentStream);
+                    currentStream = null;
+                    flagVideoUser = false;
+                });
+
+                // Enviar un mensaje a otras pestañas para que sepan que el stream está en uso
+                localStorage.setItem('cameraInUse', 'true');
             })
             .catch(function(error) {
                 console.error('Error al acceder a la cámara:', error);

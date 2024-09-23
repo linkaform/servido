@@ -106,7 +106,6 @@ function fillCatalogs(){
                     }
                     loadCatalogsLocation(arrayUserBoothsLocations)
                     loadCatalogsCaseta(getCookie('userLocation') ,arrayUserBoothsLocations)
-                    console.log("ARRAY VIENE VACIO", arrayUserBoothsLocations)
                     setCookie("arrayUserBoothsLocations", JSON.stringify(arrayUserBoothsLocations),7);
                 }
             }
@@ -158,7 +157,6 @@ function loadCatalogsCaseta(location ,arrayUserBoothsLocations){
 
 
 async function fetchOnChangeCaseta(script, option, area, location){
-    console.log("CAMBIOOS",script, option, area, location)
     Swal.fire({
         title: 'Cargando...',
         allowOutsideClick: false,

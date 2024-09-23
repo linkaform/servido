@@ -1,5 +1,7 @@
-window.onload = function(){
+let colors = getPAlleteColors(12,0)
 
+window.onload = function(){
+	/*
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
 	if(user !='' && jw!=''){
@@ -13,8 +15,9 @@ window.onload = function(){
 			rel: 'noopener noreferrer',
 			href: urlNew,
 		}).click();*/
-		agregarPestana('turnos')
-	}
+	//	agregarPestana('turnos')
+	//}
+	/*
 	let userInput = document.getElementById('user');
 	let userError = document.getElementById('userError');
 	userInput.addEventListener('input', function () {
@@ -28,8 +31,62 @@ window.onload = function(){
 		    }
 		}
 	   
-	});
+	});  */
 }
+
+function selectRadio(type){
+	console.log("CLICK", type)
+}
+
+
+function changeLoginView(view){
+	let res= getInputsValueByClass("login-form")
+	let emptyProp=propiedadesVacias(res)
+	if(view=="loginView"){
+		$("#email").val("");
+		$("#password").val("");
+        $('#email').css('background-color', 'white !important');
+		$('#password').css('background-color', 'white !important');
+
+		$("#loginView").show();
+        $("#loginViewFade").show(); 
+
+        $("#accountTypeView").hide(); 
+		$("#accountTypeViewFade").hide(); 
+	}else if (view=="accountTypeView"){
+		if(emptyProp.length == 0){
+			if(validarEmail(res.email)){
+                $("#loginView").hide();
+                $("#loginViewFade").hide();
+				$("#accountTypeView").show();
+				$("#accountTypeViewFade").show(); 
+
+				//LLAMAR FUNCION DE LOGIN
+
+			}else{
+					successMsg("Validación","Escribe un email valido", "warning")
+				}
+		}else if(emptyProp.length > 0){
+			successMsg("Validación","Faltan campos por llenar", "warning")
+		}
+	}else if (createAccountView= 'createAccountView'){
+		console.log("HELLO")
+		let protocol = window.location.protocol;
+		let host = window.location.host;
+		let urlNew = `${protocol}//${host}/solucion_accesos/admin/crearCuenta.html`
+		window.location.href =urlNew
+	}if(view=="continue"){
+		let protocol = window.location.protocol;
+		let host = window.location.host;
+		let urlNew = `${protocol}//${host}/solucion_accesos/admin/contratos.html`
+		window.location.href =urlNew
+	}
+	
+}
+
+function selectRadio(){
+}
+
 
 function get_login(){
 	let valueMail = $("#user").val();
@@ -48,6 +105,7 @@ function get_login(){
 		.then((res) => res.json())
 		.then((res) => {
 			if(res.code == 2){
+				/*
 				let userId = res.user && res.user.id ? res.user.id : 0;
 				let userJwt = res.jwt ? res.jwt:'';
 				let sessionId = res.session_id ? res.session_id: 0;
@@ -74,7 +132,10 @@ function get_login(){
 				let host = window.location.host;
 				let url = `${protocol}//${host}/solucion_accesos/turnos.html`;
 				
-				window.location.reload();
+				window.location.reload(); */
+
+
+
 				//window.open(`${protocol}//${host}/solucion_accesos/turnos.html`, "turnos")
 				//window.location.href =url
 				/*
@@ -99,11 +160,4 @@ function get_login(){
 function reset() {
     $("#user").val('');
     $("#password").val('');
-}
-
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + "; " + expires+"; SameSite=Strict;"
 }

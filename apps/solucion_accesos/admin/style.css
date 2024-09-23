@@ -1,0 +1,148 @@
+:root{
+	--main-color:#090619;
+	--main-color-light: #edeafa;
+	--main-color-hover: #cac1f0;
+
+	--text-gray:#808080;
+
+	--text-link:#0d6efd;
+	--text-link-hover: #0252ca;
+
+	--button-main-color: #090619;
+	--button-main-color-hover: #cac1f0;
+
+	--text-button-main-color: #FFFFFF;
+	--text-button-main-color-hover: #000000;
+
+}
+
+html, body {
+  height: 100%; /* EL body ocupe toda la altura de la ventana */
+  margin: 0;    /* Elimina márgenes por defecto */
+  
+}
+
+.full{
+	height: 100vh;
+}
+
+.fill{
+	width: 100%; /* Ocupa el 100% del ancho del contenedor */
+    sbox-sizing: border-box; /* Incluye el padding y el borde en el cálculo del ancho */
+}
+
+
+/* ANIMACIONES
+*/
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.fade-in {
+    opacity: 1;
+    transition: opacity 0.5s ease-in; /* Si estás usando fade-in */
+}
+.fade-out {
+    animation: fadeOut 0.5s forwards; /* La animación durará 0.5 segundos */
+}
+
+
+/* TIPO DE CUENTA
+*/
+
+.login-size{
+	min-height: 200px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+/*	EFECTOS PRINCIPALES color y texto
+*/
+
+.customShadow{
+	border: none !important;
+  	box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+  	border-radius: 10px;
+}
+
+.custom-link{
+	text-decoration: none;
+}
+
+.custom-link:hover{
+	text-decoration: none;
+}
+
+/*	BOTONES PRINCIPALES color y texto
+*/
+
+.button-radio{
+	display:flex;
+}
+.button-radio .button-radio-margin{
+	margin: 20px;
+}
+
+.button-radio:hover{
+	background-color: var(--main-color-light);
+}
+
+
+.button-main-color{
+	background-color: var(--main-color);
+	color: var(--text-button-main-color);
+}
+.button-main-color:hover, .button-main-color:active, .button-main-color:focus{
+	box-shadow: none;
+	cursor: pointer;
+}
+
+
+.btn-transparent{
+	color: var(--text-link);
+    background-color: none; /* Fondo transparente */
+    border: none; /* Borde transparente (puedes ajustarlo si es necesario) */
+}
+
+.btn-transparent:hover , .btn-transparent:focus , .btn-transparent:active {
+	color: var(--text-link-hover);
+    background-color: none; /* Fondo ligeramente oscuro en hover */
+    border: none; /* Borde de color en hover (opcional) */
+    box-shadow: none;
+}
+
+.button-type-custom{
+	color:var(--main-color);
+	border: none; 
+    background: transparent;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+.button-type-custom:hover {
+	color:var(--main-color);
+	border: none; 
+    background: var(--main-color-light);
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+
+
+/*	LOGIN
+*/
+
+#buttonLogin:hover{
+	color: var(--text-button-main-color-hover);
+	background-color: var(--button-main-color-hover);
+}
+
+.text-gray{
+	color: var(--text-gray);
+}
+
+.small-size{
+	font-size: 0.7em
+}

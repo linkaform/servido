@@ -10,7 +10,7 @@
 	<link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<link rel="stylesheet" href="./style.css">
+ 	<link rel="stylesheet" href="./style.css">
 </head>
 <body>
 	<navbar-component> </navbar-component>
@@ -75,30 +75,41 @@
 					</li>
 				</ul>
 				<div class="tab-content mb-1" id="myTabContent">
-					<div class="tab-pane fade overflow-hidden show active" id="div-article-lose" role="tabpanel" aria-labelledby="out-location-tab" tabindex="0">
-							<div class=" d-flex mt-2 mb-2 ms-1 justify-content-end">
-								<button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticleLose');">
+					<div class="tab-panel fade overflow-hidden show active" id="div-article-lose" role="tabpanel" aria-labelledby="out-location-tab" tabindex="0">
+						<div class="d-flex">
+							<div class="d-flex flex-row flex-grow-1 justify-content-start align-items-center mt-2 mb-2 ms-1">
+								<div class="d-flex flex-row justify-content-center align-items-center">
+									<label class="me-3 ms-1"><b>Estado: </b></label>
+									<select class="form-select" style="width:400px;" id="filtroEstadoPerdido" onchange="onChangeFiltroEstadoPerdido()">
+										<option value="pendiente">Pendiente</option>
+										<option value="entregado">Entregado</option>
+										<option value="donado">Donado</option>
+									</select>
+								</div>
+							</div>
+
+							<div class=" d-flex mt-2 mb-2 ms-1 justify-content-end align-items-center">
+								<button type="button" class="btn btn-primary btn-sm btn-width" onclick="setModal('NewArticleLose');">
 									<i class="fa-solid fa-plus"></i>
 									Nuevo Artículo
 								</button>
-								<button type="button" class="btn btn-primary btn-sm ms-1" id="descargarArticlesLose" >
+								<button type="button" class="btn btn-primary btn-sm ms-1 btn-width" id="descargarArticlesLose" >
 									<i class="fa-solid fa-file-arrow-down "  ></i>
 									Descargar
 								</button>
-								<button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
+								<button type="button" class="btn btn-primary btn-sm ms-1 btn-width" onclick="setModal('filtros', 2)" style="display:none;">
 									<i class="fa-solid fa-magnifying-glass"></i>
 									Filtros
 								</button>
-								<button type="button" class="btn btn-danger btn-sm ms-1" id="buttonEliminarArticulosLose" onclick="alertEliminarCheckbox('articlesLose')" >
+								<button type="button" class="btn btn-danger btn-sm ms-1 btn-width" id="buttonEliminarArticulosLose" onclick="alertEliminarCheckbox('articlesLose')" style="display:none;">
 									<i class="fa-solid fa-trash" ></i>
 									Eliminar
 								</button>
-								
 							</div>
-							<div class="m-1 mb-2 tableOverflow" id="tableArticlesLose"></div>
+						</div>
+						<div class="m-1 mb-2 tableOverflow" id="tableArticlesLose"></div>
 					</div>
 					<div class="tab-pane fade overflow-hidden" id="div-article-consecionados" role="tabpanel" aria-labelledby="in-location-tab" tabindex="0">
-						
 						<div class="d-flex mt-2 mb-2 justify-content-end">
 							<button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticleCon');">
 								<i class="fa-solid fa-plus"></i>
@@ -116,18 +127,13 @@
 								<i class="fa-solid fa-magnifying-glass"></i>
 								Filtros
 							</button>
-							<button type="button" class="btn btn-danger btn-sm ms-1" id="buttonEliminarArticulosCon" onclick="alertEliminarCheckbox('articles')" >
+							<button type="button" class="btn btn-danger btn-sm ms-1" id="buttonEliminarArticulosCon" onclick="alertEliminarCheckbox('articles')" style="display:none;">
 								<i class="fa-solid fa-trash"></i>
 								Eliminar
 							</button>
 						</div>
-						<div id="header-placeholder"></div>
-						<div id="table-container">
-							    <div id="table-header"></div>
-							<div class="m-1 mb-2 " id="tableArticles"></div>
-						</div>
+						<div class="m-1 mb-2" id="tableArticles"></div>
 					</div>
-					
 				</div>
 			</div>
 		</div>
@@ -158,7 +164,7 @@
 								<option value="abierto" >Abierto</option>
 								<option value="cerrado" >Cerrado</option>
 							</select>
-						</div> -->
+						</div> 
 						<div class="d-flex justify-content-between mt-2 mb-3">
 							<div class="">
 								<label class="form-label">Foto del Articulo: *</label>
@@ -168,7 +174,6 @@
 								<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveUser">
 									Guardar Foto <i class="fa-solid fa-aperture"></i>
 								</button>
-								<!-- Canvas Foto -->
 								<div id="containerUser" class="mt-2">
 									<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
 									<img id="imgUser" src="" style="display: none;width: 185px;height: 148px;">
@@ -176,7 +181,7 @@
 								<input type="file" class="form-control mt-2" id="inputFileUser" disabled>
 							</div>
 							
-						</div>
+						</div>-->
 						<div class="mb-3 col-4">
 							<label class="form-label">Fecha: *</label>
 							<input type="datetime-local" class="form-control contentNuevoArticulo" id="idNuevoArticuloFecha">
@@ -342,41 +347,7 @@
 		</div>
 	</div>
 
-	<!-- Modal Out Article -->
-	<div class="modal fade" id="outArticleConModal" tabindex="-1"  aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5">Devolución de Articulo</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-						
-						<div class="mb-3 col-6">
-							<label class="form-label">Fecha: *</label>
-							<input type="date" class="form-control outArticle" id="outArticleLoseModalFecha">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Hora: *</label>
-							<input type="time" class="form-control outArticle" id="outArticleLoseModalHora">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Ubicación del artículo después: *</label>
-							<input type="text" class="form-control outArticle" id="outArticleLoseModalLocation" placeholder="Por ejemplo: Bodega">
-						</div>
-						<small class="text-danger mt-3">** Una vez confirmado, la acción no podra ser revertida</small>
-					</div>
-					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="devolucionArticulo('articleLose')">Agregar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
+	
 	<!-- Modal View Article -->
 	<div class="modal fade" id="viewArticleConModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -394,8 +365,6 @@
 						<div class="mb-3 col-6 row">
 							<label class="form-label fw-bold">Serie/Numero/Placa:&nbsp;&nbsp; <span class="fw-normal">10119</span></label>
 						</div>
-
-
 						<div class="mb-3 col-12">
 							<label class="form-label">Fotografía del artículo: </label><br>
 							<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65779777beef423c6264ac04.jpg" width="350" height="250">						
@@ -418,7 +387,7 @@
 						<div class="mb-3 col-12 row">
 							<label class="form-label fw-bold">Comentario:&nbsp;&nbsp; <span class="fw-normal">Se encontró un termo en el pasillo principal de la jardinera.</span></label>
 						</div>
-						<hr style=" border: 1px solid black;">
+						<hr style="border: 1px solid black;">
 						<h4>Información de la devolución</h4>
 						<div class="mb-3 col-12 row">
 							<label class="form-label fw-bold">Ubicación del Articulo:&nbsp;&nbsp; <span class="fw-normal"></span></label>
@@ -429,7 +398,6 @@
 						<div class="mb-3 col-12 row">
 							<label class="form-label fw-bold">Estado:&nbsp;&nbsp; <span class="fw-normal">Abierto</span></label>
 						</div>
-						
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -450,98 +418,100 @@
 				</div>
 				<div class="modal-body">
 					<div class="row">
-					<!--	<div class="mb-3 col-6">
-                            <h6 class="form-label">Ubicación: <span id="ubicacionNuevoArticuloPerdido" style="font-weight: normal"> </span> </h6>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <h6 class="form-label">Caseta: <span id="casetaNuevoArticuloPerdido" style="font-weight: normal"> </span> </h6>
-                        </div>
-                    -->
-						<div class="d-flex justify-content-between mm-2 ml-0">
-							<div class="">
-								<label class="form-label">Foto del Articulo: *</label>
-								<button type="button" class="btn  btn-primary " onclick="getScreenUser();return false;" id="buttonTakeUser">
-									<i class="fa-solid fa-camera-retro"></i>
-								</button>
-								<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveUser">
-									Guardar Foto <i class="fa-solid fa-aperture"></i>
-								</button>
-								<!-- Canvas Foto -->
-								<div id="containerUser" class="mt-2">
-									<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
-									<img id="imgUser" src="" style="display: none;width: 185px;height: 148px;">
-								</div>
-								<input type="file" class="form-control mt-2" id="inputFileUser" disabled>
+						<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3">
+							<label class="form-label">Foto del articulo: *</label>
+							<button type="button" class="btn  btn-primary" onclick="getScreenCard();return false;" id="buttonTakeCard">
+								<i class="fa-solid fa-camera-retro"></i>
+							</button>
+							<button type="button" class="btn  btn-sm btn-success"  style="display: none;" id="buttonSaveCard">
+								Guardar Foto <i class="fa-solid fa-aperture"></i>
+							</button>
+							<!-- Canvas Foto -->
+							<div id="containerCard" class="mt-2">
+								<canvas id="canvasPhoto" style="display: none;width: 200px;height: 125px;"></canvas>
+								<img id="imgCard" src="" style="display: none;width: 185px;height: 148px;" class="contentNuevoArticuloLose">
 							</div>
-							<div class="">
-								<label class="form-label">Persona que registro: *</label>
-								<button type="button" class="btn  btn-primary " onclick="getScreenUser();return false;" id="buttonTakeUser">
-									<i class="fa-solid fa-camera-retro"></i>
-								</button>
-								<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveUser">
-									Guardar Foto <i class="fa-solid fa-aperture"></i>
-								</button>
-								<!-- Canvas Foto -->
-								<div id="containerUser" class="mt-2">
-									<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
-									<img id="imgUser" src="" style="display: none;width: 185px;height: 148px;">
-								</div>
-								<input type="file" class="form-control mt-2" id="inputFileUser" disabled>
-							</div>
+							<input type="file" class="form-control mt-2" id="inputFileCard" disabled>
 						</div>
-
+						
 						<div class="mb-3 col-6 mt-3">
-							<label class="form-label">Fecha y hora en que se encontro: *</label>
+							<label class="form-label">Fecha y hora del hallazgo: *</label>
 							<input type="datetime-local" class="form-control contentNuevoArticuloLose" id="idFechaNuevoArticuloLose">
 						</div>
-						<div class="mb-3 col-6 mt-3">
-							<label class="form-label">Artículo: *</label>
-							<input type="text" class="form-control contentNuevoArticuloLose" id="idNombreNuevoArticuloLose">
-						</div>
-						<!--
-						<div id="foto-input-form">
-                            <div class="d-flex mb-3 col-12  div-foto-123" id="id-foto-div-123">
-                                <div class="flex-grow-1">
-                                    <label class="form-label">Fotografia *</label>
-                                    <input type="file" class="form-control-file foto-div" onchange="guardarArchivos('fileInputFotografia')"  id="fileInputFotografia">
-                                </div>
-                                <div>
-                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto();return false;">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto(123);return false;">
-                                        <i class="fa-solid fa-minus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div> -->
-                        <div class="mb-3 col-6 ">
-							<label class="form-label">Color: *</label>
-							<input type="text" class="form-control contentNuevoArticuloLose" id="idNombreNuevoArticuloLose">
-						</div>
-                        <div class="mb-3 col-6">
-							<label class="form-label">Categoria: *</label>
-							<select class="form-control contentNuevoArticuloLose" id="idCategoriaArticuloLose">
-								
+						<div class="mb-3 col-6">
+							<label class="form-label">Ubicacion: *</label>
+							<select class="form-select contentNuevoArticuloLose" id="selectUbicacionNuevoArticuloLose" onchange="onChangeCatalogoArticulo('selectUbicacionNuevoArticuloLose', 'Nuevo')">
 							</select>
 						</div>
 						<div class="mb-3 col-6">
-							<label class="form-label">Reporta: *</label>
-							<select class="form-control contentNuevoArticuloLose" id="idGuardiaNuevoArticuloLose">
+							<label class="form-label">Area: </label>
+							<select class="form-select contentNuevoArticuloLose" id="selectAreaNuevoArticuloLose">
 							</select>
 						</div>
 						<div class="mb-3 col-12">
-							<label class="form-label">Comentarios: *</label>
-							<textarea class="form-control contentNuevoArticuloLose" id="idComentarioNuevoArticuloLose" rows="3"></textarea>
+							<label class="form-label">Comentarios sobre el hallazgo: </label>
+							<textarea class="form-control contentNuevoArticuloLose" id="comentarioNuevoArticuloLose"  rows="1"></textarea>
+						</div>
+						<hr>
+						<div class="mb-3 col-6">
+							<label class="form-label">Tipo de Articulo: *</label>
+							<select class="form-select contentNuevoArticuloLose" id="tipoArticuloNuevoArticuloLose" onchange="onChangeCatalogoArticulo('tipoArticuloNuevoArticuloLose', 'Nuevo')">
+							</select>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Articulo: *</label>
+							<select class="form-select contentNuevoArticuloLose" id="selectArticuloNuevoArticuloLose">
+							</select>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Nombre: </label>
+							<input type="text" class="form-control contentNuevoArticuloLose" id="idNombreNuevoArticuloLose">
+						</div>
+						<div class="mb-3 col-6 ">
+							<label class="form-label">Color: *</label>
+							<select class="form-select contentNuevoArticuloLose" id="colorNuevoArticuloLose">
+							</select>
+						</div>
+						<div class="mb-3 col-12">
+							<label class="form-label">Descripción: </label>
+							<textarea class="form-control contentNuevoArticuloLose" id="descripcionNuevoArticuloLose" rows="1"></textarea>
+						</div>
+						<hr>
+						<div class="mt-1 mb-2">
+					        <label class="form-label">Quien entrega:</label>
+					        <div class="d-flex justify-content-start">
+						        <div class="me-4">
+						            <input type="radio" id="internoNuevoArticuloLose" class="contentNuevoArticuloLose" name="outArticleLoseModalEstatus" value="interno" onchange="onChangeRadioEntrega('interno','Nuevo')" selected>
+						            <label for="internoNuevoArticuloLose">Interno</label>
+						        </div>
+						        <div>
+						            <input type="radio" id="externoNuevoArticuloLose" class="contentNuevoArticuloLose" name="outArticleLoseModalEstatus" 
+						            onchange="onChangeRadioEntrega('externo','Nuevo')" value="externo" >
+						            <label for="externoNuevoArticuloLose">Externo</label>
+						        </div>
+					        </div>
+					    </div>
+					    <div class="mb-3 col-6" id="divEntregaInternoNuevoArtLose">
+							<label class="form-label">Quien entrega Interno: *</label>
+							<select class="form-select contentNuevoArticuloLose" id="entregaInternoNuevoArticuloLose">
+							</select>
+						</div>
+						<div class="mb-3 col-6" id="divEntregaExternoNuevoArtLose" style="display: none;">
+							<label class="form-label">Quien entrega Externo: </label>
+							<input type="text" class="form-control contentNuevoArticuloLose" id="entregaExternoNuevoArticuloLose" >
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Area de resguardo: *</label>
+							<select class="form-select contentNuevoArticuloLose" id="lockerNuevoArticuloLose">
+							</select>
 						</div>
 					</div>
-					
 					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" id="buttonEditArticuloLose" onclick="nuevoArticulo('articleLose')">Editar</button>
-					<button class="btn btn-success btn-sm" type="button" id="loadingButtonEditArticuloLose" style="display:none" disabled>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" id="buttonCancelVideo">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" id="buttonNuevoArticuloLose" onclick="nuevoArticuloLose()">Registrar</button>
+					<button class="btn btn-success btn-sm" type="button" id="loadingButtonNuevoArticuloLose" style="display:none" disabled>
                         <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
                         Cargando...
                     </button>
@@ -560,127 +530,240 @@
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<div class="mb-3 col-4">
-							<label class="form-label">Ubicación: *</label>
-							<select class="form-control articleCon-edit" id="idUbicacionEditArticuloLose">
-							</select>
+						<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3">
+							<label class="form-label">Foto del articulo: *</label>
+							<button type="button" class="btn  btn-primary " onclick="getScreenUser('User', false);return false;" id="buttonTakeUser">
+								<i class="fa-solid fa-camera-retro"></i>
+							</button>
+							<button type="button" class="btn  btn-sm btn-success"  style="display: none;" id="buttonSaveUser">
+								Guardar Foto <i class="fa-solid fa-aperture"></i>
+							</button>
+							<!-- Canvas Foto -->
+							<div id="containerUser" class="mt-2">
+								<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
+								<img id="imgUser" src="" style="display: none;width: 185px;height: 148px;" class="contentEditarArticuloLose">
+							</div>
+							<input type="file" class="form-control mt-2" id="inputFileUser" disabled>
 						</div>
-						<div class="mb-3 col-4">
-                            <label class="form-label">Area del articulo: *</label>
-                            <select class="form-control contentNuevaArticuloLose" id="idAreaEditArticuloLose">
-                            </select>
-						</div>
-						<div class="mb-3 col-4">
-							<label class="form-label">Fecha: *</label>
-							<input type="datetime-local" class="form-control articleCon-edit" id="idFechaEditArticuloLose">
+
+						<div class="mb-3 col-6 mt-3">
+							<label class="form-label">Fecha y hora del hallazgo: *</label>
+							<input type="datetime-local" class="form-control contentEditarArticuloLose" id="idFechaEditarArticuloLose">
 						</div>
 						<div class="mb-3 col-6">
-							<label class="form-label">Artículo: *</label>
-							<input type="text" class="form-control articleCon-edit" id="idArticuloEditArticuloLose">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Tipo: *</label>
-							<select class="form-control articleCon-edit" id="idTipoEditArticuloLose">
-							</select>
-						</div>
-						<div class="mb-3 col-12">
-							<label class="form-label">Fotografía del artículo: *</label>
-							<input type="file" accept="image/png, image/jpeg" id="editArticleFoto" />
-							<div>
-								<img src="" class="articleCon-edit" id="editArticleConFoto"  width="220" height="150">
-							</div>						
-						</div>
-						<!--
-						<div class="mb-3 col-6">
-							<label class="form-label">No. serie: *</label>
-							<input type="text" class="form-control  articleCon-edit" id="editArticleConNoSerie">
-						</div> -->
-						<div class="mb-3 col-6">
-							<label class="form-label">Categoria: *</label>
-							<select class="form-control contentNuevoArticuloLose" id="idCategoriaEditArticuloLose">
-								
+							<label class="form-label">Ubicacion: *</label>
+							<select class="form-select contentEditarArticuloLose" id="selectUbicacionEditarArticuloLose" onchange="onChangeCatalogoArticulo('selectUbicacionEditarArticuloLose', 'Editar')">
 							</select>
 						</div>
 						<div class="mb-3 col-6">
-							<label class="form-label">Reporta: *</label>
-							<select class="form-control  articleCon-edit" id="idGuardiaEditArticuloLose">
+							<label class="form-label">Area: *</label>
+							<select class="form-select contentEditarArticuloLose" id="selectAreaEditarArticuloLose">
 							</select>
 						</div>
 						<div class="mb-3 col-12">
-							<label class="form-label">Comentarios: *</label>
-							<textarea class="form-control  articleCon-edit" id="idCommentarioEditArticuloLose"  rows="3"></textarea>
+							<label class="form-label">Comentarios sobre el hallazgo: *</label>
+							<textarea class="form-control contentEditarArticuloLose" id="comentarioEditarArticuloLose"  rows="1"></textarea>
 						</div>
+						<hr>
+						<div class="mb-3 col-6 ">
+							<label class="form-label">Tipo de Articulo: *</label>
+							<select class="form-select contentEditarArticuloLose" id="tipoArticuloEditarArticuloLose" onchange="onChangeCatalogoArticulo('contentEditarArticuloLose', 'Editar')">
+							</select>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Articulo: *</label>
+							<select class="form-select contentEditarArticuloLose" id="selectArticuloEditarArticuloLose">
+							</select>
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Nombre: *</label>
+							<input type="text" class="form-control contentEditarArticuloLose" id="idNombreEditarArticuloLose">
+						</div>
+						<div class="mb-3 col-6 ">
+							<label class="form-label">Color: *</label>
+							<select class="form-select contentEditarArticuloLose" id="colorEditarArticuloLose">
+							</select>
+						</div>
+						<div class="mb-3 col-12">
+							<label class="form-label">Descripción: *</label>
+							<textarea class="form-control contentEditarArticuloLose" id="descripcionEditarArticuloLose" rows="1" placeholder="Descripción breve del artículo..."></textarea>
+						</div>
+						<hr>
+						<div class="mt-1 mb-2">
+					        <label class="form-label">Quien entrega:</label>
+					        <div class="d-flex justify-content-start">
+						        <div class="me-4">
+						            <input type="radio" id="internoEditarArticuloLose" class="contentEditarArticuloLose" name="outArticleLoseModalEstatus" value="interno" onchange="onChangeRadioEntrega('interno', 'Editar',false)" selected>
+						            <label for="internoEditarArticuloLose">Interno</label>
+						        </div>
+						        <div>
+						            <input type="radio" id="externoEditarArticuloLose" class="contentEditarArticuloLose" name="outArticleLoseModalEstatus" 
+						            onchange="onChangeRadioEntrega('externo', 'Editar',false)" value="externo" >
+						            <label for="externoEditarArticuloLose">Externo</label>
+						        </div>
+					        </div>
+					    </div>
+					    <div class="mb-3 col-6" id="divEntregaInternoEditarArtLose">
+							<label class="form-label">Quien entrega Interno: *</label>
+							<select class="form-select contentEditarArticuloLose" id="entregaInternoEditarArticuloLose">
+							</select>
+						</div>
+						<div class="mb-3 col-6" style="display:none" id="divEntregaExternoEditarArtLose">
+							<label class="form-label">Quien entrega Externo: *</label>
+							<input type="text" class="form-control contentEditarArticuloLose" id="entregaExternoEditarArticuloLose">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Area de resguardo: *</label>
+							<select class="form-select contentEditarArticuloLose" id="lockerEditarArticuloLose">
+							</select>
+						</div>
+						<small class="text-black-50 mt-3">** Campos son obligatorios</small>
 					</div>
-					
-					<small class="text-black-50 mt-3">** Campos son obligatorios</small>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="editarArticuloConModal()">Guardar</button>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" id="">Cancelar</button>
+						<button type="button" class="btn btn-success btn-sm" onclick="editarArticuloLoseModal()" id="buttonEditarArticuloLose">Actualizar</button>
+						<button class="btn btn-success btn-sm" type="button" id="loadingButtonEditarArticuloLose" style="display:none" disabled>
+	                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+	                        Cargando...
+	                    </button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<!-- Modal View Article Concessioned-->
-	<div class="modal fade" id="viewArticleLoseModal" tabindex="-1"  aria-hidden="true">
+<!-- Modal Out Article -->
+	<div class="modal fade" id="outArticleLoseModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">Detalles de Articulo Consecionado</h1>
+					<h1 class="modal-title fs-5">Devolución de Articulo</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<h4>Información del artículo</h4>
-						<div class="mb-3 col-6 row">
-							<label class="form-label fw-bold">Articulo:&nbsp;&nbsp; <span class="fw-normal">Termo</span></label>
+						<div class="d-flex justify-content-between mt-2 mb-3">
+							<div class="col6">
+								<label class="form-label">Foto de quien recibe: *</label>
+								<button type="button" class="btn  btn-primary " onclick="getScreenUser('UserRecibe', false);return false;" id="buttonTakeUserRecibe">
+									<i class="fa-solid fa-camera-retro"></i>
+								</button>
+								<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveUserRecibe">
+									Guardar Foto <i class="fa-solid fa-aperture"></i>
+								</button>
+								<!-- Canvas Foto -->
+								<div id="containerUserRecibe" class="mt-2">
+									<canvas id="canvasPhotoUserRecibe" style="display: none;width: 185px;height: 125px;"></canvas>
+									<img id="imgUserRecibe" src="" style="display: none;width: 185px;height: 148px;">
+								</div>
+								<input type="file" class="form-control mt-2" id="inputFileUserRecibe" disabled>
+							</div>
+							<div class="col6">
+								<label class="form-label">Identificacion de quien Recibe: *</label>
+								<button type="button" class="btn  btn-primary " onclick="getScreenUser('UserRecibeCard', false);return false;" id="buttonTakeUserRecibeCard">
+									<i class="fa-solid fa-camera-retro"></i>
+								</button>
+								<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveUserRecibeCard">
+									Guardar Foto <i class="fa-solid fa-aperture"></i>
+								</button>
+								<!-- Canvas Foto -->
+								<div id="containerUserRecibeCard" class="mt-2">
+									<canvas id="canvasPhotoUserRecibeCard" style="display: none;width: 185px;height: 125px;"></canvas>
+									<img id="imgUserRecibeCard" src="" style="display: none;width: 185px;height: 148px;">
+								</div>
+								<input type="file" class="form-control mt-2" id="inputFileUserRecibeCard" disabled>
+							</div>
 						</div>
-						<div class="mb-3 col-12">
-							<label class="form-label">Fotografía del artículo: </label><br>
-							<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65779777beef423c6264ac04.jpg" width="350" height="250">						
-						</div>
-						<hr style=" border: 1px solid black;">
-						<h4>Información del hallazgo</h4>
-						<div class="mb-3 col-6 row">
-							<label class="form-label fw-bold">Fecha y hora del hallazgo:&nbsp;&nbsp; <span class="fw-normal">02/16/23 12:56 hrs</span></label>
-						</div>
-						<div class="mb-3 col-6 row">
-							<label class="form-label fw-bold">Ubicación:&nbsp;&nbsp; <span class="fw-normal">Planta Norte</span></label>
-						</div>
-						<div class="mb-3 col-6 row">
-							<label class="form-label fw-bold">Reporta:&nbsp;&nbsp; <span class="fw-normal">Cristian Felipe Felipe</span></label>
-						</div>
-						<div class="mb-3 col-6 row">
-							<label class="form-label fw-bold">Departamento:&nbsp;&nbsp; <span class="fw-normal">Seguridad</span></label>
-						</div>
-						<div class="mb-3 col-12 row">
-							<label class="form-label fw-bold">Comentario:&nbsp;&nbsp; <span class="fw-normal">Se encontró un termo en el pasillo principal de la jardinera.</span></label>
-						</div>
-						<hr style=" border: 1px solid black;">
-						<h4>Información de la entrega</h4>
-						<div class="mb-3 col-12 row">
-							<label class="form-label fw-bold">Recibe:&nbsp;&nbsp; <span class="fw-normal"></span></label>
-						</div>
-						<div class="mb-3 col-12 row">
-							<label class="form-label fw-bold">Fecha y hora de entrega:&nbsp;&nbsp; <span class="fw-normal"></span></label>
-						</div>
-						<div class="mb-3 col-12 row">
-							<label class="form-label fw-bold">Estado:&nbsp;&nbsp; <span class="fw-normal">PENDIENTE</span></label>
+						<div class="mb-3 col-6">
+							<label class="form-label">Recibe: *</label>
+							<input type="text" class="form-control outArticleLose" id="outArticleLoseModalRecibe">
 						</div>
 						
+						<div class="mb-3 col-6">
+							<label class="form-label">Telefono de quien recibe: *</label>
+							<input type="text" class="form-control outArticleLose" id="outArticleLoseModalTel">
+						</div>
+						<div class="mt-1">
+					        <label class="form-label">Estatus:</label>
+					        <div class="d-flex justify-content-start">
+						        <div class="me-4">
+						            <input type="radio" id="statusDelivered" class="outArticleLose" name="outArticleLoseModalEstatus" value="entregado">
+						            <label for="statusDelivered">Entregado</label>
+						        </div>
+						        <div>
+						            <input type="radio" id="statusDonated" class="outArticleLose" name="outArticleLoseModalEstatus" value="donado">
+						            <label for="statusDonated">Donado</label>
+						        </div>
+					        </div>
+					    </div>
+						<small class="text-danger mt-3">* Una vez confirmado, la acción no podra ser revertida</small>
 					</div>
+					<small class="text-black-50 mt-3">* Campos son obligatorios</small>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm">Agregar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="devolucionArticulo()">Agregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Modal View Article Concessioned-->
+	<div class="modal fade" id="viewArticleLoseModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" >
+			<div class="modal-content">
+				<div class="modal-header d-flex justify-content-center">
+					<h1 class="modal-title fs-5">Detalles del Artículo Perdido</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="d-flex justify-content-start align-items-start">
+							<div class="col-5 mb-3 me-3 d-flex flex-column align-items-start justify-content-between" >
+								<div class="d-flex flex-column">
+									<label class="form-label fw-bold mt-2">Articulo:&nbsp;&nbsp; <span class="fw-normal" id="nombreArticuloPerdido"></span></label>
+									<label class="form-label fw-bold mt-2">Color:&nbsp;&nbsp; <span class="fw-normal" id="colorArticuloPerdido"></span></label>
+									<label class="form-label fw-bold mt-2">Categoria:&nbsp;&nbsp; <span class="fw-normal" id="categoriaArticuloPerdido"></span></label>
+									<label class="form-label fw-bold mt-2">Estado:&nbsp;&nbsp; <span class="fw-normal" id="estadoArticuloPerdido"></span></label>
+								</div>
+								<hr style="height: 1px!important; width: 100% !important;">
+						      	<div class="d-flex flex-column"> 
+									<label class="form-label fw-bold mt-2">Fecha del hallazgo:&nbsp;&nbsp; <span class="fw-normal" id="fechaHallazgoArticuloPerdido"></span></label>
+									<label class="form-label fw-bold mt-2">Ubicación:&nbsp;&nbsp; <span class="fw-normal" id="ubicacionArticuloPerdido"></span></label>
+									<label class="form-label fw-bold mt-2">Reporta:&nbsp;&nbsp; <span class="fw-normal" id="reportaArticuloPerdido"></span></label>
+									<label class="form-label fw-bold mt-2">Departamento:&nbsp;&nbsp; <span class="fw-normal" id="departamentoArticuloPerdido"></span></label>
+									<label class="form-label fw-bold mt-2">Comentario:&nbsp;&nbsp; <span class="fw-normal" id="comentarioArticuloPerdido"></span></label>
+						      	</div>
+							</div>
+							<div class="col-7 mb-3 d-flex flex-column align-items-start justify-content-start ">
+								<label class="form-label"><b>Fotografías del artículo: </b></label><br>
+								<div class="d-flex justify-content-between image-container " id="verFotosArticuloPerdido">
+								</div>
+							</div>
+						</div>
+						
+						<hr>
+						<h5>Información de la entrega</h5>
+						<div class="d-flex justify-content-start align-items-start">
+							<div class="mb-3 col-6">
+								<label class="form-label fw-bold">Recibe:&nbsp;&nbsp; <span class="fw-normal" id="recibeArticuloPerdido"></span></label>
+							</div>
+							<div class="mb-3 col-6">
+								<label class="form-label fw-bold">Fecha y hora de entrega:&nbsp;&nbsp; <span class="fw-normal" id="fechaEntregaArticuloPerdido"></span></label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cerrar</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!-- Modal Out Article Concessioned-->
-	<div class="modal fade" id="outArticleLoseModal" tabindex="-1"  aria-hidden="true">
+	<div class="modal fade" id="outArticleConModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -717,7 +800,6 @@
 								</label>
 							</div>
 						</div>
-						
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -727,7 +809,6 @@
 			</div>
 		</div>
 	</div>
-
 
 	<!-- Modal Out Article -->
 	<div class="modal fade" id="articleFiltersModal" tabindex="-1"  aria-hidden="true">
@@ -759,7 +840,7 @@
                             <h5>Valor: </h5>
                             <input class="form-control ds-input filterArticles" id="idFiltrosValor" >
                         </div>
-                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
@@ -769,11 +850,8 @@
         </div>
 	</div>
 
-
 </body>
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<!-- Local -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
 <script type="text/javascript" src="./functions.js"></script>
 <script type="text/javascript" src="./components/locationCard.js"></script>
@@ -781,10 +859,9 @@
 <script src="./articulosData.js"></script>
 <script src="./articulos.js"></script>
 
-<!-- Jquery -->
-<!-- Tabulator -->
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
-<!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
 </html>

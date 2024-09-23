@@ -509,7 +509,7 @@ input[type=search]{
 .btn-circle.btn-lg {
   width: 50px;
   height: 50px;
-  padding: 0; // changed
+  padding: 0;
   font-size: 18px;
   line-height: 1.33;
   border-radius: 25px;
@@ -517,7 +517,7 @@ input[type=search]{
 .btn-circle.btn-xl {
   width: 70px;
   height: 70px;
-  padding: 0; // changed
+  padding: 0;
   font-size: 24px;
   line-height: 1.33;
   border-radius: 35px;
@@ -533,7 +533,7 @@ input[type=search]{
 
 
 .btn-circle {
-    width: 40px!important; /* Tamaño del botón */
+    width: 30px!important; /* Tamaño del botón */
     height: 30px!important;
     margin-right: 5px !important; /* Tamaño del botón */
     border-radius: 50%!important; /* Hace el botón circular */
@@ -552,4 +552,69 @@ input[type=search]{
 .checkboxBottom{
     margin-bottom: 20px !important;
     align-items: center;
+}
+.btn-width{
+     height: 31px;
+}
+
+.rounded {
+    width: 120px; /* Ancho de la imagen */
+    height: 120px; /* Alto de la imagen */
+    border-radius: 50% !important; /* Redondea la imagen a un círculo */
+    object-fit: cover;
+}
+
+.recta {
+    width: 150px; /* Ancho de la imagen */
+    height: 120px; /* Alto de la imagen */
+    border-radius: 5% !important; /* Redondea la imagen a un círculo */
+    object-fit: cover;
+}
+.custom-swals {
+    width: 1000px; /* Ajusta el ancho del modal */
+    height: 400px; /* Ajusta la altura del modal */
+}
+
+
+.image-container {
+      width: 400px; /* Ajusta el ancho según tus necesidades */
+      height: 400px; /* Ajusta la altura según tus necesidades */
+      overflow: auto; /* Permite el desplazamiento si el contenido excede el tamaño del contenedor */
+      white-space: nowrap; /* Evita que las imágenes se envuelvan a la siguiente línea */
+      position: relative;
+      scrollbar-color: #111 ;
+    }
+.image-container img {
+  
+  height: 100%; /* Mantiene la relación de aspecto */
+  display: inline-block; /* Muestra las imágenes en línea */
+  object-fit: cover;
+}
+
+
+
+/* Ancho de columna para pantallas extra grandes */
+@media (min-width: 1200px) { /* 'xl' en Bootstrap 5 corresponde a min-width: 1200px */
+    .col-xl-custom {
+      flex: 0 0 38%; /* Ajusta este valor según sea necesario */
+      max-width: 40%;
+      min-width: 40% !important;
+    }
+    .custom-responsive{
+      display: flex;
+      flex-direction: row;
+    }
+}
+
+/* Ancho de columna para pantallas más pequeñas */
+@media (max-width: 1199px) {
+    .col-xl-custom {
+      flex: 0 0 38%; /* Ajusta este valor según sea necesario */
+      max-width: 40%;
+      min-width: 100% !important;
+    }
+    .custom-responsive{
+      display: flex;
+      flex-direction: column;
+    }
 }

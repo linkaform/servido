@@ -8,7 +8,7 @@ const columsData1 = [
 			//----Button Trash
 			let data=cell.getData()
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
-			console.log("DATAAA", data)
+			console.log("DATAAA", data.status_visita)
 			let divActions = '<div class="row d-flex">';
 			divActions += `<button class="btn-table-bitacora" onClick="setModal('equiposModal','${data.id}', '${folio}')"><i class="fa-solid fa-hammer"></i></button>`;
 			divActions += `<button class="btn-table-bitacora" onClick="setModal('vehiculosModal','${data.id}', '${folio}')" ><i class="fa-solid fa-car"></i></button>`;

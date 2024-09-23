@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css"/>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script> 
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> 
+
+</head>
+<body>
+     <section>
+        <div class="d-flex justify-content-center align-items-start m-0 p-0 mt-5">
+            <div class="d-flex flex-column justify-content-start align-items-center mb-5">
+                <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/66d9f0619d7676ba27417e58.png" alt="" width="70%">
+                <h3 class="m-3 mx-0 mt-5">Cuenta Personal</h3>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center p-0 m-0">
+
+            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 d-flex flex-wrap justify-content-center align-items-center p-0 m-0">
+                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                    <label for="exampleInputEmail1">Razón Social</label>
+                    <input type="email" class="form-control fill" id="razonSocial" aria-describedby="emailHelp" placeholder="">
+                </div>
+                 <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                    <label for="exampleInputPassword1">RFC</label>
+                    <input type="text" class="form-control fill" id="rfc" placeholder="">
+                </div>
+                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                    <label for="exampleInputEmail1">Correo Electrónico</label>
+                    <input type="email" class="form-control fill" id="correoElectronico" aria-describedby="emailHelp" placeholder="">
+                    <small id="emailHelp" class="form-text text-muted"></small>
+                </div>
+                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                    <label for="exampleInputPassword1">Teléfono</label>
+                    <input type="text" class="form-control fill" id="telefono" placeholder="">
+                </div>
+                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-10">
+                    <label for="exampleInputPassword1">Servicios que ofrece</label>
+                    <div class="d-flex flex-column">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="defaultCheck1">
+                            <label class="form-check-label" for="defaultCheck1">
+                                Mantenimiento
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="defaultCheck1">
+                            <label class="form-check-label" for="defaultCheck1">
+                                Construcción
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="limpiezaCheck">
+                            <label class="form-check-label" for="limpiezaCheck">
+                                Limpieza
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="otroCheck">
+                            <label class="form-check-label" for="otroCheck">
+                                Otro
+                            </label>
+                        </div>
+                        <div class="col-5">
+                            <input type="text" class="form-control fill" id="otro" placeholder="">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5 my-3">
+                    <button type="button" class="btn btn-outline-danger btn-block" id="cancelButton" onclick="changeView('cancel')">Cancelar</button>
+                </div>
+                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5 my-5">
+                    <button type="button" class="btn btn-primary btn-block" id="continueButton" onclick="changeView('continue')">Continuar</button>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section >
+        <div class="d-flex justify-content-center align-items-start m-0 p-0 mt-5">
+            <div class="d-flex flex-column justify-content-start align-items-center mb-5">
+                <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/66d9f0619d7676ba27417e58.png" alt="" width="70%">
+                <h3 class="m-3 mx-0 mt-5">Cuenta Empresarial</h3>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center p-0 m-0">
+
+            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 d-flex flex-wrap justify-content-center align-items-center p-0 m-0">
+                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                    <label for="exampleInputEmail1">Razón Social:</label>
+                    <input type="email" class="form-control fill" id="razonSocial" aria-describedby="emailHelp" placeholder="">
+                </div>
+                 <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                    <label for="exampleInputPassword1">RFC:</label>
+                    <input type="text" class="form-control fill" id="rfc" placeholder="">
+                </div>
+                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                    <label for="exampleInputEmail1">Correo Electrónico:</label>
+                    <input type="email" class="form-control fill" id="correoElectronico" aria-describedby="emailHelp" placeholder="">
+                    <small id="emailHelp" class="form-text text-muted"></small>
+                </div>
+                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                    <label for="exampleInputPassword1">Teléfono:</label>
+                    <input type="text" class="form-control fill" id="telefono" placeholder="">
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="col-sm-10 col-md-10 col-lg-5 col-xl-3">
+                        <label for="exampleInputPassword1">Servicios que ofrece:</label>
+                        <div class="d-flex flex-column">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    Mantenimiento
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    Construcción
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="limpiezaCheck">
+                                <label class="form-check-label" for="limpiezaCheck">
+                                    Limpieza
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="otroCheck">
+                                <label class="form-check-label" for="otroCheck">
+                                    Otro
+                                </label>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-sm-10 col-md-10 col-lg-5 col-xl-3">
+                        <label for="exampleInputPassword1">Servicios que ofrece:</label>
+                        <div class="d-flex flex-column">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    Mantenimiento
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    Construcción
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="limpiezaCheck">
+                                <label class="form-check-label" for="limpiezaCheck">
+                                    Limpieza
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="otroCheck">
+                                <label class="form-check-label" for="otroCheck">
+                                    Otro
+                                </label>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-sm-10 col-md-10 col-lg-5 col-xl-3">
+                        <label for="exampleInputPassword1">Servicios que ofrece:</label>
+                        <div class="d-flex flex-column">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    Mantenimiento
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    Construcción
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="limpiezaCheck">
+                                <label class="form-check-label" for="limpiezaCheck">
+                                    Limpieza
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="otroCheck">
+                                <label class="form-check-label" for="otroCheck">
+                                    Otro
+                                </label>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5 mt-2">
+                    <label for="exampleInputPassword1">Contraseña:</label>
+                    <input type="text" class="form-control fill" id="telefono" placeholder="">
+                </div>
+                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                    <label for="exampleInputPassword1">Contraseña:</label>
+                    <input type="text" class="form-control fill" id="telefono" placeholder="">
+                </div>
+                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5 my-3">
+                    <button type="button" class="btn btn-outline-danger btn-block" id="cancelButton" onclick="changeView('cancel')">Cancelar</button>
+                </div>
+                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5 my-5">
+                    <button type="button" class="btn btn-primary btn-block" id="continueButton" onclick="changeView('continue')">Continuar</button>
+                </div>
+              
+            </div>
+        </div>
+    </section>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- Local -->
+<script type="text/javascript" src="../../utils/servido_utils.js"></script>
+<script  type="text/javascript" src="./crearCuenta.js"></script>
+<!-- Jquery -->

@@ -127,8 +127,6 @@ function hideLoading() {
   }, 1000);
 };
 
-
-
 function login() {
   loading.style.display = 'flex';
   var mensage = "Es necesario ingresar:<br /><br />";
@@ -506,7 +504,7 @@ function objLength(err,data){
     return objectCount
 }
 
-function errorAlert(data, title = "Error"){
+function errorAlert(data, title = "Error", type="warning"){
     if(data.hasOwnProperty("json")){
         let errores=[]
         for(let err in data.json){
@@ -529,23 +527,31 @@ function errorAlert(data, title = "Error"){
     }else if (data.hasOwnProperty("error")){
         let error= data.error
         if(error.hasOwnProperty('msg')){
-            Swal.fire({
-                title: error.msg.title,
-                text: error.msg.msg,
-                type: error.msg.type
-            });
+            if(typeof error.msg ==='string'){
+                Swal.fire({
+                    title: title,
+                    text: error.msg,
+                    type: "warning"
+                });
+            }else{
+                Swal.fire({
+                    title: error.msg.title,
+                    text: error.msg.msg,
+                    type: error.msg.type
+                });
+            }
         }else{
             Swal.fire({
                 title: title,
                 text: error,
-                type: "warning"
+                type: type
             });
         }
     }else if (typeof data ==='string'){
         Swal.fire({
             title: title,
             text: data,
-            type: "warning"
+            type: type
         });
     }
 }
@@ -637,7 +643,7 @@ function successMsg(title, text, type = "success"){
 
 function loadingService(){
     Swal.fire({
-        title: 'Cargando...',
+        title: 'Procesando...',
         allowOutsideClick: false,
         onBeforeOpen: () => {
             Swal.showLoading();
@@ -659,6 +665,23 @@ function tienePropiedadesVacias(objeto) {
     }
     return false; // Retorna false si no encuentra ninguna propiedad vacía
 }
+
+function propiedadesVacias(objeto) {
+    let array=[]
+    for (let key in objeto) {
+        if (objeto.hasOwnProperty(key)) {
+            // Verificar si la propiedad es vacía
+            if (objeto[key] === null ||
+                objeto[key] === undefined ||
+                objeto[key] === '' ||
+                (Array.isArray(objeto[key]) && objeto[key].length === 0)) {
+                array.push(key)
+            }
+        }
+    }
+    return array; // Retorna las propiedades vacias
+}
+
 
 function formatText(text) {
     let replacedText = text.replace(/_/g, ' ');
@@ -702,4 +725,49 @@ function capitalizeFirstLetter(text) {
         const capitalizedText = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
         return capitalizedText
     }
+}
+
+//FUNCION obtener los valores de los inputs de un modal
+function getInputsValueByClass(classInput){
+    let data = {};
+    let elements = document.getElementsByClassName(classInput)
+    for (let i = 0; i < elements.length; i++) {
+        let id = elements[i].id;
+        let value = elements[i].value;
+        let type = elements[i].type;
+        let tag = elements[i].tagName.toLowerCase()
+        if(type == 'radio'){
+            let valueCheck = elements[i].checked;
+            if(valueCheck){
+                data[id] = value;
+            }
+        } else if(tag == 'img'){
+            data[id]=elements[i].src
+            
+
+        }
+        else{
+            data[id] = value;
+        }
+    }
+    return data
+}
+
+
+function cleanCatalag(catalogsId){
+    for (let cat of catalogsId){
+        let selectCat = document.getElementById(cat)
+        selectCat.innerHTML=""
+        selectCat.value=""
+    }
+}
+
+
+function eliminarPropiedadesVacias(obj) {
+    for (const key in obj) {
+        if (obj[key] === null || obj[key] === undefined || obj[key] === '') {
+            delete obj[key];
+        }
+    }
+    return obj;
 }

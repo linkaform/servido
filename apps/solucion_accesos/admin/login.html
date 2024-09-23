@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css"/>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script> 
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> 
+
+</head>
+<body>
+     <section class="full d-flex justify-content-center align-items-center m-0 p-0">
+                <div class="card">
+                    <div class="card-body">
+                        <div class=" flex-column m-5" id="loginView">
+                            <div class="d-flex justify-content-center align-items-center mb-5">
+                                <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/66d9f0619d7676ba27417e58.png" alt="" width="70%">
+                            </div>
+                            <h4 class="m-3 mx-0" id="title">Iniciar sesión</h4>
+                            <div class="login-size" id="loginViewFade">
+                                <div class="d-flex flex-column">
+                                    <label for="email">Correo electrónico </label>
+                                    <input id="email" class="form-control login-form" name="user" type="email" required autofocus>
+                                    <div class="invalid-feedback" id="userError"> Por favor ingresa un correo electrónico válido. </div>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <label for="password"> Contraseña: </label>
+                                    <input id="password" type="password" class="form-control login-form" name="password" required data-eye>
+                                    <div class="invalid-feedback"> La contraseña es requerida </div>
+                                    <div class="d-flex justify-content-start align-items-center mt-1">
+                                        <a href="https://example.com" class="custom-link">¿Olvidaste tu contraseña?</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button onclick="changeLoginView('accountTypeView')" id="buttonLogin" class="btn btn-block mt-4 button-main-color "> Continuar </button>
+                            </div>
+
+                            <div class="d-flex justify-content-center align-items-center mt-3">
+                                <button class="btn btn-transparent" id="createAccountButton" onclick="changeLoginView('createAccountView')">
+                                    Crear cuenta nueva
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex-column justify-content-between m-5" id="accountTypeView" style="display:none;">
+                            <div class="d-flex justify-content-center align-items-center mb-5">
+                                <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/66d9f0619d7676ba27417e58.png" alt="" width="70%">
+                            </div>
+                            <h4 class="m-3 mx-0">Tipo de cuenta</h4>
+                            <div class="login-size" id="accountTypeViewFade">
+                                    <button type="button" class="d-flex flex-row btn btn-outline btn-lg button-type-custom" onclick="selectRadio('companyRadio')">
+                                        <div class="button-radio-margin">
+                                            <input type="radio" class="radio-group" name="radio-group" id="companyRadio" aria-label="Radio button for following text input">
+                                        </div>
+                                        <div class="d-flex flex-column align-items-start mx-3 p-0">
+                                            <h5 class="m-0 p-0"> Empresa </h5>
+                                            <small class="text-gray small-size mx-0">Administra empleados y contratistas</small>
+                                        </div>
+                                    </button>
+
+                                    <button type="button" class="d-flex flex-row btn btn-outline btn-lg button-type-custom" onclick="selectRadio('userRadio')">
+                                        <div class="button-radio-margin">
+                                            <input type="radio" class="radio-group" name="radio-group" id="userRadio" aria-label="Radio button for following text input">
+                                        </div>
+                                        <div class="d-flex flex-column align-items-start mx-3 p-0">
+                                            <h5 class="m-0 p-0"> Usuario </h5>
+                                            <small class="text-gray small-size mx-0">Uso personal</small>
+                                        </div>
+                                    </button>
+
+
+                                </div>
+                                <div>
+                                    <button onclick="changeLoginView('continue')" id="buttonLogin" class="btn btn-block mt-4 button-main-color "> Continuar </button>
+                                </div>
+
+                            <div class="form-group m-0 ">
+                                <button class="btn btn-warning btn-block mt-4 button-main-color" type="button" id="loadingButtonLogin" style="display:none" disabled>
+                                      <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                                      Iniciando sesión...
+                                </button>
+                            </div> 
+                            <div class="d-flex justify-content-center align-items-center mt-3">
+                                <button class="btn btn-transparent" onclick="changeLoginView('loginView')">
+                                    Iniciar sesión
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </section>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- Local -->
+<script type="text/javascript" src="../../utils/servido_utils.js"></script>
+<script  type="text/javascript" src="./login.js"></script>
+<!-- Jquery -->
