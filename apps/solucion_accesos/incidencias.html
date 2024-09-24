@@ -85,10 +85,10 @@
                                 <i class="fa-solid fa-file-arrow-down"></i>
                                 Descargar
                             </button>
-                             <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
+                            <!--  <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                                 Filtros
-                            </button>
+                            </button> -->
                             <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('incidencias')" id="buttonEliminarIncidencias">
                                 <i class="fa-solid fa-trash"></i>
                                 Eliminar
@@ -107,10 +107,10 @@
                                 <i class="fa-solid fa-file-arrow-down"></i>
                                 Descargar
                             </button>
-                             <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
+                            <!--  <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                                 Filtros
-                            </button>
+                            </button> -->
                             <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('fallas')" id="buttonEliminarFallas" >
                                 <i class="fa-solid fa-trash"></i>
                                 Eliminar
@@ -135,53 +135,138 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="mb-3 col-6">
-                            <h6 class="form-label">Ubicación: <span id="ubicacionNuevaIncidencia" style="font-weight: normal"> </span> </h6>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <h6 class="form-label">Caseta: <span id="casetaNuevaIncidencia" style="font-weight: normal"> </span> </h6>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Fecha: *</label>
-                            <input type="datetime-local" class="form-control contentNuevaIncidencia" id="fechaNuevaIncidencia">
+                            <label class="form-label">Ubicacion: *</label>
+                            <select class="form-select contentNuevoIncidencia" id="ubicacionNuevoIncidencia" onchange="onChangeCatalogoIncidencia('ubicacionNuevoIncidencia', 'Nuevo')">
+                            </select>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Area: *</label>
-                            <select class="form-control contentNuevaFalla" id="areaNuevaFalla">
+                            <select class="form-select contentNuevoIncidencia" id="areaNuevoIncidencia">
                             </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Lugar del incidente: *</label>
-                            <select class="form-control contentNuevaIncidencia" id="lugarNuevaIncidencia">
+                            <label class="form-label">Fecha y hora del incidente: *</label>
+                            <input type="datetime-local" class="form-control contentNuevoIncidencia" id="fechaHoraNuevoIncidencia">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Reporta: </label>
+                            <select class="form-select contentNuevoIncidencia" id="reportaNuevoIncidencia">
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Incidencia: *</label>
+                            <select class="form-select contentNuevoIncidencia" id="incidenciaNuevoIncidencia">
+                            </select>
+                        </div>
+                         <div class="mb-3 col-6">
+                            <label class="form-label">Importancia: *</label>
+                            <select class="form-select contentNuevoIncidencia" id="importanciaNuevoIncidencia">
+                                <option value="baja">Baja</option>
+                                <option value="media">Media</option>
+                                <option value="alta">Alta</option>
+                                <option value="critica">Critica</option>
                             </select>
                         </div>
                         <div class="mb-3 col-12">
-                            <label class="form-label">Incidencia: *</label>
-                            <textarea class="form-control contentNuevaIncidencia" id="incidenciaNuevaIncidencia"></textarea>
-                            </input>
+                            <label class="form-label">Tipo de Incidencia: *</label>
+                             <input type="text" class="form-control contentNuevoIncidencia" id="tipoNuevoIncidencia">
                         </div>
-                        <div id="foto-input-form-nueva" >
-                            <div class="d-flex mb-3 col-12 div-foto-nueva-123" id="id-foto-div-123">
+                        <div class="mb-3 col-12">
+                            <label class="form-label m-0 p-0">Comentarios: *</label><br>
+                            <small class="m-0 p-0 mb-2 text-gray">Información relevante relacionada con el incidente.</small>
+                            <textarea class="form-control contentNuevoIncidencia"  rows="1" id="comentarioNuevoIncidencia"></textarea>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Tipo de daño: </label>
+                            <select class="form-select contentNuevoIncidencia" id="tipoDañoNuevoIncidencia">
+                                <option value="material">Material</option>
+                                <option value="personal">Personal</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label class="form-label m-0 p-0">Daños: *</label>
+                            <br>
+                            <small class="m-0 p-0 mb-2 text-gray">Daños causador por el incidente.</small>
+                            <textarea class="form-control contentNuevoIncidencia"  rows="1" id="dañoNuevoIncidencia"></textarea>
+                        </div>
+                        <div id="foto-input-form-nuevo" >
+                            <div class="d-flex mb-3 col-12 div-foto-nuevo-123" id="id-foto-div-123">
                                 <div class="flex-grow-1">
-                                    <label class="form-label">Fotografia </label>
-                                    <input type="file" class="form-control-file foto-div-nueva" onchange="guardarArchivos('fileInputFotografia-nueva',true);" id="fileInputFotografia-nueva">
+                                    <label class="form-label">Envidencia: </label>
+                                    <input type="file" class="form-control-file foto-div-nuevo contentNuevoIncidencia" 
+                                    onchange="guardarArchivos('fileInputFotografia-nuevo',true);" id="fileInputFotografia-nuevo">
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('nueva');return false;">
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('nuevo');return false;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('nueva',123);return false;">
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('nuevo',123);return false;">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Comentario:</label>
-                            <textarea class="form-control contentNuevaIncidencia"  rows="3" id="comentariosNuevaIncidencia"></textarea>
+                        <div id="archivo-input-form-nuevo">
+                            <div class="d-flex mb-3 col-12 div-archivo-nuevo-123" id="id-archivo-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Documentos: </label>
+                                    <input type="file" class="form-control-file archivo-div-nuevo contentNuevoIncidencia" 
+                                    onchange="guardarArchivos('fileInputArchivo-nuevo', false);" id="fileInputArchivo-nuevo">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('nuevo');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('nuevo',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Reporta: *</label>
-                            <select class="form-control contentNuevaIncidencia" id="reportaNuevaIncidencia">
+                        <hr>
+                        <div id="persona-input-form-nuevo">
+                            <div class="d-flex mb-3 div-persona-nuevo-123" id="div-persona-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Personas Involucradas: </label>
+                                    <input type="text" class="form-control persona-div-nuevo mb-2 contentNuevoIncidencia" id="repPersonaNuevoIncidencia" placeholder="Nombre completo">
+                                    <select class="form-select persona-div-nuevo contentNuevoIncidencia" id="repTipoDañoNuevoIncidencia">
+                                        <option value="afectado">Afectado</option>
+                                        <option value="testigo">Testigo</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddPersona('nuevo');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeletePersona('nuevo',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div id="daño-input-form-nuevo">
+                            <div class="d-flex mb-3 div-daño-nuevo-123" id="div-daño-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Acciones Tomadas: </label>
+                                    <input type="text" class="form-control daño-div-nuevo mb-2 contentNuevoIncidencia" id="repResponsableNuevoIncidencia" placeholder="Responsable de la accion">
+                                    <textarea class="form-control daño-div-nuevo contentNuevoIncidencia" rows="2" id="repAccionNuevoIncidencia" placeholder="Acciones tomadas"></textarea>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddDaño('nuevo');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteDaño('nuevo',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                       <div class="mb-3 col-6">
+                            <label class="form-label">Notificaciones: *</label>
+                            <select class="form-select contentNuevoIncidencia" id="notificacionNuevoIncidencia">
+                                <option value="no"> No</option>
+                                <option value="correo"> Correo</option>
                             </select>
                         </div>
                     </div>
@@ -190,7 +275,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success btn-sm" id="buttonAgregarIncidencia" onclick="nuevaIncidencia()">Agregar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="buttonAgregarIncidencia" onclick="nuevaIncidencia()">Crear</button>
                     <button class="btn btn-success btn-sm" type="button" id="loadingButtonAgregarIncidencia" style="display:none" disabled>
                         <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
                         Cargando...
@@ -205,35 +290,148 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5">Editar incidente</h1>
+                    <h1 class="modal-title fs-5">Editar incidencia</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="mb-3 col-6">
-                            <h6 class="form-label">Ubicación: <span id="ubicacionNuevaIncidencia" style="font-weight: normal"> </span> </h6>
+                            <label class="form-label">Ubicacion: *</label>
+                            <select class="form-select contentEditarIncidencia" id="ubicacionEditarIncidencia" onchange="onChangeCatalogoIncidencia('ubicacionEditarIncidencia', 'Editar')">
+                            </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <h6 class="form-label">Caseta: <span id="casetaNuevaIncidencia" style="font-weight: normal"> </span> </h6>
+                            <label class="form-label">Area: *</label>
+                            <select class="form-select contentEditarIncidencia" id="areaEditarIncidencia">
+                            </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Fecha: *</label>
-                            <input type="datetime-local" class="form-control contentEditIncidencia" id="dateEditIncidencia">
+                            <label class="form-label">Fecha y hora del incidente: *</label>
+                            <input type="datetime-local" class="form-control contentEditarIncidencia" id="fechaHoraEditarIncidencia">
                         </div>
-                        <div class="mb-3 col-12">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Reporta: </label>
+                            <select class="form-select contentEditarIncidencia" id="reportaEditarIncidencia">
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
                             <label class="form-label">Incidencia: *</label>
-                            <input type="text" class="form-control contentEditIncidencia" id="incidenciaEditIncidencia">
+                            <select class="form-select contentEditarIncidencia" id="incidenciaEditarIncidencia">
+                            </select>
+                        </div>
+                         <div class="mb-3 col-6">
+                            <label class="form-label">Importancia: *</label>
+                            <select class="form-select contentEditarIncidencia" id="importanciaEditarIncidencia">
+                                <option value="baja">Baja</option>
+                                <option value="media">Media</option>
+                                <option value="alta">Alta</option>
+                                <option value="critica">Critica</option>
+                            </select>
                         </div>
                         <div class="mb-3 col-12">
-                            <label class="form-label">Comentarios: </label>
-                            <textarea class="form-control contentEditIncidencia"  rows="3" id="comentariosEditIncidencia"></textarea>
+                            <label class="form-label">Tipo de Incidencia: *</label>
+                             <input type="text" class="form-control contentEditarIncidencia" id="tipoEditarIncidencia">
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label class="form-label m-0 p-0">Comentarios: *</label><br>
+                            <small class="m-0 p-0 mb-2 text-gray">Información relevante relacionada con el incidente.</small>
+                            <textarea class="form-control contentEditarIncidencia"  rows="1" id="comentarioEditarIncidencia"></textarea>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Reporta: *</label>
-                            <select class="form-control contentEditIncidencia" id="guardEditIncidencia">
+                            <label class="form-label">Tipo de daño: </label>
+                            <select class="form-select contentEditarIncidencia" id="tipoDañoEditarIncidencia">
+                                <option value="material">Material</option>
+                                <option value="personal">Personal</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label class="form-label m-0 p-0">Daños: *</label>
+                            <br>
+                            <small class="m-0 p-0 mb-2 text-gray">Daños causador por el incidente.</small>
+                            <textarea class="form-control contentEditarIncidencia"  rows="1" id="dañoEditarIncidencia"></textarea>
+                        </div>
+                        <div id="foto-input-form-editar" >
+                            <div class="d-flex mb-3 col-12 div-foto-editar-123" id="id-foto-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Envidencia: </label>
+                                    <input type="file" class="form-control-file foto-div-editar contentEditarIncidencia" 
+                                    onchange="guardarArchivos('fileInputFotografia-editar',true);" id="fileInputFotografia-editar">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('editar');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('editar',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="archivo-input-form-editar">
+                            <div class="d-flex mb-3 col-12 div-archivo-editar-123" id="id-archivo-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Documentos: </label>
+                                    <input type="file" class="form-control-file archivo-div-editar contentEditarIncidencia" 
+                                    onchange="guardarArchivos('fileInputArchivo-editar', false);" id="fileInputArchivo-editar">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('editar');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('editar',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div id="persona-input-form-editar">
+                            <div class="d-flex mb-3 div-persona-editar-123" id="div-persona-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Personas Involucradas: </label>
+                                    <input type="text" class="form-control persona-div-editar mb-2 contentEditarIncidencia" id="repPersonaEditarIncidencia" placeholder="Nombre completo">
+                                    <select class="form-select persona-div-editar contentEditarIncidencia" id="repTipoDañoEditarIncidencia">
+                                        <option value="afectado">Afectado</option>
+                                        <option value="testigo">Testigo</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddPersona('editar');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeletePersona('editar',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div id="daño-input-form-editar">
+                            <div class="d-flex mb-3 div-daño-editar-123" id="div-daño-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Acciones Tomadas: </label>
+                                    <input type="text" class="form-control daño-div-editar mb-2 contentEditarIncidencia" id="repResponsableEditarIncidencia" placeholder="Responsable de la accion">
+                                    <textarea class="form-control daño-div-editar contentEditarIncidencia" rows="2" id="repAccionEditarIncidencia" placeholder="Acciones tomadas"></textarea>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddDaño('editar');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteDaño('editar',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                       <div class="mb-3 col-6">
+                            <label class="form-label">Notificaciones: *</label>
+                            <select class="form-select contentEditarIncidencia" id="notificacionEditarIncidencia">
+                                <option value="no"> No</option>
+                                <option value="correo"> Correo</option>
                             </select>
                         </div>
                     </div>
+
                     <small class="text-black-50 mt-3">** Campos son obligatorios</small>
                 </div>
                 <div class="modal-footer">
@@ -259,33 +457,65 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Fecha:&nbsp;&nbsp; <span class="fw-normal">26-04-2024</span></label>
+                        <div class="d-flex justify-content-start align-items-start">
+                            <div class="col-5 mb-3 me-3 d-flex flex-column align-items-start justify-content-between" >
+                                <div class="d-flex flex-column">
+                                    <label class="form-label fw-bold mt-2">Fecha y hora de la incidencia:&nbsp;&nbsp; <br> <span class="fw-normal" id="fechaHoraIncidencia"></span></label>
+                                    <label class="form-label fw-bold mt-2">Ubicación:&nbsp;&nbsp; <span class="fw-normal" id="ubicacionIncidencia"></span></label>
+                                    <label class="form-label fw-bold mt-2">Area:&nbsp;&nbsp; <span class="fw-normal" id="areaIncidencia"></span></label>
+                                    <label class="form-label fw-bold mt-2">Incidencia:&nbsp;&nbsp; <span class="fw-normal" id="incidenciaIncidencia"></span></label>
+                                </div>
+                                <hr style="height: 1px!important; width: 100% !important;">
+                                <div class="d-flex flex-column"> 
+                                    <label class="form-label fw-bold mt-2">Comentarios:&nbsp;&nbsp; <span class="fw-normal" id="comentarioIncidencia"></span></label>
+                                     <label class="form-label fw-bold mt-2">Prioridad:&nbsp;&nbsp; <span class="fw-normal" id="prioridadIncidencia"></span></label>
+                                    <label class="form-label fw-bold mt-2">Tipo de incidencia:&nbsp;&nbsp; <span class="fw-normal" id="tipoIncidencia"></span></label>
+                                    <label class="form-label fw-bold mt-2">Tipo de daño:&nbsp;&nbsp; <span class="fw-normal" id="tipoDanoIncidencia"></span></label>
+                                    <label class="form-label fw-bold mt-2">Daños:&nbsp;&nbsp; <span class="fw-normal" id="danoIncidencia"></span></label>
+                                    
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <div class="col-7 mb-3 d-flex flex-column align-items-start justify-content-start ">
+                                <label class="form-label"><b>Evidencia de la incidencia: </b></label><br>
+                                <div class="d-flex justify-content-between image-container " id="evidenciaIncidencia">
+                                </div>
+                            </div>
+                            <div class="col-7 mb-3 d-flex flex-column align-items-start justify-content-start ">
+                                <label class="form-label me-3"><b>Documentos: </b></label><br>
+                                <div class="d-flex flex-row justify-content-between " id="documentosIncidencia">
+                                </div>
+                                <label class="form-label fw-bold mt-2">Notificaciones:&nbsp;&nbsp; <span class="fw-normal" id="notificacionIncidencia"></span></label>
+                              
+                            </div>
+                            </div>
                         </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Hora:&nbsp;&nbsp; <span class="fw-normal">11:56:00 Hrs</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Lugar del incidente:&nbsp;&nbsp; <span class="fw-normal">Habitación 23 piso 2</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Ubicación:&nbsp;&nbsp; <span class="fw-normal">Planta Sur</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Incidente:&nbsp;&nbsp; <span class="fw-normal">Acceso Personal Externo</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Comentarios:&nbsp;&nbsp; <span class="fw-normal">El visitante autorizado sergio Perez ingresa con una persona externa, de nombre Miguel Sanchez</span></label>
-                        </div>
-                        <hr style=" border: 1px solid black;">
-                        <h4>Información del personal involucrado</h4>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Reporta:&nbsp;&nbsp; <span class="fw-normal">Miguel Perez Nuñez</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Departamento:&nbsp;&nbsp; <span class="fw-normal">Seguridad</span></label>
+                        
+                        <hr>
+                        <h5>Detalles de los involucrados</h5>
+                        <div class="d-flex justify-content-start align-items-start">
+                            <div class="mb-3 col-6">
+                                <label class="form-label fw-bold">Personas involucradas:&nbsp;&nbsp; <span class="fw-normal" ></span></label>
+                                <div id="personasInvolucradasIncidencia">
+                                    
+                                </div>
+                            </div>
+                            <div class="mb-3 col-6">
+                                <label class="form-label fw-bold">Acciones tomadas:&nbsp;&nbsp; <span class="fw-normal" ></span></label>
+                                <div id="accionIncidencia">
+                                    
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+
+
+
+
+
+
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" onclick="cerrarModal('viewIncidentModal')">Cerrar</button>
@@ -305,7 +535,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="mb-3 col-6">
-                            <h6 class="form-label">Ubicación: <span id="ubicacionNuevaFalla" style="font-weight: normal"> </span> </h6>
+                            <h6 class="form-label">Ubicación: <span id="ubicacionNuevoFalla" style="font-weight: normal"> </span> </h6>
                         </div>
                         <div class="mb-3 col-6">
                             <h6 class="form-label">Caseta: <span id="casetaNuevaFalla" style="font-weight: normal"> </span> </h6>
@@ -556,6 +786,7 @@
 
 
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!-- Local -->
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
 <script type="text/javascript" src="./functions.js"></script>
@@ -566,7 +797,6 @@
 <script src="./incidencias.js"></script>
 
 <!-- Jquery -->
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!-- Tabulator -->
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 <!-- Bootstrap -->

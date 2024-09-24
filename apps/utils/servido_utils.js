@@ -751,7 +751,6 @@ function getInputsValueByClass(classInput){
     return data
 }
 
-
 function cleanCatalag(catalogsId){
     for (let cat of catalogsId){
         let selectCat = document.getElementById(cat)
@@ -760,7 +759,6 @@ function cleanCatalag(catalogsId){
     }
 }
 
-
 function eliminarPropiedadesVacias(obj) {
     for (const key in obj) {
         if (obj[key] === null || obj[key] === undefined || obj[key] === '') {
@@ -768,4 +766,73 @@ function eliminarPropiedadesVacias(obj) {
         }
     }
     return obj;
+}
+
+async function cargarCatalogos(bodys=[]) {
+    let failedRequests=[]
+    let format=[]
+    let requests=[]
+    if(bodys.length>0){
+        loadingService()
+        for (let body of bodys){
+            requests.push({
+                url: url + urlScripts,
+                options: {
+                    method: 'POST',
+                    body:JSON.stringify(body),
+                    headers:
+                    {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+userJwt
+                    },
+                },
+            })
+        }
+         // Crea un array de promesas fetch
+        const fetchPromises = requests.map((request, index) =>
+             fetch(request.url, request.options)
+                .then(async response => {
+                    if (!response.ok) {
+                        let objBody= JSON.parse(request.options.body)
+                        failedRequests.push(objBody.option)
+                        Swal.close()
+                        return Promise.reject({
+                            index,
+                            success:false,
+                            url: request.url,
+                            status: response.status,
+                            error: objBody.option,
+                            msj:`Error en la solicitud: ${objBody.option}, Se obtuvo status code: ${response.status}`
+                        });
+                    }else{
+                        let objBody= JSON.parse(request.options.body)
+                        const data = await response.json();
+                        Swal.close()
+                        return { index, url: request.url, data, objBody: objBody};
+                    }
+                })
+                .catch(error => {
+                    // Captura y maneja errores de red o de respuesta
+                    let objBody= JSON.parse(request.options.body)
+                    Swal.close()
+                    return {
+                        index,
+                        url: request.url,
+                        success:false,
+                        error: objBody.option,
+                        msj: `Error en la solicitud: ${objBody.option}, Se obtuvo status code: ${response.status}`
+                    };
+                })
+        );
+        // Ejecuta todas las promesas
+        const results = await Promise.allSettled(fetchPromises);
+
+        let successfulRequests = results
+            .filter(result => result.status === 'fulfilled' && result.value.data.success)
+            .map(result => result);
+        for (let res of successfulRequests){
+            format.push({objBody: res.value.objBody, data: res.value.data.response.data})
+        }
+    }
+    return {format,failedRequests}
 }

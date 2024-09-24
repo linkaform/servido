@@ -1,6 +1,7 @@
 :root {
   --yellowLKF: #ffe99c;
   --downloadButton:#003285;
+  --text-gray:#808080;
 }
 
 .header{
@@ -575,22 +576,23 @@ input[type=search]{
     height: 400px; /* Ajusta la altura del modal */
 }
 
-
 .image-container {
-      width: 400px; /* Ajusta el ancho según tus necesidades */
-      height: 400px; /* Ajusta la altura según tus necesidades */
-      overflow: auto; /* Permite el desplazamiento si el contenido excede el tamaño del contenedor */
-      white-space: nowrap; /* Evita que las imágenes se envuelvan a la siguiente línea */
-      position: relative;
-      scrollbar-color: #111 ;
-    }
-.image-container img {
-  
-  height: 100%; /* Mantiene la relación de aspecto */
-  display: inline-block; /* Muestra las imágenes en línea */
-  object-fit: cover;
-}
+    width: 350px; /* Ajusta el ancho según tus necesidades */
+    height: 300px; /* Ajusta la altura según tus necesidades */
+    overflow: auto; /* Permite el desplazamiento si el contenido excede el tamaño del contenedor */
+    white-space: nowrap; /* Evita que las imágenes se envuelvan a la siguiente línea */
+    position: relative;
+    scrollbar-color: #111 ;
+  }
 
+.image-container img {
+  min-width: 95%;
+  max-width: 100%; /* Ajusta el ancho según tus necesidades */
+  max-height: 300px; 
+  display: inline-block; /* Muestra las imágenes en línea */
+  object-fit: contain;
+  vertical-align: top!important;
+}
 
 
 /* Ancho de columna para pantallas extra grandes */
@@ -618,3 +620,8 @@ input[type=search]{
       flex-direction: column;
     }
 }
+
+.text-gray {
+  color: var(--text-gray); /* Mantiene la relación de aspecto */
+}
+
