@@ -10,23 +10,36 @@ const columsData1 = [
             let data=cell.getData()
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			let divActions = '<div class="row d-flex">';
-            console.log("TBALEEEEEEEE",data.guard)
-			divActions += `<button class="btn-table-bitacora" onClick="alertViewIncident('${folio}','${data.date_incidence}','${data.ubicacion_incidence}', 
-            '${data.area_incidence}', '${data.incidence}', '${data.comments_incidence}', '${data.guard_incident}' )"><i class="fa-solid fa-eye"></i></button>`;
-			divActions += `<button class="btn-table-bitacora" onClick="editarIncidenciaModal('${folio}','${data.date_incidence}','${data.ubicacion_incidence}', 
-            '${data.area_incidence}', '${data.incidence}', '${data.comments_incidence}', '${data.guard_incident}' )"><i class="fa-solid fa-pen"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('ViewIncident', '${folio}')"><i class="fa-solid fa-eye"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('EditIncident','${folio}');"><i class="fa-solid fa-pen"></i></button>`;
 			divActions += `<button class="btn-table-bitacora" onClick="alertEliminar('${folio}', 'incidencias')"><i class="fa-solid fa-trash" ></i></button>`;
 			divActions += '</div>';
 			return divActions;
 		},
 	},
-	{ title:"Fecha ", field:'date_incidence',hozAlign:"left", headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
-	{ title:"Ubicación", field:'ubicacion_incidence',hozAlign:"left",headerFilter:true},
-	{ title:"Lugar del incidente", field:'area_incidence',hozAlign:"left",headerFilter:true},
-	{ title:"incidente", field:'incidence',hozAlign:"left",headerFilter:true},
-	{ title:"Comentarios", field:'comments_incidence',hozAlign:"left",headerFilter:true,width:350},
-	{ title:"Reporta", field:'guard_incident',hozAlign:"left",headerFilter:true},
+	{ title:"Ubicación", field:'ubicacion_incidencia',hozAlign:"left",headerFilter:true},
+	{ title:"Lugar del incidente", field:'area_incidencia',hozAlign:"left",headerFilter:true},
+	{ title:"Fecha ", field:'fecha_hora_incidencia',hozAlign:"left", headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") },
+		formatter: function(cell) {
+            let data = cell.getData();
+            return data.fecha_hora_incidencia.slice(0,-3)
+        }},
+	{ title:"Incidente", field:'incidencia',hozAlign:"left",headerFilter:true},
+	{ title:"Evidencia", field:'evidencia_incidencia',hozAlign:"left",headerFilter:true,
+		formatter: function(cell) {
+            let data = cell.getData();
+            let res=""
+            console.log("data.hasOwnProperty('evidencia_incidencia')",data.hasOwnProperty('evidencia_incidencia'))
+            if(data.hasOwnProperty('evidencia_incidencia') && data.evidencia_incidencia !==undefined){
+            	res= `<img src="${data.evidencia_incidencia.length>0 ? data.evidencia_incidencia[0].file_url : ""}" alt="Imagen" style="width:120px;height:120px; object-fit:cover;" class="img-cell"/>`;
+            }
+            return res
+        }},
+	{ title:"Comentarios", field:'comentario_incidencia',hozAlign:"left",headerFilter:true,width:350},
+	{ title:"Reporta", field:'reporta_incidencia',hozAlign:"left",headerFilter:true},
 ];
+
+
 
 const columsData2 = [
      {formatter:"rowSelection", field:'checkboxColumn',titleFormatter:"rowSelection", width:10,hozAlign:"center", headerSort:false, cellClick:function(e, cell){

@@ -846,7 +846,7 @@ function crearNuevaVisita(){
                     successMsg("Confirmación","Nueva visita registrada exitosamente" )
                     codeUserVisit= Date.now();
                     let inputCode = document.getElementById("inputCodeUser");
-                     $("#inputCodeUser").val(data.json.id);
+                    $("#inputCodeUser").val(data.json.id);
                     if(data.json.id!==""){
                         //setSpinner(true, 'divSpinner');
                         $("#divSpinner").show();
@@ -1297,6 +1297,12 @@ function dataUserInf(dataUser){
         rfc=dataUser.portador.rfc[0]
     }
     $('#rfc').text(rfc);*/
+
+    let empres = ""
+    if(dataUser.hasOwnProperty('empresa')){
+        empres= dataUser.empresa !==  '' ? dataUser.empresa : '';
+    }
+    $('#contratista').text(empres);
 
     let validity = ""
     if(dataUser.hasOwnProperty('fecha_de_caducidad')){

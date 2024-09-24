@@ -141,7 +141,6 @@
 
 	<div id="divSpinner" style="display:none; margin-top: 100px;"></div>
 
-	<!-- Modal New Article -->
 	<div class="modal fade" id="newArticleConModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
@@ -243,7 +242,6 @@
 		</div>
 	</div>
 
-	<!-- Modal Edit Article -->
 	<div class="modal fade" id="editArticleConModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
@@ -347,8 +345,6 @@
 		</div>
 	</div>
 
-	
-	<!-- Modal View Article -->
 	<div class="modal fade" id="viewArticleConModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
@@ -408,7 +404,53 @@
 		</div>
 	</div>
 
-	<!-- Modal New Article Concessioned-->
+	<div class="modal fade" id="outArticleConModal" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Entrega de artículo</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="mb-3 col-6">
+							<label class="form-label">Fecha: *</label>
+							<input type="date" class="form-control outArticleCon" id="outArticleFecha">
+						</div>
+						<div class="mb-3 col-6">
+							<label class="form-label">Hora: *</label>
+							<input type="time" class="form-control outArticleCon" id="outArticleHora">
+						</div>
+						<div class="mb-3 col-12">
+							<label class="form-label">Recibe: *</label>
+							<input type="text" class="form-control outArticleCon" id="outArticleRecibe">
+						</div>
+						
+						<div class="mb-3 col-6">
+							<label class="form-label">Estado: *</label><br>
+							<div class="form-check">
+								<input class="form-check-input outArticleCon" type="radio" name="flexRadioDefault" id="outArticleEstado">
+								<label class="form-check-label" for="outArticleEstado">
+								Abierto	
+								</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input outArticleCon" type="radio" name="flexRadioDefault" id="outArticleEstado2" checked>
+								<label class="form-check-label" for="outArticleEstado2">
+								Cerrado
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="devolucionArticulo('article')">Entregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="modal fade" id="newArticleLoseModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
@@ -520,7 +562,6 @@
 		</div>
 	</div>
 
-	<!-- Modal Edit Article Concessioned-->
 	<div class="modal fade" id="editArticleLoseModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
@@ -632,7 +673,6 @@
 		</div>
 	</div>
 
-<!-- Modal Out Article -->
 	<div class="modal fade" id="outArticleLoseModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 			<div class="modal-content">
@@ -702,14 +742,12 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="devolucionArticulo()">Agregar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="devolucionArticulo()">Devolver</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-
-	<!-- Modal View Article Concessioned-->
 	<div class="modal fade" id="viewArticleLoseModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" >
 			<div class="modal-content">
@@ -725,20 +763,24 @@
 									<label class="form-label fw-bold mt-2">Articulo:&nbsp;&nbsp; <span class="fw-normal" id="nombreArticuloPerdido"></span></label>
 									<label class="form-label fw-bold mt-2">Color:&nbsp;&nbsp; <span class="fw-normal" id="colorArticuloPerdido"></span></label>
 									<label class="form-label fw-bold mt-2">Categoria:&nbsp;&nbsp; <span class="fw-normal" id="categoriaArticuloPerdido"></span></label>
+									<label class="form-label fw-bold mt-2">Tipo de articulo:&nbsp;&nbsp; <span class="fw-normal" id="tipoArticuloArticuloPerdido"></span></label>
+									<label class="form-label fw-bold mt-2">Descripción:&nbsp;&nbsp; <span class="fw-normal" id="descripcionArticuloPerdido"></span></label>
 									<label class="form-label fw-bold mt-2">Estado:&nbsp;&nbsp; <span class="fw-normal" id="estadoArticuloPerdido"></span></label>
 								</div>
 								<hr style="height: 1px!important; width: 100% !important;">
 						      	<div class="d-flex flex-column"> 
 									<label class="form-label fw-bold mt-2">Fecha del hallazgo:&nbsp;&nbsp; <span class="fw-normal" id="fechaHallazgoArticuloPerdido"></span></label>
 									<label class="form-label fw-bold mt-2">Ubicación:&nbsp;&nbsp; <span class="fw-normal" id="ubicacionArticuloPerdido"></span></label>
+									<label class="form-label fw-bold mt-2">Area:&nbsp;&nbsp; <span class="fw-normal" id="areaArticuloPerdido"></span></label>
 									<label class="form-label fw-bold mt-2">Reporta:&nbsp;&nbsp; <span class="fw-normal" id="reportaArticuloPerdido"></span></label>
 									<label class="form-label fw-bold mt-2">Departamento:&nbsp;&nbsp; <span class="fw-normal" id="departamentoArticuloPerdido"></span></label>
 									<label class="form-label fw-bold mt-2">Comentario:&nbsp;&nbsp; <span class="fw-normal" id="comentarioArticuloPerdido"></span></label>
+									<label class="form-label fw-bold mt-2">Guardia:&nbsp;&nbsp; <span class="fw-normal" id="guardiaArticuloPerdido"></span></label>
 						      	</div>
 							</div>
 							<div class="col-7 mb-3 d-flex flex-column align-items-start justify-content-start ">
 								<label class="form-label"><b>Fotografías del artículo: </b></label><br>
-								<div class="d-flex justify-content-between image-container " id="verFotosArticuloPerdido">
+								<div class="d-flex justify-content-between image-container align-items-start" id="verFotosArticuloPerdido" >
 								</div>
 							</div>
 						</div>
@@ -747,10 +789,31 @@
 						<h5>Información de la entrega</h5>
 						<div class="d-flex justify-content-start align-items-start">
 							<div class="mb-3 col-6">
+								<label class="form-label fw-bold">Fecha y hora de entrega:&nbsp;&nbsp; <span class="fw-normal" id="fechaEntregaArticuloPerdido"></span></label>
+							</div>
+							<div class="mb-3 col-6">
 								<label class="form-label fw-bold">Recibe:&nbsp;&nbsp; <span class="fw-normal" id="recibeArticuloPerdido"></span></label>
 							</div>
 							<div class="mb-3 col-6">
-								<label class="form-label fw-bold">Fecha y hora de entrega:&nbsp;&nbsp; <span class="fw-normal" id="fechaEntregaArticuloPerdido"></span></label>
+								<label class="form-label fw-bold">Teléfono:&nbsp;&nbsp; <span class="fw-normal" id="telefonoArticuloPerdido"></span></label>
+							</div>
+							<div class="mb-3 col-6">
+								<label class="form-label fw-bold">Foto:&nbsp;&nbsp; <span class="fw-normal" id="identificacionArticuloPerdido"></span></label>
+							</div>
+							<div class="mb-3 col-6">
+								<label class="form-label fw-bold">Identificación:&nbsp;&nbsp; <span class="fw-normal" id="identificacionArticuloPerdido"></span></label>
+							</div>
+							<div class="mb-3 col-6">
+								<label class="form-label fw-bold">Quien entrega:&nbsp;&nbsp; <span class="fw-normal" id="recibeArticuloPerdido"></span></label>
+							</div>
+							<div class="mb-3 col-6">
+								<label class="form-label fw-bold">Interno:&nbsp;&nbsp; <span class="fw-normal" id="internoArticuloPerdido"></span></label>
+							</div>
+							<div class="mb-3 col-6">
+								<label class="form-label fw-bold">Externo:&nbsp;&nbsp; <span class="fw-normal" id="externoArticuloPerdido"></span></label>
+							</div>
+							<div class="mb-3 col-6">
+								<label class="form-label fw-bold">Area actual de resguardo del objeto:&nbsp;&nbsp; <span class="fw-normal" id="lockerArticuloPerdido"></span></label>
 							</div>
 						</div>
 					</div>
@@ -762,55 +825,6 @@
 		</div>
 	</div>
 
-	<!-- Modal Out Article Concessioned-->
-	<div class="modal fade" id="outArticleConModal" tabindex="-1"  aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5">Entrega de artículo</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-						<div class="mb-3 col-6">
-							<label class="form-label">Fecha: *</label>
-							<input type="date" class="form-control outArticleCon" id="outArticleFecha">
-						</div>
-						<div class="mb-3 col-6">
-							<label class="form-label">Hora: *</label>
-							<input type="time" class="form-control outArticleCon" id="outArticleHora">
-						</div>
-						<div class="mb-3 col-12">
-							<label class="form-label">Recibe: *</label>
-							<input type="text" class="form-control outArticleCon" id="outArticleRecibe">
-						</div>
-						
-						<div class="mb-3 col-6">
-							<label class="form-label">Estado: *</label><br>
-							<div class="form-check">
-								<input class="form-check-input outArticleCon" type="radio" name="flexRadioDefault" id="outArticleEstado">
-								<label class="form-check-label" for="outArticleEstado">
-								Abierto	
-								</label>
-							</div>
-							<div class="form-check">
-								<input class="form-check-input outArticleCon" type="radio" name="flexRadioDefault" id="outArticleEstado2" checked>
-								<label class="form-check-label" for="outArticleEstado2">
-								Cerrado
-								</label>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="devolucionArticulo('article')">Agregar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Modal Out Article -->
 	<div class="modal fade" id="articleFiltersModal" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content">
@@ -851,7 +865,7 @@
 	</div>
 
 </body>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
 <script type="text/javascript" src="./functions.js"></script>
 <script type="text/javascript" src="./components/locationCard.js"></script>
