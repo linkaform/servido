@@ -82,9 +82,9 @@ function verIncidencia(folio){
     $("#incidenciaIncidencia").text(capitalizeFirstLetter(selectedIncidencia.incidencia ||""))
     $("#comentarioIncidencia").text(selectedIncidencia.comentario_incidencia ||"")
     $("#prioridadIncidencia").text(capitalizeFirstLetter(selectedIncidencia.prioridad_incidencia ||""))
-    $("#tipoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.tipo_incidencia ||""))
-    $("#tipoDanoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.tipo_daño_incidencia ||""))
-    $("#danoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.daño_incidencia ||""))
+    // $("#tipoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.tipo_incidencia ||""))
+    $("#tipoDanoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.tipo_dano_incidencia[0] ||""))
+    $("#danoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.dano_incidencia ||""))
     $("#notificacionIncidencia").text(capitalizeFirstLetter(selectedIncidencia.notificacion_incidencia ||""))
 
     let divFotos = document.getElementById("evidenciaIncidencia")
@@ -103,7 +103,7 @@ function verIncidencia(folio){
         for(let file of selectedIncidencia.documento_incidencia){
             console.log("GOOO", file)
 
-            doc += `<a href="`+file.file_url+`" target="_blank">`+file.file_name+`</a>`
+            doc += `<a href="`+file.file_url+`" target="_blank" class="me-2">`+file.file_name+`</a>`
 
         }
     }
@@ -236,12 +236,12 @@ function limpiarModal(classInput, editAdd){
     let divPersona = document.getElementById("persona-input-form-"+editAdd);
     const elementsPersona = divPersona.querySelectorAll('.persona-div-'+editAdd);
     elementsPersona.forEach(function(input) {
-        if(input.id !== "repPersona"+capitalizeFirstLetter(editAdd)+"Incidencia" && input.id !== "repTipoDaño"+capitalizeFirstLetter(editAdd)+"Incidencia"){
+        if(input.id !== "repPersona"+capitalizeFirstLetter(editAdd)+"Incidencia" && input.id !== "repTipoDano"+capitalizeFirstLetter(editAdd)+"Incidencia"){
             input.parentElement.parentElement.remove();
         }
     });
-    let divAccion = document.getElementById("daño-input-form-"+editAdd);
-    const elementsAccion = divAccion.querySelectorAll('.daño-div-'+editAdd);
+    let divAccion = document.getElementById("dano-input-form-"+editAdd);
+    const elementsAccion = divAccion.querySelectorAll('.dano-div-'+editAdd);
     elementsAccion.forEach(function(input) {
         if(input.id !== "repResponsable"+capitalizeFirstLetter(editAdd)+"Incidencia" && input.id !== "repAccion"+capitalizeFirstLetter(editAdd)+"Incidencia" ){
             input.parentElement.parentElement.remove();
@@ -290,10 +290,10 @@ function getAllDataIncidencias(){
                                 ubicacion_incidencia: incidencia.ubicacion_incidencia||"",
                                 area_incidencia: incidencia.area_incidencia||"",
                                 incidencia: incidencia.incidencia||"",
-                                tipo_incidencia: incidencia.tipo_incidencia||"",
+                                //tipo_incidencia: incidencia.tipo_incidencia||"",
                                 comentario_incidencia: incidencia.comentario_incidencia||"",
-                                tipo_dano_incidencia: incidencia.tipo_daño_incidencia||"",
-                                dano_incidencia:incidencia.daño_incidencia||"",
+                                tipo_dano_incidencia: incidencia.tipo_dano_incidencia||"",
+                                dano_incidencia:incidencia.dano_incidencia||"",
                                 personas_involucradas_incidencia:incidencia.personas_involucradas_incidencia||"",
                                 acciones_tomadas_incidencia:incidencia.acciones_tomadas_incidencia||"",
                                 evidencia_incidencia:incidencia.evidencia_incidencia||"",
@@ -532,7 +532,6 @@ function initializeCatalogsFallas(dataCatalogs,boothsLocations){
 }
 
 async function abrirModalNuevaEditarIncidencia(folio=null,nuevoEditar='Nuevo'){
-    console.log(folio, nuevoEditar)
     selectedRowFolio=folio
     cleanCatalag(['ubicacion'+nuevoEditar+'Incidencia','area'+nuevoEditar+'Incidencia', 
         'reporta'+nuevoEditar+'Incidencia','incidencia'+nuevoEditar+'Incidencia'])
@@ -549,17 +548,16 @@ async function abrirModalNuevaEditarIncidencia(folio=null,nuevoEditar='Nuevo'){
     } catch (error) {
         console.error('Error al cargar los catálogos, ', error);
     }
-    console.log("INCIDECI SELEC",selectIncidencia)
     if(catalogsData.format.length>0){
         for(let obj of catalogsData.format){
             if (obj.objBody.option=="catalogo_area_empleado"){
-                obj.data=['Emiliano Zapata', 'Pedro Parmo']
+                //obj.data=['Emiliano Zapata', 'Pedro Parmo']
                 for(let name of obj.data){
                     selectReporta.innerHTML += '<option value="'+name+'">'+name+'</option>';
                 }
                 selectReporta.value="";
             }else if(obj.objBody.option =='catalogo_incidencias') {
-                obj.data=['Otro','Accidentes laborales, como resbalones, tropiezos o caídas']
+                //obj.data=['Otro','Accidentes laborales, como resbalones, tropiezos o caídas']
                 for(let inc of obj.data){
                     selectIncidencia.innerHTML += '<option value="'+inc+'">'+inc+'</option>';
                 }
@@ -594,18 +592,15 @@ async function abrirModalNuevaEditarIncidencia(folio=null,nuevoEditar='Nuevo'){
 }
 
 function llenarEditarIncidencia(selectArea,selectedIncidencia,selectUbicacion,selectIncidencia){
-    console.log("EDOCVOS",selectedIncidencia.incidencia)
     selectIncidencia.value= selectedIncidencia.incidencia
     selectUbicacion.value=selectedIncidencia.ubicacion_incidencia;
      let optionsCaseta = arrayUserBoothsLocations.filter(booth => {
         return booth.ubi == selectedIncidencia.ubicacion_incidencia;
     });
     selectArea.innerHTML=""; 
-    console.log("SEDFS",optionsCaseta)
     for (let obj of optionsCaseta){
         selectArea.innerHTML += '<option value="'+obj.name.toString()+'">'+obj.name+'</option>';
     }
-    console.log("FADEEE",selectedIncidencia)
     $('#ubicacionEditarIncidencia').val(selectedIncidencia.ubicacion_incidencia)
     $('#areaEditarIncidencia').val(selectedIncidencia.area_incidencia)
     $('#fechaHoraEditarIncidencia').val(selectedIncidencia.fecha_hora_incidencia)
@@ -614,8 +609,8 @@ function llenarEditarIncidencia(selectArea,selectedIncidencia,selectUbicacion,se
     $('#importanciaEditarIncidencia').val(selectedIncidencia.prioridad_incidencia)
     $('#tipoIncidenciaEditarIncidencia').val(selectedIncidencia.tipo_incidencia)
     $('#comentarioEditarIncidencia').val(selectedIncidencia.comentario_incidencia)
-    $('#tipoDañoEditarIncidencia').val(selectedIncidencia.tipo_dano_incidencia[0])
-    $('#dañoEditarIncidencia').val(selectedIncidencia.dano_incidencia)
+    $('#tipoDanoEditarIncidencia').val(selectedIncidencia.tipo_dano_incidencia[0])
+    $('#danoEditarIncidencia').val(selectedIncidencia.dano_incidencia)
     $('#notificacionEditarIncidencia').val(selectedIncidencia.notificacion_incidencia)
     $('#editIncidentModal').modal('show');
 }
@@ -925,14 +920,29 @@ function editarFallaModal(folio, fecha, ubicacion, area, falla, comentarios, gua
 }
 
 
+function verInputsDeposito(){
+    let selectedOption= document.getElementById('incidenciaNuevoIncidencia')
+    if(selectedOption.value =="Deposito"){
+        console.log('asdf')
+        $('#depositos-inputs').show();
+    }else{
+        $('#depositos-inputs').hide();
+    }
+}
+
 //FUNCION editar y validar la informacion al editar un incidencia
 function editarIncidencia(){
     $("#buttonEditarIncidencia").hide();
     $("#loadingButtonEditarIncidencia").show();
 
     let personas= getDataGrupoRepetitivo('persona-input-form-editar','.persona-div-editar' , 2)
-    let acciones= getDataGrupoRepetitivo('daño-input-form-editar','.daño-div-editar' , 2)
+    let acciones= getDataGrupoRepetitivo('dano-input-form-editar','.dano-div-editar' , 2)
     arrayResponses = arrayResponses.filter(obj => !obj.hasOwnProperty('error'));
+    let selected=''
+    for(d of dataTableIncidencias){
+        if(d.folio == selectedRowFolio)
+            selected = d
+    }
     for(let obj of arrayResponses){
         if( obj.hasOwnProperty('file_name') && obj.isImage==true){
             let { isImage, file_name, file  } = obj;
@@ -945,13 +955,13 @@ function editarIncidencia(){
     let data = getInputsValueByClass("contentEditarIncidencia")
     let data_incidence_update ={
         'reporta_incidencia': data.reportaEditarIncidencia,
-        'fecha_hora_incidencia':data.fechaHoraEditarIncidencia,
+        'fecha_hora_incidencia':formatDateToService(data.fechaHoraEditarIncidencia,
+            "loadingButtonEditarIncidencia","buttonEditarIncidencia")+':00',
         'ubicacion_incidencia': data.ubicacionEditarIncidencia,
         'area_incidencia': data.areaEditarIncidencia,
         'incidencia': data.incidenciaEditarIncidencia,
-        'tipo_incidencia': data.tipoEditarIncidencia,
         'comentario_incidencia': data.comentarioEditarIncidencia,
-        'tipo_dano_incidencia': data.tipoDanoEditarIncidencia,
+        'tipo_dano_incidencia': [data.tipoDanoEditarIncidencia],
         'dano_incidencia':data.danoEditarIncidencia,
         'personas_involucradas_incidencia':personas,
         'acciones_tomadas_incidencia':acciones,
@@ -960,91 +970,92 @@ function editarIncidencia(){
         'prioridad_incidencia':data.importanciaEditarIncidencia,
         'notificacion_incidencia':data.notificacionEditarIncidencia
     };
-
-    let selected=''
-    for(d of dataTableIncidencias){
-        if(d.folio == selectedRowFolio)
-            selected = d
-    }
-    
     let cleanSelected = (({ actions, checkboxColumn, folio,...rest }) => rest)(selected);
-    let partes=cleanSelected.date_incidence.split(" ")
-    let date = partes[0]+'T'+partes[1]
-    cleanSelected.date_incidence= date
     console.log("LIMPIARR",cleanSelected, data_incidence_update)
+
     let validateObj = encontrarCambios(cleanSelected,data_incidence_update)
-    if(Object.keys(validateObj).length == 0){
-        Swal.fire({
-            title: "Validación",
-            text: "Edita algo para actualizar la información.",
-            type: "warning"
-        });
-    } else {
-        if(validateObj.hasOwnProperty('date_incidence')){
-            let formatValue= validateObj.date_incidence.split('T')
-            validateObj.date_incidence=formatValue[0]+' '+formatValue[1]+':00'
-        }
-        fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_name: "incidencias.py",
-                option:"update_incidence",
-                data_incidence_update:validateObj,
-                folio: selected.folio
-            }),
-            headers:
-            {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt
-            },
-        })
-        .then(res => res.json())
-        .then(res => {
-            if (res.success) {
-                let data=res.response.data
-                if(data.status_code==400){
-                    let errores=[]
-                    for(let err in data.json){
-                        errores.push(data.json[err].label+': '+data.json[err].msg)
-                    }
-                    Swal.fire({
-                        title: "Error",
-                        text: errores.flat(),
-                        type: "error"
-                    });
-                    $("#buttonEditarIncidencia").show();
-                    $("#loadingButtonEditarIncidencia").hide();
-                }else if(data.status_code==202 && data.json.objects[0][selected.folio].success){
-                     Swal.fire({
-                        title: "Confirmación",
-                        text: "Incidencia actualizada correctamente.",
-                        type: "success"
-                    });
-                    let selectedIncidencia = dataTableIncidencias.find(x => x.folio === selected.folio);
-                    for (let key in validateObj){
-                        if(key=='date_incidence'){
-                            let formatDate= validateObj[key].slice(0,-3)
-                            validateObj[key]= formatDate
+
+    for(let o of selected.evidencia_incidencia){
+        validateObj.evidencia_incidencia.unshift(o)
+    }
+    for(let o of selected.documento_incidencia){
+        validateObj.documento_incidencia.unshift(o)
+    }
+    for(let o of selected.personas_involucradas_incidencia){
+        validateObj.personas_involucradas_incidencia.unshift(o)
+    }
+    for(let o of selected.acciones_tomadas_incidencia){
+        validateObj.acciones_tomadas_incidencia.unshift(o)
+    }
+
+    console.log("validateObj",validateObj)
+    let noOptional = (({ acciones_tomadas_incidencia, personas_involucradas_incidencia, documento_incidencia, evidencia_incidencia, reporta_incidencia,
+        tipo_dano_incidencia, view,check,...rest  }) => rest)(data_incidence_update);
+    if(!validarObjeto(noOptional)){
+        successMsg("Validación","Faltan campos por llenar, los campos marcados con asterisco son obligatorios.", "warning");
+        $("#loadingButtonEditarIncidencia").hide();
+        $("#buttonEditarIncidencia").show();
+    }else{
+        if(Object.keys(validateObj).length == 0){
+            Swal.fire({
+                title: "Validación",
+                text: "Edita algo para actualizar la información.",
+                type: "warning"
+            });
+            console.log("VALIDAR OBJ", validateObj)
+        } else {
+            fetch(url + urlScripts, {
+                method: 'POST',
+                body: JSON.stringify({
+                    script_name: "incidencias.py",
+                    option:"update_incidence",
+                    data_incidence_update:validateObj,
+                    folio: selected.folio
+                }),
+                headers:
+                {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+userJwt
+                },
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    let data=res.response.data
+                    if(data.status_code==400){
+                        errorAlert(data)
+                        $("#buttonEditarIncidencia").show();
+                        $("#loadingButtonEditarIncidencia").hide();
+                    }else if(data.status_code==202){
+                        successMsg("Confirmación", "Incidencia actualizada correctamente.")
+                        let selectedIncidencia = dataTableIncidencias.find(x => x.folio === selected.folio);
+                        for (let key in validateObj){
+                            if(key == 'evidencia_incidencia'||key == 'documento_incidencia'|| key == 'personas_involucradas_incidencia' || key =='acciones_tomadas_incidencia'){
+                                selectedIncidencia[key]=validateObj[key]
+                                /*if(validateObj[key].length>0){
+                                    validateObj[key]= data_incidence_update[key].unshift(validateObj[key])
+                                }else{
+                                    validateObj[key]= data_incidence_update[key]
+                                }
+                                selectedIncidencia[key]= validateObj[key]*/
+                            }
                         }
-                        selectedIncidencia[key]= validateObj[key]
+                        tables["tableIncidencias"].setData(dataTableIncidencias);
+                        $("#editIncidentModal").modal('hide')
+                        $("#buttonEditarIncidencia").show();
+                        $("#loadingButtonEditarIncidencia").hide();
                     }
-                    tables["tableIncidencias"].setData(dataTableIncidencias);
-                    $("#editIncidentModal").modal('hide')
+                       
+                }else{
+                    errorAlert(res)
                     $("#buttonEditarIncidencia").show();
                     $("#loadingButtonEditarIncidencia").hide();
                 }
-                   
-            }else{
-                Swal.fire({
-                    title: "Error",
-                    text: res.error,
-                    type: "Error"
-                });
-                $("#buttonEditarIncidencia").show();
-                $("#loadingButtonEditarIncidencia").hide();
-            }
-        });       
+            });       
+        }
     }
+
+
 }
 
 
@@ -1152,16 +1163,15 @@ function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
     let divP = document.getElementById(divPadre);
     let inputs = divP.querySelectorAll(inputsHijos);
     let array=[]
-
     for (let i = 0; i < inputs.length; i += cantidadInputs) { // Incrementar de dos en dos
         const datoInput1 = inputs[i].value; // Input
         const dataInput2 = inputs[i + 1].value; // Select
         let objTemporal={}
         if (datoInput1 && dataInput2) { // Verificar que el input no esté vacío
-            if(inputsHijos=='.persona-div-nuevo'){
+            if(inputsHijos=='.persona-div-nuevo'|| inputsHijos=='.persona-div-editar'){
                 objTemporal.nombre_completo= datoInput1;
                 objTemporal.tipo_persona= dataInput2;
-            }else if(inputsHijos=='.persona-div-nuevo'){
+            }else if(inputsHijos=='.dano-div-nuevo' ||inputsHijos=='.dano-div-editar'){
                 objTemporal.responsable_accion= datoInput1;
                 objTemporal.acciones_tomadas= dataInput2;
             }
@@ -1176,7 +1186,8 @@ function nuevaIncidencia(){
     $("#buttonAgregarIncidencia").hide();
 
     let personas= getDataGrupoRepetitivo('persona-input-form-nuevo','.persona-div-nuevo' , 2)
-    let acciones= getDataGrupoRepetitivo('daño-input-form-nuevo','.daño-div-nuevo' , 2)
+    let acciones= getDataGrupoRepetitivo('dano-input-form-nuevo','.dano-div-nuevo' , 2)
+    console.log("MAJKASNK", acciones)
     arrayResponses = arrayResponses.filter(obj => !obj.hasOwnProperty('error'));
     for(let obj of arrayResponses){
         if( obj.hasOwnProperty('file_name') && obj.isImage==true){
@@ -1190,20 +1201,21 @@ function nuevaIncidencia(){
     let data = getInputsValueByClass("contentNuevoIncidencia")
     let data_incidence ={
         'reporta_incidencia': data.reportaNuevoIncidencia,
-        'fecha_hora_incidencia':data.fechaHoraNuevoIncidencia,
+        'fecha_hora_incidencia':formatDateToService(data.fechaHoraNuevoIncidencia)+':00',
         'ubicacion_incidencia': data.ubicacionNuevoIncidencia,
         'area_incidencia': data.areaNuevoIncidencia,
         'incidencia': data.incidenciaNuevoIncidencia,
-        'tipo_incidencia': data.tipoNuevoIncidencia,
         'comentario_incidencia': data.comentarioNuevoIncidencia,
-        'tipo_dano_incidencia': data.tipoDanoNuevoIncidencia,
+        'tipo_dano_incidencia': [data.tipoDanoNuevoIncidencia],
         'dano_incidencia':data.danoNuevoIncidencia,
         'personas_involucradas_incidencia':personas,
         'acciones_tomadas_incidencia':acciones,
         'evidencia_incidencia':arraySuccessFoto,
         'documento_incidencia':arraySuccessArchivo,
         'prioridad_incidencia':data.importanciaNuevoIncidencia,
-        'notificacion_incidencia':data.notificacionNuevoIncidencia
+        'notificacion_incidencia':data.notificacionNuevoIncidencia,
+        'total_deposito_incidencia':data.totalDepositoNuevoIncidencia,
+        'datos_deposito_incidencia': [{'tipo_deposito': data.tipoDepositoNuevoIncidencia, 'cantidad': data.cantidadNuevoIncidencia}]
     };
 
     console.log("DATA INCIDENCIA", data_incidence)
@@ -1223,7 +1235,7 @@ function nuevaIncidencia(){
             method: 'POST',
             body: JSON.stringify({
                 script_name: "incidencias.py",
-                option:"new_incidence",
+                option:"nueva_incidencia",
                 data_incidence: data_incidence
             }),
             headers:
@@ -1249,30 +1261,23 @@ function nuevaIncidencia(){
                     $("#loadingButtonAgregarIncidencia").hide();
                     $("#buttonAgregarIncidencia").show();
                 }else if(data.status_code==202 || data.status_code==201){
-                    Swal.fire({
-                        title: "Confirmación",
-                        text: "Incidencia creada correctamente.",
-                        type: "success"
-                    });
+                    successMsg("Confirmación", "Nueva incidencia creada correctamente.")
+                    console.log("HII",data_incidence.ubicacion_incidencia == selectLocation.value)
                     if(data_incidence.ubicacion_incidencia == selectLocation.value){
                         //Solo lo agrega a la tabla si estan en la misma ubicacion y caseta, en case de no seleccionar caseta
                         // y tener la misma ubicacion la agrega
                         if((selectCaseta.value !== "" && data_incidence.area_incidencia == selectCaseta.value) || (selectCaseta.value == "" )){
                             data_incidence.folio= data.json.folio ? data.json.folio :''
-                            dataTableIncidencias = dataTableIncidencias.unshift(data_incidence);
+                            dataTableIncidencias.unshift(data_incidence);
                         }
                     }
                     tables["tableIncidencias"].setData(dataTableIncidencias);
-                    $("#newIncidentModal").modal('hide');
                     $("#loadingButtonAgregarIncidencia").hide();
                     $("#buttonAgregarIncidencia").show();
+                    $("#newIncidentModal").modal('hide');
                 }
             }else{
-                 Swal.fire({
-                    title: "Error",
-                    text: res.error,
-                    type: "error"
-                });
+                 errorAlert(res)
                 $("#loadingButtonAgregarIncidencia").hide();
                 $("#buttonAgregarIncidencia").show();
             }
@@ -1683,7 +1688,7 @@ function setAddPersona(editAdd ="nueva"){
                 <label class="form-label">Personas Involucradas: </label>
                 <input type="text" class="form-control persona-div-`+editAdd+` mb-2" 
                 id="repPersona`+editAdd+`Incidencia-`+randomID+`" placeholder="Nombre completo">
-                    <select class="form-select persona-div-`+editAdd+`" id="repTipoDaño`+editAdd+`Incidencia-`+randomID+`">
+                    <select class="form-select persona-div-`+editAdd+`" id="repTipoDano`+editAdd+`Incidencia-`+randomID+`">
                         <option value="afectado">Afectado</option>
                         <option value="testigo">Testigo</option>
                     </select>
@@ -1702,7 +1707,6 @@ function setAddPersona(editAdd ="nueva"){
 //FUNCION para elimar foto en el modal de agregar nota
 function setDeletePersona(editAdd ="nuevo",id){
     const elements = document.querySelectorAll('.persona-div-'+editAdd);
-    console.log("ELEMENTOS",elements)
     const count = elements.length;
     if(count > 1){
         const elements = document.getElementsByClassName('div-persona-'+editAdd+'-'+id);
@@ -1716,11 +1720,12 @@ function setDeletePersona(editAdd ="nuevo",id){
 function setAddDaño(editAdd ="nueva"){
     let randomID = Date.now();
     let newItem=`
-        <div class="d-flex mb-3 div-daño-`+editAdd+`-`+randomID+`" id="div-daño-`+randomID+`">
+        <div class="d-flex mb-3 div-dano-`+editAdd+`-`+randomID+`" id="div-dano-`+randomID+`">
             <div class="flex-grow-1">
                 <label class="form-label">Acciones Tomadas: </label>
-                <input type="text" class="form-control daño-div-`+editAdd+` mb-2" id="fileInputArchivo-nuevo" placeholder="Responsable de la accion">
-                <textarea class="form-control daño-div-`+editAdd+`" rows="2" id="tipoDañoNuevaIncidencia" placeholder="Acciones tomadas"></textarea>
+                <input type="text" class="form-control dano-div-`+editAdd+` mb-2" 
+                id="repResponsable`+editAdd+`Incidencia-`+randomID+`" placeholder="Responsable de la accion">
+                <textarea class="form-control dano-div-`+editAdd+`" rows="2" id="repAccion`+editAdd+`Incidencia-`+randomID+`" placeholder="Acciones tomadas"></textarea>
             </div>
             <div>
                 <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteDaño('`+editAdd+`',`+randomID+`);return false;">
@@ -1730,17 +1735,16 @@ function setAddDaño(editAdd ="nueva"){
         </div>
 
     `;
-    $('#daño-input-form-'+editAdd).append(newItem) 
+    $('#dano-input-form-'+editAdd).append(newItem) 
 }
 
 
 //FUNCION para elimar foto en el modal de agregar nota
 function setDeleteDaño(editAdd ="nuevo",id){
-    const elements = document.querySelectorAll('.daño-div-'+editAdd);
-    console.log("ELEMENTOS",elements)
+    const elements = document.querySelectorAll('.dano-div-'+editAdd);
     const count = elements.length;
     if(count > 1){
-        const elements = document.getElementsByClassName('div-daño-'+editAdd+'-'+id);
+        const elements = document.getElementsByClassName('div-dano-'+editAdd+'-'+id);
         while(elements.length > 0 && id !==123){
             elements[0].parentNode.removeChild(elements[0]);
         }

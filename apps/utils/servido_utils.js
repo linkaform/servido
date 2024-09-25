@@ -455,6 +455,27 @@ function validarEmail(email){
     return result
 }
 
+
+function formatDateToService(isoDateStr, buttonLoading, button){
+    const dateObj = new Date(isoDateStr);
+    if(dateObj!==""){
+        let formattedDateStr
+        try {
+            console.log(isoDateStr)
+            formattedDateStr = dateObj.toISOString().replace('T', ' ').substring(0, 16);
+        }catch{
+            errorAlert("Selecciona una fecha y hora válida.","Validación", "warning")
+            if(buttonLoading){
+                $("#"+buttonLoading).hide();
+            }
+            if(button){
+                $("#"+button).show();
+            }
+        }
+        return formattedDateStr;
+    }
+}
+
 function getTodayDateTime(){
     let fecha = new Date();
     // Obtener los componentes individuales de la fecha
