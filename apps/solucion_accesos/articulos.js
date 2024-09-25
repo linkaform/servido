@@ -1051,9 +1051,6 @@ function formatDate(isoDateStr){
             $("#buttonNuevoArticuloLose").show();
         }
         return formattedDateStr;
-    }else {
-        let fort="2021-02-12 01:32"
-        return fort
     }
 }
 
@@ -1491,7 +1488,6 @@ function editarArticuloLoseModal(){
         if(d.folio == selectedRowFolio)
             selected = d
     }
-    console.log("DATA OBTENIDAA", data)
     let data_article_update={
         'estatus_perdido':'pendiente',
         'foto_perdido': fotosNuevoArticulo.foto,
@@ -1512,8 +1508,6 @@ function editarArticuloLoseModal(){
     let cleanSelected = (({ actions, checkboxColumn, folio,foto_concesion,recibe_concesion,updated_at, type_perdido, 
         date_entrega_perdido,foto_recibe_perdido,identificacion_recibe_perdido,recibe_perdido,reporta_perdido,
         telefono_recibe_perdido,guard_perdido,...rest }) => rest)(selected);
-        console.log("ORIGINAL RELLENO",cleanSelected)
-        console.log("NUEVA INFOMAC",data_article_update)
 
     if(data_article_update.foto_perdido==0){
         data_article_update.foto_perdido=cleanSelected.foto_perdido
@@ -1530,7 +1524,6 @@ function editarArticuloLoseModal(){
         cleanSelected.date_entrega_perdido = date
     } 
 
-    console.log(cleanSelected,data_article_update)
     let validateObj = encontrarCambios(cleanSelected,data_article_update)
     if(Object.keys(validateObj).length == 0){
         Swal.fire({
