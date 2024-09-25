@@ -224,9 +224,9 @@ function getAllData(area="", location="", loading=false){
                     }
                     let userName=getCookie('userName')
 
-                    if(getCookie('userCaseta') !== data.location.area){
+                    /*if(getCookie('userCaseta') !== data.location.area){
                         getNotes();
-                    }else{
+                    }else{*/
                         dataTableNotas=[]
                         if(notes.length > 0){
                             for(let note of notes){
@@ -247,7 +247,7 @@ function getAllData(area="", location="", loading=false){
                         }else{
                             dataTableNotas = []
                         }
-                    }
+                    //}
                     if(tables['tableGuardiasApoyo']){
                         tables['tableGuardiasApoyo'].setData(dataTableGuardiasApoyo)
                     }else{
