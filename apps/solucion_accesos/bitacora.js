@@ -575,6 +575,7 @@ function loadDataTables(){
 }
 
 function openDataModal(folio){
+    $('#documento').text('')
     /*
     fetch(url + urlScripts, {
             method: 'POST',
@@ -697,9 +698,10 @@ function openDataModal(folio){
     if(registroSeleccionado.hasOwnProperty('grupo_areas_acceso')){
         listaAccesos = registroSeleccionado.grupo_areas_acceso.length > 0 ? registroSeleccionado.grupo_areas_acceso: [];
     }
+    console.log("REVISAR",listaAccesos)
     for (let i = 0; i < listaAccesos.length; i++) {
         let newRow = $('<tr>');
-        newRow.append($('<td>').text(listaAccesos[i].nombre_area||""));
+        newRow.append($('<td>').text(listaAccesos[i].note_booth||""));
         newRow.append('</tr>');
         $('#tableAccesos').append(newRow);
     }

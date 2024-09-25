@@ -1688,27 +1688,26 @@ function devolucionArticulo(){
                     let data=res.response.data
                     if(data.status_code==400){
                         errorAlert(data);
-
-                        Swal.close()
-                    }else if (data.status_code==202){
-                        if(data.json.hasOwnProperty('date_entrega_perdido')){
-                            let formatDate= data.json.date_entrega_perdido.slice(0,-3)
-                            selectedArticleLose[key]= formatDate
-                        }else{
-                            selectedArticleLose[key]= ""
-                        }
-                        for(key of data_article_update){
+                        //Swal.close()
+                    }else if (data.status_code==202 || data.status_code==202){
+                        for(let key in data_article_update){
                             selectedArticleLose[key]= data_article_update[key]
                         }
-                        tables["tableArticlesLose"].setData(dataTableArticlesLose);
+                        if(data.json.hasOwnProperty('date_entrega_perdido')){
+                            let formatDate= data.json.date_entrega_perdido.slice(0,-3)
+                            selectedArticleLose.date_entrega_perdido= formatDate
+                        }else{
+                            selectedArticleLose.date_entrega_perdido= ""
+                        }
                         Swal.close()
-                        $("#outArticleLoseModal").modal('hide')
+                        tables["tableArticlesLose"].setData(dataTableArticlesLose);
                         successMsg("Confirmación", "Artículo entregado correctamente.", "success")
-                        location.reload()
+                        $("#outArticleLoseModal").modal('hide')
+                        //location.reload()
                     }
                 }else{
                     errorAlert(res)
-                    Swal.close()
+                    //Swal.close()
                 }
             })
      }
