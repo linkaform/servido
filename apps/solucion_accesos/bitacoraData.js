@@ -10,11 +10,11 @@ const columsData1 = [
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			console.log("DATAAA", data.status_visita)
 			let divActions = '<div class="row d-flex">';
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('Data','${folio}')" ><i class="fa-solid fa-user"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('Card','${folio}')"><i class="fa-solid fa-address-card"></i></button>`;
 			divActions += `<button class="btn-table-bitacora" onClick="setModal('equiposModal','${data.id}', '${folio}')"><i class="fa-solid fa-hammer"></i></button>`;
 			divActions += `<button class="btn-table-bitacora" onClick="setModal('vehiculosModal','${data.id}', '${folio}')" ><i class="fa-solid fa-car"></i></button>`;
-			divActions += `<button class="btn-table-bitacora" onClick="setModal('Card','${folio}')"><i class="fa-solid fa-address-card"></i></button>`;
 			divActions += `<button class="btn-table-bitacora" onClick="alertSalida('${data.codigo_qr}', '${data.status_visita}')" ><i class="fa-solid fa-arrow-right-from-bracket"></i></button>`;
-			divActions += `<button class="btn-table-bitacora" onClick="setModal('Data','${folio}')" ><i class="fa-solid fa-user"></i></button>`;
 			divActions += '</div>';
 			return divActions;
 			//`<button  class="btn-table-bitacora" onClick="setModal('Tools',${folio})"><i class="fa-solid fa-car"></i></button> `;

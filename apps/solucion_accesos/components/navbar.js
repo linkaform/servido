@@ -10,7 +10,7 @@ class lkfNavbarComponent extends HTMLElement{
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
 	<nav class="navbar header m-0 p-0 mb-5" id='myCustomNavBar'>
-        <div class=" navbar-brand">
+        <div class="navbar-brand">
 			<img src="" height="40" height="60" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
         </div>
         <div class="navbar-brand navbarShowHide customNoBorder">

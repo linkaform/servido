@@ -1187,7 +1187,6 @@ function nuevaIncidencia(){
 
     let personas= getDataGrupoRepetitivo('persona-input-form-nuevo','.persona-div-nuevo' , 2)
     let acciones= getDataGrupoRepetitivo('dano-input-form-nuevo','.dano-div-nuevo' , 2)
-    console.log("MAJKASNK", acciones)
     arrayResponses = arrayResponses.filter(obj => !obj.hasOwnProperty('error'));
     for(let obj of arrayResponses){
         if( obj.hasOwnProperty('file_name') && obj.isImage==true){
@@ -1220,7 +1219,7 @@ function nuevaIncidencia(){
 
     console.log("DATA INCIDENCIA", data_incidence)
     let noOptional = (({ acciones_tomadas_incidencia, personas_involucradas_incidencia, documento_incidencia, evidencia_incidencia, reporta_incidencia,
-        tipo_dano_incidencia, view,check,...rest }) => rest)(data_incidence);
+        tipo_dano_incidencia, total_deposito_incidencia, datos_deposito_incidencia,view,check,...rest }) => rest)(data_incidence);
     console.log("NO OPCIONAL", noOptional)
     if(!validarObjeto(noOptional)){
         Swal.fire({
@@ -1231,57 +1230,71 @@ function nuevaIncidencia(){
         $("#loadingButtonAgregarIncidencia").hide();
         $("#buttonAgregarIncidencia").show();
     } else {
-        fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_name: "incidencias.py",
-                option:"nueva_incidencia",
-                data_incidence: data_incidence
-            }),
-            headers:
-            {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt
-            },
-        })
-        .then(res => res.json())
-        .then(res => {
-            if(res.success){
-                let data=res.response.data
-                if(data.status_code==400 || data.status_code==401){
-                    let errores=[]
-                    for(let err in data.json){
-                        errores.push(data.json[err].label+': '+data.json[err].msg)
-                    }
-                    Swal.fire({
-                        title: "Error",
-                        text: errores.flat(),
-                        type: "error"
-                    });
-                    $("#loadingButtonAgregarIncidencia").hide();
-                    $("#buttonAgregarIncidencia").show();
-                }else if(data.status_code==202 || data.status_code==201){
-                    successMsg("Confirmación", "Nueva incidencia creada correctamente.")
-                    console.log("HII",data_incidence.ubicacion_incidencia == selectLocation.value)
-                    if(data_incidence.ubicacion_incidencia == selectLocation.value){
-                        //Solo lo agrega a la tabla si estan en la misma ubicacion y caseta, en case de no seleccionar caseta
-                        // y tener la misma ubicacion la agrega
-                        if((selectCaseta.value !== "" && data_incidence.area_incidencia == selectCaseta.value) || (selectCaseta.value == "" )){
-                            data_incidence.folio= data.json.folio ? data.json.folio :''
-                            dataTableIncidencias.unshift(data_incidence);
-                        }
-                    }
-                    tables["tableIncidencias"].setData(dataTableIncidencias);
-                    $("#loadingButtonAgregarIncidencia").hide();
-                    $("#buttonAgregarIncidencia").show();
-                    $("#newIncidentModal").modal('hide');
-                }
+        let go=false
+        if(data.incidenciaNuevoIncidencia =='Deposito'){
+            if(tienePropiedadesVacias({vacio:data.notificacionNuevoIncidencia}) || tienePropiedadesVacias(data.totalDepositoNuevoIncidencia)){
+                errorAlert("Faltan datos por llenar", 'Validación', 'warning')
             }else{
-                 errorAlert(res)
-                $("#loadingButtonAgregarIncidencia").hide();
-                $("#buttonAgregarIncidencia").show();
+                go=true
             }
-        });
+        }else {
+            go=true
+            delete data_incidence.total_deposito_incidencia;
+            delete data_incidence.datos_deposito_incidencia;
+        }
+        if (go){
+            fetch(url + urlScripts, {
+                method: 'POST',
+                body: JSON.stringify({
+                    script_name: "incidencias.py",
+                    option:"nueva_incidencia",
+                    data_incidence: data_incidence
+                }),
+                headers:
+                {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+userJwt
+                },
+            })
+            .then(res => res.json())
+            .then(res => {
+                if(res.success){
+                    let data=res.response.data
+                    if(data.status_code==400 || data.status_code==401){
+                        let errores=[]
+                        for(let err in data.json){
+                            errores.push(data.json[err].label+': '+data.json[err].msg)
+                        }
+                        Swal.fire({
+                            title: "Error",
+                            text: errores.flat(),
+                            type: "error"
+                        });
+                        $("#loadingButtonAgregarIncidencia").hide();
+                        $("#buttonAgregarIncidencia").show();
+                    }else if(data.status_code==202 || data.status_code==201){
+                        successMsg("Confirmación", "Nueva incidencia creada correctamente.")
+                        console.log("HII",data_incidence.ubicacion_incidencia == selectLocation.value)
+                        if(data_incidence.ubicacion_incidencia == selectLocation.value){
+                            //Solo lo agrega a la tabla si estan en la misma ubicacion y caseta, en case de no seleccionar caseta
+                            // y tener la misma ubicacion la agrega
+                            if((selectCaseta.value !== "" && data_incidence.area_incidencia == selectCaseta.value) || (selectCaseta.value == "" )){
+                                data_incidence.folio= data.json.folio ? data.json.folio :''
+                                dataTableIncidencias.unshift(data_incidence);
+                            }
+                        }
+                        tables["tableIncidencias"].setData(dataTableIncidencias);
+                        $("#loadingButtonAgregarIncidencia").hide();
+                        $("#buttonAgregarIncidencia").show();
+                        $("#newIncidentModal").modal('hide');
+                    }
+                }else{
+                     errorAlert(res)
+                    $("#loadingButtonAgregarIncidencia").hide();
+                    $("#buttonAgregarIncidencia").show();
+                }
+            });
+        }
     }
 }
 
