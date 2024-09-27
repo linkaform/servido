@@ -43,14 +43,10 @@ window.onload = function(){
         reloadTableArticulosPer(response2.response.data)
     };
     changeButtonColor();
-    getInfoCatalogs();
+    //getInfoCatalogs();
     fillCatalogs();
-
     allDataArticulosCon();
     allDataArticulosPer();
-	
-	setSpinner(true, 'divSpinner');
-	
 	
     document.querySelector("#tableArticles").addEventListener("scroll", function(){
         var scrollLeft = this.scrollLeft;
@@ -79,10 +75,24 @@ window.onload = function(){
             $('#labelGuardiaDeApoyo').remove();
         })
     }
-
     selectCaseta.value=""
     selectCaseta.disabled=true
 }
+
+$("#checkboxTodasLasCasetas").on("click",async function()  {
+    if ($(this).is(':checked')) {
+        selectCaseta.value=""
+        selectCaseta.disabled=true
+        let response = await fetchOnChangeCaseta('articulos_perdidos.py', 'get_articles','', selectLocation.value)
+        reloadTableArticulosPer(response.response.data)
+        //let response2 = await fetchOnChangeCaseta('script_turnos.py', 'get_lockers', '', selectLocation.value)
+        //reloadTableLockers(response2.response.data)
+    } else {
+        console.log("NO SRIVE")
+        selectCaseta.value=''
+        selectCaseta.disabled=false
+    }
+})
 
 window.addEventListener('storage', function(event) {
     if (event.key === 'cerrarSesion') {
@@ -103,10 +113,12 @@ function setModal(type = 'none',id){
     }else if(type == 'OutArticleCon'){
         $('#outArticleConModal').modal('show');
     }else if(type == 'NewArticleLose'){
+        limpiarArticuloLose()
         abrirNuevoEditarArticuloPerdido(null,"Nuevo")
     }else if(type == 'ViewArticleLose'){
         verArticuloPerdido(id)
     }else if(type == 'EditArticleLose'){
+        limpiarArticuloLose('Editar')
         abrirNuevoEditarArticuloPerdido(id,"Editar")
     }else if(type == 'OutArticleLose'){
         selectedRowFolio=id
@@ -150,76 +162,6 @@ function onChangeFiltroEstadoPerdido(){
     })
 }
 
-
-async function cargarCatalogos(bodys=[]) {
-    let failedRequests=[]
-    let format=[]
-    let requests=[]
-    if(bodys.length>0){
-        loadingService()
-        for (let body of bodys){
-            requests.push({
-                url: url + urlScripts,
-                options: {
-                    method: 'POST',
-                    body:JSON.stringify(body),
-                    headers:
-                    {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer '+userJwt
-                    },
-                },
-            })
-        }
-         // Crea un array de promesas fetch
-        const fetchPromises = requests.map((request, index) =>
-             fetch(request.url, request.options)
-                .then(async response => {
-                    if (!response.ok) {
-                        let objBody= JSON.parse(request.options.body)
-                        failedRequests.push(objBody.option)
-                        Swal.close()
-                        return Promise.reject({
-                            index,
-                            success:false,
-                            url: request.url,
-                            status: response.status,
-                            error: objBody.option,
-                            msj:`Error en la solicitud: ${objBody.option}, Se obtuvo status code: ${response.status}`
-                        });
-                    }else{
-                        let objBody= JSON.parse(request.options.body)
-                        const data = await response.json();
-                        Swal.close()
-                        console.log("CERRARR")
-                        return { index, url: request.url, data, objBody: objBody};
-                    }
-                })
-                .catch(error => {
-                    // Captura y maneja errores de red o de respuesta
-                    let objBody= JSON.parse(request.options.body)
-                    Swal.close()
-                    return {
-                        index,
-                        url: request.url,
-                        success:false,
-                        error: objBody.option,
-                        msj: `Error en la solicitud: ${objBody.option}, Se obtuvo status code: ${response.status}`
-                    };
-                })
-        );
-        // Ejecuta todas las promesas
-        const results = await Promise.allSettled(fetchPromises);
-
-        let successfulRequests = results
-            .filter(result => result.status === 'fulfilled' && result.value.data.success)
-            .map(result => result);
-        for (let res of successfulRequests){
-            format.push({objBody: res.value.objBody, data: res.value.data.response.data})
-        }
-    }
-    return {format,failedRequests}
-}
 
 function reloadTableArticulosCon(data,caseta){
     dataTableArticles=[]
@@ -507,46 +449,61 @@ function verArticulosPerdidosAlert(folio){
 
 //FUNCION Otener informacion inciia
 function getInfoCatalogs(){
-     fetch(url + urlScripts, {
-    method: 'POST',
-    body: JSON.stringify({
-        script_name: 'script_turnos.py',
-        option:'get_user_booths'
-    }),
-    headers:
-        {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            if(user !='' && userJwt!=''){
-                arrayUserBoothsLocations=[]
-                let userBooths=res.response.data
-                if(userBooths.length>0){
-                    for(let booth of userBooths){
-                        arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio})
-                    }
-
-                     dataCatalogs={
-                        "persona_nombre_concesion":["Fernando Sntibañez", "Jacinto Sánchez Hil"],
-                        "guard_perdido":["Fernando Sntibañez", "Jacinto Sánchez Hil"],
-                        //"department":["Seguridad","Departamento 2","Departamento 3"],
-                        "solicita_concesion":["compartida", "persona", "area"],
-                        "articulos":{"concession_articles": 15,"lost_articles":20},
-                        "area_concesion":["Recursos eléctricos","Recursos eléctricos"],
-                        "area_perdido":["Recursos eléctricos","Recursos eléctricos"]
-                    }
-                    initializeCatalogsArticulosCon(dataCatalogs,arrayUserBoothsLocations)
-                    initializeCatalogsArticulosLose(dataCatalogs,arrayUserBoothsLocations)
-                }else{
+    if(getCookie('arrayUserBoothsLocations')==''){
+        fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'script_turnos.py',
+            option:'get_user_booths'
+        }),
+        headers:
+            {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                if(user !='' && userJwt!=''){
                     arrayUserBoothsLocations=[]
+                    let userBooths=res.response.data
+                    if(userBooths.length>0){
+                        for(let booth of userBooths){
+                            arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio})
+                        }
+
+                         dataCatalogs={
+                            "persona_nombre_concesion":["Fernando Sntibañez", "Jacinto Sánchez Hil"],
+                            "guard_perdido":["Fernando Sntibañez", "Jacinto Sánchez Hil"],
+                            //"department":["Seguridad","Departamento 2","Departamento 3"],
+                            "solicita_concesion":["compartida", "persona", "area"],
+                            "articulos":{"concession_articles": 15,"lost_articles":20},
+                            "area_concesion":["Recursos eléctricos","Recursos eléctricos"],
+                            "area_perdido":["Recursos eléctricos","Recursos eléctricos"]
+                        }
+                        initializeCatalogsArticulosCon(dataCatalogs,arrayUserBoothsLocations)
+                        initializeCatalogsArticulosLose(dataCatalogs,arrayUserBoothsLocations)
+                    }else{
+                        arrayUserBoothsLocations=[]
+                    }
                 }
             }
+        })
+    }else{
+        arrayUserBoothsLocations= JSON.parse(getCookie('arrayUserBoothsLocations'))
+        dataCatalogs={
+            "persona_nombre_concesion":["Fernando Sntibañez", "Jacinto Sánchez Hil"],
+            "guard_perdido":["Fernando Sntibañez", "Jacinto Sánchez Hil"],
+            //"department":["Seguridad","Departamento 2","Departamento 3"],
+            "solicita_concesion":["compartida", "persona", "area"],
+            "articulos":{"concession_articles": 15,"lost_articles":20},
+            "area_concesion":["Recursos eléctricos","Recursos eléctricos"],
+            "area_perdido":["Recursos eléctricos","Recursos eléctricos"]
         }
-    })
+        initializeCatalogsArticulosCon(dataCatalogs,arrayUserBoothsLocations)
+        initializeCatalogsArticulosLose(dataCatalogs,arrayUserBoothsLocations)
+    }
 	//INFO: poner aqui FETCH para traer los catalogos y la informacion de las tablas y lo sig agregarlo dentro del response
     //INFO: los array que estan en el archivo incidencias data se llenaran desde esta fetch
     //al igual aqui se llenara la iformacion de la tablas, dataTableArticle y dataTableArticleLose
@@ -747,7 +704,7 @@ async function abrirNuevoEditarArticuloPerdido(folio = null, nuevoEditar = "Nuev
         let requests=[{script_name:'gafetes_lockers.py',option:'get_lockers',status:'Disponible',location: selectLocation.value /*, tipo_locker:"Objetos Perdidos",*/},
                     {script_name:'articulos_perdidos.py',option:'catalogo_area_empleado'},
                     {script_name:'articulos_perdidos.py',option:'catalogo_tipo_articulo'}]
-        console.log("SELECTED ARTICULO", selectedArticulo.tipo_articulo_perdido)
+
         if(selectedArticulo.hasOwnProperty('tipo_articulo_perdido')){
             if (selectedArticulo.tipo_articulo_perdido !== null && selectedArticulo.tipo_articulo_perdido !== ''){
                 requests.push({script_name:'articulos_perdidos.py',option:'catalogo_tipo_articulo', tipo:selectedArticulo.tipo_articulo_perdido })
@@ -779,7 +736,13 @@ async function abrirNuevoEditarArticuloPerdido(folio = null, nuevoEditar = "Nuev
             }
         }
     } 
+
         let locationsUnique = new Set();
+        if(getCookie("arrayUserBoothsLocations")==""){
+            getInfoAndCatalogos()
+        }else{
+            arrayUserBoothsLocations=JSON.parse(getCookie('arrayUserBoothsLocations'))
+        }
         arrayUserBoothsLocations.forEach(function(booth) {
             locationsUnique.add(booth.ubi);
         });
@@ -887,7 +850,7 @@ function verArticuloPerdido(folio){
     let fotos=""
     if(selectedArticulo.hasOwnProperty('foto_perdido')){
         for(let foto of selectedArticulo.foto_perdido){
-            fotos += `<img id="imgArticuloPerdido" src="`+foto.file_url+`" style="object-fit: contain;" height="180" class="me-2">`
+            fotos += `<img id="imgArticuloPerdido" src="`+foto.file_url+`" style="object-fit: contain;"  class="me-2">`
         }
     }
     divFotos.innerHTML = fotos
@@ -1032,34 +995,48 @@ function limpiarArticuloLose(editAdd="Nuevo"){
     $("#selectArticulo"+editAdd+"ArticuloLose").val("")
     $("#selectUbicacion"+editAdd+"ArticuloLose").val("")
     $("#tipoArticulo"+editAdd+"ArticuloLose").val("")
+    $('input[name="outArticleLoseModalEstatus"]').prop('checked', false);
 
-    let divFoto = document.getElementById("inputFileCard");
-    divFoto.value = ''; 
-    $('#inputFileCard').val('')
-    let imgElement = document.getElementById('imgCard');
-    $('#imgCard').val('')
-    imgElement.src = '';
-    let divCard= document.getElementById('containerCard')
-    divCard.innerHTML=""
-    divCard.display="none"
-    if(editAdd=='Editar'){
+    if(editAdd=="Editar"){
         flagVideoUser=false
         currentStream=null
         $('#buttonTakeUser').show();
         $('#buttonTakeUser').prop('disabled', false);
         $('#buttonSaveUser').hide();
-        // Ocultar el canvas y la imagen
-        $('#canvasPhotoUser').hide();
         $('#imgUser').hide();
-        $('#imgUser').css('display', 'none')
-        // Habilitar el input de archivo
-        $('#inputFileUser').prop('disabled', false);
-        // Limpiar el contenido del canvas y la imagen
-        $('#canvasPhotoUser')[0].getContext('2d').clearRect(0, 0, $('#canvasPhotoUser').width(), $('#canvasPhotoUser').height());
         $('#imgUser').attr('src', '');
+        $('#inputFileUser').val('');
     }else{
-     
+        flagVideoCard=false
+        currentStream=null
+        $('#buttonTakeCard').show();
+        $('#buttonTakeCard').prop('disabled', false);
+        $('#buttonSaveCard').hide();
+        $('#imgCard').hide();
+        $('#imgCard').attr('src', '');
+        $('#inputFileCard').val('');
     }
+   
+}
+
+function limpiarDevolver(){
+    flagVideoUser=false
+    currentStream=null
+    $('#buttonSaveUserRecibe').show();
+    $('#buttonTakeUserRecibe').prop('disabled', false);
+    $('#buttonSaveUserRecibe').hide();
+    $('#imgUserRecibe').hide();
+    $('#imgUserRecibe').attr('src', '');
+    $('#inputFileUserRecibe').val('');
+    $('#buttonTakeUserRecibeCard').show();
+    $('#buttonTakeUserRecibeCard').prop('disabled', false);
+    $('#buttonSaveUserRecibeCard').hide();
+    $('#imgUserRecibeCard').hide();
+    $('#imgUserRecibeCard').attr('src', '');
+    $('#inputFileUserRecibeCard').val('');
+    $('input[name="outArticleLoseModalEstatus"]').prop('checked', false);
+    $('#outArticleLoseModalRecibe').val('')
+    $('#outArticleLoseModalTel').val('')
 }
 
 function formatDate(isoDateStr){
@@ -1074,9 +1051,6 @@ function formatDate(isoDateStr){
             $("#buttonNuevoArticuloLose").show();
         }
         return formattedDateStr;
-    }else {
-        let fort="2021-02-12 01:32"
-        return fort
     }
 }
 
@@ -1504,17 +1478,16 @@ async function guardarArchivos(id, isImage){
 
 //FUNCION editar el articulo consesionado
 function editarArticuloLoseModal(){
-    limpiarArticuloLose()
+    limpiarArticuloLose('Editar')
     $("#loadingButtonEditarArticuloLose").show();
     $("#buttonEditarArticuloLose").hide();
     let data = getInputsValueByClass('contentEditarArticuloLose')
+    console.log("Informaciond e edicion",data)
     let selected=''
     for(d of dataTableArticlesLose){
         if(d.folio == selectedRowFolio)
             selected = d
     }
-    console.log("DATA OBTENIDAA", data)
-    console.log(fotosNuevoArticulo.identificacion)
     let data_article_update={
         'estatus_perdido':'pendiente',
         'foto_perdido': fotosNuevoArticulo.foto,
@@ -1535,8 +1508,6 @@ function editarArticuloLoseModal(){
     let cleanSelected = (({ actions, checkboxColumn, folio,foto_concesion,recibe_concesion,updated_at, type_perdido, 
         date_entrega_perdido,foto_recibe_perdido,identificacion_recibe_perdido,recibe_perdido,reporta_perdido,
         telefono_recibe_perdido,guard_perdido,...rest }) => rest)(selected);
-        console.log("ORIGINAL RELLENO",cleanSelected)
-        console.log("NUEVA INFOMAC",data_article_update)
 
     if(data_article_update.foto_perdido==0){
         data_article_update.foto_perdido=cleanSelected.foto_perdido
@@ -1553,7 +1524,6 @@ function editarArticuloLoseModal(){
         cleanSelected.date_entrega_perdido = date
     } 
 
-    console.log(cleanSelected,data_article_update)
     let validateObj = encontrarCambios(cleanSelected,data_article_update)
     if(Object.keys(validateObj).length == 0){
         Swal.fire({
@@ -1718,27 +1688,26 @@ function devolucionArticulo(){
                     let data=res.response.data
                     if(data.status_code==400){
                         errorAlert(data);
-
-                        Swal.close()
-                    }else if (data.status_code==202){
-                        if(data.json.hasOwnProperty('date_entrega_perdido')){
-                            let formatDate= data.json.date_entrega_perdido.slice(0,-3)
-                            selectedArticleLose[key]= formatDate
-                        }else{
-                            selectedArticleLose[key]= ""
-                        }
-                        for(key of data_article_update){
+                        //Swal.close()
+                    }else if (data.status_code==202 || data.status_code==202){
+                        for(let key in data_article_update){
                             selectedArticleLose[key]= data_article_update[key]
                         }
-                        tables["tableArticlesLose"].setData(dataTableArticlesLose);
+                        if(data.json.hasOwnProperty('date_entrega_perdido')){
+                            let formatDate= data.json.date_entrega_perdido.slice(0,-3)
+                            selectedArticleLose.date_entrega_perdido= formatDate
+                        }else{
+                            selectedArticleLose.date_entrega_perdido= ""
+                        }
                         Swal.close()
-                        $("#outArticleLoseModal").modal('hide')
+                        tables["tableArticlesLose"].setData(dataTableArticlesLose);
                         successMsg("Confirmación", "Artículo entregado correctamente.", "success")
-                        location.reload()
+                        $("#outArticleLoseModal").modal('hide')
+                        //location.reload()
                     }
                 }else{
                     errorAlert(res)
-                    Swal.close()
+                    //Swal.close()
                 }
             })
      }

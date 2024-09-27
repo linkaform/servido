@@ -17,7 +17,7 @@ class lkfLocationCard extends HTMLElement{
             <div class="">
                 <div class="d-flex align-items-center justify-content-between">
                     <h6 class="text-black ">Ubicación: </h6>
-                    <select class="form-select ms-1 " id="selectLocation"> </select>
+                    <select class="form-select ms-1" id="selectLocation"> </select>
                 </div>
                 <div class="d-flex align-items-center" >
                     <h6 class="text-black" >Caseta: </h6>
@@ -70,12 +70,10 @@ function initializeCatalogs(){
     let valueCaseta = getCookie('userCaseta')
     let valueLocation =  getCookie('userLocation')
     let selectCaseta= document.getElementById("selectCaseta")
-    selectCaseta.value = valueCaseta
+    //selectCaseta.value = valueCaseta
     let selectLocation= document.getElementById("selectLocation")
     selectLocation.value = valueLocation
 }
-
-
 
 function fillCatalogs(){
      if(getCookie("arrayUserBoothsLocations") == ""){
@@ -116,7 +114,6 @@ function fillCatalogs(){
     }
 }
 
-
 function loadCatalogsLocation(arrayUserBoothsLocations){
     let selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.innerHTML = "";
@@ -151,19 +148,16 @@ function loadCatalogsCaseta(location ,arrayUserBoothsLocations){
     selectCaseta.value = getCookie('userCaseta')
     if(getValueUserLocation()=='accesos'){
         selectCaseta.disabled=true
+    }else if(getValueUserLocation()=='articulos' || getValueUserLocation()=='bitacoras'){
+        selectCaseta.value=''
+        selectCaseta.disabled=true
     }
     
 }
 
 
 async function fetchOnChangeCaseta(script, option, area, location){
-    Swal.fire({
-        title: 'Cargando...',
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-            Swal.showLoading();
-        }
-    });
+    loadingService()
     let responseData=""
     let response={ "data":{
          "caseta":{
@@ -204,10 +198,36 @@ async function fetchOnChangeCaseta(script, option, area, location){
 }
 
 
-function fetchOnChangeLocation(location){
+async function fetchOnChangeLocation(location){
     loadCatalogsCaseta(location,JSON.parse(getCookie('arrayUserBoothsLocations')).length>0? JSON.parse(getCookie('arrayUserBoothsLocations')): arrayUserBoothsLocations )
     let selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.value = ""
+
+    /*loadingService()
+    let body={
+        script_name: script,
+        option:option,
+    }
+    if (location){
+        body.location=location
+    }
+    console.log(body)
+    let dataCasetas=[]
+    let fetchData= await fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify(body), 
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    let data = await fetchData.json();
+    if (data){
+        Swal.close()
+    }else{
+        errorAlert("Ocurrio un error al cargar la lista.", "Error", "warning")
+    }
+    return data*/
 }
 
 

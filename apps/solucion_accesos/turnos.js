@@ -214,7 +214,7 @@ function getAllData(area="", location="", loading=false){
                     if(data.support_guards.length > 0){
                         for(let guard of data.support_guards){
                             if(guard.user_id.toString() !==  getCookie('userId').toString()){
-                                dataTableGuardiasApoyo.push({name:guard.name, status: '', img: guard.picture? guard.picture.file_url :'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1', 
+                                dataTableGuardiasApoyo.push({name:guard.name, status: '', img: guard.picture? guard.picture :'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1', 
                                 fechaInicio: '', id:guard.user_id})
 
                             }
@@ -224,9 +224,9 @@ function getAllData(area="", location="", loading=false){
                     }
                     let userName=getCookie('userName')
 
-                    if(getCookie('userCaseta') !== data.location.area){
+                    /*if(getCookie('userCaseta') !== data.location.area){
                         getNotes();
-                    }else{
+                    }else{*/
                         dataTableNotas=[]
                         if(notes.length > 0){
                             for(let note of notes){
@@ -247,7 +247,7 @@ function getAllData(area="", location="", loading=false){
                         }else{
                             dataTableNotas = []
                         }
-                    }
+                    //}
                     if(tables['tableGuardiasApoyo']){
                         tables['tableGuardiasApoyo'].setData(dataTableGuardiasApoyo)
                     }else{
@@ -1313,7 +1313,7 @@ function cargarGuardiasApoyo(){
             let data= res.response.data.guardia_de_apoyo
             for(guard in data){
                 dataTableAgregarGuardiaApoyo.push({ name: data[guard].name,  status:'',
-                img: data[guard].picture.file_url ? data[guard].picture.file_url :'https://cdn.questionpro.com/userimages/site_media/no-image.png' , id:data[guard].user_id})
+                img: data[guard].picture ? data[guard].picture :'https://cdn.questionpro.com/userimages/site_media/no-image.png' , id:data[guard].user_id})
             }
             if(tables['tableAgregarGuardiaApoyo']){
                 tables['tableAgregarGuardiaApoyo'].setData(dataTableAgregarGuardiaApoyo)

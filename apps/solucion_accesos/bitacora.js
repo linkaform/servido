@@ -11,6 +11,10 @@ window.onload = function(){
     fillCatalogs();
 
 	//getCatalogs();
+
+    let checkboxCasetas = document.getElementById('checkboxTodasLasCasetas');
+    checkboxCasetas.checked = true; 
+    
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	selectLocation= document.getElementById("selectLocation")
 	selectLocation.onchange = function() {
@@ -42,6 +46,17 @@ window.onload = function(){
     $("#textPersonalDentro").text(boothStats.staff_indoors);
     $("#textVehiculosDentro").text(boothStats.vehicles_inside);
     $("#textSalidasRegistradas").text(boothStats.registered_exits);
+
+    if(getValueUserLocation()=='bitacora'){
+         $(document).ready(function() {
+            $('#divTodasLasCasetas').show();
+            $('#labelGuardiaDeApoyo').remove();
+        })
+    }
+
+    selectCaseta.value=""
+    selectCaseta.disabled=true
+
 }
 
 $("#checkboxTodasLasCasetas").on("click",async function()  {
@@ -470,34 +485,36 @@ function agregarVehiculo(){
 
 function reloadTableBitacoras(data){
     console.log("DATATA",data)
-    dataTableBitacora=[]
-   //dataTableLocker=[]
-    if(user !='' && userJwt!=''){
-        let lista= data
-        if(lista.length>0){
-            for (let bitacora of lista){
-                dataTableBitacora.push({
-                folio:bitacora.folio ,fecha_entrada:bitacora.fecha_entrada ,nombre_visitante:bitacora.nombre_visitante, perfil_visita:bitacora.perfil_visita,
-                contratista:bitacora.contratista,status_gafete:bitacora.status_gafete, visita_a:bitacora.visita_a, caseta_entrada:bitacora.caseta_entrada,caseta_salida:bitacora.caseta_salida, 
-                fecha_salida:bitacora.fecha_salida,comentarios:bitacora.comentarios||[] , equipos: bitacora.equipos, vehiculos: bitacora.vehiculos, foto: bitacora.foto, 
-                identificacion: bitacora.identificacion, documento: bitacora.documento||"" , a_quien_visita: bitacora.a_quien_visita||"" , perfil_visita: bitacora.perfil_visita||"" ,
-                id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso, codigo_qr: bitacora.codigo_qr , status_visita:bitacora.status_visita})
+    if(data){
+        dataTableBitacora=[]
+       //dataTableLocker=[]
+        if(user !='' && userJwt!=''){
+            let lista= data
+            if(lista.length>0){
+                for (let bitacora of lista){
+                    dataTableBitacora.push({
+                    folio:bitacora.folio ,fecha_entrada:bitacora.fecha_entrada ,nombre_visitante:bitacora.nombre_visitante, perfil_visita:bitacora.perfil_visita,
+                    contratista:bitacora.contratista,status_gafete:bitacora.status_gafete, visita_a:bitacora.visita_a, caseta_entrada:bitacora.caseta_entrada,caseta_salida:bitacora.caseta_salida, 
+                    fecha_salida:bitacora.fecha_salida,comentarios:bitacora.comentarios||[] , equipos: bitacora.equipos, vehiculos: bitacora.vehiculos, foto: bitacora.foto, 
+                    identificacion: bitacora.identificacion, documento: bitacora.documento||"" , a_quien_visita: bitacora.a_quien_visita||"" , perfil_visita: bitacora.perfil_visita||"" ,
+                    id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso, codigo_qr: bitacora.codigo_qr , status_visita:bitacora.status_visita})
+                }
             }
-        }
-        
-        if(tables['tableEntradas']){
-            tables['tableEntradas'].setData(dataTableBitacora)
+            
+            if(tables['tableEntradas']){
+                tables['tableEntradas'].setData(dataTableBitacora)
+            }else{
+                drawTable('tableEntradas',columsData1,dataTableBitacora);
+            }
+            /*
+            if(tables['tableSalidas']){
+                tables['tableSalidas'].setData(dataTableLocker)
+            }else{
+                drawTable('tableSalidas',columsData2,dataTableLocker);
+            }*/
         }else{
-            drawTable('tableEntradas',columsData1,dataTableBitacora);
+            redirectionUrl('login',false);
         }
-        /*
-        if(tables['tableSalidas']){
-            tables['tableSalidas'].setData(dataTableLocker)
-        }else{
-            drawTable('tableSalidas',columsData2,dataTableLocker);
-        }*/
-    }else{
-        redirectionUrl('login',false);
     }
 }
 
@@ -558,6 +575,7 @@ function loadDataTables(){
 }
 
 function openDataModal(folio){
+    $('#documento').text('')
     /*
     fetch(url + urlScripts, {
             method: 'POST',
@@ -680,9 +698,10 @@ function openDataModal(folio){
     if(registroSeleccionado.hasOwnProperty('grupo_areas_acceso')){
         listaAccesos = registroSeleccionado.grupo_areas_acceso.length > 0 ? registroSeleccionado.grupo_areas_acceso: [];
     }
+    console.log("REVISAR",listaAccesos)
     for (let i = 0; i < listaAccesos.length; i++) {
         let newRow = $('<tr>');
-        newRow.append($('<td>').text(listaAccesos[i].nombre_area||""));
+        newRow.append($('<td>').text(listaAccesos[i].note_booth||""));
         newRow.append('</tr>');
         $('#tableAccesos').append(newRow);
     }
