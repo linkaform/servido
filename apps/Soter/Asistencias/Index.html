@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Asistencias</title>
+	<!-- Custom fonts for this template-->
+    <link href="../Utils/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <!-- Custom styles for this template-->
+    <link href="../Utils/css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Tabulator CSS con tema Bootstrap 5 -->
+	<link href="https://cdn.jsdelivr.net/npm/tabulator-tables@5.5.0/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet">
+</head>
+<body>
+	<!-- Page Wrapper -->
+    <div id="wrapper">
+
+    	<!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+        	<!-- Main Content -->
+            <div id="content" class="mt-4">
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4 ">
+                        <h1 class="h3 mb-0 text-gray-800">Asistencias</h1>
+
+                        <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                        	Ejecutar Reporte
+                        </button>
+                    </div>
+                    <!-- Filter Row -->
+                    <div class="row mb-4">
+						<!-- Filtro de Fecha -->
+						<div class="col-xl-3 col-md-6">
+						    <label for="fecha" class="form-label">Fecha Desde:</label>
+						    <input type="date" class="form-control" id="fecha">
+						</div>
+
+						<div class="col-xl-3 col-md-6">
+						    <label for="fecha" class="form-label">Fecha Hasta:</label>
+						    <input type="date" class="form-control" id="fecha">
+						</div>
+
+						<!-- Filtro de Selector (Dropdown) -->
+						<div class="col-xl-3 col-md-6">
+						    <label for="categoria" class="form-label">Categoría</label>
+						    <select class="form-select" id="categoria">
+						        <option selected>Selecciona una categoría</option>
+						        <option value="1">Ventas</option>
+						        <option value="2">Compras</option>
+						        <option value="3">Inventario</option>
+						    </select>
+						</div>
+
+						<!-- Filtro de Buscador -->
+						<div class="col-xl-3 col-md-6">
+						    <label for="buscador" class="form-label">Buscar</label>
+						    <input type="text" class="form-control" id="buscador" placeholder="Buscar...">
+						</div>
+                    </div>
+
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                    	<!-- Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                            	Tasa de Asistencia Promedio
+                                            </div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto ml-3">
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">70%</div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress progress-sm mr-2">
+                                                        <div class="progress-bar bg-info" role="progressbar"
+                                                            style="width: 70%" aria-valuenow="50" aria-valuemin="0"
+                                                            aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            	Tasa de Absentismo %
+                                            </div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto ml-3">
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">20%</div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress progress-sm mr-2">
+                                                        <div class="progress-bar bg-primary" role="progressbar"
+                                                            style="width: 20%" aria-valuenow="50" aria-valuemin="0"
+                                                            aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                               Numero De Empleados</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">1,000</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                      
+                        <!-- Pending Requests Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                Total de Días Perdidos por ausencias</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">13</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+                        <!-- Area Chart -->
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Asistencias vs. Ausencias</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Opciones:</div>
+                                            <a class="dropdown-item" href="#">Descargar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div id="firstElement">
+                                        <canvas id="chartFirst" height="400"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pie Chart -->
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Incapacidad X Tipo</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Descargar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div id="secondElement">
+                                        <canvas id="chartSecond" height="400"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Content Column -->
+                        <div class="col-lg-6 mb-4">
+
+                            <!-- Project Card Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Ausencias por Día de Semana</h6>
+                                </div>
+                                <div class="card-body">
+                                	<div id="thirdElement">
+	                                    <h4 class="small font-weight-bold">Lunes <span
+	                                            class="float-right">10%</span></h4>
+	                                    <div class="progress mb-4">
+	                                        <div class="progress-bar bg-info" role="progressbar" style="width: 10%"
+	                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+	                                    </div>
+	                                    <h4 class="small font-weight-bold">Martes <span
+	                                            class="float-right">15%</span></h4>
+	                                    <div class="progress mb-4">
+	                                        <div class="progress-bar bg-info" role="progressbar" style="width: 15%"
+	                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+	                                    </div>
+	                                    <h4 class="small font-weight-bold">Miercoles <span
+	                                            class="float-right">15%</span></h4>
+	                                    <div class="progress mb-4">
+	                                        <div class="progress-bar bg-info" role="progressbar" style="width: 15%"
+	                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+	                                    </div>
+	                                    <h4 class="small font-weight-bold">Jueves <span
+	                                            class="float-right">30%</span></h4>
+	                                    <div class="progress mb-4">
+	                                        <div class="progress-bar bg-info" role="progressbar" style="width: 30%"
+	                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+	                                    </div>
+	                                    <h4 class="small font-weight-bold">Viernes <span
+	                                            class="float-right">30%</span></h4>
+	                                    <div class="progress mb-4">
+	                                        <div class="progress-bar bg-info" role="progressbar" style="width: 30%"
+	                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+	                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-4">
+                            <!-- Illustrations -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Faltas Y motivos</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="fourthElement"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+	<!-- Bootstrap core JavaScript-->
+	<script src="../Utils/vendor/jquery/jquery.min.js"></script>
+	<script src="../Utils/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!--Chart Js-->
+	<script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<!--Table -->
+   	<script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+	<script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
+
+
+	<!--Utils -->
+	<script type="text/javascript" src="../../styles/js/chroma.min.js"></script>
+    <script type="text/javascript" src="../../utils/lkf_utils.js"></script>
+    <script type="text/javascript" src="../../utils/servido_utils.js"></script>
+
+
+	<!--Report -->
+	<script type="text/javascript" src="./asitencias.js"></script>
+    <script type="text/javascript" src="./asitencias_data.js"></script>
+
+</body>
+</html>
