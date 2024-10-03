@@ -608,7 +608,7 @@
 						<hr>
 						<div class="mb-3 col-6 ">
 							<label class="form-label">Tipo de Articulo: *</label>
-							<select class="form-select contentEditarArticuloLose" id="tipoArticuloEditarArticuloLose" onchange="onChangeCatalogoArticulo('contentEditarArticuloLose', 'Editar')">
+							<select class="form-select contentEditarArticuloLose" id="tipoArticuloEditarArticuloLose" onchange="onChangeCatalogoArticulo('tipoArticuloEditarArticuloLose', 'Editar')">
 							</select>
 						</div>
 						<div class="mb-3 col-6">
@@ -685,10 +685,10 @@
 						<div class="d-flex justify-content-between mt-2 mb-3">
 							<div class="col6">
 								<label class="form-label">Foto de quien recibe: *</label>
-								<button type="button" class="btn  btn-primary " onclick="getScreenUser('UserRecibe', false);return false;" id="buttonTakeUserRecibe">
+								<button type="button" class="btn btn-primary" onclick="getScreenUser('UserRecibe', false);return false;" id="buttonTakeUserRecibe">
 									<i class="fa-solid fa-camera-retro"></i>
 								</button>
-								<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveUserRecibe">
+								<button type="button" class="btn btn-sm btn-success"  style="display: none;" id="buttonSaveUserRecibe">
 									Guardar Foto <i class="fa-solid fa-aperture"></i>
 								</button>
 								<!-- Canvas Foto -->
@@ -703,7 +703,7 @@
 								<button type="button" class="btn  btn-primary " onclick="getScreenUser('UserRecibeCard', false);return false;" id="buttonTakeUserRecibeCard">
 									<i class="fa-solid fa-camera-retro"></i>
 								</button>
-								<button type="button" class="btn  btn-secondary"  style="display: none;" id="buttonSaveUserRecibeCard">
+								<button type="button" class="btn  btn-sm btn-success"  style="display: none;" id="buttonSaveUserRecibeCard">
 									Guardar Foto <i class="fa-solid fa-aperture"></i>
 								</button>
 								<!-- Canvas Foto -->
@@ -727,11 +727,11 @@
 					        <label class="form-label">Estatus:</label>
 					        <div class="d-flex justify-content-start">
 						        <div class="me-4">
-						            <input type="radio" id="statusDelivered" class="outArticleLose" name="outArticleLoseModalEstatus" value="entregado">
+						            <input type="radio" id="statusDelivered" class="outArticleLose" name="outArticleLoseModalEstatusDev" value="entregado">
 						            <label for="statusDelivered">Entregado</label>
 						        </div>
 						        <div>
-						            <input type="radio" id="statusDonated" class="outArticleLose" name="outArticleLoseModalEstatus" value="donado">
+						            <input type="radio" id="statusDonated" class="outArticleLose" name="outArticleLoseModalEstatusDev" value="donado">
 						            <label for="statusDonated">Donado</label>
 						        </div>
 					        </div>
@@ -773,21 +773,23 @@
 									<label class="form-label fw-bold mt-2">Ubicación:&nbsp;&nbsp; <span class="fw-normal" id="ubicacionArticuloPerdido"></span></label>
 									<label class="form-label fw-bold mt-2">Area:&nbsp;&nbsp; <span class="fw-normal" id="areaArticuloPerdido"></span></label>
 									<label class="form-label fw-bold mt-2">Reporta:&nbsp;&nbsp; <span class="fw-normal" id="reportaArticuloPerdido"></span></label>
-									<label class="form-label fw-bold mt-2">Departamento:&nbsp;&nbsp; <span class="fw-normal" id="departamentoArticuloPerdido"></span></label>
-									<label class="form-label fw-bold mt-2">Comentario:&nbsp;&nbsp; <span class="fw-normal" id="comentarioArticuloPerdido"></span></label>
-									<label class="form-label fw-bold mt-2">Guardia:&nbsp;&nbsp; <span class="fw-normal" id="guardiaArticuloPerdido"></span></label>
+									
 						      	</div>
 							</div>
 							<div class="col-7 mb-3 d-flex flex-column align-items-start justify-content-start ">
 								<label class="form-label"><b>Fotografías del artículo: </b></label><br>
-								<div class="d-flex justify-content-between image-container align-items-start" id="verFotosArticuloPerdido" >
+								<div class="d-flex justify-content-between image-container align-items-start" id="verFotosArticuloPerdido"
+								 >
 								</div>
+								<label class="form-label fw-bold mt-2">Departamento:&nbsp;&nbsp; <span class="fw-normal" id="departamentoArticuloPerdido"></span></label>
+									<label class="form-label fw-bold mt-2">Comentario:&nbsp;&nbsp; <span class="fw-normal" id="comentarioArticuloPerdido"></span></label>
+									<label class="form-label fw-bold mt-2">Guardia:&nbsp;&nbsp; <span class="fw-normal" id="guardiaArticuloPerdido"></span></label>
 							</div>
 						</div>
 						
 						<hr>
 						<h5>Información de la entrega</h5>
-						<div class="d-flex justify-content-start align-items-start">
+						<div class="d-flex flex-wrap justify-content-start align-items-start">
 							<div class="mb-3 col-6">
 								<label class="form-label fw-bold">Fecha y hora de entrega:&nbsp;&nbsp; <span class="fw-normal" id="fechaEntregaArticuloPerdido"></span></label>
 							</div>

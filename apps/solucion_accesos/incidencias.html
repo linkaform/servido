@@ -219,10 +219,10 @@
                                     onchange="guardarArchivos('fileInputFotografia-nuevo',true);" id="fileInputFotografia-nuevo">
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('nuevo');return false;">
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('nuevo', 'foto');return false;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('nuevo',123);return false;">
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('nuevo',123,'foto');return false;">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                 </div>
@@ -236,10 +236,11 @@
                                     onchange="guardarArchivos('fileInputArchivo-nuevo', false);" id="fileInputArchivo-nuevo">
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('nuevo');return false;">
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('nuevo', 
+                                    'archivo');return false;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('nuevo',123);return false;">
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('nuevo',123, 'archivo');return false;">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                 </div>
@@ -377,10 +378,10 @@
                                     onchange="guardarArchivos('fileInputFotografia-editar',true);" id="fileInputFotografia-editar">
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('editar');return false;">
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('editar', 'foto');return false;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('editar',123);return false;">
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('editar',123, 'foto');return false;">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                 </div>
@@ -394,10 +395,10 @@
                                     onchange="guardarArchivos('fileInputArchivo-editar', false);" id="fileInputArchivo-editar">
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('editar');return false;">
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('editar', 'archivo');return false;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('editar',123);return false;">
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('editar',123, 'archivo');return false;">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                 </div>
@@ -496,7 +497,7 @@
                             <div class="d-flex flex-column">
                                 <div class="col-7 mb-1 d-flex flex-column align-items-start justify-content-start ">
                                 <label class="form-label"><b>Evidencia de la incidencia: </b></label><br>
-                                <div class="d-flex justify-content-between image-container " id="evidenciaIncidencia">
+                                <div class="d-flex justify-content-between image-container" id="evidenciaIncidencia">
                                 </div>
                             </div>
                             <div class="col-7 mb-3 d-flex flex-column align-items-start justify-content-start ">
@@ -543,57 +544,87 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="mb-3 col-6">
-                            <h6 class="form-label">Ubicación: <span id="ubicacionNuevoFalla" style="font-weight: normal"> </span> </h6>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <h6 class="form-label">Caseta: <span id="casetaNuevaFalla" style="font-weight: normal"> </span> </h6>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Fecha de la falla: *</label>
-                            <input type="datetime-local" class="form-control contentNuevaFalla" id="fechaNuevaFalla">
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Area: *</label>
-                            <select class="form-control contentNuevaFalla" id="areaNuevaFalla">
+                            <label class="form-label">Ubicacion: *</label>
+                            <select class="form-select contentNuevoFalla" id="ubicacionNuevoFalla" onchange="onChangeCatalogoFalla('ubicacionNuevoFalla', 'Nuevo')">
                             </select>
                         </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Falla: *</label>
-                              <textarea class="form-control contentNuevaFalla" id="fallaNuevaFalla" ></textarea>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Area: </label>
+                            <select class="form-select contentNuevoFalla" id="areaNuevoFalla">
+                            </select>
                         </div>
-                        <div id="foto-input-form-nuevaFalla" >
-                            <div class="d-flex mb-3 col-12 div-foto-nuevaFalla-123" id="id-foto-div-123">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Fecha: *</label>
+                            <input type="date" class="form-control contentNuevoFalla" id="fechaNuevoFalla">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Hora: *</label>
+                            <div class="time-selector">
+                                <select class="form-select time-select contentNuevoFalla" id="horaNuevoFalla" 
+                                onchange="onChangeAmpmLabel('horaNuevoFalla','ampmNuevaFalla')">
+                                </select>
+                                <label class="mx-1">:</label>
+                                <select class="form-select time-select contentNuevoFalla" id="minNuevoFalla">
+                                </select>
+                                <label class="ms-2" id="ampmNuevaFalla"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Falla: </label>
+                            <select class="form-select contentNuevoFalla" id="fallaNuevoFalla"  onchange="onChangeCatalogoFalla('fallaNuevoFalla', 'Nuevo')">
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Objeto afectado: </label>
+                              <select class="form-select contentNuevoFalla" id="objetoAfectadoNuevoFalla" ></select>
+                        </div>
+                        
+                        <div id="evidenciaF-input-form-nuevo" >
+                            <div class="d-flex mb-3 col-12 div-evidenciaF-nuevo-123" id="id-evidenciaF-div-123">
                                 <div class="flex-grow-1">
-                                    <label class="form-label">Fotografia </label>
-                                    <input type="file" class="form-control-file foto-div-nuevaFalla" onchange="guardarArchivos('fileInputFotografia-nuevaFalla',true);" id="fileInputFotografia-nuevaFalla">
+                                    <label class="form-label">Evidencia </label>
+                                    <input type="file" class="form-control-file evidenciaF-div-nuevo contentNuevoFalla" onchange="guardarArchivos('evidenciaF-nuevo',true);" id="evidenciaF-nuevo">
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('nuevaFalla');return false;">
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('nuevo','evidenciaF');return false;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('nuevaFalla',123);return false;">
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('nuevo',123,'evidenciaF');return false;">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
+                        <div id="documentoF-input-form-nuevo">
+                            <div class="d-flex mb-3 col-12 div-documentoF-nuevo-123" id="id-documentoF-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Documento </label>
+                                    <input type="file" class="form-control-file documentoF-div-nuevo contentNuevoFalla" onchange="guardarArchivos('documentoF-nuevo', false);" id="documentoF-nuevo">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('nuevo', 'documentoF');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('nuevo',123, 'documentoF');return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentarios: *</label>
-                            <textarea class="form-control contentNuevaFalla" id="comentariosNuevaFalla"  rows="3" ></textarea>
+                            <textarea class="form-control contentNuevoFalla" id="comentariosNuevoFalla"  rows="3" ></textarea>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Reporta: *</label>
-                            <select class="form-control contentNuevaFalla" id="reportaNuevaFalla">
+                            <select class="form-select contentNuevoFalla" id="reportaNuevoFalla">
                             </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Responsable asignado de solucionar: *</label>
-                            <select class="form-control contentNuevaFalla" id="responsableNuevaFalla">
+                            <label class="form-label">Responsable asignado de solucionar: </label>
+                            <select class="form-select contentNuevoFalla" id="responsableNuevoFalla">
                             </select>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Fecha de resolucion: *</label>
-                            <input type="datetime-local" class="form-control contentNuevaFalla" id="fechaResolucionNuevaFalla">
                         </div>
                     </div>
                     
@@ -601,7 +632,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success btn-sm" id="buttonAgregarFalla" onclick="nuevaFalla()">Agregar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="buttonAgregarFalla" onclick="nuevaFalla()">Registrar</button>
                     <button class="btn btn-success btn-sm" type="button" id="loadingButtonAgregarFalla" style="display:none" disabled>
                         <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
                         Cargando...
@@ -620,43 +651,106 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
+                     <div class="row">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Ubicacion: *</label>
+                            <select class="form-select contentEditarFalla" id="ubicacionEditarFalla" onchange="onChangeCatalogoFalla('ubicacionEditarFalla', 'Editar')">
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Area: </label>
+                            <select class="form-select contentEditarFalla" id="areaEditarFalla">
+                            </select>
+                        </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Fecha: *</label>
-                            <input type="datetime-local" class="form-control contentEditFalla" id="fechaEditFalla">
+                            <input type="date" class="form-control contentEditarFalla" id="fechaEditarFalla">
                         </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Ubicación: *</label>
-                            <select class="form-control contentEditFalla" id="ubicacionEditFalla">
-                            </select>
+                        <div class="col-4">
+                            <label class="form-label">Hora: *</label>
+                            <div class="time-selector">
+                                <select class="form-select time-select contentEditarFalla" id="horaEditarFalla" 
+                                onchange="onChangeAmpmLabel('horaEditarFalla','ampmEditarFalla1')">
+                                </select>
+                                <label class="mx-1">:</label>
+                                <select class="form-select time-select contentEditarFalla" id="minEditarFalla">
+                                </select>
+                                <label class="ms-2" id="ampmEditarFalla1"></label>
+                            </div>
                         </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Lugar de la falla: *</label>
-                            <select class="form-control contentEditFalla" id="lugarEditFalla">
-                            </select>
-                        </div>
+
                         <div class="mb-3 col-6">
                             <label class="form-label">Falla: *</label>
-                            <select class="form-control contentEditFalla" id="fallaEditFalla">
+                            <select class="form-select contentEditarFalla" id="fallaEditarFalla" onchange="onChangeCatalogoFalla('fallaEditarFalla', 'Editar')">
                             </select>
                         </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Objeto afectado: </label>
+                              <select class="form-select contentEditarFalla" id="objetoAfectadoEditarFalla" ></select>
+                        </div>
+                        
+                        <div id="evidenciaF-input-form-editar" >
+                            <div class="d-flex mb-3 col-12 div-evidenciaF-editar-123" id="id-evidenciaF-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Evidencia </label>
+                                    <input type="file" class="form-control-file evidenciaF-div-editar contentEditarFalla" onchange="guardarArchivos('evidenciaF-editar',true);" id="evidenciaF-editar">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('editar', 'evidenciaF');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('editar',123, 'evidenciaF');return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="documentoF-input-form-editar">
+                            <div class="d-flex mb-3 col-12 div-documentoF-editar-123" id="id-documentoF-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Documento </label>
+                                    <input type="file" class="form-control-file documentoF-div-editar contentEditarFalla" onchange="guardarArchivos('documentoF-editar', false);" id="documentoF-editar">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('editar', 'documentoF');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('editar',123, 'documentoF');return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentarios: *</label>
-                            <textarea class="form-control contentEditFalla" id="comentariosEditFalla"  rows="3"></textarea>
+                            <textarea class="form-control contentEditarFalla" id="comentariosEditarFalla"  rows="3" ></textarea>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Reporta: *</label>
-                            <select class="form-control contentEditFalla" id="reportaEditFalla">
+                            <select class="form-select contentEditarFalla" id="reportaEditarFalla">
                             </select>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Responsable asignado de solucionar: *</label>
-                            <select class="form-control contentEditFalla" id="responsableEditFalla">
+                            <select class="form-select contentEditarFalla" id="responsableEditarFalla">
                             </select>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Fecha de resolucion: *</label>
-                            <input type="datetime-local" class="form-control contentEditFalla" id="fechaResolucionEditFalla">
+                            <input type="date" class="form-control contentEditarFalla" id="fechaResolucionEditarFalla">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Hora: *</label>
+                            <div class="time-selector">
+                                <select class="form-select time-select contentEditarFalla" id="horaResolucionEditarFalla" 
+                                onchange="onChangeAmpmLabel('horaResolucionEditarFalla','ampmEditarFalla')">
+                                </select>
+                                <label class="mx-1">:</label>
+                                <select class="form-select time-select contentEditarFalla" id="minResolucionEditarFalla">
+                                </select>
+                                <label class="ms-2" id="ampmEditarFalla"></label>
+                            </div>
                         </div>
                     </div>
                     
@@ -674,57 +768,142 @@
         </div>
     </div>
 
-    <!-- Modal View Fail -->
-    <div class="modal fade" id="viewFailModal" tabindex="-1"  aria-hidden="true">
+    <div class="modal fade" id="cerrarFallaModal" tabindex="-1"  aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h1 class="modal-title fs-5">Seguimiento</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Folio de reporte accion correctiva: </label>
+                            <input type="text" class="form-control seguimientoFalla" id="folioAccionSeguimientoFalla">
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Comentario: </label>
+                            <textarea type="text" rows="2" class="form-control seguimientoFalla" id="comentarioSeguimientoFalla"></textarea>
+                        </div>
+                         <div id="evidenciaFS-input-form-editar" >
+                            <div class="d-flex mb-3 col-12 div-evidenciaFS-editar-123" id="id-evidenciaFS-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Evidencia de solucion: </label>
+                                    <input type="file" class="form-control-file evidenciaFS-div-editar seguimientoFalla" onchange="guardarArchivos('evidenciaFS-editar',true);" id="evidenciaFS-editar">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('editar','evidenciaFS');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('editar',123, 'evidenciaFS');return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="documentoFS-input-form-editar">
+                            <div class="d-flex mb-3 col-12 div-documentoFS-editar-123" id="id-documentoFS-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Documento de solucion: </label>
+                                    <input type="file" class="form-control-file documentoFS-div-editar seguimientoFalla" onchange="guardarArchivos('documentoFS-editar', false);" id="documentoFS-editar">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('editar', 'documentoFS');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('editar',123, 'documentoFS');return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <small class="text-black-50 mt-3">* Campos son obligatorios</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="buttonSeguimientoFalla" onclick="funcionSeguimientoFalla()">Actualizar</button>
+                    <button class="btn btn-success btn-sm" type="button" id="loadingButtonSeguimientoFalla" style="display:none" disabled>
+                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                        Cargando...
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal View Fail -->
+    <div class="modal fade" id="fallaVer" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" >
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-center">
                     <h1 class="modal-title fs-5">Detalles de la falla</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Fecha:&nbsp;&nbsp; <span class="fw-normal">26-04-2024</span></label>
+                        <div class="d-flex justify-content-start align-items-start">
+                            <div class="col-5 mb-3 me-3 d-flex flex-column align-items-start justify-content-between" >
+                                <div class="d-flex flex-column">
+                                    <label class="form-label fw-bold mt-2">Falla:&nbsp;&nbsp; <span class="fw-normal" id="fallaVista"></span></label>
+                                    <label class="form-label fw-bold mt-2">Objeto Afectado:&nbsp;&nbsp; <span class="fw-normal" id="objetoAfectadoVista"></span></label>
+                                    <label class="form-label fw-bold mt-2">Ubicacion:&nbsp;&nbsp; <span class="fw-normal" id="ubicacionVista"></span></label>
+                                    <label class="form-label fw-bold mt-2">Area:&nbsp;&nbsp; <span class="fw-normal" id="areaVista"></span></label>
+                                    <label class="form-label fw-bold mt-2">Comentario:&nbsp;&nbsp; <span class="fw-normal" id="comentarioVista"></span></label>
+                                </div>
+                                <hr style="height: 1px!important; width: 100% !important;">
+                                <div class="d-flex flex-column"> 
+                                    <label class="form-label fw-bold mt-2">Fecha de la falla:&nbsp;&nbsp; <span class="fw-normal" id="fechaFallaVista"></span></label>
+                                    <label class="form-label fw-bold mt-2">Estatus:&nbsp;&nbsp; <span class="fw-normal" id="estatusVista"></span></label>
+                                    <label class="form-label fw-bold mt-2">Reporta:&nbsp;&nbsp; <span class="fw-normal" id="reportaVista"></span></label>
+                                </div>
+                            </div>
+                           <div class="d-flex flex-column">
+                                <div class="col-7 mb-1 d-flex flex-column align-items-start justify-content-start ">
+                                    <label class="form-label"><b>Evidencia de la falla: </b></label><br>
+                                    <div class="d-flex justify-content-between image-container" id="evidenciaFalla">
+                                    </div>
+                                </div>
+                                <div class="col-7 mb-3 d-flex flex-column align-items-start justify-content-start ">
+                                    <label class="form-label me-3"><b>Documentos: </b></label><br>
+                                    <div class="d-flex flex-row justify-content-start flex-wrap" id="documentosFalla">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Hora:&nbsp;&nbsp; <span class="fw-normal">11:56:00 Hrs</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Lugar del fallo:&nbsp;&nbsp; <span class="fw-normal">Sala de servidores</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Ubicación:&nbsp;&nbsp; <span class="fw-normal">Planta Norte</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Fallo:&nbsp;&nbsp; <span class="fw-normal">Fallo en el suministro electrico</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Comentarios:&nbsp;&nbsp; <span class="fw-normal">Corte de energia repentino</span></label>
-                        </div>
-                        <hr style=" border: 1px solid black;">
-                        <h4>Información del personal involucrado</h4>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Reporta:&nbsp;&nbsp; <span class="fw-normal">Juan  Perez Nuñez</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Departamento:&nbsp;&nbsp; <span class="fw-normal">Seguridad</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Responsable asignado:&nbsp;&nbsp; <span class="fw-normal">Rodrgio gonzales</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Departamento:&nbsp;&nbsp; <span class="fw-normal">Ti</span></label>
-                        </div>
-                        <hr style=" border: 1px solid black;">
-                        <h4>Seguimiento</h4>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Estado:&nbsp;&nbsp; <span class="fw-normal">Resuelto</span></label>
+                        
+                        <hr>
+                        <h5>Información de la solucion</h5>
+                        <div class="d-flex flex-wrap justify-content-start align-items-start">
+                            <div class="mb-3 col-6">
+                                <label class="form-label fw-bold">Folio de accion correctiva:&nbsp;&nbsp; <span class="fw-normal" id="folioVista"></span></label>
+                            </div>
+                            <div class="mb-3 col-6">
+                                <label class="form-label fw-bold">Responsable:&nbsp;&nbsp; <span class="fw-normal" id="responsableVista"></span></label>
+                            </div>
+                            <div class="mb-3 col-6">
+                                <label class="form-label fw-bold">Comentario:&nbsp;&nbsp; <span class="fw-normal" id="comentarioSolucionVista"></span></label>
+                            </div>
+                            <div class="mb-3 col-6">
+                                <label class="form-label fw-bold">Fecha de solucion:&nbsp;&nbsp; <span class="fw-normal" id="fechaSolucionVista"></span></label>
+                            </div>
+                            <div class="col-12 d-flex flex-row">
+                                <div class="col-6 mb-1 d-flex flex-column align-items-start justify-content-start ">
+                                    <label class="form-label"><b>Evidencia de la solucion: </b></label><br>
+                                    <div class="d-flex justify-content-between image-container" id="evidenciaSolucionFalla">
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3 d-flex flex-column align-items-start justify-content-start ">
+                                    <label class="form-label me-3"><b>Documentos: </b></label><br>
+                                    <div class="d-flex flex-row justify-content-start flex-wrap" id="documentosSolucionFalla">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" onclick="cerrarModal('viewFailModal')">Cerrar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -795,6 +974,8 @@
 
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+
 <!-- Local -->
 <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
@@ -810,5 +991,13 @@
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 <!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- Moment.js -->
+
+
+
 <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+
+<script src=" https://cdn.jsdelivr.net/npm/timepicker@1.14.1/jquery.timepicker.min.js "></script>
+<link href=" https://cdn.jsdelivr.net/npm/timepicker@1.14.1/jquery.timepicker.min.css " rel="stylesheet">
+
 </html>
