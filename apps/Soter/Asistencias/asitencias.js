@@ -3,9 +3,10 @@ window.onload = function(){
 }
 
 function loadDemoData(){
-  	drawFirstElement(dataChart1, setOptions1);
-  	drawSecondElement(dataChart2, setOptions2);
-	getDrawTable('fourthElement', columsTable1, dataTable1, '320');
+  drawFirstElement(dataChart1, setOptions1);
+  drawSecondElement(dataChart2, setOptions2);
+  drawThirdElement(dataChart3, setOptions3)
+	getDrawTable('fivethElement', columsTable1, dataTable1, '320');
 }
 
 //-----TABLES
@@ -14,10 +15,11 @@ function getDrawTable(id, columnsData, tableData, height){
 	    height: height+"px",
 	    theme: "bootstrap5", 
 	    layout: "fitDataStretch", 
-	    responsiveLayout: true,
+	    //responsiveLayout: true,
 	    columnMinWidth: 100,
 	    autoColumns: false, 
 	    scrollX: true, 
+	    dataTree:true,
 	    data:tableData,
 	    columns:columnsData,
   	});
@@ -78,6 +80,27 @@ function drawSecondElement(datasets, dataconfig){
   datasets['datasets'][0]['borderColor'] = array_colors;
   chart2 = new Chart(ctx, {
     type: 'pie',
+    data: datasets,
+    plugins: [ChartDataLabels],
+    options: dataconfig
+  });
+}
+
+let chart3;
+function drawThirdElement(datasets, dataconfig){
+
+  //---CHART
+  var ctx = document.getElementById('chartThird').getContext('2d');
+  
+  if (chart3) {
+    chart3.destroy();
+  }
+  //---Color
+  array_colors = getPAlleteColors(6,datasets['labels'].length);
+  datasets['datasets'][0]['backgroundColor'] = array_colors;
+  datasets['datasets'][0]['borderColor'] = array_colors;
+  chart3 = new Chart(ctx, {
+    type: 'bar',
     data: datasets,
     plugins: [ChartDataLabels],
     options: dataconfig
