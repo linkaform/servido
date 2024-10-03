@@ -26,14 +26,19 @@ window.onload = function(){
     checkboxCasetas.checked = true; 
 
 	selectLocation= document.getElementById("selectLocation")
-	selectLocation.onchange = function() {
+	selectLocation.onchange = async function() {
         let response = fetchOnChangeLocation(selectLocation.value )
+        console.log("BUSCANDO EN TODO", selectCaseta.value, selectLocation.value)
+        let response2 = await fetchOnChangeCaseta('incidencias.py', 'get_incidences', selectCaseta.value, selectLocation.value)
+        reloadTableIncidencias(response2.response.data, selectCaseta.value)
+        let response3 = await fetchOnChangeCaseta('fallas.py', 'get_failures', selectCaseta.value, selectLocation.value, status=statusFallaAbierto.toLowerCase())
+        reloadTableFallas(response3.response.data)
     };
     selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = async function() {
         let response = await fetchOnChangeCaseta('incidencias.py', 'get_incidences', selectCaseta.value, selectLocation.value)
         reloadTableIncidencias(response.response.data)
-        let response2 = await fetchOnChangeCaseta('fallas.py', 'get_fallas', selectCaseta.value, selectLocation.value)
+        let response2 = await fetchOnChangeCaseta('fallas.py', 'get_failures', selectCaseta.value, selectLocation.value, status=statusFallaAbierto.toLowerCase())
         reloadTableFallas(response2.response.data)
     };
 	setSpinner(true, 'divSpinner');
@@ -56,8 +61,6 @@ window.onload = function(){
 
     iniciarSelectHora('horaNuevoFalla','minNuevoFalla', 'ampmNuevoFalla')
     iniciarSelectHora('horaEditarFalla','minEditarFalla', 'ampmEditarFalla1')
-    iniciarSelectHora('horaResolucionEditarFalla','minResolucionEditarFalla', 'ampmEditarFalla')
-    // iniciarSelectHora('horaResolucionNuevoFalla','minResolucionNuevoFalla')
 }
 
 
@@ -148,9 +151,7 @@ function verFallaModal(folio){
 
     divDoc2.innerHTML = doc2
     $('#fallaVer').modal('show');
-
 }
-
 
 function cerrarFallaModal(folio){
     selectedRowFolio=folio
@@ -196,7 +197,6 @@ function verIncidencia(folio){
     }
     divDoc.innerHTML = doc
     $('#viewIncidentModal').modal('show');
-
 }
 
 $("#checkboxTodasLasCasetas").on("click",async function()  {
@@ -469,8 +469,8 @@ function getAllDataFallas(){
         method: 'POST',
         body: JSON.stringify({
             script_name:'fallas.py',
-            option:'get_fallas',
-            locacion: getCookie('userLocation'),
+            option:'get_failures',
+            location: getCookie('userLocation'),
             area: getCookie('userCaseta'),
             status: statusFallaAbierto.toLowerCase()
         }),
@@ -961,7 +961,9 @@ async function onChangeCatalogoFalla(catalog, abrirEditar, selectedFalla={}){
         }else{
             selectObjetoAfectado.value=""
             selectObjetoAfectado.value=selectedFalla.falla_objeto_afectado
-            $('#editFailModal').modal('show');
+            if(abrirEditar =="Editar"){
+                $('#editFailModal').modal('show');
+            }
         }
     }
 }
@@ -1370,7 +1372,7 @@ function editarIncidencia(){
         if(validateObj.acciones_tomadas_incidencia.length==0){
             delete validateObj.acciones_tomadas_incidencia
         }
-        
+
         if(Object.keys(validateObj).length == 0){
             Swal.fire({
                 title: "Validación",
@@ -1663,6 +1665,7 @@ function nuevaFalla(){
                     $("#loadingButtonAgregarFalla").hide();
                     $("#buttonAgregarFalla").show();
                 }else if(data.status_code==202 || data.status_code==201){
+                    successMsg("Confirmación", 'Nueva falla creada correctamente')
                     let selectedFalla = {}
                     selectedFalla.folio = data.json.folio
                     for (let key in data_failure){
@@ -1710,7 +1713,6 @@ function editarFalla(){
         }
     }
     let fecha1= data.fechaEditarFalla+' '+data.horaEditarFalla+':'+data.minEditarFalla+":00"
-    let fecha2= data.fechaResolucionEditarFalla+' '+data.horaResolucionEditarFalla+':'+data.minResolucionEditarFalla+":00"
     let data_failure_update={
         'falla_estatus': statusFallaAbierto.toLowerCase(),
         'falla_fecha_hora': fecha1,
@@ -1723,7 +1725,6 @@ function editarFalla(){
         'falla_evidencia':arraySuccessFoto,
         'falla_documento':arraySuccessArchivo,
         'falla_responsable_solucionar_nombre':data.responsableEditarFalla,
-        'falla_fecha_hora_solucion': fecha2
     }
 
     //let cleanSelected = (({ actions, checkboxColumn, folio,...rest }) => rest)(selected);
@@ -1771,7 +1772,7 @@ function editarFalla(){
                     successMsg('Confirmación', 'Falla editada correctamente.')
                     let selectedFalla = dataTableFallas.find(x => x.folio === selected.folio);
                     for (let key in data_failure_update){
-                        if(key=='falla_fecha_hora' || key=='falla_fecha_hora_solucion'){
+                        if(key=='falla_fecha_hora'){
                             let formatDate= data_failure_update[key].slice(0,-3)
                             selectedFalla[key]= formatDate
                         }else if(key=='falla_evidencia'){

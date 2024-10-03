@@ -273,7 +273,7 @@
                                 <div class="flex-grow-1">
                                     <label class="form-label">Acciones Tomadas: </label>
                                     <input type="text" class="form-control dano-div-nuevo mb-2 contentNuevoIncidencia" id="repResponsableNuevoIncidencia" placeholder="Responsable de la accion">
-                                    <textarea class="form-control dano-div-nuevo contentNuevoIncidencia" rows="2" id="repAccionNuevoIncidencia" placeholder="Acciones tomadas"></textarea>
+                                    <textarea class="form-control dano-div-nuevo contentNuevoIncidencia" rows="1" id="repAccionNuevoIncidencia" placeholder="Acciones tomadas"></textarea>
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-success button-add-register" onclick="setAddDaño('nuevo');return false;">
@@ -431,7 +431,7 @@
                                 <div class="flex-grow-1">
                                     <label class="form-label">Acciones Tomadas: </label>
                                     <input type="text" class="form-control dano-div-editar mb-2 contentEditarIncidencia" id="repResponsableEditarIncidencia" placeholder="Responsable de la accion">
-                                    <textarea class="form-control dano-div-editar contentEditarIncidencia" rows="2" id="repAccionEditarIncidencia" placeholder="Acciones tomadas"></textarea>
+                                    <textarea class="form-control dano-div-editar contentEditarIncidencia" rows="1" id="repAccionEditarIncidencia" placeholder="Acciones tomadas"></textarea>
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-success button-add-register" onclick="setAddDaño('editar');return false;">
@@ -561,12 +561,12 @@
                             <label class="form-label">Hora: *</label>
                             <div class="time-selector">
                                 <select class="form-select time-select contentNuevoFalla" id="horaNuevoFalla" 
-                                onchange="onChangeAmpmLabel('horaNuevoFalla','ampmNuevaFalla')">
+                                onchange="onChangeAmpmLabel('horaNuevoFalla','ampmNuevoFalla')">
                                 </select>
                                 <label class="mx-1">:</label>
                                 <select class="form-select time-select contentNuevoFalla" id="minNuevoFalla">
                                 </select>
-                                <label class="ms-2" id="ampmNuevaFalla"></label>
+                                <label class="ms-2" id="ampmNuevoFalla"></label>
                             </div>
                         </div>
                         <div class="mb-3 col-6">
@@ -614,7 +614,7 @@
 
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentarios: *</label>
-                            <textarea class="form-control contentNuevoFalla" id="comentariosNuevoFalla"  rows="3" ></textarea>
+                            <textarea class="form-control contentNuevoFalla" id="comentariosNuevoFalla"  rows="1" ></textarea>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Reporta: *</label>
@@ -724,7 +724,7 @@
 
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentarios: *</label>
-                            <textarea class="form-control contentEditarFalla" id="comentariosEditarFalla"  rows="3" ></textarea>
+                            <textarea class="form-control contentEditarFalla" id="comentariosEditarFalla"  rows="1" ></textarea>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Reporta: *</label>
@@ -735,22 +735,6 @@
                             <label class="form-label">Responsable asignado de solucionar: *</label>
                             <select class="form-select contentEditarFalla" id="responsableEditarFalla">
                             </select>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Fecha de resolucion: *</label>
-                            <input type="date" class="form-control contentEditarFalla" id="fechaResolucionEditarFalla">
-                        </div>
-                        <div class="col-4">
-                            <label class="form-label">Hora: *</label>
-                            <div class="time-selector">
-                                <select class="form-select time-select contentEditarFalla" id="horaResolucionEditarFalla" 
-                                onchange="onChangeAmpmLabel('horaResolucionEditarFalla','ampmEditarFalla')">
-                                </select>
-                                <label class="mx-1">:</label>
-                                <select class="form-select time-select contentEditarFalla" id="minResolucionEditarFalla">
-                                </select>
-                                <label class="ms-2" id="ampmEditarFalla"></label>
-                            </div>
                         </div>
                     </div>
                     
@@ -783,7 +767,7 @@
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentario: </label>
-                            <textarea type="text" rows="2" class="form-control seguimientoFalla" id="comentarioSeguimientoFalla"></textarea>
+                            <textarea type="text" rows="1" class="form-control seguimientoFalla" id="comentarioSeguimientoFalla"></textarea>
                         </div>
                          <div id="evidenciaFS-input-form-editar" >
                             <div class="d-flex mb-3 col-12 div-evidenciaFS-editar-123" id="id-evidenciaFS-div-123">

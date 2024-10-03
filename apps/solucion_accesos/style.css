@@ -285,6 +285,7 @@ th {
  .customNoBorder:focus, .customNoBorder:active, .customNoBorder:hover {
   border: none !important;
   box-shadow: none !important ;
+
 }
 
 .custom-navbar-button{
@@ -304,6 +305,7 @@ th {
   background-color: #0275d8 !important;
   border: none !important;
   box-shadow: none !important;
+  color: whitesmoke !important;
 }
 
 .btn{
