@@ -525,6 +525,39 @@ function objLength(err,data){
     return objectCount
 }
 
+function formatNumber(num) {
+    return String(num).padStart(2, '0');
+} 
+
+function onChangeAmpmLabel(idHora, labelId){
+    let selectHora = document.getElementById(idHora)
+    if(selectHora.value > String(12) && selectHora.value < String(23)){
+        $('#'+labelId).text('PM')
+    }else{
+        $('#'+labelId).text('AM')
+    }
+
+}
+
+function iniciarSelectHora(hr, min, lab){
+    let selHora = document.getElementById(hr)
+    let selMin = document.getElementById(min)
+    let label = document.getElementById(lab)
+
+    selMin.innerHTML=""
+    selHora.innerHTML=""
+    for (let i =0; i<60; i++){
+        selMin.innerHTML += '<option value="'+formatNumber(i)+'">'+formatNumber(i)+'</option>';
+    }
+    for (let i = 0; i < 24; i++){
+        selHora.innerHTML += '<option value="'+formatNumber(i)+'">'+formatNumber(i)+'</option>';
+    }
+    selMin.value='00'
+    selHora.value='00'
+    $('#'+lab).text('AM')
+
+}
+
 function errorAlert(data, title = "Error", type="warning"){
     if(data.hasOwnProperty("json")){
         let errores=[]
@@ -750,6 +783,7 @@ function capitalizeFirstLetter(text) {
 
 //FUNCION obtener los valores de los inputs de un modal
 function getInputsValueByClass(classInput){
+    console.log("QUE PASAA",classInput)
     let data = {};
     let elements = document.getElementsByClassName(classInput)
     for (let i = 0; i < elements.length; i++) {
@@ -764,8 +798,6 @@ function getInputsValueByClass(classInput){
             }
         } else if(tag == 'img'){
             data[id]=elements[i].src
-            
-
         }
         else{
             data[id] = value;
@@ -791,12 +823,12 @@ function eliminarPropiedadesVacias(obj) {
     return obj;
 }
 
-async function cargarCatalogos(bodys=[]) {
+async function cargarCatalogos(bodys=[], loading=true) {
     let failedRequests=[]
     let format=[]
     let requests=[]
     if(bodys.length>0){
-        loadingService()
+        if(loading)loadingService()
         for (let body of bodys){
             requests.push({
                 url: url + urlScripts,

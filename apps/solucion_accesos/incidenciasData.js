@@ -45,32 +45,40 @@ const columsData2 = [
      {formatter:"rowSelection", field:'checkboxColumn',titleFormatter:"rowSelection", width:10,hozAlign:"center", headerSort:false, cellClick:function(e, cell){
         cell.getRow().toggleSelect();
       }},
-	{ title: "Opciones", field: "actions" , hozAlign: "left", 
+	{ title: "Opciones", field: "actions" , hozAlign: "left", width:140,
 		formatter: (cell, formatterParams) => {
 			//----Button Trash
             let data= cell.getData()
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
 			let divActions = '<div class="row d-flex">';
-			divActions += `<button class="btn-table-bitacora" onClick="alertViewFalla('${folio}','${data.falla_fecha}', '${data.falla_ubicacion}', '${data.falla_area}', 
-            '${data.falla}','${data.falla_comments}', '${data.falla_guard}' ,'${data.falla_guard_solution}','${data.falla_status}')"> <i class="fa-solid fa-eye"> </i> </button>`;
-			divActions += `<button class="btn-table-bitacora" onClick="alertFallaResuelta('${folio}','${data.falla_status}')"> <i class="fa-solid fa-circle-check"> </i> </button>`;
-			divActions += `<button class="btn-table-bitacora" onClick="editarFallaModal('${folio}','${data.falla_fecha}', '${data.falla_ubicacion}', '${data.falla_area}', 
-            '${data.falla}','${data.falla_comments}', '${data.falla_guard}' ,'${data.falla_guard_solution}', '${data.falla_status}')">
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('fallaVer','${folio}')"> <i class="fa-solid fa-eye"> </i> </button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('cerrarFallaModal','${folio}')"> <i class="fa-solid fa-circle-check"> </i> </button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('EditFail','${folio}')">
                 <i class="fa-solid fa-pen"></i></button>`;
 			divActions += `<button class="btn-table-bitacora" onClick="alertEliminar('${folio}', 'fallas')"><i class="fa-solid fa-trash"> </i> </button>`;
 			divActions += '</div>';
 			return divActions;
 		},
 	},
-	{ title:"Fecha ", field:'falla_fecha',hozAlign:"left",headerFilter:true , headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
+	{ title:"Fecha y hora", field:'falla_fecha_hora',hozAlign:"left",headerFilter:true, headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
+	{ title:"Estado", field:'falla_estatus',hozAlign:"left",headerFilter:true},
 	{ title:"Ubicación", field:'falla_ubicacion',hozAlign:"left",headerFilter:true },
-	{ title:"Lugar del fallo", field:'falla_area', hozAlign:"left",headerFilter:true},
+	{ title:"Lugar del fallo", field:'falla_caseta', hozAlign:"left",headerFilter:true},
 	{ title:"Falla", field:'falla',hozAlign:"left",headerFilter:true },
-	{ title:"Comentarios", field:'falla_comments',hozAlign:"left",headerFilter:true, width:350},
-	{ title:"Reporta", field:'falla_guard',hozAlign:"left",headerFilter:true},
-	{ title:"Responsable", field:'falla_guard_solution',hozAlign:"left",headerFilter:true},
-	{ title:"Estado", field:'falla_status',hozAlign:"left",headerFilter:true},
-	{ title:"Resolución", field:'falla_fecha_solucion',hozAlign:"left",headerFilter:true}
+	{ title:"Evidencia", field:'falla_evidencia',hozAlign:"left",headerFilter:true,
+		formatter: function(cell) {
+            let data = cell.getData();
+            let res=""
+            console.log("data.hasOwnProperty('falla_evidencia')",data.hasOwnProperty('falla_evidencia'))
+            if(data.hasOwnProperty('falla_evidencia') && data.falla_evidencia !==undefined){
+            	res= `<img src="${data.falla_evidencia.length>0 ? data.falla_evidencia[0].file_url : ""}" alt="Imagen" style="width:120px;height:120px; object-fit:cover;" class="img-cell"/>`;
+            }
+            return res
+        }},
+	{ title:"Comentarios", field:'falla_comentarios',hozAlign:"left",headerFilter:true, width:350},
+	{ title:"Reporta", field:'falla_reporta_nombre',hozAlign:"left",headerFilter:true},
+	{ title:"Responsable", field:'falla_responsable_solucionar_nombre',hozAlign:"left",headerFilter:true},
+	//{ title:"Resolución", field:'falla_fecha_solucion',hozAlign:"left",headerFilter:true}
 ];
 
 let dataTableIncidencias = []

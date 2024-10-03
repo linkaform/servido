@@ -9,7 +9,7 @@ class lkfNavbarComponent extends HTMLElement{
     <link rel="stylesheet" href="./style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
-	<nav class="navbar header m-0 p-0 mb-5" id='myCustomNavBar'>
+	<nav class="navbar header m-0 p-0 mb-5 customShadow" id='myCustomNavBar'>
         <div class="navbar-brand">
 			<img src="" height="40" height="60" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
         </div>
@@ -58,6 +58,8 @@ let statusDisponible="Disponible";
 let statusEnUso="En Uso";
 let statusVisitaEntrada="Entrada"
 let statusVisitaSalida="Salida"
+let statusFallaAbierto="Abierto"
+let statusFallaResuelto="Resuelto"
 
 function changeButtonColor(){
     $("#imageUserNavbar").attr("src", getCookie('userImg'));
@@ -69,24 +71,29 @@ function changeButtonColor(){
             $("#imageLinkaform").attr("src", getCookie('lkfLogo'));
             switch (getValueUserLocation()) {
               case "accesos":
-                 let btn1 = document.getElementById("buttonAccesos");
-                 btn1.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
+                let btn1 = document.getElementById("buttonAccesos");
+                btn1.style.setProperty('background-color', '#0275d8', 'important');
+                btn1.style.setProperty('color', 'white', 'important');
                 break;
               case "bitacora":
-                 let btn2 = document.getElementById("buttonBitacoras");
-                 btn2.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
+                let btn2 = document.getElementById("buttonBitacoras");
+                btn2.style.setProperty('background-color', '#0275d8', 'important');
+                btn2.style.setProperty('color', 'white', 'important');
                 break;
               case "incidencias":
-                 let btn3 = document.getElementById("buttonIncidencias");
-                 btn3.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
+                let btn3 = document.getElementById("buttonIncidencias");
+                btn3.style.setProperty('background-color', '#0275d8', 'important');
+                btn3.style.setProperty('color', 'white', 'important');
                 break;
               case "articulos":
-                 let btn4 = document.getElementById("buttonArticulos");
-                 btn4.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset";
+                let btn4 = document.getElementById("buttonArticulos");
+                btn4.style.setProperty('background-color', '#0275d8', 'important');
+                btn4.style.setProperty('color', 'white', 'important');
                 break;
               case "rondines":
-                 let btn5 = document.getElementById("buttonRondines");
-                 btn5.style.boxShadow= "rgba(227, 200, 110, 0.80) 100px -50px 20px -10px inset"; 
+                let btn5 = document.getElementById("buttonRondines");
+                btn5.style.setProperty('background-color', '#0275d8', 'important');
+                btn5.style.setProperty('color', 'white', 'important');
                 break;
             }
         } 
