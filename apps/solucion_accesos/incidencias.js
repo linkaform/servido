@@ -33,7 +33,7 @@ window.onload = function(){
     selectCaseta.onchange = async function() {
         let response = await fetchOnChangeCaseta('incidencias.py', 'get_incidences', selectCaseta.value, selectLocation.value)
         reloadTableIncidencias(response.response.data)
-        let response2 = await fetchOnChangeCaseta('fallas.py', 'get_failures', selectCaseta.value, selectLocation.value)
+        let response2 = await fetchOnChangeCaseta('fallas.py', 'get_fallas', selectCaseta.value, selectLocation.value)
         reloadTableFallas(response2.response.data)
     };
 	setSpinner(true, 'divSpinner');
@@ -45,7 +45,22 @@ window.onload = function(){
     }
     selectCaseta.value=""
     selectCaseta.disabled=true
+
+
+         const buttons = document.querySelectorAll('.time-button');
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            alert(`Hora seleccionada: ${button.textContent}:${document.getElementById('minutes').value}`);
+        });
+    });
+
+    iniciarSelectHora('horaNuevoFalla','minNuevoFalla', 'ampmNuevoFalla')
+    iniciarSelectHora('horaEditarFalla','minEditarFalla', 'ampmEditarFalla1')
+    iniciarSelectHora('horaResolucionEditarFalla','minResolucionEditarFalla', 'ampmEditarFalla')
+    // iniciarSelectHora('horaResolucionNuevoFalla','minResolucionNuevoFalla')
 }
+
+
 
 //FUNCION para mostrar los modales
 function setModal(type = 'none',id){
@@ -58,21 +73,95 @@ function setModal(type = 'none',id){
     }else if(type == 'ViewIncident'){
         verIncidencia(id)
     }else if(type == 'NewFail'){
-        //limpiarModal("contentNuevaFalla", "nueva")
-        $("#ubicacionNuevaFalla").text(selectLocation.value)
-        $("#casetaNuevaFalla").text(selectCaseta.value)
-        $('#newFailModal').modal('show');
+        limpiarModal("contentNuevoFalla", "nuevo")
+        abrirModalNuevaEditarFalla(null, "Nuevo")
     }else if(type == 'EditFail'){
-        //limpiarModal("contentEditFalla", "edit")
-        $('#editFailModal').modal('show');
-    }else if(type == 'ViewFail'){
-        $('#viewFailModal').modal('show');
+        limpiarModal("contentEditarFalla", "editar")
+        abrirModalNuevaEditarFalla(id, "Editar")
+    }else if (type =='cerrarFallaModal'){
+        limpiarModal("seguimientoFalla", "editar")
+        cerrarFallaModal(id)
+    }else if(type == 'fallaVer'){
+        console.log("COBERRR",type)
+        verFallaModal(id)
     }else if(type == 'SuccessFail'){
         $('#successResolveFailModal').modal('show');
     }else if(type == 'filtros'){
         modalFiltros('tableIncidencias','incidenciasFiltersModal')
     }
 }
+
+function verFallaModal(folio){
+    let selected= dataTableFallas.find(x => x.folio == folio)
+    $('#fallaVista').text(selected.falla);
+    $('#objetoAfectadoVista').text(selected.falla_objeto_afectado);
+    $('#ubicacionVista').text(selected.falla_ubicacion);
+    $('#areaVista').text(selected.falla_caseta);
+    $('#estatusVista').text(selected.falla_estatus);
+    $('#comentarioVista').text(selected.falla_comentarios);
+    $('#fechaFallaVista').text(selected.falla_fecha_hora);
+    $('#reportaVista').text(selected.falla_reporta_nombre);
+    $('#folioVista').text(selected.falla_folio_accion_correctiva);
+    $('#comentarioSolucionVista').text(selected.falla_comentario_solucion);
+    $('#fechaSolucionVista').text(selected.falla_fecha_hora_solucion);
+    $('#responsableVista').text(selected.falla_responsable_solucionar_nombre)
+
+    let divFotos = document.getElementById("evidenciaFalla")
+    divFotos.innerHTML=""
+    let fotos=""
+    if(selected.hasOwnProperty('falla_evidencia')){
+        for(let foto of selected.falla_evidencia){
+            fotos += `<img src="`+foto.file_url+`" style="object-fit: contain;"  class="me-2">`
+        }
+    }
+    divFotos.innerHTML = fotos
+    let divDoc = document.getElementById("documentosFalla")
+    divDoc.innerHTML=""
+    let doc=""
+    if(selected.hasOwnProperty('falla_documento')){
+        console.log('holi')
+        for(let file of selected.falla_documento){
+            doc += `<a href="`+file.file_url+`" target="_blank" class="me-2">`+file.file_name+`</a>`
+
+        }
+    }
+    divDoc.innerHTML = doc
+
+    let divFotos2 = document.getElementById("evidenciaSolucionFalla")
+    divFotos2.innerHTML=""
+    let fotos2=""
+    if(selected.hasOwnProperty('falla_evidencia_solucion') && selected.falla_evidencia_solucion!==undefined){
+        for(let foto of selected.falla_evidencia_solucion){
+            fotos2 += `<img src="`+foto.file_url+`" style="object-fit: contain;"  class="me-2">`
+        }
+    }
+    divFotos2.innerHTML = fotos2
+    let divDoc2 = document.getElementById("documentosSolucionFalla")
+    divDoc2.innerHTML=""
+    let doc2=""
+    if(selected.hasOwnProperty('falla_documento_solucion') && selected.falla_documento_solucion!==undefined){
+        for(let file of selected.falla_documento_solucion){
+            doc2 += `<a href="`+file.file_url+`" target="_blank" class="me-2">`+file.file_name+`</a>`
+
+        }
+    }
+
+    divDoc2.innerHTML = doc2
+    $('#fallaVer').modal('show');
+
+}
+
+
+function cerrarFallaModal(folio){
+    selectedRowFolio=folio
+    let selected= dataTableFallas.find(x => x.folio == folio)
+    if(selected.falla_estatus== statusFallaResuelto.toLowerCase()){
+        successMsg("Esta falla ya se encuentra resuelta.", 'Validación', 'warning')
+    }else{
+        $('#cerrarFallaModal').modal('show');
+    }
+}
+
 
 function verIncidencia(folio){
     let selectedIncidencia = dataTableIncidencias.find(x => x.folio == folio)
@@ -101,8 +190,6 @@ function verIncidencia(folio){
     let doc=""
     if(selectedIncidencia.hasOwnProperty('documento_incidencia')){
         for(let file of selectedIncidencia.documento_incidencia){
-            console.log("GOOO", file)
-
             doc += `<a href="`+file.file_url+`" target="_blank" class="me-2">`+file.file_name+`</a>`
 
         }
@@ -135,6 +222,7 @@ window.addEventListener('storage', function(event) {
 
 
 function reloadTableIncidencias(data){
+    dataTableIncidencias = []
     if(user !='' && userJwt!=''){
         let incidencias=data
         if(incidencias.length >0){
@@ -179,16 +267,40 @@ function reloadTableIncidencias(data){
 }
 
 function reloadTableFallas(data){
+    dataTableFallas=[]
     if(user !='' && userJwt!=''){
         let fallas= data
         if(fallas.length >0){
             for(let falla of fallas){
-                let dateFormat= falla.falla_fecha.slice(0,-3)
-                dataTableFallas.push({folio:falla.folio, falla_fecha:dateFormat,
-                    falla_ubicacion:falla.falla_ubicacion, falla_area:falla.falla_area, 
-                    falla:falla.falla, falla_comments:falla.falla_comments, 
-                    falla_guard:falla.falla_guard, falla_guard_solution:falla.falla_guard_solution, 
-                    falla_status:falla.falla_status})
+                let dateFormat=""
+                let dateFormat2=""
+                if(falla.hasOwnProperty('falla_fecha_hora')&& falla.falla_fecha_hora !=="" ){
+                    dateFormat= falla.falla_fecha_hora.slice(0,-3)
+                }
+                if(falla.hasOwnProperty('falla_fecha_hora_solucion')&& falla.falla_fecha_hora_solucion !=="" ){
+                    dateFormat2= falla.falla_fecha_hora_solucion.slice(0,-3)
+                }
+                dataTableFallas.push({
+                    'folio': falla.folio,
+                    'falla_estatus': falla.falla_estatus,
+                    'falla_fecha_hora': dateFormat,
+                    'falla_reporta_nombre': falla.falla_reporta_nombre,
+                    'falla_reporta_departamento': falla.falla_reporta_departamento,
+                    'falla_ubicacion': falla.falla_ubicacion,
+                    'falla_caseta':falla.falla_caseta,
+                    'falla':falla.falla,
+                    'falla_objeto_afectado':falla.falla_objeto_afectado,
+                    'falla_comentarios':falla.falla_comentarios,
+                    'falla_evidencia': falla.falla_evidencia,
+                    'falla_documento':falla.falla_documento,
+                    'falla_responsable_solucionar_nombre':falla.falla_responsable_solucionar_nombre,
+                    'falla_responsable_solucionar_documento':falla.falla_responsable_solucionar_documento,
+                    'falla_comentario_solucion':falla.falla_comentario_solucion,
+                    'falla_folio_accion_correctiva':falla.falla_folio_accion_correctiva,
+                    'falla_evidencia_solucion':falla.falla_evidencia_solucion,
+                    'falla_documento_solucion':falla.falla_documento_solucion,
+                    'falla_fecha_hora_solucion':dateFormat2,
+                })
             }
         }else{
             dataTableFallas = []
@@ -247,6 +359,38 @@ function limpiarModal(classInput, editAdd){
             input.parentElement.parentElement.remove();
         }
     });
+
+   let divEvidenciaF = document.getElementById("evidenciaF-input-form-"+editAdd);
+    const elementsEvidenciaF = divEvidenciaF.querySelectorAll('.evidenciaF-div-'+editAdd);
+    elementsEvidenciaF.forEach(function(input) {
+        if(input.id !== "evidenciaF-"+editAdd){
+            input.parentElement.parentElement.remove();
+        }
+    });
+    let divDocumentoF = document.getElementById("documentoF-input-form-"+editAdd);
+    const elementsDocumentoF = divDocumentoF.querySelectorAll('.documentoF-div-'+editAdd);
+    elementsDocumentoF.forEach(function(input) {
+        if(input.id !== "documentoF-"+editAdd){
+            input.parentElement.parentElement.remove();
+        }
+    });
+
+    if(editAdd =='Editar'){
+        let divEvidenciaFS = document.getElementById("evidenciaFS-input-form-"+editAdd);
+        const elementsEvidenciaFS = divEvidenciaFS.querySelectorAll('.evidenciaFS-div-'+editAdd);
+        elementsEvidenciaFS.forEach(function(input) {
+            if(input.id !== "evidenciaFS-"+editAdd){
+                input.parentElement.parentElement.remove();
+            }
+        });
+        let divDocumentoFS = document.getElementById("documentoFS-input-form-"+editAdd);
+        const elementsDocumentoFS = divDocumentoFS.querySelectorAll('.documentoFS-div-'+editAdd);
+        elementsDocumentoFS.forEach(function(input) {
+            if(input.id !== "documentoFS-"+editAdd){
+                input.parentElement.parentElement.remove();
+            }
+        });
+    }
 }
 
 function reemplazarConVacio(obj) {
@@ -325,9 +469,10 @@ function getAllDataFallas(){
         method: 'POST',
         body: JSON.stringify({
             script_name:'fallas.py',
-            option:'get_failures',
+            option:'get_fallas',
             locacion: getCookie('userLocation'),
-            area: getCookie('userCaseta')
+            area: getCookie('userCaseta'),
+            status: statusFallaAbierto.toLowerCase()
         }),
         headers:
         {
@@ -342,12 +487,35 @@ function getAllDataFallas(){
                     let fallas= res.response.data
                     if(fallas.length >0){
                         for(let falla of fallas){
-                            let dateFormat= falla.falla_fecha.slice(0,-3)
-                            dataTableFallas.push({folio:falla.folio, falla_fecha:dateFormat,
-                                falla_ubicacion:falla.falla_ubicacion, falla_area:falla.falla_area, 
-                                falla:falla.falla, falla_comments:falla.falla_comments, 
-                                falla_guard:falla.falla_guard, falla_guard_solution:falla.falla_guard_solution, 
-                                falla_status:falla.falla_status})
+                            let dateFormat=""
+                            let dateFormat2=""
+                            if(falla.hasOwnProperty('falla_fecha_hora')&& falla.falla_fecha_hora !=="" ){
+                                dateFormat= falla.falla_fecha_hora.slice(0,-3)
+                            }
+                            if(falla.hasOwnProperty('falla_fecha_hora_solucion')&& falla.falla_fecha_hora_solucion !=="" ){
+                                dateFormat2= falla.falla_fecha_hora_solucion.slice(0,-3)
+                            }
+                            dataTableFallas.push({
+                                'folio': falla.folio,
+                                'falla_estatus': falla.falla_estatus,
+                                'falla_fecha_hora': dateFormat,
+                                'falla_reporta_nombre': falla.falla_reporta_nombre,
+                                'falla_reporta_departamento': falla.falla_reporta_departamento,
+                                'falla_ubicacion': falla.falla_ubicacion,
+                                'falla_caseta':falla.falla_caseta,
+                                'falla':falla.falla,
+                                'falla_objeto_afectado':falla.falla_objeto_afectado,
+                                'falla_comentarios':falla.falla_comentarios,
+                                'falla_evidencia': falla.falla_evidencia,
+                                'falla_documento':falla.falla_documento,
+                                'falla_responsable_solucionar_nombre':falla.falla_responsable_solucionar_nombre,
+                                'falla_responsable_solucionar_documento':falla.falla_responsable_solucionar_documento,
+                                'falla_comentario_solucion':falla.falla_comentario_solucion,
+                                'falla_folio_accion_correctiva':falla.falla_folio_accion_correctiva,
+                                'falla_evidencia_solucion':falla.falla_evidencia_solucion,
+                                'falla_documento_solucion':falla.falla_documento_solucion,
+                                'falla_fecha_hora_solucion':dateFormat2,
+                            })
                         }
                     }else{
                         dataTableFallas = []
@@ -616,8 +784,8 @@ function llenarEditarIncidencia(selectArea,selectedIncidencia,selectUbicacion,se
 }
 
 async function onChangeCatalogoIncidencia(catalog, abrirEditar){
-    let optionsCaseta = new Set();
     if(catalog =='ubicacion'+abrirEditar+'Incidencia'){
+        let optionsCaseta = new Set();
         cleanCatalag(['area'+abrirEditar+'Incidencia'])
         let selectUbicacion = document.getElementById(catalog)
         let selectArea = document.getElementById('area'+abrirEditar+'Incidencia')
@@ -625,13 +793,179 @@ async function onChangeCatalogoIncidencia(catalog, abrirEditar){
         return booth.ubi == selectUbicacion.value ;
         });
         selectArea.innerHTML=""; 
-        console.log("OPTOOPNC",arrayUserBoothsLocations)
+        for (let obj of optionsCaseta){
+                selectArea.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
+        }
+        selectArea.value=""
+    }else if (catalog =='ubicacion'+abrirEditar+'Falla'){
+        let optionsCaseta = new Set();
+        cleanCatalag(['area'+abrirEditar+'Falla'])
+        let selectUbicacion = document.getElementById(catalog)
+        let selectArea = document.getElementById('area'+abrirEditar+'Falla')
+        optionsCaseta = arrayUserBoothsLocations.filter(booth => {
+        return booth.ubi == selectUbicacion.value ;
+        });
+        selectArea.innerHTML=""; 
         for (let obj of optionsCaseta){
                 selectArea.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
         }
         selectArea.value=""
     }
 }
+
+async function abrirModalNuevaEditarFalla(folio=null,nuevoEditar='Nuevo'){
+    selectedRowFolio=folio
+    cleanCatalag(['ubicacion'+nuevoEditar+'Falla','area'+nuevoEditar+'Falla', 
+        'reporta'+nuevoEditar+'Falla', 'objetoAfectado'+nuevoEditar+'Falla','falla'+nuevoEditar+'Falla',
+        'responsable'+nuevoEditar+'Falla'])
+
+    let selectUbicacion = document.getElementById('ubicacion'+nuevoEditar+'Falla')
+    let selectArea = document.getElementById('area'+nuevoEditar+'Falla')
+    let selectFalla= document.getElementById('falla'+nuevoEditar+'Falla')
+    let selectObjetoAfectado= document.getElementById('objetoAfectado'+nuevoEditar+'Falla')
+    let selectReporta= document.getElementById('reporta'+nuevoEditar+'Falla')
+    let selectResponsable= document.getElementById('responsable'+nuevoEditar+'Falla')
+    let selectedFalla =""
+    if(nuevoEditar=="Editar"){selectedFalla = dataTableFallas.find(x => x.folio == folio) }
+    try {
+        let requests=[{script_name:'incidencias.py',option:'catalogo_area_empleado'},
+                    {script_name:'fallas.py',option:'catalogo_fallas'},
+                    {script_name:'fallas.py',option:'catalogo_area_empleado_apoyo'}]
+        catalogsData = await cargarCatalogos(requests);
+    } catch (error) {
+        console.error('Error al cargar los catálogos, ', error);
+    }
+    console.log(catalogsData)
+    if(catalogsData.format.length>0){
+        for(let obj of catalogsData.format){
+            if (obj.objBody.option=="catalogo_area_empleado"){
+                for(let name of obj.data){
+                    selectReporta.innerHTML += '<option value="'+name+'">'+name+'</option>';
+                }
+                selectReporta.value="";
+            }else if(obj.objBody.option =='catalogo_fallas') {
+                for(let falla of obj.data){
+                    selectFalla.innerHTML += '<option value="'+falla+'">'+falla+'</option>';
+                }
+                selectFalla.value=""
+            }else if(obj.objBody.option =='catalogo_area_empleado_apoyo') {
+                for(let name of obj.data){
+                    if(name!==null){
+                        selectResponsable.innerHTML += '<option value="'+name+'">'+name+'</option>';
+                    }
+                }
+                selectResponsable.value=""
+            }
+        }
+    } 
+    let locationsUnique = new Set();
+    if(getCookie("arrayUserBoothsLocations")==""){
+        getInfoAndCatalogos()
+    }else{
+        arrayUserBoothsLocations=JSON.parse(getCookie('arrayUserBoothsLocations'))
+    }
+    arrayUserBoothsLocations.forEach(function(booth) {
+        locationsUnique.add(booth.ubi);
+    });
+
+    optionsLocation = Array.from(locationsUnique);
+    for(let ubi of optionsLocation){
+        selectUbicacion.innerHTML += '<option value="'+ubi+'">'+ubi+'</option>';
+    }
+
+    selectArea.innerHTML += '<option disabled> Selecciona una ubicación... </option>';
+    selectArea.value="";
+    selectObjetoAfectado.innerHTML += '<option disabled> Selecciona una falla... </option>';
+    selectObjetoAfectado.value="";
+    onChangeCatalogoFalla('ubicacion'+nuevoEditar+'Falla', nuevoEditar)
+    selectArea.value= selectCaseta.value||""
+    if(nuevoEditar == 'Nuevo'){
+        $('#newFailModal').modal('show');
+    }else{
+        llenarEditarFalla(selectArea,selectedFalla,selectUbicacion,selectFalla)
+    }
+}
+
+function llenarEditarFalla(selectArea,selectedFalla,selectUbicacion,selectFalla){
+    console.log("CONTENIDOO", selectedFalla)
+    selectFalla.value= selectedFalla.falla
+    //selectUbicacion.value=selectedFalla.falla_ubicacion;
+     let optionsCaseta = arrayUserBoothsLocations.filter(booth => {
+        return booth.ubi == selectedFalla.falla_ubicacion;
+    });
+    selectArea.innerHTML=""; 
+    for (let obj of optionsCaseta){
+        selectArea.innerHTML += '<option value="'+obj.name.toString()+'">'+obj.name+'</option>';
+    }
+    $('#ubicacionEditarFalla').val(selectedFalla.falla_ubicacion)
+    $('#areaEditarFalla').val(selectedFalla.falla_caseta)
+    $('#fallaEditarFalla').val(selectedFalla.falla)
+    $('#objetoAfectadoEditarFalla').val(selectedFalla.falla_objeto_afectado)
+    $('#reportaEditarFalla').val(selectedFalla.falla_reporta_nombre)
+    $('#responsableEditarFalla').val(selectedFalla.falla_responsable_solucionar_nombre)
+    $('#comentariosEditarFalla').val(selectedFalla.falla_comentarios)
+    
+    if(selectedFalla.hasOwnProperty('falla_fecha_hora') && selectedFalla.falla_fecha_hora!==""){
+        let partsDate1 = selectedFalla.falla_fecha_hora.split(' ');
+        let hour1= partsDate1[1].split(':')
+        $('#fechaEditarFalla').val(partsDate1[0])
+        $('#horaEditarFalla').val(hour1[0])
+        $('#minEditarFalla').val(hour1[1])
+        onChangeAmpmLabel('horaEditarFalla','ampmEditarFalla1')
+    }
+
+    if(selectedFalla.hasOwnProperty('falla_fecha_hora_solucion') && selectedFalla.falla_fecha_hora_solucion!==""){
+        let partsDate2 = selectedFalla.falla_fecha_hora_solucion.split(' ');
+        let hour2= partsDate2[1].split(':')
+        $('#fechaResolucionEditarFalla').val(partsDate2[0])
+        $('#horaResolucionEditarFalla').val(hour2[0])
+        $('#minResolucionEditarFalla').val(hour2[1])
+        onChangeAmpmLabel('horaResolucionEditarFalla','ampmEditarFalla')
+    }
+
+    onChangeCatalogoFalla('fallaEditarFalla', 'Editar',selectedFalla)
+    
+}
+
+async function onChangeCatalogoFalla(catalog, abrirEditar, selectedFalla={}){
+    if(catalog =='ubicacion'+abrirEditar+'Falla'){
+        console.log("HII")
+        let optionsCaseta = new Set();
+        cleanCatalag(['area'+abrirEditar+'Falla'])
+        let selectUbicacion = document.getElementById(catalog)
+        let selectArea = document.getElementById('area'+abrirEditar+'Falla')
+        optionsCaseta = arrayUserBoothsLocations.filter(booth => {
+        return booth.ubi == selectUbicacion.value ;
+        });
+        selectArea.innerHTML=""; 
+        for (let obj of optionsCaseta){
+                selectArea.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
+        }
+        selectArea.value=""
+    } else if (catalog =='falla'+abrirEditar+'Falla'){
+        console.log("FALLA")
+        cleanCatalag(['objetoAfectado'+abrirEditar+'Falla'])
+        let selectFalla = document.getElementById(catalog)
+        console.log("FALLA SECLECIOPNADA",selectFalla)
+        let selectObjetoAfectado = document.getElementById('objetoAfectado'+abrirEditar+'Falla')
+        let data = await cargarCatalogos([{script_name:'fallas.py',option:'catalogo_fallas',tipo:selectFalla.value}], true)
+        const dataSinNulos = data.format[0].data.filter(element => element !== null);
+        for(let obj of dataSinNulos){
+            if(obj !==null){
+                selectObjetoAfectado.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
+            }
+        }
+        if(dataSinNulos.length==0){
+            selectObjetoAfectado.innerHTML += '<option disabled> No hay registros disponibles... </option>';
+            selectObjetoAfectado.value="";
+        }else{
+            selectObjetoAfectado.value=""
+            selectObjetoAfectado.value=selectedFalla.falla_objeto_afectado
+            $('#editFailModal').modal('show');
+        }
+    }
+}
+
 //FUNCION para cerrar modales de vista
 function cerrarModal(id){
     $('#'+ id).modal('hide');
@@ -747,15 +1081,46 @@ function alertEliminarCheckbox(type){
         //INFO: mandar llamar la FETCH aqui para eliminar esos registros y en el response traer la data actualizada y actualizar la tabla
         if (result.value) {
             if(type=="fallas"){
-                selectedFallas= getActiveCheckBoxs(tables, 'tableFallas')
+                loadingService()
+                selected= getActiveCheckBoxs(tables, 'tableFallas')
                 let ids=[]
-                for (d of selectedFallas){
+                for (d of selected){
                     ids.push(d.folio)
                 }
-                dataTableFallas = dataTableFallas.filter(function(objeto) {
-                    return !ids.includes(objeto.folio); // Retorna verdadero para mantener el objeto, falso para eliminarlo
+                fetch(url + urlScripts, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        script_name: bodyInf.script_name,
+                        option: bodyInf.option,
+                        folio: ids
+                    }),
+                    headers:
+                    {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+userJwt
+                    },
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                        let data=res.response.data
+                        if(data.status_code==400){
+                            errorAlert(data)
+                        }else if(data.status_code==202 ||data.status_code==201 ){
+                            Swal.close();
+                            successMsg('Confirmación', 'Incidencias borradas correctamente')
+                            for (d of selectedFallas){
+                                ids.push(d.folio)
+                            }
+                            dataTableFallas = dataTableFallas.filter(function(objeto) {
+                                return !ids.includes(objeto.folio); // Retorna verdadero para mantener el objeto, falso para eliminarlo
+                            });
+                            tables["tableFallas"].setData(dataTableFallas);
+                        }
+                    }else{
+                        errorAlert(res)
+                    }
                 });
-                tables["tableFallas"].setData(dataTableFallas);
             }else{
                 loadingService()
                 selected= getActiveCheckBoxs(tables, 'tableIncidencias')
@@ -803,7 +1168,8 @@ function alertEliminarCheckbox(type){
 
 //FUNCION para cerrar un fallla de manera individual desde la tabla
 function alertFallaResuelta(folio, state){
-    if(state== statusAbierto){
+    console.log(folio, state,statusFallaAbierto.toLowerCase())
+    if(state== statusFallaAbierto.toLowerCase()){
         Swal.fire({
             title:'¿Estas seguro de que la falla fue resulta?',
             html:`
@@ -955,8 +1321,7 @@ function editarIncidencia(){
     let data = getInputsValueByClass("contentEditarIncidencia")
     let data_incidence_update ={
         'reporta_incidencia': data.reportaEditarIncidencia,
-        'fecha_hora_incidencia':formatDateToService(data.fechaHoraEditarIncidencia,
-            "loadingButtonEditarIncidencia","buttonEditarIncidencia")+':00',
+        'fecha_hora_incidencia':formatDateToService(data.fechaHoraEditarIncidencia),
         'ubicacion_incidencia': data.ubicacionEditarIncidencia,
         'area_incidencia': data.areaEditarIncidencia,
         'incidencia': data.incidenciaEditarIncidencia,
@@ -970,11 +1335,9 @@ function editarIncidencia(){
         'prioridad_incidencia':data.importanciaEditarIncidencia,
         'notificacion_incidencia':data.notificacionEditarIncidencia
     };
+
     let cleanSelected = (({ actions, checkboxColumn, folio,...rest }) => rest)(selected);
-    console.log("LIMPIARR",cleanSelected, data_incidence_update)
-
     let validateObj = encontrarCambios(cleanSelected,data_incidence_update)
-
     for(let o of selected.evidencia_incidencia){
         validateObj.evidencia_incidencia.unshift(o)
     }
@@ -987,8 +1350,7 @@ function editarIncidencia(){
     for(let o of selected.acciones_tomadas_incidencia){
         validateObj.acciones_tomadas_incidencia.unshift(o)
     }
-
-    console.log("validateObj",validateObj)
+    /*console.log(ERR)*/
     let noOptional = (({ acciones_tomadas_incidencia, personas_involucradas_incidencia, documento_incidencia, evidencia_incidencia, reporta_incidencia,
         tipo_dano_incidencia, view,check,...rest  }) => rest)(data_incidence_update);
     if(!validarObjeto(noOptional)){
@@ -996,6 +1358,19 @@ function editarIncidencia(){
         $("#loadingButtonEditarIncidencia").hide();
         $("#buttonEditarIncidencia").show();
     }else{
+        if(validateObj.evidencia_incidencia.length==0){
+            delete validateObj.evidencia_incidencia
+        }
+        if(validateObj.documento_incidencia.length==0){
+            delete validateObj.documento_incidencia
+        }
+        if(validateObj.personas_involucradas_incidencia.length==0){
+            delete validateObj.personas_involucradas_incidencia
+        }
+        if(validateObj.acciones_tomadas_incidencia.length==0){
+            delete validateObj.acciones_tomadas_incidencia
+        }
+        
         if(Object.keys(validateObj).length == 0){
             Swal.fire({
                 title: "Validación",
@@ -1030,14 +1405,41 @@ function editarIncidencia(){
                         successMsg("Confirmación", "Incidencia actualizada correctamente.")
                         let selectedIncidencia = dataTableIncidencias.find(x => x.folio === selected.folio);
                         for (let key in validateObj){
-                            if(key == 'evidencia_incidencia'||key == 'documento_incidencia'|| key == 'personas_involucradas_incidencia' || key =='acciones_tomadas_incidencia'){
-                                selectedIncidencia[key]=validateObj[key]
-                                /*if(validateObj[key].length>0){
-                                    validateObj[key]= data_incidence_update[key].unshift(validateObj[key])
-                                }else{
-                                    validateObj[key]= data_incidence_update[key]
+                            if(key=='fecha_hora_incidencia'){
+                            let formatDate= data_incidence_update[key].slice(0,-3)
+                            selectedIncidencia[key]= formatDate
+                            }else if(key=='falla_evidencia'){
+                                if(data_incidence_update.falla_evidencia.length>0){
+                                    for (let d of data_incidence_update.falla_evidencia){
+                                        selectedIncidencia.falla_evidencia.unshift(d)
+                                    }
                                 }
-                                selectedIncidencia[key]= validateObj[key]*/
+                            }else if(key=='evidencia_incidencia'){
+                                if(data_incidence_update.evidencia_incidencia.length>0){
+                                    for (let d of data_incidence_update.evidencia_incidencia){
+                                        selectedIncidencia.evidencia_incidencia.unshift(d)
+                                    }
+                                }
+                            }else if(key=='documento_incidencia'){
+                                if(data_incidence_update.documento_incidencia.length>0){
+                                    for (let d of data_incidence_update.documento_incidencia){
+                                        selectedIncidencia.documento_incidencia.unshift(d)
+                                    }
+                                }
+                            }else if(key=='personas_involucradas_incidencia'){
+                                if(data_incidence_update.personas_involucradas_incidencia.length>0){
+                                    for (let d of data_incidence_update.personas_involucradas_incidencia){
+                                        selectedIncidencia.personas_involucradas_incidencia.unshift(d)
+                                    }
+                                }
+                            }else if(key=='acciones_tomadas_incidencia'){
+                                if(data_incidence_update.acciones_tomadas_incidencia.length>0){
+                                    for (let d of data_incidence_update.acciones_tomadas_incidencia){
+                                        selectedIncidencia.acciones_tomadas_incidencia.unshift(d)
+                                    }
+                                }
+                            }else{
+                                selectedIncidencia[key]= data_incidence_update[key]
                             }
                         }
                         tables["tableIncidencias"].setData(dataTableIncidencias);
@@ -1054,110 +1456,10 @@ function editarIncidencia(){
             });       
         }
     }
-
-
 }
 
 
-//FUNCION editar y validar la informacion al editar un falla
-function editarFalla(){
-    $("#loadingButtonEditarFalla").show();
-    $("#buttonEditarFalla").hide();
-    let data = getInputsValueByClass("contentEditFalla")
 
-    let selected=''
-    for(d of dataTableFallas){
-        if(d.folio == selectedRowFolio)
-            selected = d
-    }
-    let data_failure_update={
-        'falla_status':data.estatusEditFalla,
-        'falla_fecha':data.fechaEditFalla+':00',
-        'falla_ubicacion':data.ubicacionEditFalla,
-        'falla_area':data.lugarEditFalla,
-        'falla':data.fallaEditFalla,
-        'falla_comments':data.comentariosEditFalla,
-        'falla_guard':data.reportaEditFalla,
-        'falla_guard_solution':data.responsableEditFalla,
-        'falla_fecha_solucion':data.fechaResolucionEditFalla+':00',
-    }
-
-    let cleanSelected = (({ actions, checkboxColumn, folio,...rest }) => rest)(selected);
-    if(cleanSelected.falla_fecha){
-        let partes=cleanSelected.falla_fecha.split(" ")
-        let date = partes[0]+'T'+partes[1]
-        cleanSelected.falla_fecha= date
-    }
-    if(cleanSelected.falla_fecha_solucion){
-        let partesS= cleanSelected.falla_fecha_solucion.split(" ")
-        let dateS = partesS[0]+'T'+partesS[1]
-        cleanSelected.falla_fecha_solucion= dateS
-    }
-    let validateObj = encontrarCambios(cleanSelected,data_failure_update)
-    if(Object.keys(validateObj).length == 0){
-        Swal.fire({
-            title: "Validación",
-            text: "Edita algo para actualizar la información.",
-            type: "warning"
-        });
-    } else {
-        fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_name: "fallas.py",
-                option:"update_failure",
-                data_failure_update: validateObj,
-                folio:selected.folio
-            }),
-            headers:
-            {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt
-            },
-        })
-        .then(res => res.json())
-        .then(res => {
-            if (res.success) {
-                let data=res.response.data
-                if(data.status_code==400){
-                    let errores=[]
-                    for(let err in data.json){
-                        errores.push(data.json[err].label+': '+data.json[err].msg)
-                    }
-                    Swal.fire({
-                        title: "Error",
-                        text: errores.flat(),
-                        type: "error"
-                    });
-                    $("#loadingButtonEditarFalla").hide();
-                    $("#buttonEditarFalla").show();
-                }else if(data.status_code==202 && data.json.objects[0][selected.folio].success){
-                    Swal.fire({
-                        title: "Confirmación",
-                        text: "Falla actualizada correctamente.",
-                        type: "success"
-                    });
-                    let selectedFalla = dataTableFallas.find(x => x.folio === selected.folio);
-                    for (let key in validateObj){
-                        if(key=='falla_fecha_solucion' || key=='falla_fecha'){
-                            let formatDate= validateObj[key].slice(0,-3)
-                            validateObj[key]= formatDate
-                        }
-                        selectedFalla[key]= validateObj[key]
-                    }
-                    tables["tableFallas"].setData(dataTableFallas);
-                    $("#editFailModal").modal('hide')
-                    $("#loadingButtonEditarFalla").hide();
-                    $("#buttonEditarFalla").show();
-                }
-            }else{
-                errorAlert(res)
-                $("#loadingButtonEditarFalla").hide();
-                $("#buttonEditarFalla").show();
-            }
-        });
-    }
-}
 
 function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
     let divP = document.getElementById(divPadre);
@@ -1180,6 +1482,7 @@ function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
     }
     return array
 }
+
 //FUNCION crear nueva incidencia y validar la informacion
 function nuevaIncidencia(){
     $("#loadingButtonAgregarIncidencia").show();
@@ -1274,7 +1577,6 @@ function nuevaIncidencia(){
                         $("#buttonAgregarIncidencia").show();
                     }else if(data.status_code==202 || data.status_code==201){
                         successMsg("Confirmación", "Nueva incidencia creada correctamente.")
-                        console.log("HII",data_incidence.ubicacion_incidencia == selectLocation.value)
                         if(data_incidence.ubicacion_incidencia == selectLocation.value){
                             //Solo lo agrega a la tabla si estan en la misma ubicacion y caseta, en case de no seleccionar caseta
                             // y tener la misma ubicacion la agrega
@@ -1298,48 +1600,47 @@ function nuevaIncidencia(){
     }
 }
 
-
 //FUNCION crear nueva incidencia y validar la informacion
 function nuevaFalla(){
+    $("#loadingButtonAgregarFalla").show();
+    $("#buttonAgregarFalla").hide();
+
+    arrayResponses = arrayResponses.filter(obj => !obj.hasOwnProperty('error'));
     for(let obj of arrayResponses){
         if( obj.hasOwnProperty('file_name') && obj.isImage==true){
             let { isImage, file_name, file  } = obj;
             arraySuccessFoto.push({file_name: file_name, file_url: file});
+        } else if( obj.hasOwnProperty('file_name') && obj.isImage==false){
+            let { isImage, file_name, file } = obj;
+            arraySuccessArchivo.push({file_name: file_name, file_url: file});
         }
     }
-
-    $("#loadingButtonAgregarFalla").show();
-    $("#buttonAgregarFalla").hide();
-    let data = getInputsValueByClass("contentNuevaFalla")
+    let data = getInputsValueByClass("contentNuevoFalla")
+    let fecha1= data.fechaNuevoFalla+' '+data.horaNuevoFalla+':'+data.minNuevoFalla+":00"
     let data_failure={
-        'falla_status':data.estatusNuevaFalla,
-        'falla_fecha':data.fechaNuevaFalla+':00',
-        'falla_ubicacion':data.ubicacionNuevaFalla,
-        'falla_area':data.lugarNuevaFalla,
-        'falla':data.fallaNuevaFalla,
-        'falla_fotos': arraySuccessFoto, //NUEVA KEY
-        'falla_comments':data.comentariosNuevaFalla,
-        'falla_guard':data.reportaNuevaFalla,
-        'falla_guard_solution':data.responsableNuevaFalla,
-        'falla_fecha_solucion':data.fechaResolucionNuevaFalla+':00',
+        'falla_estatus': statusFallaAbierto.toLowerCase(),
+        'falla_fecha_hora': fecha1,
+        'falla_reporta_nombre': data.reportaNuevoFalla,
+        'falla_ubicacion': data.ubicacionNuevoFalla,
+        'falla_caseta':data.areaNuevoFalla,
+        'falla':data.fallaNuevoFalla,
+        'falla_objeto_afectado':data.objetoAfectadoNuevoFalla,
+        'falla_comentarios':data.comentariosNuevoFalla,
+        'falla_evidencia':arraySuccessFoto,
+        'falla_documento':arraySuccessArchivo,
+        'falla_responsable_solucionar_nombre':data.responsableNuevoFalla,
     }
-
-    let partes=data_failure.falla_fecha.split("T")
-    let date = partes[0]+' '+partes[1]
-    data_failure.falla_fecha= date
-
-    let partes2=data_failure.falla_fecha_solucion.split("T")
-    let date2 = partes2[0]+' '+partes2[1]
-    data_failure.falla_fecha_solucion= date2
-
-    /*
-    if(!validarObjeto(data_failure)){
+    console.log("DATATA PARA ENVIAR", data_failure)
+    if(data_failure.falla_estatus ==""|| data_failure.falla_fecha_hora==""|| data_failure.falla_ubicacion ==""
+       || data_failure.falla_comentarios ==""|| data_failure.falla_reporta_nombre ==""){
         Swal.fire({
             title: "Validación",
             text: "Faltan campos por llenar, los campos marcados con asterisco son obligatorios.",
             type: "warning"
         });
-    } else { */
+        $("#loadingButtonAgregarFalla").hide();
+        $("#buttonAgregarFalla").show();
+    } else { 
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -1358,53 +1659,252 @@ function nuevaFalla(){
             if (res.success) {
                 let data=res.response.data
                 if(data.status_code==400){
-                    let errores=[]
-                    for(let err in data.json){
-                        errores.push(data.json[err].label+': '+data.json[err].msg)
-                    }
-                    Swal.fire({
-                        title: "Error",
-                        text: errores.flat(),
-                        type: "error"
-                    });
+                    errorAlert(data)
+                    $("#loadingButtonAgregarFalla").hide();
+                    $("#buttonAgregarFalla").show();
                 }else if(data.status_code==202 || data.status_code==201){
-                    let formatDate= data_failure.falla_fecha.slice(0,-3)
-                    data_failure.date_incidence= formatDate
-                    let formatDate2=data_failure.falla_fecha_solucion.slice(0,-3)
-                    data_failure.falla_fecha_solucion= formatDate2
-
-                    Swal.fire({
-                        title: "Confirmación",
-                        text: "Falla creada correctamente.",
-                        type: "success"
-                    });
-                    dataTableFallas = dataTableFallas.concat({folio: data.json.folio,falla_fecha: data_failure.falla_fecha, 
-                        falla_ubicacion: data_failure.falla_ubicacion, falla_area: data_failure.falla_area, falla:data_failure.falla,
-                        falla_comments: data_failure.falla_comments, falla_guard: data_failure.reportaNuevaFalla,
-                        falla_guard_solution: data_failure.falla_guard_solution,
-                        falla_status: data_failure.falla_status});
-
+                    let selectedFalla = {}
+                    selectedFalla.folio = data.json.folio
+                    for (let key in data_failure){
+                        if(key == 'falla_fecha_hora'){
+                            let formatDate= data_failure[key].slice(0,-3)
+                            data_failure[key]= formatDate
+                            selectedFalla[key]=data_failure[key]
+                        }else{
+                            selectedFalla[key]= data_failure[key]
+                        }
+                    }
+                    dataTableFallas.unshift(selectedFalla)
                     tables["tableFallas"].setData(dataTableFallas);
                     $("#newFailModal").modal('hide')
                     $("#loadingButtonAgregarFalla").hide();
                     $("#buttonAgregarFalla").show();
                 }
             }else{
-                 Swal.fire({
-                    title: "Error",
-                    text: res.error,
-                    type: "error"
-                });
+                errorAlert(res)
                 $("#loadingButtonAgregarFalla").hide();
                 $("#buttonAgregarFalla").show();
             }
         });
+   }
+}
 
-        
-   // }
+//FUNCION editar y validar la informacion al editar un falla
+function editarFalla(){
+    $("#loadingButtonEditarFalla").show();
+    $("#buttonEditarFalla").hide();
+    let data = getInputsValueByClass("contentEditarFalla")
+    let selected=''
+    for(d of dataTableFallas){
+        if(d.folio == selectedRowFolio)
+            selected = d
+    }
+
+    for(let obj of arrayResponses){
+        if( obj.hasOwnProperty('file_name') && obj.isImage==true){
+            let { isImage, file_name, file  } = obj;
+            arraySuccessFoto.push({file_name: file_name, file_url: file});
+        } else if( obj.hasOwnProperty('file_name') && obj.isImage==false){
+            let { isImage, file_name, file } = obj;
+            arraySuccessArchivo.push({file_name: file_name, file_url: file});
+        }
+    }
+    let fecha1= data.fechaEditarFalla+' '+data.horaEditarFalla+':'+data.minEditarFalla+":00"
+    let fecha2= data.fechaResolucionEditarFalla+' '+data.horaResolucionEditarFalla+':'+data.minResolucionEditarFalla+":00"
+    let data_failure_update={
+        'falla_estatus': statusFallaAbierto.toLowerCase(),
+        'falla_fecha_hora': fecha1,
+        'falla_reporta_nombre': data.reportaEditarFalla,
+        'falla_ubicacion': data.ubicacionEditarFalla,
+        'falla_caseta':data.areaEditarFalla,
+        'falla':data.fallaEditarFalla,
+        'falla_objeto_afectado':data.objetoAfectadoEditarFalla,
+        'falla_comentarios':data.comentariosEditarFalla,
+        'falla_evidencia':arraySuccessFoto,
+        'falla_documento':arraySuccessArchivo,
+        'falla_responsable_solucionar_nombre':data.responsableEditarFalla,
+        'falla_fecha_hora_solucion': fecha2
+    }
+
+    //let cleanSelected = (({ actions, checkboxColumn, folio,...rest }) => rest)(selected);
+    //console.log("LALALALALA",cleanSelected, data_failure_update)
+    //let validateObj = encontrarCambios(cleanSelected,data_failure_update)
+    if(data_failure_update.falla_estatus ==""|| data_failure_update.falla_fecha_hora==""|| data_failure_update.falla_ubicacion ==""
+       || data_failure_update.falla_comentarios ==""|| data_failure_update.falla_reporta_nombre ==""){
+        Swal.fire({
+            title: "Validación",
+            text: "Faltan campos por llenar, los campos marcados con asterisco son obligatorios.",
+            type: "warning"
+        });
+        $("#loadingButtonEditarFalla").hide();
+        $("#buttonEditarFalla").show();
+    } else {
+        if(data_failure_update.falla_evidencia.length==0){
+            delete data_failure_update.falla_evidencia
+        }
+        if(data_failure_update.falla_documento.length==0){
+            delete data_failure_update.falla_documento
+        }
+        fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name: "fallas.py",
+                option:"update_failure",
+                data_failure_update: data_failure_update,
+                folio:selected.folio
+            }),
+            headers:
+            {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                let data=res.response.data
+                if(data.status_code==400){
+                    errorAlert(data)
+                    $("#loadingButtonEditarFalla").hide();
+                    $("#buttonEditarFalla").show();
+                }else if(data.status_code==202 || data.status_code==201){
+                    successMsg('Confirmación', 'Falla editada correctamente.')
+                    let selectedFalla = dataTableFallas.find(x => x.folio === selected.folio);
+                    for (let key in data_failure_update){
+                        if(key=='falla_fecha_hora' || key=='falla_fecha_hora_solucion'){
+                            let formatDate= data_failure_update[key].slice(0,-3)
+                            selectedFalla[key]= formatDate
+                        }else if(key=='falla_evidencia'){
+                            if(data_failure_update.falla_evidencia.length>0){
+                                for (let d of data_failure_update.falla_evidencia){
+                                    selectedFalla.falla_evidencia.unshift(d)
+                                }
+                            }
+                        }else if(key=='falla_evidencia_solucion'){
+                            if(data_failure_update.falla_evidencia_solucion.length>0){
+                                for (let d of data_failure_update.falla_evidencia_solucion){
+                                    selectedFalla.falla_evidencia_solucion.unshift(d)
+                                }
+                            }
+                        }else if(key=='falla_documento'){
+                            if(data_failure_update.falla_documento.length>0){
+                                for (let d of data_failure_update.falla_documento){
+                                    selectedFalla.falla_documento.unshift(d)
+                                }
+                            }
+                        }else if(key=='falla_documento_solucion'){
+                            if(data_failure_update.falla_documento_solucion.length>0){
+                                for (let d of data_failure_update.falla_documento_solucion){
+                                    selectedFalla.falla_documento_solucion.unshift(d)
+                                }
+                            }
+                        }else{
+                            selectedFalla[key]= data_failure_update[key]
+                        }
+                    }
+                    tables["tableFallas"].setData(dataTableFallas);
+                    $("#editFailModal").modal('hide')
+                    $("#loadingButtonEditarFalla").hide();
+                    $("#buttonEditarFalla").show();
+                }
+            }else{
+                errorAlert(res)
+                $("#loadingButtonEditarFalla").hide();
+                $("#buttonEditarFalla").show();
+            }
+        });
+    }
 }
 
 
+function funcionSeguimientoFalla(){
+    $("#loadingButtonSeguimientoFalla").show();
+    $("#buttonSeguimientoFalla").hide();
+    let data = getInputsValueByClass("seguimientoFalla")
+    let selected=''
+    for(d of dataTableFallas){
+        if(d.folio == selectedRowFolio)
+            selected = d
+    }
+    for(let obj of arrayResponses){
+        if( obj.hasOwnProperty('file_name') && obj.isImage==true){
+            let { isImage, file_name, file  } = obj;
+            arraySuccessFoto.push({file_name: file_name, file_url: file});
+        } else if( obj.hasOwnProperty('file_name') && obj.isImage==false){
+            let { isImage, file_name, file } = obj;
+            arraySuccessArchivo.push({file_name: file_name, file_url: file});
+        }
+    }
+    let data_failure_update={
+        'falla_estatus': statusFallaResuelto.toLowerCase(),
+        'falla_folio_accion_correctiva': data.folioAccionSeguimientoFalla,
+        'falla_comentario_solucion': data.comentarioSeguimientoFalla,
+        'falla_evidencia_solucion': arraySuccessFoto,
+        'falla_documento_solucion': arraySuccessArchivo
+    }
+    if(data_failure_update.falla_evidencia_solucion.length==0){
+        delete data_failure_update.falla_evidencia_solucion
+    }
+    if(data_failure_update.falla_documento_solucion.length==0){
+        delete data_failure_update.falla_documento_solucion
+    }
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "fallas.py",
+            option:"update_failure",
+            data_failure_update: data_failure_update,
+            folio:selected.folio
+        }),
+        headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            let data=res.response.data
+            if(data.status_code==400){
+                errorAlert(data)
+                $("#loadingButtonSeguimientoFalla").hide();
+                $("#buttonSeguimientoFalla").show();
+            }else if(data.status_code==202 || data.status_code==201){
+                successMsg('Confirmación', 'Falla resulta correctamente.')
+                console.log("FALLA", selected.folio)
+                let selectedFalla = dataTableFallas.find(x => x.folio === selected.folio);
+                let formatDate= data.json.falla_fecha_hora_solucion.slice(0,-3)
+                selectedFalla.falla_fecha_hora_solucion= formatDate
+                for (let key in data_failure_update){
+                    if(key=='falla_evidencia_solucion'){
+                        if(data_failure_update.falla_evidencia_solucion.length>0){
+                            for (let d of data_failure_update.falla_evidencia_solucion){
+                                selectedFalla.falla_evidencia_solucion.unshift(d)
+                            }
+                        }
+                    }else if(key=='falla_documento_solucion'){
+                        if(data_failure_update.falla_documento_solucion.length>0){
+                            for (let d of data_failure_update.falla_documento_solucion){
+                                selectedFalla.falla_documento_solucion.unshift(d)
+                            }
+                        }
+                    }else{
+                        selectedFalla[key]= data_failure_update[key]
+                    }
+                }
+                tables["tableFallas"].setData(dataTableFallas);
+                $("#cerrarFallaModal").modal('hide')
+                $("#loadingButtonSeguimientoFalla").hide();
+                $("#buttonSeguimientoFalla").show();
+            }
+        }else{
+            errorAlert(res)
+            $("#loadingButtonSeguimientoFalla").hide();
+            $("#buttonSeguimientoFalla").show();
+        }
+    });
+}
 //FUNCION validar un objeto vacio
 function validarObjeto(objeto) {
     return Object.values(objeto).every(valor => valor !== undefined && valor !== null && valor !== '');
@@ -1623,76 +2123,6 @@ async function guardarArchivos(id, isImage){
 }
 
 //FUNCION para agregar foto en el modal de agregar nota
-function setAddFoto(editAdd ="nueva"){
-    let randomID = Date.now();
-    let newItem=`
-        <div class="d-flex mb-3 col-12  div-foto-`+editAdd+`-`+randomID+`" id="id-foto-div-`+randomID+`">
-            <div class="flex-grow-1">
-                <label class="form-label">Evidencia:  </label>
-                <input type="file" class="form-control-file foto-div-`+editAdd+`" 
-                onchange="guardarArchivos('fileInputFotografia-`+editAdd+`-`+randomID+`', true);" 
-                id="fileInputFotografia-`+editAdd+`-`+randomID+`">
-            </div>
-            <div>
-                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('`+editAdd+`',`+randomID+`);return false;">
-                   <i class="fa-solid fa-minus"></i>
-                </button>
-            </div>
-        </div>
-    `;
-    $('#foto-input-form-'+editAdd).append(newItem) 
-}
-
-
-//FUNCION para elimar foto en el modal de agregar nota
-function setDeleteFoto(editAdd ="nueva",id){
-    const elements = document.querySelectorAll('.foto-div-'+editAdd);
-    const count = elements.length;
-    if(count > 1){
-        const elements = document.getElementsByClassName('div-foto-'+editAdd+'-'+id);
-        while(elements.length > 0 && id !==123){
-            elements[0].parentNode.removeChild(elements[0]);
-        }
-    }
-}
-
-//FUNCION para eliminar archivo en el modal de agregar nota
-function setAddArchivo(editAdd ="nueva"){
-    console.log("editAdd",editAdd)
-    let randomID = Date.now();
-    let newItem=`
-        <div class="d-flex mb-3 col-12 div-archivo-`+editAdd+`-`+randomID+`" id="id-archivo-div-`+randomID+`">
-            <div class="flex-grow-1">
-                <label class="form-label">Documento:  </label>
-                <input type="file" class="form-control-file archivo-div-`+editAdd+`" 
-                onchange="guardarArchivos('fileInputArchivo-`+editAdd+`-`+randomID+`', false);" 
-                id="fileInputArchivo-`+editAdd+`-`+randomID+`">
-            </div>
-            <div>
-                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo('`+editAdd+`',`+randomID+`);return false;">
-                    <i class="fa-solid fa-minus"></i>
-                </button>
-            </div>
-        </div>
-    `;
-    $('#archivo-input-form-'+editAdd).append(newItem);
-}
-
-
-//FUNCION para agregar archivo en el modal de agregar nota
-function setDeleteArchivo(editAdd ="nueva", id ){
-    const elements = document.querySelectorAll('.archivo-div-'+editAdd);
-    const count = elements.length;
-    if(count > 1){
-        const elements = document.getElementsByClassName('div-archivo-'+editAdd+'-'+id);
-        while(elements.length > 0 && id !==123){
-            elements[0].parentNode.removeChild(elements[0]);
-        }
-    }
-}
-
-
-//FUNCION para agregar foto en el modal de agregar nota
 function setAddPersona(editAdd ="nueva"){
     let randomID = Date.now();
     let newItem=`
@@ -1763,3 +2193,74 @@ function setDeleteDaño(editAdd ="nuevo",id){
         }
     }
 }
+
+
+//FUNCION para agregar foto en el modal de agregar nota
+function setAddFoto(editAdd ="nuevo", classNam){
+    let randomID = Date.now();
+    let newItem=`
+        <div class="d-flex mb-3 col-12  div-`+classNam+`-`+editAdd+`-`+randomID+`" id="id-`+classNam+`-div-`+randomID+`">
+            <div class="flex-grow-1">
+                <label class="form-label">Evidencia:  </label>
+                <input type="file" class="form-control-file `+classNam+`-div-`+editAdd+`" 
+                onchange="guardarArchivos('`+classNam+`-`+editAdd+`-`+randomID+`', true);" 
+                id="`+classNam+`-`+editAdd+`-`+randomID+`">
+            </div>
+            <div>
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('`+editAdd+`',`+randomID+`,'`+classNam+`');return false;">
+                   <i class="fa-solid fa-minus"></i>
+                </button>
+            </div>
+        </div>
+    `;
+    $(`#`+classNam+`-input-form-`+editAdd).append(newItem) 
+}
+
+
+//FUNCION para elimar foto en el modal de agregar nota
+function setDeleteFoto(editAdd ="nuevo", id, classNam){
+    const elements = document.querySelectorAll(`.`+classNam+`-div-`+editAdd);
+    const count = elements.length;
+    if(count > 1){
+        const elements = document.getElementsByClassName(`div-`+classNam+`-`+editAdd+`-`+id);
+        while(elements.length > 0 && id !==123){
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+    }
+}
+
+//FUNCION para eliminar archivo en el modal de agregar nota
+function setAddArchivo(editAdd ="nueva", classNam){
+    console.log("editAdd",editAdd,classNam)
+    let randomID = Date.now();
+    let newItem=`
+        <div class="d-flex mb-3 col-12 div-`+classNam+`-`+editAdd+`-`+randomID+`" id="id-`+classNam+`-div-`+randomID+`">
+            <div class="flex-grow-1">
+                <label class="form-label">Documento:  </label>
+                <input type="file" class="form-control-file `+classNam+`-div-`+editAdd+`" 
+                onchange="guardarArchivos('`+classNam+`-`+editAdd+`-`+randomID+`', false);" 
+                id="`+classNam+`-`+editAdd+`-`+randomID+`">
+            </div>
+            <div>
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArchivo('`+editAdd+`',`+randomID+`, '`+classNam+`');return false;">
+                    <i class="fa-solid fa-minus"></i>
+                </button>
+            </div>
+        </div>
+    `;
+    $(`#`+classNam+`-input-form-`+editAdd).append(newItem);
+}
+
+
+//FUNCION para agregar archivo en el modal de agregar nota
+function setDeleteArchivo(editAdd ="nuevo", id , classNam){
+    const elements = document.querySelectorAll(`.`+classNam+`-div-`+editAdd);
+    const count = elements.length;
+    if(count > 1){
+        const elements = document.getElementsByClassName(`div-`+classNam+`-`+editAdd+`-`+id);
+        while(elements.length > 0 && id !==123){
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+    }
+}
+

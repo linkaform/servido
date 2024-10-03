@@ -1,5 +1,5 @@
 :root {
-  --yellowLKF: #ffe99c;
+  --yellowLKF: #FFA823;
   --downloadButton:#003285;
   --text-gray:#808080;
 }
@@ -278,9 +278,8 @@ th {
 
 /*Navbar style*/
 .custom-navbar-button{
-  background-color: #F2DEBA !important;
   border: none !important;
-  color: darkgray !important;
+  color: transparent !important;
 }
 
  .customNoBorder:focus, .customNoBorder:active, .customNoBorder:hover {
@@ -290,10 +289,10 @@ th {
 
 .custom-navbar-button{
   color: #292929 !important;
-  background-color: #F2DEBA !important;
+  background-color: transparent !important;
 }
 
-.btn:hover ,  {
+.btn:hover{
   box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 }
 
@@ -301,8 +300,8 @@ th {
   border: none !important;
 }
 
-.custom-navbar-button:hover , {
-  background-color: #dcc7a1 !important;
+.custom-navbar-button:hover{
+  background-color: #0275d8 !important;
   border: none !important;
   box-shadow: none !important;
 }
@@ -383,6 +382,7 @@ th {
   top: 0; /* Position the navbar at the top of the page */
   width: 100%; /* Full width */
   border: none !important;
+  background-color: white !important;
 }
 
 .myCustomDropdown{
@@ -432,7 +432,7 @@ input[type=search]{
 }
 
 .headerColor{
-  background-color: #ffe99c !important;
+  background-color: var(--yellowLKF); !important;
 }
 
 #inputCodeUser{
@@ -576,21 +576,24 @@ input[type=search]{
     height: 400px; /* Ajusta la altura del modal */
 }
 
+
+
 .image-container {
-    width: 350px; /* Ajusta el ancho según tus necesidades */
-    height: 300px; /* Ajusta la altura según tus necesidades */
-    overflow: auto; /* Permite el desplazamiento si el contenido excede el tamaño del contenedor */
-    white-space: nowrap; /* Evita que las imágenes se envuelvan a la siguiente línea */
-    position: relative;
-    scrollbar-color: #111 ;
-  }
+      width: 350px; /* Ajusta el ancho según tus necesidades */
+      overflow: auto; /* Permite el desplazamiento si el contenido excede el tamaño del contenedor */
+      white-space: nowrap; /* Evita que las imágenes se envuelvan a la siguiente línea */
+      position: relative;
+      scrollbar-color: #111 ;
+    }
+
+
 
 .image-container img {
   min-width: 95%;
   max-width: 100%; /* Ajusta el ancho según tus necesidades */
   max-height: 300px; 
   display: inline-block; /* Muestra las imágenes en línea */
-  object-fit: contain;
+  object-fit: cover;
   vertical-align: top!important;
 }
 
@@ -625,3 +628,18 @@ input[type=search]{
   color: var(--text-gray); /* Mantiene la relación de aspecto */
 }
 
+
+  .time-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.time-select {
+    width: 10px; /* Ancho pequeño */
+    margin: 0 0px; /* Espaciado entre selects */
+    margin-left: 5px;
+}
+
+.bg-warning-subtle{
+  background-color: whitesmoke !important;
+}

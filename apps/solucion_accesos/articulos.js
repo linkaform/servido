@@ -122,7 +122,7 @@ function setModal(type = 'none',id){
         abrirNuevoEditarArticuloPerdido(id,"Editar")
     }else if(type == 'OutArticleLose'){
         selectedRowFolio=id
-        $('#outArticleLoseModal').modal('show');
+        modalDevolucionArticuloPerdido(id)
     }else if(type== 'filtros'){
         $('#articleFiltersModal').modal('show');
     }
@@ -775,7 +775,7 @@ function llenarVistaEditarArticuloPerdido(folio, catalogsData,selectArea,selecte
     selectUbicacion.value=selectedArticulo.ubicacion_perdido;
     selectTipoArticulo.value=""
     selectTipoArticulo.value=selectedArticulo.tipo_articulo_perdido;
-    console.log("APPP",selectedArticulo.tipo_articulo_perdido)
+    console.log("APPP",selectedArticulo.quien_entrega_interno);
     let optionsCaseta = arrayUserBoothsLocations.filter(booth => {
         return booth.ubi == selectedArticulo.ubicacion_perdido;
     });
@@ -798,11 +798,13 @@ function llenarVistaEditarArticuloPerdido(folio, catalogsData,selectArea,selecte
         }
     } 
     $(document).ready(function() {
+        console.log("NOS EVEEE",selectedArticulo.quien_entrega_interno)
         selectArea.value= selectedArticulo.area_perdido.toString()||"";
         selectArticulo.value=selectedArticulo.articulo_seleccion.toString()||"";
         selectLocker.value=selectedArticulo.locker_perdido.toString()||"";
         selectEntregaI.value= selectedArticulo.quien_entrega_interno||""
         selectEntregaE.value= selectedArticulo.quien_entrega_externo||""
+        selectTipoArticulo.value= selectedArticulo.tipo_articulo_perdido||""
     })
     if(selectedArticulo.quien_entrega=='externo'){
         document.getElementById('externoEditarArticuloLose').checked = true;
@@ -812,15 +814,21 @@ function llenarVistaEditarArticuloPerdido(folio, catalogsData,selectArea,selecte
         onChangeRadioEntrega('interno', 'Editar', false)
 
     }
+    console.log("PORQUE NOS E VEE ",capitalizeFirstLetter(selectedArticulo.comentario_perdido ||""))
     $("#idFechaEditarArticuloLose").val(selectedArticulo.date_hallazgo_perdido||"");
     $("#idNombreEditarArticuloLose").val(capitalizeFirstLetter(selectedArticulo.articulo_perdido ||""));
     $("#tipoArticuloEditarArticuloLose").val(capitalizeFirstLetter(selectedArticulo.tipo_articulo_perdido ||""));
     $("#colorEditarArticuloLose").val(capitalizeFirstLetter(selectedArticulo.color_perdido ||""));
     $("#entregaEditarArticuloLose").text(capitalizeFirstLetter(selectedArticulo.quien_entrega_externo ||""));
     $("#lockerEditarArticuloLose").val(capitalizeFirstLetter(selectedArticulo.locker_perdido ||""));
-    $("#descripcionEditarArticuloLose").text(capitalizeFirstLetter(selectedArticulo.descripcion ||""));
-    $("#comentarioEditarArticuloLose").text(capitalizeFirstLetter(selectedArticulo.comentario_perdido ||""));
+    $("#descripcionEditarArticuloLose").val(capitalizeFirstLetter(selectedArticulo.descripcion ||""));
+    $("#comentarioEditarArticuloLose").val(capitalizeFirstLetter(selectedArticulo.comentario_perdido ||""));
     $('#editArticleLoseModal').modal('show');
+}
+
+function modalDevolucionArticuloPerdido(folio){
+    limpiarArticuloLose('devolucion')
+    $('#outArticleLoseModal').modal('show');
 }
 
 function verArticuloPerdido(folio){
@@ -983,38 +991,58 @@ function nuevoArticulo(type){
 function limpiarArticuloLose(editAdd="Nuevo"){
     arraySuccessFoto=[]
     arrayResponses=[]
-
-    $("#color"+editAdd+"ArticuloLose").val("")
-    $("#comentario"+editAdd+"ArticuloLose").val("")
-    $("#descripcion"+editAdd+"ArticuloLose").val("")
-    $("#entrega"+editAdd+"ArticuloLose").val("")
-    $("#idFecha"+editAdd+"ArticuloLose").val("")
-    $("#idNombre"+editAdd+"ArticuloLose").val("")
-    $("#locker"+editAdd+"ArticuloLose").val("")
-    $("#selectArea"+editAdd+"ArticuloLose").val("")
-    $("#selectArticulo"+editAdd+"ArticuloLose").val("")
-    $("#selectUbicacion"+editAdd+"ArticuloLose").val("")
-    $("#tipoArticulo"+editAdd+"ArticuloLose").val("")
-    $('input[name="outArticleLoseModalEstatus"]').prop('checked', false);
-
-    if(editAdd=="Editar"){
+    if(editAdd == 'devolucion'){
+        $('input[name="outArticleLoseModalEstatusDev"]').prop('checked', false);
+        $('outArticleLoseModalRecibe').val('')
+        $('outArticleLoseModalTel').val('')
         flagVideoUser=false
-        currentStream=null
-        $('#buttonTakeUser').show();
-        $('#buttonTakeUser').prop('disabled', false);
-        $('#buttonSaveUser').hide();
-        $('#imgUser').hide();
-        $('#imgUser').attr('src', '');
-        $('#inputFileUser').val('');
+            currentStream=null
+            $('#buttonTakeUserRecibe').show();
+            $('#buttonTakeUserRecibe').prop('disabled', false);
+            $('#buttonSaveUserRecibe').hide();
+            $('#imgUserRecibe').hide();
+            $('#imgUserRecibe').attr('src', '');
+            $('#inputFileUserRecibe').val('');
+        
+            $('#buttonTakeUserRecibeCard').show();
+            $('#buttonTakeUserRecibeCard').prop('disabled', false);
+            $('#buttonSaveUserRecibeCard').hide();
+            $('#imgUserRecibeCard').hide();
+            $('#imgUserRecibeCard').attr('src', '');
+            $('#inputFileUserRecibeCard').val('');
+
     }else{
-        flagVideoCard=false
-        currentStream=null
-        $('#buttonTakeCard').show();
-        $('#buttonTakeCard').prop('disabled', false);
-        $('#buttonSaveCard').hide();
-        $('#imgCard').hide();
-        $('#imgCard').attr('src', '');
-        $('#inputFileCard').val('');
+        $("#color"+editAdd+"ArticuloLose").val("")
+        $("#comentario"+editAdd+"ArticuloLose").val("")
+        $("#descripcion"+editAdd+"ArticuloLose").val("")
+        $("#entrega"+editAdd+"ArticuloLose").val("")
+        $("#idFecha"+editAdd+"ArticuloLose").val("")
+        $("#idNombre"+editAdd+"ArticuloLose").val("")
+        $("#locker"+editAdd+"ArticuloLose").val("")
+        $("#selectArea"+editAdd+"ArticuloLose").val("")
+        $("#selectArticulo"+editAdd+"ArticuloLose").val("")
+        $("#selectUbicacion"+editAdd+"ArticuloLose").val("")
+        $("#tipoArticulo"+editAdd+"ArticuloLose").val("")
+
+        if(editAdd=="Editar"){
+            flagVideoUser=false
+            currentStream=null
+            $('#buttonTakeUser').show();
+            $('#buttonTakeUser').prop('disabled', false);
+            $('#buttonSaveUser').hide();
+            $('#imgUser').hide();
+            $('#imgUser').attr('src', '');
+            $('#inputFileUser').val('');
+        }else{
+            flagVideoCard=false
+            currentStream=null
+            $('#buttonTakeCard').show();
+            $('#buttonTakeCard').prop('disabled', false);
+            $('#buttonSaveCard').hide();
+            $('#imgCard').hide();
+            $('#imgCard').attr('src', '');
+            $('#inputFileCard').val('');
+        }
     }
    
 }
@@ -1079,7 +1107,6 @@ function nuevoArticuloLose(){
         'locker_perdido':data.lockerNuevoArticuloLose
     }
     console.log("QUE ONDA",data_article)
-    //console.log(err)
     if(data_article.ubicacion_perdido==""||data_article.tipo_articulo_perdido=="" || data_article.articulo_seleccion ==""||data_article.locker_perdido==""
      ||data_article.color_perdido=="" ||data_article.quien_entrega==''){
         successMsg("Validación", "Faltan campos por llenar, los campos marcados con asterisco son obligatorios.", "warning")
@@ -1136,20 +1163,8 @@ function nuevoArticuloLose(){
                             selectedArticle.reporta_perdido=""
                         }
                     }
-                            
-                    console.log("ARTICULO SELECCIONADO",selectedArticle)
                     dataTableArticlesLose.unshift(selectedArticle)
-                    console.log("TABLA DE OBJETOS PERDIDOS",dataTableArticlesLose)
                     tables["tableArticlesLose"].setData(dataTableArticlesLose);
-                    /*let formatDate= data_article.fecha_concesion.slice(0,-3)
-                    data_article.date_hallazgo_perdido= formatDate(data.idFechaNuevoArticuloLose)*/
-
-                   /* dataTableArticles.push({folio:data.json.folio,ubicacion_concesion:data_article.ubicacion_concesion||"",
-                            equipo_concesion:data_article.equipo_concesion||"", fecha_concesion:data_article.fecha_concesion||"",
-                            area_concesion:data_article.area_concesion||"", 
-                            observacion_concesion:data_article.observacion_concesion||"", 
-                            nombre_concesion:data_article.nombre_concesion||"",fecha_devolucion_concesion:data_article.fecha_devolucion_concesion||"",
-                            status_concesion:data_article.status_concesion, caseta_conses})*/
                     $("#newArticleLoseModal").modal('hide')
                     $("#loadingButtonNuevoArticuloLose").hide();
                     $("#buttonNuevoArticuloLose").show();
@@ -1478,7 +1493,7 @@ async function guardarArchivos(id, isImage){
 
 //FUNCION editar el articulo consesionado
 function editarArticuloLoseModal(){
-    limpiarArticuloLose('Editar')
+    //limpiarArticuloLose('Editar')
     $("#loadingButtonEditarArticuloLose").show();
     $("#buttonEditarArticuloLose").hide();
     let data = getInputsValueByClass('contentEditarArticuloLose')
@@ -1488,6 +1503,7 @@ function editarArticuloLoseModal(){
         if(d.folio == selectedRowFolio)
             selected = d
     }
+    console.log("FOOT",fotosNuevoArticulo.foto)
     let data_article_update={
         'estatus_perdido':'pendiente',
         'foto_perdido': fotosNuevoArticulo.foto,
@@ -1505,15 +1521,18 @@ function editarArticuloLoseModal(){
         'quien_entrega_externo':data.entregaEditarArticuloLose!==""? data.entregaEditarArticuloLose :"",
         'locker_perdido':data.lockerEditarArticuloLose
     }
+    console.log("perddo",data_article_update.foto_perdido )
     let cleanSelected = (({ actions, checkboxColumn, folio,foto_concesion,recibe_concesion,updated_at, type_perdido, 
         date_entrega_perdido,foto_recibe_perdido,identificacion_recibe_perdido,recibe_perdido,reporta_perdido,
         telefono_recibe_perdido,guard_perdido,...rest }) => rest)(selected);
 
     if(data_article_update.foto_perdido==0){
-        data_article_update.foto_perdido=cleanSelected.foto_perdido
+        for(let d of cleanSelected.foto_perdido){
+            data_article_update.foto_perdido.unshift(d)
+        }
     }
+    console.log("OBJWERO",data_article_update.foto_perdido )
     if(cleanSelected.date_hallazgo_perdido){
-
         let partes=cleanSelected.date_hallazgo_perdido.split(" ")
         let date = partes[0]+' '+partes[1]+":00"
         cleanSelected.date_hallazgo_perdido= date
@@ -1531,15 +1550,18 @@ function editarArticuloLoseModal(){
             text: "Edita algo para actualizar la información.",
             type: "warning"
         });
-        $("#loadingButtonEditarArticuloLose").show();
-        $("#buttonEditarArticuloLose").hide();
+        $("#loadingButtonEditarArticuloLose").hide();
+        $("#buttonEditarArticuloLose").show();
     } else {
+        if(data_article_update.foto_perdido.length ==0){
+            delete data_article_update.foto_perdido
+        }
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
                 script_name:"articulos_perdidos.py",
                 option:"update_article",
-                data_article_update: validateObj,
+                data_article_update: data_article_update,
                 folio: selected.folio
             }),
             headers:
@@ -1554,61 +1576,61 @@ function editarArticuloLoseModal(){
                 let data=res.response.data
                 if(data.status_code==400){
                     errorAlert(data)
-                    $("#loadingButtonEditarArticuloLose").show();
-                    $("#buttonEditarArticuloLose").hide();
+                    $("#loadingButtonEditarArticuloLose").hide();
+                    $("#buttonEditarArticuloLose").show();
                 }else if(data.status_code==202 || data.status_code==201 ){
                     successMsg("Confirmación","Articulo actualizado correctamente.", "success")
                     let selectedArt = dataTableArticlesLose.find(x => x.folio === selected.folio);
-                    for (let key in validateObj){
+                    for (let key in data_article_update){
                         if(key=='date_hallazgo_perdido' || key=='date_entrega_perdido' ){
-                            let formatDate= validateObj[key].slice(0,-3)
-                            validateObj[key]= formatDate
-                            selectedArt[key]= validateObj[key]
+                            let formatDate= data_article_update[key].slice(0,-3)
+                            data_article_update[key]= formatDate
+                            selectedArt[key]= data_article_update[key]
                         }else if(key=='articulo_seleccion'){
-                            validateObj[key]= validateObj.articulo_seleccion!=="" ? validateObj.articulo_seleccion: validateObj.quien_entrega_externo;
-                            selectedArt[key]= validateObj[key]
+                            data_article_update[key]= data_article_update.articulo_seleccion!=="" ? data_article_update.articulo_seleccion: data_article_update.quien_entrega_externo;
+                            selectedArt[key]= data_article_update[key]
                         }else if (key=='articulo_perdido'){
-                            validateObj[key]=validateObj.articulo_perdido!==""&&validateObj.articulo_perdido!==undefined? validateObj.articulo_perdido: "";
-                            selectedArt[key]= validateObj[key]
+                            data_article_update[key]=data_article_update.articulo_perdido!==""&&data_article_update.articulo_perdido!==undefined? data_article_update.articulo_perdido: "";
+                            selectedArt[key]= data_article_update[key]
                         }else if(key=='reporta_perdido'){
-                            if(validateObj.hasOwnProperty('quien_entrega_interno')){
-                                if(validateObj.quien_entrega_interno!=="" && validateObj.quien_entrega_interno!==undefined){
-                                    selectedArt[key]= validateObj.quien_entrega_interno
+                            if(data_article_update.hasOwnProperty('quien_entrega_interno')){
+                                if(data_article_update.quien_entrega_interno!=="" && data_article_update.quien_entrega_interno!==undefined){
+                                    selectedArt[key]= data_article_update.quien_entrega_interno
                                 }else{
                                     selectedArt[key]=""
                                 }
-                            }else if(validateObj.hasOwnProperty('quien_entrega_externo')){
-                                if(validateObj.quien_entrega_externo!=="" && validateObj.quien_entrega_externo!==undefined){
-                                    selectedArt[key]= validateObj.quien_entrega_externo
+                            }else if(data_article_update.hasOwnProperty('quien_entrega_externo')){
+                                if(data_article_update.quien_entrega_externo!=="" && data_article_update.quien_entrega_externo!==undefined){
+                                    selectedArt[key]= data_article_update.quien_entrega_externo
                                 }else{
                                     selectedArt[key]=""
                                 }
                             }
                         }else if(key=='foto_perdido'){
                             console.log("FOTOOO",data_article_update.foto_perdido)
-                            if(validateObj.foto_perdido.length>0){
-                                validateObj[key]= data_article_update.foto_perdido.unshift(validateObj.foto_perdido)
+                            if(data_article_update.foto_perdido.length>0){
+                                data_article_update.foto_perdido.unshift(data_article_update.foto_perdido)
                             }else{
-                                validateObj[key]= data_article_update.foto_perdido
+                                data_article_update[key]= data_article_update.foto_perdido
                             }
-                            selectedArt[key]= validateObj[key]
+                            selectedArt[key]= data_article_update[key]
                         }
                         else{
-                            selectedArt[key]= validateObj[key]
+                            selectedArt[key]= data_article_update[key]
                         }
                         
                     }
 
-                    validateObj.reporta_perdido=""
-                    if(validateObj.hasOwnProperty('quien_entrega_interno')){
-                        if(validateObj.quien_entrega_interno!=="" && validateObj.quien_entrega_interno!==undefined){
-                            selectedArt.reporta_perdido= validateObj.quien_entrega_interno
+                    data_article_update.reporta_perdido=""
+                    if(data_article_update.hasOwnProperty('quien_entrega_interno')){
+                        if(data_article_update.quien_entrega_interno!=="" && data_article_update.quien_entrega_interno!==undefined){
+                            selectedArt.reporta_perdido= data_article_update.quien_entrega_interno
                         }else{
                             selectedArt.reporta_perdido=""
                         }
-                    }else if(validateObj.hasOwnProperty('quien_entrega_externo')){
-                        if(validateObj.quien_entrega_externo!=="" && validateObj.quien_entrega_externo!==undefined){
-                            selectedArt.reporta_perdido= validateObj.quien_entrega_externo
+                    }else if(data_article_update.hasOwnProperty('quien_entrega_externo')){
+                        if(data_article_update.quien_entrega_externo!=="" && data_article_update.quien_entrega_externo!==undefined){
+                            selectedArt.reporta_perdido= data_article_update.quien_entrega_externo
                         }else{
                             selectedArt.reporta_perdido=""
                         }
@@ -1620,8 +1642,8 @@ function editarArticuloLoseModal(){
                 }
             }else{
                 errorAlert(res)
-                $("#loadingButtonEditarArticuloLose").show();
-                $("#buttonEditarArticuloLose").hide();
+                $("#loadingButtonEditarArticuloLose").hide();
+                $("#buttonEditarArticuloLose").show();
             }
         });
     }
@@ -1699,6 +1721,7 @@ function devolucionArticulo(){
                         }else{
                             selectedArticleLose.date_entrega_perdido= ""
                         }
+                        console.log("DATAA", selectedArticleLose)
                         Swal.close()
                         tables["tableArticlesLose"].setData(dataTableArticlesLose);
                         successMsg("Confirmación", "Artículo entregado correctamente.", "success")
