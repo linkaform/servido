@@ -77,44 +77,67 @@
             <div class="tab-content overflow-hidden" id="myTabContent">
                 <div class="tab-pane fade show active" id="div-article-incidencias" role="tabpanel" aria-labelledby="in-location-tab" tabindex="0">
                     <div class="d-flex mt-2 mb-2 justify-content-end">
-                            <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewIncident');return false;">
-                                <i class="fa-solid fa-plus"></i>
-                                Nuevo Incidente
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarIncidencias" >
-                                <i class="fa-solid fa-file-arrow-down"></i>
-                                Descargar
-                            </button>
-                            <!--  <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                Filtros
-                            </button> -->
-                            <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('incidencias')" id="buttonEliminarIncidencias">
-                                <i class="fa-solid fa-trash"></i>
-                                Eliminar
-                            </button>
+                            <div class="d-flex flex-row flex-grow-1 justify-content-start align-items-center mt-0 mb-0 ms-1">
+                                <div class="d-flex flex-row justify-content-center align-items-center">
+                                    <label class="me-3 ms-1"><b>Prioridad: </b></label>
+                                    <select class="form-select" style="width:400px;" id="filtroEstadoPerdido" onchange="onChangeFiltroEstadoPerdido()">
+                                        <option value="pendiente">Alta</option>
+                                        <option value="entregado">Mediana</option>
+                                        <option value="donado">Baja</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class=" d-flex mb-2 ms-1 justify-content-end align-items-center">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewIncident');return false;">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Nuevo Incidente
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarIncidencias" >
+                                    <i class="fa-solid fa-file-arrow-down"></i>
+                                    Descargar
+                                </button>
+                                <!--  <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    Filtros
+                                </button> -->
+                                <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('incidencias')" id="buttonEliminarIncidencias">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Eliminar
+                                </button>
+                            </div>
                     </div>
                         <div class="m-1 mb-2" id="tableIncidencias"></div>
                 </div>
                 <div class="tab-pane fade overflow-hidden" id="div-fallas" role="tabpanel" aria-labelledby="out-location-tab" tabindex="0">
                     <div class="d-flex mt-2 mb-2 justify-content-end">
-                            <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewFail')">
-                                <i class="fa-solid fa-plus"></i>
-                                Nueva Falla
-                            </button>
-                            
-                            <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarFallas" >
-                                <i class="fa-solid fa-file-arrow-down"></i>
-                                Descargar
-                            </button>
-                            <!--  <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                Filtros
-                            </button> -->
-                            <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('fallas')" id="buttonEliminarFallas" >
-                                <i class="fa-solid fa-trash"></i>
-                                Eliminar
-                            </button>
+                            <div class="d-flex flex-row flex-grow-1 justify-content-start align-items-center mt-0 mb-0 ms-1">
+                                <div class="d-flex flex-row justify-content-center align-items-center">
+                                    <label class="me-3 ms-1"><b>Estado: </b></label>
+                                    <select class="form-select" style="width:400px;" id="filtroEstadoFalla" onchange="onChangeFiltroEstadoFalla()">
+                                        <option value="abierto">Abierto</option>
+                                        <option value="resuelto">Resuelto</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class=" d-flex mb-2 ms-1 justify-content-end align-items-center">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewFail')">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Nueva Falla
+                                </button>
+                                
+                                <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarFallas" >
+                                    <i class="fa-solid fa-file-arrow-down"></i>
+                                    Descargar
+                                </button>
+                                <!--  <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    Filtros
+                                </button> -->
+                                <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('fallas')" id="buttonEliminarFallas" >
+                                    <i class="fa-solid fa-trash"></i>
+                                    Eliminar
+                                </button>
+                            </div>
                     </div>
                         <div class="m-1 mb-2" id="tableFallas"></div>
                 </div>

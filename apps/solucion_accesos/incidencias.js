@@ -534,6 +534,39 @@ function getAllDataFallas(){
     })
 }
 
+function onChangeFiltroEstadoFalla(){
+    loadingService()
+    let estadoEscogido= $('#filtroEstadoFalla').val()
+    fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name:'fallas.py',
+                option:'get_failures',
+                location: selectLocation.value,
+                status:estadoEscogido
+            }),
+            headers:
+            {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+            let data=res.response.data
+            if(data.status_code==400){
+                errorAlert(res)
+            }else{
+                Swal.close()
+                reloadTableFallas(data)
+            }
+        }else{
+            errorAlert(res)
+        }
+    })
+}
+
 //FUNCION traer toda la informacion de los inicial y la de los catalogos
 function getInfoAndCatalogos(){
     //INFO: poner aqui FETCH para traer los catalogos y lo sig agregarlo dentro del response

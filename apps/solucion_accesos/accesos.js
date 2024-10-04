@@ -44,7 +44,10 @@ window.onload = function(){
         redirectionUrl('login',false)
     }
     customNavbar(getValueUserLocation(), getCookie('userTurn'));
-    $("#mainSection1").show()
+    $("#mainSection1").hide()
+    console.log("SECCTION2",mainSection2)
+    $('#mainSection2').show()
+
 }
 
 window.addEventListener('storage', function(event) {
