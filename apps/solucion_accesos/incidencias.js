@@ -1882,6 +1882,7 @@ function funcionSeguimientoFalla(){
     if(data_failure_update.falla_documento_solucion.length==0){
         delete data_failure_update.falla_documento_solucion
     }
+    console.log("DATAA",data_failure_update, selected.folio)
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -1912,12 +1913,15 @@ function funcionSeguimientoFalla(){
                 selectedFalla.falla_fecha_hora_solucion= formatDate
                 for (let key in data_failure_update){
                     if(key=='falla_evidencia_solucion'){
+                        selectedFalla.falla_evidencia_solucion=[]
                         if(data_failure_update.falla_evidencia_solucion.length>0){
                             for (let d of data_failure_update.falla_evidencia_solucion){
+                                console.log("FALLAS EVIDENCIA SOL")
                                 selectedFalla.falla_evidencia_solucion.unshift(d)
                             }
                         }
                     }else if(key=='falla_documento_solucion'){
+                        selectedFalla.falla_documento_solucion=[]
                         if(data_failure_update.falla_documento_solucion.length>0){
                             for (let d of data_failure_update.falla_documento_solucion){
                                 selectedFalla.falla_documento_solucion.unshift(d)

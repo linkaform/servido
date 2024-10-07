@@ -1259,7 +1259,8 @@ function dataUserInf(dataUser){
         if(dias.length>0){
             for(let d of dias){
                 $("#"+d+"").removeClass('btn-outline-success');
-                $("#"+d+"").addClass('btn-success');
+                $("#"+d+"").addClass('bg-dark');
+                $("#"+d+"").addClass('color-white');
             }
         }
     }
@@ -1802,7 +1803,7 @@ function optionListUsers(data){
 function setHideElements(option){
     if (option == 'buttonsModal') {
         $("#buttonCommentsModal").hide();
-        $("#buttonBitacoraModal").hide();
+       // $("#buttonBitacoraModal").hide();
         $("#buttonAccessModal").hide();
         $("#buttonLocationsModal").hide();
         $("#buttonItemsModal").hide();

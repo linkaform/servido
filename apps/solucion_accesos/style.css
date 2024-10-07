@@ -1,7 +1,7 @@
 :root {
   --yellowLKF: #FFA823;
   --downloadButton:#003285;
-  --text-gray:#808080;
+  --text-gray:#616161;
 }
 
 .header{
@@ -546,11 +546,6 @@ input[type=search]{
     padding: 0!important; /* Elimina el padding por defecto */
 }
 
-.no-hover:hover{
-    color: none !important;
-    background-color: none !important;
-    border-color: none !important;
-}
 
 .checkboxBottom{
     margin-bottom: 20px !important;
@@ -601,9 +596,9 @@ input[type=search]{
 
 
 /* Ancho de columna para pantallas extra grandes */
-@media (min-width: 1200px) { /* 'xl' en Bootstrap 5 corresponde a min-width: 1200px */
+/*@media (min-width: 1200px) {
     .col-xl-custom {
-      flex: 0 0 38%; /* Ajusta este valor según sea necesario */
+      flex: 0 0 38%; 
       max-width: 40%;
       min-width: 40% !important;
     }
@@ -611,12 +606,12 @@ input[type=search]{
       display: flex;
       flex-direction: row;
     }
-}
+}*/
 
 /* Ancho de columna para pantallas más pequeñas */
-@media (max-width: 1199px) {
+/*@media (max-width: 1199px) {
     .col-xl-custom {
-      flex: 0 0 38%; /* Ajusta este valor según sea necesario */
+      flex: 0 0 38%; 
       max-width: 40%;
       min-width: 100% !important;
     }
@@ -624,7 +619,7 @@ input[type=search]{
       display: flex;
       flex-direction: column;
     }
-}
+}*/
 
 .text-gray {
   color: var(--text-gray); /* Mantiene la relación de aspecto */
@@ -644,4 +639,23 @@ input[type=search]{
 
 .bg-warning-subtle{
   background-color: whitesmoke !important;
+}
+
+.btn-outline-success{
+  background-color: none;
+  border-color: lightgray!important;
+  color: black!important;
+  cursor: auto !important;
+}
+
+.color-white{
+  color: whitesmoke!important;
+}
+
+.btn-custom:hover {
+    background-color: none!important; /* Change to your desired color */
+    box-shadow: none !important;
+}
+.btn:hover{
+  background-color: none!important;
 }
