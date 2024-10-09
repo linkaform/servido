@@ -10,10 +10,13 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
     <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tabulator CSS con tema Bootstrap 5 -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/tabulator-tables@5.5.0/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet"> -->
 </head>
 <body>
     <navbar-component ></navbar-component>
@@ -77,44 +80,67 @@
             <div class="tab-content overflow-hidden" id="myTabContent">
                 <div class="tab-pane fade show active" id="div-article-incidencias" role="tabpanel" aria-labelledby="in-location-tab" tabindex="0">
                     <div class="d-flex mt-2 mb-2 justify-content-end">
-                            <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewIncident');return false;">
-                                <i class="fa-solid fa-plus"></i>
-                                Nuevo Incidente
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarIncidencias" >
-                                <i class="fa-solid fa-file-arrow-down"></i>
-                                Descargar
-                            </button>
-                            <!--  <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                Filtros
-                            </button> -->
-                            <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('incidencias')" id="buttonEliminarIncidencias">
-                                <i class="fa-solid fa-trash"></i>
-                                Eliminar
-                            </button>
+                            <div class="d-flex flex-row flex-grow-1 justify-content-start align-items-center mt-0 mb-0 ms-1">
+                                <div class="d-flex flex-row justify-content-center align-items-center">
+                                    <label class="me-3 ms-1"><b>Prioridad: </b></label>
+                                    <select class="form-select" style="width:400px;" id="filtroEstadoPerdido" onchange="onChangeFiltroEstadoPerdido()">
+                                        <option value="pendiente">Alta</option>
+                                        <option value="entregado">Mediana</option>
+                                        <option value="donado">Baja</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class=" d-flex mb-2 ms-1 justify-content-end align-items-center">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewIncident');return false;">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Nuevo Incidente
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarIncidencias" >
+                                    <i class="fa-solid fa-file-arrow-down"></i>
+                                    Descargar
+                                </button>
+                                <!--  <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    Filtros
+                                </button> -->
+                                <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('incidencias')" id="buttonEliminarIncidencias">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Eliminar
+                                </button>
+                            </div>
                     </div>
                         <div class="m-1 mb-2" id="tableIncidencias"></div>
                 </div>
                 <div class="tab-pane fade overflow-hidden" id="div-fallas" role="tabpanel" aria-labelledby="out-location-tab" tabindex="0">
                     <div class="d-flex mt-2 mb-2 justify-content-end">
-                            <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewFail')">
-                                <i class="fa-solid fa-plus"></i>
-                                Nueva Falla
-                            </button>
-                            
-                            <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarFallas" >
-                                <i class="fa-solid fa-file-arrow-down"></i>
-                                Descargar
-                            </button>
-                            <!--  <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                Filtros
-                            </button> -->
-                            <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('fallas')" id="buttonEliminarFallas" >
-                                <i class="fa-solid fa-trash"></i>
-                                Eliminar
-                            </button>
+                            <div class="d-flex flex-row flex-grow-1 justify-content-start align-items-center mt-0 mb-0 ms-1">
+                                <div class="d-flex flex-row justify-content-center align-items-center">
+                                    <label class="me-3 ms-1"><b>Estado: </b></label>
+                                    <select class="form-select" style="width:400px;" id="filtroEstadoFalla" onchange="onChangeFiltroEstadoFalla()">
+                                        <option value="abierto">Abierto</option>
+                                        <option value="resuelto">Resuelto</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class=" d-flex mb-2 ms-1 justify-content-end align-items-center">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewFail')">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Nueva Falla
+                                </button>
+                                
+                                <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarFallas" >
+                                    <i class="fa-solid fa-file-arrow-down"></i>
+                                    Descargar
+                                </button>
+                                <!--  <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    Filtros
+                                </button> -->
+                                <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('fallas')" id="buttonEliminarFallas" >
+                                    <i class="fa-solid fa-trash"></i>
+                                    Eliminar
+                                </button>
+                            </div>
                     </div>
                         <div class="m-1 mb-2" id="tableFallas"></div>
                 </div>
@@ -145,8 +171,20 @@
                             </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Fecha y hora del incidente: *</label>
-                            <input type="datetime-local" class="form-control contentNuevoIncidencia" id="fechaHoraNuevoIncidencia">
+                            <label class="form-label">Fecha: *</label>
+                            <input type="date" class="form-control contentNuevoIncidencia" id="fechaNuevoIncidencia">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Hora: *</label>
+                            <div class="time-selector">
+                                <select class="form-select time-select contentNuevoIncidencia" id="horaNuevoIncidencia" 
+                                onchange="onChangeAmpmLabel('horaNuevoIncidencia','ampmNuevoIncidencia')">
+                                </select>
+                                <label class="mx-1">:</label>
+                                <select class="form-select time-select contentNuevoIncidencia" id="minNuevoIncidencia">
+                                </select>
+                                <label class="ms-2" id="ampmNuevoIncidencia"></label>
+                            </div>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Reporta: </label>
@@ -154,45 +192,59 @@
                             </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Incidencia: *</label>
-                            <select class="form-select contentNuevoIncidencia" id="incidenciaNuevoIncidencia" onchange="verInputsDeposito()">
-                            </select>
-                        </div>
-                         <div class="mb-3 col-6">
                             <label class="form-label">Importancia: *</label>
                             <select class="form-select contentNuevoIncidencia" id="importanciaNuevoIncidencia">
-                                <option value="baja">Baja</option>
-                                <option value="media">Media</option>
-                                <option value="alta">Alta</option>
-                                <option value="critica">Critica</option>
+                                <option value="Baja">Baja</option>
+                                <option value="Media">Media</option>
+                                <option value="Alta">Alta</option>
+                                <option value="Crítica">Crítica</option>
                             </select>
                         </div>
-                        <div id="depositos-inputs" style="display:none;">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Incidencia: *</label>
+                            <select class="form-select contentNuevoIncidencia" id="incidenciaNuevoIncidencia" onchange="verInputsDeposito('nuevo')">
+                            </select>
+                        </div>
+                        <div id="depositos-padre-nuevo" style="display:none;">
                             <hr>
-                            <div class="d-flex flex-wrap flex-row">
-                                <div class="mb-3 col-6">
-                                    <label class="form-label">Tipo Deposito: *</label>
-                                    <select class="form-select contentNuevoIncidencia" id="tipoDepositoNuevoIncidencia">
-                                        <option value="Efectivo">Efectivo</option>
-                                        <option value="Fichas Deposito">Fichas Deposito</option>
-                                        <option value="Menos Dev. DEP-PDT">Menos Dev. DEP-PDT</option>
-                                        <option value="RecProMes">RecProMes</option>
-                                        <option value="Cheques">Cheques</option>
-                                        <option value="Cheques Dlls">Cheques Dlls</option>
-                                        <option value="Vales">Vales</option>
-                                    </select>
+                            <div class="d-flex flex-wrap flex-row deposito-div-nuevo" id="nuevoDeposito-nuevo-123">
+                                <div class=" d-flex flex-wrap flex-row flex-grow-1">
+                                    <div class="mb-3 col-5 me-3">
+                                        <label class="form-label">Tipo Deposito: </label>
+                                        <select class="form-select contentNuevoIncidencia deposito-nuevo" id="tipoDepositoNuevoIncidencia-nuevo-123">
+                                            <option value="Efectivo">Efectivo</option>
+                                            <option value="Fichas Deposito">Fichas Deposito</option>
+                                            <option value="Menos Dev. DEP-PDT">Menos Dev. DEP-PDT</option>
+                                            <option value="RecProMes">RecProMes</option>
+                                            <option value="Cheques">Cheques</option>
+                                            <option value="Cheques Dlls">Cheques Dlls</option>
+                                            <option value="Vales">Vales</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-6">
+                                        <label class="form-label">Cantidad: </label>
+                                        <input step="0.01" class="form-control contentNuevoIncidencia deposito-nuevo soloNum" id="cantidadNuevoIncidencia-nuevo-123" onChange="getTotal('cantidadNuevoIncidencia-nuevo-123', 'Nuevo')">
+                                    </div>
+                                    
                                 </div>
-                                <div class="mb-3 col-6">
-                                    <label class="form-label">Cantidad: *</label>
-                                    <input type="number" step="0.01" class="form-control contentNuevoIncidencia" id="cantidadNuevoIncidencia">
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddDeposito('nuevo');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteDeposito('nuevo',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
                                 </div>
-                                <div class="mb-3 col-6">
-                                    <label class="form-label">Total Deposito: *</label>
-                                    <input type="number" step="0.01" class="form-control contentNuevoIncidencia" id="totalDepositoNuevoIncidencia">
-                                </div>
+                            </div>
+                            <div id="depositos-inputs-nuevo">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label ms-2"><b>Total Deposito: </b></label>
+                                <span id="totalDepositoNuevoIncidencia-nuevo-123"> </span>
                             </div>
                             <hr>
                         </div>
+
                         <div class="mb-3 col-12">
                             <label class="form-label m-0 p-0">Comentarios: *</label><br>
                             <small class="m-0 p-0 mb-2 text-gray">Información relevante relacionada con el incidente.</small>
@@ -206,7 +258,7 @@
                             </select>
                         </div>
                         <div class="mb-3 col-12">
-                            <label class="form-label m-0 p-0">Daños: *</label>
+                            <label class="form-label m-0 p-0">Daños: </label>
                             <br>
                             <small class="m-0 p-0 mb-2 text-gray">Daños causador por el incidente.</small>
                             <textarea class="form-control contentNuevoIncidencia"  rows="1" id="danoNuevoIncidencia"></textarea>
@@ -273,7 +325,7 @@
                                 <div class="flex-grow-1">
                                     <label class="form-label">Acciones Tomadas: </label>
                                     <input type="text" class="form-control dano-div-nuevo mb-2 contentNuevoIncidencia" id="repResponsableNuevoIncidencia" placeholder="Responsable de la accion">
-                                    <textarea class="form-control dano-div-nuevo contentNuevoIncidencia" rows="2" id="repAccionNuevoIncidencia" placeholder="Acciones tomadas"></textarea>
+                                    <textarea class="form-control dano-div-nuevo contentNuevoIncidencia" rows="1" id="repAccionNuevoIncidencia" placeholder="Acciones tomadas"></textarea>
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-success button-add-register" onclick="setAddDaño('nuevo');return false;">
@@ -329,8 +381,20 @@
                             </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Fecha y hora del incidente: *</label>
-                            <input type="datetime-local" class="form-control contentEditarIncidencia" id="fechaHoraEditarIncidencia">
+                            <label class="form-label">Fecha: *</label>
+                            <input type="date" class="form-control contentEditarIncidencia" id="fechaEditarIncidencia">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Hora: *</label>
+                            <div class="time-selector">
+                                <select class="form-select time-select contentEditarIncidencia" id="horaEditarIncidencia" 
+                                onchange="onChangeAmpmLabel('horaEditarIncidencia','ampmEditarIncidencia')">
+                                </select>
+                                <label class="mx-1">:</label>
+                                <select class="form-select time-select contentEditarIncidencia" id="minEditarIncidencia">
+                                </select>
+                                <label class="ms-2" id="ampmEditarIncidencia"></label>
+                            </div>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Reporta: </label>
@@ -338,18 +402,63 @@
                             </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Incidencia: *</label>
-                            <select class="form-select contentEditarIncidencia" id="incidenciaEditarIncidencia">
-                            </select>
-                        </div>
-                         <div class="mb-3 col-6">
                             <label class="form-label">Importancia: *</label>
                             <select class="form-select contentEditarIncidencia" id="importanciaEditarIncidencia">
-                                <option value="baja">Baja</option>
-                                <option value="media">Media</option>
-                                <option value="alta">Alta</option>
-                                <option value="critica">Critica</option>
+                                <option value="Baja">Baja</option>
+                                <option value="Media">Media</option>
+                                <option value="Alta">Alta</option>
+                                <option value="Crítica">Crítica</option>
                             </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Incidencia: *</label>
+                            <select class="form-select contentEditarIncidencia" id="incidenciaEditarIncidencia" onchange="verInputsDeposito('editar')">
+                            </select>
+                        </div>
+                        <div>
+                            <h5 id="texto-cargar-deposito">Registros existentes de depositos</h5>
+                            <div class="mb-3 d-flex flex-wrap justify-content-start" id="cargar-deposito">
+                            </div>
+                        </div>
+                        <div id="depositos-padre-editar" style="display:none;">
+                            <div>
+                                <hr>
+                                <div class="d-flex flex-wrap flex-row deposito-div-editar" id="editarDeposito-editar-123">
+                                    <div class="d-flex flex-wrap flex-row flex-grow-1">
+                                        <div class="mb-3 col-5 me-3">
+                                            <label class="form-label">Tipo Deposito: </label>
+                                            <select class="form-select contentEditarIncidencia deposito-editar" id="tipoDepositoEditarIncidencia-editar-123">
+                                                <option value="Efectivo">Efectivo</option>
+                                                <option value="Fichas Deposito">Fichas Deposito</option>
+                                                <option value="Menos Dev. DEP-PDT">Menos Dev. DEP-PDT</option>
+                                                <option value="RecProMes">RecProMes</option>
+                                                <option value="Cheques">Cheques</option>
+                                                <option value="Cheques Dlls">Cheques Dlls</option>
+                                                <option value="Vales">Vales</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 col-6">
+                                            <label class="form-label">Cantidad: </label>
+                                            <input step="0.01" class="form-control deposito-editar contentEditarIncidencia" id="cantidadEditarIncidencia-editar-123" onChange="getTotal('cantidadEditarIncidencia-editar-123', 'Editar')">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-success button-add-register" onclick="setAddDeposito('editar');return false;">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteDeposito('editar',123);return false;">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="depositos-inputs-editar">
+                            </div>
+                            <div class="col-12 mt-2 mb-3">
+                                <label class="form-label ms-2"><b>Total Deposito: </b></label>
+                                <span id="totalDepositoEditarIncidencia-editar-123" > </span>
+                            </div>
+                            <hr>
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label m-0 p-0">Comentarios: *</label><br>
@@ -364,7 +473,7 @@
                             </select>
                         </div>
                         <div class="mb-3 col-12">
-                            <label class="form-label m-0 p-0">Daños: *</label>
+                            <label class="form-label m-0 p-0">Daños: </label>
                             <br>
                             <small class="m-0 p-0 mb-2 text-gray">Daños causador por el incidente.</small>
                             <textarea class="form-control contentEditarIncidencia"  rows="1" id="danoEditarIncidencia"></textarea>
@@ -405,7 +514,12 @@
                             </div>
                         </div>
                         <hr>
-                        <div id="persona-input-form-editar">
+                        <div>
+                            <h5 id="texto-cargar-persona">Registros existentes</h5>
+                            <div class="mb-3 d-flex flex-wrap justify-content-start" id="cargar-persona">
+                            </div>
+                        </div>
+                        <div id="persona-input-form-editar" >
                             <div class="d-flex mb-3 div-persona-editar-123" id="div-persona-123">
                                 <div class="flex-grow-1">
                                     <label class="form-label">Personas Involucradas: </label>
@@ -426,12 +540,17 @@
                             </div>
                         </div>
                         <hr>
+                        <div>
+                            <h5 id="texto-cargar-accion">Registros existentes</h5>
+                            <div class="mb-3 d-flex flex-wrap justify-content-start" id="cargar-accion">
+                            </div>
+                        </div>
                         <div id="dano-input-form-editar">
                             <div class="d-flex mb-3 div-dano-editar-123" id="div-dano-123">
                                 <div class="flex-grow-1">
                                     <label class="form-label">Acciones Tomadas: </label>
                                     <input type="text" class="form-control dano-div-editar mb-2 contentEditarIncidencia" id="repResponsableEditarIncidencia" placeholder="Responsable de la accion">
-                                    <textarea class="form-control dano-div-editar contentEditarIncidencia" rows="2" id="repAccionEditarIncidencia" placeholder="Acciones tomadas"></textarea>
+                                    <textarea class="form-control dano-div-editar contentEditarIncidencia" rows="1" id="repAccionEditarIncidencia" placeholder="Acciones tomadas"></textarea>
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-success button-add-register" onclick="setAddDaño('editar');return false;">
@@ -500,7 +619,7 @@
                                 <div class="d-flex justify-content-between image-container" id="evidenciaIncidencia">
                                 </div>
                             </div>
-                            <div class="col-7 mb-3 d-flex flex-column align-items-start justify-content-start ">
+                            <div class="col-7 mb-3 mt-2 d-flex flex-column align-items-start justify-content-start ">
                                 <label class="form-label me-3"><b>Documentos: </b></label><br>
                                 <div class="d-flex flex-row justify-content-start flex-wrap" id="documentosIncidencia">
                                 </div>
@@ -509,17 +628,30 @@
                         </div>
                         
                         <hr>
+                        <div id=div-table-depositos>
+                            <h5>Depositos</h5>
+                            <table class="table table-striped" id="table-depositos">
+                                <thead>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col">Cantidad</th>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+
                         <h5>Detalles de los involucrados</h5>
-                        <div class="d-flex justify-content-start align-items-start">
-                            <div class="mb-3 col-6">
+                        <div class="d-flex justify-content-between align-items-start mt-3">
+                            <div class="mb-3 col-5 me-2" >
                                 <label class="form-label fw-bold">Personas involucradas:&nbsp;&nbsp; <span class="fw-normal" ></span></label>
-                                <div id="personasInvolucradasIncidencia">
+                                <div id="personasInvolucradasIncidencia" class="pt-3">
                                     
                                 </div>
                             </div>
-                            <div class="mb-3 col-6">
+                            <div class="mb-3 col-6 ms-2">
                                 <label class="form-label fw-bold">Acciones tomadas:&nbsp;&nbsp; <span class="fw-normal" ></span></label>
-                                <div id="accionIncidencia">
+                                <div id="accionIncidencia" class="pt-3">
                                     
                                 </div>
                             </div>
@@ -561,12 +693,12 @@
                             <label class="form-label">Hora: *</label>
                             <div class="time-selector">
                                 <select class="form-select time-select contentNuevoFalla" id="horaNuevoFalla" 
-                                onchange="onChangeAmpmLabel('horaNuevoFalla','ampmNuevaFalla')">
+                                onchange="onChangeAmpmLabel('horaNuevoFalla','ampmNuevoFalla')">
                                 </select>
                                 <label class="mx-1">:</label>
                                 <select class="form-select time-select contentNuevoFalla" id="minNuevoFalla">
                                 </select>
-                                <label class="ms-2" id="ampmNuevaFalla"></label>
+                                <label class="ms-2" id="ampmNuevoFalla"></label>
                             </div>
                         </div>
                         <div class="mb-3 col-6">
@@ -614,7 +746,7 @@
 
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentarios: *</label>
-                            <textarea class="form-control contentNuevoFalla" id="comentariosNuevoFalla"  rows="3" ></textarea>
+                            <textarea class="form-control contentNuevoFalla" id="comentariosNuevoFalla"  rows="1" ></textarea>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Reporta: *</label>
@@ -724,7 +856,7 @@
 
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentarios: *</label>
-                            <textarea class="form-control contentEditarFalla" id="comentariosEditarFalla"  rows="3" ></textarea>
+                            <textarea class="form-control contentEditarFalla" id="comentariosEditarFalla"  rows="1" ></textarea>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Reporta: *</label>
@@ -735,22 +867,6 @@
                             <label class="form-label">Responsable asignado de solucionar: *</label>
                             <select class="form-select contentEditarFalla" id="responsableEditarFalla">
                             </select>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Fecha de resolucion: *</label>
-                            <input type="date" class="form-control contentEditarFalla" id="fechaResolucionEditarFalla">
-                        </div>
-                        <div class="col-4">
-                            <label class="form-label">Hora: *</label>
-                            <div class="time-selector">
-                                <select class="form-select time-select contentEditarFalla" id="horaResolucionEditarFalla" 
-                                onchange="onChangeAmpmLabel('horaResolucionEditarFalla','ampmEditarFalla')">
-                                </select>
-                                <label class="mx-1">:</label>
-                                <select class="form-select time-select contentEditarFalla" id="minResolucionEditarFalla">
-                                </select>
-                                <label class="ms-2" id="ampmEditarFalla"></label>
-                            </div>
                         </div>
                     </div>
                     
@@ -783,7 +899,7 @@
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentario: </label>
-                            <textarea type="text" rows="2" class="form-control seguimientoFalla" id="comentarioSeguimientoFalla"></textarea>
+                            <textarea type="text" rows="1" class="form-control seguimientoFalla" id="comentarioSeguimientoFalla"></textarea>
                         </div>
                          <div id="evidenciaFS-input-form-editar" >
                             <div class="d-flex mb-3 col-12 div-evidenciaFS-editar-123" id="id-evidenciaFS-div-123">

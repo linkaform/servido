@@ -156,7 +156,7 @@ function loadCatalogsCaseta(location ,arrayUserBoothsLocations){
 }
 
 
-async function fetchOnChangeCaseta(script, option, area, location){
+async function fetchOnChangeCaseta(script, option, area, location,status=""){
     loadingService()
     let responseData=""
     let response={ "data":{
@@ -178,6 +178,9 @@ async function fetchOnChangeCaseta(script, option, area, location){
     }
     if (location){
         body.location=location
+    }
+    if (status){
+        body.status=status
     }
     console.log(body)
     let dataCasetas=[]
