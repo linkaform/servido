@@ -93,8 +93,8 @@ window.onload = function(){
     setSpinner();
     $('#divOptions').show();
     $('#title_report').show();
+    $('.js-example-basic-multiple').select2();
     document.getElementById("firstParameters").style.removeProperty('display');
-    
   } else {
     unhideElement("inicio_ses");
     $('#divContent').hide();

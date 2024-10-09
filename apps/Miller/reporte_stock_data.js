@@ -1,10 +1,13 @@
 
 let columsTable1 = [
-  { title:"Id", field:'id',hozAlign:"left",width:150},
-  { title:"Stock",field:'stock', formatter:"money", formatterParams:{thousand:",",negativeSign:true,precision:false,},hozAlign:"right",width:180 },
+  { title:"Folio", field:'folio',hozAlign:"left",width:150},
   { title:"Almacén", field:'wharehouse',hozAlign:"left",width:200 },
   { title:"Ubicación",field:'location',hozAlign:"left",width:150 },
-  { title:"Encargado",field:'supervisor',hozAlign:"left",width:150 },
+  { title:"Producto",field:'product',hozAlign:"left",width:150 },
+  { title:"Stock",field:'stock',hozAlign:"rigth",formatter:"money", formatterParams:{decimal:","},width:150 },
+  { title:"Adjust In",field:'adjust_in',hozAlign:"rigth",formatter:"money", formatterParams:{decimal:","},width:150 },
+  { title:"Adjust Out",field:'adjust_out',hozAlign:"rigth",formatter:"money", formatterParams:{decimal:","},width:150 },
+  { title:"Status ",field:'status_item',hozAlign:"left",width:150 },
 ];
 
 let dataTable1 = [
