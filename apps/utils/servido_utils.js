@@ -200,7 +200,6 @@ function getCompanyLogo(userParentId){
   document.getElementById("image_log").setAttribute("src", "https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_"+userParentId+".thumbnail")
   document.getElementById("image_log").setAttribute("width","125");
   document.getElementById("image_log").setAttribute("height","75");
-
 }
 
 function changeColor() {
@@ -734,6 +733,14 @@ function propiedadesVacias(objeto) {
     return array; // Retorna las propiedades vacias
 }
 
+function eliminarObjetosConPropiedadesVacias(array) {
+    return array.filter(obj => {
+        // Verificar si cada propiedad del objeto no está vacía
+        return Object.values(obj).every(value => {
+            return value !== "" && value !== null && value !== undefined && value.toString().trim() !== "";
+        });
+    });
+}
 
 function formatText(text) {
     let replacedText = text.replace(/_/g, ' ');
@@ -807,8 +814,10 @@ function getInputsValueByClass(classInput){
 function cleanCatalag(catalogsId){
     for (let cat of catalogsId){
         let selectCat = document.getElementById(cat)
-        selectCat.innerHTML=""
-        selectCat.value=""
+        if(selectCat){
+            selectCat.innerHTML=""
+            selectCat.value=""
+        }
     }
 }
 

@@ -10,6 +10,8 @@ let selectLocFallas=""
 let catalogsData= ""
 let arraySuccessFoto=[]
 let arraySuccessArchivo=[]
+let total=0
+let inputsCantidad=""
 
 window.onload = function(){
 	user= getCookie("userId");
@@ -61,9 +63,30 @@ window.onload = function(){
 
     iniciarSelectHora('horaNuevoFalla','minNuevoFalla', 'ampmNuevoFalla')
     iniciarSelectHora('horaEditarFalla','minEditarFalla', 'ampmEditarFalla1')
+    iniciarSelectHora('horaEditarIncidencia','minEditarIncidencia', 'ampmEditarIncidencia')
+    iniciarSelectHora('horaNuevoIncidencia','minNuevoIncidencia', 'ampmNuevoIncidencia')
+    inputsCantidad = document.querySelectorAll(".soloNum");
+
+    inputsCantidad.forEach(input => {
+        input.addEventListener("input", function() {
+            // Guardar el valor actual
+            let valor = this.value;
+
+            // Eliminar caracteres no numéricos y no permitir más de un punto
+            valor = valor.replace(/[^0-9.]/g, ''); // Eliminar todo excepto números y puntos
+            const partes = valor.split('.');
+            
+            // Si hay más de un punto, volver a unir manteniendo solo el primero
+            if (partes.length > 2) {
+                valor = partes[0] + '.' + partes.slice(1).join('').replace(/[^0-9]/g, '');
+            }
+
+            this.value = valor; // Asignar el valor filtrado al input
+        });
+    });
 }
 
-
+ 
 
 //FUNCION para mostrar los modales
 function setModal(type = 'none',id){
@@ -196,6 +219,69 @@ function verIncidencia(folio){
         }
     }
     divDoc.innerHTML = doc
+
+    let per=""
+    let divVistaPersona= document.getElementById('personasInvolucradasIncidencia')
+    divVistaPersona.innerHTML=""
+    if(selectedIncidencia.hasOwnProperty('personas_involucradas_incidencia')){
+        for(let p of selectedIncidencia.personas_involucradas_incidencia){
+            per += `
+                <div class="customShadow p-2 roundDiv">
+                    <span><b>Nombre :</b> `+p.nombre_completo+`</span> <br>
+                    <span><b>Tipo :</b> `+p.tipo_persona+`</span>
+                </div>
+            `
+        }
+    }
+    divVistaPersona.innerHTML = per
+
+    let acc=""
+    let divVistaAccion= document.getElementById('accionIncidencia')
+    divVistaAccion.innerHTML=""
+    if(selectedIncidencia.hasOwnProperty('acciones_tomadas_incidencia')){
+        for(let p of selectedIncidencia.acciones_tomadas_incidencia){
+            console.log("ACCIONES",p)
+            acc += `
+                <div class="customShadow p-2 roundDiv">
+                    <span><b>Responsable :</b> `+p.responsable_accion+`</span> <br>
+                    <span><b>Accion :</b> `+p.acciones_tomadas+`</span>
+                </div>
+            `
+        }
+    }
+    divVistaAccion.innerHTML = acc
+
+    //let dep=""
+    //let divVistaDepo= document.getElementById('accionIncidencia')
+    //divVistaDepo.innerHTML=""
+    if(selectedIncidencia.hasOwnProperty('datos_deposito_incidencia')){
+            let tabla = document.getElementById("table-depositos");
+            let tbody = tabla.getElementsByTagName("tbody")[0];
+            tbody.innerHTML="";
+            if(selectedIncidencia.datos_deposito_incidencia.length>0){
+                for(let p of selectedIncidencia.datos_deposito_incidencia){
+                    let newRow = $('<tr>');
+                    newRow.append($('<td>').text(p.tipo_deposito));
+                    newRow.append($('<td>').text(p.cantidad));
+                    newRow.append('</tr>');
+                    $('#table-depositos').append(newRow);
+                }
+            }else{
+                let newRow = $('<tr>');
+                    newRow.append($('<td>').text('No hay datos disponibles.'));
+                    newRow.append($('<td>').text(""));
+                    newRow.append('</tr>');
+                    $('#table-depositos').append(newRow);
+            }
+        /*dep += `
+            <div class="customShadow p-2 roundDiv">
+                <span><b>Responsable :</b> `+p.responsable_accion+`</span> <br>
+                <span><b>Accion :</b> `+p.acciones_tomadas+`</span>
+            </div>
+        `*/
+    }
+    //divVistaDepo.innerHTML = dep
+
     $('#viewIncidentModal').modal('show');
 }
 
@@ -244,7 +330,8 @@ function reloadTableIncidencias(data){
                         evidencia_incidencia:incidencia.evidencia_incidencia,
                         documento_incidencia:incidencia.documento_incidencia,
                         prioridad_incidencia:incidencia.prioridad_incidencia,
-                        notificacion_incidencia:incidencia.notificacion_incidencia
+                        notificacion_incidencia:incidencia.notificacion_incidencia,
+                        datos_deposito_incidencia:incidencia.datos_deposito_incidencia   
                     })
             }
         }else{
@@ -326,6 +413,7 @@ function limpiarModal(classInput, editAdd){
     arrayResponses=[]
     arraySuccessFoto=[]
     arraySuccessArchivo=[]
+    total=0
     let elements = document.getElementsByClassName(classInput)
     for (let i = 0; i < elements.length; i++) {
         elements[i].value='';
@@ -375,6 +463,15 @@ function limpiarModal(classInput, editAdd){
         }
     });
 
+    let divDep = document.getElementById("depositos-inputs-"+editAdd.toLowerCase());
+    let elementsDep = divDep.querySelectorAll('.deposito-div-'+editAdd.toLowerCase());
+    elementsDep.forEach(function(input) {
+        let partes = input.id.split('-');
+        let ultimaParte = partes[partes.length - 1];
+        setDeleteDeposito(editAdd.toLowerCase(), ultimaParte)
+    });
+    verInputsDeposito(editAdd.toLowerCase())
+    $("#totalDeposito"+capitalizeFirstLetter(editAdd)+"Incidencia-"+editAdd+"-123").text("")
     if(editAdd =='Editar'){
         let divEvidenciaFS = document.getElementById("evidenciaFS-input-form-"+editAdd);
         const elementsEvidenciaFS = divEvidenciaFS.querySelectorAll('.evidenciaFS-div-'+editAdd);
@@ -443,7 +540,8 @@ function getAllDataIncidencias(){
                                 evidencia_incidencia:incidencia.evidencia_incidencia||"",
                                 documento_incidencia:incidencia.documento_incidencia||"",
                                 prioridad_incidencia:incidencia.prioridad_incidencia||"",
-                                notificacion_incidencia:incidencia.notificacion_incidencia||""
+                                notificacion_incidencia:incidencia.notificacion_incidencia||"",
+                                datos_deposito_incidencia:incidencia.datos_deposito_incidencia||""
                             })
                         }
                     }else{
@@ -802,9 +900,126 @@ function llenarEditarIncidencia(selectArea,selectedIncidencia,selectUbicacion,se
     for (let obj of optionsCaseta){
         selectArea.innerHTML += '<option value="'+obj.name.toString()+'">'+obj.name+'</option>';
     }
+
+    let addPersona=""
+    let divPersona = document.getElementById('cargar-persona')
+    divPersona.innerHTML=""
+    for (let p of selectedIncidencia.personas_involucradas_incidencia){
+        let randomID= Date.now() + Math.floor(Math.random() * 1000);
+        addPersona+= `
+            <div class="col-6 mt-2 d-flex flex-column justify-content-start me-4" id="persona-`+randomID+`" style="width:45%">
+                <div class="col-12 d-flex flex-row justify-content-start customShadow roundDiv p-3 py-2">
+                    <div class="col-10 d-flex flex-column">
+                        <div class="d-flex flex-row">
+                            <span><b>Nombre: </b> </span> <span id="nombre-`+randomID+`" class="ms-2">`+p.nombre_completo+`</span> 
+                        </div>
+                        <div class="d-flex flex-row" >
+                            <span><b>Tipo: </b></span> <span id="tipo-`+randomID+`" class="ms-2">`+p.tipo_persona+`</span> 
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="col-12 d-flex justify-content-end m-0 p-0">
+                            <button type="button" class="btn btn-outline " onClick="setDeleteDivPersona('`+randomID+`', 'cargar-persona');">
+                                <span class="text-danger"> X</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
+    }
+    if(selectedIncidencia.personas_involucradas_incidencia.length<=0){
+        $('#texto-cargar-persona').hide();
+    }else{
+        $('#texto-cargar-persona').show();
+    }
+    $(`#cargar-persona`).append(addPersona);
+
+
+    let addAccion=""
+    let divAccion = document.getElementById('cargar-accion')
+    divAccion.innerHTML=""
+    for (let p of selectedIncidencia.acciones_tomadas_incidencia){
+        let randomID= Date.now() + Math.floor(Math.random() * 1000);
+        addAccion+= `
+            <div class="col-6 mt-2 d-flex flex-column justify-content-start me-4" id="accion-`+randomID+`" style="width:45%">
+                <div class="col-12 d-flex flex-row justify-content-start customShadow roundDiv p-3 py-2">
+                    <div class="col-10 d-flex flex-column">
+                        <div class="d-flex flex-row">
+                            <span><b>Responsable: </b> </span> <span id="responable-`+randomID+`" class="ms-2">`+p.responsable_accion+`</span> 
+                        </div>
+                        <div class="d-flex flex-row">
+                            <span><b>Acciones: </b></span> <span id="accionestomadas-`+randomID+`" class="ms-2">`+p.acciones_tomadas+`</span> 
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="col-12 d-flex justify-content-end m-0 p-0">
+                            <button type="button" class="btn btn-outline " onClick="setDeleteDivPersona('`+randomID+`', 'cargar-accion');">
+                                <span class="text-danger"> X</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
+    }
+    if(selectedIncidencia.acciones_tomadas_incidencia.length<=0){
+        $('#texto-cargar-accion').hide();
+    }else{
+        $('#texto-cargar-accion').show();
+    }
+    $(`#cargar-accion`).append(addAccion);
+
+    let addDeposito=""
+    let divDeposito = document.getElementById('cargar-deposito')
+    divDeposito.innerHTML=""
+    for (let p of selectedIncidencia.datos_deposito_incidencia){
+        let randomID= Date.now() + Math.floor(Math.random() * 1000);
+        addDeposito+= `
+            <div class="col-6 mt-2 d-flex flex-column justify-content-start me-4" id="deposito-`+randomID+`" style="width:45%">
+                <div class="col-12 d-flex flex-row justify-content-start customShadow roundDiv p-3 py-2">
+                    <div class="col-10 d-flex flex-column">
+                        <div class="d-flex flex-row">
+                            <span><b>Tipo: </b> </span> <span id="tipo-`+randomID+`" class="ms-2">`+p.tipo_deposito+`</span> 
+                        </div>
+                        <div class="d-flex flex-row">
+                            <span><b>Cantidad: </b></span> <span id="cantidad-`+randomID+`" class="ms-2">`+p.cantidad+`</span> 
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="col-12 d-flex justify-content-end m-0 p-0">
+                            <button type="button" class="btn btn-outline " onClick="setDeleteDivPersona('`+randomID+`', 'cargar-deposito');">
+                                <span class="text-danger"> X</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
+    }
+    if(selectedIncidencia.datos_deposito_incidencia.length<=0){
+        $('#texto-cargar-deposito').hide();
+    }else{
+        $('#texto-cargar-deposito').show();
+    }
+    $(`#cargar-deposito`).append(addDeposito);
+
+    if(selectedIncidencia.incidencia=="Deposito"){
+        verInputsDeposito('editar')
+    }
+
+    if(selectedIncidencia.hasOwnProperty('fecha_hora_incidencia') && selectedIncidencia.fecha_hora_incidencia!==""){
+        let partsDate1 = selectedIncidencia.fecha_hora_incidencia.split(' ');
+        let hour1= partsDate1[1].split(':')
+        console.log("FECHAA",partsDate1[0])
+        $('#fechaEditarIncidencia').val(partsDate1[0])
+        $('#horaEditarIncidencia').val(hour1[0])
+        $('#minEditarIncidencia').val(hour1[1])
+        onChangeAmpmLabel('horaEditarIncidencia','ampmEditarIncidencia1')
+    }
+
     $('#ubicacionEditarIncidencia').val(selectedIncidencia.ubicacion_incidencia)
     $('#areaEditarIncidencia').val(selectedIncidencia.area_incidencia)
-    $('#fechaHoraEditarIncidencia').val(selectedIncidencia.fecha_hora_incidencia)
     $('#reportaEditarIncidencia').val(selectedIncidencia.reporta_incidencia)
     $('#incidenciaEditarIncidencia').val(selectedIncidencia.incidencia)
     $('#importanciaEditarIncidencia').val(selectedIncidencia.prioridad_incidencia)
@@ -1321,13 +1536,13 @@ function editarFallaModal(folio, fecha, ubicacion, area, falla, comentarios, gua
 }
 
 
-function verInputsDeposito(){
-    let selectedOption= document.getElementById('incidenciaNuevoIncidencia')
+function verInputsDeposito(editAdd){
+    let selectedOption= document.getElementById('incidencia'+capitalizeFirstLetter(editAdd)+'Incidencia')
     if(selectedOption.value =="Deposito"){
         console.log('asdf')
-        $('#depositos-inputs').show();
+        $('#depositos-padre-'+editAdd).show();
     }else{
-        $('#depositos-inputs').hide();
+        $('#depositos-padre-'+editAdd).hide();
     }
 }
 
@@ -1335,9 +1550,19 @@ function verInputsDeposito(){
 function editarIncidencia(){
     $("#buttonEditarIncidencia").hide();
     $("#loadingButtonEditarIncidencia").show();
+    let data = getInputsValueByClass("contentEditarIncidencia")
+    let personas= getDataGrupoRepetitivo('persona-input-form-editar','.persona-div-editar', 2)
+    let acciones= getDataGrupoRepetitivo('dano-input-form-editar','.dano-div-editar', 2)
+    let depositos=""
+    if(data.incidenciaEditarIncidencia=="Deposito"){
+        depositos=[]
+        depositosPadre= getDataGrupoRepetitivo('depositos-padre-editar','.deposito-editar', 2)
+        depositosPadre=eliminarObjetosConPropiedadesVacias(depositosPadre)
+        for (let i of depositosPadre){
+            depositos.push(i)
+        }
+    }
 
-    let personas= getDataGrupoRepetitivo('persona-input-form-editar','.persona-div-editar' , 2)
-    let acciones= getDataGrupoRepetitivo('dano-input-form-editar','.dano-div-editar' , 2)
     arrayResponses = arrayResponses.filter(obj => !obj.hasOwnProperty('error'));
     let selected=''
     for(d of dataTableIncidencias){
@@ -1353,15 +1578,22 @@ function editarIncidencia(){
             arraySuccessArchivo.push({file_name: file_name, file_url: file});
         }
     }
-    let data = getInputsValueByClass("contentEditarIncidencia")
+    let personasArray = getAcciones('cargar-persona')
+    let accionArray = getAcciones('cargar-accion')
+    let depositoArray = getAcciones('cargar-deposito')
+    personasArray = eliminarObjetosConPropiedadesVacias(personasArray)
+    accionArray = eliminarObjetosConPropiedadesVacias(accionArray)
+    depositoArray = eliminarObjetosConPropiedadesVacias(depositoArray)
+    console.log("DEPOSITO ARRAY222", depositoArray)
+    let fecha1= data.fechaEditarIncidencia+' '+data.horaEditarIncidencia+':'+data.minEditarIncidencia+":00"
     let data_incidence_update ={
         'reporta_incidencia': data.reportaEditarIncidencia,
-        'fecha_hora_incidencia':formatDateToService(data.fechaHoraEditarIncidencia),
+        'fecha_hora_incidencia':fecha1,
         'ubicacion_incidencia': data.ubicacionEditarIncidencia,
         'area_incidencia': data.areaEditarIncidencia,
         'incidencia': data.incidenciaEditarIncidencia,
         'comentario_incidencia': data.comentarioEditarIncidencia,
-        'tipo_dano_incidencia': [data.tipoDanoEditarIncidencia],
+        'tipo_dano_incidencia': data.tipoDanoEditarIncidencia!==""?[data.tipoDanoEditarIncidencia]:"",
         'dano_incidencia':data.danoEditarIncidencia,
         'personas_involucradas_incidencia':personas,
         'acciones_tomadas_incidencia':acciones,
@@ -1370,22 +1602,31 @@ function editarIncidencia(){
         'prioridad_incidencia':data.importanciaEditarIncidencia,
         'notificacion_incidencia':data.notificacionEditarIncidencia
     };
-
     let cleanSelected = (({ actions, checkboxColumn, folio,...rest }) => rest)(selected);
-    let validateObj = encontrarCambios(cleanSelected,data_incidence_update)
+    //let validateObj = encontrarCambios(cleanSelected,data_incidence_update)
     for(let o of selected.evidencia_incidencia){
-        validateObj.evidencia_incidencia.unshift(o)
+        data_incidence_update.evidencia_incidencia.unshift(o)
     }
     for(let o of selected.documento_incidencia){
-        validateObj.documento_incidencia.unshift(o)
+        data_incidence_update.documento_incidencia.unshift(o)
     }
-    for(let o of selected.personas_involucradas_incidencia){
-        validateObj.personas_involucradas_incidencia.unshift(o)
+    for(let o of personasArray){
+        data_incidence_update.personas_involucradas_incidencia.unshift(o)
     }
-    for(let o of selected.acciones_tomadas_incidencia){
-        validateObj.acciones_tomadas_incidencia.unshift(o)
+    for(let o of accionArray){
+        data_incidence_update.acciones_tomadas_incidencia.unshift(o)
     }
-    /*console.log(ERR)*/
+    if(data_incidence_update.incidencia=="Deposito"){
+        data_incidence_update.datos_deposito_incidencia=[]
+        for(let o of depositoArray){
+            data_incidence_update.datos_deposito_incidencia.unshift(o)
+        }
+        for(let o of depositos){
+            data_incidence_update.datos_deposito_incidencia.unshift(o)
+        }
+        console.log("DEPOSITOaaaaaS",data_incidence_update.datos_deposito_incidencia)
+    }
+    console.log("CAMBIOSS", data_incidence_update.datos_deposito_incidencia)
     let noOptional = (({ acciones_tomadas_incidencia, personas_involucradas_incidencia, documento_incidencia, evidencia_incidencia, reporta_incidencia,
         tipo_dano_incidencia, view,check,...rest  }) => rest)(data_incidence_update);
     if(!validarObjeto(noOptional)){
@@ -1393,33 +1634,37 @@ function editarIncidencia(){
         $("#loadingButtonEditarIncidencia").hide();
         $("#buttonEditarIncidencia").show();
     }else{
-        if(validateObj.evidencia_incidencia.length==0){
-            delete validateObj.evidencia_incidencia
+        if(data_incidence_update.evidencia_incidencia.length==0){
+            delete data_incidence_update.evidencia_incidencia
         }
-        if(validateObj.documento_incidencia.length==0){
-            delete validateObj.documento_incidencia
+        if(data_incidence_update.documento_incidencia.length==0){
+            delete data_incidence_update.documento_incidencia
         }
-        if(validateObj.personas_involucradas_incidencia.length==0){
-            delete validateObj.personas_involucradas_incidencia
+        if(data_incidence_update.tipo_dano_incidencia==""){
+            delete data_incidence_update.tipo_dano_incidencia
         }
-        if(validateObj.acciones_tomadas_incidencia.length==0){
-            delete validateObj.acciones_tomadas_incidencia
+        /*if(data_incidence_update.personas_involucradas_incidencia.length==0){
+            delete data_incidence_update.personas_involucradas_incidencia
         }
+        if(data_incidence_update.acciones_tomadas_incidencia.length==0){
+            delete data_incidence_update.acciones_tomadas_incidencia
+        }*/
 
-        if(Object.keys(validateObj).length == 0){
+        if(Object.keys(data_incidence_update).length == 0){
             Swal.fire({
                 title: "Validación",
                 text: "Edita algo para actualizar la información.",
                 type: "warning"
             });
-            console.log("VALIDAR OBJ", validateObj)
         } else {
+            console.log("INFO PARA ACTUALIZAR",data_incidence_update, selected.folio)
+            //console.log(ERROR)
             fetch(url + urlScripts, {
                 method: 'POST',
                 body: JSON.stringify({
                     script_name: "incidencias.py",
                     option:"update_incidence",
-                    data_incidence_update:validateObj,
+                    data_incidence_update:data_incidence_update,
                     folio: selected.folio
                 }),
                 headers:
@@ -1439,38 +1684,52 @@ function editarIncidencia(){
                     }else if(data.status_code==202){
                         successMsg("Confirmación", "Incidencia actualizada correctamente.")
                         let selectedIncidencia = dataTableIncidencias.find(x => x.folio === selected.folio);
-                        for (let key in validateObj){
+                        for (let key in data_incidence_update){
                             if(key=='fecha_hora_incidencia'){
-                            let formatDate= data_incidence_update[key].slice(0,-3)
-                            selectedIncidencia[key]= formatDate
+                                let formatDate= data_incidence_update[key].slice(0,-3)
+                                selectedIncidencia[key]= formatDate
                             }else if(key=='falla_evidencia'){
+                                selectedIncidencia.falla_evidencia=[]
                                 if(data_incidence_update.falla_evidencia.length>0){
                                     for (let d of data_incidence_update.falla_evidencia){
                                         selectedIncidencia.falla_evidencia.unshift(d)
                                     }
                                 }
                             }else if(key=='evidencia_incidencia'){
+                                selectedIncidencia.evidencia_incidencia=[]
                                 if(data_incidence_update.evidencia_incidencia.length>0){
                                     for (let d of data_incidence_update.evidencia_incidencia){
                                         selectedIncidencia.evidencia_incidencia.unshift(d)
                                     }
                                 }
                             }else if(key=='documento_incidencia'){
+                                selectedIncidencia.documento_incidencia=[]
                                 if(data_incidence_update.documento_incidencia.length>0){
                                     for (let d of data_incidence_update.documento_incidencia){
                                         selectedIncidencia.documento_incidencia.unshift(d)
                                     }
                                 }
                             }else if(key=='personas_involucradas_incidencia'){
+                                selectedIncidencia.personas_involucradas_incidencia=[]
                                 if(data_incidence_update.personas_involucradas_incidencia.length>0){
                                     for (let d of data_incidence_update.personas_involucradas_incidencia){
                                         selectedIncidencia.personas_involucradas_incidencia.unshift(d)
                                     }
                                 }
                             }else if(key=='acciones_tomadas_incidencia'){
+                                selectedIncidencia.acciones_tomadas_incidencia=[]
                                 if(data_incidence_update.acciones_tomadas_incidencia.length>0){
                                     for (let d of data_incidence_update.acciones_tomadas_incidencia){
                                         selectedIncidencia.acciones_tomadas_incidencia.unshift(d)
+                                    }
+                                }
+                            }else if(key=='datos_deposito_incidencia'){
+                                if(selectedIncidencia.datos_deposito_incidencia.length>0){
+                                    selectedIncidencia.datos_deposito_incidencia=[]
+                                }
+                                if(data_incidence_update.datos_deposito_incidencia.length>0){
+                                    for (let d of data_incidence_update.datos_deposito_incidencia){
+                                        selectedIncidencia.datos_deposito_incidencia.unshift(d)
                                     }
                                 }
                             }else{
@@ -1493,13 +1752,11 @@ function editarIncidencia(){
     }
 }
 
-
-
-
 function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
+    let array=[]
     let divP = document.getElementById(divPadre);
     let inputs = divP.querySelectorAll(inputsHijos);
-    let array=[]
+    console.log("IMPUTSSSS",inputs)
     for (let i = 0; i < inputs.length; i += cantidadInputs) { // Incrementar de dos en dos
         const datoInput1 = inputs[i].value; // Input
         const dataInput2 = inputs[i + 1].value; // Select
@@ -1508,9 +1765,14 @@ function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
             if(inputsHijos=='.persona-div-nuevo'|| inputsHijos=='.persona-div-editar'){
                 objTemporal.nombre_completo= datoInput1;
                 objTemporal.tipo_persona= dataInput2;
-            }else if(inputsHijos=='.dano-div-nuevo' ||inputsHijos=='.dano-div-editar'){
+            }
+            if(inputsHijos=='.dano-div-nuevo' ||inputsHijos=='.dano-div-editar'){
                 objTemporal.responsable_accion= datoInput1;
                 objTemporal.acciones_tomadas= dataInput2;
+            }
+             if(inputsHijos=='.deposito-nuevo' ||inputsHijos=='.deposito-editar'){
+                objTemporal.tipo_deposito= datoInput1;
+                objTemporal.cantidad= dataInput2;
             }
             array.push(objTemporal); // Agregar el objeto al array
         }
@@ -1525,6 +1787,7 @@ function nuevaIncidencia(){
 
     let personas= getDataGrupoRepetitivo('persona-input-form-nuevo','.persona-div-nuevo' , 2)
     let acciones= getDataGrupoRepetitivo('dano-input-form-nuevo','.dano-div-nuevo' , 2)
+    let depositos= getDataGrupoRepetitivo('depositos-inputs-nuevo','.deposito-nuevo' , 2)
     arrayResponses = arrayResponses.filter(obj => !obj.hasOwnProperty('error'));
     for(let obj of arrayResponses){
         if( obj.hasOwnProperty('file_name') && obj.isImage==true){
@@ -1536,14 +1799,15 @@ function nuevaIncidencia(){
         }
     }
     let data = getInputsValueByClass("contentNuevoIncidencia")
+    let fecha1= data.fechaNuevoIncidencia+' '+data.horaNuevoIncidencia+':'+data.minNuevoIncidencia+":00"
     let data_incidence ={
         'reporta_incidencia': data.reportaNuevoIncidencia,
-        'fecha_hora_incidencia':formatDateToService(data.fechaHoraNuevoIncidencia)+':00',
+        'fecha_hora_incidencia':fecha1,
         'ubicacion_incidencia': data.ubicacionNuevoIncidencia,
         'area_incidencia': data.areaNuevoIncidencia,
         'incidencia': data.incidenciaNuevoIncidencia,
         'comentario_incidencia': data.comentarioNuevoIncidencia,
-        'tipo_dano_incidencia': [data.tipoDanoNuevoIncidencia],
+        'tipo_dano_incidencia': data.tipoDanoNuevoIncidencia!==""?[data.tipoDanoNuevoIncidencia]:"",
         'dano_incidencia':data.danoNuevoIncidencia,
         'personas_involucradas_incidencia':personas,
         'acciones_tomadas_incidencia':acciones,
@@ -1551,14 +1815,10 @@ function nuevaIncidencia(){
         'documento_incidencia':arraySuccessArchivo,
         'prioridad_incidencia':data.importanciaNuevoIncidencia,
         'notificacion_incidencia':data.notificacionNuevoIncidencia,
-        'total_deposito_incidencia':data.totalDepositoNuevoIncidencia,
-        'datos_deposito_incidencia': [{'tipo_deposito': data.tipoDepositoNuevoIncidencia, 'cantidad': data.cantidadNuevoIncidencia}]
+        'datos_deposito_incidencia': depositos,
     };
-
-    console.log("DATA INCIDENCIA", data_incidence)
     let noOptional = (({ acciones_tomadas_incidencia, personas_involucradas_incidencia, documento_incidencia, evidencia_incidencia, reporta_incidencia,
-        tipo_dano_incidencia, total_deposito_incidencia, datos_deposito_incidencia,view,check,...rest }) => rest)(data_incidence);
-    console.log("NO OPCIONAL", noOptional)
+        tipo_dano_incidencia,dano_incidencia, total_deposito_incidencia, datos_deposito_incidencia,view,check,...rest }) => rest)(data_incidence);
     if(!validarObjeto(noOptional)){
         Swal.fire({
             title: "Validación",
@@ -1571,16 +1831,20 @@ function nuevaIncidencia(){
         let go=false
         if(data.incidenciaNuevoIncidencia =='Deposito'){
             if(tienePropiedadesVacias({vacio:data.notificacionNuevoIncidencia}) || tienePropiedadesVacias(data.totalDepositoNuevoIncidencia)){
-                errorAlert("Faltan datos por llenar", 'Validación', 'warning')
+                errorAlert("Faltan datos por llenar en depositos", 'Validación', 'warning')
             }else{
                 go=true
             }
         }else {
             go=true
-            delete data_incidence.total_deposito_incidencia;
-            delete data_incidence.datos_deposito_incidencia;
+            //delete data_incidence.total_deposito_incidencia;
+            //delete data_incidence.datos_deposito_incidencia;
         }
         if (go){
+            if(data_incidence.tipo_dano_incidencia==""){
+                delete data_incidence.tipo_dano_incidencia;
+            }
+            console.log("QUE SE ENVIA", data_incidence)
             fetch(url + urlScripts, {
                 method: 'POST',
                 body: JSON.stringify({
@@ -1633,6 +1897,20 @@ function nuevaIncidencia(){
             });
         }
     }
+}
+
+function getTotal(id, editAdd="nuevo"){
+    let cant= document.getElementById(id)
+    let totalText = document.getElementById('totalDeposito'+editAdd+'Incidencia-'+editAdd.toLowerCase()+'-123')
+    total += parseFloat(cant.value);
+    totalText.textContent ="$ " + total;
+
+    /*if(editAdd=="editar"){
+        let depositos= getDataGrupoRepetitivo('depositos-inputs-editar','.deposito-editar', 2)
+        depositos=eliminarObjetosConPropiedadesVacias(depositos)
+        let depositosExistentes= getAcciones('cargar-deposito')
+        console.log("depositos",depositos, depositosExistentes )
+    }*/
 }
 
 //FUNCION crear nueva incidencia y validar la informacion
@@ -2232,6 +2510,51 @@ function setDeleteDaño(editAdd ="nuevo",id){
     }
 }
 
+//FUNCION para agregar foto en el modal de agregar nota
+function setAddDeposito(editAdd ="nuevo"){
+    let randomID = Date.now();
+    let newItem=`
+        <div class="d-flex flex-wrap flex-row deposito-div-`+editAdd+`" id="nuevoDeposito-`+editAdd+`-`+randomID+`">
+            <div class="d-flex flex-wrap flex-row flex-grow-1">
+                <div class="mb-3 col-5 me-3">
+                    <label class="form-label">Tipo Deposito: </label>
+                    <select class="form-select contentNuevoIncidencia deposito-`+editAdd+` deposito-`+editAdd+`-`+randomID+`" id="tipoDeposito`+capitalizeFirstLetter(editAdd)+`Incidencia-`+randomID+`" value="">
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="Fichas Deposito">Fichas Deposito</option>
+                        <option value="Menos Dev. DEP-PDT">Menos Dev. DEP-PDT</option>
+                        <option value="RecProMes">RecProMes</option>
+                        <option value="Cheques">Cheques</option>
+                        <option value="Cheques Dlls">Cheques Dlls</option>
+                        <option value="Vales">Vales</option>
+                    </select>
+                </div>
+                <div class="mb-3 col-6">
+                    <label class="form-label">Cantidad: </label>
+                    <input step="0.01" class="form-control deposito-`+editAdd+` content`+capitalizeFirstLetter(editAdd)+`Incidencia deposito-`+editAdd+`-`+randomID+` soloNum" id="cantidad`+capitalizeFirstLetter(editAdd)+`Incidencia-`+randomID+`" 
+                    onChange="getTotal('cantidad`+capitalizeFirstLetter(editAdd)+`Incidencia-`+randomID+`','`+capitalizeFirstLetter(editAdd)+`' );">
+                </div>
+            </div>
+            <div>
+                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteDeposito('`+editAdd+`',`+randomID+`);return false;">
+                    <i class="fa-solid fa-minus"></i>
+                </button>
+            </div>
+        </div>
+    `;
+    $('#depositos-inputs-'+editAdd).append(newItem) 
+    let selTipoDp=document.getElementById(`tipoDeposito`+capitalizeFirstLetter(editAdd)+`Incidencia-`+randomID);
+    selTipoDp.value=""
+}
+
+
+//FUNCION para elimar foto en el modal de agregar nota
+function setDeleteDeposito(editAdd, id){
+    const div = document.getElementById('nuevoDeposito-'+editAdd+'-'+id);
+    console.log("EN ELIMINAR",div)
+    if(div && id !==123){
+        div.remove(); // Elimina el div y su contenido
+    }
+}
 
 //FUNCION para agregar foto en el modal de agregar nota
 function setAddFoto(editAdd ="nuevo", classNam){
@@ -2302,3 +2625,84 @@ function setDeleteArchivo(editAdd ="nuevo", id , classNam){
     }
 }
 
+//FUNCION para agregar archivo en el modal de agregar nota
+function setDeleteDivPersona(id, classNam){
+    let divPrincipal=""
+    let startsWith=""
+    if(classNam=="cargar-persona"){
+        divPrincipal="texto-cargar-persona"
+        startsWith="persona-"
+    }else if(classNam=="cargar-accion"){
+        divPrincipal="texto-cargar-accion"
+        startsWith="accion-"
+    }else if(classNam=="cargar-deposito"){
+        divPrincipal="texto-cargar-deposito"
+        startsWith="deposito-"
+    }
+    let cargarPersonasDiv = document.getElementById(classNam)
+    let divToRemove = document.getElementById(startsWith+id);
+    if (divToRemove) {
+        divToRemove.remove();
+    }
+    let count=0
+    if(cargarPersonasDiv){
+        for (let i of cargarPersonasDiv.children){
+            if(i.id.startsWith(startsWith)){
+                count++
+            }
+        }
+        if(count == 0){
+            $('#'+divPrincipal).hide();
+        }
+    }else{
+        if(count == 0){
+            $('#'+divPrincipal).hide();
+        }
+    }
+}
+    
+function getAcciones(tipo){
+    let id=""
+    let obj={}
+    let varios = ""
+    if (tipo=='cargar-persona'){
+        varios= document.querySelectorAll("#cargar-persona div[id^='persona-']");
+    }else if (tipo=='cargar-accion'){
+        varios= document.querySelectorAll("#cargar-accion div[id^='accion-']");
+    }else if (tipo=='cargar-deposito'){
+        varios= document.querySelectorAll("#cargar-deposito div[id^='deposito-']");
+    }
+    let accionesArray = Array.from(varios);
+    // Crear un array de objetos
+    const resultado = accionesArray.map(accion => {
+        let dato1=""
+        let dato2=""
+        if(tipo=='cargar-persona'){
+            dato1 = accion.querySelector("span[id^='nombre-']");
+            dato2 = accion.querySelector("span[id^='tipo-']");
+            obj={nombre_completo:"",tipo_persona:"" }
+            if (dato1 && dato2) {
+                obj.nombre_completo = dato1.textContent.trim();
+                obj.tipo_persona = dato2.textContent.trim();
+            }
+        }else if(tipo=='cargar-accion'){
+            dato1 = accion.querySelector("span[id^='responable-']");
+            dato2 = accion.querySelector("span[id^='accionestomadas-']");
+            obj={responsable_accion: "", acciones_tomadas: ""}
+            if (dato1 && dato2) {
+                obj.responsable_accion = dato1.textContent.trim();
+                obj.acciones_tomadas = dato2.textContent.trim();
+            }
+        }else if(tipo=='cargar-deposito'){
+            dato1 = accion.querySelector("span[id^='tipo-']");
+            dato2 = accion.querySelector("span[id^='cantidad-']");
+            obj={tipo_deposito: "", cantidad: ""}
+            if (dato1 && dato2) {
+                obj.tipo_deposito = dato1.textContent.trim();
+                obj.cantidad = dato2.textContent.trim();
+            }
+        }
+        return obj
+    });
+    return resultado
+}

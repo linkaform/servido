@@ -94,7 +94,7 @@ function getCatalogs(){
                     selectVehiculos.innerHTML=""; 
                     for (let obj of data){
                     	console.log(obj)
-                        selectVehiculos.innerHTML += '<option value="'+obj.key+'">'+obj.key+'</option>';
+                        selectVehiculos.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
                     }
                     selectVehiculos.value=""
                 } 
@@ -158,7 +158,7 @@ async function onChangeCatalog(type, id){
             for (let obj in list){
             console.log(list[obj])
 
-                selectVehiculosMarca.innerHTML += '<option value="'+list[obj].key[1]+'">'+list[obj].key[1]+'</option>';
+                selectVehiculosMarca.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
             }
             selectVehiculosMarca.value=""
         }
@@ -404,6 +404,7 @@ function AlertSendDataUser() {
     })
     .then((result) => {
         if (result.value) {
+        	loadingService()
 	        let access_pass={
 	            nombre: name,
 	            perfil_pase:"Walkin",
@@ -456,6 +457,7 @@ function AlertSendDataUser() {
 		    .then(res => res.json())
 		    .then(res => {
 		        if (res.success) {
+		        	Swal.close()
 		        	Swal.fire({
 			      		type:"success",
 			      		imageUrl: "https://app.linkaform.com/img/login-linkaform-logo.png",
@@ -483,7 +485,8 @@ function AlertSendDataUser() {
 						level: "L", 
 					});
 		        }else{
-
+					Swal.close()
+					errorAlert(res)
 		        }
 		    });
 
