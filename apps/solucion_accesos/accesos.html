@@ -12,113 +12,390 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
  	<link rel="stylesheet" href="./style.css">
 </head>
-<body>
+<body >
 	<navbar-component> </navbar-component>
 	<!-- Information Plant-->
 	<section class="mainSection mainSectionMargins mb-3" id="mainSection1" style="display:none">
-
 		<div class="accordion" id="accordionExample">
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                <h5 class="m-0">Informacion de la caseta</h5>
-              </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show "  data-bs-parent="#accordionExample">
-              <div class="accordion-body p-0 pt-1" >
-                   <div class="row ">
-						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-							<div class="card m-2 div-card-portal  customShadow">
-							    <locationcard-component> </locationcard-component>
+	        <div class="accordion-item">
+	            <h2 class="accordion-header">
+	              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+	                <h5 class="m-0">Informacion de la caseta</h5>
+	              </button>
+	            </h2>
+	            <div id="collapseOne" class="accordion-collapse collapse show "  data-bs-parent="#accordionExample">
+	                <div class="accordion-body p-0 pt-1" >
+	                    <div class="row ">
+							<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+								<div class="card m-2 div-card-portal  customShadow">
+								    <locationcard-component> </locationcard-component>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
+								<div class="card  m-2 div-card-portal customShadow">
+								    <div class="card-body p-3">
+								        <div class="d-flex justify-content-evenly">
+							           		<span class="h1 font-weight-bold mb-0 text-dark text-center" id="textVisitasEnElDia"> </span>
+							            	<i class="fa-solid fa-house"  style="font-size: 40px;"></i>
+							            </div>
+							            <h5 class="card-title text-center text-uppercase text-dark">Visitas en el Día</h5>
+								    </div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
+								<div class="card  m-2 div-card-portal customShadow">
+								    <div class="card-body p-3">
+								        <div class="d-flex justify-content-evenly">
+							            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textPersonalDentro"> </p>
+							            	<i class="fa-solid fa-users" style="font-size: 40px;"></i>
+							            </div>
+							            <h5 class="card-title text-center text-uppercase text-dark">Personal Dentro</h5>
+								    </div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
+								<div class="card  m-2 div-card-portal customShadow">
+								    <div class="card-body p-3">
+								        <div class="d-flex justify-content-evenly">
+							            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textVehiculosDentro"> </p>
+							            	<i class="fa-solid fa-car" style="font-size: 40px;"></i>
+							            </div>
+							            <h5 class="card-title text-center text-uppercase text-dark">Vehículos Dentro</h5>
+								    </div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
+								<div class="card  m-2 div-card-portal customShadow">
+								    <div class="card-body p-3">
+								        <div class="d-flex justify-content-evenly">
+							            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textSalidasRegistradas"> </p>
+							            	<i class="fa-solid fa-door-open"  style="font-size: 40px;"></i>
+							            </div>
+							            <h5 class="card-title text-center text-uppercase text-dark">Salidas Registradas</h5>
+								    </div>
+								</div>
 							</div>
 						</div>
-						<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-							<div class="card  m-2 div-card-portal customShadow">
-							    <div class="card-body p-3">
-							        <div class="d-flex justify-content-evenly">
-						           		<span class="h1 font-weight-bold mb-0 text-dark text-center" id="textVisitasEnElDia"> </span>
-						            	<i class="fa-solid fa-house"  style="font-size: 40px;"></i>
-						            </div>
-						            <h5 class="card-title text-center text-uppercase text-dark">Visitas en el Día</h5>
-							    </div>
-							</div>
+	              	</div>
+	            </div>
+	      	</div>
+    	</div>	
+	</section>
+	<!-- NUEVO CODIGO -->
+	<div class="d-flex justify-content-center flex-wrap">
+		<section class="col-3 mainSection d-flex flex-column justify-content-start" id="cartaUser" style="display:none !important;" >
+			<div class="customShadow p-4 ms-4" style="height:100%">
+				<div class="d-flex flex-row justify-content-between">
+					<div class="col-6">
+						<h5 class="ms-2 mb-0">Folio: &nbsp;&nbsp; <span id="folio"></span></h5>
+					</div>
+					<div class="col-6 d-flex justify-content-end" >
+						<h5 class="ms-2 me-4">
+							<span class="text-danger" id="textOut">Salida</span>
+							<span class="text-success" id="textIn">Entrada</span>
+						</h5>
+					</div>
+				</div>
+				<div class="d-flex justify-content-center ">
+					<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded mt-4" alt="Imagen Usuario" id="imgUser">
+				</div>
+				<div class="d-flex flex-column justify-content-center align-items-center mt-2 ">
+					<h4 class="m-0 p-0"><span id="nameUserInf"></span></h4> 
+					<p class="text-gray"><b>Tipo de pase:</b> <span id="tipoPaseText" style="font-weight: normal"></span></p>
+					<hr>
+				</div>
+				<div class="d-flex flex-column justify-content-start mt-2 ">
+					<p class="m-0 p-0"><span class="text-gray">Empresa:</span>&nbsp;&nbsp; <br> <span id="contratista" ></span></p>
+				</div>
+				<hr class="m-3 p-0 ms-0">
+				<div class="d-flex flex-column justify-content-start">
+					<p class="m-0 p-0"><span class="text-gray">Motivo de Visita:</span>&nbsp;&nbsp; <br><span id="motivo"></span></p>
+				</div>
+				<hr class="m-3 p-0 ms-0">
+				<div class="d-flex flex-row justify-content-between">
+					<div class="d-flex flex-column justify-content-between">
+						<div>
+							<p class="m-0 p-0"><span class="text-gray">Visita a:</span>&nbsp;&nbsp; <br></p>
 						</div>
-						<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-							<div class="card  m-2 div-card-portal customShadow">
-							    <div class="card-body p-3">
-							        <div class="d-flex justify-content-evenly">
-						            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textPersonalDentro"> </p>
-						            	<i class="fa-solid fa-users" style="font-size: 40px;"></i>
-						            </div>
-						            <h5 class="card-title text-center text-uppercase text-dark">Personal Dentro</h5>
-							    </div>
-							</div>
-						</div>
-						<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-							<div class="card  m-2 div-card-portal customShadow">
-							    <div class="card-body p-3">
-							        <div class="d-flex justify-content-evenly">
-						            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textVehiculosDentro"> </p>
-						            	<i class="fa-solid fa-car" style="font-size: 40px;"></i>
-						            </div>
-						            <h5 class="card-title text-center text-uppercase text-dark">Vehículos Dentro</h5>
-							    </div>
-							</div>
-						</div>
-						<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-							<div class="card  m-2 div-card-portal customShadow">
-							    <div class="card-body p-3">
-							        <div class="d-flex justify-content-evenly">
-						            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textSalidasRegistradas"> </p>
-						            	<i class="fa-solid fa-door-open"  style="font-size: 40px;"></i>
-						            </div>
-						            <h5 class="card-title text-center text-uppercase text-dark">Salidas Registradas</h5>
-							    </div>
+						<div class="d-flex flex-row justify-content-between align-items-start">
+							<div class="col-10"> <p><span id="visita"></span></p></div>
+							<div class="col-2 d-flex justify-content-start p-0" >
+								<button type="button" class="btn btn-primary btn-sm m-1 " data-bs-toggle="modal" data-bs-target="#phoneModal">
+									<i class="fa-solid fa-phone"></i>
+								</button>
+								<button type="button" class="btn btn-primary btn-sm m-1" data-bs-toggle="modal" data-bs-target="#messageModal">
+									<i class="fa-solid fa-message"></i> 
+								</button>
 							</div>
 						</div>
 					</div>
-              </div>
-            </div>
-          </div>
-        </div>	
-	</section>
-
-	<!-- Filter User-->
-	<section class="d-flex justify-content-center mainSectionMargins" id="mainSection2" style="display:none">
-			<div>
-				<div class="input-group" role="group">
-					<input type="text" class="form-control  input-search-portal " placeholder="Codigo User" value="" id="inputCodeUser" onchange="buscarPaseEntrada();return false;">
-					<button class="input-group-text bg-warning-subtle  cursor-pointer" id="buttonBuscarPaseEntrada" onclick="buscarPaseEntrada();return false;" style="background-color: white!important;" disabled><i class="fa-solid fa-magnifying-glass" ></i></button>
-					<button class="input-group-text bg-warning-subtle cursor-pointer" onclick="setModal('listaPases')" style="background-color: white!important;"><i class="fa-solid fa-list"></i></button>
+					
+				</div>
+				<hr class="m-3 p-0 ms-0">
+				<div class="d-flex flex-row justify-content-between">
+					<div class="col-5">
+						<p class="m-0 p-0"><span id="gafeteText" class="text-gray">Gafete:</span>&nbsp;&nbsp;<br>  <span class="text-success" id="gafete"></span></p>
+					</div>
+					<div class="col-5">
+						<p class="m-0 p-0"><span id="lockerText" class="text-gray">Locker:</span>&nbsp;&nbsp;<br> <span class="text-success" id="locker"></span></p>
+					</div>
+				</div>
+				<hr class="m-3 p-0 ms-0">
+				<div class="d-flex flex-row justify-content-start">
+					<p><span class="text-gray">Estatus:</span>&nbsp;&nbsp; <br><span id="status">Vigente</span></p>
+				</div>
+				<hr class="m-3 p-0 ms-0">
+				<div>
+					<p><span class="text-gray">Vigencia del pase:</span>&nbsp;&nbsp;<br> <span id="validity"></span></p>
+				</div>
+				<hr class="m-3 p-0 ms-0">
+				<div>
+					<p class="text-gray">Disponible los días:</p>
+					<div class="d-flex justify-content-around">
+						<button type="button" class="btn btn-outline-success btn-custom" id="lunes">L</button>
+						<button type="button" class="btn btn-outline-success btn-custom" id="martes">M</button>
+						<button type="button" class="btn btn-outline-success btn-custom" id="miércoles">M</button>
+						<button type="button" class="btn btn-outline-success btn-custom" id="jueves">J</button>
+						<button type="button" class="btn btn-outline-success btn-custom" id="viernes">V</button>
+						<button type="button" class="btn btn-outline-success btn-custom" id="sabado">S</button>
+						<button type="button" class="btn btn-outline-success btn-custom" id="domingo">D</button>
+					</div>
 				</div>
 			</div>
-			<div class="ms-2 d-flex" >
-				<div>
-					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" style="display: none;" id="buttonIn" onclick="registrarIngreso();return false;">
-					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso</button>
-					<button type="button" class="mt-1 mb-1  btn btn-danger btn-sm p-5 pt-1 pb-1" style="display: none;" id="buttonOut" onclick="registrarSalida();return false;">
-					<i class="fa-sharp fa-solid fa-door-open"></i> Registrar Salida</button>
-					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1" onclick="setModal('gafeteModal');" style="display: none;" id="buttonAsignarGafete">  <i class="fa-sharp fa-solid fa-id-card"></i> Asignar Gafete</button>
-					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm -3 pt-1 pb-1" onclick="setModal('recibirGafete');" style="display: none;" id="buttonRecibirGafete">  <i class="fa-sharp fa-solid fa-id-card"></i> Recibir Gafete</button>
-					<button type="button" class="mt-1 mb-1 btn btn-warning btn-sm p-3 pt-1 pb-1" style="display: none;" id="buttonClean" onclick="setCleanData2()">
-					<i class="fa-solid fa-broom"></i> Limpiar</button>
-					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" id="buttonNew" onclick="setModal('nuevaVisitaModal');">
-					<i class="fa-solid fa-plus"></i> Nueva Visita</button>
-					<button type="button" class="mt-1 mb-1 btn btn-primary btn-sm p-3 pt-1 pb-1" id="pasesTemporales" onclick="setModal('listaPasesTemporales')">
-					 <i class="fa-solid fa-list me-2"></i>Pases temporales</button>
+		</section>
+		<section class="col-9 mainSection d-flex justify-content-center " >
+			<section class=" d-flex flex-wrap">
+				<div class="d-flex input-group ms-4" role="group" style="width: 450px;">
+					<input type="text" class="form-control" placeholder="Codigo User" id="inputCodeUser" onchange="buscarPaseEntrada();return false;">
+					<button class="input-group-text bg-warning-subtle cursor-pointer" id="buttonBuscarPaseEntrada" onclick="buscarPaseEntrada();return false;" style="background-color: white!important;" disabled><i class="fa-solid fa-magnifying-glass" ></i></button>
+					<button class="input-group-text bg-warning-subtle cursor-pointer" onclick="setModal('listaPases')" style="background-color: white!important;"><i class="fa-solid fa-list"></i></button>
 				</div>
-				<div >
-					<button type="button" class="mt-1 mb-1 btn btn-success btn-sm p-3 pt-1 pb-1" onclick="setModal('comentarioAccesoModal')" 
+				<div class="d-flex flex-grow-1 flex-wrap ms-3 justify-content-start">
+					<button type="button" class="btn btn-success btn-sm me-2" style="display: none;" id="buttonIn" onclick="registrarIngreso();return false;">
+					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso</button>
+					<button type="button" class=" btn btn-danger btn-sm me-2" style="display: none;" id="buttonOut" onclick="registrarSalida();return false;">
+					<i class="fa-sharp fa-solid fa-door-open"></i> Registrar Salida</button>
+					<button type="button" class="btn btn-primary btn-sm me-2" onclick="setModal('gafeteModal');" style="display: none;" id="buttonAsignarGafete">  <i class="fa-sharp fa-solid fa-id-card"></i> Asignar Gafete</button>
+					<button type="button" class="btn btn-primary btn-sm me-2" onclick="setModal('recibirGafete');" style="display: none;" id="buttonRecibirGafete">  <i class="fa-sharp fa-solid fa-id-card"></i> Recibir Gafete</button>
+					<button type="button" class="btn btn-warning btn-sm me-2" style="display: none;" id="buttonClean" onclick="setCleanData2()">
+					<i class="fa-solid fa-broom"></i> Limpiar</button>
+					<button type="button" class="btn btn-success btn-sm me-2" id="buttonNew" onclick="setModal('nuevaVisitaModal');">
+					<i class="fa-solid fa-plus"></i> Nueva Visita</button>
+					<button type="button" class="btn btn-primary btn-sm me-2" id="pasesTemporales" onclick="setModal('listaPasesTemporales')">
+					 <i class="fa-solid fa-list me-2"></i>Pases temporales</button>
+					<button type="button" class="btn btn-success btn-sm bg-dark" onclick="setModal('comentarioAccesoModal')" 
 					id="buttonAddCommentarioAccesoModal" style="display: none; margin-left: 3px;">
 						<i class="fa-solid fa-plus"></i> Agregar comentario
 					</button>
 				</div>
-				
-			</div>
+				<!-- SECCION DE TABLAS-->
+				<section class="section-data mainSectionMargins " id="mainSection4" style="display:none">
+					<div class="d-flex flex-wrap  row p-2">
+						<!-- <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+							<div class="d-flex justify-content-between mb-2 mt-2">
+								<div>
+									<h4>Comentarios / Instrucciones de visita</h4>
+								</div> 
+								<div class="flex-nowrap">
+									<button type="button" class="btn btn-success btn-sm" onclick="setModal('comentarioPaseModal')" id="buttonAddCommentarioPaseModal">
+										<i class="fa-solid fa-plus"></i> Agregar comentario
+									</button>
+								</div>
+								<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listCommentsModal" id="buttonCommentsModal">
+									<i class="fa-solid fa-eye"></i>
+								</button>
+							</div>
+
+							<div class="overflowCustom div-containerTable-portal div-container-table mt-1" style="max-width:900px !important;">
+								<table  class=" table-borderless" style="border: none;">
+									<thead class="overflowCustomHead">
+										<tr>
+											<th class="headerColor">Comentarios / Instrucciones</th>
+											<th class="headerColor">Tipo de comentario</th>
+										</tr>
+									</thead>
+								<tbody></tbody>
+								</table>
+						  	</div>
+						</div> -->
+
+						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+							<div class="div-containerTable-portal div-container-table p-2 customShadow">
+								<div class="">
+									<div class="mt-2 mb-2 d-flex justify-content-between">
+										<h4>Comentarios / Instrucciones de visita</h4>
+										<button type="button" class="btn btn-success btn-sm" onclick="setModal('comentarioPaseModal')" id="buttonAddCommentarioPaseModal">
+											<i class="fa-solid fa-plus"></i> Agregar comentario
+										</button>
+										
+									</div>
+									<div class="overflowCustom" style="max-width:900px !important;" >
+										<table id="tableInstructions" class=" table-borderless" style="border: none;">
+											<thead class="overflowCustomHead">
+												<tr>
+													<th class="headerColor">Comentarios / Instrucciones</th>
+													<th class="headerColor">Tipo de comentario</th>
+												</tr>
+											</thead>
+											<tbody></tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+							<div class="div-containerTable-portal div-container-table p-2 customShadow">
+								<div class="">
+									<div class="mt-2 mb-2 d-flex justify-content-between">
+										<h4>Ultimos accesos</h4>
+										<button type="button" class="btn btn-info ml-5 btn-sm"  data-bs-toggle="modal" data-bs-target="#listBitacoraModal" id="buttonBitacoraModal" style="border: none;">
+											<i class="fa-solid fa-eye"></i>
+										</button>
+									</div>
+									<div class="overflowCustom" style="max-width:900px !important;" >
+										<table id="tableBitacora" class="table-borderless" style="border: none;">
+											<thead class="overflowCustomHead">
+												<tr>
+													<th class="headerColor">Visito a</th>
+													<th class="headerColor">Fecha</th>
+													<th class="headerColor">Duración</th>
+													<th class="headerColor"></th>
+												</tr>
+											</thead>
+											<tbody></tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+							<div class="div-containerTable-portal p-2 div-container-table customShadow">
+								
+								<div class="mt-3 mb-2 d-flex justify-content-between">
+									<h4>Permisos / certificaciones</h4>
+									<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listAccessModal" id="buttonAccessModal">
+										<i class="fa-solid fa-eye"></i>
+									</button>
+								</div>
+								<div class="overflowCustom" style="max-width:900px !important;">
+									<table id="tableLocations" class=" table-borderless" style="border: none;">
+										<thead class="overflowCustomHead">
+											<tr>
+												<th class="headerColor">Permiso / Certificaciones</th>
+												<th class="headerColor">Status</th>
+											</tr>
+										</thead>
+										<tbody></tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+							<div class="div-containerTable-portal p-2 div-container-table customShadow" >
+								<div class="mt-3 mb-2 d-flex justify-content-between">
+									<h4>Accesos permitidos</h4>
+									<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listLocationsModal" id="buttonLocationsModal">
+										<i class="fa-solid fa-eye"></i>
+									</button>
+								</div>
+								<div class="overflowCustom" style="max-width:900px !important;">
+									<table id="tableAccess" class="table-borderless" style="border: none;">
+										<thead class="overflowCustomHead" >
+											<tr>
+												<th class="headerColor">Acceso</th>
+												<th class="headerColor">Status</th>
+												<th class="headerColor">Comentario</th>
+											</tr>
+										</thead>
+										<tbody ></tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+							<div class="div-containerTable-portal p-2 div-container-table customShadow">
+								<div class="mt-3 mb-2 d-flex justify-content-between">
+									<h4>Equipos Autorizados</h4>
+									<div>
+										<button type="button" class="btn btn-success  btn-sm" onclick="setModal('equiposModal')" id="idButtonEquipoNota" data-bs-target="#equipmentModal">
+											<i class="fa-solid fa-plus"></i> Agregar Equipo
+										</button>
+										<button type="button" class="btn btn-primary  btn-sm"  onclick="verListaDeEquiposAgregados();return false">
+											<i class="fa-solid fa-list"></i>
+										</button>
+										<button type="button" class="btn btn-info  btn-sm"  data-bs-toggle="modal" data-bs-target="#listItemsModal" id="buttonItemsModal">
+											<i class="fa-solid fa-eye"></i>
+										</button>
+									</div>
+								</div>
+								<div class="overflowCustom" style="max-width:1400px !important; ">
+									<table id="tableEquipos" class=" table-borderless" style="border: none;">
+										<thead class="overflowCustomHead">
+											<tr>
+												<th class="headerColor">Tipo</th>
+												<th class="headerColor">Nombre</th>
+												<th class="headerColor">Marca</th>
+												<th class="headerColor">Modelo</th>
+												<th class="headerColor">No.de Serie</th>
+												<th class="headerColor">Color</th>
+												<th class="headerColor"> </th>
+											</tr>
+										</thead>
+										<tbody></tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+							<div class="div-containerTable-portal p-2 div-container-table customShadow" >
+								<div class="mt-3 mb-2 d-flex justify-content-between">
+									<h4>Vehiculos Autorizados</h4>
+									<div>
+										<button type="button" class="btn btn-success btn-sm" onclick="setModal('vehiculosModal')" data-bs-target="#carModal" id="idButtonVehiculos">
+										  Agregar Vehículo
+										</button>
+										<button class="btn btn-success btn-sm" type="button" id="idLoadingButtonVehiculos" style="display:none;" disabled>
+						                    <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+						                    Cargando...
+						                </button>
+										<button type="button" class="btn btn-primary btn-sm"  onclick="verListaDeVehiculosAgregados();return false" >
+											<i class="fa-solid fa-list"></i>
+										</button>
+										<button type="button" class="btn btn-info  btn-sm"  data-bs-toggle="modal" data-bs-target="#listCarsModal" id="buttonCarsModal">
+											<i class="fa-solid fa-eye"></i>
+										</button>
+									</div>
+								</div>	
+								<div class="overflowCustom" style="max-width:1400px !important;">
+									<table id="tableCars"class=" table-borderless" style="border: none;">
+										<thead class="overflowCustomHead">
+											<tr>
+												<th class="headerColor">Tipo</th>
+												<th class="headerColor">Marca</th>
+												<th class="headerColor">Modelo</th>
+												<th class="headerColor">Matricula</th>
+												<th class="headerColor">Color</th>
+												<th class="headerColor"> </th>
+											</tr>
+										</thead>
+										<tbody></tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</section>
+		</section>
+	</div>
+	<!-- Filter User-->
+	<section class="d-flex mainSection justify-content-center mainSectionMargins" id="mainSection2">
+		
+		
 	</section>	
 
 	<!-- Information User-->
-	<section class="section-data mainSectionMargins" id="mainSection3" style="display:none">
+	<!-- <section class="section-data mainSectionMargins" id="mainSection3" style="display:none">
 		<div class="d-flex flex-wrap justify-content-between p-2">
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-7 flex-wrap customShadow mt-4 me-2 " style="border-radius: 1%;">
 				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex custom-responsive m-1 pt-0 flex-wrap">
@@ -126,7 +403,7 @@
 						<h4 class="m-2 mb-0">Folio: &nbsp;&nbsp; <span id="folio"></span></h4>
 						<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-evenly">
 							<div class=" col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex flex-column ms-3 me-3 justify-content-center align-items-center" style="min-height:120px;">
-									<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" 			class="rounded mt-4" alt="Imagen Usuario" id="imgUser">
+									<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" 			class="rounded mt-4" alt="Imagen Usuario" id="imgUser" style="display:none">
 								<h5 class="mt-4 ms-2 mb-2" style="font-size:1.3em">Tipo de pase: <br><span id="tipoPaseText" style="font-weight: normal"></span></h5>
 							</div>
 							<div class=" col-sm-12 col-md-12 col-lg-4 col-xl-6 d-flex flex-column ms-3" style="min-height:120px;">
@@ -184,180 +461,13 @@
 
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-custom" >
 				<div class="row div-container-portal customShadow me-2" >
-					<div class="d-flex justify-content-between mb-2 mt-2">
-							<div>
-								<h4>Comentarios / Instrucciones de visita</h4>
-							</div> 
-							<div class="flex-nowrap">
-								<button type="button" class="btn btn-success btn-sm" onclick="setModal('comentarioPaseModal')" id="buttonAddCommentarioPaseModal">
-									<i class="fa-solid fa-plus"></i> Agregar comentario
-								</button>
-							</div>
-							<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listCommentsModal" id="buttonCommentsModal">
-								<i class="fa-solid fa-eye"></i>
-							</button>
-					</div>
-					<div class="overflowCustom div-containerTable-portal div-container-table mt-1" style="max-width:900px !important;">
-						<table id="tableInstructions" class=" table-borderless" style="border: none;">
-							<thead class="overflowCustomHead">
-								<tr>
-									<th class="headerColor">Comentarios / Instrucciones</th>
-									<th class="headerColor">Tipo de comentario</th>
-								</tr>
-							</thead>
-						<tbody></tbody>
-						</table>
-				  	</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- Table User-->
-	<section class="section-data mainSectionMargins" id="mainSection4" style="display:none">
-		<div class="row p-2">
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-				<div class="div-containerTable-portal div-container-table p-2 customShadow">
-					<div class="">
-						<div class="mt-2 mb-2 d-flex justify-content-between">
-							<h4>Ultimos accesos</h4>
-							<button type="button" class="btn btn-info ml-5 btn-sm"  data-bs-toggle="modal" data-bs-target="#listBitacoraModal" id="buttonBitacoraModal">
-								<i class="fa-solid fa-eye"></i>
-							</button>
-						</div>
-						<div class="overflowCustom" style="max-width:900px !important;" >
-							<table id="tableBitacora" class="table-borderless" style="border: none;">
-								<thead class="overflowCustomHead">
-									<tr>
-										<th class="headerColor">Visito a</th>
-										<th class="headerColor">Fecha</th>
-										<th class="headerColor">Duración</th>
-										<th class="headerColor"></th>
-									</tr>
-								</thead>
-								<tbody></tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-				<div class="div-containerTable-portal p-2 div-container-table customShadow">
 					
-					<div class="mt-3 mb-2 d-flex justify-content-between">
-						<h4>Permisos / certificaciones</h4>
-						<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listAccessModal" id="buttonAccessModal">
-							<i class="fa-solid fa-eye"></i>
-						</button>
-					</div>
-					<div class="overflowCustom" style="max-width:900px !important;">
-						<table id="tableLocations" class=" table-borderless" style="border: none;">
-							<thead class="overflowCustomHead">
-								<tr>
-									<th class="headerColor">Permiso / Certificaciones</th>
-									<th class="headerColor">Status</th>
-								</tr>
-							</thead>
-							<tbody></tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-				<div class="div-containerTable-portal p-2 div-container-table customShadow" >
-					<div class="mt-3 mb-2 d-flex justify-content-between">
-						<h4>Accesos permitidos</h4>
-						<button type="button" class="btn btn-info ml-5 btn-sm" data-bs-toggle="modal" data-bs-target="#listLocationsModal" id="buttonLocationsModal">
-							<i class="fa-solid fa-eye"></i>
-						</button>
-					</div>
-					<div class="overflowCustom" style="max-width:900px !important;">
-						<table id="tableAccess" class="table-borderless" style="border: none;">
-							<thead class="overflowCustomHead" >
-								<tr>
-									<th class="headerColor">Acceso</th>
-									<th class="headerColor">Status</th>
-									<th class="headerColor">Comentario</th>
-								</tr>
-							</thead>
-							<tbody ></tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
-				<div class="div-containerTable-portal p-2 div-container-table customShadow">
-					<div class="mt-3 mb-2 d-flex justify-content-between">
-						<h4>Equipos Autorizados</h4>
-						<div>
-							<button type="button" class="btn btn-success  btn-sm" onclick="setModal('equiposModal')" id="idButtonEquipoNota" data-bs-target="#equipmentModal">
-								<i class="fa-solid fa-plus"></i> Agregar Equipo
-							</button>
-							<button type="button" class="btn btn-primary  btn-sm"  onclick="verListaDeEquiposAgregados();return false">
-								<i class="fa-solid fa-list"></i>
-							</button>
-							<button type="button" class="btn btn-info  btn-sm"  data-bs-toggle="modal" data-bs-target="#listItemsModal" id="buttonItemsModal">
-								<i class="fa-solid fa-eye"></i>
-							</button>
-						</div>
-					</div>
-					<div class="overflowCustom" style="max-width:900px !important; ">
-						<table id="tableEquipos" class=" table-borderless" style="border: none;">
-							<thead class="overflowCustomHead">
-								<tr>
-									<th class="headerColor">Tipo</th>
-									<th class="headerColor">Nombre</th>
-									<th class="headerColor">Marca</th>
-									<th class="headerColor">Modelo</th>
-									<th class="headerColor">No.de Serie</th>
-									<th class="headerColor">Color</th>
-									<th class="headerColor"> </th>
-								</tr>
-							</thead>
-							<tbody></tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
-				<div class="div-containerTable-portal p-2 div-container-table customShadow" >
-					<div class="mt-3 mb-2 d-flex justify-content-between">
-						<h4>Vehiculos Autorizados</h4>
-						<div>
-							<button type="button" class="btn btn-success btn-sm" onclick="setModal('vehiculosModal')" data-bs-target="#carModal" id="idButtonVehiculos">
-							  Agregar Vehículo
-							</button>
-							<button class="btn btn-success btn-sm" type="button" id="idLoadingButtonVehiculos" style="display:none;" disabled>
-			                    <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
-			                    Cargando...
-			                </button>
-							<button type="button" class="btn btn-primary btn-sm"  onclick="verListaDeVehiculosAgregados();return false" >
-								<i class="fa-solid fa-list"></i>
-							</button>
-							<button type="button" class="btn btn-info  btn-sm"  data-bs-toggle="modal" data-bs-target="#listCarsModal" id="buttonCarsModal">
-								<i class="fa-solid fa-eye"></i>
-							</button>
-						</div>
-					</div>	
-					<div class="overflowCustom" style="max-width:900px !important;">
-						<table id="tableCars"class=" table-borderless" style="border: none;">
-							<thead class="overflowCustomHead">
-								<tr>
-									<th class="headerColor">Tipo</th>
-									<th class="headerColor">Marca</th>
-									<th class="headerColor">Modelo</th>
-									<th class="headerColor">Matricula</th>
-									<th class="headerColor">Color</th>
-									<th class="headerColor"> </th>
-								</tr>
-							</thead>
-							<tbody></tbody>
-						</table>
-					</div>
 				</div>
 			</div>
 		</div>
-	</section>
+	</section> -->
+
+	
 
 	<!-- Modal List-->
 	<div class="modal fade" id="listModal" tabindex="-1"  aria-hidden="true" >

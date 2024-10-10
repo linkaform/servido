@@ -1,7 +1,8 @@
 :root {
   --yellowLKF: #FFA823;
   --downloadButton:#003285;
-  --text-gray:#808080;
+  --text-gray:#616161;
+  --soft-gray:#dcdcdc;
 }
 
 .header{
@@ -88,11 +89,13 @@ body{
 /* Estilos de la tabla */
 table {
   width: 100%;
-  border-collapse: collapse;
-  border: 2px solid #ddd; /* Borde de la tabla */
+  background-color: none;
+  /*border-collapse: collapse;*/
+  /*border: 2px solid #ddd;  Borde de la tabla */
 }
 
 th, td {
+
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd; /* Borde de las celdas */
@@ -100,12 +103,13 @@ th, td {
 
 /* Estilos para las filas impares */
 tr:nth-child(odd) {
-  background-color: #ebebeb !important; /* Color de fondo para filas impares */
+  /*background-color: #ebebeb !important;*/ /* Color de fondo para filas impares */
 }
 
 /* Estilos para la primera fila (encabezados) */
 th {
-  background-color: #F2DEBA; /* Color de fondo para los encabezados */
+  border-top: 1px solid #ddd; 
+  /*background-color: #F2DEBA;*/ /* Color de fondo para los encabezados */
   color: black; /* Color del texto de los encabezados */
 }
 
@@ -182,11 +186,11 @@ th {
 }
 
 .tabulator-tableholder{
-  border-color: lightgray !important;
+  /*border-color: lightgray !important;*/
 }
 
 .tabulator-page{
-  border:none !important;
+  /*border:none !important;*/
 }
 
 .tabulator-page:hover{
@@ -285,6 +289,7 @@ th {
  .customNoBorder:focus, .customNoBorder:active, .customNoBorder:hover {
   border: none !important;
   box-shadow: none !important ;
+
 }
 
 .custom-navbar-button{
@@ -304,6 +309,7 @@ th {
   background-color: #0275d8 !important;
   border: none !important;
   box-shadow: none !important;
+  color: whitesmoke !important;
 }
 
 .btn{
@@ -544,11 +550,6 @@ input[type=search]{
     padding: 0!important; /* Elimina el padding por defecto */
 }
 
-.no-hover:hover{
-    color: none !important;
-    background-color: none !important;
-    border-color: none !important;
-}
 
 .checkboxBottom{
     margin-bottom: 20px !important;
@@ -599,9 +600,9 @@ input[type=search]{
 
 
 /* Ancho de columna para pantallas extra grandes */
-@media (min-width: 1200px) { /* 'xl' en Bootstrap 5 corresponde a min-width: 1200px */
+/*@media (min-width: 1200px) {
     .col-xl-custom {
-      flex: 0 0 38%; /* Ajusta este valor según sea necesario */
+      flex: 0 0 38%; 
       max-width: 40%;
       min-width: 40% !important;
     }
@@ -609,12 +610,12 @@ input[type=search]{
       display: flex;
       flex-direction: row;
     }
-}
+}*/
 
 /* Ancho de columna para pantallas más pequeñas */
-@media (max-width: 1199px) {
+/*@media (max-width: 1199px) {
     .col-xl-custom {
-      flex: 0 0 38%; /* Ajusta este valor según sea necesario */
+      flex: 0 0 38%; 
       max-width: 40%;
       min-width: 100% !important;
     }
@@ -622,7 +623,7 @@ input[type=search]{
       display: flex;
       flex-direction: column;
     }
-}
+}*/
 
 .text-gray {
   color: var(--text-gray); /* Mantiene la relación de aspecto */
@@ -643,3 +644,43 @@ input[type=search]{
 .bg-warning-subtle{
   background-color: whitesmoke !important;
 }
+
+.btn-outline-success{
+  background-color: none;
+  border-color: lightgray!important;
+  color: black!important;
+  cursor: auto !important;
+}
+
+.color-white{
+  color: whitesmoke!important;
+}
+
+.btn-custom:hover {
+    background-color: none!important; /* Change to your desired color */
+    box-shadow: none !important;
+}
+.btn:hover{
+  background-color: none!important;
+}
+
+/**/
+
+
+.stylePersona{
+  background-color: var(--soft-gray);
+  padding: 10px;
+  width: 50%;
+ 
+}
+
+.roundDiv{
+  border-radius: 15px; /* Radio de las esquinas */
+}
+
+@media (display: none) {
+    #cartaUser{
+        display: none !important;
+    }
+}
+

@@ -31,7 +31,11 @@ const columsData1 = [
             let res=""
             console.log("data.hasOwnProperty('evidencia_incidencia')",data.hasOwnProperty('evidencia_incidencia'))
             if(data.hasOwnProperty('evidencia_incidencia') && data.evidencia_incidencia !==undefined){
-            	res= `<img src="${data.evidencia_incidencia.length>0 ? data.evidencia_incidencia[0].file_url : ""}" alt="Imagen" style="width:120px;height:120px; object-fit:cover;" class="img-cell"/>`;
+            	if(data.evidencia_incidencia.length>0){
+            		res= `<img src="${data.evidencia_incidencia.length>0 ? data.evidencia_incidencia[0].file_url : ""}" alt="Imagen" style="width:120px;height:120px; object-fit:cover;" class="img-cell"/>`;
+            	}else{
+            		res=""
+            	}
             }
             return res
         }},
@@ -71,7 +75,11 @@ const columsData2 = [
             let res=""
             console.log("data.hasOwnProperty('falla_evidencia')",data.hasOwnProperty('falla_evidencia'))
             if(data.hasOwnProperty('falla_evidencia') && data.falla_evidencia !==undefined){
-            	res= `<img src="${data.falla_evidencia.length>0 ? data.falla_evidencia[0].file_url : ""}" alt="Imagen" style="width:120px;height:120px; object-fit:cover;" class="img-cell"/>`;
+            	if(data.falla_evidencia.length>0){
+            		res= `<img src="${data.falla_evidencia.length>0 ? data.falla_evidencia[0].file_url : ""}" alt="Imagen" style="width:120px;height:120px; object-fit:cover;" class="img-cell"/>`;
+            	}else{
+            		res=""
+            	}
             }
             return res
         }},
@@ -136,6 +144,17 @@ function drawTable(id, columnsData, tableData){
 	    pagination:true, 
 	    paginationSize:40,
         placeholder: "No hay registros disponibles", 
+
+	    /*theme: "bootstrap5", 
+	    layout: "fitDataStretch", 
+	    columnMinWidth: 100,
+	    autoColumns: false, 
+	    scrollX: true, 
+	    dataTree:true,
+	    data:tableData,
+	    columns:columnsData,
+	    placeholder: "No hay registros disponibles"*/
+
     });
     tables[id]=table;
 }

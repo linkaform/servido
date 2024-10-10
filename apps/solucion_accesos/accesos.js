@@ -44,7 +44,10 @@ window.onload = function(){
         redirectionUrl('login',false)
     }
     customNavbar(getValueUserLocation(), getCookie('userTurn'));
-    $("#mainSection1").show()
+    $("#mainSection1").hide()
+    $("#cartaUser").hide()
+    $('#mainSection2').show()
+
 }
 
 window.addEventListener('storage', function(event) {
@@ -68,20 +71,25 @@ function setModal(type = 'none',id =""){
     }else if(type == 'vehiculosModal'){
         abrirAgregarVehiculo()
     }else if(type== "listaPases"){
+        console.log("ENTRADA")
+        $("#cartaUser").hide();
         verListaPasesActivos()
     }else if(type=="nuevaVisitaModal"){
+        $("#cartaUser").hide();
         abrirModalNuevaVisita()
     }else if(type=="gafeteModal"){
         abrirAsignarGafeteModal()
     }else if(type=="recibirGafete"){
         abrirRecibirGafeteModal()
     }else if(type== "listaPasesTemporales"){
+        $("#cartaUser").hide();
         verListaPasesTemporales()
     }
      
 }
 
 function verListaPasesTemporales(){
+
     setCleanData()
     loadingService()
     fetch(url + urlScripts, {
@@ -171,7 +179,6 @@ function abrirAsignarGafeteModal(){
             location: selectLocation.value,
             area: selectCaseta.value,
             status: statusDisponible,
-            tipo_locker:"Identificaciones"
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -306,6 +313,7 @@ function verListaPasesActivos(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
+            $("#cartaUser").hide();
             Swal.close();
             let listPases = res.response.data
             let formatedList=[]
@@ -872,6 +880,7 @@ function crearNuevaVisita(){
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
 function buscarPaseEntrada() {
+    $("#cartaUser").hide(); 
     setCleanData()
     gafeteId=""
     gafeteRegistroIngreso={}
@@ -913,6 +922,7 @@ function buscarPaseEntrada() {
                 fullData= res.response.data
                 Swal.close()
                 //setCookie('userLocation', res.response.data.ubicacion)
+                $("#cartaUser").show(); 
                 setDataInformation('informatioUser', res.response.data);
                 setHideElements('buttonsModal');
                 setHideElements('dataShow');
@@ -1256,7 +1266,8 @@ function dataUserInf(dataUser){
         if(dias.length>0){
             for(let d of dias){
                 $("#"+d+"").removeClass('btn-outline-success');
-                $("#"+d+"").addClass('btn-success');
+                $("#"+d+"").addClass('bg-dark');
+                $("#"+d+"").addClass('color-white');
             }
         }
     }
@@ -1551,7 +1562,7 @@ function tableFillVehiculos(dataUser){
         let marcaCar = listCars[i].marca_vehiculo;
         let modeloCar = listCars[i].modelo_vehiculo;
         let matriculaCar = listCars[i].placas_vehiculo;
-        let colorCar = listCars[i].color_vehiculo;
+        let colorCar = capitalizeFirstLetter(listCars[i].color_vehiculo);
         let id = listCars[i].id;
         var newRow = $('<tr>');
         newRow.append($('<td>').text(tipoCar));
@@ -1799,7 +1810,8 @@ function optionListUsers(data){
 function setHideElements(option){
     if (option == 'buttonsModal') {
         $("#buttonCommentsModal").hide();
-        $("#buttonBitacoraModal").hide();
+        $('#buttonBitacoraModal').hide();
+       // $("#buttonBitacoraModal").hide();
         $("#buttonAccessModal").hide();
         $("#buttonLocationsModal").hide();
         $("#buttonItemsModal").hide();
@@ -1822,11 +1834,11 @@ function setHideElements(option){
             elements[i].style.display = 'none';
         }
     }else if(option =='dataShow'){
+                
         var elements = document.getElementsByClassName('section-data');
         for (var i = 0; i < elements.length; i++) {
             elements[i].style.display = 'block';
         }
-        
     }else if(option==statusVisitaEntrada || option == statusVisitaSalida){
         $("#divSpinner").hide();
         $("#inputCodeUser").val("")
