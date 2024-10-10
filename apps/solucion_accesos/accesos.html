@@ -13,77 +13,12 @@
  	<link rel="stylesheet" href="./style.css">
 </head>
 <body >
-	<navbar-component> </navbar-component>
+	<navbar-component style="z-index: 0;"> </navbar-component>
 	<!-- Information Plant-->
-	<section class="mainSection mainSectionMargins mb-3" id="mainSection1" style="display:none">
-		<div class="accordion" id="accordionExample">
-	        <div class="accordion-item">
-	            <h2 class="accordion-header">
-	              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-	                <h5 class="m-0">Informacion de la caseta</h5>
-	              </button>
-	            </h2>
-	            <div id="collapseOne" class="accordion-collapse collapse show "  data-bs-parent="#accordionExample">
-	                <div class="accordion-body p-0 pt-1" >
-	                    <div class="row ">
-							<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-								<div class="card m-2 div-card-portal  customShadow">
-								    <locationcard-component> </locationcard-component>
-								</div>
-							</div>
-							<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-								<div class="card  m-2 div-card-portal customShadow">
-								    <div class="card-body p-3">
-								        <div class="d-flex justify-content-evenly">
-							           		<span class="h1 font-weight-bold mb-0 text-dark text-center" id="textVisitasEnElDia"> </span>
-							            	<i class="fa-solid fa-house"  style="font-size: 40px;"></i>
-							            </div>
-							            <h5 class="card-title text-center text-uppercase text-dark">Visitas en el Día</h5>
-								    </div>
-								</div>
-							</div>
-							<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-								<div class="card  m-2 div-card-portal customShadow">
-								    <div class="card-body p-3">
-								        <div class="d-flex justify-content-evenly">
-							            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textPersonalDentro"> </p>
-							            	<i class="fa-solid fa-users" style="font-size: 40px;"></i>
-							            </div>
-							            <h5 class="card-title text-center text-uppercase text-dark">Personal Dentro</h5>
-								    </div>
-								</div>
-							</div>
-							<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-								<div class="card  m-2 div-card-portal customShadow">
-								    <div class="card-body p-3">
-								        <div class="d-flex justify-content-evenly">
-							            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textVehiculosDentro"> </p>
-							            	<i class="fa-solid fa-car" style="font-size: 40px;"></i>
-							            </div>
-							            <h5 class="card-title text-center text-uppercase text-dark">Vehículos Dentro</h5>
-								    </div>
-								</div>
-							</div>
-							<div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-								<div class="card  m-2 div-card-portal customShadow">
-								    <div class="card-body p-3">
-								        <div class="d-flex justify-content-evenly">
-							            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textSalidasRegistradas"> </p>
-							            	<i class="fa-solid fa-door-open"  style="font-size: 40px;"></i>
-							            </div>
-							            <h5 class="card-title text-center text-uppercase text-dark">Salidas Registradas</h5>
-								    </div>
-								</div>
-							</div>
-						</div>
-	              	</div>
-	            </div>
-	      	</div>
-    	</div>	
-	</section>
+	
 	<!-- NUEVO CODIGO -->
 	<div class="d-flex justify-content-center flex-wrap">
-		<section class="col-3 mainSection d-flex flex-column justify-content-start" id="cartaUser" style="display:none !important;" >
+		<div class="col-3 mainSection " id="cartaUser" style="display:none !important;" >
 			<div class="customShadow p-4 ms-4" style="height:100%">
 				<div class="d-flex flex-row justify-content-between">
 					<div class="col-6">
@@ -101,7 +36,7 @@
 				</div>
 				<div class="d-flex flex-column justify-content-center align-items-center mt-2 ">
 					<h4 class="m-0 p-0"><span id="nameUserInf"></span></h4> 
-					<p class="text-gray"><b>Tipo de pase:</b> <span id="tipoPaseText" style="font-weight: normal"></span></p>
+					<p class="text-gray">Tipo de pase: <b><span id="tipoPaseText" style="font-weight: normal"></span></b></p>
 					<hr>
 				</div>
 				<div class="d-flex flex-column justify-content-start mt-2 ">
@@ -133,18 +68,18 @@
 				</div>
 				<hr class="m-3 p-0 ms-0">
 				<div class="d-flex flex-row justify-content-between">
-					<div class="col-5">
+					<div class="col-5" id="divGafete">
 						<p class="m-0 p-0"><span id="gafeteText" class="text-gray">Gafete:</span>&nbsp;&nbsp;<br>  <span class="text-success" id="gafete"></span></p>
 					</div>
-					<div class="col-5">
+					<div class="col-5" id="divLocker">
 						<p class="m-0 p-0"><span id="lockerText" class="text-gray">Locker:</span>&nbsp;&nbsp;<br> <span class="text-success" id="locker"></span></p>
 					</div>
 				</div>
-				<hr class="m-3 p-0 ms-0">
-				<div class="d-flex flex-row justify-content-start">
-					<p><span class="text-gray">Estatus:</span>&nbsp;&nbsp; <br><span id="status">Vigente</span></p>
+				<hr class="m-3 p-0 ms-0" id="hrGafeteLocker">
+				<div  id="divEstatus">
+					<p><span class="text-gray" >Estatus:</span>&nbsp;&nbsp; <br><span id="status">Vigente</span></p>
 				</div>
-				<hr class="m-3 p-0 ms-0">
+				<hr class="m-3 p-0 ms-0" id="hrEstatus">
 				<div>
 					<p><span class="text-gray">Vigencia del pase:</span>&nbsp;&nbsp;<br> <span id="validity"></span></p>
 				</div>
@@ -162,15 +97,15 @@
 					</div>
 				</div>
 			</div>
-		</section>
-		<section class="col-9 mainSection d-flex justify-content-center " >
+		</div>
+		<div class="col-9 mainSection d-flex justify-content-center " >
 			<section class=" d-flex flex-wrap">
-				<div class="d-flex input-group ms-4" role="group" style="width: 450px;">
+				<div class="input-group ms-4" role="group" style="width: 450px;">
 					<input type="text" class="form-control" placeholder="Codigo User" id="inputCodeUser" onchange="buscarPaseEntrada();return false;">
 					<button class="input-group-text bg-warning-subtle cursor-pointer" id="buttonBuscarPaseEntrada" onclick="buscarPaseEntrada();return false;" style="background-color: white!important;" disabled><i class="fa-solid fa-magnifying-glass" ></i></button>
-					<button class="input-group-text bg-warning-subtle cursor-pointer" onclick="setModal('listaPases')" style="background-color: white!important;"><i class="fa-solid fa-list"></i></button>
+					<button class="input-group-text bg-warning-subtle cursor-pointer" onclick="setModal('listaPases')" style="background-color: white!important;" id="pasesActivos"><i class="fa-solid fa-list"></i></button>
 				</div>
-				<div class="d-flex flex-grow-1 flex-wrap ms-3 justify-content-start">
+				<div class="ms-3">
 					<button type="button" class="btn btn-success btn-sm me-2" style="display: none;" id="buttonIn" onclick="registrarIngreso();return false;">
 					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso</button>
 					<button type="button" class=" btn btn-danger btn-sm me-2" style="display: none;" id="buttonOut" onclick="registrarSalida();return false;">
@@ -183,7 +118,7 @@
 					<i class="fa-solid fa-plus"></i> Nueva Visita</button>
 					<button type="button" class="btn btn-primary btn-sm me-2" id="pasesTemporales" onclick="setModal('listaPasesTemporales')">
 					 <i class="fa-solid fa-list me-2"></i>Pases temporales</button>
-					<button type="button" class="btn btn-success btn-sm bg-dark" onclick="setModal('comentarioAccesoModal')" 
+					<button type="button" class="btn btn-success btn-sm btn-danger" onclick="setModal('comentarioAccesoModal')" 
 					id="buttonAddCommentarioAccesoModal" style="display: none; margin-left: 3px;">
 						<i class="fa-solid fa-plus"></i> Agregar comentario
 					</button>
@@ -328,7 +263,7 @@
 										</button>
 									</div>
 								</div>
-								<div class="overflowCustom" style="max-width:1400px !important; ">
+								<div class="overflowCustom" style="max-width:1520px !important; ">
 									<table id="tableEquipos" class=" table-borderless" style="border: none;">
 										<thead class="overflowCustomHead">
 											<tr>
@@ -366,7 +301,7 @@
 										</button>
 									</div>
 								</div>	
-								<div class="overflowCustom" style="max-width:1400px !important;">
+								<div class="overflowCustom" style="max-width:1520px !important;">
 									<table id="tableCars"class=" table-borderless" style="border: none;">
 										<thead class="overflowCustomHead">
 											<tr>
@@ -386,14 +321,69 @@
 					</div>
 				</section>
 			</section>
-		</section>
+		</div>
 	</div>
 	<!-- Filter User-->
-	<section class="d-flex mainSection justify-content-center mainSectionMargins" id="mainSection2">
-		
-		
+	<section class="d-flex mainSection justify-content-center mainSectionMargins" id="mainSection2">	
 	</section>	
 
+	<div id="divSpinner" style="display:none;margin-top:100px;"></div>
+
+	<div class="mainSectionMargins mb-3 mt-5" id="mainSection1" >
+		<div class="d-flex justify-content-center ">
+			<div class="col-5 d-flex flex-row flex-wrap justify-content-center">
+				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-4">
+					<div class="card m-2 div-card-portal  customShadow">
+					    <locationcard-component> </locationcard-component>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+					<div class="card  m-2 div-card-portal customShadow">
+					    <div class="card-body p-3">
+					        <div class="d-flex justify-content-evenly">
+				           		<span class="h1 font-weight-bold mb-0 text-dark text-center" id="textVisitasEnElDia"> </span>
+				            	<i class="fa-solid fa-house"  style="font-size: 40px;"></i>
+				            </div>
+				            <h5 class="card-title text-center text-uppercase text-dark">Visitas en el Día</h5>
+					    </div>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 mb-4">
+					<div class="card  m-2 div-card-portal customShadow">
+					    <div class="card-body p-3">
+					        <div class="d-flex justify-content-evenly">
+				            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textPersonalDentro"> </p>
+				            	<i class="fa-solid fa-users" style="font-size: 40px;"></i>
+				            </div>
+				            <h5 class="card-title text-center text-uppercase text-dark">Personal Dentro</h5>
+					    </div>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+					<div class="card  m-2 div-card-portal customShadow">
+					    <div class="card-body p-3">
+					        <div class="d-flex justify-content-evenly">
+				            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textVehiculosDentro"> </p>
+				            	<i class="fa-solid fa-car" style="font-size: 40px;"></i>
+				            </div>
+				            <h5 class="card-title text-center text-uppercase text-dark">Vehículos Dentro</h5>
+					    </div>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+					<div class="card  m-2 div-card-portal customShadow">
+					    <div class="card-body p-3">
+					        <div class="d-flex justify-content-evenly">
+				            	<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textSalidasRegistradas"> </p>
+				            	<i class="fa-solid fa-door-open"  style="font-size: 40px;"></i>
+				            </div>
+				            <h5 class="card-title text-center text-uppercase text-dark">Salidas Registradas</h5>
+					    </div>
+					</div>
+				</div>
+			</div>	
+		</div>
+	</div>
 	<!-- Information User-->
 	<!-- <section class="section-data mainSectionMargins" id="mainSection3" style="display:none">
 		<div class="d-flex flex-wrap justify-content-between p-2">
@@ -1065,7 +1055,7 @@
 		</div>
 	</div>
 
-	<div id="divSpinner" style="display:none;margin-top:100px;"></div>
+	
 
 </body>
 <!-- Local -->

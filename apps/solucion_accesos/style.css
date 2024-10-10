@@ -678,9 +678,4 @@ input[type=search]{
   border-radius: 15px; /* Radio de las esquinas */
 }
 
-@media (display: none) {
-    #cartaUser{
-        display: none !important;
-    }
-}
 
