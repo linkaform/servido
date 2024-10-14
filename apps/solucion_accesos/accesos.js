@@ -44,7 +44,7 @@ window.onload = function(){
         redirectionUrl('login',false)
     }
     customNavbar(getValueUserLocation(), getCookie('userTurn'));
-    $("#mainSection1").hide()
+    //$("#mainSection1").hide()
     $("#cartaUser").hide()
     $('#mainSection2').show()
 
@@ -71,11 +71,9 @@ function setModal(type = 'none',id =""){
     }else if(type == 'vehiculosModal'){
         abrirAgregarVehiculo()
     }else if(type== "listaPases"){
-        console.log("ENTRADA")
-        $("#cartaUser").hide();
+        
         verListaPasesActivos()
     }else if(type=="nuevaVisitaModal"){
-        $("#cartaUser").hide();
         abrirModalNuevaVisita()
     }else if(type=="gafeteModal"){
         abrirAsignarGafeteModal()
@@ -179,6 +177,7 @@ function abrirAsignarGafeteModal(){
             location: selectLocation.value,
             area: selectCaseta.value,
             status: statusDisponible,
+            tipo_locker:"Identificaciones"
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -313,7 +312,6 @@ function verListaPasesActivos(){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            $("#cartaUser").hide();
             Swal.close();
             let listPases = res.response.data
             let formatedList=[]
@@ -880,14 +878,15 @@ function crearNuevaVisita(){
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
 function buscarPaseEntrada() {
-    $("#cartaUser").hide(); 
     setCleanData()
+    $("#mainSection1").hide()
     gafeteId=""
     gafeteRegistroIngreso={}
     $(document).ready(function() {
         $("#buttonBuscarPaseEntrada").prop('disabled', true);
         $("#buttonNew").prop('disabled', true);
         $("#pasesTemporales").prop('disabled', true);
+        $("#pasesActivos").prop('disabled', true);
     })
     codeUser = $("#inputCodeUser").val();
     if(codeUser ==""){
@@ -896,12 +895,15 @@ function buscarPaseEntrada() {
             $("#buttonBuscarPaseEntrada").prop('disabled', false);
             $("#buttonNew").prop('disabled', false);
             $("#pasesTemporales").prop('disabled', false);
+            $("#pasesActivos").prop('disabled', false);
         })
     }else{
-        
+        console.log("ENTRADA")
         $("#divSpinner").show();
-        setHideElements('dataHide');
-        setHideElements('buttonsOptions');
+        $("#mainSection1").hide();
+
+        //setHideElements('dataHide');
+        //setHideElements('buttonsOptions');
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -921,7 +923,6 @@ function buscarPaseEntrada() {
             if (res.success) {
                 fullData= res.response.data
                 Swal.close()
-                //setCookie('userLocation', res.response.data.ubicacion)
                 $("#cartaUser").show(); 
                 setDataInformation('informatioUser', res.response.data);
                 setHideElements('buttonsModal');
@@ -939,7 +940,9 @@ function buscarPaseEntrada() {
                 $("#buttonBuscarPaseEntrada").prop('disabled', false);
                 $("#buttonNew").prop('disabled', false);
                 $("#pasesTemporales").prop('disabled', false);
-                $("#pasesTemporales").show();
+                $("#mainSection1").show();
+                $("#pasesActivos").prop('disabled', false);
+                /*$("#pasesTemporales").show();*/
             }
         })
     }
@@ -973,7 +976,6 @@ function getDataListUser(){
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 1
 function registrarIngreso(){
     loadingService()
-    //let codeUser  = $("#inputCodeUser").val();
     $("#buttonIn").hide();
     $("#buttonOut").hide();
     
@@ -1077,10 +1079,8 @@ function registrarSalida(){
     }
 
     if(!salida){
-        console.log("FULL NOOOOO",fullData.gafete_id,fullData.locker_id, gafeteId)
         errorAlert("¡Debes recibir el gafete antes de registrar la salida!","Validación","warning" )
     } else{
-        console.log("FULL DATA",fullData.gafete_id,fullData.locker_id, gafeteId)
         loadingService()
         fetch(url + urlScripts, {
             method: 'POST',
@@ -1323,11 +1323,18 @@ function dataUserInf(dataUser){
 
     let status = ""
     if(dataUser.hasOwnProperty('estatus')){
-        if(dataUser.estatus !=="" ){
+        if(dataUser.estatus !=="" || dataUser.estatus !==null|| dataUser.estatus !==undefined ){
+            $("#divEstatus").show()
+            $("#hrEstatus").show()
             status=dataUser.estatus !=="" ? dataUser.estatus: '';
         }else{
             status=""
+            $("#divEstatus").hide()
+            $("#hrEstatus").hide()
         }
+    }else{
+        $("#divEstatus").hide()
+        $("#hrEstatus").hide()
     }
     $('#status').text(status);
     
@@ -1607,24 +1614,35 @@ function optionInformationUser(data){
         let tieneGafete=false
         let tieneLocker=false
         if(data.hasOwnProperty("gafete_id")){
-            if(data.gafete_id==''|| data.gafete_id==null || data.locker_id==undefined){
+            console.log("DFATAA",data.gafete_id)
+            if(data.gafete_id==''|| data.gafete_id==null || data.gafete_id==undefined){
                 $("#gafeteText").hide()
+                $("#divGafete").hide()
+                
             }else{
                 $("#gafeteText").show()
+                $("#divGafete").show()
                 tieneGafete=true
             }
         }else{
             $("#gafeteText").hide()
+            $("#divGafete").hide()
+            
         }
         if(data.hasOwnProperty("locker_id")){
             if(data.locker_id=='' || data.locker_id==null || data.locker_id==undefined){
                 $("#lockerText").hide()
+                $("#divLocker").hide()
+               
             }else{
                 $("#lockerText").show()
+                $("#divLocker").show()
                 tieneLocker=true
             }
         }else{
             $("#lockerText").hide()
+            $("#divLocker").hide()
+            
         }
         console.log("TIENE GAFETE LOCKER", tieneGafete, tieneLocker)
         if(data.tipo_movimiento == 'Entrada'){
@@ -1635,10 +1653,12 @@ function optionInformationUser(data){
            if(tieneGafete || tieneLocker){
                 $(document).ready(function() {
                     $("#buttonAsignarGafete").hide()
+                    $("#hrGafeteLocker").show()
                 })
            }else{
                 $(document).ready(function() {
                     $("#buttonAsignarGafete").show()
+                    $("#hrGafeteLocker").hide()
                 })
            }
         }else if(data.tipo_movimiento == 'Salida'){
@@ -1655,8 +1675,11 @@ function optionInformationUser(data){
             }
         } 
         
-        $("#gafete").text(data.gafete_id)
-        $("#locker").text(data.locker_id)
+        /*if(data.gafete_info)*/
+
+
+        $("#gafete").text(data.gafete_id !== null ? data.gafete_id : "")
+        $("#locker").text(data.locker_id !== null ? data.locker_id : "")
         $("#buttonNew").hide();
         $("#buttonAsignarGafete").show();
         $("#buttonClean").show();
@@ -1811,19 +1834,18 @@ function setHideElements(option){
     if (option == 'buttonsModal') {
         $("#buttonCommentsModal").hide();
         $('#buttonBitacoraModal').hide();
-       // $("#buttonBitacoraModal").hide();
         $("#buttonAccessModal").hide();
         $("#buttonLocationsModal").hide();
         $("#buttonItemsModal").hide();
         $("#buttonCarsModal").hide();
     }else if(option == 'buttonsOptions'){
-        $("#pasesTemporales").hide();
         $("#buttonNew").hide()
         $("#buttonIn").hide();
         $("#buttonOut").hide();
         $("#buttonNew").hide();
         $("#buttonAsignarGafete").hide();
         $("#buttonClean").hide();
+        //$("#pasesTemporales").hide()
     }else if(option == 'buttonNew'){
         $("#buttonNew").show();
     }else if(option =='dataHide'){
@@ -1846,10 +1868,9 @@ function setHideElements(option){
         $("#idComentarioAcceso").val('')
         $("#buttonBuscarPaseEntrada").prop('disabled', false);
         $("#buttonNew").prop('disabled', false);
-        $("#pasesTemporales").hide()
-        $("#buttonNew").hide()
         $("#pasesTemporales").prop('disabled', false);
-        $("#pasesTemporales").hide();
+        $("#pasesActivos").prop('disabled', false);
+        $("#buttonNew").hide()
         if(option==statusVisitaEntrada){
             $("#buttonAsignarGafete").show()
             $("#buttonRecibirGafete").hide()
@@ -1946,12 +1967,15 @@ function setCleanData(){
     tipoMovimiento=""
     gafeteId=""
     gafeteRegistroIngreso={}
+    $("#cartaUser").hide(); 
     $("#buttonAsignarGafete").hide()
     $("#buttonRecibirGafete").hide()
     $("#idButtonEquipoNota").prop('disabled', false);
     $("#idButtonVehiculos").prop('disabled', false);
-    $("#pasesTemporales").prop('disabled', false);
-    $("#pasesTemporales").show();
+    $("#cartaUser").hide();
+    $("#mainSection1").show();
+   // $("#pasesTemporales").prop('disabled', false);
+   // $("#pasesTemporales").show();
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
     setHideElements('buttonNew');
@@ -2064,10 +2088,6 @@ function getFormGafete(){
 
 //FUNCION obtener data para rellenar los catalogos
 function getCatalogs(){
-    //$("#selectTipoVehiculo-123").prop( "disabled", true );
-    //$("#divCatalogMarca123").hide();
-    //$("#divCatalogModelo123").hide();
-    
     fetch(url + urlScripts ,{
         method: 'POST',
         body: JSON.stringify({

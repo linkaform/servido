@@ -37,7 +37,7 @@ window.onload = function(){
 	}
 	$("#textLocation").text(ubicacion);
 	$("#textModule").text(caseta);
-    getCatalogs();
+    getCatalogsIngreso();
 }	
 
 
@@ -72,16 +72,15 @@ function getExtraInformation(){
 
 
 //FUNCION para obtener los catalogos
-function getCatalogs(){
+function getCatalogsIngreso(){
 	fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_name: "script_turnos.py",
-            option: "vehiculo_tipo",
+            script_name: "get_vehiculos.py",
+            
         }),
         headers:{
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt,
         },
         }).then(res => res.json())
         .then(res => {
@@ -139,11 +138,10 @@ async function onChangeCatalog(type, id){
         const options = {
             method: 'POST', 
             body: JSON.stringify({
-                script_name:'script_turnos.py',
-                option:'vehiculo_tipo',
+                script_name:'get_vehiculos.py',
                 tipo:inputMarca.value
             }),
-             headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+ userJwt}
+             headers:{ 'Content-Type': 'application/json'}
         };
         loadingService();
         let respuesta = await fetch(url + urlScripts, options);
