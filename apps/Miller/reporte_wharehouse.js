@@ -129,8 +129,9 @@ loading.style.display = 'none';
 
 //-----DEMO 
 function loadDemoData(){
-
   $('.title_tables').show();
+  $('#close_sesion').hide();
+  $('#image_log').hide();
   unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
 
