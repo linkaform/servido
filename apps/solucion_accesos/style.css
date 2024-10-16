@@ -438,7 +438,7 @@ input[type=search]{
 }
 
 .headerColor{
-  background-color: var(--yellowLKF); !important;
+  background-color: var(--yellowLKF) !important;
 }
 
 #inputCodeUser{

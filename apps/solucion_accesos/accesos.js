@@ -28,6 +28,9 @@ let paseDeAccesoScript= "pase_de_acceso.py"
 let gafeteRegistroIngreso={}
 let gafeteId=""
 let currentStream = null;
+let data_for_msj={}
+
+
 window.onload = function(){
     setValueUserLocation('accesos');
     changeButtonColor(); 
@@ -59,7 +62,7 @@ window.addEventListener('storage', function(event) {
 });
 
 //funcion Escojer modales
-function setModal(type = 'none',id =""){
+function setModal(type = 'none',id ="", nombre='', email=''){
     if(type == 'comentarioPaseModal'){
         $("#idComentarioPase").val("")
         $('#commentarioPaseModal').modal('show');
@@ -71,9 +74,10 @@ function setModal(type = 'none',id =""){
     }else if(type == 'vehiculosModal'){
         abrirAgregarVehiculo()
     }else if(type== "listaPases"){
-        
         verListaPasesActivos()
     }else if(type=="nuevaVisitaModal"){
+        limpiarTomarFoto('User')
+        limpiarTomarFoto('Card')
         abrirModalNuevaVisita()
     }else if(type=="gafeteModal"){
         abrirAsignarGafeteModal()
@@ -82,8 +86,88 @@ function setModal(type = 'none',id =""){
     }else if(type== "listaPasesTemporales"){
         $("#cartaUser").hide();
         verListaPasesTemporales()
+    }else if (type== "phoneModal"){
+        console.log("DATTOTOOTOTOT",type, nombre, email)
+        verModalPhone(nombre, email)
+    }else if (type== "messageModal"){
+        console.log("DATTOTOOTOTOT2222",type ,nombre, email)
+        verModalMessageModal(nombre,email)
     }
      
+}
+
+function verModalPhone(nombre, email){
+    console.log("PHONE MODAL",nombre, email)
+    $("#phoneModal").modal("show")
+    if(email){
+        successMsg("Validación", "El email no ha sido configurado para esta persona.","warning")
+    }else{
+
+    }
+}
+
+
+function enviarMensaje(){
+    loadingService()
+    data_for_msj.mensaje= $("#msj").val()
+    if(data_for_msj.mensaje==""){
+        successMsg("Validación", "Faltan campos por llenar", "warning")
+    }else{
+        console.log("MENSJAEE", data_for_msj)
+        fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name: "script_turnos.py",
+                option: 'enviar_msj',
+                data_msj: data_for_msj
+            }),
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                Swal.close()
+                console.log("res 200", res)
+                successMsg('Confirmación', "Correo enviado correctamente.", "Success")
+                $("#messageModal").modal("hide")
+            } else{
+                errorAlert(res)
+            }
+        });
+    }
+}
+
+function verModalMessageModal(nombre, email){
+    data_for_msj={nombre: nombre, email: email, mensaje:''}
+    $("#textMsjNombre").text(nombre)
+    $("#textMsjCorreo").text(email)
+    $("#msj").val("")
+    $("#messageModal").modal("show")
+}
+
+function limpiarTomarFoto(id){
+    $("#container"+id+" video").remove()
+    if(id=="User"){
+        flagVideoUser=false
+        fotosNuevaVisita.foto = []
+    }else if(id=="Card"){
+        flagVideoCard=false
+        fotosNuevaVisita.identificacion = []
+    }
+    currentStream=null
+    $('#buttonTake'+id).show();
+    $('#buttonTake'+id).prop('disabled', false);
+    $('#buttonSave'+id).hide();
+    $('#img'+id).hide();
+    $('#img'+id).attr('src', '');
+    $('#inputFile'+id).val('');
+}
+
+function limpiarSeleccion(){
+   $('table input[name="groupCarList"]').prop('checked', false); 
 }
 
 function verListaPasesTemporales(){
@@ -167,8 +251,14 @@ function abrirNuevaVisita(){
 
 function abrirAsignarGafeteModal(){
     loadingService()
-    $("#selectGafete").val("")
-    $("#selectLocker").val("")
+    $('input[name="radioOptionsDocument"]').each(function() {
+        console.log("DOCUMENTOOO", gafeteRegistroIngreso.documento_garantia,gafeteRegistroIngreso.gafete_id, gafeteRegistroIngreso.locker_id)
+        if ($(this).val() === gafeteRegistroIngreso.documento_garantia) {
+            $(this).prop('checked', true);
+        } else {
+            $(this).prop('checked', false); // Opcional: para deseleccionar otros
+        }
+    });
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -197,7 +287,7 @@ function abrirAsignarGafeteModal(){
             if(data.length==0){
                  selectLockers.innerHTML += '<option disabled> No hay lockers disponibles </option>';
             }
-            selectLockers.value="" 
+            selectLockers.value = gafeteRegistroIngreso.locker_id
         } 
     });
 
@@ -232,7 +322,7 @@ function abrirAsignarGafeteModal(){
             if(data.length==0){
                  selectGaf.innerHTML += '<option disabled> No hay gafetes disponibles </option>';
             }
-            selectGaf.value=""
+            selectGaf.value=gafeteRegistroIngreso.gafete_id
         } 
     });
 }
@@ -988,6 +1078,8 @@ function registrarIngreso(){
     getSelectedCheckbox('tableEquipos', 'radioGroupItems', selectedVehiculos)
     let selectedVe= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id)).map(({ check, id, ...rest }) => rest);
        
+
+
     //let dataItem = {'listItemsData':listItemsData,'listNewItems':listNewItems}
     //let dataVehicule = {'listVehiculesData':listVehiculesData,'listNewVehicules':listNewVehicules}
     let comPase=[]
@@ -1005,6 +1097,7 @@ function registrarIngreso(){
     for (let eq of selectedEq){
         eq.color_articulo= eq.color_articulo.toLowerCase();
     }
+    console.log("VISITA A ",fullData.visita_a)
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -1017,7 +1110,8 @@ function registrarIngreso(){
             equipo: selectedEq,
             comentario_pase: comentariosPase,
             comentario_acceso: comentariosAcceso,
-            gafete:gafeteRegistroIngreso
+            gafete:gafeteRegistroIngreso,
+            visita_a:fullData.visita_a
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -1161,12 +1255,54 @@ function entregarGafete(){
             'documento_gafete':[radioSeleccionado.value],*/
         }
 
+        let tieneGafete=false
+        let tieneLocker=false
+        if(gafeteRegistroIngreso.hasOwnProperty("gafete_id")){
+            console.log("DFATAA",gafeteRegistroIngreso.gafete_id)
+            if(gafeteRegistroIngreso.gafete_id==''|| gafeteRegistroIngreso.gafete_id==null || gafeteRegistroIngreso.gafete_id==undefined){
+                $("#gafeteText").hide()
+                $("#divGafete").hide()
+                
+            }else{
+                $("#gafeteText").show()
+                $("#divGafete").show()
+                $("#gafeteText").show();
+                $("#gafete").text(gafeteRegistroIngreso.gafete_id);
+                tieneGafete=true
+            }
+        }else{
+            $("#gafeteText").hide()
+            $("#divGafete").hide()
+            
+        }
+        if(gafeteRegistroIngreso.hasOwnProperty("locker_id")){
+            if(gafeteRegistroIngreso.locker_id=='' || gafeteRegistroIngreso.locker_id==null || gafeteRegistroIngreso.locker_id==undefined){
+                $("#lockerText").hide()
+                $("#divLocker").hide()
+               
+            }else{
+                $("#lockerText").show()
+                $("#divLocker").show()
+                $("#lockerText").show();
+                $("#locker").text(gafeteRegistroIngreso.locker_id)
 
+                tieneLocker=true
+            }
+        }else{
+            $("#lockerText").hide()
+            $("#divLocker").hide()
+            
+        }
+        if(tieneGafete || tieneLocker){
+                $(document).ready(function() {
+                    $("#hrGafeteLocker").show()
+                })
+           }else{
+                $(document).ready(function() {
+                    $("#hrGafeteLocker").hide()
+                })
+           }
         $("#gafeteModal").modal('hide')
-        $("#gafeteText").show();
-        $("#lockerText").show();
-        $("#gafete").text(gafeteRegistroIngreso.gafete_id);
-        $("#locker").text(gafeteRegistroIngreso.locker_id)
         successMsg("Gafete Entregado", "El gafete asignado para el registro de ingreso.")
         $("#idLoadingButtonAsignarGafete").hide();
         $("#idButtonAsignarGafete").show();
@@ -1277,12 +1413,13 @@ function dataUserInf(dataUser){
     if(dataUser.hasOwnProperty('foto')){
         if(dataUser.foto.length>0){
             imgUser = dataUser.foto[0].file_url !== '' ? 
-            dataUser.foto[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
+            dataUser.foto[0].file_url : 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
         }else{
             imgUser= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
         }
     }
-    $('#imgUser').attr('src', imgUser);
+    console.log("HOLA",imgUser)
+    $('#imgUser1').attr('src', imgUser);
 
     let imgCard="https://www.creativefabrica.com/wp-content/uploads/2018/12/Id-card-icon-by-rudezstudio-5-580x386.jpg"
 
@@ -1295,7 +1432,7 @@ function dataUserInf(dataUser){
         }
         
     }
-    $('#imgCard').attr('src', imgCard); 
+    $('#imgCard1').attr('src', imgCard); 
 
     let nameUser = ""
     if(dataUser.hasOwnProperty("nombre")){
@@ -1319,7 +1456,7 @@ function dataUserInf(dataUser){
     if(dataUser.hasOwnProperty('fecha_de_caducidad')){
         validity= dataUser.fecha_de_caducidad !==  '' ? dataUser.fecha_de_caducidad : '';
     }
-    $('#validity').text(validity);
+    $('#validity').text(validity.slice(0,-3) + ' hrs');
 
     let status = ""
     if(dataUser.hasOwnProperty('estatus')){
@@ -1336,7 +1473,7 @@ function dataUserInf(dataUser){
         $("#divEstatus").hide()
         $("#hrEstatus").hide()
     }
-    $('#status').text(status);
+    $('#status').text(capitalizeFirstLetter(status) );
     
     let tipoDePase = ""
     if(dataUser.hasOwnProperty("tipo_de_pase")){
@@ -1351,11 +1488,47 @@ function dataUserInf(dataUser){
     $('#motivo').text(motivo);
     
     let visit=""
+    let listaVisitas= document.getElementById('listaVisitas')
+    let listaVisitasPadre= document.getElementById('listaVisitasPadre')
+
     if(dataUser.hasOwnProperty('visita_a')){
-        visit= dataUser.visita_a.length>0 ? dataUser.visita_a[0].nombre: '';
+        if(dataUser.visita_a.length>0){
+            listaVisitasPadre.style.display="block"
+            listaVisitas.innerHTML=""
+            listaVisitas.innerHTML=`
+            <div>
+                <p class="m-0 p-0"><span class="text-gray">Visita a:</span>&nbsp;&nbsp; <br></p>
+            </div>`;
+            for(let v of dataUser.visita_a){
+                let nom= v.nombre || ""
+                let em= v.email || ""
+                let randomID=Math.floor(Math.random() * 1000000);
+                visit +=`
+                    <div class="d-flex flex-row justify-content-between align-items-start">
+                        <div class="col-10"> <p><span id="visita-`+randomID+`">`+v.nombre+` </span></p></div>
+                        <div class="col-2 d-flex justify-content-start p-0" >
+                            <button type="button" class="btn btn-primary btn-sm m-1" onclick="setModal('phoneModal', '', '${nom}', '${em}');">
+                                <i class="fa-solid fa-phone"></i>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm m-1" onclick="setModal('messageModal', '' , '${nom}', '${em}');">
+                                <i class="fa-solid fa-message"></i> 
+                            </button>
+                        </div>
+                    </div>`;
+            }
+            listaVisitas.innerHTML += visit
+        }else {
+            listaVisitasPadre.style.display="none"
+            listaVisitas.innerHTM=""
+        }
+    }else{
+        listaVisitas.innerHTML=""
+        listaVisitasPadre.style.display="none"
     }
-    $('#visita').text(visit);
+    //$('#visita').text(visit);
     
+
+
     /*let authorizePase =""
     if(dataUser.hasOwnProperty("authorize_pase")){
         authorizePase=dataUser.authorize_pase !==  '' ? dataUser.authorize_pase: '';
@@ -1395,7 +1568,7 @@ function tableFill(dataUser){
         //if(i < 3){
             var newRow = $('<tr>');
             newRow.append($('<td>').text(listInstructions[i].comentario_pase));
-            newRow.append($('<td>').text(listInstructions[i].tipo_de_comentario));
+            newRow.append($('<td>').text(capitalizeFirstLetter(listInstructions[i].tipo_de_comentario)));
             newRow.append('</tr>');
             $('#tableInstructions').append(newRow);
         //}
@@ -1580,6 +1753,7 @@ function tableFillVehiculos(dataUser){
         let isChecked= listCars[i].check == true ? 'checked' : '';
         newRow.append('<td ><input class="form-check-input radioGroupItems" style="margin: auto !important; display: block !important;" type="radio" name="groupCarList" id='+id+' '+isChecked+'></td>');
         newRow.append('</tr>');
+        console.log("ITEMMMM",  tipoCar,marcaCar,modeloCar,matriculaCar,colorCar)
         $('#tableCars').append(newRow);
         if(dataUser.tipo_movimiento =="Entrada"){
             $('#'+id).prop('disabled', false);
@@ -1668,9 +1842,11 @@ function optionInformationUser(data){
             $("#textOut").show();
             if(tieneGafete || tieneLocker){
                 $("#buttonRecibirGafete").show()
+                $("#hrGafeteLocker").show()
             }else{
                 $(document).ready(function() {
                     $("#buttonRecibirGafete").hide()
+                    $("#hrGafeteLocker").hide()
                 })
             }
         } 
@@ -1690,9 +1866,9 @@ function optionInformationUser(data){
                 //if(i < 3){
                     //let duration=segundosAHoras(listBitacora[i].duration)
                     let newRow = $('<tr>');
-                    newRow.append($('<td>').text(listBitacora[i].visita_a ? listBitacora[i].visita_a : ''));
+                    newRow.append($('<td>').text(listBitacora[i].visita_a.length>0 ? listBitacora[i].visita_a[0].nombre ||"": ''));
                     newRow.append($('<td>').text(listBitacora[i].fecha ? listBitacora[i].fecha : ''));
-                    newRow.append($('<td>').text(listBitacora[i].duration ? listBitacora[i].duration +' hrs': ''));
+                    newRow.append($('<td>').text(listBitacora[i].duration ? listBitacora[i].duration.slice(0,-3) +' hrs': '00:00 hrs'));
                     if(listBitacora[i].hasOwnProperty('comentarios')){
                         if(listBitacora[i].comentarios.length>0){
                             let stringArray= encodeURIComponent(JSON.stringify(listBitacora[i].comentarios))
@@ -1929,9 +2105,9 @@ function setCleanData(){
     tbody = document.querySelector('#tableModalInstructions tbody');
     tbody.innerHTML = '';
 
-    $('#imgUser').attr('src', 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png'); 
-    $('#imgCard').attr('src', 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg'); 
-    $('#tipoPaseText').text('')
+    /*$('#imgUser1').attr('src', 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png'); 
+    $('#imgCard1').attr('src', 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg'); 
+  */  $('#tipoPaseText').text('')
     $('#name').text('')
     $('#rfc').text('')
     $('#validity').text('')
@@ -2165,8 +2341,10 @@ function isCanvasBlank(canvas) {
 
 
 function stopStream(stream) {
-    const tracks = stream.getTracks();
-    tracks.forEach(track => track.stop());
+    if(stream!==null){
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+    }
 }
 
 //FUNCION obtener la imagen del canvas
@@ -2221,8 +2399,9 @@ function getScreenUser(){
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true })
             .then(function(stream) {
+                $("#containerUser video").remove()
                 let video = document.createElement('video');
-                video.style.width = '150px';
+                video.style.width = '180px';
                 video.style.height = '150px';
                 document.getElementById('containerUser').appendChild(video);
                 video.srcObject = stream;
@@ -2237,11 +2416,11 @@ function getScreenUser(){
                     setTranslateImageUser(context, video, canvas);
                 });
                // Evento para detener el stream al cerrar el modal o al cancelar
-                document.getElementById('buttonCancel').addEventListener('click', function() {
+                /*document.getElementById('buttonCancel').addEventListener('click', function() {
                     stopStream(currentStream);
                     currentStream = null;
                     flagVideoUser = false;
-                });
+                });*/
 
                 // Enviar un mensaje a otras pestañas para que sepan que el stream está en uso
                 localStorage.setItem('cameraInUse', 'true');
@@ -2266,7 +2445,7 @@ function setTranslateImageUser(context, video, canvas){
     video.srcObject.getTracks().forEach(function(track) {
         track.stop();
     });
-    //video.style.display = 'none';
+    video.style.display = 'none';
     //sdjkfns
     ///-- Save Input
     canvas.toBlob( (blob) => {
@@ -2297,7 +2476,7 @@ function setTranslateImageCard(context, video, canvas){
     video.srcObject.getTracks().forEach(function(track) {
         track.stop();
     });
-    //video.style.display = 'none';
+    video.style.display = 'none';
     ///-- Save Input
     canvas.toBlob( (blob) => {
         const file = new File( [ blob ], "imageCard.png" );
@@ -2344,8 +2523,8 @@ function setRequestFileImg(type) {
                     urlImgCard = res.file;
                     fotosNuevaVisita.identificacion.push({"file_name":res.file_name, "file_url":res.file})
                     //----Clean Canvas
-                    var canvas = document.getElementById('canvasPhoto');
-                    var ctx = canvas.getContext('2d');
+                    let canvas = document.getElementById('canvasPhoto');
+                    let ctx = canvas.getContext('2d');
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     let imgC =document.getElementById('imgCard')
                     imgC.css('display', 'block');
@@ -2354,8 +2533,8 @@ function setRequestFileImg(type) {
                     urlImgUser = res.file;
                     fotosNuevaVisita.foto.push({"file_name":res.file_name, "file_url":res.file})
                     //----Clean Canvas
-                    var canvas = document.getElementById('canvasPhotoUser');
-                    var ctx = canvas.getContext('2d');
+                    let canvas = document.getElementById('canvasPhotoUser');
+                    let ctx = canvas.getContext('2d');
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     let imgU =document.getElementById('imgUser')
                     imgU.css('display', 'block');
