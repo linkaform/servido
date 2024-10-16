@@ -196,7 +196,8 @@ function verIncidencia(folio){
     $("#comentarioIncidencia").text(selectedIncidencia.comentario_incidencia ||"")
     $("#prioridadIncidencia").text(capitalizeFirstLetter(selectedIncidencia.prioridad_incidencia ||""))
     // $("#tipoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.tipo_incidencia ||""))
-    $("#tipoDanoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.tipo_dano_incidencia[0] ||""))
+    $("#tipoDanoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.tipo_dano_incidencia.length>0 ? 
+        selectedIncidencia.tipo_dano_incidencia[0] :""))
     $("#danoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.dano_incidencia ||""))
     $("#notificacionIncidencia").text(capitalizeFirstLetter(selectedIncidencia.notificacion_incidencia ||""))
 
@@ -1017,7 +1018,7 @@ function llenarEditarIncidencia(selectArea,selectedIncidencia,selectUbicacion,se
         $('#minEditarIncidencia').val(hour1[1])
         onChangeAmpmLabel('horaEditarIncidencia','ampmEditarIncidencia1')
     }
-
+    console.log()
     $('#ubicacionEditarIncidencia').val(selectedIncidencia.ubicacion_incidencia)
     $('#areaEditarIncidencia').val(selectedIncidencia.area_incidencia)
     $('#reportaEditarIncidencia').val(selectedIncidencia.reporta_incidencia)
@@ -1025,7 +1026,7 @@ function llenarEditarIncidencia(selectArea,selectedIncidencia,selectUbicacion,se
     $('#importanciaEditarIncidencia').val(selectedIncidencia.prioridad_incidencia)
     $('#tipoIncidenciaEditarIncidencia').val(selectedIncidencia.tipo_incidencia)
     $('#comentarioEditarIncidencia').val(selectedIncidencia.comentario_incidencia)
-    $('#tipoDanoEditarIncidencia').val(selectedIncidencia.tipo_dano_incidencia[0])
+    $('#tipoDanoEditarIncidencia').val(selectedIncidencia.tipo_dano_incidencia[0]|| "")
     $('#danoEditarIncidencia').val(selectedIncidencia.dano_incidencia)
     $('#notificacionEditarIncidencia').val(selectedIncidencia.notificacion_incidencia)
     $('#editIncidentModal').modal('show');

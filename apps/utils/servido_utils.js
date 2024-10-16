@@ -782,9 +782,13 @@ function formatearFechaHora(fechaHora) {
 
 
 function capitalizeFirstLetter(text) {
-    if (text.length > 0) {
-        const capitalizedText = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-        return capitalizedText
+    if(text){
+        if (text.length > 0) {
+            const capitalizedText = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+            return capitalizedText
+        }
+    }else{
+        return ""
     }
 }
 
