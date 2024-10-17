@@ -401,7 +401,7 @@ var setOptions3 = {
     },
     title: {
         display: true,
-        text: 'Reporte de Tendencia Por Voladores Barras',
+        text: 'Reporte de Tendencia Por Voladores Suma',
         font: {
           size: 25
         }
