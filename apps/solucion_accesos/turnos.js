@@ -794,7 +794,8 @@ function cerrarNotaAlert(name, note, folio, status){
                                     selectedNote[key]= data_update[key]
                                 }
                                     selectedNote.note_status = data_update.note_status
-                                    tables["tableNotas"].setData(dataTableNotas);
+                                    dataTableNotas = dataTableNotas.filter(nota => nota.folio !== folio);
+                                tables["tableNotas"].setData(dataTableNotas);
                                 Swal.fire({
                                     title: "Success",
                                     text: "La nota fue cerrada correctamente",
