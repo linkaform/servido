@@ -313,3 +313,117 @@ var setOptions1 = {
     }
   },
 };
+
+
+
+var data2 = {
+  labels: ['2022-12-01','2022-12-08','2022-12-15','2022-12-25','2023-01-03'],
+  datasets: [
+    {
+      label: 'Volador 1',
+      data: [25,10,20,25,20],
+      borderColor: "#264653",
+      backgroundColor: "#264653",
+      fill: true
+    },
+        {
+      label: 'Volador 1',
+      data: [5,52,11,85,65],
+      borderColor: "#1b747c",
+      backgroundColor: "#1b747c",
+      fill: true
+    },
+        {
+      label: 'Volador 1',
+      data: [12,4,20,54,30],
+      borderColor: "#26988e",
+      backgroundColor: "#26988e",
+      fill: true
+    },
+        {
+      label: 'Volador 1',
+      data: [15,20,30,45,50],
+      borderColor: "#1c7c81",
+      backgroundColor: "#1c7c81",
+      fill: true
+    },
+  ]
+};
+
+
+var setOptions2 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Reporte de Tendencia Por Voladores Barras',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'white',
+    }
+  },
+  scales: {
+    y:{
+      ticks: {
+        stepSize: 1
+      }, 
+    }
+  },
+};
+
+
+var data3 = {
+  labels: ['Voladores','Mosca Domestica','Palomilla','Escarabajo','Mosca'],
+  datasets: [
+    {
+      label: 'Cantidad',
+      data: [25,10,20,25,20],
+      backgroundColor: ["#264653","#9CCC65","#CDDC39","#FFEB3B","#FFB300"],
+      fill: true
+    },
+  ]
+};
+
+
+var setOptions3 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Reporte de Tendencia Por Voladores Barras',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'white',
+    }
+  },
+  scales: {
+    x: {
+      display: false,
+      stacked: true,
+      gridLines: {
+        display: false,
+      },
+    },
+    y:{
+      display: false,
+      stacked: true,
+      gridLines: {
+        display: false,
+      },
+    }
+  },
+};
