@@ -227,24 +227,16 @@ function runFirstElement(){
   {
     option = 'programada';
   }
-  if(region != '' && region != '--'){
-    firstElement =getFirstElement( 
-      date_from, 
-      date_to,
-      pais,
-      division,
-      region,
-      sucursal,
-      bodega,
-      option
-    );
-
-  }else{
-    Swal.fire({
-      title:"Opps",
-      text:"Necesita seleccionar un regional.",
-    })
-  }
+  firstElement =getFirstElement( 
+    date_from, 
+    date_to,
+    pais,
+    division,
+    region,
+    sucursal,
+    bodega,
+    option
+  );
   //--Syle
   unhideElement("div_alert1");
   unhideElement("div_alert2");
