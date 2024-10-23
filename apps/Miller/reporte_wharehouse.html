@@ -91,22 +91,41 @@
                 <!--Filters -->
                 <div id="firstParameters" class="collapse row show">
                     <div class="col-sm-12 col-md-3 col-lg-3" >
-                        <h5>Almacenes Destino: </h5>
-                        <select class="form-control mdb-select md-form js-example-basic-multiple" name="states[]" multiple="multiple" id="wharehouse_destination">
+                        <h5>Familia: </h5>
+                        <select class="form-control mdb-select md-form" id="product_family">
                             <option value="">--Seleccione--</option>
-                            <option value="">Mty</option>
-                            <option value="">Gdl</option>
-                            <option value="">Merida</option>
+                            <option value="Herramientas">Herramientas</option>
+                            <option value="Electrodomesticos">Electrodomesticos</option>
                         </select>
                     </div>
-
                     <div class="col-sm-12 col-md-3 col-lg-3" >
-                        <h5>Familia: </h5>
-                        <select class="form-control mdb-select md-form" id="type">
-                            <option value="">--Seleccione--</option>
-                            <option value="">Herramientas</option>
-                            <option value="">Electrodomesticos</option>
+                        <h5>Linea(opcional): </h5>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <select class="form-control mdb-select md-form" id="product_line">
+                                <option value="">--Seleccione--</option>
+                                <option value="Aluminio">Aluminio</option>
+                                <option value="Bola">Bola</option>
+                            </select>
+                            <div class="spinner-border text-primary d-none" role="status" id="spinner_product_line">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3" >
+                        <h5>Almacenes: </h5>
+                        <select class="form-control mdb-select md-form js-example-basic-multiple" name="states[]" multiple="multiple" id="wharehouse_destination">
+                            <option value="Bodega Guadalajara">Bodega Guadalajara</option>
+                            <option value="Bodega Monterrey">Bodega Monterrey</option>
+                            <option value="Bodega Merida">Bodega Merida</option>
                         </select>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3" >
+                        <h5>Balanceo sugerido: </h5>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                            <label class="custom-control-label" for="customSwitch1" id="on_off">Desactivado</label>
+                          </div>
                     </div>
                 </div>
 
