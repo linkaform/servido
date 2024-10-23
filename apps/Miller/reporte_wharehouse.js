@@ -16,7 +16,25 @@ hideElement("firstElement");
 hideElement("secondElement");
 hideElement("thirdElement");
 
+let balanceo = false;
+
 window.onload = function(){
+
+
+  document.getElementById("customSwitch1").addEventListener("change", function() {
+    const label = document.getElementById("on_off");
+    const switchButton = document.getElementById("customSwitch1");
+  
+    if (switchButton.checked) {
+      label.textContent = "Activado";
+      balanceo = true;
+    } else {
+      label.textContent = "Desactivado";
+      balanceo = false;
+    }
+  });
+  
+
   var qs = urlParamstoJson();
   var formNode = document.getElementById("appCont");
 	for(var key in qs){
@@ -73,7 +91,6 @@ window.onload = function(){
   hideElement("close_sesion");
   hideElement("firstParameters");
 
-
   if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
     unhideElement("close_sesion");
@@ -103,7 +120,7 @@ window.onload = function(){
     $('.title_tables').hide();
     hideElement("firstElement-Buttons");
   }
-
+  
   ///-----HIDE AND SHOW
   for(var key in qs){
     if (key === 'embed'){
@@ -113,6 +130,14 @@ window.onload = function(){
       }
     }
   }
+
+  $("#product_family").on("change", function() {
+    $('#product_line').prop('disabled', true);
+    $('#spinner_product_line').removeClass('d-none');
+    let selectedCategory = $(this).val();
+    get_product_category(selectedCategory);
+  });
+
 }
 
 function unHideReportElements(){
@@ -134,34 +159,90 @@ function loadDemoData(){
   $('#image_log').hide();
   unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
-
+  
   getDrawTable('firstElement', columsTable1, dataTable1, 350);
   document.getElementById("firstElement").style.removeProperty('display');
 }
 
 //-----EXCUTION
 function runFirstElement(){
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  let wharehouse = document.getElementById("wharehouse");  
-  let status = document.getElementById("status");  
-  getFirstElement(date_from.value, date_to.value, wharehouse.value, status.value);
+  let familia = document.getElementById("product_family");
+  let wharehouse = $("#wharehouse_destination").val();
+  let linea = document.getElementById("product_line");
+  console.log("Familia", familia.value);
+  console.log("Almacen destino", wharehouse);
+  console.log("Linea", linea.value);
+  console.log("Balanceo sugerido", balanceo);
+
+  // getFirstElement(familia.value, wharehouse);
+  getFirstElement(wharehouse, familia.value, linea);
 };
 
-function getFirstElement(dateTo, dateFrom, wharehouse){
-  //----Hide Css
+function getFirstElement(wharehouses, familia, line) {
+
   $("#divContent").hide();
   $('.load-wrapp').show();
   $('.title_tables').hide();
+
+  columsTable1 = [
+    { title: "Sku", field: 'sku', hozAlign: "left", width: 150 },
+    { title: 'Descripción del Producto', field: 'desc_producto', hozAlign: "left", width: 150 },
+    { title: 'Línea', field: 'linea', hozAlign: "left", width: 150 },
+    { title: "Familia", field: 'familia', hozAlign: "left", width: 150 },
+    { title: "Stock CEDIS", field: 'stock_cedis', hozAlign: "right", width: 150 },
+    { title: "Stock Final", field: 'stock_final', hozAlign: "right", formatter: "money", formatterParams: { thousand: "," }, width: 150 },
+  ];
+  
+  if (wharehouses && wharehouses.length > 0) {
+    let traspasoColumn = {
+      title: 'Traspaso',
+      columns: []
+    };
+
+    let balanceoColumn = {
+      title: 'Balanceo sugerido',
+      columns: []
+    };
+    
+    wharehouses.forEach(wharehouse => {
+      traspasoColumn.columns.push({
+        title: wharehouse,
+        field: `stock_${wharehouse}`,
+        hozAlign: "right",
+        width: 150
+      });
+      traspasoColumn.columns.push({
+        title: `% de stock maximo`,
+        field: `p_stock_min_${wharehouse}`,
+        hozAlign: "right",
+        width: 150
+      });
+
+      if (balanceo) {
+        balanceoColumn.columns.push({
+          title: `${wharehouse}`,
+          field: `balanceo_sugerido_${wharehouse}`,
+          hozAlign: "left",
+          width: 150
+        });
+      }
+
+    });
+    
+    columsTable1.splice(5, 0, traspasoColumn);
+    
+    if (balanceo && balanceoColumn.columns.length > 0) {
+      columsTable1.push(balanceoColumn);
+    }
+  }
+  
+  getDrawTable('firstElement', columsTable1, dataTable1, 355);
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      date_to: dateTo,
-      date_from: dateFrom,
-      wharehouse: wharehouse,
-      status: status,
+      product_family: familia,
       option: 'get_report',
     }),
     headers:{
@@ -177,11 +258,12 @@ function getFirstElement(dateTo, dateFrom, wharehouse){
       $("#divContent").show();
       $('.title_tables').show();
       
-      if (res.response.firstElement) {
-        getDrawTable('firstElement', columsTable1, res.response.firstElement, 355);
+      if (res.response.stockInfo) {
+        console.log("Respuesta", res.response.stockInfo)
+        getDrawTable('firstElement', columsTable1, res.response.stockInfo, 355);
         document.getElementById("firstElement").style.removeProperty('display');
       }
-
+      
     } else {
       hideLoading();
       if(res.code == 11){
@@ -199,15 +281,24 @@ function getFirstElement(dateTo, dateFrom, wharehouse){
       }
     }
   })
-};
+}
 
 //-----CATALOG
-function set_select(data) {
-  const selectElement = document.getElementById("wharehouse");
+function set_select(data, elementId) {
+  const selectElement = document.getElementById(elementId);
+  if (elementId == "wharehouse_destination"){
+    while (selectElement.options.length > 0) {
+      selectElement.remove(0);
+    }  
+  }else{
+    while (selectElement.options.length > 1) {
+      selectElement.remove(1);
+    }
+  }
   data.forEach(function(value) {
     let option = document.createElement("option");
-    option.text = value; 
-    option.value = value;  
+    option.text = value;
+    option.value = value;
     selectElement.appendChild(option);
   });
 }
@@ -227,8 +318,11 @@ function getCatalog(){
   .then(res => res.json())
   .then(res => {
     if (res.success) {
-      if (res.response.dataCatalog) {
-        set_select(res.response.dataCatalog) 
+      if (res.response.dataCatalogWarehouse) {
+        set_select(res.response.dataCatalogWarehouse, "wharehouse_destination")
+        set_select(res.response.dataCatalogProductFamily, "product_family")
+        $('#product_line').prop('disabled', true);
+        // set_select(res.response.dataCatalogProductLine, "product_line")
       }
     } 
   }) 
@@ -264,4 +358,46 @@ function getDrawTable(id, columnsData, tableData, height = 500){
       table.download("csv", "data.csv");
     });
   }
+}
+
+function get_product_category(type)
+{
+  fetch(url + 'infosync/scripts/run/',{
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: scriptId,
+      option:"get_product_line",
+      product_code: type
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.success){
+      if(res.response){
+        let dataLotNumber = res.response['product_line'];
+        updateProductLineSelect(dataLotNumber);
+      }
+    }
+  })
+}
+
+// Función para vaciar y rellenar el select
+function updateProductLineSelect(data) {
+  const selectElement = document.getElementById('product_line');
+  
+  selectElement.innerHTML = '<option value="">--Seleccione--</option>';
+  
+  data.forEach(item => {
+    let option = document.createElement('option');
+    option.value = item;
+    option.text = item;
+    selectElement.appendChild(option);
+  });
+
+  $('#product_line').prop('disabled', false);
+  $('#spinner_product_line').addClass('d-none');
 }
