@@ -102,8 +102,13 @@ window.onload = function(){
     unHideReportElements()
     
     if (scriptId == null) {
+      $('#spinner_product_family').addClass('d-none');
+      $('#spinner_wharehouse').addClass('d-none');
       loadDemoData();
     }else{
+      $('#product_line').prop('disabled', true);
+      $('#product_family').prop('disabled', true);
+      $('#wharehouse_destination').prop('disabled', true);
       getCatalog();
     }
     //--Styles
@@ -174,6 +179,14 @@ function runFirstElement(){
   console.log("Linea", linea.value);
   console.log("Balanceo sugerido", balanceo);
 
+  if(!familia.value){
+    Swal.fire({
+      title: 'Atención',
+      text: 'Debes seleccionar una Familia primero...',
+      icon: 'info'
+    });
+    return
+  }
   // getFirstElement(familia.value, wharehouse);
   getFirstElement(wharehouse, familia.value, linea);
 };
@@ -184,12 +197,39 @@ function getFirstElement(wharehouses, familia, line) {
   $('.load-wrapp').show();
   $('.title_tables').hide();
 
+  /*
+    {"stockInfo": [{"sku": "750200301040",
+     "desc_producto": "MTRS TUBO C/C SS304L C10 1/2\"",
+      "line": "304",
+      "familia": "TUBOS",
+      "stock_mty": 0,
+      "stock_gdl": 0,
+      "stock_max": 0,
+      "stock_merida": 0,
+      "actuals": 42,
+      "percentage_stock_max": 0,
+      "stock_final": -416,
+      "stock_to_move_alm_monterrey": 326,
+      "stock_to_move_alm_guadalajara": 132,
+      "actuals_alm_monterrey": 109,
+      "actuals_cedis_guadalajara": 0,
+      "actuals_alm_merida": 61,
+      "actuals_alm_guadalajara": 42, 
+      "stock_max_alm_guadalajara": 174.84,
+      "p_stock_max_alm_guadalajara": 24.02,
+      "stock_max_alm_merida": 27.26,
+      "p_stock_max_alm_merida": 223.77,
+      "stock_max_alm_monterrey": 435.22,
+      "p_stock_max_alm_monterrey": 25.04}]}
+  */
+
+
   columsTable1 = [
     { title: "Sku", field: 'sku', hozAlign: "left", width: 150 },
     { title: 'Descripción del Producto', field: 'desc_producto', hozAlign: "left", width: 150 },
-    { title: 'Línea', field: 'linea', hozAlign: "left", width: 150 },
+    { title: 'Línea', field: 'line', hozAlign: "right", width: 150 },
     { title: "Familia", field: 'familia', hozAlign: "left", width: 150 },
-    { title: "Stock CEDIS", field: 'stock_cedis', hozAlign: "right", width: 150 },
+    { title: "Stock CEDIS", field: 'actuals', hozAlign: "right", width: 150 },
     { title: "Stock Final", field: 'stock_final', hozAlign: "right", formatter: "money", formatterParams: { thousand: "," }, width: 150 },
   ];
   
@@ -205,23 +245,32 @@ function getFirstElement(wharehouses, familia, line) {
     };
     
     wharehouses.forEach(wharehouse => {
+      field_wharehouse = wharehouse.toLowerCase().replace(" ", "_")
       traspasoColumn.columns.push({
         title: wharehouse,
-        field: `stock_${wharehouse}`,
+        field: `actuals_${field_wharehouse}`,
+        hozAlign: "right",
+        width: 150
+      });
+      //stock_to_move_alm_monterrey
+      traspasoColumn.columns.push({
+        title: `Traspaso ${wharehouse}`,
+        field: `stock_to_move_${field_wharehouse}`,
         hozAlign: "right",
         width: 150
       });
       traspasoColumn.columns.push({
         title: `% de stock maximo`,
-        field: `p_stock_min_${wharehouse}`,
+        field: `p_stock_max_${field_wharehouse}`,
         hozAlign: "right",
+        formatter: "money", formatterParams: { thousand: ",", symbol: "%", symbolAfter: true },
         width: 150
       });
 
       if (balanceo) {
         balanceoColumn.columns.push({
           title: `${wharehouse}`,
-          field: `balanceo_sugerido_${wharehouse}`,
+          field: `balanceo_sugerido_${field_wharehouse}`,
           hozAlign: "left",
           width: 150
         });
@@ -242,6 +291,7 @@ function getFirstElement(wharehouses, familia, line) {
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
+      //warehouse: wharehouses,
       product_family: familia,
       option: 'get_report',
     }),
@@ -259,7 +309,6 @@ function getFirstElement(wharehouses, familia, line) {
       $('.title_tables').show();
       
       if (res.response.stockInfo) {
-        console.log("Respuesta", res.response.stockInfo)
         getDrawTable('firstElement', columsTable1, res.response.stockInfo, 355);
         document.getElementById("firstElement").style.removeProperty('display');
       }
@@ -321,7 +370,11 @@ function getCatalog(){
       if (res.response.dataCatalogWarehouse) {
         set_select(res.response.dataCatalogWarehouse, "wharehouse_destination")
         set_select(res.response.dataCatalogProductFamily, "product_family")
+        $('#spinner_product_family').addClass('d-none');
+        $('#spinner_wharehouse').addClass('d-none');
         $('#product_line').prop('disabled', true);
+        $('#product_family').prop('disabled', false);
+        $('#wharehouse_destination').prop('disabled', false);
         // set_select(res.response.dataCatalogProductLine, "product_line")
       }
     } 
