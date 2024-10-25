@@ -174,10 +174,10 @@ function runFirstElement(){
   let familia = document.getElementById("product_family");
   let wharehouse = $("#wharehouse_destination").val();
   let linea = document.getElementById("product_line");
-  console.log("Familia", familia.value);
-  console.log("Almacen destino", wharehouse);
-  console.log("Linea", linea.value);
-  console.log("Balanceo sugerido", balanceo);
+  // console.log("Familia", familia.value);
+  // console.log("Almacen destino", wharehouse);
+  // console.log("Linea", linea.value);
+  // console.log("Balanceo sugerido", balanceo);
 
   if(!familia.value){
     Swal.fire({
