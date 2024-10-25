@@ -21,18 +21,18 @@ let balanceo = false;
 window.onload = function(){
 
 
-  document.getElementById("customSwitch1").addEventListener("change", function() {
-    const label = document.getElementById("on_off");
-    const switchButton = document.getElementById("customSwitch1");
+  // document.getElementById("customSwitch1").addEventListener("change", function() {
+  //   const label = document.getElementById("on_off");
+  //   const switchButton = document.getElementById("customSwitch1");
   
-    if (switchButton.checked) {
-      label.textContent = "Activado";
-      balanceo = true;
-    } else {
-      label.textContent = "Desactivado";
-      balanceo = false;
-    }
-  });
+  //   if (switchButton.checked) {
+  //     label.textContent = "Activado";
+  //     balanceo = true;
+  //   } else {
+  //     label.textContent = "Desactivado";
+  //     balanceo = false;
+  //   }
+  // });
   
 
   var qs = urlParamstoJson();
