@@ -188,7 +188,7 @@ function runFirstElement(){
     return
   }
   // getFirstElement(familia.value, wharehouse);
-  getFirstElement(wharehouse, familia.value, linea);
+  getFirstElement(wharehouse, familia.value, linea.value);
 };
 
 function getFirstElement(wharehouses, familia, line) {
@@ -293,6 +293,7 @@ function getFirstElement(wharehouses, familia, line) {
       script_id: scriptId,
       //warehouse: wharehouses,
       product_family: familia,
+      product_line: String(line),
       option: 'get_report',
     }),
     headers:{
