@@ -28,7 +28,7 @@ let dataTable1 = [
         "tiempo": "14:35",
         "_children":[
             {
-                "empleado":'Proyecto Logistica',
+                "empleado":'Entrada Principal',
                 "fecha_23_09":'0:45',
                 "fecha_24_09":'0:00',
                 "fecha_25_09":'0:00',
@@ -36,10 +36,10 @@ let dataTable1 = [
                 "fecha_27_09":'0:30',
                 "fecha_28_09":'0:20',
                 "fecha_29_09":'0:30',
-                "tiempo": "02:150",
+                "tiempo": "02:15",
             },
             {
-                "empleado":'Proyecto Administración',
+                "empleado":'Entrada Secundaria',
                 "fecha_23_09":'2:00',
                 "fecha_24_09":'1:00',
                 "fecha_25_09":'0:30',
@@ -51,7 +51,7 @@ let dataTable1 = [
             }
         ]
     },
-        {
+    {
         "empleado": "Ana Rodríguez", 
         "fecha_23_09":'3:30',
         "fecha_24_09":'1:15',
@@ -63,7 +63,7 @@ let dataTable1 = [
         "tiempo": "10:00",
         "_children":[
             {
-                "empleado":'Proyecto Calidad',
+                "empleado":'Entrada de Carga',
                 "fecha_23_09":'1:30',
                 "fecha_24_09":'0:45',
                 "fecha_25_09":'0:30',
@@ -71,10 +71,10 @@ let dataTable1 = [
                 "fecha_27_09":'0:15',
                 "fecha_28_09":'0:40',
                 "fecha_29_09":'0:50',
-                "tiempo": "5:30",
+                "tiempo": "05:30",
             },
             {
-                "empleado":'Proyecto Administracion',
+                "empleado":'Entrada de Personal',
                 "fecha_23_09":'2:00',
                 "fecha_24_09":'0:30',
                 "fecha_25_09":'0:20',
@@ -82,7 +82,7 @@ let dataTable1 = [
                 "fecha_27_09":'0:30',
                 "fecha_28_09":'0:30',
                 "fecha_29_09":'0:40',
-                "tiempo": "5:30",
+                "tiempo": "05:30",
             }
         ]
     },
@@ -95,10 +95,10 @@ let dataTable1 = [
         "fecha_27_09":'0:50',
         "fecha_28_09":'0:30',
         "fecha_29_09":'2:00',
-        "tiempo": "8:45",
+        "tiempo": "08:45",
         "_children":[
             {
-                "empleado":'Proyecto Logistica',
+                "empleado":'Entrada de Emergencia',
                 "fecha_23_09":'0:50',
                 "fecha_24_09":'1:10',
                 "fecha_25_09":'0:20',
@@ -106,10 +106,10 @@ let dataTable1 = [
                 "fecha_27_09":'0:25',
                 "fecha_28_09":'0:10',
                 "fecha_29_09":'0:40',
-                "tiempo": "4:20",
+                "tiempo": "04:20",
             },
             {
-                "empleado":'Proyecto Producción',
+                "empleado":'Entrada Norte',
                 "fecha_23_09":'0:30',
                 "fecha_24_09":'1:00',
                 "fecha_25_09":'0:20',
@@ -117,7 +117,7 @@ let dataTable1 = [
                 "fecha_27_09":'0:25',
                 "fecha_28_09":'0:20',
                 "fecha_29_09":'1:20',
-                "tiempo": "4:25",
+                "tiempo": "04:25",
             }
         ]
     },
@@ -130,10 +130,10 @@ let dataTable1 = [
         "fecha_27_09":'0:55',
         "fecha_28_09":'0:25',
         "fecha_29_09":'1:15',
-        "tiempo": "8:50",
+        "tiempo": "08:50",
         "_children":[
             {
-                "empleado":'Proyecto Calidad',
+                "empleado":'Entrada Sur',
                 "fecha_23_09":'1:00',
                 "fecha_24_09":'0:40',
                 "fecha_25_09":'0:15',
@@ -141,10 +141,10 @@ let dataTable1 = [
                 "fecha_27_09":'0:25',
                 "fecha_28_09":'0:10',
                 "fecha_29_09":'0:30',
-                "tiempo": "3:50",
+                "tiempo": "03:50",
             },
             {
-                "empleado":'Proyecto Almacenamientos',
+                "empleado":'Entrada Principal',
                 "fecha_23_09":'1:50',
                 "fecha_24_09":'1:00',
                 "fecha_25_09":'0:20',
@@ -152,7 +152,7 @@ let dataTable1 = [
                 "fecha_27_09":'0:30',
                 "fecha_28_09":'0:15',
                 "fecha_29_09":'0:45',
-                "tiempo": "4:55",
+                "tiempo": "04:55",
             }
         ]
     },
@@ -165,10 +165,10 @@ let dataTable1 = [
         "fecha_27_09":'1:00',
         "fecha_28_09":'0:35',
         "fecha_29_09":'1:10',
-        "tiempo": "9:45",
+        "tiempo": "09:45",
         "_children":[
             {
-                "empleado":'Proyecto Producción',
+                "empleado":'Entrada Secundaria',
                 "fecha_23_09":'1:40',
                 "fecha_24_09":'0:20',
                 "fecha_25_09":'0:15',
@@ -176,10 +176,10 @@ let dataTable1 = [
                 "fecha_27_09":'0:45',
                 "fecha_28_09":'0:20',
                 "fecha_29_09":'0:50',
-                "tiempo": "4:30",
+                "tiempo": "04:30",
             },
             {
-                "empleado":'Proyecto Logistica',
+                "empleado":'Entrada de Carga',
                 "fecha_23_09":'1:20',
                 "fecha_24_09":'0:35',
                 "fecha_25_09":'0:30',
@@ -187,7 +187,7 @@ let dataTable1 = [
                 "fecha_27_09":'0:15',
                 "fecha_28_09":'0:15',
                 "fecha_29_09":'0:20',
-                "tiempo": "4:35",
+                "tiempo": "04:35",
             }
         ]
     },
@@ -200,10 +200,10 @@ let dataTable1 = [
         "fecha_27_09":'0:50',
         "fecha_28_09":'0:40',
         "fecha_29_09":'1:30',
-        "tiempo": "9:35",
+        "tiempo": "09:35",
         "_children":[
             {
-                "empleado":'Proyecto Calidad',
+                "empleado":'Entrada de Personal',
                 "fecha_23_09":'1:00',
                 "fecha_24_09":'0:50',
                 "fecha_25_09":'0:25',
@@ -211,10 +211,10 @@ let dataTable1 = [
                 "fecha_27_09":'0:20',
                 "fecha_28_09":'0:15',
                 "fecha_29_09":'0:45',
-                "tiempo": "3:45",
+                "tiempo": "03:45",
             },
             {
-                "empleado":'Proyecto Administración',
+                "empleado":'Entrada de Emergencia',
                 "fecha_23_09":'1:30',
                 "fecha_24_09":'0:30',
                 "fecha_25_09":'0:30',
@@ -222,12 +222,226 @@ let dataTable1 = [
                 "fecha_27_09":'0:30',
                 "fecha_28_09":'0:25',
                 "fecha_29_09":'0:45',
-                "tiempo": "4:50",
+                "tiempo": "04:50",
+            }
+        ]
+    },
+    {
+        "empleado": "Carlos Pérez", 
+        "fecha_23_09":'2:45',
+        "fecha_24_09":'1:00',
+        "fecha_25_09":'0:30',
+        "fecha_26_09":'0:40',
+        "fecha_27_09":'0:30',
+        "fecha_28_09":'0:20',
+        "fecha_29_09":'1:00',
+        "fecha_30_09":'1:00',
+        "fecha_01_10":'2:50',
+        "fecha_02_10":'3:00',
+        "fecha_03_10":'0:00',
+        "fecha_04_10":'1:00',
+        "tiempo": "14:35",
+        "_children": [
+            {
+                "empleado": 'Entrada Principal',
+                "fecha_23_09": '0:45',
+                "fecha_24_09": '0:00',
+                "fecha_25_09": '0:00',
+                "fecha_26_09": '0:00',
+                "fecha_27_09": '0:30',
+                "fecha_28_09": '0:20',
+                "fecha_29_09": '0:30',
+                "tiempo": "02:15"
+            },
+            {
+                "empleado": 'Entrada Secundaria',
+                "fecha_23_09": '2:00',
+                "fecha_24_09": '1:00',
+                "fecha_25_09": '0:30',
+                "fecha_26_09": '0:40',
+                "fecha_27_09": '0:00',
+                "fecha_28_09": '0:00',
+                "fecha_29_09": '0:30',
+                "tiempo": "03:10"
+            }
+        ]
+    },
+    {
+        "empleado": "Ana Rodríguez", 
+        "fecha_23_09":'3:30',
+        "fecha_24_09":'1:15',
+        "fecha_25_09":'0:50',
+        "fecha_26_09":'2:00',
+        "fecha_27_09":'0:45',
+        "fecha_28_09":'1:10',
+        "fecha_29_09":'1:30',
+        "tiempo": "10:00",
+        "_children": [
+            {
+                "empleado": 'Entrada de Carga',
+                "fecha_23_09": '1:30',
+                "fecha_24_09": '0:45',
+                "fecha_25_09": '0:30',
+                "fecha_26_09": '1:00',
+                "fecha_27_09": '0:15',
+                "fecha_28_09": '0:40',
+                "fecha_29_09": '0:50',
+                "tiempo": "05:30"
+            },
+            {
+                "empleado": 'Entrada de Personal',
+                "fecha_23_09": '2:00',
+                "fecha_24_09": '0:30',
+                "fecha_25_09": '0:20',
+                "fecha_26_09": '1:00',
+                "fecha_27_09": '0:30',
+                "fecha_28_09": '0:30',
+                "fecha_29_09": '0:40',
+                "tiempo": "05:30"
+            }
+        ]
+    },
+    {
+        "empleado": "Javier Martínez", 
+        "fecha_23_09":'1:20',
+        "fecha_24_09":'2:10',
+        "fecha_25_09":'0:40',
+        "fecha_26_09":'1:15',
+        "fecha_27_09":'0:50',
+        "fecha_28_09":'0:30',
+        "fecha_29_09":'2:00',
+        "tiempo": "08:45",
+        "_children": [
+            {
+                "empleado": 'Entrada de Emergencia',
+                "fecha_23_09": '0:50',
+                "fecha_24_09": '1:10',
+                "fecha_25_09": '0:20',
+                "fecha_26_09": '0:45',
+                "fecha_27_09": '0:25',
+                "fecha_28_09": '0:10',
+                "fecha_29_09": '0:40',
+                "tiempo": "04:20"
+            },
+            {
+                "empleado": 'Entrada Norte',
+                "fecha_23_09": '0:30',
+                "fecha_24_09": '1:00',
+                "fecha_25_09": '0:20',
+                "fecha_26_09": '0:30',
+                "fecha_27_09": '0:25',
+                "fecha_28_09": '0:20',
+                "fecha_29_09": '1:20',
+                "tiempo": "04:25"
+            }
+        ]
+    },
+    {
+        "empleado": "Lucía Fernández", 
+        "fecha_23_09":'2:50',
+        "fecha_24_09":'1:40',
+        "fecha_25_09":'0:35',
+        "fecha_26_09":'1:10',
+        "fecha_27_09":'0:55',
+        "fecha_28_09":'0:25',
+        "fecha_29_09":'1:15',
+        "tiempo": "08:50",
+        "_children": [
+            {
+                "empleado": 'Entrada Sur',
+                "fecha_23_09": '1:00',
+                "fecha_24_09": '0:40',
+                "fecha_25_09": '0:15',
+                "fecha_26_09": '0:50',
+                "fecha_27_09": '0:25',
+                "fecha_28_09": '0:10',
+                "fecha_29_09": '0:30',
+                "tiempo": "03:50"
+            },
+            {
+                "empleado": 'Entrada Principal',
+                "fecha_23_09": '1:50',
+                "fecha_24_09": '1:00',
+                "fecha_25_09": '0:20',
+                "fecha_26_09": '0:20',
+                "fecha_27_09": '0:30',
+                "fecha_28_09": '0:15',
+                "fecha_29_09": '0:45',
+                "tiempo": "04:55"
+            }
+        ]
+    },
+    {
+        "empleado": "Pedro García", 
+        "fecha_23_09":'3:00',
+        "fecha_24_09":'0:55',
+        "fecha_25_09":'0:45',
+        "fecha_26_09":'2:20',
+        "fecha_27_09":'1:00',
+        "fecha_28_09":'0:35',
+        "fecha_29_09":'1:10',
+        "tiempo": "09:45",
+        "_children": [
+            {
+                "empleado": 'Entrada Secundaria',
+                "fecha_23_09": '1:40',
+                "fecha_24_09": '0:20',
+                "fecha_25_09": '0:15',
+                "fecha_26_09": '1:00',
+                "fecha_27_09": '0:45',
+                "fecha_28_09": '0:20',
+                "fecha_29_09": '0:50',
+                "tiempo": "04:30"
+            },
+            {
+                "empleado": 'Entrada de Carga',
+                "fecha_23_09": '1:20',
+                "fecha_24_09": '0:35',
+                "fecha_25_09": '0:30',
+                "fecha_26_09": '1:20',
+                "fecha_27_09": '0:15',
+                "fecha_28_09": '0:15',
+                "fecha_29_09": '0:20',
+                "tiempo": "04:35"
+            }
+        ]
+    },
+    {
+        "empleado": "Sofía Torres", 
+        "fecha_23_09":'2:30',
+        "fecha_24_09":'1:20',
+        "fecha_25_09":'0:55',
+        "fecha_26_09":'1:50',
+        "fecha_27_09":'0:50',
+        "fecha_28_09":'0:40',
+        "fecha_29_09":'1:30',
+        "tiempo": "09:35",
+        "_children": [
+            {
+                "empleado": 'Entrada de Personal',
+                "fecha_23_09": '1:00',
+                "fecha_24_09": '0:50',
+                "fecha_25_09": '0:25',
+                "fecha_26_09": '1:00',
+                "fecha_27_09": '0:20',
+                "fecha_28_09": '0:15',
+                "fecha_29_09": '0:45',
+                "tiempo": "03:45"
+            },
+            {
+                "empleado": 'Entrada de Emergencia',
+                "fecha_23_09": '1:30',
+                "fecha_24_09": '0:30',
+                "fecha_25_09": '0:30',
+                "fecha_26_09": '0:50',
+                "fecha_27_09": '0:30',
+                "fecha_28_09": '0:25',
+                "fecha_29_09": '0:45',
+                "tiempo": "04:50"
             }
         ]
     }
-]
-
+];
 
 
 
@@ -235,78 +449,6 @@ let dataTable1 = [
 
 //-----Configuiración de la grafica
 var setOptions1 = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top',
-      },
-      title: {
-          display: false,
-      },
-      datalabels: {
-        color: 'white',
-        font: {
-            size: 15
-        }
-      }
-  },
-  responsive: true, 
-    maintainAspectRatio: false ,
-  scales: {
-      y: {
-          step: 1,
-      }
-  },
-};
-
-var dataChart1 = {
-    labels: ['01-Oct','02-Oct','03-Oct','04-Oct','05-Oct'],
-    datasets: [
-      {
-          label: 'Horas',
-          data: [135,100,150,120,120],
-          fill: false,
-        backgroundColor: '#007CB3',
-      },
-    ]
-};
-
-var setOptions2 = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top',
-      },
-      title: {
-          display: false,
-      },
-      datalabels: {
-          color: 'white',
-          font: {
-              size: 15
-           }
-        }
-  },
-};
-
-var dataChart2 = {
-    labels: ['Producción','Almacenamiento','Logistica','Calidad','Administración'],
-    datasets: [
-      {
-          label: 'Cantidad',
-          data: [200,100,150,50,120],
-          backgroundColor: ['#007CB3','#EFB03B'],
-          borderColor: ['#007CB3','#EFB03B'],
-      },
-
-    ]
-};
-
-
-var setOptions3 = {
     responsive: true,
     plugins: {
       legend: {
@@ -332,14 +474,57 @@ var setOptions3 = {
   },
 };
 
-var dataChart3 = {
-    labels: ['Juan Carlos','Rodrigo Perez','Jose Patricio','Juan Paramo','Pedro Morales'],
+var dataChart1 = {
+    labels: [
+        'Juan Carlos', 'Rodrigo Perez', 'Jose Patricio', 'Juan Paramo', 'Pedro Morales',
+        'Luis Hernandez', 'Carlos Gutierrez', 'Andres Flores', 'Santiago Rivas', 'Jorge Lopez',
+        'Fernando Diaz', 'Pablo Ortega', 'Manuel Ruiz', 'Oscar Nuñez', 'Adrian Ramos',
+        'Ricardo Silva', 'David Romero', 'Daniel Herrera', 'Gabriel Torres', 'Mario Salinas'
+    ],
     datasets: [
         {
           label: 'Cantidad',
-          data: [40,50,70,20,70],
+          data: [40, 50, 70, 20, 70, 35, 60, 45, 55, 65, 30, 50, 75, 25, 80, 90, 85, 60, 40, 55],
           backgroundColor: [],
           borderColor: [],
         },
+    ]
+};
+
+
+var setOptions2 = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      title: {
+          display: false,
+      },
+      datalabels: {
+          color: 'white',
+          font: {
+              size: 15
+           }
+        }
+  },
+};
+
+var dataChart2 = {
+    labels: [
+        'Entrada Principal', 'Entrada Secundaria', 'Entrada de Carga', 
+        'Entrada de Personal', 'Entrada de Emergencia', 
+        'Entrada Norte', 'Entrada Sur'
+    ],
+    datasets: [
+      {
+          label: 'Horas Abiertas',
+          data: [12, 10, 8, 15, 6, 11, 14], 
+          backgroundColor: [],
+          borderColor: [],
+      },
+
     ]
 };

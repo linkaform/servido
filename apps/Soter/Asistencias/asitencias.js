@@ -5,7 +5,6 @@ window.onload = function(){
 function loadDemoData(){
   drawFirstElement(dataChart1, setOptions1);
   drawSecondElement(dataChart2, setOptions2);
-  drawThirdElement(dataChart3, setOptions3)
 	getDrawTable('fivethElement', columsTable1, dataTable1, '320');
 }
 
@@ -53,10 +52,9 @@ function drawFirstElement(datasets, dataconfig){
     chart1.destroy();
   }
   //---Color
-  array_colors = getPAlleteColors(6,datasets['datasets'].length);
-  for (let i = 0; i < datasets['datasets'].length; i++) {
-    datasets['datasets'][i]['backgroundColor'] = array_colors[i];
-  }
+  array_colors = getPAlleteColors(6,datasets['labels'].length);
+  datasets['datasets'][0]['backgroundColor'] = array_colors;
+  datasets['datasets'][0]['borderColor'] = array_colors;
   chart1 = new Chart(ctx, {
     type: 'bar',
     data: datasets,
@@ -86,23 +84,3 @@ function drawSecondElement(datasets, dataconfig){
   });
 }
 
-let chart3;
-function drawThirdElement(datasets, dataconfig){
-
-  //---CHART
-  var ctx = document.getElementById('chartThird').getContext('2d');
-  
-  if (chart3) {
-    chart3.destroy();
-  }
-  //---Color
-  array_colors = getPAlleteColors(6,datasets['labels'].length);
-  datasets['datasets'][0]['backgroundColor'] = array_colors;
-  datasets['datasets'][0]['borderColor'] = array_colors;
-  chart3 = new Chart(ctx, {
-    type: 'bar',
-    data: datasets,
-    plugins: [ChartDataLabels],
-    options: dataconfig
-  });
-}

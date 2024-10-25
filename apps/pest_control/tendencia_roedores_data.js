@@ -254,7 +254,6 @@ var dataTable1 = [
   },
 ];
 
-
 var data1 = {
   labels: ['2022-12-01','2022-12-08','2022-12-15','2022-12-25','2023-01-03'],
   datasets: [
@@ -285,8 +284,6 @@ var data1 = {
   ]
 };
 
-
-
 var setOptions1 = {
   responsive: true,
   plugins: {
@@ -310,6 +307,84 @@ var setOptions1 = {
       ticks: {
         stepSize: 1
       }, 
+    }
+  },
+};
+
+
+var setOptions2 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Reporte de Tendencia Por Roedores Barras',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'white',
+    }
+  },
+  scales: {
+    y:{
+      ticks: {
+        stepSize: 1
+      }, 
+    }
+  },
+};
+
+
+var data3 = {
+  labels: ['Voladores','Mosca Domestica','Palomilla','Escarabajo','Mosca'],
+  datasets: [
+    {
+      label: 'Cantidad',
+      data: [25,10,20,25,20],
+      backgroundColor: ["#264653","#9CCC65","#CDDC39","#FFEB3B","#FFB300"],
+      fill: true
+    },
+  ]
+};
+
+
+var setOptions3 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+    },
+    title: {
+        display: true,
+        text: 'Reporte de Tendencia Por Roedores Suma',
+        font: {
+          size: 25
+        }
+    },
+    datalabels: {
+      color: 'white',
+    }
+  },
+  scales: {
+    x: {
+      display: false,
+      stacked: true,
+      gridLines: {
+        display: false,
+      },
+    },
+    y:{
+      display: false,
+      stacked: true,
+      gridLines: {
+        display: false,
+      },
     }
   },
 };

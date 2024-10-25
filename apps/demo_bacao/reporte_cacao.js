@@ -25,7 +25,7 @@ window.onload = function(){
     }
     if (key === 'env') {
       if (qs[key] === 'test'){
-         url = "https://preprod.linkaform.com/api/";
+        url = "https://preprod.linkaform.com/api/";
       }
     }
     if (key ==='title'){
@@ -101,6 +101,7 @@ window.onload = function(){
     $('.title_tables').hide();
     hideElement("firstElement-Buttons");
   }
+
   ///-----HIDE AND SHOW
   for(var key in qs){
     if (key === 'embed'){
@@ -126,6 +127,7 @@ loading.style.display = 'none';
 
 //-----DEMO 
 function loadDemoData(){
+
   $('.title_tables').show();
   unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
