@@ -183,7 +183,7 @@ function runFirstElement(){
     Swal.fire({
       title: 'Atención',
       text: 'Debes seleccionar una Familia primero...',
-      icon: 'info'
+      type: 'info'
     });
     return
   }
