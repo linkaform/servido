@@ -239,7 +239,18 @@ function closeSession(){
         var spcook = cookies[i].split("="); 
         document.cookie = spcook[0] + "=;expires=Thu, 21 Sep 1979 00:00:01 UTC;"; 
     }
-  location.reload();
+  //location.reload();
+}
+
+function setCloseSession(argument) {
+    closeSession();
+    localStorage.setItem('cerrarSesion', Date.now());
+
+    //redirectionUrl('login',false, true);
+    /*let protocol = window.location.protocol;
+    let host = window.location.host;
+    window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;*/
+
 }
 
 
@@ -901,4 +912,41 @@ async function cargarCatalogos(bodys=[], loading=true) {
         }
     }
     return {format,failedRequests}
+}
+
+
+
+function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
+    let array=[]
+    let divP = document.getElementById(divPadre);
+    let inputs = divP.querySelectorAll(inputsHijos);
+    for (let i = 0; i < inputs.length; i += cantidadInputs) { // Incrementar de dos en dos
+        const datoInput1 = inputs[i].value; // Input
+        const dataInput2 = inputs[i + 1].value; // Select
+        let objTemporal={}
+        if (datoInput1 && dataInput2) { // Verificar que el input no esté vacío
+            if(inputsHijos=='.persona-div-nuevo'|| inputsHijos=='.persona-div-editar'){
+                objTemporal.nombre_completo= datoInput1;
+                objTemporal.tipo_persona= dataInput2;
+            }
+            if(inputsHijos=='.dano-div-nuevo' ||inputsHijos=='.dano-div-editar'){
+                objTemporal.responsable_accion= datoInput1;
+                objTemporal.acciones_tomadas= dataInput2;
+            }
+             if(inputsHijos=='.deposito-nuevo' ||inputsHijos=='.deposito-editar'){
+                objTemporal.tipo_deposito= datoInput1;
+                objTemporal.cantidad= dataInput2;
+            }
+            if(inputsHijos=='.com-div-nuevo' ||inputsHijos=='.com-div-nuevo'){
+                objTemporal.tipo_comentario= datoInput1;
+                objTemporal.comentario= dataInput2;
+            }
+            if(inputsHijos=='.area-div-nuevo' ||inputsHijos=='.area-div-nuevo'){
+                objTemporal.area= datoInput1;
+                objTemporal.comentario= dataInput2;
+            }
+            array.push(objTemporal); // Agregar el objeto al array
+        }
+    }
+    return array
 }

@@ -36,7 +36,7 @@
 						<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded mt-4" alt="Imagen Usuario" id="imgUser1">
 					</div>
 					<div class="ms-4">
-						<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded mt-4" alt="Imagen Usuario" id="imgCard1">
+						<img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png" class="rounded mt-4" style="width:100% !important;" alt="Imagen Usuario" id="imgCard1">
 					</div>
 				</div>
 				<div class="d-flex flex-column justify-content-center align-items-center mt-2 ">
@@ -74,20 +74,25 @@
 					<p><span class="text-gray" >Estatus:</span>&nbsp;&nbsp; <br><span id="status">Vigente</span></p>
 				</div>
 				<hr class="m-3 p-0 ms-0" id="hrEstatus">
-				<div>
-					<p><span class="text-gray">Vigencia del pase:</span>&nbsp;&nbsp;<br> <span id="validity"></span></p>
+				<div class="d-flex flex-row justify-content-between">
+					<div class="col-5" id="vigenciaPase">
+						<p><span class="text-gray">Vigencia del pase:</span>&nbsp;&nbsp;<br> <span id="validity"></span></p>
+					</div>
+					<div class="col-5" id="divDiasAcceso">
+						<p><span class="text-gray" id="textDiasAcceso"></span>&nbsp;&nbsp;<br> <span id="diasAcceso"></span></p>
+					</div>
 				</div>
 				<hr class="m-3 p-0 ms-0">
 				<div>
 					<p class="text-gray">Disponible los días:</p>
 					<div class="d-flex justify-content-around">
-						<button type="button" class="btn btn-outline-success btn-custom" id="lunes">L</button>
-						<button type="button" class="btn btn-outline-success btn-custom" id="martes">M</button>
-						<button type="button" class="btn btn-outline-success btn-custom" id="miércoles">M</button>
-						<button type="button" class="btn btn-outline-success btn-custom" id="jueves">J</button>
-						<button type="button" class="btn btn-outline-success btn-custom" id="viernes">V</button>
-						<button type="button" class="btn btn-outline-success btn-custom" id="sabado">S</button>
-						<button type="button" class="btn btn-outline-success btn-custom" id="domingo">D</button>
+						<button type="button" class="btn btn-outline-success btn-custom week" id="lunes">L</button>
+						<button type="button" class="btn btn-outline-success btn-custom week" id="martes">M</button>
+						<button type="button" class="btn btn-outline-success btn-custom week" id="miércoles">M</button>
+						<button type="button" class="btn btn-outline-success btn-custom week" id="jueves">J</button>
+						<button type="button" class="btn btn-outline-success btn-custom week" id="viernes">V</button>
+						<button type="button" class="btn btn-outline-success btn-custom week" id="sábado">S</button>
+						<button type="button" class="btn btn-outline-success btn-custom week" id="domingo">D</button>
 					</div>
 				</div>
 			</div>
@@ -249,11 +254,14 @@
 										<button type="button" class="btn btn-success  btn-sm" onclick="setModal('equiposModal')" id="idButtonEquipoNota" data-bs-target="#equipmentModal">
 											<i class="fa-solid fa-plus"></i> Agregar Equipo
 										</button>
-										<button type="button" class="btn btn-primary  btn-sm"  onclick="verListaDeEquiposAgregados();return false">
+										<button type="button" class="btn btn-primary  btn-sm" id="buttonVerListaEquipos" onclick="verListaDeEquiposAgregados();return false">
 											<i class="fa-solid fa-list"></i>
 										</button>
 										<button type="button" class="btn btn-info  btn-sm"  data-bs-toggle="modal" data-bs-target="#listItemsModal" id="buttonItemsModal">
 											<i class="fa-solid fa-eye"></i>
+										</button>
+										<button type="button" class="btn  btn-warning btn-sm" id="buttonVerBorradorEquipos" onclick="limpiarSeleccion('equipos');return false;" id="erase2">
+											<i class="fa-solid fa-eraser"></i>
 										</button>
 									</div>
 								</div>
@@ -287,13 +295,13 @@
 						                    <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
 						                    Cargando...
 						                </button>
-										<button type="button" class="btn btn-primary btn-sm"  onclick="verListaDeVehiculosAgregados();return false" >
+										<button type="button" class="btn btn-primary btn-sm" id="buttonVerListaVehiculos" onclick="verListaDeVehiculosAgregados();return false" >
 											<i class="fa-solid fa-list"></i>
 										</button>
 										<button type="button" class="btn btn-info btn-sm"  data-bs-toggle="modal" data-bs-target="#listCarsModal" id="buttonCarsModal">
 											<i class="fa-solid fa-eye"></i>
 										</button>
-										<button type="button" class="btn  btn-warning btn-sm" onclick="limpiarSeleccion('vehiculos');return false;" id="erase1">
+										<button type="button" class="btn  btn-warning btn-sm" id="buttonVerBorradorVehiculos" onclick="limpiarSeleccion('vehiculos');return false;" id="erase1">
 											<i class="fa-solid fa-eraser"></i>
 										</button>
 									</div>
@@ -567,6 +575,12 @@
 							<span><b>Correo : </b></span><span id="textMsjCorreo" ></span>	
 						</div>	
 											
+					</div>
+					
+					<div class="mb-3">
+						<label  class="form-label">Título: *</label>
+						<input class="form-control"  id="titulo" placeholder="Asunto...">
+						</input>
 					</div>
 					<div class="mb-3">
 						<label  class="form-label">Mensaje: *</label>
@@ -901,6 +915,7 @@
 							<th class="headerColor">Modelo</th>
 							<th class="headerColor">Matrícula</th>
 							<th class="headerColor">Color</th>
+							<th class="headerColor"> </th>
 						</thead>
 						<tbody></tbody>
 					</table>
@@ -929,6 +944,7 @@
 							<th class="headerColor">Modelo</th>
 							<th class="headerColor">No. Serie</th>
 							<th class="headerColor">Color</th>
+							<th class="headerColor"> </th>
 						</thead>
 						<tbody></tbody>
 					</table>

@@ -115,15 +115,7 @@ function customNavbar(location, turno){
      }
 }
 
-function setCloseSession(argument) {
-    closeSession();
-    localStorage.setItem('cerrarSesion', Date.now());
-    //redirectionUrl('login',false, true);
-    let protocol = window.location.protocol;
-    let host = window.location.host;
-    window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
 
-}
 
 //----Function Redirection
 function redirectionUrl(type = 'null',blank = false, logout=false){

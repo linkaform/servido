@@ -83,11 +83,32 @@
                             <div class="d-flex flex-row flex-grow-1 justify-content-start align-items-center mt-0 mb-0 ms-1">
                                 <div class="d-flex flex-row justify-content-center align-items-center">
                                     <label class="me-3 ms-1"><b>Prioridad: </b></label>
+                                    <div class="checkbox-group me-2">
+                                        <label>
+                                            <input type="checkbox" name="estadoIncidencia" value="alta" onchange="onChangeFiltroEstadoPerdido()"> Alta
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-group me-2">
+                                        <label>
+                                            <input type="checkbox" name="estadoIncidencia" value="media" onchange="onChangeFiltroEstadoPerdido()"> Media
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-group me-2">
+                                        <label>
+                                            <input type="checkbox" name="estadoIncidencia" value="baja" onchange="onChangeFiltroEstadoPerdido()"> Baja
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-group me-2">
+                                        <label>
+                                            <input type="checkbox" name="estadoIncidencia" value="critica" onchange="onChangeFiltroEstadoPerdido()"> Crítica
+                                        </label>
+                                    </div>
+                                    <!-- <label class="me-3 ms-1"><b>Prioridad: </b></label>
                                     <select class="form-select" style="width:400px;" id="filtroEstadoPerdido" onchange="onChangeFiltroEstadoPerdido()">
                                         <option value="pendiente">Alta</option>
                                         <option value="entregado">Mediana</option>
                                         <option value="donado">Baja</option>
-                                    </select>
+                                    </select> -->
                                 </div>
                             </div>
                             <div class=" d-flex mb-2 ms-1 justify-content-end align-items-center">
@@ -115,11 +136,25 @@
                     <div class="d-flex mt-2 mb-2 justify-content-end">
                             <div class="d-flex flex-row flex-grow-1 justify-content-start align-items-center mt-0 mb-0 ms-1">
                                 <div class="d-flex flex-row justify-content-center align-items-center">
+                                    <div class="d-flex flex-row justify-content-center align-items-center">
+                                        <label class="me-3 ms-1"><b>Prioridad: </b></label>
+                                        <div class="checkbox-group me-2">
+                                            <label>
+                                                <input type="checkbox" name="estadoIncidencia" value="alta" onchange="onChangeFiltroEstadoFallas()"> Abierto
+                                            </label>
+                                        </div>
+                                        <div class="checkbox-group me-2">
+                                            <label>
+                                                <input type="checkbox" name="estadoIncidencia" value="media" onchange="onChangeFiltroEstadoFallas()"> Cerrado
+                                            </label>
+                                        </div>
+                                    </div>
+                                <!-- 
                                     <label class="me-3 ms-1"><b>Estado: </b></label>
                                     <select class="form-select" style="width:400px;" id="filtroEstadoFalla" onchange="onChangeFiltroEstadoFalla()">
                                         <option value="abierto">Abierto</option>
                                         <option value="resuelto">Resuelto</option>
-                                    </select>
+                                    </select> -->
                                 </div>
                             </div>
                             <div class=" d-flex mb-2 ms-1 justify-content-end align-items-center">
@@ -244,25 +279,71 @@
                             </div>
                             <hr>
                         </div>
-
+                        <div id="tipoDaño-Nuevo" style="display:none;">
+                            <div class="mb-3 col-6">
+                                <div class="d-flex mb-2">
+                                    <label class="me-3">Tipo de daño: </label>
+                                <div class="checkbox-group me-3">
+                                    <label>
+                                        <input type="checkbox" name="estadoIncidenciaNuevo" value="material" > Material
+                                    </label>
+                                </div>
+                                <div class="checkbox-group me-2">
+                                    <label>
+                                        <input type="checkbox" name="estadoIncidenciaNuevo" value="personal" > Personal
+                                    </label>
+                                </div>
+                                </div>
+                                <!-- <label class="form-label">Tipo de daño: </label>
+                                <select class="form-select contentNuevoIncidencia" id="tipoDanoNuevoIncidencia">
+                                    <option value="material">Material</option>
+                                    <option value="personal">Personal</option>
+                                </select> -->
+                            </div>
+                            <div class="mb-3 col-12">
+                                <label class="form-label m-0 p-0">Daños: </label>
+                                <br>
+                                <small class="m-0 p-0 mb-2 text-gray">Daños causador por el incidente.</small>
+                                <textarea class="form-control contentNuevoIncidencia"  rows="1" id="danoNuevoIncidencia"></textarea>
+                            </div>
+                        </div>
                         <div class="mb-3 col-12">
                             <label class="form-label m-0 p-0">Comentarios: *</label><br>
                             <small class="m-0 p-0 mb-2 text-gray">Información relevante relacionada con el incidente.</small>
                             <textarea class="form-control contentNuevoIncidencia"  rows="1" id="comentarioNuevoIncidencia"></textarea>
                         </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Tipo de daño: </label>
-                            <select class="form-select contentNuevoIncidencia" id="tipoDanoNuevoIncidencia">
-                                <option value="material">Material</option>
-                                <option value="personal">Personal</option>
-                            </select>
+                        
+                        <div class="d-flex flex-row justify-content-start align-items-center mb-3">
+                            <label class="me-3"><b>Selecciona una opción: </b></label>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoIncidencia" id="subirFotoRadio" value="subirFotoRadio" onchange="onChangeTomarFoto()"> Subir foto
+                                </label>
+                            </div>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoIncidencia" id="abrirCamaraRadio" value="abrirCamaraRadio" onchange="onChangeTomarFoto()"> Abrir cámara
+                                </label>
+                            </div>
                         </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label m-0 p-0">Daños: </label>
-                            <br>
-                            <small class="m-0 p-0 mb-2 text-gray">Daños causador por el incidente.</small>
-                            <textarea class="form-control contentNuevoIncidencia"  rows="1" id="danoNuevoIncidencia"></textarea>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3" id="abrirCamara">
+                            <label class="form-label">Foto de la evidencia: *</label>
+                            <button type="button" class="btn  btn-primary" onclick="getScreen('EvidenciaIncidencia');return false;" id="buttonTakeEvidenciaIncidencia">
+                                <i class="fa-solid fa-camera-retro"></i>
+                            </button>
+                            <button type="button" class="btn  btn-sm btn-success"  style="display: none;" id="buttonSaveEvidenciaIncidencia">
+                                Guardar Foto <i class="fa-solid fa-aperture"></i>
+                            </button>
+                            <!-- Canvas Foto -->
+                            <div id="containerEvidenciaIncidencia" class="mt-2">
+                                <canvas id="canvasPhotoEvidenciaIncidencia" style="display: none;width: 200px;height: 125px;"></canvas>
+                                <img id="imgEvidenciaIncidencia" src="" style="display: none;width: 185px;height: 148px;" class="contentNuevoIncidencia">
+                            </div>
+                            <input type="file" class="form-control mt-2" id="inputFileEvidenciaIncidencia" disabled>
                         </div>
+
+
                         <div id="foto-input-form-nuevo" >
                             <div class="d-flex mb-3 col-12 div-foto-nuevo-123" id="id-foto-div-123">
                                 <div class="flex-grow-1">
@@ -465,20 +546,63 @@
                             <small class="m-0 p-0 mb-2 text-gray">Información relevante relacionada con el incidente.</small>
                             <textarea class="form-control contentEditarIncidencia"  rows="1" id="comentarioEditarIncidencia"></textarea>
                         </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Tipo de daño: </label>
-                            <select class="form-select contentEditarIncidencia" id="tipoDanoEditarIncidencia">
-                                <option value="material">Material</option>
-                                <option value="personal">Personal</option>
-                            </select>
-                        </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label m-0 p-0">Daños: </label>
-                            <br>
-                            <small class="m-0 p-0 mb-2 text-gray">Daños causador por el incidente.</small>
-                            <textarea class="form-control contentEditarIncidencia"  rows="1" id="danoEditarIncidencia"></textarea>
+                        <div id="tipoDaño-Editar" style="display:none;">
+                            <div class="d-flex mb-2">
+                                <label class="me-3">Tipo de daño: </label>
+                                <div class="checkbox-group me-3">
+                                    <label>
+                                        <input type="checkbox" name="estadoIncidenciaEditar" value="material" id="material-editar"> Material
+                                    </label>
+                                </div>
+                                <div class="checkbox-group me-2">
+                                    <label>
+                                        <input type="checkbox" name="estadoIncidenciaEditar" value="personal" id="personal-editar"> Personal
+                                    </label>
+                                </div>
+                            </div>
+                                <!-- <label class="form-label">Tipo de daño: </label>
+                                <select class="form-select contentNuevoIncidencia" id="tipoDanoNuevoIncidencia">
+                                    <option value="material">Material</option>
+                                    <option value="personal">Personal</option>
+                                </select> -->
+                            <div class="mb-3 col-12">
+                                <label class="form-label m-0 p-0">Daños: </label>
+                                <br>
+                                <small class="m-0 p-0 mb-2 text-gray">Daños causador por el incidente.</small>
+                                <textarea class="form-control contentEditarIncidencia"  rows="1" id="danoEditarIncidencia"></textarea>
+                            </div>
                         </div>
                         <small class="text-gray mb-2"> Agregar un nuevo archivo o una nueva fotografia, no reemplazara ni eliminara las anteriores.</small>
+                        <div class="d-flex flex-row justify-content-start align-items-center mb-3">
+                            <label class="me-3"><b>Selecciona una opción: </b></label>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoIncidenciaEditar" id="subirFotoRadioEditar" value="subirFotoRadioEditar" onchange="onChangeTomarFotoEditar()"> Subir foto
+                                </label>
+                            </div>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoIncidenciaEditar" id="abrirCamaraRadioEditar" value="abrirCamaraRadioEditar" onchange="onChangeTomarFotoEditar()"> Abrir cámara
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3" id="abrirCamaraEditar">
+                            <label class="form-label">Foto del articulo: *</label>
+                            <button type="button" class="btn  btn-primary" onclick="getScreen('EvidenciaIncidenciaEditar');return false;" id="buttonTakeEvidenciaIncidenciaEditar">
+                                <i class="fa-solid fa-camera-retro"></i>
+                            </button>
+                            <button type="button" class="btn  btn-sm btn-success"  style="display: none;" id="buttonSaveEvidenciaIncidenciaEditar">
+                                Guardar Foto <i class="fa-solid fa-aperture"></i>
+                            </button>
+                            <!-- Canvas Foto -->
+                            <div id="containerEvidenciaIncidenciaEditar" class="mt-2">
+                                <canvas id="canvasPhotoEvidenciaIncidenciaEditar" style="display: none;width: 200px;height: 125px;"></canvas>
+                                <img id="imgEvidenciaIncidenciaEditar" src="" style="display: none;width: 185px;height: 148px;" class="contentEditarIncidencia">
+                            </div>
+                            <input type="file" class="form-control mt-2" id="inputFileEvidenciaIncidenciaEditar" disabled>
+                        </div>
+
                         <div id="foto-input-form-editar" >
                             <div class="d-flex mb-3 col-12 div-foto-editar-123" id="id-foto-div-123">
                                 <div class="flex-grow-1">
@@ -710,7 +834,35 @@
                             <label class="form-label">Objeto afectado: </label>
                               <select class="form-select contentNuevoFalla" id="objetoAfectadoNuevoFalla" ></select>
                         </div>
-                        
+                        <div class="d-flex flex-row justify-content-start align-items-center mb-3">
+                            <label class="me-3"><b>Selecciona una opción: </b></label>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoFalla" id="subirFotoRadioFalla" value="subirFotoRadioFalla" onchange="onChangeTomarFotoFalla()"> Subir foto
+                                </label>
+                            </div>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoFalla" id="abrirCamaraRadioFalla" value="abrirCamaraRadioFalla" onchange="onChangeTomarFotoFalla()"> Abrir cámara
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3" id="abrirCamaraFalla">
+                            <label class="form-label">Tomar foto: *</label>
+                            <button type="button" class="btn  btn-primary" onclick="getScreen('User');return false;" id="buttonTakeUser">
+                                <i class="fa-solid fa-camera-retro"></i>
+                            </button>
+                            <button type="button" class="btn  btn-sm btn-success"  style="display: none;" id="buttonSaveUser">
+                                Guardar Foto <i class="fa-solid fa-aperture"></i>
+                            </button>
+                            <!-- Canvas Foto -->
+                            <div id="containerUser" class="mt-2">
+                                <canvas id="canvasPhotoUser" style="display: none;width: 200px;height: 125px;"></canvas>
+                                <img id="imgUser" src="" style="display: none;width: 185px;height: 148px;" class="contentNuevoFalla">
+                            </div>
+                            <input type="file" class="form-control mt-2" id="inputFileUser" disabled>
+                        </div>
                         <div id="evidenciaF-input-form-nuevo" >
                             <div class="d-flex mb-3 col-12 div-evidenciaF-nuevo-123" id="id-evidenciaF-div-123">
                                 <div class="flex-grow-1">
@@ -820,7 +972,39 @@
                             <label class="form-label">Objeto afectado: </label>
                               <select class="form-select contentEditarFalla" id="objetoAfectadoEditarFalla" ></select>
                         </div>
-                        
+
+
+                        <div class="d-flex flex-row justify-content-start align-items-center mb-3">
+                            <label class="me-3"><b>Selecciona una opción: </b></label>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoFallaEditar" id="subirFotoRadioEditarFalla" value="subirFotoRadioEditarFalla" onchange="onChangeTomarFotoFallaEditar()"> Subir foto
+                                </label>
+                            </div>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoFallaEditar" id="abrirCamaraRadioEditarFalla" value="abrirCamaraRadioEditarFalla" onchange="onChangeTomarFotoFallaEditar()"> Abrir cámara
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3" id="abrirCamaraEditarFalla">
+                            <label class="form-label">Tomar foto: *</label>
+                            <button type="button" class="btn  btn-primary" onclick="getScreen('EvidenciaFallaEditar');return false;" id="buttonTakeEvidenciaFallaEditar">
+                                <i class="fa-solid fa-camera-retro"></i>
+                            </button>
+                            <button type="button" class="btn  btn-sm btn-success"  style="display: none;" id="buttonSaveEvidenciaFallaEditar">
+                                Guardar Foto <i class="fa-solid fa-aperture"></i>
+                            </button>
+                            <!-- Canvas Foto -->
+                            <div id="containerEvidenciaFallaEditar" class="mt-2">
+                                <canvas id="canvasPhotoEvidenciaFallaEditar" style="display: none;width: 200px;height: 125px;"></canvas>
+                                <img id="imgEvidenciaFallaEditar" src="" style="display: none;width: 185px;height: 148px;" class="contentNuevoArticuloLose">
+                            </div>
+                            <input type="file" class="form-control mt-2" id="inputFileEvidenciaFallaEditar" disabled>
+                        </div>
+
+
                         <div id="evidenciaF-input-form-editar" >
                             <div class="d-flex mb-3 col-12 div-evidenciaF-editar-123" id="id-evidenciaF-div-123">
                                 <div class="flex-grow-1">

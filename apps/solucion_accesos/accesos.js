@@ -87,17 +87,14 @@ function setModal(type = 'none',id ="", nombre='', email=''){
         $("#cartaUser").hide();
         verListaPasesTemporales()
     }else if (type== "phoneModal"){
-        console.log("DATTOTOOTOTOT",type, nombre, email)
         verModalPhone(nombre, email)
     }else if (type== "messageModal"){
-        console.log("DATTOTOOTOTOT2222",type ,nombre, email)
         verModalMessageModal(nombre,email)
     }
      
 }
 
 function verModalPhone(nombre, email){
-    console.log("PHONE MODAL",nombre, email)
     $("#phoneModal").modal("show")
     if(email){
         successMsg("Validación", "El email no ha sido configurado para esta persona.","warning")
@@ -110,10 +107,11 @@ function verModalPhone(nombre, email){
 function enviarMensaje(){
     loadingService()
     data_for_msj.mensaje= $("#msj").val()
-    if(data_for_msj.mensaje==""){
+    data_for_msj.titulo= $("#titulo").val()
+    data_for_msj.email_from= getCookie('userEmail')
+    if(data_for_msj.mensaje=="" && data_for_msj.titulo!=="" && data_for_msj.email_from!=="" && data_for_msj.email_to!==""){
         successMsg("Validación", "Faltan campos por llenar", "warning")
     }else{
-        console.log("MENSJAEE", data_for_msj)
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -130,8 +128,7 @@ function enviarMensaje(){
         .then(res => {
             if (res.success) {
                 Swal.close()
-                console.log("res 200", res)
-                successMsg('Confirmación', "Correo enviado correctamente.", "Success")
+                successMsg('Confirmación', "Correo enviado correctamente.", "success")
                 $("#messageModal").modal("hide")
             } else{
                 errorAlert(res)
@@ -141,7 +138,7 @@ function enviarMensaje(){
 }
 
 function verModalMessageModal(nombre, email){
-    data_for_msj={nombre: nombre, email: email, mensaje:''}
+    data_for_msj={nombre: nombre, email_to: email, mensaje:''}
     $("#textMsjNombre").text(nombre)
     $("#textMsjCorreo").text(email)
     $("#msj").val("")
@@ -166,21 +163,29 @@ function limpiarTomarFoto(id){
     $('#inputFile'+id).val('');
 }
 
-function limpiarSeleccion(){
-   $('table input[name="groupCarList"]').prop('checked', false); 
+function limpiarSeleccion(type, id=""){
+    if(type =='vehiculos'){
+        $('table input[name="groupCarList"]').prop('checked', false); 
+    }else{
+        if(id!==""){
+            $(`#`+id).prop('checked', false);
+        }else{
+            $('table input[name="equipoCheckGroup"]').prop('checked', false); 
+        }
+    }
 }
 
 function verListaPasesTemporales(){
-
     setCleanData()
     loadingService()
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name: "script_turnos.py",
-            option: 'lista_pases_temporales',
+            option: 'lista_pases',
             caseta: selectCaseta.value,
             location: selectLocation.value,
+            inActive:"true"
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -191,16 +196,15 @@ function verListaPasesTemporales(){
     .then(res => {
         if (res.success) {
             Swal.close();
-            let listPases = res.response.data || []
+            let listPases = res.response.data
             let formatedList=[]
-            if(listPases.length >0){
-                for(let obj of listPases){
-                    formatedList.push({nombre: obj.nombre, folio: obj.folio, qr_code: obj.qr_code, ubicacion: obj.ubicacion, foto: obj.foto})
-                }
+            console.log()
+            for(let obj of listPases){
+                formatedList.push({nombre: obj.nombre, folio: obj.folio, qr_code: obj.qr_code, ubicacion: obj.ubicacion, foto: obj.foto})
             }
 
             if(user!="" && userJwt!=""){
-                drawTableSelect('tableListaPases',columsListaPases, [],"500px",1);
+                drawTableSelect('tableListaPases',columsListaPases, formatedList,"500px",1);
                 $("#listaPasesTitulo").text("Lista de Pases Temporales")
                 $("#listModal").modal('show');
             }
@@ -252,7 +256,6 @@ function abrirNuevaVisita(){
 function abrirAsignarGafeteModal(){
     loadingService()
     $('input[name="radioOptionsDocument"]').each(function() {
-        console.log("DOCUMENTOOO", gafeteRegistroIngreso.documento_garantia,gafeteRegistroIngreso.gafete_id, gafeteRegistroIngreso.locker_id)
         if ($(this).val() === gafeteRegistroIngreso.documento_garantia) {
             $(this).prop('checked', true);
         } else {
@@ -683,7 +686,7 @@ function agregarEquipo(){
         newRow2.append($('<td>').text(modelo));
         newRow2.append($('<td>').text(noserie));
         newRow2.append($('<td>').text(color));
-        newRow2.append('<td><input class="form-check-input checkboxGroupEquipos" style="margin: auto !important; display: block !important;"type="checkbox" id='+id+' '+checked+'></td>');
+        newRow2.append('<td><input class="form-check-input checkboxGroupEquipos" name="equipoCheckGroup" style="margin: auto !important; display: block !important;" type="checkbox" id='+id+' '+checked+'></td>');
         newRow2.append('</tr>');
         $('#listAddItemsModal').append(newRow2);
         $("#tableEquipos").append(newRow2)
@@ -700,11 +703,29 @@ function agregarEquipo(){
     }
 }
 
-function verListaDeEquiposAgregados(){
+function borrarEquipoAgregado(){
+
+}
+
+function borrarVehiculoSeleccionado(tableId, objId=""){
+    if(tableId=='tableAddCarsModal'){
+        let tabla = document.getElementById(tableId);
+        let tbody = tabla.getElementsByTagName('tbody')[0];
+        tbody.innerHTML = '';
+        limpiarSeleccion('vehiculos')
+        verListaDeEquiposAgregados(false)
+    }else{
+        limpiarSeleccion('equipos', objId)
+        verListaDeEquiposAgregados(false)
+    }
+}
+
+
+function verListaDeEquiposAgregados(showModal=true){
     selectedEquipos=[]
     getSelectedCheckbox('tableEquipos', 'checkboxGroupEquipos', selectedEquipos)
     let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
-    $('#listAddItemsModal').modal('show');
+    if(showModal){$('#listAddItemsModal').modal('show')};
     let tabla = document.getElementById('tableAddItemsModal');
     let tbody = tabla.getElementsByTagName('tbody')[0];
     tbody.innerHTML = '';
@@ -723,23 +744,31 @@ function verListaDeEquiposAgregados(){
             newRow.append($('<td>').text(modeloCar));
             newRow.append($('<td>').text(numeroSerie));
             newRow.append($('<td>').text(colorCar));
+            newRow.append(`  
+                <td >
+                <button class="btn" style="margin: auto !important; display: block !important; background-color: transparent; 
+                color: black; border: none;" onclick="borrarVehiculoSeleccionado('tableAddItemsModal', '${selectedItems[i].id}' )">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td></td >`)
             newRow.append('</tr>');
-            $('#tableAddItemsModal').append(newRow);
+            $('#tableAddItemsModal').append(newRow)
         }
     } else if(selectedItems.length==0){
         var newRow = $('<tr>');
         newRow.append($('<td colspan="3">').text('No existen equipos seleccionados.'));
         newRow.append('</tr>');
-        $('#tableAddItemsModal').append(newRow);
+        
+        $('#tableAddItemsModal').append(newRow)
     }
-    $("#listAddItemsModal").modal('show');
+    if(showModal){$("#listAddItemsModal").modal('show')}
 }
 
-function verListaDeVehiculosAgregados(){
+function verListaDeVehiculosAgregados(showModal=true){
     selectedVehiculos=[]
     getSelectedCheckbox('tableCars', 'radioGroupItems', selectedVehiculos)
     let selectedVehiculo= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
-    $('#listAddCarsModal').modal('show');
+    if(showModal){$('#listAddCarsModal').modal('show');}
     let tabla = document.getElementById('tableAddCarsModal');
     let tbody = tabla.getElementsByTagName('tbody')[0];
     tbody.innerHTML = '';
@@ -756,6 +785,12 @@ function verListaDeVehiculosAgregados(){
             newRow.append($('<td>').text(modeloCar));
             newRow.append($('<td>').text(matriculaCar));
             newRow.append($('<td>').text(colorCar));
+            newRow.append(`  
+                <td >
+                <button class="btn" style="margin: auto !important; display: block !important; background-color: transparent; color: black; border: none;" onclick="borrarVehiculoSeleccionado('tableAddCarsModal')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td></td >`)
             newRow.append('</tr>');
             $('#tableAddCarsModal').append(newRow);
         }
@@ -765,7 +800,7 @@ function verListaDeVehiculosAgregados(){
         newRow.append('</tr>');
         $('#tableAddCarsModal').append(newRow);
     }
-    $("#listAddCarsModal").modal('show');
+    if(showModal){$("#listAddCarsModal").modal('show');}
 }
 
 
@@ -988,7 +1023,6 @@ function buscarPaseEntrada() {
             $("#pasesActivos").prop('disabled', false);
         })
     }else{
-        console.log("ENTRADA")
         $("#divSpinner").show();
         $("#mainSection1").hide();
 
@@ -1097,7 +1131,6 @@ function registrarIngreso(){
     for (let eq of selectedEq){
         eq.color_articulo= eq.color_articulo.toLowerCase();
     }
-    console.log("VISITA A ",fullData.visita_a)
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -1258,7 +1291,6 @@ function entregarGafete(){
         let tieneGafete=false
         let tieneLocker=false
         if(gafeteRegistroIngreso.hasOwnProperty("gafete_id")){
-            console.log("DFATAA",gafeteRegistroIngreso.gafete_id)
             if(gafeteRegistroIngreso.gafete_id==''|| gafeteRegistroIngreso.gafete_id==null || gafeteRegistroIngreso.gafete_id==undefined){
                 $("#gafeteText").hide()
                 $("#divGafete").hide()
@@ -1397,16 +1429,7 @@ function optionCheckOtro(){
 
 //FUNCION al pedir la opcion information user al setear la informacion del usuario
 function dataUserInf(dataUser){
-    if(dataUser.hasOwnProperty('limitado_a_dias')){
-        let dias= dataUser.limitado_a_dias
-        if(dias.length>0){
-            for(let d of dias){
-                $("#"+d+"").removeClass('btn-outline-success');
-                $("#"+d+"").addClass('bg-dark');
-                $("#"+d+"").addClass('color-white');
-            }
-        }
-    }
+    
     $("#folio").text(dataUser.folio !==""? dataUser.folio: "")
 
     let imgUser ="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1"
@@ -1418,7 +1441,6 @@ function dataUserInf(dataUser){
             imgUser= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
         }
     }
-    console.log("HOLA",imgUser)
     $('#imgUser1').attr('src', imgUser);
 
     let imgCard="https://www.creativefabrica.com/wp-content/uploads/2018/12/Id-card-icon-by-rudezstudio-5-580x386.jpg"
@@ -1457,6 +1479,48 @@ function dataUserInf(dataUser){
         validity= dataUser.fecha_de_caducidad !==  '' ? dataUser.fecha_de_caducidad : '';
     }
     $('#validity').text(validity.slice(0,-3) + ' hrs');
+
+    $("#textDiasAcceso").text("")
+    $('#diasAcceso').text("")
+
+    let btns = document.getElementsByClassName('week')
+    for(let b of btns){ 
+        $("#"+b.id).addClass('btn-outline-success')
+        $("#"+b.id).removeClass('bg-dark')
+        $("#"+b.id).removeClass('color-white')
+    }
+    let diasAcceso = ""
+    if(dataUser.hasOwnProperty('config_dia_de_acceso')){
+        if(dataUser.config_dia_de_acceso =="limitar días de acceso"){
+            if(dataUser.limitado_a_acceso!==""){
+                $("#textDiasAcceso").text("Limitado a :")
+                diasAcceso= dataUser.limitado_a_acceso !==  '' ? dataUser.limitado_a_acceso : '';
+                $('#diasAcceso').text(diasAcceso + " accesos");
+            }else{
+                
+                $("#textDiasAcceso").text("")
+                $('#diasAcceso').text("")
+            }
+            let dias= dataUser.limitado_a_dias
+            if(dias.length>0){
+                for(let d of dias){
+                    $("#"+d+"").removeClass('btn-outline-success');
+                    $("#"+d+"").addClass('bg-dark');
+                    $("#"+d+"").addClass('color-white');
+                }
+            }
+        }else{
+            $("#textDiasAcceso").text("Días de acceso :")
+            diasAcceso= 'Cualquier día';
+            $('#diasAcceso').text(diasAcceso)
+        }
+        
+    }
+    
+
+
+
+
 
     let status = ""
     if(dataUser.hasOwnProperty('estatus')){
@@ -1695,15 +1759,24 @@ function tableFillEquipos(dataUser){
         //dataUser.tipo_movimiento == 'Entrada'
        
         let isChecked= listItems[i].check == true || listItems[i].check == "checked" ? 'checked' : '';
-        newRow.append('<td ><input class="form-check-input checkboxGroupEquipos" style="margin: auto!important; display: block!important;" type="checkbox" id='+id+' '+isChecked+'></td>');
+        newRow.append('<td ><input class="form-check-input checkboxGroupEquipos" style="margin: auto!important; display: block!important;" type="checkbox" name="equipoCheckGroup" id='+id+' '+isChecked+'></td>');
         newRow.append('</tr>');
         $('#tableEquipos').append(newRow);
         if(dataUser.tipo_movimiento =="Entrada"){
             $('#'+id).prop('disabled', false);
             $("#idButtonEquipoNota").prop('disabled', false);
+            $("#buttonVerListaVehiculos").prop('disabled', false)
+            $("#buttonVerBorradorVehiculos").prop('disabled', false)
+            $("#buttonVerListaEquipos").prop('disabled', false)
+            $("#buttonVerBorradorEquipos").prop('disabled', false)
         }else{
             $("#idButtonEquipoNota").prop('disabled', true);
             $('#'+id).prop('disabled', true);
+            $("#idButtonVehiculos").prop('disabled', true)
+            $("#buttonVerListaVehiculos").prop('disabled', true)
+            $("#buttonVerBorradorVehiculos").prop('disabled', true)
+            $("#buttonVerListaEquipos").prop('disabled', true)
+            $("#buttonVerBorradorEquipos").prop('disabled', true)
         }
     }
     if(listItems.length == 0){
@@ -1753,7 +1826,6 @@ function tableFillVehiculos(dataUser){
         let isChecked= listCars[i].check == true ? 'checked' : '';
         newRow.append('<td ><input class="form-check-input radioGroupItems" style="margin: auto !important; display: block !important;" type="radio" name="groupCarList" id='+id+' '+isChecked+'></td>');
         newRow.append('</tr>');
-        console.log("ITEMMMM",  tipoCar,marcaCar,modeloCar,matriculaCar,colorCar)
         $('#tableCars').append(newRow);
         if(dataUser.tipo_movimiento =="Entrada"){
             $('#'+id).prop('disabled', false);
@@ -1788,7 +1860,6 @@ function optionInformationUser(data){
         let tieneGafete=false
         let tieneLocker=false
         if(data.hasOwnProperty("gafete_id")){
-            console.log("DFATAA",data.gafete_id)
             if(data.gafete_id==''|| data.gafete_id==null || data.gafete_id==undefined){
                 $("#gafeteText").hide()
                 $("#divGafete").hide()
@@ -1818,7 +1889,6 @@ function optionInformationUser(data){
             $("#divLocker").hide()
             
         }
-        console.log("TIENE GAFETE LOCKER", tieneGafete, tieneLocker)
         if(data.tipo_movimiento == 'Entrada'){
             tipoMovimiento="Entrada" 
            $("#buttonIn").show();
@@ -2135,6 +2205,14 @@ function setCleanData(){
     $("#viernes").removeClass('btn-success');
     $("#sábado").removeClass('btn-success');
     $("#domingo").removeClass('btn-success');
+
+    let btns = document.getElementsByClassName('week')
+    for(let b of btns){ 
+        $("#"+b.id).addClass('btn-outline-success')
+        $("#"+b.id).removeClass('bg-dark')
+        $("#"+b.id).removeClass('color-white')
+    }
+
     $("#buttonAddCommentarioAccesoModal").hide()
     selectedEquipos=[]
     selectedVehiculos=[]

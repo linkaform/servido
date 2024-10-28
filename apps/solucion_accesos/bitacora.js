@@ -22,7 +22,7 @@ window.onload = function(){
     };
  	selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = async function() {
-        let response = await fetchOnChangeCaseta('script_turnos.py', 'list_bitacora', selectCaseta.value, selectLocation.value)
+        let response = await fetchOnChangeCaseta('script_turnos.py', 'list_bitacora', selectCaseta.value, selectLocation.value,prioridades=['entrada'])
         reloadTableBitacoras(response.response.data)
     };
 	let user = getCookie("userId");
@@ -100,6 +100,14 @@ window.addEventListener('storage', function(event) {
         window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
     }
 });
+
+
+async function onChangeFiltroEstadoBitacora(){
+    let prioridades = document.querySelectorAll('input[name="estadoBitacora"]:checked');
+    let values = Array.from(prioridades).map(checkbox => checkbox.value);
+    let response2 = await fetchOnChangeCaseta('script_turnos.py', 'list_bitacora', selectCaseta.value, selectLocation.value, prioridades= values)
+    reloadTableBitacoras(response2.response.data, selectCaseta.value)
+}
 
 function abrirGafeteModal(folio){
     loadingService()
@@ -484,7 +492,6 @@ function agregarVehiculo(){
 }
 
 function reloadTableBitacoras(data){
-    console.log("DATATA",data)
     if(data){
         dataTableBitacora=[]
        //dataTableLocker=[]
@@ -493,14 +500,34 @@ function reloadTableBitacoras(data){
             if(lista.length>0){
                 for (let bitacora of lista){
                     dataTableBitacora.push({
-                    folio:bitacora.folio ,fecha_entrada:bitacora.fecha_entrada ,nombre_visitante:bitacora.nombre_visitante, perfil_visita:bitacora.perfil_visita,
-                    contratista:bitacora.contratista,status_gafete:bitacora.status_gafete, visita_a:bitacora.visita_a, caseta_entrada:bitacora.caseta_entrada,caseta_salida:bitacora.caseta_salida, 
-                    fecha_salida:bitacora.fecha_salida,comentarios:bitacora.comentarios||[] , equipos: bitacora.equipos, vehiculos: bitacora.vehiculos, foto: bitacora.foto, 
-                    identificacion: bitacora.identificacion, documento: bitacora.documento||"" , a_quien_visita: bitacora.a_quien_visita||"" , perfil_visita: bitacora.perfil_visita||"" ,
-                    id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso, codigo_qr: bitacora.codigo_qr , status_visita:bitacora.status_visita})
+                    folio:bitacora.folio ,
+                    fecha_entrada:bitacora.fecha_entrada ,
+                    nombre_visitante:bitacora.nombre_visitante, 
+                    perfil_visita:bitacora.perfil_visita,
+                    contratista:bitacora.contratista,
+                    status_gafete:bitacora.status_gafete, 
+                    visita_a:bitacora.visita_a, 
+                    caseta_entrada:bitacora.caseta_entrada,
+                    caseta_salida:bitacora.caseta_salida, 
+                    fecha_salida:bitacora.fecha_salida,
+                    comentarios:bitacora.comentarios||[] , 
+                    equipos: bitacora.equipos, 
+                    vehiculos: bitacora.vehiculos, 
+                    foto: bitacora.foto, 
+                    identificacion: bitacora.identificacion, 
+                    documento: bitacora.documento||"" , 
+                    visita_a: bitacora.visita_a||"" , 
+                    perfil_visita: bitacora.perfil_visita||"" ,
+                    id: bitacora._id, 
+                    motivo_visita:bitacora.motivo_visita, 
+                    grupo_areas_acceso:bitacora.grupo_areas_acceso, 
+                    codigo_qr: bitacora.codigo_qr , 
+                    status_visita:bitacora.status_visita,
+                    id_gafet:bitacora.id_gafet
+                })
                 }
             }
-            
+            console.log("LKAROGOO", dataTableBitacora.length)
             if(tables['tableEntradas']){
                 tables['tableEntradas'].setData(dataTableBitacora)
             }else{
@@ -559,11 +586,31 @@ function loadDataTables(){
             if(user !='' && userJwt!=''){
                 let lista= res.response.data
                 for (bitacora of lista){
-                    dataTableBitacora.push({folio:bitacora.folio ,fecha_entrada:bitacora.fecha_entrada ,nombre_visitante:bitacora.nombre_visitante, perfil_visita:bitacora.perfil_visita,
-                    contratista:bitacora.contratista,status_gafete:bitacora.status_gafete, visita_a:bitacora.visita_a, caseta_entrada:bitacora.caseta_entrada,caseta_salida:bitacora.caseta_salida, 
-                    fecha_salida:bitacora.fecha_salida,comentarios:bitacora.comentarios||[] , equipos: bitacora.equipos, vehiculos: bitacora.vehiculos, foto: bitacora.foto, 
-                    identificacion: bitacora.identificacion, documento: bitacora.documento||"" , a_quien_visita: bitacora.a_quien_visita||"" , perfil_visita: bitacora.perfil_visita||"" ,
-                    id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso , codigo_qr: bitacora.codigo_qr, status_visita:bitacora.status_visita})
+                    dataTableBitacora.push({folio:bitacora.folio ,
+                    fecha_entrada:bitacora.fecha_entrada ,
+                    nombre_visitante:bitacora.nombre_visitante, 
+                    perfil_visita:bitacora.perfil_visita,
+                    contratista:bitacora.contratista,
+                    status_gafete:bitacora.status_gafete, 
+                    visita_a:bitacora.visita_a, 
+                    caseta_entrada:bitacora.caseta_entrada,
+                    caseta_salida:bitacora.caseta_salida, 
+                    fecha_salida:bitacora.fecha_salida,
+                    comentarios:bitacora.comentarios||[] , 
+                    equipos: bitacora.equipos, 
+                    vehiculos: bitacora.vehiculos, 
+                    foto: bitacora.foto, 
+                    identificacion: bitacora.identificacion, 
+                    documento: bitacora.documento||"" , 
+                    visita_a: bitacora.visita_a||"" , 
+                    perfil_visita: bitacora.perfil_visita||"" ,
+                    id: bitacora._id, 
+                    motivo_visita:bitacora.motivo_visita, 
+                    grupo_areas_acceso:bitacora.grupo_areas_acceso , 
+                    codigo_qr: bitacora.codigo_qr, 
+                    status_visita:bitacora.status_visita,
+                    id_gafet:bitacora.id_gafet
+                })
                 }
                 drawTable('tableEntradas',columsData1,dataTableBitacora);
                 drawTable('tableSalidas',columsData2,dataTableLocker);
@@ -1280,9 +1327,3 @@ function printTable(table){
     tab.print(false, true);
 }
 
-
-//---Cerrar Sesión
-function setCloseSession(argument) {
-    closeSession();
-    redirectionUrl('login',false);
-}
