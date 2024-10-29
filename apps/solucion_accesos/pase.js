@@ -262,6 +262,8 @@ function crearConfirmacion() {
 
 	let fechaVisitaMain = ""
 	let fechaHastaMain = ""
+	let selectedRadioDias = ""
+	let selectedRadioDiasAcceso = ""
 	let hayFechaVisita = $("#radioFechaFija").is(':checked') && data.fechaVisita !== ""
 	let hayFechaHasta = $("#radioRangoFechas").is(':checked')
 	if(hayFechaVisita){
@@ -279,14 +281,17 @@ function crearConfirmacion() {
 			let formatMin2= formatNumber(data.minNuevoRangoHasta)
 			fechaHastaMain= `${data.fechaHastaOA} ${formatHor2}:${formatMin2} hrs`
 		}
+		selectedRadioDias = $('input[name="diasAcceso"]:checked');
+		console.log("RADIO DIAS",selectedRadioDias)
+		selectedRadioDiasAcceso=selectedRadioDias[0].id
 	}
 
+	
 	let diasSeleccionados= $('input[name="diasPase"]:checked')
 	let diasArr=[]
 	for (let d of diasSeleccionados){
 		diasArr.push(d.value)
 	}
-		console.log("DIASAAA",diasArr)
 
 	let buttonDays=""
 	if(data.diasArr){
@@ -416,6 +421,34 @@ function crearConfirmacion() {
 		            areas: areas,
 		            comentarios:comentarios,
             		perfil_pase:"visita general",
+            		estatus:'Proceso',
+
+            		custom:true
+		        }
+		        if(areas.length>0){
+					access_pass.comentarios = comentarios
+		        }
+		        if(comentarios.length>0){
+		        	access_pass.areas = areas
+		        }
+		        if(hayFechaHasta){
+		        	access_pass.tipo_visita_pase= "rango_de_fechas" 
+		        }else{
+		        	access_pass.tipo_visita_pase= "fecha_fija"
+		        }
+		        if(fechaVisitaMain){
+		        	access_pass.fecha_desde_visita=fechaVisitaMain.slice(0, -4) +':00';
+		        }
+		        if(fechaHastaMain){
+		        	access_pass.fecha_desde_hasta=fechaHastaMain.slice(0, -4) +':00';
+		        }
+		        if(selectedRadioDiasAcceso=='radioCualquierDia'){
+		        	access_pass.config_dia_de_acceso='cualquier_día'
+		        }else{
+		        	access_pass.config_dia_de_acceso='limitar_días_de_acceso'
+		        }
+		        if(diasArr.length>0){
+		        	access_pass.config_dias_acceso = diasArr 
 		        }
 	        	fetch(url + urlScripts, {
 			        method: 'POST',
@@ -487,6 +520,3 @@ function crearConfirmacion() {
         }
 	}
 }
-
-
-

@@ -68,8 +68,10 @@ const columnsTableNotas = [
           		let comment=""
                 let data = cell.getData();
                 let html=""
-
-                if(data.note_comments.length>0){
+                for(let i of data.note_comments){
+                	html+= `<li>`+ i.note_comments+` </li>`
+                }
+               /* if(data.note_comments.length>0){
                 	for(let com of data.note_comments){
 	                	if(com.hasOwnProperty(["6647fb38da07bf430e273ea2"])){
 	                		comment= com["6647fb38da07bf430e273ea2"]
@@ -78,7 +80,7 @@ const columnsTableNotas = [
 	                	}
 	                	 html+= `<li>`+ comment+` </li>`
                 	}
-                }
+                }*/
            		let base=`<div class="lista-container" style="max-height: 100px; overflow-y: auto;">
     						<ul class="scrollable-list">
     							`+html+`

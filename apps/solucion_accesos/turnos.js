@@ -836,7 +836,7 @@ function verNotasAlert(folio){
             <tr> <td> <span > `+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span > </td> </tr>`;
         }else{
             commentsItem+=`
-           <tr> <td> <span > `+selectedNota.note_comments[com]+`</span > </td> </tr>`;
+           <tr> <td> <span > `+selectedNota.note_comments[com].note_comments+`</span > </td> </tr>`;
         }
     }
     let htmlComments = comments.length>0 ? `
@@ -1401,7 +1401,7 @@ function turnoAbierto(idGuardiasEnTurno){
     $('#buttonGuardiaApoyoModal').attr("disabled", false);
     $('#buttonCambiarCaseta').attr("disabled", true);
     $('#buttonForzarCierre').attr("disabled", true);
-    $('#textInfActualCaseta').text('Información:');
+    $('#textInfActualCaseta').text('Resumen de actividad:');
     $('#agregarGuardiasApoyoButton').attr("disabled", false);
     $("#idButtonGuardiasApoyo").prop('disabled', false);
     tables["tableGuardiasApoyo"].updateColumnDefinition("name", {title:"Guardias en Caseta"})
@@ -1421,7 +1421,7 @@ function turnoCerrado(idGuardiasEnTurno){
     $('#buttonChangeStatusTurn').text('Iniciar Turno').removeClass('btn-danger').addClass('btn-success');
     $('#buttonGuardiaApoyoModal').attr("disabled", true);
     $('#buttonCambiarCaseta').attr("disabled", false);
-    $('#textInfActualCaseta').text('Información actual de la caseta:')
+    $('#textInfActualCaseta').text('Resumen de actividad:')
     $('#buttonForzarCierre').attr("disabled", false);
     $('#agregarGuardiasApoyoButton').attr("disabled", true);
     $("#idButtonGuardiasApoyo").prop('disabled', true);

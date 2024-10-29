@@ -939,11 +939,11 @@ function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
             }
             if(inputsHijos=='.com-div-nuevo' ||inputsHijos=='.com-div-nuevo'){
                 objTemporal.tipo_comentario= datoInput1;
-                objTemporal.comentario= dataInput2;
+                objTemporal.comentario_pase= dataInput2;
             }
             if(inputsHijos=='.area-div-nuevo' ||inputsHijos=='.area-div-nuevo'){
-                objTemporal.area= datoInput1;
-                objTemporal.comentario= dataInput2;
+                objTemporal.nombre_area= datoInput1;
+                objTemporal.commentario_area= dataInput2;
             }
             array.push(objTemporal); // Agregar el objeto al array
         }

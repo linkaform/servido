@@ -414,8 +414,6 @@ function editarNota(){
     if(validateObj.note_pic.length==0 ){
         delete validateObj['note_pic'];
     }
-    console.log("OBJETOS QUE SE MANDARAN A LA PETICION",validateObj)
-
     if(nota!==""){
         fetch(url + urlScripts, {
             method: 'POST',
@@ -736,7 +734,7 @@ function verNotasAlert(folio){
             <tr> <td> <span > `+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span > </td> </tr>`;
         }else{
             commentsItem+=`
-           <tr> <td> <span > `+selectedNota.note_comments[com]+`</span > </td> </tr>`;
+           <tr> <td> <span > `+selectedNota.note_comments[com].note_comments+`</span > </td> </tr>`;
         }
     }
     let htmlComments = comments.length>0 ? `
