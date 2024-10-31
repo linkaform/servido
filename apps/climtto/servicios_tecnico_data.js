@@ -11,8 +11,8 @@ var columsTable1 = [
   	{ title:"Hora Inicio",  field:'hora_inicio',hozAlign:"right", headerFilter:"input",width:120 },
   	{ title:"Hora Fin",  field:'hora_fin',hozAlign:"right", headerFilter:"input",width:120 },
   	{ title:"Hras Efectivas",  field:'horas_totales',hozAlign:"right", headerFilter:"input",width:120 },
-  	{ title:"Técnico", field:'tecnico',hozAlign:"left", headerFilter:"input",width:150},
-  	{ title:"Equipos Realizados",field:'equipo',hozAlign:"left", headerFilter:"input",width:150 },
+  	{ title:"Técnico", field:'tecnico',hozAlign:"left", width:150},
+  	{ title:"Equipos Realizados",field:'equipo',hozAlign:"left", width:150 },
 ];
 
 

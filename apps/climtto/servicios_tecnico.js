@@ -406,11 +406,11 @@ function drawSecondElement(datasets, dataconfig){
     chart2.destroy();
   }
   //---Color
-  array_colors = getPAlleteColors(4,datasets['datasets'].length);
+  array_colors = getPAlleteColors(13,datasets['datasets'].length);
   for (let i = 0; i < datasets['datasets'].length; i++) {
-    datasets['datasets'][i]['backgroundColor'] = array_colors[i];
+    datasets['datasets'][i]['backgroundColor'].push(array_colors[i]);
   }
-  console.log('datasets',datasets)
+
   chart2 = new Chart(ctx, {
     type: 'pie',
     data: datasets,
