@@ -2,7 +2,8 @@ var userActualPage='';
 var userStatusTurn=''; 
 var arrayUserBoothsLocations=[];
 let userJwt = getCookie("userJwt");
-let coloresArray=["Amarillo", "Azul", "Beige", "Blanco", "Cafe", "Crema", "Dorado", "Gris", "Morado", "Naranja","Negro", "Plateado", "Rojo", "Rosa", "Verde", "Violeta", "Otro"]
+let coloresArray=["Amarillo", "Azul", "Beige", "Blanco", "Cafe", "Crema", "Dorado", "Gris", 
+    "Morado", "Naranja","Negro", "Plateado", "Rojo", "Rosa", "Verde", "Violeta", "Otro"]
 
 function setValueUserLocation(txt){
 	userActualPage=txt;

@@ -2891,38 +2891,6 @@ function stopStream(stream) {
 }
 
 
-//FUNCION obtener la imagen del canvas
-function getScreen(type){
-    if(!flagVideoUser){
-        console.log("hello")
-        flagVideoUser = true;
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
-            .then(function(stream) {
-                let video = document.createElement('video');
-                video.style.width = '200px';
-                video.style.height = '125px';
-                document.getElementById('container'+type).appendChild(video);
-                video.srcObject = stream;
-                video.play();
-                let canvas = document.getElementById('canvasPhoto'+type);
-                let context = canvas.getContext('2d');
-                //----Take Photo
-                $("#buttonTake"+type).attr('disabled','disabled');
-                $("#buttonTake"+type).hide();
-                $("#buttonSave"+type).show();
-                document.getElementById('buttonSave'+type).addEventListener('click', function() {
-                    setTranslateImage(context, video, canvas, type)
-                });
-            })
-            .catch(function(error) {
-                console.error('Error al acceder a la cámara:', error);
-            });
-        } else {
-            alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
-        }
-    }
-}
 
 function setTranslateImage(context, video, canvas, type){
     context.drawImage(video, 0, 0, canvas.width, canvas.height);

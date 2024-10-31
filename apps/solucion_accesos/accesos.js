@@ -50,7 +50,6 @@ window.onload = function(){
     //$("#mainSection1").hide()
     $("#cartaUser").hide()
     $('#mainSection2').show()
-
 }
 
 window.addEventListener('storage', function(event) {

@@ -803,9 +803,9 @@ function capitalizeFirstLetter(text) {
 
 //FUNCION obtener los valores de los inputs de un modal
 function getInputsValueByClass(classInput){
-    console.log("QUE PASAA",classInput)
     let data = {};
     let elements = document.getElementsByClassName(classInput)
+    console.log("QUE PASAA",elements)
     for (let i = 0; i < elements.length; i++) {
         let id = elements[i].id;
         let value = elements[i].value;
@@ -950,3 +950,75 @@ function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
     }
     return array
 }
+
+
+//FUNCION obtener la imagen del canvas
+function getScreen(type){
+    if(!flagVideoUser){
+        console.log("hello")
+        flagVideoUser = true;
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
+            .then(function(stream) {
+                let video = document.createElement('video');
+                video.style.width = '200px';
+                video.style.height = '225px';
+                document.getElementById('container'+type).appendChild(video);
+                video.srcObject = stream;
+                video.play();
+                let canvas = document.getElementById('canvasPhoto'+type);
+                let context = canvas.getContext('2d');
+                //----Take Photo
+                $("#buttonTake"+type).attr('disabled','disabled');
+                $("#buttonTake"+type).hide();
+                $("#buttonSave"+type).show();
+                document.getElementById('buttonSave'+type).addEventListener('click', function() {
+                    setTranslateImage(context, video, canvas, type)
+                });
+                flagVideoUser=false
+            })
+            .catch(function(error) {
+                console.error('Error al acceder a la cámara:', error);
+            });
+        } else {
+            alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
+        }
+    }
+}
+
+function setTranslateImage(context, video, canvas, type){
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    let photoUser = document.getElementById('img'+type);
+    photoUser.src = canvas.toDataURL('image/png');
+    photoUser.style.display = 'block';
+    video.pause();
+    video.srcObject.getTracks().forEach(function(track) {
+        track.stop();
+    });
+    video.style.display = 'none';
+    ///-- Save Input
+    canvas.toBlob( (blob) => {
+        const file = new File( [ blob ], "image"+type+".png" );
+        const dT = new DataTransfer();
+        dT.items.add( file );
+        document.getElementById("inputFile"+type).files = dT.files;
+    } );
+    //-----Rquest Photo
+    const flagBlankUser = isCanvasBlank(document.getElementById('canvasPhoto'+type));
+    if(!flagBlankUser){
+        setTimeout(() => {
+            setRequestFileImg('input'+type, type);
+        }, "1000");
+    }
+    //-----Clean ELement
+    $("#buttonSave"+type).hide();
+}
+//FUNCION validar que el canvas este limpio
+function isCanvasBlank(canvas) {
+    const context = canvas.getContext('2d');
+    const pixelBuffer = new Uint32Array(
+        context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+    );
+    return !pixelBuffer.some(color => color !== 0);
+}
+

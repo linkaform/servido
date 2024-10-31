@@ -19,49 +19,55 @@
     
 
     <link rel="stylesheet" href="./style.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 
 </head>
 <body>
 	<navbar-component ></navbar-component>
 
-     <section class="mainSection mainSectionMargins col-12 full d-flex flex-column align-items-center">
-     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 mb-3 mt-5" >
-	     	<div>
+     <section class="mainSection mainSectionMargins col-12 full d-flex flex-column align-items-center" >
+     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 mb-3 mt-5" id="paseEntradaInf1">
+	     	<div class="mb-3">
 	            <h4 >Pase de entrada</h4>
 	     	</div>
 	     	<div> 
 	     		<span ><b>Tipo de pase: </b></span>
 	     		<small class="text-gray">Visita General</small>
 	     	</div>
+	     	<div class="mt-2"> 
+	     		<span ><b>Estatus: </b></span>
+	     		<small class="text-gray">Proceso</small>
+	     	</div>
      	</div>
-     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 d-flex flex-wrap justify-content-start align-items-center p-0 m-0" >
-            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
+     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8  p-0 m-0" id="paseEntradaInf2">
+            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
                 <label for="exampleInputEmail1">Nombre Completo</label>
                 <input type="email" class="form-control fill paseEntradaNuevo" id="nombreCompleto" aria-describedby="emailHelp" placeholder="Nombre completo">
             </div>
-            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
-                <label for="exampleInputEmail1">Email</label>
-                <input type="email" class="form-control fill paseEntradaNuevo" id="email" aria-describedby="emailHelp" placeholder="Email">
-            </div>
-            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
-                <label for="exampleInputEmail1">Telefono</label>
-                <input type="email" class="form-control fill paseEntradaNuevo" id="telefono" aria-describedby="emailHelp" placeholder="Telefono">
+            <div class="d-flex flex-row flex-wrap">
+            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                	<label for="exampleInputEmail1">Email</label>
+                	<input type="email" class="form-control fill paseEntradaNuevo" id="email" aria-describedby="emailHelp" placeholder="Email">
+            	</div>
+            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                	<label for="exampleInputEmail1">Telefono</label>
+               	 	<input type="email" class="form-control fill paseEntradaNuevo" id="telefono" aria-describedby="emailHelp" placeholder="Telefono">
+            	</div>
             </div>
         </div>
-        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 d-flex flex-wrap justify-content-start align-items-center mt-5" >
- 			<h4>Sobre vigencia y acceso: </h4>
- 			<div class="d-flex flex-grow-1 justify-content-end" >
- 				<div class="checkbox-group me-2">
-	                <label>
-	                    <input type="checkbox" class="paseEntradaNuevo" name="estadoIncidencia" value="opcionesAvanzadas" id="checkOpcionesAvanzadas" onchange="onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')"> Opciones Avanzadas
-	                </label>
-	            </div>
- 			</div>
+        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8  mt-5" id="paseEntradaInf3">
+ 			<h4>Vigencia: </h4>
+ 			
  		</div> 
-        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 d-flex flex-wrap justify-content-start align-items-center ">
+ 		
+        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 " id="paseEntradaInf4">
             <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6" >
                 <div>
+					<div class="checkbox-group me-2 my-3">
+		            	<label>
+		                	<input type="checkbox" class="paseEntradaNuevo" name="estadoIncidencia" value="opcionesAvanzadas" id="checkOpcionesAvanzadas" onchange="onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')"><b> Opciones Avanzadas</b>
+		            	</label>
+		        	</div>
                 	<label>Visita de: </label>
                 	<div class="d-flex flex-column justify-content-start align-items-start " >
                 		<div>
@@ -70,42 +76,44 @@
 	                            Fecha Fija
 	                        </label>
                 		</div>
+                		<div class="col-sm-10 col-md-10 col-lg-12 col-xl-12 d-flex mb-3">
+			               <div class="col-6"> 
+			               		<label for="fechaVisita">Fecha de visita</label>
+			               		<input type="date" class="form-control paseEntradaNuevo" id="fechaVisita" aria-describedby="emailHelp" placeholder="">
+			               </div>
+			               <div class="col-6"> 
+			                    <label class="form-label">Hora: *</label>
+			                    <div class="time-selector">
+			                        <select class="form-select time-select contentNuevoPase paseEntradaNuevo" id="horaNuevoPase" 
+			                        onchange="onChangeAmpmLabel('horaNuevoPase','ampmNuevoPase')">
+			                        </select>
+			                        <label class="mx-1">:</label>
+			                        <select class="form-select time-select contentNuevoPase paseEntradaNuevo" id="minNuevoPase">
+			                        </select>
+			                        <label class="ms-2" id="ampmNuevoPase"></label>
+			                    </div>
+			               </div>
+			            </div>
                 		<div class="opcionesAvanzadasDiv">
                 			<input class="form-radio-input" type="radio" name="opcionesAvanzadas" id="radioRangoFechas" onchange="onChangeOpcionesAvanzadas('radioRangoFechas');">
 	                        <label class="form-radio-label" for="radioRangoFechas" >
 	                            Rango de Fechas
 	                        </label>
                 		</div>
+                		
                 	</div>
                 </div>
             </div>
-            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6 d-flex">
-               <div class="col-6"> 
-               		<label for="fechaVisita">Fecha de visita</label>
-               		<input type="date" class="form-control paseEntradaNuevo" id="fechaVisita" aria-describedby="emailHelp" placeholder="">
-               </div>
-               <div class="col-6"> 
-                    <label class="form-label">Hora: *</label>
-                    <div class="time-selector">
-                        <select class="form-select time-select contentNuevoPase paseEntradaNuevo" id="horaNuevoPase" 
-                        onchange="onChangeAmpmLabel('horaNuevoPase','ampmNuevoPase')">
-                        </select>
-                        <label class="mx-1">:</label>
-                        <select class="form-select time-select contentNuevoPase paseEntradaNuevo" id="minNuevoPase">
-                        </select>
-                        <label class="ms-2" id="ampmNuevoPase"></label>
-                    </div>
-               </div>
-            </div>
+            
 
             <div class="opcionesAvanzadasDiv col-12">
-	            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-12 d-flex mt-3 flex-wrap">
+	            <div class="col-sm-8 col-md-8 col-lg-12 col-xl-12 d-flex mt-3 flex-wrap">
 	               <div class="col-6 d-flex p-0 m-0" id="fechaVisitaDiv"> 
 		               	<div class="col-6">
 		               		<label for="fechaVisitaOA">Fecha de visita: </label>
 		               		<input type="date" class="form-control paseEntradaNuevo" id="fechaVisitaOA" aria-describedby="emailHelp" placeholder="">
 		               	</div>
-		               	<div class="col-6">
+		               	<!-- <div class="col-6">
 		                    <label class="form-label">Hora: *</label>
 		                    <div class="time-selector">
 		                        <select class="form-select time-select contentNuevoRangoVisita paseEntradaNuevo" id="horaNuevoRangoVisita" 
@@ -116,14 +124,14 @@
 		                        </select>
 		                        <label class="ms-2" id="ampmNuevoRangoVisita"></label>
 		                    </div>
-		               	</div>
+		               	</div> -->
 	               </div>
 	               <div class="col-6 d-flex p-0 m-0" id="fechaHastaDiv"> 
 	               		<div class="col-6">
 		               		<label for="fechaHastaOA">Fecha hasta: </label>
 		               		<input type="date" class="form-control paseEntradaNuevo" id="fechaHastaOA" aria-describedby="emailHelp" placeholder="">
 		               	</div>
-		               	<div class="col-6">
+		               <!-- 	<div class="col-6">
 		                    <label class="form-label">Hora: *</label>
 		                    <div class="time-selector">
 		                        <select class="form-select time-select contentNuevoRangoHasta paseEntradaNuevo" id="horaNuevoRangoHasta" 
@@ -134,7 +142,7 @@
 		                        </select>
 		                        <label class="ms-2" id="ampmNuevoRangoHasta"></label>
 		                    </div>
-		               	</div>
+		               	</div> -->
 	               </div>
 	               <div class="col-12  mt-4" id="diasAccesoDiv"> 
 	               		<label>Días de acceso: </label>
@@ -221,7 +229,7 @@
 		            </div>
 	            </div>
             </div>
-             <div class="col-sm-10 col-md-10 col-lg-12 col-xl-6 p-0">
+             <div class="col-sm-10 col-md-10 col-lg-12 col-xl-12 p-0 my-3">
              	<h4>Comentarios/Instrucciones: </h4>
              </div>
 			<div class="col-12 flex-grow-1 p-0">
@@ -230,8 +238,8 @@
 		                    <div class="flex-grow-1 d-flex">
 		                    	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
 					                <label for="exampleInputPassword1">Tipo de comentario: </label>
-					                <select type="select" class="form-select fill com-div-nuevo" id="tipoComentario" >
-					                	<option id="pase">Pase</option>
+					                <select type="select" class="form-select fill com-div-nuevo" id="tipoComentario" disabled>
+					                	<option id="pase" selected>Pase</option>
 					                	<option id="caseta">Caseta</option>
 					                </select>
 					            </div>
@@ -252,17 +260,6 @@
 	            	</div>
 			</div>
  			
-            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-10">
-                <label for="exampleInputPassword1">Estatus del pase</label>
-                <div class="d-flex flex-column">
-                    <div class="form-radio">
-                        <input class="form-radio-input paseEntradaNuevo" type="radio" id="estatusPase" checked>
-                        <label class="form-radio-label" for="estatusPase">
-                            Proceso
-                        </label>
-                    </div>
-                </div>
-            </div>
             <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6 my-3">
                 <!-- <button type="button" class="btn btn-outline-danger btn-block" id="cancelButton" onclick="changeView('cancel')">Cancelar</button> -->
             </div>
@@ -274,9 +271,165 @@
             	</div>
             </div>
      	</div>
+
+
+     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 mb-3 mt-5" id="paseEntradaInf5">
+	     	<div class="mb-3">
+	            <h4 >Pase de Entrada</h4>
+	     	</div>
+	     	<div class="d-flex flex-column mt-2 mb-3"> 
+	     		<span ><b>Nombre completo: </b></span>
+	     		<span class="text-gray paseEntadaUser" id="nombreText"> </span>
+	     	</div>
+	     	<div class="d-flex">
+            	<div class="d-flex flex-column col-4 p-0">
+                	<label for="exampleInputEmail1"><b>Email</b>:</label>
+                	<span class="text-gray paseEntadaUser" id="emailText"> </span>
+            	</div>
+            	<div class="d-flex flex-column col4">
+                	<label for="exampleInputEmail1"><b>Telefono</b></label>
+               	 	<span class="text-gray paseEntadaUser" id="telefonoText"> </span>
+            	</div>
+            </div>
+     	</div>
+     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8  p-0 m-0" id="paseEntradaInf6">
+            <div class="d-flex flex-row flex-wrap">
+            	<div class="col-sm-12 col-md-6 col-lg-5 col-xl-5  mb-3 mt-3">
+					<label class="form-label">Fotografia: *</label>
+					<button type="button" class="btn  btn-primary btn-primary btn-sm" onclick="getScreen('User');return false;" id="buttonTakeUser">
+						<i class="fa-solid fa-camera-retro"></i>
+					</button>
+					<button type="button" class="btn  btn-success btn-sm"  style="display: none;" id="buttonSaveUser">
+						Guardar Foto <i class="fa-solid fa-aperture"></i>
+					</button>
+					<!-- Canvas Foto -->
+					<div id="containerUser" class="mt-2">
+						<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
+						<img id="imgUser" src="" style="display: none;width: 185px;height: 148px;">
+					</div>
+					<input type="file" class="form-control mt-2" id="inputFileUser" disabled>
+				</div>
+            	<div class="col-sm-12 col-md-6 col-lg-5 col-xl-5  mb-3 mt-3">
+					<label class="form-label">Identificación: *</label>
+					<button type="button" class="btn  btn-primary btn-primary btn-sm" onclick="getScreen('Card');return false;" id="buttonTakeCard">
+						<i class="fa-solid fa-camera-retro"></i>
+					</button>
+					<button type="button" class="btn  btn-success btn-sm"  style="display: none;" id="buttonSaveCard">
+						Guardar Foto <i class="fa-solid fa-aperture"></i>
+					</button>
+					<!-- Canvas Foto -->
+					<div id="containerCard" class="mt-2">
+						<canvas id="canvasPhotoCard" style="display: none;width: 185px;height: 125px;"></canvas>
+						<img id="imgCard" src="" style="display: none;width: 185px;height: 148px;">
+					</div>
+					<input type="file" class="form-control mt-2" id="inputFileCard" disabled>
+				</div>
+				
+				<div class="col-sm-12 col-md-12 col-lg-10 col-xl-10 mt-3">
+					<label class="form-label">Motivo de la visita: *</label>
+					<textarea class="form-control paseEntadaUser"  id="inputMotivo" rows="3"></textarea>
+				</div>
+				<div class="col-sm-12 col-md-12 col-lg-10 col-xl-10 checkbox-group me-2 my-3">
+	            	<label>
+	                	<input type="checkbox" class="paseEntradaNuevo" name="agregarVehiculoEquipo" value="opcionesAvanzadas" id="agregarVehiculoEquipo" onchange="onChangeOpcionesAvanzadas('agregarVehiculoEquipo')"><b> Agregar vehiculos/equipos</b>
+	            	</label>
+	        	</div>
+	        	<div class="col-12" id="div-vehiculo">
+		        	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row div-main-vehiculo" id="div-vehiculo-item-123">
+						<div class="col-9 div-vehiculo-row-1 div-row-vehiculo" >
+							<div class="div-vehiculo-row-1 div-row-vehiculo" >
+								<label class="form-label">Tipo de Vehiculo: </label>
+								<select class="form-select" aria-label="Default select example" id="selectTipoVehiculo-123" onChange='onChangeCatalog("vehiculo",123)'>
+								</select>
+							</div>
+						</div>
+						<div class="col-3 pt-4 mt-2 div-vehiculo-row-1 ">
+							<button type="button" class="btn btn-success button-add-register" onclick="setAddVehiculo();return false;">
+								<i class="fa-solid fa-plus"></i>
+							</button>
+							<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteVehiculo(123);return false;">
+								<i class="fa-solid fa-minus"></i>
+							</button>
+						</div>
+						<div class="col-9 div-vehiculo-row-1 div-row-vehiculo">
+							<div id='divCatalogMarca123'>
+								<label class="form-label">Marca: </label>
+								<select class="form-select" aria-label="Default select example" id="selectCatalogMarca-123" onChange='onChangeCatalog("marca",123)'>
+									<option disabled>Escoge un tipo de vehiculo...</option>
+								</select>
+							</div>
+							<div id='divCatalogModelo123'>
+								<label class="form-label">Modelo: </label>
+									<select class="form-select" aria-label="Default select example" id="selectCatalogModelo-123" >
+										<option disabled>Escoge una marca...</option>
+									</select>
+							</div>
+							<div class="div-row-vehiculo">
+								<label class="form-label">Matrícula del Vehiculo:</label>
+								<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo">
+							</div>
+							<div class="div-row-vehiculo">
+								<label class="form-label">Color:</label>
+								<select class="form-select group-vehiculo" aria-label="Default select example" id="inputColor" style="height: 40px !important; overflow: auto !important;">
+								</select>
+							</div>
+						</div>
+						<hr class="my-3">
+					</div>
+	        	</div>
+	        	<div class="col-12" id="div-equipo">
+					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row div-main-equipo" id="div-equipo-item-123">	
+						<div class="col-9 div-equipo-row-123 div-row-equipo" >
+							<div class="div-equipo-row-123 div-row-equipo mb-2" >
+								<label class="form-label">Tipo de Equipo: *</label>
+								<select class="form-select group-equipo" aria-label="Default select example" value="" id="selectTipoEquipo-123">
+									<option value="Herramienta">Herramienta</option>
+									<option value="Computo">Computo</option>
+									<option value="Tablet">Tablet</option>
+									<option value="Otra">Otra</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-3 pt-4 mt-2 div-equipo-row-1 mb-2">
+							<button type="button" class="btn btn-success button-add-register" onclick="setAddEquipo();return false;">
+								<i class="fa-solid fa-plus"></i>
+							</button>
+							<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteEquipo(123);return false;">
+								<i class="fa-solid fa-minus"></i>
+							</button>
+						</div>
+						<div class="col-9 div-equipo-row-1 div-row-equipo mb-2">
+						<label class="form-label ">Nombre del Equipo:</label>
+							<input type="text" class="form-control group-equipo" id="inputNombreEquipo-123">
+						</div>
+						<div class="col-9 div-equipo-row-1 div-row-equipo mb-2">
+							<label class="form-label">Marca:</label>
+							<input type="text" class="form-control group-equipo" id="inputMatriculaVehiculo-123">
+						</div>
+						<div class="col-9 div-equipo-row-1 div-row-equipo mb-2">
+							<label class="form-label">Modelo:</label>
+							<input type="text" class="form-control group-equipo" id="inputModelo-123">
+						</div>
+						<div class="col-9 div-equipo-row-1 div-row-equipo">
+							<label class="form-label">Color:</label>
+							<input type="text" class="form-control group-equipo" id="inputColor-123">
+							<hr>
+
+						</div>
+					</div>
+	        	</div>
+            </div>
+             <div class="col-sm-10 col-md-12 col-lg-12 col-xl-12 my-5">
+            	<div class="col-12 d-flex justify-content-center">
+                	<div class="col-6 flex-grow-1"> 
+                		<button type="button" class="btn btn-primary btn-block" id="continueButton" onclick="crearConfirmacionMini()">Continuar</button>
+                	</div>
+            	</div>
+            </div>
+        </div>
     </section>
 </body>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
 
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
 <script type="text/javascript" src="./functions.js"></script>

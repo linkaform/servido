@@ -2,16 +2,171 @@ let urlImgCard=""
 let urlImgUser=""
 let arrayAreas=[]
 let arrayDias=[]
+let flagVideoCard = false;
+let flagVideoUser = false;
+let nombre=""
+let email=""
+let tel=""
+let dataCatalogs=[]
 window.onload = function(){
 	setValueUserLocation('pase');
 	customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	changeButtonColor();
-	onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')
-	iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')
-	iniciarSelectHora('horaNuevoRangoVisita','minNuevoRangoVisita', 'ampmNuevoRangoVisita')
-	iniciarSelectHora('horaNuevoRangoHasta','minNuevoRangoHasta', 'ampmNuevoRangoHasta')
-	catalogoAreaByLocation(getCookie('userLocation'))
-	$("#tipoComentario").val("")
+	const valores = window.location.search;
+	const urlParams = new URLSearchParams(valores);
+
+	let id = urlParams.get('id') !== null ? urlParams.get('id') :'' ;
+	nombre = urlParams.get('nombre') !== null ? urlParams.get('nombre') :'' ;
+	email = urlParams.get('email') !== null ? urlParams.get('email') :'' ;
+	tel = urlParams.get('tel') !== null ? urlParams.get('tel') :'' ;
+	if(id){
+		console.log("OCUUILTAR LA IFNORMACION", nombre, email, tel)
+		$("#paseEntradaInf1").hide()
+		$("#paseEntradaInf2").hide()
+		$("#paseEntradaInf3").hide()
+		$("#paseEntradaInf4").hide()
+		$("#paseEntradaInf5").show()
+		$("#paseEntradaInf6").show()
+		$("#nombreText").text(nombre)
+		$("#emailText").text(email)
+		$("#telefonoText").text(tel)
+		getCatalogsIngreso()
+		onChangeOpcionesAvanzadas('agregarVehiculoEquipo')
+		//onChangeCatalog('vehiculo', "")
+	}else{
+		$("#paseEntradaInf1").show()
+		$("#paseEntradaInf2").show()
+		$("#paseEntradaInf3").show()
+		$("#paseEntradaInf4").show()
+		$("#paseEntradaInf5").hide()
+		$("#paseEntradaInf6").hide()
+		onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')
+		iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')
+		// iniciarSelectHora('horaNuevoRangoVisita','minNuevoRangoVisita', 'ampmNuevoRangoVisita')
+		// iniciarSelectHora('horaNuevoRangoHasta','minNuevoRangoHasta', 'ampmNuevoRangoHasta')
+		catalogoAreaByLocation(getCookie('userLocation'))
+		
+	}
+}
+
+//FUNCION para obtener los catalogos
+function getCatalogsIngreso(){
+	loadingService()
+	fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "get_vehiculos.py",
+            //account_id:10
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+        }).then(res => res.json())
+        .then(res => {
+            if(res.success){
+            	Swal.close()
+                let data= res.response.data
+                if(data.status_code ==400 || data.status_code==401){
+                    errorAlert(res)
+                }else{
+                    let selectVehiculos= document.getElementById("selectTipoVehiculo-123")
+                    selectVehiculos.innerHTML="";
+                    dataCatalogs.types_cars=data 
+                    for (let obj of data){
+                    	console.log(obj)
+                        selectVehiculos.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
+                    }
+                    selectVehiculos.value=""
+                } 
+            }else{
+                errorAlert(res)
+            }
+        })
+
+    let cat={
+        "brands_cars": [
+            {"type": "motocicleta", "brand": ["vento"]},
+            {"type": "carro", "brand": ["nissan"]},
+            {"type": "trailer", "brand": ["volvo"]},
+        ],
+        "model_cars": [
+            {"brand": "vento", "model": ["35WFAS"]},
+            {"brand":"suzuki", "model":["veloxs3"]},
+            {"brand":"indian","model": ["model345"]},
+            {"brand":"nissan", "model":["beliocks"]},
+            {"brand":"chevrolet", "model":["345ref"]},
+            {"brand":"ford", "model":["magic44"]},
+            {"brand":"volvo", "model":["ref564"]},
+            {"brand":"mercedes", "model":["mobre45"]},
+            {"brand":"kenworth", "model":["cam213"]},
+        ],
+        "types_cars": ["motocicleta", "carro", "trailer"],
+    };
+    // dataCatalogs =cat// res.response.data;
+    $("#selectTipoVehiculo-123").prop( "disabled", false );
+    $("#spinnerTipoVehiculo").css("display", "none");
+    // dataCatalogs.types_cars.forEach(function(e, i){
+    //     $("#datalistOptionsTipo").append($('<option></option>').val(e).text(e));
+    // });
+}
+
+//FUNCION rellenar catalogos al momento de escojer una opcion
+async function onChangeCatalog(type, id){
+    if(type == "vehiculo"){
+        let inputMarca= document.getElementById("selectTipoVehiculo-"+id);
+        const options = {
+            method: 'POST', 
+            body: JSON.stringify({
+                script_name:'get_vehiculos.py',
+                tipo:inputMarca.value
+            }),
+             headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+userJwt}
+        };
+        loadingService();
+        let respuesta = await fetch(url + urlScripts, options);
+        let data = await respuesta.json();
+        if(data.error){
+            errorAlert(data)
+        }else{
+            Swal.close();
+            let list =data.response.data
+            let selectVehiculosMarca= document.getElementById("selectCatalogMarca-"+id)
+            selectVehiculosMarca.innerHTML=""; 
+            for (let obj in list){
+                selectVehiculosMarca.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+            }
+            selectVehiculosMarca.value=""
+        }
+    }else if (type == "marca"){
+        let inputTipo= document.getElementById("selectTipoVehiculo-"+id);
+        let inputMarca= document.getElementById("selectCatalogMarca-"+id);
+        const options = {
+            method: 'POST', 
+            body: JSON.stringify({
+                script_name:'script_turnos.py',
+                option:'vehiculo_tipo',
+                tipo:inputTipo.value,
+                marca: inputMarca.value
+            }),
+             headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+ userJwt}
+        };
+        loadingService();
+        let respuesta = await fetch(url + urlScripts, options);
+        let data = await respuesta.json();
+        if(data.error){
+            errorAlert(data)
+        }else{
+            Swal.close();
+            let list =data.response.data
+            let selectVehiculosModelo= document.getElementById("selectCatalogModelo-"+id)
+            selectVehiculosModelo.innerHTML=""; 
+            for (let obj in list){
+                selectVehiculosModelo.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+            }
+            selectVehiculosModelo.value=""
+        }
+    }
 }
 
 function catalogoAreaByLocation(location){
@@ -58,8 +213,8 @@ function setAddCom(editAdd ="nuevo", classNam){
             <div class="flex-grow-1 d-flex">
                 	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
 		                <label for="exampleInputPassword1">Tipo de comentario: </label>
-		                <select type="select" class="form-select fill paseEntradaNuevo com-div-nuevo" id="tipoComentario-`+randomID+`" >
-		                	<option id="pase">Pase</option>
+		                <select type="select" class="form-select fill paseEntradaNuevo com-div-nuevo" id="tipoComentario-`+randomID+`" disabled>
+		                	<option id="pase" selected>Pase</option>
 					        <option id="caseta">Caseta</option>
 		                </select>
 		            </div>
@@ -76,7 +231,6 @@ function setAddCom(editAdd ="nuevo", classNam){
         </div>
     `;
     $(`#`+classNam+`-input-form-`+editAdd).append(newItem) 
-    $(`#tipoComentario-${randomID}`).val("")
 }
 
 
@@ -90,7 +244,8 @@ function setDeleteCom(editAdd ="nuevo", id, classNam){
             elements[0].parentNode.removeChild(elements[0]);
         }
     }
-}//FUNCION para agregar foto en el modal de agregar nota
+}
+//FUNCION para agregar foto en el modal de agregar nota
 function setAddArea(editAdd ="nuevo", classNam){
     let randomID = Date.now();
     let newItem=`
@@ -132,7 +287,6 @@ function setAddArea(editAdd ="nuevo", classNam){
 //FUNCION para elimar foto en el modal de agregar nota
 function setDeleteArea(editAdd ="nuevo", id, classNam){
     const elements = document.querySelectorAll(`.`+classNam+`-div-`+editAdd);
-	console.log("ELEMENTOS", elements)
     const count = elements.length;
     if(count > 1){
         const elements = document.getElementsByClassName(`div-`+classNam+`-`+editAdd+`-`+id);
@@ -142,6 +296,69 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
     }
 }
 
+//FUNCION rellenar catalogos al momento de escojer una opcion
+async function onChangeCatalog(type, id){
+    if(type == "vehiculo"){
+        console.log("AL CAMBIO",type, id)
+        let inputMarca= document.getElementById("selectTipoVehiculo-123");
+        const options = {
+            method: 'POST', 
+            body: JSON.stringify({
+                script_name:'get_vehiculos.py',
+                tipo:inputMarca.value
+            }),
+             headers:{ 'Content-Type': 'application/json',
+             'Authorization': 'Bearer '+userJwt}
+        };
+        loadingService();
+        let respuesta = await fetch(url + urlScripts, options);
+        let data = await respuesta.json();
+        if(data.error){
+            errorAlert(data)
+        }else{
+            Swal.close();
+            let list =data.response.data
+            let selectVehiculosMarca= document.getElementById("selectCatalogMarca-123")
+            selectVehiculosMarca.innerHTML=""; 
+            for (let obj in list){
+            console.log(list[obj])
+
+                selectVehiculosMarca.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+            }
+            selectVehiculosMarca.value=""
+        }
+    }else if (type == "marca"){
+        let inputTipo= document.getElementById("selectTipoVehiculo-123");
+        let inputMarca= document.getElementById("selectCatalogMarca-123");
+        console.log("DETALLES",inputTipo.value, inputMarca.value)
+        const options = {
+            method: 'POST', 
+            body: JSON.stringify({
+                script_name:'script_turnos.py',
+                option:'vehiculo_tipo',
+                tipo:inputTipo.value,
+                marca: inputMarca.value
+            }),
+             headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+ userJwt}
+        };
+        loadingService();
+        let respuesta = await fetch(url + urlScripts, options);
+        let data = await respuesta.json();
+        if(data.error){
+            errorAlert(data)
+        }else{
+            Swal.close();
+            let list =data.response.data
+            let selectVehiculosModelo= document.getElementById("selectCatalogModelo-123")
+            selectVehiculosModelo.innerHTML=""; 
+                console.log("OBJ",selectVehiculosModelo.value)
+            for (let obj in list){
+                selectVehiculosModelo.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
+            }
+            selectVehiculosModelo.value=""
+        }
+    }
+}
 
 function onChangeOpcionesAvanzadas(type){
 	if(type=="checkOpcionesAvanzadas"){
@@ -180,6 +397,21 @@ function onChangeOpcionesAvanzadas(type){
 		}else if(selected[0].id == 'radioLimitarDias'){
 			$("#diasAccesoDivDias").show()
 		}
+	}else if (type == "agregarVehiculoEquipo"){
+		if($("#agregarVehiculoEquipo").is(':checked')){
+			$("#div-equipo").show()
+			$("#div-vehiculo").show()
+			let selectColores= document.getElementById("inputColor")
+			$(document).ready(function() {
+				for(let color of coloresArray){
+			        selectColores.innerHTML += '<option value="'+capitalizeFirstLetter(color.toLowerCase()) +'">'+color+'</option>';
+			    }
+			});
+			selectColores.value=""
+		}else{
+			$("#div-equipo").hide()
+			$("#div-vehiculo").hide()
+		}
 	}
 }
 
@@ -199,152 +431,54 @@ function getSelectedCheckRAdio(name=""){
 
 function copyLinkPase(id){
 	console.log("data.json.id",id)
-	navigator.clipboard.writeText(`https://app.linkaform.com/#/records/detail/`+id);
+	navigator.clipboard.writeText(`https://app.linkaform.com/#/records/detail/`+id  `${protocol}//${host}/solucion_accesos/${type}.html`);
 }
 
-function crearConfirmacion() {
-	let data= getInputsValueByClass('paseEntradaNuevo')
-	let comentarios= getDataGrupoRepetitivo('com-input-form-nuevo','.com-div-nuevo' , 2)
-	let areas= getDataGrupoRepetitivo('area-input-form-nuevo','.area-div-nuevo' , 2)
-	console.log("DFATAAA", data)
-	let areasTr=""
-	for (let s of areas){
-		areasTr +=	
-		`<tr>
-			<td>`+s.area+`</td>
-			<td>`+s.comentario+`</td>
-		</tr>`
-	}
-	let comTr=""
-	for (let c of comentarios){
-		comTr +=	
-		`<tr>
-			<td>`+c.tipo_comentario+`</td>
-			<td>`+c.comentario+`</td>
-		</tr>`
-	}
-	let mainAccesos=""
-	if(areasTr){
-		mainAccesos=`<table class="table table-borderless" >
-						<thead>
-							<tr>
-								<th style=" text-align:left !important;"><h5><b> Areas de acceso</b></h5></th>
-								<th > </th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><b>Area: </b></td>
-								<td><b>Comentario:</b></td>
-							</tr>
-							`+areasTr+`
-						</tbody>
-					</table>`
-	}
-	let mainComentarios=""
-	if(comTr){
-		mainComentarios=`<table  class="table table-borderless">
-							<thead>
-								<tr>
-									<th style=" text-align:left !important;" class="m-0"><h5><b> Comentarios/Instrucciones </b></h5></th>
-									<th> </th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td><b>	Tipo de comentario:</b></td>
-									<td><b>Comentario</b></td>
-								</tr>
-								`+comTr+`
-							</tbody>
-						</table>`
-	}
-
-	let fechaVisitaMain = ""
-	let fechaHastaMain = ""
-	let selectedRadioDias = ""
-	let selectedRadioDiasAcceso = ""
-	let hayFechaVisita = $("#radioFechaFija").is(':checked') && data.fechaVisita !== ""
-	let hayFechaHasta = $("#radioRangoFechas").is(':checked')
-	if(hayFechaVisita){
-		let formatMin = formatNumber(data.minNuevoPase)
-		let formatHor = formatNumber(data.horaNuevoPase)
-		fechaVisitaMain= `${data.fechaVisita} ${formatHor}:${formatMin} hrs`
-	}else if (hayFechaHasta){
-		if(data.fechaVisitaOA !== ""){
-			let formatHor= formatNumber(data.horaNuevoRangoVisita)
-			let formatMin= formatNumber(data.minNuevoRangoVisita)
-			fechaVisitaMain= `${data.fechaVisitaOA} ${formatHor}:${formatMin} hrs`
-		}
-		if(data.fechaHastaOA!==""){
-			let formatHor2= formatNumber(data.horaNuevoRangoHasta)
-			let formatMin2= formatNumber(data.minNuevoRangoHasta)
-			fechaHastaMain= `${data.fechaHastaOA} ${formatHor2}:${formatMin2} hrs`
-		}
-		selectedRadioDias = $('input[name="diasAcceso"]:checked');
-		console.log("RADIO DIAS",selectedRadioDias)
-		selectedRadioDiasAcceso=selectedRadioDias[0].id
-	}
-
-	
-	let diasSeleccionados= $('input[name="diasPase"]:checked')
-	let diasArr=[]
-	for (let d of diasSeleccionados){
-		diasArr.push(d.value)
-	}
-
-	let buttonDays=""
-	if(data.diasArr){
-		buttonDays=`
-		<div class="d-flex justify-content-start ms-2">
-			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="lunes">L</button>
-			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="martes">M</button>
-			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="miércoles">M</button>
-			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="jueves">J</button>
-			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="viernes">V</button>
-			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="sábado">S</button>
-			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="domingo">D</button>
-		</div>`
-	}
-	let fechaVisitaDiv=""
-	if(fechaVisitaMain){
-		fechaVisitaDiv=`<div class="d-flex flex-wrap ms-2">
-							<div>
-								<i class="fa-regular fa-calendar"></i>
-							</div>
-							<div class="ms-3">
-								Fecha y hora de visita: `+fechaVisitaMain+`
-							</div>
-						</div>`
-	}
-	let fechaHastaDiv=""
-	if(fechaHastaMain){
-		fechaHastaDiv=` <div class="d-flex mt-3 ms-2">
-							<div>
-								<i class="fa-regular fa-calendar"></i>
-							</div>
-							<div class="ms-3">
-								Fecha y hora de hasta: `+fechaHastaMain+`
-							</div>
-						</div>`
-	}
-	let tituloVigencia=""
-	if(fechaHastaMain || fechaVisitaMain){
-		tituloVigencia=`<div class="d-flex justify-content-start mt-3 ms-2">
-							<h5><b>Vigencia y acceso:</b></h5>
-						</div>`
-	}
-	let tituloDias=""
-	if(true){
-		tituloDias=`<div class="d-flex justify-content-start mt-4 ms-2">
-						<h5><b>Dias de acceso:</b></h5>
-					</div>`
-	}
+function crearConfirmacionMini() {
+	let data= getInputsValueByClass('paseEntradaUser')
+	let listInputsVehicule={};
+	let listInputsEquipo={};
+	let divVehiculos = document.getElementById("div-vehiculo");
+    let inputsV = divVehiculos.querySelectorAll('.group-vehiculo');
+    inputsV.forEach(function(input) {
+    var idV = input.id.split('-')[1];
+        if (!listInputsVehicule[idV]) {
+            listInputsVehicule[idV] = [];
+        }
+        listInputsVehicule[idV].push(input);
+    });
+    let divEquipo = document.getElementById("div-equipo");
+    let inputsE = divEquipo.querySelectorAll('.group-equipo');
+    inputsE.forEach(function(input) {
+    let idE = input.id.split('-')[1];
+        if (!listInputsEquipo[idE]) {
+            listInputsEquipo[idE] = [];
+        }
+        listInputsEquipo[idE].push(input);
+    });
+    let motivoHtml=""
+    data.inputMotivo= $("#inputMotivo").val()
+    if(data.inputMotivo!==""){
+    	motivoHtml=`
+    	<table class="table table-borderless" >
+    		<thead>
+				<tr>
+					<th style=" text-align:left !important;" > <h6> <b>Motivo de la visita: </b></h6> </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>`+data.inputMotivo+`</td>
+				</tr>
+			</tbody>
+		</table>
+    	`;
+    }
 
 
 
 	let html = []//getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
-	if(data.nombreCompleto=="" ||data.email=="" || data.telefono==""){
+	if(false){
 		successMsg("Validación", "Faltan datos por llenar", "warning")
 	}else{
 		Swal.fire({
@@ -372,7 +506,7 @@ function crearConfirmacion() {
 								<td></td>
 							</tr>
 							<tr>
-								<td>`+data.nombreCompleto+`</td>
+								<td>`+nombre+`</td>
 								<td></td>
 							</tr>
 							<tr>
@@ -380,27 +514,21 @@ function crearConfirmacion() {
 								<td><span ><b>Teléfono:</b></span></td>
 							</tr>
 							<tr>
-								<td> `+data.email+`</td>
-								<td><span > `+data.telefono+`</span></td>
+								<td> `+email+`</td>
+								<td><span > `+tel+`</span></td>
+							</tr>
+							<tr>
+								<td><b>Foto:</b></td>
+								<td><span><b>identificación:</b></span></td>
+							</tr>
+							<tr>
+								<td><img src="`+urlImgUser+`" alt="description" style="object-fit:cover;" width="220" height="150"> </td>
+								<td><img src="`+urlImgCard+`" alt="description" style="object-fit:cover;" width="220" height="150"> </td>
 							</tr>
 						</tbody>
 					</table>
 					<hr>
-					`+mainAccesos+`
-					`+mainComentarios+`
-					`+tituloVigencia+`
-					`+fechaVisitaDiv+`
-					`+fechaHastaDiv+`
-					`+tituloDias+`
-					<div class="d-flex justify-content-start ms-2">
-						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="lunes">L</button>
-						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="martes">M</button>
-						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="miércoles">M</button>
-						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="jueves">J</button>
-						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="viernes">V</button>
-						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="sábado">S</button>
-						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="domingo">D</button>
-					</div>
+					`+motivoHtml+`
 				</div>
 		
 	      `,
@@ -415,14 +543,12 @@ function crearConfirmacion() {
 	        if (result.value) {
 	        	loadingService()
 		        let access_pass={
-		            nombre: data.nombreCompleto,
-		            email:data.email,
-		            telefono: data.telefono,
-		            areas: areas,
-		            comentarios:comentarios,
+		            nombre: nombre,
+		            email: email,
+		            telefono:telefono,
             		perfil_pase:"visita general",
             		estatus:'Proceso',
-
+            		visita_a: getCookie("userName"),
             		custom:true
 		        }
 		        if(areas.length>0){
@@ -495,7 +621,7 @@ function crearConfirmacion() {
 						    confirmButtonText: "Copiar Link"
 						 }).then((result)=>{
 						 	if (result.value) {
-						 		copyLinkPase(data.json.id);
+						 		copyLinkPase(data.json.id, nombre,);
 						 	}
 						 })
                     }
@@ -509,14 +635,425 @@ function crearConfirmacion() {
 		      	
 	        }
 		});
-
-		
-        if(diasArr.length>0){
-            for(let d of diasArr){
-                $("#"+d+"").removeClass('btn-outline-success');
-                $("#"+d+"").addClass('bg-dark');
-                $("#"+d+"").addClass('color-white');
-            }
-        }
 	}
+}
+
+
+function crearConfirmacion() {
+	let data= getInputsValueByClass('paseEntradaUser')
+	let
+	let divVehiculos = document.getElementById("div-vehiculo");
+    let inputsV = divVehiculos.querySelectorAll('.group-vehiculo');
+    inputsV.forEach(function(input) {
+    var idV = input.id.split('-')[1];
+        if (!listInputsVehicule[idV]) {
+            listInputsVehicule[idV] = [];
+        }
+        listInputsVehicule[idV].push(input);
+    });
+    let divEquipo = document.getElementById("div-equipo");
+    let inputsE = divEquipo.querySelectorAll('.group-equipo');
+    inputsE.forEach(function(input) {
+    let idE = input.id.split('-')[1];
+        if (!listInputsEquipo[idE]) {
+            listInputsEquipo[idE] = [];
+        }
+        listInputsEquipo[idE].push(input);
+    });
+    let motivoHtml=""
+    data.inputMotivo= $("#inputMotivo").val()
+    if(data.inputMotivo!==""){
+    	motivoHtml=`
+    	<table class="table table-borderless" >
+    		<thead>
+				<tr>
+					<th style=" text-align:left !important;" > <h6> <b>Motivo de la visita: </b></h6> </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>`+data.inputMotivo+`</td>
+				</tr>
+			</tbody>
+		</table>
+    	`;
+    }
+
+
+
+	let html = []//getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
+	if(false){
+		successMsg("Validación", "Faltan datos por llenar", "warning")
+	}else{
+		Swal.fire({
+	        title:'Confirmación',
+	        html:`
+				<div>
+					<table class="table table-borderless" >
+						<thead>
+							<tr>
+								<th  style=" text-align:left !important;" > <h5> <b>Sobre la visita</b></h5> </th>
+								<th > </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><b>Tipo de pase:</b></td>
+								<td><b>Estatus:</b></td>
+							</tr>
+							<tr>
+								<td>Visita General</td>
+								<td><span > Proceso </span></td>
+							</tr>
+							<tr>
+								<td><b>Nombre completo:</b></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>`+nombre+`</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td><b>Email:</b></td>
+								<td><span ><b>Teléfono:</b></span></td>
+							</tr>
+							<tr>
+								<td> `+email+`</td>
+								<td><span > `+tel+`</span></td>
+							</tr>
+							<tr>
+								<td><b>Foto:</b></td>
+								<td><span><b>identificación:</b></span></td>
+							</tr>
+							<tr>
+								<td><img src="`+urlImgUser+`" alt="description" style="object-fit:cover;" width="220" height="150"> </td>
+								<td><img src="`+urlImgCard+`" alt="description" style="object-fit:cover;" width="220" height="150"> </td>
+							</tr>
+						</tbody>
+					</table>
+					<hr>
+					`+motivoHtml+`
+				</div>
+		
+	      `,
+	        showCancelButton: true,
+	        confirmButtonColor: "#28a745",
+	        cancelButtonColor: "#dc3545",
+	        confirmButtonText: "Generar link",
+	        heightAuto:false,
+	        width:750,
+	    })
+	    .then((result) => {
+	        if (result.value) {
+	        	loadingService()
+		        let access_pass={
+		            nombre: nombre,
+		            email: email,
+		            telefono:telefono,
+            		perfil_pase:"visita general",
+            		estatus:'Proceso',
+            		visita_a: getCookie("userName"),
+            		custom:true
+		        }
+		        if(areas.length>0){
+					access_pass.comentarios = comentarios
+		        }
+		        if(comentarios.length>0){
+		        	access_pass.areas = areas
+		        }
+		        if(hayFechaHasta){
+		        	access_pass.tipo_visita_pase= "rango_de_fechas" 
+		        }else{
+		        	access_pass.tipo_visita_pase= "fecha_fija"
+		        }
+		        if(fechaVisitaMain){
+		        	access_pass.fecha_desde_visita=fechaVisitaMain.slice(0, -4) +':00';
+		        }
+		        if(fechaHastaMain){
+		        	access_pass.fecha_desde_hasta=fechaHastaMain.slice(0, -4) +':00';
+		        }
+		        if(selectedRadioDiasAcceso=='radioCualquierDia'){
+		        	access_pass.config_dia_de_acceso='cualquier_día'
+		        }else{
+		        	access_pass.config_dia_de_acceso='limitar_días_de_acceso'
+		        }
+		        if(diasArr.length>0){
+		        	access_pass.config_dias_acceso = diasArr 
+		        }
+	        	fetch(url + urlScripts, {
+			        method: 'POST',
+			        body: JSON.stringify({
+			            script_name: "pase_de_acceso.py",
+		                option: 'create_access_pass',
+		                location:getCookie('userLocation'),
+		                access_pass: access_pass
+			        }),
+			        headers:{
+			            'Content-Type': 'application/json',
+			            'Authorization': 'Bearer '+userJwt
+			        },
+			    })
+			    .then(res => res.json())
+			    .then(res => {
+			        if (res.success) {
+			        	let data=res.response.data
+			        	if(data.status_code==400 || data.status_code==401){
+                        let errores=[]
+                        for(let err in data.json){
+                            errores.push(data.json[err].label+': '+data.json[err].msg)
+                        }
+                        Swal.fire({
+                            title: "Error",
+                            text: errores.flat(),
+                            type: "error"
+                        });
+                    }else if(data.status_code==202 || data.status_code==201){
+			        	Swal.close()
+			        	Swal.fire({
+				      		imageUrl: "https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_10.png",
+				      		text: "Tu informacion se ha guardado correctamente.",
+						    html:`
+						      	<div class="mb-3 mt-2" style="font-weight: bold; font-size: 1.1em; color:#8ebd73 !important; "> Pase de entrada generado. </div>
+						        <div class="d-flex flex-column justify-content-center align-items-center">
+			    			      	<div class='align-items-start m-2'>
+			    			      	  	El pase de entrada se ha generado correctamente. Por favor, copie el siguiente enlace y compartalo con el visitante para
+			    			      	  	completar el proceso.
+			    			    	</div>
+						        </div>`,
+						    showCancelButton:false,
+						    showConfirmButton:true,
+						    confirmButtonText: "Copiar Link"
+						 }).then((result)=>{
+						 	if (result.value) {
+						 		copyLinkPase(data.json.id, nombre,);
+						 	}
+						 })
+                    }
+			        }else{
+						Swal.close()
+						errorAlert(res)
+			        }
+			    });
+
+
+		      	
+	        }
+		});
+	}
+}
+
+
+
+
+function limpiarTomarFoto(id){
+    flagVideoUser=false
+    currentStream=null
+    $('#buttonTake' + id).show();
+    $('#buttonTake' + id).prop('disabled', false);
+    $('#buttonSave' + id).hide();
+    $('#img' + id).hide();
+    $('#img' + id).attr('src', '');
+    $('#inputFile' + id).val('');
+
+    fotosNuevoIncidenteEditar={}
+    fotosNuevoIncidente={}
+    fotoNuevaFalla={}
+}
+
+//FUNCION eliminar un set repetitivo de vehiculo
+function setDeleteVehiculo(id) {
+	const element = document.getElementById('div-vehiculo-item-'+id);
+	if(element && id!=123){
+		element.remove()
+	}
+}
+
+
+//FUNCION eliminar set repetitivo de vehiculo
+function setAddVehiculo() {
+	let randomID = Date.now();
+	//---Structure HTML
+    let newItem=`
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row div-main-vehiculo" id="div-vehiculo-item-`+randomID+`">
+    	<div class="col-9 div-vehiculo-row-1 div-row-vehiculo-`+randomID+`" >
+			<div class="div-vehiculo-row-1 div-row-vehiculo-`+randomID+`">
+				<label class="form-label">Tipo de Vehiculo: </label>
+				<select class="form-select" aria-label="Default select example" id="selectTipoVehiculo-`+randomID+`" onChange='onChangeCatalog("vehiculo",`+ randomID+`)'>
+				</select>
+			</div>
+		</div>
+		<div class="col-3 pt-4 mt-2 div-vehiculo-row-`+randomID+`">
+			<button type="button" class="btn btn-success button-add-register" onclick="setAddVehiculo();return false;">
+				<i class="fa-solid fa-plus"></i>
+			</button>
+			<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteVehiculo(`+randomID+`);return false;">
+				<i class="fa-solid fa-minus"></i>
+			</button>
+		</div>
+		<div class="col-9 div-vehiculo-row-1 div-row-vehiculo-`+randomID+`">
+			<div id='divCatalogMarca123'>
+				<label class="form-label">Marca: </label>
+				<select class="form-select" aria-label="Default select example" id="selectCatalogMarca-`+randomID+`" onChange='onChangeCatalog("marca",`+ randomID+`)'>
+					<option disabled>Escoge un tipo de vehiculo...</option>
+				</select>
+			</div>
+			<div id='divCatalogModelo123'>
+				<label class="form-label">Modelo: </label>
+					<select class="form-select" aria-label="Default select example" id="selectCatalogModelo-`+randomID+`" >
+						<option disabled>Escoge una marca...</option>
+					</select>
+			</div>
+			<div class="div-row-vehiculo">
+				<label class="form-label">Matrícula del Vehiculo:</label>
+				<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-`+ randomID+`>
+			</div>
+			<div class="div-row-vehiculo">
+				<label class="form-label">Color:</label>
+				<select class="form-select group-vehiculo" aria-label="Default select example" id="inputColor-`+randomID+`" style="height: 40px !important; overflow: auto !important;">
+				</select>
+			</div>
+		</div>
+		<hr class="my-3">
+	</div>
+    `;
+	$('#div-vehiculo').append(newItem)
+	/*$(".select-item-register").select2({
+	    tags: true
+	});*/
+	 //INFO: Inicializamos el primer catalago
+	$("#divCatalogMarca"+randomID+"").hide();
+	$("#divCatalogModelo"+randomID+"").hide();
+	dataCatalogs.types_cars.forEach(function(e, i){
+	   $("#selectTipoVehiculo-"+randomID+"").append($('<option></option>').val(e).text(e));
+	});
+	let selectColores= document.getElementById("inputColor-"+randomID)
+	$(document).ready(function() {
+		for(let color of coloresArray){
+	        selectColores.innerHTML += '<option value="'+capitalizeFirstLetter(color.toLowerCase()) +'">'+color+'</option>';
+	    }
+	});
+	selectColores.value=""
+}
+
+
+//FUNCION eliminar set repetitivo de equipo
+function setDeleteEquipo(id) {
+	const element = document.getElementById('div-equipo-item-'+id);
+	if(element && id!=123){
+		element.remove()
+	}
+}
+
+
+//FUNCION eliminar set repetitivo de equipo
+function setAddEquipo() {
+	let randomID = Date.now();
+    let newItem=`
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row div-main-equipo" id="div-equipo-item-`+randomID+`">
+		<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo" >
+		<div class="div-equipo-row-123 div-row-equipo mb-2" >
+			<label class="form-label">Tipo de Equipo: *</label>
+			<select class="form-select group-equipo" aria-label="Default select example" value="" id="selectTipoEquipo-`+randomID+`">
+				<option value="Herramienta">Herramienta</option>
+				<option value="Computo">Computo</option>
+				<option value="Tablet">Tablet</option>
+				<option value="Otra">Otra</option>
+			</select>
+		</div>
+		</div>
+		<div class="col-3 pt-4 mt-2 div-equipo-row-`+randomID+` div-row-equipo ">
+			<button type="button" class="btn btn-success button-add-register" onclick="setAddEquipo();return false;">
+				<i class="fa-solid fa-plus"></i>
+			</button>
+			<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteEquipo(`+randomID+`);return false;">
+				<i class="fa-solid fa-minus"></i>
+			</button>
+		</div>
+		<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
+			<label class="form-label ">Nombre del Equipo:</label>
+			<input type="text" class="form-control group-equipo" id="inputNombreEquipo-`+randomID+`">
+		</div>
+		<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
+			<label class="form-label ">Marca:</label>
+			<input type="text" class="form-control group-equipo" id="inputMarcaEquipo-`+randomID+`">
+		</div>
+		<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
+			<label class="form-label ">Modelo:</label>
+			<input type="text" class="form-control group-equipo" id="inputModeloEquipo-`+randomID+`">
+		</div>
+		<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
+			<label class="form-label ">No. de Serie:</label>
+			<input type="text" class="form-control group-equipo" id="inputNoSerieEquipo-`+randomID+`">
+		</div>
+		<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
+			<label class="form-label ">Color:</label>
+			<input type="text" class="form-control group-equipo" id="inputColorEquipo-`+randomID+`">
+		</div>
+	</div>
+    `;
+	$('#div-equipo').append(newItem)
+	/*$(".select-item-register").select2({
+	    tags: true
+	});*/
+}
+
+
+function setRequestFileImg(type, id="") {
+    console.log("QUE ESS", type, id)
+    loadingService()
+    let idInput = '';
+    if(type == 'inputCard'){
+        idInput = 'inputFileCard';
+    }else if(type == 'inputUser'){
+        idInput = 'inputFileUser';
+    }else if(type == 'inputUserRecibeCard'){
+        idInput = 'inputFileUserRecibeCard';
+    }else if(type == 'inputUserRecibe'){
+        idInput = 'inputFileUserRecibe';
+    }else if(type =="inputEvidenciaIncidenciaEditar"){
+        idInput = 'inputFileEvidenciaIncidenciaEditar';
+    }else if(type =="inputEvidenciaIncidencia"){
+        idInput = 'inputFileEvidenciaIncidencia';
+    }
+    const fileInput = document.getElementById(idInput);
+    const file = fileInput.files[0];
+    if (file) {
+        const formData = new FormData();
+        formData.append('File', file);
+        formData.append('field_id', '660459dde2b2d414bce9cf8f');
+        formData.append('is_image', true);
+        formData.append('form_id', 116852);
+        fetch('https://app.linkaform.com/api/infosync/cloud_upload/', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(res => {
+            Swal.close()
+            console.log("aaaaa",res)
+            if(res.file !== undefined && res.file !== null){
+                if(type == 'inputCard'){
+                    urlImgCard = res.file;
+                    //fotosNuevoIncidente.identificacion.push({"file_name":res.file_name, "file_url":res.file})
+                }else if(type == 'inputUser'){
+                    urlImgUser = res.file;
+                    //fotoNuevaFalla={"file_name":res.file_name, "file_url":res.file}
+                }
+                var canvas = document.getElementById('canvasPhoto'+id);
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }else{
+                Swal.close()
+                console.log('Error aqui 2');
+                return 'Error';
+            }
+        })
+        .catch(error => {
+            Swal.close()
+            console.log('Error aqui 3',error);
+            return 'Error';
+        });
+    }else{
+        return 'Error';
+    }
 }
