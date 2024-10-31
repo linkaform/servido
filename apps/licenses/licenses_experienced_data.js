@@ -1,6 +1,7 @@
 //----Total
 var columsTable1 = [
   { title:"Id" , field:'codigo', hozAlign:"left", width:250},
+  { title:"Nombre de Usuario" , field:'username', hozAlign:"left", width:300},
   { title:"Primer Nombre", field:'nombre', hozAlign:"left", width:450},
   { title:"Correo Electrónico", field:'mail', hozAlign:"left", width:250},
   { title:"Posición", field:'posicion', hozAlign:"left", width:300},
