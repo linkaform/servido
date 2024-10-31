@@ -408,7 +408,7 @@ function drawSecondElement(datasets, dataconfig){
   //---Color
   array_colors = getPAlleteColors(13,datasets['datasets'].length);
   for (let i = 0; i < datasets['datasets'].length; i++) {
-    datasets['datasets'][i]['backgroundColor'].push(array_colors[i]);
+    datasets['datasets'][i]['backgroundColor'] = array_colors;
   }
 
   chart2 = new Chart(ctx, {
