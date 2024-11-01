@@ -64,11 +64,12 @@ function getCatalogsIngreso(){
         method: 'POST',
         body: JSON.stringify({
             script_name: "get_vehiculos.py",
-            option: "catalago_vehiculo"
+            option: "catalago_vehiculo",
+            account_id:10
         }),
         headers:{
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt
+            // 'Authorization': 'Bearer '+userJwt
         },
         }).then(res => res.json())
         .then(res => {
