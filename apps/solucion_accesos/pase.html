@@ -25,7 +25,7 @@
 <body>
 	<navbar-component ></navbar-component>
 
-     <section class="mainSection mainSectionMargins col-12 full d-flex flex-column align-items-center" >
+     <section class="mainSection mainSectionMargins col-12 full d-flex flex-column align-items-center justify-content-center" >
      	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 mb-3 mt-5" id="paseEntradaInf1">
 	     	<div class="mb-3">
 	            <h4 >Pase de entrada</h4>
@@ -57,9 +57,7 @@
         </div>
         <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8  mt-5" id="paseEntradaInf3">
  			<h4>Vigencia: </h4>
- 			
  		</div> 
- 		
         <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 " id="paseEntradaInf4">
             <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6" >
                 <div>
@@ -104,8 +102,6 @@
                 	</div>
                 </div>
             </div>
-            
-
             <div class="opcionesAvanzadasDiv col-12">
 	            <div class="col-sm-8 col-md-8 col-lg-12 col-xl-12 d-flex mt-3 flex-wrap">
 	               <div class="col-6 d-flex p-0 m-0" id="fechaVisitaDiv"> 
@@ -259,7 +255,6 @@
 		                </div>
 	            	</div>
 			</div>
- 			
             <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6 my-3">
                 <!-- <button type="button" class="btn btn-outline-danger btn-block" id="cancelButton" onclick="changeView('cancel')">Cancelar</button> -->
             </div>
@@ -272,8 +267,7 @@
             </div>
      	</div>
 
-
-     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 mb-3 mt-5" id="paseEntradaInf5">
+     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 d-flexjustify-content-center mb-3 mt-5" id="paseEntradaInf5">
 	     	<div class="mb-3">
 	            <h4 >Pase de Entrada</h4>
 	     	</div>
@@ -292,9 +286,9 @@
             	</div>
             </div>
      	</div>
-     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8  p-0 m-0" id="paseEntradaInf6">
+     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 d-flexjustify-content-center p-0 m-0" id="paseEntradaInf6">
             <div class="d-flex flex-row flex-wrap">
-            	<div class="col-sm-12 col-md-6 col-lg-5 col-xl-5  mb-3 mt-3">
+            	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3 mt-3">
 					<label class="form-label">Fotografia: *</label>
 					<button type="button" class="btn  btn-primary btn-primary btn-sm" onclick="getScreen('User');return false;" id="buttonTakeUser">
 						<i class="fa-solid fa-camera-retro"></i>
@@ -309,7 +303,7 @@
 					</div>
 					<input type="file" class="form-control mt-2" id="inputFileUser" disabled>
 				</div>
-            	<div class="col-sm-12 col-md-6 col-lg-5 col-xl-5  mb-3 mt-3">
+            	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3 mt-3">
 					<label class="form-label">Identificación: *</label>
 					<button type="button" class="btn  btn-primary btn-primary btn-sm" onclick="getScreen('Card');return false;" id="buttonTakeCard">
 						<i class="fa-solid fa-camera-retro"></i>
@@ -325,10 +319,6 @@
 					<input type="file" class="form-control mt-2" id="inputFileCard" disabled>
 				</div>
 				
-				<div class="col-sm-12 col-md-12 col-lg-10 col-xl-10 mt-3">
-					<label class="form-label">Motivo de la visita: *</label>
-					<textarea class="form-control paseEntadaUser"  id="inputMotivo" rows="3"></textarea>
-				</div>
 				<div class="col-sm-12 col-md-12 col-lg-10 col-xl-10 checkbox-group me-2 my-3">
 	            	<label>
 	                	<input type="checkbox" class="paseEntradaNuevo" name="agregarVehiculoEquipo" value="opcionesAvanzadas" id="agregarVehiculoEquipo" onchange="onChangeOpcionesAvanzadas('agregarVehiculoEquipo')"><b> Agregar vehiculos/equipos</b>
@@ -336,14 +326,14 @@
 	        	</div>
 	        	<div class="col-12" id="div-vehiculo">
 		        	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row div-main-vehiculo" id="div-vehiculo-item-123">
-						<div class="col-9 div-vehiculo-row-1 div-row-vehiculo" >
+						<div class="col-10 div-vehiculo-row-1 div-row-vehiculo m-0 p-0" >
 							<div class="div-vehiculo-row-1 div-row-vehiculo" >
 								<label class="form-label">Tipo de Vehiculo: </label>
-								<select class="form-select" aria-label="Default select example" id="selectTipoVehiculo-123" onChange='onChangeCatalog("vehiculo",123)'>
+								<select class="form-select group-vehiculo" aria-label="Default select example" id="selectTipoVehiculo-123" onChange='onChangeCatalog("vehiculo",123)'>
 								</select>
 							</div>
 						</div>
-						<div class="col-3 pt-4 mt-2 div-vehiculo-row-1 ">
+						<div class="col-2 pt-4 mt-2 div-vehiculo-row-1 ">
 							<button type="button" class="btn btn-success button-add-register" onclick="setAddVehiculo();return false;">
 								<i class="fa-solid fa-plus"></i>
 							</button>
@@ -351,35 +341,40 @@
 								<i class="fa-solid fa-minus"></i>
 							</button>
 						</div>
-						<div class="col-9 div-vehiculo-row-1 div-row-vehiculo">
+						<div class="col-10 div-vehiculo-row-1 div-row-vehiculo m-0 p-0">
 							<div id='divCatalogMarca123'>
 								<label class="form-label">Marca: </label>
-								<select class="form-select" aria-label="Default select example" id="selectCatalogMarca-123" onChange='onChangeCatalog("marca",123)'>
+								<select class="form-select group-vehiculo" aria-label="Default select example" id="selectCatalogMarca-123" onChange='onChangeCatalog("marca",123)'>
 									<option disabled>Escoge un tipo de vehiculo...</option>
 								</select>
 							</div>
-							<div id='divCatalogModelo123'>
+							<div class="col-12 m-0 p-0" id='divCatalogModelo123 '>
 								<label class="form-label">Modelo: </label>
-									<select class="form-select" aria-label="Default select example" id="selectCatalogModelo-123" >
+									<select class="form-select group-vehiculo" aria-label="Default select example" id="selectCatalogModelo-123" >
 										<option disabled>Escoge una marca...</option>
 									</select>
 							</div>
-							<div class="div-row-vehiculo">
+							<div class="div-row-vehiculo col-12 m-0 p-0">
 								<label class="form-label">Matrícula del Vehiculo:</label>
-								<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo">
+								<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-123">
 							</div>
-							<div class="div-row-vehiculo">
-								<label class="form-label">Color:</label>
-								<select class="form-select group-vehiculo" aria-label="Default select example" id="inputColor" style="height: 40px !important; overflow: auto !important;">
+							<div class="div-row-vehiculo col-12 m-0 p-0">
+								<label class="form-label">Estado:</label>
+								<select class="form-select group-vehiculo" id="inputEstadoVehiculo-123" style="height: 40px !important; overflow: auto !important;">
 								</select>
 							</div>
+							<div class="div-row-vehiculo col-12 m-0 p-0">
+								<label class="form-label">Color:</label>
+								<select class="form-select group-vehiculo" aria-label="Default select example" id="inputColorVehiculo-123" style="height: 40px !important; overflow: auto !important;">
+								</select>
+								<hr class="my-3">
+							</div>
 						</div>
-						<hr class="my-3">
 					</div>
 	        	</div>
 	        	<div class="col-12" id="div-equipo">
 					<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row div-main-equipo" id="div-equipo-item-123">	
-						<div class="col-9 div-equipo-row-123 div-row-equipo" >
+						<div class="col-10 div-equipo-row-123 div-row-equipo" >
 							<div class="div-equipo-row-123 div-row-equipo mb-2" >
 								<label class="form-label">Tipo de Equipo: *</label>
 								<select class="form-select group-equipo" aria-label="Default select example" value="" id="selectTipoEquipo-123">
@@ -390,7 +385,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-3 pt-4 mt-2 div-equipo-row-1 mb-2">
+						<div class="col-2 pt-4 mt-2 div-equipo-row-1 mb-2">
 							<button type="button" class="btn btn-success button-add-register" onclick="setAddEquipo();return false;">
 								<i class="fa-solid fa-plus"></i>
 							</button>
@@ -398,21 +393,26 @@
 								<i class="fa-solid fa-minus"></i>
 							</button>
 						</div>
-						<div class="col-9 div-equipo-row-1 div-row-equipo mb-2">
+						<div class="col-10 div-equipo-row-1 div-row-equipo mb-2">
 						<label class="form-label ">Nombre del Equipo:</label>
 							<input type="text" class="form-control group-equipo" id="inputNombreEquipo-123">
 						</div>
-						<div class="col-9 div-equipo-row-1 div-row-equipo mb-2">
+						<div class="col-10 div-equipo-row-1 div-row-equipo mb-2">
 							<label class="form-label">Marca:</label>
-							<input type="text" class="form-control group-equipo" id="inputMatriculaVehiculo-123">
+							<input type="text" class="form-control group-equipo" id="inputMarcaEquipo-123">
 						</div>
-						<div class="col-9 div-equipo-row-1 div-row-equipo mb-2">
+						<div class="col-10 div-row-equipo-1 div-row-equipo mb-2">
+							<label class="form-label">No.serie:</label>
+							<input type="text" class="form-control group-equipo" id="inputSerieEquipo-123">
+						</div>
+						<div class="col-10 div-equipo-row-1 div-row-equipo mb-2">
 							<label class="form-label">Modelo:</label>
 							<input type="text" class="form-control group-equipo" id="inputModelo-123">
 						</div>
-						<div class="col-9 div-equipo-row-1 div-row-equipo">
+						<div class="col-10 div-equipo-row-1 div-row-equipo">
 							<label class="form-label">Color:</label>
-							<input type="text" class="form-control group-equipo" id="inputColor-123">
+							<select class="form-select group-equipo" aria-label="Default select example" id="inputColorEquipo-123" style="height: 40px !important; overflow: auto !important;">
+								</select>
 							<hr>
 
 						</div>

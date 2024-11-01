@@ -4,10 +4,14 @@ let arrayAreas=[]
 let arrayDias=[]
 let flagVideoCard = false;
 let flagVideoUser = false;
+let colors = getPAlleteColors(12,0)
 let nombre=""
 let email=""
 let tel=""
+let id=""
 let dataCatalogs=[]
+let catEstados=[]
+let qr_code=""
 window.onload = function(){
 	setValueUserLocation('pase');
 	customNavbar(getValueUserLocation(), getCookie('userTurn'))
@@ -15,12 +19,13 @@ window.onload = function(){
 	const valores = window.location.search;
 	const urlParams = new URLSearchParams(valores);
 
-	let id = urlParams.get('id') !== null ? urlParams.get('id') :'' ;
+	id = urlParams.get('id') !== null ? urlParams.get('id') :'' ;
 	nombre = urlParams.get('nombre') !== null ? urlParams.get('nombre') :'' ;
 	email = urlParams.get('email') !== null ? urlParams.get('email') :'' ;
 	tel = urlParams.get('tel') !== null ? urlParams.get('tel') :'' ;
 	if(id){
 		console.log("OCUUILTAR LA IFNORMACION", nombre, email, tel)
+        customNavbar(getValueUserLocation(), userTurnCerrado)
 		$("#paseEntradaInf1").hide()
 		$("#paseEntradaInf2").hide()
 		$("#paseEntradaInf3").hide()
@@ -32,6 +37,9 @@ window.onload = function(){
 		$("#telefonoText").text(tel)
 		getCatalogsIngreso()
 		onChangeOpcionesAvanzadas('agregarVehiculoEquipo')
+		$("#selectTipoEquipo-123").val("")
+		$("#inputColorVehiculo-123").val("")
+        $("#inputColorEquipo-123").val("")
 		//onChangeCatalog('vehiculo', "")
 	}else{
 		$("#paseEntradaInf1").show()
@@ -56,7 +64,7 @@ function getCatalogsIngreso(){
         method: 'POST',
         body: JSON.stringify({
             script_name: "get_vehiculos.py",
-            //account_id:10
+            option: "catalago_vehiculo"
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -65,7 +73,6 @@ function getCatalogsIngreso(){
         }).then(res => res.json())
         .then(res => {
             if(res.success){
-            	Swal.close()
                 let data= res.response.data
                 if(data.status_code ==400 || data.status_code==401){
                     errorAlert(res)
@@ -74,7 +81,6 @@ function getCatalogsIngreso(){
                     selectVehiculos.innerHTML="";
                     dataCatalogs.types_cars=data 
                     for (let obj of data){
-                    	console.log(obj)
                         selectVehiculos.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
                     }
                     selectVehiculos.value=""
@@ -83,32 +89,39 @@ function getCatalogsIngreso(){
                 errorAlert(res)
             }
         })
-
-    let cat={
-        "brands_cars": [
-            {"type": "motocicleta", "brand": ["vento"]},
-            {"type": "carro", "brand": ["nissan"]},
-            {"type": "trailer", "brand": ["volvo"]},
-        ],
-        "model_cars": [
-            {"brand": "vento", "model": ["35WFAS"]},
-            {"brand":"suzuki", "model":["veloxs3"]},
-            {"brand":"indian","model": ["model345"]},
-            {"brand":"nissan", "model":["beliocks"]},
-            {"brand":"chevrolet", "model":["345ref"]},
-            {"brand":"ford", "model":["magic44"]},
-            {"brand":"volvo", "model":["ref564"]},
-            {"brand":"mercedes", "model":["mobre45"]},
-            {"brand":"kenworth", "model":["cam213"]},
-        ],
-        "types_cars": ["motocicleta", "carro", "trailer"],
-    };
-    // dataCatalogs =cat// res.response.data;
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "get_vehiculos.py",
+            option: "catalago_estados"
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+        }).then(res => res.json())
+        .then(res => {
+            if(res.success){
+                Swal.close()
+                let data= res.response.data
+                if(data.status_code ==400 || data.status_code==401){
+                    errorAlert(res)
+                }else{
+                    let selectVehiculos= document.getElementById("inputEstadoVehiculo-123")
+                    selectVehiculos.innerHTML="";
+                    catEstados=data 
+                    for (let obj of data){
+                        selectVehiculos.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
+                    }
+                    selectVehiculos.value=""
+                } 
+            }else{
+                errorAlert(res)
+            }
+        })
+  
     $("#selectTipoVehiculo-123").prop( "disabled", false );
     $("#spinnerTipoVehiculo").css("display", "none");
-    // dataCatalogs.types_cars.forEach(function(e, i){
-    //     $("#datalistOptionsTipo").append($('<option></option>').val(e).text(e));
-    // });
 }
 
 //FUNCION rellenar catalogos al momento de escojer una opcion
@@ -300,12 +313,13 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
 async function onChangeCatalog(type, id){
     if(type == "vehiculo"){
         console.log("AL CAMBIO",type, id)
-        let inputMarca= document.getElementById("selectTipoVehiculo-123");
+        let inputMarca= document.getElementById("selectTipoVehiculo-"+id);
         const options = {
             method: 'POST', 
             body: JSON.stringify({
                 script_name:'get_vehiculos.py',
-                tipo:inputMarca.value
+                option: "catalago_vehiculo",
+                tipo: inputMarca.value
             }),
              headers:{ 'Content-Type': 'application/json',
              'Authorization': 'Bearer '+userJwt}
@@ -318,7 +332,7 @@ async function onChangeCatalog(type, id){
         }else{
             Swal.close();
             let list =data.response.data
-            let selectVehiculosMarca= document.getElementById("selectCatalogMarca-123")
+            let selectVehiculosMarca= document.getElementById("selectCatalogMarca-"+id)
             selectVehiculosMarca.innerHTML=""; 
             for (let obj in list){
             console.log(list[obj])
@@ -328,14 +342,14 @@ async function onChangeCatalog(type, id){
             selectVehiculosMarca.value=""
         }
     }else if (type == "marca"){
-        let inputTipo= document.getElementById("selectTipoVehiculo-123");
-        let inputMarca= document.getElementById("selectCatalogMarca-123");
+        let inputTipo= document.getElementById("selectTipoVehiculo-"+id);
+        let inputMarca= document.getElementById("selectCatalogMarca-"+id);
         console.log("DETALLES",inputTipo.value, inputMarca.value)
         const options = {
             method: 'POST', 
             body: JSON.stringify({
-                script_name:'script_turnos.py',
-                option:'vehiculo_tipo',
+                script_name:'get_vehiculos.py',
+                option: "catalago_vehiculo",
                 tipo:inputTipo.value,
                 marca: inputMarca.value
             }),
@@ -349,7 +363,7 @@ async function onChangeCatalog(type, id){
         }else{
             Swal.close();
             let list =data.response.data
-            let selectVehiculosModelo= document.getElementById("selectCatalogModelo-123")
+            let selectVehiculosModelo= document.getElementById("selectCatalogModelo-"+id)
             selectVehiculosModelo.innerHTML=""; 
                 console.log("OBJ",selectVehiculosModelo.value)
             for (let obj in list){
@@ -401,7 +415,14 @@ function onChangeOpcionesAvanzadas(type){
 		if($("#agregarVehiculoEquipo").is(':checked')){
 			$("#div-equipo").show()
 			$("#div-vehiculo").show()
-			let selectColores= document.getElementById("inputColor")
+            let selectColores1= document.getElementById("inputColorVehiculo-123")
+            $(document).ready(function() {
+                for(let color of coloresArray){
+                    selectColores1.innerHTML += '<option value="'+capitalizeFirstLetter(color.toLowerCase()) +'">'+color+'</option>';
+                }
+            });
+            selectColores1.value=""
+			let selectColores= document.getElementById("inputColorEquipo-123")
 			$(document).ready(function() {
 				for(let color of coloresArray){
 			        selectColores.innerHTML += '<option value="'+capitalizeFirstLetter(color.toLowerCase()) +'">'+color+'</option>';
@@ -429,17 +450,22 @@ function getSelectedCheckRAdio(name=""){
 	 }
 }
 
-function copyLinkPase(id){
-	console.log("data.json.id",id)
-	navigator.clipboard.writeText(`https://app.linkaform.com/#/records/detail/`+id  `${protocol}//${host}/solucion_accesos/${type}.html`);
+function copyLinkPase(id, nombre, email, tel){
+	console.log("data.json.id",id, nombre, email, tel)
+	let protocol = window.location.protocol;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+    let host = window.location.host;
+	navigator.clipboard.writeText(`${protocol}//${host}/solucion_accesos/pase.html?id=`+id +`&nombre=`+nombre+`&email=`+email+`&tel=`+tel);
 }
 
 function crearConfirmacionMini() {
 	let data= getInputsValueByClass('paseEntradaUser')
 	let listInputsVehicule={};
 	let listInputsEquipo={};
+	let arrayEquipos=[]
+	let arrayVehiculos=[]
 	let divVehiculos = document.getElementById("div-vehiculo");
     let inputsV = divVehiculos.querySelectorAll('.group-vehiculo');
+    console.log("QUE TENEMOS AQUI",inputsV)
     inputsV.forEach(function(input) {
     var idV = input.id.split('-')[1];
         if (!listInputsVehicule[idV]) {
@@ -456,29 +482,65 @@ function crearConfirmacionMini() {
         }
         listInputsEquipo[idE].push(input);
     });
+    let htmlAppendEquipos=""
+  
+    for (let equipo in listInputsEquipo) {
+		if(listInputsEquipo[equipo][1].value!==""){
+			htmlAppendEquipos +="<div class='col-sm-12 col-md-12 col-lg-6 col-xl-6'>"
+			htmlAppendEquipos +="<table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>"
+			htmlAppendEquipos +="<tbody> <tr> <td><b>Tipo de Equipo:</b></td> <td> <span > "+ listInputsEquipo[equipo][0].value +"</span></td> </tr>"
+			htmlAppendEquipos +="<tr> <td><b>Nombre:</b></td> <td> <span > "+ listInputsEquipo[equipo][1].value +"</span></td> </tr>"	
+			htmlAppendEquipos +="<tr> <td><b>Marca:</b></td> <td> <span > "+ listInputsEquipo[equipo][2].value +"</span></td> </tr>"
+			htmlAppendEquipos +="<tr> <td><b>Modelo:</b></td> <td> <span > "+ listInputsEquipo[equipo][4].value +"</span></td> </tr>"
+			htmlAppendEquipos +="<tr> <td><b>No. Serie:</b></td> <td> <span > "+ listInputsEquipo[equipo][3].value +"</span></td> </tr>"
+		    htmlAppendEquipos +="<tr> <td><b>Color:</b></td> <td> <span > "+ listInputsEquipo[equipo][5].value +"</span></td> </tr>"
+			htmlAppendEquipos +="</tbody> </table>	</div>";
+		    let objEquipo={
+	            'nombre':listInputsEquipo[equipo][1].value,
+                'modelo':listInputsEquipo[equipo][4].value,
+	            'marca':listInputsEquipo[equipo][2].value,
+	            'color':listInputsEquipo[equipo][5].value,
+	            'tipo':listInputsEquipo[equipo][0].value,
+	            'serie':listInputsEquipo[equipo][3].value ,
+	        }
+		    arrayEquipos.push(objEquipo)
+		}	
+	}
+	 let htmlAppendEquiposTitulo=""
+    if(arrayEquipos.length>0){
+		htmlAppendEquiposTitulo+=`<div class="d-flex justify-content-start ms-2" style="color:#171717"><h5><b>Equipos:</b></h5></div>`
+	}
+	let htmlAppendVehiculos=""
+	for (let vehiculo in listInputsVehicule) {
+    console.log("listInputsVehicule",listInputsVehicule[vehiculo])
+		if(listInputsVehicule[vehiculo][0].value !==""){
+			htmlAppendVehiculos +="<div class='col-sm-12 col-md-12 col-lg-6 col-xl-6'>"
+			htmlAppendVehiculos +="<table class='table table-borderless customShadow' style='border: none; font-size: .8em; background-color: lightgray!important;'>"
+			htmlAppendVehiculos +="<tbody> <tr> <td><b>Tipo de Vehiculo:</b></td> <td><span > "+ listInputsVehicule[vehiculo][0].value +"</span></td> </tr>"
+			htmlAppendVehiculos +="<tr> <td><b>Marca:</b></td> <td><span > "+ listInputsVehicule[vehiculo][1].value +"</span></td> </tr>"
+			htmlAppendVehiculos +="<tr> <td><b>Modelo:</b></td> <td><span > "+ listInputsVehicule[vehiculo][2].value +"</span></td> </tr>"
+			htmlAppendVehiculos +="<tr> <td><b>Matricula:</b></td> <td><span > "+ listInputsVehicule[vehiculo][3].value +"</span></td> </tr>"
+            htmlAppendVehiculos +="<tr> <td><b>Estado:</b></td> <td><span > "+ listInputsVehicule[vehiculo][4].value +"</span></td> </tr>"
+			htmlAppendVehiculos +="<tr> <td> <b> Color: </b></td> <td><span > "+ listInputsVehicule[vehiculo][5].value +"</span></td> </tr> </tbody> </table> </div>";
+			let objVehiculo={ 
+				'tipo':listInputsVehicule[vehiculo][0].value,
+	            'marca':listInputsVehicule[vehiculo][1].value,
+	            'modelo':listInputsVehicule[vehiculo][2].value,
+	            'estado':listInputsVehicule[vehiculo][4].value,
+	            'placas':listInputsVehicule[vehiculo][3].value,
+	            'color':listInputsVehicule[vehiculo][5].value
+		    }
+			arrayVehiculos.push(objVehiculo)
+		}
+	}
+	let htmlAppendVehiculosTitulo=""
+	if(arrayVehiculos.length>0){
+		htmlAppendVehiculosTitulo+=`<div class="d-flex justify-content-start ms-2" style="color:#171717"><h5><b>Vehiculos:</b></h5></div>`
+	}
+    console.log("PASEE", arrayVehiculos, arrayEquipos)
     let motivoHtml=""
-    data.inputMotivo= $("#inputMotivo").val()
-    if(data.inputMotivo!==""){
-    	motivoHtml=`
-    	<table class="table table-borderless" >
-    		<thead>
-				<tr>
-					<th style=" text-align:left !important;" > <h6> <b>Motivo de la visita: </b></h6> </th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>`+data.inputMotivo+`</td>
-				</tr>
-			</tbody>
-		</table>
-    	`;
-    }
-
-
-
 	let html = []//getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
-	if(false){
+	if(urlImgUser=="" || urlImgCard==""){
 		successMsg("Validación", "Faltan datos por llenar", "warning")
 	}else{
 		Swal.fire({
@@ -519,7 +581,7 @@ function crearConfirmacionMini() {
 							</tr>
 							<tr>
 								<td><b>Foto:</b></td>
-								<td><span><b>identificación:</b></span></td>
+								<td><span><b>Identificación:</b></span></td>
 							</tr>
 							<tr>
 								<td><img src="`+urlImgUser+`" alt="description" style="object-fit:cover;" width="220" height="150"> </td>
@@ -529,60 +591,38 @@ function crearConfirmacionMini() {
 					</table>
 					<hr>
 					`+motivoHtml+`
+					`+htmlAppendEquiposTitulo+`
+					`+htmlAppendEquipos+`
+					`+htmlAppendVehiculosTitulo+`
+					`+htmlAppendVehiculos+`
 				</div>
 		
 	      `,
 	        showCancelButton: true,
 	        confirmButtonColor: "#28a745",
 	        cancelButtonColor: "#dc3545",
-	        confirmButtonText: "Generar link",
+	        confirmButtonText: "Completar pase",
 	        heightAuto:false,
+	        reverseButtons:true,
 	        width:750,
 	    })
 	    .then((result) => {
 	        if (result.value) {
 	        	loadingService()
 		        let access_pass={
-		            nombre: nombre,
-		            email: email,
-		            telefono:telefono,
-            		perfil_pase:"visita general",
-            		estatus:'Proceso',
-            		visita_a: getCookie("userName"),
-            		custom:true
-		        }
-		        if(areas.length>0){
-					access_pass.comentarios = comentarios
-		        }
-		        if(comentarios.length>0){
-		        	access_pass.areas = areas
-		        }
-		        if(hayFechaHasta){
-		        	access_pass.tipo_visita_pase= "rango_de_fechas" 
-		        }else{
-		        	access_pass.tipo_visita_pase= "fecha_fija"
-		        }
-		        if(fechaVisitaMain){
-		        	access_pass.fecha_desde_visita=fechaVisitaMain.slice(0, -4) +':00';
-		        }
-		        if(fechaHastaMain){
-		        	access_pass.fecha_desde_hasta=fechaHastaMain.slice(0, -4) +':00';
-		        }
-		        if(selectedRadioDiasAcceso=='radioCualquierDia'){
-		        	access_pass.config_dia_de_acceso='cualquier_día'
-		        }else{
-		        	access_pass.config_dia_de_acceso='limitar_días_de_acceso'
-		        }
-		        if(diasArr.length>0){
-		        	access_pass.config_dias_acceso = diasArr 
+		            walkin_fotografia:[{file_name:"foto.png",file_url:urlImgUser}],
+		            walkin_identificacion:[{file_name:"indentificacion.png",file_url:urlImgCard}],
+		            grupo_vehiculos:arrayVehiculos,
+		            grupo_equipos:arrayEquipos,
+
 		        }
 	        	fetch(url + urlScripts, {
 			        method: 'POST',
 			        body: JSON.stringify({
 			            script_name: "pase_de_acceso.py",
-		                option: 'create_access_pass',
-		                location:getCookie('userLocation'),
-		                access_pass: access_pass
+		                option: 'update_pass',
+		                access_pass: access_pass,
+		                folio:id,
 			        }),
 			        headers:{
 			            'Content-Type': 'application/json',
@@ -604,24 +644,117 @@ function crearConfirmacionMini() {
                             type: "error"
                         });
                     }else if(data.status_code==202 || data.status_code==201){
+                    	qr_code=data.json.id
 			        	Swal.close()
 			        	Swal.fire({
-				      		imageUrl: "https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_10.png",
 				      		text: "Tu informacion se ha guardado correctamente.",
 						    html:`
-						      	<div class="mb-3 mt-2" style="font-weight: bold; font-size: 1.1em; color:#8ebd73 !important; "> Pase de entrada generado. </div>
+						      	<div class="mb-3 mt-2" style=" font-size: 1.2em;  ">  <h4>Pase de entrada generado.</h4> </div>
 						        <div class="d-flex flex-column justify-content-center align-items-center">
 			    			      	<div class='align-items-start m-2'>
-			    			      	  	El pase de entrada se ha generado correctamente. Por favor, copie el siguiente enlace y compartalo con el visitante para
-			    			      	  	completar el proceso.
+			    			      	  	El pase de entrada se ha generado correctamente. Por favor, selecciona alguna de las siguientes opciones.
 			    			    	</div>
+			    			    	<div class="d-flex  flex-column align-items-start justify-content-start mt-2">
+			    			    		<div class="m-0 p-0">
+				    			    		<label>
+								            	<input type="checkbox" name="opcionesCorreoMsj" id="enviarMensaje">
+								            	<b>Enviar recordatorio por mensaje</b>
+									        </label><br>
+									    </div>
+								        <div class="m-0 p-0">
+								        	<label>
+								            	<input type="checkbox" name="opcionesCorreoMsj" id="enviarCorreo">
+								            	<b>Enviar recordatorio por correo</b>
+								        	</label><br>
+								        </div>
+			    			    	</div>
+			    			    	<img class="mt-1" alt="Código QR" id="codigo" width=250 height=250 src=${data.json.qr_pase[0].file_url}>
 						        </div>`,
-						    showCancelButton:false,
+						         
+					      	icon: "success",
+						    showCancelButton:true,
 						    showConfirmButton:true,
-						    confirmButtonText: "Copiar Link"
+						    reverseButtons:true,
+						    cancelButtonColor: colors[0],
+						    cancelButtonText:'Cerrar',
+						    confirmButtonText: "Aceptar y Descargar"
 						 }).then((result)=>{
 						 	if (result.value) {
-						 		copyLinkPase(data.json.id, nombre,);
+						 		Swal.close()
+						 		loadingService()
+						 		let data_for_msj = {}
+								let data_for_msj_tel={}
+						 		let selected = $('input[name="opcionesCorreoMsj"]:checked');
+								for (let sel of selected){
+									if(sel.id == 'enviarMensaje'){
+										data_for_msj_tel={
+											mensaje: "Se ha creado un nuevo pase de entrada",
+											numero: data.json.telefono
+										}
+									}
+									if (sel.id=="enviarCorreo"){
+										data_for_msj = {
+											mensaje: "Se ha creado un nuevo pase de entrada",
+	    									titulo: "Pase de entreda generado correctamente",
+	    									email_from: data.json.enviar_de,
+	    									email_to: data.json.enviar_a,
+										}
+									}
+								}
+								fetch(url + urlScripts, {
+							        method: 'POST',
+							        body: JSON.stringify({
+							            script_name: "pase_de_acceso.py",
+						                option: 'send_qr',
+						                email: data_for_msj,
+						                msj: data_for_msj_tel,
+							        }),
+							        headers:{
+							            'Content-Type': 'application/json',
+							            'Authorization': 'Bearer '+userJwt
+							        },
+							    })
+							    .then(res => res.json())
+							    .then(res => {
+							        if (res.success) {
+							        	if(data.status_code==400 || data.status_code==401){
+					                        let errores=[]
+					                        for(let err in data.json){
+					                            errores.push(data.json[err].label+': '+data.json[err].msg)
+					                        }
+					                        Swal.fire({
+					                            title: "Error",
+					                            text: errores.flat(),
+					                            type: "error"
+					                        });
+					                    }else if(data.status_code==202 || data.status_code==201){
+					                    	successMsg("Confirmación", "Informacion enviada correctamente.", "success")
+					                    	
+								            fetch(data.json.qr_pase[0].file_url)
+							                .then(response => {
+							                    if (!response.ok) {
+							                        throw new Error('Error al descargar la imagen');
+							                    }
+							                    return response.blob();
+							                })
+							                .then(blob => {
+							                    const url = URL.createObjectURL(blob);
+							                    const link = document.createElement('a');
+							                    link.href = url;
+							                    link.download = 'mi-imagen.jpg'; // Nombre con el que se descargará la imagen
+							                    document.body.appendChild(link);
+							                    link.click();
+							                    document.body.removeChild(link);
+							                    URL.revokeObjectURL(url); // Libera el objeto URL
+							                })
+							                .catch(error => {
+							                    console.error('Error:', error);
+							                });
+					                    }
+							        }else{
+							        	errorAlert(res)
+							        }
+							    })
 						 	}
 						 })
                     }
@@ -640,49 +773,144 @@ function crearConfirmacionMini() {
 
 
 function crearConfirmacion() {
-	let data= getInputsValueByClass('paseEntradaUser')
-	let
-	let divVehiculos = document.getElementById("div-vehiculo");
-    let inputsV = divVehiculos.querySelectorAll('.group-vehiculo');
-    inputsV.forEach(function(input) {
-    var idV = input.id.split('-')[1];
-        if (!listInputsVehicule[idV]) {
-            listInputsVehicule[idV] = [];
-        }
-        listInputsVehicule[idV].push(input);
-    });
-    let divEquipo = document.getElementById("div-equipo");
-    let inputsE = divEquipo.querySelectorAll('.group-equipo');
-    inputsE.forEach(function(input) {
-    let idE = input.id.split('-')[1];
-        if (!listInputsEquipo[idE]) {
-            listInputsEquipo[idE] = [];
-        }
-        listInputsEquipo[idE].push(input);
-    });
-    let motivoHtml=""
-    data.inputMotivo= $("#inputMotivo").val()
-    if(data.inputMotivo!==""){
-    	motivoHtml=`
-    	<table class="table table-borderless" >
-    		<thead>
-				<tr>
-					<th style=" text-align:left !important;" > <h6> <b>Motivo de la visita: </b></h6> </th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>`+data.inputMotivo+`</td>
-				</tr>
-			</tbody>
-		</table>
-    	`;
-    }
+	let data= getInputsValueByClass('paseEntradaNuevo')
+	let comentarios= getDataGrupoRepetitivo('com-input-form-nuevo','.com-div-nuevo' , 2)
+	let areas= getDataGrupoRepetitivo('area-input-form-nuevo','.area-div-nuevo' , 2)
+	let areasTr=""
+	for (let s of areas){
+		areasTr +=	
+		`<tr>
+			<td>`+s.nombre_area+`</td>
+			<td>`+s.commentario_area+`</td>
+		</tr>`
+	}
+	let comTr=""
+	for (let c of comentarios){
+		comTr +=	
+		`<tr>
+			<td>`+c.tipo_comentario+`</td>
+			<td>`+c.comentario_pase+`</td>
+		</tr>`
+	}
+	let mainAccesos=""
+	if(areasTr){
+		mainAccesos=`<table class="table table-borderless" >
+						<thead>
+							<tr>
+								<th style=" text-align:left !important;"><h5><b> Areas de acceso</b></h5></th>
+								<th > </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><b>Area: </b></td>
+								<td><b>Comentario:</b></td>
+							</tr>
+							`+areasTr+`
+						</tbody>
+					</table>`
+	}
+	let mainComentarios=""
+	if(comTr){
+		mainComentarios=`<table  class="table table-borderless">
+							<thead>
+								<tr>
+									<th style=" text-align:left !important;" class="m-0"><h5><b> Comentarios/Instrucciones </b></h5></th>
+									<th> </th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><b>	Tipo de comentario:</b></td>
+									<td><b>Comentario</b></td>
+								</tr>
+								`+comTr+`
+							</tbody>
+						</table>`
+	}
 
+	let fechaVisitaMain = ""
+	let fechaHastaMain = ""
+	let selectedRadioDias = ""
+	let selectedRadioDiasAcceso = ""
+	let hayFechaVisita = $("#radioFechaFija").is(':checked') && data.fechaVisita !== ""
+	let hayFechaHasta = $("#radioRangoFechas").is(':checked')
+	if(hayFechaVisita){
+		let formatMin = formatNumber(data.minNuevoPase)
+		let formatHor = formatNumber(data.horaNuevoPase)
+		fechaVisitaMain= `${data.fechaVisita} ${formatHor}:${formatMin}:00`
+	}else if (hayFechaHasta){
+		if(data.fechaVisitaOA !== ""){
+			let formatHor= formatNumber(data.horaNuevoRangoVisita)
+			let formatMin= formatNumber(data.minNuevoRangoVisita)
+			fechaVisitaMain= `${data.fechaVisitaOA} 00:00:00`
+		}
+		if(data.fechaHastaOA!==""){
+			let formatHor2= formatNumber(data.horaNuevoRangoHasta)
+			let formatMin2= formatNumber(data.minNuevoRangoHasta)
+			fechaHastaMain= `${data.fechaHastaOA} 00:00:00`
+		}
+		selectedRadioDias = $('input[name="diasAcceso"]:checked');
+		selectedRadioDiasAcceso=selectedRadioDias[0].id
+	}
 
+	
+	let diasSeleccionados= $('input[name="diasPase"]:checked')
+	let diasArr=[]
+	for (let d of diasSeleccionados){
+		diasArr.push(d.value)
+	}
+
+	let buttonDays=""
+	if(data.diasArr){
+		buttonDays=`
+		<div class="d-flex justify-content-start ms-2">
+			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="lunes">L</button>
+			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="martes">M</button>
+			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="miércoles">M</button>
+			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="jueves">J</button>
+			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="viernes">V</button>
+			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="sábado">S</button>
+			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="domingo">D</button>
+		</div>`
+	}
+	let fechaVisitaDiv=""
+	if(fechaVisitaMain){
+		fechaVisitaDiv=`<div class="d-flex flex-wrap ms-2">
+							<div>
+								<i class="fa-regular fa-calendar"></i>
+							</div>
+							<div class="ms-3">
+								Fecha y hora de visita: `+fechaVisitaMain+`
+							</div>
+						</div>`
+	}
+	let fechaHastaDiv=""
+	if(fechaHastaMain){
+		fechaHastaDiv=` <div class="d-flex mt-3 ms-2">
+							<div>
+								<i class="fa-regular fa-calendar"></i>
+							</div>
+							<div class="ms-3">
+								Fecha y hora de hasta: `+fechaHastaMain+`
+							</div>
+						</div>`
+	}
+	let tituloVigencia=""
+	if(fechaHastaMain || fechaVisitaMain){
+		tituloVigencia=`<div class="d-flex justify-content-start mt-3 ms-2">
+							<h5><b>Vigencia y acceso:</b></h5>
+						</div>`
+	}
+	let tituloDias=""
+	if(true){
+		tituloDias=`<div class="d-flex justify-content-start mt-4 ms-2">
+						<h5><b>Dias de acceso:</b></h5>
+					</div>`
+	}
 
 	let html = []//getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
-	if(false){
+	if(data.nombreCompleto=="" ||data.email=="" || data.telefono==""){
 		successMsg("Validación", "Faltan datos por llenar", "warning")
 	}else{
 		Swal.fire({
@@ -710,7 +938,7 @@ function crearConfirmacion() {
 								<td></td>
 							</tr>
 							<tr>
-								<td>`+nombre+`</td>
+								<td>`+data.nombreCompleto+`</td>
 								<td></td>
 							</tr>
 							<tr>
@@ -718,41 +946,51 @@ function crearConfirmacion() {
 								<td><span ><b>Teléfono:</b></span></td>
 							</tr>
 							<tr>
-								<td> `+email+`</td>
-								<td><span > `+tel+`</span></td>
-							</tr>
-							<tr>
-								<td><b>Foto:</b></td>
-								<td><span><b>identificación:</b></span></td>
-							</tr>
-							<tr>
-								<td><img src="`+urlImgUser+`" alt="description" style="object-fit:cover;" width="220" height="150"> </td>
-								<td><img src="`+urlImgCard+`" alt="description" style="object-fit:cover;" width="220" height="150"> </td>
+								<td> `+data.email+`</td>
+								<td><span > `+data.telefono+`</span></td>
 							</tr>
 						</tbody>
 					</table>
 					<hr>
-					`+motivoHtml+`
+					`+mainAccesos+`
+					`+mainComentarios+`
+					`+tituloVigencia+`
+					`+fechaVisitaDiv+`
+					`+fechaHastaDiv+`
+					`+tituloDias+`
+					<div class="d-flex justify-content-start ms-2">
+						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="lunes">L</button>
+						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="martes">M</button>
+						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="miércoles">M</button>
+						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="jueves">J</button>
+						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="viernes">V</button>
+						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="sábado">S</button>
+						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="domingo">D</button>
+					</div>
 				</div>
 		
 	      `,
-	        showCancelButton: true,
 	        confirmButtonColor: "#28a745",
+	        showCancelButton: true,
 	        cancelButtonColor: "#dc3545",
-	        confirmButtonText: "Generar link",
+	        confirmButtonText:'Crear pase',
+	        cancelButtonText:'Cancelar',
 	        heightAuto:false,
+	        reverseButtons: true,
 	        width:750,
 	    })
 	    .then((result) => {
 	        if (result.value) {
 	        	loadingService()
 		        let access_pass={
-		            nombre: nombre,
-		            email: email,
-		            telefono:telefono,
+		            nombre: data.nombreCompleto,
+		            email:data.email,
+		            telefono: data.telefono,
+		            areas: areas,
+		            comentarios:comentarios,
             		perfil_pase:"visita general",
             		estatus:'Proceso',
-            		visita_a: getCookie("userName"),
+                    visita_a: getCookie("userName"),
             		custom:true
 		        }
 		        if(areas.length>0){
@@ -825,7 +1063,7 @@ function crearConfirmacion() {
 						    confirmButtonText: "Copiar Link"
 						 }).then((result)=>{
 						 	if (result.value) {
-						 		copyLinkPase(data.json.id, nombre,);
+						 		copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono);
 						 	}
 						 })
                     }
@@ -839,9 +1077,17 @@ function crearConfirmacion() {
 		      	
 	        }
 		});
+
+		
+        if(diasArr.length>0){
+            for(let d of diasArr){
+                $("#"+d+"").removeClass('btn-outline-success');
+                $("#"+d+"").addClass('bg-dark');
+                $("#"+d+"").addClass('color-white');
+            }
+        }
 	}
 }
-
 
 
 
@@ -878,7 +1124,7 @@ function setAddVehiculo() {
     	<div class="col-9 div-vehiculo-row-1 div-row-vehiculo-`+randomID+`" >
 			<div class="div-vehiculo-row-1 div-row-vehiculo-`+randomID+`">
 				<label class="form-label">Tipo de Vehiculo: </label>
-				<select class="form-select" aria-label="Default select example" id="selectTipoVehiculo-`+randomID+`" onChange='onChangeCatalog("vehiculo",`+ randomID+`)'>
+				<select class="form-select group-vehiculo" aria-label="Default select example" id="selectTipoVehiculo-`+randomID+`" onChange='onChangeCatalog("vehiculo",`+randomID+`)'>
 				</select>
 			</div>
 		</div>
@@ -893,13 +1139,13 @@ function setAddVehiculo() {
 		<div class="col-9 div-vehiculo-row-1 div-row-vehiculo-`+randomID+`">
 			<div id='divCatalogMarca123'>
 				<label class="form-label">Marca: </label>
-				<select class="form-select" aria-label="Default select example" id="selectCatalogMarca-`+randomID+`" onChange='onChangeCatalog("marca",`+ randomID+`)'>
+				<select class="form-select group-vehiculo" aria-label="Default select example" id="selectCatalogMarca-`+randomID+`" onChange='onChangeCatalog("marca",`+ randomID+`)'>
 					<option disabled>Escoge un tipo de vehiculo...</option>
 				</select>
 			</div>
 			<div id='divCatalogModelo123'>
 				<label class="form-label">Modelo: </label>
-					<select class="form-select" aria-label="Default select example" id="selectCatalogModelo-`+randomID+`" >
+					<select class="form-select group-vehiculo" aria-label="Default select example" id="selectCatalogModelo-`+randomID+`" >
 						<option disabled>Escoge una marca...</option>
 					</select>
 			</div>
@@ -907,13 +1153,18 @@ function setAddVehiculo() {
 				<label class="form-label">Matrícula del Vehiculo:</label>
 				<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-`+ randomID+`>
 			</div>
+            <div class="div-row-vehiculo col-12 m-0 p-0">
+                <label class="form-label">Estado:</label>
+                <select class="form-select group-vehiculo" id="inputEstadoVehiculo-`+randomID+`" style="height: 40px !important; overflow: auto !important;">
+                </select>
+            </div>
 			<div class="div-row-vehiculo">
 				<label class="form-label">Color:</label>
-				<select class="form-select group-vehiculo" aria-label="Default select example" id="inputColor-`+randomID+`" style="height: 40px !important; overflow: auto !important;">
+				<select class="form-select group-vehiculo" aria-label="Default select example" id="inputColorVehiculo-`+randomID+`" style="height: 40px !important; overflow: auto !important;">
 				</select>
+		        <hr class="my-3">
 			</div>
 		</div>
-		<hr class="my-3">
 	</div>
     `;
 	$('#div-vehiculo').append(newItem)
@@ -926,13 +1177,23 @@ function setAddVehiculo() {
 	dataCatalogs.types_cars.forEach(function(e, i){
 	   $("#selectTipoVehiculo-"+randomID+"").append($('<option></option>').val(e).text(e));
 	});
-	let selectColores= document.getElementById("inputColor-"+randomID)
+    let selectEst= document.getElementById("inputEstadoVehiculo-"+randomID)
+    $(document).ready(function() {
+        for(let es of catEstados){
+            selectEst.innerHTML += '<option value="'+capitalizeFirstLetter(es.toLowerCase()) +'">'+es+'</option>';
+        }
+    });
+    selectEst.value=""
+	let selectColores= document.getElementById("inputColorVehiculo-"+randomID)
 	$(document).ready(function() {
 		for(let color of coloresArray){
 	        selectColores.innerHTML += '<option value="'+capitalizeFirstLetter(color.toLowerCase()) +'">'+color+'</option>';
 	    }
 	});
 	selectColores.value=""
+    $("#inputEstadoVehiculo-"+randomID+"").val("")
+    $("#inputColorVehiculo-"+randomID+"").val("")
+    $("#selectTipoVehiculo-"+randomID+"").val("")
 }
 
 
@@ -987,7 +1248,9 @@ function setAddEquipo() {
 		</div>
 		<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
 			<label class="form-label ">Color:</label>
-			<input type="text" class="form-control group-equipo" id="inputColorEquipo-`+randomID+`">
+			 <select class="form-select group-equipo" aria-label="Default select example" id="inputColorEquipo-`+randomID+`" style="height: 40px !important; overflow: auto !important;">
+                </select>
+            <hr class="my-3">
 		</div>
 	</div>
     `;
@@ -995,6 +1258,16 @@ function setAddEquipo() {
 	/*$(".select-item-register").select2({
 	    tags: true
 	});*/
+    $("#selectTipoEquipo-"+randomID+"").val("")
+
+    let selectColores= document.getElementById("inputColorEquipo-"+randomID)
+    $(document).ready(function() {
+        for(let color of coloresArray){
+            selectColores.innerHTML += '<option value="'+capitalizeFirstLetter(color.toLowerCase()) +'">'+color+'</option>';
+        }
+    });
+    selectColores.value=""
+    $("#inputColorEquipo-"+randomID+"").val("")
 }
 
 

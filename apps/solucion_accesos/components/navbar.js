@@ -20,7 +20,7 @@ class lkfNavbarComponent extends HTMLElement{
             <button id='buttonIncidencias' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
             <button id='buttonArticulos' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
             <button id='buttonRondines' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('rondines');return false;">Rondines</button>   
-            <div class="btn p-0 ms-2 customNoBorder">
+            <div class="btn p-0 ms-2 customNoBorder" id="userMenu">
 			  <button type="button" class=" rounded-circle btn btn-secondary" id="imageUserButton" data-bs-toggle="dropdown" >
 				<img src="" id="imageUserNavbar">
 			  </button>
@@ -113,6 +113,8 @@ function customNavbar(location, turno){
         $('#buttonIncidencias').addClass('ocultar');
         $('#buttonArticulos').addClass('ocultar');
         $('#buttonRondines').addClass('ocultar');
+        $('#buttonPase').addClass("ocultar"); 
+        $("#userMenu").addClass("ocultar");
      }else if(turno === userTurnAbierto){
         $('#buttonAccesos').removeClass("ocultar"); 
         $('#buttonBitacoras').removeClass("ocultar"); 
@@ -120,6 +122,7 @@ function customNavbar(location, turno){
         $('#buttonArticulos').removeClass("ocultar"); 
         $('#buttonRondines').removeClass("ocultar"); 
         $('#buttonPase').removeClass("ocultar"); 
+        $('#userMenu').removeClass("ocultar")
      }
 }
 
