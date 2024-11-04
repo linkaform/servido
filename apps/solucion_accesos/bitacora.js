@@ -137,7 +137,7 @@ function abrirGafeteModal(folio){
             let selectGaf= document.getElementById("selectLocker") 
             selectGaf.innerHTML=""; 
             for(let loc of data){
-                    selectGaf.innerHTML += '<option value="'+loc.id_locker+'">'+loc.id_locker+'</option>';
+                    selectGaf.innerHTML += '<option value="'+loc.locker_id+'">'+loc.locker_id+'</option>';
             }
             if(data.length==0){
                  selectGaf.innerHTML += '<option disabled> No hay gafetes disponibles </option>';
@@ -169,7 +169,7 @@ function abrirGafeteModal(folio){
             let selectGaf= document.getElementById("selectGafete") 
             selectGaf.innerHTML=""; 
             for(let gaf of data){
-                    selectGaf.innerHTML += '<option value="'+gaf.id_gafete+'">'+gaf.id_gafete+'</option>';
+                    selectGaf.innerHTML += '<option value="'+gaf.gafete_id+'">'+gaf.gafete_id+'</option>';
             }
             if(data.length==0){
                  selectGaf.innerHTML += '<option disabled> No hay gafetes disponibles </option>';
@@ -829,6 +829,7 @@ function llenarTablasInfoUsuario(){
 //FUNCION confirmar la salida a un registro individual desde la tabla
 function alertSalida(folio, status_visita){
     console.log(status_visita, statusVisitaEntrada)
+    console.log('Valor de casetaaaa',selectCaseta.value)
     if(status_visita== statusVisitaEntrada){
 		Swal.fire({
     	    title:'¿Estas seguro de confirmar la salida?',
