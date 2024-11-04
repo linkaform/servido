@@ -17,6 +17,8 @@ hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
 hideElement("secondElement");
+hideElement("thirdElement");
+hideElement("fourthElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -136,6 +138,12 @@ function loadDemoData(){
   getDrawGraphicFirst(data1, setOptions1);
   document.getElementById("secondElement").style.removeProperty('display');
 
+  getDrawGraphicSecond(data2, setOptions2);
+  document.getElementById("thirdElement").style.removeProperty('display');
+
+  getDrawGraphicThird(data3, setOptions3);
+  document.getElementById("fourthElement").style.removeProperty('display');
+
 }
 
 const loading = document.querySelector('.loading-container');
@@ -201,6 +209,16 @@ function getFirstElement(dateTo, dateFrom, dispositivo, cliente){
         getDrawGraphicFirst(res.response.json.secondElement, setOptions1);
         document.getElementById("secondElement").style.removeProperty('display');
       }
+      if (res.response.json.secondElement) {
+        getDrawGraphicSecond(res.response.json.secondElement, setOptions2);
+        document.getElementById("thirdElement").style.removeProperty('display');
+      }
+      if (res.response.json.secondElement) {
+
+        let dataFormat = setFormat(res.response.json.secondElement);
+        getDrawGraphicThird(dataFormat, setOptions3);
+        document.getElementById("fourthElement").style.removeProperty('display');
+      }
       
     } else {
       hideLoading();
@@ -254,22 +272,27 @@ function getDrawTable(id, columnsData, tableData){
   }
 }
 
+//-----FORMAT
+function setFormat(data) {
+  let dicReturn = {
+    'labels': [],
+    'datasets': [
+      {
+        'label': 'Cantidad',
+        'data': [],
+        'backgroundColor': [],
+      },
+    ]
+  };
 
-//-----GRAPICH
-let chart1;
-function getDrawGraphicFirst(data, setOptions){
-  //---CHART
-  var ctx = document.getElementById('graphicFirst').getContext('2d');
-  
-  if (chart1) {
-    chart1.destroy();
+  for (var i = 0; i < data['datasets'].length; i++) {
+    let suma = data['datasets'][i]['data'].reduce((count, value) => count + value, 0);
+    dicReturn['labels'].push(data['datasets'][i]['label'])
+    dicReturn['datasets'][0]['backgroundColor'].push(data['datasets'][i]['backgroundColor'])
+    dicReturn['datasets'][0]['data'].push(suma)
   }
 
-  chart1 = new Chart(ctx, {
-    type: 'line',
-    data:data,
-    options: setOptions,
-  });
+  return dicReturn
 }
 
 //-----CATALOG
@@ -316,3 +339,53 @@ function get_catalog()
     } 
   })
 };
+
+//-----GRAPICH
+let chart1;
+function getDrawGraphicFirst(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicFirst').getContext('2d');
+  
+  if (chart1) {
+    chart1.destroy();
+  }
+
+  chart1 = new Chart(ctx, {
+    type: 'line',
+    data:data,
+    options: setOptions,
+  });
+}
+
+let chart2;
+function getDrawGraphicSecond(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicSecond').getContext('2d');
+  
+  if (chart2) {
+    chart2.destroy();
+  }
+
+  chart2 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    options: setOptions,
+  });
+}
+
+
+let chart3;
+function getDrawGraphicThird(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicThird').getContext('2d');
+  
+  if (chart3) {
+    chart3.destroy();
+  }
+
+  chart3 = new Chart(ctx, {
+    type: 'doughnut',
+    data:data,
+    options: setOptions,
+  });
+}

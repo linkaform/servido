@@ -99,26 +99,20 @@
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3 mt-1">
                         <h5>Edificio: </h5>
-                        <select class="form-control mdb-select md-form" id="edificio" >
+                        <select class="form-control mdb-select md-form" id="edificio" onchange="changeSelectors('piso');return false;">
                             <option value="">--Seleccione--</option>
-                            <option value="">Edificio 1</option>
-                            <option value="">Edificio 2</option>
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3 mt-1">
                         <h5>Piso: </h5>
-                        <select class="form-control mdb-select md-form" id="piso" >
+                        <select class="form-control mdb-select md-form" id="piso" onchange="changeSelectors('cliente');return false;">
                             <option value="">--Seleccione--</option>
-                            <option value="">Piso 1</option>
-                            <option value="">Piso 2</option>
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3 mt-1">
                         <h5>Cliente: </h5>
                         <select class="form-control mdb-select md-form" id="cliente" >
                             <option value="">--Seleccione--</option>
-                            <option value="">Cliente 1</option>
-                            <option value="">Cliente 2</option>
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-2 col-lg-3 mt-1">

@@ -10,6 +10,8 @@ let userName = null;
 let userParentId = null;
 let scriptId = null;
 let isExpanded = false;
+let dicCatalog = null;
+let dataTable = null;
 
 
 $('#divOptions').hide();
@@ -79,7 +81,6 @@ window.onload = function(){
   hideElement("close_sesion");
   hideElement("firstParameters");
 
-
   if(us != "" && jw != "" || scriptId===null){
     hideElement("inicio_ses");
     unhideElement("close_sesion");
@@ -91,6 +92,8 @@ window.onload = function(){
     unHideReportElements()
     if (scriptId == null) {
       loadDemoData();
+    }else{
+      getCatalog();
     }
     //--Styles
     setSpinner();
@@ -130,6 +133,8 @@ function loadDemoData(){
   $('.title_tables').show();
   document.getElementById("firstParameters").style.removeProperty('display');
 
+
+  dataTable = dataTable1;
   getDrawTable('firstElement', columsTable1, dataTable1, 350);
   document.getElementById("divContentFirst").style.removeProperty('display');
   document.getElementById("firstElement").style.removeProperty('display');
@@ -147,12 +152,16 @@ const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement(){
-  let date_from = document.getElementById("date_from");
-  let date_to = document.getElementById("date_to");  
-  getFirstElement(date_to.value, date_from.value);
+  const date_from = document.getElementById("date_from").value;
+  const date_to = document.getElementById("date_to").value;  
+  const valueEdificio = document.getElementById("edificio").value;
+  const valuePiso = document.getElementById("piso").value;
+  const valueCliente = document.getElementById("cliente").value;
+
+  getFirstElement(date_to, date_from, valueEdificio, valuePiso, valueCliente);
 };
 
-function getFirstElement(dateTo, dateFrom){
+function getFirstElement(dateTo, dateFrom, edificio, piso, cliente){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -162,8 +171,12 @@ function getFirstElement(dateTo, dateFrom){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
+      option:'get_query',
       date_to: dateTo,
       date_from: dateFrom,
+      edificio: edificio,
+      piso: piso,
+      cliente: cliente,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -178,19 +191,20 @@ function getFirstElement(dateTo, dateFrom){
       $("#divContent").show();
       $('.title_tables').show();
 
-      if (res.response.json.firstElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data, 350);
+      if (res.response.data.firtsElement) {
+        dataTable = res.response.data.firtsElement;
+        getDrawTable('firstElement', columsTable1, res.response.data.firtsElement, 350);
+        document.getElementById("divContentFirst").style.removeProperty('display');
         document.getElementById("firstElement").style.removeProperty('display');
       }
-      if (res.response.json.secondElement) {
-        drawFirstElement(res.response.json.secondElement, setOptions1)
-        document.getElementById("secondElement").style.removeProperty('display');
+      if (res.response.data.secondElement) {
+        drawFirstElement(res.response.data.secondElement, setOptions1)
+        document.getElementById("divContentSecond").style.removeProperty('display');
         document.getElementById("graphicFirst").style.removeProperty('display');
       }
-      if (res.response.json.thirdElement) {
-        console.log(res.response.json.thirdElement)
-        drawSecondElement(res.response.json.thirdElement, setOptions2)
-        document.getElementById("thirdElement").style.removeProperty('display');
+      if (res.response.data.thirdElement) {
+        drawSecondElement(res.response.data.thirdElement, setOptions2)
+        document.getElementById("divContentThird").style.removeProperty('display');
         document.getElementById("graphicSecond").style.removeProperty('display');
       }
     } else {
@@ -211,6 +225,107 @@ function getFirstElement(dateTo, dateFrom){
     }
   })
 };
+
+//-----CATALOGS
+function getCatalog() {
+  fetch(url + 'infosync/scripts/run/', {
+    method: 'POST',
+    body: JSON.stringify({
+      script_id: scriptId,
+      option: 'get_catalog',
+    }),
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
+    },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      if (res && res.response && res.response.data) {
+        dicCatalog = res.response.data;
+        setSelectors();
+      } 
+    } 
+  })
+}
+
+function setSelectors() {
+  let edificios = [...new Set(dicCatalog.map(item => item.edificio))];
+  edificios.sort();
+  //----New Options
+  const select = document.getElementById("edificio");
+  edificios.forEach(item => {
+    let newOption = document.createElement("option");
+    newOption.value = item;      
+    newOption.text = item;       
+    select.appendChild(newOption); 
+  });
+}
+
+function changeSelectors(type){
+    console.log('entra a cambio de selector ',type)
+    const valueEdificio = document.getElementById("edificio").value;
+    const valuePiso = document.getElementById("piso").value;
+
+    if (type == 'piso' && valueEdificio!=''){
+      console.log('Entra a piso')
+      //---Clean Selects
+      $("#piso").empty();
+      $("#cliente").empty();
+
+      const defaultOptionPiso = $("<option>", {
+          value: "",
+          text: "--Seleccione--"
+      });
+      const defaultOptionCliente = $("<option>", {
+          value: "",
+          text: "--Seleccione--"
+      });
+
+      $("#piso").append(defaultOptionPiso);
+      $("#cliente").append(defaultOptionCliente);
+
+      //---Order
+      const listFilter = dicCatalog.filter(item => item.edificio === valueEdificio);
+      let pisos = [...new Set(listFilter.map(item => item.piso))];
+      pisos.sort();
+
+      //----New Options
+      const selectPiso = document.getElementById("piso");
+      pisos.forEach(item => {
+        let newOption = document.createElement("option");
+        newOption.value = item;      
+        newOption.text = item;       
+        selectPiso.appendChild(newOption); 
+      });
+
+    }else if (type == 'cliente' && valuePiso!=''){
+      //---Clean Select
+      $("#cliente").empty();
+      
+      const defaultOptionCliente = $("<option>", {
+        value: "",
+        text: "--Seleccione--"
+      });
+      
+      $("#cliente").append(defaultOptionCliente);
+
+      //---Order
+      const selectCliente = document.getElementById("cliente");
+      const listFilter = dicCatalog.filter(item => item.piso === valuePiso);
+      let clientes = [...new Set(listFilter.map(item => item.cliente))];
+      clientes.sort();
+
+      //----New Options
+      clientes.forEach(item => {
+        let newOption = document.createElement("option");
+        newOption.value = item;      
+        newOption.text = item;       
+        selectCliente.appendChild(newOption); 
+      });
+    }
+}
 
 //-----TABLES
 function getDrawTable(id, columnsData, tableData, height, expanded = false){
@@ -254,7 +369,7 @@ function getDrawTable(id, columnsData, tableData, height, expanded = false){
 
 function changeTableExpanded(){
   isExpanded = !isExpanded; 
-  getDrawTable('firstElement', columsTable1, dataTable1, 350, expanded = isExpanded);
+  getDrawTable('firstElement', columsTable1, dataTable, 350, expanded = isExpanded);
   document.getElementById("divContentFirst").style.removeProperty('display');
   document.getElementById("firstElement").style.removeProperty('display');
 }
@@ -265,15 +380,18 @@ function drawFirstElement(datasets, dataconfig){
 
   //---CHART
   var ctx = document.getElementById('graphicFirst').getContext('2d');
-  
   if (chart1) {
     chart1.destroy();
   }
-
+  //---Color
+  array_colors = getPAlleteColors(13,datasets['datasets'].length);
+  for (let i = 0; i < datasets['datasets'].length; i++) {
+    datasets['datasets'][i]['backgroundColor'] = array_colors[i];
+  }
   chart1 = new Chart(ctx, {
     type: 'bar',
     data: datasets,
-    plugins: [ChartDataLabels],
+    //plugins: [ChartDataLabels],
     options: dataconfig
   });
 }
@@ -287,11 +405,13 @@ function drawSecondElement(datasets, dataconfig){
   if (chart2) {
     chart2.destroy();
   }
-
+  //---Color
+  array_colors = getPAlleteColors(13,datasets['labels'].length);
+  datasets['datasets'][0]['backgroundColor'] = array_colors;
   chart2 = new Chart(ctx, {
     type: 'pie',
     data: datasets,
-    plugins: [ChartDataLabels],
+    //plugins: [ChartDataLabels],
     options: dataconfig
   });
 }
