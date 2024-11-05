@@ -1121,14 +1121,14 @@ function registrarIngreso(){
         comPase.push(comP.comentario_pase)
     }
     for (let comA of comentariosAcceso ){
-        comAcc.push("a", comA.comentario_pase)
+        comAcc.push(comA.comentario_pase)
     }
     for (let veh of selectedVe){
-        veh.color_vehiculo= veh.color_vehiculo.toLowerCase();
-        veh.nombre_estado= veh.nombre_estado.toLowerCase();
+        veh.color_vehiculo= veh.color_vehiculo ? veh.color_vehiculo.toLowerCase():""
+        veh.nombre_estado= veh.nombre_estado ? veh.nombre_estado.toLowerCase():""
     }
     for (let eq of selectedEq){
-        eq.color_articulo= eq.color_articulo.toLowerCase();
+        eq.color_articulo= eq.color_articulo ? eq.color_articulo.toLowerCase():""
     }
     fetch(url + urlScripts, {
         method: 'POST',

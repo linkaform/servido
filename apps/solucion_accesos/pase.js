@@ -686,14 +686,14 @@ function crearConfirmacionMini() {
 						 		let data_for_msj = {}
 								let data_for_msj_tel={}
 						 		let selected = $('input[name="opcionesCorreoMsj"]:checked');
-								for (let sel of selected){
-									if(sel.id == 'enviarMensaje'){
+								for (let sel in selected){
+									if(selected[sel].id == 'enviarMensaje'){
 										data_for_msj_tel={
 											mensaje: "Se ha creado un nuevo pase de entrada",
 											numero: data.json.telefono
 										}
 									}
-									if (sel.id=="enviarCorreo"){
+									if (selected[sel].id=="enviarCorreo"){
 										data_for_msj = {
 											mensaje: "Se ha creado un nuevo pase de entrada",
 	    									titulo: "Pase de entreda generado correctamente",
@@ -857,9 +857,10 @@ function crearConfirmacion() {
 
 	
 	let diasSeleccionados= $('input[name="diasPase"]:checked')
+    console.log("dias seleccionados",diasSeleccionados)
 	let diasArr=[]
-	for (let d of diasSeleccionados){
-		diasArr.push(d.value)
+	for (let d in diasSeleccionados){
+		diasArr.push(diasSeleccionados[d].value)
 	}
 
 	let buttonDays=""
