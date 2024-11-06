@@ -24,6 +24,7 @@ function loadDemoData(){
 }
 
 function loadData(response) {
+  console.log('response',response)
   if (response && response.data && response.data.chartFirst) {
     drawChartElement('chartFirst','bar',response.data.chartFirst,setOptions1);
   } 
@@ -42,6 +43,7 @@ function loadData(response) {
 }
 
 function getInformation(){
+    console.log('Entra a get information')
     const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
     const statusSession = getSession();

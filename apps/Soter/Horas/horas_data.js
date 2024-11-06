@@ -1,7 +1,7 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'card', d: '3', id:'cardFirst', title:'Porcentaje De Avance X Proyecto %'},
+            { type:'card', d: '3', id:'cardFirst', title:'PorcentajE Proyecto %'},
             { type:'card', col: '3', id:'cardSecond', title:'Departamentos Activos'},
             { type:'card', col: '3', id:'cardThird', title:'Numero De Empleados'},
             { type:'card', col: '3', id:'cardFourth', title:'Horas Totales de Trabajo'},
@@ -20,7 +20,12 @@ let dicReportContext = [
     { class:'', _children : [
             { type:'table', col: '12', id:'tableFirst', title:'Detalle de empleados'},
         ] 
-    }
+    },
+    { class:'', _children : [
+            { type:'card', col: '6', id:'cardFirst', title:'PorcentajE Proyecto %'},
+            { type:'card', col: '6', id:'cardSecond', title:'Departamentos Activos'},
+        ] 
+    },
 ];
 
 //-----Configuiraciónes de las graficas
