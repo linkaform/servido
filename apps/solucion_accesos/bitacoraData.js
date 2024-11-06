@@ -25,8 +25,14 @@ const columsData1 = [
 	{ title:"Visitante", field:'nombre_visitante',hozAlign:"left",headerFilter:true},
 	{ title:"Tipo", field:'perfil_visita',hozAlign:"left",headerFilter:true},
 	{ title:"Contratista", field:'contratista',hozAlign:"left",headerFilter:true},
-	{ title:"Gafete", field:'status_gafete',hozAlign:"left",headerFilter:true},
-	{ title:"Visita a", field:'visita_a',hozAlign:"left",headerFilter:true},
+	{ title:"Gafete", field:'id_gafet',hozAlign:"left",headerFilter:true},
+	{ title:"Visita a", field:'visita_a',hozAlign:"left",headerFilter:true, 
+		formatter: function(cell) {
+		            let data = cell.getData();
+		            let visit = data.visita_a.length>0 ? data.visita_a[0].nombre: ""
+		            return visit
+		        },
+	},
 	{ title:"Caseta Entrada", field:'caseta_entrada',hozAlign:"left",headerFilter:true},
 	{ title:"Caseta Salida", field:'caseta_salida',hozAlign:"center",tooltip:true},
 	{ title:"Salida", field:'fecha_salida',hozAlign:"left",headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},

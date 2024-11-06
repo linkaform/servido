@@ -156,7 +156,7 @@ function loadCatalogsCaseta(location ,arrayUserBoothsLocations){
 }
 
 
-async function fetchOnChangeCaseta(script, option, area, location,status=""){
+async function fetchOnChangeCaseta(script, option, area, location, prioridades=[]){
     loadingService()
     let responseData=""
     let response={ "data":{
@@ -182,7 +182,10 @@ async function fetchOnChangeCaseta(script, option, area, location,status=""){
     if (status){
         body.status=status
     }
-    console.log(body)
+    if (prioridades.length>0){
+        body.prioridades=prioridades
+    } 
+
     let dataCasetas=[]
     let fetchData= await fetch(url + urlScripts, {
         method: 'POST',

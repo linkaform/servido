@@ -13,17 +13,18 @@ class lkfNavbarComponent extends HTMLElement{
         <div class="navbar-brand">
 			<img src="" height="40" height="60" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
         </div>
+        <div class="d-flex flex-grow-1" ><button id='buttonPase' class="btn btn-sm btn-secondary custom-navbar-button ocultar"  onclick="redirectionUrl('pase');return false;" >Pase de entrada</button></div>
         <div class="navbar-brand navbarShowHide customNoBorder">
             <button id='buttonAccesos' class="btn btn-sm btn-secondary custom-navbar-button ocultar"  onclick="redirectionUrl('accesos');return false;" >Accesos</button>   
             <button id='buttonBitacoras' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('bitacora');return false;" >Bitacoras</button>   
             <button id='buttonIncidencias' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
             <button id='buttonArticulos' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
             <button id='buttonRondines' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('rondines');return false;">Rondines</button>   
-            <div class="btn p-0 ms-2 customNoBorder">
+            <div class="btn p-0 ms-2 customNoBorder" id="userMenu">
 			  <button type="button" class=" rounded-circle btn btn-secondary" id="imageUserButton" data-bs-toggle="dropdown" >
 				<img src="" id="imageUserNavbar">
 			  </button>
-			  <ul class="dropdown-menu dropdown-menu-end  ">
+			  <ul class="dropdown-menu dropdown-menu-end">
 			    <li>
                     <button class="dropdown-item"  onclick="redirectionUrl('turnos');return false;" type="button"> 
                     <i class="fa-solid fa-door-open"></i> Turno</button>
@@ -95,6 +96,12 @@ function changeButtonColor(){
                 btn5.style.setProperty('background-color', '#0275d8', 'important');
                 btn5.style.setProperty('color', 'white', 'important');
                 break;
+              case "pase":
+                console.log("QUE ONDA")
+                let btn6 = document.getElementById("buttonPase");
+                btn6.style.setProperty('background-color', '#0275d8', 'important');
+                btn6.style.setProperty('color', 'white', 'important');
+                break;
             }
         } 
 }
@@ -106,24 +113,20 @@ function customNavbar(location, turno){
         $('#buttonIncidencias').addClass('ocultar');
         $('#buttonArticulos').addClass('ocultar');
         $('#buttonRondines').addClass('ocultar');
+        $('#buttonPase').addClass("ocultar"); 
+        $("#userMenu").addClass("ocultar");
      }else if(turno === userTurnAbierto){
         $('#buttonAccesos').removeClass("ocultar"); 
         $('#buttonBitacoras').removeClass("ocultar"); 
         $('#buttonIncidencias').removeClass("ocultar"); 
         $('#buttonArticulos').removeClass("ocultar"); 
         $('#buttonRondines').removeClass("ocultar"); 
+        $('#buttonPase').removeClass("ocultar"); 
+        $('#userMenu').removeClass("ocultar")
      }
 }
 
-function setCloseSession(argument) {
-    closeSession();
-    localStorage.setItem('cerrarSesion', Date.now());
-    //redirectionUrl('login',false, true);
-    let protocol = window.location.protocol;
-    let host = window.location.host;
-    window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
 
-}
 
 //----Function Redirection
 function redirectionUrl(type = 'null',blank = false, logout=false){
@@ -134,7 +137,6 @@ function redirectionUrl(type = 'null',blank = false, logout=false){
     const pestanas = JSON.parse(localStorage.getItem("pestanas_key")) || [];
     agregarPestana(type)
     if (existingTab && type !=="login") {
-        console.log("ya existe")
         window.open(`${protocol}//${host}/solucion_accesos/${type}.html`, type)
     }/* else {
         if(type == 'users'){

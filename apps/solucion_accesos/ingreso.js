@@ -77,6 +77,7 @@ function getCatalogsIngreso(){
         method: 'POST',
         body: JSON.stringify({
             script_name: "get_vehiculos.py",
+            account_id:10
             
         }),
         headers:{

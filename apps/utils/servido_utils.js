@@ -239,7 +239,18 @@ function closeSession(){
         var spcook = cookies[i].split("="); 
         document.cookie = spcook[0] + "=;expires=Thu, 21 Sep 1979 00:00:01 UTC;"; 
     }
-  location.reload();
+  //location.reload();
+}
+
+function setCloseSession(argument) {
+    closeSession();
+    localStorage.setItem('cerrarSesion', Date.now());
+
+    //redirectionUrl('login',false, true);
+    /*let protocol = window.location.protocol;
+    let host = window.location.host;
+    window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;*/
+
 }
 
 
@@ -794,9 +805,9 @@ function capitalizeFirstLetter(text) {
 
 //FUNCION obtener los valores de los inputs de un modal
 function getInputsValueByClass(classInput){
-    console.log("QUE PASAA",classInput)
     let data = {};
     let elements = document.getElementsByClassName(classInput)
+    console.log("QUE PASAA",elements)
     for (let i = 0; i < elements.length; i++) {
         let id = elements[i].id;
         let value = elements[i].value;
@@ -904,3 +915,112 @@ async function cargarCatalogos(bodys=[], loading=true) {
     }
     return {format,failedRequests}
 }
+
+
+
+function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
+    let array=[]
+    let divP = document.getElementById(divPadre);
+    let inputs = divP.querySelectorAll(inputsHijos);
+    for (let i = 0; i < inputs.length; i += cantidadInputs) { // Incrementar de dos en dos
+        const datoInput1 = inputs[i].value; // Input
+        const dataInput2 = inputs[i + 1].value; // Select
+        let objTemporal={}
+        if (datoInput1 && dataInput2) { // Verificar que el input no esté vacío
+            if(inputsHijos=='.persona-div-nuevo'|| inputsHijos=='.persona-div-editar'){
+                objTemporal.nombre_completo= datoInput1;
+                objTemporal.tipo_persona= dataInput2;
+            }
+            if(inputsHijos=='.dano-div-nuevo' ||inputsHijos=='.dano-div-editar'){
+                objTemporal.responsable_accion= datoInput1;
+                objTemporal.acciones_tomadas= dataInput2;
+            }
+             if(inputsHijos=='.deposito-nuevo' ||inputsHijos=='.deposito-editar'){
+                objTemporal.tipo_deposito= datoInput1;
+                objTemporal.cantidad= dataInput2;
+            }
+            if(inputsHijos=='.com-div-nuevo' ||inputsHijos=='.com-div-nuevo'){
+                objTemporal.tipo_comentario= datoInput1;
+                objTemporal.comentario_pase= dataInput2;
+            }
+            if(inputsHijos=='.area-div-nuevo' ||inputsHijos=='.area-div-nuevo'){
+                objTemporal.nombre_area= datoInput1;
+                objTemporal.commentario_area= dataInput2;
+            }
+            array.push(objTemporal); // Agregar el objeto al array
+        }
+    }
+    return array
+}
+
+
+//FUNCION obtener la imagen del canvas
+function getScreen(type){
+    if(!flagVideoUser){
+        console.log("hello")
+        flagVideoUser = true;
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
+            .then(function(stream) {
+                let video = document.createElement('video');
+                video.style.width = '200px';
+                video.style.height = '225px';
+                document.getElementById('container'+type).appendChild(video);
+                video.srcObject = stream;
+                video.play();
+                let canvas = document.getElementById('canvasPhoto'+type);
+                let context = canvas.getContext('2d');
+                //----Take Photo
+                $("#buttonTake"+type).attr('disabled','disabled');
+                $("#buttonTake"+type).hide();
+                $("#buttonSave"+type).show();
+                document.getElementById('buttonSave'+type).addEventListener('click', function() {
+                    setTranslateImage(context, video, canvas, type)
+                });
+                flagVideoUser=false
+            })
+            .catch(function(error) {
+                console.error('Error al acceder a la cámara:', error);
+            });
+        } else {
+            alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
+        }
+    }
+}
+
+function setTranslateImage(context, video, canvas, type){
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    let photoUser = document.getElementById('img'+type);
+    photoUser.src = canvas.toDataURL('image/png');
+    photoUser.style.display = 'block';
+    video.pause();
+    video.srcObject.getTracks().forEach(function(track) {
+        track.stop();
+    });
+    video.style.display = 'none';
+    ///-- Save Input
+    canvas.toBlob( (blob) => {
+        const file = new File( [ blob ], "image"+type+".png" );
+        const dT = new DataTransfer();
+        dT.items.add( file );
+        document.getElementById("inputFile"+type).files = dT.files;
+    } );
+    //-----Rquest Photo
+    const flagBlankUser = isCanvasBlank(document.getElementById('canvasPhoto'+type));
+    if(!flagBlankUser){
+        setTimeout(() => {
+            setRequestFileImg('input'+type, type);
+        }, "1000");
+    }
+    //-----Clean ELement
+    $("#buttonSave"+type).hide();
+}
+//FUNCION validar que el canvas este limpio
+function isCanvasBlank(canvas) {
+    const context = canvas.getContext('2d');
+    const pixelBuffer = new Uint32Array(
+        context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+    );
+    return !pixelBuffer.some(color => color !== 0);
+}
+

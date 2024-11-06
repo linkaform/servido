@@ -1,5 +1,6 @@
 :root {
   --yellowLKF: #FFA823;
+  --yellowLKF-light: #ffe1b4 ;
   --downloadButton:#003285;
   --text-gray:#616161;
   --soft-gray:#dcdcdc;
@@ -169,11 +170,13 @@ th {
 }
 
 .tabulator .tabulator-header .tabulator-col{
-  background: #ffe99c !important;
+  background: var(--yellowLKF-light) !important;
   color: #292929 !important;
   border:none  !important;
   padding-left: 5px;
 }
+
+
 
 .tabulator-header {
   border-bottom: .5px solid;

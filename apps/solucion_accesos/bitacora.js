@@ -22,7 +22,7 @@ window.onload = function(){
     };
  	selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = async function() {
-        let response = await fetchOnChangeCaseta('script_turnos.py', 'list_bitacora', selectCaseta.value, selectLocation.value)
+        let response = await fetchOnChangeCaseta('script_turnos.py', 'list_bitacora', selectCaseta.value, selectLocation.value,prioridades=['entrada'])
         reloadTableBitacoras(response.response.data)
     };
 	let user = getCookie("userId");
@@ -101,6 +101,14 @@ window.addEventListener('storage', function(event) {
     }
 });
 
+
+async function onChangeFiltroEstadoBitacora(){
+    let prioridades = document.querySelectorAll('input[name="estadoBitacora"]:checked');
+    let values = Array.from(prioridades).map(checkbox => checkbox.value);
+    let response2 = await fetchOnChangeCaseta('script_turnos.py', 'list_bitacora', selectCaseta.value, selectLocation.value, prioridades= values)
+    reloadTableBitacoras(response2.response.data, selectCaseta.value)
+}
+
 function abrirGafeteModal(folio){
     loadingService()
     seleccionadoBitacora= dataTableBitacora.find(x => x.folio == folio);
@@ -129,7 +137,7 @@ function abrirGafeteModal(folio){
             let selectGaf= document.getElementById("selectLocker") 
             selectGaf.innerHTML=""; 
             for(let loc of data){
-                    selectGaf.innerHTML += '<option value="'+loc.id_locker+'">'+loc.id_locker+'</option>';
+                    selectGaf.innerHTML += '<option value="'+loc.locker_id+'">'+loc.locker_id+'</option>';
             }
             if(data.length==0){
                  selectGaf.innerHTML += '<option disabled> No hay gafetes disponibles </option>';
@@ -161,7 +169,7 @@ function abrirGafeteModal(folio){
             let selectGaf= document.getElementById("selectGafete") 
             selectGaf.innerHTML=""; 
             for(let gaf of data){
-                    selectGaf.innerHTML += '<option value="'+gaf.id_gafete+'">'+gaf.id_gafete+'</option>';
+                    selectGaf.innerHTML += '<option value="'+gaf.gafete_id+'">'+gaf.gafete_id+'</option>';
             }
             if(data.length==0){
                  selectGaf.innerHTML += '<option disabled> No hay gafetes disponibles </option>';
@@ -484,7 +492,6 @@ function agregarVehiculo(){
 }
 
 function reloadTableBitacoras(data){
-    console.log("DATATA",data)
     if(data){
         dataTableBitacora=[]
        //dataTableLocker=[]
@@ -493,14 +500,34 @@ function reloadTableBitacoras(data){
             if(lista.length>0){
                 for (let bitacora of lista){
                     dataTableBitacora.push({
-                    folio:bitacora.folio ,fecha_entrada:bitacora.fecha_entrada ,nombre_visitante:bitacora.nombre_visitante, perfil_visita:bitacora.perfil_visita,
-                    contratista:bitacora.contratista,status_gafete:bitacora.status_gafete, visita_a:bitacora.visita_a, caseta_entrada:bitacora.caseta_entrada,caseta_salida:bitacora.caseta_salida, 
-                    fecha_salida:bitacora.fecha_salida,comentarios:bitacora.comentarios||[] , equipos: bitacora.equipos, vehiculos: bitacora.vehiculos, foto: bitacora.foto, 
-                    identificacion: bitacora.identificacion, documento: bitacora.documento||"" , a_quien_visita: bitacora.a_quien_visita||"" , perfil_visita: bitacora.perfil_visita||"" ,
-                    id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso, codigo_qr: bitacora.codigo_qr , status_visita:bitacora.status_visita})
+                    folio:bitacora.folio ,
+                    fecha_entrada:bitacora.fecha_entrada ,
+                    nombre_visitante:bitacora.nombre_visitante, 
+                    perfil_visita:bitacora.perfil_visita,
+                    contratista:bitacora.contratista,
+                    status_gafete:bitacora.status_gafete, 
+                    visita_a:bitacora.visita_a, 
+                    caseta_entrada:bitacora.caseta_entrada,
+                    caseta_salida:bitacora.caseta_salida, 
+                    fecha_salida:bitacora.fecha_salida,
+                    comentarios:bitacora.comentarios||[] , 
+                    equipos: bitacora.equipos, 
+                    vehiculos: bitacora.vehiculos, 
+                    foto: bitacora.foto, 
+                    identificacion: bitacora.identificacion, 
+                    documento: bitacora.documento||"" , 
+                    visita_a: bitacora.visita_a||"" , 
+                    perfil_visita: bitacora.perfil_visita||"" ,
+                    id: bitacora._id, 
+                    motivo_visita:bitacora.motivo_visita, 
+                    grupo_areas_acceso:bitacora.grupo_areas_acceso, 
+                    codigo_qr: bitacora.codigo_qr , 
+                    status_visita:bitacora.status_visita,
+                    id_gafet:bitacora.id_gafet
+                })
                 }
             }
-            
+            console.log("LKAROGOO", dataTableBitacora.length)
             if(tables['tableEntradas']){
                 tables['tableEntradas'].setData(dataTableBitacora)
             }else{
@@ -559,11 +586,31 @@ function loadDataTables(){
             if(user !='' && userJwt!=''){
                 let lista= res.response.data
                 for (bitacora of lista){
-                    dataTableBitacora.push({folio:bitacora.folio ,fecha_entrada:bitacora.fecha_entrada ,nombre_visitante:bitacora.nombre_visitante, perfil_visita:bitacora.perfil_visita,
-                    contratista:bitacora.contratista,status_gafete:bitacora.status_gafete, visita_a:bitacora.visita_a, caseta_entrada:bitacora.caseta_entrada,caseta_salida:bitacora.caseta_salida, 
-                    fecha_salida:bitacora.fecha_salida,comentarios:bitacora.comentarios||[] , equipos: bitacora.equipos, vehiculos: bitacora.vehiculos, foto: bitacora.foto, 
-                    identificacion: bitacora.identificacion, documento: bitacora.documento||"" , a_quien_visita: bitacora.a_quien_visita||"" , perfil_visita: bitacora.perfil_visita||"" ,
-                    id: bitacora._id, motivo_visita:bitacora.motivo_visita, grupo_areas_acceso:bitacora.grupo_areas_acceso , codigo_qr: bitacora.codigo_qr, status_visita:bitacora.status_visita})
+                    dataTableBitacora.push({folio:bitacora.folio ,
+                    fecha_entrada:bitacora.fecha_entrada ,
+                    nombre_visitante:bitacora.nombre_visitante, 
+                    perfil_visita:bitacora.perfil_visita,
+                    contratista:bitacora.contratista,
+                    status_gafete:bitacora.status_gafete, 
+                    visita_a:bitacora.visita_a, 
+                    caseta_entrada:bitacora.caseta_entrada,
+                    caseta_salida:bitacora.caseta_salida, 
+                    fecha_salida:bitacora.fecha_salida,
+                    comentarios:bitacora.comentarios||[] , 
+                    equipos: bitacora.equipos, 
+                    vehiculos: bitacora.vehiculos, 
+                    foto: bitacora.foto, 
+                    identificacion: bitacora.identificacion, 
+                    documento: bitacora.documento||"" , 
+                    visita_a: bitacora.visita_a||"" , 
+                    perfil_visita: bitacora.perfil_visita||"" ,
+                    id: bitacora._id, 
+                    motivo_visita:bitacora.motivo_visita, 
+                    grupo_areas_acceso:bitacora.grupo_areas_acceso , 
+                    codigo_qr: bitacora.codigo_qr, 
+                    status_visita:bitacora.status_visita,
+                    id_gafet:bitacora.id_gafet
+                })
                 }
                 drawTable('tableEntradas',columsData1,dataTableBitacora);
                 drawTable('tableSalidas',columsData2,dataTableLocker);
@@ -782,6 +829,7 @@ function llenarTablasInfoUsuario(){
 //FUNCION confirmar la salida a un registro individual desde la tabla
 function alertSalida(folio, status_visita){
     console.log(status_visita, statusVisitaEntrada)
+    console.log('Valor de casetaaaa',selectCaseta.value)
     if(status_visita== statusVisitaEntrada){
 		Swal.fire({
     	    title:'¿Estas seguro de confirmar la salida?',
@@ -1280,9 +1328,3 @@ function printTable(table){
     tab.print(false, true);
 }
 
-
-//---Cerrar Sesión
-function setCloseSession(argument) {
-    closeSession();
-    redirectionUrl('login',false);
-}
