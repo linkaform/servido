@@ -1,0 +1,18 @@
+.pass_quantity{
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.title_tables h3 {
+  color: #000;
+  font: 1.4rem gothambook;
+}
+
+.title_tables h3 > span{
+  padding-bottom: 5px;
+  border-bottom: 1px solid #D9D9D9;
+}
+
+body{
+  font-family: gothambook;
+}
