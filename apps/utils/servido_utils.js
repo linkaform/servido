@@ -981,6 +981,7 @@ function getScreen(type){
             })
             .catch(function(error) {
                 console.error('Error al acceder a la cámara:', error);
+                errorAlert("Error al acceder a la cámara")
             });
         } else {
             alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');

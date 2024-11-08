@@ -255,8 +255,13 @@
 		                </div>
 	            	</div>
 			</div>
-            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6 my-3">
-                <!-- <button type="button" class="btn btn-outline-danger btn-block" id="cancelButton" onclick="changeView('cancel')">Cancelar</button> -->
+            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6 my-3 d-flex flex-column">
+            	<label>
+	            	<input type="checkbox" class="paseEntradaNuevo" name="AgregarFotoIdent" value="agregarFoto" id="agregarFoto" onchange="onChangeOpcionesAvanzadas('AgregarFotoIdent')"><b> Agregar Fotografia</b>
+	        	</label>
+	        	<label>
+	            	<input type="checkbox" class="paseEntradaNuevo" name="AgregarFotoIdent" value="agregarIdentificacion" id="agregarIdentificacion" onchange="onChangeOpcionesAvanzadas('AgregarFotoIdent')"><b> Agregar Identificacion</b>
+	        	</label>
             </div>
             <div class="col-sm-10 col-md-12 col-lg-12 col-xl-12 my-5">
             	<div class="col-12 d-flex justify-content-center">
@@ -265,6 +270,8 @@
                 	</div>
             	</div>
             </div>
+
+            
      	</div>
 
      	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 d-flexjustify-content-center mb-3 mt-5" id="paseEntradaInf5">
@@ -288,7 +295,7 @@
      	</div>
      	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 d-flexjustify-content-center p-0 m-0" id="paseEntradaInf6">
             <div class="d-flex flex-row flex-wrap">
-            	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3 mt-3">
+            	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3 mt-3" id="foto">
 					<label class="form-label">Fotografia: *</label>
 					<button type="button" class="btn  btn-primary btn-primary btn-sm" onclick="getScreen('User');return false;" id="buttonTakeUser">
 						<i class="fa-solid fa-camera-retro"></i>
@@ -301,9 +308,9 @@
 						<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
 						<img id="imgUser" src="" style="display: none;width: 185px;height: 148px;">
 					</div>
-					<input type="file" class="form-control mt-2" id="inputFileUser" disabled>
+					<input type="file" class="form-control mt-2" id="inputFileUser" >
 				</div>
-            	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3 mt-3">
+            	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3 mt-3" id="iden">
 					<label class="form-label">Identificación: *</label>
 					<button type="button" class="btn  btn-primary btn-primary btn-sm" onclick="getScreen('Card');return false;" id="buttonTakeCard">
 						<i class="fa-solid fa-camera-retro"></i>
@@ -316,12 +323,15 @@
 						<canvas id="canvasPhotoCard" style="display: none;width: 185px;height: 125px;"></canvas>
 						<img id="imgCard" src="" style="display: none;width: 185px;height: 148px;">
 					</div>
-					<input type="file" class="form-control mt-2" id="inputFileCard" disabled>
+					<input type="file" class="form-control mt-2" id="inputFileCard" >
 				</div>
 				
-				<div class="col-sm-12 col-md-12 col-lg-10 col-xl-10 checkbox-group me-2 my-3">
+				<div class="col-sm-12 col-md-12 col-lg-10 col-xl-10 checkbox-group me-2 my-3 d-flex flex-column">
 	            	<label>
-	                	<input type="checkbox" class="paseEntradaNuevo" name="agregarVehiculoEquipo" value="opcionesAvanzadas" id="agregarVehiculoEquipo" onchange="onChangeOpcionesAvanzadas('agregarVehiculoEquipo')"><b> Agregar vehiculos/equipos</b>
+	                	<input type="checkbox" class="paseEntradaNuevo" name="agregarVehiculo" value="opcionesAvanzadas" id="agregarVehiculo" onchange="onChangeOpcionesAvanzadas('agregarVehiculo')"><b> Agregar vehiculos</b>
+	            	</label>
+	            	<label>
+	                	<input type="checkbox" class="paseEntradaNuevo" name="agregarEquipo" value="opcionesAvanzadas" id="agregarEquipo" onchange="onChangeOpcionesAvanzadas('agregarEquipo')"><b> Agregar equipos</b>
 	            	</label>
 	        	</div>
 	        	<div class="col-12" id="div-vehiculo">
@@ -329,7 +339,7 @@
 						<div class="col-10 div-vehiculo-row-1 div-row-vehiculo m-0 p-0" >
 							<div class="div-vehiculo-row-1 div-row-vehiculo" >
 								<label class="form-label">Tipo de Vehiculo: </label>
-								<select class="form-select group-vehiculo" aria-label="Default select example" id="selectTipoVehiculo-123" onChange='onChangeCatalog("vehiculo",123)'>
+								<select class="form-select group-vehiculo" aria-label="Default select example" id="selectTipoVehiculo-123" onChange='onChangeCatalogPase("vehiculo",123)'>
 								</select>
 							</div>
 						</div>
@@ -344,7 +354,7 @@
 						<div class="col-10 div-vehiculo-row-1 div-row-vehiculo m-0 p-0">
 							<div id='divCatalogMarca123'>
 								<label class="form-label">Marca: </label>
-								<select class="form-select group-vehiculo" aria-label="Default select example" id="selectCatalogMarca-123" onChange='onChangeCatalog("marca",123)'>
+								<select class="form-select group-vehiculo" aria-label="Default select example" id="selectCatalogMarca-123" onChange='onChangeCatalogPase("marca",123)'>
 									<option disabled>Escoge un tipo de vehiculo...</option>
 								</select>
 							</div>

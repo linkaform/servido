@@ -11,7 +11,7 @@ class lkfNavbarComponent extends HTMLElement{
 
 	<nav class="navbar header m-0 p-0 mb-5 customShadow" id='myCustomNavBar'>
         <div class="navbar-brand">
-			<img src="" height="40" height="60" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
+			<img src="https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_10.png" height="40" height="60" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
         </div>
         <div class="d-flex flex-grow-1" ><button id='buttonPase' class="btn btn-sm btn-secondary custom-navbar-button ocultar"  onclick="redirectionUrl('pase');return false;" >Pase de entrada</button></div>
         <div class="navbar-brand navbarShowHide customNoBorder">
@@ -69,7 +69,7 @@ function changeButtonColor(){
         if(user !='' && jw!=''){
             let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
             imagenMostradaNavbar.src= localStorage.getItem("imagenURL");
-            $("#imageLinkaform").attr("src", getCookie('lkfLogo'));
+            //$("#imageLinkaform").attr("src", getCookie('lkfLogo'));
             switch (getValueUserLocation()) {
               case "accesos":
                 let btn1 = document.getElementById("buttonAccesos");

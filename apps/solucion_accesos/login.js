@@ -64,12 +64,12 @@ function get_login(){
 				setCookie("userParentId", userParentId,7);
 				setCookie("userEmail", userEmail,7);
 				setCookie("userPosition", userPosition,7);
+				setCookie("user", userPosition,7);
 				console.log("userPosition",userPosition)
 				localStorage.setItem("imagenURL", userImg);
 
 				setCookie("lkfLogo", res.user.company_logo.picture, 7)
 				//redirectionUrl("turnos",false)
-				
 				let protocol = window.location.protocol;
 				let host = window.location.host;
 				let url = `${protocol}//${host}/solucion_accesos/turnos.html`;
