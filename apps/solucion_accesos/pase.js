@@ -249,25 +249,19 @@ function catalogoAreaByLocation(location){
 //FUNCION para agregar foto en el modal de agregar nota
 function setAddCom(editAdd ="nuevo", classNam){
     let randomID = Date.now();
+    console.log("randomID", randomID)
     let newItem=`
         <div class="d-flex mb-3 col-12  div-`+classNam+`-`+editAdd+`-`+randomID+`" id="id-`+classNam+`-div-`+randomID+`">
             <div class="flex-grow-1 d-flex">
-                	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
-		                <label for="exampleInputPassword1">Tipo de comentario: </label>
-		                <select type="select" class="form-select fill paseEntradaNuevo com-div-nuevo" id="tipoComentario-`+randomID+`" disabled>
-		                	<option id="pase" selected>Pase</option>
-					        <option id="caseta">Caseta</option>
-		                </select>
-		            </div>
-                   <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
-		                <label for="exampleInputPassword1">Instruccion o comentario: </label>
-		                <textarea type="text" class="form-control fill paseEntradaNuevo com-div-nuevo" rows="1" id="telefono" placeholder=""></textarea>
-		            </div>
-            </div>
-            <div>
-                <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteCom('`+editAdd+`',`+randomID+`,'`+classNam+`');return false;">
-                   <i class="fa-solid fa-minus"></i>
-                </button>
+               <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
+	                <label for="exampleInputPassword1">Instruccion o comentario: </label>
+	                <textarea type="text" class="form-control fill paseEntradaNuevo com-div-nuevo" rows="1" id="instruccionComentario-${randomID}" placeholder=""></textarea>
+	            </div>
+                <div>
+                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteCom('`+editAdd+`',`+randomID+`,'`+classNam+`');return false;">
+                       <i class="fa-solid fa-minus"></i>
+                    </button>
+                </div>
             </div>
         </div>
     `;
@@ -659,13 +653,13 @@ function crearConfirmacionMini() {
 	        	loadingService()
 		        let access_pass={
                     grupo_vehiculos:arrayVehiculos,
-                    grupo_equipos:arrayEquipos
+                    grupo_equipos:arrayEquipos,
                 }
                 if(urlImgCard !== ""){
-                    walkin_fotografia:[{file_name:"foto.png",file_url:urlImgUser}]
+                    access_pass.walkin_fotografia=[{file_name:"foto.png",file_url:urlImgCard}]
                 }
                 if(urlImgUser !== ""){
-                    walkin_identificacion:[{file_name:"indentificacion.png",file_url:urlImgCard}]
+                    access_pass.walkin_identificacion=[{file_name:"indentificacion.png",file_url:urlImgUser}]
                 }
                 
 	        	fetch(url + urlScripts, {
@@ -684,8 +678,8 @@ function crearConfirmacionMini() {
 			    })
 			    .then(res => res.json())
 			    .then(res => {
+			        let data=res.response.data
 			        if (res.success) {
-			        	let data=res.response.data
 			        	if(data.status_code==400 || data.status_code==401){
                         let errores=[]
                         for(let err in data.json){
@@ -750,6 +744,7 @@ function crearConfirmacionMini() {
                                 let bodyPost={
                                     script_name: "pase_de_acceso.py",
                                     option: "enviar_msj",
+                                    folio:data.json.folio,
                                     account_id:account_id
                                 }
 						 		console.log($('#enviarMensaje').is(':checked'), $('#enviarCorreo').is(':checked'))
@@ -764,7 +759,9 @@ function crearConfirmacionMini() {
                                 }
 								if (result.value.enviarCorreo){
 									data_for_msj = {
-										mensaje: "Hola, un nuevo pase de entrada se ha creado para ti, has sido invitado por " +data.json.enviar_de+".",
+										mensaje: `Hola, un nuevo pase de entrada se ha creado para ti, has sido invitado por `+data.json.enviar_de+`.
+                                        Ubicacion: `+getCookie("Linkaform")+`
+                                        Te esperamos, Saludos`,
     									titulo: "NUEVO PASE DE ENTRADA GENERADO",
     									email_from: getCookie("userEmail"),
     									email_to: email,
@@ -787,7 +784,7 @@ function crearConfirmacionMini() {
     							    .then(res => {
     							        if (res.success) {
     							        	if(data.status_code==400 || data.status_code==401){
-    					                        let errores=[]
+    					                        /*let errores=[]
     					                        for(let err in data.json){
     					                            errores.push(data.json[err].label+': '+data.json[err].msg)
     					                        }
@@ -795,7 +792,7 @@ function crearConfirmacionMini() {
     					                            title: "Error",
     					                            text: errores.flat(),
     					                            type: "error"
-    					                        });
+    					                        });*/
     					                    }else if(data.status_code==202 || data.status_code==201){
     					                    	successMsg("Confirmación", "Informacion enviada correctamente.", "success")
     					                    	
@@ -863,7 +860,14 @@ function crearConfirmacionMini() {
 
 function crearConfirmacion() {
 	let data= getInputsValueByClass('paseEntradaNuevo')
-	let comentarios= getDataGrupoRepetitivo('com-input-form-nuevo','.com-div-nuevo' , 2)
+	// let comentarios= getDataGrupoRepetitivo('com-input-form-nuevo','.com-div-nuevo' , 0)
+    let arrComentarios= document.getElementsByClassName('com-div-nuevo')
+    let comentarios=[]
+    for(let c of arrComentarios){
+        if(c.id.includes("instruccionComentario-")){
+            comentarios.push({tipo_comentario:"Pase", comentario_pase: c.value})
+        }
+    }
 	let areas= getDataGrupoRepetitivo('area-input-form-nuevo','.area-div-nuevo' , 2)
 	let areasTr=""
 	for (let s of areas){
@@ -874,11 +878,11 @@ function crearConfirmacion() {
 		</tr>`
 	}
 	let comTr=""
-	for (let c of comentarios){
-		comTr +=	
+	for (let c in comentarios){
+ 		comTr +=	
 		`<tr>
-			<td>`+c.tipo_comentario+`</td>
-			<td>`+c.comentario_pase+`</td>
+			<td>`+comentarios[c].tipo_comentario+` </td>
+			<td>`+comentarios[c].comentario_pase+`</td>
 		</tr>`
 	}
 	let mainAccesos=""
@@ -943,18 +947,18 @@ function crearConfirmacion() {
 		selectedRadioDiasAcceso=selectedRadioDias[0].id
 	}
 
-	
-	let diasSeleccionados= $('input[name="diasPase"]:checked')
-    console.log("dias seleccionados",diasSeleccionados)
 	let diasArr=[]
-	for (let d in diasSeleccionados){
-		diasArr.push(diasSeleccionados[d].value)
-	}
+    let checkboxes = document.querySelectorAll('input[name="diasPase"]');
+    checkboxes.forEach(function(checkbox) {
+        if (checkbox.checked) {
+            diasArr.push(checkbox.value)
+        }
+    });
+
     let checkDocSeleccionados= []
     $('input[name="AgregarFotoIdent"]:checked').each(function() {
         checkDocSeleccionados.push($(this).val()); 
     });
-
 	let buttonDays=""
 	if(data.diasArr){
 		buttonDays=`
@@ -1083,7 +1087,7 @@ function crearConfirmacion() {
 		            areas: areas,
 		            comentarios:comentarios,
             		perfil_pase:"visita general",
-            		estatus:'Proceso',
+            		status_pase:'Proceso',
                     visita_a: getCookie("userName"),
             		custom:true
 		        }
@@ -1130,31 +1134,24 @@ function crearConfirmacion() {
 			        if (res.success) {
 			        	let data=res.response.data
 			        	if(data.status_code==400 || data.status_code==401){
-                        let errores=[]
-                        for(let err in data.json){
-                            errores.push(data.json[err].label+': '+data.json[err].msg)
-                        }
-                        Swal.fire({
-                            title: "Error",
-                            text: errores.flat(),
-                            type: "error"
-                        });
-                    }else if(data.status_code==202 || data.status_code==201){
-			        	Swal.close()
-			        	Swal.fire({
-				      		type:"success",
-				      		text: "Tu informacion se ha guardado correctamente.",
-						    html:`
-						      	<div class="mb-3 mt-2" style="font-weight: bold; font-size: 1.1em; color:#8ebd73 !important;"> Pase de entrada generado </div>
-						        <div class="d-flex flex-column justify-content-center align-items-center">
-			    			      	<div class='align-items-start m-2'>
-			    			      	  	El pase de entrada se ha generado correctamente. Por favor, copie el siguiente enlace y compartalo con el visitante para
-			    			      	  	completar el proceso.
-			    			    	</div>
-						        </div>`,
-						    showCancelButton:false,
-						    showConfirmButton:true,
-						    confirmButtonText: "Copiar Link"
+                            Swal.close()
+                            errorAlert(data)
+                        }else if(data.status_code==202 || data.status_code==201){
+			        	    Swal.close()
+			        	    Swal.fire({
+    				      		type:"success",
+    				      		text: "Tu informacion se ha guardado correctamente.",
+    						    html:`
+    						      	<div class="mb-3 mt-2" style="font-weight: bold; font-size: 1.1em; color:#8ebd73 !important;"> Pase de entrada generado </div>
+    						        <div class="d-flex flex-column justify-content-center align-items-center">
+    			    			      	<div class='align-items-start m-2'>
+    			    			      	  	El pase de entrada se ha generado correctamente. Por favor, copie el siguiente enlace y compartalo con el visitante para
+    			    			      	  	completar el proceso.
+    			    			    	</div>
+    						        </div>`,
+    						    showCancelButton:false,
+    						    showConfirmButton:true,
+    						    confirmButtonText: "Copiar Link"
 						 }).then((result)=>{
 						 	if (result.value) {
 						 		copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId"), getCookie('userEmail'));
