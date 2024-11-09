@@ -740,7 +740,7 @@ function crearConfirmacionMini() {
 						 		loadingService()
 						 		let data_for_msj = {}
 								let data_for_msj_tel={}
-
+                                console.log("CAMBIOS")
                                 let bodyPost={
                                     script_name: "pase_de_acceso.py",
                                     option: "enviar_msj",
