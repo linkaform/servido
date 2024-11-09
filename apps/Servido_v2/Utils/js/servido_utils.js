@@ -77,13 +77,20 @@ function getSession(location = null) {
   const JWT = getCookie("userJwt");
   const SCRIPTID = getParameterURL('scriptId');
   const DEMO = getParameterURL('demo');
+  const EMBEDED = getParameterURL('embeded');
   if(DEMO != "" && DEMO != null){
     return 'Demo';
   }else if(USERID != null && JWT != null && USERID != "" && JWT != ""){
     return 'Active';
   }else{
-    if(location != 'login'){
-      setRedirection();
+    console.log('location',location)
+    if(location != 'login' || location == null){
+        if(EMBEDED != "" && EMBEDED != null){
+            setRedirection();
+        }else{
+            let div = document.getElementById("content-div-noseession");
+            div.style.display = "flex";
+        }
     }
     return 'Offline';
   }

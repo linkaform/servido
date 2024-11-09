@@ -1,7 +1,7 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'card', col: '6', id:'cardFirst', title:'Horas Totales Facturables'},
+            { type:'card', col: '6', id:'cardFirst', title:'Horas No Facturables'},
             { type:'card', col: '6', id:'cardSecond', title:'Horas Totales No Facturables'},
         ] 
     },
