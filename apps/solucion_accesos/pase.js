@@ -816,7 +816,7 @@ function crearConfirmacionMini() {
     							        body: JSON.stringify(bodyPost),
     							        headers:{
     							            'Content-Type': 'application/json',
-    							            'Authorization': 'Bearer '+userJwt
+    							            // 'Authorization': 'Bearer '+userJwt
     							        },
     							    })
     							    .then(res => res.json())
