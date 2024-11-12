@@ -20,7 +20,6 @@
 
     <link rel="stylesheet" href="./style.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-
 </head>
 <body>
 	<navbar-component ></navbar-component>
@@ -42,16 +41,31 @@
      	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8  p-0 m-0" id="paseEntradaInf2">
             <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
                 <label for="exampleInputEmail1">Nombre Completo</label>
-                <input type="email" class="form-control fill paseEntradaNuevo" id="nombreCompleto" aria-describedby="emailHelp" placeholder="Nombre completo">
+                <input type="text" class="form-control fill paseEntradaNuevo" id="nombreCompleto" aria-describedby="emailHelp" placeholder="Nombre completo">
             </div>
-            <div class="d-flex flex-row flex-wrap">
+            <div class="d-flex flex-row flex-wrap mt-2">
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
                 	<label for="exampleInputEmail1">Email</label>
                 	<input type="email" class="form-control fill paseEntradaNuevo" id="email" aria-describedby="emailHelp" placeholder="Email">
             	</div>
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
                 	<label for="exampleInputEmail1">Telefono</label>
-               	 	<input type="email" class="form-control fill paseEntradaNuevo" id="telefono" aria-describedby="emailHelp" placeholder="Telefono">
+               	 	<input type="text" class="form-control fill paseEntradaNuevo" id="telefono" aria-describedby="emailHelp" placeholder="">
+            	</div>
+            </div>
+            <div class="d-flex flex-row flex-wrap mt-2">
+            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                	<label for="exampleInputEmail1">Ubicación</label>
+                	<select type="select" class="form-select fill paseEntradaNuevo" id="ubicacion" aria-describedby="emailHelp" placeholder="">
+                	</select>
+            	</div>
+            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                	<label for="exampleInputEmail1">Tema de la cita</label>
+               	 	<input type="email" class="form-control fill paseEntradaNuevo" id="temaCita" aria-describedby="emailHelp" placeholder="">
+            	</div>
+            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                	<label for="exampleInputEmail1">Descripcion</label>
+               	 	<input type="email" class="form-control fill paseEntradaNuevo" id="descripcion" aria-describedby="emailHelp" placeholder="">
             	</div>
             </div>
         </div>
@@ -446,3 +460,5 @@
 
 <!-- Local -->
 <!-- Jquery -->
+
+

@@ -28,7 +28,10 @@ window.onload = function(){
 	email = urlParams.get('email') !== null ? urlParams.get('email') :'' ;
 	tel = urlParams.get('tel') !== null ? urlParams.get('tel') :'' ;
     docs = urlParams.get('docs') !== null ? urlParams.get('docs') :'' ;
-    account_id = parseInt(urlParams.get('user') !== null ? urlParams.get('user') :'' ) 
+    account_id = parseInt(urlParams.get('user') !== null ? urlParams.get('user') :'' ) || ""
+    if(account_id== null || account_id==""){
+        account_id= parseInt(getCookie('userId'))||""
+    }
     showIneIden= docs.split("-")
 	if(id){
 		console.log("OCUUILTAR LA IFNORMACION", nombre, email, tel)
@@ -217,18 +220,18 @@ function catalogoAreaByLocation(location){
         body: JSON.stringify({
             script_name: "pase_de_acceso.py",
             option:"area_by_location",
-            location:location
+            location:location,
+            account_id:account_id
         }),
         headers:
         {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt
+            //'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-        	Swal.close()
         	arrayAreas= res.response.data
         	for(let i of arrayAreas){
         		$("#tipoArea").append($('<option></option>').val(i).text(i));
@@ -242,6 +245,41 @@ function catalogoAreaByLocation(location){
         	}
         }else{
         	errorAlert(res)
+        }
+    })
+
+    loadingService()
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "pase_de_acceso.py",
+            option:"area_by_location_salidas",
+            location:location,
+            account_id:account_id
+        }),
+        headers:
+        {
+            'Content-Type': 'application/json',
+            //'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close()
+            arrayAreas= res.response.data
+            for(let i of arrayAreas){
+                $("#ubicacion").append($('<option></option>').val(i).text(i));
+                $("#ubicacion").val("")
+            }
+            if(arrayAreas.length==0){
+                let ubicacion= document.getElementById("ubicacion")
+                ubicacion.innerHTML=""
+                $("#ubicacion").append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
+                $("#ubicacion").val("")
+            }
+        }else{
+            errorAlert(res)
         }
     })
 }
@@ -486,7 +524,8 @@ function copyLinkPase(id, nombre, email, tel, arrayDocSel,userId, email_from){
             if(a==0)docs+="-"
         }
     }
-	navigator.clipboard.writeText(`${protocol}//${host}/solucion_accesos/pase.html?id=`+id +`&nombre=`+nombre+`&email=`+email+`&tel=`+tel+`&user=`+userId+ `&docs=`+ docs+`&email_from=`+email_from);
+	navigator.clipboard.writeText(`${protocol}//${host}/solucion_accesos/pase.html?id=`+id +`&nombre=`+nombre+`&email=`+email+`&tel=`+tel+`&user=`+userId+ `&docs=`+ docs+`&emailfrom=`+email_from);
+    return `${protocol}//${host}/solucion_accesos/pase.html?id=`+id +`&nombre=`+nombre+`&email=`+email+`&tel=`+tel+`&user=`+userId+ `&docs=`+ docs+`&emailfrom=`+email_from
 }
 
 function crearConfirmacionMini() {
@@ -744,7 +783,7 @@ function crearConfirmacionMini() {
                                 let bodyPost={
                                     script_name: "pase_de_acceso.py",
                                     option: "enviar_msj",
-                                    folio:data.json.folio,
+                                    folio:data.json.id,
                                     account_id:account_id
                                 }
 						 		console.log($('#enviarMensaje').is(':checked'), $('#enviarCorreo').is(':checked'))
@@ -777,7 +816,7 @@ function crearConfirmacionMini() {
     							        body: JSON.stringify(bodyPost),
     							        headers:{
     							            'Content-Type': 'application/json',
-    							            // 'Authorization': 'Bearer '+userJwt
+    							            'Authorization': 'Bearer '+userJwt
     							        },
     							    })
     							    .then(res => res.json())
@@ -1047,6 +1086,22 @@ function crearConfirmacion() {
 								<td> `+data.email+`</td>
 								<td><span > `+data.telefono+`</span></td>
 							</tr>
+                            <tr>
+                                <td><b>Ubicación:</b></td>
+                                <td><span ><b>Tema de la cita:</b></span></td>
+                            </tr>
+                            <tr>
+                                <td> `+data.ubicacion+`</td>
+                                <td><span > `+data.temaCita+`</span></td>
+                            </tr>
+                             <tr>
+                                <td><b>Descripción:</b></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>`+data.descripcion+`</td>
+                                <td> </td>
+                            </tr>
 						</tbody>
 					</table>
 					<hr>
@@ -1080,12 +1135,19 @@ function crearConfirmacion() {
 	    .then((result) => {
 	        if (result.value) {
 	        	loadingService()
+                let protocol = window.location.protocol;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                let host = window.location.host;
+                /*console.log("LINK DE LA URL", `${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id +`&nombre=`+access_pass.nombre+`&email=`+access_pass.email+
+                    `&tel=`+ access_pass.telefono+`&user=`+ getCookie("userId")+ `&docs=`+ checkDocSeleccionados+`&emailfrom=`+getCookie('userEmail'))*/
 		        let access_pass={
 		            nombre: data.nombreCompleto,
 		            email:data.email,
 		            telefono: data.telefono,
 		            areas: areas,
 		            comentarios:comentarios,
+                    ubicacion:data.ubicacion,
+                    tema_cita: data.temaCita,
+                    descripcion: data.descripcion,
             		perfil_pase:"visita general",
             		status_pase:'Proceso',
                     visita_a: getCookie("userName"),
@@ -1154,7 +1216,36 @@ function crearConfirmacion() {
     						    confirmButtonText: "Copiar Link"
 						 }).then((result)=>{
 						 	if (result.value) {
-						 		copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId"), getCookie('userEmail'));
+                                /*link: `${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id +`&nombre=`+access_pass.nombre+`&email=`+access_pass.email+
+                    `&tel=`+ access_pass.telefono+`&user=`+ getCookie("userId")+ `&docs=`+ checkDocSeleccionados+`&emailfrom=`+getCookie('userEmail')*/
+						 		let link= copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId"), getCookie('userEmail'));
+                                loadingService()
+                                fetch(url + urlScripts, {
+                                    method: 'POST',
+                                    body: JSON.stringify({
+                                        script_name: "pase_de_acceso.py",
+                                        option: 'update_pass',
+                                        location:getCookie('userLocation'),
+                                        access_pass: {
+                                            link:link
+                                        },
+                                        folio: data.json.id
+                                    }),
+                                    headers:{
+                                        'Content-Type': 'application/json',
+                                        'Authorization': 'Bearer '+userJwt
+                                    },
+                                })
+                                .then(res => res.json())
+                                .then(res => {
+                                    if (res.success) {
+                                        Swal.close()
+                                        
+                                        successMsg("Confirmación", "Informacion enviada, el link esta listo para compartir")
+                                    }else{
+                                        errorAlert(res)
+                                    }
+                                })
 						 	}
 						 })
                     }

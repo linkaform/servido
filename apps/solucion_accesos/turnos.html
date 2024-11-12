@@ -331,3 +331,115 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 </html>
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Plantilla de Correo Electrónico</title>
+        <style>
+            /* Estilos generales */
+            body, table, td, a {
+                font-family: 'Arial', sans-serif;
+                font-size: 16px;
+                color: #333333;
+                line-height: 1.6;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #ffffff;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            img {
+                border: 0;
+                height: auto;
+                line-height: 100%;
+                outline: none;
+                text-decoration: none;
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #ffffff;
+                padding: 20px;
+            }
+            /*.header {
+                background-color: #021d49;
+                color: #ffffff;
+                padding: 20px;
+                text-align: center;
+            }*/
+            .content {
+                padding: 20px;
+                text-align: justify;
+            }
+            .footer {
+                background-color: #F5F5F5;
+                color: #666666;
+                padding: 20px;
+                text-align: left;
+            }
+            .button {
+                background-color: #021d49;
+                color: #ffffff;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                margin: 10px 0;
+                border-radius: 5px;
+            }
+            .button:hover {
+                background-color: #005bb5;
+            }
+        </style>
+    </head>
+    <body>
+        <table class="container">
+            <tr>
+                <td class="header">
+                    <img align="left" alt="" src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/66cf3e294e2420113f105797.png">
+                </td>
+            </tr>
+            <tr>
+                <td class="content">
+                    <h3>Hola {{record.answers.662c2937108836dec6d92580}},</h3>
+                    <p>Has sido invitado a visitar a: </p>
+                    {% if answers.663d4ba61b14fab90559ebb0 %}
+                        {% if answers.663d4ba61b14fab90559ebb0 | length > 0 %}
+                            <ul>
+                                {% for item in answers.663d4ba61b14fab90559ebb0 %}
+                                    {% if item.66a83ab5ca3453e21ea08d19 %}
+                                        <li>{{ item.66a83ab5ca3453e21ea08d19.62c5ff407febce07043024dd }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endif %}            
+                    <p><strong>Detalles de la visita:</strong></p>
+                    <ul>
+                        <li><strong>Ubicación: </strong>{{record.answers.66a83a74de752e12018fbc3c.663e5c57f5b8a7ce8211ed0b}}</li>
+                        <li><strong>Dirección: </strong>{{record.answers.66a83a74de752e12018fbc3c.663a7e0fe48382c5b1230902}}</li>
+                        <li><strong>Fecha y hora: </strong>{{record.answers.662c304fad7432d296d92582}}</li>
+                    </ul>
+                    <p>Se ha creado un pre-registro y ahora está pendiente de su asignación. Por favor, complete sus datos de registro en este link <a href="https://srv.linkaform.com/solucion_accesos/pase.html?id={{record.id}}&nombre={{record.answers.662c2937108836dec6d92580}}&email={{record.answers.662c2937108836dec6d92581}}&tel={{record.answers.662c2937108836dec6d92582}}&user={{record.answers.66a83ab5c3a77af505489ca2.663bd466b19b7fb7d9e97cdc}}&docs=foto-iden&emailfrom={{record.answers.66a83ab5c3a77af505489ca2.66a8470ea6665607e5663143}}" target="_blank">enlace</a>.</p>
+                    <p>Saludos,<br>Equipo de Administración.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="footer">
+                    <a href="https://www.linkaform.com/" target="_blank">
+                        <img alt="" src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/107023/64dd1bd4fd200a3308ec2141/663517c3caae08b8adf27472.png">
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
