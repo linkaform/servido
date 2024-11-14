@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Asistencias</title>
 	<!-- Custom fonts for this template-->
-    <link href="../Utils/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Custom styles for this template-->
     <link href="../Utils/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="../Utils/css/styles.css" rel="stylesheet">
@@ -31,21 +31,21 @@
                     <div class="d-sm-flex align-items-center justify-content-between mb-4 ">
                         <h1 class="h3 mb-0 text-gray-800">Asistencias</h1>
                     </div>
-                    <div class="d-sm-flex align-items-center justify-content-end mb-4 ">
-                        <button class="btn btn-sm btn-primary shadow-sm m-1" id="buttonExecution">
+                    <div class="d-sm-flex align-items-center justify-content-end mb-4">
+                        <button class="btn btn-sm btn-primary shadow-sm m-1 btn-elements" id="buttonExecution">
                             Ejecutar Reporte
                         </button>
-                        <button class="btn btn-sm btn-success shadow-sm m-1" id="buttonList">
+                        <button class="btn btn-sm btn-success shadow-sm m-1 btn-elements" id="buttonList">
                             Lista de Reportes
                         </button>
-                        <button class="btn btn-sm btn-secondary shadow-sm m-1" id="buttonClose">
+                        <button class="btn btn-sm btn-secondary shadow-sm m-1 btn-elements" id="buttonClose">
                             Cerrar Sesión
                         </button>
                     </div>
                     <!-- Filter Row -->
                     <div class="row mb-4"></div>
                     <!-- Content Empty -->
-                    <div class="row div-content-empty mt-5">
+                    <div class="row div-content-empty mt-5" id="content-div-empty">
                         <div class="container mt-5">
                             <p class="text-white  text-center">
                                 <i class="fas fa-chart-bar text-dark fs-1 text-center"></i>
@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     <!-- Content NoSession -->
-                    <div class="row div-content-empty mt-5" id="content-div-noseession">
+                    <div class="row div-content-empty mt-5 d-none" id="content-div-noseession">
                         <div class="container mt-5">
                             <p class="text-white  text-center">
                                 <i class="fas fa-chart-bar text-dark fs-1 text-center"></i>
@@ -70,8 +70,8 @@
         <!-- End of Content Wrapper -->
     </div>
 	<!-- Bootstrap core JavaScript-->
-	<script src="../Utils/vendor/jquery/jquery.min.js"></script>
-	<script src="../Utils/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
 	<!--Chart Js-->
 	<script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
