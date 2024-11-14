@@ -7,7 +7,7 @@ var columsTable1 = [
   { title:"Servicios Realizados",field:'servicio',hozAlign:"left", headerFilter:"input",width:300,formatter: function(cell, formatterParams) {
 	   	let value = cell.getValue();
 	    if (cell.getRow().getData().id_record) {
-	        return `<a href="https://app.linkaform.com/#/records/detail/${cell.getRow().getData().id_record}" target="_blank">${value}</a>`;
+	        return `<a href="https://app.linkaform.com/#/records/detail/${cell.getRow().getData().id_record}" target="_blank" rel="noopener noreferrer">${value}</a>`;
 	    } else {
 	        return value;
 	    }
