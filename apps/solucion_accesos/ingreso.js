@@ -102,32 +102,6 @@ function getCatalogsIngreso(){
                 errorAlert(res)
             }
         })
-
-    let cat={
-        "brands_cars": [
-            {"type": "motocicleta", "brand": ["vento"]},
-            {"type": "carro", "brand": ["nissan"]},
-            {"type": "trailer", "brand": ["volvo"]},
-        ],
-        "model_cars": [
-            {"brand": "vento", "model": ["35WFAS"]},
-            {"brand":"suzuki", "model":["veloxs3"]},
-            {"brand":"indian","model": ["model345"]},
-            {"brand":"nissan", "model":["beliocks"]},
-            {"brand":"chevrolet", "model":["345ref"]},
-            {"brand":"ford", "model":["magic44"]},
-            {"brand":"volvo", "model":["ref564"]},
-            {"brand":"mercedes", "model":["mobre45"]},
-            {"brand":"kenworth", "model":["cam213"]},
-        ],
-        "types_cars": ["motocicleta", "carro", "trailer"],
-    };
-    dataCatalogs =cat// res.response.data;
-    $("#selectTipoVehiculo-123").prop( "disabled", false );
-    $("#spinnerTipoVehiculo").css("display", "none");
-    dataCatalogs.types_cars.forEach(function(e, i){
-        $("#datalistOptionsTipo").append($('<option></option>').val(e).text(e));
-    });
 }
 
 
