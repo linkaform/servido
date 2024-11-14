@@ -721,10 +721,10 @@ function crearConfirmacionMini() {
                     grupo_vehiculos:arrayVehiculos,
                     grupo_equipos:arrayEquipos,
                 }
-                if(urlImgCard !== ""){
+                if(urlImgUser !== ""){
                     access_pass.walkin_fotografia=[{file_name:"foto.png",file_url:urlImgUser}]
                 }
-                if(urlImgUser !== ""){
+                if(urlImgCard !== ""){
                     access_pass.walkin_identificacion=[{file_name:"indentificacion.png",file_url:urlImgCard}]
                 }
                 
