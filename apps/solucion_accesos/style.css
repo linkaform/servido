@@ -15,7 +15,9 @@ body{
 }
 
 /*Styles Div*/
-
+ .iti {
+    width: 100% !important;
+ }
 
 .div-card-portal{
   min-height: 120px !important;

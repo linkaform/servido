@@ -16,10 +16,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css"/>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script> 
-    
 
     <link rel="stylesheet" href="./style.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/css/intlTelInput.min.css">
+  	<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/js/intlTelInput.min.js"></script>
+  	 <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/js/utils.js"></script>
 </head>
 <body>
 	<navbar-component ></navbar-component>
@@ -48,10 +51,25 @@
                 	<label for="exampleInputEmail1">Email</label>
                 	<input type="email" class="form-control fill paseEntradaNuevo" id="email" aria-describedby="emailHelp" placeholder="Email">
             	</div>
-            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
-                	<label for="exampleInputEmail1">Telefono</label>
-               	 	<input type="text" class="form-control fill paseEntradaNuevo" id="telefono" aria-describedby="emailHelp" placeholder="Telefono">
+            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5 ">
+                	<label for="exampleInputEmail1">Telefono</label> <br>
+               	 	<!-- <input type="text" class="form-control fill paseEntradaNuevo" id="telefono" aria-describedby="emailHelp" placeholder="Telefono"> -->
+               	 	<input type="tel" id="telefono" name="telefono" class="form-control fill aseEntradaNuevo" placeholder="Número de teléfono" onchange="removeNonNumeric(this)">
             	</div>
+            	<script>
+				  	const input = document.querySelector("#telefono");
+				  	const iti = window.intlTelInput(input, {
+				   	 	initialCountry: "auto", // Detecta el país automáticamente
+				    	geoIpLookup: function(callback) {
+					     fetch("https://ipinfo.io/json", { headers: { Accept: "application/json" } })
+					        .then(response => response.json())
+					        .then(data => callback(data.country))
+					        .catch(() => callback("MX"));
+				    	},
+				    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/js/utils.js"
+				  });
+				</script>
+
             </div>
             <div class="d-flex flex-row flex-wrap mt-2">
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
@@ -63,6 +81,8 @@
                 	<label for="exampleInputEmail1">Tema de la cita</label>
                	 	<input type="email" class="form-control fill paseEntradaNuevo" id="temaCita" aria-describedby="emailHelp" placeholder="Tema de la cita">
             	</div>
+            </div>
+            <div class="d-flex flex-row flex-wrap mt-2">
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
                 	<label for="exampleInputEmail1">Descripcion</label>
                	 	<input type="email" class="form-control fill paseEntradaNuevo" id="descripcion" aria-describedby="emailHelp" placeholder="Descripción">
@@ -96,12 +116,12 @@
 	                            Fecha Fija
 	                        </label>
                 		</div>
-                		<div class="col-sm-10 col-md-10 col-lg-12 col-xl-12 d-flex mb-3">
-			               <div class="col-6"> 
+                		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-wrap mb-3">
+			               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6"> 
 			               		<label for="fechaVisita">Fecha de visita: </label>
 			               		<input type="date" class="form-control paseEntradaNuevo" id="fechaVisita" aria-describedby="emailHelp" placeholder="">
 			               </div>
-			               <div class="col-6"> 
+			               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6"> 
 			                    <label class="form-label">Hora: *</label>
 			                    <div class="time-selector">
 			                        <select class="form-select time-select contentNuevoPase paseEntradaNuevo" id="horaNuevoPase" 
@@ -128,7 +148,7 @@
 	            <div class="col-sm-8 col-md-8 col-lg-12 col-xl-12 d-flex mt-3 flex-wrap">
 	            	
 	               <div class="col-6 d-flex p-0 m-0" id="fechaVisitaDiv"> 
-		               	<div class="col-6">
+		               	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
 		               		<label for="fechaVisitaOA">Fecha de visita: </label>
 		               		<input type="date" class="form-control paseEntradaNuevo" id="fechaVisitaOA" aria-describedby="emailHelp" placeholder="">
 		               	</div>
@@ -146,7 +166,7 @@
 		               	</div> -->
 	               </div>
 	               <div class="col-6 d-flex p-0 m-0" id="fechaHastaDiv"> 
-	               		<div class="col-6">
+	               		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
 		               		<label for="fechaHastaOA">Fecha hasta: </label>
 		               		<input type="date" class="form-control paseEntradaNuevo" id="fechaHastaOA" aria-describedby="emailHelp" placeholder="">
 		               	</div>
@@ -222,7 +242,7 @@
 		                </div>
 	                </div>
 	                <div class="col-12 d-flex p-0 m-0 my-1 mb-2" id="limiteEntradasDiv"> 
-	            		<div class="col-3">
+	            		<div class="col-sm-12 col-md-12 col-lg-6 col-xl-3">
 		            		<label>Limite de entradas: </label>
 		            		<input type="text" class="form-control paseEntradaNuevo" id="limiteEntradas" placeholder="Limite de entradas"  onChange="removeNonNumeric(this)">
 	            		</div>
@@ -462,6 +482,7 @@
         </div>
     </section>
 </body>
+
 
 <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

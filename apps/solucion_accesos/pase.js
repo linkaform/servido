@@ -721,13 +721,12 @@ function crearConfirmacionMini() {
                     grupo_vehiculos:arrayVehiculos,
                     grupo_equipos:arrayEquipos,
                 }
-                if(urlImgCard !== ""){
+                if(urlImgUser !== ""){
                     access_pass.walkin_fotografia=[{file_name:"foto.png",file_url:urlImgUser}]
                 }
-                if(urlImgUser !== ""){
+                if(urlImgCard !== ""){
                     access_pass.walkin_identificacion=[{file_name:"indentificacion.png",file_url:urlImgCard}]
                 }
-                
 	        	fetch(url + urlScripts, {
 			        method: 'POST',
 			        body: JSON.stringify({
@@ -784,7 +783,7 @@ function crearConfirmacionMini() {
                                         <div class="m-0 p-0">
                                             <label>
                                                 <input type="checkbox" name="opcionesCorreoMsj" id="descargarPdfCheck" value="descargarPdfCheck">
-                                                <i class="fa-solid fa-envelope ms-2"></i> <b>Descargar PDF</b>
+                                                <i class="fa-solid fa-download"></i> <b>Descargar PDF</b>
                                             </label><br>
                                         </div>
 			    			    	</div>
@@ -1143,229 +1142,244 @@ function crearConfirmacion() {
             </div>
         `
     }
+    let numValid = iti.isValidNumber()
+    let numeroConLada = ""
+    if(numValid){
+        numeroConLada = iti.getNumber();
+    }
 	let html = []//getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
-	if(data.nombreCompleto=="" ||data.email=="" || data.telefono==""){
-		successMsg("Validación", "Faltan datos por llenar", "warning")
+	if(data.nombreCompleto=="" ||data.email=="" || data.telefono=="" ){
+		  successMsg("Validación", "Faltan datos por llenar", "warning")
 	}else{
-		Swal.fire({
-	        title:'Confirmación',
-	        html:`
-				<div>
-					<table class="table table-borderless" >
-						<thead>
-							<tr>
-								<th  style=" text-align:left !important;" > <h5> <b>Sobre la visita</b></h5> </th>
-								<th > </th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><b>Tipo de pase:</b></td>
-								<td><b>Estatus:</b></td>
-							</tr>
-							<tr>
-								<td>Visita General</td>
-								<td><span > Proceso </span></td>
-							</tr>
-							<tr>
-								<td><b>Nombre completo:</b></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>`+data.nombreCompleto+`</td>
-								<td></td>
-							</tr>
-							<tr>
-								<td><b>Email:</b></td>
-								<td><span ><b>Teléfono:</b></span></td>
-							</tr>
-							<tr>
-								<td> `+data.email+`</td>
-								<td><span > `+data.telefono+`</span></td>
-							</tr>
-                            <tr>
-                                <td><b>Ubicación:</b></td>
-                                <td><span ><b>Tema de la cita:</b></span></td>
-                            </tr>
-                            <tr>
-                                <td> `+data.ubicacion+`</td>
-                                <td><span > `+data.temaCita+`</span></td>
-                            </tr>
-                             <tr>
-                                <td><b>Descripción:</b></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>`+data.descripcion+`</td>
-                                <td> </td>
-                            </tr>
-						</tbody>
-					</table>
-					<hr>
-					`+mainAccesos+`
-					`+mainComentarios+`
-					`+tituloVigencia+`
-					`+fechaVisitaDiv+`
-					`+fechaHastaDiv+`
-					`+tituloDias+`
-                    `+limiteEntradasTexto+`
-					`+buttonDays+`
-				</div>
-		
-	      `,
-	        confirmButtonColor: "#28a745",
-	        showCancelButton: true,
-	        cancelButtonColor: "#dc3545",
-	        confirmButtonText:'Crear pase',
-	        cancelButtonText:'Cancelar',
-	        heightAuto:false,
-	        reverseButtons: true,
-	        width:750,
-	    })
-	    .then((result) => {
-	        if (result.value) {
-	        	loadingService()
-                let protocol = window.location.protocol;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
-                let host = window.location.host;
-                /*console.log("LINK DE LA URL", `${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id +`&nombre=`+access_pass.nombre+`&email=`+access_pass.email+
-                    `&tel=`+ access_pass.telefono+`&user=`+ getCookie("userId")+ `&docs=`+ checkDocSeleccionados+`&emailfrom=`+getCookie('userEmail'))*/
-		        let access_pass={
-		            nombre: data.nombreCompleto,
-		            email:data.email,
-		            telefono: data.telefono,
-		            /*areas: areas,
-		            comentarios:comentarios,*/
-                    config_limitar_acceso: parseInt(data.limiteEntradas),
-                    ubicacion:data.ubicacion,
-                    tema_cita: data.temaCita,
-                    descripcion: data.descripcion,
-            		perfil_pase:"visita general",
-            		status_pase:'Proceso',
-                    visita_a: getCookie("userName"),
-            		custom:true,
-                    link:{
-                        "link":`${protocol}//${host}/solucion_accesos/pase.html`,
-                        "docs": checkDocSeleccionados,
-                        "creado_por_id": getCookie("userId"),
-                        "creado_por_email":getCookie("userEmail")
-                    },
-		        }
-		        if(comentarios.length>0){
-					access_pass.comentarios = comentarios
-		        }
-		        if(areas.length>0){
-		        	access_pass.areas = areas
-		        }
-		        if(hayFechaHasta){
-		        	access_pass.tipo_visita_pase= "rango_de_fechas" 
-		        }else{
-		        	access_pass.tipo_visita_pase= "fecha_fija"
-		        }
-		        if(fechaVisitaMain){
-		        	access_pass.fecha_desde_visita=fechaVisitaMain.slice(0, -3) +':00';
-                    console.log("FECHA DESPUES DE TOO",fechaVisitaMain)
-		        }
-		        if(fechaHastaMain){
-		        	access_pass.fecha_desde_hasta=fechaHastaMain.slice(0, -3) +':00';
-                    console.log("FECHA HASTAA DEPUSES",fechaVisitaMain)
-		        }
-		        if(selectedRadioDiasAcceso=='radioCualquierDia'){
-		        	access_pass.config_dia_de_acceso='cualquier_día'
-		        }else{
-		        	access_pass.config_dia_de_acceso='limitar_días_de_acceso'
-		        }
-		        if(diasArr.length>0){
-		        	access_pass.config_dias_acceso = diasArr 
-		        }
-                if(checkPregistro.length>0){
-                    access_pass.enviar_correo_pre_registro = checkPregistro
-                }
-	        	fetch(url + urlScripts, {
-			        method: 'POST',
-			        body: JSON.stringify({
-			            script_name: "pase_de_acceso.py",
-		                option: 'create_access_pass',
-		                location:getCookie('userLocation'),
-		                access_pass: access_pass
-			        }),
-			        headers:{
-			            'Content-Type': 'application/json',
-			            'Authorization': 'Bearer '+userJwt
-			        },
-			    })
-			    .then(res => res.json())
-			    .then(res => {
-			        if (res.success) {
-			        	let data=res.response.data
-			        	if(data.status_code==400 || data.status_code==401){
-                            Swal.close()
-                            errorAlert(data)
-                        }else if(data.status_code==202 || data.status_code==201){
-			        	    Swal.close()
-			        	    Swal.fire({
-    				      		type:"success",
-    				      		text: "Tu informacion se ha guardado correctamente.",
-    						    html:`
-    						      	<div class="mb-3 mt-2" style="font-weight: bold; font-size: 1.1em; color:#8ebd73 !important;"> Pase de entrada generado </div>
-    						        <div class="d-flex flex-column justify-content-center align-items-center">
-    			    			      	<div class='align-items-start m-2'>
-    			    			      	  	El pase de entrada se ha generado correctamente. Por favor, copie el siguiente enlace y compartalo con el visitante para
-    			    			      	  	completar el proceso.
-    			    			    	</div>
-    						        </div>`,
-    						    showCancelButton:false,
-    						    showConfirmButton:true,
-    						    confirmButtonText: "Copiar Link"
-						 }).then((result)=>{
-						 	if (result.value) {
-						 		let link= copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId"), getCookie('userEmail'));
-                                /*loadingService()
-                                fetch(url + urlScripts, {
-                                    method: 'POST',
-                                    body: JSON.stringify({
-                                        script_name: "pase_de_acceso.py",
-                                        option: 'update_pass',
-                                        location:getCookie('userLocation'),
-                                        access_pass: {
-                                            link:link
-                                        },
-                                        folio: data.json.id
-                                    }),
-                                    headers:{
-                                        'Content-Type': 'application/json',
-                                        'Authorization': 'Bearer '+userJwt
-                                    },
-                                })
-                                .then(res => res.json())
-                                .then(res => {
-                                    if (res.success) {
-                                        Swal.close()
-                                        
-                                        successMsg("Confirmación", "Informacion enviada, el link esta listo para compartir")
-                                    }else{
-                                        errorAlert(res)
-                                    }
-                                })*/
-						 	}
-						 })
+        console.log("ES VALIDOO",numValid)
+        if(!numValid){
+            successMsg("Validación","Escribe un número de teléfono válido.", "warning")
+            let inputTel= document.getElementById("telefono")
+            inputTel.value=""
+        }else{
+    		Swal.fire({
+    	        title:'Confirmación',
+    	        html:`
+    				<div>
+    					<table class="table table-borderless" >
+    						<thead>
+    							<tr>
+    								<th  style=" text-align:left !important;" > <h5> <b>Sobre la visita</b></h5> </th>
+    								<th > </th>
+    							</tr>
+    						</thead>
+    						<tbody>
+    							<tr>
+    								<td><b>Tipo de pase:</b></td>
+    								<td><b>Estatus:</b></td>
+    							</tr>
+    							<tr>
+    								<td>Visita General</td>
+    								<td><span > Proceso </span></td>
+    							</tr>
+    							<tr>
+    								<td><b>Nombre completo:</b></td>
+    								<td></td>
+    							</tr>
+    							<tr>
+    								<td>`+data.nombreCompleto+`</td>
+    								<td></td>
+    							</tr>
+    							<tr>
+    								<td><b>Email:</b></td>
+    								<td><span ><b>Teléfono:</b></span></td>
+    							</tr>
+    							<tr>
+    								<td> `+data.email+`</td>
+    								<td><span > `+numeroConLada+`</span></td>
+    							</tr>
+                                <tr>
+                                    <td><b>Ubicación:</b></td>
+                                    <td><span ><b>Tema de la cita:</b></span></td>
+                                </tr>
+                                <tr>
+                                    <td> `+data.ubicacion+`</td>
+                                    <td><span > `+data.temaCita+`</span></td>
+                                </tr>
+                                 <tr>
+                                    <td><b>Descripción:</b></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>`+data.descripcion+`</td>
+                                    <td> </td>
+                                </tr>
+    						</tbody>
+    					</table>
+    					<hr>
+    					`+mainAccesos+`
+    					`+mainComentarios+`
+    					`+tituloVigencia+`
+    					`+fechaVisitaDiv+`
+    					`+fechaHastaDiv+`
+    					`+tituloDias+`
+                        `+limiteEntradasTexto+`
+    					`+buttonDays+`
+    				</div>
+    		
+    	      `,
+    	        confirmButtonColor: "#28a745",
+    	        showCancelButton: true,
+    	        cancelButtonColor: "#dc3545",
+    	        confirmButtonText:'Crear pase',
+    	        cancelButtonText:'Cancelar',
+    	        heightAuto:false,
+    	        reverseButtons: true,
+    	        width:750,
+    	    })
+    	    .then((result) => {
+    	        if (result.value) {
+    	        	loadingService()
+                    let protocol = window.location.protocol;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                    let host = window.location.host;
+                    /*console.log("LINK DE LA URL", `${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id +`&nombre=`+access_pass.nombre+`&email=`+access_pass.email+
+                        `&tel=`+ access_pass.telefono+`&user=`+ getCookie("userId")+ `&docs=`+ checkDocSeleccionados+`&emailfrom=`+getCookie('userEmail'))*/
+    		        let access_pass={
+    		            nombre: data.nombreCompleto,
+    		            email:data.email,
+    		            /*areas: areas,
+    		            comentarios:comentarios,*/
+                        config_limitar_acceso: parseInt(data.limiteEntradas),
+                        ubicacion:data.ubicacion,
+                        tema_cita: data.temaCita,
+                        descripcion: data.descripcion,
+                		perfil_pase:"visita general",
+                		status_pase:'Proceso',
+                        visita_a: getCookie("userName"),
+                		custom:true,
+                        link:{
+                            "link":`${protocol}//${host}/solucion_accesos/pase.html`,
+                            "docs": checkDocSeleccionados,
+                            "creado_por_id": getCookie("userId"),
+                            "creado_por_email":getCookie("userEmail")
+                        },
+    		        }
+                    if(numeroConLada !== ""){
+                        access_pass.telefono=numeroConLada
                     }
-			        }else{
-						Swal.close()
-						errorAlert(res)
-			        }
-			    });
+                  
+    		        if(comentarios.length>0){
+    					access_pass.comentarios = comentarios
+    		        }
+    		        if(areas.length>0){
+    		        	access_pass.areas = areas
+    		        }
+    		        if(hayFechaHasta){
+    		        	access_pass.tipo_visita_pase= "rango_de_fechas" 
+    		        }else{
+    		        	access_pass.tipo_visita_pase= "fecha_fija"
+    		        }
+    		        if(fechaVisitaMain){
+    		        	access_pass.fecha_desde_visita=fechaVisitaMain.slice(0, -3) +':00';
+                        console.log("FECHA DESPUES DE TOO",fechaVisitaMain)
+    		        }
+    		        if(fechaHastaMain){
+    		        	access_pass.fecha_desde_hasta=fechaHastaMain.slice(0, -3) +':00';
+                        console.log("FECHA HASTAA DEPUSES",fechaVisitaMain)
+    		        }
+    		        if(selectedRadioDiasAcceso=='radioCualquierDia'){
+    		        	access_pass.config_dia_de_acceso='cualquier_día'
+    		        }else{
+    		        	access_pass.config_dia_de_acceso='limitar_días_de_acceso'
+    		        }
+    		        if(diasArr.length>0){
+    		        	access_pass.config_dias_acceso = diasArr 
+    		        }
+                    if(checkPregistro.length>0){
+                        access_pass.enviar_correo_pre_registro = checkPregistro
+                    }
+    	        	fetch(url + urlScripts, {
+    			        method: 'POST',
+    			        body: JSON.stringify({
+    			            script_name: "pase_de_acceso.py",
+    		                option: 'create_access_pass',
+    		                location:getCookie('userLocation'),
+    		                access_pass: access_pass
+    			        }),
+    			        headers:{
+    			            'Content-Type': 'application/json',
+    			            'Authorization': 'Bearer '+userJwt
+    			        },
+    			    })
+    			    .then(res => res.json())
+    			    .then(res => {
+    			        if (res.success) {
+    			        	let data=res.response.data
+    			        	if(data.status_code==400 || data.status_code==401){
+                                Swal.close()
+                                errorAlert(data)
+                            }else if(data.status_code==202 || data.status_code==201){
+    			        	    Swal.close()
+    			        	    Swal.fire({
+        				      		type:"success",
+        				      		text: "Tu informacion se ha guardado correctamente.",
+        						    html:`
+        						      	<div class="mb-3 mt-2" style="font-weight: bold; font-size: 1.1em; color:#8ebd73 !important;"> Pase de entrada generado </div>
+        						        <div class="d-flex flex-column justify-content-center align-items-center">
+        			    			      	<div class='align-items-start m-2'>
+        			    			      	  	El pase de entrada se ha generado correctamente. Por favor, copie el siguiente enlace y compartalo con el visitante para
+        			    			      	  	completar el proceso.
+        			    			    	</div>
+        						        </div>`,
+        						    showCancelButton:false,
+        						    showConfirmButton:true,
+        						    confirmButtonText: "Copiar Link"
+    						 }).then((result)=>{
+    						 	if (result.value) {
+    						 		let link= copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId"), getCookie('userEmail'));
+                                    /*loadingService()
+                                    fetch(url + urlScripts, {
+                                        method: 'POST',
+                                        body: JSON.stringify({
+                                            script_name: "pase_de_acceso.py",
+                                            option: 'update_pass',
+                                            location:getCookie('userLocation'),
+                                            access_pass: {
+                                                link:link
+                                            },
+                                            folio: data.json.id
+                                        }),
+                                        headers:{
+                                            'Content-Type': 'application/json',
+                                            'Authorization': 'Bearer '+userJwt
+                                        },
+                                    })
+                                    .then(res => res.json())
+                                    .then(res => {
+                                        if (res.success) {
+                                            Swal.close()
+                                            
+                                            successMsg("Confirmación", "Informacion enviada, el link esta listo para compartir")
+                                        }else{
+                                            errorAlert(res)
+                                        }
+                                    })*/
+    						 	}
+    						 })
+                        }
+    			        }else{
+    						Swal.close()
+    						errorAlert(res)
+    			        }
+    			    });
 
 
-		      	
-	        }
-		});
+    		      	
+    	        }
+    		});
 
-		
-        if(diasArr.length>0){
-            for(let d of diasArr){
-                $("#"+d+"").removeClass('btn-outline-success');
-                $("#"+d+"").addClass('bg-dark');
-                $("#"+d+"").addClass('color-white');
+    		
+            if(diasArr.length>0){
+                for(let d of diasArr){
+                    $("#"+d+"").removeClass('btn-outline-success');
+                    $("#"+d+"").addClass('bg-dark');
+                    $("#"+d+"").addClass('color-white');
+                }
             }
         }
 	}
