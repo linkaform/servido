@@ -97,7 +97,6 @@ function changeButtonColor(){
                 btn5.style.setProperty('color', 'white', 'important');
                 break;
               case "pase":
-                console.log("QUE ONDA")
                 let btn6 = document.getElementById("buttonPase");
                 btn6.style.setProperty('background-color', '#0275d8', 'important');
                 btn6.style.setProperty('color', 'white', 'important');
@@ -160,14 +159,12 @@ function redirectionUrl(type = 'null',blank = false, logout=false){
         }
         //----Validation
         if(urlNew !='' && blank){
-             console.log("OTRA PESTANA")
             Object.assign(document.createElement('a'), {
             target: '_blank',
             rel: 'noopener noreferrer',
             href: urlNew,
             }).click();
         }else if(urlNew !='' && !blank){
-            console.log("MISMA PERSTANA")
             Object.assign(document.createElement('a'), {
             rel: 'noopener noreferrer',
             href: urlNew,
@@ -181,7 +178,6 @@ function redirectionUrl(type = 'null',blank = false, logout=false){
 function agregarPestana(type){
     const pestanas = JSON.parse(localStorage.getItem("pestanas_key")) || [];
     if(!pestanas.includes(type)){
-        console.log("TRUEEEE")
         pestanas.push(type);
         localStorage.setItem("pestanas_key", JSON.stringify(pestanas));
     }
@@ -190,7 +186,6 @@ function agregarPestana(type){
 
 function cerrarPestanas() {
     const pestanas = JSON.parse(localStorage.getItem("pestanas_key")) || [];
-    //console.log("PESTANAS", pestanas)
     pestanas.forEach(name => {
         const pestana = window.open('', name);
         if (pestana && !pestana.closed) {
