@@ -83,7 +83,7 @@ function getCatalogsIngresoPase(){
         }),
         headers:{
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+userJwt
+            /*'Authorization': 'Bearer '+userJwt*/
         },
         }).then(res => res.json())
         .then(res => {
@@ -195,7 +195,6 @@ function getCatalogsIngresoPase(){
 //FUNCION rellenar catalogos al momento de escojer una opcion
 async function onChangeCatalogPase(type, id){
     if(type == "vehiculo"){
-        console.log("QUE ONDA")
         let inputMarca= document.getElementById("selectTipoVehiculo-"+id);
         const options = {
             method: 'POST', 
@@ -313,7 +312,6 @@ function catalogoAreaByLocation(location){
 //FUNCION para agregar foto en el modal de agregar nota
 function setAddCom(editAdd ="nuevo", classNam){
     let randomID = Date.now();
-    console.log("randomID", randomID)
     let newItem=`
         <div class="d-flex mb-3 col-12  div-`+classNam+`-`+editAdd+`-`+randomID+`" id="id-`+classNam+`-div-`+randomID+`">
             <div class="flex-grow-1 d-flex">
@@ -398,7 +396,6 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
 //FUNCION rellenar catalogos al momento de escojer una opcion
 /*async function onChangeCatalog(type, id){
     if(type == "vehiculo"){
-        console.log("AL CAMBIO",type, id)
         let inputMarca= document.getElementById("selectTipoVehiculo-"+id);
         const options = {
             method: 'POST', 
@@ -421,7 +418,6 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
             let selectVehiculosMarca= document.getElementById("selectCatalogMarca-"+id)
             selectVehiculosMarca.innerHTML=""; 
             for (let obj in list){
-            console.log(list[obj])
 
                 selectVehiculosMarca.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
             }
@@ -430,7 +426,6 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
     }else if (type == "marca"){
         let inputTipo= document.getElementById("selectTipoVehiculo-"+id);
         let inputMarca= document.getElementById("selectCatalogMarca-"+id);
-        console.log("DETALLES",inputTipo.value, inputMarca.value)
         const options = {
             method: 'POST', 
             body: JSON.stringify({
@@ -451,7 +446,6 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
             let list =data.response.data
             let selectVehiculosModelo= document.getElementById("selectCatalogModelo-"+id)
             selectVehiculosModelo.innerHTML=""; 
-                console.log("OBJ",selectVehiculosModelo.value)
             for (let obj in list){
                 selectVehiculosModelo.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
             }
@@ -462,7 +456,6 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
 
 function onChangeOpcionesAvanzadas(type){
 	if(type=="checkOpcionesAvanzadas"){
-		console.log($("#checkOpcionesAvanzadas").is(':checked'))
 		if($("#checkOpcionesAvanzadas").is(':checked')){
 			$(".opcionesAvanzadasDiv").show();
 			onChangeOpcionesAvanzadas('radioRangoFechas')
@@ -490,7 +483,6 @@ function onChangeOpcionesAvanzadas(type){
 		}
 	}else if (type == "radioCualquierDia" || type=="radioLimitarDias"){
 		let selected = $('input[name="diasAcceso"]:checked');
-		console.log("RANGO FECHAS",selected[0].id)
 		if(selected[0].id == 'radioCualquierDia'){
 			$("#diasAccesoDivDias").hide()
 			
@@ -530,7 +522,6 @@ function onChangeOpcionesAvanzadas(type){
 function getSelectedCheckRAdio(name=""){
 	 const seleccionados = $('input[name="'+name+'"]:checked');
 	 let arraySelected=[]
-	 console.log("SEWLEDIONADOS", seleccionados)
 	 for (let i of seleccionados){
 	 	arraySelected.push(i.id)
 	 }
@@ -609,7 +600,6 @@ function crearConfirmacionMini() {
 	}
 	let htmlAppendVehiculos=""
 	for (let vehiculo in listInputsVehicule) {
-    console.log("listInputsVehicule",listInputsVehicule[vehiculo])
 		if(listInputsVehicule[vehiculo][0].value !==""){
 			htmlAppendVehiculos +="<div class='col-sm-12 col-md-12 col-lg-6 col-xl-6'>"
 			htmlAppendVehiculos +="<table class='table table-borderless customShadow' style='border: none; font-size: .8em; background-color: lightgray!important;'>"
@@ -647,7 +637,6 @@ function crearConfirmacionMini() {
             }
         }
     }
-    console.log("USER Y CARD", urlImgCard, urlImgUser, showIn, showIde)
     if(showIn || showIde){
 		successMsg("Validación", "Faltan datos por llenar", "warning")
 	}else{
@@ -716,7 +705,7 @@ function crearConfirmacionMini() {
 	    })
 	    .then((result) => {
 	        if (result.value) {
-	        	loadingService()
+	        	loadingService("Generando tu pase de entrada...")
 		        let access_pass={
                     grupo_vehiculos:arrayVehiculos,
                     grupo_equipos:arrayEquipos,
@@ -746,217 +735,119 @@ function crearConfirmacionMini() {
 			        let data=res.response.data
 			        if (res.success) {
 			        	if(data.status_code==400 || data.status_code==401){
-                        let errores=[]
-                        for(let err in data.json){
-                            errores.push(data.json[err].label+': '+data.json[err].msg)
-                        }
-                        Swal.fire({
-                            title: "Error",
-                            text: errores.flat(),
-                            type: "error"
-                        });
-                    }else if(data.status_code==202 || data.status_code==201){
-                    	qr_code=data.json.id
-			        	Swal.close()
-			        	Swal.fire({
-                            type:"success",
-				      		text: "Tu informacion se ha guardado correctamente.",
-						    html:`
-						      	<div class="mb-3 mt-2" style=" font-size: 1.2em;  color:#8ebd73 !important;">  <h4>Pase de entrada generado </h4> </div>
-						        <div class="d-flex flex-column justify-content-center align-items-center">
-			    			      	<div class='align-items-start m-2'>
-			    			      	  	El pase de entrada se ha generado correctamente. Por favor, selecciona alguna de las siguientes opciones.
-			    			    	</div>
-			    			    	<div class="d-flex  flex-column align-items-start justify-content-start mt-2">
-			    			    		<div class="m-0 p-0">
-				    			    		<label>
-								            	<input type="checkbox" name="opcionesCorreoMsj" id="enviarMensaje" value="enviarMensaje">
-								            	<i class="fa-solid fa-comment-sms ms-2"></i> <b>Enviar mensaje</b>
-									        </label><br>
-									    </div>
-								        <div class="m-0 p-0">
-								        	<label>
-								            	<input type="checkbox" name="opcionesCorreoMsj" id="enviarCorreo" value="enviarCorreo">
-								            	<i class="fa-solid fa-envelope ms-2"></i> <b>Enviar correo</b>
-								        	</label><br>
-								        </div>
-                                        <div class="m-0 p-0">
-                                            <label>
-                                                <input type="checkbox" name="opcionesCorreoMsj" id="descargarPdfCheck" value="descargarPdfCheck">
-                                                <i class="fa-solid fa-download"></i> <b>Descargar PDF</b>
-                                            </label><br>
-                                        </div>
-			    			    	</div>
-			    			    	<img class="mt-1" alt="Código QR" id="codigo" width=250 height=250 src=${data.json.qr_pase[0].file_url}>
-						        </div>`,
-					      	icon: "success",
-						    showCancelButton:true,
-						    showConfirmButton:true,
-						    reverseButtons:true,
-						    cancelButtonColor: colors[0],
-						    cancelButtonText:'Cerrar',
-						    confirmButtonText: "Aceptar y Descargar",
-                            preConfirm: () => {
-                                // Obtener los estados de los checkboxes
-                                const enviarMensajeChecked = document.getElementById('enviarMensaje').checked;
-                                const enviarCorreoChecked = document.getElementById('enviarCorreo').checked;
-                                const descargarPdfChecked = document.getElementById('descargarPdfCheck').checked;
-                                return {
-                                    enviarMsj: enviarMensajeChecked,
-                                    enviarCorreo: enviarCorreoChecked,
-                                    descargarPdf:descargarPdfChecked
-                                };
+                            let errores=[]
+                            for(let err in data.json){
+                                errores.push(data.json[err].label+': '+data.json[err].msg)
                             }
-						 }).then((result)=>{
-						 	if (result.value) {
-						 		Swal.close()
-						 		loadingService()
-						 		let data_for_msj = {}
-								let data_for_msj_tel={}
-                                let bodyPost={
-                                    script_name: "pase_de_acceso.py",
-                                    option: "enviar_msj",
-                                    folio:data.json.id,
-                                    account_id:account_id
+                            Swal.fire({
+                                title: "Error",
+                                text: errores.flat(),
+                                type: "error"
+                            });
+                        }else if(data.status_code==202 || data.status_code==201){
+                        	qr_code=data.json.id
+    			        	Swal.close()
+    			        	Swal.fire({
+                                type:"success",
+    				      		text: "Pase de entrada generado correctamente 🎉",
+    						    html:`
+    						      	<div class="mb-3 mt-2" style=" font-size: 1.2em;  color:#8ebd73 !important;">  <h4>Pase de entrada generado 🎉 </h4> </div>
+    						        <div class="d-flex flex-column justify-content-center align-items-center">
+    			    			      	<div class='align-items-start m-2'>
+    			    			      	  	El pase de entrada se ha generado correctamente. Por favor, selecciona alguna de las siguientes opciones.
+    			    			    	</div>
+    			    			    	<div class="d-flex  flex-column align-items-start justify-content-start mt-2">
+    			    			    		<div class="m-0 p-0">
+    				    			    		<label>
+    								            	<input type="checkbox" name="opcionesCorreoMsj" id="enviarMensaje" value="enviarMensaje">
+    								            	<i class="fa-solid fa-comment-sms ms-2"></i> <b>Enviar mensaje</b>
+    									        </label><br>
+    									    </div>
+    								        <div class="m-0 p-0">
+    								        	<label>
+    								            	<input type="checkbox" name="opcionesCorreoMsj" id="enviarCorreo" value="enviarCorreo">
+    								            	<i class="fa-solid fa-envelope ms-2"></i> <b>Enviar correo</b>
+    								        	</label><br>
+    								        </div>
+                                            <div class="m-0 p-0">
+                                                <label>
+                                                    <input type="checkbox" name="opcionesCorreoMsj" id="descargarPdfCheck" value="descargarPdfCheck">
+                                                    <i class="fa-solid fa-download ms-2"></i> <b>Descargar PDF</b>
+                                                </label><br>
+                                            </div>
+    			    			    	</div>
+    			    			    	<img class="mt-1" alt="Código QR" id="codigo" width=250 height=250 src=${data.json.qr_pase[0].file_url}>
+    						        </div>`,
+    					      	icon: "success",
+    						    showCancelButton:true,
+    						    showConfirmButton:true,
+    						    reverseButtons:true,
+    						    cancelButtonColor: colors[0],
+    						    cancelButtonText:'Cerrar',
+    						    confirmButtonText: "Aceptar",
+                                preConfirm: () => {
+                                    // Obtener los estados de los checkboxes
+                                    const enviarMensajeChecked = document.getElementById('enviarMensaje').checked;
+                                    const enviarCorreoChecked = document.getElementById('enviarCorreo').checked;
+                                    const descargarPdfChecked = document.getElementById('descargarPdfCheck').checked;
+                                    return {
+                                        enviarMsj: enviarMensajeChecked,
+                                        enviarCorreo: enviarCorreoChecked,
+                                        descargarPdf:descargarPdfChecked
+                                    };
                                 }
-						 		console.log($('#enviarMensaje').is(':checked'), $('#enviarCorreo').is(':checked'))
-								if(result.value.enviarMsj){
-                                    let msj=""
-                                    if(data.json.fecha_desde !==""){
-                                        msj=`el día ${data.json.fecha_desde}`
-                                    }else if (data.json.fecha_hasta !=="" && data.json.fecha_desde !==""){
-                                        msj= `apartir del `+data.json.fecha_desde+` hasta el `+data.json.fecha_hasta+`.`
-                                    }
-									data_for_msj_tel={
-										mensaje: `
-                                        Estimado ${nombre},
-                                        ${data.json.enviar_de}, te esta invitando a: ${data.json.ubicacion},  
-                                        `+msj+` Descarga tu pase en: ${data.json.pdf.data.download_url}`,
-										numero: data.json.telefono
-									}
-                                    bodyPost.data_cel_msj= data_for_msj_tel
-								}else{
-                                    bodyPost.data_cel_msj= {}
-                                }
-								if (result.value.enviarCorreo){
-									data_for_msj = {
-										mensaje: `Hola, un nuevo pase de entrada se ha creado para ti, has sido invitado por `+data.json.enviar_de+`.
-                                        Ubicacion: `+getCookie("Linkaform")+`
-                                        Te esperamos, Saludos`,
-    									titulo: "NUEVO PASE DE ENTRADA GENERADO",
-    									email_from: getCookie("userEmail"),
-    									email_to: email,
-                                        nombre: nombre
-									}
-                                    bodyPost.data_msj= data_for_msj
-								}else{
-                                    bodyPost.data_msj = {}
-                                }
-                                if(result.value.enviarMsj || result.value.enviarCorreo){
-    								fetch(url + urlScripts, {
-    							        method: 'POST',
-    							        body: JSON.stringify(bodyPost),
-    							        headers:{
-    							            'Content-Type': 'application/json',
-    							            // 'Authorization': 'Bearer '+userJwt
-    							        },
-    							    })
-    							    .then(res => res.json())
-    							    .then(res => {
-    							        if (res.success) {
-    							        	if(data.status_code==400 || data.status_code==401){
-    					                        /*let errores=[]
-    					                        for(let err in data.json){
-    					                            errores.push(data.json[err].label+': '+data.json[err].msg)
-    					                        }
-    					                        Swal.fire({
-    					                            title: "Error",
-    					                            text: errores.flat(),
-    					                            type: "error"
-    					                        });*/
-    					                    }else if(data.status_code==202 || data.status_code==201){
-    					                    	successMsg("Confirmación", "Informacion enviada correctamente.", "success")
-    					                    	
-    								            /*fetch(data.json.pdf.data.download_url)
-    							                .then(response => {
-    							                    if (!response.ok) {
-    							                        throw new Error('Error al descargar el pdf');
-    							                    }
-    							                    return response.blob();
-    							                })
-    							                .then(blob => {
-    							                    const url = URL.createObjectURL(blob);
-    							                    const link = document.createElement('a');
-    							                    link.href = url;
-    							                    link.download = 'mi-imagen.jpg'; // Nombre con el que se descargará la imagen
-    							                    document.body.appendChild(link);
-    							                    link.click();
-    							                    document.body.removeChild(link);
-    							                    URL.revokeObjectURL(url); // Libera el objeto URL
-    							                })
-    							                .catch(error => {
-    							                    console.error('Error:', error);
-    							                });*/
-                                                if(result.value.descargarPdf){
-                                                    fetch(data.json.pdf.data.download_url)
-                                                    .then(response => {
-                                                        // Verificar si la respuesta es correcta
-                                                        if (!response.ok) {
-                                                            throw new Error('No se pudo obtener el archivo');
-                                                        }
-                                                        return response.blob();  // Convertir la respuesta en un Blob
-                                                    })
-                                                    .then(blob => {
-                                                        // Crear un enlace de descarga con el Blob
-                                                        const url = URL.createObjectURL(blob); // Crear una URL temporal del Blob
-
-                                                        // Crear un enlace <a> para iniciar la descarga
-                                                        const a = document.createElement('a');
-                                                        a.href = url;
-                                                        a.download = 'archivo_descargado.pdf'; // Nombre del archivo descargado
-                                                        document.body.appendChild(a);
-                                                        a.click(); // Hacer clic en el enlace para descargar el archivo
-
-                                                        // Limpiar: eliminar el enlace temporal
-                                                        document.body.removeChild(a);
-                                                        URL.revokeObjectURL(url); // Liberar la URL temporal
-                                                    })
-                                                    .catch(error => {
-                                                        console.error('Error al descargar el PDF:', error);
-                                                    });
-                                                }
-
-    					                    }
-    							        }else{
-    							        	errorAlert(res)
-    							        }
-    							    })
-                                }else{
-                                    fetch(data.json.pdf.data.download_url)
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error('Error al descargar el pdf');
+    						 }).then((result)=>{
+    						 	if (result.value) {
+    						 		Swal.close()
+    						 		loadingService()
+    						 		let data_for_msj = {}
+    								let data_for_msj_tel={}
+                                    
+                                    if(result.value.enviarMsj){
+                                        let bodyPost={
+                                            script_name: "pase_de_acceso.py",
+                                            folio:data.json.id,
+                                            account_id:account_id
                                         }
-                                        return response.blob();
-                                    })
-                                    .then(blob => {
-                                        const url = URL.createObjectURL(blob);
-                                        const link = document.createElement('a');
-                                        link.href = url;
-                                        link.download = 'mi-imagen.jpg'; // Nombre con el que se descargará la imagen
-                                        document.body.appendChild(link);
-                                        link.click();
-                                        document.body.removeChild(link);
-                                        URL.revokeObjectURL(url); // Libera el objeto URL
-                                    })
-                                    .catch(error => {
-                                        console.error('Error:', error);
-                                    });
-                                    successMsg("Confirmación","Pdf descargado correctamente." , "success", )
-                                }
-						 	}
-						 })
-                    }
+                                         let msj=""
+                                        if(data.json.fecha_desde !==""){
+                                            msj=`el día ${data.json.fecha_desde}`
+                                        }else if (data.json.fecha_hasta !=="" && data.json.fecha_desde !==""){
+                                            msj= `apartir del `+data.json.fecha_desde+` hasta el `+data.json.fecha_hasta+`.`
+                                        }
+                                        data_for_msj_tel={
+                                            mensaje: `Estimado ${nombre} 😁, ${data.json.enviar_de}, te esta invitando a: ${data.json.ubicacion}, `+msj+` Descarga tu pase 💳 en: ${data.json.pdf.data.download_url}`,
+                                            numero: data.json.telefono
+                                        }
+                                        bodyPost.data_cel_msj= data_for_msj_tel
+                                        bodyPost.option= "enviar_msj"
+        								enviarSmsPase(bodyPost)
+                                    }
+                                    if(result.value.enviarCorreo){
+                                        let bodyPost={
+                                            script_name: "pase_de_acceso.py",
+                                            folio:data.json.id,
+                                            account_id:account_id
+                                        }
+                                        data_for_msj = {
+                                            mensaje: `Hola, un nuevo pase de entrada se ha creado para ti, has sido invitado por `+data.json.enviar_de+`.
+                                            Ubicacion: `+getCookie("Linkaform")+`
+                                            Te esperamos, Saludos`,
+                                            titulo: "NUEVO PASE DE ENTRADA GENERADO",
+                                            email_from: getCookie("userEmail"),
+                                            email_to: email,
+                                            nombre: nombre
+                                        }
+                                        bodyPost.data_msj= data_for_msj
+                                        bodyPost.option= "enviar_correo"
+                                        enviarCorreoPase(bodyPost)
+                                    }
+                                    if(result.value.descargarPdf){
+                                        descargarPdfPase(data.json.pdf.data.download_url)
+                                    }
+    						 	}
+    						 })
+                        }
 			        }else{
 						Swal.close()
 						errorAlert(res)
@@ -967,9 +858,89 @@ function crearConfirmacionMini() {
 	}
 }
 
+
+function enviarCorreoPase(bodyPost){
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify(bodyPost),
+        headers:{
+            'Content-Type': 'application/json',
+            // 'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            let dataR=res.response.data
+            if(dataR.status_code==400 || dataR.status_code==401){
+                errorAlert(dataR)
+            }else if(dataR.status_code==202 || dataR.status_code==201){
+                successMsg("Confirmación", "Informacion enviada correctamente.", "success")
+            }
+        }else{
+            errorAlert(res)
+        }
+    })
+}
+
+function enviarSmsPase(bodyPost){
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify(bodyPost),
+        headers:{
+            'Content-Type': 'application/json',
+            // 'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            let dataR=res.response.data
+            if(dataR.status_code==400 || dataR.status_code==401){
+                errorAlert(dataR)
+            }else if(dataR.status_code==202 || dataR.status_code==201){
+                // successMsg("Confirmación", "Informacion enviada correctamente.", "success")
+            }
+        }else{
+            errorAlert(res)
+        }
+    })
+}
+
+function descargarPdfPase(url_pase){
+    fetch(url_pase)
+        .then(response => {
+            // Verificar si la respuesta es correcta
+            if (!response.ok) {
+                throw new Error('No se pudo obtener el archivo');
+            }
+            return response.blob();  // Convertir la respuesta en un Blob
+        })
+        .then(blob => {
+            // Crear un enlace de descarga con el Blob
+            const url = URL.createObjectURL(blob); // Crear una URL temporal del Blob
+
+            // Crear un enlace <a> para iniciar la descarga
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'archivo_descargado.pdf'; // Nombre del archivo descargado
+            document.body.appendChild(a);
+            a.click(); // Hacer clic en el enlace para descargar el archivo
+
+            // Limpiar: eliminar el enlace temporal
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url); // Liberar la URL temporal
+        })
+        .catch(error => {
+            console.error('Error al descargar el PDF:', error);
+        });
+}
+
+
+
 function removeNonNumeric(input) {
     input.value = input.value.replace(/[^0-9]/g, '');
-  }
+}
 
 function crearConfirmacion() {
 	let data= getInputsValueByClass('paseEntradaNuevo')
@@ -1046,7 +1017,6 @@ function crearConfirmacion() {
 		let formatHor = formatNumber(data.horaNuevoPase)
 		fechaVisitaMain= `${data.fechaVisita} ${formatHor}:${formatMin}:00`
         if(formatMin.length==1){
-            console.log("TIENE SOLO 1 NUMERO", formatMin)
         }
 	}else if (hayFechaHasta){
 		if(data.fechaVisitaOA !== ""){
@@ -1062,8 +1032,6 @@ function crearConfirmacion() {
 		selectedRadioDias = $('input[name="diasAcceso"]:checked');
 		selectedRadioDiasAcceso=selectedRadioDias[0].id
 	}
-    console.log("QUE PASAA", fechaVisitaMain, fechaHastaMain)
-
 	let diasArr=[]
     let checkboxes = document.querySelectorAll('input[name="diasPase"]');
     checkboxes.forEach(function(checkbox) {
@@ -1085,7 +1053,6 @@ function crearConfirmacion() {
         checkDocSeleccionados.push($(this).val()); 
     });
 	let buttonDays=""
-    console.log("DATA DIASS", diasArr)
 	if(diasArr.length>0){
 		buttonDays=`
         <div class="d-flex justify-content-start mt-4 ms-2">
@@ -1151,7 +1118,6 @@ function crearConfirmacion() {
 	if(data.nombreCompleto=="" ||data.email=="" || data.telefono=="" ){
 		  successMsg("Validación", "Faltan datos por llenar", "warning")
 	}else{
-        console.log("ES VALIDOO",numValid)
         if(!numValid){
             successMsg("Validación","Escribe un número de teléfono válido.", "warning")
             let inputTel= document.getElementById("telefono")
@@ -1234,11 +1200,10 @@ function crearConfirmacion() {
     	    })
     	    .then((result) => {
     	        if (result.value) {
-    	        	loadingService()
+    	        	loadingService("Creando pase de entrada...")
                     let protocol = window.location.protocol;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
                     let host = window.location.host;
-                    /*console.log("LINK DE LA URL", `${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id +`&nombre=`+access_pass.nombre+`&email=`+access_pass.email+
-                        `&tel=`+ access_pass.telefono+`&user=`+ getCookie("userId")+ `&docs=`+ checkDocSeleccionados+`&emailfrom=`+getCookie('userEmail'))*/
+                   
     		        let access_pass={
     		            nombre: data.nombreCompleto,
     		            email:data.email,
@@ -1276,11 +1241,9 @@ function crearConfirmacion() {
     		        }
     		        if(fechaVisitaMain){
     		        	access_pass.fecha_desde_visita=fechaVisitaMain.slice(0, -3) +':00';
-                        console.log("FECHA DESPUES DE TOO",fechaVisitaMain)
     		        }
     		        if(fechaHastaMain){
     		        	access_pass.fecha_desde_hasta=fechaHastaMain.slice(0, -3) +':00';
-                        console.log("FECHA HASTAA DEPUSES",fechaVisitaMain)
     		        }
     		        if(selectedRadioDiasAcceso=='radioCualquierDia'){
     		        	access_pass.config_dia_de_acceso='cualquier_día'
@@ -1568,7 +1531,6 @@ function setAddEquipo() {
 
 
 function setRequestFileImg(type, id="") {
-    console.log("QUE ESS", type, id)
     loadingService()
     let idInput = '';
     if(type == 'inputCard'){
@@ -1599,7 +1561,6 @@ function setRequestFileImg(type, id="") {
         .then(response => response.json())
         .then(res => {
             Swal.close()
-            console.log("aaaaa",res)
             if(res.file !== undefined && res.file !== null){
                 if(type == 'inputCard'){
                     urlImgCard = res.file;
@@ -1613,13 +1574,11 @@ function setRequestFileImg(type, id="") {
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
             }else{
                 Swal.close()
-                console.log('Error aqui 2');
                 return 'Error';
             }
         })
         .catch(error => {
             Swal.close()
-            console.log('Error aqui 3',error);
             return 'Error';
         });
     }else{

@@ -705,9 +705,10 @@ function successMsg(title, text, type = "success"){
     });
 }
 
-function loadingService(){
+function loadingService(text ="Procesando...", html=""){
     Swal.fire({
-        title: 'Procesando...',
+        title: text,
+        html: html, // Icono con animación
         allowOutsideClick: false,
         onBeforeOpen: () => {
             Swal.showLoading();
