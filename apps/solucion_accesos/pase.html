@@ -16,10 +16,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css"/>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script> 
-    
 
     <link rel="stylesheet" href="./style.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/css/intlTelInput.min.css">
+  	<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/js/intlTelInput.min.js"></script>
+  	 <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/js/utils.js"></script>
 </head>
 <body>
 	<navbar-component ></navbar-component>
@@ -48,28 +51,53 @@
                 	<label for="exampleInputEmail1">Email</label>
                 	<input type="email" class="form-control fill paseEntradaNuevo" id="email" aria-describedby="emailHelp" placeholder="Email">
             	</div>
-            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
-                	<label for="exampleInputEmail1">Telefono</label>
-               	 	<input type="text" class="form-control fill paseEntradaNuevo" id="telefono" aria-describedby="emailHelp" placeholder="">
+            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5 ">
+                	<label for="exampleInputEmail1">Telefono</label> <br>
+               	 	<!-- <input type="text" class="form-control fill paseEntradaNuevo" id="telefono" aria-describedby="emailHelp" placeholder="Telefono"> -->
+               	 	<input type="tel" id="telefono" name="telefono" class="form-control fill aseEntradaNuevo" placeholder="Número de teléfono" onchange="removeNonNumeric(this)">
             	</div>
+            	<script>
+				  	const input = document.querySelector("#telefono");
+				  	const iti = window.intlTelInput(input, {
+				   	 	initialCountry: "auto", // Detecta el país automáticamente
+				    	geoIpLookup: function(callback) {
+					     fetch("https://ipinfo.io/json", { headers: { Accept: "application/json" } })
+					        .then(response => response.json())
+					        .then(data => callback(data.country))
+					        .catch(() => callback("MX"));
+				    	},
+				    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/js/utils.js"
+				  });
+				</script>
+
             </div>
             <div class="d-flex flex-row flex-wrap mt-2">
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
                 	<label for="exampleInputEmail1">Ubicación</label>
-                	<select type="select" class="form-select fill paseEntradaNuevo" id="ubicacion" aria-describedby="emailHelp" placeholder="">
+                	<select type="select" class="form-select fill paseEntradaNuevo" id="ubicacion" aria-describedby="emailHelp" placeholder="Ubicación">
                 	</select>
             	</div>
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
                 	<label for="exampleInputEmail1">Tema de la cita</label>
-               	 	<input type="email" class="form-control fill paseEntradaNuevo" id="temaCita" aria-describedby="emailHelp" placeholder="">
-            	</div>
-            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
-                	<label for="exampleInputEmail1">Descripcion</label>
-               	 	<input type="email" class="form-control fill paseEntradaNuevo" id="descripcion" aria-describedby="emailHelp" placeholder="">
+               	 	<input type="email" class="form-control fill paseEntradaNuevo" id="temaCita" aria-describedby="emailHelp" placeholder="Tema de la cita">
             	</div>
             </div>
+            <div class="d-flex flex-row flex-wrap mt-2">
+            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+                	<label for="exampleInputEmail1">Descripcion</label>
+               	 	<input type="email" class="form-control fill paseEntradaNuevo" id="descripcion" aria-describedby="emailHelp" placeholder="Descripción">
+            	</div>
+            </div>
+               <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6 my-1 mt-2 d-flex flex-column">
+            	<label>
+	            	<input type="checkbox" class="paseEntradaNuevo" name="enviarCorreoSms" value="enviar_correo_pre_registro" id="enviar_correo_pre_registro" onchange="onChangeOpcionesAvanzadas('enviarCorreoSms')"><b> Enviar correo</b>
+	        	</label>
+	        	<label>
+	            	<input type="checkbox" class="paseEntradaNuevo" name="enviarCorreoSms" value="enviar_sms_pre_registro" id="enviar_sms_pre_registro" onchange="onChangeOpcionesAvanzadas('enviarCorreoSms')"><b> Enviar sms</b>
+	        	</label>
+            </div>
         </div>
-        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8  mt-5" id="paseEntradaInf3">
+        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8  mt-3" id="paseEntradaInf3">
  			<h4>Vigencia: </h4>
  		</div> 
         <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 " id="paseEntradaInf4">
@@ -88,12 +116,12 @@
 	                            Fecha Fija
 	                        </label>
                 		</div>
-                		<div class="col-sm-10 col-md-10 col-lg-12 col-xl-12 d-flex mb-3">
-			               <div class="col-6"> 
-			               		<label for="fechaVisita">Fecha de visita</label>
+                		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-wrap mb-3">
+			               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6"> 
+			               		<label for="fechaVisita">Fecha de visita: </label>
 			               		<input type="date" class="form-control paseEntradaNuevo" id="fechaVisita" aria-describedby="emailHelp" placeholder="">
 			               </div>
-			               <div class="col-6"> 
+			               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6"> 
 			                    <label class="form-label">Hora: *</label>
 			                    <div class="time-selector">
 			                        <select class="form-select time-select contentNuevoPase paseEntradaNuevo" id="horaNuevoPase" 
@@ -118,8 +146,9 @@
             </div>
             <div class="opcionesAvanzadasDiv col-12">
 	            <div class="col-sm-8 col-md-8 col-lg-12 col-xl-12 d-flex mt-3 flex-wrap">
+	            	
 	               <div class="col-6 d-flex p-0 m-0" id="fechaVisitaDiv"> 
-		               	<div class="col-6">
+		               	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
 		               		<label for="fechaVisitaOA">Fecha de visita: </label>
 		               		<input type="date" class="form-control paseEntradaNuevo" id="fechaVisitaOA" aria-describedby="emailHelp" placeholder="">
 		               	</div>
@@ -137,7 +166,7 @@
 		               	</div> -->
 	               </div>
 	               <div class="col-6 d-flex p-0 m-0" id="fechaHastaDiv"> 
-	               		<div class="col-6">
+	               		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
 		               		<label for="fechaHastaOA">Fecha hasta: </label>
 		               		<input type="date" class="form-control paseEntradaNuevo" id="fechaHastaOA" aria-describedby="emailHelp" placeholder="">
 		               	</div>
@@ -154,6 +183,7 @@
 		                    </div>
 		               	</div> -->
 	               </div>
+
 	               <div class="col-12  mt-4" id="diasAccesoDiv"> 
 	               		<label>Días de acceso: </label>
 	                	<div class="d-flex flex-column justify-content-start align-items-start">
@@ -211,6 +241,12 @@
 	                        </div>
 		                </div>
 	                </div>
+	                <div class="col-12 d-flex p-0 m-0 my-1 mb-2" id="limiteEntradasDiv"> 
+	            		<div class="col-sm-12 col-md-12 col-lg-6 col-xl-3">
+		            		<label>Limite de entradas: </label>
+		            		<input type="text" class="form-control paseEntradaNuevo" id="limiteEntradas" placeholder="Limite de entradas"  onChange="removeNonNumeric(this)">
+	            		</div>
+	            	</div>
 	               <div class="opcionesAvanzadasDiv col-12 flex-grow-1 mt-3 mx-0">
 			            <h4 >Areas de acceso: </h4>
 			            <div id="area-input-form-nuevo" class="col-12 mx-0 px-0">
@@ -295,7 +331,7 @@
                 	<span class="text-gray paseEntadaUser" id="emailText"> </span>
             	</div>
             	<div class="d-flex flex-column col4">
-                	<label for="exampleInputEmail1"><b>Telefono</b></label>
+                	<label for="exampleInputEmail1"><b>Telefono: </b></label>
                	 	<span class="text-gray paseEntadaUser" id="telefonoText"> </span>
             	</div>
             </div>
@@ -447,6 +483,7 @@
     </section>
 </body>
 
+
 <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
@@ -457,8 +494,260 @@
 
 
 
+<!---- PLANTILLA DE CORREO ---->
 
-<!-- Local -->
-<!-- Jquery -->
+<!-- <!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Plantilla de Correo Electrónico</title>
+        <style>
+            /* Estilos generales */
+            body, table, td, a {
+                font-family: 'Arial', sans-serif;
+                font-size: 16px;
+                color: #333333;
+                line-height: 1.6;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #ffffff;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            img {
+                border: 0;
+                height: auto;
+                line-height: 100%;
+                outline: none;
+                text-decoration: none;
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #ffffff;
+                padding: 20px;
+            }
+            /*.header {
+                background-color: #021d49;
+                color: #ffffff;
+                padding: 20px;
+                text-align: center;
+            }*/
+            .content {
+                padding: 20px;
+                text-align: justify;
+            }
+            .footer {
+                background-color: #F5F5F5;
+                color: #666666;
+                padding: 20px;
+                text-align: left;
+            }
+            .button {
+                background-color: #021d49;
+                color: #ffffff;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                margin: 10px 0;
+                border-radius: 5px;
+            }
+            .button:hover {
+                background-color: #005bb5;
+            }
+        </style>
+    </head>
+    <body>
+        <table class="container">
+            <tr>
+                <td class="header">
+                    <img align="left" alt="" src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/66cf3e294e2420113f105797.png">
+                </td>
+            </tr>
+           <tr>
+                <td class="content">
+                    <h3>Hola {{record.answers.662c2937108836dec6d92580}},</h3>
+                    <p>Has sido invitado a visitar a: </p>
+                
+                    {% if record.answers.663d4ba61b14fab90559ebb0|length > 0 %}
+                       {% for item in record.answers.663d4ba61b14fab90559ebb0 %}
+                            {% if item.66a83ab5ca3453e21ea08d19 %}
+                                        <li><strong>{{ item.66a83ab5ca3453e21ea08d19.62c5ff407febce07043024dd }}</strong></li>
+                            {% endif %}
+                       {% endfor %}
+                    {% endif %}
+                    <p><strong>Detalles de la visita:</strong></p>
+                    <ul>
+                        <li><strong>Ubicación: </strong> {{ record.answers.66a83a74de752e12018fbc3c.663e5c57f5b8a7ce8211ed0b }} </li> 
+                        {% if record.answers.662c304fad7432d296d92581 == 'Fecha fija' %}
+                        	<li><strong>Fecha de la visita: </strong> {{ record.answers.662c304fad7432d296d92582 }} </li> 
+                        {% endif %}
+                    </ul>
+                    <p> {{ record.answers.662c304fad7432d296d92581 }}</p>
+                    {% if record.answers.662c304fad7432d296d92581 == "Rango de fechas" %}
+                    	<p><strong>Diponibilidad de fechas:</strong></p>
+                    	<ul>
+                            <li><strong>Desde:</strong> {{ record.answers.662c304fad7432d296d92582 }} </li>
+                            <li><strong>Hasta: </strong> {{ record.answers.662c304fad7432d296d92583 }} </li> 
+                        </ul>
+                        {% if record.answers.6635380dc9b3e7db4d59eb49 %}
+	                        <p><strong>Limite de accesos:</strong> {{ record.answers.6635380dc9b3e7db4d59eb49 }} </p>
+                        {% endif %}
+                        {% if record.answers.662c304fad7432d296d92585|length > 0 %}
+                        	<p><strong>Dias de acceso:</strong></p>
+                    		<ul>
+	                        	{% for item in record.answers.662c304fad7432d296d92585 %}
+		                        	<li><strong> {{ item }} </strong></li>
+		                        {% endfor %}
+	                    	</ul>
+                        {% endif %}
 
+                    {% endif %}
+                    <p>Se ha creado un pre-registro y ahora está pendiente de su asignación. Por favor, complete sus datos de registro en este link . <a href={{record.answers.6732aa1189fc6b0ae27e3824}} target="_blank"> Completar Pase </a> </p>
+                    <p> Saludos, <br> Equipo de Administración. </p>          
+                </td>
+            </tr>
+            <tr>
+                <td class="footer">
+                    <a href="https://www.linkaform.com/" target="_blank">
+                        <img alt="" src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/107023/64dd1bd4fd200a3308ec2141/663517c3caae08b8adf27472.png">
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html> -->
 
+<!-- <!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Plantilla de Correo Electrónico</title>
+        <style>
+            /* Estilos generales */
+            body, table, td, a {
+                font-family: 'Arial', sans-serif;
+                font-size: 16px;
+                color: #333333;
+                line-height: 1.6;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #ffffff;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            img {
+                border: 0;
+                height: auto;
+                line-height: 100%;
+                outline: none;
+                text-decoration: none;
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #ffffff;
+                padding: 20px;
+            }
+            /*.header {
+                background-color: #021d49;
+                color: #ffffff;
+                padding: 20px;
+                text-align: center;
+            }*/
+            .content {
+                padding: 20px;
+                text-align: justify;
+            }
+            .footer {
+                background-color: #F5F5F5;
+                color: #666666;
+                padding: 20px;
+                text-align: left;
+            }
+            .button {
+                background-color: #021d49;
+                color: #ffffff;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                margin: 10px 0;
+                border-radius: 5px;
+            }
+            .button:hover {
+                background-color: #005bb5;
+            }
+        </style>
+    </head>
+    <body>
+        <table class="container">
+            <tr>
+                <td class="header">
+                    <img align="left" alt="" src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/66cf3e294e2420113f105797.png">
+                </td>
+            </tr>
+           <tr>
+                <td class="content">
+                    <h3>Hola {{record.answers.662c2937108836dec6d92580}},</h3>
+                    <p>Has sido invitado a visitar a: </p>
+                
+                    {% if record.answers.663d4ba61b14fab90559ebb0|length > 0 %}
+                       {% for item in record.answers.663d4ba61b14fab90559ebb0 %}
+                            {% if item.66a83ab5ca3453e21ea08d19 %}
+                                        <li><strong>{{ item.66a83ab5ca3453e21ea08d19.62c5ff407febce07043024dd }}</strong></li>
+                            {% endif %}
+                       {% endfor %}
+                    {% endif %}
+                    <p><strong>Detalles de la visita:</strong></p>
+                    <ul>
+                        <li><strong>Ubicación: </strong> {{ record.answers.66a83a74de752e12018fbc3c.663e5c57f5b8a7ce8211ed0b }} </li> 
+                        {% if record.answers.662c304fad7432d296d92581 == 'Fecha fija' %}
+                        	<li><strong>Fecha de la visita: </strong> {{ record.answers.662c304fad7432d296d92582 }} </li> 
+                        {% endif %}
+                    </ul>
+                    <p> {{ record.answers.662c304fad7432d296d92581 }}</p>
+                    {% if record.answers.662c304fad7432d296d92581 == "Rango de fechas" %}
+                    	<p><strong>Diponibilidad de fechas:</strong></p>
+                    	<ul>
+                            <li><strong>Desde:</strong> {{ record.answers.662c304fad7432d296d92582 }} </li>
+                            <li><strong>Hasta: </strong> {{ record.answers.662c304fad7432d296d92583 }} </li> 
+                        </ul>
+                        {% if record.answers.6635380dc9b3e7db4d59eb49 %}
+	                        <p><strong>Limite de accesos:</strong> {{ record.answers.6635380dc9b3e7db4d59eb49 }} </p>
+                        {% endif %}
+                        {% if record.answers.662c304fad7432d296d92585|length > 0 %}
+                        	<p><strong>Dias de acceso:</strong></p>
+                    		<ul>
+	                        	{% for item in record.answers.662c304fad7432d296d92585 %}
+		                        	<li><strong> {{ item }} </strong></li>
+		                        {% endfor %}
+	                    	</ul>
+                        {% endif %}
+
+                    {% endif %}
+                    <p> Te esperamos</p>
+                    <p> Saludos, <br> Equipo de Administración. </p>          
+                </td>
+            </tr>
+            <tr>
+                <td class="footer">
+                    <a href="https://www.linkaform.com/" target="_blank">
+                        <img alt="" src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/107023/64dd1bd4fd200a3308ec2141/663517c3caae08b8adf27472.png">
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html> -->

@@ -2,9 +2,9 @@ window.onload = function(){
 
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
+	let protocol = window.location.protocol;
+	let host = window.location.host;
 	if(user !='' && jw!=''){
-		let protocol = window.location.protocol;
-		let host = window.location.host;
 		let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
 		window.location.href =urlNew
 		//window.open(`${protocol}//${host}/solucion_accesos/turnos.html`, "turnos")
@@ -14,7 +14,10 @@ window.onload = function(){
 			href: urlNew,
 		}).click();*/
 		agregarPestana('turnos')
-	}
+	}/*else{
+		let urlNew = `${protocol}//${host}/solucion_accesos/login.html`
+		window.location.href =urlNew
+	}*/
 	let userInput = document.getElementById('user');
 	let userError = document.getElementById('userError');
 	userInput.addEventListener('input', function () {

@@ -24,9 +24,9 @@ window.onload = function(){
 	const urlParams = new URLSearchParams(valores);
 
 	id = urlParams.get('id') !== null ? urlParams.get('id') :'' ;
-	nombre = urlParams.get('nombre') !== null ? urlParams.get('nombre') :'' ;
+	/*nombre = urlParams.get('nombre') !== null ? urlParams.get('nombre') :'' ;
 	email = urlParams.get('email') !== null ? urlParams.get('email') :'' ;
-	tel = urlParams.get('tel') !== null ? urlParams.get('tel') :'' ;
+	tel = urlParams.get('tel') !== null ? urlParams.get('tel') :'' ;*/
     docs = urlParams.get('docs') !== null ? urlParams.get('docs') :'' ;
     account_id = parseInt(urlParams.get('user') !== null ? urlParams.get('user') :'' ) || ""
     if(account_id== null || account_id==""){
@@ -34,7 +34,7 @@ window.onload = function(){
     }
     showIneIden= docs.split("-")
 	if(id){
-		console.log("OCUUILTAR LA IFNORMACION", nombre, email, tel)
+		getCatalogsIngresoPase()
         customNavbar(getValueUserLocation(), userTurnCerrado)
 		$("#paseEntradaInf1").hide()
 		$("#paseEntradaInf2").hide()
@@ -42,22 +42,10 @@ window.onload = function(){
 		$("#paseEntradaInf4").hide()
 		$("#paseEntradaInf5").show()
 		$("#paseEntradaInf6").show()
-
         $("#foto").hide()
         $("#iden").hide()
-
-		$("#nombreText").text(nombre)
-		$("#emailText").text(email)
-		$("#telefonoText").text(tel)
-		getCatalogsIngreso()
-		onChangeOpcionesAvanzadas('agregarVehiculo')
-        onChangeOpcionesAvanzadas('agregarEquipo')
-		$("#selectTipoEquipo-123").val("")
-		$("#inputColorVehiculo-123").val("")
-        $("#inputColorEquipo-123").val("")
-		//onChangeCatalog('vehiculo', "")
+        
         if(showIneIden.length>0){
-            console.log("VALOERRR DE EEE", showIneIden)
             for(let a of showIneIden){
                 if(a=="foto"){
                     $("#foto").show()
@@ -83,12 +71,65 @@ window.onload = function(){
 }
 
 //FUNCION para obtener los catalogos
-function getCatalogsIngreso(){
+function getCatalogsIngresoPase(){
 	loadingService()
-	fetch(url + urlScripts, {
+    fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_name: "get_vehiculos.py",
+            script_name: "pase_de_acceso.py",
+            option: "catalogos_pase_no_jwt",
+            qr_code:id,
+            account_id:account_id
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            /*'Authorization': 'Bearer '+userJwt*/
+        },
+        }).then(res => res.json())
+        .then(res => {
+            if(res.success){
+                let data= res.response.data
+                if(data.status_code ==400 || data.status_code==401){
+                    errorAlert(res)
+                }else{
+                    Swal.close()
+
+                    onChangeOpcionesAvanzadas('agregarVehiculo')
+                    onChangeOpcionesAvanzadas('agregarEquipo')
+                    $("#selectTipoEquipo-123").val("")
+                    $("#inputColorVehiculo-123").val("")
+                    $("#inputColorEquipo-123").val("")
+
+                    let selectVehiculos= document.getElementById("selectTipoVehiculo-123")
+                    selectVehiculos.innerHTML="";
+                    dataCatalogs.types_cars=data.cat_vehiculos 
+                    for (let obj of data.cat_vehiculos){
+                        selectVehiculos.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
+                    }
+                    selectVehiculos.value=""
+                    let selectEstados= document.getElementById("inputEstadoVehiculo-123")
+                    selectEstados.innerHTML="";
+                    catEstados=data.cat_estados
+                    for (let obj of data.cat_estados){
+                        selectEstados.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
+                    }
+                    selectEstados.value=""
+                    nombre=data.pass_selected.nombre
+                    email=data.pass_selected.email
+                    tel=data.pass_selected.telefono
+
+                    $("#nombreText").text(nombre)
+                    $("#emailText").text(email)
+                    $("#telefonoText").text(tel)
+                } 
+            }else{
+                errorAlert(res)
+            }
+        })
+	/*fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "access_pass.py",
             option: "catalago_vehiculo",
             account_id:account_id
         }),
@@ -114,8 +155,8 @@ function getCatalogsIngreso(){
             }else{
                 errorAlert(res)
             }
-        })
-    fetch(url + urlScripts, {
+        })*/
+  /*  fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name: "get_vehiculos.py",
@@ -145,7 +186,7 @@ function getCatalogsIngreso(){
             }else{
                 errorAlert(res)
             }
-        })
+        })*/
   
     $("#selectTipoVehiculo-123").prop( "disabled", false );
     $("#spinnerTipoVehiculo").css("display", "none");
@@ -154,7 +195,6 @@ function getCatalogsIngreso(){
 //FUNCION rellenar catalogos al momento de escojer una opcion
 async function onChangeCatalogPase(type, id){
     if(type == "vehiculo"){
-        console.log("QUE ONDA")
         let inputMarca= document.getElementById("selectTipoVehiculo-"+id);
         const options = {
             method: 'POST', 
@@ -219,67 +259,52 @@ function catalogoAreaByLocation(location){
         method: 'POST',
         body: JSON.stringify({
             script_name: "pase_de_acceso.py",
-            option:"area_by_location",
+            option:"catalogos_pase",
             location:location,
+            user_id: parseInt(getCookie("userId")),
             account_id:account_id
         }),
         headers:
         {
             'Content-Type': 'application/json',
-            //'Authorization': 'Bearer '+userJwt
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-        	arrayAreas= res.response.data
-        	for(let i of arrayAreas){
-        		$("#tipoArea").append($('<option></option>').val(i).text(i));
-        		$("#tipoArea").val("")
-        	}
-        	if(arrayAreas.length==0){
-        		let tipoArea= document.getElementById("tipoArea")
-        		tipoArea.innerHTML=""
-        		$("#tipoArea").append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
-        		$("#tipoArea").val("")
-        	}
-        }else{
-        	errorAlert(res)
-        }
-    })
-
-    loadingService()
-    fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_name: "pase_de_acceso.py",
-            option:"area_by_location_salidas",
-            location:location,
-            account_id:account_id
-        }),
-        headers:
-        {
-            'Content-Type': 'application/json',
-            //'Authorization': 'Bearer '+userJwt
+            'Authorization': 'Bearer '+userJwt
         },
     })
     .then(res => res.json())
     .then(res => {
         if (res.success) {
             Swal.close()
-            arrayAreas= res.response.data
-            for(let i of arrayAreas){
-                $("#ubicacion").append($('<option></option>').val(i).text(i));
-                $("#ubicacion").val("")
+        	arrayAreas= res.response.data
+        	for(let i of arrayAreas.areas_by_location){
+        		$("#tipoArea").append($('<option></option>').val(i).text(i));
+        		$("#tipoArea").val("")
+        	}
+        	if(arrayAreas.areas_by_location.length==0){
+        		let tipoArea= document.getElementById("tipoArea")
+        		tipoArea.innerHTML=""
+        		$("#tipoArea").append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
+        		$("#tipoArea").val("")
+        	}
+            if(arrayAreas.ubicaciones_user.length>1){
+
+                for(let i of arrayAreas.ubicaciones_user){
+                    $("#ubicacion").append($('<option></option>').val(i).text(i));
+                    $("#ubicacion").val("")
+                }
+            }else{
+                for(let i of arrayAreas.ubicaciones_user){
+                    $("#ubicacion").append($('<option ></option>').val(i).text(i));
+                    $("#ubicacion").val(i)
+                }
             }
-            if(arrayAreas.length==0){
+            if(arrayAreas.ubicaciones_user.length==0){
                 let ubicacion= document.getElementById("ubicacion")
                 ubicacion.innerHTML=""
                 $("#ubicacion").append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
                 $("#ubicacion").val("")
             }
         }else{
-            errorAlert(res)
+        	errorAlert(res)
         }
     })
 }
@@ -287,7 +312,6 @@ function catalogoAreaByLocation(location){
 //FUNCION para agregar foto en el modal de agregar nota
 function setAddCom(editAdd ="nuevo", classNam){
     let randomID = Date.now();
-    console.log("randomID", randomID)
     let newItem=`
         <div class="d-flex mb-3 col-12  div-`+classNam+`-`+editAdd+`-`+randomID+`" id="id-`+classNam+`-div-`+randomID+`">
             <div class="flex-grow-1 d-flex">
@@ -372,7 +396,6 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
 //FUNCION rellenar catalogos al momento de escojer una opcion
 /*async function onChangeCatalog(type, id){
     if(type == "vehiculo"){
-        console.log("AL CAMBIO",type, id)
         let inputMarca= document.getElementById("selectTipoVehiculo-"+id);
         const options = {
             method: 'POST', 
@@ -395,7 +418,6 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
             let selectVehiculosMarca= document.getElementById("selectCatalogMarca-"+id)
             selectVehiculosMarca.innerHTML=""; 
             for (let obj in list){
-            console.log(list[obj])
 
                 selectVehiculosMarca.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
             }
@@ -404,7 +426,6 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
     }else if (type == "marca"){
         let inputTipo= document.getElementById("selectTipoVehiculo-"+id);
         let inputMarca= document.getElementById("selectCatalogMarca-"+id);
-        console.log("DETALLES",inputTipo.value, inputMarca.value)
         const options = {
             method: 'POST', 
             body: JSON.stringify({
@@ -425,7 +446,6 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
             let list =data.response.data
             let selectVehiculosModelo= document.getElementById("selectCatalogModelo-"+id)
             selectVehiculosModelo.innerHTML=""; 
-                console.log("OBJ",selectVehiculosModelo.value)
             for (let obj in list){
                 selectVehiculosModelo.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
             }
@@ -436,7 +456,6 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
 
 function onChangeOpcionesAvanzadas(type){
 	if(type=="checkOpcionesAvanzadas"){
-		console.log($("#checkOpcionesAvanzadas").is(':checked'))
 		if($("#checkOpcionesAvanzadas").is(':checked')){
 			$(".opcionesAvanzadasDiv").show();
 			onChangeOpcionesAvanzadas('radioRangoFechas')
@@ -464,7 +483,6 @@ function onChangeOpcionesAvanzadas(type){
 		}
 	}else if (type == "radioCualquierDia" || type=="radioLimitarDias"){
 		let selected = $('input[name="diasAcceso"]:checked');
-		console.log("RANGO FECHAS",selected[0].id)
 		if(selected[0].id == 'radioCualquierDia'){
 			$("#diasAccesoDivDias").hide()
 			
@@ -504,7 +522,6 @@ function onChangeOpcionesAvanzadas(type){
 function getSelectedCheckRAdio(name=""){
 	 const seleccionados = $('input[name="'+name+'"]:checked');
 	 let arraySelected=[]
-	 console.log("SEWLEDIONADOS", seleccionados)
 	 for (let i of seleccionados){
 	 	arraySelected.push(i.id)
 	 }
@@ -524,8 +541,9 @@ function copyLinkPase(id, nombre, email, tel, arrayDocSel,userId, email_from){
             if(a==0)docs+="-"
         }
     }
-	navigator.clipboard.writeText(`${protocol}//${host}/solucion_accesos/pase.html?id=`+id +`&nombre=`+nombre+`&email=`+email+`&tel=`+tel+`&user=`+userId+ `&docs=`+ docs+`&emailfrom=`+email_from);
-    return `${protocol}//${host}/solucion_accesos/pase.html?id=`+id +`&nombre=`+nombre+`&email=`+email+`&tel=`+tel+`&user=`+userId+ `&docs=`+ docs+`&emailfrom=`+email_from
+    /* +`&nombre=`+nombre+`&email=`+email+`&tel=`+tel +`&emailfrom=`+email_from*/
+	navigator.clipboard.writeText(`${protocol}//${host}/solucion_accesos/pase.html?id=`+id+`&user=`+userId+ `&docs=`+ docs);
+    return `${protocol}//${host}/solucion_accesos/pase.html?id=`+id+`&user=`+userId+ `&docs=`+ docs
 }
 
 function crearConfirmacionMini() {
@@ -582,7 +600,6 @@ function crearConfirmacionMini() {
 	}
 	let htmlAppendVehiculos=""
 	for (let vehiculo in listInputsVehicule) {
-    console.log("listInputsVehicule",listInputsVehicule[vehiculo])
 		if(listInputsVehicule[vehiculo][0].value !==""){
 			htmlAppendVehiculos +="<div class='col-sm-12 col-md-12 col-lg-6 col-xl-6'>"
 			htmlAppendVehiculos +="<table class='table table-borderless customShadow' style='border: none; font-size: .8em; background-color: lightgray!important;'>"
@@ -614,13 +631,12 @@ function crearConfirmacionMini() {
 	if(showIneIden.length>0){
         for(let i of showIneIden){
             if(i=="foto"){
-                showIn== urlImgUser=="" ? true : false
+                showIn= (urlImgUser=="" ? true : false)
             }else if(i=="iden"){
-                showIde= urlImgCard=="" ? true : false
+                showIde= (urlImgCard=="" ? true : false)
             }
         }
     }
-    console.log("USER Y CARD", urlImgCard, urlImgUser)
     if(showIn || showIde){
 		successMsg("Validación", "Faltan datos por llenar", "warning")
 	}else{
@@ -682,25 +698,24 @@ function crearConfirmacionMini() {
 	        showCancelButton: true,
 	        confirmButtonColor: "#28a745",
 	        cancelButtonColor: "#dc3545",
-	        confirmButtonText: "Completar pase",
+	        confirmButtonText: "Obtener pase",
 	        heightAuto:false,
 	        reverseButtons:true,
 	        width:750,
 	    })
 	    .then((result) => {
 	        if (result.value) {
-	        	loadingService()
+	        	loadingService("Generando tu pase de entrada...")
 		        let access_pass={
                     grupo_vehiculos:arrayVehiculos,
                     grupo_equipos:arrayEquipos,
                 }
-                if(urlImgCard !== ""){
-                    access_pass.walkin_fotografia=[{file_name:"foto.png",file_url:urlImgCard}]
-                }
                 if(urlImgUser !== ""){
-                    access_pass.walkin_identificacion=[{file_name:"indentificacion.png",file_url:urlImgUser}]
+                    access_pass.walkin_fotografia=[{file_name:"foto.png",file_url:urlImgUser}]
                 }
-                
+                if(urlImgCard !== ""){
+                    access_pass.walkin_identificacion=[{file_name:"indentificacion.png",file_url:urlImgCard}]
+                }
 	        	fetch(url + urlScripts, {
 			        method: 'POST',
 			        body: JSON.stringify({
@@ -720,172 +735,119 @@ function crearConfirmacionMini() {
 			        let data=res.response.data
 			        if (res.success) {
 			        	if(data.status_code==400 || data.status_code==401){
-                        let errores=[]
-                        for(let err in data.json){
-                            errores.push(data.json[err].label+': '+data.json[err].msg)
-                        }
-                        Swal.fire({
-                            title: "Error",
-                            text: errores.flat(),
-                            type: "error"
-                        });
-                    }else if(data.status_code==202 || data.status_code==201){
-                    	qr_code=data.json.id
-			        	Swal.close()
-			        	Swal.fire({
-                            type:"success",
-				      		text: "Tu informacion se ha guardado correctamente.",
-						    html:`
-						      	<div class="mb-3 mt-2" style=" font-size: 1.2em;  color:#8ebd73 !important;">  <h4>Pase de entrada generado </h4> </div>
-						        <div class="d-flex flex-column justify-content-center align-items-center">
-			    			      	<div class='align-items-start m-2'>
-			    			      	  	El pase de entrada se ha generado correctamente. Por favor, selecciona alguna de las siguientes opciones.
-			    			    	</div>
-			    			    	<div class="d-flex  flex-column align-items-start justify-content-start mt-2">
-			    			    		<div class="m-0 p-0">
-				    			    		<label>
-								            	<input type="checkbox" name="opcionesCorreoMsj" id="enviarMensaje" value="enviarMensaje">
-								            	<i class="fa-solid fa-comment-sms ms-2"></i> <b>Enviar mensaje</b>
-									        </label><br>
-									    </div>
-								        <div class="m-0 p-0">
-								        	<label>
-								            	<input type="checkbox" name="opcionesCorreoMsj" id="enviarCorreo" value="enviarCorreo">
-								            	<i class="fa-solid fa-envelope ms-2"></i> <b>Enviar correo</b>
-								        	</label><br>
-								        </div>
-			    			    	</div>
-			    			    	<img class="mt-1" alt="Código QR" id="codigo" width=250 height=250 src=${data.json.qr_pase[0].file_url}>
-						        </div>`,
-					      	icon: "success",
-						    showCancelButton:true,
-						    showConfirmButton:true,
-						    reverseButtons:true,
-						    cancelButtonColor: colors[0],
-						    cancelButtonText:'Cerrar',
-						    confirmButtonText: "Aceptar y Descargar",
-                            preConfirm: () => {
-                                // Obtener los estados de los checkboxes
-                                const enviarMensajeChecked = document.getElementById('enviarMensaje').checked;
-                                const enviarCorreoChecked = document.getElementById('enviarCorreo').checked;
-                                return {
-                                    enviarMsj: enviarMensajeChecked,
-                                    enviarCorreo: enviarCorreoChecked
-                                };
+                            let errores=[]
+                            for(let err in data.json){
+                                errores.push(data.json[err].label+': '+data.json[err].msg)
                             }
-						 }).then((result)=>{
-						 	if (result.value) {
-						 		Swal.close()
-						 		loadingService()
-						 		let data_for_msj = {}
-								let data_for_msj_tel={}
-                                console.log("CAMBIOS")
-                                let bodyPost={
-                                    script_name: "pase_de_acceso.py",
-                                    option: "enviar_msj",
-                                    folio:data.json.id,
-                                    account_id:account_id
+                            Swal.fire({
+                                title: "Error",
+                                text: errores.flat(),
+                                type: "error"
+                            });
+                        }else if(data.status_code==202 || data.status_code==201){
+                        	qr_code=data.json.id
+    			        	Swal.close()
+    			        	Swal.fire({
+                                type:"success",
+    				      		text: "Pase de entrada generado correctamente 🎉",
+    						    html:`
+    						      	<div class="mb-3 mt-2" style=" font-size: 1.2em;  color:#8ebd73 !important;">  <h4>Pase de entrada generado 🎉 </h4> </div>
+    						        <div class="d-flex flex-column justify-content-center align-items-center">
+    			    			      	<div class='align-items-start m-2'>
+    			    			      	  	El pase de entrada se ha generado correctamente. Por favor, selecciona alguna de las siguientes opciones.
+    			    			    	</div>
+    			    			    	<div class="d-flex  flex-column align-items-start justify-content-start mt-2">
+    			    			    		<div class="m-0 p-0">
+    				    			    		<label>
+    								            	<input type="checkbox" name="opcionesCorreoMsj" id="enviarMensaje" value="enviarMensaje">
+    								            	<i class="fa-solid fa-comment-sms ms-2"></i> <b>Enviar mensaje</b>
+    									        </label><br>
+    									    </div>
+    								        <div class="m-0 p-0">
+    								        	<label>
+    								            	<input type="checkbox" name="opcionesCorreoMsj" id="enviarCorreo" value="enviarCorreo">
+    								            	<i class="fa-solid fa-envelope ms-2"></i> <b>Enviar correo</b>
+    								        	</label><br>
+    								        </div>
+                                            <div class="m-0 p-0">
+                                                <label>
+                                                    <input type="checkbox" name="opcionesCorreoMsj" id="descargarPdfCheck" value="descargarPdfCheck">
+                                                    <i class="fa-solid fa-download ms-2"></i> <b>Descargar PDF</b>
+                                                </label><br>
+                                            </div>
+    			    			    	</div>
+    			    			    	<img class="mt-1" alt="Código QR" id="codigo" width=250 height=250 src=${data.json.qr_pase[0].file_url}>
+    						        </div>`,
+    					      	icon: "success",
+    						    showCancelButton:true,
+    						    showConfirmButton:true,
+    						    reverseButtons:true,
+    						    cancelButtonColor: colors[0],
+    						    cancelButtonText:'Cerrar',
+    						    confirmButtonText: "Aceptar",
+                                preConfirm: () => {
+                                    // Obtener los estados de los checkboxes
+                                    const enviarMensajeChecked = document.getElementById('enviarMensaje').checked;
+                                    const enviarCorreoChecked = document.getElementById('enviarCorreo').checked;
+                                    const descargarPdfChecked = document.getElementById('descargarPdfCheck').checked;
+                                    return {
+                                        enviarMsj: enviarMensajeChecked,
+                                        enviarCorreo: enviarCorreoChecked,
+                                        descargarPdf:descargarPdfChecked
+                                    };
                                 }
-						 		console.log($('#enviarMensaje').is(':checked'), $('#enviarCorreo').is(':checked'))
-								if(result.value.enviarMsj){
-									data_for_msj_tel={
-										mensaje: "Se ha creado un nuevo pase de entrada",
-										numero: data.json.telefono
-									}
-                                    bodyPost.data_cel_msj= data_for_msj_tel
-								}else{
-                                    bodyPost.data_cel_msj= {}
-                                }
-								if (result.value.enviarCorreo){
-									data_for_msj = {
-										mensaje: `Hola, un nuevo pase de entrada se ha creado para ti, has sido invitado por `+data.json.enviar_de+`.
-                                        Ubicacion: `+getCookie("Linkaform")+`
-                                        Te esperamos, Saludos`,
-    									titulo: "NUEVO PASE DE ENTRADA GENERADO",
-    									email_from: getCookie("userEmail"),
-    									email_to: email,
-                                        nombre: nombre
-									}
-                                    bodyPost.data_msj= data_for_msj
-								}else{
-                                    bodyPost.data_msj = {}
-                                }
-                                if(result.value.enviarMsj || result.value.enviarCorreo){
-    								fetch(url + urlScripts, {
-    							        method: 'POST',
-    							        body: JSON.stringify(bodyPost),
-    							        headers:{
-    							            'Content-Type': 'application/json',
-    							            'Authorization': 'Bearer '+userJwt
-    							        },
-    							    })
-    							    .then(res => res.json())
-    							    .then(res => {
-    							        if (res.success) {
-    							        	if(data.status_code==400 || data.status_code==401){
-    					                        /*let errores=[]
-    					                        for(let err in data.json){
-    					                            errores.push(data.json[err].label+': '+data.json[err].msg)
-    					                        }
-    					                        Swal.fire({
-    					                            title: "Error",
-    					                            text: errores.flat(),
-    					                            type: "error"
-    					                        });*/
-    					                    }else if(data.status_code==202 || data.status_code==201){
-    					                    	successMsg("Confirmación", "Informacion enviada correctamente.", "success")
-    					                    	
-    								            fetch(data.json.pdf.data.download_url)
-    							                .then(response => {
-    							                    if (!response.ok) {
-    							                        throw new Error('Error al descargar el pdf');
-    							                    }
-    							                    return response.blob();
-    							                })
-    							                .then(blob => {
-    							                    const url = URL.createObjectURL(blob);
-    							                    const link = document.createElement('a');
-    							                    link.href = url;
-    							                    link.download = 'mi-imagen.jpg'; // Nombre con el que se descargará la imagen
-    							                    document.body.appendChild(link);
-    							                    link.click();
-    							                    document.body.removeChild(link);
-    							                    URL.revokeObjectURL(url); // Libera el objeto URL
-    							                })
-    							                .catch(error => {
-    							                    console.error('Error:', error);
-    							                });
-    					                    }
-    							        }else{
-    							        	errorAlert(res)
-    							        }
-    							    })
-                                }else{
-                                    fetch(data.json.pdf.data.download_url)
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error('Error al descargar el pdf');
+    						 }).then((result)=>{
+    						 	if (result.value) {
+    						 		Swal.close()
+    						 		loadingService()
+    						 		let data_for_msj = {}
+    								let data_for_msj_tel={}
+                                    
+                                    if(result.value.enviarMsj){
+                                        let bodyPost={
+                                            script_name: "pase_de_acceso.py",
+                                            folio:data.json.id,
+                                            account_id:account_id
                                         }
-                                        return response.blob();
-                                    })
-                                    .then(blob => {
-                                        const url = URL.createObjectURL(blob);
-                                        const link = document.createElement('a');
-                                        link.href = url;
-                                        link.download = 'mi-imagen.jpg'; // Nombre con el que se descargará la imagen
-                                        document.body.appendChild(link);
-                                        link.click();
-                                        document.body.removeChild(link);
-                                        URL.revokeObjectURL(url); // Libera el objeto URL
-                                    })
-                                    .catch(error => {
-                                        console.error('Error:', error);
-                                    });
-                                    successMsg("Confirmación","Pdf descargado correctamente." , "success", )
-                                }
-						 	}
-						 })
-                    }
+                                         let msj=""
+                                        if(data.json.fecha_desde !==""){
+                                            msj=`el día ${data.json.fecha_desde}`
+                                        }else if (data.json.fecha_hasta !=="" && data.json.fecha_desde !==""){
+                                            msj= `apartir del `+data.json.fecha_desde+` hasta el `+data.json.fecha_hasta+`.`
+                                        }
+                                        data_for_msj_tel={
+                                            mensaje: `Estimado ${nombre} 😁, ${data.json.enviar_de}, te esta invitando a: ${data.json.ubicacion}, `+msj+` Descarga tu pase 💳 en: ${data.json.pdf.data.download_url}`,
+                                            numero: data.json.telefono
+                                        }
+                                        bodyPost.data_cel_msj= data_for_msj_tel
+                                        bodyPost.option= "enviar_msj"
+        								enviarSmsPase(bodyPost)
+                                    }
+                                    if(result.value.enviarCorreo){
+                                        let bodyPost={
+                                            script_name: "pase_de_acceso.py",
+                                            folio:data.json.id,
+                                            account_id:account_id
+                                        }
+                                        data_for_msj = {
+                                            mensaje: `Hola, un nuevo pase de entrada se ha creado para ti, has sido invitado por `+data.json.enviar_de+`.
+                                            Ubicacion: `+getCookie("Linkaform")+`
+                                            Te esperamos, Saludos`,
+                                            titulo: "NUEVO PASE DE ENTRADA GENERADO",
+                                            email_from: getCookie("userEmail"),
+                                            email_to: email,
+                                            nombre: nombre
+                                        }
+                                        bodyPost.data_msj= data_for_msj
+                                        bodyPost.option= "enviar_correo"
+                                        enviarCorreoPase(bodyPost)
+                                    }
+                                    if(result.value.descargarPdf){
+                                        descargarPdfPase(data.json.pdf.data.download_url)
+                                    }
+    						 	}
+    						 })
+                        }
 			        }else{
 						Swal.close()
 						errorAlert(res)
@@ -897,13 +859,96 @@ function crearConfirmacionMini() {
 }
 
 
+function enviarCorreoPase(bodyPost){
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify(bodyPost),
+        headers:{
+            'Content-Type': 'application/json',
+            // 'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            let dataR=res.response.data
+            if(dataR.status_code==400 || dataR.status_code==401){
+                errorAlert(dataR)
+            }else if(dataR.status_code==202 || dataR.status_code==201){
+                successMsg("Confirmación", "Informacion enviada correctamente.", "success")
+            }
+        }else{
+            errorAlert(res)
+        }
+    })
+}
+
+function enviarSmsPase(bodyPost){
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify(bodyPost),
+        headers:{
+            'Content-Type': 'application/json',
+            // 'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            let dataR=res.response.data
+            if(dataR.status_code==400 || dataR.status_code==401){
+                errorAlert(dataR)
+            }else if(dataR.status_code==202 || dataR.status_code==201){
+                // successMsg("Confirmación", "Informacion enviada correctamente.", "success")
+            }
+        }else{
+            errorAlert(res)
+        }
+    })
+}
+
+function descargarPdfPase(url_pase){
+    fetch(url_pase)
+        .then(response => {
+            // Verificar si la respuesta es correcta
+            if (!response.ok) {
+                throw new Error('No se pudo obtener el archivo');
+            }
+            return response.blob();  // Convertir la respuesta en un Blob
+        })
+        .then(blob => {
+            // Crear un enlace de descarga con el Blob
+            const url = URL.createObjectURL(blob); // Crear una URL temporal del Blob
+
+            // Crear un enlace <a> para iniciar la descarga
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'archivo_descargado.pdf'; // Nombre del archivo descargado
+            document.body.appendChild(a);
+            a.click(); // Hacer clic en el enlace para descargar el archivo
+
+            // Limpiar: eliminar el enlace temporal
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url); // Liberar la URL temporal
+        })
+        .catch(error => {
+            console.error('Error al descargar el PDF:', error);
+        });
+}
+
+
+
+function removeNonNumeric(input) {
+    input.value = input.value.replace(/[^0-9]/g, '');
+}
+
 function crearConfirmacion() {
 	let data= getInputsValueByClass('paseEntradaNuevo')
 	// let comentarios= getDataGrupoRepetitivo('com-input-form-nuevo','.com-div-nuevo' , 0)
     let arrComentarios= document.getElementsByClassName('com-div-nuevo')
     let comentarios=[]
     for(let c of arrComentarios){
-        if(c.id.includes("instruccionComentario-")){
+        if(c.id.includes("instruccionComentario-") && c.value !== ""){
             comentarios.push({tipo_comentario:"Pase", comentario_pase: c.value})
         }
     }
@@ -971,6 +1016,8 @@ function crearConfirmacion() {
 		let formatMin = formatNumber(data.minNuevoPase)
 		let formatHor = formatNumber(data.horaNuevoPase)
 		fechaVisitaMain= `${data.fechaVisita} ${formatHor}:${formatMin}:00`
+        if(formatMin.length==1){
+        }
 	}else if (hayFechaHasta){
 		if(data.fechaVisitaOA !== ""){
 			let formatHor= formatNumber(data.horaNuevoRangoVisita)
@@ -985,7 +1032,6 @@ function crearConfirmacion() {
 		selectedRadioDias = $('input[name="diasAcceso"]:checked');
 		selectedRadioDiasAcceso=selectedRadioDias[0].id
 	}
-
 	let diasArr=[]
     let checkboxes = document.querySelectorAll('input[name="diasPase"]');
     checkboxes.forEach(function(checkbox) {
@@ -994,13 +1040,24 @@ function crearConfirmacion() {
         }
     });
 
+    let checkPregistro=[]
+    let correoSms = document.querySelectorAll('input[name="enviarCorreoSms"]');
+    correoSms.forEach(function(checkbox) {
+        if (checkbox.checked) {
+            checkPregistro.push(checkbox.value)
+        }
+    });
+
     let checkDocSeleccionados= []
     $('input[name="AgregarFotoIdent"]:checked').each(function() {
         checkDocSeleccionados.push($(this).val()); 
     });
 	let buttonDays=""
-	if(data.diasArr){
+	if(diasArr.length>0){
 		buttonDays=`
+        <div class="d-flex justify-content-start mt-4 ms-2">
+                        <h5><b>Dias de acceso:</b></h5>
+                    </div>
 		<div class="d-flex justify-content-start ms-2">
 			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="lunes">L</button>
 			<button type="button" class="btn btn-outline-success btn-custom week me-3" id="martes">M</button>
@@ -1041,231 +1098,251 @@ function crearConfirmacion() {
 	}
 	let tituloDias=""
 	if(true){
-		tituloDias=`<div class="d-flex justify-content-start mt-4 ms-2">
-						<h5><b>Dias de acceso:</b></h5>
-					</div>`
+		tituloDias=``
 	}
 
+    let limiteEntradasTexto=""
+    if(data.limiteEntradas!==""){
+        limiteEntradasTexto=`
+            <div class="d-flex justify-content-start mt-3 ms-2">
+                <p><span class="me-2"><b>Limite de entradas:</b></span>`+ data.limiteEntradas+`</p>
+            </div>
+        `
+    }
+    let numValid = iti.isValidNumber()
+    let numeroConLada = ""
+    if(numValid){
+        numeroConLada = iti.getNumber();
+    }
 	let html = []//getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
-	if(data.nombreCompleto=="" ||data.email=="" || data.telefono==""){
-		successMsg("Validación", "Faltan datos por llenar", "warning")
+	if(data.nombreCompleto=="" ||data.email=="" || data.telefono=="" ){
+		  successMsg("Validación", "Faltan datos por llenar", "warning")
 	}else{
-		Swal.fire({
-	        title:'Confirmación',
-	        html:`
-				<div>
-					<table class="table table-borderless" >
-						<thead>
-							<tr>
-								<th  style=" text-align:left !important;" > <h5> <b>Sobre la visita</b></h5> </th>
-								<th > </th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><b>Tipo de pase:</b></td>
-								<td><b>Estatus:</b></td>
-							</tr>
-							<tr>
-								<td>Visita General</td>
-								<td><span > Proceso </span></td>
-							</tr>
-							<tr>
-								<td><b>Nombre completo:</b></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>`+data.nombreCompleto+`</td>
-								<td></td>
-							</tr>
-							<tr>
-								<td><b>Email:</b></td>
-								<td><span ><b>Teléfono:</b></span></td>
-							</tr>
-							<tr>
-								<td> `+data.email+`</td>
-								<td><span > `+data.telefono+`</span></td>
-							</tr>
-                            <tr>
-                                <td><b>Ubicación:</b></td>
-                                <td><span ><b>Tema de la cita:</b></span></td>
-                            </tr>
-                            <tr>
-                                <td> `+data.ubicacion+`</td>
-                                <td><span > `+data.temaCita+`</span></td>
-                            </tr>
-                             <tr>
-                                <td><b>Descripción:</b></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>`+data.descripcion+`</td>
-                                <td> </td>
-                            </tr>
-						</tbody>
-					</table>
-					<hr>
-					`+mainAccesos+`
-					`+mainComentarios+`
-					`+tituloVigencia+`
-					`+fechaVisitaDiv+`
-					`+fechaHastaDiv+`
-					`+tituloDias+`
-					<div class="d-flex justify-content-start ms-2">
-						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="lunes">L</button>
-						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="martes">M</button>
-						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="miércoles">M</button>
-						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="jueves">J</button>
-						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="viernes">V</button>
-						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="sábado">S</button>
-						<button type="button" class="btn btn-outline-success btn-custom week me-3" id="domingo">D</button>
-					</div>
-				</div>
-		
-	      `,
-	        confirmButtonColor: "#28a745",
-	        showCancelButton: true,
-	        cancelButtonColor: "#dc3545",
-	        confirmButtonText:'Crear pase',
-	        cancelButtonText:'Cancelar',
-	        heightAuto:false,
-	        reverseButtons: true,
-	        width:750,
-	    })
-	    .then((result) => {
-	        if (result.value) {
-	        	loadingService()
-                let protocol = window.location.protocol;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
-                let host = window.location.host;
-                /*console.log("LINK DE LA URL", `${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id +`&nombre=`+access_pass.nombre+`&email=`+access_pass.email+
-                    `&tel=`+ access_pass.telefono+`&user=`+ getCookie("userId")+ `&docs=`+ checkDocSeleccionados+`&emailfrom=`+getCookie('userEmail'))*/
-		        let access_pass={
-		            nombre: data.nombreCompleto,
-		            email:data.email,
-		            telefono: data.telefono,
-		            areas: areas,
-		            comentarios:comentarios,
-                    ubicacion:data.ubicacion,
-                    tema_cita: data.temaCita,
-                    descripcion: data.descripcion,
-            		perfil_pase:"visita general",
-            		status_pase:'Proceso',
-                    visita_a: getCookie("userName"),
-            		custom:true
-		        }
-		        if(areas.length>0){
-					access_pass.comentarios = comentarios
-		        }
-		        if(comentarios.length>0){
-		        	access_pass.areas = areas
-		        }
-		        if(hayFechaHasta){
-		        	access_pass.tipo_visita_pase= "rango_de_fechas" 
-		        }else{
-		        	access_pass.tipo_visita_pase= "fecha_fija"
-		        }
-		        if(fechaVisitaMain){
-		        	access_pass.fecha_desde_visita=fechaVisitaMain.slice(0, -4) +':00';
-		        }
-		        if(fechaHastaMain){
-		        	access_pass.fecha_desde_hasta=fechaHastaMain.slice(0, -4) +':00';
-		        }
-		        if(selectedRadioDiasAcceso=='radioCualquierDia'){
-		        	access_pass.config_dia_de_acceso='cualquier_día'
-		        }else{
-		        	access_pass.config_dia_de_acceso='limitar_días_de_acceso'
-		        }
-		        if(diasArr.length>0){
-		        	access_pass.config_dias_acceso = diasArr 
-		        }
-	        	fetch(url + urlScripts, {
-			        method: 'POST',
-			        body: JSON.stringify({
-			            script_name: "pase_de_acceso.py",
-		                option: 'create_access_pass',
-		                location:getCookie('userLocation'),
-		                access_pass: access_pass
-			        }),
-			        headers:{
-			            'Content-Type': 'application/json',
-			            'Authorization': 'Bearer '+userJwt
-			        },
-			    })
-			    .then(res => res.json())
-			    .then(res => {
-			        if (res.success) {
-			        	let data=res.response.data
-			        	if(data.status_code==400 || data.status_code==401){
-                            Swal.close()
-                            errorAlert(data)
-                        }else if(data.status_code==202 || data.status_code==201){
-			        	    Swal.close()
-			        	    Swal.fire({
-    				      		type:"success",
-    				      		text: "Tu informacion se ha guardado correctamente.",
-    						    html:`
-    						      	<div class="mb-3 mt-2" style="font-weight: bold; font-size: 1.1em; color:#8ebd73 !important;"> Pase de entrada generado </div>
-    						        <div class="d-flex flex-column justify-content-center align-items-center">
-    			    			      	<div class='align-items-start m-2'>
-    			    			      	  	El pase de entrada se ha generado correctamente. Por favor, copie el siguiente enlace y compartalo con el visitante para
-    			    			      	  	completar el proceso.
-    			    			    	</div>
-    						        </div>`,
-    						    showCancelButton:false,
-    						    showConfirmButton:true,
-    						    confirmButtonText: "Copiar Link"
-						 }).then((result)=>{
-						 	if (result.value) {
-                                /*link: `${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id +`&nombre=`+access_pass.nombre+`&email=`+access_pass.email+
-                    `&tel=`+ access_pass.telefono+`&user=`+ getCookie("userId")+ `&docs=`+ checkDocSeleccionados+`&emailfrom=`+getCookie('userEmail')*/
-						 		let link= copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId"), getCookie('userEmail'));
-                                loadingService()
-                                fetch(url + urlScripts, {
-                                    method: 'POST',
-                                    body: JSON.stringify({
-                                        script_name: "pase_de_acceso.py",
-                                        option: 'update_pass',
-                                        location:getCookie('userLocation'),
-                                        access_pass: {
-                                            link:link
-                                        },
-                                        folio: data.json.id
-                                    }),
-                                    headers:{
-                                        'Content-Type': 'application/json',
-                                        'Authorization': 'Bearer '+userJwt
-                                    },
-                                })
-                                .then(res => res.json())
-                                .then(res => {
-                                    if (res.success) {
-                                        Swal.close()
-                                        
-                                        successMsg("Confirmación", "Informacion enviada, el link esta listo para compartir")
-                                    }else{
-                                        errorAlert(res)
-                                    }
-                                })
-						 	}
-						 })
+        if(!numValid){
+            successMsg("Validación","Escribe un número de teléfono válido.", "warning")
+            let inputTel= document.getElementById("telefono")
+            inputTel.value=""
+        }else{
+    		Swal.fire({
+    	        title:'Confirmación',
+    	        html:`
+    				<div>
+    					<table class="table table-borderless" >
+    						<thead>
+    							<tr>
+    								<th  style=" text-align:left !important;" > <h5> <b>Sobre la visita</b></h5> </th>
+    								<th > </th>
+    							</tr>
+    						</thead>
+    						<tbody>
+    							<tr>
+    								<td><b>Tipo de pase:</b></td>
+    								<td><b>Estatus:</b></td>
+    							</tr>
+    							<tr>
+    								<td>Visita General</td>
+    								<td><span > Proceso </span></td>
+    							</tr>
+    							<tr>
+    								<td><b>Nombre completo:</b></td>
+    								<td></td>
+    							</tr>
+    							<tr>
+    								<td>`+data.nombreCompleto+`</td>
+    								<td></td>
+    							</tr>
+    							<tr>
+    								<td><b>Email:</b></td>
+    								<td><span ><b>Teléfono:</b></span></td>
+    							</tr>
+    							<tr>
+    								<td> `+data.email+`</td>
+    								<td><span > `+numeroConLada+`</span></td>
+    							</tr>
+                                <tr>
+                                    <td><b>Ubicación:</b></td>
+                                    <td><span ><b>Tema de la cita:</b></span></td>
+                                </tr>
+                                <tr>
+                                    <td> `+data.ubicacion+`</td>
+                                    <td><span > `+data.temaCita+`</span></td>
+                                </tr>
+                                 <tr>
+                                    <td><b>Descripción:</b></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>`+data.descripcion+`</td>
+                                    <td> </td>
+                                </tr>
+    						</tbody>
+    					</table>
+    					<hr>
+    					`+mainAccesos+`
+    					`+mainComentarios+`
+    					`+tituloVigencia+`
+    					`+fechaVisitaDiv+`
+    					`+fechaHastaDiv+`
+    					`+tituloDias+`
+                        `+limiteEntradasTexto+`
+    					`+buttonDays+`
+    				</div>
+    		
+    	      `,
+    	        confirmButtonColor: "#28a745",
+    	        showCancelButton: true,
+    	        cancelButtonColor: "#dc3545",
+    	        confirmButtonText:'Crear pase',
+    	        cancelButtonText:'Cancelar',
+    	        heightAuto:false,
+    	        reverseButtons: true,
+    	        width:750,
+    	    })
+    	    .then((result) => {
+    	        if (result.value) {
+    	        	loadingService("Creando pase de entrada...")
+                    let protocol = window.location.protocol;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                    let host = window.location.host;
+                   
+    		        let access_pass={
+    		            nombre: data.nombreCompleto,
+    		            email:data.email,
+    		            /*areas: areas,
+    		            comentarios:comentarios,*/
+                        config_limitar_acceso: parseInt(data.limiteEntradas),
+                        ubicacion:data.ubicacion,
+                        tema_cita: data.temaCita,
+                        descripcion: data.descripcion,
+                		perfil_pase:"visita general",
+                		status_pase:'Proceso',
+                        visita_a: getCookie("userName"),
+                		custom:true,
+                        link:{
+                            "link":`${protocol}//${host}/solucion_accesos/pase.html`,
+                            "docs": checkDocSeleccionados,
+                            "creado_por_id": getCookie("userId"),
+                            "creado_por_email":getCookie("userEmail")
+                        },
+    		        }
+                    if(numeroConLada !== ""){
+                        access_pass.telefono=numeroConLada
                     }
-			        }else{
-						Swal.close()
-						errorAlert(res)
-			        }
-			    });
+                  
+    		        if(comentarios.length>0){
+    					access_pass.comentarios = comentarios
+    		        }
+    		        if(areas.length>0){
+    		        	access_pass.areas = areas
+    		        }
+    		        if(hayFechaHasta){
+    		        	access_pass.tipo_visita_pase= "rango_de_fechas" 
+    		        }else{
+    		        	access_pass.tipo_visita_pase= "fecha_fija"
+    		        }
+    		        if(fechaVisitaMain){
+    		        	access_pass.fecha_desde_visita=fechaVisitaMain.slice(0, -3) +':00';
+    		        }
+    		        if(fechaHastaMain){
+    		        	access_pass.fecha_desde_hasta=fechaHastaMain.slice(0, -3) +':00';
+    		        }
+    		        if(selectedRadioDiasAcceso=='radioCualquierDia'){
+    		        	access_pass.config_dia_de_acceso='cualquier_día'
+    		        }else{
+    		        	access_pass.config_dia_de_acceso='limitar_días_de_acceso'
+    		        }
+    		        if(diasArr.length>0){
+    		        	access_pass.config_dias_acceso = diasArr 
+    		        }
+                    if(checkPregistro.length>0){
+                        access_pass.enviar_correo_pre_registro = checkPregistro
+                    }
+    	        	fetch(url + urlScripts, {
+    			        method: 'POST',
+    			        body: JSON.stringify({
+    			            script_name: "pase_de_acceso.py",
+    		                option: 'create_access_pass',
+    		                location:getCookie('userLocation'),
+    		                access_pass: access_pass
+    			        }),
+    			        headers:{
+    			            'Content-Type': 'application/json',
+    			            'Authorization': 'Bearer '+userJwt
+    			        },
+    			    })
+    			    .then(res => res.json())
+    			    .then(res => {
+    			        if (res.success) {
+    			        	let data=res.response.data
+    			        	if(data.status_code==400 || data.status_code==401){
+                                Swal.close()
+                                errorAlert(data)
+                            }else if(data.status_code==202 || data.status_code==201){
+    			        	    Swal.close()
+    			        	    Swal.fire({
+        				      		type:"success",
+        				      		text: "Tu informacion se ha guardado correctamente.",
+        						    html:`
+        						      	<div class="mb-3 mt-2" style="font-weight: bold; font-size: 1.1em; color:#8ebd73 !important;"> Pase de entrada generado </div>
+        						        <div class="d-flex flex-column justify-content-center align-items-center">
+        			    			      	<div class='align-items-start m-2'>
+        			    			      	  	El pase de entrada se ha generado correctamente. Por favor, copie el siguiente enlace y compartalo con el visitante para
+        			    			      	  	completar el proceso.
+        			    			    	</div>
+        						        </div>`,
+        						    showCancelButton:false,
+        						    showConfirmButton:true,
+        						    confirmButtonText: "Copiar Link"
+    						 }).then((result)=>{
+    						 	if (result.value) {
+    						 		let link= copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId"), getCookie('userEmail'));
+                                    /*loadingService()
+                                    fetch(url + urlScripts, {
+                                        method: 'POST',
+                                        body: JSON.stringify({
+                                            script_name: "pase_de_acceso.py",
+                                            option: 'update_pass',
+                                            location:getCookie('userLocation'),
+                                            access_pass: {
+                                                link:link
+                                            },
+                                            folio: data.json.id
+                                        }),
+                                        headers:{
+                                            'Content-Type': 'application/json',
+                                            'Authorization': 'Bearer '+userJwt
+                                        },
+                                    })
+                                    .then(res => res.json())
+                                    .then(res => {
+                                        if (res.success) {
+                                            Swal.close()
+                                            
+                                            successMsg("Confirmación", "Informacion enviada, el link esta listo para compartir")
+                                        }else{
+                                            errorAlert(res)
+                                        }
+                                    })*/
+    						 	}
+    						 })
+                        }
+    			        }else{
+    						Swal.close()
+    						errorAlert(res)
+    			        }
+    			    });
 
 
-		      	
-	        }
-		});
+    		      	
+    	        }
+    		});
 
-		
-        if(diasArr.length>0){
-            for(let d of diasArr){
-                $("#"+d+"").removeClass('btn-outline-success');
-                $("#"+d+"").addClass('bg-dark');
-                $("#"+d+"").addClass('color-white');
+    		
+            if(diasArr.length>0){
+                for(let d of diasArr){
+                    $("#"+d+"").removeClass('btn-outline-success');
+                    $("#"+d+"").addClass('bg-dark');
+                    $("#"+d+"").addClass('color-white');
+                }
             }
         }
 	}
@@ -1306,7 +1383,7 @@ function setAddVehiculo() {
     	<div class="col-9 div-vehiculo-row-1 div-row-vehiculo-`+randomID+`" >
 			<div class="div-vehiculo-row-1 div-row-vehiculo-`+randomID+`">
 				<label class="form-label">Tipo de Vehiculo: </label>
-				<select class="form-select group-vehiculo" aria-label="Default select example" id="selectTipoVehiculo-`+randomID+`" onChange='onChangeCatalog("vehiculo",`+randomID+`)'>
+				<select class="form-select group-vehiculo" aria-label="Default select example" id="selectTipoVehiculo-`+randomID+`" onChange='onChangeCatalogPase("vehiculo",`+randomID+`)'>
 				</select>
 			</div>
 		</div>
@@ -1321,7 +1398,7 @@ function setAddVehiculo() {
 		<div class="col-9 div-vehiculo-row-1 div-row-vehiculo-`+randomID+`">
 			<div id='divCatalogMarca'>
 				<label class="form-label">Marca: </label>
-				<select class="form-select group-vehiculo" aria-label="Default select example" id="selectCatalogMarca-`+randomID+`" onChange='onChangeCatalog("marca",`+ randomID+`)'>
+				<select class="form-select group-vehiculo" aria-label="Default select example" id="selectCatalogMarca-`+randomID+`" onChange='onChangeCatalogPase("marca",`+ randomID+`)'>
 					<option disabled>Escoge un tipo de vehiculo...</option>
 				</select>
 			</div>
@@ -1454,7 +1531,6 @@ function setAddEquipo() {
 
 
 function setRequestFileImg(type, id="") {
-    console.log("QUE ESS", type, id)
     loadingService()
     let idInput = '';
     if(type == 'inputCard'){
@@ -1485,7 +1561,6 @@ function setRequestFileImg(type, id="") {
         .then(response => response.json())
         .then(res => {
             Swal.close()
-            console.log("aaaaa",res)
             if(res.file !== undefined && res.file !== null){
                 if(type == 'inputCard'){
                     urlImgCard = res.file;
@@ -1499,13 +1574,11 @@ function setRequestFileImg(type, id="") {
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
             }else{
                 Swal.close()
-                console.log('Error aqui 2');
                 return 'Error';
             }
         })
         .catch(error => {
             Swal.close()
-            console.log('Error aqui 3',error);
             return 'Error';
         });
     }else{
