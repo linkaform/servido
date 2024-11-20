@@ -17,7 +17,7 @@
 	<!-- Information Plant-->
 	
 	<!-- NUEVO CODIGO -->
-	<div class="d-flex justify-content-center flex-wrap">
+	<div class="d-flex justify-content-center flex-wrap ">
 		<div class="col-3 mainSection " id="cartaUser" style="display:none !important;" >
 			<div class="customShadow p-4 ms-4" style="height:100%">
 				<div class="d-flex flex-row justify-content-between">
@@ -97,11 +97,11 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-9 mainSection d-flex justify-content-center " >
+		<div class="col-9 mainSection d-flex justify-content-center mt-0" >
 			<section class=" d-flex flex-wrap">
 				<div class="input-group ms-4" role="group" style="width: 450px;">
-					<input type="text" class="form-control" placeholder="Codigo User" id="inputCodeUser" onchange="buscarPaseEntrada();return false;">
-					<button class="input-group-text bg-warning-subtle cursor-pointer" id="buttonBuscarPaseEntrada" onclick="buscarPaseEntrada();return false;" style="background-color: white!important;" disabled><i class="fa-solid fa-magnifying-glass" ></i></button>
+					<input type="text" class="form-control" placeholder="Escanear pase" id="inputCodeUser" autofocus onchange="buscarPaseEntrada();return false;">
+					<button class="input-group-text bg-warning-subtle cursor-pointer" id="buttonBuscarPaseEntrada" onclick="buscarPaseEntrada();return false;" style="background-color: white!important;" ><i class="fa-solid fa-magnifying-glass" ></i></button>
 					<button class="input-group-text bg-warning-subtle cursor-pointer" onclick="setModal('listaPases')" style="background-color: white!important;" id="pasesActivos"><i class="fa-solid fa-list"></i></button>
 				</div>
 				<div class="ms-3">
@@ -432,10 +432,10 @@
 						<div class="d-flex justify-content-evenly">
 							<div class="mb-3">
 								<label class="form-label">Fotografia: *</label>
-								<button type="button" class="btn  btn-primary " onclick="getScreenUser();return false;" id="buttonTakeUser">
+								<button type="button" class="btn  btn-primary  btn-sm" onclick="getScreenUser();return false;" id="buttonTakeUser">
 									<i class="fa-solid fa-camera-retro"></i>
 								</button>
-								<button type="button" class="btn  btn-warning" onclick="limpiarTomarFoto('User');return false;" id="erase1">
+								<button type="button" class="btn btn-warning btn-sm" onclick="limpiarTomarFoto('User');return false;" id="erase1">
 									<i class="fa-solid fa-eraser"></i>
 								</button>
 								<button type="button" class="btn btn-success btn-sm"  style="display: none;" id="buttonSaveUser">
@@ -451,10 +451,10 @@
 
 							<div class="mb-3">
 								<label class="form-label">Identificación: *</label>
-								<button type="button" class="btn  btn-primary" onclick="getScreenCard();return false;" id="buttonTakeCard">
+								<button type="button" class="btn  btn-primary  btn-sm" onclick="getScreenCard();return false;" id="buttonTakeCard">
 									<i class="fa-solid fa-camera-retro"></i>
 								</button>
-								<button type="button" class="btn  btn-warning" onclick="limpiarTomarFoto('Card');return false;" id="erase2">
+								<button type="button" class="btn btn-warning btn-sm" onclick="limpiarTomarFoto('Card');return false;" id="erase2">
 									<i class="fa-solid fa-eraser"></i>
 								</button>
 								<button type="button" class="btn  btn-success btn-sm"  style="display: none;" id="buttonSaveCard">
@@ -569,7 +569,7 @@
 				<div class="modal-body">
 					<div class="d-flex flex-column mb-2">
 						<div>
-							<span><b>Nombre : </b></span><span id="textMsjNombre" ></span>
+							<span><b>Para : </b></span><span id="textMsjNombre" ></span>
 						</div>
 						<div>
 							<span><b>Correo : </b></span><span id="textMsjCorreo" ></span>	

@@ -217,7 +217,6 @@ async function fetchOnChangeLocation(location){
     if (location){
         body.location=location
     }
-    console.log(body)
     let dataCasetas=[]
     let fetchData= await fetch(url + urlScripts, {
         method: 'POST',

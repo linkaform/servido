@@ -347,7 +347,7 @@ function setAddArea(editAdd ="nuevo", classNam){
     let randomID = Date.now();
     let newItem=`
         <div class="d-flex mb-3 col-12  div-`+classNam+`-`+editAdd+`-`+randomID+`" id="id-`+classNam+`-div-`+randomID+`">
-            <div class="flex-grow-1 d-flex">
+            <div class="flex-grow-1 d-flex flex-wrap">
                 <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
 	                <label for="exampleInputPassword1">Area: </label>
 	                <select type="select" class="form-select fill paseEntradaNuevo area-div-nuevo" id="tipoArea-`+randomID+`">
@@ -367,13 +367,13 @@ function setAddArea(editAdd ="nuevo", classNam){
         </div>
     `;
     $(`#`+classNam+`-input-form-`+editAdd).append(newItem) 
-    if(arrayAreas.length>0){
-		for(let i of arrayAreas){
+    if(arrayAreas.areas_by_location.length>0){
+		for(let i of arrayAreas.areas_by_location){
 			$(`#tipoArea-${randomID}`).append($('<option></option>').val(i).text(i));
 			$(`#tipoArea-${randomID}`).val("")
 		}
     }else{
-    	let tipoArea= document.getElementById(`"tipoArea-`+randomID+`"`)
+    	let tipoArea= document.getElementById(`tipoArea-`+randomID)
 		tipoArea.innerHTML=""
 		$(`#tipoArea-${randomID}`).append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
 		$(`#tipoArea-${randomID}`).val("")
@@ -600,6 +600,7 @@ function crearConfirmacionMini() {
 	}
 	let htmlAppendVehiculos=""
 	for (let vehiculo in listInputsVehicule) {
+        console.log("LISTA DE VEHICULOS",listInputsVehicule[vehiculo])
 		if(listInputsVehicule[vehiculo][0].value !==""){
 			htmlAppendVehiculos +="<div class='col-sm-12 col-md-12 col-lg-6 col-xl-6'>"
 			htmlAppendVehiculos +="<table class='table table-borderless customShadow' style='border: none; font-size: .8em; background-color: lightgray!important;'>"
@@ -631,12 +632,15 @@ function crearConfirmacionMini() {
 	if(showIneIden.length>0){
         for(let i of showIneIden){
             if(i=="foto"){
+                console.log("USERRR FOPTO",urlImgUser, (urlImgUser=="" ? true : false))
                 showIn= (urlImgUser=="" ? true : false)
             }else if(i=="iden"){
+                console.log("USERRR CARDDD",urlImgCard, (urlImgCard=="" ? true : false))
                 showIde= (urlImgCard=="" ? true : false)
             }
         }
     }
+
     if(showIn || showIde){
 		successMsg("Validación", "Faltan datos por llenar", "warning")
 	}else{
@@ -716,6 +720,7 @@ function crearConfirmacionMini() {
                 if(urlImgCard !== ""){
                     access_pass.walkin_identificacion=[{file_name:"indentificacion.png",file_url:urlImgCard}]
                 }
+                console.log("PASE DE ACESO",access_pass)
 	        	fetch(url + urlScripts, {
 			        method: 'POST',
 			        body: JSON.stringify({
@@ -799,7 +804,6 @@ function crearConfirmacionMini() {
     						 }).then((result)=>{
     						 	if (result.value) {
     						 		Swal.close()
-    						 		loadingService()
     						 		let data_for_msj = {}
     								let data_for_msj_tel={}
                                     
@@ -861,6 +865,7 @@ function crearConfirmacionMini() {
 
 
 function enviarCorreoPase(bodyPost){
+    loadingService()
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify(bodyPost),
@@ -885,6 +890,7 @@ function enviarCorreoPase(bodyPost){
 }
 
 function enviarSmsPase(bodyPost){
+    loadingService()
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify(bodyPost),
@@ -900,6 +906,7 @@ function enviarSmsPase(bodyPost){
             if(dataR.status_code==400 || dataR.status_code==401){
                 errorAlert(dataR)
             }else if(dataR.status_code==202 || dataR.status_code==201){
+                Swal.close()
                 // successMsg("Confirmación", "Informacion enviada correctamente.", "success")
             }
         }else{
@@ -909,6 +916,7 @@ function enviarSmsPase(bodyPost){
 }
 
 function descargarPdfPase(url_pase){
+    loadingService()
     fetch(url_pase)
         .then(response => {
             // Verificar si la respuesta es correcta
@@ -918,6 +926,7 @@ function descargarPdfPase(url_pase){
             return response.blob();  // Convertir la respuesta en un Blob
         })
         .then(blob => {
+            Swal.close()
             // Crear un enlace de descarga con el Blob
             const url = URL.createObjectURL(blob); // Crear una URL temporal del Blob
 
@@ -1352,6 +1361,7 @@ function crearConfirmacion() {
 
 
 function limpiarTomarFoto(id){
+    $("#container"+id+" video").remove()
     flagVideoUser=false
     currentStream=null
     $('#buttonTake' + id).show();
@@ -1361,9 +1371,11 @@ function limpiarTomarFoto(id){
     $('#img' + id).attr('src', '');
     $('#inputFile' + id).val('');
 
-    fotosNuevoIncidenteEditar={}
-    fotosNuevoIncidente={}
-    fotoNuevaFalla={}
+    if(id == "User"){
+        urlImgUser=""
+    }else{
+        urlImgCard=""
+    }
 }
 
 //FUNCION eliminar un set repetitivo de vehiculo
@@ -1411,9 +1423,9 @@ function setAddVehiculo() {
 			</div>
 			<div class="div-row-vehiculo">
 				<label class="form-label">Matrícula del Vehiculo:</label>
-				<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-`+ randomID+`>
+				<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-`+ randomID+`">
 			</div>
-            <div class="div-row-vehiculo col-12 m-0 p-0">
+            <div class="div-row-vehiculo">
                 <label class="form-label">Estado:</label>
                 <select class="form-select group-vehiculo" id="inputEstadoVehiculo-`+randomID+`" style="height: 40px !important; overflow: auto !important;">
                 </select>
@@ -1584,5 +1596,64 @@ function setRequestFileImg(type, id="") {
         });
     }else{
         return 'Error';
+    }
+}
+
+//FUNCION para guardar los archivos en el server 
+async function guardarArchivos(id, isImage){
+    loadingService()
+    const fileInput = document.getElementById(id);
+    const file = fileInput.files[0]; // Obtener el archivo seleccionado
+
+    if (!file) {
+        alert('Selecciona un archivo para subir');
+        return;
+    }
+    let data=""
+    let formData = new FormData();
+    if(isImage){
+        formData.append('File', file);
+        formData.append('field_id', '63e65029c0f814cb466658a2');
+        formData.append('is_image', true);
+        formData.append('form_id', 95435);
+    }else{
+        formData.append('File[0]', file);
+        formData.append('field_id', '63e65029c0f814cb466658a2');
+        formData.append('form_id', 95435);
+
+    }
+
+    const options = {
+      method: 'POST', 
+      body: formData,
+    };
+    let respuesta = await fetch('https://app.linkaform.com/api/infosync/cloud_upload/', options);
+    data = await respuesta.json(); //Obtenemos los datos de la respuesta 
+    data.isImage=isImage
+    console.log("DATAA",data)
+    if(id=="inputFileUser" && data.file){
+        urlImgUser = data.file
+    }else if(id=="inputFileCard" && data.file){
+        urlImgCard= data.file
+    }
+    console.log("CARD",urlImgCard, urlImgUser)
+    if(data.hasOwnProperty('error')){
+        Swal.fire({
+            title: "Error",
+            text: data.error,
+            type: "error",
+            showConfirmButton:false,
+            timer:1100
+        });
+        
+    }else{
+        let text= isImage? 'Las imagenes fueron guardadas correctamente.': 'Los archivos fueron guardados correctamente.';
+        Swal.fire({
+            title: "Acción Completada",
+            text: text,
+            type: "success",
+            showConfirmButton:false,
+            timer:1100
+        });
     }
 }

@@ -958,10 +958,10 @@ function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
 //FUNCION obtener la imagen del canvas
 function getScreen(type){
     if(!flagVideoUser){
-        console.log("hello")
         flagVideoUser = true;
+        console.log("hello",navigator.mediaDevices,navigator.mediaDevices.getUserMedia)
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }})
             .then(function(stream) {
                 let video = document.createElement('video');
                 video.style.width = '200px';

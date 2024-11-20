@@ -27,7 +27,7 @@
 <body>
 	<navbar-component ></navbar-component>
 
-     <section class="mainSection mainSectionMargins col-12 full d-flex flex-column align-items-center justify-content-center" >
+     <section class="mainSection d-flex flex-column align-items-center justify-content-center" >
      	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 mb-3 mt-5" id="paseEntradaInf1">
 	     	<div class="mb-3">
 	            <h4 >Pase de entrada</h4>
@@ -189,20 +189,20 @@
 	                	<div class="d-flex flex-column justify-content-start align-items-start">
 	                		<div>
 	                			<input class="form-radio-input paseEntradaNuevo" type="radio" name="diasAcceso" id="radioCualquierDia" onchange="onChangeOpcionesAvanzadas('radioCualquierDia')">
-		                        <label class="form-radio-label" for="radioFechaFija">
+		                        <label class="form-radio-label" for="radioCualquierDia">
 		                            Cualquier día
 		                        </label>
 	                		</div>
 	                		<div class="opcionesAvanzadasDiv">
 	                			<input class="form-radio-input paseEntradaNuevo" type="radio" name="diasAcceso" id="radioLimitarDias" onchange="onChangeOpcionesAvanzadas('radioLimitarDias')">
-		                        <label class="form-radio-label" for="radioRangoFechas">
+		                        <label class="form-radio-label" for="radioLimitarDias">
 		                            limitar días de acceso
 		                        </label>
 	                		</div>
 	                	</div>
 		                <div class="flex-grow-1 mt-4" id="diasAccesoDivDias"> 
 		               		<label>Selecione los días de acceso: </label>
-		               		<div class="d-flex flex-row justify-content-start align-items-center">
+		               		<div class="d-flex flex-row flex-wrap justify-content-start align-items-center">
 	                            <div class="checkbox-group me-2">
 	                                <label>
 	                                    <input type="checkbox" name="diasPase" value="lunes" > Lunes
@@ -251,7 +251,7 @@
 			            <h4 >Areas de acceso: </h4>
 			            <div id="area-input-form-nuevo" class="col-12 mx-0 px-0">
 			                <div class="d-flex mb-3 col-12 div-area-nuevo-123 mx-0 px-0" id="id-area-div-123">
-			                    <div class="flex-grow-1 d-flex">
+			                    <div class="flex-grow-1 d-flex flex-wrap">
 			                    	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
 						                <label for="exampleInputPassword1">Area: </label>
 						                <select type="select" class="form-select fill area-div-nuevo" id="tipoArea" >
@@ -312,12 +312,10 @@
                 		<button type="button" class="btn btn-primary btn-block" id="continueButton" onclick="crearConfirmacion()">Continuar</button>
                 	</div>
             	</div>
-            </div>
-
-            
+            </div>     
      	</div>
 
-     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 d-flexjustify-content-center mb-3 mt-5" id="paseEntradaInf5">
+     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 mb-3 mt-5" id="paseEntradaInf5">
 	     	<div class="mb-3">
 	            <h4 >Pase de Entrada</h4>
 	     	</div>
@@ -326,11 +324,11 @@
 	     		<span class="text-gray paseEntadaUser" id="nombreText"> </span>
 	     	</div>
 	     	<div class="d-flex">
-            	<div class="d-flex flex-column col-4 p-0">
+            	<div class="d-flex flex-column col-sm-10 col-md-10 col-lg-5 col-xl-5 p-0">
                 	<label for="exampleInputEmail1"><b>Email</b>:</label>
                 	<span class="text-gray paseEntadaUser" id="emailText"> </span>
             	</div>
-            	<div class="d-flex flex-column col4">
+            	<div class="d-flex flex-column col-sm-10 col-md-10 col-lg-5 col-xl-5">
                 	<label for="exampleInputEmail1"><b>Telefono: </b></label>
                	 	<span class="text-gray paseEntadaUser" id="telefonoText"> </span>
             	</div>
@@ -343,6 +341,9 @@
 					<button type="button" class="btn  btn-primary btn-primary btn-sm" onclick="getScreen('User');return false;" id="buttonTakeUser">
 						<i class="fa-solid fa-camera-retro"></i>
 					</button>
+					<button type="button" class="btn  btn-warning btn-sm" onclick="limpiarTomarFoto('User');return false;" id="erase1">
+							<i class="fa-solid fa-eraser"></i>
+					</button>
 					<button type="button" class="btn  btn-success btn-sm"  style="display: none;" id="buttonSaveUser">
 						Guardar Foto <i class="fa-solid fa-aperture"></i>
 					</button>
@@ -351,12 +352,15 @@
 						<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
 						<img id="imgUser" src="" style="display: none;width: 185px;height: 148px;">
 					</div>
-					<input type="file" class="form-control mt-2" id="inputFileUser" >
+					<input type="file" class="form-control mt-2" id="inputFileUser" onchange="guardarArchivos('inputFileUser', false);" >
 				</div>
             	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3 mt-3" id="iden">
 					<label class="form-label">Identificación: *</label>
 					<button type="button" class="btn  btn-primary btn-primary btn-sm" onclick="getScreen('Card');return false;" id="buttonTakeCard">
 						<i class="fa-solid fa-camera-retro"></i>
+					</button>
+					<button type="button" class="btn  btn-warning btn-sm" onclick="limpiarTomarFoto('Card');return false;" id="erase2">
+							<i class="fa-solid fa-eraser"></i>
 					</button>
 					<button type="button" class="btn  btn-success btn-sm"  style="display: none;" id="buttonSaveCard">
 						Guardar Foto <i class="fa-solid fa-aperture"></i>
@@ -366,7 +370,7 @@
 						<canvas id="canvasPhotoCard" style="display: none;width: 185px;height: 125px;"></canvas>
 						<img id="imgCard" src="" style="display: none;width: 185px;height: 148px;">
 					</div>
-					<input type="file" class="form-control mt-2" id="inputFileCard" >
+					<input type="file" class="form-control mt-2" id="inputFileCard" onchange="guardarArchivos('inputFileCard', false);" >
 				</div>
 				
 				<div class="col-sm-12 col-md-12 col-lg-10 col-xl-10 checkbox-group me-2 my-3 d-flex flex-column">
@@ -739,6 +743,148 @@
                     {% endif %}
                     <p> Te esperamos</p>
                     <p> Saludos, <br> Equipo de Administración. </p>          
+                </td>
+            </tr>
+            <tr>
+                <td class="footer">
+                    <a href="https://www.linkaform.com/" target="_blank">
+                        <img alt="" src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/107023/64dd1bd4fd200a3308ec2141/663517c3caae08b8adf27472.png">
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Plantilla de Correo Electrónico</title>
+        <style>
+            /* Estilos generales */
+            body, table, td, a {
+                font-family: 'Arial', sans-serif;
+                font-size: 16px;
+                color: #333333;
+                line-height: 1.6;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+               
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            img {
+                border: 0;
+                height: auto;
+                line-height: 100%;
+                outline: none;
+                text-decoration: none;
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #FFFFFF!important;
+                padding: 20px;
+            }
+            /*.header {
+                background-color: #021d49;
+                color: #ffffff;
+                padding: 20px;
+                text-align: center;
+            }*/
+            .content {
+                padding: 20px;
+                text-align: justify;
+            }
+            .footer {
+                background-color: #FFFFFF!important;
+                color: #666666;
+                padding: 20px;
+                text-align: left;
+            }
+            .button {
+                background-color: #021d49;
+                color: #ffffff;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                margin: 10px 0;
+                border-radius: 5px;
+            }
+            .button:hover {
+                background-color: #005bb5;
+            }
+            .button-link{
+            	background-color: #0d6efd;
+            	border-radius: 5px;
+            	padding: 10px 20px; 
+            	width: 30%; 
+            	color: white; 
+            	text-align: center; 
+            	border-radius: 5px; 
+            	cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <table class="container">
+            <tr>
+                <td class="header">
+                    <img align="left" alt="" src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/66cf3e294e2420113f105797.png" width="180" >
+                </td>
+            </tr>
+           <tr>
+                <td class="content">
+                    <h3>Hola {{record.answers.662c2937108836dec6d92580}},</h3>
+                    <p>Has sido invitado a visitar a: </p>
+                
+                    {% if record.answers.663d4ba61b14fab90559ebb0|length > 0 %}
+                       {% for item in record.answers.663d4ba61b14fab90559ebb0 %}
+                            {% if item.66a83ab5ca3453e21ea08d19 %}
+                                        <li><strong>{{ item.66a83ab5ca3453e21ea08d19.62c5ff407febce07043024dd }}</strong></li>
+                            {% endif %}
+                       {% endfor %}
+                    {% endif %}
+                    <p><strong>Detalles de la visita:</strong></p>
+                    <ul>
+                        <li><strong>Ubicación: </strong> {{ record.answers.66a83a74de752e12018fbc3c.663e5c57f5b8a7ce8211ed0b }} </li> 
+                        {% if record.answers.662c304fad7432d296d92581 == 'Fecha fija' %}
+                        	<li><strong>Fecha de la visita: </strong> {{ record.answers.662c304fad7432d296d92582 }} </li> 
+                        {% endif %}
+                    </ul>
+                    {% if record.answers.662c304fad7432d296d92581 == "Rango de fechas" %}
+                    	<p><strong>Disponibilidad de fechas:</strong></p>
+                    	<ul>
+                            <li><strong>Desde:</strong> {{ record.answers.662c304fad7432d296d92582 }} </li>
+                            <li><strong>Hasta: </strong> {{ record.answers.662c304fad7432d296d92583 }} </li> 
+                        </ul>
+                        {% if record.answers.6635380dc9b3e7db4d59eb49 %}
+	                        <p><strong>Limite de accesos:</strong> {{ record.answers.6635380dc9b3e7db4d59eb49 }} </p>
+                        {% endif %}
+                        {% if record.answers.662c304fad7432d296d92585|length > 0 %}
+                        	<p><strong>Dias de acceso disponibles:</strong></p>
+                    		<ul>
+	                        	{% for item in record.answers.662c304fad7432d296d92585 %}
+		                        	<li><strong> {{ item }} </strong></li>
+		                        {% endfor %}
+	                    	</ul>
+                        {% endif %}
+
+                    {% endif %}
+                    <p>Se ha creado un pre-registro y ahora está pendiente de su asignación. Por favor, complete sus datos de registro en este link :</p> <br> 
+                	<a class="d-flex justify-content-center" href={{record.answers.6732aa1189fc6b0ae27e3824}}>
+				    	<div class="button-link" style="">
+				     		Completar Pase
+				    	</div>
+				 	</a>
+                    <p class="mt-3"> Saludos, <br> Equipo de Administración. </p>          
                 </td>
             </tr>
             <tr>
