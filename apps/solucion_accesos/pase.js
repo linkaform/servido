@@ -830,13 +830,14 @@ function crearConfirmacionMini() {
                                             account_id:account_id
                                         }
                                         data_for_msj = {
-                                            mensaje: `Hola, un nuevo pase de entrada se ha creado para ti, has sido invitado por `+data.json.enviar_de+`.
-                                            Ubicacion: `+getCookie("Linkaform")+`
-                                            Te esperamos, Saludos`,
-                                            titulo: "NUEVO PASE DE ENTRADA GENERADO",
+											email_to: email,
+											asunto: data.json.asunto,
                                             email_from: getCookie("userEmail"),
-                                            email_to: email,
-                                            nombre: nombre
+                                            nombre: nombre,
+											nombre_organizador: data.json.enviar_de,
+											ubicacion: data.json.ubicacion,
+											fecha: {desde: data.json.fecha_desde, hasta: data.json.fecha_hasta},
+											descripcion: data.json.descripcion,
                                         }
                                         bodyPost.data_msj= data_for_msj
                                         bodyPost.option= "enviar_correo"
