@@ -4,10 +4,6 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Check</title>
-	<!-- Custom fonts for this template-->
-    <link href="../Utils/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <!-- Custom styles for this template-->
-    <link href="../Utils/css/sb-admin-2.min.css" rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<!-- Tabulator CSS con tema Bootstrap 5 -->
@@ -49,46 +45,7 @@
                 <div class="card-body ">
                     <h4 class="card-title mb-2">Checklist</h4>
                     <p class=" text-secondary">Por cada elemento, seleccione la casilla si cumple.</p>
-                    <div id="listCheckDiv">
-                        <form>
-                            <div class="row align-items-center mb-3">
-                                <div class="col-10">5's en caseta</div>
-                                <div class="col-2 text-end">
-                                    <input class="form-check-input border-secondary" type="checkbox" id="item1">
-                                </div>
-                            </div>
-                            <div class="row align-items-center mb-3">
-                                <div class="col-10">Botoneras</div>
-                                <div class="col-2 text-end">
-                                    <input class="form-check-input border-secondary" type="checkbox" id="item2">
-                                </div>
-                            </div>
-                          <div class="row align-items-center mb-3">
-                            <div class="col-10">Equipo de cómputo en buen estado</div>
-                            <div class="col-2 text-end">
-                              <input class="form-check-input border-secondary" type="checkbox" id="item3">
-                            </div>
-                          </div>
-                          <div class="row align-items-center mb-3">
-                            <div class="col-10">Botiquines</div>
-                            <div class="col-2 text-end">
-                              <input class="form-check-input border-secondary" type="checkbox" id="item4">
-                            </div>
-                          </div>
-                          <div class="row align-items-center mb-3">
-                            <div class="col-10">Tableros de avisos</div>
-                            <div class="col-2 text-end">
-                              <input class="form-check-input border-secondary" type="checkbox" id="item5">
-                            </div>
-                          </div>
-                          <div class="row align-items-center mb-3">
-                            <div class="col-10">Alumbrado del exterior suficiente y correcto</div>
-                            <div class="col-2 text-end">
-                              <input class="form-check-input border-secondary" type="checkbox" id="item6">
-                            </div>
-                          </div>
-                        </form>
-                    </div >
+                    <div id="listCheckDiv"></div >
                 </div>
                 <div class="card-body ">
                     <div class="mb-3">
@@ -96,8 +53,8 @@
                         <textarea class="form-control" id="commentCheck" rows="5"></textarea>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <a href="#" class="text-primary text-decoration-none">Agregar foto</a>
-                        <button class="btn btn-light border  p-2">
+                        <a href="#" class="text-primary text-decoration-none" id="galleryButton">Agregar foto</a>
+                        <button class="btn btn-light border  p-2" id="cameraButton">
                             <i class="bi bi-camera"></i>
                         </button>
                     </div>
@@ -112,11 +69,9 @@
     </div>
     <!-- End of Main Content -->
 	<!-- Bootstrap core JavaScript-->
-	<script src="../Utils/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 	<!--Report -->
-	<script type="text/javascript" src="./asitencias.js"></script>
-    <script type="text/javascript" src="./asitencias_data.js"></script>
-
+	<script type="text/javascript" src="./check.js"></script>
+    <script type="text/javascript" src="./check_data.js"></script>
 </body>
 </html>
