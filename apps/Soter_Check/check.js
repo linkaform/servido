@@ -188,7 +188,7 @@ function getCheckboxStates() {
 function deleteImage(value) {
     //---Delte dic in list 
     listImagesDic.forEach((dict, index )=> {
-        if (dict['value'] && dict['value'] == value) {
+        if (dict['file_url'] && dict['file_url'] == value) {
             if (index > -1) {
                 listImagesDic.splice(index); 
             }
@@ -202,7 +202,7 @@ function dataSend(){
     const checksSelected = getCheckboxStates();
     const inputComment = document.getElementById('commentCheck').value;
     const dicData = {
-        'location': location.toLowerCase().replace(/\s+/g, '_'),
+        'location': location,
         'list_checks': checksSelected,
         'comment': inputComment,
         'list_img': listImagesDic,
