@@ -32,14 +32,14 @@
         </nav>
 
     	<!-- Main Content -->
-        <div class="container p-3">
+        <div class="container p-3" id="divContent">
             <div class="col-xl-12 col-lg-12 ml-2 mr-2 p-2 ">
-                <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/673f54428183892c605a26d2.png" class="card-img-top img-fluid custom-rounded" height="50%" >
+                <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/673f54428183892c605a26d2.png" class="card-img-top img-fluid custom-rounded" height="50%" id="imgLocation">
                 <div class="card-body mt-4">
-                    <h2 class="card-title mb-2">Caseta de vigilancia Planta 1</h2>
-                    <p class=" text-secondary">Ubicación: LENNOX</p>
-                    <p class=" text-secondary">Tipo de Área: Caseta</p>
-                    <p class=" text-secondary">Fecha y Hora de Inspección: 20/11/2024 12:00</p>
+                    <h2 class="card-title mb-2" id="titleLocation"></h2>
+                    <p class=" text-secondary" id="textDir"></p>
+                    <p class=" text-secondary" id="textType"></p>
+                    <p class=" text-secondary" id="textTime"></p>
                 </div>
                 <hr><br/>
                 <div class="card-body ">
@@ -52,20 +52,28 @@
                         <label for="commentCheck" class="form-label">Comentarios</label>
                         <textarea class="form-control" id="commentCheck" rows="5"></textarea>
                     </div>
+                    <!-- Carga de Fotos -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <a href="#" class="text-primary text-decoration-none" id="galleryButton">Agregar foto</a>
                         <button class="btn btn-light border  p-2" id="cameraButton">
                             <i class="bi bi-camera"></i>
                         </button>
                     </div>
+                    <!-- Lista de Fotos -->
+                    <div class="d-flex justify-content-between align-items-center mb-4" id="divListImages"></div>
                     <!-- Botón Enviar -->
-                   <div class="text-center">
-                        <button class="btn btn-lg btn-primary rounded-pill w-100">Enviar</button>
+                    <div class="text-center">
+                        <button class="btn btn-lg btn-primary rounded-pill w-100" id="buttonSend">Enviar</button>
                     </div>
                 </div>
             </div>
         </div>
         <!-- /.container-fluid -->
+        <div class="container p-3 text-center" id="divLoading">
+            <div class="spinner-border text-info" role="status"></div>
+            <p class="mt-2">Cargando datos, por favor espera...</p>
+        </div>
+
     </div>
     <!-- End of Main Content -->
 	<!-- Bootstrap core JavaScript-->

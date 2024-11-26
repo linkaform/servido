@@ -176,3 +176,6 @@ const checkListData = [
   },
   // Continúa con todas las áreas restantes...
 ];
+
+
+
