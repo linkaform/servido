@@ -3,8 +3,7 @@ let optionsCaseta=[]
 let urlScripts='infosync/scripts/run/';
 let idScript= 117936;
 let user = getCookie("userId");
-//let userJwt = getCookie("userJwt");
-//let arrayUserBoothsLocations=[]
+
 class lkfLocationCard extends HTMLElement{
 	constructor(){
 		super();
@@ -14,7 +13,7 @@ class lkfLocationCard extends HTMLElement{
 	this.innerHTML=`
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
         <div class="card-body d-flex justify-content-start " >
-            <div class="">
+            <div class="" >
                 <div class="d-flex align-items-center justify-content-between">
                     <h6 class="text-black ">Ubicación: </h6>
                     <select class="form-select ms-1" id="selectLocation"> </select>
@@ -217,7 +216,6 @@ async function fetchOnChangeLocation(location){
     if (location){
         body.location=location
     }
-    console.log(body)
     let dataCasetas=[]
     let fetchData= await fetch(url + urlScripts, {
         method: 'POST',
