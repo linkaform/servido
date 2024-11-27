@@ -23,7 +23,7 @@ window.onload = function(){
         drawTable('tableListTodos',columnsTableListPendientes, dataTableListPendientes4 );
 
     } else{
-		redirectionUrl('login',false);
+		setCloseSession()
 	}
     $("#descargarListPendientes").on("click", function() {
         descargarExcel(tables, 'tableListPendientes')

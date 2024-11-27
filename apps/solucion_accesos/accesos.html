@@ -13,7 +13,7 @@
  	<link rel="stylesheet" href="./style.css">
 </head>
 <body >
-	<navbar-component style="z-index: 0;"> </navbar-component>
+	<navbar-component > </navbar-component>
 	<!-- Information Plant-->
 	
 	<!-- NUEVO CODIGO -->
@@ -97,14 +97,14 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-9 mainSection d-flex justify-content-center mt-0" >
+		<div class="col-9 mainSection d-flex justify-content-center mt-4" >
 			<section class=" d-flex flex-wrap">
 				<div class="input-group ms-4" role="group" style="width: 450px;">
 					<input type="text" class="form-control" placeholder="Escanear pase" id="inputCodeUser" autofocus onchange="buscarPaseEntrada();return false;">
 					<button class="input-group-text bg-warning-subtle cursor-pointer" id="buttonBuscarPaseEntrada" onclick="buscarPaseEntrada();return false;" style="background-color: white!important;" ><i class="fa-solid fa-magnifying-glass" ></i></button>
 					<button class="input-group-text bg-warning-subtle cursor-pointer" onclick="setModal('listaPases')" style="background-color: white!important;" id="pasesActivos"><i class="fa-solid fa-list"></i></button>
 				</div>
-				<div class="ms-3">
+				<div class="ms-3 ">
 					<button type="button" class="btn btn-success btn-sm me-2" style="display: none;" id="buttonIn" onclick="registrarIngreso();return false;">
 					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso</button>
 					<button type="button" class=" btn btn-danger btn-sm me-2" style="display: none;" id="buttonOut" onclick="registrarSalida();return false;">
