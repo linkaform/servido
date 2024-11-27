@@ -97,18 +97,30 @@ function setElementImages(data) {
     ul.className = "list-group w-100";
     data.forEach(image => {
         const li = document.createElement("li");
-        li.className = "list-group-item d-flex justify-content-between align-items-center";
+        li.className = "list-group-item d-flex  justify-content-between  align-items-center text-wrap";
+
+        const divText = document.createElement("div");
+        divText.className = "text-truncate";
+        divText.style.maxWidth = '80%';
         const text = document.createTextNode(image.file_name);
+
         const button = document.createElement("button");
         button.className = "btn btn-danger btn-sm";
-        button.textContent = "Eliminar";
+        const icon = document.createElement("i");
+        icon.className = "bi bi-trash";
+        button.appendChild(icon);
         button.setAttribute("onclick", `deleteImage('${image.file_url}')`);
-        li.appendChild(text);
+        divText.appendChild(text);
+        li.appendChild(divText);
         li.appendChild(button);
         ul.appendChild(li);
     });
     container.appendChild(ul);
+    const divContent = document.getElementById('divListImages');
+    const divLoader = document.getElementById('divLoadingImage');
+
 }
+
 
 function openCamera(callback) {
     console.log('openCamera');
@@ -143,11 +155,19 @@ function openFilePicker(callback) {
 }
 
 function handleFile(file) {
-    console.log("Archivo seleccionado:", file);
     if (!file) {
         alert('No existe archivo');
         return ;
     }
+    //--Show Loading
+    const divContent = document.getElementById('divListImages');
+    divContent.style.display = 'none'; 
+
+    const divLoader = document.getElementById('divLoadingImage');
+    divLoader.style.display = 'block'; 
+
+
+    //--Fetch
     const formData = new FormData();
     formData.append('File', file);
     formData.append('field_id', '6740cbd734849293fe5a2735');
@@ -163,12 +183,19 @@ function handleFile(file) {
         imgUrl = res.file ? res.file : '';
         imgName = res.file_name ? res.file_name : '';
         listImagesDic.push({'file_name':imgName,'file_url':imgUrl});
-        setElementImages(listImagesDic); 
+        divContent.style.display = 'block'; 
+        divLoader.style.display = 'none'; 
+        setTimeout(() => { 
+            setElementImages(listImagesDic);
+        }, 500);
     })
     .then((data) => {
         console.log(data); 
     })
     .catch((error) => console.error("Error en el fetch:", error));
+    //---Show Div
+    
+
 }   
 
 function getCheckboxStates() {
@@ -239,7 +266,6 @@ function getInformationLocation(location){
     const textTitle = document.getElementById('titleLocation');
     const textDir = document.getElementById('textDir');
     const textType = document.getElementById('textType');
-    
 
     let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
     fetch(urlLinkaform, {
@@ -274,9 +300,6 @@ function getInformationLocation(location){
             imageElement.src = res.response.data.image_location[0].file_url;
         }
     })
-    
-
-
 }
 
 function getTimeNow() {

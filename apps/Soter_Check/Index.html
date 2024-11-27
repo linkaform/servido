@@ -12,6 +12,11 @@
         .custom-rounded {
             border-radius: 10px;
         }
+        .list-group-item {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     </style>
 </head>
 
@@ -53,11 +58,20 @@
                         <textarea class="form-control" id="commentCheck" rows="5"></textarea>
                     </div>
                     <!-- Carga de Fotos -->
+                    <h4 class="card-title mb-2">Agregar Fotos</h4>
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <a href="#" class="text-primary text-decoration-none" id="galleryButton">Agregar foto</a>
+                        <button class="btn btn-light border  p-2" id="galleryButton">
+                            <i class="bi bi-images"></i>
+                        </button>
+
                         <button class="btn btn-light border  p-2" id="cameraButton">
                             <i class="bi bi-camera"></i>
                         </button>
+                    </div>
+                    <!-- Loader de Fotos -->
+                    <div class="container p-3 text-center" id="divLoadingImage" style="display: none;">
+                        <div class="spinner-border text-success" role="status"></div>
+                        <p class="mt-2">Subiendo Imagen</p>
                     </div>
                     <!-- Lista de Fotos -->
                     <div class="d-flex justify-content-between align-items-center mb-4" id="divListImages"></div>
