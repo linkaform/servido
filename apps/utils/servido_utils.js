@@ -1025,3 +1025,35 @@ function isCanvasBlank(canvas) {
     return !pixelBuffer.some(color => color !== 0);
 }
 
+function validarFechasConHora(fechaV, fechaH) {
+      fecha1 = new Date(fechaV.replace(' ', 'T')+':00');
+      fecha2 = fechaH ? new Date(fechaH.replace(' ', 'T')+':00') : null;
+      if (isNaN(fecha1.getTime())) {
+        return { valido: false, mensaje: "La fecha de visita no es una fecha válida." };
+      }
+
+      // Verificar si la fecha de visita no es anterior a ahora (fecha y hora)
+      const ahora = new Date();
+      if (fecha1 < ahora) {
+        return { valido: false, mensaje: "La fecha de visita no puede ser anterior a la fecha y hora actual." };
+      }
+
+      // Si hay una fecha de "hasta", verificar que sea válida y posterior a la fecha de visita
+      if (fecha2) {
+        if (isNaN(fecha2.getTime())) {
+          return { valido: false, mensaje: "La fecha hasta no es una fecha válida." };
+        }
+        if (fecha2 < fecha1) {
+          return { valido: false, mensaje: "La fecha hasta debe ser posterior a la fecha de visita." };
+        }
+      }
+
+      // Si todas las validaciones pasan, las fechas y horas son válidas
+      return { valido: true };
+}
+
+// Ejemplo de uso
+const objeto = {
+  fecha1: '2024-11-30T01:13:00', // Fecha y hora de visita
+  fecha2: '2024-12-05T01:13:00'    // Fecha y hora de hasta (opcional)
+};

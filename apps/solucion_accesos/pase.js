@@ -265,9 +265,9 @@ async function onChangeCatalogPase(type, id){
     }
 }
 
-function catalogoAreaByLocation(location){
+async function catalogoAreaByLocation(location){
 	loadingService()
-	fetch(url + urlScripts, {
+	await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name: "pase_de_acceso.py",
@@ -608,7 +608,13 @@ function crearConfirmacionMini() {
 	}
 	 let htmlAppendEquiposTitulo=""
     if(arrayEquipos.length>0){
-		htmlAppendEquiposTitulo+=`<div class="d-flex justify-content-start ms-2" style="color:#171717"><h5><b>Equipos:</b></h5></div>`
+		htmlAppendEquiposTitulo+=`
+        <div class="d-flex flex-column justify-content-start ms-2" style="color:#171717">
+            <h5><b>Equipos:</b></h5>
+            <div class="d-flex flex-row flex-wrap"> 
+                `+htmlAppendEquipos+`
+            </div>
+        </div>`
 	}
 	let htmlAppendVehiculos=""
 	for (let vehiculo in listInputsVehicule) {
@@ -635,7 +641,13 @@ function crearConfirmacionMini() {
 	}
 	let htmlAppendVehiculosTitulo=""
 	if(arrayVehiculos.length>0){
-		htmlAppendVehiculosTitulo+=`<div class="d-flex justify-content-start ms-2" style="color:#171717"><h5><b>Vehiculos:</b></h5></div>`
+		htmlAppendVehiculosTitulo+=`
+        <div class="d-flex flex-column justify-content-start ms-2" style="color:#171717">
+            <h5><b>Vehiculos:</b></h5>
+            <div class="d-flex flex-row flex-wrap"> 
+                `+htmlAppendVehiculos+`
+            </div>
+        </div>`
 	}
     let motivoHtml=""
 	let html = []
@@ -705,9 +717,7 @@ function crearConfirmacionMini() {
 					<hr>
 					`+motivoHtml+`
 					`+htmlAppendEquiposTitulo+`
-					`+htmlAppendEquipos+`
 					`+htmlAppendVehiculosTitulo+`
-					`+htmlAppendVehiculos+`
 				</div>
 		
 	      `,
@@ -725,6 +735,7 @@ function crearConfirmacionMini() {
 		        let access_pass={
                     grupo_vehiculos:arrayVehiculos,
                     grupo_equipos:arrayEquipos,
+                    status_pase:'Activo'
                 }
                 if(urlImgUser !== ""){
                     access_pass.walkin_fotografia=[{file_name:"foto.png",file_url:urlImgUser}]
@@ -786,7 +797,6 @@ function crearConfirmacionMini() {
     								            	<i class="fa-solid fa-envelope ms-2"></i> <b>Enviar correo</b>
     								        	</label><br>
     								        </div>
-                                           
     			    			    	</div>
     			    			    	<img class="mt-1" alt="Código QR" id="codigo" width=250 height=250 src=${data.json.qr_pase[0].file_url}>
     						        </div>`,
@@ -805,12 +815,12 @@ function crearConfirmacionMini() {
                                     return {
                                         enviarMsj: enviarMensajeChecked,
                                         enviarCorreo: enviarCorreoChecked,
-                                        // descargarPdf:descargarPdfChecked
+                                        descargarPdf:descargarPdfChecked
                                     };
                                 }
     						 }).then((result)=>{
     						 	if (result.value) {
-    						 		Swal.close()
+                                    // Swal.close()
     						 		let data_for_msj = {}
     								let data_for_msj_tel={}
                                     
@@ -857,7 +867,10 @@ function crearConfirmacionMini() {
                                     if(result.value.descargarPdf){
                                         descargarPdfPase(data.json.pdf.data.download_url)
                                     }
-    						 	}
+    						 	}else{
+                                    console.log("NO SE ESCOGIO NADI")
+                                    Swal.close()
+                                }
     						 })
                         }
 			        }else{
@@ -868,88 +881,6 @@ function crearConfirmacionMini() {
 	        }
 		});
 	}
-}
-
-function enviarCorreoPase(bodyPost){
-    loadingService()
-    fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify(bodyPost),
-        headers:{
-            'Content-Type': 'application/json',
-            // 'Authorization': 'Bearer '+userJwt
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            let dataR=res.response.data
-            if(dataR.status_code==400 || dataR.status_code==401){
-                errorAlert(dataR)
-            }else if(dataR.status_code==202 || dataR.status_code==201){
-                successMsg("Confirmación", "Informacion enviada correctamente.", "success")
-            }
-        }else{
-            errorAlert(res)
-        }
-    })
-}
-
-function enviarSmsPase(bodyPost){
-    loadingService()
-    fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify(bodyPost),
-        headers:{
-            'Content-Type': 'application/json',
-            // 'Authorization': 'Bearer '+userJwt
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            let dataR=res.response.data
-            if(dataR.status_code==400 || dataR.status_code==401){
-                errorAlert(dataR)
-            }else if(dataR.status_code==202 || dataR.status_code==201){
-                Swal.close()
-                // successMsg("Confirmación", "Informacion enviada correctamente.", "success")
-            }
-        }else{
-            errorAlert(res)
-        }
-    })
-}
-
-function descargarPdfPase(url_pase){
-    loadingService()
-    fetch(url_pase)
-        .then(response => {
-            // Verificar si la respuesta es correcta
-            if (!response.ok) {
-                throw new Error('No se pudo obtener el archivo');
-            }
-            return response.blob();  // Convertir la respuesta en un Blob
-        })
-        .then(blob => {
-            Swal.close()
-            // Crear un enlace de descarga con el Blob
-            const url = URL.createObjectURL(blob); // Crear una URL temporal del Blob
-
-            // Crear un enlace <a> para iniciar la descarga
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'archivo_descargado.pdf'; // Nombre del archivo descargado
-            document.body.appendChild(a);
-            a.click(); // Hacer clic en el enlace para descargar el archivo
-
-            // Limpiar: eliminar el enlace temporal
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url); // Liberar la URL temporal
-        })
-        .catch(error => {
-            console.error('Error al descargar el PDF:', error);
-        });
 }
 
 
@@ -1242,7 +1173,7 @@ function crearConfirmacion() {
                         ubicacion:data.ubicacion,
                         tema_cita: data.temaCita,
                         descripcion: data.descripcion,
-                		perfil_pase:"visita general",
+                		perfil_pase:"Visita General",
                 		status_pase:'Proceso',
                         visita_a: getCookie("userName"),
                 		custom:true,
