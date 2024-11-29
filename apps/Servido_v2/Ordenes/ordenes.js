@@ -24,7 +24,7 @@ function loadDemoData(){
 }
 
 function loadData(response) {
-  console.log('response',response)
+  setStylesLoading('loading');
   if (response && response.data && response.data.chartFirst) {
     drawChartElement('chartFirst','bar',response.data.chartFirst,setOptions1);
   } 
@@ -40,6 +40,7 @@ function loadData(response) {
   if (response && response.data && response.data.cardSecond) {
     drawCardElement('cardFirst',response.data.cardSecond);
   } 
+  setStylesLoading('finish');
 }
 
 function getInformation(){
