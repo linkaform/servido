@@ -955,6 +955,8 @@ function descargarPdfPase(url_pase){
 
 
 function crearConfirmacion() {
+    let enviarPreSmsChecked = document.getElementById('enviar_sms_pre_registro').checked;
+
 	let data= getInputsValueByClass('paseEntradaNuevo')
 	// let comentarios= getDataGrupoRepetitivo('com-input-form-nuevo','.com-div-nuevo' , 0)
     let arrComentarios= document.getElementsByClassName('com-div-nuevo')
@@ -1143,6 +1145,13 @@ function crearConfirmacion() {
             let inputTel= document.getElementById("telefono")
             inputTel.value=""
         }else{
+            if(enviarPreSmsChecked){
+                enviarPreSmsChecked = {
+                    "from": "enviar_pre_sms",
+                    "mensaje": "",
+                    "numero": numeroConLada
+                }
+            }
     		Swal.fire({
     	        title:'Confirmación',
     	        html:`
@@ -1282,7 +1291,8 @@ function crearConfirmacion() {
     			            script_name: "pase_de_acceso.py",
     		                option: 'create_access_pass',
     		                location:getCookie('userLocation'),
-    		                access_pass: access_pass
+    		                access_pass: access_pass,
+                            enviar_pre_sms: enviarPreSmsChecked
     			        }),
     			        headers:{
     			            'Content-Type': 'application/json',
