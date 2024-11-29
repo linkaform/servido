@@ -245,11 +245,10 @@ function closeSession(){
 function setCloseSession(argument) {
     closeSession();
     localStorage.setItem('cerrarSesion', Date.now());
-
-    //redirectionUrl('login',false, true);
-    /*let protocol = window.location.protocol;
+    // redirectionUrl('login',false, true);
+    let protocol = window.location.protocol;
     let host = window.location.host;
-    window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;*/
+    window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
 
 }
 
@@ -705,9 +704,10 @@ function successMsg(title, text, type = "success"){
     });
 }
 
-function loadingService(){
+function loadingService(text ="Procesando...", html=""){
     Swal.fire({
-        title: 'Procesando...',
+        title: text,
+        html: html, // Icono con animación
         allowOutsideClick: false,
         onBeforeOpen: () => {
             Swal.showLoading();
@@ -957,10 +957,10 @@ function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
 //FUNCION obtener la imagen del canvas
 function getScreen(type){
     if(!flagVideoUser){
-        console.log("hello")
         flagVideoUser = true;
+        console.log("hello",navigator.mediaDevices,navigator.mediaDevices.getUserMedia)
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }})
             .then(function(stream) {
                 let video = document.createElement('video');
                 video.style.width = '200px';
@@ -981,6 +981,7 @@ function getScreen(type){
             })
             .catch(function(error) {
                 console.error('Error al acceder a la cámara:', error);
+                errorAlert("Error al acceder a la cámara")
             });
         } else {
             alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');

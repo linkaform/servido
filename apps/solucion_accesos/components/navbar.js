@@ -9,11 +9,11 @@ class lkfNavbarComponent extends HTMLElement{
     <link rel="stylesheet" href="./style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
-	<nav class="navbar header m-0 p-0 mb-5 customShadow" id='myCustomNavBar'>
+	<nav class="navbar m-0 p-0 mb-0 customShadow" >
         <div class="navbar-brand">
-			<img src="" height="40" height="60" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
+			<img src="https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_10.png" height="40" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
         </div>
-        <div class="d-flex flex-grow-1" ><button id='buttonPase' class="btn btn-sm btn-secondary custom-navbar-button ocultar"  onclick="redirectionUrl('pase');return false;" >Pase de entrada</button></div>
+        <div class="d-flex flex-grow-1" ><button id='buttonPase' class="btn btn-sm btn-secondary custom-navbar-button ocultar"  onclick="redirectionUrl('pases');return false;" >Pases de entrada</button></div>
         <div class="navbar-brand navbarShowHide customNoBorder">
             <button id='buttonAccesos' class="btn btn-sm btn-secondary custom-navbar-button ocultar"  onclick="redirectionUrl('accesos');return false;" >Accesos</button>   
             <button id='buttonBitacoras' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('bitacora');return false;" >Bitacoras</button>   
@@ -69,7 +69,7 @@ function changeButtonColor(){
         if(user !='' && jw!=''){
             let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
             imagenMostradaNavbar.src= localStorage.getItem("imagenURL");
-            $("#imageLinkaform").attr("src", getCookie('lkfLogo'));
+            //$("#imageLinkaform").attr("src", getCookie('lkfLogo'));
             switch (getValueUserLocation()) {
               case "accesos":
                 let btn1 = document.getElementById("buttonAccesos");
@@ -96,12 +96,12 @@ function changeButtonColor(){
                 btn5.style.setProperty('background-color', '#0275d8', 'important');
                 btn5.style.setProperty('color', 'white', 'important');
                 break;
-              case "pase":
-                console.log("QUE ONDA")
+              case "pases":
                 let btn6 = document.getElementById("buttonPase");
                 btn6.style.setProperty('background-color', '#0275d8', 'important');
                 btn6.style.setProperty('color', 'white', 'important');
                 break;
+
             }
         } 
 }
@@ -137,8 +137,14 @@ function redirectionUrl(type = 'null',blank = false, logout=false){
     const pestanas = JSON.parse(localStorage.getItem("pestanas_key")) || [];
     agregarPestana(type)
     if (existingTab && type !=="login") {
+        console.log("ENTRANDO AQUI ")
         window.open(`${protocol}//${host}/solucion_accesos/${type}.html`, type)
-    }/* else {
+    }else if(type=='login' && logout){
+        
+        let urlNew = `${protocol}//${host}/solucion_accesos/login.html`
+        window.location.href =urlNew
+    }
+    /* else {
         if(type == 'users'){
             urlNew = `${protocol}//${host}/solucion_accesos/accesos.html`
         }else if(type == 'bitacora'){
@@ -160,14 +166,12 @@ function redirectionUrl(type = 'null',blank = false, logout=false){
         }
         //----Validation
         if(urlNew !='' && blank){
-             console.log("OTRA PESTANA")
             Object.assign(document.createElement('a'), {
             target: '_blank',
             rel: 'noopener noreferrer',
             href: urlNew,
             }).click();
         }else if(urlNew !='' && !blank){
-            console.log("MISMA PERSTANA")
             Object.assign(document.createElement('a'), {
             rel: 'noopener noreferrer',
             href: urlNew,
@@ -181,7 +185,6 @@ function redirectionUrl(type = 'null',blank = false, logout=false){
 function agregarPestana(type){
     const pestanas = JSON.parse(localStorage.getItem("pestanas_key")) || [];
     if(!pestanas.includes(type)){
-        console.log("TRUEEEE")
         pestanas.push(type);
         localStorage.setItem("pestanas_key", JSON.stringify(pestanas));
     }
@@ -190,7 +193,6 @@ function agregarPestana(type){
 
 function cerrarPestanas() {
     const pestanas = JSON.parse(localStorage.getItem("pestanas_key")) || [];
-    //console.log("PESTANAS", pestanas)
     pestanas.forEach(name => {
         const pestana = window.open('', name);
         if (pestana && !pestana.closed) {

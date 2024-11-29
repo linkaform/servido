@@ -1,6 +1,6 @@
 :root {
   --yellowLKF: #FFA823;
-  --yellowLKF-light: #ffe1b4 ;
+  --yellowLKF-light:  #dcdcdc  ;
   --downloadButton:#003285;
   --text-gray:#616161;
   --soft-gray:#dcdcdc;
@@ -15,7 +15,9 @@ body{
 }
 
 /*Styles Div*/
-
+ .iti {
+    width: 100% !important;
+ }
 
 .div-card-portal{
   min-height: 120px !important;
@@ -377,7 +379,7 @@ th {
 }
 
 .mainSection{
-  margin-top: 65px !important;
+  margin-top: 25px !important;
 }
 
 .mainSectionMargins{

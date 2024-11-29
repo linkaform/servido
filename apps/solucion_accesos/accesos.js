@@ -138,9 +138,12 @@ function enviarMensaje(){
 
 function verModalMessageModal(nombre, email){
     data_for_msj={nombre: nombre, email_to: email, mensaje:''}
+    let nombrePase = $("#nameUserInf").text();
     $("#textMsjNombre").text(nombre)
     $("#textMsjCorreo").text(email)
-    $("#msj").val("")
+    $("#titulo").val("Mensaje de "+nombrePase+" enviado desde Accesos.")
+
+    $("#msj").val(nombrePase +" quiere ponerse en contacto contigo.")
     $("#messageModal").modal("show")
 }
 
@@ -1002,74 +1005,110 @@ function crearNuevaVisita(){
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
 function buscarPaseEntrada() {
-    setCleanData()
-    $("#mainSection1").hide()
-    gafeteId=""
-    gafeteRegistroIngreso={}
-    $(document).ready(function() {
-        $("#buttonBuscarPaseEntrada").prop('disabled', true);
-        $("#buttonNew").prop('disabled', true);
-        $("#pasesTemporales").prop('disabled', true);
-        $("#pasesActivos").prop('disabled', true);
-    })
-    codeUser = $("#inputCodeUser").val();
-    if(codeUser ==""){
-        successMsg("Validación", "Escribe un codigo para continuar", "warning")
-        $(document).ready(function() {
-            $("#buttonBuscarPaseEntrada").prop('disabled', false);
-            $("#buttonNew").prop('disabled', false);
-            $("#pasesTemporales").prop('disabled', false);
-            $("#pasesActivos").prop('disabled', false);
-        })
+    if($("#inputCodeUser").val()==""){
+        successMsg("Validación", "Escribe un código para continuar", "warning")
     }else{
-        $("#divSpinner").show();
-        $("#mainSection1").hide();
-
-        //setHideElements('dataHide');
-        //setHideElements('buttonsOptions');
-        fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_name: "script_turnos.py",
-                option: 'search_access_pass',
-                location: selectLocation.value,
-                area: selectCaseta.value,
-                qr_code: codeUser
-            }),
-            headers:{
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt,
-            },
+        console.log("QUE PASA")
+        setCleanData()
+        $("#mainSection1").hide()
+        gafeteId=""
+        gafeteRegistroIngreso={}
+        $(document).ready(function() {
+            $("#buttonBuscarPaseEntrada").prop('disabled', true);
+            $("#buttonNew").prop('disabled', true);
+            $("#pasesTemporales").prop('disabled', true);
+            $("#pasesActivos").prop('disabled', true);
         })
-        .then(res => res.json())
-        .then(res => {
-            if (res.success) {
-                fullData= res.response.data
-                Swal.close()
-                $("#cartaUser").show(); 
-                setDataInformation('informatioUser', res.response.data);
-                setHideElements('buttonsModal');
-                setHideElements('dataShow');
-                setHideElements(fullData.tipo_movimiento) //Oculta o muestra los botones correspondientes dependiendo de si es Entrada o Salida
-            }else{
-                errorAlert(res)
-                setCleanData();
-                setHideElements('dataHide');
-                $("#buttonNew").show();
-                $("#divSpinner").hide();
-                $("#inputCodeUser").val("")
-                $("#idComentarioPase").val('')
-                $("#idComentarioAcceso").val('')
+        codeUser = $("#inputCodeUser").val();
+        if(codeUser ==""){
+            successMsg("Validación", "Escribe un codigo para continuar", "warning")
+            $(document).ready(function() {
                 $("#buttonBuscarPaseEntrada").prop('disabled', false);
                 $("#buttonNew").prop('disabled', false);
                 $("#pasesTemporales").prop('disabled', false);
-                $("#mainSection1").show();
                 $("#pasesActivos").prop('disabled', false);
-                /*$("#pasesTemporales").show();*/
-            }
-        })
+            })
+        }else{
+            $("#divSpinner").show();
+            $("#mainSection1").hide();
+
+            //setHideElements('dataHide');
+            //setHideElements('buttonsOptions');
+            fetch(url + urlScripts, {
+                method: 'POST',
+                body: JSON.stringify({
+                    script_name: "script_turnos.py",
+                    option: 'search_access_pass',
+                    location: selectLocation.value,
+                    area: selectCaseta.value,
+                    qr_code: codeUser
+                }),
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+userJwt,
+                },
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    Swal.close()
+                    fullData= res.response.data
+                    fotoPerfilInde(res.response.data)
+                    console.log("PASKDNA")
+                    $("#cartaUser").show(); 
+                    setDataInformation('informatioUser', res.response.data);
+                    setHideElements('buttonsModal');
+                    setHideElements('dataShow');
+                    setHideElements(fullData.tipo_movimiento) //Oculta o muestra los botones correspondientes dependiendo de si es Entrada o Salida
+                }else{
+                    errorAlert(res)
+                    setCleanData();
+                    setHideElements('dataHide');
+                    $("#buttonNew").show();
+                    $("#divSpinner").hide();
+                    $("#inputCodeUser").val("")
+                    $("#idComentarioPase").val('')
+                    $("#idComentarioAcceso").val('')
+                    $("#buttonBuscarPaseEntrada").prop('disabled', false);
+                    $("#buttonNew").prop('disabled', false);
+                    $("#pasesTemporales").prop('disabled', false);
+                    $("#mainSection1").show();
+                    $("#pasesActivos").prop('disabled', false);
+                    /*$("#pasesTemporales").show();*/
+                }
+            })
+        }
     }
 }
+
+
+function fotoPerfilInde(dataUser){
+    console.log("FOTOTOTOT", dataUser.hasOwnProperty('foto'))
+    let imgUser ="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1"
+    if(dataUser.hasOwnProperty('foto')){
+        if(dataUser.foto.length>0){
+            imgUser = dataUser.foto[0].file_url !== '' ? 
+            dataUser.foto[0].file_url : 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
+        }else{
+            imgUser= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
+        }
+    }
+    $('#imgUser1').attr('src', imgUser);
+
+    let imgCard="https://www.creativefabrica.com/wp-content/uploads/2018/12/Id-card-icon-by-rudezstudio-5-580x386.jpg"
+
+    if(dataUser.hasOwnProperty('identificacion')){
+        if(dataUser.identificacion.length>0){
+            imgCard= dataUser.identificacion[0].file_url !==  '' ? 
+            dataUser.identificacion[0].file_url : "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
+        }else{
+            imgCard= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
+        }
+        
+    }
+    $('#imgCard1').attr('src', imgCard); 
+}
+
 
 //FUNCION para obtener la lista de usuario
 function getDataListUser(){
@@ -1431,29 +1470,7 @@ function dataUserInf(dataUser){
     
     $("#folio").text(dataUser.folio !==""? dataUser.folio: "")
 
-    let imgUser ="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1"
-    if(dataUser.hasOwnProperty('foto')){
-        if(dataUser.foto.length>0){
-            imgUser = dataUser.foto[0].file_url !== '' ? 
-            dataUser.foto[0].file_url : 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
-        }else{
-            imgUser= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
-        }
-    }
-    $('#imgUser1').attr('src', imgUser);
-
-    let imgCard="https://www.creativefabrica.com/wp-content/uploads/2018/12/Id-card-icon-by-rudezstudio-5-580x386.jpg"
-
-    if(dataUser.hasOwnProperty('identificacion')){
-        if(dataUser.identificacion.length>0){
-            imgCard= dataUser.identificacion[0].file_url !==  '' ? 
-            dataUser.identificacion[0].file_url : "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
-        }else{
-            imgCard= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
-        }
-        
-    }
-    $('#imgCard1').attr('src', imgCard); 
+    
 
     let nameUser = ""
     if(dataUser.hasOwnProperty("nombre")){
@@ -2173,7 +2190,8 @@ function setCleanData(){
 
     tbody = document.querySelector('#tableModalInstructions tbody');
     tbody.innerHTML = '';
-
+    $('#imgUser1').attr('src', '');
+    $('#imgCard1').attr('src', '');
     /*$('#imgUser1').attr('src', 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png'); 
     $('#imgCard1').attr('src', 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg'); 
   */  $('#tipoPaseText').text('')

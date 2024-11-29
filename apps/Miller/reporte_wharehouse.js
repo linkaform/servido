@@ -46,6 +46,11 @@ window.onload = function(){
         url = "https://preprod.linkaform.com/api/";
       }
     }
+    if (key === 'env') {
+      if (qs[key] === 'local'){
+        url = "http://192.168.0.25:8000/api/";
+      }
+    }
     if (key ==='title'){
       $("#title_report").text(qs[key]);
     }
@@ -165,7 +170,7 @@ function loadDemoData(){
   unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
   
-  getDrawTable('firstElement', columsTable1, dataTable1, 350);
+  getDrawTable('firstElement', columsTable1, dataTable1, 750);
   document.getElementById("firstElement").style.removeProperty('display');
 }
 
@@ -225,12 +230,12 @@ function getFirstElement(wharehouses, familia, line) {
 
 
   columsTable1 = [
-    { title: "Sku", field: 'sku', hozAlign: "left", width: 150 },
-    { title: 'Descripción del Producto', field: 'desc_producto', hozAlign: "left", width: 150 },
-    { title: 'Línea', field: 'line', hozAlign: "right", width: 150 },
-    { title: "Familia", field: 'familia', hozAlign: "left", width: 150 },
-    { title: "Stock CEDIS", field: 'actuals', hozAlign: "right", width: 150 },
-    { title: "Stock Final", field: 'stock_final', hozAlign: "right", formatter: "money", formatterParams: { thousand: "," }, width: 150 },
+    { title: "Sku", field: 'sku', hozAlign: "left", width: 150,  headerFilter:"input" },
+    { title: 'Descripción del Producto', field: 'desc_producto', hozAlign: "left", width: 150,  headerFilter:"input" },
+    { title: 'Línea', field: 'line', hozAlign: "right", width: 150,  headerFilter:"input" },
+    // { title: "Familia", field: 'familia', hozAlign: "left", width: 150 },
+    { title: "Stock CEDIS", field: 'actuals', hozAlign: "right", width: 100 },
+    { title: "Stock Final", field: 'stock_final', hozAlign: "right", formatter: "money", formatterParams: { thousand: "," }, width: 120 },
   ];
   
   if (wharehouses && wharehouses.length > 0) {
@@ -247,24 +252,60 @@ function getFirstElement(wharehouses, familia, line) {
     wharehouses.forEach(wharehouse => {
       field_wharehouse = wharehouse.toLowerCase().replace(" ", "_")
       traspasoColumn.columns.push({
+        title: `% de stock inical`,
+        field: `p_stock_max_${field_wharehouse}`,
+        hozAlign: "right",
+        // formatter: "money", formatterParams: { thousand: ",", symbol: "%", symbolAfter: true },
+        width: 150,
+        hozAlign: "left",
+        formatter:"progress", formatterParams:{
+              min:0,
+              max:100,
+              color:[
+                "rgb(211, 47, 47)", "rgb(239, 83, 80)","rgb(244, 143, 177)", ///reds
+                "rgb(255, 235, 59)", "rgb(255, 241, 118)","rgb(230, 238, 156)", ///yellows
+                "rgb(230, 238, 156)", "rgb(0, 188, 212)","rgb(0, 172, 193)", ///blues
+                "rgb(76, 175, 80)", "rgb(56, 142, 60)","rgb(56, 142, 60)", ///greens
+                ],
+              legendColor:"#24201E",
+              legendAlign:"center",
+              legend:function(value){return value + "%"}
+          }
+      });
+      traspasoColumn.columns.push({
         title: wharehouse,
         field: `actuals_${field_wharehouse}`,
         hozAlign: "right",
-        width: 150
+        width: 200
       });
       //stock_to_move_alm_monterrey
       traspasoColumn.columns.push({
         title: `Traspaso ${wharehouse}`,
         field: `stock_to_move_${field_wharehouse}`,
         hozAlign: "right",
-        width: 150
+        width: 230
       });
       traspasoColumn.columns.push({
-        title: `% de stock maximo`,
-        field: `p_stock_max_${field_wharehouse}`,
+        title: `% de stock final`,
+        field: `final_stock_percentage_${field_wharehouse}`,
         hozAlign: "right",
-        formatter: "money", formatterParams: { thousand: ",", symbol: "%", symbolAfter: true },
-        width: 150
+        // formatter: "money", formatterParams: { thousand: ",", symbol: "%", symbolAfter: true },
+        width: 180,
+        hozAlign: "left",
+        formatter:"progress", formatterParams:{
+              min:0,
+              max:100,
+              color:[
+                "rgb(211, 47, 47)", "rgb(239, 83, 80)","rgb(244, 143, 177)", ///reds
+                "rgb(255, 235, 59)", "rgb(255, 241, 118)","rgb(230, 238, 156)", ///yellows
+                "rgb(230, 238, 156)", "rgb(0, 188, 212)","rgb(0, 172, 193)", ///blues
+                "rgb(76, 175, 80)", "rgb(56, 142, 60)","rgb(56, 142, 60)", ///greens
+                // "", "","", ///reds
+                ],
+              legendColor:"#24201E",
+              legendAlign:"center",
+              legend:function(value){return value + "%"}
+          }
       });
 
       if (balanceo) {
@@ -285,7 +326,7 @@ function getFirstElement(wharehouses, familia, line) {
     }
   }
   
-  getDrawTable('firstElement', columsTable1, dataTable1, 355);
+  getDrawTable('firstElement', columsTable1, dataTable1, 750);
 
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
@@ -310,7 +351,7 @@ function getFirstElement(wharehouses, familia, line) {
       $('.title_tables').show();
       
       if (res.response.stockInfo) {
-        getDrawTable('firstElement', columsTable1, res.response.stockInfo, 355);
+        getDrawTable('firstElement', columsTable1, res.response.stockInfo, 750);
         document.getElementById("firstElement").style.removeProperty('display');
       }
       
@@ -383,7 +424,7 @@ function getCatalog(){
 }
 
 //-----TABLES
-function getDrawTable(id, columnsData, tableData, height = 500){
+function getDrawTable(id, columnsData, tableData, height = 750){
   var  table = new Tabulator("#" + id, {
     height:height +"px",
     layout:"fitDataTable",
