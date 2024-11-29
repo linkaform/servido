@@ -1,0 +1,78 @@
+// let tables={}
+let actualTab=''
+let dataTableListTodos = [];
+
+
+let dataTableListFavoritos = [];
+
+let dataTableListActivos = [];
+ 
+
+let dataTableListVencidos = [];
+
+
+const columnsTableListPendientes = [
+    { title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,width:180,
+        formatter: (cell, formatterParams) => {
+            //----Button Trash
+            let data = cell.getData();
+            let folio = cell.getData().folio ? cell.getData().folio : 0;
+            let _id = cell.getData()._id ? cell.getData()._id : 0;
+            console.log("id", _id)
+            let star= data.favoritos !=="" ? `<i class="fa-solid fa-star star" id="${_id}"></i>` : `<i class="fa-regular fa-star star" id="${_id}"></i>`
+            let divActions = '<div class="row d-flex">';
+            divActions += `<button class="btn-table-bitacora" onClick="setModal('favoritos','${_id}')">${star}</button>`;
+            divActions += `<button class="btn-table-bitacora" onClick="setModal('ver','${_id}')" ><i class="fa-regular fa-eye"></i></button>`;
+            divActions += `<button class="btn-table-bitacora" onClick="setModal('editar', '${_id}')" ><i class="fa-regular fa-pen-to-square"></i></button>`;
+            divActions += `<button class="btn-table-bitacora" onClick="setModal('reenviar', '${_id}')" ><i class="fa-solid fa-angles-right"></i></button>`;
+            divActions += '</div>';
+            return divActions;
+            //`<button  class="btn-table-bitacora" onClick="setModal('Tools',${folio})"><i class="fa-solid fa-car"></i></button> `;
+        },
+    },
+    { title:"Folio", field:'folio', hozAlign:"center", tooltip:true,headerFilter:true,width:100,headerTooltip:true},
+    { title:"Fecha creacion", field:'fecha_desde_visita', hozAlign:"left",headerFilter:"date",width:200, headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") },
+        formatter: function(cell) {
+            let data = cell.getData();
+            return data.fecha_desde_visita.slice(0,-3)
+        },
+    },
+    { title:"Vigencia", field:'fecha_desde_hasta', hozAlign:"left",headerFilter:"date", width:200,headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") },
+        formatter: function(cell) {
+            let data = cell.getData();
+            return data.fecha_desde_hasta.slice(0,-3)
+        }},
+    { title:"Visitante", field:'nombre', hozAlign:"left",headerFilter:true,headerTooltip:true ,width:200},
+    { title:"TipoPase", field:'tipo_de_pase', hozAlign:"left", headerFilter:true,headerTooltip:true ,width:200,
+        formatter: function(cell) {
+            let data = cell.getData();
+            return capitalizeFirstLetter(data.tipo_de_pase)
+        }},
+    { title:"Motivo", field:'descripcion',hozAlign:"left", headerFilter:true ,width:300,
+        formatter: function(cell) {
+            let data = cell.getData();
+            return capitalizeFirstLetter(data.descripcion)
+        }},
+    { title:"Estado", field:'estatus', hozAlign:"left",headerFilter:true,headerTooltip:true ,width:200,
+        formatter: function(cell) {
+            let data = cell.getData();
+            return capitalizeFirstLetter(data.estatus)
+        }},
+];
+
+
+//-----TABLES
+function drawTable(id, columnsData, tableData,){
+    let table = new Tabulator("#" + id, {
+         layout:"fitDataStretch",
+        data:tableData,
+        textDirection:"ltr",
+        columns:columnsData,
+        pagination:true, 
+        paginationSize:40,
+        placeholder: "No hay registros disponibles",
+
+  });
+    actualTab=id
+    tables[id]=table;
+}

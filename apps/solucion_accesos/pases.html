@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pases de Entrada</title>
+	<link rel="icon" type='image/svg+xml' href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 552 512'><path  d='M512 80c8.8 0 16 7.2 16 16l0 320c0 8.8-7.2 16-16 16L64 432c-8.8 0-16-7.2-16-16L48 96c0-8.8 7.2-16 16-16l448 0zM64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l448 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM208 256a64 64 0 1 0 0-128 64 64 0 1 0 0 128zm-32 32c-44.2 0-80 35.8-80 80c0 8.8 7.2 16 16 16l192 0c8.8 0 16-7.2 16-16c0-44.2-35.8-80-80-80l-64 0zM376 144c-13.3 0-24 10.7-24 24s10.7 24 24 24l80 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-80 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l80 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-80 0z'%3E%3C/path%3E%3C/svg%3E" />
+
+	<link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script> 
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/css/intlTelInput.min.css">
+  	<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/js/intlTelInput.min.js"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/js/utils.js"></script>
+
+	<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+	<navbar-component ></navbar-component>
+<section>
+
+
+    <section class="mainSection mainSectionMargins">
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <h5 class="m-0">Informacion de pases</h5>
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show "  data-bs-parent="#accordionExample">
+              <div class="accordion-body p-0 pt-1" >
+                    <div class="row justify-content-between">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4 " style="display:none;">
+                            <div class="card m-2 div-card-portal  customShadow">
+                                <locationcard-component> </locationcard-component>
+                            </div>
+                        </div> 
+                        
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                            <div class="card  m-2 div-card-portal customShadow">
+                                <div class="card-body p-3">
+                                    <div class="d-flex justify-content-center gap-5">
+                                        <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert1">00</p>
+                                        <i class="fa-regular fa-circle-check" style="font-size: 40px;"></i>
+                                    </div>
+                                    <h5 class="card-title text-center text-uppercase text-dark">Pases activos</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                            <div class="card  m-2 div-card-portal customShadow">
+                                <div class="card-body p-3">
+                                    <div class="d-flex justify-content-center gap-5">
+                                        <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert2">00</p>
+                                        <i class="fa-solid fa-rotate-left" style="font-size: 40px;"></i>
+                                    </div>
+                                    <h5 class="card-title text-center text-uppercase text-dark">Pases recurrentes</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                            <div class="card  m-2 div-card-portal customShadow">
+                                <div class="card-body p-3">
+                                    <div class="d-flex justify-content-center gap-5">
+                                        <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert3">00</p>
+                                        <i class="fa-solid fa-ban" style="font-size: 40px;"></i>
+                                    </div>
+                                    <h5 class="card-title text-center text-uppercase text-dark">Pases proximos a vencer</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                            <div class="card  m-2 div-card-portal customShadow">
+                                <div class="card-body p-3">
+                                    <div class="d-flex justify-content-center gap-5">
+                                        <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert3">00</p>
+										<i class="fa-solid fa-file-circle-plus" style="font-size: 40px;"></i>
+                                    </div>
+                                    <h5 class="card-title text-center text-uppercase text-dark">Pases generados por dia</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>  
+    </section>
+    <section class="mainSectionMargins">
+        <div class="d-flex justify-content-center mt-1 align-self-center">
+            <h4 class="m-0 p-0">Listado de Notas</h4>
+        </div>
+    </section>
+
+
+
+		<!-- Information Plant-->
+	<section class="mainSectionMargins">
+	  	<div class="nav nav-tabs" id="nav-tab" role="tablist">
+	    <button class="nav-link active" id="nav-todos-tab" data-bs-toggle="tab" data-bs-target="#nav-todos" type="button" role="tab" aria-controls="nav-todos" aria-selected="true">Todos</button>
+	    <button class="nav-link" id="nav-favoritos-tab" data-bs-toggle="tab" data-bs-target="#nav-favoritos" type="button" role="tab" aria-controls="nav-favoritos" aria-selected="false">Favoritos</button>
+	    <button class="nav-link" id="nav-activos-tab" data-bs-toggle="tab" data-bs-target="#nav-activos" type="button" role="tab" aria-controls="nav-activos" aria-selected="false">Activos</button>
+	    <button class="nav-link" id="nav-vencidos-tab" data-bs-toggle="tab" data-bs-target="#nav-vencidos" type="button" role="tab" aria-controls="nav-vencidos" aria-selected="false">Vencidos</button>
+	  	</div>
+
+	  	<div class="tab-content mb-1" id="myTabContent">
+	    <div class="tab-pane fade show active" id="nav-todos" role="tabpanel" aria-labelledby="nav-todos-tab">
+	      <div class="d-flex mt-2 justify-content-end">
+	        <button type="button" class="btn btn-primary btn-sm" onclick="redirectionUrl('pase')">
+	          <i class="fa-solid fa-plus"></i> Nuevo Pase
+	        </button>
+	       <!--  <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListTodos">
+	          <i class="fa-solid fa-file-arrow-down"></i> Descargar
+	        </button> -->
+	      </div>
+	      <div class="mt-2 mb-3 tableOverflow" id="tableListTodos"></div>
+	    </div>
+
+	    <div class="tab-pane fade" id="nav-favoritos" role="tabpanel" aria-labelledby="nav-favoritos-tab">
+	      <div class="d-flex mt-2 justify-content-end">
+	        <button type="button" class="btn btn-primary btn-sm" onclick="redirectionUrl('pase')">
+	          <i class="fa-solid fa-plus"></i> Nuevo Pase
+	        </button>
+	        <!-- <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListFavoritos">
+	          <i class="fa-solid fa-file-arrow-down"></i> Descargar
+	        </button> -->
+	      </div>
+	      <div class="mt-2 mb-3 tableOverflow" id="tableListFavoritos"></div>
+	    </div>
+
+	    <div class="tab-pane fade" id="nav-activos" role="tabpanel" aria-labelledby="nav-activos-tab">
+	      <div class="d-flex mt-2 justify-content-end">
+	        <button type="button" class="btn btn-primary btn-sm" onclick="redirectionUrl('pase')">
+	          <i class="fa-solid fa-plus"></i> Nuevo Pase
+	        </button>
+	       <!--  <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListActivos">
+	          <i class="fa-solid fa-file-arrow-down"></i> Descargar
+	        </button> -->
+	      </div>
+	      <div class="mt-2 mb-3 tableOverflow" id="tableListActivos"></div>
+	    </div>
+
+	    <div class="tab-pane fade" id="nav-vencidos" role="tabpanel" aria-labelledby="nav-vencidos-tab">
+	      <div class="d-flex mt-2 justify-content-end">
+	        <button type="button" class="btn btn-primary btn-sm" onclick="redirectionUrl('pase')">
+	          <i class="fa-solid fa-plus"></i> Nuevo Pase
+	        </button>
+	        <!-- <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListVencidos">
+	          <i class="fa-solid fa-file-arrow-down"></i> Descargar
+	        </button> -->
+	      </div>
+	      <div class="mt-2 mb-3 tableOverflow" id="tableListVencidos"></div>
+	    </div>
+	  	</div>
+	</section>
+
+    <div class="modal fade" id="agregarNotasModal" tabindex="-1"  aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Agregar notas</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Nota *</label>
+                              <textarea class="form-control nueva-nota" id="textAreaNuevaNotaNota" rows="3" placeholder="Escribe algo..."></textarea>
+                        </div>
+                        <div id="archivo-input-form-nueva">
+                            <div class="d-flex mb-3 col-12 div-archivo-nueva-123" id="id-archivo-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Cargar un archivo </label>
+                                    <input type="file" class="form-control-file archivo-div-nueva" onchange="guardarArchivos('fileInputArchivo-nueva', false);" id="fileInputArchivo-nueva">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('nueva');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('nueva',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="foto-input-form-nueva" >
+                            <div class="d-flex mb-3 col-12 div-foto-nueva-123" id="id-foto-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Fotografia </label>
+                                    <input type="file" class="form-control-file foto-div-nueva" onchange="guardarArchivos('fileInputFotografia-nueva',true);" id="fileInputFotografia-nueva">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('nueva');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('nueva',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="comment-input-form-nueva">
+                            <div class="d-flex mb-3 div-comment-nueva-123" id="div-comment-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Comentario </label>
+                                    <textarea class="form-control comment-div-nueva" id="comentarioNuevaNota-nueva" rows="3" placeholder="Escribe algo..."></textarea>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddComentario('nueva');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteComentario('nueva',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="idButtonEnviarNota" onclick="agregarNuevaNota()">Agregar</button>
+                    <button class="btn btn-success btn-sm" type="button" id="idLoadingButtonEnviarNota" style="display:none;" disabled>
+                          <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                          Cargando...
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editarNotasModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width: 600px;">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Editar notas</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" id="" aria-label="Close"></button>
+                    </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Nota *</label>
+                              <textarea class="form-control editNota" id="notaEditNota" rows="3" placeholder="Escribe algo..."></textarea>
+                        </div>
+
+                        <div id="cargarArchivosEditNotaDiv">
+                        </div>
+                        <div id="cargarFotosEditNotaDiv">
+                        </div>
+                        <div id="cargarComentariosEditNotaDiv">
+                        </div>
+                        <div id="archivo-input-form-editar">
+                            <div class="d-flex mb-3 col-12 div-archivo-editar-123" id="id-archivo-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Cargar un archivo </label>
+                                    <input type="file" class="form-control-file archivo-div-editar" onchange="guardarArchivos('fileInputArchivo-editar', false);" id="fileInputArchivo-editar">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('editar');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('editar',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="foto-input-form-editar" >
+                            <div class="d-flex mb-3 col-12 div-foto-editar-123" id="id-foto-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Fotografia </label>
+                                    <input type="file" class="form-control-file foto-div-editar" onchange="guardarArchivos('fileInputFotografia-editar',true);" id="fileInputFotografia-editar">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('editar');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('editar',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="comment-input-form-editar">
+                            <div class="d-flex mb-3 div-comment-editar-123" id="div-comment-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Comentario </label>
+                                    <textarea class="form-control comment-div-editar" id="comentarioEditarNota-editar" rows="3" placeholder="Escribe algo..."></textarea>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddComentario('editar');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteComentario('editar',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <small class="text-black-50 mt-3">** Campos son obligatorios</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="idButtonEditarNota" onclick="editarNota()">Editar</button>
+                    <button class="btn btn-success btn-sm" type="button" id="idLoadingButtonEditarNota" style="display:none;" disabled>
+                          <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                          Cargando...
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="notasFiltersModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Filtros</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mt-3 row ">
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                             <h5>Columna: </h5>
+                            <select class="form-control ds-input filterArticles" id="idFiltrosColumna">
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <h5>Tipo: </h5>
+                            <select class="form-control ds-input filterArticles" id="idFiltrosTipo" >
+                                <option value="=">=</option>
+                                <option value="<"><</option>
+                                <option value="<="><=</option>
+                                <option value=">">></option>
+                                <option value=">=">>=</option>
+                                <option value="!=">!=</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <h5>Valor: </h5>
+                            <input class="form-control ds-input filterArticles" id="idFiltrosValor" >
+                        </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="aplicarFiltros()">Aplicar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!--     <div class="modal fade" id="paseEntradaEditar" tabindex="-1"  aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Editar pase </h1>
+				</div>
+				<div class=" m-4 mr-0">
+					<p>Selecciona las nuevas fechas en las que el visitante podra asistir.</p>
+				</div>
+				<div class="mb-3 m-4 mt-0 mr-0">
+					<label class="form-label">Fecha de visita:</label>
+					<input type="date" class="form-control comment-div-nueva" id="idComentarioPase" rows="3" placeholder="Escribe algo..."></textarea>
+				</div>
+				<div class="mb-3 m-4 mr-0">
+					<label class="form-label">Fecha hasta:</label>
+					<input type="date" class="form-control comment-div-nueva" id="idComentarioPase" rows="3" placeholder="Escribe algo..."></textarea>
+				</div>
+				<div class="mb-3 m-4 mr-0 col-6">
+					<label class="form-label">limite de accesos:</label>
+					<input type="number" class="form-control comment-div-nueva" id="idComentarioPase" rows="3" placeholder="Escribe algo..."></textarea>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-success btn-sm" onclick="agregarComentarioPaseAcceso('pase')">Actualizar</button>
+				</div>
+			</div>
+		</div>
+	</div> -->
+
+    <!-- Modal Edit Incident -->
+    <div class="modal fade" id="paseEntradaEditar" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Editar Pase de entrada</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 " id="paseEntradaInf1">
+				     	
+				     	<div> 
+				     		<span ><b>Tipo de pase: </b></span>
+				     		<small class="text-gray">Visita General</small>
+				     	</div>
+				     	<div class="mt-2"> 
+				     		<span ><b>Estatus: </b></span>
+				     		<small class="text-gray">Proceso</small>
+				     	</div>
+			     	</div>
+			     	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 p-0 m-0" id="paseEntradaInf2">
+			            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+			                <label for="exampleInputEmail1">Nombre Completo</label>
+			                <input type="text" class="form-control fill paseEntradaEdit" id="nombreCompleto" aria-describedby="emailHelp" placeholder="Nombre completo">
+			            </div>
+			            <div class="d-flex flex-row flex-wrap justify-content-start mt-2 gap-5">
+			            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+			                	<label for="exampleInputEmail1">Email</label>
+			                	<input type="email" class="form-control  paseEntradaEdit" id="email" aria-describedby="emailHelp" placeholder="Email">
+			            	</div>
+			            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+			                	<label for="exampleInputEmail1">Telefono</label> <br>
+			               	 	<!-- <input type="text" class="form-control fill paseEntradaEdit" id="telefono" aria-describedby="emailHelp" placeholder="Telefono"> -->
+			               	 	<input type="tel" id="telefono" name="telefono" class="form-control  PaseEntradaEdit" aria-describedby="telefonoValid" placeholder="Número de teléfono" onchange="validarTel(this)">
+			               	 	<div id="telefonoValid" class="invalid-feedback">
+						      		Escribe un telefono válido.
+						    	</div>
+			            	</div>
+			            	<script>
+							  	const input = document.querySelector("#telefono");
+							  	const iti = window.intlTelInput(input, {
+							   	 	initialCountry: "auto", // Detecta el país automáticamente
+							    	geoIpLookup: function(callback) {
+								     fetch("https://ipinfo.io/json", { headers: { Accept: "application/json" } })
+								        .then(response => response.json())
+								        .then(data => callback(data.country))
+								        .catch(() => callback("MX"));
+							    	},
+							    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/js/utils.js"
+							  });
+							</script>
+
+			            </div>
+			            <div class="d-flex flex-row flex-wrap mt-2 gap-5">
+			            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+			                	<label for="exampleInputEmail1">Ubicación</label>
+			                	<select type="select" class="form-select fill paseEntradaEdit" id="ubicacion" aria-describedby="emailHelp" placeholder="Ubicación">
+			                	</select>
+			            	</div>
+			            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+			                	<label for="exampleInputEmail1">Tema de la cita</label>
+			               	 	<input type="email" class="form-control fill paseEntradaEdit" id="temaCita" aria-describedby="emailHelp" placeholder="Tema de la cita">
+			            	</div>
+			            </div>
+			            <div class="d-flex flex-row flex-wrap mt-2">
+			            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+			                	<label for="exampleInputEmail1">Descripcion</label>
+			               	 	<input type="email" class="form-control fill paseEntradaEdit" id="descripcion" aria-describedby="emailHelp" placeholder="Descripción">
+			            	</div>
+			            </div>
+			               <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5 my-1 mt-2 d-flex flex-column">
+			            	<label>
+				            	<input type="checkbox" class="paseEntradaEdit" name="enviarCorreoSms" value="enviar_correo_pre_registro" id="enviar_correo_pre_registro" onchange="onChangeOpcionesAvanzadas('enviarCorreoSms')"><b> Enviar correo</b>
+				        	</label>
+				        	<label>
+				            	<input type="checkbox" class="paseEntradaEdit" name="enviarCorreoSms" value="enviar_sms_pre_registro" id="enviar_sms_pre_registro" onchange="onChangeOpcionesAvanzadas('enviarCorreoSms')"><b> Enviar sms</b>
+				        	</label>
+			            </div>
+			        </div>
+			        <div class="mt-3" id="paseEntradaInf3">
+			 			<h4>Vigencia: </h4>
+			 		</div> 
+			        <div  id="paseEntradaInf4">
+			            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5" >
+			                <div>
+								<div class="checkbox-group me-2 my-3">
+					            	<label>
+					                	<input type="checkbox" class="paseEntradaEdit" name="estadoIncidencia" value="opcionesAvanzadas" id="checkOpcionesAvanzadas" onchange="onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')"><b> Opciones Avanzadas</b>
+					            	</label>
+					        	</div>
+			                	<label>Visita de: </label>
+			                	<div class="d-flex flex-column justify-content-start align-items-start" >
+			                		<div class="d-flex flex-wrap">
+			                			<input class="form-radio-input paseEntradaEdit" type="radio" name="opcionesAvanzadas" id="radioFechaFija" onchange="onChangeOpcionesAvanzadas('radioRangoFechas')">
+				                        <label class="form-radio-label" for="radioFechaFija">
+				                            Fecha Fija
+				                        </label>
+			                		</div>
+			                		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-wrap mb-3 mt-2">
+						               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
+														               		<label for="fechaVisita">Fecha de visita: </label>
+						               		<input type="date" class="form-control paseEntradaEdit" id="fechaVisita" placeholder="" onchange="validDatePase()" 
+						               		aria-describedby="fechaVisita">
+						               		<div id="fechaVisita" class="invalid-feedback">
+									      		Escribe un fecha y hora válida.
+									    	</div>
+						               </div>
+						               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2"> 
+						                    <label class="form-label">Hora: *</label>
+						                    <div class="time-selector">
+						                        <select class="form-select time-select contentNuevoPase paseEntradaEdit" id="horaNuevoPase" 
+						                        onchange="onChangeAmpmLabel('horaNuevoPase','ampmNuevoPase')" onchange="validDatePase()">
+						                        </select>
+						                        <label class="mx-1">:</label>
+						                        <select class="form-select time-select contentNuevoPase paseEntradaEdit" id="minNuevoPase" onchange="validDatePase()">
+						                        </select>
+						                        <label class="ms-2" id="ampmNuevoPase"></label>
+						                    </div>
+						               </div>
+						            </div>
+			                		<div class="opcionesAvanzadasDiv">
+			                			<input class="form-radio-input paseEntradaEdit" type="radio" name="opcionesAvanzadas" id="radioRangoFechas" onchange="onChangeOpcionesAvanzadas('radioRangoFechas');">
+				                        <label class="form-radio-label" for="radioRangoFechas" >
+				                            Rango de Fechas
+				                        </label>
+			                		</div>
+			                		
+			                	</div>
+			                </div>
+			            </div>
+			            <div class="opcionesAvanzadasDiv col-12">
+				            <div class="col-sm-8 col-md-8 col-lg-12 col-xl-12 d-flex mt-3 flex-wrap">
+				            	
+				               <div class="col-6 d-flex p-0 m-0 flex-wrap" id="fechaVisitaDiv"> 
+					               	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-8">
+					               		<label for="fechaVisitaOA">Fecha de visita: </label>
+					               		<input type="date" class="form-control paseEntradaEdit" id="fechaVisitaOA" aria-describedby="fechaVisitaOAvalidation" placeholder="" onchange="validDatePase()">
+					               		<div id="fechaVisitaOAvalidation" class="invalid-feedback">
+									      	Escribe un fecha válida.
+									    </div>
+					               	</div>
+					               	<!-- <div class="col-6">
+					                    <label class="form-label">Hora: *</label>
+					                    <div class="time-selector">
+					                        <select class="form-select time-select contentNuevoRangoVisita paseEntradaEdit" id="horaNuevoRangoVisita" 
+					                        onchange="onChangeAmpmLabel('horaNuevoRangoVisita','ampmNuevoRangoVisita')">
+					                        </select>
+					                        <label class="mx-1">:</label>
+					                        <select class="form-select time-select contentNuevoRangoVisita paseEntradaEdit" id="minNuevoRangoVisita">
+					                        </select>
+					                        <label class="ms-2" id="ampmNuevoRangoVisita"></label>
+					                    </div>
+					               	</div> -->
+				               </div>
+				               <div class="col-6 d-flex p-0 m-0" id="fechaHastaDiv"> 
+				               		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-8">
+					               		<label for="fechaHastaOA">Fecha hasta: </label>
+					               		<input type="date" class="form-control paseEntradaEdit" id="fechaHastaOA" aria-describedby="fechaHastaOAvalidation" placeholder="" onchange="validDatePase()">
+					               		<div id="fechaHastaOAvalidation" class="invalid-feedback">
+									      	Escribe un fecha válida.
+									    </div>
+					               	</div>
+					               <!-- 	<div class="col-6">
+					                    <label class="form-label">Hora: *</label>
+					                    <div class="time-selector">
+					                        <select class="form-select time-select contentNuevoRangoHasta paseEntradaEdit" id="horaNuevoRangoHasta" 
+					                        onchange="onChangeAmpmLabel('horaNuevoRangoHasta','ampmNuevoRangoHasta')">
+					                        </select>
+					                        <label class="mx-1">:</label>
+					                        <select class="form-select time-select contentNuevoRangoHasta paseEntradaEdit" id="minNuevoRangoHasta">
+					                        </select>
+					                        <label class="ms-2" id="ampmNuevoRangoHasta"></label>
+					                    </div>
+					               	</div> -->
+				               </div>
+				               <div class="col-12  mt-4" id="diasAccesoDiv"> 
+				               		<label>Días de acceso: </label>
+				                	<div class="d-flex flex-column justify-content-start align-items-start">
+				                		<div>
+				                			<input class="form-radio-input paseEntradaEdit" type="radio" name="diasAcceso" id="radioCualquierDia" onchange="onChangeOpcionesAvanzadas('radioCualquierDia')">
+					                        <label class="form-radio-label" for="radioCualquierDia">
+					                            Cualquier día
+					                        </label>
+				                		</div>
+				                		<div class="opcionesAvanzadasDiv">
+				                			<input class="form-radio-input paseEntradaEdit" type="radio" name="diasAcceso" id="radioLimitarDias" onchange="onChangeOpcionesAvanzadas('radioLimitarDias')">
+					                        <label class="form-radio-label" for="radioLimitarDias">
+					                            Limitar días de acceso
+					                        </label>
+				                		</div>
+				                	</div>
+					                <div class="flex-grow-1 mt-4" id="diasAccesoDivDias"> 
+					               		<label>Selecione los días de acceso: </label>
+					               		<div class="d-flex flex-row flex-wrap justify-content-start align-items-center">
+				                            <div class="checkbox-group me-2">
+				                                <label>
+				                                    <input type="checkbox" name="diasPase" value="lunes" > Lunes
+				                                </label>
+				                            </div>
+				                            <div class="checkbox-group me-2">
+				                                <label>
+				                                    <input type="checkbox" name="diasPase" value="martes" > Martes
+				                                </label>
+				                            </div>
+				                            <div class="checkbox-group me-2">
+				                                <label>
+				                                    <input type="checkbox" name="diasPase" value="miércoles" > Miercoles
+				                                </label>
+				                            </div>
+				                            <div class="checkbox-group me-2">
+				                                <label>
+				                                    <input type="checkbox" name="diasPase" value="jueves" > Jueves
+				                                </label>
+				                            </div>
+				                            <div class="checkbox-group me-2">
+				                                <label>
+				                                    <input type="checkbox" name="diasPase" value="viernes" > Viernes
+				                                </label>
+				                            </div>
+				                            <div class="checkbox-group me-2">
+				                                <label>
+				                                    <input type="checkbox" name="diasPase" value="sábado" > Sábado
+				                                </label>
+				                            </div>
+				                            <div class="checkbox-group me-2">
+				                                <label>
+				                                    <input type="checkbox" name="diasPase" value="domingo" > Domingo
+				                                </label>
+				                            </div>
+				                        </div>
+					                </div>
+				                </div>
+				                <div class="col-12 d-flex p-0 m-0 my-1 mb-2 mt-3" id="limiteEntradasDiv"> 
+				            		<div class="col-sm-12 col-md-12 col-lg-6 col-xl-3">
+					            		<label>Limite de entradas: </label>
+					            		<input type="text" class="form-control paseEntradaEdit" id="limiteEntradas" placeholder="Limite de entradas"  onChange="removeNonNumeric(this)">
+				            		</div>
+				            	</div>
+				               <div class="opcionesAvanzadasDiv col-12 flex-grow-1 mt-3 mx-0">
+						            <h4 >Areas de acceso: </h4>
+						            <div id="area-input-form-nuevo" class="col-12 mx-0 px-0">
+						                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex mb-3 div-area-nuevo-123 mx-0 px-0" id="id-area-div-123">
+						                    <div class="col-sm-10 col-md-10 col-lg-10 col-xl-11 d-flex flex-wrap justify-content-start gap-5">
+						                    	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
+									                <label for="exampleInputPassword1">Area: </label>
+									                <select type="select" class="form-select fill area-div-nuevo" id="tipoArea" >
+									                </select>
+									            </div>
+						                       <div class="col-sm-10 col-md-10 col-lg-6 col-xl-6">
+									                <label for="exampleInputPassword1">Comentario: </label>
+									                <textarea type="text" class="form-control fill area-div-nuevo" rows="1" id="comentario" placeholder=""></textarea>
+									            </div>
+						                    </div>
+						                    <div>
+						                        <button type="button" class="btn btn-success button-add-register" onclick="setAddArea('nuevo', 'area');return false;">
+						                            <i class="fa-solid fa-plus"></i>
+						                        </button>
+						                        <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArea('nuevo',123,'area');return false;">
+						                            <i class="fa-solid fa-minus"></i>
+						                        </button>
+						                    </div>
+						                </div>
+						            </div>
+					            </div>
+				            </div>
+			            </div>
+			             <div class="col-sm-10 col-md-10 col-lg-12 col-xl-12 p-0 my-3">
+			             	<h4>Comentarios/Instrucciones: </h4>
+			             </div>
+						<div class="col-12 flex-grow-1 p-0">
+				 				<div id="com-input-form-nuevo" class="col-12 p-0 m-0">
+					                <div class="d-flex mb-3 col-12 div-com-nuevo-123 m-0 p-0" id="id-com-div-123">
+					                    <div class="flex-grow-1 d-flex justify-content-start">
+					                       <div class="col-sm-10 col-md-10 col-lg-6 col-xl-6">
+								                <label for="exampleInputPassword1">Instruccion o comentario: </label>
+								                <textarea type="text" class="form-control fill com-div-nuevo" rows="1" id="instruccionComentario-123" placeholder=""></textarea>
+								            </div>
+						                    <div>
+						                        <button type="button" class="btn btn-success button-add-register" onclick="setAddCom('nuevo', 'com');return false;">
+						                            <i class="fa-solid fa-plus"></i>
+						                        </button>
+						                        <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteCom('nuevo',123,'com');return false;">
+						                            <i class="fa-solid fa-minus"></i>
+						                        </button>
+						                    </div>
+					                    </div>
+					                </div>
+				            	</div>
+						</div>
+			            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6 my-3 d-flex flex-column">
+			            	<label>
+				            	<input type="checkbox" class="paseEntradaEdit" name="AgregarFotoIdent" value="agregarFoto" id="agregarFoto" onchange="onChangeOpcionesAvanzadas('AgregarFotoIdent')"><b> Agregar Fotografia</b>
+				        	</label>
+				        	<label>
+				            	<input type="checkbox" class="paseEntradaEdit" name="AgregarFotoIdent" value="agregarIdentificacion" id="agregarIdentificacion" onchange="onChangeOpcionesAvanzadas('AgregarFotoIdent')"><b> Agregar Identificacion</b>
+				        	</label>
+			            </div>
+			            <div class="col-sm-10 col-md-12 col-lg-12 col-xl-12 my-5">
+			            	<div class="col-12 d-flex justify-content-center">
+			                	<div class="col-6 flex-grow-1"> 
+			                		<button type="button" class="btn btn-primary btn-block" id="continueButton" onclick="crearConfirmacion()">Continuar</button>
+			                	</div>
+			            	</div>
+			            </div>     
+			     	</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="buttonEditarIncidencia" onclick="editarPaseEntrada()">Actualizar</button>
+                    <button class="btn btn-success btn-sm" type="button" id="loadingButtonEditarIncidencia" style="display:none" disabled>
+                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                        Cargando...
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
+</section>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+
+<!-- Local -->
+<script type="text/javascript" src="../styles/js/chroma.min.js"></script>
+<script type="text/javascript" src="../utils/servido_utils.js"></script>
+<script src="./functions.js"></script>
+<script type="text/javascript" src="./components/locationCard.js"></script>
+<script type="text/javascript" src="./components/navbar.js"></script>
+<script src="./pase.js"></script>
+<script src="./pasesData.js"></script>
+<script src="./pases.js"></script>
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+</html>

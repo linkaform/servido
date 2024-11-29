@@ -9,6 +9,9 @@ let nombre=""
 let email=""
 let tel=""
 let id=""
+let visitaA=""
+let ubicacion=""
+let direccion=""
 let dataCatalogs=[]
 let catEstados=[]
 let qr_code=""
@@ -16,6 +19,10 @@ let flagAgregarVideo=false
 let flagAgregarIndet=false
 let showIneIden=[]
 let account_id=''
+let validFechaVisita = false
+let validFechaHasta = false
+let tables={}
+
 window.onload = function(){
 	setValueUserLocation('pase');
 	customNavbar(getValueUserLocation(), getCookie('userTurn'))
@@ -117,10 +124,15 @@ function getCatalogsIngresoPase(){
                     nombre=data.pass_selected.nombre
                     email=data.pass_selected.email
                     tel=data.pass_selected.telefono
+                    visitaA=data.pass_selected.visita_a[0] ? data.pass_selected.visita_a[0].nombre : ""
+                    ubicacion=data.pass_selected.ubicacion ? data.pass_selected.ubicacion : ""
+                    direccion=""
 
                     $("#nombreText").text(nombre)
                     $("#emailText").text(email)
                     $("#telefonoText").text(tel)
+                    $("#visitaPase2").text(visitaA)
+                    $("#ubicacionPase2").text(ubicacion)
                 } 
             }else{
                 errorAlert(res)
@@ -253,9 +265,9 @@ async function onChangeCatalogPase(type, id){
     }
 }
 
-function catalogoAreaByLocation(location){
+async function catalogoAreaByLocation(location){
 	loadingService()
-	fetch(url + urlScripts, {
+	await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name: "pase_de_acceso.py",
@@ -347,7 +359,7 @@ function setAddArea(editAdd ="nuevo", classNam){
     let randomID = Date.now();
     let newItem=`
         <div class="d-flex mb-3 col-12  div-`+classNam+`-`+editAdd+`-`+randomID+`" id="id-`+classNam+`-div-`+randomID+`">
-            <div class="flex-grow-1 d-flex">
+            <div class="flex-grow-1 d-flex flex-wrap">
                 <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
 	                <label for="exampleInputPassword1">Area: </label>
 	                <select type="select" class="form-select fill paseEntradaNuevo area-div-nuevo" id="tipoArea-`+randomID+`">
@@ -367,13 +379,13 @@ function setAddArea(editAdd ="nuevo", classNam){
         </div>
     `;
     $(`#`+classNam+`-input-form-`+editAdd).append(newItem) 
-    if(arrayAreas.length>0){
-		for(let i of arrayAreas){
+    if(arrayAreas.areas_by_location.length>0){
+		for(let i of arrayAreas.areas_by_location){
 			$(`#tipoArea-${randomID}`).append($('<option></option>').val(i).text(i));
 			$(`#tipoArea-${randomID}`).val("")
 		}
     }else{
-    	let tipoArea= document.getElementById(`"tipoArea-`+randomID+`"`)
+    	let tipoArea= document.getElementById(`tipoArea-`+randomID)
 		tipoArea.innerHTML=""
 		$(`#tipoArea-${randomID}`).append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
 		$(`#tipoArea-${randomID}`).val("")
@@ -596,10 +608,17 @@ function crearConfirmacionMini() {
 	}
 	 let htmlAppendEquiposTitulo=""
     if(arrayEquipos.length>0){
-		htmlAppendEquiposTitulo+=`<div class="d-flex justify-content-start ms-2" style="color:#171717"><h5><b>Equipos:</b></h5></div>`
+		htmlAppendEquiposTitulo+=`
+        <div class="d-flex flex-column justify-content-start ms-2" style="color:#171717">
+            <h5><b>Equipos:</b></h5>
+            <div class="d-flex flex-row flex-wrap"> 
+                `+htmlAppendEquipos+`
+            </div>
+        </div>`
 	}
 	let htmlAppendVehiculos=""
 	for (let vehiculo in listInputsVehicule) {
+        console.log("LISTA DE VEHICULOS",listInputsVehicule[vehiculo])
 		if(listInputsVehicule[vehiculo][0].value !==""){
 			htmlAppendVehiculos +="<div class='col-sm-12 col-md-12 col-lg-6 col-xl-6'>"
 			htmlAppendVehiculos +="<table class='table table-borderless customShadow' style='border: none; font-size: .8em; background-color: lightgray!important;'>"
@@ -622,7 +641,13 @@ function crearConfirmacionMini() {
 	}
 	let htmlAppendVehiculosTitulo=""
 	if(arrayVehiculos.length>0){
-		htmlAppendVehiculosTitulo+=`<div class="d-flex justify-content-start ms-2" style="color:#171717"><h5><b>Vehiculos:</b></h5></div>`
+		htmlAppendVehiculosTitulo+=`
+        <div class="d-flex flex-column justify-content-start ms-2" style="color:#171717">
+            <h5><b>Vehiculos:</b></h5>
+            <div class="d-flex flex-row flex-wrap"> 
+                `+htmlAppendVehiculos+`
+            </div>
+        </div>`
 	}
     let motivoHtml=""
 	let html = []
@@ -631,12 +656,15 @@ function crearConfirmacionMini() {
 	if(showIneIden.length>0){
         for(let i of showIneIden){
             if(i=="foto"){
+                console.log("USERRR FOPTO",urlImgUser, (urlImgUser=="" ? true : false))
                 showIn= (urlImgUser=="" ? true : false)
             }else if(i=="iden"){
+                console.log("USERRR CARDDD",urlImgCard, (urlImgCard=="" ? true : false))
                 showIde= (urlImgCard=="" ? true : false)
             }
         }
     }
+
     if(showIn || showIde){
 		successMsg("Validación", "Faltan datos por llenar", "warning")
 	}else{
@@ -689,9 +717,7 @@ function crearConfirmacionMini() {
 					<hr>
 					`+motivoHtml+`
 					`+htmlAppendEquiposTitulo+`
-					`+htmlAppendEquipos+`
 					`+htmlAppendVehiculosTitulo+`
-					`+htmlAppendVehiculos+`
 				</div>
 		
 	      `,
@@ -709,6 +735,7 @@ function crearConfirmacionMini() {
 		        let access_pass={
                     grupo_vehiculos:arrayVehiculos,
                     grupo_equipos:arrayEquipos,
+                    status_pase:'Activo'
                 }
                 if(urlImgUser !== ""){
                     access_pass.walkin_fotografia=[{file_name:"foto.png",file_url:urlImgUser}]
@@ -716,6 +743,7 @@ function crearConfirmacionMini() {
                 if(urlImgCard !== ""){
                     access_pass.walkin_identificacion=[{file_name:"indentificacion.png",file_url:urlImgCard}]
                 }
+                console.log("PASE DE ACESO",access_pass)
 	        	fetch(url + urlScripts, {
 			        method: 'POST',
 			        body: JSON.stringify({
@@ -769,12 +797,6 @@ function crearConfirmacionMini() {
     								            	<i class="fa-solid fa-envelope ms-2"></i> <b>Enviar correo</b>
     								        	</label><br>
     								        </div>
-                                            <div class="m-0 p-0">
-                                                <label>
-                                                    <input type="checkbox" name="opcionesCorreoMsj" id="descargarPdfCheck" value="descargarPdfCheck">
-                                                    <i class="fa-solid fa-download ms-2"></i> <b>Descargar PDF</b>
-                                                </label><br>
-                                            </div>
     			    			    	</div>
     			    			    	<img class="mt-1" alt="Código QR" id="codigo" width=250 height=250 src=${data.json.qr_pase[0].file_url}>
     						        </div>`,
@@ -789,7 +811,7 @@ function crearConfirmacionMini() {
                                     // Obtener los estados de los checkboxes
                                     const enviarMensajeChecked = document.getElementById('enviarMensaje').checked;
                                     const enviarCorreoChecked = document.getElementById('enviarCorreo').checked;
-                                    const descargarPdfChecked = document.getElementById('descargarPdfCheck').checked;
+                                    const descargarPdfChecked = true //document.getElementById('descargarPdfCheck').checked;
                                     return {
                                         enviarMsj: enviarMensajeChecked,
                                         enviarCorreo: enviarCorreoChecked,
@@ -798,8 +820,7 @@ function crearConfirmacionMini() {
                                 }
     						 }).then((result)=>{
     						 	if (result.value) {
-    						 		Swal.close()
-    						 		loadingService()
+                                    // Swal.close()
     						 		let data_for_msj = {}
     								let data_for_msj_tel={}
                                     
@@ -846,7 +867,10 @@ function crearConfirmacionMini() {
                                     if(result.value.descargarPdf){
                                         descargarPdfPase(data.json.pdf.data.download_url)
                                     }
-    						 	}
+    						 	}else{
+                                    console.log("NO SE ESCOGIO NADI")
+                                    Swal.close()
+                                }
     						 })
                         }
 			        }else{
@@ -860,90 +884,10 @@ function crearConfirmacionMini() {
 }
 
 
-function enviarCorreoPase(bodyPost){
-    fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify(bodyPost),
-        headers:{
-            'Content-Type': 'application/json',
-            // 'Authorization': 'Bearer '+userJwt
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            let dataR=res.response.data
-            if(dataR.status_code==400 || dataR.status_code==401){
-                errorAlert(dataR)
-            }else if(dataR.status_code==202 || dataR.status_code==201){
-                successMsg("Confirmación", "Informacion enviada correctamente.", "success")
-            }
-        }else{
-            errorAlert(res)
-        }
-    })
-}
-
-function enviarSmsPase(bodyPost){
-    fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify(bodyPost),
-        headers:{
-            'Content-Type': 'application/json',
-            // 'Authorization': 'Bearer '+userJwt
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        if (res.success) {
-            let dataR=res.response.data
-            if(dataR.status_code==400 || dataR.status_code==401){
-                errorAlert(dataR)
-            }else if(dataR.status_code==202 || dataR.status_code==201){
-                // successMsg("Confirmación", "Informacion enviada correctamente.", "success")
-            }
-        }else{
-            errorAlert(res)
-        }
-    })
-}
-
-function descargarPdfPase(url_pase){
-    fetch(url_pase)
-        .then(response => {
-            // Verificar si la respuesta es correcta
-            if (!response.ok) {
-                throw new Error('No se pudo obtener el archivo');
-            }
-            return response.blob();  // Convertir la respuesta en un Blob
-        })
-        .then(blob => {
-            // Crear un enlace de descarga con el Blob
-            const url = URL.createObjectURL(blob); // Crear una URL temporal del Blob
-
-            // Crear un enlace <a> para iniciar la descarga
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'archivo_descargado.pdf'; // Nombre del archivo descargado
-            document.body.appendChild(a);
-            a.click(); // Hacer clic en el enlace para descargar el archivo
-
-            // Limpiar: eliminar el enlace temporal
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url); // Liberar la URL temporal
-        })
-        .catch(error => {
-            console.error('Error al descargar el PDF:', error);
-        });
-}
-
-
-
-function removeNonNumeric(input) {
-    input.value = input.value.replace(/[^0-9]/g, '');
-}
 
 function crearConfirmacion() {
+    let enviarPreSmsChecked = document.getElementById('enviar_sms_pre_registro').checked;
+
 	let data= getInputsValueByClass('paseEntradaNuevo')
 	// let comentarios= getDataGrupoRepetitivo('com-input-form-nuevo','.com-div-nuevo' , 0)
     let arrComentarios= document.getElementsByClassName('com-div-nuevo')
@@ -1017,8 +961,7 @@ function crearConfirmacion() {
 		let formatMin = formatNumber(data.minNuevoPase)
 		let formatHor = formatNumber(data.horaNuevoPase)
 		fechaVisitaMain= `${data.fechaVisita} ${formatHor}:${formatMin}:00`
-        if(formatMin.length==1){
-        }
+        console.log("UHNA SOLA FECHAA", new Date(),fechaVisitaMain.replace(" ", "t"))
 	}else if (hayFechaHasta){
 		if(data.fechaVisitaOA !== ""){
 			let formatHor= formatNumber(data.horaNuevoRangoVisita)
@@ -1032,6 +975,15 @@ function crearConfirmacion() {
 		}
 		selectedRadioDias = $('input[name="diasAcceso"]:checked');
 		selectedRadioDiasAcceso=selectedRadioDias[0].id
+        let fechaActual= new Date()
+        let fecha1= fechaVisitaMain.replace(" ", "t")
+        let fecha2= fechaHastaMain.replace(" ", "t")
+        if(fecha1 < fechaActual || fecha2 < fechaActual){
+            console.log("RANGO DE FECHAS INVALIDO")
+            $("#fechaVisitaOA").val("")
+            $("#fechaHastaOA").val("")
+        }
+        console.log("RANGO9 DE FECHAS", fechaActual, fecha1, fecha2 )
 	}
 	let diasArr=[]
     let checkboxes = document.querySelectorAll('input[name="diasPase"]');
@@ -1124,6 +1076,13 @@ function crearConfirmacion() {
             let inputTel= document.getElementById("telefono")
             inputTel.value=""
         }else{
+            if(enviarPreSmsChecked){
+                enviarPreSmsChecked = {
+                    "from": "enviar_pre_sms",
+                    "mensaje": "",
+                    "numero": numeroConLada
+                }
+            }
     		Swal.fire({
     	        title:'Confirmación',
     	        html:`
@@ -1214,7 +1173,7 @@ function crearConfirmacion() {
                         ubicacion:data.ubicacion,
                         tema_cita: data.temaCita,
                         descripcion: data.descripcion,
-                		perfil_pase:"visita general",
+                		perfil_pase:"Visita General",
                 		status_pase:'Proceso',
                         visita_a: getCookie("userName"),
                 		custom:true,
@@ -1263,7 +1222,8 @@ function crearConfirmacion() {
     			            script_name: "pase_de_acceso.py",
     		                option: 'create_access_pass',
     		                location:getCookie('userLocation'),
-    		                access_pass: access_pass
+    		                access_pass: access_pass,
+                            enviar_pre_sms: enviarPreSmsChecked
     			        }),
     			        headers:{
     			            'Content-Type': 'application/json',
@@ -1278,6 +1238,15 @@ function crearConfirmacion() {
                                 Swal.close()
                                 errorAlert(data)
                             }else if(data.status_code==202 || data.status_code==201){
+
+                                let protocol = window.location.protocol;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                                let host = window.location.host;
+                                let docs = ""
+                                
+                                let linkk=`${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id+`&user=`+getCookie("userId")+ `&docs=`+ checkDocSeleccionados
+
+
+
     			        	    Swal.close()
     			        	    Swal.fire({
         				      		type:"success",
@@ -1288,6 +1257,7 @@ function crearConfirmacion() {
         			    			      	<div class='align-items-start m-2'>
         			    			      	  	El pase de entrada se ha generado correctamente. Por favor, copie el siguiente enlace y compartalo con el visitante para
         			    			      	  	completar el proceso.
+                                                <input type="text" class="form-control fill paseEntradaNuevo mt-3" id="nombreCompleto" aria-describedby="emailHelp" value="${linkk}">
         			    			    	</div>
         						        </div>`,
         						    showCancelButton:false,
@@ -1350,8 +1320,156 @@ function crearConfirmacion() {
 }
 
 
+function validDatePase(){
+    let fechaActual= new Date()
+    let fechaFijaSelected = $("#radioFechaFija").is(':checked')
+    let rangoFechasSelected = $("#radioRangoFechas").is(':checked')
+    $('#fechaVisita').removeClass('is-invalid');
+    $('#horaNuevoPase').removeClass('is-invalid');
+    $('#minNuevoPase').removeClass('is-invalid');
+    $('#fechaHastaOA').removeClass('is-invalid');
+    $('#fechaVisitaOA').removeClass('is-invalid');
+    if(fechaFijaSelected){
+        let fullDate= `${$("#fechaVisita").val()}T${$("#horaNuevoPase").val()}:${$("#minNuevoPase").val()}:00`
+        if(new Date(fullDate).toLocaleDateString() >= fechaActual.toLocaleDateString()){
+            $('#horaNuevoPase').val(formatNumber(fechaActual.getHours() + 1));
+            $('#minNuevoPase').val(formatNumber(fechaActual.getMinutes()));
+        }else if (new Date(fullDate) < fechaActual){
+            $('#fechaVisita').addClass('is-invalid');
+            $('#horaNuevoPase').addClass('is-invalid');
+            $('#minNuevoPase').addClass('is-invalid');
+
+            $('#fechaVisita').val("");
+            $('#horaNuevoPase').val("00");
+            $('#minNuevoPase').val("00");
+        }
+    }else if (rangoFechasSelected){
+        console.log("RANGO SELECCIONADA")
+        let fullDate1= `${$("#fechaVisitaOA").val()}T00:00:00`
+        let fullDate2= `${$("#fechaHastaOA").val()}T00:00:00`
+        if (new Date(fullDate1).toLocaleDateString() < fechaActual.toLocaleDateString()){
+            $('#fechaVisitaOA').addClass('is-invalid');
+            $('#fechaVisitaOA').val('')
+        }else if(new Date(fullDate2).toLocaleDateString() < fechaActual.toLocaleDateString()){
+            $('#fechaHastaOA').addClass('is-invalid');
+            $('#fechaHastaOA').val('')
+        }
+    }
+    
+}
+
+
+function setModal(type = 'none',id ="", nombre='', email=''){
+    if(type== "listaPasesTemporales"){
+        verListaPasesTemporales()
+    }
+}
+
+function verListaPasesTemporales(){
+    loadingService()
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: 'lista_pases',
+            caseta: "Caseta Principal",
+            location: "Planta Monterrey",
+            inActive:"true"
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close();
+            let listPases = res.response.data
+            let formatedList=[]
+            console.log()
+            for(let obj of listPases){
+                formatedList.push({nombre: obj.nombre, folio: obj.folio, qr_code: obj.qr_code, ubicacion: obj.ubicacion, foto: obj.foto})
+            }
+
+            if(user!="" && userJwt!=""){
+                drawTableSelect('tableListaPases',columsListaPases, formatedList,"500px",1);
+                $("#listaPasesTitulo").text("Lista de Pases")
+                $("#listModal").modal('show');
+            }
+
+            tables["tableListaPases"].on("rowSelectionChanged", function(data, rows){
+                if (rows.length > 0) {
+                    $("#inputCodeUser").val(data[0].qr_code);
+                    if(data[0].qr_code!==""){
+                        //setSpinner(true, 'divSpinner');
+                        $("#divSpinner").show();
+                        buscarPaseEntrada();
+                    }
+                    $("#listModal").modal('hide');
+                }
+            });
+        } 
+    });
+}
+
+const columsListaPases= [
+    { title:"Nombre", field:'nombre',hozAlign:"left",headerFilter:'input',
+          formatter: (cell, formatterParams) => {
+               let data = cell.getData();
+               if(!data.hasOwnProperty('foto') || data.foto==undefined){
+                    data.foto=[{file_name: "notfound", file_url: "https://www.smarttools.com.mx/wp-content/uploads/2019/05/imagen-no-disponible.png"}]
+               }
+               let foto= data.foto.length>0 ? data.foto[0].file_url : "https://www.smarttools.com.mx/wp-content/uploads/2019/05/imagen-no-disponible.png"
+               let id = cell.getData().id ? cell.getData().id : 0;
+               let divActions = '<div id="inf'+data.folio +'"><div class="d-flex flex-row" id="listOfGuards">';
+               divActions+= '<div col-sm-12 col-md-12 col-lg-6 col-xl-6> <img id="imgGuardiaApoyo" height="60" width="60" src="'
+               + foto + '"> </div > <div col-sm-12 col-md-12 col-lg-6 col-xl-6 class="flex-column ms-3"> <div> <b>'
+               + data.nombre +'</b> </div></div>';
+               divActions += '</div> </div>';
+               return divActions;
+          },
+     }
+];
+
+//FUNCION para dibujar las tablas con opcion select de la pagina y guardar su instancia en el obj tables
+function drawTableSelect(id, columnsData, tableData, height, select){
+    let  table = new Tabulator("#" + id, {
+        layout:"fitDataStretch",
+        height:height,
+        data:tableData,
+        textDirection:"ltr",
+        columns:columnsData,
+        pagination:true, 
+        selectableRows:select,
+        paginationSize:40,
+        placeholder: "No hay registros disponibles", 
+    });
+    tables[id]=table;
+}
+
+
+function removeNonNumeric(input) {
+    input.value = input.value.replace(/[^0-9]/g, '');
+}
+
+function validarTel(input){
+    removeNonNumeric(input)
+    let numValid = iti.isValidNumber()
+    let numeroConLada = ""
+    if(numValid){
+        numeroConLada = iti.getNumber();
+    }
+    $('#telefono').removeClass('is-invalid');
+    if(!numValid){
+        $('#telefono').addClass('is-invalid');
+        let inputTel = document.getElementById("telefono")
+        inputTel.value = ""
+    }
+}
 
 function limpiarTomarFoto(id){
+    $("#container"+id+" video").remove()
     flagVideoUser=false
     currentStream=null
     $('#buttonTake' + id).show();
@@ -1361,9 +1479,11 @@ function limpiarTomarFoto(id){
     $('#img' + id).attr('src', '');
     $('#inputFile' + id).val('');
 
-    fotosNuevoIncidenteEditar={}
-    fotosNuevoIncidente={}
-    fotoNuevaFalla={}
+    if(id == "User"){
+        urlImgUser=""
+    }else{
+        urlImgCard=""
+    }
 }
 
 //FUNCION eliminar un set repetitivo de vehiculo
@@ -1411,9 +1531,9 @@ function setAddVehiculo() {
 			</div>
 			<div class="div-row-vehiculo">
 				<label class="form-label">Matrícula del Vehiculo:</label>
-				<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-`+ randomID+`>
+				<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-`+ randomID+`">
 			</div>
-            <div class="div-row-vehiculo col-12 m-0 p-0">
+            <div class="div-row-vehiculo">
                 <label class="form-label">Estado:</label>
                 <select class="form-select group-vehiculo" id="inputEstadoVehiculo-`+randomID+`" style="height: 40px !important; overflow: auto !important;">
                 </select>
@@ -1584,5 +1704,64 @@ function setRequestFileImg(type, id="") {
         });
     }else{
         return 'Error';
+    }
+}
+
+//FUNCION para guardar los archivos en el server 
+async function guardarArchivos(id, isImage){
+    loadingService()
+    const fileInput = document.getElementById(id);
+    const file = fileInput.files[0]; // Obtener el archivo seleccionado
+
+    if (!file) {
+        alert('Selecciona un archivo para subir');
+        return;
+    }
+    let data=""
+    let formData = new FormData();
+    if(isImage){
+        formData.append('File', file);
+        formData.append('field_id', '63e65029c0f814cb466658a2');
+        formData.append('is_image', true);
+        formData.append('form_id', 95435);
+    }else{
+        formData.append('File[0]', file);
+        formData.append('field_id', '63e65029c0f814cb466658a2');
+        formData.append('form_id', 95435);
+
+    }
+
+    const options = {
+      method: 'POST', 
+      body: formData,
+    };
+    let respuesta = await fetch('https://app.linkaform.com/api/infosync/cloud_upload/', options);
+    data = await respuesta.json(); //Obtenemos los datos de la respuesta 
+    data.isImage=isImage
+    console.log("DATAA",data)
+    if(id=="inputFileUser" && data.file){
+        urlImgUser = data.file
+    }else if(id=="inputFileCard" && data.file){
+        urlImgCard= data.file
+    }
+    console.log("CARD",urlImgCard, urlImgUser)
+    if(data.hasOwnProperty('error')){
+        Swal.fire({
+            title: "Error",
+            text: data.error,
+            type: "error",
+            showConfirmButton:false,
+            timer:1100
+        });
+        
+    }else{
+        let text= isImage? 'Las imagenes fueron guardadas correctamente.': 'Los archivos fueron guardados correctamente.';
+        Swal.fire({
+            title: "Acción Completada",
+            text: text,
+            type: "success",
+            showConfirmButton:false,
+            timer:1100
+        });
     }
 }

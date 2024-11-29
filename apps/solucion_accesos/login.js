@@ -1,5 +1,4 @@
 window.onload = function(){
-
 	let user = getCookie("userId");
 	let jw = getCookie("userJwt");
 	let protocol = window.location.protocol;
@@ -15,8 +14,7 @@ window.onload = function(){
 		}).click();*/
 		agregarPestana('turnos')
 	}/*else{
-		let urlNew = `${protocol}//${host}/solucion_accesos/login.html`
-		window.location.href =urlNew
+		setCloseSession();
 	}*/
 	let userInput = document.getElementById('user');
 	let userError = document.getElementById('userError');

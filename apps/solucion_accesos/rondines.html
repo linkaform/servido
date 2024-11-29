@@ -94,15 +94,37 @@
 	    <button class="nav-link" id="nav-todos-tab" data-bs-toggle="tab" data-bs-target="#nav-todos" type="button" role="tab" aria-controls="nav-articulos" aria-selected="false">Todos</button>
 	  </div>
 	</nav>
-        <div class="tab-content mainSectionMargins" id="nav-tabContent">
-          <div class="tab-pane fade show active " id="nav-pendientes" role="tabpanel" aria-labelledby="nav-pendientes-tab"> 
-            <div class="tab-content " id="myTabContent" >
-                <div class="d-flex mt-2 mb-0 justify-content-end">
+    <div class="tab-content mainSectionMargins" id="nav-tabContent">
+      <div class="tab-pane fade show active " id="nav-pendientes" role="tabpanel" aria-labelledby="nav-pendientes-tab"> 
+        <div class="tab-content " id="myTabContent" >
+            <div class="d-flex mt-2 mb-0 justify-content-end">
+                <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticle');" style="display: none;">
+                    <i class="fa-solid fa-plus"></i>
+                    Nuevo Recorrido
+                </button>
+                <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListPendientes" >
+                    <i class="fa-solid fa-file-arrow-down" ></i>
+                    Descargar
+                </button>
+                <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Filtros
+                </button>
+                <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('articles')" style="display: none;">
+                    <i class="fa-solid fa-trash"></i>
+                    Eliminar
+                </button>
+            </div>
+            <div class="mt-2 mb-3 tableOverflow" id="tableListPendientes"></div>
+        </div>
+       </div>
+      <div class="tab-pane fade" id="nav-realizados" role="tabpanel" aria-labelledby="nav-reslizados-tab">
+            <div class="d-flex mt-2  justify-content-end">
                     <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticle');" style="display: none;">
                         <i class="fa-solid fa-plus"></i>
                         Nuevo Recorrido
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListPendientes" >
+                    <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListRealizados" >
                         <i class="fa-solid fa-file-arrow-down" ></i>
                         Descargar
                     </button>
@@ -115,73 +137,51 @@
                         Eliminar
                     </button>
                 </div>
-                <div class="mt-2 mb-3 tableOverflow" id="tableListPendientes"></div>
-            </div>
-           </div>
-          <div class="tab-pane fade" id="nav-realizados" role="tabpanel" aria-labelledby="nav-reslizados-tab">
-                <div class="d-flex mt-2  justify-content-end">
-                        <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticle');" style="display: none;">
-                            <i class="fa-solid fa-plus"></i>
-                            Nuevo Recorrido
-                        </button>
-                        <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListRealizados" >
-                            <i class="fa-solid fa-file-arrow-down" ></i>
-                            Descargar
-                        </button>
-                        <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            Filtros
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('articles')" style="display: none;">
-                            <i class="fa-solid fa-trash"></i>
-                            Eliminar
-                        </button>
-                    </div>
-                <div class="mt-2 mb-3 tableOverflow" id="tableListRealizados"></div>
-            </div>
-          <div class="tab-pane fade" id="nav-cancelados" role="tabpanel" aria-labelledby="nav-cancelados-tab"> 
-                 <div class="d-flex mt-2 mb-1 justify-content-end">
-                        <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticle');" style="display: none;">
-                            <i class="fa-solid fa-plus"></i>
-                            Nuevo Recorrido
-                        </button>
-                        <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListCancelados" >
-                            <i class="fa-solid fa-file-arrow-down" ></i>
-                            Descargar
-                        </button>
-                        <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            Filtros
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('articles')" style="display: none;">
-                            <i class="fa-solid fa-trash"></i>
-                            Eliminar
-                        </button>
-                    </div> 
-                    <div class="mt-2 mb-3 tableOverflow" id="tableListCancelados"></div>   
-            </div>
-          <div class="tab-pane fade" id="nav-todos" role="tabpanel" aria-labelledby="nav-todos-tab"> 
-            <div class="d-flex mt-2 mb-1 justify-content-end">
-                        <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticle');" style="display: none;">
-                            <i class="fa-solid fa-plus"></i>
-                            Nuevo Recorrido
-                        </button>
-                        <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListTodos" >
-                            <i class="fa-solid fa-file-arrow-down" ></i>
-                            Descargar
-                        </button>
-                        <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            Filtros
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('articles')" style="display: none;">
-                            <i class="fa-solid fa-trash"></i>
-                            Eliminar
-                        </button>
-                    </div>
-                 <div class="mt-2 mb-3 tableOverflow" id="tableListTodos"></div>
-             </div>
+            <div class="mt-2 mb-3 tableOverflow" id="tableListRealizados"></div>
         </div>
+      <div class="tab-pane fade" id="nav-cancelados" role="tabpanel" aria-labelledby="nav-cancelados-tab"> 
+             <div class="d-flex mt-2 mb-1 justify-content-end">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticle');" style="display: none;">
+                        <i class="fa-solid fa-plus"></i>
+                        Nuevo Recorrido
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListCancelados" >
+                        <i class="fa-solid fa-file-arrow-down" ></i>
+                        Descargar
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        Filtros
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('articles')" style="display: none;">
+                        <i class="fa-solid fa-trash"></i>
+                        Eliminar
+                    </button>
+                </div> 
+                <div class="mt-2 mb-3 tableOverflow" id="tableListCancelados"></div>   
+        </div>
+      <div class="tab-pane fade" id="nav-todos" role="tabpanel" aria-labelledby="nav-todos-tab"> 
+        <div class="d-flex mt-2 mb-1 justify-content-end">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewArticle');" style="display: none;">
+                        <i class="fa-solid fa-plus"></i>
+                        Nuevo Recorrido
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListTodos" >
+                        <i class="fa-solid fa-file-arrow-down" ></i>
+                        Descargar
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 1)" >
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        Filtros
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('articles')" style="display: none;">
+                        <i class="fa-solid fa-trash"></i>
+                        Eliminar
+                    </button>
+                </div>
+             <div class="mt-2 mb-3 tableOverflow" id="tableListTodos"></div>
+         </div>
+    </div>
 </section>
 
 <div class="modal fade" id="modalNuevoRecorrido" tabindex="-1"  aria-hidden="true">

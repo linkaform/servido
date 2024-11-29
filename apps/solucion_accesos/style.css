@@ -1,6 +1,6 @@
 :root {
   --yellowLKF: #FFA823;
-  --yellowLKF-light: #ffe1b4 ;
+  --yellowLKF-light:  #dcdcdc  ;
   --downloadButton:#003285;
   --text-gray:#616161;
   --soft-gray:#dcdcdc;
@@ -379,7 +379,7 @@ th {
 }
 
 .mainSection{
-  margin-top: 65px !important;
+  margin-top: 25px !important;
 }
 
 .mainSectionMargins{
@@ -683,4 +683,6 @@ input[type=search]{
   border-radius: 15px; /* Radio de las esquinas */
 }
 
-
+.custom-color {
+    color: yellow; /* Cambia el color de la estrella */
+}

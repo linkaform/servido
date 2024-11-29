@@ -71,3 +71,86 @@ function loadBoothsLocations(){
         }
     });
 }
+
+
+
+function enviarCorreoPase(bodyPost){
+    loadingService()
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify(bodyPost),
+        headers:{
+            'Content-Type': 'application/json',
+            // 'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            let dataR=res.response.data
+            if(dataR.status_code==400 || dataR.status_code==401){
+                errorAlert(dataR)
+            }else if(dataR.status_code==202 || dataR.status_code==201){
+                successMsg("Confirmación", "Informacion enviada correctamente.", "success")
+            }
+        }else{
+            errorAlert(res)
+        }
+    })
+}
+
+function enviarSmsPase(bodyPost){
+    loadingService()
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify(bodyPost),
+        headers:{
+            'Content-Type': 'application/json',
+            // 'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            let dataR=res.response.data
+            if(dataR.status_code==400 || dataR.status_code==401){
+                errorAlert(dataR)
+            }else if(dataR.status_code==202 || dataR.status_code==201){
+                Swal.close()
+                // successMsg("Confirmación", "Informacion enviada correctamente.", "success")
+            }
+        }else{
+            errorAlert(res)
+        }
+    })
+}
+
+function descargarPdfPase(url_pase){
+    loadingService()
+    fetch(url_pase)
+        .then(response => {
+            // Verificar si la respuesta es correcta
+            if (!response.ok) {
+                throw new Error('No se pudo obtener el archivo');
+            }
+            return response.blob();  // Convertir la respuesta en un Blob
+        })
+        .then(blob => {
+            // Crear un enlace de descarga con el Blob
+            const url = URL.createObjectURL(blob); // Crear una URL temporal del Blob
+
+            // Crear un enlace <a> para iniciar la descarga
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'PASE_DE_ENTRADA.pdf'; // Nombre del archivo descargado
+            document.body.appendChild(a);
+            a.click(); // Hacer clic en el enlace para descargar el archivo
+
+            // Limpiar: eliminar el enlace temporal
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url); // Liberar la URL temporal
+        })
+        .catch(error => {
+            console.error('Error al descargar el PDF:', error);
+        });
+}
