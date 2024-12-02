@@ -6,6 +6,7 @@ let userJwt = null;
 let userName = null;
 let userParentId = null;
 let scriptId = null;
+console.log('cargando js')
 
 $('#divOptions').hide();
 $('#title_report').hide();
@@ -243,7 +244,10 @@ function getFirstElement(wharehouses, familia, line) {
       title: 'Traspaso',
       columns: []
     };
-
+    let traspasoColumn2 = {
+      title: 'Traspaso2',
+      columns: []
+    };
     let balanceoColumn = {
       title: 'Balanceo sugerido',
       columns: []
@@ -252,20 +256,19 @@ function getFirstElement(wharehouses, familia, line) {
     wharehouses.forEach(wharehouse => {
       field_wharehouse = wharehouse.toLowerCase().replace(" ", "_")
       traspasoColumn.columns.push({
-        title: `% de stock inical`,
+        title: `% Inical`,
         field: `p_stock_max_${field_wharehouse}`,
         hozAlign: "right",
         // formatter: "money", formatterParams: { thousand: ",", symbol: "%", symbolAfter: true },
         width: 150,
         hozAlign: "left",
         formatter:"progress", formatterParams:{
-              min:0,
+              min:-1,
               max:100,
               color:[
-                "rgb(211, 47, 47)", "rgb(239, 83, 80)","rgb(244, 143, 177)", ///reds
-                "rgb(255, 235, 59)", "rgb(255, 241, 118)","rgb(230, 238, 156)", ///yellows
-                "rgb(230, 238, 156)", "rgb(0, 188, 212)","rgb(0, 172, 193)", ///blues
-                "rgb(76, 175, 80)", "rgb(56, 142, 60)","rgb(56, 142, 60)", ///greens
+                "rgb(211, 47, 47)",//, "rgb(239, 83, 80)","rgb(244, 143, 177)", ///reds
+                "rgb(255, 235, 59)",// "rgb(255, 241, 118)","rgb(230, 238, 156)", ///yellows
+                "rgb(76, 175, 80)", //"rgb(56, 142, 60)","rgb(56, 142, 60)", ///greens
                 ],
               legendColor:"#24201E",
               legendAlign:"center",
@@ -274,32 +277,32 @@ function getFirstElement(wharehouses, familia, line) {
       });
       traspasoColumn.columns.push({
         title: wharehouse,
-        field: `actuals_${field_wharehouse}`,
+        field: "Stock", //`actuals_${field_wharehouse}`,
+        formatter: "money", formatterParams: { thousand: ",", precision: 2, symbolAfter: true },
         hozAlign: "right",
         width: 200
       });
       //stock_to_move_alm_monterrey
       traspasoColumn.columns.push({
-        title: `Traspaso ${wharehouse}`,
+        title: 'Traspaso', //`Traspaso ${wharehouse}`,
         field: `stock_to_move_${field_wharehouse}`,
         hozAlign: "right",
-        width: 230
+        width: 150
       });
       traspasoColumn.columns.push({
-        title: `% de stock final`,
+        title: `%  Final`,
         field: `final_stock_percentage_${field_wharehouse}`,
         hozAlign: "right",
         // formatter: "money", formatterParams: { thousand: ",", symbol: "%", symbolAfter: true },
-        width: 180,
+        width: 150,
         hozAlign: "left",
         formatter:"progress", formatterParams:{
               min:0,
               max:100,
               color:[
-                "rgb(211, 47, 47)", "rgb(239, 83, 80)","rgb(244, 143, 177)", ///reds
-                "rgb(255, 235, 59)", "rgb(255, 241, 118)","rgb(230, 238, 156)", ///yellows
-                "rgb(230, 238, 156)", "rgb(0, 188, 212)","rgb(0, 172, 193)", ///blues
-                "rgb(76, 175, 80)", "rgb(56, 142, 60)","rgb(56, 142, 60)", ///greens
+                "rgb(211, 47, 47)",//, "rgb(239, 83, 80)","rgb(244, 143, 177)", ///reds
+                "rgb(255, 235, 59)",// "rgb(255, 241, 118)","rgb(230, 238, 156)", ///yellows
+                "rgb(76, 175, 80)", //"rgb(56, 142, 60)","rgb(56, 142, 60)", ///greens
                 // "", "","", ///reds
                 ],
               legendColor:"#24201E",
