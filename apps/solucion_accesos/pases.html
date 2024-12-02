@@ -509,7 +509,7 @@
 						                        <label class="mx-1">:</label>
 						                        <select class="form-select time-select contentNuevoPase paseEntradaEdit" id="minNuevoPase" onchange="validDatePase()">
 						                        </select>
-						                        <label class="ms-2" id="ampmNuevoPase"></label>
+						                        <label class="ms-2" id="ampmNuevoPase">hrs</label>
 						                    </div>
 						               </div>
 						            </div>
@@ -589,37 +589,37 @@
 					               		<div class="d-flex flex-row flex-wrap justify-content-start align-items-center">
 				                            <div class="checkbox-group me-2">
 				                                <label>
-				                                    <input type="checkbox" name="diasPase" value="lunes" > Lunes
+				                                    <input type="checkbox" name="diasPase" value="lunes" class="paseEntradaEdit"> Lunes
 				                                </label>
 				                            </div>
 				                            <div class="checkbox-group me-2">
 				                                <label>
-				                                    <input type="checkbox" name="diasPase" value="martes" > Martes
+				                                    <input type="checkbox" name="diasPase" value="martes" class="paseEntradaEdit"> Martes
 				                                </label>
 				                            </div>
 				                            <div class="checkbox-group me-2">
 				                                <label>
-				                                    <input type="checkbox" name="diasPase" value="miércoles" > Miercoles
+				                                    <input type="checkbox" name="diasPase" value="miércoles" class="paseEntradaEdit"> Miercoles
 				                                </label>
 				                            </div>
 				                            <div class="checkbox-group me-2">
 				                                <label>
-				                                    <input type="checkbox" name="diasPase" value="jueves" > Jueves
+				                                    <input type="checkbox" name="diasPase" value="jueves" class="paseEntradaEdit"> Jueves
 				                                </label>
 				                            </div>
 				                            <div class="checkbox-group me-2">
 				                                <label>
-				                                    <input type="checkbox" name="diasPase" value="viernes" > Viernes
+				                                    <input type="checkbox" name="diasPase" value="viernes" class="paseEntradaEdit"> Viernes
 				                                </label>
 				                            </div>
 				                            <div class="checkbox-group me-2">
 				                                <label>
-				                                    <input type="checkbox" name="diasPase" value="sábado" > Sábado
+				                                    <input type="checkbox" name="diasPase" value="sábado" class="paseEntradaEdit"> Sábado
 				                                </label>
 				                            </div>
 				                            <div class="checkbox-group me-2">
 				                                <label>
-				                                    <input type="checkbox" name="diasPase" value="domingo" > Domingo
+				                                    <input type="checkbox" name="diasPase" value="domingo" class="paseEntradaEdit"> Domingo
 				                                </label>
 				                            </div>
 				                        </div>
@@ -638,12 +638,12 @@
 						                    <div class="col-sm-10 col-md-10 col-lg-10 col-xl-11 d-flex flex-wrap justify-content-start gap-5">
 						                    	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
 									                <label for="exampleInputPassword1">Area: </label>
-									                <select type="select" class="form-select fill area-div-nuevo" id="tipoArea" >
+									                <select type="select" class="form-select fill area-div-nuevo paseEntradaEdit" id="tipoArea" >
 									                </select>
 									            </div>
 						                       <div class="col-sm-10 col-md-10 col-lg-6 col-xl-6">
 									                <label for="exampleInputPassword1">Comentario: </label>
-									                <textarea type="text" class="form-control fill area-div-nuevo" rows="1" id="comentario" placeholder=""></textarea>
+									                <textarea type="text" class="form-control fill area-div-nuevo paseEntradaEdit" rows="1" id="comentario" placeholder=""></textarea>
 									            </div>
 						                    </div>
 						                    <div>
@@ -668,7 +668,7 @@
 					                    <div class="flex-grow-1 d-flex justify-content-start">
 					                       <div class="col-sm-10 col-md-10 col-lg-6 col-xl-6">
 								                <label for="exampleInputPassword1">Instruccion o comentario: </label>
-								                <textarea type="text" class="form-control fill com-div-nuevo" rows="1" id="instruccionComentario-123" placeholder=""></textarea>
+								                <textarea type="text" class="form-control fill com-div-nuevo paseEntradaEdit" rows="1" id="instruccionComentario-123" placeholder=""></textarea>
 								            </div>
 						                    <div>
 						                        <button type="button" class="btn btn-success button-add-register" onclick="setAddCom('nuevo', 'com');return false;">
@@ -690,18 +690,18 @@
 				            	<input type="checkbox" class="paseEntradaEdit" name="AgregarFotoIdent" value="agregarIdentificacion" id="agregarIdentificacion" onchange="onChangeOpcionesAvanzadas('AgregarFotoIdent')"><b> Agregar Identificacion</b>
 				        	</label>
 			            </div>
-			            <div class="col-sm-10 col-md-12 col-lg-12 col-xl-12 my-5">
+			            <!-- <div class="col-sm-10 col-md-12 col-lg-12 col-xl-12 my-5">
 			            	<div class="col-12 d-flex justify-content-center">
 			                	<div class="col-6 flex-grow-1"> 
 			                		<button type="button" class="btn btn-primary btn-block" id="continueButton" onclick="crearConfirmacion()">Continuar</button>
 			                	</div>
 			            	</div>
-			            </div>     
+			            </div>    -->  
 			     	</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success btn-sm" id="buttonEditarIncidencia" onclick="editarPaseEntrada()">Actualizar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="buttonEditarIncidencia" onclick="crearConfirmacionEditar()">Actualizar</button>
                     <button class="btn btn-success btn-sm" type="button" id="loadingButtonEditarIncidencia" style="display:none" disabled>
                         <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
                         Cargando...
