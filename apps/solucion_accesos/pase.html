@@ -151,7 +151,7 @@
 			                        <label class="mx-1">:</label>
 			                        <select class="form-select time-select contentNuevoPase paseEntradaNuevo" id="minNuevoPase" onchange="validDatePase()">
 			                        </select>
-			                        <label class="ms-2" id="ampmNuevoPase"></label>
+			                        <label class="ms-2" id="ampmNuevoPase">hrs</label>
 			                    </div>
 			               </div>
 			            </div>
@@ -523,30 +523,7 @@
         </div>
     </section>
 
-	<div class="modal fade" id="paseEntradaEditar" tabindex="-1"  aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5">Editar pase </h1>
-				</div>
-
-				<div class="mb-3 m-4 mr-0">
-					<label class="form-label">Fecha de visita:</label>
-					<input type="date" class="form-control comment-div-nueva" id="idComentarioPase" rows="3" placeholder="Escribe algo..."></textarea>
-				</div>
-				<div class="mb-3 m-4 mr-0">
-					<label class="form-label">Fecha hasta:</label>
-					<input type="date" class="form-control comment-div-nueva" id="idComentarioPase" rows="3" placeholder="Escribe algo..."></textarea>
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="agregarComentarioPaseAcceso('pase')">Actualizar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
+	
     <!-- Modal List-->
 	<div class="modal fade" id="listModal" tabindex="-1"  aria-hidden="true" >
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width:600px">

@@ -545,7 +545,7 @@ function onChangeAmpmLabel(idHora, labelId){
     }else{
         $('#'+labelId).text('AM')
     }
-
+    $('#'+labelId).text('hrs')
 }
 
 function iniciarSelectHora(hr, min, lab){
@@ -563,7 +563,7 @@ function iniciarSelectHora(hr, min, lab){
     }
     selMin.value='00'
     selHora.value='00'
-    $('#'+lab).text('AM')
+    $('#'+lab).text('hrs')
 
 }
 
@@ -1057,3 +1057,20 @@ const objeto = {
   fecha1: '2024-11-30T01:13:00', // Fecha y hora de visita
   fecha2: '2024-12-05T01:13:00'    // Fecha y hora de hasta (opcional)
 };
+
+
+function limpiarInputsPorClase(clase) {
+        // Selecciona todos los elementos con la clase especificada
+    $('.' + clase).each(function() {
+        if ($(this).is('input[type="text"],input[type="tel"], input[type="password"], input[type="email"], input[type="number"], input[type="checkbox"], input[type="radio"],input[type="date"]')) {
+            $(this).val(''); // Limpia el valor de los inputs de texto, número, etc.
+            $(this).prop('checked', false); // Limpia los checkboxes y radios
+        } else if ($(this).is('select')) {
+            $(this).prop('selectedIndex', 0); // Restablece el valor del select a la opción por defecto
+        } else if ($(this).is('textarea')) {
+            $(this).val(''); // Limpia el contenido del textarea
+        }
+    });
+
+    $("#fechaVisitaOA").val('')
+}

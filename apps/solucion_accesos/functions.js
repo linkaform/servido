@@ -126,7 +126,6 @@ function enviarSmsPase(bodyPost){
 }
 
 function descargarPdfPase(url_pase){
-    loadingService()
     fetch(url_pase)
         .then(response => {
             // Verificar si la respuesta es correcta
