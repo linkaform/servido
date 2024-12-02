@@ -1256,9 +1256,7 @@ async function abrirModalNuevaEditarFalla(folio=null,nuevoEditar='Nuevo'){
 }
 
 function llenarEditarFalla(selectArea,selectedFalla,selectUbicacion,selectFalla){
-    console.log("CONTENIDOO", selectedFalla)
     selectFalla.value= selectedFalla.falla
-    //selectUbicacion.value=selectedFalla.falla_ubicacion;
      let optionsCaseta = arrayUserBoothsLocations.filter(booth => {
         return booth.ubi == selectedFalla.falla_ubicacion;
     });
@@ -1723,7 +1721,6 @@ function editarIncidencia(){
     personasArray = eliminarObjetosConPropiedadesVacias(personasArray)
     accionArray = eliminarObjetosConPropiedadesVacias(accionArray)
     depositoArray = eliminarObjetosConPropiedadesVacias(depositoArray)
-    console.log("DEPOSITO ARRAY222", depositoArray)
     let fecha1= data.fechaEditarIncidencia+' '+data.horaEditarIncidencia+':'+data.minEditarIncidencia+":00"
     let data_incidence_update ={
         'reporta_incidencia': data.reportaEditarIncidencia,
@@ -1795,8 +1792,6 @@ function editarIncidencia(){
                 type: "warning"
             });
         } else {
-            console.log("INFO PARA ACTUALIZAR",data_incidence_update, selected.folio)
-            //console.log(ERROR)
             fetch(url + urlScripts, {
                 method: 'POST',
                 body: JSON.stringify({
@@ -1883,7 +1878,6 @@ function editarIncidencia(){
                                 selectedIncidencia[key]= data_incidence_update[key]
                             }
                         }
-                        console.log("DATAA QUE SE EDITOOO",data_incidence_update)
                         tables["tableIncidencias"].setData(dataTableIncidencias);
                         $("#editIncidentModal").modal('hide')
                         $("#buttonEditarIncidencia").show();
@@ -2102,7 +2096,6 @@ function nuevaFalla(){
             arraySuccessFoto.push({file_name: fotosNuevoIncidente.file_name, file_url: fotosNuevoIncidente.file_url});
         }     
     }
-    console.log("FOTOS SUCCESSS",arraySuccessFoto)
     let data = getInputsValueByClass("contentNuevoFalla")
     let fecha1= data.fechaNuevoFalla+' '+data.horaNuevoFalla+':'+data.minNuevoFalla+":00"
     let data_failure={

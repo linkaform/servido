@@ -683,4 +683,6 @@ input[type=search]{
   border-radius: 15px; /* Radio de las esquinas */
 }
 
-
+.custom-color {
+    color: yellow; /* Cambia el color de la estrella */
+}

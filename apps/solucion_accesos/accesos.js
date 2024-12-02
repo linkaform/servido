@@ -1494,7 +1494,12 @@ function dataUserInf(dataUser){
     if(dataUser.hasOwnProperty('fecha_de_caducidad')){
         validity= dataUser.fecha_de_caducidad !==  '' ? dataUser.fecha_de_caducidad : '';
     }
-    $('#validity').text(validity.slice(0,-3) + ' hrs');
+    if(validity==""){
+        $('#vigenciaPase').hide()
+    }else{
+        $('#vigenciaPase').show()
+        $('#validity').text(validity.slice(0,-3) + ' hrs');
+    }
 
     $("#textDiasAcceso").text("")
     $('#diasAcceso').text("")
