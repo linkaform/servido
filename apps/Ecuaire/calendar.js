@@ -29,7 +29,7 @@ window.onload = function(){
       scriptId = parseInt(qs[key]);
     }
     if (key === 'env') {
-      if (qs[key] === 'test'){
+      if (qs[key] === 'test' || qs[key] === 'Test'){
          url = "https://preprod.linkaform.com/api/";
       }
     }
@@ -147,8 +147,6 @@ const loading = document.querySelector('.loading-container');
 loading.style.display = 'none';
 
 function runFirstElement() {
-
-
   let gestor = $('#selectGestor').val();
   let actividad = $('#selectActividad').val();
   firstElement = getFirstElement(gestor, actividad);
@@ -159,7 +157,7 @@ function getFirstElement(gestor, actividad){
   $("#divContent").hide();
   $('.load-wrapp').show();
 
-  fetch(url + 'infosync/scripts/run/', {
+  fetch('https://preprod.linkaform.com/api/infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
@@ -182,30 +180,9 @@ function getFirstElement(gestor, actividad){
       $('.title_tables').show();
       
       //----Res
-      console.log(res.response.json);
-      if (res.response.json.firstElement.data) {
-        
-        //--Draw Calendar
-        resourcess = res.response.json.firstElement.data
-      }
-      if (res.response.json.secondElement.data){
-        eventss = res.response.json.secondElement.data
-        
-        eventss.forEach(element => {
-          let parColor = arrayColors[element.gestor]
-          if(element.status == 'planificada'){
-
-           element.color = parColor[1]
-        
-          }else if(element.status == 'realizada'  ){
-            element.color = parColor[0]
-          }
-        });
-
-        getDrawCalendar('firstElement', eventss);
-        document.getElementById("firstParameters").style.removeProperty('display');
+      if (res.response && res.response.data && res.response.data.length > 0) {
+        getDrawCalendar('firstElement',  res.response.data);
         document.getElementById("firstElement").style.removeProperty('display');
-        document.getElementById("secondElement").style.removeProperty('display');
       }
     } else {
       hideLoading();
@@ -278,23 +255,48 @@ function getDrawCalendar(id,  events){
     },
   });
   calendar.render();
-
-  document.getElementById('eventForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    const title = 'Evento Ejemplo';
-    const date = document.getElementById('eventDate').value;
-
-    if (title) {
-      calendar.addEvent({
-        title: title,
-        start: date,
-        allDay: true
-      });
-      e.target.reset();
-      const modal = bootstrap.Modal.getInstance(document.getElementById('eventModal'));
-      modal.hide();
-    }
-  });
+  document.getElementById("buttonSave").addEventListener("click", () => {
+    //----Fecht
+    dicData = getDataForm();
+    fetch('https://preprod.linkaform.com/api/infosync/scripts/run/', {
+      method: 'POST',
+      body: JSON.stringify({
+        script_id: 126611,
+        option: 'creation_record',
+        formInformation: dicData,
+      }),
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+userJwt
+      },
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.success) {
+        let status = res.response && res.response.status ?  res.response.status : '400';
+        if(status == '201'){
+          const modal = bootstrap.Modal.getInstance(document.getElementById('eventModal'));
+          modal.hide();
+          alert('Se a guardado su evento');
+          const title = document.getElementById('inputClient').value;
+          const date = document.getElementById('eventDate').value;
+          calendar.addEvent({
+            title: title,
+            start: date,
+            allDay: true
+          });
+          //----Close Modal
+          cleanForm();
+          e.target.reset();
+          
+        }else{
+          const modal = bootstrap.Modal.getInstance(document.getElementById('eventModal'));
+          modal.hide();
+          alert('No se a guardado su evento');
+        }
+      }   
+    })
+ });
 }
 
 function setFormItem(option) {
@@ -411,30 +413,11 @@ function getDataForm() {
       const dicCheck = catalog_checklist.find(item => item.checklist === searchCheck);
       datos['dicCheck'] = dicCheck;
     }
-
-    //----Datos
-    sendRequest(datos);
+    return datos;
   }
 }
 
 function sendRequest(data) {
-  fetch('https://app.linkaform.com/api/infosync/scripts/run/', {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: 119618,
-      option: 'creation_record',
-      data: data,
-    }),
-    headers:{
-      'Content-Type': 'application/json',
-    },
-  })
-  .then(res => res.json())
-  .then(res => {
-    if (res.success) {
-      console.log('res',res);
-    }   
-  })
 }
 
 function get_catalogs() {
@@ -446,6 +429,7 @@ function get_catalogs() {
     }),
     headers:{
       'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+userJwt
     },
   })
   .then(res => res.json())
@@ -529,6 +513,29 @@ function get_catalogs() {
   })
 }
 
-
-
-
+function cleanForm() {
+  //---Clean
+  const elements = document.querySelectorAll('.input-form-event');
+  elements.forEach(element => {
+    if (element.tagName === 'INPUT') {
+      if (element.type === 'checkbox' || element.type === 'radio') {
+        element.checked = false;
+      } else {
+        element.value = '';
+      }
+    } else if (element.tagName === 'SELECT') {
+      element.selectedIndex = 0;
+    } else if (element.tagName === 'TEXTAREA') {
+      element.value = '';
+    }
+  });
+  //---Hide and Show
+  const classDivCatalog = document.querySelectorAll(".div-catalog-item");
+  const classDivItem = document.querySelectorAll(".div-input-item");
+  classDivCatalog.forEach((elemento) => {
+    elemento.style.display = "none";
+  });
+  classDivItem.forEach((elemento) => {
+    elemento.style.display = "none";
+  });
+}
