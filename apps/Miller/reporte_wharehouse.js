@@ -276,8 +276,8 @@ function getFirstElement(wharehouses, familia, line) {
           }
       });
       traspasoColumn.columns.push({
-        title: wharehouse,
-        field: "Stock", //`actuals_${field_wharehouse}`,
+        title: 'Stock',
+        field: `actuals_${field_wharehouse}`,
         formatter: "money", formatterParams: { thousand: ",", precision: 2, symbolAfter: true },
         hozAlign: "right",
         width: 200
