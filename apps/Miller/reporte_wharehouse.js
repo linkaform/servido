@@ -252,8 +252,8 @@ function getFirstElement(wharehouses, familia, line) {
     { title: 'Stock CEDIS',
       cssClass: "stock-cedis",
       columns: [
-        { title: "Inicial", field: 'actuals', hozAlign: "right", width: 120, formatter: "money", formatterParams: { thousand: "," } },
-        { title: "Final", field: 'stock_final', hozAlign: "right", formatter: "money", formatterParams: { thousand: "," }, width: 120 },
+        { title: "Inicial", field: 'actuals', hozAlign: "right", width: 100, formatter: "money", formatterParams: { thousand: "," } },
+        { title: "Final", field: 'stock_final', hozAlign: "right", formatter: "money", formatterParams: { thousand: "," }, width: 100 },
       ]
     }
   ];
@@ -321,7 +321,7 @@ function getFirstElement(wharehouses, familia, line) {
             cssClass: classHeaderColumns,
             formatter: "money", formatterParams: { thousand: ",", precision: 2, symbolAfter: true },
             hozAlign: "right",
-            width: 200
+            width: 100
           },
           //stock_to_move_alm_monterrey
           {
@@ -329,7 +329,7 @@ function getFirstElement(wharehouses, familia, line) {
             field: `stock_to_move_${field_wharehouse}`,
             cssClass: classHeaderColumns,
             hozAlign: "right",
-            width: 150
+            width: 130
           },
           {
             title: `%  Final`,
