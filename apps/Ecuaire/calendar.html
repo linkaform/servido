@@ -198,8 +198,8 @@
                                             </select>
                                         </div>
                                         <p class="ml-4"><small>** los campos son obligatorios</small></p>
-                                        <input type="hidden" id="eventDate">
-                                        <button type="button" class="btn btn-primary" onclick="getDataForm();">Guardar Evento</button>
+                                        <input type="hidden" class="input-form-event" id="eventDate">
+                                        <button type="button" class="btn btn-primary" id="buttonSave">Guardar Evento</button>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                     </form>
                                 </div>
@@ -214,7 +214,6 @@
                                     <h5 class="modal-title" id="eventModalLabel">Detalles del Evento</h5>
                                 </div>
                                 <div class="modal-body">
-                                    <p><strong>Título:</strong> <span id="modalTitle"></span></p>
                                     <p><strong>Cliente:</strong> <span id="modalCliente"></span></p>
                                     <p><strong>Contacto:</strong> <span id="modalContacto"></span></p>
                                     <p><strong>Telefono:</strong> <span id="modalTelefono"></span></p>
