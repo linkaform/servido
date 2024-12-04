@@ -139,10 +139,10 @@ function redirectionUrl(type = 'null',blank = false, logout=false){
     if (existingTab && type !=="login") {
         console.log("ENTRANDO AQUI ")
         window.open(`${protocol}//${host}/solucion_accesos/${type}.html`, type)
-    }else if(type=='login' && logout){
-        
+        // window.location.href = `${protocol}//${host}/solucion_accesos/${type}.html`
+    }else if(type=='login' && logout){ERROR
         let urlNew = `${protocol}//${host}/solucion_accesos/login.html`
-        window.location.href =urlNew
+        window.location.replace(urlNew);
     }
     /* else {
         if(type == 'users'){

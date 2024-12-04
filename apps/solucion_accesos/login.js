@@ -66,6 +66,7 @@ function get_login(){
 				setCookie("userEmail", userEmail,7);
 				setCookie("userPosition", userPosition,7);
 				setCookie("user", userPosition,7);
+				setCookie("soter", true ,7);
 				console.log("userPosition",userPosition)
 				localStorage.setItem("imagenURL", userImg);
 

@@ -4,18 +4,17 @@ const tabs = document.querySelectorAll('.nav-link');
 let selectedGlobalPase =""
 
 window.onload = function(){
+    setValueUserLocation('pases');
     let userA = getCookie("userId");
     userJwt = getCookie("userJwt");
+    validSession(user, userJwt);
     if(userA !='' && userJwt!=''){
         drawTable('tableListTodos',columnsTableListPendientes, dataTableListTodos );
         drawTable('tableListFavoritos',columnsTableListPendientes, dataTableListFavoritos );
         drawTable('tableListActivos',columnsTableListPendientes, dataTableListActivos );
         drawTable('tableListVencidos',columnsTableListPendientes, dataTableListVencidos );
-    }else{
-        setCloseSession();
     }
 
-    setValueUserLocation('pases');
     $("#locCard").hide()
     changeButtonColor();
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
@@ -42,6 +41,7 @@ function setModal(type = 'none',id ="", nombre='', email=''){
     }else if(type== "ver"){
         modalVerPase(id)
     }else if(type== "editar"){
+        selectedGlobalPase=id
         modalEditarPase(id)
     }else if(type== "reenviar"){
         modalReenviarPase(id)
@@ -576,8 +576,8 @@ async function modalReenviarPase(folio){
     let selectedPase = dataTableListTodos.find(x => x._id == folio);
     console.log("PASE",selectedPase)
     let fechasSonValidas= validarFechasConHora(selectedPase.fecha_desde_visita, selectedPase.fecha_desde_hasta)
-    console.log("SON FECHAS VALIDAS",fechasSonValidas)
-    // if(fechasSonValidas.valido==true){
+    console.log("SON FECHAS VALIDAS",selectedPase.estatus.toLowerCase())
+    if(selectedPase.estatus.toLowerCase() !== "vencido"){
         let pdf = await get_pdf(selectedPase._id);
         console.log(pdf)
         let bodyInf={}
@@ -680,9 +680,9 @@ async function modalReenviarPase(folio){
                 }   
             }
         });
-    // }else{
-    //     successMsg("Validación", "El pase ha vencido, modifica las fechas para continuar.", 'warning')
-    // }
+    }else{
+        successMsg("Validación", "El pase ha vencido, modifica las fechas para continuar.", 'warning')
+    }
     
 }
 
@@ -1410,7 +1410,7 @@ function crearConfirmacionEditar() {
             })
             .then((result) => {
                 if (result.value) {
-                    loadingService("Creando pase de entrada...")
+                    loadingService("Actualizando pase de entrada...")
                     let protocol = window.location.protocol;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
                     let host = window.location.host;
                    
@@ -1466,6 +1466,7 @@ function crearConfirmacionEditar() {
                     if(checkPregistro.length>0){
                         access_pass.enviar_correo_pre_registro = checkPregistro
                     }
+                    console.log("paseEntradaEdit",selectedGlobalPase)
                     fetch(url + urlScripts, {
                         method: 'POST',
                         body: JSON.stringify({
@@ -1473,7 +1474,8 @@ function crearConfirmacionEditar() {
                             option: 'create_access_pass',
                             location:getCookie('userLocation'),
                             access_pass: access_pass,
-                            enviar_pre_sms: enviarPreSmsChecked
+                            enviar_pre_sms: enviarPreSmsChecked,
+                            // folio: selectedGlobalPase
                         }),
                         headers:{
                             'Content-Type': 'application/json',

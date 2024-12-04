@@ -3,6 +3,10 @@ let selectedRondin=""
 
 window.onload = function(){    
     setValueUserLocation('rondines');
+    user = getCookie("userId");
+    userJwt=getCookie('userJwt');
+    validSession(user, userJwt);
+    
     changeButtonColor();
     fillCatalogs();
     customNavbar(getValueUserLocation(), getCookie('userTurn'))

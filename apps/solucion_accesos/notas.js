@@ -13,6 +13,9 @@ let selectedNotaActualizado=""
 
 window.onload = function(){
     userJwt = getCookie("userJwt");
+    user = getCookie("userId");
+    validSession(user, userJwt);
+    
     setValueUserLocation('notas');
     changeButtonColor();
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
@@ -29,7 +32,7 @@ window.onload = function(){
     };
     fillCatalogs();
     getAllData();
-    let user = getCookie("userId");
+    // let user = getCookie("userId");
     
     $("#descargarListNotas").on("click", function() {
         descargarExcel(tables, 'tableNotas')

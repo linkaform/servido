@@ -25,6 +25,10 @@ let tables={}
 
 window.onload = function(){
 	setValueUserLocation('pase');
+    user = getCookie("userId");
+    userJwt=getCookie('userJwt');
+    validSession(user, userJwt);
+    
 	customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	changeButtonColor();
 	const valores = window.location.search;
@@ -76,6 +80,14 @@ window.onload = function(){
 		
 	}
 }
+
+window.addEventListener('storage', function(event) {
+    if (event.key === 'cerrarSesion') {
+        let protocol = window.location.protocol;
+        let host = window.location.host;
+        window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+    }
+});
 
 //FUNCION para obtener los catalogos
 function getCatalogsIngresoPase(){
@@ -671,7 +683,7 @@ function crearConfirmacionMini() {
 		Swal.fire({
 	        title:'Confirmación',
 	        html:`
-				<div>
+				<div  style="overflow-x:auto;">
 					<table class="table table-borderless" >
 						<thead>
 							<tr>
