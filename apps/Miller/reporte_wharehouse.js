@@ -340,7 +340,7 @@ function getFirstElement(wharehouses, familia, line) {
             width: 150,
             hozAlign: "left",
             formatter:"progress", formatterParams:{
-                  min:0,
+                  min:-1,
                   max:100,
                   color:[
                     "rgb(211, 47, 47)",//, "rgb(239, 83, 80)","rgb(244, 143, 177)", ///reds
