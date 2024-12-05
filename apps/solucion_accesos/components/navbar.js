@@ -127,7 +127,6 @@ function customNavbar(location, turno){
 }
 
 
-
 //----Function Redirection
 function redirectionUrl(type = 'null',blank = false, logout=false){
     let urlNew =  '';
@@ -137,7 +136,6 @@ function redirectionUrl(type = 'null',blank = false, logout=false){
     const pestanas = JSON.parse(localStorage.getItem("pestanas_key")) || [];
     agregarPestana(type)
     if (existingTab && type !=="login") {
-        console.log("ENTRANDO AQUI ")
         window.open(`${protocol}//${host}/solucion_accesos/${type}.html`, type)
         // window.location.href = `${protocol}//${host}/solucion_accesos/${type}.html`
     }else if(type=='login' && logout){ERROR
@@ -179,7 +177,6 @@ function redirectionUrl(type = 'null',blank = false, logout=false){
         }
     } */
 }
-
 
 
 function agregarPestana(type){

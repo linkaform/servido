@@ -25,9 +25,7 @@ let tables={}
 
 window.onload = function(){
 	setValueUserLocation('pase');
-    user = getCookie("userId");
-    userJwt=getCookie('userJwt');
-    validSession(user, userJwt);
+  
     
 	customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	changeButtonColor();
@@ -66,6 +64,9 @@ window.onload = function(){
             }
         }
 	}else{
+        user = getCookie("userId");
+        userJwt=getCookie('userJwt');
+        validSession(user, userJwt);
 		$("#paseEntradaInf1").show()
 		$("#paseEntradaInf2").show()
 		$("#paseEntradaInf3").show()
@@ -74,6 +75,7 @@ window.onload = function(){
 		$("#paseEntradaInf6").hide()
 		onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')
 		iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')
+        iniciarMin("minNuevoPase")
 		// iniciarSelectHora('horaNuevoRangoVisita','minNuevoRangoVisita', 'ampmNuevoRangoVisita')
 		// iniciarSelectHora('horaNuevoRangoHasta','minNuevoRangoHasta', 'ampmNuevoRangoHasta')
 		catalogoAreaByLocation(getCookie('userLocation'))
@@ -81,8 +83,28 @@ window.onload = function(){
 	}
 }
 
+function iniciarMin(id){
+    $("#minNuevoPase").empty();
+    // Obtener el elemento <select> por su ID (o nombre de clase, etc.)
+    let combo = document.getElementById(id);
+
+    // Bucle para agregar opciones al combo
+    for (let i = 0; i < 60; i += 15) {
+        let opcion = document.createElement('option');
+        if(i == 0){
+            opcion.value = "00";
+            opcion.textContent = "00";
+        }else{
+            opcion.value = i;
+            opcion.textContent = i;
+        }
+        combo.appendChild(opcion);
+        console.log("OPTION",opcion)
+    }
+}
+
 window.addEventListener('storage', function(event) {
-    if (event.key === 'cerrarSesion') {
+    if (event.key === 'cerrarSesion' && id == "") {
         let protocol = window.location.protocol;
         let host = window.location.host;
         window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
@@ -1343,9 +1365,10 @@ function validDatePase(){
     $('#fechaVisitaOA').removeClass('is-invalid');
     if(fechaFijaSelected){
         let fullDate= `${$("#fechaVisita").val()}T${$("#horaNuevoPase").val()}:${$("#minNuevoPase").val()}:00`
+        console.log("ASI", new Date(fullDate).toLocaleDateString(), fechaActual.toLocaleDateString())
         if(new Date(fullDate).toLocaleDateString() >= fechaActual.toLocaleDateString()){
             $('#horaNuevoPase').val(formatNumber(fechaActual.getHours() + 1));
-            $('#minNuevoPase').val(formatNumber(fechaActual.getMinutes()));
+            $('#minNuevoPase').val(formatNumber("00"));
         }else if (new Date(fullDate) < fechaActual){
             $('#fechaVisita').addClass('is-invalid');
             $('#horaNuevoPase').addClass('is-invalid');

@@ -10,27 +10,27 @@ window.onload = function(){
     validSession(user, userJwt);
     if(userA !='' && userJwt!=''){
         drawTable('tableListTodos',columnsTableListPendientes, dataTableListTodos );
-        drawTable('tableListFavoritos',columnsTableListPendientes, dataTableListFavoritos );
-        drawTable('tableListActivos',columnsTableListPendientes, dataTableListActivos );
-        drawTable('tableListVencidos',columnsTableListPendientes, dataTableListVencidos );
+        // drawTable('tableListFavoritos',columnsTableListPendientes, dataTableListFavoritos );
+        // drawTable('tableListActivos',columnsTableListPendientes, dataTableListActivos );
+        // drawTable('tableListVencidos',columnsTableListPendientes, dataTableListVencidos );
     }
 
     $("#locCard").hide()
     changeButtonColor();
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	
-    selectLocation= document.getElementById("selectLocation")
-    selectCaseta= document.getElementById("selectCaseta")
+    selectLocation= getCookie("userLocation") //document.getElementById("selectLocation")
+    selectCaseta= getCookie("userCaseta")//document.getElementById("selectCaseta")
 
-    selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation(selectLocation.value)
-    };
-    selectCaseta.onchange = async function() {
-        let response = await fetchOnChangeCaseta('notes.py', 'get_notes', selectCaseta.value, selectLocation.value)
-        reloadTableNotas(response.response.data)
-    };
+    // selectLocation.onchange = function() {
+    //     let response = fetchOnChangeLocation(selectLocation.value)
+    // };
+    // selectCaseta.onchange = async function() {
+    //     let response = await fetchOnChangeCaseta('notes.py', 'get_notes', selectCaseta.value, selectLocation.value)
+    //     reloadTableNotas(response.response.data)
+    // };
     account_id=getCookie('userId')
-    fillCatalogs();
+    // fillCatalogs();
     // getAllData();
     getAllDataPases()
 }
@@ -76,7 +76,7 @@ function onTabChange(activeTabId, previousTabId) {
 }
 
 function getAllDataPases(tab_status='Todos'){
-    loadingService()
+    // loadingService()
     dataTableListTodos=[]
     fetch(url + urlScripts, {
         method: 'POST',
@@ -385,10 +385,10 @@ function modalVerPase(id){
         tituloDias=``
     }
     let limiteEntradasTexto=""
-    if(data.limiteEntradas!==""){
+    if(data.limite_de_acceso!==""){
         limiteEntradasTexto=`
             <div class="d-flex justify-content-start mt-3 ms-2">
-                <p><span class="me-2"><b>Limite de entradas:</b></span>`+ data.limiteEntradas+`</p>
+                <p><span class="me-2"><b>Limite de entradas:</b></span>`+ data.limite_de_acceso+`</p>
             </div>
         `
     }
@@ -472,10 +472,16 @@ function modalVerPase(id){
                     `+limiteEntradasTexto+`
                     `+buttonDays+`
                 </div>
-        
+                <div class ="mt-4">
+                    <button type="button" class="btn btn-danger">Cerrar</button>
+                    <button type="button" class="btn btn-primary">Enviar por correo</button>
+                    <button type="button" class="btn btn-success">Enviar por sms</button>
+                    <button type="button" class="btn btn-warning">Descargar pdf</button>
+                </div>
+                
           `,
             confirmButtonColor: "#28a745",
-            showCancelButton: true,
+            showCancelButton: false,
             showConfirmButton: false,
             cancelButtonColor: "#dc3545",
             confirmButtonText:'Cerrar',
@@ -483,6 +489,19 @@ function modalVerPase(id){
             heightAuto:false,
             reverseButtons: true,
             width:750,
+            buttons: [
+                {
+                  text: 'Opción 1',
+                  value: 'opcion1',
+                  className: 'btn-primary'
+                },
+                {
+                  text: 'Opción 2',
+                  value: 'opcion2',
+                  className: 'btn-secondary'
+                }
+            ],
+
     })
     .then((result) => {
         if (result.value) {

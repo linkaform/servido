@@ -22,9 +22,7 @@
 <body>
 	<navbar-component ></navbar-component>
 <section>
-
-
-    <section class="mainSection mainSectionMargins">
+    <!-- <section class="mainSection mainSectionMargins">
         <div class="accordion" id="accordionExample">
           <div class="accordion-item">
             <h2 class="accordion-header">
@@ -90,10 +88,10 @@
             </div>
           </div>
         </div>  
-    </section>
+    </section> -->
     <section class="mainSectionMargins">
         <div class="d-flex justify-content-center mt-1 align-self-center">
-            <h4 class="m-0 p-0">Listado de Notas</h4>
+            <h4 class="m-0 p-0 mt-3">Listado de Pases</h4>
         </div>
     </section>
 
@@ -101,34 +99,37 @@
 
 		<!-- Information Plant-->
 	<section class="mainSectionMargins">
-	  	<div class="nav nav-tabs" id="nav-tab" role="tablist">
-	    <button class="nav-link active" id="nav-todos-tab" data-bs-toggle="tab" data-bs-target="#nav-todos" type="button" role="tab" aria-controls="nav-todos" aria-selected="true">Todos</button>
-	    <button class="nav-link" id="nav-favoritos-tab" data-bs-toggle="tab" data-bs-target="#nav-favoritos" type="button" role="tab" aria-controls="nav-favoritos" aria-selected="false">Favoritos</button>
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary btn-sm" onclick="redirectionUrl('pase')">
+                <i class="fa-solid fa-plus"></i> Nuevo Pase
+            </button>
+            
+        </div>
+           <!--  <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListTodos">
+              <i class="fa-solid fa-file-arrow-down"></i> Descargar
+            </button> -->
+          <!-- </div> -->
+          <div class="mt-2 mb-3 tableOverflow" id="tableListTodos"></div>
+
+	  	<!-- <div class="nav nav-tabs" id="nav-tab" role="tablist">
+	    <button class="nav-link active" id="nav-todos-tab" data-bs-toggle="tab" data-bs-target="#nav-todos" type="button" role="tab" aria-controls="nav-todos" aria-selected="true">Todos</button> -->
+	   <!--  <button class="nav-link" id="nav-favoritos-tab" data-bs-toggle="tab" data-bs-target="#nav-favoritos" type="button" role="tab" aria-controls="nav-favoritos" aria-selected="false">Favoritos</button>
 	    <button class="nav-link" id="nav-activos-tab" data-bs-toggle="tab" data-bs-target="#nav-activos" type="button" role="tab" aria-controls="nav-activos" aria-selected="false">Activos</button>
 	    <button class="nav-link" id="nav-vencidos-tab" data-bs-toggle="tab" data-bs-target="#nav-vencidos" type="button" role="tab" aria-controls="nav-vencidos" aria-selected="false">Vencidos</button>
-	  	</div>
+	  	</div> -->
 
-	  	<div class="tab-content mb-1" id="myTabContent">
-	    <div class="tab-pane fade show active" id="nav-todos" role="tabpanel" aria-labelledby="nav-todos-tab">
+	  	<!-- <div class="tab-content mb-1" id="myTabContent"> -->
+	    <!-- <div class="tab-pane fade show active" id="nav-todos" role="tabpanel" aria-labelledby="nav-todos-tab">
+	      <div class="d-flex mt-2 justify-content-end">
+	       
+	    </div> -->
+
+	    <!-- <div class="tab-pane fade" id="nav-favoritos" role="tabpanel" aria-labelledby="nav-favoritos-tab">
 	      <div class="d-flex mt-2 justify-content-end">
 	        <button type="button" class="btn btn-primary btn-sm" onclick="redirectionUrl('pase')">
 	          <i class="fa-solid fa-plus"></i> Nuevo Pase
 	        </button>
-	       <!--  <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListTodos">
-	          <i class="fa-solid fa-file-arrow-down"></i> Descargar
-	        </button> -->
-	      </div>
-	      <div class="mt-2 mb-3 tableOverflow" id="tableListTodos"></div>
-	    </div>
-
-	    <div class="tab-pane fade" id="nav-favoritos" role="tabpanel" aria-labelledby="nav-favoritos-tab">
-	      <div class="d-flex mt-2 justify-content-end">
-	        <button type="button" class="btn btn-primary btn-sm" onclick="redirectionUrl('pase')">
-	          <i class="fa-solid fa-plus"></i> Nuevo Pase
-	        </button>
-	        <!-- <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListFavoritos">
-	          <i class="fa-solid fa-file-arrow-down"></i> Descargar
-	        </button> -->
+	      
 	      </div>
 	      <div class="mt-2 mb-3 tableOverflow" id="tableListFavoritos"></div>
 	    </div>
@@ -138,9 +139,7 @@
 	        <button type="button" class="btn btn-primary btn-sm" onclick="redirectionUrl('pase')">
 	          <i class="fa-solid fa-plus"></i> Nuevo Pase
 	        </button>
-	       <!--  <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListActivos">
-	          <i class="fa-solid fa-file-arrow-down"></i> Descargar
-	        </button> -->
+	       
 	      </div>
 	      <div class="mt-2 mb-3 tableOverflow" id="tableListActivos"></div>
 	    </div>
@@ -150,13 +149,11 @@
 	        <button type="button" class="btn btn-primary btn-sm" onclick="redirectionUrl('pase')">
 	          <i class="fa-solid fa-plus"></i> Nuevo Pase
 	        </button>
-	        <!-- <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListVencidos">
-	          <i class="fa-solid fa-file-arrow-down"></i> Descargar
-	        </button> -->
+	       
 	      </div>
 	      <div class="mt-2 mb-3 tableOverflow" id="tableListVencidos"></div>
-	    </div>
-	  	</div>
+	    </div> -->
+	  	<!-- </div> -->
 	</section>
 
     <div class="modal fade" id="agregarNotasModal" tabindex="-1"  aria-hidden="true">
