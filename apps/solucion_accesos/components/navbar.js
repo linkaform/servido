@@ -129,18 +129,24 @@ function customNavbar(location, turno){
 
 //----Function Redirection
 function redirectionUrl(type = 'null',blank = false, logout=false){
+    console.log(type)
     let urlNew =  '';
     let protocol = window.location.protocol;
     let host = window.location.host;
-    let existingTab = window.open('', type); 
+    // let existingTab = window.open('', type); 
     const pestanas = JSON.parse(localStorage.getItem("pestanas_key")) || [];
     agregarPestana(type)
-    if (existingTab && type !=="login") {
+    // if (existingTab && type !=="login") {
+    if (type !=="login") {
+        console.log("ENTRANDO AQUI ")
         window.open(`${protocol}//${host}/solucion_accesos/${type}.html`, type)
-        // window.location.href = `${protocol}//${host}/solucion_accesos/${type}.html`
-    }else if(type=='login' && logout){ERROR
-        let urlNew = `${protocol}//${host}/solucion_accesos/login.html`
-        window.location.replace(urlNew);
+    }else if(type=='login' && logout){
+        
+        urlNew = `${protocol}//${host}/solucion_accesos/login.html`
+        window.location.href = urlNew
+    }else if(type=='login' && !blank){
+        urlNew = `${protocol}//${host}/solucion_accesos/login.html`
+        window.location.href = urlNew
     }
     /* else {
         if(type == 'users'){
