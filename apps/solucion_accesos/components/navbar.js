@@ -10,7 +10,7 @@ class lkfNavbarComponent extends HTMLElement{
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
 	<nav class="navbar m-0 p-0 mb-0 customShadow" >
-        <div class="navbar-brand">
+        <div class="navbar-brand cursor-pointer" onclick="redirectionUrl('menu', false);">
 			<img src="https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_10.png" height="40" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
         </div>
         <div class="d-flex flex-grow-1" ><button id='buttonPase' class="btn btn-sm btn-secondary custom-navbar-button ocultar"  onclick="redirectionUrl('pases');return false;" >Pases de entrada</button></div>
