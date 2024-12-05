@@ -901,6 +901,9 @@ function crearConfirmacionMini() {
                                     if(result.value.descargarPdf){
                                         descargarPdfPase(data.json.pdf.data.download_url)
                                     }
+                                    setTimeout(() => {
+                                        redirectionUrl("login", false)
+                                    }, 4000)
     						 	}else{
                                     console.log("NO SE ESCOGIO NADI")
                                     Swal.close()
