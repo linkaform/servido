@@ -115,7 +115,7 @@ function enviarSmsPase(bodyPost){
             let dataR=res.response.data
             if(dataR.status_code==400 || dataR.status_code==401){
                 errorAlert(dataR)
-            }else if(dataR.status_code==202 || dataR.status_code==201){
+            }else if(dataR.status_code==202 || dataR.status_code==201 || dataR.status_code==200){
                 Swal.close()
                 // successMsg("Confirmación", "Informacion enviada correctamente.", "success")
             }
