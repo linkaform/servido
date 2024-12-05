@@ -4,7 +4,7 @@ window.onload = function(){
 	let protocol = window.location.protocol;
 	let host = window.location.host;
 	if(user !='' && jw!=''){
-		let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
+		let urlNew = `${protocol}//${host}/solucion_accesos/menu.html`
 		window.location.href =urlNew
 		//window.open(`${protocol}//${host}/solucion_accesos/turnos.html`, "turnos")
 		/*let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
@@ -12,7 +12,7 @@ window.onload = function(){
 			rel: 'noopener noreferrer',
 			href: urlNew,
 		}).click();*/
-		agregarPestana('turnos')
+		agregarPestana('menu')
 	}/*else{
 		setCloseSession();
 	}*/
