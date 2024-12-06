@@ -43,22 +43,33 @@ body {
 }
 
 /* Ajustes para pantallas pequeñas */
-@media (max-width: 768px) {
-  .login-container {
-    width: 70vw; 
+@media (max-width: 1024px) {
+  .login-container{
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
     padding: 2rem; 
+    border-radius: 0; 
   }
-  .logo {
-    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .login-container{
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
   }
 }
 
 @media (max-width: 425px) {
-  .login-container {
-    width: 90vw; 
+  .login-container{
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
     padding: 2rem; 
-  }
-  .logo {
-    margin-bottom: 1.5rem;
+    border-radius: 0; 
   }
 }
+
