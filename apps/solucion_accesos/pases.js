@@ -1,5 +1,6 @@
 // let colors = getPAlleteColors(12,0)
 const tabs = document.querySelectorAll('.nav-link');
+
 // let account_id=''
 let selectedGlobalPase =""
 
@@ -39,7 +40,8 @@ function setModal(type = 'none',id ="", nombre='', email=''){
     if(type== "favoritos"){
         modalFavoritos(id)
     }else if(type== "ver"){
-        modalVerPase(id)
+        selectedGlobalPase=id
+        modalVerPase2(id)
     }else if(type== "editar"){
         selectedGlobalPase=id
         modalEditarPase(id)
@@ -124,13 +126,17 @@ function getAllDataPases(tab_status='Todos'){
                                 tipo_fechas_pase:pase.tipo_fechas_pase||"",
                                 tipo_visita : pase.tipo_visita ||"",
                                 limite_de_acceso:pase.limite_de_acceso||"",
+                                grupo_instrucciones_pase: pase.grupo_instrucciones_pase||[],  
+                                grupo_vehiculos:pase.grupo_vehiculos ||[],  
+                                grupo_equipos:pase.grupo_equipos ||[],  
+                                grupo_areas_acceso :pase.grupo_areas_acceso ||[],
+                                limitado_a_dias :pase.limitado_a_dias||[],  
+
                             })
                         }
                     }else{
                         dataTableListTodos = []
                     }
-                    
-                    console.log("PASESS", dataTableListTodos)
                     tab(tab_status,columnsTableListPendientes, dataTableListTodos)
             } else{
                 redirectionUrl('login',false);
@@ -211,6 +217,12 @@ function modalFavoritos(folio){
         })
 
 }
+
+function cerrarSwal(){
+    console.log("HELLO")
+    Swal.close()
+}
+
 
 function modalVerPase(id){
     //CAMBIAS LOS ID PARA ADAPTAR EL MODAL
@@ -473,10 +485,10 @@ function modalVerPase(id){
                     `+buttonDays+`
                 </div>
                 <div class ="mt-4">
-                    <button type="button" class="btn btn-danger">Cerrar</button>
-                    <button type="button" class="btn btn-primary">Enviar por correo</button>
-                    <button type="button" class="btn btn-success">Enviar por sms</button>
-                    <button type="button" class="btn btn-warning">Descargar pdf</button>
+                    <button type="button" class="btn btn-danger" id="cerrarSw">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="enviarCorreo">Enviar por correo</button>
+                    <button type="button" class="btn btn-success" id="enviarSms">Enviar por sms</button>
+                    <button type="button" class="btn btn-warning" id="descargarPdf">Descargar pdf</button>
                 </div>
                 
           `,
@@ -489,24 +501,13 @@ function modalVerPase(id){
             heightAuto:false,
             reverseButtons: true,
             width:750,
-            buttons: [
-                {
-                  text: 'Opción 1',
-                  value: 'opcion1',
-                  className: 'btn-primary'
-                },
-                {
-                  text: 'Opción 2',
-                  value: 'opcion2',
-                  className: 'btn-secondary'
-                }
-            ],
-
     })
     .then((result) => {
         if (result.value) {
+            console.log("RESULT")
            Swal.close()
         }
+
     });
 
     if(diasArr.length>0){
@@ -518,12 +519,417 @@ function modalVerPase(id){
     }
 }
 
+
+function modalVerPase2(id){
+    
+     //CAMBIAS LOS ID PARA ADAPTAR EL MODAL
+
+    let data = dataTableListTodos.filter(x => x._id == id).pop();
+    console.log("QUE PASA",data)
+
+    $("#nombrePase").text(data.nombre)
+    $("#emailPase").text(data.email)
+    $("#telefonoPase").text(data.telefono)
+    $("#ubicacionPase").text(data.ubicacion)
+    $("#temaPase").text(data.tema_cita)
+    $("#descripcionPase").text(data.descripcion)
+    let fotoP = data.foto.length > 0 ? data.foto[0].file_url : "" 
+    $("#fotoPase").prop('src', fotoP);
+    let identificacionP = data.identificacion.length > 0 ? data.identificacion[0].file_url : "" 
+    $("#identificacionPase").prop('src',identificacionP); 
+    //let data= getInputsValueByClass('paseEntradaNuevo')
+    // let comentarios= getDataGrupoRepetitivo('com-input-form-nuevo','.com-div-nuevo' , 0)
+    // let arrComentarios= document.getElementsByClassName('com-div-nuevo')
+    // console.log("INFO DE DATA",data,id)
+    let arrComentarios=[]
+    let comentarios=data.grupo_instrucciones_pase
+    for(let c of arrComentarios){
+        if(c.id.includes("instruccionComentario-") && c.comentario_pase !== ""){
+            comentarios.push({tipo_de_comentario:"Pase", comentario_pase: c.comentario_pase})
+        }
+    }
+    // let areas= getDataGrupoRepetitivo('area-input-form-nuevo','.area-div-nuevo' , 2)
+    let areas= data.grupo_areas_acceso
+    let areasTr=""
+    for (let s of areas){
+        areasTr +=  
+        `<tr>
+            <td>`+s.note_booth+`</td>
+            <td>`+s.commentario_area+`</td>
+        </tr>`
+    }
+    let comTr=""
+    for (let c in comentarios){
+        comTr +=    
+        `<tr>
+            <td>`+comentarios[c].tipo_de_comentario+` </td>
+            <td>`+comentarios[c].comentario_pase+`</td>
+        </tr>`
+    }
+    let mainAccesos=""
+    if(areasTr){
+        mainAccesos=`<table class="table table-borderless" >
+                        <thead>
+                            <tr>
+                                <th style=" text-align:left !important;"><h5><b> Areas de acceso</b></h5></th>
+                                <th > </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><b>Area: </b></td>
+                                <td><b>Comentario:</b></td>
+                            </tr>
+                            `+areasTr+`
+                        </tbody>
+                    </table>`
+    }
+    let mainComentarios=""
+    if(comTr){
+        mainComentarios=`<table  class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th style=" text-align:left !important;" class="m-0"><h5><b> Comentarios/Instrucciones </b></h5></th>
+                                    <th> </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><b> Tipo de comentario:</b></td>
+                                    <td><b>Comentario</b></td>
+                                </tr>
+                                `+comTr+`
+                            </tbody>
+                        </table>`
+    }
+
+    let fechaVisitaMain = ""
+    let fechaHastaMain = ""
+    let selectedRadioDias = ""
+    let selectedRadioDiasAcceso = ""
+    let hayFechaVisita = data.fecha_desde_visita//$("#radioFechaFija").is(':checked') && data.fechaVisita !== ""
+    let hayFechaHasta = data.fecha_desde_hasta//$("#radioRangoFechas").is(':checked')
+    if(hayFechaVisita){
+        // let formatMin = formatNumber(data.minNuevoPase)
+        // let formatHor = formatNumber(data.horaNuevoPase)
+        fechaVisitaMain= data.fecha_desde_visita //`${data.fechaVisita} ${formatHor}:${formatMin}:00`
+    }
+    if (hayFechaHasta){
+        fechaHastaMain= data.fecha_desde_hasta
+        // if(data.fechaVisitaOA !== ""){
+        //     let formatHor= formatNumber(data.horaNuevoRangoVisita)
+        //     let formatMin= formatNumber(data.minNuevoRangoVisita)
+        //     fechaVisitaMain= `${data.fechaVisitaOA} 00:00:00`
+        // }
+        // if(data.fechaHastaOA!==""){
+        //     let formatHor2= formatNumber(data.horaNuevoRangoHasta)
+        //     let formatMin2= formatNumber(data.minNuevoRangoHasta)
+        //     fechaHastaMain= `${data.fechaHastaOA} 00:00:00`
+        // }
+        selectedRadioDias = $('input[name="diasAcceso"]:checked');
+        selectedRadioDiasAcceso=  data.dias_acceso//selectedRadioDias[0].id
+        // let fechaActual= new Date()
+        // let fecha1= fechaVisitaMain.replace(" ", "t")
+        // let fecha2= fechaHastaMain.replace(" ", "t")
+        // if(fecha1 < fechaActual || fecha2 < fechaActual){
+        //     console.log("RANGO DE FECHAS INVALIDO")
+        //     $("#fechaVisitaOA").val("")
+        //     $("#fechaHastaOA").val("")
+        // }
+    }
+    let diasArr=data.limitado_a_dias
+    // let checkboxes = document.querySelectorAll('input[name="diasPase"]');
+    // checkboxes.forEach(function(checkbox) {
+    //     if (checkbox.checked) {
+    //         diasArr.push(checkbox.value)
+    //     }
+    // });
+
+    let arrayEquipos=[]
+    let htmlAppendEquipos=""
+    let listInputsEquipo= data.grupo_equipos
+    for (let equipo of listInputsEquipo) {
+        if(equipo.value!==""){
+            htmlAppendEquipos +="<div class='col-sm-12 col-md-12 col-lg-6 col-xl-5'>"
+            htmlAppendEquipos +="<table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>"
+            htmlAppendEquipos +="<tbody> <tr> <td><b>Tipo de Equipo:</b></td> <td> <span > "+ equipo.tipo_equipo +"</span></td> </tr>"
+            htmlAppendEquipos +="<tr> <td><b>Nombre:</b></td> <td> <span > "+ equipo.nombre_articulo +"</span></td> </tr>"   
+            htmlAppendEquipos +="<tr> <td><b>Marca:</b></td> <td> <span > "+ equipo.marca_articulo +"</span></td> </tr>"
+            htmlAppendEquipos +="<tr> <td><b>Modelo:</b></td> <td> <span > "+ "" +"</span></td> </tr>"
+            htmlAppendEquipos +="<tr> <td><b>No. Serie:</b></td> <td> <span > "+ equipo.numero_serie +"</span></td> </tr>"
+            htmlAppendEquipos +="<tr> <td><b>Color:</b></td> <td> <span > "+ equipo.color_articulo +"</span></td> </tr>"
+            htmlAppendEquipos +="</tbody> </table>  </div>";
+            let objEquipo={
+                'nombre':equipo.nombre_articulo,
+                'modelo':"",
+                'marca':equipo.marca_articulo,
+                'color':equipo.color_articulo,
+                'tipo':equipo.tipo_equipo,
+                'serie':equipo.numero_serie ,
+            }
+            arrayEquipos.push(objEquipo)
+        }   
+    }
+    let htmlAppendEquiposTitulo=""
+    if(arrayEquipos.length>0){
+        htmlAppendEquiposTitulo+=`
+        <div class="d-flex flex-column justify-content-start ms-2 mt-3" style="color:#171717">
+            <h5><b>Equipos:</b></h5>
+            <div class="d-flex flex-row flex-wrap gap-4"> 
+                `+htmlAppendEquipos+`
+            </div>
+        </div>`
+    }
+    let arrayVehiculos=[]
+    let listInputsVehicule= data.grupo_vehiculos
+    let htmlAppendVehiculos=""
+    for (let vehiculo of listInputsVehicule) {
+        if(vehiculo.value !==""){
+            htmlAppendVehiculos +="<div class='col-sm-12 col-md-12 col-lg-6 col-xl-5'>"
+            htmlAppendVehiculos +="<table class='table table-borderless customShadow' style='border: none; font-size: .8em; background-color: lightgray!important;'>"
+            htmlAppendVehiculos +="<tbody> <tr> <td><b>Tipo de Vehiculo:</b></td> <td><span>"+ vehiculo.tipo_vehiculo +"</span></td> </tr>"
+            htmlAppendVehiculos +="<tr> <td><b>Marca:</b></td> <td><span > "+ vehiculo.marca_vehiculo +"</span></td> </tr>"
+            htmlAppendVehiculos +="<tr> <td><b>Modelo:</b></td> <td><span > "+ vehiculo.modelo_vehiculo +"</span></td> </tr>"
+            htmlAppendVehiculos +="<tr> <td><b>Matricula:</b></td> <td><span > "+ vehiculo.placas_vehiculo +"</span></td> </tr>"
+            htmlAppendVehiculos +="<tr> <td><b>Estado:</b></td> <td><span > "+ vehiculo.state +"</span></td> </tr>"
+            htmlAppendVehiculos +="<tr> <td> <b> Color: </b></td> <td><span > "+ vehiculo.color_vehiculo +"</span></td> </tr> </tbody> </table> </div>";
+            let objVehiculo={ 
+                'tipo':vehiculo.tipo_vehiculo,
+                'marca':vehiculo.marca_vehiculo,
+                'modelo':vehiculo.modelo_vehiculo,
+                'estado':vehiculo.state,
+                'placas':vehiculo.placas_vehiculo,
+                'color':vehiculo.color_vehiculo
+            }
+            arrayVehiculos.push(objVehiculo)
+        }
+    }
+    let htmlAppendVehiculosTitulo=""
+    if(arrayVehiculos.length>0){
+        htmlAppendVehiculosTitulo+=`
+        <div class="d-flex flex-column justify-content-start ms-2 mt-3" style="color:#171717">
+            <h5><b>Vehiculos:</b></h5>
+            <div class="d-flex flex-row flex-wrap gap-4"> 
+                `+htmlAppendVehiculos+`
+            </div>
+        </div>`
+    }
+
+
+    let checkPregistro=[]
+    let correoSms = document.querySelectorAll('input[name="enviarCorreoSms"]');
+    correoSms.forEach(function(checkbox) {
+        if (checkbox.checked) {
+            checkPregistro.push(checkbox.value)
+        }
+    });
+
+    let checkDocSeleccionados= []
+    $('input[name="AgregarFotoIdent"]:checked').each(function() {
+        checkDocSeleccionados.push($(this).val()); 
+    });
+    let buttonDays=""
+    if(diasArr.length>0){
+        buttonDays=`
+        <div class="d-flex justify-content-start mt-2 ms-2">
+                        <h5><b>Dias de acceso:</b></h5>
+                    </div>
+        <div class="d-flex justify-content-start ms-2">
+            <button type="button" class="btn btn-outline-success btn-custom week me-3" id="lunes">L</button>
+            <button type="button" class="btn btn-outline-success btn-custom week me-3" id="martes">M</button>
+            <button type="button" class="btn btn-outline-success btn-custom week me-3" id="miércoles">M</button>
+            <button type="button" class="btn btn-outline-success btn-custom week me-3" id="jueves">J</button>
+            <button type="button" class="btn btn-outline-success btn-custom week me-3" id="viernes">V</button>
+            <button type="button" class="btn btn-outline-success btn-custom week me-3" id="sábado">S</button>
+            <button type="button" class="btn btn-outline-success btn-custom week me-3" id="domingo">D</button>
+        </div>`
+    }
+    let fechaVisitaDiv=""
+    if(fechaVisitaMain){
+        fechaVisitaDiv=`<div class="d-flex flex-wrap ms-2">
+                            <div>
+                                <i class="fa-regular fa-calendar"></i>
+                            </div>
+                            <div class="ms-3">
+                                Fecha y hora de visita: `+data.fecha_desde_visita+`
+                            </div>
+                        </div>`
+    }
+    let fechaHastaDiv=""
+    if(fechaHastaMain){
+        fechaHastaDiv=` <div class="d-flex mt-3 ms-2">
+                            <div>
+                                <i class="fa-regular fa-calendar"></i>
+                            </div>
+                            <div class="ms-3">
+                                Fecha y hora de hasta: `+data.fecha_desde_hasta+`
+                            </div>
+                        </div>`
+    }
+    let tituloVigencia=""
+    if(fechaHastaMain || fechaVisitaMain){
+        tituloVigencia=`<div class="d-flex justify-content-start mt-3 ms-2">
+                            <h5><b>Vigencia y acceso:</b></h5>
+                        </div>`
+    }
+    let tituloDias=""
+    if(true){
+        tituloDias=``
+    }
+    let limiteEntradasTexto=""
+    if(data.limite_de_acceso!==""){
+        limiteEntradasTexto=`
+            <div class="d-flex justify-content-start mt-3 ms-2">
+                <p><span class="me-2"><b>Limite de entradas:</b></span>`+ data.limite_de_acceso+`</p>
+            </div>
+        `
+    }
+    let numValid = true //iti.isValidNumber()
+    let numeroConLada = ""
+    if(numValid){
+        numeroConLada = data.telefono//iti.getNumber();
+    }
+    let html = []//getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
+    let foto= data.foto.length>0?data.foto[0].file_url:""
+    let identificacion= data.identificacion.length>0?data.identificacion[0].file_url:""
+   
+    let htmlPase= mainAccesos+``+mainComentarios+``+tituloVigencia+``+fechaVisitaDiv+``+fechaHastaDiv+``+tituloDias+``+limiteEntradasTexto+``+buttonDays
+    +``+htmlAppendEquiposTitulo+``+htmlAppendVehiculosTitulo
+
+    
+                
+    //       // ,
+    //       //   confirmButtonColor: "#28a745",
+    //       //   showCancelButton: false,
+    //       //   showConfirmButton: false,
+    //       //   cancelButtonColor: "#dc3545",
+    //       //   confirmButtonText:'Cerrar',
+    //       //   cancelButtonText:'Cerrar',
+    //       //   heightAuto:false,
+    //       //   reverseButtons: true,
+    //       //   width:750,
+    //         // preConfirm: () => 
+    //         // {
+    //         //     // Obtener los estados de los checkboxes
+    //         //     const enviarMensajeChecked = document.getElementById('cerrar').checked;
+    //         //     const enviarCorreoChecked = document.getElementById('enviarCorreo').checked;
+    //         //     const descargarPdfChecked = true //document.getElementById('descargarPdfCheck').checked;
+    //         //     return {
+    //         //         enviarMsj: enviarMensajeChecked,
+    //         //         enviarCorreo: enviarCorreoChecked,
+    //         //         descargarPdf:descargarPdfChecked
+    //         //     };
+    //         // }
+    
+    // .then((result) => {
+    //     if (result.value) {
+    //         console.log("RESULT")
+    //        Swal.close()
+    //     }
+    //     // console.log("SWALA",Swal.getHtmlContainer()) // Cierra la alerta
+    // });
+    let miDiv = document.getElementById('addHTML');
+    miDiv.innerHTML = htmlPase
+
+    if(diasArr.length>0){
+        for(let d of diasArr){
+            $("#"+d+"").removeClass('btn-outline-success');
+            $("#"+d+"").addClass('bg-dark');
+            $("#"+d+"").addClass('color-white');
+        }
+    }
+    $("#verPaseModal").modal('show')
+}
+
+function cerrarModalPase(id){
+    $("#"+id).modal("hide")
+}
+
+function enviarCorreoPaseE() {
+    let data = dataTableListTodos.filter(x => x._id == selectedGlobalPase).pop();
+    console.log("QUE HAY", data)
+    loadingService()
+    let bodyPost={
+        script_name: "pase_de_acceso.py",
+        folio:data._id,
+        account_id:parseInt(getCookie('userId'))||""
+    }
+    data_for_msj = {
+        email_to: data.email,
+        asunto: data.tema_cita,
+        email_from: data.visita_a.length>0 ? data.visita_a[0].email[0] :'',
+        nombre: data.nombre,
+        nombre_organizador: data.visita_a.length>0 ? data.visita_a[0].nombre :'',
+        ubicacion: data.ubicacion,
+        fecha: {desde: data.fecha_desde_visita, hasta: data.fecha_desde_hasta},
+        descripcion: data.descripcion,
+    }
+    console.log(data_for_msj)
+    bodyPost.data_msj= data_for_msj
+    bodyPost.option= "enviar_correo"
+    enviarCorreoPase(bodyPost)
+}
+
+async function enviarSmsPaseE() {
+    let data = dataTableListTodos.filter(x => x._id == selectedGlobalPase).pop();
+    console.log("QUE HAY", data)
+    loadingService()
+    let pdf = await get_pdf(selectedGlobalPase)
+    let bodyPost={
+            script_name: "pase_de_acceso.py",
+            folio:data._id,
+            account_id:parseInt(getCookie('userId'))||""
+        }
+    let msj=""
+    if(data.fecha_desde_visita !==""){
+        msj=`el día ${data.fecha_desde_visita}`
+    }else if (data.fecha_desde_hasta !=="" && data.fecha_desde_visita !==""){
+        msj= `apartir del `+data.fecha_desde_visita+` hasta el `+data.fecha_desde_hasta+`.`
+    }
+    data_for_msj_tel={
+        mensaje: `Estimado ${data.nombre} 😁, ${data.visita_a.length>0 ? data.visita_a[0].nombre :''}, te esta invitando a: ${data.ubicacion}, `+msj+` Descarga tu pase 💳 en: ${pdf.download_url}`,
+        numero: data.telefono
+    }
+    bodyPost.data_cel_msj= data_for_msj_tel
+    bodyPost.option= "enviar_msj"
+    enviarSmsPase(bodyPost)
+
+}
+
+async function descargarPdfPaseE() {
+    loadingService()
+    let pdf = await get_pdf(selectedGlobalPase)
+    descargarPdfPase(pdf.download_url)
+}
+
 async function modalEditarPase(id){
     limpiarInputsPorClase('paseEntradaEdit')
+    // $("#com-input-form-nuevo div").not("#id-com-div-123").remove();
+    // $("#miContenedor div").not("#123").remove();
+    let divs = document.querySelectorAll('div[id*="id-com-div-"]');
+    if(divs.length>0){
+        divs.forEach(function(div) {
+            if (div.id !== 'id-com-div-123') {
+                div.remove();
+            }
+        });
+    }
+    let divs2 = document.querySelectorAll('div[id*="id-area-div-"]');
+    if(divs2>0){
+        divs2.forEach(function(div) {
+            if (div.id !== 'id-area-div-123') {
+                div.remove();
+            }
+        });
+    }
+
     let selectedPase = dataTableListTodos.filter(x => x._id == id).pop();
     let selectedGlobalPase = selectedPase
     onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')
     iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')
+
+    
+    
     try {
         const resultado = await catalogoAreaByLocation(getCookie('userLocation'))
        $("#paseEntradaEditar").modal('show')
@@ -539,6 +945,47 @@ async function modalEditarPase(id){
         $('#descripcion').val(selectedPase.descripcion)
         $('#ubicacion').prop('value', selectedPase.ubicacion);
     })
+
+    for (let [key, value] of  Object.entries(selectedPase.grupo_areas_acceso)){
+        setAddArea('nuevo', 'area');
+    }
+    for (let [key, value] of  Object.entries(selectedPase.grupo_instrucciones_pase)){
+        setAddCom('nuevo', 'com');
+    }
+    const inputsTipoArea = $("select[id^='tipoArea-']");
+    if (inputsTipoArea.length > 0) {
+        inputsTipoArea.each(function(index) {
+            const inputId = $(this).attr('id');
+            const key = Object.keys(selectedPase.grupo_areas_acceso)[index];
+            if (key) {
+                $(`#${inputId}`).val(selectedPase.grupo_areas_acceso[key].note_booth)
+            }
+        });
+    }
+
+    const inputsComments = $("textarea[id^='comentario-']");
+    if (inputsComments.length > 0) {
+        inputsComments.each(function(index) {
+            const inputId = $(this).attr('id');
+            const key = Object.keys(selectedPase.grupo_areas_acceso)[index];
+            if (key) {
+                $(`#${inputId}`).val(selectedPase.grupo_areas_acceso[key].commentario_area)
+            }
+        });
+    }
+
+    const inputsInstruc = $("textarea[id^='instruccionComentario-']");
+    if (inputsInstruc.length > 0) {
+        inputsInstruc.each(function(index) {
+            const inputId = $(this).attr('id');
+            const key = Object.keys(selectedPase.grupo_instrucciones_pase)[index];
+            if (key) {
+                $(`#${inputId}`).val(selectedPase.grupo_instrucciones_pase[key].comentario_pase)
+            }
+        });
+    } 
+
+
     for(let i of selectedPase.enviar_correo_pre_registro){
         if(i =='enviar_correo_pre_registro'){
             $("#enviar_correo_pre_registro").prop('checked', true);
@@ -560,7 +1007,6 @@ async function modalEditarPase(id){
         $("#fechaVisitaOA").val(date[0])
         let date1= selectedPase.fecha_desde_hasta.split(" ")
         $("#fechaHastaOA").val(date1[0])
-        console.log("FEWHCASSS ",date, date1)
     }else{
         $("#radioFechaFija").prop('checked', true);
         let date =selectedPase.fecha_desde_visita.split(" ")
@@ -758,7 +1204,7 @@ function actualizarEstrella(access_pass, idStar) {
 
 async function get_pdf(qr_code){
     let pdf=""
-    loadingService()
+    // loadingService()
     await fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -801,8 +1247,8 @@ function validarTel(input){
 }
 
 function editarPaseEntrada(){
+    let paseSelected = dataTableListTodos.filter(x => x._id == id).pop();
     let data = getInputsValueByClass("paseEntradaEdit")
-    console.log("DATA ANTIGUA", data)
     // let selectedGlobalPase=''
     loadingService("Creando pase de entrada...")
 
@@ -1002,7 +1448,6 @@ function editarPaseEntrada(){
                     "numero": numeroConLada
                 }
             }
-
             let protocol = window.location.protocol;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
                     let host = window.location.host;
                    
@@ -1059,16 +1504,17 @@ function editarPaseEntrada(){
                         access_pass.enviar_correo_pre_registro = checkPregistro
                     }
 
-                    console.log("DATAAAAA", access_pass)
+                    console.log("DATAAAAA", access_pass, paseSelected.folio)
                     ERORR
                     fetch(url + urlScripts, {
                         method: 'POST',
                         body: JSON.stringify({
                             script_name: "pase_de_acceso.py",
-                            option: 'update_pass',
-                            location:getCookie('userLocation'),
+                            option: 'update_full_pass',
+                            // location:getCookie('userLocation'),
                             access_pass: access_pass,
-                            enviar_pre_sms: enviarPreSmsChecked
+                            folio: paseSelected.folio,
+                            // enviar_pre_sms: enviarPreSmsChecked
                         }),
                         headers:{
                             'Content-Type': 'application/json',
@@ -1149,15 +1595,16 @@ function editarPaseEntrada(){
 
 
         }
-    }
-                    
+    }                  
 }
 
 
 function crearConfirmacionEditar() {
+    let paseSelected = dataTableListTodos.filter(x => x._id == selectedGlobalPase).pop();
     let enviarPreSmsChecked = document.getElementById('enviar_sms_pre_registro').checked;
 
     let data= getInputsValueByClass('paseEntradaEdit')
+    console.log("QRRR",selectedGlobalPase, enviarPreSmsChecked)
     // let comentarios= getDataGrupoRepetitivo('com-input-form-nuevo','.com-div-nuevo' , 0)
     let arrComentarios= document.getElementsByClassName('com-div-nuevo')
     let comentarios=[]
@@ -1264,16 +1711,29 @@ function crearConfirmacionEditar() {
 
     let checkPregistro=[]
     let correoSms = document.querySelectorAll('input[name="enviarCorreoSms"]');
+    console.log("correoSms", correoSms, )
     correoSms.forEach(function(checkbox) {
         if (checkbox.checked) {
-            checkPregistro.push(checkbox.value)
+            console.log("checkbox", checkbox.checked)
+            checkPregistro.push(checkbox.id)
+        }
+    });
+    console.log("SMSS COREEO", checkPregistro, )
+
+    let checkDocSeleccionados= []
+    // $('input[name="AgregarFotoIdent"]:checked').each(function() {
+    //     console.log("LALALA",$(this).val())
+    //     checkDocSeleccionados.push($(this).val()); 
+    // });
+    let docsCheck = document.querySelectorAll('input[name="AgregarFotoIdent"]');
+    console.log("docsCheck", docsCheck, )
+    docsCheck.forEach(function(checkbox) {
+        if (checkbox.checked) {
+            console.log("checkbox", checkbox.checked)
+            checkDocSeleccionados.push(checkbox.id)
         }
     });
 
-    let checkDocSeleccionados= []
-    $('input[name="AgregarFotoIdent"]:checked').each(function() {
-        checkDocSeleccionados.push($(this).val()); 
-    });
     let buttonDays=""
     if(diasArr.length>0){
         buttonDays=`
@@ -1421,7 +1881,7 @@ function crearConfirmacionEditar() {
                 confirmButtonColor: "#28a745",
                 showCancelButton: true,
                 cancelButtonColor: "#dc3545",
-                confirmButtonText:'Crear pase',
+                confirmButtonText:'Actualizar pase',
                 cancelButtonText:'Cancelar',
                 heightAuto:false,
                 reverseButtons: true,
@@ -1429,13 +1889,13 @@ function crearConfirmacionEditar() {
             })
             .then((result) => {
                 if (result.value) {
-                    loadingService("Actualizando pase de entrada...")
+                    // loadingService("Actualizando pase de entrada...")
                     let protocol = window.location.protocol;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
                     let host = window.location.host;
                    
                     let access_pass={
-                        nombre: data.nombreCompleto,
-                        email:data.email,
+                        nombre_pase: data.nombreCompleto,
+                        email_pase:data.email,
                         /*areas: areas,
                         comentarios:comentarios,*/
                         config_limitar_acceso: parseInt(data.limiteEntradas),
@@ -1445,7 +1905,7 @@ function crearConfirmacionEditar() {
                         perfil_pase:"Visita General",
                         status_pase:'Proceso',
                         visita_a: getCookie("userName"),
-                        custom:true,
+                        // custom:true,
                         link:{
                             "link":`${protocol}//${host}/solucion_accesos/pase.html`,
                             "docs": checkDocSeleccionados,
@@ -1458,10 +1918,10 @@ function crearConfirmacionEditar() {
                     }
                   
                     if(comentarios.length>0){
-                        access_pass.comentarios = comentarios
+                        access_pass.grupo_instrucciones_pase = comentarios
                     }
                     if(areas.length>0){
-                        access_pass.areas = areas
+                        access_pass.grupo_areas_acceso = areas
                     }
                     if(hayFechaHasta){
                         access_pass.tipo_visita_pase= "rango_de_fechas" 
@@ -1485,16 +1945,31 @@ function crearConfirmacionEditar() {
                     if(checkPregistro.length>0){
                         access_pass.enviar_correo_pre_registro = checkPregistro
                     }
-                    console.log("paseEntradaEdit",selectedGlobalPase)
+                    if(paseSelected.foto.length>0){
+                        access_pass.foto = paseSelected.foto
+                    }
+                    if(paseSelected.identificacion.length>0){
+                        access_pass.identificacion = paseSelected.identificacion
+                    }
+                    if(paseSelected.grupo_equipos.length>0){
+                        access_pass.grupo_equipos = paseSelected.grupo_equipos
+                    }
+                    if(paseSelected.grupo_vehiculos.length>0){
+                        access_pass.grupo_vehiculos = paseSelected.grupo_vehiculos
+                    }
+
+
+                    console.log("EDITAR PASE", access_pass,selectedGlobalPase, paseSelected.folio)
                     fetch(url + urlScripts, {
                         method: 'POST',
                         body: JSON.stringify({
                             script_name: "pase_de_acceso.py",
-                            option: 'create_access_pass',
+                            option: 'update_full_pass',
                             location:getCookie('userLocation'),
                             access_pass: access_pass,
-                            enviar_pre_sms: enviarPreSmsChecked,
-                            // folio: selectedGlobalPase
+                            // enviar_pre_sms: enviarPreSmsChecked,
+                            folio: paseSelected.folio,
+                            qr_code: paseSelected._id
                         }),
                         headers:{
                             'Content-Type': 'application/json',

@@ -1080,6 +1080,7 @@ function limpiarInputsPorClase(clase) {
             $(this).val(''); // Limpia el contenido del textarea
         }
     });
-
+    $('.'+clase).prop('disabled', false);
     $("#fechaVisitaOA").val('')
+
 }

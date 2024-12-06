@@ -321,6 +321,8 @@ async function catalogoAreaByLocation(location){
         if (res.success) {
             Swal.close()
         	arrayAreas= res.response.data
+            let tipoArea= document.getElementById("tipoArea")
+                tipoArea.innerHTML=""
         	for(let i of arrayAreas.areas_by_location){
         		$("#tipoArea").append($('<option></option>').val(i).text(i));
         		$("#tipoArea").val("")
@@ -332,12 +334,15 @@ async function catalogoAreaByLocation(location){
         		$("#tipoArea").val("")
         	}
             if(arrayAreas.ubicaciones_user.length>1){
-
+                let tipoArea= document.getElementById("ubicacion")
+                tipoArea.innerHTML=""
                 for(let i of arrayAreas.ubicaciones_user){
                     $("#ubicacion").append($('<option></option>').val(i).text(i));
                     $("#ubicacion").val("")
                 }
             }else{
+                let ubicacion= document.getElementById("ubicacion")
+                ubicacion.innerHTML=""
                 for(let i of arrayAreas.ubicaciones_user){
                     $("#ubicacion").append($('<option ></option>').val(i).text(i));
                     $("#ubicacion").val(i)
@@ -357,7 +362,7 @@ async function catalogoAreaByLocation(location){
 
 //FUNCION para agregar foto en el modal de agregar nota
 function setAddCom(editAdd ="nuevo", classNam){
-    let randomID = Date.now();
+    let randomID = Date.now()+ Math.floor(Math.random() * 1000);
     let newItem=`
         <div class="d-flex mb-3 col-12  div-`+classNam+`-`+editAdd+`-`+randomID+`" id="id-`+classNam+`-div-`+randomID+`">
             <div class="flex-grow-1 d-flex">
@@ -389,20 +394,20 @@ function setDeleteCom(editAdd ="nuevo", id, classNam){
     }
 }
 //FUNCION para agregar foto en el modal de agregar nota
-function setAddArea(editAdd ="nuevo", classNam){
-    let randomID = Date.now();
+async function setAddArea(editAdd ="nuevo", classNam){
+    let randomID = Date.now()+ Math.floor(Math.random() * 1000);
     let newItem=`
         <div class="d-flex mb-3 col-12  div-`+classNam+`-`+editAdd+`-`+randomID+`" id="id-`+classNam+`-div-`+randomID+`">
-            <div class="flex-grow-1 d-flex flex-wrap">
-                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
+            <div class="col-sm-12 col-md-12 col-lg-11 col-xl-11 d-flex flex-wrap justify-content-between">
+                <div class="col-sm-10 col-md-10 col-lg-6 col-xl-5">
 	                <label for="exampleInputPassword1">Area: </label>
 	                <select type="select" class="form-select fill paseEntradaNuevo area-div-nuevo" id="tipoArea-`+randomID+`">
 	                	
 	                </select>
 	            </div>
-               <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
+               <div class="col-sm-10 col-md-10 col-lg-6 col-xl-6">
 	                <label for="exampleInputPassword1">Comentario: </label>
-	                <textarea type="text" class="form-control fill paseEntradaNuevo area-div-nuevo" rows="1" id="comentario" placeholder=""></textarea>
+	                <textarea type="text" class="form-control fill paseEntradaNuevo area-div-nuevo" rows="1" id="comentario-`+randomID+`" placeholder=""></textarea>
 	            </div>
             </div>
             <div>
@@ -413,16 +418,21 @@ function setAddArea(editAdd ="nuevo", classNam){
         </div>
     `;
     $(`#`+classNam+`-input-form-`+editAdd).append(newItem) 
-    if(arrayAreas.areas_by_location.length>0){
+    if(Object.keys(arrayAreas).length > 0){
+        let tipoArea= document.getElementById(`tipoArea-${randomID}`)
+        tipoArea.innerHTML=""
 		for(let i of arrayAreas.areas_by_location){
 			$(`#tipoArea-${randomID}`).append($('<option></option>').val(i).text(i));
 			$(`#tipoArea-${randomID}`).val("")
 		}
     }else{
-    	let tipoArea= document.getElementById(`tipoArea-`+randomID)
-		tipoArea.innerHTML=""
-		$(`#tipoArea-${randomID}`).append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
-		$(`#tipoArea-${randomID}`).val("")
+        await catalogoAreaByLocation(getCookie('userLocation'))
+        let tipoArea= document.getElementById(`tipoArea-${randomID}`)
+        tipoArea.innerHTML=""
+    	for(let i of arrayAreas.areas_by_location){
+            $(`#tipoArea-${randomID}`).append($('<option></option>').val(i).text(i));
+            $(`#tipoArea-${randomID}`).val("")
+        }
     }
 }
 
@@ -513,6 +523,19 @@ function onChangeOpcionesAvanzadas(type){
 		let selected = $('input[name="opcionesAvanzadas"]:checked');
 		let radioRangoFechas = document.getElementById('radioRangoFechas');
 		if(selected[0].id == 'radioRangoFechas'){
+            $("#fechaVisita").val("")
+            $("#horaNuevoPase").val("00")
+            $("#minNuevoPase").val("00")
+            $("#fechaVisita").prop('disabled', true);
+            $("#horaNuevoPase").prop('disabled', true)
+            $("#minNuevoPase").prop('disabled', true)
+
+            $("#fechaVisitaOA").val("")
+            $("#fechaHastaOA").val("")
+            $("#fechaVisitaOA").prop('disabled', false);
+            $("#fechaHastaOA").prop('disabled', false);
+
+
 			$("#fechaVisitaDiv").addClass('d-flex');
 			$("#fechaHastaDiv").addClass('d-flex');
 			$("#fechaVisitaDiv").show()
@@ -521,6 +544,18 @@ function onChangeOpcionesAvanzadas(type){
 			$("#radioCualquierDia").prop('checked', true);
 			onChangeOpcionesAvanzadas('radioCualquierDia')
 		}else if(selected[0].id == 'radioFechaFija'){
+            $("#fechaVisita").val("")
+            $("#horaNuevoPase").val("00")
+            $("#minNuevoPase").val("00")
+            $("#fechaVisita").prop('disabled', false);
+            $("#horaNuevoPase").prop('disabled', false)
+            $("#minNuevoPase").prop('disabled', false)
+
+            $("#fechaVisitaOA").val("")
+            $("#fechaHastaOA").val("")
+            $("#fechaVisitaOA").prop('disabled', true);
+            $("#fechaHastaOA").prop('disabled', true);
+
 			$("#fechaVisitaDiv").removeClass('d-flex');
 			$("#fechaHastaDiv").removeClass('d-flex');
 			$("#fechaVisitaDiv").hide()
@@ -530,6 +565,8 @@ function onChangeOpcionesAvanzadas(type){
 	}else if (type == "radioCualquierDia" || type=="radioLimitarDias"){
 		let selected = $('input[name="diasAcceso"]:checked');
 		if(selected[0].id == 'radioCualquierDia'){
+            console.log("HRLLOO")
+            $('input[name="diasPase"]').prop('checked', false);
 			$("#diasAccesoDivDias").hide()
 			
 		}else if(selected[0].id == 'radioLimitarDias'){
@@ -1004,7 +1041,9 @@ function crearConfirmacion() {
 			let formatHor= formatNumber(data.horaNuevoRangoVisita)
 			let formatMin= formatNumber(data.minNuevoRangoVisita)
 			fechaVisitaMain= `${data.fechaVisitaOA} 00:00:00`
-		}
+		}else{
+            fechaVisitaMain=""
+        }
 		if(data.fechaHastaOA!==""){
 			let formatHor2= formatNumber(data.horaNuevoRangoHasta)
 			let formatMin2= formatNumber(data.minNuevoRangoHasta)
@@ -1013,8 +1052,8 @@ function crearConfirmacion() {
 		selectedRadioDias = $('input[name="diasAcceso"]:checked');
 		selectedRadioDiasAcceso=selectedRadioDias[0].id
         let fechaActual= new Date()
-        let fecha1= fechaVisitaMain.replace(" ", "t")
-        let fecha2= fechaHastaMain.replace(" ", "t")
+        let fecha1= fechaVisitaMain !== "" ? fechaVisitaMain.replace(" ", "t"):""
+        let fecha2= fechaHastaMain !== "" ? fechaHastaMain.replace(" ", "t"):""
         if(fecha1 < fechaActual || fecha2 < fechaActual){
             console.log("RANGO DE FECHAS INVALIDO")
             $("#fechaVisitaOA").val("")
@@ -1105,13 +1144,27 @@ function crearConfirmacion() {
         numeroConLada = iti.getNumber();
     }
 	let html = []//getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
-	if(data.nombreCompleto=="" ||data.email=="" || data.telefono=="" ){
-		  successMsg("Validación", "Faltan datos por llenar", "warning")
-	}else{
-        if(!numValid){
-            successMsg("Validación","Escribe un número de teléfono válido.", "warning")
-            let inputTel= document.getElementById("telefono")
-            inputTel.value=""
+    
+    const formInputs = document.querySelectorAll('.paseEntradaNuevo');
+    console.log("INVALID INPUT",)
+    let hasInvalidInput = false;
+    formInputs.forEach(input => {
+      if (input.classList.contains('is-invalid')) {
+        hasInvalidInput = true;
+      }
+    });
+    let tieneEmailTel = data.email!="" || data.telefono!=""
+    console.log("HAY INPUTS INVALIDOS",hasInvalidInput, tieneEmailTel, fechaVisitaMain, data.nombreCompleto=="")
+	if(data.nombreCompleto=="" && tieneEmailTel==false && fechaVisitaMain==""){
+		successMsg("Validación", "Faltan datos por llenar", "warning")
+	}else {
+        // if(!numValid){
+        //     successMsg("Validación","Escribe un número de teléfono válido.", "warning")
+        //     let inputTel= document.getElementById("telefono")
+        //     inputTel.value=""
+        // }else{ 
+        if(hasInvalidInput == true){
+           successMsg("Validación", "Datos invalidos, por favor verifica de nuevo.", "warning")
         }else{
             if(enviarPreSmsChecked){
                 enviarPreSmsChecked = {
@@ -1356,6 +1409,78 @@ function crearConfirmacion() {
 	}
 }
 
+function validateEmailTelInput(id) {
+    let value= $("#"+id).val()
+    if(id=="email"){
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailPattern.test(value)) {
+            $("#"+id).removeClass('is-invalid');
+            $("#enviar_correo_pre_registro").removeClass("is-invalid")
+        } else {
+            $("#"+id).addClass('is-invalid');
+        }
+        if (value=="") {
+            $("#"+id).removeClass('is-invalid');
+            $("#enviar_correo_pre_registro").removeClass("is-invalid")
+        }
+    }else if (id == "enviar_correo_pre_registro"){
+        let isChecked = $("#"+id).is(":checked")
+        let email = $("#email").val()
+        if(isChecked) {
+            if(email==""){
+                $("#"+id).addClass("is-invalid")
+                $("#email").addClass("is-invalid")
+            }else{
+                validateEmailTelInput('email')
+                $("#"+id).removeClass("is-invalid")
+            }
+        }else{
+            $("#"+id).removeClass("is-invalid")
+            if(email==""){
+                $("#email").removeClass("is-invalid")
+            }
+        }
+    }else if (id == "enviar_sms_pre_registro"){
+        console.log("SMSSSS?", id)
+        let isChecked = $("#"+id).is(":checked")
+        let telefono = $("#telefono").val()
+        if(isChecked) {
+            if(telefono==""){
+                $("#"+id).addClass("is-invalid")
+                $("#telefonoValid").show();
+                $("#telefono").addClass("is-invalid")
+            }else{
+                validateEmailTelInput('telefono')
+                // $("#telefonoValid").hide();
+                $("#"+id).removeClass("is-invalid")
+            }
+        }else{
+            $("#"+id).removeClass("is-invalid")
+            if(telefono==""){
+                $("#telefono").removeClass("is-invalid")
+                $("#telefonoValid").hide();
+            }
+        }
+    }else if (id == 'telefono'){
+        removeNonNumeric(input)
+        let numValid = iti.isValidNumber()
+
+        if(numValid==false ){
+            $('#telefono').addClass('is-invalid');
+            $("#telefonoValid").show();
+        }else{
+            $('#telefono').removeClass('is-invalid');
+            $("#telefonoValid").hide();
+            $("#enviar_sms_pre_registro").removeClass("is-invalid")
+        }
+        if (numValid==false && $("#telefono").val() == "") {
+            $("#"+id).removeClass('is-invalid');
+            $("#telefonoValid").hide();
+            $("#enviar_correo_pre_registro").removeClass("is-invalid")
+        }
+
+    }
+}
 
 function validDatePase(){
     let fechaActual= new Date()
@@ -1367,10 +1492,17 @@ function validDatePase(){
     $('#fechaHastaOA').removeClass('is-invalid');
     $('#fechaVisitaOA').removeClass('is-invalid');
     if(fechaFijaSelected){
-        let fullDate= `${$("#fechaVisita").val()}T${$("#horaNuevoPase").val()}:${$("#minNuevoPase").val()}:00`
+        let fullDate= `${$("#fechaVisita").val()}T00:00:00`
         console.log("ASI", new Date(fullDate).toLocaleDateString(), fechaActual.toLocaleDateString())
         if(new Date(fullDate).toLocaleDateString() >= fechaActual.toLocaleDateString()){
-            $('#horaNuevoPase').val(formatNumber(fechaActual.getHours() + 1));
+            let horaActual = fechaActual.getHours()
+            if(horaActual == 23){
+                horaActual="13"
+            }else{
+                horaActual=formatNumber(fechaActual.getHours() + 1)
+            }
+            console.log("FORMATO DE FECHA",horaActual)
+            $('#horaNuevoPase').val(horaActual);
             $('#minNuevoPase').val(formatNumber("00"));
         }else if (new Date(fullDate) < fechaActual){
             $('#fechaVisita').addClass('is-invalid');
@@ -1381,21 +1513,64 @@ function validDatePase(){
             $('#horaNuevoPase').val("00");
             $('#minNuevoPase').val("00");
         }
-    }else if (rangoFechasSelected){
-        console.log("RANGO SELECCIONADA")
-        let fullDate1= `${$("#fechaVisitaOA").val()}T00:00:00`
-        let fullDate2= `${$("#fechaHastaOA").val()}T00:00:00`
-        if (new Date(fullDate1).toLocaleDateString() < fechaActual.toLocaleDateString()){
-            $('#fechaVisitaOA').addClass('is-invalid');
-            $('#fechaVisitaOA').val('')
-        }else if(new Date(fullDate2).toLocaleDateString() < fechaActual.toLocaleDateString()){
-            $('#fechaHastaOA').addClass('is-invalid');
-            $('#fechaHastaOA').val('')
-        }
     }
+    // }else if (rangoFechasSelected){
+    //     console.log("RANGO SELECCIONADA")
+    //     let date1= $("#fechaVisitaOA").val()
+    //     let date2= $("#fechaHastaOA").val()
+    //     if(date1=="" && date2 !==){
+
+    //     }else{
+    //         let fullDate1= `${date1}T00:00:00`
+    //         let fullDate2= `${date2}T00:00:00`
+    //         if (new Date(fullDate1).toLocaleDateString() < fechaActual.toLocaleDateString()){
+    //             $('#fechaVisitaOA').addClass('is-invalid');
+    //             $('#fechaVisitaOA').val('')
+    //         }else if(new Date(fullDate2).toLocaleDateString() < fechaActual.toLocaleDateString()){
+    //             $('#fechaHastaOA').addClass('is-invalid');
+    //             $('#fechaHastaOA').val('')
+    //         }
+    //     }
+    // }
     
 }
 
+function validRangeOfDates(id){
+    let fechaVisita=$("#fechaVisitaOA").val()
+    let fechaHasta=$("#fechaHastaOA").val()
+    let fechaActual= new Date()
+    if(id == "fechaVisitaOA"){
+        console.log("entrada")
+        if(fechaVisita != ""){
+            console.log("fechas ",fechaVisita,new Date(fechaVisita).toISOString() , fechaActual.toISOString())
+            if (new Date(fechaVisita).toISOString() < fechaActual.toISOString()){
+                console.log("nova")
+                $('#fechaVisitaOA').addClass('is-invalid');
+            }else{
+                console.log("fehcaaaaa")
+                $('#fechaVisitaOA').removeClass('is-invalid');
+            }
+        }
+    }else if(id == "fechaHastaOA"){
+        if(fechaVisita != "" && fechaHasta != "" ){
+            if (new Date(fechaVisita).toLocaleDateString() < fechaActual.toLocaleDateString()){
+                $('#fechaVisitaOA').addClass('is-invalid');
+            }else if(new Date(fechaHasta).toLocaleDateString() < fechaActual.toLocaleDateString()){
+                $('#fechaHastaOA').addClass('is-invalid');
+            }else if (new Date(fechaHasta).toLocaleDateString() < new Date(fechaVisita).toLocaleDateString()){
+                $('#fechaHastaOA').addClass('is-invalid');
+                $('#fechaVisitaOA').addClass('is-invalid');
+            }
+        }
+        // }else{
+        //      $('#fechaHastaOA').addClass('is-invalid');
+        // }
+        if(!fechaHasta){ //si esta vacia se quita el error
+             $('#fechaHastaOA').removeClass('is-invalid');
+
+        }
+    }
+}
 
 function setModal(type = 'none',id ="", nombre='', email=''){
     if(type== "listaPasesTemporales"){
@@ -1498,11 +1673,14 @@ function validarTel(input){
     if(numValid){
         numeroConLada = iti.getNumber();
     }
-    $('#telefono').removeClass('is-invalid');
+    
     if(!numValid){
+        $('#telefono').removeClass('is-invalid');
         $('#telefono').addClass('is-invalid');
         let inputTel = document.getElementById("telefono")
         inputTel.value = ""
+    }else{
+        $('#telefono').removeClass('is-invalid');
     }
 }
 
