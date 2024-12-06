@@ -81,3 +81,34 @@ body {
 .delete-icon:hover {
   color: #a71d2a;
 }
+
+@media (max-width: 1024px) {
+  .container-custom {
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+
+@media (max-width: 768px) {
+  .container-custom {
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+
+@media (max-width: 425px) {
+  .container-custom {
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+

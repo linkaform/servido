@@ -3,13 +3,13 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.container {
+.container-custom {
   max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
   padding: 2rem;
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  margin-top: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .header-title {
@@ -69,3 +69,34 @@ body {
   font-size: 1rem;
   margin-bottom: 0.5rem;
 }
+
+@media (max-width: 1024px) {
+  .container-custom {
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+
+@media (max-width: 768px) {
+  .container-custom {
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+
+@media (max-width: 425px) {
+  .container-custom {
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+

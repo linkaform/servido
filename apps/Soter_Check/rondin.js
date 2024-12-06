@@ -1,6 +1,8 @@
 window.onload = function(){
 	const statusSession = getSession('login');
+	/*
 	if(statusSession == 'Active'){
+		resquestLocation();
 		resquestLocation();
 	}else{
 		//----Cookie
@@ -13,7 +15,19 @@ window.onload = function(){
         //---URL REDIRECTION LOGIN
         let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/Login.html`
         window.location.href = urlRedirection;
-	}
+	}*/
+	const componentTitle = document.getElementById('textLocation');
+	const componentTime = document.getElementById('textTime');
+	componentTitle.textContent = 'Caseta';
+	componentTime.textContent = `Ultima inspección hace 2 días`;
+
+
+	setTimeout(() => {
+		const loading = document.getElementById('loading');
+		const mainContent = document.getElementById('main-content');
+		loading.style.display = 'none';
+		mainContent.classList.remove('hidden'); 
+	}, 2000);
 }
 
 function resquestLocation(){

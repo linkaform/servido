@@ -142,34 +142,41 @@ body {
 .delete-icon:hover {
   color: #a71d2a;
 }
-    
+
 @media (max-width: 1024px) {
   .rondin-container {
-    width: 80vw; 
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
     padding: 2rem; 
+    border-radius: 0; 
   }
   .image-container img {
-    width: 35vw;
+    width: 50vw;
   }
 }
 
 @media (max-width: 768px) {
   .rondin-container {
-    width: 70vw; 
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
     padding: 2rem; 
+    border-radius: 0; 
   }
-  
   .image-container img {
-    width: 40vw;
+    width: 50vw;
   }
 }
 
 @media (max-width: 425px) {
   .rondin-container {
-    width: 90vw; 
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
     padding: 2rem; 
+    border-radius: 0; 
   }
-
   .image-container img {
     width: 50vw;
   }
