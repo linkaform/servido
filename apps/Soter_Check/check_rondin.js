@@ -1,38 +1,51 @@
 let listImagesDic = [];
 
 window.onload = function(){
-    //---Hide Div
-    const divContent = document.getElementById('divContent');
-    divContent.style.display = 'none'; 
+    const statusSession = getSession('login');
+    if(statusSession == 'Active'){
+        //---Hide Div
+        const divContent = document.getElementById('divContent');
+        divContent.style.display = 'none'; 
 
-    const divLoader = document.getElementById('divLoading');
-    divLoader.style.display = 'block'; 
+        const divLoader = document.getElementById('divLoading');
+        divLoader.style.display = 'block'; 
 
-    //---Create Element
-    let parameter = getParameterURL('location');
-    let listData = getListCheck(parameter);
-    setElementsCheck(listData);
-    //---Information 
-    getInformationLocation(parameter);
-    getTimeNow();
-    //---Asign Events
-    document.getElementById("cameraButton").addEventListener("click", () => {
-        openCamera(handleFile);
-    });
+        //---Create Element
+        let parameter = getParameterURL('location');
+        let listData = getListCheck(parameter);
+        setElementsCheck(listData);
+        //---Information 
+        getInformationLocation(parameter);
+        getTimeNow();
+        //---Asign Events
+        document.getElementById("cameraButton").addEventListener("click", () => {
+            openCamera(handleFile);
+        });
 
-    document.getElementById("galleryButton").addEventListener("click", () => {
-        openFilePicker(handleFile);
-    });
+        document.getElementById("galleryButton").addEventListener("click", () => {
+            openFilePicker(handleFile);
+        });
 
-    document.getElementById("buttonSend").addEventListener("click", () => {
-        dataSend();
-    });
-
-    //---Show Div
-    setTimeout(() => { 
-        divContent.style.display = 'block'; 
-        divLoader.style.display = 'none'; 
-    }, 4000);
+        document.getElementById("buttonSend").addEventListener("click", () => {
+            dataSend();
+        });
+        //---Show Div
+        setTimeout(() => { 
+            divContent.style.display = 'block'; 
+            divLoader.style.display = 'none'; 
+        }, 4000);
+    }else {
+        //----Cookie
+        const LOCATION = getParameterURL('location');
+        setCookie("locationOrigin", LOCATION, 7);
+        //----Url
+        const protocolo = window.location.protocol;    
+        const hostname = window.location.hostname;      
+        const puerto = window.location.port;            
+        //---URL REDIRECTION LOGIN
+        let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/Login.html`
+        window.location.href = urlRedirection;
+    }
 }
 
 function getParameterURL(keyFound = null) {
@@ -313,4 +326,37 @@ function getTimeNow() {
     const minutes = String(now.getMinutes()).padStart(2, '0');
 
     textTime.textContent = `Fecha y Hora de Inspección: ${year}-${month}-${day} ${hours}:${minutes}`;
+}
+
+//------Configuración ROndines
+function addSelector() {
+    const container = document.getElementById('divContentArea');
+    const newSelector = document.createElement('div');
+    newSelector.classList.add('d-flex', 'align-items-center', 'mb-2', 'selector-item');
+
+    const select = document.createElement('select');
+    select.classList.add('form-select');
+    select.innerHTML = `
+        <option selected>Seleccione Área</option>
+        <option value="1">Área 1</option>
+    `;
+
+    const removeButton = document.createElement('button');
+    removeButton.type = 'button';
+    removeButton.classList.add('btn', 'btn-danger', 'ms-2', 'btn-remove');
+    removeButton.textContent = 'X';
+    removeButton.onclick = function () {
+        removeSelector(removeButton);
+    };
+
+    newSelector.appendChild(select);
+    newSelector.appendChild(removeButton);
+
+    container.appendChild(newSelector);
+}
+
+function removeSelector(button) {
+    const container = document.getElementById('divContentArea');
+    const item = button.parentNode;
+    container.removeChild(item);
 }

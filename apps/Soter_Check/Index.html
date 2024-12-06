@@ -1,99 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Check</title>
-    <!-- Bootstrap 5 CSS -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-	<!-- Tabulator CSS con tema Bootstrap 5 -->
-	<link href="https://cdn.jsdelivr.net/npm/tabulator-tables@5.5.0/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet">
-    <style>
-        .custom-rounded {
-            border-radius: 10px;
-        }
-        .list-group-item {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-    </style>
-</head>
+    <head>
+    	<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<title>Soter</title>
+        <!-- Bootstrap 5 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
 
-<body>
-
-	<!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column ">
-        <!-- Nav -->
-        <nav class="navbar bg-body-tertiary container">
-            <div class="container-fluid ">
-                <a class="navbar-brand" href="#">
-                    <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/673f4e709860ad7a7d5a274a.png" alt="Bootstrap" width="" height="50" >
-                </a>
-                <form class="d-flex" role="search">
-                    <p class="fs-4 ml-2">Check Áreas</p>
-                </form>
-            </div>
-        </nav>
-
-    	<!-- Main Content -->
-        <div class="container p-3" id="divContent">
-            <div class="col-xl-12 col-lg-12 ml-2 mr-2 p-2 ">
-                <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/673f54428183892c605a26d2.png" class="card-img-top img-fluid custom-rounded" height="50%" id="imgLocation">
-                <div class="card-body mt-4">
-                    <h2 class="card-title mb-2" id="titleLocation"></h2>
-                    <p class=" text-secondary" id="textDir"></p>
-                    <p class=" text-secondary" id="textType"></p>
-                    <p class=" text-secondary" id="textTime"></p>
-                </div>
-                <hr><br/>
-                <div class="card-body ">
-                    <h4 class="card-title mb-2">Checklist</h4>
-                    <p class=" text-secondary">Por cada elemento, seleccione la casilla si cumple.</p>
-                    <div id="listCheckDiv"></div >
-                </div>
-                <div class="card-body ">
-                    <div class="mb-3">
-                        <label for="commentCheck" class="form-label">Comentarios</label>
-                        <textarea class="form-control" id="commentCheck" rows="5"></textarea>
-                    </div>
-                    <!-- Carga de Fotos -->
-                    <h4 class="card-title mb-2">Agregar Fotos</h4>
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <button class="btn btn-light border  p-2" id="galleryButton">
-                            <i class="bi bi-images"></i>
-                        </button>
-
-                        <button class="btn btn-light border  p-2" id="cameraButton">
-                            <i class="bi bi-camera"></i>
-                        </button>
-                    </div>
-                    <!-- Loader de Fotos -->
-                    <div class="container p-3 text-center" id="divLoadingImage" style="display: none;">
-                        <div class="spinner-border text-success" role="status"></div>
-                        <p class="mt-2">Subiendo Imagen</p>
-                    </div>
-                    <!-- Lista de Fotos -->
-                    <div class="d-flex justify-content-between align-items-center mb-4" id="divListImages"></div>
-                    <!-- Botón Enviar -->
-                    <div class="text-center">
-                        <button class="btn btn-lg btn-primary rounded-pill w-100" id="buttonSend">Enviar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /.container-fluid -->
-        <div class="container p-3 text-center" id="divLoading">
-            <div class="spinner-border text-info" role="status"></div>
-            <p class="mt-2">Cargando datos, por favor espera...</p>
-        </div>
-
-    </div>
-    <!-- End of Main Content -->
-	<!-- Bootstrap core JavaScript-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-	<!--Report -->
-	<script type="text/javascript" src="./check.js"></script>
-    <script type="text/javascript" src="./check_data.js"></script>
-</body>
+    <body>
+    	<!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column "></div>
+    	<!-- Bootstrap core JavaScript-->
+        <script type="text/javascript" src="../Utils_New/js/servido_utils.js"></script>
+        <script type="text/javascript" src="./Index.js"></script>
+    </body>
 </html>
