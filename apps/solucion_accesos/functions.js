@@ -91,7 +91,8 @@ function enviarCorreoPase(bodyPost){
             if(dataR.status_code==400 || dataR.status_code==401){
                 errorAlert(dataR)
             }else if(dataR.status_code==202 || dataR.status_code==201){
-                successMsg("Confirmación", "Informacion enviada correctamente.", "success")
+                Swal.close()
+                successMsg("Confirmación", "Correo enviado correctamente.", "success")
             }
         }else{
             errorAlert(res)
@@ -117,7 +118,7 @@ function enviarSmsPase(bodyPost){
                 errorAlert(dataR)
             }else if(dataR.status_code==202 || dataR.status_code==201 || dataR.status_code==200){
                 Swal.close()
-                // successMsg("Confirmación", "Informacion enviada correctamente.", "success")
+                successMsg("Confirmación", "Mensaje enviado correctamente.", "success")
             }
         }else{
             errorAlert(res)

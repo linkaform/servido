@@ -1,9 +1,10 @@
 :root {
   --yellowLKF: #FFA823;
-  --yellowLKF-light:  #dcdcdc  ;
-  --downloadButton:#003285;
-  --text-gray:#616161;
-  --soft-gray:#dcdcdc;
+  --yellowLKF-light: #dcdcdc;
+  --downloadButton: #003285;
+  --text-gray: #616161;
+  --soft-gray: #dcdcdc;
+  --dark-gray: #404040;
 }
 
 .header{
@@ -669,6 +670,9 @@ input[type=search]{
   background-color: none!important;
 }
 
+.text-dark-black{
+    color: var(--dark-gray);
+}
 /**/
 
 

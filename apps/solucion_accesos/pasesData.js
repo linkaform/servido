@@ -18,7 +18,6 @@ const columnsTableListPendientes = [
             let data = cell.getData();
             let folio = cell.getData().folio ? cell.getData().folio : 0;
             let _id = cell.getData()._id ? cell.getData()._id : 0;
-            console.log("id", _id)
             let star= data.favoritos !=="" ? `<i class="fa-solid fa-star star" id="${_id}"></i>` : `<i class="fa-regular fa-star star" id="${_id}"></i>`
             let divActions = '<div class="row d-flex">';
             // divActions += `<button class="btn-table-bitacora" onClick="setModal('favoritos','${_id}')">${star}</button>`;
