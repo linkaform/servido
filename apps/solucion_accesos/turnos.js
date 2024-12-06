@@ -18,6 +18,10 @@ let casetaOcupadaFecha =""
 
 window.onload = function(){
     user = getCookie("userId");
+    userJwt=getCookie('userJwt');
+    validSession(user, userJwt);
+    
+
     setValueUserLocation('turnos');
     getAllData(getCookie("userCaseta"),getCookie("userLocation"),false);
     changeButtonColor();

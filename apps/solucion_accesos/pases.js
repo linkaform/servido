@@ -4,34 +4,33 @@ const tabs = document.querySelectorAll('.nav-link');
 let selectedGlobalPase =""
 
 window.onload = function(){
+    setValueUserLocation('pases');
     let userA = getCookie("userId");
     userJwt = getCookie("userJwt");
+    validSession(user, userJwt);
     if(userA !='' && userJwt!=''){
         drawTable('tableListTodos',columnsTableListPendientes, dataTableListTodos );
-        drawTable('tableListFavoritos',columnsTableListPendientes, dataTableListFavoritos );
-        drawTable('tableListActivos',columnsTableListPendientes, dataTableListActivos );
-        drawTable('tableListVencidos',columnsTableListPendientes, dataTableListVencidos );
-    }else{
-        setCloseSession();
+        // drawTable('tableListFavoritos',columnsTableListPendientes, dataTableListFavoritos );
+        // drawTable('tableListActivos',columnsTableListPendientes, dataTableListActivos );
+        // drawTable('tableListVencidos',columnsTableListPendientes, dataTableListVencidos );
     }
 
-    setValueUserLocation('pases');
     $("#locCard").hide()
     changeButtonColor();
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	
-    selectLocation= document.getElementById("selectLocation")
-    selectCaseta= document.getElementById("selectCaseta")
+    selectLocation= getCookie("userLocation") //document.getElementById("selectLocation")
+    selectCaseta= getCookie("userCaseta")//document.getElementById("selectCaseta")
 
-    selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation(selectLocation.value)
-    };
-    selectCaseta.onchange = async function() {
-        let response = await fetchOnChangeCaseta('notes.py', 'get_notes', selectCaseta.value, selectLocation.value)
-        reloadTableNotas(response.response.data)
-    };
+    // selectLocation.onchange = function() {
+    //     let response = fetchOnChangeLocation(selectLocation.value)
+    // };
+    // selectCaseta.onchange = async function() {
+    //     let response = await fetchOnChangeCaseta('notes.py', 'get_notes', selectCaseta.value, selectLocation.value)
+    //     reloadTableNotas(response.response.data)
+    // };
     account_id=getCookie('userId')
-    fillCatalogs();
+    // fillCatalogs();
     // getAllData();
     getAllDataPases()
 }
@@ -42,6 +41,7 @@ function setModal(type = 'none',id ="", nombre='', email=''){
     }else if(type== "ver"){
         modalVerPase(id)
     }else if(type== "editar"){
+        selectedGlobalPase=id
         modalEditarPase(id)
     }else if(type== "reenviar"){
         modalReenviarPase(id)
@@ -76,7 +76,7 @@ function onTabChange(activeTabId, previousTabId) {
 }
 
 function getAllDataPases(tab_status='Todos'){
-    loadingService()
+    // loadingService()
     dataTableListTodos=[]
     fetch(url + urlScripts, {
         method: 'POST',
@@ -385,10 +385,10 @@ function modalVerPase(id){
         tituloDias=``
     }
     let limiteEntradasTexto=""
-    if(data.limiteEntradas!==""){
+    if(data.limite_de_acceso!==""){
         limiteEntradasTexto=`
             <div class="d-flex justify-content-start mt-3 ms-2">
-                <p><span class="me-2"><b>Limite de entradas:</b></span>`+ data.limiteEntradas+`</p>
+                <p><span class="me-2"><b>Limite de entradas:</b></span>`+ data.limite_de_acceso+`</p>
             </div>
         `
     }
@@ -472,10 +472,16 @@ function modalVerPase(id){
                     `+limiteEntradasTexto+`
                     `+buttonDays+`
                 </div>
-        
+                <div class ="mt-4">
+                    <button type="button" class="btn btn-danger">Cerrar</button>
+                    <button type="button" class="btn btn-primary">Enviar por correo</button>
+                    <button type="button" class="btn btn-success">Enviar por sms</button>
+                    <button type="button" class="btn btn-warning">Descargar pdf</button>
+                </div>
+                
           `,
             confirmButtonColor: "#28a745",
-            showCancelButton: true,
+            showCancelButton: false,
             showConfirmButton: false,
             cancelButtonColor: "#dc3545",
             confirmButtonText:'Cerrar',
@@ -483,6 +489,19 @@ function modalVerPase(id){
             heightAuto:false,
             reverseButtons: true,
             width:750,
+            buttons: [
+                {
+                  text: 'Opción 1',
+                  value: 'opcion1',
+                  className: 'btn-primary'
+                },
+                {
+                  text: 'Opción 2',
+                  value: 'opcion2',
+                  className: 'btn-secondary'
+                }
+            ],
+
     })
     .then((result) => {
         if (result.value) {
@@ -576,8 +595,8 @@ async function modalReenviarPase(folio){
     let selectedPase = dataTableListTodos.find(x => x._id == folio);
     console.log("PASE",selectedPase)
     let fechasSonValidas= validarFechasConHora(selectedPase.fecha_desde_visita, selectedPase.fecha_desde_hasta)
-    console.log("SON FECHAS VALIDAS",fechasSonValidas)
-    // if(fechasSonValidas.valido==true){
+    console.log("SON FECHAS VALIDAS",selectedPase.estatus.toLowerCase())
+    if(selectedPase.estatus.toLowerCase() !== "vencido"){
         let pdf = await get_pdf(selectedPase._id);
         console.log(pdf)
         let bodyInf={}
@@ -680,9 +699,9 @@ async function modalReenviarPase(folio){
                 }   
             }
         });
-    // }else{
-    //     successMsg("Validación", "El pase ha vencido, modifica las fechas para continuar.", 'warning')
-    // }
+    }else{
+        successMsg("Validación", "El pase ha vencido, modifica las fechas para continuar.", 'warning')
+    }
     
 }
 
@@ -1410,7 +1429,7 @@ function crearConfirmacionEditar() {
             })
             .then((result) => {
                 if (result.value) {
-                    loadingService("Creando pase de entrada...")
+                    loadingService("Actualizando pase de entrada...")
                     let protocol = window.location.protocol;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
                     let host = window.location.host;
                    
@@ -1466,6 +1485,7 @@ function crearConfirmacionEditar() {
                     if(checkPregistro.length>0){
                         access_pass.enviar_correo_pre_registro = checkPregistro
                     }
+                    console.log("paseEntradaEdit",selectedGlobalPase)
                     fetch(url + urlScripts, {
                         method: 'POST',
                         body: JSON.stringify({
@@ -1473,7 +1493,8 @@ function crearConfirmacionEditar() {
                             option: 'create_access_pass',
                             location:getCookie('userLocation'),
                             access_pass: access_pass,
-                            enviar_pre_sms: enviarPreSmsChecked
+                            enviar_pre_sms: enviarPreSmsChecked,
+                            // folio: selectedGlobalPase
                         }),
                         headers:{
                             'Content-Type': 'application/json',

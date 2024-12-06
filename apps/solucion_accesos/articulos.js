@@ -18,8 +18,12 @@ let fotosDevolucion={userRecibe:[], userRecibeCard:[]}
 
 window.onload = function(){
 	setValueUserLocation('articulos');
+    user= getCookie("userId");
+    userJwt=getCookie('userJwt');
+    validSession(user, userJwt);
+    
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
-	let user = getCookie("userId");
+	// let user = getCookie("userId");
     let checkboxCasetas = document.getElementById('checkboxTodasLasCasetas');
     checkboxCasetas.checked = true; 
 

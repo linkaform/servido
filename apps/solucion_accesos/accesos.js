@@ -33,6 +33,10 @@ let data_for_msj={}
 
 window.onload = function(){
     setValueUserLocation('accesos');
+    user= getCookie("userId");
+    userJwt=getCookie('userJwt');
+    validSession(user, userJwt);
+
     changeButtonColor(); 
     fillCatalogs();
     getInitialData();
@@ -40,7 +44,7 @@ window.onload = function(){
     selectCaseta= document.getElementById("selectCaseta")
     setHideElements('dataHide');
     setSpinner(true, 'divSpinner');
-    let user = getCookie("userId");
+    // let user = getCookie("userId");
     if(user !='' && userJwt!=''){
         setDataInformation('alerts',data = {})
     }else{
@@ -2655,7 +2659,7 @@ function setRequestFileImg(type) {
 
 
 //---Cerrar Sesión
-function setCloseSession() {
-    closeSession();
-    redirectionUrl('login',false);
-}
+// function setCloseSession() {
+//     closeSession();
+//     redirectionUrl('login',false);
+// }
