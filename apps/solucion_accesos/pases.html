@@ -22,9 +22,7 @@
 <body>
 	<navbar-component ></navbar-component>
 <section>
-
-
-    <section class="mainSection mainSectionMargins">
+    <!-- <section class="mainSection mainSectionMargins">
         <div class="accordion" id="accordionExample">
           <div class="accordion-item">
             <h2 class="accordion-header">
@@ -90,10 +88,10 @@
             </div>
           </div>
         </div>  
-    </section>
+    </section> -->
     <section class="mainSectionMargins">
         <div class="d-flex justify-content-center mt-1 align-self-center">
-            <h4 class="m-0 p-0">Listado de Notas</h4>
+            <h4 class="m-0 p-0 mt-3">Listado de Pases</h4>
         </div>
     </section>
 
@@ -101,34 +99,37 @@
 
 		<!-- Information Plant-->
 	<section class="mainSectionMargins">
-	  	<div class="nav nav-tabs" id="nav-tab" role="tablist">
-	    <button class="nav-link active" id="nav-todos-tab" data-bs-toggle="tab" data-bs-target="#nav-todos" type="button" role="tab" aria-controls="nav-todos" aria-selected="true">Todos</button>
-	    <button class="nav-link" id="nav-favoritos-tab" data-bs-toggle="tab" data-bs-target="#nav-favoritos" type="button" role="tab" aria-controls="nav-favoritos" aria-selected="false">Favoritos</button>
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary btn-sm" onclick="redirectionUrl('pase')">
+                <i class="fa-solid fa-plus"></i> Nuevo Pase
+            </button>
+            
+        </div>
+           <!--  <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListTodos">
+              <i class="fa-solid fa-file-arrow-down"></i> Descargar
+            </button> -->
+          <!-- </div> -->
+          <div class="mt-2 mb-3 tableOverflow" id="tableListTodos"></div>
+
+	  	<!-- <div class="nav nav-tabs" id="nav-tab" role="tablist">
+	    <button class="nav-link active" id="nav-todos-tab" data-bs-toggle="tab" data-bs-target="#nav-todos" type="button" role="tab" aria-controls="nav-todos" aria-selected="true">Todos</button> -->
+	   <!--  <button class="nav-link" id="nav-favoritos-tab" data-bs-toggle="tab" data-bs-target="#nav-favoritos" type="button" role="tab" aria-controls="nav-favoritos" aria-selected="false">Favoritos</button>
 	    <button class="nav-link" id="nav-activos-tab" data-bs-toggle="tab" data-bs-target="#nav-activos" type="button" role="tab" aria-controls="nav-activos" aria-selected="false">Activos</button>
 	    <button class="nav-link" id="nav-vencidos-tab" data-bs-toggle="tab" data-bs-target="#nav-vencidos" type="button" role="tab" aria-controls="nav-vencidos" aria-selected="false">Vencidos</button>
-	  	</div>
+	  	</div> -->
 
-	  	<div class="tab-content mb-1" id="myTabContent">
-	    <div class="tab-pane fade show active" id="nav-todos" role="tabpanel" aria-labelledby="nav-todos-tab">
+	  	<!-- <div class="tab-content mb-1" id="myTabContent"> -->
+	    <!-- <div class="tab-pane fade show active" id="nav-todos" role="tabpanel" aria-labelledby="nav-todos-tab">
+	      <div class="d-flex mt-2 justify-content-end">
+	       
+	    </div> -->
+
+	    <!-- <div class="tab-pane fade" id="nav-favoritos" role="tabpanel" aria-labelledby="nav-favoritos-tab">
 	      <div class="d-flex mt-2 justify-content-end">
 	        <button type="button" class="btn btn-primary btn-sm" onclick="redirectionUrl('pase')">
 	          <i class="fa-solid fa-plus"></i> Nuevo Pase
 	        </button>
-	       <!--  <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListTodos">
-	          <i class="fa-solid fa-file-arrow-down"></i> Descargar
-	        </button> -->
-	      </div>
-	      <div class="mt-2 mb-3 tableOverflow" id="tableListTodos"></div>
-	    </div>
-
-	    <div class="tab-pane fade" id="nav-favoritos" role="tabpanel" aria-labelledby="nav-favoritos-tab">
-	      <div class="d-flex mt-2 justify-content-end">
-	        <button type="button" class="btn btn-primary btn-sm" onclick="redirectionUrl('pase')">
-	          <i class="fa-solid fa-plus"></i> Nuevo Pase
-	        </button>
-	        <!-- <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListFavoritos">
-	          <i class="fa-solid fa-file-arrow-down"></i> Descargar
-	        </button> -->
+	      
 	      </div>
 	      <div class="mt-2 mb-3 tableOverflow" id="tableListFavoritos"></div>
 	    </div>
@@ -138,9 +139,7 @@
 	        <button type="button" class="btn btn-primary btn-sm" onclick="redirectionUrl('pase')">
 	          <i class="fa-solid fa-plus"></i> Nuevo Pase
 	        </button>
-	       <!--  <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListActivos">
-	          <i class="fa-solid fa-file-arrow-down"></i> Descargar
-	        </button> -->
+	       
 	      </div>
 	      <div class="mt-2 mb-3 tableOverflow" id="tableListActivos"></div>
 	    </div>
@@ -150,13 +149,11 @@
 	        <button type="button" class="btn btn-primary btn-sm" onclick="redirectionUrl('pase')">
 	          <i class="fa-solid fa-plus"></i> Nuevo Pase
 	        </button>
-	        <!-- <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarListVencidos">
-	          <i class="fa-solid fa-file-arrow-down"></i> Descargar
-	        </button> -->
+	       
 	      </div>
 	      <div class="mt-2 mb-3 tableOverflow" id="tableListVencidos"></div>
-	    </div>
-	  	</div>
+	    </div> -->
+	  	<!-- </div> -->
 	</section>
 
     <div class="modal fade" id="agregarNotasModal" tabindex="-1"  aria-hidden="true">
@@ -361,6 +358,98 @@
         </div>
     </div>
 
+    <div class="modal fade" id="verPaseModal" tabindex="-1"  aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Pase de entrada</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="verPaseDiv">
+                        <div>
+                    <table class="table table-borderless" >
+                        <thead>
+                            <tr>
+                                <th  style=" text-align:left !important;" > <h5 class="text-dark-black"><b> Sobre la visita </b></h5> </th>
+                                <th > </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><b>Tipo de pase:</b></td>
+                                <td><b>Estatus:</b></td>
+                            </tr>
+                            <tr>
+                                <td>Visita General</td>
+                                <td><span > Proceso </span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Nombre completo:</b></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td> <span id="nombrePase"></span></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><b>Email:</b></td>
+                                <td><span ><b>Teléfono:</b></span></td>
+                            </tr>
+                            <tr>
+                                <td ><span id="emailPase"></span></td>
+                                <td><span id="telefonoPase"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Ubicación:</b></td>
+                                <td><span ><b>Tema de la cita:</b></span></td>
+                            </tr>
+                            <tr>
+                                <td ><span id="ubicacionPase"> </span> </td>
+                                <td ><span id="temaPase"> </span></td>
+                            </tr>
+                             <tr>
+                                <td><b>Descripción:</b></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td id="descripcionPase"></td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td><b>Foto:</b></td>
+                                <td><span><b>Identificación:</b></span></td>
+                            </tr>
+                            <tr>
+                                <td><img id="fotoPase" src="" alt="No hay imagen disponible" style="object-fit:contain !important" height="150"> </td>
+                                <td><img id="identificacionPase" src="" alt="No hay imagen disponible" style="object-fit:contain !important" height="150"> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                    <div id="addHTML">
+                    </div>
+                </div>
+                <div class ="d-flex justify-content-center mt-4 gap-2">
+                    <button type="button" class="btn btn-danger" id= "cerrarSw" onclick="cerrarModalPase('verPaseModal')">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="enviarCorreo" onclick="enviarCorreoPaseE()">Enviar por correo</button>
+                    <button type="button" class="btn btn-success" id="enviarSms" onclick="enviarSmsPaseE()">Enviar por sms</button>
+                    <button type="button" class="btn btn-warning" id="descargarPdf" onclick="descargarPdfPaseE()">Descargar pdf</button>
+                </div>
+
+                    </div>
+                </div>
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="idButtonEnviarNota" onclick="agregarNuevaNota()">Agregar</button>
+                    <button class="btn btn-success btn-sm" type="button" id="idLoadingButtonEnviarNota" style="display:none;" disabled>
+                          <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                          Cargando...
+                    </button>
+                </div> -->
+            </div>
+        </div>
+    </div>
 
 <!--     <div class="modal fade" id="paseEntradaEditar" tabindex="-1"  aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -418,34 +507,37 @@
 			                <label for="exampleInputEmail1">Nombre Completo</label>
 			                <input type="text" class="form-control fill paseEntradaEdit" id="nombreCompleto" aria-describedby="emailHelp" placeholder="Nombre completo">
 			            </div>
-			            <div class="d-flex flex-row flex-wrap justify-content-start mt-2 gap-5">
-			            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
-			                	<label for="exampleInputEmail1">Email</label>
-			                	<input type="email" class="form-control  paseEntradaEdit" id="email" aria-describedby="emailHelp" placeholder="Email">
-			            	</div>
-			            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
-			                	<label for="exampleInputEmail1">Telefono</label> <br>
-			               	 	<!-- <input type="text" class="form-control fill paseEntradaEdit" id="telefono" aria-describedby="emailHelp" placeholder="Telefono"> -->
-			               	 	<input type="tel" id="telefono" name="telefono" class="form-control  PaseEntradaEdit" aria-describedby="telefonoValid" placeholder="Número de teléfono" onchange="validarTel(this)">
-			               	 	<div id="telefonoValid" class="invalid-feedback">
-						      		Escribe un telefono válido.
-						    	</div>
-			            	</div>
-			            	<script>
-							  	const input = document.querySelector("#telefono");
-							  	const iti = window.intlTelInput(input, {
-							   	 	initialCountry: "auto", // Detecta el país automáticamente
-							    	geoIpLookup: function(callback) {
-								     fetch("https://ipinfo.io/json", { headers: { Accept: "application/json" } })
-								        .then(response => response.json())
-								        .then(data => callback(data.country))
-								        .catch(() => callback("MX"));
-							    	},
-							    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/js/utils.js"
-							  });
-							</script>
-
-			            </div>
+			            <div class="d-flex flex-row flex-wrap mt-2">
+                            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
+                                <label for="exampleInputEmail1">Correo</label>
+                                <input type="email" class="form-control fill paseEntradaEdit" id="email" aria-describedby="emailValid" placeholder="Correo" onchange="validateEmailTelInput('email')">
+                                <div id="emailValid" class="invalid-feedback">
+                                    Escribe un email válido.
+                                </div>
+                            </div>
+                            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6 ">
+                                <label for="exampleInputEmail1">Teléfono</label> <br>
+                                <!-- <input type="text" class="form-control fill paseEntradaEdit" id="telefono" aria-describedby="emailHelp" placeholder="Telefono"> -->
+                                <input type="tel" id="telefono" class="form-control fill paseEntradaEdit" aria-describedby="telefonoValid" 
+                                placeholder="Número de teléfono" onchange="validateEmailTelInput('telefono')">
+                                <div id="telefonoValid" class="invalid-feedback">
+                                    Escribe un teléfono válido.
+                                </div>
+                            </div>
+                            <script>
+                                const input = document.querySelector("#telefono");
+                                const iti = window.intlTelInput(input, {
+                                    initialCountry: "auto", // Detecta el país automáticamente
+                                    geoIpLookup: function(callback) {
+                                     fetch("https://ipinfo.io/json", { headers: { Accept: "application/json" } })
+                                        .then(response => response.json())
+                                        .then(data => callback(data.country))
+                                        .catch(() => callback("MX"));
+                                    },
+                                utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/js/utils.js"
+                              });
+                            </script>
+                        </div>
 			            <div class="d-flex flex-row flex-wrap mt-2 gap-5">
 			            	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
 			                	<label for="exampleInputEmail1">Ubicación</label>
@@ -463,14 +555,20 @@
 			               	 	<input type="email" class="form-control fill paseEntradaEdit" id="descripcion" aria-describedby="emailHelp" placeholder="Descripción">
 			            	</div>
 			            </div>
-			               <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5 my-1 mt-2 d-flex flex-column">
-			            	<label>
-				            	<input type="checkbox" class="paseEntradaEdit" name="enviarCorreoSms" value="enviar_correo_pre_registro" id="enviar_correo_pre_registro" onchange="onChangeOpcionesAvanzadas('enviarCorreoSms')"><b> Enviar correo</b>
-				        	</label>
-				        	<label>
-				            	<input type="checkbox" class="paseEntradaEdit" name="enviarCorreoSms" value="enviar_sms_pre_registro" id="enviar_sms_pre_registro" onchange="onChangeOpcionesAvanzadas('enviarCorreoSms')"><b> Enviar sms</b>
-				        	</label>
-			            </div>
+			                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6 my-1 mt-2 d-flex flex-column">
+                                <label>
+                                    <input type="checkbox" class="paseEntradaEdit" name="enviarCorreoSms" value="enviar_correo_pre_registro" id="enviar_correo_pre_registro" onchange="validateEmailTelInput('enviar_correo_pre_registro')" aria-describedby="emailInputValid"><b> Enviar correo</b>
+                                    <div id="emailInputValid" class="invalid-feedback">
+                                        El campo correo debe tener información para habilitar esta opción.
+                                    </div>
+                                </label>
+                                <label>
+                                    <input type="checkbox" class="paseEntradaEdit" name="enviarCorreoSms" value="enviar_sms_pre_registro" id="enviar_sms_pre_registro" onchange="validateEmailTelInput('enviar_sms_pre_registro')" aria-describedby="telefonoInputValid"><b> Enviar sms</b>
+                                    <div id="telefonoInputValid" class="invalid-feedback">
+                                        El campo teléfono debe tener información para habilitar esta opción.
+                                    </div>
+                                </label>
+                            </div>
 			        </div>
 			        <div class="mt-3" id="paseEntradaInf3">
 			 			<h4>Vigencia: </h4>
@@ -491,28 +589,28 @@
 				                            Fecha Fija
 				                        </label>
 			                		</div>
-			                		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-wrap mb-3 mt-2">
-						               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
-														               		<label for="fechaVisita">Fecha de visita: </label>
-						               		<input type="date" class="form-control paseEntradaEdit" id="fechaVisita" placeholder="" onchange="validDatePase()" 
-						               		aria-describedby="fechaVisita">
-						               		<div id="fechaVisita" class="invalid-feedback">
-									      		Escribe un fecha y hora válida.
-									    	</div>
-						               </div>
-						               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2"> 
-						                    <label class="form-label">Hora: *</label>
-						                    <div class="time-selector">
-						                        <select class="form-select time-select contentNuevoPase paseEntradaEdit" id="horaNuevoPase" 
-						                        onchange="onChangeAmpmLabel('horaNuevoPase','ampmNuevoPase')" onchange="validDatePase()">
-						                        </select>
-						                        <label class="mx-1">:</label>
-						                        <select class="form-select time-select contentNuevoPase paseEntradaEdit" id="minNuevoPase" onchange="validDatePase()">
-						                        </select>
-						                        <label class="ms-2" id="ampmNuevoPase">hrs</label>
-						                    </div>
-						               </div>
-						            </div>
+			                		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-wrap mb-3 mt-3">
+                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
+                                            <label for="fechaVisita">Fecha de visita: </label>
+                                            <input type="date" class="form-control paseEntradaEdit my-2" id="fechaVisita" placeholder="" onchange="validDatePase()" 
+                                            aria-describedby="fechaVisita">
+                                            <div id="fechaVisita" class="invalid-feedback">
+                                                Escribe un fecha y hora válida.
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
+                                            <label class="form-label">Hora: *</label>
+                                            <div class="time-selector">
+                                                <select class="form-select time-select contentNuevoPase paseEntradaEdit" id="horaNuevoPase" 
+                                                onchange="onChangeAmpmLabel('horaNuevoPase','ampmNuevoPase')" onchange="validDatePase()">
+                                                </select>
+                                                <label class="mx-1">:</label>
+                                                <select class="form-select time-select contentNuevoPase paseEntradaEdit" id="minNuevoPase" >
+                                                </select>
+                                                <label class="ms-2" id="ampmNuevoPase">hrs</label>
+                                            </div>
+                                        </div>
+                                    </div>
 			                		<div class="opcionesAvanzadasDiv">
 			                			<input class="form-radio-input paseEntradaEdit" type="radio" name="opcionesAvanzadas" id="radioRangoFechas" onchange="onChangeOpcionesAvanzadas('radioRangoFechas');">
 				                        <label class="form-radio-label" for="radioRangoFechas" >
@@ -527,47 +625,47 @@
 				            <div class="col-sm-8 col-md-8 col-lg-12 col-xl-12 d-flex mt-3 flex-wrap">
 				            	
 				               <div class="col-6 d-flex p-0 m-0 flex-wrap" id="fechaVisitaDiv"> 
-					               	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-8">
-					               		<label for="fechaVisitaOA">Fecha de visita: </label>
-					               		<input type="date" class="form-control paseEntradaEdit" id="fechaVisitaOA" aria-describedby="fechaVisitaOAvalidation" placeholder="" onchange="validDatePase()">
-					               		<div id="fechaVisitaOAvalidation" class="invalid-feedback">
-									      	Escribe un fecha válida.
-									    </div>
-					               	</div>
-					               	<!-- <div class="col-6">
-					                    <label class="form-label">Hora: *</label>
-					                    <div class="time-selector">
-					                        <select class="form-select time-select contentNuevoRangoVisita paseEntradaEdit" id="horaNuevoRangoVisita" 
-					                        onchange="onChangeAmpmLabel('horaNuevoRangoVisita','ampmNuevoRangoVisita')">
-					                        </select>
-					                        <label class="mx-1">:</label>
-					                        <select class="form-select time-select contentNuevoRangoVisita paseEntradaEdit" id="minNuevoRangoVisita">
-					                        </select>
-					                        <label class="ms-2" id="ampmNuevoRangoVisita"></label>
-					                    </div>
-					               	</div> -->
-				               </div>
-				               <div class="col-6 d-flex p-0 m-0" id="fechaHastaDiv"> 
-				               		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-8">
-					               		<label for="fechaHastaOA">Fecha hasta: </label>
-					               		<input type="date" class="form-control paseEntradaEdit" id="fechaHastaOA" aria-describedby="fechaHastaOAvalidation" placeholder="" onchange="validDatePase()">
-					               		<div id="fechaHastaOAvalidation" class="invalid-feedback">
-									      	Escribe un fecha válida.
-									    </div>
-					               	</div>
-					               <!-- 	<div class="col-6">
-					                    <label class="form-label">Hora: *</label>
-					                    <div class="time-selector">
-					                        <select class="form-select time-select contentNuevoRangoHasta paseEntradaEdit" id="horaNuevoRangoHasta" 
-					                        onchange="onChangeAmpmLabel('horaNuevoRangoHasta','ampmNuevoRangoHasta')">
-					                        </select>
-					                        <label class="mx-1">:</label>
-					                        <select class="form-select time-select contentNuevoRangoHasta paseEntradaEdit" id="minNuevoRangoHasta">
-					                        </select>
-					                        <label class="ms-2" id="ampmNuevoRangoHasta"></label>
-					                    </div>
-					               	</div> -->
-				               </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-10">
+                                        <label for="fechaVisitaOA">Fecha de visita: </label>
+                                        <input type="date" class="form-control paseEntradaEdit" id="fechaVisitaOA" aria-describedby="fechaVisitaOAvalidation" placeholder="" onchange="validRangeOfDates('fechaVisitaOA')">
+                                        <div id="fechaVisitaOAvalidation" class="invalid-feedback">
+                                            Escribe un fecha válida.
+                                        </div>
+                                    </div>
+                                    <!-- <div class="col-6">
+                                        <label class="form-label">Hora: *</label>
+                                        <div class="time-selector">
+                                            <select class="form-select time-select contentNuevoRangoVisita paseEntradaEdit" id="horaNuevoRangoVisita" 
+                                            onchange="onChangeAmpmLabel('horaNuevoRangoVisita','ampmNuevoRangoVisita')">
+                                            </select>
+                                            <label class="mx-1">:</label>
+                                            <select class="form-select time-select contentNuevoRangoVisita paseEntradaEdit" id="minNuevoRangoVisita">
+                                            </select>
+                                            <label class="ms-2" id="ampmNuevoRangoVisita"></label>
+                                        </div>
+                                    </div> -->
+                               </div>
+                               <div class="col-6 d-flex p-0 m-0" id="fechaHastaDiv"> 
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-10">
+                                        <label for="fechaHastaOA">Fecha hasta: </label>
+                                        <input type="date" class="form-control paseEntradaEdit" id="fechaHastaOA" aria-describedby="fechaHastaOAvalidation" placeholder="" onchange="validRangeOfDates('fechaHastaOA')">
+                                        <div id="fechaHastaOAvalidation" class="invalid-feedback">
+                                            Escribe un fecha válida.
+                                        </div>
+                                    </div>
+                                   <!--     <div class="col-6">
+                                        <label class="form-label">Hora: *</label>
+                                        <div class="time-selector">
+                                            <select class="form-select time-select contentNuevoRangoHasta paseEntradaEdit" id="horaNuevoRangoHasta" 
+                                            onchange="onChangeAmpmLabel('horaNuevoRangoHasta','ampmNuevoRangoHasta')">
+                                            </select>
+                                            <label class="mx-1">:</label>
+                                            <select class="form-select time-select contentNuevoRangoHasta paseEntradaEdit" id="minNuevoRangoHasta">
+                                            </select>
+                                            <label class="ms-2" id="ampmNuevoRangoHasta"></label>
+                                        </div>
+                                    </div> -->
+                               </div>
 				               <div class="col-12  mt-4" id="diasAccesoDiv"> 
 				               		<label>Días de acceso: </label>
 				                	<div class="d-flex flex-column justify-content-start align-items-start">
@@ -668,7 +766,7 @@
 					                    <div class="flex-grow-1 d-flex justify-content-start">
 					                       <div class="col-sm-10 col-md-10 col-lg-6 col-xl-6">
 								                <label for="exampleInputPassword1">Instruccion o comentario: </label>
-								                <textarea type="text" class="form-control fill com-div-nuevo paseEntradaEdit" rows="1" id="instruccionComentario-123" placeholder=""></textarea>
+								                <textarea type="text" class="form-control fill com-div-nuevo paseEntradaEdit" rows="1" id="instruccion-123" placeholder=""></textarea>
 								            </div>
 						                    <div>
 						                        <button type="button" class="btn btn-success button-add-register" onclick="setAddCom('nuevo', 'com');return false;">

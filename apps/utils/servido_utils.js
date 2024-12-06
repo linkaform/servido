@@ -239,19 +239,28 @@ function closeSession(){
         var spcook = cookies[i].split("="); 
         document.cookie = spcook[0] + "=;expires=Thu, 21 Sep 1979 00:00:01 UTC;"; 
     }
-  //location.reload();
+  location.reload();
 }
 
 function setCloseSession(argument) {
-    closeSession();
+    console.log("SALIRR")
     localStorage.setItem('cerrarSesion', Date.now());
+    closeSession();
     // redirectionUrl('login',false, true);
-    let protocol = window.location.protocol;
-    let host = window.location.host;
-    window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+    // let protocol = window.location.protocol;
+    // let host = window.location.host;
+    // window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
 
 }
 
+function validSession(user, userJwt){
+    if(user =='' && userJwt =='' ){
+        let protocol = window.location.protocol;
+        let host = window.location.host;
+        let urlNew = `${protocol}//${host}/solucion_accesos/login.html`
+        window.location.href =urlNew
+    }
+} 
 
 ///-----STYLE
 function getPAlleteColors(pallete,number){
@@ -1071,6 +1080,7 @@ function limpiarInputsPorClase(clase) {
             $(this).val(''); // Limpia el contenido del textarea
         }
     });
-
+    $('.'+clase).prop('disabled', false);
     $("#fechaVisitaOA").val('')
+
 }

@@ -21,6 +21,9 @@ let fotosNuevoIncidenteEditar={}
 
 window.onload = function(){
 	user= getCookie("userId");
+    userJwt=getCookie('userJwt');
+    validSession(user, userJwt);
+
 	setValueUserLocation('incidencias');
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
     getAllDataIncidencias();

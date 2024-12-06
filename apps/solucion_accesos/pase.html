@@ -38,13 +38,13 @@
      <section class="mainSection d-flex flex-column align-items-center justify-content-center" >
      	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-7 mb-3 mt-5" id="paseEntradaInf1">
 	     	<div class="mb-3 d-flex flex-wrap justify-content-start">
-	     		<div class="col-12 m-0 p-0">
+	     		<div class="col-6 m-0 p-0">
 	            	<h4 >Pase de entrada</h4>
 	     		</div>
-	            <!-- <div class="col-6">
+	            <div class="col-6 d-flex justify-content-end">
 	            	<button type="button" class="btn btn-primary btn-sm me-2" id="pasesTemporales" onclick="setModal('listaPasesTemporales')">
-					 <i class="fa-solid fa-list me-2"></i>Mis pases</button>
-	            </div> -->
+					 <i class="fa-solid fa-list"></i> </button>
+	            </div>
 	     	</div>
 	     	<div> 
 	     		<span ><b>Tipo de pase: </b></span>
@@ -62,15 +62,19 @@
             </div>
             <div class="d-flex flex-row flex-wrap mt-2">
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
-                	<label for="exampleInputEmail1">Email</label>
-                	<input type="email" class="form-control fill paseEntradaNuevo" id="email" aria-describedby="emailHelp" placeholder="Email">
+                	<label for="exampleInputEmail1">Correo</label>
+                	<input type="email" class="form-control fill paseEntradaNuevo" id="email" aria-describedby="emailValid" placeholder="Correo" onchange="validateEmailTelInput('email')">
+                	<div id="emailValid" class="invalid-feedback">
+			      		Escribe un email válido.
+			    	</div>
             	</div>
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6 ">
-                	<label for="exampleInputEmail1">Telefono</label> <br>
+                	<label for="exampleInputEmail1">Teléfono</label> <br>
                	 	<!-- <input type="text" class="form-control fill paseEntradaNuevo" id="telefono" aria-describedby="emailHelp" placeholder="Telefono"> -->
-               	 	<input type="tel" id="telefono" name="telefono" class="form-control fill aseEntradaNuevo" aria-describedby="telefonoValid" placeholder="Número de teléfono" onchange="validarTel(this)">
+               	 	<input type="tel" id="telefono" class="form-control fill paseEntradaNuevo" aria-describedby="telefonoValid" 
+               	 	placeholder="Número de teléfono" onchange="validateEmailTelInput('telefono')">
                	 	<div id="telefonoValid" class="invalid-feedback">
-			      		Escribe un telefono válido.
+			      		Escribe un teléfono válido.
 			    	</div>
             	</div>
             	<script>
@@ -107,10 +111,16 @@
             </div>
                <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6 my-1 mt-2 d-flex flex-column">
             	<label>
-	            	<input type="checkbox" class="paseEntradaNuevo" name="enviarCorreoSms" value="enviar_correo_pre_registro" id="enviar_correo_pre_registro" onchange="onChangeOpcionesAvanzadas('enviarCorreoSms')"><b> Enviar correo</b>
+	            	<input type="checkbox" class="paseEntradaNuevo" name="enviarCorreoSms" value="enviar_correo_pre_registro" id="enviar_correo_pre_registro" onchange="validateEmailTelInput('enviar_correo_pre_registro')" aria-describedby="emailInputValid"><b> Enviar correo</b>
+	            	<div id="emailInputValid" class="invalid-feedback">
+			      		El campo correo debe tener información para habilitar esta opción.
+			    	</div>
 	        	</label>
 	        	<label>
-	            	<input type="checkbox" class="paseEntradaNuevo" name="enviarCorreoSms" value="enviar_sms_pre_registro" id="enviar_sms_pre_registro" onchange="onChangeOpcionesAvanzadas('enviarCorreoSms')"><b> Enviar sms</b>
+	            	<input type="checkbox" class="paseEntradaNuevo" name="enviarCorreoSms" value="enviar_sms_pre_registro" id="enviar_sms_pre_registro" onchange="validateEmailTelInput('enviar_sms_pre_registro')" aria-describedby="telefonoInputValid"><b> Enviar sms</b>
+	            	<div id="telefonoInputValid" class="invalid-feedback">
+			      		El campo teléfono debe tener información para habilitar esta opción.
+			    	</div>
 	        	</label>
             </div>
         </div>
@@ -128,14 +138,14 @@
                 	<label>Visita de: </label>
                 	<div class="d-flex flex-column justify-content-start align-items-start" >
                 		<div>
-                			<input class="form-radio-input" type="radio" name="opcionesAvanzadas" id="radioFechaFija" onchange="onChangeOpcionesAvanzadas('radioRangoFechas')">
+                			<input class="form-radio-input paseEntradaNuevo" type="radio" name="opcionesAvanzadas" id="radioFechaFija" onchange="onChangeOpcionesAvanzadas('radioRangoFechas')">
 	                        <label class="form-radio-label" for="radioFechaFija">
 	                            Fecha Fija
 	                        </label>
                 		</div>
                 		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-wrap mb-3">
 			               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
-											               		<label for="fechaVisita">Fecha de visita: </label>
+								<label for="fechaVisita">Fecha de visita: </label>
 			               		<input type="date" class="form-control paseEntradaNuevo" id="fechaVisita" placeholder="" onchange="validDatePase()" 
 			               		aria-describedby="fechaVisita">
 			               		<div id="fechaVisita" class="invalid-feedback">
@@ -149,14 +159,14 @@
 			                        onchange="onChangeAmpmLabel('horaNuevoPase','ampmNuevoPase')" onchange="validDatePase()">
 			                        </select>
 			                        <label class="mx-1">:</label>
-			                        <select class="form-select time-select contentNuevoPase paseEntradaNuevo" id="minNuevoPase" onchange="validDatePase()">
+			                        <select class="form-select time-select contentNuevoPase paseEntradaNuevo" id="minNuevoPase" >
 			                        </select>
 			                        <label class="ms-2" id="ampmNuevoPase">hrs</label>
 			                    </div>
 			               </div>
 			            </div>
                 		<div class="opcionesAvanzadasDiv">
-                			<input class="form-radio-input" type="radio" name="opcionesAvanzadas" id="radioRangoFechas" onchange="onChangeOpcionesAvanzadas('radioRangoFechas');">
+                			<input class="form-radio-input paseEntradaNuevo" type="radio" name="opcionesAvanzadas" id="radioRangoFechas" onchange="onChangeOpcionesAvanzadas('radioRangoFechas');">
 	                        <label class="form-radio-label" for="radioRangoFechas" >
 	                            Rango de Fechas
 	                        </label>
@@ -171,7 +181,7 @@
 	               <div class="col-6 d-flex p-0 m-0 flex-wrap" id="fechaVisitaDiv"> 
 		               	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
 		               		<label for="fechaVisitaOA">Fecha de visita: </label>
-		               		<input type="date" class="form-control paseEntradaNuevo" id="fechaVisitaOA" aria-describedby="fechaVisitaOAvalidation" placeholder="" onchange="validDatePase()">
+		               		<input type="date" class="form-control paseEntradaNuevo" id="fechaVisitaOA" aria-describedby="fechaVisitaOAvalidation" placeholder="" onchange="validRangeOfDates('fechaVisitaOA')">
 		               		<div id="fechaVisitaOAvalidation" class="invalid-feedback">
 						      	Escribe un fecha válida.
 						    </div>
@@ -192,7 +202,7 @@
 	               <div class="col-6 d-flex p-0 m-0" id="fechaHastaDiv"> 
 	               		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
 		               		<label for="fechaHastaOA">Fecha hasta: </label>
-		               		<input type="date" class="form-control paseEntradaNuevo" id="fechaHastaOA" aria-describedby="fechaHastaOAvalidation" placeholder="" onchange="validDatePase()">
+		               		<input type="date" class="form-control paseEntradaNuevo" id="fechaHastaOA" aria-describedby="fechaHastaOAvalidation" placeholder="" onchange="validRangeOfDates('fechaHastaOA')">
 		               		<div id="fechaHastaOAvalidation" class="invalid-feedback">
 						      	Escribe un fecha válida.
 						    </div>
@@ -311,7 +321,7 @@
 		                    <div class="flex-grow-1 d-flex justify-content-start">
 		                       <div class="col-sm-10 col-md-10 col-lg-6 col-xl-6">
 					                <label for="exampleInputPassword1">Instruccion o comentario: </label>
-					                <textarea type="text" class="form-control fill com-div-nuevo" rows="1" id="instruccionComentario-123" placeholder=""></textarea>
+					                <textarea type="text" class="form-control fill com-div-nuevo" rows="1" id="instruccion-123" placeholder=""></textarea>
 					            </div>
 			                    <div>
 			                        <button type="button" class="btn btn-success button-add-register" onclick="setAddCom('nuevo', 'com');return false;">
@@ -379,7 +389,7 @@
 						<i class="fa-solid fa-camera-retro"></i>
 					</button>
 					<button type="button" class="btn  btn-warning btn-sm" onclick="limpiarTomarFoto('User');return false;" id="erase1">
-							<i class="fa-solid fa-eraser"></i>
+							<i class="fa-solid fa-trash"></i>
 					</button>
 					<button type="button" class="btn  btn-success btn-sm"  style="display: none;" id="buttonSaveUser">
 						Guardar Foto <i class="fa-solid fa-aperture"></i>
@@ -397,7 +407,7 @@
 						<i class="fa-solid fa-camera-retro"></i>
 					</button>
 					<button type="button" class="btn  btn-warning btn-sm" onclick="limpiarTomarFoto('Card');return false;" id="erase2">
-							<i class="fa-solid fa-eraser"></i>
+							<i class="fa-solid fa-trash"></i>
 					</button>
 					<button type="button" class="btn  btn-success btn-sm"  style="display: none;" id="buttonSaveCard">
 						Guardar Foto <i class="fa-solid fa-aperture"></i>

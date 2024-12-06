@@ -4,7 +4,7 @@ window.onload = function(){
 	let protocol = window.location.protocol;
 	let host = window.location.host;
 	if(user !='' && jw!=''){
-		let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
+		let urlNew = `${protocol}//${host}/solucion_accesos/menu.html`
 		window.location.href =urlNew
 		//window.open(`${protocol}//${host}/solucion_accesos/turnos.html`, "turnos")
 		/*let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
@@ -12,7 +12,7 @@ window.onload = function(){
 			rel: 'noopener noreferrer',
 			href: urlNew,
 		}).click();*/
-		agregarPestana('turnos')
+		agregarPestana('menu')
 	}/*else{
 		setCloseSession();
 	}*/
@@ -66,6 +66,7 @@ function get_login(){
 				setCookie("userEmail", userEmail,7);
 				setCookie("userPosition", userPosition,7);
 				setCookie("user", userPosition,7);
+				setCookie("soter", true ,7);
 				console.log("userPosition",userPosition)
 				localStorage.setItem("imagenURL", userImg);
 

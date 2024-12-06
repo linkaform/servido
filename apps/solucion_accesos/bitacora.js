@@ -7,6 +7,10 @@ let seleccionadoBitacora={}
 
 window.onload = function(){
 	setValueUserLocation('bitacora');
+    user= getCookie("userId");
+    userJwt=getCookie('userJwt');
+    validSession(user, userJwt);
+    
 	changeButtonColor();
     fillCatalogs();
 
@@ -25,8 +29,8 @@ window.onload = function(){
         let response = await fetchOnChangeCaseta('script_turnos.py', 'list_bitacora', selectCaseta.value, selectLocation.value,prioridades=['entrada'])
         reloadTableBitacoras(response.response.data)
     };
-	let user = getCookie("userId");
-	let userJwt = getCookie("userJwt");
+	// let user = getCookie("userId");
+	// let userJwt = getCookie("userJwt");
     loadDataTables();
 
     $("#descargarEntradas").on("click", function() {

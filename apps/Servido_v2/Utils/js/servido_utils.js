@@ -111,14 +111,14 @@ function getSession(location = null) {
 }
 
 //-Funciona para cerrar la sesión 
-function closeSession(){
-  let cookies = document.cookie.split(";");
-    for (var i = 0; i < cookies.length; i++){ 
-    var spcook = cookies[i].split("="); 
-    document.cookie = spcook[0] + "=;expires=Thu, 21 Sep 1979 00:00:01 UTC;"; 
-  }
-  location.reload();
-}
+// function closeSession(){
+//   let cookies = document.cookie.split(";");
+//     for (var i = 0; i < cookies.length; i++){ 
+//     var spcook = cookies[i].split("="); 
+//     document.cookie = spcook[0] + "=;expires=Thu, 21 Sep 1979 00:00:01 UTC;"; 
+//   }
+//   location.reload();
+// }
 
 //-Funciona para redireccionar a el listado de reportes
 function getReportUrl() {

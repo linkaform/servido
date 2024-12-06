@@ -1,9 +1,10 @@
 :root {
   --yellowLKF: #FFA823;
-  --yellowLKF-light:  #dcdcdc  ;
-  --downloadButton:#003285;
-  --text-gray:#616161;
-  --soft-gray:#dcdcdc;
+  --yellowLKF-light: #dcdcdc;
+  --downloadButton: #003285;
+  --text-gray: #616161;
+  --soft-gray: #dcdcdc;
+  --dark-gray: #404040;
 }
 
 .header{
@@ -669,6 +670,9 @@ input[type=search]{
   background-color: none!important;
 }
 
+.text-dark-black{
+    color: var(--dark-gray);
+}
 /**/
 
 
@@ -685,4 +689,41 @@ input[type=search]{
 
 .custom-color {
     color: yellow; /* Cambia el color de la estrella */
+}
+
+.navbar-icon-circle{
+  background: #F0F3F4;
+  border-radius: 50%;
+  padding: 5px 10px;
+}
+
+.menu-grid-item{
+  background: #F0F3F4;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.menu-grid-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 8px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.menu-grid-item:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.no-select {
+  user-select: none;
+}
+
+.qr-pass-container{
+  background: #fff;
+  border-radius: 10px;
+}
+
+.fs-7{
+  font-size: 0.8rem;
 }
