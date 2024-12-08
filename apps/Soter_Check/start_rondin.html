@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Iniciar Rondin</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="./start_rondin.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container container-custom">
+            <div class="header-title">Iniciar Rondin</div>
+            <div class="form-group">
+                <label for="inspectionDate" class="form-label">Fecha de Inspección</label>
+                <input type="date" class="form-control" id="inspectionDate" value="2024-12-04" disabled>
+            </div>
+            <div class="form-group">
+                <label for="inspectionDate" class="form-label">Hora de Inspección</label>
+                <input type="time" class="form-control" id="inspectionTime" value="02:05" disabled>
+            </div>
+            <div class="form-group">
+                <label for="guardName" class="form-label">Nombre del Guardia</label>
+                <input type="text" class="form-control" id="guardName" value="Juan Pérez Gonzáles" disabled>
+            </div>
+            <hr class="border border-secondary border-2 opacity-70">
+            
+            <div class="form-group">
+                <label for="rounding" class="form-label">Rondin</label>
+                <select class="form-select" id="rounding">
+                    <option selected>Rondin Inspección Perimetral</option>
+                    <option>Rondin Inspección Planta</option>
+                    <option>Rondin Inspección Interior</option>
+                </select>
+            </div>
+
+            <div class="location-list">
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-geo-alt-fill"></i> Caseta de vigilancia planta 1</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-geo-alt-fill"></i> Área de rampa 24</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-geo-alt-fill"></i> Cisterna</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-geo-alt-fill"></i> Sub estación norte planta 3</span>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center">
+                        <i class="bi bi-geo-alt-fill me-2"></i> Caseta de vigilancia planta 1
+                    </li>
+                </ul>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary w-100">Comenzar Rondin</button>
+                <button class="btn btn-secondary w-100">Programar Rondín</button>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

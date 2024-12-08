@@ -1,0 +1,114 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+}
+
+.container-custom {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.header-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.image-container img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.checklist-title {
+  font-weight: bold;
+  margin-top: 1.5rem;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.checklist-item label {
+  margin-left: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.comments-section textarea {
+  resize: none;
+  border-radius: 8px;
+}
+
+.attachments-section {
+  margin-top: 1.5rem;
+}
+
+.attachments-section .attachment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.btn-send {
+  width: 100%;
+  border-radius: 30px;
+  margin-top: 2rem;
+}
+
+.icon-button {
+  font-size: 1.2rem;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  color: #0056b3;
+}
+
+.delete-icon {
+  color: #dc3545;
+  cursor: pointer;
+}
+
+.delete-icon:hover {
+  color: #a71d2a;
+}
+
+@media (max-width: 1024px) {
+  .container-custom {
+    width: 100vw;
+    height: 100%; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+
+@media (max-width: 768px) {
+  .container-custom {
+    width: 100vw;
+    height: 100%; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+
+@media (max-width: 425px) {
+  .container-custom {
+    width: 100vw;
+    height: 100%; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+

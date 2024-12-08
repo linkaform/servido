@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rondines</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./rondin.css" rel="stylesheet">
+</head>
+<body>
+    <div id="loading">
+        <div>
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="text-center mt-3">Cargando...</p>
+        </div>
+    </div>
+    <!-- Information-->
+    <div class="rondin-container hidden" id="main-content">
+        <div class="header-title">Rondines</div>
+        <!-- Imagen -->
+        <div class="image-container">
+            <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/67523b3dda6ccc1afe31023e.png" alt="Caseta de vigilancia" id="imageLocation">
+        </div>
+
+        <div class="info-section">
+            <h5 id="textLocation"></h5>
+            <p id="textTime">Última inspección hace 2 días</p>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary w-100">Iniciar Rondin</button>
+            <button class="btn btn-secondary w-100">Ver Rondines</button>
+            <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modaCheck" >Inspección de Área</button>
+        </div>
+    </div>
+
+    <!-- Modal Check-->
+    <div class="modal fade" id="modaCheck" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Formulario de Inspección</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <!-- Sección del formulario (8 columnas) -->
+                            <div class="col-12">
+                                <div class="text-center">
+                                    <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/67523b3dda6ccc1afe31023e.png" alt="Imagen de referencia" class="img-fluid rounded mb-3" id="imageModal">
+                                    <p class="text-muted">Imagen del área</p>
+                                </div>
+                                <div class="info-section mb-3">
+                                    <h5 class="mb-1">Caseta de vigilancia planta 1</h5>
+                                    <p class="mb-1"><strong>Ubicación:</strong> LENNOX</p>
+                                    <p class="mb-1"><strong>Tipo de Área:</strong> CASETA</p>
+                                    <p><strong>Fecha de Inspección:</strong> 20/11/2024</p>
+                                </div>
+                                <hr class="border border-secondary border-2 opacity-70">
+
+                                <!-- Checklist -->
+                                <h6 class="checklist-title">Checklist</h6>
+                                <p>Para cada elemento, seleccione la casilla si cumple.</p>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="check1">
+                                    <label class="form-check-label" for="check1">5's en caseta</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="check2">
+                                    <label class="form-check-label" for="check2">Botoneras</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="check3">
+                                    <label class="form-check-label" for="check3">Equipo de cómputo en buen estado</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="check4">
+                                    <label class="form-check-label" for="check4">Botiquines</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="check5">
+                                    <label class="form-check-label" for="check5">Tableros de avisos</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="check6">
+                                    <label class="form-check-label" for="check6">Alumbrado del exterior suficiente y correcto</label>
+                                </div>
+
+                                <!-- Sección de comentarios -->
+                                <div class="mt-4">
+                                    <h6>Comentarios</h6>
+                                    <textarea class="form-control" rows="3" placeholder="Escriba sus comentarios aquí..."></textarea>
+                                </div>
+
+                                <!-- Adjuntar fotos -->
+                                <div class="mt-3">
+                                    <h6 class="checklist-title">Agregar foto</h6>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="icon-button me-3"><i class="fas fa-camera"></i></span>
+                                        <span class="icon-button"><i class="fas fa-upload"></i></span>
+                                    </div>
+                                    <ul class="list-group">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Foto_a.png
+                                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Foto_b.png
+                                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="../Utils_New/js/servido_utils.js"></script>
+    <script type="text/javascript" src="./rondin.js"></script>
+</body>
+</html>

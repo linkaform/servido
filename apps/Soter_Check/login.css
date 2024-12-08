@@ -1,0 +1,75 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.login-container {
+    width: 65vw; 
+    max-width: 600px;
+    background: #fff;
+    padding: 3rem; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.logo {
+    width: 180px;
+    max-width: 200px;
+    margin-bottom: 10rem; 
+}
+
+.form-control {
+  border-radius: 30px;
+}
+
+.div-lost-password{
+    margin-bottom: 10rem; 
+}
+
+.btn-primary {
+  border-radius: 30px;
+}
+
+.toggle-password {
+  cursor: pointer;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 1024px) {
+  .login-container{
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+
+@media (max-width: 768px) {
+  .login-container{
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+
+@media (max-width: 425px) {
+  .login-container{
+    width: 100vw;
+    height: 100vh; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+
