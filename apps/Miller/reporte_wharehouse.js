@@ -384,6 +384,7 @@ function getFirstElement(wharehouses, familia, line) {
       product_family: familia,
       product_line: String(line),
       option: 'get_report',
+      runtime: 'before'
     }),
     headers:{
       'Content-Type': 'application/json',
