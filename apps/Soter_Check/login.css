@@ -42,7 +42,6 @@ body {
   transform: translateY(-50%);
 }
 
-/* Ajustes para pantallas pequeñas */
 @media (max-width: 1024px) {
   .login-container{
     width: 100vw;

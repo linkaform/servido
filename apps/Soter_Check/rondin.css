@@ -22,7 +22,7 @@ body {
 }
 
 .info-section {
-  text-align: center;
+  text-align: left;
   margin: 1rem 0;
 }
 
@@ -61,6 +61,20 @@ body {
   border-radius: 15px; 
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   text-align: center;
+}
+
+.loader-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.loader-spinner .fa-spin {
+  margin-right: 8px;
+  font-size: 16px;
 }
 
 #loading {

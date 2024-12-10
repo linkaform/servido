@@ -3,13 +3,6 @@ let listImagesDic = [];
 window.onload = function(){
     const statusSession = getSession('login');
     if(statusSession == 'Active'){
-        //---Hide Div
-        const divContent = document.getElementById('divContent');
-        divContent.style.display = 'none'; 
-
-        const divLoader = document.getElementById('divLoading');
-        divLoader.style.display = 'block'; 
-
         //---Create Element
         let parameter = getParameterURL('location');
         let listData = getListCheck(parameter);
@@ -30,10 +23,12 @@ window.onload = function(){
             dataSend();
         });
         //---Show Div
-        setTimeout(() => { 
-            divContent.style.display = 'block'; 
-            divLoader.style.display = 'none'; 
-        }, 4000);
+        setTimeout(() => {
+            const loading = document.getElementById('loading');
+            const mainContent = document.getElementById('main-content');
+            loading.style.display = 'none';
+            mainContent.classList.remove('hidden'); 
+        }, 2000);
     }else {
         //----Cookie
         const LOCATION = getParameterURL('location');
@@ -61,6 +56,7 @@ function getParameterURL(keyFound = null) {
     }
 }
 
+//---Form
 function getListCheck(location) {
     let results = [];
     for (const [key, value] of Object.entries(checkListData)) {
@@ -104,36 +100,37 @@ function setElementsCheck(list) {
 
 function setElementImages(data) {
     const container = document.getElementById('divListImages');
-    container.innerHTML = '';
-    //---Images 
-    const ul = document.createElement("ul");
-    ul.className = "list-group w-100";
-    data.forEach(image => {
-        const li = document.createElement("li");
-        li.className = "list-group-item d-flex  justify-content-between  align-items-center text-wrap";
+    const loader = document.getElementById('divLoadingImage');
+    loader.style.display = 'flex';
+    container.innerHTML = ''; 
 
-        const divText = document.createElement("div");
-        divText.className = "text-truncate";
-        divText.style.maxWidth = '80%';
-        const text = document.createTextNode(image.file_name);
+    setTimeout(() => {
+        loader.style.display = 'none';
+        data.forEach(image => {
+            const attachment = document.createElement("div");
+            attachment.className = "attachment";
 
-        const button = document.createElement("button");
-        button.className = "btn btn-danger btn-sm";
-        const icon = document.createElement("i");
-        icon.className = "bi bi-trash";
-        button.appendChild(icon);
-        button.setAttribute("onclick", `deleteImage('${image.file_url}')`);
-        divText.appendChild(text);
-        li.appendChild(divText);
-        li.appendChild(button);
-        ul.appendChild(li);
-    });
-    container.appendChild(ul);
-    const divContent = document.getElementById('divListImages');
-    const divLoader = document.getElementById('divLoadingImage');
+            const fileNameSpan = document.createElement("span");
+            fileNameSpan.textContent = image.file_name;
 
+            const deleteIconSpan = document.createElement("span");
+            deleteIconSpan.className = "delete-icon";
+
+            const icon = document.createElement("i");
+            icon.className = "fas fa-trash";
+
+            deleteIconSpan.onclick = () => deleteImage(image.file_url);
+
+            deleteIconSpan.appendChild(icon);
+            attachment.appendChild(fileNameSpan);
+            attachment.appendChild(deleteIconSpan);
+
+            container.appendChild(attachment);
+        });
+        const button = document.getElementById('buttonSend');
+        button.disabled = false; 
+    }, 500);
 }
-
 
 function openCamera(callback) {
     console.log('openCamera');
@@ -177,8 +174,10 @@ function handleFile(file) {
     divContent.style.display = 'none'; 
 
     const divLoader = document.getElementById('divLoadingImage');
-    divLoader.style.display = 'block'; 
-
+    divLoader.style.display = 'flex';
+    
+    const button = document.getElementById('buttonSend');
+    button.disabled = true; 
 
     //--Fetch
     const formData = new FormData();
@@ -206,14 +205,10 @@ function handleFile(file) {
         console.log(data); 
     })
     .catch((error) => console.error("Error en el fetch:", error));
-    //---Show Div
-    
-
 }   
 
 function getCheckboxStates() {
     const form = document.getElementById('checkForm');
-
     if (!form) {
         return;
     }
@@ -247,7 +242,7 @@ function dataSend(){
         'comment': inputComment,
         'list_img': listImagesDic,
     }
-
+    const JWT = getCookie("userJwt");
     let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
     fetch(urlLinkaform, {
         method: 'POST',
@@ -258,7 +253,8 @@ function dataSend(){
         }),
         headers:{
             'Content-Type': 'application/json',
-            'Access-Control-Request-Headers':'*'
+            'Access-Control-Request-Headers':'*',
+            'Authorization': 'Bearer '+JWT
         },
     })
     .then(res => res.json())
@@ -266,7 +262,7 @@ function dataSend(){
         if (res === '201') {
             alert('Se ingresó exitosamente el registro');
         } else {
-            alert('Se ingresó exitosamente el registro.');
+            alert('Hubo un error en el registro, contacte a soporte.');
         }
     })
     .catch(error => {
@@ -278,6 +274,7 @@ function dataSend(){
 function getInformationLocation(location){
     const textTitle = document.getElementById('titleLocation');
     const textDir = document.getElementById('textDir');
+    const textUbic = document.getElementById('textUbic');
     const textType = document.getElementById('textType');
 
     let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
@@ -299,14 +296,19 @@ function getInformationLocation(location){
             textTitle.textContent = res.response.data.name_location;
         }
         if(res.response.data && res.response.data.direction_location && res.response.data.direction_location != ''){
-            textDir.textContent = `Ubicación: ${res.response.data.direction_location}`;
+            textDir.textContent = `${res.response.data.direction_location}`;
         }else{
-            textDir.textContent = `Ubicación: N/A`;
+            textDir.textContent = `N/A`;
+        }
+        if(res.response.data && res.response.data.ubication_location && res.response.data.ubication_location != ''){
+            textUbic.textContent = `${res.response.data.ubication_location}`;
+        }else{
+            textUbic.textContent = `N/A`;
         }
         if(res.response.data && res.response.data.type_location && res.response.data.type_location != ''){
-            textType.textContent = `Tipo de Área: ${res.response.data.type_location}`;
+            textType.textContent = `${res.response.data.type_location}`;
         }else{
-            textType.textContent = `Tipo de Área: N/A`;
+            textType.textContent = `N/A`;
         }
         if(res.response.data && res.response.data.image_location && res.response.data.image_location.length > 0 ){
             const imageElement = document.getElementById('imgLocation');
@@ -325,38 +327,6 @@ function getTimeNow() {
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
 
-    textTime.textContent = `Fecha y Hora de Inspección: ${year}-${month}-${day} ${hours}:${minutes}`;
+    textTime.textContent = `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
-//------Configuración ROndines
-function addSelector() {
-    const container = document.getElementById('divContentArea');
-    const newSelector = document.createElement('div');
-    newSelector.classList.add('d-flex', 'align-items-center', 'mb-2', 'selector-item');
-
-    const select = document.createElement('select');
-    select.classList.add('form-select');
-    select.innerHTML = `
-        <option selected>Seleccione Área</option>
-        <option value="1">Área 1</option>
-    `;
-
-    const removeButton = document.createElement('button');
-    removeButton.type = 'button';
-    removeButton.classList.add('btn', 'btn-danger', 'ms-2', 'btn-remove');
-    removeButton.textContent = 'X';
-    removeButton.onclick = function () {
-        removeSelector(removeButton);
-    };
-
-    newSelector.appendChild(select);
-    newSelector.appendChild(removeButton);
-
-    container.appendChild(newSelector);
-}
-
-function removeSelector(button) {
-    const container = document.getElementById('divContentArea');
-    const item = button.parentNode;
-    container.removeChild(item);
-}
