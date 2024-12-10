@@ -41,13 +41,13 @@ const columnsTableListPendientes = [
             let data = cell.getData();
             return data.fecha_desde_hasta.slice(0,-3)
         }},
-    { title:"Visitante", field:'nombre', hozAlign:"left",headerFilter:true,headerTooltip:true ,width:200},
-    { title:"Fotografia", field:'foto',hozAlign:"left",headerFilter:true,width:250,
+    { title:"Visitante", field:'nombre_pase', hozAlign:"left",headerFilter:true,headerTooltip:true ,width:200},
+    { title:"Fotografia", field:'walkin_fotografia',hozAlign:"left",headerFilter:true,width:250,
             formatter: function(cell) {
                     let data = cell.getData();
                     let img=""
-                    if(data.foto.length>0){
-                        img= `<img src="${data.foto[0].file_url}" alt="Imagen" style="width:120px;height:120px;" class="img-cell"/>`;
+                    if(data.walkin_fotografia.length>0){
+                        img= `<img src="${data.walkin_fotografia[0].file_url}" alt="Imagen" style="width:120px;height:120px;" class="img-cell"/>`;
                     }else{
                         img=""
                     }
@@ -63,10 +63,10 @@ const columnsTableListPendientes = [
     //         let data = cell.getData();
     //         return capitalizeFirstLetter(data.descripcion)
     //     }},
-    { title:"Estado", field:'estatus', hozAlign:"left",headerFilter:true,headerTooltip:true ,width:200,
+    { title:"Estado", field:'status_pase', hozAlign:"left",headerFilter:true,headerTooltip:true ,width:200,
         formatter: function(cell) {
             let data = cell.getData();
-            return capitalizeFirstLetter(data.estatus)
+            return capitalizeFirstLetter(data.status_pase)
         }},
 ];
 

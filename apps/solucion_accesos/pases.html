@@ -382,7 +382,7 @@
                             </tr>
                             <tr>
                                 <td>Visita General</td>
-                                <td><span > Proceso </span></td>
+                                <td><span id="statusPaseVer"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Nombre completo:</b></td>
@@ -451,37 +451,6 @@
         </div>
     </div>
 
-<!--     <div class="modal fade" id="paseEntradaEditar" tabindex="-1"  aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-			<div class="modal-content">
-				
-				<div class="modal-header">
-					<h1 class="modal-title fs-5">Editar pase </h1>
-				</div>
-				<div class=" m-4 mr-0">
-					<p>Selecciona las nuevas fechas en las que el visitante podra asistir.</p>
-				</div>
-				<div class="mb-3 m-4 mt-0 mr-0">
-					<label class="form-label">Fecha de visita:</label>
-					<input type="date" class="form-control comment-div-nueva" id="idComentarioPase" rows="3" placeholder="Escribe algo..."></textarea>
-				</div>
-				<div class="mb-3 m-4 mr-0">
-					<label class="form-label">Fecha hasta:</label>
-					<input type="date" class="form-control comment-div-nueva" id="idComentarioPase" rows="3" placeholder="Escribe algo..."></textarea>
-				</div>
-				<div class="mb-3 m-4 mr-0 col-6">
-					<label class="form-label">limite de accesos:</label>
-					<input type="number" class="form-control comment-div-nueva" id="idComentarioPase" rows="3" placeholder="Escribe algo..."></textarea>
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="agregarComentarioPaseAcceso('pase')">Actualizar</button>
-				</div>
-			</div>
-		</div>
-	</div> -->
-
     <!-- Modal Edit Incident -->
     <div class="modal fade" id="paseEntradaEditar" tabindex="-1"  aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
@@ -499,7 +468,7 @@
 				     	</div>
 				     	<div class="mt-2"> 
 				     		<span ><b>Estatus: </b></span>
-				     		<small class="text-gray">Proceso</small>
+				     		<small class="text-gray" ><span id="statusPase"> </span></small>
 				     	</div>
 			     	</div>
 			     	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 p-0 m-0" id="paseEntradaInf2">
@@ -507,15 +476,15 @@
 			                <label for="exampleInputEmail1">Nombre Completo</label>
 			                <input type="text" class="form-control fill paseEntradaEdit" id="nombreCompleto" aria-describedby="emailHelp" placeholder="Nombre completo">
 			            </div>
-			            <div class="d-flex flex-row flex-wrap mt-2">
-                            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
+			            <div class="d-flex flex-row flex-wrap mt-2 gap-5">
+                            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
                                 <label for="exampleInputEmail1">Correo</label>
                                 <input type="email" class="form-control fill paseEntradaEdit" id="email" aria-describedby="emailValid" placeholder="Correo" onchange="validateEmailTelInput('email')">
                                 <div id="emailValid" class="invalid-feedback">
                                     Escribe un email válido.
                                 </div>
                             </div>
-                            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6 ">
+                            <div class="col-sm-10 col-md-10 col-lg-5 col-xl-5 ">
                                 <label for="exampleInputEmail1">Teléfono</label> <br>
                                 <!-- <input type="text" class="form-control fill paseEntradaEdit" id="telefono" aria-describedby="emailHelp" placeholder="Telefono"> -->
                                 <input type="tel" id="telefono" class="form-control fill paseEntradaEdit" aria-describedby="telefonoValid" 
@@ -584,7 +553,7 @@
 			                	<label>Visita de: </label>
 			                	<div class="d-flex flex-column justify-content-start align-items-start" >
 			                		<div class="d-flex flex-wrap">
-			                			<input class="form-radio-input paseEntradaEdit" type="radio" name="opcionesAvanzadas" id="radioFechaFija" onchange="onChangeOpcionesAvanzadas('radioRangoFechas')">
+			                			<input class="form-radio-input paseEntradaEdit" type="radio" name="opcionesAvanzadas" id="radioFechaFija" onchange="onChangeOpcionesAvanzadas('radioFechaFija')">
 				                        <label class="form-radio-label" for="radioFechaFija">
 				                            Fecha Fija
 				                        </label>
@@ -687,37 +656,37 @@
 					               		<div class="d-flex flex-row flex-wrap justify-content-start align-items-center">
 				                            <div class="checkbox-group me-2">
 				                                <label>
-				                                    <input type="checkbox" name="diasPase" value="lunes" class="paseEntradaEdit"> Lunes
+				                                    <input type="checkbox" name="diasPase" value="lunes" id="lunes" class="paseEntradaEdit"> Lunes
 				                                </label>
 				                            </div>
 				                            <div class="checkbox-group me-2">
 				                                <label>
-				                                    <input type="checkbox" name="diasPase" value="martes" class="paseEntradaEdit"> Martes
+				                                    <input type="checkbox" name="diasPase" value="martes" id="martes" class="paseEntradaEdit"> Martes
 				                                </label>
 				                            </div>
 				                            <div class="checkbox-group me-2">
 				                                <label>
-				                                    <input type="checkbox" name="diasPase" value="miércoles" class="paseEntradaEdit"> Miercoles
+				                                    <input type="checkbox" name="diasPase" value="miércoles" id="miércoles" class="paseEntradaEdit"> Miercoles
 				                                </label>
 				                            </div>
 				                            <div class="checkbox-group me-2">
 				                                <label>
-				                                    <input type="checkbox" name="diasPase" value="jueves" class="paseEntradaEdit"> Jueves
+				                                    <input type="checkbox" name="diasPase" value="jueves" id="jueves" class="paseEntradaEdit"> Jueves
 				                                </label>
 				                            </div>
 				                            <div class="checkbox-group me-2">
 				                                <label>
-				                                    <input type="checkbox" name="diasPase" value="viernes" class="paseEntradaEdit"> Viernes
+				                                    <input type="checkbox" name="diasPase" value="viernes" id="viernes" class="paseEntradaEdit"> Viernes
 				                                </label>
 				                            </div>
 				                            <div class="checkbox-group me-2">
 				                                <label>
-				                                    <input type="checkbox" name="diasPase" value="sábado" class="paseEntradaEdit"> Sábado
+				                                    <input type="checkbox" name="diasPase" value="sábado" id="sábado" class="paseEntradaEdit"> Sábado
 				                                </label>
 				                            </div>
 				                            <div class="checkbox-group me-2">
 				                                <label>
-				                                    <input type="checkbox" name="diasPase" value="domingo" class="paseEntradaEdit"> Domingo
+				                                    <input type="checkbox" name="diasPase" value="domingo" id="domingo" class="paseEntradaEdit"> Domingo
 				                                </label>
 				                            </div>
 				                        </div>
@@ -736,12 +705,12 @@
 						                    <div class="col-sm-10 col-md-10 col-lg-10 col-xl-11 d-flex flex-wrap justify-content-start gap-5">
 						                    	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-5">
 									                <label for="exampleInputPassword1">Area: </label>
-									                <select type="select" class="form-select fill area-div-nuevo paseEntradaEdit" id="tipoArea" >
+									                <select type="select" class="form-select fill area-div-nuevo paseEntradaEdit" id="tipoArea-" >
 									                </select>
 									            </div>
 						                       <div class="col-sm-10 col-md-10 col-lg-6 col-xl-6">
 									                <label for="exampleInputPassword1">Comentario: </label>
-									                <textarea type="text" class="form-control fill area-div-nuevo paseEntradaEdit" rows="1" id="comentario" placeholder=""></textarea>
+									                <textarea type="text" class="form-control fill area-div-nuevo paseEntradaEdit" rows="1" id="comentario-" placeholder=""></textarea>
 									            </div>
 						                    </div>
 						                    <div>
@@ -751,6 +720,9 @@
 						                        <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArea('nuevo',123,'area');return false;">
 						                            <i class="fa-solid fa-minus"></i>
 						                        </button>
+                                                <!-- <button type="button" class="btn btn-warning button-delete-register "  onclick="setCleanInputs(['tipoArea-','comentario-']);return false;">
+                                                    <i class="fa-solid fa-trash mb-1"></i>
+                                                </button> -->
 						                    </div>
 						                </div>
 						            </div>
@@ -766,7 +738,7 @@
 					                    <div class="flex-grow-1 d-flex justify-content-start">
 					                       <div class="col-sm-10 col-md-10 col-lg-6 col-xl-6">
 								                <label for="exampleInputPassword1">Instruccion o comentario: </label>
-								                <textarea type="text" class="form-control fill com-div-nuevo paseEntradaEdit" rows="1" id="instruccion-123" placeholder=""></textarea>
+								                <textarea type="text" class="form-control fill com-div-nuevo paseEntradaEdit" rows="1" id="instruccionComentario-123" placeholder=""></textarea>
 								            </div>
 						                    <div>
 						                        <button type="button" class="btn btn-success button-add-register" onclick="setAddCom('nuevo', 'com');return false;">
@@ -775,6 +747,9 @@
 						                        <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteCom('nuevo',123,'com');return false;">
 						                            <i class="fa-solid fa-minus"></i>
 						                        </button>
+                                                 <!-- <button type="button" class="btn btn-warning button-delete-register "  onclick="setCleanInputs(['instruccionComentario-123']);return false;">
+                                                    <i class="fa-solid fa-trash mb-1"></i>
+                                                </button> -->
 						                    </div>
 					                    </div>
 					                </div>
@@ -810,6 +785,78 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalSMS" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-m">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Enviar sms</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-sm-10 col-md-10 col-lg-12 col-xl-12 ">
+                        <label for="exampleInputEmail1">Teléfono</label> <br>
+                        <!-- <input type="text" class="form-control fill paseEntradaEdit" id="telefono" aria-describedby="emailHelp" placeholder="Telefono"> -->
+                        <input type="tel" id="telefono2" class="form-control fill paseEntradaEdit" aria-describedby="telefonoValid2" 
+                        placeholder="Número de teléfono" onchange="validateEmailTelInput('telefono2')">
+                        <div id="telefonoValid2" class="invalid-feedback">
+                            Escribe un teléfono válido.
+                        </div>
+                    </div>
+                    <script>
+                        const input2 = document.querySelector("#telefono2");
+                        const iti2 = window.intlTelInput(input2, {
+                            initialCountry: "auto", // Detecta el país automáticamente
+                            geoIpLookup: function(callback) {
+                             fetch("https://ipinfo.io/json", { headers: { Accept: "application/json" } })
+                                .then(response => response.json())
+                                .then(data => callback(data.country))
+                                .catch(() => callback("MX"));
+                            },
+                        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/js/utils.js"
+                      });
+                    </script>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="buttonEditarIncidencia" onclick="saveTelSendSms()">Enviar</button>
+                    <button class="btn btn-success btn-sm" type="button" id="loadingButtonEditarIncidencia" style="display:none" disabled>
+                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                        Cargando...
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEmail" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-m">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Enviar correo</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-sm-10 col-md-10 col-lg-12 col-xl-12 ">
+                        <label for="exampleInputEmail1">Correo</label>
+                        <input type="email" class="form-control fill paseEntradaEdit" id="email2" aria-describedby="emailValid2" placeholder="Correo" onchange="validateEmailTelInput('email2')">
+                        <div id="emailValid2" class="invalid-feedback">
+                            Escribe un correo válido.
+                        </div> 
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="buttonEditarIncidencia" onclick="saveEmailSendEmail()">Enviar</button>
+                    <button class="btn btn-success btn-sm" type="button" id="loadingButtonEditarIncidencia" style="display:none" disabled>
+                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                        Cargando...
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
 
 </section>
 </body>
