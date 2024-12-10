@@ -352,6 +352,33 @@
             </div>     
      	</div>
 
+		 <div class="container mt-1" id="paseEntradaCompletado">
+			 <div class="row row-cols-1 row-cols-sm-1 no-select">
+				<div class="col">
+					<div class="qr-pass-container text-center px-5 pt-2">
+						<h4 class="fw-bold"><span id="pass-complete-nombre"></span></h4>
+						<p class="fw-light fs-7">Visita General</p>
+						<p class="fw-bold fs-7">Visita a: <span class="fw-light" id="pass-complete-visita"></span></p>
+						<p class="fw-bold fs-7">Ubicación: <span class="fw-light" id="pass-complete-ubicacion"></span></p>
+						<p class="fw-bold fs-7">Fecha y Hora de Visita: <span class="fw-light" id="pass-complete-fecha"></span></p>
+					</div>
+				</div>
+			</div>
+			<div class="row row-cols-1 row-cols-sm-1 no-select">
+				<div class="col">
+					<div class="qr-pass-container text-center px-5">
+						<img src="" alt="QR del pase" id="qrImage" class="img-fluid rounded-2 mb-2">
+					</div>
+				</div>
+			</div>
+			<div class="row row-cols-1 row-cols-sm-1 no-select">
+				<div class="col">
+					<div class="qr-pass-container text-center px-5">
+						<button type="button" class="btn btn-info text-white fw-bolder" id="actualizarBtn">Actualizar mi información</button>
+					</div>
+				</div>
+			</div>
+		</div>
      	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-7 mb-3 mt-5" id="paseEntradaInf5">
 	     	<div class="mb-3">
 	            <h4 >Pase de Entrada</h4>
@@ -381,6 +408,18 @@
             	</div>
             </div>
      	</div>
+		<div class="col-sm-8 col-md-8 col-lg-8 col-xl-7 p-0 m-0 mt-3" id="paseEntradaCompletadoFotos">
+			<div class="d-sm-flex justify-content-center">
+				<div class="col d-flex flex-column mb-2">
+					<p>Fotografia actual: </p>
+					<img id="paseActivoFoto" src="" alt="Fotografía" class="img-fluid rounded-1 w-50">
+				</div>
+				<div class="col d-flex flex-column">
+					<p>Identificacion actual: </p>
+					<img id="paseIdenFoto" src="" alt="Identificación" class="img-fluid rounded-1 w-50">
+				</div>
+			</div>
+		</div>
      	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-7 d-flexjustify-content-center p-0 m-0" id="paseEntradaInf6">
             <div class="d-flex flex-row flex-wrap">
             	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3 mt-3" id="foto">

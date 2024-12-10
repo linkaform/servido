@@ -5,6 +5,8 @@ let arrayDias=[]
 let flagVideoCard = false;
 let flagVideoUser = false;
 let colors = getPAlleteColors(12,0)
+let qrimagen=""
+let status_pase=""
 let nombre=""
 let email=""
 let tel=""
@@ -73,6 +75,8 @@ window.onload = function(){
 		$("#paseEntradaInf4").show()
 		$("#paseEntradaInf5").hide()
 		$("#paseEntradaInf6").hide()
+        $("#paseEntradaCompletado").hide()
+		$("#paseEntradaCompletadoFotos").hide()
 		onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')
 		iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')
         iniciarMin("minNuevoPase")
@@ -82,6 +86,13 @@ window.onload = function(){
 		
 	}
 }
+
+$(document).ready(function () {
+    $('#actualizarBtn').on('click', function () {
+      $('#paseEntradaCompletadoFotos').toggle();
+      $('#paseEntradaInf6').toggle();
+    });
+});
 
 function iniciarMin(id){
     $("#minNuevoPase").empty();
@@ -161,6 +172,64 @@ function getCatalogsIngresoPase(){
                     visitaA=data.pass_selected.visita_a[0] ? data.pass_selected.visita_a[0].nombre : ""
                     ubicacion=data.pass_selected.ubicacion ? data.pass_selected.ubicacion : ""
                     direccion=""
+                    status_pase=""
+                    
+                    if(status_pase === 'Activo'){
+                        qrimagen=data.pass_selected.qr_pase[0].file_url || ""
+                        let srcurlImgUser = data.pass_selected.foto[0].file_url || ""
+                        let srcurlImgCard = data.pass_selected.identificacion[0].file_url || ""
+                        let equiposregistrados = data.pass_selected.grupo_equipos || []
+                        let vehiculosregistrados = data.pass_selected.grupo_vehiculos
+                        let horavisita = data.pass_selected.fecha_de_expedicion
+    
+                        const $infoDiv = $('#equiposRegistrados');
+    
+                        equiposregistrados.forEach(equipo => {
+                            const $equipoDiv = $('<div>', { class: 'equipo' }).addClass('shadow-sm p-3 border rounded-1');
+    
+                            $equipoDiv.append(`<p class="mb-0"><strong>Tipo de equipo:</strong> ${equipo.tipo_equipo}</p>`);
+                            $equipoDiv.append(`<p class="mb-0"><strong>Nombre:</strong> ${equipo.nombre_articulo}</p>`);
+                            $equipoDiv.append(`<p class="mb-0"><strong>Marca:</strong> ${equipo.marca_articulo}</p>`);
+                            $equipoDiv.append(`<p class="mb-0"><strong>No. Serie:</strong> ${equipo.numero_serie}</p>`);
+                            $equipoDiv.append(`<p class="mb-0"><strong>Modelo:</strong></p>`);
+                            $equipoDiv.append(`<p class="mb-0"><strong>Color:</strong> ${equipo.color_articulo}</p>`);
+    
+                            $infoDiv.append($equipoDiv);
+                        });
+    
+                        const $vehDiv = $('#vehiculosRegistrados');
+    
+                        vehiculosregistrados.forEach(vehiculo => {
+                            const $vehiculosDiv = $('<div>', { class: 'vehiculo' }).addClass('shadow-sm p-3 border rounded-1');
+    
+                            $vehiculosDiv.append(`<p class="mb-0"><strong>Tipo:</strong> ${vehiculo.tipo_vehiculo}</p>`);
+                            $vehiculosDiv.append(`<p class="mb-0"><strong>Marca:</strong> ${vehiculo.marca_vehiculo}</p>`);
+                            $vehiculosDiv.append(`<p class="mb-0"><strong>Modelo:</strong> ${vehiculo.modelo_vehiculo}</p>`);
+                            $vehiculosDiv.append(`<p class="mb-0"><strong>Matricula:</strong> ${vehiculo.placas_vehiculo}</p>`);
+                            $vehiculosDiv.append(`<p class="mb-0"><strong>Estado:</strong> ${vehiculo.nombre_estado}</p>`);
+                            $vehiculosDiv.append(`<p class="mb-0"><strong>Color:</strong> ${vehiculo.color_vehiculo}</p>`);
+    
+                            $vehDiv.append($vehiculosDiv);
+                        });
+
+                        $("#qrImage").attr("src", qrimagen)
+                        $("#userImage").attr("src", srcurlImgUser)
+                        $("#paseActivoFoto").attr("src", srcurlImgUser)
+                        $("#paseIdenFoto").attr("src", srcurlImgCard)
+                        $("#pass-complete-nombre").text(nombre)
+                        $("#pass-complete-email").text(email)
+                        $("#pass-complete-telefono").text(tel)
+                        $("#pass-complete-visita").text(visitaA)
+                        $("#pass-complete-ubicacion").text(ubicacion)
+                        $("#pass-complete-fecha").text(horavisita)
+                        $("#paseEntradaCompletado").show()
+                        $("#paseEntradaCompletadoFotos").hide()
+                        $("#paseEntradaInf5").hide()
+                        $("#paseEntradaInf6").hide()
+                    }else{
+                        $("#paseEntradaCompletado").hide()
+                        $("#paseEntradaCompletadoFotos").hide()
+                    }
 
                     $("#nombreText").text(nombre)
                     $("#emailText").text(email)
