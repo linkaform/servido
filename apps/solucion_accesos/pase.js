@@ -321,17 +321,17 @@ async function catalogoAreaByLocation(location){
         if (res.success) {
             Swal.close()
         	arrayAreas= res.response.data
-            let tipoArea= document.getElementById("tipoArea")
+            let tipoArea= document.getElementById("tipoArea-")
                 tipoArea.innerHTML=""
         	for(let i of arrayAreas.areas_by_location){
-        		$("#tipoArea").append($('<option></option>').val(i).text(i));
-        		$("#tipoArea").val("")
+        		$("#tipoArea-").append($('<option></option>').val(i).text(i));
+        		$("#tipoArea-").val("")
         	}
         	if(arrayAreas.areas_by_location.length==0){
-        		let tipoArea= document.getElementById("tipoArea")
+        		let tipoArea= document.getElementById("tipoArea-")
         		tipoArea.innerHTML=""
-        		$("#tipoArea").append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
-        		$("#tipoArea").val("")
+        		$("#tipoArea-").append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
+        		$("#tipoArea-").val("")
         	}
             if(arrayAreas.ubicaciones_user.length>1){
                 let tipoArea= document.getElementById("ubicacion")
@@ -381,6 +381,14 @@ function setAddCom(editAdd ="nuevo", classNam){
     $(`#`+classNam+`-input-form-`+editAdd).append(newItem) 
 }
 
+function setCleanInputs(ids){
+    for(let i of ids){
+        $("#"+i).val("")
+    }
+}
+
+
+
 
 //FUNCION para elimar foto en el modal de agregar nota
 function setDeleteCom(editAdd ="nuevo", id, classNam){
@@ -391,6 +399,9 @@ function setDeleteCom(editAdd ="nuevo", id, classNam){
         while(elements.length > 0 && id !==123){
             elements[0].parentNode.removeChild(elements[0]);
         }
+    }
+    if(id == 123){
+        $("#instruccionComentario-123").val('')
     }
 }
 //FUNCION para agregar foto en el modal de agregar nota
@@ -446,6 +457,10 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
         while(elements.length > 0 && id !==123){
             elements[0].parentNode.removeChild(elements[0]);
         }
+    }
+    if(id == 123){
+        $("#tipoArea-").val('')
+        $("#comentario-").val('')
     }
 }
 
@@ -1423,6 +1438,16 @@ function validateEmailTelInput(id) {
             $("#"+id).removeClass('is-invalid');
             $("#enviar_correo_pre_registro").removeClass("is-invalid")
         }
+    }if(id=="email2"){
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailPattern.test(value)) {
+            $("#"+id).removeClass('is-invalid');
+        } else {
+            $("#"+id).addClass('is-invalid');
+        }
+        if (value=="") {
+            $("#"+id).removeClass('is-invalid');
+        }
     }else if (id == "enviar_correo_pre_registro"){
         let isChecked = $("#"+id).is(":checked")
         let email = $("#email").val()
@@ -1461,7 +1486,7 @@ function validateEmailTelInput(id) {
                 $("#telefonoValid").hide();
             }
         }
-    }else if (id == 'telefono'){
+    }else if (id == 'telefono' ){
         removeNonNumeric(input)
         let numValid = iti.isValidNumber()
 
@@ -1477,6 +1502,21 @@ function validateEmailTelInput(id) {
             $("#"+id).removeClass('is-invalid');
             $("#telefonoValid").hide();
             $("#enviar_correo_pre_registro").removeClass("is-invalid")
+        }
+    }else if (id == 'telefono2' ){
+        removeNonNumeric(input)
+        let numValid = iti2.isValidNumber()
+
+        if(numValid==false ){
+            $('#'+id).addClass('is-invalid');
+            $("#telefonoValid2").show();
+        }else{
+            $('#'+id).removeClass('is-invalid');
+            $("#telefonoValid2").hide();
+        }
+        if (numValid==false && $("#"+id).val() == "") {
+            $("#"+id).removeClass('is-invalid');
+            $("#telefonoValid2").hide();
         }
 
     }

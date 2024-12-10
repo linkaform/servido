@@ -291,12 +291,12 @@
 			                    <div class="flex-grow-1 d-flex flex-wrap">
 			                    	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
 						                <label for="exampleInputPassword1">Area: </label>
-						                <select type="select" class="form-select fill area-div-nuevo" id="tipoArea" >
+						                <select type="select" class="form-select fill area-div-nuevo" id="tipoArea-" >
 						                </select>
 						            </div>
 			                       <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
 						                <label for="exampleInputPassword1">Comentario: </label>
-						                <textarea type="text" class="form-control fill area-div-nuevo" rows="1" id="comentario" placeholder=""></textarea>
+						                <textarea type="text" class="form-control fill area-div-nuevo" rows="1" id="comentario-" placeholder=""></textarea>
 						            </div>
 			                    </div>
 			                    <div>
@@ -321,7 +321,7 @@
 		                    <div class="flex-grow-1 d-flex justify-content-start">
 		                       <div class="col-sm-10 col-md-10 col-lg-6 col-xl-6">
 					                <label for="exampleInputPassword1">Instruccion o comentario: </label>
-					                <textarea type="text" class="form-control fill com-div-nuevo" rows="1" id="instruccion-123" placeholder=""></textarea>
+					                <textarea type="text" class="form-control fill com-div-nuevo" rows="1" id="instruccionComentario-123" placeholder=""></textarea>
 					            </div>
 			                    <div>
 			                        <button type="button" class="btn btn-success button-add-register" onclick="setAddCom('nuevo', 'com');return false;">
@@ -385,10 +385,10 @@
             <div class="d-flex flex-row flex-wrap">
             	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3 mt-3" id="foto">
 					<label class="form-label">Fotografia: *</label>
-					<button type="button" class="btn  btn-primary btn-primary btn-sm" onclick="getScreen('User');return false;" id="buttonTakeUser">
+					<button type="button" class="btn  btn-primary btn-primary btn-sm" onclick="getScreen('User', 'user');return false;" id="buttonTakeUser">
 						<i class="fa-solid fa-camera-retro"></i>
 					</button>
-					<button type="button" class="btn  btn-warning btn-sm" onclick="limpiarTomarFoto('User');return false;" id="erase1">
+					<button type="button" class="btn  btn-warning btn-sm" onclick="limpiarTomarFoto('User',);return false;" id="erase1">
 							<i class="fa-solid fa-trash"></i>
 					</button>
 					<button type="button" class="btn  btn-success btn-sm"  style="display: none;" id="buttonSaveUser">
@@ -403,7 +403,7 @@
 				</div>
             	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3 mt-3" id="iden">
 					<label class="form-label">Identificación: *</label>
-					<button type="button" class="btn  btn-primary btn-primary btn-sm" onclick="getScreen('Card');return false;" id="buttonTakeCard">
+					<button type="button" class="btn  btn-primary btn-primary btn-sm" onclick="getScreen('Card', 'environment');return false;" id="buttonTakeCard">
 						<i class="fa-solid fa-camera-retro"></i>
 					</button>
 					<button type="button" class="btn  btn-warning btn-sm" onclick="limpiarTomarFoto('Card');return false;" id="erase2">
