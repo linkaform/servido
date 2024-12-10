@@ -75,7 +75,7 @@ function loadBoothsLocations(){
 
 
 function enviarCorreoPase(bodyPost){
-    loadingService()
+    loadingService('Enviando correo...')
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify(bodyPost),
@@ -100,9 +100,9 @@ function enviarCorreoPase(bodyPost){
     })
 }
 
-function enviarSmsPase(bodyPost){
-    loadingService()
-    fetch(url + urlScripts, {
+async function enviarSmsPase(bodyPost){
+    loadingService("Enviando sms...")
+    await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify(bodyPost),
         headers:{
@@ -121,6 +121,7 @@ function enviarSmsPase(bodyPost){
                 successMsg("Confirmación", "Mensaje enviado correctamente.", "success")
             }
         }else{
+            Swal.close()
             errorAlert(res)
         }
     })
