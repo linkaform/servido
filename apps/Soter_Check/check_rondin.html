@@ -9,49 +9,35 @@
     <link href="./check_rondin.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container container-custom">
-        <div class="header-title">Rondin Inspección Perimetral</div>
+    <!-- Div Loading-->
+    <div id="loading">
+        <div>
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="text-center mt-3">Cargando...</p>
+        </div>
+    </div>
 
+    <!-- Div Container-->
+    <div class="container container-custom hidden" id="main-content">
+        <div class="header-title">Rondin Inspección Perimetral</div>
         <div class="image-container">
             <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/673f54428183892c605a26d2.png" alt="Imagen de Caseta">
         </div>
 
         <div class="info-section">
-            <h5 class="mb-1">Caseta de vigilancia planta 1</h5>
-            <p class="mb-1"><strong>Ubicación:</strong> LENNOX</p>
-            <p class="mb-1"><strong>Tipo de Área:</strong> CASETA</p>
-            <p><strong>Fecha de Inspección:</strong> 20/11/2024</p>
+            <h5 class="mb-1" id="titleLocation">Caseta de vigilancia planta 1</h5>
+            <p class="mb-1" ><strong>Dirección:</strong> <span id="textDir"></span></p>
+            <p class="mb-1" ><strong>Ubicación:</strong> <span id="textUbic"></span></p>
+            <p class="mb-1"><strong>Tipo de Área:</strong> <span id="textType"></span></p>
+            <p><strong>Fecha de Inspección:</strong>  <span id="textTime"></span></p>
         </div>
         <hr class="border border-secondary border-2 opacity-70">
 
         <!-- Checklist -->
-        <div>
+        <div >
             <h6 class="checklist-title">Checklist</h6>
             <p>Para cada elemento, seleccione la casilla si cumple.</p>
-            <div class="checklist-item">
-                <input type="checkbox" id="check1" class="form-check-input">
-                <label for="check1">5's en caseta</label>
-            </div>
-            <div class="checklist-item">
-                <input type="checkbox" id="check2" class="form-check-input">
-                <label for="check2">Botoneras</label>
-            </div>
-            <div class="checklist-item">
-                <input type="checkbox" id="check3" class="form-check-input">
-                <label for="check3">Equipo de cómputo en buen estado</label>
-            </div>
-            <div class="checklist-item">
-                <input type="checkbox" id="check4" class="form-check-input">
-                <label for="check4">Botiquines</label>
-            </div>
-            <div class="checklist-item">
-                <input type="checkbox" id="check5" class="form-check-input">
-                <label for="check5">Tableros de avisos</label>
-            </div>
-            <div class="checklist-item">
-                <input type="checkbox" id="check6" class="form-check-input">
-                <label for="check6">Alumbrado del exterior suficiente y correcto</label>
-            </div>
+            <div id="listCheckDiv"></div>
         </div>
 
         <!-- Sección de comentarios -->
@@ -64,28 +50,23 @@
         <div class="attachments-section">
             <h6 class="checklist-title">Agregar foto</h6>
             <div class="d-flex align-items-center mb-2">
-                <span class="icon-button me-3"><i class="fas fa-camera"></i></span>
-                <span class="icon-button"><i class="fas fa-upload"></i></span>
+                <span class="icon-button me-3" id="cameraButton"><i class="fas fa-camera"></i></span>
+                <span class="icon-button" id="galleryButton"><i class="fas fa-upload"></i></span>
             </div>
-            <!-- Lista de archivos adjuntos -->
-            <div class="attachment">
-                <span>Foto_a.png</span>
-                <span class="delete-icon"><i class="fas fa-trash"></i></span>
+            <!-- Div loading -->
+            <div id="divLoadingImage" class="loader-spinner"  style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i> Cargando imágenes...
             </div>
-            <div class="attachment">
-                <span>Foto_b.png</span>
-                <span class="delete-icon"><i class="fas fa-trash"></i></span>
-            </div>
-            <div class="attachment">
-                <span>Foto_c.png</span>
-                <span class="delete-icon"><i class="fas fa-trash"></i></span>
-            </div>
+            <!-- Lista de imagenes -->
+            <div id="divListImages"></div>
         </div>
 
         <!-- Botón de enviar -->
-        <button class="btn btn-primary btn-send">Enviar</button>
+        <button class="btn btn-primary btn-send" id="buttonSend">Enviar</button>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="../Utils_New/js/servido_utils.js"></script>
     <script type="text/javascript" src="./check_rondin.js"></script>
     <script type="text/javascript" src="./check_data.js"></script>
 </body>
