@@ -7,8 +7,8 @@ let seleccionadoBitacora={}
 
 window.onload = function(){
 	setValueUserLocation('bitacora');
-    user= getCookie("userId");
-    userJwt=getCookie('userJwt');
+    user= getCookie("userId_soter");
+    userJwt=getCookie('userJwt_soter');
     validSession(user, userJwt);
     
 	changeButtonColor();
@@ -1301,7 +1301,7 @@ function asignarGafete(){
 function setDataGafete(data = {}){
     let codeUser  = $("#inputCodeUser").val();
     let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
-    let userJwt = getCookie("userJwt");
+    let userJwt = getCookie("userJwt_soter");
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({

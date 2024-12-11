@@ -33,8 +33,8 @@ let data_for_msj={}
 
 window.onload = function(){
     setValueUserLocation('accesos');
-    user= getCookie("userId");
-    userJwt=getCookie('userJwt');
+    user= getCookie("userId_soter");
+    userJwt=getCookie('userJwt_soter');
     validSession(user, userJwt);
 
     changeButtonColor(); 

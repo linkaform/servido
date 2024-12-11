@@ -29,7 +29,7 @@ let tables={}
 
 window.onload = function(){
 	setValueUserLocation('pase');
-  
+    
     
 	customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	changeButtonColor();
@@ -43,7 +43,7 @@ window.onload = function(){
     docs = urlParams.get('docs') !== null ? urlParams.get('docs') :'' ;
     account_id = parseInt(urlParams.get('user') !== null ? urlParams.get('user') :'' ) || ""
     if(account_id== null || account_id==""){
-        account_id= parseInt(getCookie('userId'))||""
+        account_id= parseInt(getCookie('userId_soter'))||""
     }
     showIneIden= docs.split("-")
 	if(id){
@@ -68,8 +68,8 @@ window.onload = function(){
             }
         }
 	}else{
-        user = getCookie("userId");
-        userJwt=getCookie('userJwt');
+        user = getCookie("userId_soter");
+        userJwt=getCookie('userJwt_soter');
         validSession(user, userJwt);
 		$("#paseEntradaInf1").show()
 		$("#paseEntradaInf2").show()
@@ -458,7 +458,7 @@ async function catalogoAreaByLocation(location){
             script_name: "pase_de_acceso.py",
             option:"catalogos_pase",
             location:location,
-            user_id: parseInt(getCookie("userId")),
+            user_id: parseInt(getCookie("userId_soter")),
             account_id:account_id
         }),
         headers:
@@ -1431,12 +1431,12 @@ function crearConfirmacion() {
                         descripcion: data.descripcion,
                 		perfil_pase:"Visita General",
                 		status_pase:'Proceso',
-                        visita_a: getCookie("userName"),
+                        visita_a: getCookie("userName_soter"),
                 		custom:true,
                         link:{
                             "link":`${protocol}//${host}/solucion_accesos/pase.html`,
                             "docs": checkDocSeleccionados,
-                            "creado_por_id": getCookie("userId"),
+                            "creado_por_id": getCookie("userId_soter"),
                             "creado_por_email":getCookie("userEmail")
                         },
     		        }
@@ -1499,7 +1499,7 @@ function crearConfirmacion() {
                                 let host = window.location.host;
                                 let docs = ""
                                 
-                                let linkk=`${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id+`&user=`+getCookie("userId")+ `&docs=`+ checkDocSeleccionados
+                                let linkk=`${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id+`&user=`+getCookie("userId_soter")+ `&docs=`+ checkDocSeleccionados
 
 
 
@@ -1521,7 +1521,7 @@ function crearConfirmacion() {
         						    confirmButtonText: "Copiar Link"
     						 }).then((result)=>{
     						 	if (result.value) {
-    						 		let link= copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId"), getCookie('userEmail'));
+    						 		let link= copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId_soter"), getCookie('userEmail'));
                                     /*loadingService()
                                     fetch(url + urlScripts, {
                                         method: 'POST',

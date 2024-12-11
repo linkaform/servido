@@ -18,8 +18,8 @@ let fotosDevolucion={userRecibe:[], userRecibeCard:[]}
 
 window.onload = function(){
 	setValueUserLocation('articulos');
-    user= getCookie("userId");
-    userJwt=getCookie('userJwt');
+    user= getCookie("userId_soter");
+    userJwt=getCookie('userJwt_soter');
     validSession(user, userJwt);
     
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
