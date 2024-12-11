@@ -178,11 +178,21 @@ function getCatalogsIngresoPase(){
                     
                     if(status_pase === 'activo'){
                         qrimagen=data.pass_selected.qr_pase[0].file_url || ""
-                        srcurlImgUser = data.pass_selected.foto[0].file_url || ""
-                        srcurlImgCard = data.pass_selected.identificacion[0].file_url || ""
+                        srcurlImgUser = data.pass_selected.foto?.[0].file_url || ""
+                        srcurlImgCard = data.pass_selected.identificacion?.[0].file_url || ""
+                        
                         let equiposregistrados = data.pass_selected.grupo_equipos || []
                         let vehiculosregistrados = data.pass_selected.grupo_vehiculos
                         let horavisita = data.pass_selected.fecha_de_expedicion
+
+                        if(!srcurlImgUser && !srcurlImgCard){
+                            $("#fotografiaActual").hide()
+                            $("#identificacionActual").hide()
+                        }else if(!srcurlImgUser){
+                            $("#fotografiaActual").hide()
+                        }else if (!srcurlImgCard){
+                            $("#identificacionActual").hide()
+                        }
 
                         urlImgCard = srcurlImgCard
                         urlImgUser = srcurlImgUser
@@ -1929,6 +1939,12 @@ function setDeleteVehiculo(id) {
 		element.remove()
 	}
     if ($('#div-vehiculo-item-123').is(':hidden') && $('#div-vehiculo').children().length === 1) {
+        $('#selectTipoEquipo-123').prop('selectedIndex', 0);
+        $('#inputNombreEquipo-123').val('');
+        $('#inputMarcaEquipo-123').val('');
+        $('#inputSerieEquipo-123').val('');
+        $('#inputModelo-123').val('');
+        $('#inputColorEquipo-123').prop('selectedIndex', 0);
         $("#div-vehiculo-item-123").show();
     }
 }
