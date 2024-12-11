@@ -2,7 +2,7 @@ let optionsLocation=[]
 let optionsCaseta=[]
 let urlScripts='infosync/scripts/run/';
 let idScript= 117936;
-let user = getCookie("userId");
+let user = getCookie("userId_soter");
 
 class lkfLocationCard extends HTMLElement{
 	constructor(){
@@ -26,7 +26,7 @@ class lkfLocationCard extends HTMLElement{
             <div class=" d-flex flex-column mt-2 ms-2 justify-content-between ">
                 <div class="d-flex justify-content-start ">
                     <h6 class="text-black" id="textJefeGuardia">Jefe en Guardia: </h6>
-                    <h6 class="text-black-50 ms-1" id="textGuardiaApoyo">`+getCookie('userName')+`</h6> 
+                    <h6 class="text-black-50 ms-1" id="textGuardiaApoyo">`+getCookie('userName_soter')+`</h6> 
                 </div>
                 <div id="divTodasLasCasetas" style="display:none;">
                     <input class="form-check-input mt-1"  type="checkbox" id="checkboxTodasLasCasetas">

@@ -6,8 +6,8 @@ let selectedGlobalPase =""
 
 window.onload = function(){
     setValueUserLocation('pases');
-    let userA = getCookie("userId");
-    userJwt = getCookie("userJwt");
+    let userA = getCookie("userId_soter");
+    userJwt = getCookie("userJwt_soter");
     validSession(user, userJwt);
     if(userA !='' && userJwt!=''){
         drawTable('tableListTodos',columnsTableListPendientes, dataTableListTodos );
@@ -30,7 +30,7 @@ window.onload = function(){
     //     let response = await fetchOnChangeCaseta('notes.py', 'get_notes', selectCaseta.value, selectLocation.value)
     //     reloadTableNotas(response.response.data)
     // };
-    account_id=getCookie('userId')
+    account_id=getCookie('userId_soter')
     // fillCatalogs();
     // getAllData();
     getAllDataPases()
@@ -549,7 +549,7 @@ async function enviarCorreoPaseE(qr="") {
             let bodyPost={
                 script_name: "pase_de_acceso.py",
                 folio:data._id,
-                account_id:parseInt(getCookie('userId'))||""
+                account_id:parseInt(getCookie('userId_soter'))||""
             }
             console.log('VISIT A', data)
             data_for_msj = {
@@ -587,7 +587,7 @@ async function enviarSmsPaseE(qr="") {
             let bodyPost={
                     script_name: "pase_de_acceso.py",
                     folio:data._id,
-                    account_id:parseInt(getCookie('userId'))||""
+                    account_id:parseInt(getCookie('userId_soter'))||""
                 }
             let msj=""
             if(data.fecha_desde_visita !==""){
@@ -972,7 +972,7 @@ function actualizarFavorito(bodyInf,access_pass, folio,resultSwal , textModal, i
                 option: bodyInf.option,
                 access_pass: access_pass,
                 folio:folio,
-                account_id: parseInt(getCookie('userId'))
+                account_id: parseInt(getCookie('userId_soter'))
             }),
             headers:
             {
@@ -1356,12 +1356,12 @@ function crearConfirmacionEditar() {
                     //     descripcion: data.descripcion,
                     //     perfil_pase:"Visita General",
                     //     status_pase:'Proceso',
-                    //     visita_a: getCookie("userName"),
+                    //     visita_a: getCookie("userName_soter"),
                     //     // custom:true,
                     //     link:{
                     //         "link":`${protocol}//${host}/solucion_accesos/pase.html`,
                     //         "docs": checkDocSeleccionados,
-                    //         "creado_por_id": getCookie("userId"),
+                    //         "creado_por_id": getCookie("userId_soter"),
                     //         "creado_por_email":getCookie("userEmail")
                     //     },
                     // }
@@ -1411,7 +1411,7 @@ function crearConfirmacionEditar() {
                     }
                     access_pass.config_limitar_acceso = parseInt(data.limiteEntradas)
                     access_pass.status_pase = "proceso"
-                    access_pass.visita_a = getCookie("userName")
+                    access_pass.visita_a = getCookie("userName_soter")
                     if(paseSelected.grupo_vehiculos.length>0){
                         access_pass.grupo_vehiculos = paseSelected.grupo_vehiculos
                     }else{
@@ -1428,7 +1428,7 @@ function crearConfirmacionEditar() {
                         access_pass.grupo_areas_acceso = []
                     }
                     access_pass.ubicacion = data.ubicacion
-                    access_pass.autorizado_por= getCookie("userName")
+                    access_pass.autorizado_por= getCookie("userName_soter")
                     access_pass.perfil_pase = "Visita General"
                     // access_pass.pase_a_nombre_de: {} //visita autorizada
                     if(paseSelected.walkin_fotografia.length>0){
@@ -1453,7 +1453,7 @@ function crearConfirmacionEditar() {
                             "link":`${protocol}//${host}/solucion_accesos/pase.html`,
                             "docs": checkDocSeleccionados,
                             'qr_code':paseSelected._id,
-                            "creado_por_id": getCookie("userId"),
+                            "creado_por_id": getCookie("userId_soter"),
                             "creado_por_email":getCookie("userEmail")
                         }
                     if(comentarios.length>0){
@@ -1488,7 +1488,7 @@ function crearConfirmacionEditar() {
                                 let host = window.location.host;
                                 let docs = ""
                                 
-                                let linkk=`${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id+`&user=`+getCookie("userId")+ `&docs=`+ checkDocSeleccionados
+                                let linkk=`${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id+`&user=`+getCookie("userId_soter")+ `&docs=`+ checkDocSeleccionados
 
 
 
@@ -1510,7 +1510,7 @@ function crearConfirmacionEditar() {
                                     confirmButtonText: "Copiar Link"
                              }).then((result)=>{
                                 if (result.value) {
-                                    let link= copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId"), getCookie('userEmail'));
+                                    let link= copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId_soter"), getCookie('userEmail'));
                                     location.reload();
                                     /*loadingService()
                                     fetch(url + urlScripts, {

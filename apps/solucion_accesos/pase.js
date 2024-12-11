@@ -1,10 +1,14 @@
 let urlImgCard=""
 let urlImgUser=""
+let srcurlImgUser=""
+let srcurlImgCard=""
 let arrayAreas=[]
 let arrayDias=[]
 let flagVideoCard = false;
 let flagVideoUser = false;
 let colors = getPAlleteColors(12,0)
+let qrimagen=""
+let status_pase=""
 let nombre=""
 let email=""
 let tel=""
@@ -25,7 +29,7 @@ let tables={}
 
 window.onload = function(){
 	setValueUserLocation('pase');
-  
+    
     
 	customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	changeButtonColor();
@@ -39,7 +43,7 @@ window.onload = function(){
     docs = urlParams.get('docs') !== null ? urlParams.get('docs') :'' ;
     account_id = parseInt(urlParams.get('user') !== null ? urlParams.get('user') :'' ) || ""
     if(account_id== null || account_id==""){
-        account_id= parseInt(getCookie('userId'))||""
+        account_id= parseInt(getCookie('userId_soter'))||""
     }
     showIneIden= docs.split("-")
 	if(id){
@@ -64,8 +68,8 @@ window.onload = function(){
             }
         }
 	}else{
-        user = getCookie("userId");
-        userJwt=getCookie('userJwt');
+        user = getCookie("userId_soter");
+        userJwt=getCookie('userJwt_soter');
         validSession(user, userJwt);
 		$("#paseEntradaInf1").show()
 		$("#paseEntradaInf2").show()
@@ -73,6 +77,8 @@ window.onload = function(){
 		$("#paseEntradaInf4").show()
 		$("#paseEntradaInf5").hide()
 		$("#paseEntradaInf6").hide()
+        $("#paseEntradaCompletado").hide()
+		$("#paseEntradaCompletadoFotos").hide()
 		onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')
 		iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')
         iniciarMin("minNuevoPase")
@@ -82,6 +88,13 @@ window.onload = function(){
 		
 	}
 }
+
+$(document).ready(function () {
+    $('#actualizarBtn').on('click', function () {
+      $('#paseEntradaCompletadoFotos').toggle();
+      $('#paseEntradaInf6').toggle();
+    });
+});
 
 function iniciarMin(id){
     $("#minNuevoPase").empty();
@@ -161,6 +174,39 @@ function getCatalogsIngresoPase(){
                     visitaA=data.pass_selected.visita_a[0] ? data.pass_selected.visita_a[0].nombre : ""
                     ubicacion=data.pass_selected.ubicacion ? data.pass_selected.ubicacion : ""
                     direccion=""
+                    status_pase=data.pass_selected.estatus
+                    
+                    if(status_pase === 'activo'){
+                        qrimagen=data.pass_selected.qr_pase[0].file_url || ""
+                        srcurlImgUser = data.pass_selected.foto[0].file_url || ""
+                        srcurlImgCard = data.pass_selected.identificacion[0].file_url || ""
+                        let equiposregistrados = data.pass_selected.grupo_equipos || []
+                        let vehiculosregistrados = data.pass_selected.grupo_vehiculos
+                        let horavisita = data.pass_selected.fecha_de_expedicion
+
+                        urlImgCard = srcurlImgCard
+                        urlImgUser = srcurlImgUser
+                        $("#qrImage").attr("src", qrimagen)
+                        $("#userImage").attr("src", srcurlImgUser)
+                        $("#paseActivoFoto").attr("src", srcurlImgUser)
+                        $("#paseIdenFoto").attr("src", srcurlImgCard)
+                        $("#pass-complete-nombre").text(nombre)
+                        $("#pass-complete-email").text(email)
+                        $("#pass-complete-telefono").text(tel)
+                        $("#pass-complete-visita").text(visitaA)
+                        $("#pass-complete-ubicacion").text(ubicacion)
+                        $("#pass-complete-fecha").text(horavisita)
+                        $("#paseEntradaCompletado").show()
+                        $("#paseEntradaCompletadoFotos").hide()
+                        $("#paseEntradaInf5").hide()
+                        $("#paseEntradaInf6").hide()
+
+                        rellenarVehiculos(vehiculosregistrados);
+                        rellenarEquipos(equiposregistrados);
+                    }else{
+                        $("#paseEntradaCompletado").hide()
+                        $("#paseEntradaCompletadoFotos").hide()
+                    }
 
                     $("#nombreText").text(nombre)
                     $("#emailText").text(email)
@@ -238,6 +284,111 @@ function getCatalogsIngresoPase(){
     $("#spinnerTipoVehiculo").css("display", "none");
 }
 
+function rellenarVehiculos(vehiculosregistrados) {
+    if (vehiculosregistrados.length > 0) {
+        $('#agregarVehiculo').prop('checked', true);
+        if ($("#agregarVehiculo").is(':checked')) {
+            $("#div-vehiculo").show();
+            $("#div-vehiculo-item-123").hide();
+
+            vehiculosregistrados.forEach(vehiculo => {
+                setAddVehiculo();
+
+                let lastDiv = $('#div-vehiculo .div-main-vehiculo').last();
+                let randomID = lastDiv.attr('id').split('-').pop();
+
+                const capitalizeFirstLetter = (string) => {
+                    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+                };
+
+                let colorCapitalizado = capitalizeFirstLetter(vehiculo.color_vehiculo);
+                let estadoCapitalizado = capitalizeFirstLetter(vehiculo.nombre_estado);
+
+                // Rellenar los campos con los datos del vehículo
+                $(`#selectTipoVehiculo-${randomID}`).val(vehiculo.tipo_vehiculo);
+
+                setTimeout(() => {
+                    $(`#selectCatalogMarca-${randomID}`).val(vehiculo.marca_vehiculo);
+                    $(`#selectCatalogMarca-${randomID}`).trigger('change');
+                },5000)
+
+                setTimeout(() => {
+                    $(`#selectCatalogModelo-${randomID}`).val(vehiculo.modelo_vehiculo);
+                    $(`#selectCatalogModelo-${randomID}`).trigger('change');
+                },9000)
+
+                $(`#inputMatriculaVehiculo-${randomID}`).val(vehiculo.placas_vehiculo);
+                
+                setTimeout(() => {
+                    $(`#inputEstadoVehiculo-${randomID}`).val(estadoCapitalizado);
+                    $(`#inputColorVehiculo-${randomID}`).val(colorCapitalizado);
+                    $(`#inputEstadoVehiculo-${randomID}`).trigger('change');
+                    $(`#inputColorVehiculo-${randomID}`).trigger('change');
+                },10000)
+
+                $(`#selectTipoVehiculo-${randomID}`).trigger('change');
+            });
+        } else {
+            $("#div-vehiculo").hide();
+        }
+    }
+}
+
+function rellenarEquipos(equiposregistrados) {
+    if (equiposregistrados.length > 0) {
+        $('#agregarEquipo').prop('checked', true);
+        if ($("#agregarEquipo").is(':checked')) {
+            $("#div-equipo").show();
+            $("#div-equipo-item-123").hide();
+
+            equiposregistrados.forEach(equipo => {
+                setAddEquipo();
+
+                let lastDiv = $('#div-equipo .div-main-equipo').last();
+                let randomID = lastDiv.attr('id').split('-').pop();
+
+                const capitalizeFirstLetter = (string) => {
+                    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+                };
+
+                let colorCapitalizado = capitalizeFirstLetter(equipo.color_articulo);
+                let tipoCapitalizado = capitalizeFirstLetter(equipo.tipo_equipo);
+                
+                $(`#selectTipoEquipo-${randomID}`).val(tipoCapitalizado);
+
+                setTimeout(() => {
+                    $(`#inputNombreEquipo-${randomID}`).val(equipo.nombre_articulo);
+                }, 1000);
+
+                setTimeout(() => {
+                    $(`#inputMarcaEquipo-${randomID}`).val(equipo.marca_articulo);
+                }, 2000);
+
+                setTimeout(() => {
+                    // Hardcodear el modelo del equipo
+                    $(`#inputModeloEquipo-${randomID}`).val(equipo.modelo_articulo);
+                }, 3000);
+
+                setTimeout(() => {
+                    $(`#inputNoSerieEquipo-${randomID}`).val(equipo.numero_serie);
+                }, 4000);
+
+                setTimeout(() => {
+                    $(`#inputColorEquipo-${randomID}`).val(colorCapitalizado);
+                    $(`#inputColorEquipo-${randomID}`).trigger('change');
+                }, 5000);
+
+                $(`#selectTipoEquipo-${randomID}`).trigger('change');
+            });
+        } else {
+            $("#div-equipo").hide();
+        }
+    }
+}
+
+
+
+
 //FUNCION rellenar catalogos al momento de escojer una opcion
 async function onChangeCatalogPase(type, id){
     if(type == "vehiculo"){
@@ -307,7 +458,7 @@ async function catalogoAreaByLocation(location){
             script_name: "pase_de_acceso.py",
             option:"catalogos_pase",
             location:location,
-            user_id: parseInt(getCookie("userId")),
+            user_id: parseInt(getCookie("userId_soter")),
             account_id:account_id
         }),
         headers:
@@ -1280,12 +1431,12 @@ function crearConfirmacion() {
                         descripcion: data.descripcion,
                 		perfil_pase:"Visita General",
                 		status_pase:'Proceso',
-                        visita_a: getCookie("userName"),
+                        visita_a: getCookie("userName_soter"),
                 		custom:true,
                         link:{
                             "link":`${protocol}//${host}/solucion_accesos/pase.html`,
                             "docs": checkDocSeleccionados,
-                            "creado_por_id": getCookie("userId"),
+                            "creado_por_id": getCookie("userId_soter"),
                             "creado_por_email":getCookie("userEmail")
                         },
     		        }
@@ -1348,7 +1499,7 @@ function crearConfirmacion() {
                                 let host = window.location.host;
                                 let docs = ""
                                 
-                                let linkk=`${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id+`&user=`+getCookie("userId")+ `&docs=`+ checkDocSeleccionados
+                                let linkk=`${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id+`&user=`+getCookie("userId_soter")+ `&docs=`+ checkDocSeleccionados
 
 
 
@@ -1370,7 +1521,7 @@ function crearConfirmacion() {
         						    confirmButtonText: "Copiar Link"
     						 }).then((result)=>{
     						 	if (result.value) {
-    						 		let link= copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId"), getCookie('userEmail'));
+    						 		let link= copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId_soter"), getCookie('userEmail'));
                                     /*loadingService()
                                     fetch(url + urlScripts, {
                                         method: 'POST',
@@ -1740,6 +1891,12 @@ function limpiarTomarFoto(id){
     }else{
         urlImgCard=""
     }
+
+    if(id == "User" && status_pase === "activo"){
+        urlImgUser = srcurlImgUser
+    }else if(id == "Card" && status_pase === "activo"){
+        urlImgCard = srcurlImgCard
+    }
 }
 
 //FUNCION eliminar un set repetitivo de vehiculo
@@ -1748,6 +1905,9 @@ function setDeleteVehiculo(id) {
 	if(element && id!=123){
 		element.remove()
 	}
+    if ($('#div-vehiculo-item-123').is(':hidden') && $('#div-vehiculo').children().length === 1) {
+        $("#div-vehiculo-item-123").show();
+    }
 }
 
 
@@ -1839,6 +1999,10 @@ function setDeleteEquipo(id) {
 	if(element && id!=123){
 		element.remove()
 	}
+
+    if ($('#div-equipo-item-123').is(':hidden') && $('#div-equipo').children().length === 1) {
+        $("#div-equipo-item-123").show();
+    }
 }
 
 

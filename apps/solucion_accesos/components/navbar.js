@@ -64,8 +64,8 @@ let statusFallaResuelto="Resuelto"
 
 function changeButtonColor(){
     $("#imageUserNavbar").attr("src", getCookie('userImg'));
-    let user = getCookie("userId");
-        let jw = getCookie("userJwt");
+    let user = getCookie("userId_soter");
+        let jw = getCookie("userJwt_soter");
         if(user !='' && jw!=''){
             let imagenMostradaNavbar = document.getElementById("imageUserNavbar");
             imagenMostradaNavbar.src= localStorage.getItem("imagenURL");

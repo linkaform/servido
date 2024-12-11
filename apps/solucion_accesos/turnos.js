@@ -17,8 +17,8 @@ let colors = getPAlleteColors(12,0)
 let casetaOcupadaFecha =""
 
 window.onload = function(){
-    user = getCookie("userId");
-    userJwt=getCookie('userJwt');
+    user = getCookie("userId_soter");
+    userJwt=getCookie('userJwt_soter');
     validSession(user, userJwt);
     
 
@@ -31,7 +31,7 @@ window.onload = function(){
     drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, [],"360px",1000);
     date = new Date().toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"});
     $('#todayDateText').append($('<div class="myDateClass"> '+ date +'</div>'));
-    $("#textName").html(getCookie('userName'));
+    $("#textName").html(getCookie('userName_soter'));
     //$("#textPosition").text(getCookie('userPosition'));
     $("#textEmail").text(getCookie('userEmail'));
     $("#imgProfilePic").attr("src", localStorage.getItem("imagenURL") /*getCookie('userImg')*/);
@@ -118,8 +118,8 @@ function getNotes(){
 
 
 function cambiarImagenGuardia(){
-    let userId= getCookie('userId')
-    userJwt=getCookie('userJwt')
+    let userId= getCookie('userId_soter')
+    userJwt=getCookie('userJwt_soter')
     let input = document.getElementById('inputFileUser');
     input.click();
     
@@ -217,7 +217,7 @@ function getAllData(area="", location="", loading=false){
                     dataTableGuardiasApoyo=[]
                     if(data.support_guards.length > 0){
                         for(let guard of data.support_guards){
-                            if(guard.user_id.toString() !==  getCookie('userId').toString()){
+                            if(guard.user_id.toString() !==  getCookie('userId_soter').toString()){
                                 dataTableGuardiasApoyo.push({name:guard.name, status: '', img: guard.picture? guard.picture :'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1', 
                                 fechaInicio: '', id:guard.user_id})
 
@@ -226,7 +226,7 @@ function getAllData(area="", location="", loading=false){
                     }else{
                         dataTableGuardiasApoyo = []
                     }
-                    let userName=getCookie('userName')
+                    let userName=getCookie('userName_soter')
 
                     /*if(getCookie('userCaseta') !== data.location.area){
                         getNotes();
@@ -991,7 +991,7 @@ function agregarNuevaNota(){
         'note_status': statusAbierto,
         'note':nota,
         'note_booth':getCookie('userCaseta'),
-        //'created_by_name':getCookie('userName'),
+        //'created_by_name':getCookie('userName_soter'),
         'note_guard_close':'', //este dato no viene en la lista principal...
         'note_pic':arraySuccessFoto ,
         'note_file':arraySuccessArchivo ,
@@ -1060,7 +1060,7 @@ function agregarNuevaNota(){
                             }
                         }
                         let note_open_date= convertDate(data.json.created_at, data.json.timezone)
-                        dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, created_by_name:getCookie('userName'), 
+                        dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, created_by_name:getCookie('userName_soter'), 
                             note_open_date: note_open_date, 
                             note_close_date:"",  note: data_notes.note, 
                             note_pic: data_notes.hasOwnProperty('note_pic') && data_notes.note_pic.length>0 ? data_notes.note_pic  : [], 
