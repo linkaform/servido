@@ -1,5 +1,7 @@
 let urlImgCard=""
 let urlImgUser=""
+let srcurlImgUser=""
+let srcurlImgCard=""
 let arrayAreas=[]
 let arrayDias=[]
 let flagVideoCard = false;
@@ -172,46 +174,18 @@ function getCatalogsIngresoPase(){
                     visitaA=data.pass_selected.visita_a[0] ? data.pass_selected.visita_a[0].nombre : ""
                     ubicacion=data.pass_selected.ubicacion ? data.pass_selected.ubicacion : ""
                     direccion=""
-                    status_pase=""
+                    status_pase=data.pass_selected.estatus
                     
-                    if(status_pase === 'Activo'){
+                    if(status_pase === 'activo'){
                         qrimagen=data.pass_selected.qr_pase[0].file_url || ""
-                        let srcurlImgUser = data.pass_selected.foto[0].file_url || ""
-                        let srcurlImgCard = data.pass_selected.identificacion[0].file_url || ""
+                        srcurlImgUser = data.pass_selected.foto[0].file_url || ""
+                        srcurlImgCard = data.pass_selected.identificacion[0].file_url || ""
                         let equiposregistrados = data.pass_selected.grupo_equipos || []
                         let vehiculosregistrados = data.pass_selected.grupo_vehiculos
                         let horavisita = data.pass_selected.fecha_de_expedicion
-    
-                        const $infoDiv = $('#equiposRegistrados');
-    
-                        equiposregistrados.forEach(equipo => {
-                            const $equipoDiv = $('<div>', { class: 'equipo' }).addClass('shadow-sm p-3 border rounded-1');
-    
-                            $equipoDiv.append(`<p class="mb-0"><strong>Tipo de equipo:</strong> ${equipo.tipo_equipo}</p>`);
-                            $equipoDiv.append(`<p class="mb-0"><strong>Nombre:</strong> ${equipo.nombre_articulo}</p>`);
-                            $equipoDiv.append(`<p class="mb-0"><strong>Marca:</strong> ${equipo.marca_articulo}</p>`);
-                            $equipoDiv.append(`<p class="mb-0"><strong>No. Serie:</strong> ${equipo.numero_serie}</p>`);
-                            $equipoDiv.append(`<p class="mb-0"><strong>Modelo:</strong></p>`);
-                            $equipoDiv.append(`<p class="mb-0"><strong>Color:</strong> ${equipo.color_articulo}</p>`);
-    
-                            $infoDiv.append($equipoDiv);
-                        });
-    
-                        const $vehDiv = $('#vehiculosRegistrados');
-    
-                        vehiculosregistrados.forEach(vehiculo => {
-                            const $vehiculosDiv = $('<div>', { class: 'vehiculo' }).addClass('shadow-sm p-3 border rounded-1');
-    
-                            $vehiculosDiv.append(`<p class="mb-0"><strong>Tipo:</strong> ${vehiculo.tipo_vehiculo}</p>`);
-                            $vehiculosDiv.append(`<p class="mb-0"><strong>Marca:</strong> ${vehiculo.marca_vehiculo}</p>`);
-                            $vehiculosDiv.append(`<p class="mb-0"><strong>Modelo:</strong> ${vehiculo.modelo_vehiculo}</p>`);
-                            $vehiculosDiv.append(`<p class="mb-0"><strong>Matricula:</strong> ${vehiculo.placas_vehiculo}</p>`);
-                            $vehiculosDiv.append(`<p class="mb-0"><strong>Estado:</strong> ${vehiculo.nombre_estado}</p>`);
-                            $vehiculosDiv.append(`<p class="mb-0"><strong>Color:</strong> ${vehiculo.color_vehiculo}</p>`);
-    
-                            $vehDiv.append($vehiculosDiv);
-                        });
 
+                        urlImgCard = srcurlImgCard
+                        urlImgUser = srcurlImgUser
                         $("#qrImage").attr("src", qrimagen)
                         $("#userImage").attr("src", srcurlImgUser)
                         $("#paseActivoFoto").attr("src", srcurlImgUser)
@@ -226,6 +200,9 @@ function getCatalogsIngresoPase(){
                         $("#paseEntradaCompletadoFotos").hide()
                         $("#paseEntradaInf5").hide()
                         $("#paseEntradaInf6").hide()
+
+                        rellenarVehiculos(vehiculosregistrados);
+                        rellenarEquipos(equiposregistrados);
                     }else{
                         $("#paseEntradaCompletado").hide()
                         $("#paseEntradaCompletadoFotos").hide()
@@ -306,6 +283,111 @@ function getCatalogsIngresoPase(){
     $("#selectTipoVehiculo-123").prop( "disabled", false );
     $("#spinnerTipoVehiculo").css("display", "none");
 }
+
+function rellenarVehiculos(vehiculosregistrados) {
+    if (vehiculosregistrados.length > 0) {
+        $('#agregarVehiculo').prop('checked', true);
+        if ($("#agregarVehiculo").is(':checked')) {
+            $("#div-vehiculo").show();
+            $("#div-vehiculo-item-123").hide();
+
+            vehiculosregistrados.forEach(vehiculo => {
+                setAddVehiculo();
+
+                let lastDiv = $('#div-vehiculo .div-main-vehiculo').last();
+                let randomID = lastDiv.attr('id').split('-').pop();
+
+                const capitalizeFirstLetter = (string) => {
+                    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+                };
+
+                let colorCapitalizado = capitalizeFirstLetter(vehiculo.color_vehiculo);
+                let estadoCapitalizado = capitalizeFirstLetter(vehiculo.nombre_estado);
+
+                // Rellenar los campos con los datos del vehículo
+                $(`#selectTipoVehiculo-${randomID}`).val(vehiculo.tipo_vehiculo);
+
+                setTimeout(() => {
+                    $(`#selectCatalogMarca-${randomID}`).val(vehiculo.marca_vehiculo);
+                    $(`#selectCatalogMarca-${randomID}`).trigger('change');
+                },5000)
+
+                setTimeout(() => {
+                    $(`#selectCatalogModelo-${randomID}`).val(vehiculo.modelo_vehiculo);
+                    $(`#selectCatalogModelo-${randomID}`).trigger('change');
+                },9000)
+
+                $(`#inputMatriculaVehiculo-${randomID}`).val(vehiculo.placas_vehiculo);
+                
+                setTimeout(() => {
+                    $(`#inputEstadoVehiculo-${randomID}`).val(estadoCapitalizado);
+                    $(`#inputColorVehiculo-${randomID}`).val(colorCapitalizado);
+                    $(`#inputEstadoVehiculo-${randomID}`).trigger('change');
+                    $(`#inputColorVehiculo-${randomID}`).trigger('change');
+                },10000)
+
+                $(`#selectTipoVehiculo-${randomID}`).trigger('change');
+            });
+        } else {
+            $("#div-vehiculo").hide();
+        }
+    }
+}
+
+function rellenarEquipos(equiposregistrados) {
+    if (equiposregistrados.length > 0) {
+        $('#agregarEquipo').prop('checked', true);
+        if ($("#agregarEquipo").is(':checked')) {
+            $("#div-equipo").show();
+            $("#div-equipo-item-123").hide();
+
+            equiposregistrados.forEach(equipo => {
+                setAddEquipo();
+
+                let lastDiv = $('#div-equipo .div-main-equipo').last();
+                let randomID = lastDiv.attr('id').split('-').pop();
+
+                const capitalizeFirstLetter = (string) => {
+                    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+                };
+
+                let colorCapitalizado = capitalizeFirstLetter(equipo.color_articulo);
+                let tipoCapitalizado = capitalizeFirstLetter(equipo.tipo_equipo);
+                
+                $(`#selectTipoEquipo-${randomID}`).val(tipoCapitalizado);
+
+                setTimeout(() => {
+                    $(`#inputNombreEquipo-${randomID}`).val(equipo.nombre_articulo);
+                }, 1000);
+
+                setTimeout(() => {
+                    $(`#inputMarcaEquipo-${randomID}`).val(equipo.marca_articulo);
+                }, 2000);
+
+                setTimeout(() => {
+                    // Hardcodear el modelo del equipo
+                    $(`#inputModeloEquipo-${randomID}`).val(equipo.modelo_articulo);
+                }, 3000);
+
+                setTimeout(() => {
+                    $(`#inputNoSerieEquipo-${randomID}`).val(equipo.numero_serie);
+                }, 4000);
+
+                setTimeout(() => {
+                    $(`#inputColorEquipo-${randomID}`).val(colorCapitalizado);
+                    $(`#inputColorEquipo-${randomID}`).trigger('change');
+                }, 5000);
+
+                $(`#selectTipoEquipo-${randomID}`).trigger('change');
+            });
+        } else {
+            $("#div-equipo").hide();
+        }
+    }
+}
+
+
+
 
 //FUNCION rellenar catalogos al momento de escojer una opcion
 async function onChangeCatalogPase(type, id){
@@ -1809,6 +1891,12 @@ function limpiarTomarFoto(id){
     }else{
         urlImgCard=""
     }
+
+    if(id == "User" && status_pase === "activo"){
+        urlImgUser = srcurlImgUser
+    }else if(id == "Card" && status_pase === "activo"){
+        urlImgCard = srcurlImgCard
+    }
 }
 
 //FUNCION eliminar un set repetitivo de vehiculo
@@ -1817,6 +1905,9 @@ function setDeleteVehiculo(id) {
 	if(element && id!=123){
 		element.remove()
 	}
+    if ($('#div-vehiculo-item-123').is(':hidden') && $('#div-vehiculo').children().length === 1) {
+        $("#div-vehiculo-item-123").show();
+    }
 }
 
 
@@ -1908,6 +1999,10 @@ function setDeleteEquipo(id) {
 	if(element && id!=123){
 		element.remove()
 	}
+
+    if ($('#div-equipo-item-123').is(':hidden') && $('#div-equipo').children().length === 1) {
+        $("#div-equipo-item-123").show();
+    }
 }
 
 
