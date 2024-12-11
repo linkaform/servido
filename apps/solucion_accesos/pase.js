@@ -47,8 +47,6 @@ window.onload = function(){
     }
     showIneIden= docs.split("-")
 	if(id){
-		getCatalogsIngresoPase()
-        customNavbar(getValueUserLocation(), userTurnCerrado)
 		$("#paseEntradaInf1").hide()
 		$("#paseEntradaInf2").hide()
 		$("#paseEntradaInf3").hide()
@@ -57,6 +55,8 @@ window.onload = function(){
 		$("#paseEntradaInf6").show()
         $("#foto").hide()
         $("#iden").hide()
+		getCatalogsIngresoPase()
+        customNavbar(getValueUserLocation(), userTurnCerrado)
         
         if(showIneIden.length>0){
             for(let a of showIneIden){
@@ -795,6 +795,16 @@ function copyLinkPase(id, nombre, email, tel, arrayDocSel,userId, email_from){
     return `${protocol}//${host}/solucion_accesos/pase.html?id=`+id+`&user=`+userId+ `&docs=`+ docs
 }
 
+function validarInputFile(id){
+    const fileInput = document.getElementById(id); 
+    console.log("QUE ONDA LIMPIAR", id, fileInput)
+    if (fileInput.files.length == 0) {
+        $("#"+id).addClass("is-invalid")
+    }else{
+        $("#"+id).removeClass("is-invalid")
+    }
+}
+
 function crearConfirmacionMini() {
 	let data= getInputsValueByClass('paseEntradaUser')
 	let listInputsVehicule={};
@@ -893,16 +903,31 @@ function crearConfirmacionMini() {
 	if(showIneIden.length>0){
         for(let i of showIneIden){
             if(i=="foto"){
-                console.log("USERRR FOPTO",urlImgUser, (urlImgUser=="" ? true : false))
                 showIn= (urlImgUser=="" ? true : false)
             }else if(i=="iden"){
-                console.log("USERRR CARDDD",urlImgCard, (urlImgCard=="" ? true : false))
                 showIde= (urlImgCard=="" ? true : false)
             }
         }
     }
+    
+    if(showIneIden.length>0){
+        for(let a of showIneIden){
+            if(a=="foto"){
+                validarInputFile('inputFileUser')
+            }else if (a=="iden"){
+                validarInputFile('inputFileCard')
+            }
+        }
+    }
+    const formInputs = document.querySelectorAll('.inputsPase');
+    let hasInvalidInput = false;
+    formInputs.forEach(input => {
+      if (input.classList.contains('is-invalid')) {
+        hasInvalidInput = true;
+      }
+    });
 
-    if(showIn || showIde){
+    if(hasInvalidInput){
 		successMsg("Validación", "Faltan datos por llenar", "warning")
 	}else{
 		Swal.fire({
@@ -1043,7 +1068,7 @@ function crearConfirmacionMini() {
     						    reverseButtons:true,
     						    cancelButtonColor: colors[0],
     						    cancelButtonText:'Cerrar',
-    						    confirmButtonText: "Aceptar",
+    						    confirmButtonText: "Descargar",
                                 preConfirm: () => {
                                     // Obtener los estados de los checkboxes
                                     const enviarMensajeChecked = document.getElementById('enviarMensaje').checked;
@@ -1312,7 +1337,6 @@ function crearConfirmacion() {
 	let html = []//getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
     
     const formInputs = document.querySelectorAll('.paseEntradaNuevo');
-    console.log("INVALID INPUT",)
     let hasInvalidInput = false;
     formInputs.forEach(input => {
       if (input.classList.contains('is-invalid')) {
@@ -1320,7 +1344,6 @@ function crearConfirmacion() {
       }
     });
     let tieneEmailTel = data.email!="" || data.telefono!=""
-    console.log("HAY INPUTS INVALIDOS",hasInvalidInput, tieneEmailTel, fechaVisitaMain, data.nombreCompleto=="")
 	if(data.nombreCompleto=="" && tieneEmailTel==false && fechaVisitaMain==""){
 		successMsg("Validación", "Faltan datos por llenar", "warning")
 	}else {
@@ -1645,6 +1668,8 @@ function validateEmailTelInput(id) {
             $('#telefono').addClass('is-invalid');
             $("#telefonoValid").show();
         }else{
+            formatearTelefono('telefono')
+
             $('#telefono').removeClass('is-invalid');
             $("#telefonoValid").hide();
             $("#enviar_sms_pre_registro").removeClass("is-invalid")
@@ -1731,14 +1756,10 @@ function validRangeOfDates(id){
     let fechaHasta=$("#fechaHastaOA").val()
     let fechaActual= new Date()
     if(id == "fechaVisitaOA"){
-        console.log("entrada")
         if(fechaVisita != ""){
-            console.log("fechas ",fechaVisita,new Date(fechaVisita).toISOString() , fechaActual.toISOString())
             if (new Date(fechaVisita).toISOString() < fechaActual.toISOString()){
-                console.log("nova")
                 $('#fechaVisitaOA').addClass('is-invalid');
             }else{
-                console.log("fehcaaaaa")
                 $('#fechaVisitaOA').removeClass('is-invalid');
             }
         }
@@ -1753,12 +1774,8 @@ function validRangeOfDates(id){
                 $('#fechaVisitaOA').addClass('is-invalid');
             }
         }
-        // }else{
-        //      $('#fechaHastaOA').addClass('is-invalid');
-        // }
         if(!fechaHasta){ //si esta vacia se quita el error
-             $('#fechaHastaOA').removeClass('is-invalid');
-
+            $('#fechaHastaOA').removeClass('is-invalid');
         }
     }
 }
@@ -1896,6 +1913,12 @@ function limpiarTomarFoto(id){
         urlImgUser = srcurlImgUser
     }else if(id == "Card" && status_pase === "activo"){
         urlImgCard = srcurlImgCard
+    }
+
+    if(id=='User'){
+        validarInputFile('inputFileUser')
+    }else{
+        validarInputFile('inputFileCard')
     }
 }
 
@@ -2072,6 +2095,7 @@ function setAddEquipo() {
 
 
 function setRequestFileImg(type, id="") {
+    console.log("GHOLAA", )
     loadingService()
     let idInput = '';
     if(type == 'inputCard'){
@@ -2088,6 +2112,7 @@ function setRequestFileImg(type, id="") {
         idInput = 'inputFileEvidenciaIncidencia';
     }
     const fileInput = document.getElementById(idInput);
+    $("#"+idInput).removeClass('is-invalid')
     const file = fileInput.files[0];
     if (file) {
         const formData = new FormData();
@@ -2129,6 +2154,7 @@ function setRequestFileImg(type, id="") {
 
 //FUNCION para guardar los archivos en el server 
 async function guardarArchivos(id, isImage){
+
     loadingService()
     const fileInput = document.getElementById(id);
     const file = fileInput.files[0]; // Obtener el archivo seleccionado
@@ -2150,7 +2176,6 @@ async function guardarArchivos(id, isImage){
         formData.append('form_id', 95435);
 
     }
-
     const options = {
       method: 'POST', 
       body: formData,
@@ -2158,11 +2183,12 @@ async function guardarArchivos(id, isImage){
     let respuesta = await fetch('https://app.linkaform.com/api/infosync/cloud_upload/', options);
     data = await respuesta.json(); //Obtenemos los datos de la respuesta 
     data.isImage=isImage
-    console.log("DATAA",data)
     if(id=="inputFileUser" && data.file){
         urlImgUser = data.file
+        $("#"+id).removeClass('is-invalid')
     }else if(id=="inputFileCard" && data.file){
         urlImgCard= data.file
+        $("#"+id).removeClass('is-invalid')
     }
     console.log("CARD",urlImgCard, urlImgUser)
     if(data.hasOwnProperty('error')){

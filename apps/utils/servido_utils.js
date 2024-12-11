@@ -964,7 +964,18 @@ function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
 
 
 //FUNCION obtener la imagen del canvas
-function getScreen(type, faceMode='user'){
+function getScreen(type, faceMode='user', isMobile=false){
+    let mobile=""
+    if(isMobile){
+        mobile = getMobileOperatingSystem()
+        console.log(mobile)
+        $("#buttonTake"+type).show();
+    }
+    if(mobile!=="iOS"){
+        $("#buttonTake"+type).show();
+    }else{
+        $("#buttonTake"+type).hide();
+    }
     if(!flagVideoUser){
         flagVideoUser = true;
         console.log("hello",navigator.mediaDevices,navigator.mediaDevices.getUserMedia)
@@ -1083,4 +1094,32 @@ function limpiarInputsPorClase(clase) {
     $('.'+clase).prop('disabled', false);
     $("#fechaVisitaOA").val('')
 
+}
+
+function formatearTelefono(id) {
+    const input = document.getElementById(id);
+    console.log("QUEEE PASAAA",id)
+    let tel = input.value.replace(/(\d{4})(\d{4})(\d{2})/, '$1 $2 $3');
+    input.value = tel
+}
+
+function desformatearTelefono(telefonoFormateado) {
+    return telefonoFormateado.replace(/\s+/g, '');  // Elimina todos los espacios
+}
+
+
+function getMobileOperatingSystem() {
+  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      // Windows Phone debe ir primero porque su UA tambien contiene "Android"
+     if (/windows phone/i.test(userAgent)) {
+        return "Windows Phone";
+     }
+     if (/android/i.test(userAgent)) {
+        return "Android";
+    }
+         if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return "iOS";
+    }
+
+    return "desconocido";
 }
