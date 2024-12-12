@@ -20,8 +20,8 @@ let fotoNuevaFalla={}
 let fotosNuevoIncidenteEditar={}
 
 window.onload = function(){
-	user= getCookie("userId");
-    userJwt=getCookie('userJwt');
+	user= getCookie("userId_soter");
+    userJwt=getCookie('userJwt_soter');
     validSession(user, userJwt);
 
 	setValueUserLocation('incidencias');

@@ -12,8 +12,8 @@ let selectedRowNota=""
 let selectedNotaActualizado=""
 
 window.onload = function(){
-    userJwt = getCookie("userJwt");
-    user = getCookie("userId");
+    userJwt = getCookie("userJwt_soter");
+    user = getCookie("userId_soter");
     validSession(user, userJwt);
     
     setValueUserLocation('notas');
@@ -251,7 +251,7 @@ function agregarNuevaNota(){
             arraySuccessArchivo.push({file_name: file_name, file_url: file});
         }
     }
-    console.log("getCookie('userName')",getCookie('userName'))
+    console.log("getCookie('userName_soter')",getCookie('userName_soter'))
     let data_notes={
         'note_status': statusAbierto,
         'note':nota,
@@ -325,7 +325,7 @@ function agregarNuevaNota(){
                             }
                         }
                         let note_open_date= convertDate(data.json.created_at, data.json.timezone)
-                        dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, created_by_name:getCookie('userName'), 
+                        dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, created_by_name:getCookie('userName_soter'), 
                             note_open_date: note_open_date, 
                             note_close_date:"",  note: data_notes.note, 
                             note_pic: data_notes.hasOwnProperty('note_pic') && data_notes.note_pic.length>0 ? data_notes.note_pic  : [], 

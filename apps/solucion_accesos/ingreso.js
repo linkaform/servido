@@ -13,7 +13,7 @@ let fotosNuevaVisita={foto:[], identificacion:[]}
 window.onload = function(){
 	setValueUserLocation('ingreso');
 	customNavbar(getValueUserLocation(), getStatusTurn())
-	userJwt = getCookie('userJwt');
+	userJwt = getCookie('userJwt_soter');
 	$(".select-car-register").select2({
 	  tags: true
 	});

@@ -1,6 +1,6 @@
 window.onload = function(){
-	let user = getCookie("userId");
-	let jw = getCookie("userJwt");
+	let user = getCookie("userId_soter");
+	let jw = getCookie("userJwt_soter");
 	let protocol = window.location.protocol;
 	let host = window.location.host;
 	if(user !='' && jw!=''){
@@ -58,10 +58,10 @@ function get_login(){
 				let userPosition = res.user.position ? res.user.position: '';
 				let userImg = res.user.thumb ? res.user.thumb: '';
 				console.log("REESPUESTA LOGIN",res)
-				setCookie("sessionid", sessionId, 7);
-				setCookie("userId", userId, 7);
-				setCookie("userJwt", userJwt, 7);
-				setCookie("userName", userName, 7);
+				setCookie("sessionid_soter", sessionId, 7);
+				setCookie("userId_soter", userId, 7);
+				setCookie("userJwt_soter", userJwt, 7);
+				setCookie("userName_soter", userName, 7);
 				setCookie("userParentId", userParentId,7);
 				setCookie("userEmail", userEmail,7);
 				setCookie("userPosition", userPosition,7);
