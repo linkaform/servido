@@ -1,5 +1,4 @@
 let listImagesDic = [];
-
 window.onload = function(){
     const statusSession = getSession('login');
     if(statusSession == 'Active'){
@@ -38,7 +37,7 @@ window.onload = function(){
         const hostname = window.location.hostname;      
         const puerto = window.location.port;            
         //---URL REDIRECTION LOGIN
-        let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/Login.html`
+        let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/login.html`
         window.location.href = urlRedirection;
     }
 }
@@ -201,9 +200,6 @@ function handleFile(file) {
             setElementImages(listImagesDic);
         }, 500);
     })
-    .then((data) => {
-        console.log(data); 
-    })
     .catch((error) => console.error("Error en el fetch:", error));
 }   
 
@@ -217,6 +213,7 @@ function getCheckboxStates() {
     checkboxes.forEach((checkbox) => {
         states[checkbox.name] = checkbox.checked;
     });
+    console.log('states',states)
     return states;
 }
 
@@ -233,15 +230,29 @@ function deleteImage(value) {
 }
 
 function dataSend(){
+    //---Get data form
+    let configuration = localStorage.getItem('configuration');
+    configuration = JSON.parse(configuration);
     const location = getParameterURL('location');
     const checksSelected = getCheckboxStates();
     const inputComment = document.getElementById('commentCheck').value;
     const dicData = {
+        'folio': configuration.folio,
+        'rondin': configuration.nombre_rondin,
+        'ubicacion': configuration.ubicacion,
         'location': location,
         'list_checks': checksSelected,
         'comment': inputComment,
         'list_img': listImagesDic,
     }
+    //---Get data local storage
+
+    let recordConfig = localStorage.getItem('recordBitacora');
+    recordConfig = JSON.parse(recordConfig);
+    let dicListRecord = localStorage.getItem('dicListRecord');
+    //console.log('configuration',configuration);
+    //console.log('folioRecord',folioRecord);
+    //console.log('dicListRecord',dicListRecord);
     const JWT = getCookie("userJwt");
     let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
     fetch(urlLinkaform, {
@@ -249,7 +260,8 @@ function dataSend(){
         body: JSON.stringify({
             script_id: 126428,
             formInformation: dicData,
-            option: 'add_record',
+            folioUpdate:recordConfig.folio,
+            option: 'add_record_check',
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -330,3 +342,10 @@ function getTimeNow() {
     textTime.textContent = `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
+function createDicRecord(data){
+
+}
+
+function updateDicRecord(data){
+
+}

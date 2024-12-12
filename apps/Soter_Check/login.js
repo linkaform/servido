@@ -76,7 +76,7 @@ function getReportLocation(){
 	const protocolo = window.location.protocol;    
 	const hostname = window.location.hostname;      
 	const puerto = window.location.port;            
-	let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/Index.html?location?${LOCATION}`;
+	let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/rondin.html?location?${LOCATION}`;
     window.location.href = urlRedirection;
 }
 
