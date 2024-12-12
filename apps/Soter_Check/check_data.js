@@ -34,7 +34,7 @@ const checkListData = [
     ]
   },
   {
-    location: "AREA DE TANQUES (PATIO) PLANTA 1",
+    location: "ÁREA DE TANQUES (PATIO) PLANTA 1",
     tasks: [
       "Puertas de acceso funcionales y Cerradas",
       "Cuanta con ayuda visual de solo personal autorizado",

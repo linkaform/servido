@@ -2,7 +2,6 @@ let dicConfigs = [];
 
 window.onload = function(){
 	const statusSession = getSession('login');
-	console.log('Entra aaaa');
 	if(statusSession == 'Active'){
 		const configData = getParsedConfiguration();
 		if (configData) {
@@ -14,7 +13,7 @@ window.onload = function(){
 		}
 		//--Asign Events
         document.getElementById("buttonSend").addEventListener("click", () => {
-            set_config_rondin();
+            setRedirection('summary_check');
         });
 	}else{
         setRedirection('login');
@@ -78,12 +77,12 @@ function drawConfigLocation(dataConfig) {
     const container = document.getElementById('taskList');
     container.innerHTML = '';
     //---Get Data
-    const dicListRecord = localStorage.getItem('dicListRecord');
+    let dicListRecord = localStorage.getItem('dicListRecord');
     if (dicListRecord) {
-        let locations = dicListRecord && dicListRecord.length > 0 ? dicListRecord.length : [];
+        dicListRecord = JSON.parse(dicListRecord);
+        let locations = dicListRecord && dicListRecord.length > 0 ? dicListRecord : [];
         let countFinish = 0;
         let countInprogress = 0;
-
         locations.forEach(item => {
             const li = document.createElement('li');
             if(item.status != 'completed'){
@@ -91,7 +90,6 @@ function drawConfigLocation(dataConfig) {
             }else{
                 li.className = 'task-item completed';
             }
-
             const iconDiv = document.createElement('div');
             iconDiv.className = 'task-icon';
             iconDiv.innerHTML = '<i class="fas fa-map-marker-alt"></i>';
@@ -102,13 +100,15 @@ function drawConfigLocation(dataConfig) {
             li.appendChild(iconDiv);
             li.appendChild(textDiv);
             if(item.status != 'completed'){
-                countFinish += 1;
-                li.addEventListener('click', () => set_redirection_rondin(task));
-            }else{
                 countInprogress += 1;
+                li.addEventListener('click', () => set_redirection_rondin(item.title));
+            }else{
+                countFinish += 1;
             }
             container.appendChild(li);
         });
+            
+            console.log('countInprogress',countInprogress);
         //----Assing Count
         componentCount.textContent = `${countFinish}`;
         componentTotal.textContent = `/${ countFinish + countInprogress}`;

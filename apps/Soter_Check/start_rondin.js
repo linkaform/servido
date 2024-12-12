@@ -137,7 +137,6 @@ function set_config_rondin() {
 }
 
 function set_redirection() {
-    console.log('Entro');
     //----Url
     const protocolo = window.location.protocol;    
     const hostname = window.location.hostname;      
