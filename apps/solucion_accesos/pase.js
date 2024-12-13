@@ -182,7 +182,7 @@ function getCatalogsIngresoPase(){
                         srcurlImgCard = data.pass_selected.identificacion?.[0].file_url || ""
                         
                         let equiposregistrados = data.pass_selected.grupo_equipos || []
-                        let vehiculosregistrados = data.pass_selected.grupo_vehiculos
+                        let vehiculosregistrados = data.pass_selected.grupo_vehiculos || []
                         let horavisita = data.pass_selected.fecha_de_expedicion
 
                         if(!srcurlImgUser && !srcurlImgCard){
@@ -355,39 +355,18 @@ function rellenarEquipos(equiposregistrados) {
                 setAddEquipo();
 
                 let lastDiv = $('#div-equipo .div-main-equipo').last();
-                let randomID = lastDiv.attr('id').split('-').pop();
+                const randomID = lastDiv.attr('id').split('-').pop();
 
-                const capitalizeFirstLetter = (string) => {
-                    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-                };
-
-                let colorCapitalizado = capitalizeFirstLetter(equipo.color_articulo);
-                let tipoCapitalizado = capitalizeFirstLetter(equipo.tipo_equipo);
-                
-                $(`#selectTipoEquipo-${randomID}`).val(tipoCapitalizado);
-
+                $(`#selectTipoEquipo-${randomID}`).val(equipo.tipo_equipo.charAt(0).toUpperCase() + equipo.tipo_equipo.slice(1).toLowerCase());
+                $(`#inputNombreEquipo-${randomID}`).val(equipo.nombre_articulo);
+                $(`#inputMarcaEquipo-${randomID}`).val(equipo.marca_articulo);
+                $(`#inputModeloEquipo-${randomID}`).val(equipo.modelo_articulo);
+                $(`#inputNoSerieEquipo-${randomID}`).val(equipo.numero_serie);
                 setTimeout(() => {
-                    $(`#inputNombreEquipo-${randomID}`).val(equipo.nombre_articulo);
-                }, 1000);
-
-                setTimeout(() => {
-                    $(`#inputMarcaEquipo-${randomID}`).val(equipo.marca_articulo);
-                }, 2000);
-
-                setTimeout(() => {
-                    // Hardcodear el modelo del equipo
-                    $(`#inputModeloEquipo-${randomID}`).val(equipo.modelo_articulo);
-                }, 3000);
-
-                setTimeout(() => {
-                    $(`#inputNoSerieEquipo-${randomID}`).val(equipo.numero_serie);
-                }, 4000);
-
-                setTimeout(() => {
-                    $(`#inputColorEquipo-${randomID}`).val(colorCapitalizado);
+                    $(`#inputColorEquipo-${randomID}`).val(equipo.color_articulo.charAt(0).toUpperCase() + equipo.color_articulo.slice(1).toLowerCase());
                     $(`#inputColorEquipo-${randomID}`).trigger('change');
-                }, 5000);
-
+                },2000)
+                
                 $(`#selectTipoEquipo-${randomID}`).trigger('change');
             });
         } else {
@@ -808,8 +787,10 @@ function copyLinkPase(id, nombre, email, tel, arrayDocSel,userId, email_from){
 function validarInputFile(id){
     const fileInput = document.getElementById(id); 
     console.log("QUE ONDA LIMPIAR", id, fileInput)
-    if (fileInput.files.length == 0) {
+    if (fileInput.files.length == 0 && status_pase !== "activo") {
         $("#"+id).addClass("is-invalid")
+    }else if(status_pase == "activo"){
+        $("#"+id).removeClass("is-invalid")
     }else{
         $("#"+id).removeClass("is-invalid")
     }
@@ -860,6 +841,7 @@ function crearConfirmacionMini() {
 	            'tipo':listInputsEquipo[equipo][0].value,
 	            'serie':listInputsEquipo[equipo][3].value ,
 	        }
+            console.log(objEquipo)
 		    arrayEquipos.push(objEquipo)
 		}	
 	}
@@ -893,6 +875,7 @@ function crearConfirmacionMini() {
 	            'placas':listInputsVehicule[vehiculo][3].value,
 	            'color':listInputsVehicule[vehiculo][5].value
 		    }
+            console.log(objVehiculo)
 			arrayVehiculos.push(objVehiculo)
 		}
 	}
@@ -1939,12 +1922,12 @@ function setDeleteVehiculo(id) {
 		element.remove()
 	}
     if ($('#div-vehiculo-item-123').is(':hidden') && $('#div-vehiculo').children().length === 1) {
-        $('#selectTipoEquipo-123').prop('selectedIndex', 0);
-        $('#inputNombreEquipo-123').val('');
-        $('#inputMarcaEquipo-123').val('');
-        $('#inputSerieEquipo-123').val('');
-        $('#inputModelo-123').val('');
-        $('#inputColorEquipo-123').prop('selectedIndex', 0);
+        $('#selectTipoVehiculo-123').prop('selectedIndex', 0);
+        $('#selectCatalogMarca-123').prop('selectedIndex', 0);
+        $('#selectCatalogModelo-123').prop('selectedIndex', 0);
+        $('#inputMatriculaVehiculo-123').val('');
+        $('#inputEstadoVehiculo-123').prop('selectedIndex', 0);
+        $('#inputColorVehiculo-123').prop('selectedIndex', 0);
         $("#div-vehiculo-item-123").show();
     }
 }
@@ -2040,14 +2023,24 @@ function setDeleteEquipo(id) {
 	}
 
     if ($('#div-equipo-item-123').is(':hidden') && $('#div-equipo').children().length === 1) {
-        $("#div-equipo-item-123").show();
+        $('#selectTipoEquipo-123').prop('selectedIndex', 0);
+        $('#inputNombreEquipo-123').val('');
+        $('#inputMarcaEquipo-123').val('');
+        $('#inputSerieEquipo-123').val('');
+        $('#inputModelo-123').val('');
+        $('#inputColorEquipo-123').prop('selectedIndex', 0);
+        $("#div-equipo-item-123").show();        
     }
 }
 
+let counter = 0;
+function generateUniqueID() {
+    return `${Date.now()}${counter++}`;
+}
 
 //FUNCION eliminar set repetitivo de equipo
 function setAddEquipo() {
-	let randomID = Date.now();
+	let randomID = generateUniqueID();
     let newItem=`
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row div-main-equipo" id="div-equipo-item-`+randomID+`">
 		<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo" >
@@ -2077,13 +2070,13 @@ function setAddEquipo() {
 			<label class="form-label ">Marca:</label>
 			<input type="text" class="form-control group-equipo" id="inputMarcaEquipo-`+randomID+`">
 		</div>
+        <div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
+            <label class="form-label ">No. de Serie:</label>
+            <input type="text" class="form-control group-equipo" id="inputNoSerieEquipo-`+randomID+`">
+        </div>
 		<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
 			<label class="form-label ">Modelo:</label>
 			<input type="text" class="form-control group-equipo" id="inputModeloEquipo-`+randomID+`">
-		</div>
-		<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
-			<label class="form-label ">No. de Serie:</label>
-			<input type="text" class="form-control group-equipo" id="inputNoSerieEquipo-`+randomID+`">
 		</div>
 		<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
 			<label class="form-label ">Color:</label>
