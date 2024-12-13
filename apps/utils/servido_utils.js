@@ -962,6 +962,11 @@ function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
     return array
 }
 
+function esLink(url) {
+    const regex = /^(https?:\/\/(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[a-zA-Z0-9-._~:?#&=]*$)?/;
+    return regex.test(url);
+}
+
 
 //FUNCION obtener la imagen del canvas
 function getScreen(type, faceMode='user', isMobile=false){

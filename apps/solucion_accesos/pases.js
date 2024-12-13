@@ -11,9 +11,6 @@ window.onload = function(){
     validSession(user, userJwt);
     if(userA !='' && userJwt!=''){
         drawTable('tableListTodos',columnsTableListPendientes, dataTableListTodos );
-        // drawTable('tableListFavoritos',columnsTableListPendientes, dataTableListFavoritos );
-        // drawTable('tableListActivos',columnsTableListPendientes, dataTableListActivos );
-        // drawTable('tableListVencidos',columnsTableListPendientes, dataTableListVencidos );
     }
 
     $("#locCard").hide()
@@ -735,6 +732,7 @@ async function modalEditarPase(id){
     }
 
     let selectedPase = dataTableListTodos.filter(x => x._id == id).pop();
+    console.log("PASE SELECCIONADO")
     let selectedGlobalPase = selectedPase
     onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')
     iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')

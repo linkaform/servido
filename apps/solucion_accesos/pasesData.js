@@ -29,7 +29,7 @@ const columnsTableListPendientes = [
             //`<button  class="btn-table-bitacora" onClick="setModal('Tools',${folio})"><i class="fa-solid fa-car"></i></button> `;
         },
     },
-    {title:"", field:'name',hozAlign:"left",headerFilter:true,width:390, 
+    {title:"", field:'nombre_pase',hozAlign:"left",headerFilter:true,width:390,headerFilter:'input', headerFilterPlaceholder: "Buscar por nombre o estatus", 
          formatter: (cell, formatterParams) => {
             let data = cell.getData();
             let id = cell.getData().id ? cell.getData().id : 0;
@@ -48,6 +48,22 @@ const columnsTableListPendientes = [
             divActions += '</div> </div>';
             return divActions;
         },
+        headerFilterFunc: function(headerValue, rowValue, rowData, filterParams) {
+            let buscarValor = headerValue.toLowerCase();
+            let nombrePase = rowData.nombre_pase.toLowerCase();
+            let statusPase = rowData.status_pase.toLowerCase();
+            // Primero checamos si la frase completa esta en nombre pase o status_pase, si se encuentra regresa la fila
+            if (nombrePase.includes(buscarValor) || statusPase.includes(buscarValor)) {
+                return true;
+            }
+            //Despues buscamos por separado las palabras 
+            let buscarPalabras = buscarValor.split(' ').map(palabra => palabra.trim()).filter(palabra => palabra.length > 0);
+            // si estan las palabras en nombre_pase o status_pase tambien regresa esas filas, sin importar el orden 
+            let coincidencias = buscarPalabras.every(palabra => 
+                nombrePase.includes(palabra) || statusPase.includes(palabra)
+            );
+            return coincidencias;
+        }
     },
     // { title:"Folio", field:'folio', hozAlign:"center", tooltip:true,headerFilter:true,width:100,headerTooltip:true},
     { title:"Fecha creacion", field:'fecha_desde_visita', hozAlign:"left",headerFilter:"date",width:200, headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") },

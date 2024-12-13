@@ -20,7 +20,8 @@
 
 </head>
 <body>
-    <nav class="navbar m-0 p-2 mb-0 pt-2 border border-start-0 border-end-0 border-top-0 border-light-subtle-bottom-1">
+    <navbar-component > </navbar-component>
+    <!-- <nav class="navbar m-0 p-2 mb-0 pt-2 border border-start-0 border-end-0 border-top-0 border-light-subtle-bottom-1">
         <div class="d-flex flex-row justify-content-between w-100 px-4">
             <div class="navbar-brand cursor-pointer" onclick="redirectionUrl('menu', false);">
                 <img src="https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_10.png" height="40" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
@@ -51,71 +52,19 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav> -->
 
     <section>
         <div class="container mt-4">
-          <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 no-select mb-5">
-            <div class="col">
-              <div class="menu-grid-item text-center p-4"  onclick="redirectionUrl('pases');return false;">
-                <i class="fa-solid fa-passport fs-1 mb-3"></i>
-                <p>Pase de Entrada</p>
-              </div>
+            <div class=" d-flex justify-content-center">
+                <div id="spinner">
+                    <div class="spinner-border m-5" style="width: 5rem; height: 5rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
             </div>
-            <div class="col">
-              <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('turnos');return false;">
-                <i class="fa-solid fa-shield-halved fs-1 mb-3"></i>
-                <p>Turnos</p>
-              </div>
-            </div>
-            <div class="col">
-              <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('accesos');return false;">
-                <i class="fa-solid fa-unlock-keyhole fs-1 mb-3"></i>
-                <p>Accesos</p>
-              </div>
-            </div>
-            <div class="col">
-              <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('notas');return false;">
-                <i class="fa-regular fa-note-sticky fs-1 mb-3"></i>
-                <p>Notas</p>
-              </div>
-            </div>
-            <div class="col">
-              <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('rondines');return false;">
-                <i class="fa-solid fa-route fs-1 mb-3"></i>
-                <p>Rondines</p>
-              </div>
-            </div>
-            <div class="col">
-              <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('incidencias');return false;">
-                <i class="fa-solid fa-triangle-exclamation fs-1 mb-3"></i>
-                <p>Incidencias</p>
-              </div>
-            </div>
-            <div class="col">
-              <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('incidencias');return false;">
-                <i class="fa-regular fa-rectangle-xmark fs-1 mb-3"></i>
-                <p>Fallas</p>
-              </div>
-            </div>
-            <div class="col">
-              <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('bitacora');return false;">
-                <i class="fa-solid fa-book fs-1 mb-3"></i>
-                <p>Bitacoras</p>
-              </div>
-            </div>
-            <div class="col">
-              <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('articulos');return false;">
-                <i class="fa-solid fa-hammer fs-1 mb-3"></i>
-                <p>Articulos consesionados</p>
-              </div>
-            </div>
-            <div class="col">
-              <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('articulos');return false;">
-                <i class="fa-solid fa-glasses fs-1 mb-3"></i>
-                <p>Objetos Perdidos</p>
-              </div>
-            </div>
+          <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 no-select mb-5" id="customMenu">
+            
           </div>
         </div>
     </section>
@@ -130,9 +79,8 @@
 <script src="./functions.js"></script>
 <script type="text/javascript" src="./components/locationCard.js"></script>
 <script type="text/javascript" src="./components/navbar.js"></script>
-<script src="./pase.js"></script>
-<script src="./pasesData.js"></script>
-<script src="./pases.js"></script>
+<script src="./menu.js"></script>
+
 
 <!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

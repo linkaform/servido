@@ -6,7 +6,7 @@ let idNuevoEquipoVehiculo=""
 let seleccionadoBitacora={}
 
 window.onload = function(){
-	setValueUserLocation('bitacora');
+	setValueUserLocation('bitacoras');
     user= getCookie("userId_soter");
     userJwt=getCookie('userJwt_soter');
     validSession(user, userJwt);
@@ -39,7 +39,7 @@ window.onload = function(){
     $("#descargarSalidas").on("click", function() {
         descargarExcel(tables, 'tableSalidas')
     });
-    if(getValueUserLocation()=='bitacora'){
+    if(getValueUserLocation()=='bitacoras'){
          $(document).ready(function() {
             $('#divTodasLasCasetas').show();
             $('#labelGuardiaDeApoyo').remove();
