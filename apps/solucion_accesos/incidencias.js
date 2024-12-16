@@ -23,8 +23,8 @@ window.onload = function(){
 	user= getCookie("userId_soter");
     userJwt=getCookie('userJwt_soter');
     validSession(user, userJwt);
-
 	setValueUserLocation('incidencias');
+    validURL(getValueUserLocation());
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
     getAllDataIncidencias();
 

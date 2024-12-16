@@ -33,7 +33,6 @@ function drawTable(id, columnsData, tableData,){
   });
 }
 
-
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -71,8 +70,6 @@ function loadBoothsLocations(){
         }
     });
 }
-
-
 
 function enviarCorreoPase(bodyPost){
     loadingService('Enviando correo...')
@@ -154,4 +151,44 @@ function descargarPdfPase(url_pase){
         .catch(error => {
             console.error('Error al descargar el PDF:', error);
         });
+}
+
+
+function validURL(actualPage){
+    console.log("hii")
+    let menus = getCookie('menus_soter') !==''? JSON.parse(getCookie('menus_soter')):""
+    menus.push('menu')
+    if(!menus.includes(actualPage)){
+        if(user !=='' && userJwt !=='' ){
+            redirectionUrl("menu", false,false)
+        }
+    }
+}
+
+async function getMenuFetch(){
+    $("#spinner").show()
+    let menus=[]
+    await fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name:"script_turnos.py",
+            option:"get_user_menu",
+        }),
+        headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if(res.success){
+            $("#spinner").hide()
+            menus = res.response.data.menus  || []
+        }else{
+            $("#spinner").hide()
+            errorAlert(res)
+        }
+    })
+    return menus
 }
