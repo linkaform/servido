@@ -41,9 +41,9 @@
 	     		<div class="col-6 m-0 p-0">
 	            	<h4 >Pase de entrada</h4>
 	     		</div>
-	            <div class="col-6 d-flex justify-content-end">
+	            <div class="col-6 d-flex justify-content-start">
 	            	<button type="button" class="btn btn-primary btn-sm me-2" id="pasesTemporales" onclick="setModal('listaPasesTemporales')">
-					 <i class="fa-solid fa-list"></i> </button>
+					 <i class="fa-solid fa-list"></i> Mis contactos </button>
 	            </div>
 	     	</div>
 	     	<div> 
@@ -80,6 +80,8 @@
             	<script>
 				  	const input = document.querySelector("#telefono");
 				  	const iti = window.intlTelInput(input, {
+				  		formatAsYouType:true,
+				  		separateDialCode: true,
 				   	 	initialCountry: "auto", // Detecta el país automáticamente
 				    	geoIpLookup: function(callback) {
 					     fetch("https://ipinfo.io/json", { headers: { Accept: "application/json" } })

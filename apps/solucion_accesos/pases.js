@@ -711,7 +711,7 @@ async function descargarPdfPaseE() {
 }
 
 function disableAreaButtons(){
-    $("buttonAddArea")
+    $("buttonAddArea").prop
 }
 
 async function modalEditarPase(id){

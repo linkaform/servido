@@ -1881,11 +1881,8 @@ function verListaPasesTemporales(){
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_name: "script_turnos.py",
-            option: 'lista_pases',
-            caseta: "Caseta Principal",
-            location: "Planta Monterrey",
-            inActive:"true"
+            script_name: "pase_de_acceso.py",
+            option: 'get_user_contacts',
         }),
         headers:{
             'Content-Type': 'application/json',
