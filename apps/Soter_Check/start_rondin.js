@@ -18,7 +18,7 @@ window.onload = function(){
         const hostname = window.location.hostname;      
         const puerto = window.location.port;            
         //---URL REDIRECTION LOGIN
-        let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/Login.html`
+        let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/login.html`
         window.location.href = urlRedirection;
 	}
     setTimeout(() => {
@@ -120,16 +120,20 @@ function changeRondin() {
         document.getElementById("buttonSend").disabled = true;
         ulContainer.innerHTML = '';
     }
-
 }
 
 function set_config_rondin() {
+    //---Load
+    const loading = document.getElementById('loading');
+    const mainContent = document.getElementById('main-content');
+    mainContent.classList.add('hidden'); 
+    loading.style.display = 'flex';
+
+    //---Create
     const valueSelect = document.getElementById('selectRondin').value;
     const selectedData = dicConfigs.find(rondin => rondin.folio === valueSelect);
     localStorage.setItem('configuration', JSON.stringify(selectedData));
-    const localStorageData = getAllLocalStorageData();
     setRequestCreatedBitacora();
-    //set_redirection();
 }
 
 function set_redirection() {
@@ -153,6 +157,7 @@ function getAllLocalStorageData() {
 }
 
 function setRequestCreatedBitacora(){
+    const valueSelect = document.getElementById('selectRondin').value;
     const JWT = getCookie("userJwt");
     const LOCATION = getCookie("locationOrigin");
     fetch('https://app.linkaform.com/api/infosync/scripts/run/', {
@@ -160,7 +165,7 @@ function setRequestCreatedBitacora(){
         body: JSON.stringify({
             script_id: 126428,
             location: LOCATION,
-            config: LOCATION,
+            config: valueSelect,
             option: 'add_record_bitacora',
         }),
         headers:{
@@ -170,6 +175,12 @@ function setRequestCreatedBitacora(){
     })
     .then((res) => res.json())
     .then((res) => {
-        console.log('Res',res)      
+        const data = res.response && res.response.data ? res.response.data : [];
+        if(data.folio){
+            localStorage.setItem('recordBitacora', JSON.stringify(data));
+            setTimeout(() => {
+                set_redirection();
+            }, 1000);
+        }
     })
 }

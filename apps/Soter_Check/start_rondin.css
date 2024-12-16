@@ -96,7 +96,7 @@ body {
 @media (max-width: 1024px) {
   .container-custom {
     width: 100vw;
-    height: 100vh; 
+    height: 100%; 
     margin: 0; 
     padding: 2rem; 
     border-radius: 0; 
@@ -106,7 +106,7 @@ body {
 @media (max-width: 768px) {
   .container-custom {
     width: 100vw;
-    height: 100vh; 
+    height: 100%; 
     margin: 0; 
     padding: 2rem; 
     border-radius: 0; 
@@ -116,7 +116,7 @@ body {
 @media (max-width: 425px) {
   .container-custom {
     width: 100vw;
-    height: 100vh; 
+    height: 100%; 
     margin: 0; 
     padding: 2rem; 
     border-radius: 0; 

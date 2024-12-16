@@ -148,11 +148,28 @@ body {
 }
 
 
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Se adapta al tamaño disponible */
+  grid-auto-rows: 150px; /* Altura fija para las filas */
+  gap: 10px;
+}
+.image-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.no-images {
+  text-align: center;
+  font-size: 1.2em;
+  color: gray;
+}
 
+    
 @media (max-width: 1024px) {
   .container-custom {
     width: 100vw;
-    height: 100vh; 
+    height: 100%; 
     margin: 0; 
     padding: 2rem; 
     border-radius: 0; 
@@ -162,7 +179,7 @@ body {
 @media (max-width: 768px) {
   .container-custom {
     width: 100vw;
-    height: 100vh; 
+    height: 100%; 
     margin: 0; 
     padding: 2rem; 
     border-radius: 0; 
@@ -172,7 +189,7 @@ body {
 @media (max-width: 425px) {
   .container-custom {
     width: 100vw;
-    height: 100vh; 
+    height: 100%; 
     margin: 0; 
     padding: 2rem; 
     border-radius: 0; 

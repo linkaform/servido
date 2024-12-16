@@ -188,7 +188,6 @@ function getTimeNow() {
 }
 
 function openCamera(callback) {
-    console.log('openCamera');
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";

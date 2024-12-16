@@ -1,5 +1,4 @@
 let listImagesDic = [];
-
 window.onload = function(){
     const statusSession = getSession('login');
     if(statusSession == 'Active'){
@@ -29,6 +28,7 @@ window.onload = function(){
             loading.style.display = 'none';
             mainContent.classList.remove('hidden'); 
         }, 2000);
+
     }else {
         //----Cookie
         const LOCATION = getParameterURL('location');
@@ -38,7 +38,7 @@ window.onload = function(){
         const hostname = window.location.hostname;      
         const puerto = window.location.port;            
         //---URL REDIRECTION LOGIN
-        let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/Login.html`
+        let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/login.html`
         window.location.href = urlRedirection;
     }
 }
@@ -201,9 +201,6 @@ function handleFile(file) {
             setElementImages(listImagesDic);
         }, 500);
     })
-    .then((data) => {
-        console.log(data); 
-    })
     .catch((error) => console.error("Error en el fetch:", error));
 }   
 
@@ -217,6 +214,7 @@ function getCheckboxStates() {
     checkboxes.forEach((checkbox) => {
         states[checkbox.name] = checkbox.checked;
     });
+    console.log('states',states)
     return states;
 }
 
@@ -233,15 +231,27 @@ function deleteImage(value) {
 }
 
 function dataSend(){
+    //---DIsable
+    const button = document.getElementById('buttonSend');
+    button.disabled = true; 
+    //---Get data form
+    let configuration = JSON.parse( localStorage.getItem('configuration'));
     const location = getParameterURL('location');
     const checksSelected = getCheckboxStates();
     const inputComment = document.getElementById('commentCheck').value;
     const dicData = {
+        'folio': configuration.folio,
+        'rondin': configuration.nombre_rondin,
+        'ubicacion': configuration.ubicacion,
         'location': location,
         'list_checks': checksSelected,
         'comment': inputComment,
         'list_img': listImagesDic,
     }
+    //---Get data local storage
+    let recordConfig = localStorage.getItem('recordBitacora');
+    recordConfig = JSON.parse(recordConfig);
+    let dicListRecord = localStorage.getItem('dicListRecord');
     const JWT = getCookie("userJwt");
     let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
     fetch(urlLinkaform, {
@@ -249,7 +259,8 @@ function dataSend(){
         body: JSON.stringify({
             script_id: 126428,
             formInformation: dicData,
-            option: 'add_record',
+            folioUpdate:recordConfig.folio,
+            option: 'add_record_check',
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -259,16 +270,20 @@ function dataSend(){
     })
     .then(res => res.json())
     .then(res => {
-        if (res === '201') {
+        const data = res.response && res.response.data ? res.response.data : {};
+        if (data.status_create == '201') {
             alert('Se ingresó exitosamente el registro');
+            let dicListRecord = localStorage.getItem('dicListRecord');
+            if(!dicListRecord){
+                createDicRecord(configuration, dicData);
+            }else{
+                updateDicRecord(dicListRecord,dicData);
+            }
+            setRedirection();
         } else {
             alert('Hubo un error en el registro, contacte a soporte.');
         }
     })
-    .catch(error => {
-        alert('Hubo un error al conectarse al servidor. Inténtalo de nuevo.');
-        console.error('Error:', error);
-    });
 }
 
 function getInformationLocation(location){
@@ -323,10 +338,67 @@ function getTimeNow() {
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son 0-indexados
     const day = String(now.getDate()).padStart(2, '0');
-
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
-
     textTime.textContent = `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
+function createDicRecord(configuration, dicData){
+    //---Create Dic
+    let resultList = [];
+    for (const key in configuration) {
+        if(key == 'area' ){
+            const items = configuration[key];
+            for (var i = 0; i < items.length; i++) {
+                const newObject = {
+                    title: items[i],
+                    status: 'in_progress',
+                    information: {},
+                };
+                resultList.push(newObject);
+            }
+        }
+    }
+    //---Update Dic
+    const updatedData = {
+        status: "completed",
+        information: dicData,
+    };
+    const foundIndex = resultList.findIndex(item => item.title === dicData.location);
+    if (foundIndex !== -1) {
+        resultList[foundIndex] = {
+            ...resultList[foundIndex],
+            ...updatedData,           
+        };
+    }
+    localStorage.setItem('dicListRecord', JSON.stringify(resultList));
+}
+
+function updateDicRecord(dicList, data){
+    //---Update Dic
+    const updatedData = {
+        status: "completed",
+        information: data,
+    };
+    dicList = JSON.parse(dicList);
+    if(dicList){
+        const foundIndex = dicList.findIndex(item => item.title === data.location);
+        if (foundIndex !== -1) {
+            dicList[foundIndex] = {
+                ...dicList[foundIndex],
+                ...updatedData,           
+            };
+        }
+        localStorage.setItem('dicListRecord', JSON.stringify(dicList));
+    }
+}
+
+function setRedirection() {
+    //----Url
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/time_line_rondin.html`;
+    window.location.href = urlRedirection;
+}
