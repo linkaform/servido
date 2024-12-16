@@ -443,7 +443,8 @@ function setColorsDatasets(data = null, type = null){
             }
 
         }else if(data.datasets.length > 1){
-            let array_colors = datasets.labels.length > 0 ? getPAlleteColors(6, datasets.labels.length) : getPAlleteColors(6, 5);
+            console.log('datasets.labels',data)
+            let array_colors = data.labels.length > 0 ? getPAlleteColors(6,  data.labels.length) : getPAlleteColors(6, 5);
             data.datasets.forEach((item, index) => {
                 if(type == 'line'){
                     item.borderColor = array_colors[index];
