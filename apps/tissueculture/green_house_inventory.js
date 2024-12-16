@@ -342,10 +342,9 @@ function get_catalog()
       //console.log("Datos devueltos")
       if(res.response.json.catalogtwo){
         res.response.json.catalogtwo.forEach((element, index)=>{
-          console.log("FE:"+element)
           arrayIn.push(element)
         })
-          arrayIn.push('Scrap')
+          // arrayIn.push('Scrap')
           arrayIn.sort()
           //---Warehouse Out
           $("#warehouse_from").select2({
@@ -364,11 +363,6 @@ function get_catalog()
           $('#warehouse_to').append('<option value="">--Seleccione--</option>');
           $("#warehouse_from").empty();
           $("#warehouse_from").append('<option value="">--Seleccione--</option>');
-        res.response.json.catalogtwo.forEach((element, index)=>{
-          arrayIn.push(element)
-        })
-          arrayIn.push('Scrap')
-          arrayIn.sort()
           for(i = 0; i < arrayIn.length; i++){
             value = arrayIn[i]
             $('#warehouse_from').append('<option value="' + value + '">'+value + '</option>');
