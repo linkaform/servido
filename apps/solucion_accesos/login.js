@@ -67,7 +67,13 @@ function get_login(){
 				setCookie("userPosition", userPosition,7);
 				setCookie("user", userPosition,7);
 				setCookie("soter", true ,7);
-				console.log("userPosition",userPosition)
+				setCookie('menus_soter',"",7)
+				if (esLink(userImg)){
+					userImg = userImg
+				}else if (userImg.includes('/media/avatar/thumb.jpg')){
+					userImg = 'https://app.linkaform.com/media/avatar/thumb.jpg'
+				}
+
 				localStorage.setItem("imagenURL", userImg);
 
 				setCookie("lkfLogo", res.user.company_logo.picture, 7)

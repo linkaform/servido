@@ -13,28 +13,32 @@ class lkfNavbarComponent extends HTMLElement{
         <div class="navbar-brand cursor-pointer" onclick="redirectionUrl('menu', false);">
 			<img src="https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_10.png" height="40" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
         </div>
-        <div class="d-flex flex-grow-1" ><button id='buttonPase' class="btn btn-sm btn-secondary custom-navbar-button ocultar"  onclick="redirectionUrl('pases');return false;" >Pases de entrada</button></div>
+        <div class="d-flex flex-grow-1" ><button id='buttonPases' class="btn btn-sm btn-secondary custom-navbar-button ocultar"  onclick="redirectionUrl('pases');return false;" >Pases de entrada</button></div>
         <div class="navbar-brand navbarShowHide customNoBorder">
-            <button id='buttonAccesos' class="btn btn-sm btn-secondary custom-navbar-button ocultar"  onclick="redirectionUrl('accesos');return false;" >Accesos</button>   
-            <button id='buttonBitacoras' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('bitacora');return false;" >Bitacoras</button>   
-            <button id='buttonIncidencias' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
-            <button id='buttonArticulos' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
-            <button id='buttonRondines' class="btn btn-sm btn-secondary custom-navbar-button ocultar" onclick="redirectionUrl('rondines');return false;">Rondines</button>   
+            <button id='buttonAccesos' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu"  onclick="redirectionUrl('accesos');return false;" >Accesos</button>   
+            <button id='buttonBitacoras' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu" onclick="redirectionUrl('bitacora');return false;" >Bitacoras</button>   
+            <button id='buttonIncidencias' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
+            <button id='buttonArticulos' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
+            <button id='buttonRondines' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu" onclick="redirectionUrl('rondines');return false;">Rondines</button>   
             <div class="btn p-0 ms-2 customNoBorder" id="userMenu">
 			  <button type="button" class=" rounded-circle btn btn-secondary" id="imageUserButton" data-bs-toggle="dropdown" >
 				<img src="" id="imageUserNavbar">
 			  </button>
 			  <ul class="dropdown-menu dropdown-menu-end">
 			    <li>
-                    <button class="dropdown-item"  onclick="redirectionUrl('turnos');return false;" type="button"> 
-                    <i class="fa-solid fa-door-open"></i> Turno</button>
-                    </li>
+                    <div id="buttonTurnos" class="menu">
+                        <button class="dropdown-item"  onclick="redirectionUrl('turnos');return false;" type="button"> 
+                        <i class="fa-solid fa-door-open"></i> Turno</button>
+                    </div> 
+                </li>
 			    <li>
-                    <button class="dropdown-item" type="button" onclick="redirectionUrl('notas');return false;"> <i class="fa fa-sticky-note" aria-hidden="true"></i> Notas</button>
-                    </li>
-			    <li> 
+                    <div id="buttonNotas" class="menu">
+                        <button  class="dropdown-item" type="button" onclick="redirectionUrl('notas');return false;"> <i class="fa fa-sticky-note" aria-hidden="true"></i> Notas</button>
+                    </div> 
+                </li>
+			    <li>
                     <button class="dropdown-item" type="button"> <i class="fa fa-cog" aria-hidden="true"></i>  Configuracion</button>
-                    </li>
+                </li>
 			     <li>
                     <button class="dropdown-item" onclick="setCloseSession();return false;" type="button"> 
 			     	<i class="fa-solid fa-right-from-bracket"></i>  Salir</button>
@@ -97,7 +101,7 @@ function changeButtonColor(){
                 btn5.style.setProperty('color', 'white', 'important');
                 break;
               case "pases":
-                let btn6 = document.getElementById("buttonPase");
+                let btn6 = document.getElementById("buttonPases");
                 btn6.style.setProperty('background-color', '#0275d8', 'important');
                 btn6.style.setProperty('color', 'white', 'important');
                 break;
@@ -106,24 +110,55 @@ function changeButtonColor(){
         } 
 }
 
+
+
 function customNavbar(location, turno){
-     if(turno === userTurnCerrado ){
-        $('#buttonAccesos').addClass('ocultar');
-        $('#buttonBitacoras').addClass('ocultar');
-        $('#buttonIncidencias').addClass('ocultar');
-        $('#buttonArticulos').addClass('ocultar');
-        $('#buttonRondines').addClass('ocultar');
-        $('#buttonPase').addClass("ocultar"); 
-        $("#userMenu").addClass("ocultar");
-     }else if(turno === userTurnAbierto){
-        $('#buttonAccesos').removeClass("ocultar"); 
-        $('#buttonBitacoras').removeClass("ocultar"); 
-        $('#buttonIncidencias').removeClass("ocultar"); 
-        $('#buttonArticulos').removeClass("ocultar"); 
-        $('#buttonRondines').removeClass("ocultar"); 
-        $('#buttonPase').removeClass("ocultar"); 
-        $('#userMenu').removeClass("ocultar")
-     }
+    let menus = getCookie('menus_soter') !==''? JSON.parse(getCookie('menus_soter')):""
+    if(location=='turnos'){
+        if(turno === userTurnCerrado ){ 
+            showSpecificMenu(menus)
+        }else if(turno === userTurnAbierto){ 
+            let ids = getIdsMenu("menu")
+            showSpecificMenu(ids)
+        }
+
+    } 
+
+}
+
+
+function getIdsMenu(idClass){
+    let divs = document.querySelectorAll('div.'+idClass);
+    let divsB = document.querySelectorAll('button.'+idClass);
+    let ids = [];
+    divs.forEach(div => {
+        if (div.id.startsWith('button')) {
+            let key = div.id.substring(6).toLowerCase();
+            ids.push(key);
+        }
+    })
+    divsB.forEach(div => {
+        if (div.id.startsWith('button')) {
+            let key = div.id.substring(6).toLowerCase();
+            ids.push(key);
+        }
+    })
+    return ids
+}
+
+
+function showSpecificMenu(menus){
+    if (menus.length>0){
+        for (let m of menus){
+            $('#button'+capitalizeFirstLetter(m)).removeClass('ocultar')
+        }
+    }else{
+        let menusUnlock = [] 
+        for (let m of menus){
+            $('#button'+capitalizeFirstLetter(m)).addClass('ocultar')
+        }
+    }
+
 }
 
 
@@ -138,10 +173,8 @@ function redirectionUrl(type = 'null',blank = false, logout=false){
     agregarPestana(type)
     // if (existingTab && type !=="login") {
     if (type !=="login") {
-        console.log("ENTRANDO AQUI ")
         window.open(`${protocol}//${host}/solucion_accesos/${type}.html`, type)
     }else if(type=='login' && logout){
-        
         urlNew = `${protocol}//${host}/solucion_accesos/login.html`
         window.location.href = urlNew
     }else if(type=='login' && !blank){

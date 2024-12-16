@@ -101,6 +101,12 @@ function drawTableSelect(id, columnsData, tableData, height, select){
         selectableRows:select,
         paginationSize:40,
         placeholder: "No hay registros disponibles", 
+        initialFilter: [],  // No aplicar ningún filtro al principio
+       filterBy: (data, filterParams) => {
+         // Obtener el valor del filtro global
+         let query = filterParams.value.toLowerCase();
+         return data.nombre.toLowerCase().includes(query) || data.estatus.toLowerCase().includes(query);
+       }
     });
     tables[id]=table;
 }

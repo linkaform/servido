@@ -33,8 +33,8 @@ window.onload = function(){
     $('#todayDateText').append($('<div class="myDateClass"> '+ date +'</div>'));
     $("#textName").html(getCookie('userName_soter'));
     //$("#textPosition").text(getCookie('userPosition'));
-    $("#textEmail").text(getCookie('userEmail'));
     $("#imgProfilePic").attr("src", localStorage.getItem("imagenURL") /*getCookie('userImg')*/);
+    $("#textEmail").text(getCookie('userEmail'));
     $("#textUbicacion").html();
     $("#buttonCambiarCaseta").show();
     $("#loadingButtonCaseta").hide();
