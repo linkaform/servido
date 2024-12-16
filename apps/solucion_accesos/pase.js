@@ -84,8 +84,11 @@ window.onload = function(){
         iniciarMin("minNuevoPase")
 		// iniciarSelectHora('horaNuevoRangoVisita','minNuevoRangoVisita', 'ampmNuevoRangoVisita')
 		// iniciarSelectHora('horaNuevoRangoHasta','minNuevoRangoHasta', 'ampmNuevoRangoHasta')
-		catalogoAreaByLocation(getCookie('userLocation'))
-		
+		catalogoPaseLocation()
+		let tipoArea= document.getElementById("tipoArea-")
+        tipoArea.innerHTML=""
+        $("#tipoArea-").append($('<option disabled></option>').val("").text("Seleccione una ubicación para ver los registros..."));
+        $("#tipoArea-").val("")
 	}
 }
 
@@ -439,16 +442,14 @@ async function onChangeCatalogPase(type, id){
     }
 }
 
-async function catalogoAreaByLocation(location){
+async function catalogoPaseArea(location){
 	loadingService()
 	await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name: "pase_de_acceso.py",
-            option:"catalogos_pase",
-            location:location,
-            user_id: parseInt(getCookie("userId_soter")),
-            account_id:account_id
+            option:"catalogos_pase_area",
+            location:location
         }),
         headers:
         {
@@ -470,9 +471,67 @@ async function catalogoAreaByLocation(location){
         	if(arrayAreas.areas_by_location.length==0){
         		let tipoArea= document.getElementById("tipoArea-")
         		tipoArea.innerHTML=""
-        		$("#tipoArea-").append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
+        		$("#tipoArea-").append($('<option disabled></option>').val("").text("Seleccione una ubicación para ver los registros..."));
         		$("#tipoArea-").val("")
         	}
+            // if(arrayAreas.ubicaciones_user.length>1){
+            //     let tipoArea= document.getElementById("ubicacion")
+            //     tipoArea.innerHTML=""
+            //     for(let i of arrayAreas.ubicaciones_user){
+            //         $("#ubicacion").append($('<option></option>').val(i).text(i));
+            //         $("#ubicacion").val("")
+            //     }
+            // }else{
+            //     let ubicacion= document.getElementById("ubicacion")
+            //     ubicacion.innerHTML=""
+            //     for(let i of arrayAreas.ubicaciones_user){
+            //         $("#ubicacion").append($('<option ></option>').val(i).text(i));
+            //         $("#ubicacion").val(i)
+            //     }
+            // }
+            // if(arrayAreas.ubicaciones_user.length==0){
+            //     let ubicacion= document.getElementById("ubicacion")
+            //     ubicacion.innerHTML=""
+            //     $("#ubicacion").append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
+            //     $("#ubicacion").val("")
+            // }
+        }else{
+        	errorAlert(res)
+        }
+    })
+}
+
+async function catalogoPaseLocation(){
+    loadingService()
+    await fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "pase_de_acceso.py",
+            option:"catalogos_pase_location",
+        }),
+        headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close()
+            arrayAreas= res.response.data
+            // let tipoArea= document.getElementById("tipoArea-")
+            //     tipoArea.innerHTML=""
+            // for(let i of arrayAreas.areas_by_location){
+            //     $("#tipoArea-").append($('<option></option>').val(i).text(i));
+            //     $("#tipoArea-").val("")
+            // }
+            // if(arrayAreas.areas_by_location.length==0){
+            //     let tipoArea= document.getElementById("tipoArea-")
+            //     tipoArea.innerHTML=""
+            //     $("#tipoArea-").append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
+            //     $("#tipoArea-").val("")
+            // }
             if(arrayAreas.ubicaciones_user.length>1){
                 let tipoArea= document.getElementById("ubicacion")
                 tipoArea.innerHTML=""
@@ -495,10 +554,29 @@ async function catalogoAreaByLocation(location){
                 $("#ubicacion").val("")
             }
         }else{
-        	errorAlert(res)
+            errorAlert(res)
         }
     })
 }
+
+async function fillCatalogoArea(id) {
+    let location = $("#"+id).val()
+        console.log("entrando", location, $("#checkOpcionesAvanzadas").is(":checked"))
+    if(location && $("#checkOpcionesAvanzadas").is(":checked")){
+        let divs2 = document.querySelectorAll('div[id*="id-area-div-"]');
+        if(divs2.length>0){
+            divs2.forEach(function(div) {
+                if (div.id !== 'id-area-div-123') {
+                    div.remove();
+                }
+            });
+        }
+        console.log("entrando")
+        await catalogoPaseArea(location)
+    }
+}
+
+
 
 //FUNCION para agregar foto en el modal de agregar nota
 function setAddCom(editAdd ="nuevo", classNam){
@@ -577,12 +655,19 @@ async function setAddArea(editAdd ="nuevo", classNam){
 			$(`#tipoArea-${randomID}`).val("")
 		}
     }else{
-        await catalogoAreaByLocation(getCookie('userLocation'))
-        let tipoArea= document.getElementById(`tipoArea-${randomID}`)
-        tipoArea.innerHTML=""
-    	for(let i of arrayAreas.areas_by_location){
-            $(`#tipoArea-${randomID}`).append($('<option></option>').val(i).text(i));
-            $(`#tipoArea-${randomID}`).val("")
+        if($('ubicacion').val()!==""){
+            await catalogoPaseArea($('ubicacion').val())
+            let tipoArea= document.getElementById(`tipoArea-${randomID}`)
+            tipoArea.innerHTML=""
+        	for(let i of arrayAreas.areas_by_location){
+                $(`#tipoArea-${randomID}`).append($('<option></option>').val(i).text(i));
+                $(`#tipoArea-${randomID}`).val("")
+            }
+        }else{
+            let tipoArea= document.getElementById("tipoArea-")
+            tipoArea.innerHTML=""
+            $("#tipoArea-").append($('<option disabled></option>').val("").text("Seleccione una ubicación para ver los registros..."));
+            $("#tipoArea-").val("")
         }
     }
 }
@@ -665,14 +750,26 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
     }
 }*/
 
-function onChangeOpcionesAvanzadas(type){
+async function onChangeOpcionesAvanzadas(type){
 	if(type=="checkOpcionesAvanzadas"){
 		if($("#checkOpcionesAvanzadas").is(':checked')){
 			$(".opcionesAvanzadasDiv").show();
 			onChangeOpcionesAvanzadas('radioRangoFechas')
+            if($("#ubicacion").val()){
+                await catalogoPaseArea($("#ubicacion").val())
+            }else{
+                let tipoArea= document.getElementById("tipoArea-")
+                tipoArea.innerHTML=""
+                $("#tipoArea-").append($('<option disabled></option>').val("").text("Seleccione una ubicación para ver los registros..."));
+                $("#tipoArea-").val("")
+            }
 		}else{
 			$(".opcionesAvanzadasDiv").hide();
 			$("#radioFechaFija").prop('checked', true);
+            let tipoArea= document.getElementById("tipoArea-")
+            tipoArea.innerHTML=""
+            $("#tipoArea-").append($('<option disabled></option>').val("").text("Seleccione una ubicación para ver los registros..."));
+            $("#tipoArea-").val("")
 		}
 	}else if (type == "radioRangoFechas" || type=="radioFechaFija"){
 		let selected = $('input[name="opcionesAvanzadas"]:checked');

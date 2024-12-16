@@ -710,6 +710,10 @@ async function descargarPdfPaseE() {
     $("#verPaseModal").modal('hide')
 }
 
+function disableAreaButtons(){
+    $("buttonAddArea")
+}
+
 async function modalEditarPase(id){
     limpiarInputsPorClase('paseEntradaEdit')
     // $("#com-input-form-nuevo div").not("#id-com-div-123").remove();
@@ -738,7 +742,7 @@ async function modalEditarPase(id){
     iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')
     
     try {
-        const resultado = await catalogoAreaByLocation(getCookie('userLocation'))
+        const resultado = await catalogoPaseLocation()
        $("#paseEntradaEditar").modal('show')
       } catch (error) {
         console.error('Error al cargar el catálogo o abrir el modal:', error);

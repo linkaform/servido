@@ -3,8 +3,9 @@ window.onload = async function(){
     user = getCookie("userId_soter");
     userJwt=getCookie('userJwt_soter');
     validSession(user, userJwt);
-    setCookie("menus_soter", JSON.stringify(["turnos", "accesos", "bitacoras", "notas", "incidencias", "pases"]),7)
+    // setCookie("menus_soter", JSON.stringify(["turnos", "accesos", "bitacoras", "notas", "incidencias", "pases"]),7)
     $("#imageUserNavbar").attr("src", localStorage.getItem("imagenURL"));
+    console.log(getCookie('menus_soter'))
     if(getCookie('menus_soter')==""){
     	await getMenus()
     }else{
@@ -86,14 +87,16 @@ function showCustomMenu(menus, idHtmlMenu){
                  <i class="fa-solid fa-glasses fs-1 mb-3"></i>
                  <p>Objetos Perdidos</p>
                </div>
-             </div>
-             <div class="col">
+             </div>`
+		}
+        if(menu=='articulos'){
+            addHtml+=`<div class="col">
                <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('articulos');return false;">
                  <i class="fa-solid fa-hammer fs-1 mb-3"></i>
                  <p>Articulos consesionados</p>
                </div>
              </div>`
-		}
+        }
 		if(menu=='incidencias'){
 			addHtml+=`<div class="col">
                <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('incidencias');return false;">
@@ -101,13 +104,16 @@ function showCustomMenu(menus, idHtmlMenu){
                  <p>Incidencias</p>
                </div>
              </div>
-             <div class="col">
+             `
+		}
+        if(menu == "fallas"){
+            addHtml+= `<div class="col">
                <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('incidencias');return false;">
                  <i class="fa-regular fa-rectangle-xmark fs-1 mb-3"></i>
                  <p>Fallas</p>
                </div>
              </div>`
-		}
+        }
              // `<div class="col">
              //   <div class="menu-grid-item text-center p-4">
              //     <i class="fa-solid fa-cube fs-1 mb-3"></i>
