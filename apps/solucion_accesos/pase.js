@@ -13,6 +13,8 @@ let nombre=""
 let email=""
 let tel=""
 let id=""
+let idActivePass=""
+let folioActivePass=""
 let visitaA=""
 let ubicacion=""
 let direccion=""
@@ -79,6 +81,7 @@ window.onload = function(){
 		$("#paseEntradaInf6").hide()
         $("#paseEntradaCompletado").hide()
 		$("#paseEntradaCompletadoFotos").hide()
+        $("#containerUpdateButton").hide()
 		onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')
 		iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')
         iniciarMin("minNuevoPase")
@@ -178,11 +181,13 @@ function getCatalogsIngresoPase(){
                     ubicacion=data.pass_selected.ubicacion ? data.pass_selected.ubicacion : ""
                     direccion=""
                     status_pase=data.pass_selected.estatus
+                    idActivePass=data.pass_selected.folio
+                    folioActivePass=data.pass_selected._id
                     
                     if(status_pase === 'activo'){
                         qrimagen=data.pass_selected.qr_pase[0].file_url || ""
-                        srcurlImgUser = data.pass_selected.foto?.[0].file_url || ""
-                        srcurlImgCard = data.pass_selected.identificacion?.[0].file_url || ""
+                        srcurlImgUser = data.pass_selected.foto?.[0]?.file_url ?? ""
+                        srcurlImgCard = data.pass_selected.identificacion?.[0]?.file_url ?? ""
                         
                         let equiposregistrados = data.pass_selected.grupo_equipos || []
                         let vehiculosregistrados = data.pass_selected.grupo_vehiculos || []
@@ -213,6 +218,8 @@ function getCatalogsIngresoPase(){
                         $("#paseEntradaCompletadoFotos").hide()
                         $("#paseEntradaInf5").hide()
                         $("#paseEntradaInf6").hide()
+                        $("#containerContinueButton").hide()
+                        $("#containerUpdateButton").show()
 
                         rellenarVehiculos(vehiculosregistrados);
                         rellenarEquipos(equiposregistrados);
@@ -1233,6 +1240,240 @@ function crearConfirmacionMini() {
 						errorAlert(res)
 			        }
 			    });
+	        }
+		});
+	}
+}
+
+function actualizarPaseActivo() {
+	let data= getInputsValueByClass('paseEntradaUser')
+	let listInputsVehicule={};
+	let listInputsEquipo={};
+	let arrayEquipos=[]
+	let arrayVehiculos=[]
+	let divVehiculos = document.getElementById("div-vehiculo");
+    let inputsV = divVehiculos.querySelectorAll('.group-vehiculo');
+    inputsV.forEach(function(input) {
+    var idV = input.id.split('-')[1];
+        if (!listInputsVehicule[idV]) {
+            listInputsVehicule[idV] = [];
+        }
+        listInputsVehicule[idV].push(input);
+    });
+    let divEquipo = document.getElementById("div-equipo");
+    let inputsE = divEquipo.querySelectorAll('.group-equipo');
+    inputsE.forEach(function(input) {
+    let idE = input.id.split('-')[1];
+        if (!listInputsEquipo[idE]) {
+            listInputsEquipo[idE] = [];
+        }
+        listInputsEquipo[idE].push(input);
+    });
+    let htmlAppendEquipos=""
+  
+    for (let equipo in listInputsEquipo) {
+		if(listInputsEquipo[equipo][1].value!==""){
+			htmlAppendEquipos +="<div class='col-sm-12 col-md-12 col-lg-6 col-xl-6'>"
+			htmlAppendEquipos +="<table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>"
+			htmlAppendEquipos +="<tbody> <tr> <td><b>Tipo de Equipo:</b></td> <td> <span > "+ listInputsEquipo[equipo][0].value +"</span></td> </tr>"
+			htmlAppendEquipos +="<tr> <td><b>Nombre:</b></td> <td> <span > "+ listInputsEquipo[equipo][1].value +"</span></td> </tr>"	
+			htmlAppendEquipos +="<tr> <td><b>Marca:</b></td> <td> <span > "+ listInputsEquipo[equipo][2].value +"</span></td> </tr>"
+			htmlAppendEquipos +="<tr> <td><b>Modelo:</b></td> <td> <span > "+ listInputsEquipo[equipo][4].value +"</span></td> </tr>"
+			htmlAppendEquipos +="<tr> <td><b>No. Serie:</b></td> <td> <span > "+ listInputsEquipo[equipo][3].value +"</span></td> </tr>"
+		    htmlAppendEquipos +="<tr> <td><b>Color:</b></td> <td> <span > "+ listInputsEquipo[equipo][5].value +"</span></td> </tr>"
+			htmlAppendEquipos +="</tbody> </table>	</div>";
+		    let objEquipo={
+	            'nombre_articulo':listInputsEquipo[equipo][1].value,
+                'modelo_articulo':listInputsEquipo[equipo][4].value,
+	            'marca_articulo':listInputsEquipo[equipo][2].value,
+	            'color_articulo':listInputsEquipo[equipo][5].value,
+	            'tipo_equipo':listInputsEquipo[equipo][0].value,
+	            'numero_serie':listInputsEquipo[equipo][3].value ,
+	        }
+            console.log(objEquipo)
+		    arrayEquipos.push(objEquipo)
+		}	
+	}
+	 let htmlAppendEquiposTitulo=""
+    if(arrayEquipos.length>0){
+		htmlAppendEquiposTitulo+=`
+        <div class="d-flex flex-column justify-content-start ms-2" style="color:#171717">
+            <h5><b>Equipos:</b></h5>
+            <div class="d-flex flex-row flex-wrap"> 
+                `+htmlAppendEquipos+`
+            </div>
+        </div>`
+	}
+	let htmlAppendVehiculos=""
+	for (let vehiculo in listInputsVehicule) {
+        console.log("LISTA DE VEHICULOS",listInputsVehicule[vehiculo])
+		if(listInputsVehicule[vehiculo][0].value !==""){
+			htmlAppendVehiculos +="<div class='col-sm-12 col-md-12 col-lg-6 col-xl-6'>"
+			htmlAppendVehiculos +="<table class='table table-borderless customShadow' style='border: none; font-size: .8em; background-color: lightgray!important;'>"
+			htmlAppendVehiculos +="<tbody> <tr> <td><b>Tipo de Vehiculo:</b></td> <td><span>"+ listInputsVehicule[vehiculo][0].value +"</span></td> </tr>"
+			htmlAppendVehiculos +="<tr> <td><b>Marca:</b></td> <td><span > "+ listInputsVehicule[vehiculo][1].value +"</span></td> </tr>"
+			htmlAppendVehiculos +="<tr> <td><b>Modelo:</b></td> <td><span > "+ listInputsVehicule[vehiculo][2].value +"</span></td> </tr>"
+			htmlAppendVehiculos +="<tr> <td><b>Matricula:</b></td> <td><span > "+ listInputsVehicule[vehiculo][3].value +"</span></td> </tr>"
+            htmlAppendVehiculos +="<tr> <td><b>Estado:</b></td> <td><span > "+ listInputsVehicule[vehiculo][4].value +"</span></td> </tr>"
+			htmlAppendVehiculos +="<tr> <td> <b> Color: </b></td> <td><span > "+ listInputsVehicule[vehiculo][5].value +"</span></td> </tr> </tbody> </table> </div>";
+			let objVehiculo={ 
+				'tipo_vehiculo':listInputsVehicule[vehiculo][0].value,
+	            'marca_vehiculo':listInputsVehicule[vehiculo][1].value,
+	            'modelo_vehiculo':listInputsVehicule[vehiculo][2].value,
+	            'nombre_estado':listInputsVehicule[vehiculo][4].value,
+	            'placas_vehiculo':listInputsVehicule[vehiculo][3].value,
+	            'color_vehiculo':listInputsVehicule[vehiculo][5].value
+		    }
+            console.log(objVehiculo)
+			arrayVehiculos.push(objVehiculo)
+		}
+	}
+	let htmlAppendVehiculosTitulo=""
+	if(arrayVehiculos.length>0){
+		htmlAppendVehiculosTitulo+=`
+        <div class="d-flex flex-column justify-content-start ms-2" style="color:#171717">
+            <h5><b>Vehiculos:</b></h5>
+            <div class="d-flex flex-row flex-wrap"> 
+                `+htmlAppendVehiculos+`
+            </div>
+        </div>`
+	}
+    let motivoHtml=""
+	let html = []
+    let showIn=false;
+    let showIde=false;
+	if(showIneIden.length>0){
+        for(let i of showIneIden){
+            if(i=="foto"){
+                showIn= (urlImgUser=="" ? true : false)
+            }else if(i=="iden"){
+                showIde= (urlImgCard=="" ? true : false)
+            }
+        }
+    }
+    
+    if(showIneIden.length>0){
+        for(let a of showIneIden){
+            if(a=="foto"){
+                validarInputFile('inputFileUser')
+            }else if (a=="iden"){
+                validarInputFile('inputFileCard')
+            }
+        }
+    }
+    const formInputs = document.querySelectorAll('.inputsPase');
+    let hasInvalidInput = false;
+    formInputs.forEach(input => {
+      if (input.classList.contains('is-invalid')) {
+        hasInvalidInput = true;
+      }
+    });
+
+    if(hasInvalidInput){
+		successMsg("Validación", "Faltan datos por llenar", "warning")
+	}else{
+		Swal.fire({
+	        title:'Confirmación',
+	        html:`
+				<div  style="overflow-x:auto;">
+					<table class="table table-borderless" >
+						<thead>
+							<tr>
+								<th  style=" text-align:left !important;" > <h5> <b>Sobre la visita</b></h5> </th>
+								<th > </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><b>Tipo de pase:</b></td>
+								<td><b>Estatus:</b></td>
+							</tr>
+							<tr>
+								<td>Visita General</td>
+								<td><span > Proceso </span></td>
+							</tr>
+							<tr>
+								<td><b>Nombre completo:</b></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>`+nombre+`</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td><b>Email:</b></td>
+								<td><span ><b>Teléfono:</b></span></td>
+							</tr>
+							<tr>
+								<td> `+email+`</td>
+								<td><span > `+tel+`</span></td>
+							</tr>
+							<tr>
+								<td><b>Foto:</b></td>
+								<td><span><b>Identificación:</b></span></td>
+							</tr>
+							<tr>
+								<td><img src="`+urlImgUser+`" alt="No hay imagen disponible" style="object-fit:cover;" width="220" height="150"> </td>
+								<td><img src="`+urlImgCard+`" alt="No hay imagen disponible" style="object-fit:cover;" width="220" height="150"> </td>
+							</tr>
+						</tbody>
+					</table>
+					<hr>
+					`+motivoHtml+`
+					`+htmlAppendEquiposTitulo+`
+					`+htmlAppendVehiculosTitulo+`
+				</div>
+		
+	      `,
+	        showCancelButton: true,
+	        confirmButtonColor: "#28a745",
+	        cancelButtonColor: "#dc3545",
+	        confirmButtonText: "Obtener pase",
+	        heightAuto:false,
+	        reverseButtons:true,
+	        width:750,
+	    })
+	    .then((result) => {
+	        if (result.value) {
+	        	loadingService("Actualizando tu pase de entrada...")
+		        let access_pass={
+                    grupo_vehiculos:arrayVehiculos,
+                    grupo_equipos:arrayEquipos,
+                    status_pase:'Activo'
+                }
+                if(urlImgUser !== ""){
+                    access_pass.foto=[{file_name:"foto.png",file_url:urlImgUser}]
+                }
+                if(urlImgCard !== ""){
+                    access_pass.identificacion=[{file_name:"indentificacion.png",file_url:urlImgCard}]
+                }
+                console.log("PASE DE ACESO",access_pass)
+	        	fetch(url + urlScripts, {
+			        method: 'POST',
+			        body: JSON.stringify({
+			            script_name: "pase_de_acceso.py",
+		                option: 'update_active_pass',
+		                update_obj: access_pass,
+		                folio:idActivePass,
+                        qr_code:folioActivePass,
+                        account_id:account_id
+			        }),
+			        headers:{
+			            'Content-Type': 'application/json',
+			             // 'Authorization': 'Bearer '+userJwt
+			        },
+			    })
+			    .then(res => {
+                    Swal.close()
+
+                    Swal.fire({
+                        type:"success",
+                        text: "Pase de entrada actualizado correctamente 🎉",
+                    }).then(() => {
+                        window.location.reload();
+                    });
+
+                })
 	        }
 		});
 	}
