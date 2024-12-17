@@ -2139,7 +2139,6 @@ function verListaPasesTemporales(){
             let formatedList=[]
             console.log()
             for(let obj of listPases){
-                console.log("  FOTO",obj)
                 formatedList.push({nombre: obj.nombre, email: obj.email, telefono: obj.telefono, foto: obj.fotografia, identificacion: obj.identificacion})
             }
 
@@ -2151,7 +2150,6 @@ function verListaPasesTemporales(){
 
             tables["tableListaPases"].on("rowSelectionChanged", function(data, rows){
                 if (rows.length > 0) {
-                    console.log("DATAA",data[0])
                     let data_contact = {
                         nombre: data[0].nombre || "",
                         email: data[0].email || "",
@@ -2168,13 +2166,10 @@ function verListaPasesTemporales(){
 }
 
 function fillPassByContact(data){
-    console.log("DATAA", data)
     $("#nombreCompleto").val(data.nombre)
     $("#email").val(data.email)
     $("#telefono").val(data.telefono)
     input.value = data.telefono;
-
-// Establecer el país basado en la lada del número
     iti.setNumber(data.telefono);
     if(data.fotografia.length>0){
         $("#agregarFoto").prop('checked', true);

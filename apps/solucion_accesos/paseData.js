@@ -19,7 +19,6 @@ const columsListaPases= [
 
 //FUNCION para dibujar las tablas con opcion select de la pagina y guardar su instancia en el obj tables
 function drawTableSelect(id, columnsData, tableData, height, select){
-	console.log("QUE PASA" , id)
     let  table = new Tabulator("#" + id, {
         layout:"fitDataStretch",
         height:height,

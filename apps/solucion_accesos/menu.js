@@ -5,7 +5,6 @@ window.onload = async function(){
     validSession(user, userJwt);
     // setCookie("menus_soter", JSON.stringify(["turnos", "accesos", "bitacoras", "notas", "incidencias", "pases"]),7)
     $("#imageUserNavbar").attr("src", localStorage.getItem("imagenURL"));
-    console.log(getCookie('menus_soter'))
     if(getCookie('menus_soter')==""){
     	await getMenus()
     }else{

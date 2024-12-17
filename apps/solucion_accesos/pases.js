@@ -128,7 +128,8 @@ function getAllDataPases(tab_status='Todos'){
                                 grupo_areas_acceso :pase.grupo_areas_acceso ||[],
                                 limitado_a_dias :pase.limitado_a_dias||[],  
                                 qr_pase:pase.qr_pase||[],
-                                archivo_invitacion:pase.archivo_invitacion ||[]
+                                archivo_invitacion:pase.archivo_invitacion ||[],
+                                link:pase.link ||"",
                             })
                         }
                     }else{
@@ -538,7 +539,9 @@ function cerrarModalPase(id){
 
 function copiarlinkPaseE(){
     let data = dataTableListTodos.filter(x => x._id == selectedGlobalPase).pop();
-    console.log("LINKK",data)
+    navigator.clipboard.writeText(data.link);
+    successMsg("Confirmación", "Link copiado, compartelo con el visitante.", "success")
+    $("#verPaseModal").modal('hide')
 }
 
 async function enviarCorreoPaseE(qr="") {
