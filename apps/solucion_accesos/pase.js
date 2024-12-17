@@ -226,6 +226,7 @@ function getCatalogsIngresoPase(){
                     }else{
                         $("#paseEntradaCompletado").hide()
                         $("#paseEntradaCompletadoFotos").hide()
+                        $("#containerUpdateButton").hide()
                     }
 
                     $("#nombreText").text(nombre)
