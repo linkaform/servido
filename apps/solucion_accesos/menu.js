@@ -19,8 +19,7 @@ window.onload = async function(){
 async function getMenus(){
 	let menus= await getMenuFetch()
 	setCookie("menus_soter", JSON.stringify(menus), 7);
-	showCustomMenu(menus, 'customMenu')
-    
+	showCustomMenu(menus, 'customMenu') 
 }
 
 
@@ -122,7 +121,6 @@ function showCustomMenu(menus, idHtmlMenu){
              //   </div>
              // </div>`
 	}
-    console.log("menus",menus)
     if(!menus.length>0){
         errorAlert("No se encontraron los menus, revisa la configuracion")
     }

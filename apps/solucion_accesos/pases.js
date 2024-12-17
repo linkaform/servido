@@ -535,6 +535,12 @@ function cerrarModalPase(id){
     $("#"+id).modal("hide")
 }
 
+
+function copiarlinkPaseE(){
+    let data = dataTableListTodos.filter(x => x._id == selectedGlobalPase).pop();
+    console.log("LINKK",data)
+}
+
 async function enviarCorreoPaseE(qr="") {
     if(qr){
         selectedGlobalPase=qr

@@ -2139,7 +2139,8 @@ function verListaPasesTemporales(){
             let formatedList=[]
             console.log()
             for(let obj of listPases){
-                formatedList.push({nombre: obj.nombre, folio: obj.folio, qr_code: obj.qr_code, ubicacion: obj.ubicacion, foto: obj.foto})
+                console.log("  FOTO",obj)
+                formatedList.push({nombre: obj.nombre, email: obj.email, telefono: obj.telefono, foto: obj.fotografia, identificacion: obj.identificacion})
             }
 
             if(user!="" && userJwt!=""){
@@ -2150,12 +2151,15 @@ function verListaPasesTemporales(){
 
             tables["tableListaPases"].on("rowSelectionChanged", function(data, rows){
                 if (rows.length > 0) {
-                    $("#inputCodeUser").val(data[0].qr_code);
-                    if(data[0].qr_code!==""){
-                        //setSpinner(true, 'divSpinner');
-                        $("#divSpinner").show();
-                        buscarPaseEntrada();
+                    console.log("DATAA",data[0])
+                    let data_contact = {
+                        nombre: data[0].nombre || "",
+                        email: data[0].email || "",
+                        telefono: data[0].telefono || "",
+                        fotografia: data[0].foto || [],
+                        identificacion:data[0].identificacion|| []
                     }
+                    fillPassByContact(data_contact)
                     $("#listModal").modal('hide');
                 }
             });
@@ -2163,39 +2167,25 @@ function verListaPasesTemporales(){
     });
 }
 
-const columsListaPases= [
-    { title:"Nombre", field:'nombre',hozAlign:"left",headerFilter:'input',
-          formatter: (cell, formatterParams) => {
-               let data = cell.getData();
-               if(!data.hasOwnProperty('foto') || data.foto==undefined){
-                    data.foto=[{file_name: "notfound", file_url: "https://www.smarttools.com.mx/wp-content/uploads/2019/05/imagen-no-disponible.png"}]
-               }
-               let foto= data.foto.length>0 ? data.foto[0].file_url : "https://www.smarttools.com.mx/wp-content/uploads/2019/05/imagen-no-disponible.png"
-               let id = cell.getData().id ? cell.getData().id : 0;
-               let divActions = '<div id="inf'+data.folio +'"><div class="d-flex flex-row" id="listOfGuards">';
-               divActions+= '<div col-sm-12 col-md-12 col-lg-6 col-xl-6> <img id="imgGuardiaApoyo" height="60" width="60" src="'
-               + foto + '"> </div > <div col-sm-12 col-md-12 col-lg-6 col-xl-6 class="flex-column ms-3"> <div> <b>'
-               + data.nombre +'</b> </div></div>';
-               divActions += '</div> </div>';
-               return divActions;
-          },
-     }
-];
+function fillPassByContact(data){
+    console.log("DATAA", data)
+    $("#nombreCompleto").val(data.nombre)
+    $("#email").val(data.email)
+    $("#telefono").val(data.telefono)
+    input.value = data.telefono;
 
-//FUNCION para dibujar las tablas con opcion select de la pagina y guardar su instancia en el obj tables
-function drawTableSelect(id, columnsData, tableData, height, select){
-    let  table = new Tabulator("#" + id, {
-        layout:"fitDataStretch",
-        height:height,
-        data:tableData,
-        textDirection:"ltr",
-        columns:columnsData,
-        pagination:true, 
-        selectableRows:select,
-        paginationSize:40,
-        placeholder: "No hay registros disponibles", 
-    });
-    tables[id]=table;
+// Establecer el país basado en la lada del número
+    iti.setNumber(data.telefono);
+    if(data.fotografia.length>0){
+        $("#agregarFoto").prop('checked', true);
+    }else{
+        $("#agregarFoto").prop('checked', false);
+    }
+    if(data.identificacion.length>0){
+        $("#agregarIdentificacion").prop('checked', true);
+    }else{
+        $("#agregarIdentificacion").prop('checked', false);
+    }
 }
 
 
