@@ -83,6 +83,7 @@ window.onload = function(){
 		$("#paseEntradaCompletadoFotos").hide()
         $("#containerUpdateButton").hide()
         $("#containerCancelButton").hide()
+
 		onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')
 		iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')
         iniciarMin("minNuevoPase")
