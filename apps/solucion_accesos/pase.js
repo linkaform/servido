@@ -82,6 +82,7 @@ window.onload = function(){
         $("#paseEntradaCompletado").hide()
 		$("#paseEntradaCompletadoFotos").hide()
         $("#containerUpdateButton").hide()
+        $("#containerCancelButton").hide()
 		onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')
 		iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')
         iniciarMin("minNuevoPase")
@@ -99,6 +100,27 @@ $(document).ready(function () {
     $('#actualizarBtn').on('click', function () {
       $('#paseEntradaCompletadoFotos').toggle();
       $('#paseEntradaInf6').toggle();
+
+      $(this).toggleClass('btn-danger');
+
+      if ($(this).text() === 'Actualizar mi información') {
+          $(this).text('Cancelar');
+      } else {
+          $(this).text('Actualizar mi información');
+      }
+    });
+
+    $('#cancelButton').on('click', function () {
+        $('#paseEntradaCompletadoFotos').toggle();
+        $('#paseEntradaInf6').toggle();
+
+        $('#actualizarBtn').toggleClass('btn-danger');
+
+        if ($('#actualizarBtn').text() === 'Actualizar mi información') {
+            $('#actualizarBtn').text('Cancelar');
+        } else {
+            $('#actualizarBtn').text('Actualizar mi información');
+        }
     });
 });
 
@@ -227,6 +249,7 @@ function getCatalogsIngresoPase(){
                         $("#paseEntradaCompletado").hide()
                         $("#paseEntradaCompletadoFotos").hide()
                         $("#containerUpdateButton").hide()
+                        $("#containerCancelButton").hide()
                     }
 
                     $("#nombreText").text(nombre)
@@ -1480,7 +1503,40 @@ function actualizarPaseActivo() {
 	}
 }
 
+async function descargarPdfPaseActivo() {
+    loadingService('Descargando pdf...')
+    let pdf = await get_pdf(folioActivePass)
+    await descargarPdfPase(pdf.download_url)
+}
 
+async function get_pdf(qr_code){
+    let pdf=""
+    // loadingService()
+    await fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name:'pase_de_acceso.py',
+                option:'get_pdf',
+                qr_code:qr_code
+            }),
+            headers:
+            {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if(res.success){
+                Swal.close()
+                pdf=res.response.data.data
+            }else{
+                Swal.close()
+                errorAlert(res)
+            }
+        })
+    return pdf
+}
 
 function crearConfirmacion() {
     let enviarPreSmsChecked = document.getElementById('enviar_sms_pre_registro').checked;
@@ -2225,8 +2281,12 @@ function limpiarTomarFoto(id){
 
     if(id == "User" && status_pase === "activo"){
         urlImgUser = srcurlImgUser
+        $("#fotografiaActual img").show();
+        $("#fotografiaActual p").css("visibility", "visible");
     }else if(id == "Card" && status_pase === "activo"){
         urlImgCard = srcurlImgCard
+        $("#identificacionActual img").show();
+        $("#identificacionActual p").css("visibility", "visible");
     }
 
     if(id=='User'){
@@ -2532,6 +2592,13 @@ async function guardarArchivos(id, isImage){
         
     }else{
         let text= isImage? 'Las imagenes fueron guardadas correctamente.': 'Los archivos fueron guardados correctamente.';
+        if(id == 'inputFileUser'){
+            $("#fotografiaActual img").hide();
+            $("#fotografiaActual p").css("visibility", "hidden");
+        }else if (id == 'inputFileCard'){
+            $("#identificacionActual img").hide();
+            $("#identificacionActual p").css("visibility", "hidden");
+        }
         Swal.fire({
             title: "Acción Completada",
             text: text,
