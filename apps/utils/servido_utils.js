@@ -1001,6 +1001,13 @@ function getScreen(type, faceMode='user', isMobile=false){
                 $("#buttonSave"+type).show();
                 document.getElementById('buttonSave'+type).addEventListener('click', function() {
                     setTranslateImage(context, video, canvas, type)
+                    if(type == 'User'){
+                        $("#fotografiaActual img").hide();
+                        $("#fotografiaActual p").css("visibility", "hidden");
+                    }else if (type == 'Card'){
+                        $("#identificacionActual img").hide();
+                        $("#identificacionActual p").css("visibility", "hidden");
+                    }
                 });
                 flagVideoUser=false
             })
