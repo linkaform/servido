@@ -111,9 +111,7 @@ body {
   background-color: #007bff;
   color: #fff;
 }
-.task-pointer{
-  cursor: pointer;
-}
+
 
 .task-text {
   font-size: 1rem;
@@ -165,7 +163,9 @@ body {
   color: gray;
 }
 
-    
+
+
+        
 @media (max-width: 1024px) {
   .container-custom {
     width: 100vw;

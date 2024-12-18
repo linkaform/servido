@@ -13,7 +13,7 @@ window.onload = function(){
 		}
 		//--Asign Events
         document.getElementById("buttonSend").addEventListener("click", () => {
-            setRedirection('summary_check');
+            setFinishRondin();
         });
 	}else{
         setRedirection('login');
@@ -85,10 +85,10 @@ function drawConfigLocation(dataConfig) {
         let countInprogress = 0;
         locations.forEach(item => {
             const li = document.createElement('li');
-            if(item.status != 'completed'){
-                li.className = 'task-item task-pointer';
-            }else{
+            if(item.status == 'completed'){
                 li.className = 'task-item completed';
+            }else{
+                li.className = 'task-item';
             }
             const iconDiv = document.createElement('div');
             iconDiv.className = 'task-icon';
@@ -101,14 +101,11 @@ function drawConfigLocation(dataConfig) {
             li.appendChild(textDiv);
             if(item.status != 'completed'){
                 countInprogress += 1;
-                li.addEventListener('click', () => set_redirection_rondin(item.title));
             }else{
                 countFinish += 1;
             }
             container.appendChild(li);
         });
-            
-            console.log('countInprogress',countInprogress);
         //----Assing Count
         componentCount.textContent = `${countFinish}`;
         componentTotal.textContent = `/${ countFinish + countInprogress}`;
@@ -116,12 +113,13 @@ function drawConfigLocation(dataConfig) {
         //----Assing Count
         const progressPercentage = (countFinish / (countFinish + countInprogress)) * 100;
         progressFill.style.width = `${progressPercentage}%`;
-
+        //----Validation Status
+        validationAllStatus(locations);
     } else {
         let locations = dataConfig.area && dataConfig.area.length > 0 ? dataConfig.area : [];
         locations.forEach(task => {
             const li = document.createElement('li');
-            li.className = 'task-item task-pointer';
+            li.className = 'task-item';
 
             const iconDiv = document.createElement('div');
             iconDiv.className = 'task-icon';
@@ -133,7 +131,6 @@ function drawConfigLocation(dataConfig) {
 
             li.appendChild(iconDiv);
             li.appendChild(textDiv);
-            li.addEventListener('click', () => set_redirection_rondin(task));
             container.appendChild(li);
         });        
         if(dataConfig.area && dataConfig.area.length){
@@ -148,13 +145,55 @@ function drawConfigLocation(dataConfig) {
     }
 }
 
-function set_redirection_rondin(location) {
-    //----Url
-    const protocolo = window.location.protocol;    
-    const hostname = window.location.hostname;      
-    const puerto = window.location.port;            
-    //---URL REDIRECTION LOGIN
-    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/check_rondin.html?location=${location}`;
-    window.location.href = urlRedirection;
+
+
+function validationAllStatus(dicConfig) {
+    const numChecks = dicConfig.length > 0 ? dicConfig.length : 0;
+    let numCompleted = 0;
+    dicConfig.forEach(item => {
+        if(item.status == 'completed'){
+            numCompleted += 1;
+        }
+    });
+    if(numChecks == numCompleted){
+        setFinishRondin();
+    }
 }
 
+function setFinishRondin(){
+    //---COmponents Alert
+    let buttonFinish = document.getElementById('buttonSend');
+    let modal = new bootstrap.Modal(document.getElementById('alertaModal'));
+    modal.show();
+    buttonFinish.disabled = false; 
+    //----Update Status
+    setRequestStatus();
+        
+    //----Redirection
+    //setRedirection('summary_check');
+}
+
+function setRequestStatus() {
+    let recordConfig = localStorage.getItem('recordBitacora');
+    recordConfig = JSON.parse(recordConfig);
+    const JWT = getCookie("userJwt");
+    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
+    fetch(urlLinkaform, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: 126428,
+            folioUpdate:recordConfig.folio,
+            option: 'update_record_bitacora',
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Access-Control-Request-Headers':'*',
+            'Authorization': 'Bearer '+JWT
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        const data = res.response && res.response.data ? res.response.data : {};
+        console.log('Data',data)
+    })
+}

@@ -59,10 +59,10 @@ function checkDrawSummary() {
             const textDiv = document.createElement('div');
             textDiv.className = 'task-text ';
             textDiv.textContent = item.title; 
-
             li.appendChild(iconDiv);
             li.appendChild(textDiv);
             li.addEventListener('click', () => showInformation(item));
+            
             if(item.status != 'completed'){
                 countInprogress += 1;
             }else{

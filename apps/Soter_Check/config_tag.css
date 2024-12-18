@@ -1,0 +1,107 @@
+body {
+  background-color: #f8f9fa;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 600px;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  margin-top: 2rem;
+}
+
+.header-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.action-buttons .btn {
+  border-radius: 30px;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+  
+#loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#loading .spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.image-container img {
+  width: 25vw;
+  height: auto;
+  border-radius: 10px;
+}
+      
+@media (max-width: 1024px) {
+  .container-custom {
+    width: 100vw;
+    height: 100%; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+  .image-container img {
+    width: 60vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .container-custom {
+    width: 100vw;
+    height: 100%; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+  .image-container img {
+    width: 55vw;
+  }
+}
+
+@media (max-width: 425px) {
+  .container-custom {
+    width: 100vw;
+    height: 100%; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+  .image-container img {
+    width: 55vw;
+  }
+}
+
