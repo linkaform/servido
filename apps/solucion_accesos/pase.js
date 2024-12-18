@@ -29,7 +29,7 @@ let validFechaVisita = false
 let validFechaHasta = false
 let tables={}
 
-window.onload = function(){
+window.onload = async function(){
 	setValueUserLocation('pase');
     
     
@@ -49,6 +49,8 @@ window.onload = function(){
     }
     showIneIden= docs.split("-")
 	if(id){
+        customNavbar(getValueUserLocation(), userTurnCerrado, false)
+		await getCatalogsIngresoPase()
 		$("#paseEntradaInf1").hide()
 		$("#paseEntradaInf2").hide()
 		$("#paseEntradaInf3").hide()
@@ -57,8 +59,6 @@ window.onload = function(){
 		$("#paseEntradaInf6").show()
         $("#foto").hide()
         $("#iden").hide()
-		getCatalogsIngresoPase()
-        customNavbar(getValueUserLocation(), userTurnCerrado)
         
         if(showIneIden.length>0){
             for(let a of showIneIden){
@@ -153,9 +153,9 @@ window.addEventListener('storage', function(event) {
 });
 
 //FUNCION para obtener los catalogos
-function getCatalogsIngresoPase(){
-	loadingService()
-    fetch(url + urlScripts, {
+async function getCatalogsIngresoPase(){
+	loadingService("Preparando tu pase de entrada...")
+    await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name: "pase_de_acceso.py",
@@ -262,70 +262,7 @@ function getCatalogsIngresoPase(){
                 errorAlert(res)
             }
         })
-	/*fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_name: "access_pass.py",
-            option: "catalago_vehiculo",
-            account_id:account_id
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            // 'Authorization': 'Bearer '+userJwt
-        },
-        }).then(res => res.json())
-        .then(res => {
-            if(res.success){
-                let data= res.response.data
-                if(data.status_code ==400 || data.status_code==401){
-                    errorAlert(res)
-                }else{
-                    let selectVehiculos= document.getElementById("selectTipoVehiculo-123")
-                    selectVehiculos.innerHTML="";
-                    dataCatalogs.types_cars=data 
-                    for (let obj of data){
-                        selectVehiculos.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
-                    }
-                    selectVehiculos.value=""
-                } 
-            }else{
-                errorAlert(res)
-            }
-        })*/
-  /*  fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_name: "get_vehiculos.py",
-            option: "catalago_estados",
-            account_id:account_id
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            // 'Authorization': 'Bearer '+userJwt
-        },
-        }).then(res => res.json())
-        .then(res => {
-            if(res.success){
-                Swal.close()
-                let data= res.response.data
-                if(data.status_code ==400 || data.status_code==401){
-                    errorAlert(res)
-                }else{
-                    let selectVehiculos= document.getElementById("inputEstadoVehiculo-123")
-                    selectVehiculos.innerHTML="";
-                    catEstados=data 
-                    for (let obj of data){
-                        selectVehiculos.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
-                    }
-                    selectVehiculos.value=""
-                } 
-            }else{
-                errorAlert(res)
-            }
-        })*/
-  
-    $("#selectTipoVehiculo-123").prop( "disabled", false );
-    $("#spinnerTipoVehiculo").css("display", "none");
+
 }
 
 function rellenarVehiculos(vehiculosregistrados) {
@@ -419,7 +356,7 @@ async function onChangeCatalogPase(type, id){
         const options = {
             method: 'POST', 
             body: JSON.stringify({
-                script_name:'get_vehiculos.py',
+                script_name:'pase_de_acceso.py',
                 option:"catalago_vehiculo",
                 tipo:inputMarca.value,
                 account_id:account_id
@@ -447,7 +384,7 @@ async function onChangeCatalogPase(type, id){
         const options = {
             method: 'POST', 
             body: JSON.stringify({
-                script_name:'get_vehiculos.py',
+                script_name:'pase_de_acceso.py',
                 option:'catalago_vehiculo',
                 tipo:inputTipo.value,
                 marca: inputMarca.value,
@@ -727,7 +664,7 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
         const options = {
             method: 'POST', 
             body: JSON.stringify({
-                script_name:'get_vehiculos.py',
+                script_name:'pase_de_acceso.py',
                 option: "catalago_vehiculo",
                 tipo: inputMarca.value
             }),
@@ -756,7 +693,7 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
         const options = {
             method: 'POST', 
             body: JSON.stringify({
-                script_name:'get_vehiculos.py',
+                script_name:'pase_de_acceso.py',
                 option: "catalago_vehiculo",
                 tipo:inputTipo.value,
                 marca: inputMarca.value
