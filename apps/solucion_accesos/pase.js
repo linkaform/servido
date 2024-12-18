@@ -55,8 +55,7 @@ window.onload = async function(){
 		$("#paseEntradaInf2").hide()
 		$("#paseEntradaInf3").hide()
 		$("#paseEntradaInf4").hide()
-		$("#paseEntradaInf5").show()
-		$("#paseEntradaInf6").show()
+		
         $("#foto").hide()
         $("#iden").hide()
         
@@ -99,6 +98,7 @@ window.onload = async function(){
 $(document).ready(function () {
     $('#actualizarBtn').on('click', function () {
       $('#paseEntradaCompletadoFotos').toggle();
+      $('#paseEntradaInf5').toggle();
       $('#paseEntradaInf6').toggle();
 
       $(this).toggleClass('btn-danger');
@@ -112,6 +112,7 @@ $(document).ready(function () {
 
     $('#cancelButton').on('click', function () {
         $('#paseEntradaCompletadoFotos').toggle();
+        $('#paseEntradaInf5').toggle();
         $('#paseEntradaInf6').toggle();
 
         $('#actualizarBtn').toggleClass('btn-danger');
@@ -238,6 +239,7 @@ async function getCatalogsIngresoPase(){
                         $("#pass-complete-fecha").text(horavisita)
                         $("#paseEntradaCompletado").show()
                         $("#paseEntradaCompletadoFotos").hide()
+                        console.log("QUE POASA")
                         $("#paseEntradaInf5").hide()
                         $("#paseEntradaInf6").hide()
                         $("#containerContinueButton").hide()
@@ -246,6 +248,8 @@ async function getCatalogsIngresoPase(){
                         rellenarVehiculos(vehiculosregistrados);
                         rellenarEquipos(equiposregistrados);
                     }else{
+                        $("#paseEntradaInf5").show()
+                        $("#paseEntradaInf6").show()
                         $("#paseEntradaCompletado").hide()
                         $("#paseEntradaCompletadoFotos").hide()
                         $("#containerUpdateButton").hide()
