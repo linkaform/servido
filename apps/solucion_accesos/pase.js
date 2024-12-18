@@ -69,6 +69,7 @@ window.onload = async function(){
             }
         }
         hideInMobile("User")
+        hideInMobile("Card")
 	}else{
         user = getCookie("userId_soter");
         userJwt=getCookie('userJwt_soter');
