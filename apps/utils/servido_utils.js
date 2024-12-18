@@ -967,23 +967,22 @@ function esLink(url) {
     return regex.test(url);
 }
 
-
-//FUNCION obtener la imagen del canvas
-function getScreen(type, faceMode='user', isMobile=false){
+function hideInMobile(type="User"){
     let mobile=""
-    if(isMobile){
-        mobile = getMobileOperatingSystem()
-        console.log(mobile)
-        $("#buttonTake"+type).show();
-    }
+    mobile = getMobileOperatingSystem()
+    console.log("Tipo de dispositivo = ",mobile)
     if(mobile!=="iOS"){
         $("#buttonTake"+type).show();
     }else{
         $("#buttonTake"+type).hide();
     }
+}
+
+//FUNCION obtener la imagen del canvas
+function getScreen(type, faceMode='user'){
+    
     if(!flagVideoUser){
         flagVideoUser = true;
-        console.log("hello",navigator.mediaDevices,navigator.mediaDevices.getUserMedia)
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: { facingMode: faceMode }})
             .then(function(stream) {
@@ -1110,7 +1109,6 @@ function limpiarInputsPorClase(clase) {
 
 function formatearTelefono(id) {
     const input = document.getElementById(id);
-    console.log("QUEEE PASAAA",id)
     let tel = input.value.replace(/(\d{4})(\d{4})(\d{2})/, '$1 $2 $3');
     input.value = tel
 }

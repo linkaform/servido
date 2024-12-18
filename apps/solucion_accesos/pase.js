@@ -68,6 +68,7 @@ window.onload = async function(){
                 }
             }
         }
+        hideInMobile("User")
 	}else{
         user = getCookie("userId_soter");
         userJwt=getCookie('userJwt_soter');
@@ -249,6 +250,7 @@ async function getCatalogsIngresoPase(){
                         rellenarVehiculos(vehiculosregistrados);
                         rellenarEquipos(equiposregistrados);
                     }else{
+                        $("#paseEntradaInfo").show()
                         $("#paseEntradaInf5").show()
                         $("#paseEntradaInf6").show()
                         $("#paseEntradaCompletado").hide()
@@ -2244,6 +2246,7 @@ function limpiarTomarFoto(id){
     }else{
         validarInputFile('inputFileCard')
     }
+    hideInMobile(id)
 }
 
 //FUNCION eliminar un set repetitivo de vehiculo
