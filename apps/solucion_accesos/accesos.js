@@ -1154,8 +1154,6 @@ function registrarIngreso(){
     getSelectedCheckbox('tableEquipos', 'radioGroupItems', selectedVehiculos)
     let selectedVe= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id)).map(({ check, id, ...rest }) => rest);
        
-
-
     //let dataItem = {'listItemsData':listItemsData,'listNewItems':listNewItems}
     //let dataVehicule = {'listVehiculesData':listVehiculesData,'listNewVehicules':listNewVehicules}
     let comPase=[]

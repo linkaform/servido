@@ -41,9 +41,9 @@
 	     		<div class="col-6 m-0 p-0">
 	            	<h4 >Pase de entrada</h4>
 	     		</div>
-	            <div class="col-6 d-flex justify-content-end">
+	            <div class="col-6 d-flex justify-content-start">
 	            	<button type="button" class="btn btn-primary btn-sm me-2" id="pasesTemporales" onclick="setModal('listaPasesTemporales')">
-					 <i class="fa-solid fa-list"></i> </button>
+					 <i class="fa-solid fa-list"></i> Mis contactos </button>
 	            </div>
 	     	</div>
 	     	<div> 
@@ -80,6 +80,8 @@
             	<script>
 				  	const input = document.querySelector("#telefono");
 				  	const iti = window.intlTelInput(input, {
+				  		formatAsYouType:true,
+				  		separateDialCode: true,
 				   	 	initialCountry: "auto", // Detecta el país automáticamente
 				    	geoIpLookup: function(callback) {
 					     fetch("https://ipinfo.io/json", { headers: { Accept: "application/json" } })
@@ -95,7 +97,7 @@
             <div class="d-flex flex-row flex-wrap mt-2">
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
                 	<label for="exampleInputEmail1">Ubicación</label>
-                	<select type="select" class="form-select fill paseEntradaNuevo" id="ubicacion" aria-describedby="emailHelp" placeholder="Ubicación">
+                	<select type="select" class="form-select fill paseEntradaNuevo" id="ubicacion" aria-describedby="emailHelp" placeholder="Ubicación" onchange="fillCatalogoArea('ubicacion')">
                 	</select>
             	</div>
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
@@ -300,10 +302,10 @@
 						            </div>
 			                    </div>
 			                    <div>
-			                        <button type="button" class="btn btn-success button-add-register" onclick="setAddArea('nuevo', 'area');return false;">
+			                        <button type="button" class="btn btn-success button-add-register" onclick="setAddArea('nuevo', 'area');return false;" id="buttonAddArea">
 			                            <i class="fa-solid fa-plus"></i>
 			                        </button>
-			                        <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArea('nuevo',123,'area');return false;">
+			                        <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArea('nuevo',123,'area');return false;" id="buttonDelCleanArea">
 			                            <i class="fa-solid fa-minus"></i>
 			                        </button>
 			                    </div>
@@ -371,7 +373,12 @@
 					</div>
 				</div>
 			</div>
-			<div class="row row-cols-1 row-cols-sm-1 no-select">
+			<div class="row row-cols-1 row-cols-sm-1 no-select gap-2 mb-3">
+				<div class="col">
+					<div class="qr-pass-container text-center px-5">
+						<button type="button" class="btn btn-warning" id="descargarPdf" onclick="descargarPdfPaseActivo()">Descargar pdf</button>
+					</div>
+				</div>
 				<div class="col">
 					<div class="qr-pass-container text-center px-5">
 						<button type="button" class="btn btn-info text-white fw-bolder" id="actualizarBtn">Actualizar mi información</button>
@@ -574,9 +581,15 @@
             </div>
              <div class="col-sm-10 col-md-12 col-lg-12 col-xl-12 my-5">
             	<div class="col-12 d-flex justify-content-center">
-                	<div class="col-6 flex-grow-1"> 
+                	<div class="col-6 flex-grow-1" id="containerContinueButton"> 
                 		<button type="button" class="btn btn-primary btn-block" id="continueButton" onclick="crearConfirmacionMini()">Continuar</button>
                 	</div>
+					<div class="col-6 flex-grow-1" id="containerUpdateButton"> 
+                		<button type="button" class="btn btn-primary btn-block" id="updateButton" onclick="actualizarPaseActivo()">Actualizar</button>
+					</div>
+					<div class="col-6 flex-grow-1" id="containerCancelButton"> 
+						<button type="button" class="btn btn-primary btn-block btn-danger" id="cancelButton">Cancelar</button>
+					</div>
             	</div>
             </div>
         </div>
@@ -613,9 +626,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
 <script type="text/javascript" src="./functions.js"></script>
-<script  type="text/javascript" src="./components/locationCard.js"></script>
-<script  type="text/javascript" src="./components/navbar.js"></script>
-<script  type="text/javascript" src="./pase.js"></script>
+<script type="text/javascript" src="./components/locationCard.js"></script>
+<script type="text/javascript" src="./components/navbar.js"></script>
+<script type="text/javascript" src="./paseData.js"></script>
+<script type="text/javascript" src="./pase.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>

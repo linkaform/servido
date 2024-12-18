@@ -13,6 +13,8 @@ let nombre=""
 let email=""
 let tel=""
 let id=""
+let idActivePass=""
+let folioActivePass=""
 let visitaA=""
 let ubicacion=""
 let direccion=""
@@ -79,13 +81,19 @@ window.onload = function(){
 		$("#paseEntradaInf6").hide()
         $("#paseEntradaCompletado").hide()
 		$("#paseEntradaCompletadoFotos").hide()
+        $("#containerUpdateButton").hide()
+        $("#containerCancelButton").hide()
+
 		onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')
 		iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')
         iniciarMin("minNuevoPase")
 		// iniciarSelectHora('horaNuevoRangoVisita','minNuevoRangoVisita', 'ampmNuevoRangoVisita')
 		// iniciarSelectHora('horaNuevoRangoHasta','minNuevoRangoHasta', 'ampmNuevoRangoHasta')
-		catalogoAreaByLocation(getCookie('userLocation'))
-		
+		catalogoPaseLocation()
+		let tipoArea= document.getElementById("tipoArea-")
+        tipoArea.innerHTML=""
+        $("#tipoArea-").append($('<option disabled></option>').val("").text("Seleccione una ubicación para ver los registros..."));
+        $("#tipoArea-").val("")
 	}
 }
 
@@ -93,6 +101,27 @@ $(document).ready(function () {
     $('#actualizarBtn').on('click', function () {
       $('#paseEntradaCompletadoFotos').toggle();
       $('#paseEntradaInf6').toggle();
+
+      $(this).toggleClass('btn-danger');
+
+      if ($(this).text() === 'Actualizar mi información') {
+          $(this).text('Cancelar');
+      } else {
+          $(this).text('Actualizar mi información');
+      }
+    });
+
+    $('#cancelButton').on('click', function () {
+        $('#paseEntradaCompletadoFotos').toggle();
+        $('#paseEntradaInf6').toggle();
+
+        $('#actualizarBtn').toggleClass('btn-danger');
+
+        if ($('#actualizarBtn').text() === 'Actualizar mi información') {
+            $('#actualizarBtn').text('Cancelar');
+        } else {
+            $('#actualizarBtn').text('Actualizar mi información');
+        }
     });
 });
 
@@ -175,11 +204,13 @@ function getCatalogsIngresoPase(){
                     ubicacion=data.pass_selected.ubicacion ? data.pass_selected.ubicacion : ""
                     direccion=""
                     status_pase=data.pass_selected.estatus
+                    idActivePass=data.pass_selected.folio
+                    folioActivePass=data.pass_selected._id
                     
                     if(status_pase === 'activo'){
                         qrimagen=data.pass_selected.qr_pase[0].file_url || ""
-                        srcurlImgUser = data.pass_selected.foto?.[0].file_url || ""
-                        srcurlImgCard = data.pass_selected.identificacion?.[0].file_url || ""
+                        srcurlImgUser = data.pass_selected.foto?.[0]?.file_url ?? ""
+                        srcurlImgCard = data.pass_selected.identificacion?.[0]?.file_url ?? ""
                         
                         let equiposregistrados = data.pass_selected.grupo_equipos || []
                         let vehiculosregistrados = data.pass_selected.grupo_vehiculos || []
@@ -210,12 +241,16 @@ function getCatalogsIngresoPase(){
                         $("#paseEntradaCompletadoFotos").hide()
                         $("#paseEntradaInf5").hide()
                         $("#paseEntradaInf6").hide()
+                        $("#containerContinueButton").hide()
+                        $("#containerUpdateButton").show()
 
                         rellenarVehiculos(vehiculosregistrados);
                         rellenarEquipos(equiposregistrados);
                     }else{
                         $("#paseEntradaCompletado").hide()
                         $("#paseEntradaCompletadoFotos").hide()
+                        $("#containerUpdateButton").hide()
+                        $("#containerCancelButton").hide()
                     }
 
                     $("#nombreText").text(nombre)
@@ -439,16 +474,14 @@ async function onChangeCatalogPase(type, id){
     }
 }
 
-async function catalogoAreaByLocation(location){
+async function catalogoPaseArea(location){
 	loadingService()
 	await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name: "pase_de_acceso.py",
-            option:"catalogos_pase",
-            location:location,
-            user_id: parseInt(getCookie("userId_soter")),
-            account_id:account_id
+            option:"catalogos_pase_area",
+            location:location
         }),
         headers:
         {
@@ -470,9 +503,67 @@ async function catalogoAreaByLocation(location){
         	if(arrayAreas.areas_by_location.length==0){
         		let tipoArea= document.getElementById("tipoArea-")
         		tipoArea.innerHTML=""
-        		$("#tipoArea-").append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
+        		$("#tipoArea-").append($('<option disabled></option>').val("").text("Seleccione una ubicación para ver los registros..."));
         		$("#tipoArea-").val("")
         	}
+            // if(arrayAreas.ubicaciones_user.length>1){
+            //     let tipoArea= document.getElementById("ubicacion")
+            //     tipoArea.innerHTML=""
+            //     for(let i of arrayAreas.ubicaciones_user){
+            //         $("#ubicacion").append($('<option></option>').val(i).text(i));
+            //         $("#ubicacion").val("")
+            //     }
+            // }else{
+            //     let ubicacion= document.getElementById("ubicacion")
+            //     ubicacion.innerHTML=""
+            //     for(let i of arrayAreas.ubicaciones_user){
+            //         $("#ubicacion").append($('<option ></option>').val(i).text(i));
+            //         $("#ubicacion").val(i)
+            //     }
+            // }
+            // if(arrayAreas.ubicaciones_user.length==0){
+            //     let ubicacion= document.getElementById("ubicacion")
+            //     ubicacion.innerHTML=""
+            //     $("#ubicacion").append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
+            //     $("#ubicacion").val("")
+            // }
+        }else{
+        	errorAlert(res)
+        }
+    })
+}
+
+async function catalogoPaseLocation(){
+    loadingService()
+    await fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "pase_de_acceso.py",
+            option:"catalogos_pase_location",
+        }),
+        headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close()
+            arrayAreas= res.response.data
+            // let tipoArea= document.getElementById("tipoArea-")
+            //     tipoArea.innerHTML=""
+            // for(let i of arrayAreas.areas_by_location){
+            //     $("#tipoArea-").append($('<option></option>').val(i).text(i));
+            //     $("#tipoArea-").val("")
+            // }
+            // if(arrayAreas.areas_by_location.length==0){
+            //     let tipoArea= document.getElementById("tipoArea-")
+            //     tipoArea.innerHTML=""
+            //     $("#tipoArea-").append($('<option disabled></option>').val("").text("No hay registros para mostrar..."));
+            //     $("#tipoArea-").val("")
+            // }
             if(arrayAreas.ubicaciones_user.length>1){
                 let tipoArea= document.getElementById("ubicacion")
                 tipoArea.innerHTML=""
@@ -495,10 +586,29 @@ async function catalogoAreaByLocation(location){
                 $("#ubicacion").val("")
             }
         }else{
-        	errorAlert(res)
+            errorAlert(res)
         }
     })
 }
+
+async function fillCatalogoArea(id) {
+    let location = $("#"+id).val()
+        console.log("entrando", location, $("#checkOpcionesAvanzadas").is(":checked"))
+    if(location && $("#checkOpcionesAvanzadas").is(":checked")){
+        let divs2 = document.querySelectorAll('div[id*="id-area-div-"]');
+        if(divs2.length>0){
+            divs2.forEach(function(div) {
+                if (div.id !== 'id-area-div-123') {
+                    div.remove();
+                }
+            });
+        }
+        console.log("entrando")
+        await catalogoPaseArea(location)
+    }
+}
+
+
 
 //FUNCION para agregar foto en el modal de agregar nota
 function setAddCom(editAdd ="nuevo", classNam){
@@ -577,12 +687,19 @@ async function setAddArea(editAdd ="nuevo", classNam){
 			$(`#tipoArea-${randomID}`).val("")
 		}
     }else{
-        await catalogoAreaByLocation(getCookie('userLocation'))
-        let tipoArea= document.getElementById(`tipoArea-${randomID}`)
-        tipoArea.innerHTML=""
-    	for(let i of arrayAreas.areas_by_location){
-            $(`#tipoArea-${randomID}`).append($('<option></option>').val(i).text(i));
-            $(`#tipoArea-${randomID}`).val("")
+        if($('ubicacion').val()!==""){
+            await catalogoPaseArea($('ubicacion').val())
+            let tipoArea= document.getElementById(`tipoArea-${randomID}`)
+            tipoArea.innerHTML=""
+        	for(let i of arrayAreas.areas_by_location){
+                $(`#tipoArea-${randomID}`).append($('<option></option>').val(i).text(i));
+                $(`#tipoArea-${randomID}`).val("")
+            }
+        }else{
+            let tipoArea= document.getElementById("tipoArea-")
+            tipoArea.innerHTML=""
+            $("#tipoArea-").append($('<option disabled></option>').val("").text("Seleccione una ubicación para ver los registros..."));
+            $("#tipoArea-").val("")
         }
     }
 }
@@ -665,14 +782,26 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
     }
 }*/
 
-function onChangeOpcionesAvanzadas(type){
+async function onChangeOpcionesAvanzadas(type){
 	if(type=="checkOpcionesAvanzadas"){
 		if($("#checkOpcionesAvanzadas").is(':checked')){
 			$(".opcionesAvanzadasDiv").show();
 			onChangeOpcionesAvanzadas('radioRangoFechas')
+            if($("#ubicacion").val()){
+                await catalogoPaseArea($("#ubicacion").val())
+            }else{
+                let tipoArea= document.getElementById("tipoArea-")
+                tipoArea.innerHTML=""
+                $("#tipoArea-").append($('<option disabled></option>').val("").text("Seleccione una ubicación para ver los registros..."));
+                $("#tipoArea-").val("")
+            }
 		}else{
 			$(".opcionesAvanzadasDiv").hide();
 			$("#radioFechaFija").prop('checked', true);
+            let tipoArea= document.getElementById("tipoArea-")
+            tipoArea.innerHTML=""
+            $("#tipoArea-").append($('<option disabled></option>').val("").text("Seleccione una ubicación para ver los registros..."));
+            $("#tipoArea-").val("")
 		}
 	}else if (type == "radioRangoFechas" || type=="radioFechaFija"){
 		let selected = $('input[name="opcionesAvanzadas"]:checked');
@@ -1141,7 +1270,274 @@ function crearConfirmacionMini() {
 	}
 }
 
+function actualizarPaseActivo() {
+	let data= getInputsValueByClass('paseEntradaUser')
+	let listInputsVehicule={};
+	let listInputsEquipo={};
+	let arrayEquipos=[]
+	let arrayVehiculos=[]
+	let divVehiculos = document.getElementById("div-vehiculo");
+    let inputsV = divVehiculos.querySelectorAll('.group-vehiculo');
+    inputsV.forEach(function(input) {
+    var idV = input.id.split('-')[1];
+        if (!listInputsVehicule[idV]) {
+            listInputsVehicule[idV] = [];
+        }
+        listInputsVehicule[idV].push(input);
+    });
+    let divEquipo = document.getElementById("div-equipo");
+    let inputsE = divEquipo.querySelectorAll('.group-equipo');
+    inputsE.forEach(function(input) {
+    let idE = input.id.split('-')[1];
+        if (!listInputsEquipo[idE]) {
+            listInputsEquipo[idE] = [];
+        }
+        listInputsEquipo[idE].push(input);
+    });
+    let htmlAppendEquipos=""
+  
+    for (let equipo in listInputsEquipo) {
+		if(listInputsEquipo[equipo][1].value!==""){
+			htmlAppendEquipos +="<div class='col-sm-12 col-md-12 col-lg-6 col-xl-6'>"
+			htmlAppendEquipos +="<table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>"
+			htmlAppendEquipos +="<tbody> <tr> <td><b>Tipo de Equipo:</b></td> <td> <span > "+ listInputsEquipo[equipo][0].value +"</span></td> </tr>"
+			htmlAppendEquipos +="<tr> <td><b>Nombre:</b></td> <td> <span > "+ listInputsEquipo[equipo][1].value +"</span></td> </tr>"	
+			htmlAppendEquipos +="<tr> <td><b>Marca:</b></td> <td> <span > "+ listInputsEquipo[equipo][2].value +"</span></td> </tr>"
+			htmlAppendEquipos +="<tr> <td><b>Modelo:</b></td> <td> <span > "+ listInputsEquipo[equipo][4].value +"</span></td> </tr>"
+			htmlAppendEquipos +="<tr> <td><b>No. Serie:</b></td> <td> <span > "+ listInputsEquipo[equipo][3].value +"</span></td> </tr>"
+		    htmlAppendEquipos +="<tr> <td><b>Color:</b></td> <td> <span > "+ listInputsEquipo[equipo][5].value +"</span></td> </tr>"
+			htmlAppendEquipos +="</tbody> </table>	</div>";
+		    let objEquipo={
+	            'nombre_articulo':listInputsEquipo[equipo][1].value,
+                'modelo_articulo':listInputsEquipo[equipo][4].value,
+	            'marca_articulo':listInputsEquipo[equipo][2].value,
+	            'color_articulo':listInputsEquipo[equipo][5].value,
+	            'tipo_equipo':listInputsEquipo[equipo][0].value,
+	            'numero_serie':listInputsEquipo[equipo][3].value ,
+	        }
+            console.log(objEquipo)
+		    arrayEquipos.push(objEquipo)
+		}	
+	}
+	 let htmlAppendEquiposTitulo=""
+    if(arrayEquipos.length>0){
+		htmlAppendEquiposTitulo+=`
+        <div class="d-flex flex-column justify-content-start ms-2" style="color:#171717">
+            <h5><b>Equipos:</b></h5>
+            <div class="d-flex flex-row flex-wrap"> 
+                `+htmlAppendEquipos+`
+            </div>
+        </div>`
+	}
+	let htmlAppendVehiculos=""
+	for (let vehiculo in listInputsVehicule) {
+        console.log("LISTA DE VEHICULOS",listInputsVehicule[vehiculo])
+		if(listInputsVehicule[vehiculo][0].value !==""){
+			htmlAppendVehiculos +="<div class='col-sm-12 col-md-12 col-lg-6 col-xl-6'>"
+			htmlAppendVehiculos +="<table class='table table-borderless customShadow' style='border: none; font-size: .8em; background-color: lightgray!important;'>"
+			htmlAppendVehiculos +="<tbody> <tr> <td><b>Tipo de Vehiculo:</b></td> <td><span>"+ listInputsVehicule[vehiculo][0].value +"</span></td> </tr>"
+			htmlAppendVehiculos +="<tr> <td><b>Marca:</b></td> <td><span > "+ listInputsVehicule[vehiculo][1].value +"</span></td> </tr>"
+			htmlAppendVehiculos +="<tr> <td><b>Modelo:</b></td> <td><span > "+ listInputsVehicule[vehiculo][2].value +"</span></td> </tr>"
+			htmlAppendVehiculos +="<tr> <td><b>Matricula:</b></td> <td><span > "+ listInputsVehicule[vehiculo][3].value +"</span></td> </tr>"
+            htmlAppendVehiculos +="<tr> <td><b>Estado:</b></td> <td><span > "+ listInputsVehicule[vehiculo][4].value +"</span></td> </tr>"
+			htmlAppendVehiculos +="<tr> <td> <b> Color: </b></td> <td><span > "+ listInputsVehicule[vehiculo][5].value +"</span></td> </tr> </tbody> </table> </div>";
+			let objVehiculo={ 
+				'tipo_vehiculo':listInputsVehicule[vehiculo][0].value,
+	            'marca_vehiculo':listInputsVehicule[vehiculo][1].value,
+	            'modelo_vehiculo':listInputsVehicule[vehiculo][2].value,
+	            'nombre_estado':listInputsVehicule[vehiculo][4].value,
+	            'placas_vehiculo':listInputsVehicule[vehiculo][3].value,
+	            'color_vehiculo':listInputsVehicule[vehiculo][5].value
+		    }
+            console.log(objVehiculo)
+			arrayVehiculos.push(objVehiculo)
+		}
+	}
+	let htmlAppendVehiculosTitulo=""
+	if(arrayVehiculos.length>0){
+		htmlAppendVehiculosTitulo+=`
+        <div class="d-flex flex-column justify-content-start ms-2" style="color:#171717">
+            <h5><b>Vehiculos:</b></h5>
+            <div class="d-flex flex-row flex-wrap"> 
+                `+htmlAppendVehiculos+`
+            </div>
+        </div>`
+	}
+    let motivoHtml=""
+	let html = []
+    let showIn=false;
+    let showIde=false;
+	if(showIneIden.length>0){
+        for(let i of showIneIden){
+            if(i=="foto"){
+                showIn= (urlImgUser=="" ? true : false)
+            }else if(i=="iden"){
+                showIde= (urlImgCard=="" ? true : false)
+            }
+        }
+    }
+    
+    if(showIneIden.length>0){
+        for(let a of showIneIden){
+            if(a=="foto"){
+                validarInputFile('inputFileUser')
+            }else if (a=="iden"){
+                validarInputFile('inputFileCard')
+            }
+        }
+    }
+    const formInputs = document.querySelectorAll('.inputsPase');
+    let hasInvalidInput = false;
+    formInputs.forEach(input => {
+      if (input.classList.contains('is-invalid')) {
+        hasInvalidInput = true;
+      }
+    });
 
+    if(hasInvalidInput){
+		successMsg("Validación", "Faltan datos por llenar", "warning")
+	}else{
+		Swal.fire({
+	        title:'Confirmación',
+	        html:`
+				<div  style="overflow-x:auto;">
+					<table class="table table-borderless" >
+						<thead>
+							<tr>
+								<th  style=" text-align:left !important;" > <h5> <b>Sobre la visita</b></h5> </th>
+								<th > </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><b>Tipo de pase:</b></td>
+								<td><b>Estatus:</b></td>
+							</tr>
+							<tr>
+								<td>Visita General</td>
+								<td><span > Proceso </span></td>
+							</tr>
+							<tr>
+								<td><b>Nombre completo:</b></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>`+nombre+`</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td><b>Email:</b></td>
+								<td><span ><b>Teléfono:</b></span></td>
+							</tr>
+							<tr>
+								<td> `+email+`</td>
+								<td><span > `+tel+`</span></td>
+							</tr>
+							<tr>
+								<td><b>Foto:</b></td>
+								<td><span><b>Identificación:</b></span></td>
+							</tr>
+							<tr>
+								<td><img src="`+urlImgUser+`" alt="No hay imagen disponible" style="object-fit:cover;" width="220" height="150"> </td>
+								<td><img src="`+urlImgCard+`" alt="No hay imagen disponible" style="object-fit:cover;" width="220" height="150"> </td>
+							</tr>
+						</tbody>
+					</table>
+					<hr>
+					`+motivoHtml+`
+					`+htmlAppendEquiposTitulo+`
+					`+htmlAppendVehiculosTitulo+`
+				</div>
+		
+	      `,
+	        showCancelButton: true,
+	        confirmButtonColor: "#28a745",
+	        cancelButtonColor: "#dc3545",
+	        confirmButtonText: "Obtener pase",
+	        heightAuto:false,
+	        reverseButtons:true,
+	        width:750,
+	    })
+	    .then((result) => {
+	        if (result.value) {
+	        	loadingService("Actualizando tu pase de entrada...")
+		        let access_pass={
+                    grupo_vehiculos:arrayVehiculos,
+                    grupo_equipos:arrayEquipos,
+                    status_pase:'Activo'
+                }
+                if(urlImgUser !== ""){
+                    access_pass.foto=[{file_name:"foto.png",file_url:urlImgUser}]
+                }
+                if(urlImgCard !== ""){
+                    access_pass.identificacion=[{file_name:"indentificacion.png",file_url:urlImgCard}]
+                }
+                console.log("PASE DE ACESO",access_pass)
+	        	fetch(url + urlScripts, {
+			        method: 'POST',
+			        body: JSON.stringify({
+			            script_name: "pase_de_acceso.py",
+		                option: 'update_active_pass',
+		                update_obj: access_pass,
+		                folio:idActivePass,
+                        qr_code:folioActivePass,
+                        account_id:account_id
+			        }),
+			        headers:{
+			            'Content-Type': 'application/json',
+			             // 'Authorization': 'Bearer '+userJwt
+			        },
+			    })
+			    .then(res => {
+                    Swal.close()
+
+                    Swal.fire({
+                        type:"success",
+                        text: "Pase de entrada actualizado correctamente 🎉",
+                    }).then(() => {
+                        window.location.reload();
+                    });
+
+                })
+	        }
+		});
+	}
+}
+
+async function descargarPdfPaseActivo() {
+    loadingService('Descargando pdf...')
+    let pdf = await get_pdf(folioActivePass)
+    await descargarPdfPase(pdf.download_url)
+}
+
+async function get_pdf(qr_code){
+    let pdf=""
+    // loadingService()
+    await fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name:'pase_de_acceso.py',
+                option:'get_pdf',
+                qr_code:qr_code
+            }),
+            headers:
+            {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if(res.success){
+                Swal.close()
+                pdf=res.response.data.data
+            }else{
+                Swal.close()
+                errorAlert(res)
+            }
+        })
+    return pdf
+}
 
 function crearConfirmacion() {
     let enviarPreSmsChecked = document.getElementById('enviar_sms_pre_registro').checked;
@@ -1784,11 +2180,8 @@ function verListaPasesTemporales(){
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_name: "script_turnos.py",
-            option: 'lista_pases',
-            caseta: "Caseta Principal",
-            location: "Planta Monterrey",
-            inActive:"true"
+            script_name: "pase_de_acceso.py",
+            option: 'get_user_contacts',
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -1803,7 +2196,7 @@ function verListaPasesTemporales(){
             let formatedList=[]
             console.log()
             for(let obj of listPases){
-                formatedList.push({nombre: obj.nombre, folio: obj.folio, qr_code: obj.qr_code, ubicacion: obj.ubicacion, foto: obj.foto})
+                formatedList.push({nombre: obj.nombre, email: obj.email, telefono: obj.telefono, foto: obj.fotografia, identificacion: obj.identificacion})
             }
 
             if(user!="" && userJwt!=""){
@@ -1814,12 +2207,14 @@ function verListaPasesTemporales(){
 
             tables["tableListaPases"].on("rowSelectionChanged", function(data, rows){
                 if (rows.length > 0) {
-                    $("#inputCodeUser").val(data[0].qr_code);
-                    if(data[0].qr_code!==""){
-                        //setSpinner(true, 'divSpinner');
-                        $("#divSpinner").show();
-                        buscarPaseEntrada();
+                    let data_contact = {
+                        nombre: data[0].nombre || "",
+                        email: data[0].email || "",
+                        telefono: data[0].telefono || "",
+                        fotografia: data[0].foto || [],
+                        identificacion:data[0].identificacion|| []
                     }
+                    fillPassByContact(data_contact)
                     $("#listModal").modal('hide');
                 }
             });
@@ -1827,39 +2222,22 @@ function verListaPasesTemporales(){
     });
 }
 
-const columsListaPases= [
-    { title:"Nombre", field:'nombre',hozAlign:"left",headerFilter:'input',
-          formatter: (cell, formatterParams) => {
-               let data = cell.getData();
-               if(!data.hasOwnProperty('foto') || data.foto==undefined){
-                    data.foto=[{file_name: "notfound", file_url: "https://www.smarttools.com.mx/wp-content/uploads/2019/05/imagen-no-disponible.png"}]
-               }
-               let foto= data.foto.length>0 ? data.foto[0].file_url : "https://www.smarttools.com.mx/wp-content/uploads/2019/05/imagen-no-disponible.png"
-               let id = cell.getData().id ? cell.getData().id : 0;
-               let divActions = '<div id="inf'+data.folio +'"><div class="d-flex flex-row" id="listOfGuards">';
-               divActions+= '<div col-sm-12 col-md-12 col-lg-6 col-xl-6> <img id="imgGuardiaApoyo" height="60" width="60" src="'
-               + foto + '"> </div > <div col-sm-12 col-md-12 col-lg-6 col-xl-6 class="flex-column ms-3"> <div> <b>'
-               + data.nombre +'</b> </div></div>';
-               divActions += '</div> </div>';
-               return divActions;
-          },
-     }
-];
-
-//FUNCION para dibujar las tablas con opcion select de la pagina y guardar su instancia en el obj tables
-function drawTableSelect(id, columnsData, tableData, height, select){
-    let  table = new Tabulator("#" + id, {
-        layout:"fitDataStretch",
-        height:height,
-        data:tableData,
-        textDirection:"ltr",
-        columns:columnsData,
-        pagination:true, 
-        selectableRows:select,
-        paginationSize:40,
-        placeholder: "No hay registros disponibles", 
-    });
-    tables[id]=table;
+function fillPassByContact(data){
+    $("#nombreCompleto").val(data.nombre)
+    $("#email").val(data.email)
+    $("#telefono").val(data.telefono)
+    input.value = data.telefono;
+    iti.setNumber(data.telefono);
+    if(data.fotografia.length>0){
+        $("#agregarFoto").prop('checked', true);
+    }else{
+        $("#agregarFoto").prop('checked', false);
+    }
+    if(data.identificacion.length>0){
+        $("#agregarIdentificacion").prop('checked', true);
+    }else{
+        $("#agregarIdentificacion").prop('checked', false);
+    }
 }
 
 
@@ -1904,8 +2282,12 @@ function limpiarTomarFoto(id){
 
     if(id == "User" && status_pase === "activo"){
         urlImgUser = srcurlImgUser
+        $("#fotografiaActual img").show();
+        $("#fotografiaActual p").css("visibility", "visible");
     }else if(id == "Card" && status_pase === "activo"){
         urlImgCard = srcurlImgCard
+        $("#identificacionActual img").show();
+        $("#identificacionActual p").css("visibility", "visible");
     }
 
     if(id=='User'){
@@ -2211,6 +2593,13 @@ async function guardarArchivos(id, isImage){
         
     }else{
         let text= isImage? 'Las imagenes fueron guardadas correctamente.': 'Los archivos fueron guardados correctamente.';
+        if(id == 'inputFileUser'){
+            $("#fotografiaActual img").hide();
+            $("#fotografiaActual p").css("visibility", "hidden");
+        }else if (id == 'inputFileCard'){
+            $("#identificacionActual img").hide();
+            $("#identificacionActual p").css("visibility", "hidden");
+        }
         Swal.fire({
             title: "Acción Completada",
             text: text,

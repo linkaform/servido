@@ -8,7 +8,6 @@ const columsData1 = [
 			//----Button Trash
 			let data=cell.getData()
 			let folio = cell.getData().folio ? cell.getData().folio : 0;
-			console.log("DATAAA", data.status_visita)
 			let divActions = '<div class="row d-flex">';
 			divActions += `<button class="btn-table-bitacora" onClick="setModal('Data','${folio}')" ><i class="fa-solid fa-user"></i></button>`;
 			divActions += `<button class="btn-table-bitacora" onClick="setModal('Card','${folio}')"><i class="fa-solid fa-address-card"></i></button>`;
@@ -43,7 +42,6 @@ const columsData1 = [
         let data = cell.getData();
         let arrayComentarios=[]
         if(data.hasOwnProperty('comentarios')){
-        	console.log("valorerr",data)
         	if(data.comentarios.length>0){
 				arrayComentarios = data.comentarios
         	}else{

@@ -114,15 +114,14 @@ function changeButtonColor(){
 
 function customNavbar(location, turno){
     let menus = getCookie('menus_soter') !==''? JSON.parse(getCookie('menus_soter')):""
-    if(location=='turnos'){
+        console.log("men", menus, turno,location)
         if(turno === userTurnCerrado ){ 
-            showSpecificMenu(menus)
+            showSpecificMenu([])
         }else if(turno === userTurnAbierto){ 
-            let ids = getIdsMenu("menu")
-            showSpecificMenu(ids)
+            //let ids = getIdsMenu("menu")
+            showSpecificMenu(menus)
         }
 
-    } 
 
 }
 
@@ -150,6 +149,7 @@ function getIdsMenu(idClass){
 function showSpecificMenu(menus){
     if (menus.length>0){
         for (let m of menus){
+        console.log("MENUS", m)
             $('#button'+capitalizeFirstLetter(m)).removeClass('ocultar')
         }
     }else{

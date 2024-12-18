@@ -128,7 +128,8 @@ function getAllDataPases(tab_status='Todos'){
                                 grupo_areas_acceso :pase.grupo_areas_acceso ||[],
                                 limitado_a_dias :pase.limitado_a_dias||[],  
                                 qr_pase:pase.qr_pase||[],
-                                archivo_invitacion:pase.archivo_invitacion ||[]
+                                archivo_invitacion:pase.archivo_invitacion ||[],
+                                link:pase.link ||"",
                             })
                         }
                     }else{
@@ -535,6 +536,14 @@ function cerrarModalPase(id){
     $("#"+id).modal("hide")
 }
 
+
+function copiarlinkPaseE(){
+    let data = dataTableListTodos.filter(x => x._id == selectedGlobalPase).pop();
+    navigator.clipboard.writeText(data.link);
+    successMsg("Confirmación", "Link copiado, compartelo con el visitante.", "success")
+    $("#verPaseModal").modal('hide')
+}
+
 async function enviarCorreoPaseE(qr="") {
     if(qr){
         selectedGlobalPase=qr
@@ -710,6 +719,10 @@ async function descargarPdfPaseE() {
     $("#verPaseModal").modal('hide')
 }
 
+function disableAreaButtons(){
+    $("buttonAddArea").prop
+}
+
 async function modalEditarPase(id){
     limpiarInputsPorClase('paseEntradaEdit')
     // $("#com-input-form-nuevo div").not("#id-com-div-123").remove();
@@ -738,7 +751,7 @@ async function modalEditarPase(id){
     iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')
     
     try {
-        const resultado = await catalogoAreaByLocation(getCookie('userLocation'))
+        const resultado = await catalogoPaseLocation()
        $("#paseEntradaEditar").modal('show')
       } catch (error) {
         console.error('Error al cargar el catálogo o abrir el modal:', error);
