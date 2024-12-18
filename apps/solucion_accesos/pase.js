@@ -1289,8 +1289,16 @@ function actualizarPaseActivo() {
 	            'placas_vehiculo':listInputsVehicule[vehiculo][3].value,
 	            'color_vehiculo':listInputsVehicule[vehiculo][5].value
 		    }
-            console.log(objVehiculo)
-			arrayVehiculos.push(objVehiculo)
+            if (
+                objVehiculo.marca_vehiculo === 'Escoge un tipo de vehiculo...' || 
+                objVehiculo.modelo_vehiculo === 'Escoge una marca...' || 
+                objVehiculo.placas_vehiculo === ''
+            ) {
+                arrayVehiculos = []
+            }else{
+                console.log(objVehiculo)
+                arrayVehiculos.push(objVehiculo)
+            }
 		}
 	}
 	let htmlAppendVehiculosTitulo=""
@@ -1355,7 +1363,7 @@ function actualizarPaseActivo() {
 							</tr>
 							<tr>
 								<td>Visita General</td>
-								<td><span > Proceso </span></td>
+								<td><span > Activo </span></td>
 							</tr>
 							<tr>
 								<td><b>Nombre completo:</b></td>
@@ -1393,7 +1401,7 @@ function actualizarPaseActivo() {
 	        showCancelButton: true,
 	        confirmButtonColor: "#28a745",
 	        cancelButtonColor: "#dc3545",
-	        confirmButtonText: "Obtener pase",
+	        confirmButtonText: "Actualizar pase",
 	        heightAuto:false,
 	        reverseButtons:true,
 	        width:750,
@@ -2249,6 +2257,15 @@ function setDeleteVehiculo(id) {
         $('#selectCatalogModelo-123').prop('selectedIndex', 0);
         $('#inputMatriculaVehiculo-123').val('');
         $('#inputEstadoVehiculo-123').prop('selectedIndex', 0);
+        if(status_pase == "activo"){
+            let selectColores1= document.getElementById("inputColorVehiculo-123")
+                $(document).ready(function() {
+                    for(let color of coloresArray){
+                        selectColores1.innerHTML += '<option value="'+capitalizeFirstLetter(color.toLowerCase()) +'">'+color+'</option>';
+                    }
+                });
+            selectColores1.value=""
+        }
         $('#inputColorVehiculo-123').prop('selectedIndex', 0);
         $("#div-vehiculo-item-123").show();
     }
@@ -2331,9 +2348,9 @@ function setAddVehiculo() {
 	    }
 	});
 	selectColores.value=""
-    $("#inputEstadoVehiculo-"+randomID+"").val("")
-    $("#inputColorVehiculo-"+randomID+"").val("")
-    $("#selectTipoVehiculo-"+randomID+"").val("")
+    $("#selectTipoVehiculo-"+randomID+"").prop('selectedIndex', 0);
+    $("#selectCatalogMarca-"+randomID+"").prop('selectedIndex', 0);
+    $("#selectCatalogModelo-"+randomID+"").prop('selectedIndex', 0);
 }
 
 
