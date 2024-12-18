@@ -6,6 +6,7 @@ let userJwt = null;
 let userName = null;
 let userParentId = null;
 let scriptId = null;
+console.log('cargando js')
 
 $('#divOptions').hide();
 $('#title_report').hide();
@@ -228,85 +229,132 @@ function getFirstElement(wharehouses, familia, line) {
       "p_stock_max_alm_monterrey": 25.04}]}
   */
 
+    /*
+    {
+    title:'Traspaso',
+    columns:[
+      { title:"Mty", field:'stock_mty', hozAlign:"left", formatter:"money", formatterParams:{thousand:","},width:150},
+      { title:"% de stock minimo", field:'p_stock_min_mty', hozAlign:"left", formatter:"money", formatterParams:{thousand:","}, width:150},
+      { title:"Gdl", field:'stock_gdl',hozAlign:"left",formatter:"money", formatterParams:{thousand:","},width:150},
+      { title:"% de stock minimo", field:'p_stock_min_gdl', hozAlign:"left", formatter:"money", formatterParams:{thousand:","}, width:150},
+      { title:"Merida", field:'stock_merida',hozAlign:"left",formatter:"money", formatterParams:{thousand:","},width:150},
+      { title:"% de stock minimo", field:'p_stock_min_merida', hozAlign:"left", formatter:"money", formatterParams:{thousand:","}, width:150},
+    ]
+  },
+    */
+
 
   columsTable1 = [
-    { title: "Sku", field: 'sku', hozAlign: "left", width: 150,  headerFilter:"input" },
+    { title: "Sku", field: 'sku', hozAlign: "left", width: 150,  headerFilter:"input", responsive:0 },
     { title: 'Descripción del Producto', field: 'desc_producto', hozAlign: "left", width: 150,  headerFilter:"input" },
     { title: 'Línea', field: 'line', hozAlign: "right", width: 150,  headerFilter:"input" },
     // { title: "Familia", field: 'familia', hozAlign: "left", width: 150 },
-    { title: "Stock CEDIS", field: 'actuals', hozAlign: "right", width: 100 },
-    { title: "Stock Final", field: 'stock_final', hozAlign: "right", formatter: "money", formatterParams: { thousand: "," }, width: 120 },
+    { title: 'Stock CEDIS',
+      cssClass: "stock-cedis",
+      columns: [
+        { title: "Inicial", field: 'actuals', hozAlign: "right", width: 100, formatter: "money", formatterParams: { thousand: "," } },
+        { title: "Final", field: 'stock_final', hozAlign: "right", formatter: "money", formatterParams: { thousand: "," }, width: 100 },
+      ]
+    }
   ];
   
   if (wharehouses && wharehouses.length > 0) {
-    let traspasoColumn = {
-      title: 'Traspaso',
+    let dynamicColumns = [];
+    let traspasoColumn = {};
+    let traspasoColumn2 = {
+      title: 'Traspaso2',
       columns: []
     };
-
     let balanceoColumn = {
       title: 'Balanceo sugerido',
       columns: []
     };
     
     wharehouses.forEach(wharehouse => {
+      let classHeader = "";
+      let classHeaderColumns = "";
+      if (wharehouse === "ALM MONTERREY") {
+        classHeader = "alm-monterrey-header";
+      } else if (wharehouse === "ALM GUADALAJARA") {
+        classHeader = "alm-guadalajara-header";
+      } else if (wharehouse === "ALM MERIDA") {
+        classHeader = "alm-merida-header";
+      }
+
+      if (wharehouse === "ALM MONTERREY") {
+        classHeaderColumns = "alm-monterrey-header-columns";
+      } else if (wharehouse === "ALM GUADALAJARA") {
+        classHeaderColumns = "alm-guadalajara-header-columns";
+      } else if (wharehouse === "ALM MERIDA") {
+        classHeaderColumns = "alm-merida-header-columns";
+      }
+
       field_wharehouse = wharehouse.toLowerCase().replace(" ", "_")
-      traspasoColumn.columns.push({
-        title: `% de stock inical`,
-        field: `p_stock_max_${field_wharehouse}`,
-        hozAlign: "right",
-        // formatter: "money", formatterParams: { thousand: ",", symbol: "%", symbolAfter: true },
-        width: 150,
-        hozAlign: "left",
-        formatter:"progress", formatterParams:{
-              min:0,
-              max:100,
-              color:[
-                "rgb(211, 47, 47)", "rgb(239, 83, 80)","rgb(244, 143, 177)", ///reds
-                "rgb(255, 235, 59)", "rgb(255, 241, 118)","rgb(230, 238, 156)", ///yellows
-                "rgb(230, 238, 156)", "rgb(0, 188, 212)","rgb(0, 172, 193)", ///blues
-                "rgb(76, 175, 80)", "rgb(56, 142, 60)","rgb(56, 142, 60)", ///greens
-                ],
-              legendColor:"#24201E",
-              legendAlign:"center",
-              legend:function(value){return value + "%"}
-          }
-      });
-      traspasoColumn.columns.push({
+      traspasoColumn = {
         title: wharehouse,
-        field: `actuals_${field_wharehouse}`,
-        hozAlign: "right",
-        width: 200
-      });
-      //stock_to_move_alm_monterrey
-      traspasoColumn.columns.push({
-        title: `Traspaso ${wharehouse}`,
-        field: `stock_to_move_${field_wharehouse}`,
-        hozAlign: "right",
-        width: 230
-      });
-      traspasoColumn.columns.push({
-        title: `% de stock final`,
-        field: `final_stock_percentage_${field_wharehouse}`,
-        hozAlign: "right",
-        // formatter: "money", formatterParams: { thousand: ",", symbol: "%", symbolAfter: true },
-        width: 180,
-        hozAlign: "left",
-        formatter:"progress", formatterParams:{
-              min:0,
-              max:100,
-              color:[
-                "rgb(211, 47, 47)", "rgb(239, 83, 80)","rgb(244, 143, 177)", ///reds
-                "rgb(255, 235, 59)", "rgb(255, 241, 118)","rgb(230, 238, 156)", ///yellows
-                "rgb(230, 238, 156)", "rgb(0, 188, 212)","rgb(0, 172, 193)", ///blues
-                "rgb(76, 175, 80)", "rgb(56, 142, 60)","rgb(56, 142, 60)", ///greens
-                // "", "","", ///reds
-                ],
-              legendColor:"#24201E",
-              legendAlign:"center",
-              legend:function(value){return value + "%"}
+        cssClass: classHeader,
+        columns: [
+          {
+            title: `% Inical`,
+            field: `p_stock_max_${field_wharehouse}`,
+            cssClass: classHeaderColumns,
+            hozAlign: "right",
+            // formatter: "money", formatterParams: { thousand: ",", symbol: "%", symbolAfter: true },
+            width: 150,
+            hozAlign: "left",
+            formatter:"progress", formatterParams:{
+                  min:-1,
+                  max:100,
+                  color:[
+                    "rgb(211, 47, 47)",//, "rgb(239, 83, 80)","rgb(244, 143, 177)", ///reds
+                    "rgb(255, 235, 59)",// "rgb(255, 241, 118)","rgb(230, 238, 156)", ///yellows
+                    "rgb(76, 175, 80)", //"rgb(56, 142, 60)","rgb(56, 142, 60)", ///greens
+                    ],
+                  legendColor:"#24201E",
+                  legendAlign:"center",
+                  legend:function(value){return value + "%"}
+            }
+          },
+          {
+            title: 'Stock',
+            field: `actuals_${field_wharehouse}`,
+            cssClass: classHeaderColumns,
+            formatter: "money", formatterParams: { thousand: ",", precision: 2, symbolAfter: true },
+            hozAlign: "right",
+            width: 100
+          },
+          //stock_to_move_alm_monterrey
+          {
+            title: 'Traspaso', //`Traspaso ${wharehouse}`,
+            field: `stock_to_move_${field_wharehouse}`,
+            cssClass: classHeaderColumns,
+            hozAlign: "right",
+            width: 130
+          },
+          {
+            title: `%  Final`,
+            field: `final_stock_percentage_${field_wharehouse}`,
+            cssClass: classHeaderColumns,
+            hozAlign: "right",
+            // formatter: "money", formatterParams: { thousand: ",", symbol: "%", symbolAfter: true },
+            width: 150,
+            hozAlign: "left",
+            formatter:"progress", formatterParams:{
+                  min:-1,
+                  max:100,
+                  color:[
+                    "rgb(211, 47, 47)",//, "rgb(239, 83, 80)","rgb(244, 143, 177)", ///reds
+                    "rgb(255, 235, 59)",// "rgb(255, 241, 118)","rgb(230, 238, 156)", ///yellows
+                    "rgb(76, 175, 80)", //"rgb(56, 142, 60)","rgb(56, 142, 60)", ///greens
+                    // "", "","", ///reds
+                    ],
+                  legendColor:"#24201E",
+                  legendAlign:"center",
+                  legend:function(value){return value + "%"}
+              }
           }
-      });
+        ],
+      }
 
       if (balanceo) {
         balanceoColumn.columns.push({
@@ -316,10 +364,10 @@ function getFirstElement(wharehouses, familia, line) {
           width: 150
         });
       }
-
+      dynamicColumns.push(traspasoColumn);
     });
     
-    columsTable1.splice(5, 0, traspasoColumn);
+    columsTable1.splice(5, 0, ...dynamicColumns);
     
     if (balanceo && balanceoColumn.columns.length > 0) {
       columsTable1.push(balanceoColumn);
@@ -336,6 +384,7 @@ function getFirstElement(wharehouses, familia, line) {
       product_family: familia,
       product_line: String(line),
       option: 'get_report',
+      runtime: 'before'
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -395,6 +444,7 @@ function set_select(data, elementId) {
 }
 
 function getCatalog(){
+  const selectedWarehouses = ['ALM MONTERREY', 'ALM GUADALAJARA', 'ALM MERIDA'];
   fetch(url + 'infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
@@ -418,6 +468,7 @@ function getCatalog(){
         $('#product_family').prop('disabled', false);
         $('#wharehouse_destination').prop('disabled', false);
         // set_select(res.response.dataCatalogProductLine, "product_line")
+        $('#wharehouse_destination').val(selectedWarehouses).trigger('change');
       }
     } 
   }) 
@@ -427,9 +478,8 @@ function getCatalog(){
 function getDrawTable(id, columnsData, tableData, height = 750){
   var  table = new Tabulator("#" + id, {
     height:height +"px",
-    layout:"fitDataTable",
     data:tableData,
-    resizableRows:false,
+    resizableRows:true,
     dataTree:true,
     dataTreeStartExpanded:false,
     clipboard:true,

@@ -1,38 +1,46 @@
 let listImagesDic = [];
-
 window.onload = function(){
-    //---Hide Div
-    const divContent = document.getElementById('divContent');
-    divContent.style.display = 'none'; 
+    const statusSession = getSession('login');
+    if(statusSession == 'Active'){
+        //---Create Element
+        let parameter = getParameterURL('location');
+        let listData = getListCheck(parameter);
+        setElementsCheck(listData);
+        //---Information 
+        getInformationLocation(parameter);
+        getTimeNow();
+        //---Asign Events
+        document.getElementById("cameraButton").addEventListener("click", () => {
+            openCamera(handleFile);
+        });
 
-    const divLoader = document.getElementById('divLoading');
-    divLoader.style.display = 'block'; 
+        document.getElementById("galleryButton").addEventListener("click", () => {
+            openFilePicker(handleFile);
+        });
 
-    //---Create Element
-    let parameter = getParameterURL('location');
-    let listData = getListCheck(parameter);
-    setElementsCheck(listData);
-    //---Information 
-    getInformationLocation(parameter);
-    getTimeNow();
-    //---Asign Events
-    document.getElementById("cameraButton").addEventListener("click", () => {
-        openCamera(handleFile);
-    });
+        document.getElementById("buttonSend").addEventListener("click", () => {
+            dataSend();
+        });
+        //---Show Div
+        setTimeout(() => {
+            const loading = document.getElementById('loading');
+            const mainContent = document.getElementById('main-content');
+            loading.style.display = 'none';
+            mainContent.classList.remove('hidden'); 
+        }, 2000);
 
-    document.getElementById("galleryButton").addEventListener("click", () => {
-        openFilePicker(handleFile);
-    });
-
-    document.getElementById("buttonSend").addEventListener("click", () => {
-        dataSend();
-    });
-
-    //---Show Div
-    setTimeout(() => { 
-        divContent.style.display = 'block'; 
-        divLoader.style.display = 'none'; 
-    }, 4000);
+    }else {
+        //----Cookie
+        const LOCATION = getParameterURL('location');
+        setCookie("locationOrigin", LOCATION, 7);
+        //----Url
+        const protocolo = window.location.protocol;    
+        const hostname = window.location.hostname;      
+        const puerto = window.location.port;            
+        //---URL REDIRECTION LOGIN
+        let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/login.html`
+        window.location.href = urlRedirection;
+    }
 }
 
 function getParameterURL(keyFound = null) {
@@ -48,6 +56,7 @@ function getParameterURL(keyFound = null) {
     }
 }
 
+//---Form
 function getListCheck(location) {
     let results = [];
     for (const [key, value] of Object.entries(checkListData)) {
@@ -91,36 +100,37 @@ function setElementsCheck(list) {
 
 function setElementImages(data) {
     const container = document.getElementById('divListImages');
-    container.innerHTML = '';
-    //---Images 
-    const ul = document.createElement("ul");
-    ul.className = "list-group w-100";
-    data.forEach(image => {
-        const li = document.createElement("li");
-        li.className = "list-group-item d-flex  justify-content-between  align-items-center text-wrap";
+    const loader = document.getElementById('divLoadingImage');
+    loader.style.display = 'flex';
+    container.innerHTML = ''; 
 
-        const divText = document.createElement("div");
-        divText.className = "text-truncate";
-        divText.style.maxWidth = '80%';
-        const text = document.createTextNode(image.file_name);
+    setTimeout(() => {
+        loader.style.display = 'none';
+        data.forEach(image => {
+            const attachment = document.createElement("div");
+            attachment.className = "attachment";
 
-        const button = document.createElement("button");
-        button.className = "btn btn-danger btn-sm";
-        const icon = document.createElement("i");
-        icon.className = "bi bi-trash";
-        button.appendChild(icon);
-        button.setAttribute("onclick", `deleteImage('${image.file_url}')`);
-        divText.appendChild(text);
-        li.appendChild(divText);
-        li.appendChild(button);
-        ul.appendChild(li);
-    });
-    container.appendChild(ul);
-    const divContent = document.getElementById('divListImages');
-    const divLoader = document.getElementById('divLoadingImage');
+            const fileNameSpan = document.createElement("span");
+            fileNameSpan.textContent = image.file_name;
 
+            const deleteIconSpan = document.createElement("span");
+            deleteIconSpan.className = "delete-icon";
+
+            const icon = document.createElement("i");
+            icon.className = "fas fa-trash";
+
+            deleteIconSpan.onclick = () => deleteImage(image.file_url);
+
+            deleteIconSpan.appendChild(icon);
+            attachment.appendChild(fileNameSpan);
+            attachment.appendChild(deleteIconSpan);
+
+            container.appendChild(attachment);
+        });
+        const button = document.getElementById('buttonSend');
+        button.disabled = false; 
+    }, 500);
 }
-
 
 function openCamera(callback) {
     console.log('openCamera');
@@ -164,8 +174,10 @@ function handleFile(file) {
     divContent.style.display = 'none'; 
 
     const divLoader = document.getElementById('divLoadingImage');
-    divLoader.style.display = 'block'; 
-
+    divLoader.style.display = 'flex';
+    
+    const button = document.getElementById('buttonSend');
+    button.disabled = true; 
 
     //--Fetch
     const formData = new FormData();
@@ -189,18 +201,11 @@ function handleFile(file) {
             setElementImages(listImagesDic);
         }, 500);
     })
-    .then((data) => {
-        console.log(data); 
-    })
     .catch((error) => console.error("Error en el fetch:", error));
-    //---Show Div
-    
-
 }   
 
 function getCheckboxStates() {
     const form = document.getElementById('checkForm');
-
     if (!form) {
         return;
     }
@@ -209,6 +214,7 @@ function getCheckboxStates() {
     checkboxes.forEach((checkbox) => {
         states[checkbox.name] = checkbox.checked;
     });
+    console.log('states',states)
     return states;
 }
 
@@ -225,46 +231,65 @@ function deleteImage(value) {
 }
 
 function dataSend(){
+    //---DIsable
+    const button = document.getElementById('buttonSend');
+    button.disabled = true; 
+    //---Get data form
+    let configuration = JSON.parse( localStorage.getItem('configuration'));
     const location = getParameterURL('location');
     const checksSelected = getCheckboxStates();
     const inputComment = document.getElementById('commentCheck').value;
     const dicData = {
+        'folio': configuration.folio,
+        'rondin': configuration.nombre_rondin,
+        'ubicacion': configuration.ubicacion,
         'location': location,
         'list_checks': checksSelected,
         'comment': inputComment,
         'list_img': listImagesDic,
     }
-
+    //---Get data local storage
+    let recordConfig = localStorage.getItem('recordBitacora');
+    recordConfig = JSON.parse(recordConfig);
+    let dicListRecord = localStorage.getItem('dicListRecord');
+    const JWT = getCookie("userJwt");
     let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
     fetch(urlLinkaform, {
         method: 'POST',
         body: JSON.stringify({
             script_id: 126428,
             formInformation: dicData,
-            option: 'add_record',
+            folioUpdate:recordConfig.folio,
+            option: 'add_record_check',
         }),
         headers:{
             'Content-Type': 'application/json',
-            'Access-Control-Request-Headers':'*'
+            'Access-Control-Request-Headers':'*',
+            'Authorization': 'Bearer '+JWT
         },
     })
     .then(res => res.json())
     .then(res => {
-        if (res === '201') {
+        const data = res.response && res.response.data ? res.response.data : {};
+        if (data.status_create == '201') {
             alert('Se ingresó exitosamente el registro');
+            let dicListRecord = localStorage.getItem('dicListRecord');
+            if(!dicListRecord){
+                createDicRecord(configuration, dicData);
+            }else{
+                updateDicRecord(dicListRecord,dicData);
+            }
+            setRedirection();
         } else {
-            alert('Se ingresó exitosamente el registro.');
+            alert('Hubo un error en el registro, contacte a soporte.');
         }
     })
-    .catch(error => {
-        alert('Hubo un error al conectarse al servidor. Inténtalo de nuevo.');
-        console.error('Error:', error);
-    });
 }
 
 function getInformationLocation(location){
     const textTitle = document.getElementById('titleLocation');
     const textDir = document.getElementById('textDir');
+    const textUbic = document.getElementById('textUbic');
     const textType = document.getElementById('textType');
 
     let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
@@ -286,14 +311,19 @@ function getInformationLocation(location){
             textTitle.textContent = res.response.data.name_location;
         }
         if(res.response.data && res.response.data.direction_location && res.response.data.direction_location != ''){
-            textDir.textContent = `Ubicación: ${res.response.data.direction_location}`;
+            textDir.textContent = `${res.response.data.direction_location}`;
         }else{
-            textDir.textContent = `Ubicación: N/A`;
+            textDir.textContent = `N/A`;
+        }
+        if(res.response.data && res.response.data.ubication_location && res.response.data.ubication_location != ''){
+            textUbic.textContent = `${res.response.data.ubication_location}`;
+        }else{
+            textUbic.textContent = `N/A`;
         }
         if(res.response.data && res.response.data.type_location && res.response.data.type_location != ''){
-            textType.textContent = `Tipo de Área: ${res.response.data.type_location}`;
+            textType.textContent = `${res.response.data.type_location}`;
         }else{
-            textType.textContent = `Tipo de Área: N/A`;
+            textType.textContent = `N/A`;
         }
         if(res.response.data && res.response.data.image_location && res.response.data.image_location.length > 0 ){
             const imageElement = document.getElementById('imgLocation');
@@ -308,9 +338,67 @@ function getTimeNow() {
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son 0-indexados
     const day = String(now.getDate()).padStart(2, '0');
-
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
+    textTime.textContent = `${year}-${month}-${day} ${hours}:${minutes}`;
+}
 
-    textTime.textContent = `Fecha y Hora de Inspección: ${year}-${month}-${day} ${hours}:${minutes}`;
+function createDicRecord(configuration, dicData){
+    //---Create Dic
+    let resultList = [];
+    for (const key in configuration) {
+        if(key == 'area' ){
+            const items = configuration[key];
+            for (var i = 0; i < items.length; i++) {
+                const newObject = {
+                    title: items[i],
+                    status: 'in_progress',
+                    information: {},
+                };
+                resultList.push(newObject);
+            }
+        }
+    }
+    //---Update Dic
+    const updatedData = {
+        status: "completed",
+        information: dicData,
+    };
+    const foundIndex = resultList.findIndex(item => item.title === dicData.location);
+    if (foundIndex !== -1) {
+        resultList[foundIndex] = {
+            ...resultList[foundIndex],
+            ...updatedData,           
+        };
+    }
+    localStorage.setItem('dicListRecord', JSON.stringify(resultList));
+}
+
+function updateDicRecord(dicList, data){
+    //---Update Dic
+    const updatedData = {
+        status: "completed",
+        information: data,
+    };
+    dicList = JSON.parse(dicList);
+    if(dicList){
+        const foundIndex = dicList.findIndex(item => item.title === data.location);
+        if (foundIndex !== -1) {
+            dicList[foundIndex] = {
+                ...dicList[foundIndex],
+                ...updatedData,           
+            };
+        }
+        localStorage.setItem('dicListRecord', JSON.stringify(dicList));
+    }
+}
+
+function setRedirection() {
+    //----Url
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/time_line_rondin.html`;
+    window.location.href = urlRedirection;
 }

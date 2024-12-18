@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+    <html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Servido</title>
+        <meta name="title" content="Servido">
+        <meta name="description" content="Forcast by Cicle">
+        <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+        <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
+        <!--Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <!--Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <!-- FullCalendar CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <!-- FullCalendar CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/main.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/main.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.8/main.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/list@6.1.8/main.min.css" rel="stylesheet">
+        <!--Utils -->        
+        <link rel="stylesheet" href="../styles/css/sweetalert2.min.css">
+        <link rel="stylesheet" href="../styles/css/styles.css">
+        <link href='../utils/main.css' rel='stylesheet' />
+        <style>
+            .fc-scrollgrid-sync-inner a {
+              text-decoration: none;
+              color: black;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Header -->
+        <nav class="navbar header">
+            <div class="navbar-brand">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="index.html">
+                            <div class="logo_marca">
+                                <img src="https://app.linkaform.com/img/login-linkaform-logo.png" alt="LinkaForm" id="image_log">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="container">
+                            <div class="back"  id="atras"><i class="fa fa-solid fa-arrow-left"></i>Atras</div>
+                            <div class="close" id="close_sesion"><a onclick="closeSession();"><i class="fa-solid fa-lock"></i>Cerrar Sesión</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <h1 id="title_report">Calendario</h1>
+                </div>
+            </div> 
+        </nav>
+        <!-- Loading style -->
+        <div class="loading-container">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Content -->
+        <div style="width:100%">
+            <div class="app" id="appCont" style="padding-top: 0px;">
+                <!--Session -->
+                <div class="row inicio_ses" id="inicio_ses">
+                    <div class="errorLogin" id="errorLog"></div>
+                    <div class="control">
+                        <div class="renglon">
+                            <h3>Usuario: </h3>
+                            <input class="form-control ds-input" id="user" name="user" value="">
+                        </div>
+                        <div class="renglon">
+                            <h3>Contraseña: </h3>
+                            <input class="form-control ds-input" type="password" id="pass" name="pass" value="">
+                        </div>
+                        <div class="controlBtn">
+                        <div class="btn btn-primary" onclick="login()">Login</div>
+                        <div class="btn btn-primary" onclick="reset()">Reset</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Title Demo -->
+                <div id="title_demo" style="margin-bottom: 20px;">
+                    <center>
+                        <h1><span>Demo data</span>&nbsp;&nbsp;</h1>
+                    </center>
+                </div>
+
+                 <!--OPtions FIlter -->
+                <div class="p-3" id="divOptions">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#firstParameters" aria-expanded="false" aria-controls="collapseExample" id="buttonFilter">
+                        <i class="fa-solid fa-filter"></i>
+                    </button >  &nbsp;  &nbsp;
+                    <div class="btn btn-primary" onclick="runFirstElement()" >Run</div>
+                </div>
+
+                <!--Filters -->
+                <div id="firstParameters" class="collapse row show p-3">
+                    <div class="col-sm-12 col-md-2 col-lg-2" id="divnameGestor">
+                        <h5>Gestor: </h5>
+                        <select class="form-control mdb-select md-form" id="selectGestor">
+                            <option value="">--Seleccione--</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-sm-12 col-md-2 col-lg-2" id="divActivities">
+                        <h5>Actividad: </h5>
+                        <select class="form-control mdb-select md-form" id="selectActividad">
+                            <option value="">--Seleccione--</option >
+                        </select>
+                    </div>
+
+                </div>
+
+                <!--Content -->
+                <div class="row mt-2 p-3"  id="divContent">
+                    <!--Calendar-->
+                    <div class="col-sm-12 col-md-12 col-lg-12" style="align-items: center;overflow-y: scroll;">
+                        <div id="firstElement" >  </div>
+                    </div>
+                    <!--Modal add Record-->
+                    <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="eventModalLabel">Añadir Evento</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="eventForm">
+                                        <div class="mb-3">
+                                            <label class="form-label">Cliente**</label>
+                                            <select class="form-select input-form-event" id="inputClient">
+                                                <option value="">Seleccione Cliente</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Nombre del contacto**</label>
+                                            <input type="text" class="form-control input-form-event" id="inputNameContac">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Celular</label>
+                                            <input type="number" class="form-control input-form-event" id="inputPhone">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">¿El equipo está registrado en la base de datos?**</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input input-form-event" type="radio"  id="checkItemYes" onclick="setFormItem('si');" name="checkFormItem" >
+                                                <label class="form-check-label" for="checkItemYes">Sí</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input input-form-event" type="radio"  id="checkItemNo" onclick="setFormItem('no');" name="checkFormItem" >
+                                                <label class="form-check-label" for="checkItemNo">No</label>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 div-catalog-item" style="display: none;">
+                                            <label class="form-label">Equipo**</label>
+                                            <select class="form-select input-form-event" id="inputItem">
+                                                <option seleccione="">Seleccione Equipo</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 div-input-item" style="display: none;">
+                                            <label class="form-label">Especifique Equipo**</label>
+                                            <input type="text" class="form-control input-form-event" id="inputTextItem">
+                                        </div>
+                                        <div class="mb-3 div-input-item" style="display: none;">
+                                            <label class="form-label">Especifique Marca</label>
+                                            <input type="text" class="form-control input-form-event" id="inputTextBrand">
+                                        </div>
+                                        <div class="mb-3 div-input-item" style="display: none;">
+                                            <label class="form-label">Especifique Modelo</label>
+                                            <input type="text" class="form-control input-form-event" id="InputTextModel">
+                                        </div>
+                                        <div class="mb-3 div-input-item" style="display: none;">
+                                            <label class="form-label">Especifique Serie</label>
+                                            <input type="text" class="form-control input-form-event" id="inputTextSerie">
+                                        </div>
+                                        <div class="form-floating">
+                                            <textarea class="form-control input-form-event" placeholder="Trabajo a realizar" id="inputTextJob" style="height: 100px"></textarea>
+                                            <label for="floatingTextarea2">Trabajo a realizar**</label>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="inputCheck" class="form-label">Checklist a programar**</label>
+                                            <select class="form-select input-form-event" id="inputCheck">
+                                                <option>Seleccione Checklist</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Especifique Orden</label>
+                                            <input type="text" class="form-control input-form-event" id="inputTextOrden">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="inputCheck" class="form-label">Seleccione Usuario</label>
+                                            <select class="form-select input-form-event" id="inputUser">
+                                                <option>Seleccione Usuario</option>
+                                            </select>
+                                        </div>
+                                        <p class="ml-4"><small>** los campos son obligatorios</small></p>
+                                        <input type="hidden" class="input-form-event" id="eventDate">
+                                        <button type="button" class="btn btn-primary" id="buttonSave">Guardar Evento</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Modal view Record-->
+                    <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="eventModalLabel">Detalles del Evento</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Cliente:</strong> <span id="modalCliente"></span></p>
+                                    <p><strong>Contacto:</strong> <span id="modalContacto"></span></p>
+                                    <p><strong>Telefono:</strong> <span id="modalTelefono"></span></p>
+                                    <p><strong>Equipo:</strong> <span id="modalEquipo"></span></p>
+                                    <p><strong>CheckList:</strong> <span id="modalCheckList"></span></p>
+                                    <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </body>
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <!-- JavaScript de Select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Calendar -->
+    <script src='../utils/main.js'></script>
+    <!-- Utils -->
+    <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
+    <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="../utils/lkf_utils.js"></script>
+    <script type="text/javascript" src="../utils/servido_utils.js"></script>
+   
+    <!-- Template -->
+    <script type="text/javascript" src="./calendar_data.js"></script>
+    <script type="text/javascript" src="./calendar.js"></script>
+    
+    </body>
+</html>
