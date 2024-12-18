@@ -373,7 +373,12 @@
 					</div>
 				</div>
 			</div>
-			<div class="row row-cols-1 row-cols-sm-1 no-select">
+			<div class="row row-cols-1 row-cols-sm-1 no-select gap-2 mb-3">
+				<div class="col">
+					<div class="qr-pass-container text-center px-5">
+						<button type="button" class="btn btn-warning" id="descargarPdf" onclick="descargarPdfPaseActivo()">Descargar pdf</button>
+					</div>
+				</div>
 				<div class="col">
 					<div class="qr-pass-container text-center px-5">
 						<button type="button" class="btn btn-info text-white fw-bolder" id="actualizarBtn">Actualizar mi información</button>
@@ -581,7 +586,10 @@
                 	</div>
 					<div class="col-6 flex-grow-1" id="containerUpdateButton"> 
                 		<button type="button" class="btn btn-primary btn-block" id="updateButton" onclick="actualizarPaseActivo()">Actualizar</button>
-                	</div>
+					</div>
+					<div class="col-6 flex-grow-1" id="containerCancelButton"> 
+						<button type="button" class="btn btn-primary btn-block btn-danger" id="cancelButton">Cancelar</button>
+					</div>
             	</div>
             </div>
         </div>
