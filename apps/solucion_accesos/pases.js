@@ -27,7 +27,7 @@ window.onload = function(){
     //     let response = await fetchOnChangeCaseta('notes.py', 'get_notes', selectCaseta.value, selectLocation.value)
     //     reloadTableNotas(response.response.data)
     // };
-    account_id=getCookie('userId_soter')
+    account_id= parseInt(getCookie('userId_soter'))||""
     // fillCatalogs();
     // getAllData();
     getAllDataPases()
@@ -589,11 +589,11 @@ async function enviarSmsPaseE(qr="") {
     if(data.status_pase.toLowerCase()=='activo'){
         if(data.telefono_pase!==""){
             loadingService('Obteniendo pase...')
-            let pdf = await get_pdf(selectedGlobalPase)
+            let pdf = await get_pdf(selectedGlobalPase, account_id)
             let bodyPost={
                     script_name: "pase_de_acceso.py",
                     folio:data._id,
-                    account_id:parseInt(getCookie('userId_soter'))||""
+                    account_id:account_id 
                 }
             let msj=""
             if(data.fecha_desde_visita !==""){
@@ -714,7 +714,7 @@ async function update_pass(access_pass, qr_code){
 
 async function descargarPdfPaseE() {
     loadingService('Descargando pdf...')
-    let pdf = await get_pdf(selectedGlobalPase)
+    let pdf = await get_pdf(selectedGlobalPase, account_id)
     await descargarPdfPase(pdf.download_url)
     $("#verPaseModal").modal('hide')
 }
@@ -745,7 +745,6 @@ async function modalEditarPase(id){
     }
 
     let selectedPase = dataTableListTodos.filter(x => x._id == id).pop();
-    console.log("PASE SELECCIONADO")
     let selectedGlobalPase = selectedPase
     onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')
     iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')
@@ -868,7 +867,7 @@ async function modalReenviarPase(folio){
     let selectedPase = dataTableListTodos.find(x => x._id == folio);
     let fechasSonValidas= validarFechasConHora(selectedPase.fecha_desde_visita, selectedPase.fecha_desde_hasta)
     if(selectedPase.status_pase.toLowerCase() !== "vencido"){
-        let pdf = await get_pdf(selectedPase._id);
+        let pdf = await get_pdf(selectedPase._id, account_id);
         let bodyInf={}
         bodyInf={script_name:"pase_de_acceso.py", option:"update_pass", folio:folio}
         let access_pass={'favoritos': ['Agregar a favoritos'], }
@@ -1024,34 +1023,34 @@ function actualizarEstrella(access_pass, idStar) {
     }
 }
 
-async function get_pdf(qr_code){
-    let pdf=""
-    // loadingService()
-    await fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_name:'pase_de_acceso.py',
-                option:'get_pdf',
-                qr_code:qr_code
-            }),
-            headers:
-            {
-                'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer '+userJwt
-            },
-        })
-        .then(res => res.json())
-        .then(res => {
-            if(res.success){
-                Swal.close()
-                pdf=res.response.data.data
-            }else{
-                Swal.close()
-                errorAlert(res)
-            }
-        })
-    return pdf
-}
+// async function get_pdf(qr_code){
+//     let pdf=""
+//     // loadingService()
+//     await fetch(url + urlScripts, {
+//             method: 'POST',
+//             body: JSON.stringify({
+//                 script_name:'pase_de_acceso.py',
+//                 option:'get_pdf',
+//                 qr_code:qr_code
+//             }),
+//             headers:
+//             {
+//                 'Content-Type': 'application/json',
+//                 // 'Authorization': 'Bearer '+userJwt
+//             },
+//         })
+//         .then(res => res.json())
+//         .then(res => {
+//             if(res.success){
+//                 Swal.close()
+//                 pdf=res.response.data.data
+//             }else{
+//                 Swal.close()
+//                 errorAlert(res)
+//             }
+//         })
+//     return pdf
+// }
 
 function validarTel(input){
     removeNonNumeric(input)

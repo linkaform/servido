@@ -124,26 +124,26 @@ async function enviarSmsPase(bodyPost){
     })
 }
 
-
-async function get_pdf(qr_code){
+async function get_pdf(qr_code, account_id){
     let pdf=""
     // loadingService()
+    console.log("URL" ,url, urlScripts)
     await fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
-                script_name:'pase_de_acceso.py',
-                option:'get_pdf',
-                qr_code:qr_code
+                script_name:"pase_de_acceso.py",
+                option:"get_pdf",
+                qr_code: qr_code,
+                account_id: parseInt(account_id) 
             }),
-            headers:
-            {
+            headers:{
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer '+userJwt
+                 // 'Authorization': 'Bearer '+userJwt
             },
         })
         .then(res => res.json())
         .then(res => {
-            console.log("QUE PASA")
+            console.log("QUE PASAAaaaA")
             if(res.success){
                 Swal.close()
                 pdf=res.response.data.data

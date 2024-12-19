@@ -1458,7 +1458,7 @@ function actualizarPaseActivo() {
 
 async function descargarPdfPaseActivo() {
     loadingService('Descargando pdf...')
-    let pdf = await get_pdf(folioActivePass)
+    let pdf = await get_pdf(folioActivePass, account_id)
     await descargarPdfPase(pdf.download_url)
 }
 
