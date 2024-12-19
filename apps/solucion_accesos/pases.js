@@ -555,13 +555,13 @@ async function enviarCorreoPaseE(qr="") {
             let bodyPost={
                 script_name: "pase_de_acceso.py",
                 folio:data._id,
-                account_id:parseInt(getCookie('userId_soter'))||""
+                account_id:account_id
             }
             console.log('VISIT A', data)
             data_for_msj = {
                 email_to: data.email_pase,
                 asunto: data.tema_cita,
-                email_from: data.visita_a.length>0 ? data.visita_a[0].email[0] :'',
+                email_from: data.visita_a.length>0 ? data.visita_a[0].email :'',
                 nombre: data.nombre_pase,
                 nombre_organizador: data.visita_a.length>0 ? data.visita_a[0].nombre :'',
                 ubicacion: data.ubicacion,
