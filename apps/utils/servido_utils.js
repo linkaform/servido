@@ -970,7 +970,7 @@ function esLink(url) {
 function hideInMobile(type="User"){
     let mobile=""
     mobile = getMobileOperatingSystem()
-    console.log("Tipo de dispositivo = ",mobile)
+    console.log("Tipo de dispositivo = ",mobile, type)
     if(mobile!=="iOS"){
         $("#buttonTake"+type).show();
     }else{

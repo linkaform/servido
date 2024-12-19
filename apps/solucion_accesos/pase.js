@@ -69,6 +69,7 @@ window.onload = async function(){
             }
         }
         hideInMobile("User")
+        console.log("JOLLSA")
         hideInMobile("Card")
 	}else{
         user = getCookie("userId_soter");
@@ -930,7 +931,6 @@ function crearConfirmacionMini() {
 	}
 	let htmlAppendVehiculos=""
 	for (let vehiculo in listInputsVehicule) {
-        console.log("LISTA DE VEHICULOS",listInputsVehicule[vehiculo])
 		if(listInputsVehicule[vehiculo][0].value !==""){
 			htmlAppendVehiculos +="<div class='col-sm-12 col-md-12 col-lg-6 col-xl-6'>"
 			htmlAppendVehiculos +="<table class='table table-borderless customShadow' style='border: none; font-size: .8em; background-color: lightgray!important;'>"
