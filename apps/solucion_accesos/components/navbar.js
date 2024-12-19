@@ -113,10 +113,17 @@ function changeButtonColor(){
 
 function customNavbar(location, turno, showPic = true){
     let menus = getCookie('menus_soter') !==''? JSON.parse(getCookie('menus_soter')):""
-    if(turno === userTurnCerrado ){ 
+    // if(turno === userTurnCerrado ){ 
+    //     showSpecificMenu([], showPic)
+    // }else if(turno === userTurnAbierto){ 
+    //     showSpecificMenu(menus)
+    // }
+    if(location == "menu"){
         showSpecificMenu([], showPic)
-    }else if(turno === userTurnAbierto){ 
-        showSpecificMenu(menus)
+    }else if (location == "pase_no_session"){
+        showSpecificMenu([], showPic)
+    }else{
+        showSpecificMenu(menus, showPic) 
     }
 }
 

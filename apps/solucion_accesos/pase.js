@@ -30,18 +30,10 @@ let validFechaHasta = false
 let tables={}
 
 window.onload = async function(){
-	setValueUserLocation('pase');
-    
-    
-	customNavbar(getValueUserLocation(), getCookie('userTurn'))
-	changeButtonColor();
+	// customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	const valores = window.location.search;
 	const urlParams = new URLSearchParams(valores);
-
 	id = urlParams.get('id') !== null ? urlParams.get('id') :'' ;
-	/*nombre = urlParams.get('nombre') !== null ? urlParams.get('nombre') :'' ;
-	email = urlParams.get('email') !== null ? urlParams.get('email') :'' ;
-	tel = urlParams.get('tel') !== null ? urlParams.get('tel') :'' ;*/
     docs = urlParams.get('docs') !== null ? urlParams.get('docs') :'' ;
     account_id = parseInt(urlParams.get('user') !== null ? urlParams.get('user') :'' ) || ""
     if(account_id== null || account_id==""){
@@ -49,7 +41,9 @@ window.onload = async function(){
     }
     showIneIden= docs.split("-")
 	if(id){
+        setValueUserLocation('pase_no_session');
         customNavbar(getValueUserLocation(), userTurnCerrado, false)
+        changeButtonColor();
 		await getCatalogsIngresoPase()
 		$("#paseEntradaInf1").hide()
 		$("#paseEntradaInf2").hide()
@@ -72,6 +66,9 @@ window.onload = async function(){
         console.log("JOLLSA")
         hideInMobile("Card")
 	}else{
+        setValueUserLocation('pase');
+        customNavbar(getValueUserLocation(), userTurnCerrado, true)
+        changeButtonColor();
         user = getCookie("userId_soter");
         userJwt=getCookie('userJwt_soter');
         validSession(user, userJwt);
