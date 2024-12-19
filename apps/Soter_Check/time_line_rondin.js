@@ -153,11 +153,10 @@ function setRequestStatus() {
     let recordConfig = localStorage.getItem('recordBitacora');
     recordConfig = JSON.parse(recordConfig);
     const JWT = getCookie("userJwt");
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
-    fetch(urlLinkaform, {
+    fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 126428,
+            script_id: 'create_record_check.py',
             folioUpdate:recordConfig.folio,
             option: 'update_record_bitacora',
         }),
@@ -170,7 +169,6 @@ function setRequestStatus() {
     .then(res => res.json())
     .then(res => {
         const data = res.response && res.response.data ? res.response.data : {};
-        console.log('Data',data)
     })
 }
 

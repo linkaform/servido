@@ -145,7 +145,7 @@ function handleFile(file) {
     formData.append('is_image', true);
     formData.append('form_id',  126213);
 
-    fetch('https://app.linkaform.com/api/infosync/cloud_upload/', {
+    fetch(getUrlRequest('script'), {
         method: 'POST',
         body: formData
     })
@@ -207,7 +207,7 @@ function dataSend(){
             'list_img': listImagesDic,
         }
         dicFetch = {
-            script_id: 126428,
+            script_id: 'create_record_check.py',
             formInformation: dicData,
             option: 'add_inspection_check',
         }
@@ -231,7 +231,7 @@ function dataSend(){
         recordConfig = JSON.parse(recordConfig);
 
         dicFetch = {
-            script_id: 126428,
+            script_id: 'create_record_check.py',
             formInformation: dicData,
             folioUpdate:recordConfig.folio,
             option: 'add_record_check',
@@ -239,9 +239,8 @@ function dataSend(){
 
     }
     const JWT = getCookie("userJwt");
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
     //---Request
-    fetch(urlLinkaform, {
+    fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify(dicFetch),
         headers:{
@@ -284,11 +283,10 @@ function getInformationLocation(location){
     const textUbic = document.getElementById('textUbic');
     const textType = document.getElementById('textType');
 
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
-    fetch(urlLinkaform, {
+    fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 126428,
+            script_id: 'create_record_check.py',
             tagId: tagId,
             option: 'get_catalog',
         }),
@@ -438,12 +436,10 @@ async function get_validation_flow() {
 async function validationTagId() {
     let statusTag = '';
     let tagId = getParameterURL('tagId');
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
-    
-    const response = await fetch(urlLinkaform, {
+    const response = await fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 126428,
+            script_id: 'create_record_check.py',
             tagId: tagId,
             option: 'get_information_tag',
         }),
@@ -520,7 +516,6 @@ function validationConfigTag(dicData) {
     let statusReturn = false;
     let tagId = getParameterURL('tagId');
     let data  = JSON.parse(dicData);
-    console.log('data',data)
     let listConfig = data.area && data.area.length > 0 ? data.area : [];
 
     listConfig.forEach(item => {

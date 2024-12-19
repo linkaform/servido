@@ -19,11 +19,10 @@ function setRequestUpdateTag(){
     buttonSend.disabled = false;
     let idCatalog =  document.getElementById('selectArea').value;
     let idTag =  document.getElementById('inputIdTag').value;
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
-    fetch(urlLinkaform, {
+    fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 126428,
+            script_id: 'create_record_check.py',
             tagId:idTag,
             idCatalog:idCatalog,
             option: 'update_information_tag',
@@ -45,11 +44,10 @@ function setRequestUpdateTag(){
 
 function setRequestTag() {
     let tagId = getParameterURL('tagId');
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
-    fetch(urlLinkaform, {
+    fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 126428,
+            script_id: 'create_record_check.py',
             tagId:tagId,
             option: 'get_information_tag',
         }),

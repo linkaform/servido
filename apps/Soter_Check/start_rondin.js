@@ -33,10 +33,10 @@ function getDatesUser() {
 function resquestLocation(){
     let tagId = getParameterURL('tagId');
 	const JWT = getCookie("userJwt");
-	fetch('https://app.linkaform.com/api/infosync/scripts/run/', {
+	fetch(getUrlRequest('script'), {
 		method: 'POST',
 		body: JSON.stringify({
-			script_id: 126428,
+			script_id: 'create_record_check.py',
 			tagId: tagId,
 			option: 'get_config',
 		}),
@@ -135,10 +135,10 @@ function setRequestCreatedBitacora(){
     const tagId = getParameterURL('tagId');
     const JWT = getCookie("userJwt");
     const valueSelect = document.getElementById('selectRondin').value;
-    fetch('https://app.linkaform.com/api/infosync/scripts/run/', {
+    fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 126428,
+            script_id: 'create_record_check.py',
             tagId: tagId,
             config: valueSelect,
             option: 'add_record_bitacora',

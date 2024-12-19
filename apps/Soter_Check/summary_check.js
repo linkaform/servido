@@ -3,13 +3,6 @@ window.onload = function(){
 	if(statusSession == 'Active'){
 		checkDrawSummary();
 		getDatesUser();
-		//--Asign Events
-		/*
-	        document.getElementById("buttonSend").addEventListener("click", () => {
-	            console.log('Hola','ejemplo');
-	            //set_reset();
-	        });
-        */
 	}else{
         setRedirection('login');
 	}

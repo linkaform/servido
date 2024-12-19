@@ -1,3 +1,16 @@
+//-----URL SCRIPTS
+//const URLENVSCRIPT = "https://preprod.linkaform.com/";
+const URLENVSCRIPT = "https://app.linkaform.com";
+//const URLENVSCRIPT = "http://192.168.0.25:8000";
+//const URLENVSCRIPT = "http://127.0.0.1:8011";
+
+//-----URL LOGIN
+//const URLENVLOGIN = "https://preprod.linkaform.com/";
+const URLENVLOGIN = "https://app.linkaform.com";
+//const URLENVLOGIN = "http://192.168.0.25:8000";
+//const URLENVLOGIN = "http://127.0.0.1:8011";
+
+
 //-Funciona para definir una cookie
 function setCookie(cname, cvalue, exdays) {
   var d = new Date();
@@ -255,7 +268,6 @@ function setElementsStyle(){
     }
   }
 }
-
 
 //-Funciona para crear un esquema por defecto
 function createElements(dataConfig = null){
@@ -516,7 +528,6 @@ function setStylesLoading(state = null){
     }else if(state == 'finish'){
 
     }
-
 }
 
 //----Funciona para Cargar elementos en un div
@@ -530,4 +541,13 @@ function loadComponent(content, file) {
         document.getElementById(content).innerHTML = html;
     })
     .catch(error => console.error("Error:", error));
+}
+
+function getUrlRequest(type) {
+    if(type == 'script'){
+        return `${URLENVSCRIPT}/api/infosync/scripts/run/`
+    }else if(type == 'login'){
+        return `${URLENVLOGIN}/api/infosync/user_admin/login/`
+    }
+    return ''
 }

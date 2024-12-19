@@ -9,10 +9,10 @@ function resquestLocation(){
     //---Modal Components
     const textLocation = document.getElementById('textLocation');
 	const JWT = getCookie("userJwt");
-	fetch('https://app.linkaform.com/api/infosync/scripts/run/', {
+	fetch(getUrlRequest('script'), {
 		method: 'POST',
 		body: JSON.stringify({
-			script_id: 126428,
+			script_id: 'create_record_check.py',
 			tagId: tagId,
 			option: 'get_catalog',
 		}),

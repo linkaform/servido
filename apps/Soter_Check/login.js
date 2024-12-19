@@ -13,7 +13,7 @@ function sendRequest() {
   	let password = document.getElementById("inputPassword").value;  
   	let validation = validationRequest(email, password);
   	if (validation) {
-		fetch('https://app.linkaform.com/api/infosync/user_admin/login/', {
+		fetch(getUrlRequest('login'), {
 			method: 'POST',
 			body: JSON.stringify({
 				username: email,
