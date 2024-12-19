@@ -939,10 +939,10 @@ function crearNuevaVisita(){
     let areaQueVisita=$("#inputAreaVisitaNV").val();
     let visitaA=$("#selectVisitaNV").val();
     let motivoVisita=$("#selectMotivoVisitaNV").val();
-    if(nombre!=='' , empresa!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
+    if(nombre!=='' && empresa!=='' && areaQueVisita!=='' && visitaA!=='' && motivoVisita!==''){
         let access_pass={
             nombre: nombre,
-            perfil_pase:"Walkin",
+            perfil_pase: "Visita General",
             telefono: "",
             visita_a:visitaA,
             email: getCookie("userEmail"),
@@ -952,6 +952,7 @@ function crearNuevaVisita(){
             //area_que_visita:areaQueVisita,
             //motivo_visita:motivoVisita,
         }
+        console.log("entrandoo")
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -970,7 +971,7 @@ function crearNuevaVisita(){
             if (res.success) {
                 let data= res.response.data
                 if(data.status_code ==400 || data.status_code==401){
-                    errorAlert(res)
+                    errorAlert(data)
                     //$("#idLoadingButtonVehiculos").hide();
                     //$("#idButtonVehiculos").show();
                 }else{
@@ -995,7 +996,9 @@ function crearNuevaVisita(){
                 }
                     //
                 //CODE una vez resulta la imagen, cargarla en front                
-            } 
+            }else{
+                errorAlert(res)
+            }
         });
         
     }else{
@@ -1057,13 +1060,27 @@ function buscarPaseEntrada() {
                 if (res.success) {
                     Swal.close()
                     fullData= res.response.data
-                    fotoPerfilInde(res.response.data)
-                    console.log("PASKDNA")
-                    $("#cartaUser").show(); 
-                    setDataInformation('informatioUser', res.response.data);
-                    setHideElements('buttonsModal');
-                    setHideElements('dataShow');
-                    setHideElements(fullData.tipo_movimiento) //Oculta o muestra los botones correspondientes dependiendo de si es Entrada o Salida
+                    if(fullData.status_pase.toLowerCase() == 'vencido'){
+                        console.log("VENICDO", fullData)
+                         $("#cartaUser").show(); 
+                        setDataInformation('informatioUser', res.response.data);
+                         fotoPerfilInde(res.response.data)
+                        $("#cartaUser").show(); 
+                        setDataInformation('informatioUser', res.response.data);
+                        setHideElements('buttonsModal');
+                        setHideElements('dataShow');
+                        setHideElements(fullData.tipo_movimiento) //Oculta o muestra los botones correspondientes dependiendo de si es Entrada o Salida
+                        setHideElements('paseVencido');
+                    }else{
+                        setHideElements('paseHabilitar');
+                        fotoPerfilInde(res.response.data)
+                        $("#cartaUser").show(); 
+                        setDataInformation('informatioUser', res.response.data);
+                        setHideElements('buttonsModal');
+                        setHideElements('dataShow');
+                        setHideElements(fullData.tipo_movimiento) //Oculta o muestra los botones correspondientes dependiendo de si es Entrada o Salida
+                    }
+                    
                 }else{
                     errorAlert(res)
                     setCleanData();
@@ -2147,7 +2164,22 @@ function setHideElements(option){
             $("#buttonAsignarGafete").hide()
             $("#buttonRecibirGafete").show()
         }
-    }
+    }else if(option == 'paseVencido') {
+        $("#buttonIn").prop("disabled", true)
+        $("#buttonAsignarGafete").prop("disabled", true)
+        $("#buttonAddCommentarioAccesoModal").prop("disabled", true)
+        $("#buttonAddCommentarioPaseModal").prop("disabled", true)
+        $("#idButtonEquipoNota").prop("disabled", true)
+        $("#buttonVerListaEquipos").prop("disabled", true)
+        $("#buttonVerBorradorEquipos").prop("disabled", true)
+    }else if (option == 'paseHabilitar'){}
+        $("#buttonIn").prop("disabled", false)
+        $("#buttonAsignarGafete").prop("disabled", false)
+        $("#buttonAddCommentarioAccesoModal").prop("disabled", false)
+        $("#buttonAddCommentarioPaseModal").prop("disabled", false)
+        $("#idButtonEquipoNota").prop("disabled", false)
+        $("#buttonVerListaEquipos").prop("disabled", false)
+        $("#buttonVerBorradorEquipos").prop("disabled", false)
 }
 
 

@@ -110,7 +110,7 @@ const columnsTableListPendientes = [
 //-----TABLES
 function drawTable(id, columnsData, tableData,){
     let table = new Tabulator("#" + id, {
-         layout:"fitDataStretch",
+        layout:"fitDataStretch",
         data:tableData,
         textDirection:"ltr",
         columns:columnsData,
