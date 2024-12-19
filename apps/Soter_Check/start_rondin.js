@@ -1,26 +1,7 @@
 let dicConfigs = [];
 
 window.onload = function(){
-	const statusSession = getSession('login');
-	if(statusSession == 'Active'){
-		getDatesUser();
-		resquestLocation();
-		//--Asign Events
-		document.getElementById('selectRondin').addEventListener('change', () => {
-			changeRondin();
-		});
-        document.getElementById("buttonSend").addEventListener("click", () => {
-            set_config_rondin();
-        });
-	}else{
-        //----Url
-        const protocolo = window.location.protocol;    
-        const hostname = window.location.hostname;      
-        const puerto = window.location.port;            
-        //---URL REDIRECTION LOGIN
-        let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/login.html`
-        window.location.href = urlRedirection;
-	}
+	get_validation_flow();
     setTimeout(() => {
         const loading = document.getElementById('loading');
         const mainContent = document.getElementById('main-content');
@@ -50,13 +31,13 @@ function getDatesUser() {
 }
 
 function resquestLocation(){
+    let tagId = getParameterURL('tagId');
 	const JWT = getCookie("userJwt");
-	const LOCATION = getCookie("locationOrigin");
 	fetch('https://app.linkaform.com/api/infosync/scripts/run/', {
 		method: 'POST',
 		body: JSON.stringify({
 			script_id: 126428,
-			location: LOCATION,
+			tagId: tagId,
 			option: 'get_config',
 		}),
 		headers:{
@@ -72,13 +53,6 @@ function resquestLocation(){
 			setListAreas(data);
 		}
 	})
-	/*
-	// Mostrar todas las cookies
-	const cookies = document.cookie.split(';');
-	cookies.forEach(cookie => {
-	  console.log(cookie.trim());
-	});
-	*/
 }
 
 function setListAreas(data) {
@@ -138,11 +112,12 @@ function set_config_rondin() {
 
 function set_redirection() {
     //----Url
+    let tagId = getParameterURL('tagId');
     const protocolo = window.location.protocol;    
     const hostname = window.location.hostname;      
     const puerto = window.location.port;            
     //---URL REDIRECTION LOGIN
-    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/time_line_rondin.html`
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/time_line_rondin.html?tagId=${tagId}`
     window.location.href = urlRedirection;
 }
 
@@ -183,4 +158,31 @@ function setRequestCreatedBitacora(){
             }, 1000);
         }
     })
+}
+
+//----Validation Flow
+async function get_validation_flow() {
+    const statusSession = getSession('login');
+    if(statusSession == 'Active'){
+        getDatesUser();
+        resquestLocation();
+        //--Asign Events
+        document.getElementById('selectRondin').addEventListener('change', () => {
+            changeRondin();
+        });
+        document.getElementById("buttonSend").addEventListener("click", () => {
+            set_config_rondin();
+        });
+    }else{  
+        redirectionLogin();
+    }
+}
+
+function redirectionLogin() {
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/login.html`
+    window.location.href = urlRedirection;
 }

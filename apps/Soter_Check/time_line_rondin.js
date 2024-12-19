@@ -1,30 +1,6 @@
 let dicConfigs = [];
-
 window.onload = function(){
-	const statusSession = getSession('login');
-	if(statusSession == 'Active'){
-		const configData = getParsedConfiguration();
-		if (configData) {
-		    getDatesUser();
-            drawConfigLocation(configData) 
-
-		} else {
-		    setRedirection('start_rondin');
-		}
-		//--Asign Events
-        document.getElementById("buttonSend").addEventListener("click", () => {
-            setFinishRondin();
-        });
-	}else{
-        setRedirection('login');
-	}
-
-	setTimeout(() => {
-		const loading = document.getElementById('loading');
-		const mainContent = document.getElementById('main-content');
-		loading.style.display = 'none';
-		mainContent.classList.remove('hidden'); 
-	}, 2000);
+	get_validation_flow();
 }
 
 function getParsedConfiguration() {
@@ -36,7 +12,6 @@ function getParsedConfiguration() {
         return null;
     }
 }
-
 
 function setRedirection(file) {
 	//----Url
@@ -143,9 +118,13 @@ function drawConfigLocation(dataConfig) {
             componentRemaning.textContent = `0`;
         }
     }
+    setTimeout(() => {
+        const loading = document.getElementById('loading');
+        const mainContent = document.getElementById('main-content');
+        loading.style.display = 'none';
+        mainContent.classList.remove('hidden'); 
+    }, 2000);
 }
-
-
 
 function validationAllStatus(dicConfig) {
     const numChecks = dicConfig.length > 0 ? dicConfig.length : 0;
@@ -168,9 +147,8 @@ function setFinishRondin(){
     buttonFinish.disabled = false; 
     //----Update Status
     setRequestStatus();
-        
     //----Redirection
-    //setRedirection('summary_check');
+    setRedirection('summary_check');
 }
 
 function setRequestStatus() {
@@ -196,4 +174,44 @@ function setRequestStatus() {
         const data = res.response && res.response.data ? res.response.data : {};
         console.log('Data',data)
     })
+}
+
+//----Validation Flow
+async function get_validation_flow() {
+    const statusSession = getSession('login');
+    if(statusSession == 'Active'){
+        const configData = getParsedConfiguration();
+        if (configData) {
+            getDatesUser();
+            drawConfigLocation(configData);
+            //--Asign Events
+            document.getElementById("buttonSend").addEventListener("click", () => {
+                setFinishRondin();
+            });
+        } else {
+            redirectionStartRondin();
+        }
+    }else{  
+        redirectionLogin();
+    }
+}
+
+function redirectionLogin() {
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/login.html`
+    window.location.href = urlRedirection;
+}
+
+function redirectionStartRondin() {
+    //----Url
+    let tagId = getParameterURL('tagId');
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/${file}.html?tagId=${tagId}`
+    window.location.href = urlRedirection;
 }

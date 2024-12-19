@@ -1,46 +1,6 @@
 let listImagesDic = [];
 window.onload = function(){
-    const statusSession = getSession('login');
-    if(statusSession == 'Active'){
-        //---Create Element
-        let parameter = getParameterURL('location');
-        let listData = getListCheck(parameter);
-        setElementsCheck(listData);
-        //---Information 
-        getInformationLocation(parameter);
-        getTimeNow();
-        //---Asign Events
-        document.getElementById("cameraButton").addEventListener("click", () => {
-            openCamera(handleFile);
-        });
-
-        document.getElementById("galleryButton").addEventListener("click", () => {
-            openFilePicker(handleFile);
-        });
-
-        document.getElementById("buttonSend").addEventListener("click", () => {
-            dataSend();
-        });
-        //---Show Div
-        setTimeout(() => {
-            const loading = document.getElementById('loading');
-            const mainContent = document.getElementById('main-content');
-            loading.style.display = 'none';
-            mainContent.classList.remove('hidden'); 
-        }, 2000);
-
-    }else {
-        //----Cookie
-        const LOCATION = getParameterURL('location');
-        setCookie("locationOrigin", LOCATION, 7);
-        //----Url
-        const protocolo = window.location.protocol;    
-        const hostname = window.location.hostname;      
-        const puerto = window.location.port;            
-        //---URL REDIRECTION LOGIN
-        let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/login.html`
-        window.location.href = urlRedirection;
-    }
+    get_validation_flow();
 }
 
 function getParameterURL(keyFound = null) {
@@ -56,7 +16,6 @@ function getParameterURL(keyFound = null) {
     }
 }
 
-//---Form
 function getListCheck(location) {
     let results = [];
     for (const [key, value] of Object.entries(checkListData)) {
@@ -401,4 +360,111 @@ function setRedirection() {
     //---URL REDIRECTION LOGIN
     let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/time_line_rondin.html`;
     window.location.href = urlRedirection;
+}
+
+//----Validation Flow
+async function get_validation_flow() {
+    const statusSession = getSession('login');
+    if(statusSession == 'Active'){
+        let data = await validationTagId(); 
+        if(data.status_request && data.status_request == 'included'){
+            let area = data.data_tag && data.data_tag.nombre_area_catalog ? data.data_tag.nombre_area_catalog  :'undefined';
+            let configuration = localStorage.getItem('configuration');
+            if(configuration){
+                loadCheckArea(area);
+            }else{
+                redirectionArea(area);
+            }
+        }else if(data.status_request && data.status_request == 'not_included'){
+            redirectionConfig();
+        }
+    }else {
+        //----Save Cookie Tag Id
+        const tagId = getParameterURL('tagId');
+        setCookie("tagId", tagId, 7);
+        //----Redirection Login 
+        redirectionLogin();
+    }
+}
+
+async function validationTagId() {
+    let statusTag = '';
+    let tagId = getParameterURL('tagId');
+    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
+    
+    const response = await fetch(urlLinkaform, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: 126428,
+            tagId: tagId,
+            option: 'get_information_tag',
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Request-Headers': '*',
+        },
+    });
+    const res = await response.json();
+    let data = res.response && res.response.data ? res.response.data : {};
+    if (data.status_request) {
+        return data; 
+    } else {
+        return null; 
+    }
+}
+
+function redirectionLogin() {
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/login.html`
+    window.location.href = urlRedirection;
+}
+
+function redirectionConfig() {
+    let tagId = getParameterURL('tagId');
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/config_tag.html?tagId=${tagId}`
+    window.location.href = urlRedirection;
+}
+
+function redirectionArea() {
+    let tagId = getParameterURL('tagId');
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/rondin.html?tagId=${tagId}`
+    window.location.href = urlRedirection;
+}
+
+function loadCheckArea(area) {
+    console.log('Area',area);
+    let listData = getListCheck(area);
+    setElementsCheck(listData);
+    //---Information 
+    getInformationLocation(area);
+    getTimeNow();
+    //---Asign Events
+    document.getElementById("cameraButton").addEventListener("click", () => {
+        openCamera(handleFile);
+    });
+
+    document.getElementById("galleryButton").addEventListener("click", () => {
+        openFilePicker(handleFile);
+    });
+
+    document.getElementById("buttonSend").addEventListener("click", () => {
+        dataSend();
+    });
+    setTimeout(() => {
+        const loading = document.getElementById('loading');
+        const mainContent = document.getElementById('main-content');
+        loading.style.display = 'none';
+        mainContent.classList.remove('hidden'); 
+    }, 2000);
 }
