@@ -29,7 +29,7 @@ let validFechaVisita = false
 let validFechaHasta = false
 let tables={}
 
-window.onload = function(){
+window.onload = async function(){
 	setValueUserLocation('pase');
     
     
@@ -49,16 +49,15 @@ window.onload = function(){
     }
     showIneIden= docs.split("-")
 	if(id){
+        customNavbar(getValueUserLocation(), userTurnCerrado, false)
+		await getCatalogsIngresoPase()
 		$("#paseEntradaInf1").hide()
 		$("#paseEntradaInf2").hide()
 		$("#paseEntradaInf3").hide()
 		$("#paseEntradaInf4").hide()
-		$("#paseEntradaInf5").show()
-		$("#paseEntradaInf6").show()
+		
         $("#foto").hide()
         $("#iden").hide()
-		getCatalogsIngresoPase()
-        customNavbar(getValueUserLocation(), userTurnCerrado)
         
         if(showIneIden.length>0){
             for(let a of showIneIden){
@@ -69,6 +68,9 @@ window.onload = function(){
                 }
             }
         }
+        hideInMobile("User")
+        console.log("JOLLSA")
+        hideInMobile("Card")
 	}else{
         user = getCookie("userId_soter");
         userJwt=getCookie('userJwt_soter');
@@ -100,6 +102,7 @@ window.onload = function(){
 $(document).ready(function () {
     $('#actualizarBtn').on('click', function () {
       $('#paseEntradaCompletadoFotos').toggle();
+      $('#paseEntradaInf5').toggle();
       $('#paseEntradaInf6').toggle();
 
       $(this).toggleClass('btn-danger');
@@ -113,6 +116,7 @@ $(document).ready(function () {
 
     $('#cancelButton').on('click', function () {
         $('#paseEntradaCompletadoFotos').toggle();
+        $('#paseEntradaInf5').toggle();
         $('#paseEntradaInf6').toggle();
 
         $('#actualizarBtn').toggleClass('btn-danger');
@@ -154,9 +158,9 @@ window.addEventListener('storage', function(event) {
 });
 
 //FUNCION para obtener los catalogos
-function getCatalogsIngresoPase(){
-	loadingService()
-    fetch(url + urlScripts, {
+async function getCatalogsIngresoPase(){
+	loadingService("Preparando tu pase de entrada...")
+    await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name: "pase_de_acceso.py",
@@ -239,6 +243,7 @@ function getCatalogsIngresoPase(){
                         $("#pass-complete-fecha").text(horavisita)
                         $("#paseEntradaCompletado").show()
                         $("#paseEntradaCompletadoFotos").hide()
+                        console.log("QUE POASA")
                         $("#paseEntradaInf5").hide()
                         $("#paseEntradaInf6").hide()
                         $("#containerContinueButton").hide()
@@ -247,6 +252,9 @@ function getCatalogsIngresoPase(){
                         rellenarVehiculos(vehiculosregistrados);
                         rellenarEquipos(equiposregistrados);
                     }else{
+                        $("#paseEntradaInfo").show()
+                        $("#paseEntradaInf5").show()
+                        $("#paseEntradaInf6").show()
                         $("#paseEntradaCompletado").hide()
                         $("#paseEntradaCompletadoFotos").hide()
                         $("#containerUpdateButton").hide()
@@ -263,70 +271,7 @@ function getCatalogsIngresoPase(){
                 errorAlert(res)
             }
         })
-	/*fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_name: "access_pass.py",
-            option: "catalago_vehiculo",
-            account_id:account_id
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            // 'Authorization': 'Bearer '+userJwt
-        },
-        }).then(res => res.json())
-        .then(res => {
-            if(res.success){
-                let data= res.response.data
-                if(data.status_code ==400 || data.status_code==401){
-                    errorAlert(res)
-                }else{
-                    let selectVehiculos= document.getElementById("selectTipoVehiculo-123")
-                    selectVehiculos.innerHTML="";
-                    dataCatalogs.types_cars=data 
-                    for (let obj of data){
-                        selectVehiculos.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
-                    }
-                    selectVehiculos.value=""
-                } 
-            }else{
-                errorAlert(res)
-            }
-        })*/
-  /*  fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_name: "get_vehiculos.py",
-            option: "catalago_estados",
-            account_id:account_id
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            // 'Authorization': 'Bearer '+userJwt
-        },
-        }).then(res => res.json())
-        .then(res => {
-            if(res.success){
-                Swal.close()
-                let data= res.response.data
-                if(data.status_code ==400 || data.status_code==401){
-                    errorAlert(res)
-                }else{
-                    let selectVehiculos= document.getElementById("inputEstadoVehiculo-123")
-                    selectVehiculos.innerHTML="";
-                    catEstados=data 
-                    for (let obj of data){
-                        selectVehiculos.innerHTML += '<option value="'+obj+'">'+obj+'</option>';
-                    }
-                    selectVehiculos.value=""
-                } 
-            }else{
-                errorAlert(res)
-            }
-        })*/
-  
-    $("#selectTipoVehiculo-123").prop( "disabled", false );
-    $("#spinnerTipoVehiculo").css("display", "none");
+
 }
 
 function rellenarVehiculos(vehiculosregistrados) {
@@ -420,7 +365,7 @@ async function onChangeCatalogPase(type, id){
         const options = {
             method: 'POST', 
             body: JSON.stringify({
-                script_name:'get_vehiculos.py',
+                script_name:'pase_de_acceso.py',
                 option:"catalago_vehiculo",
                 tipo:inputMarca.value,
                 account_id:account_id
@@ -448,7 +393,7 @@ async function onChangeCatalogPase(type, id){
         const options = {
             method: 'POST', 
             body: JSON.stringify({
-                script_name:'get_vehiculos.py',
+                script_name:'pase_de_acceso.py',
                 option:'catalago_vehiculo',
                 tipo:inputTipo.value,
                 marca: inputMarca.value,
@@ -728,7 +673,7 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
         const options = {
             method: 'POST', 
             body: JSON.stringify({
-                script_name:'get_vehiculos.py',
+                script_name:'pase_de_acceso.py',
                 option: "catalago_vehiculo",
                 tipo: inputMarca.value
             }),
@@ -757,7 +702,7 @@ function setDeleteArea(editAdd ="nuevo", id, classNam){
         const options = {
             method: 'POST', 
             body: JSON.stringify({
-                script_name:'get_vehiculos.py',
+                script_name:'pase_de_acceso.py',
                 option: "catalago_vehiculo",
                 tipo:inputTipo.value,
                 marca: inputMarca.value
@@ -986,7 +931,6 @@ function crearConfirmacionMini() {
 	}
 	let htmlAppendVehiculos=""
 	for (let vehiculo in listInputsVehicule) {
-        console.log("LISTA DE VEHICULOS",listInputsVehicule[vehiculo])
 		if(listInputsVehicule[vehiculo][0].value !==""){
 			htmlAppendVehiculos +="<div class='col-sm-12 col-md-12 col-lg-6 col-xl-6'>"
 			htmlAppendVehiculos +="<table class='table table-borderless customShadow' style='border: none; font-size: .8em; background-color: lightgray!important;'>"
@@ -1349,8 +1293,16 @@ function actualizarPaseActivo() {
 	            'placas_vehiculo':listInputsVehicule[vehiculo][3].value,
 	            'color_vehiculo':listInputsVehicule[vehiculo][5].value
 		    }
-            console.log(objVehiculo)
-			arrayVehiculos.push(objVehiculo)
+            if (
+                objVehiculo.marca_vehiculo === 'Escoge un tipo de vehiculo...' || 
+                objVehiculo.modelo_vehiculo === 'Escoge una marca...' || 
+                objVehiculo.placas_vehiculo === ''
+            ) {
+                arrayVehiculos = []
+            }else{
+                console.log(objVehiculo)
+                arrayVehiculos.push(objVehiculo)
+            }
 		}
 	}
 	let htmlAppendVehiculosTitulo=""
@@ -1415,7 +1367,7 @@ function actualizarPaseActivo() {
 							</tr>
 							<tr>
 								<td>Visita General</td>
-								<td><span > Proceso </span></td>
+								<td><span > Activo </span></td>
 							</tr>
 							<tr>
 								<td><b>Nombre completo:</b></td>
@@ -1453,7 +1405,7 @@ function actualizarPaseActivo() {
 	        showCancelButton: true,
 	        confirmButtonColor: "#28a745",
 	        cancelButtonColor: "#dc3545",
-	        confirmButtonText: "Obtener pase",
+	        confirmButtonText: "Actualizar pase",
 	        heightAuto:false,
 	        reverseButtons:true,
 	        width:750,
@@ -1506,38 +1458,10 @@ function actualizarPaseActivo() {
 
 async function descargarPdfPaseActivo() {
     loadingService('Descargando pdf...')
-    let pdf = await get_pdf(folioActivePass)
+    let pdf = await get_pdf(folioActivePass, account_id)
     await descargarPdfPase(pdf.download_url)
 }
 
-async function get_pdf(qr_code){
-    let pdf=""
-    // loadingService()
-    await fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_name:'pase_de_acceso.py',
-                option:'get_pdf',
-                qr_code:qr_code
-            }),
-            headers:
-            {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt
-            },
-        })
-        .then(res => res.json())
-        .then(res => {
-            if(res.success){
-                Swal.close()
-                pdf=res.response.data.data
-            }else{
-                Swal.close()
-                errorAlert(res)
-            }
-        })
-    return pdf
-}
 
 function crearConfirmacion() {
     let enviarPreSmsChecked = document.getElementById('enviar_sms_pre_registro').checked;
@@ -2295,6 +2219,7 @@ function limpiarTomarFoto(id){
     }else{
         validarInputFile('inputFileCard')
     }
+    hideInMobile(id)
 }
 
 //FUNCION eliminar un set repetitivo de vehiculo
@@ -2309,6 +2234,15 @@ function setDeleteVehiculo(id) {
         $('#selectCatalogModelo-123').prop('selectedIndex', 0);
         $('#inputMatriculaVehiculo-123').val('');
         $('#inputEstadoVehiculo-123').prop('selectedIndex', 0);
+        if(status_pase == "activo"){
+            let selectColores1= document.getElementById("inputColorVehiculo-123")
+                $(document).ready(function() {
+                    for(let color of coloresArray){
+                        selectColores1.innerHTML += '<option value="'+capitalizeFirstLetter(color.toLowerCase()) +'">'+color+'</option>';
+                    }
+                });
+            selectColores1.value=""
+        }
         $('#inputColorVehiculo-123').prop('selectedIndex', 0);
         $("#div-vehiculo-item-123").show();
     }
@@ -2391,9 +2325,9 @@ function setAddVehiculo() {
 	    }
 	});
 	selectColores.value=""
-    $("#inputEstadoVehiculo-"+randomID+"").val("")
-    $("#inputColorVehiculo-"+randomID+"").val("")
-    $("#selectTipoVehiculo-"+randomID+"").val("")
+    $("#selectTipoVehiculo-"+randomID+"").prop('selectedIndex', 0);
+    $("#selectCatalogMarca-"+randomID+"").prop('selectedIndex', 0);
+    $("#selectCatalogModelo-"+randomID+"").prop('selectedIndex', 0);
 }
 
 

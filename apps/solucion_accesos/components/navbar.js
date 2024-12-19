@@ -111,18 +111,13 @@ function changeButtonColor(){
 }
 
 
-
-function customNavbar(location, turno){
+function customNavbar(location, turno, showPic = true){
     let menus = getCookie('menus_soter') !==''? JSON.parse(getCookie('menus_soter')):""
-        console.log("men", menus, turno,location)
-        if(turno === userTurnCerrado ){ 
-            showSpecificMenu([])
-        }else if(turno === userTurnAbierto){ 
-            //let ids = getIdsMenu("menu")
-            showSpecificMenu(menus)
-        }
-
-
+    if(turno === userTurnCerrado ){ 
+        showSpecificMenu([], showPic)
+    }else if(turno === userTurnAbierto){ 
+        showSpecificMenu(menus)
+    }
 }
 
 
@@ -146,7 +141,7 @@ function getIdsMenu(idClass){
 }
 
 
-function showSpecificMenu(menus){
+function showSpecificMenu(menus, showPic){
     if (menus.length>0){
         for (let m of menus){
         console.log("MENUS", m)
@@ -154,9 +149,16 @@ function showSpecificMenu(menus){
         }
     }else{
         let menusUnlock = [] 
+       
         for (let m of menus){
             $('#button'+capitalizeFirstLetter(m)).addClass('ocultar')
         }
+    }
+    
+    if(showPic){
+        $("#userMenu").show()
+    }else{
+        $("#userMenu").hide()
     }
 
 }

@@ -36,7 +36,7 @@
 	<navbar-component ></navbar-component>
 
      <section class="mainSection d-flex flex-column align-items-center justify-content-center" >
-     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-7 mb-3 mt-5" id="paseEntradaInf1">
+     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-7 mb-3 mt-5" id="paseEntradaInf1" style="display:none">
 	     	<div class="mb-3 d-flex flex-wrap justify-content-start">
 	     		<div class="col-6 m-0 p-0">
 	            	<h4 >Pase de entrada</h4>
@@ -55,7 +55,7 @@
 	     		<small class="text-gray">Proceso</small>
 	     	</div>
      	</div>
-     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-7  p-0 m-0" id="paseEntradaInf2">
+     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-7  p-0 m-0" id="paseEntradaInf2" style="display:none">
             <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
                 <label for="exampleInputEmail1">Nombre Completo</label>
                 <input type="text" class="form-control fill paseEntradaNuevo" id="nombreCompleto" aria-describedby="emailHelp" placeholder="Nombre completo">
@@ -126,10 +126,10 @@
 	        	</label>
             </div>
         </div>
-        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-7  mt-3" id="paseEntradaInf3">
+        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-7  mt-3" id="paseEntradaInf3" style="display:none">
  			<h4>Vigencia: </h4>
  		</div> 
-        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-7" id="paseEntradaInf4">
+        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-7" id="paseEntradaInf4" style="display:none">
             <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6" >
                 <div>
 					<div class="checkbox-group me-2 my-3">
@@ -353,8 +353,7 @@
             	</div>
             </div>     
      	</div>
-
-		 <div class="container mt-1" id="paseEntradaCompletado">
+		<div class="container mt-1" id="paseEntradaCompletado" style="display:none">
 			 <div class="row row-cols-1 row-cols-sm-1 no-select">
 				<div class="col">
 					<div class="qr-pass-container text-center px-5 pt-2">
@@ -386,7 +385,7 @@
 				</div>
 			</div>
 		</div>
-     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-7 mb-3 mt-5" id="paseEntradaInf5">
+     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-7 mb-3 mt-5" id="paseEntradaInfo" style="display:none"> <!-- id="buttonTakeUser" -->
 	     	<div class="mb-3">
 	            <h4 >Pase de Entrada</h4>
 	     	</div>
@@ -415,7 +414,7 @@
             	</div>
             </div>
      	</div>
-		<div class="col-sm-8 col-md-8 col-lg-8 col-xl-7 p-0 m-0 mt-3" id="paseEntradaCompletadoFotos">
+		<div class="col-sm-8 col-md-8 col-lg-8 col-xl-7 p-0 m-0 mt-3" id="paseEntradaCompletadoFotos" style="display:none">
 			<div class="d-sm-flex justify-content-center">
 				<div class="col" id="fotografiaActual">
 					<div class="d-flex flex-column mb-2">
@@ -431,7 +430,7 @@
 				</div>
 			</div>
 		</div>
-     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-7 d-flexjustify-content-center p-0 m-0" id="paseEntradaInf6">
+     	<div class="col-sm-8 col-md-8 col-lg-8 col-xl-7  p-0 m-0" id="paseEntradaInf6" style="display:none">
             <div class="d-flex flex-row flex-wrap">
             	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3 mt-3" id="foto">
 					<label class="form-label">Fotografia: *</label>
@@ -449,7 +448,7 @@
 						<canvas id="canvasPhotoUser" style="display: none;width: 185px;height: 125px;"></canvas>
 						<img id="imgUser" src="" style="display: none;width: 185px;height: 148px;">
 					</div>
-					<input type="file" class="form-control mt-2 inputsPase" id="inputFileUser" aria-describedby="fotoInput" onchange="guardarArchivos('inputFileUser', false); validarInputFile('inputFileUser')" >
+					<input type="file" class="form-control mt-2 inputsPase" id="inputFileUser" aria-describedby="fotoInput" onchange="guardarArchivos('inputFileUser', false); validarInputFile('inputFileUser')" accept="image/*">
 					<div id="fotoInput" class="invalid-feedback">
                         Este campo es requerido.
                     </div>
@@ -470,7 +469,7 @@
 						<canvas id="canvasPhotoCard" style="display: none;width: 185px;height: 125px;"></canvas>
 						<img id="imgCard" src="" style="display: none;width: 185px;height: 148px;">
 					</div>
-					<input type="file" class="form-control mt-2 inputsPase" id="inputFileCard" aria-describedby="fotoInput" onchange="guardarArchivos('inputFileCard', false);validarInputFile('inputFileCard')" >
+					<input type="file" class="form-control mt-2 inputsPase" id="inputFileCard" aria-describedby="fotoInput" onchange="guardarArchivos('inputFileCard', false);validarInputFile('inputFileCard')" accept="image/*">
 					<div id="identInput" class="invalid-feedback">
                         Este campo es requerido.
                     </div>
