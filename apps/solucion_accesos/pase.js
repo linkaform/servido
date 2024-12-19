@@ -1462,34 +1462,6 @@ async function descargarPdfPaseActivo() {
     await descargarPdfPase(pdf.download_url)
 }
 
-async function get_pdf(qr_code){
-    let pdf=""
-    // loadingService()
-    await fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_name:'pase_de_acceso.py',
-                option:'get_pdf',
-                qr_code:qr_code
-            }),
-            headers:
-            {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt
-            },
-        })
-        .then(res => res.json())
-        .then(res => {
-            if(res.success){
-                Swal.close()
-                pdf=res.response.data.data
-            }else{
-                Swal.close()
-                errorAlert(res)
-            }
-        })
-    return pdf
-}
 
 function crearConfirmacion() {
     let enviarPreSmsChecked = document.getElementById('enviar_sms_pre_registro').checked;

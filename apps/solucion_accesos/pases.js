@@ -1037,7 +1037,7 @@ async function get_pdf(qr_code){
             headers:
             {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt
+                // 'Authorization': 'Bearer '+userJwt
             },
         })
         .then(res => res.json())
