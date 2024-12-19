@@ -8,7 +8,6 @@ function getParsedConfiguration() {
     if (configuration) {
         return JSON.parse(configuration);
     } else {
-        console.log('No hay configuración en localStorage.');
         return null;
     }
 }
@@ -71,7 +70,6 @@ function drawConfigLocation(dataConfig) {
             const textDiv = document.createElement('div');
             textDiv.className = 'task-text ';
             textDiv.textContent = item.title; 
-
             li.appendChild(iconDiv);
             li.appendChild(textDiv);
             if(item.status != 'completed'){
@@ -102,7 +100,7 @@ function drawConfigLocation(dataConfig) {
 
             const textDiv = document.createElement('div');
             textDiv.className = 'task-text';
-            textDiv.textContent = task; 
+            textDiv.textContent = task.nombre; 
 
             li.appendChild(iconDiv);
             li.appendChild(textDiv);

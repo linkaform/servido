@@ -80,11 +80,11 @@ function changeRondin() {
         ulContainer.innerHTML = '';
         const selectedData = dicConfigs.find(rondin => rondin.folio === valueSelect);
         if (selectedData && selectedData.area) {
-            selectedData.area.forEach(area => {
+            selectedData.area.forEach(item => {
                 const li = document.createElement('li');
                 li.className = 'list-group-item d-flex justify-content-between align-items-center';
                 const span = document.createElement('span');
-                span.innerHTML = `<i class="bi bi-geo-alt-fill"></i> ${area}`;
+                span.innerHTML = `<i class="bi bi-geo-alt-fill"></i> ${item.nombre}`;
                 li.appendChild(span);
                 ulContainer.appendChild(li);
             });
@@ -132,14 +132,14 @@ function getAllLocalStorageData() {
 }
 
 function setRequestCreatedBitacora(){
-    const valueSelect = document.getElementById('selectRondin').value;
+    const tagId = getParameterURL('tagId');
     const JWT = getCookie("userJwt");
-    const LOCATION = getCookie("locationOrigin");
+    const valueSelect = document.getElementById('selectRondin').value;
     fetch('https://app.linkaform.com/api/infosync/scripts/run/', {
         method: 'POST',
         body: JSON.stringify({
             script_id: 126428,
-            location: LOCATION,
+            tagId: tagId,
             config: valueSelect,
             option: 'add_record_bitacora',
         }),

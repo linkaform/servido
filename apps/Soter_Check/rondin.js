@@ -48,14 +48,29 @@ function resquestLocation(){
 async function get_validation_flow() {
     const statusSession = getSession('login');
     if(statusSession == 'Active'){
-        resquestLocation();
-        //---Asign Events
-        document.getElementById("buttonStartRondin").addEventListener("click", () => {
-            redirectionStartRondin();
-        });
-        document.getElementById("buttonStartRondin").addEventListener("click", () => {
-            buttonInspectionArea();
-        });
+        let configuration = localStorage.getItem('configuration');
+        if(configuration){
+            resquestLocation();
+            const buttonInspectionArea = document.getElementById("buttonInspectionArea");
+            buttonInspectionArea.classList.remove('hidden');
+            buttonInspectionArea.addEventListener("click", () => {
+                redirectionInspectionArea();
+            });
+        }else{
+            const buttonStartRondin = document.getElementById("buttonStartRondin");
+            const buttonInspectionArea = document.getElementById("buttonInspectionArea");
+
+            resquestLocation();
+            //---Asign Events
+            buttonStartRondin.classList.remove('hidden');
+            buttonInspectionArea.classList.remove('hidden');
+            buttonStartRondin.addEventListener("click", () => {
+                redirectionStartRondin();
+            });
+            buttonInspectionArea.addEventListener("click", () => {
+                redirectionInspectionArea();
+            });
+        }
     }else{  
         redirectionLogin();
     }

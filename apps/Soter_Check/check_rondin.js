@@ -193,34 +193,57 @@ function dataSend(){
     //---DIsable
     const button = document.getElementById('buttonSend');
     button.disabled = true; 
-    //---Get data form
-    let configuration = JSON.parse( localStorage.getItem('configuration'));
-    const location = getParameterURL('location');
-    const checksSelected = getCheckboxStates();
-    const inputComment = document.getElementById('commentCheck').value;
-    const dicData = {
-        'folio': configuration.folio,
-        'rondin': configuration.nombre_rondin,
-        'ubicacion': configuration.ubicacion,
-        'location': location,
-        'list_checks': checksSelected,
-        'comment': inputComment,
-        'list_img': listImagesDic,
-    }
-    //---Get data local storage
-    let recordConfig = localStorage.getItem('recordBitacora');
-    recordConfig = JSON.parse(recordConfig);
-    let dicListRecord = localStorage.getItem('dicListRecord');
-    const JWT = getCookie("userJwt");
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
-    fetch(urlLinkaform, {
-        method: 'POST',
-        body: JSON.stringify({
+    //---TYPE
+    const tagId = getParameterURL('tagId');
+    let dicFetch = {}
+    let type = getParameterURL('type');
+    if(type){
+        const checksSelected = getCheckboxStates();
+        const inputComment = document.getElementById('commentCheck').value;
+        const dicData = {
+            'tagId': tagId,
+            'list_checks': checksSelected,
+            'comment': inputComment,
+            'list_img': listImagesDic,
+        }
+        dicFetch = {
+            script_id: 126428,
+            formInformation: dicData,
+            option: 'add_inspection_check',
+        }
+    }else{
+        //---Get data form
+        let configuration = JSON.parse( localStorage.getItem('configuration'));
+        const tagId = getParameterURL('tagId');
+        const checksSelected = getCheckboxStates();
+        const inputComment = document.getElementById('commentCheck').value;
+        const dicData = {
+            'folio': configuration.folio,
+            'rondin': configuration.nombre_rondin,
+            'ubicacion': configuration.ubicacion,
+            'tagId': tagId,
+            'list_checks': checksSelected,
+            'comment': inputComment,
+            'list_img': listImagesDic,
+        }
+        //---Get data local storage
+        let recordConfig = localStorage.getItem('recordBitacora');
+        recordConfig = JSON.parse(recordConfig);
+
+        dicFetch = {
             script_id: 126428,
             formInformation: dicData,
             folioUpdate:recordConfig.folio,
             option: 'add_record_check',
-        }),
+        }
+
+    }
+    const JWT = getCookie("userJwt");
+    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
+    //---Request
+    fetch(urlLinkaform, {
+        method: 'POST',
+        body: JSON.stringify(dicFetch),
         headers:{
             'Content-Type': 'application/json',
             'Access-Control-Request-Headers':'*',
@@ -231,21 +254,31 @@ function dataSend(){
     .then(res => {
         const data = res.response && res.response.data ? res.response.data : {};
         if (data.status_create == '201') {
-            alert('Se ingresó exitosamente el registro');
-            let dicListRecord = localStorage.getItem('dicListRecord');
-            if(!dicListRecord){
-                createDicRecord(configuration, dicData);
+            if(!type){
+                let dicListRecord = localStorage.getItem('dicListRecord');
+                if(!dicListRecord){
+                    createDicRecord(configuration, dicData);
+                }else{
+                    updateDicRecord(dicListRecord,dicData);
+                }
+                let modal = new bootstrap.Modal(document.getElementById('alertaModalSuccess'));
+                modal.show();
+                setTimeout(() => {
+                    setRedirection();
+                }, 2000);
             }else{
-                updateDicRecord(dicListRecord,dicData);
+                let modal = new bootstrap.Modal(document.getElementById('alertaModalSuccess'));
+                modal.show();
             }
-            setRedirection();
         } else {
-            alert('Hubo un error en el registro, contacte a soporte.');
+            let modal = new bootstrap.Modal(document.getElementById('alertaModalFail'));
+            modal.show();
         }
     })
 }
 
 function getInformationLocation(location){
+    const tagId = getParameterURL('tagId');
     const textTitle = document.getElementById('titleLocation');
     const textDir = document.getElementById('textDir');
     const textUbic = document.getElementById('textUbic');
@@ -256,7 +289,7 @@ function getInformationLocation(location){
         method: 'POST',
         body: JSON.stringify({
             script_id: 126428,
-            location: location,
+            tagId: tagId,
             option: 'get_catalog',
         }),
         headers:{
@@ -371,9 +404,24 @@ async function get_validation_flow() {
             let area = data.data_tag && data.data_tag.nombre_area_catalog ? data.data_tag.nombre_area_catalog  :'undefined';
             let configuration = localStorage.getItem('configuration');
             if(configuration){
-                loadCheckArea(area);
+                status_config = validationConfigTag(configuration);
+                if(status_config){
+                    loadCheckArea(area);
+                }else{
+                    let type = getParameterURL('type');
+                    if(type){
+                        loadCheckArea(area);
+                    }else{
+                        redirectionArea(area);
+                    }
+                }
             }else{
-                redirectionArea(area);
+                let type = getParameterURL('type');
+                if(type){
+                    loadCheckArea(area);
+                }else{
+                    redirectionArea(area);
+                }
             }
         }else if(data.status_request && data.status_request == 'not_included'){
             redirectionConfig();
@@ -443,7 +491,6 @@ function redirectionArea() {
 }
 
 function loadCheckArea(area) {
-    console.log('Area',area);
     let listData = getListCheck(area);
     setElementsCheck(listData);
     //---Information 
@@ -467,4 +514,19 @@ function loadCheckArea(area) {
         loading.style.display = 'none';
         mainContent.classList.remove('hidden'); 
     }, 2000);
+}
+
+function validationConfigTag(dicData) {
+    let statusReturn = false;
+    let tagId = getParameterURL('tagId');
+    let data  = JSON.parse(dicData);
+    console.log('data',data)
+    let listConfig = data.area && data.area.length > 0 ? data.area : [];
+
+    listConfig.forEach(item => {
+        if(item.tagId == tagId){
+            statusReturn = true;
+        }
+    });
+    return statusReturn;
 }
