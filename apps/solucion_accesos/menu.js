@@ -27,10 +27,12 @@ function showCustomMenu(menus, idHtmlMenu){
 	$("#spinner").hide()
 	let divMenu = document.getElementById(idHtmlMenu)
 	let addHtml= ''
+  let htmlPase=''
+  let htmlTurnos=''
 	for (let menu of menus ){
 
 		if(menu=='pases'){
-			addHtml+=`<div class="col">
+			htmlPase=`<div class="col">
               <div class="menu-grid-item text-center p-4"  onclick="redirectionUrl('pases');return false;">
                 <i class="fa-solid fa-passport fs-1 mb-3"></i>
                 <p>Pases de Entrada</p>
@@ -47,10 +49,10 @@ function showCustomMenu(menus, idHtmlMenu){
 
 		}
 		if(menu=='turnos'){
-			addHtml+=`<div class="col">
+			htmlTurnos=`<div class="col">
               <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('turnos');return false;">
                 <i class="fa-solid fa-shield-halved fs-1 mb-3"></i>
-                <p>Turnos</p>
+                <p>Turnos / Accesos</p>
               </div>
             </div>`
 		}
@@ -60,7 +62,7 @@ function showCustomMenu(menus, idHtmlMenu){
 			addHtml+=`<div class="col">
               <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('turnos');return false;">
                 <i class="fa-solid fa-shield-halved fs-1 mb-3"></i>
-                <p>Turnos</p>
+                <p>Turnos / Accesos</p>
               </div>
             </div>`
 		}
@@ -123,5 +125,5 @@ function showCustomMenu(menus, idHtmlMenu){
     if(!menus.length>0){
         errorAlert("No se encontraron los menus, revisa la configuracion")
     }
-	divMenu.innerHTML = addHtml
+	divMenu.innerHTML = htmlPase + htmlTurnos + addHtml
 }
