@@ -1295,7 +1295,7 @@ function actualizarPaseActivo() {
                 objVehiculo.modelo_vehiculo === 'Escoge una marca...' || 
                 objVehiculo.placas_vehiculo === ''
             ) {
-                arrayVehiculos = []
+                console.log("Vehículo inválido, no agregado:", objVehiculo);
             }else{
                 console.log(objVehiculo)
                 arrayVehiculos.push(objVehiculo)
