@@ -29,7 +29,8 @@ function setRequestUpdateTag(){
     .then(res => {
         const data = res.response && res.response.data ? res.response.data : {};
         if(data.status_request == '202'){
-            alert('Se a registrado su tag');
+            dic_data = getDataSelect();
+            drawInformation(dic_data);
         }
     })
 }
@@ -85,8 +86,9 @@ function setRequestTag() {
         const inputIdTag = document.getElementById('inputIdTag');
         inputIdTag.value = tagId;
         if(data.status_request == 'included'){
+
+            console.log('data.data_tag',data.data_tag)
             drawInformation(data.data_tag);
-            console.log('entra a la otra',data.data_tag)
         }else if(data.status_request == 'not_included'){
             drawOptionsUbicacion(data.catalog_list)
         }
@@ -191,4 +193,21 @@ function drawInformation(data) {
     inputUbicacion.classList.remove('hidden');  
     inputUbicacion.value = data.ubicacion_catalog ? data.ubicacion_catalog : '';
     inputArea.value = data.nombre_area_catalog ? data.nombre_area_catalog : '';
+}
+
+function getDataSelect() {
+    const selectUbicacion = document.getElementById('selectUbicacion');
+    const selectedTextUbicacion = selectUbicacion.options[selectUbicacion.selectedIndex].text;
+
+    const selectArea = document.getElementById('selectArea');
+    const selectedTextArea = selectArea.options[selectArea.selectedIndex].text;
+
+    const inputIdTag = document.getElementById('inputIdTag').value;
+    const dicRes = {
+        "ubicacion_catalog":selectedTextUbicacion,
+        "nombre_area_catalog":selectedTextArea,
+        "tag_id_catalog": inputIdTag,
+        "imagen_area_catalog": null
+    }
+    return dicRes;
 }

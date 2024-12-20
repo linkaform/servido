@@ -100,7 +100,7 @@ function showInformation(data) {
     const textUbic = document.getElementById('textUbic');
     const textComment = document.getElementById('commentCheck');
 	//---Asign
-	title = data.title ? data.title : '';
+	title = data.title && data.title.nombre ? data.title.nombre : '';
 	dataInformation = data.information ? data.information : {};
 
 	if(title && title != ''){
@@ -128,20 +128,23 @@ function showInformation(data) {
 function setImages(listImages) {
 	const imageUrls = listImages;
 	const container = document.getElementById("imageContainer");
-	container.innerHTML = '';
-	if (imageUrls.length == 0) {
+	if (imageUrls == undefined) {
 	  	container.innerHTML = '<p class="no-images">No hay imágenes</p>';
 	} else {
-	  	const grid = document.createElement("div");
-	  	grid.className = "image-grid";
+        if(imageUrls.length > 0){
+    	  	const grid = document.createElement("div");
+    	  	grid.className = "image-grid";
 
-	  	imageUrls.forEach((image) => {
-	    	const img = document.createElement("img");
-	    	img.src = image.file_url;
-	    	img.alt = "Imagen";
-	    	grid.appendChild(img);
-	  	});
-	  	container.appendChild(grid);
+    	  	imageUrls.forEach((image) => {
+    	    	const img = document.createElement("img");
+    	    	img.src = image.file_url;
+    	    	img.alt = "Imagen";
+    	    	grid.appendChild(img);
+    	  	});
+    	  	container.appendChild(grid);
+        }else{
+            container.innerHTML = '<p class="no-images">No hay imágenes</p>';
+        }
 	}
 }
 

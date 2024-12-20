@@ -66,28 +66,45 @@ function setElementImages(data) {
     setTimeout(() => {
         loader.style.display = 'none';
         data.forEach(image => {
-            const attachment = document.createElement("div");
-            attachment.className = "attachment";
+            const colDiv = document.createElement("div");
+            colDiv.className = "col-12 col-md-12 col-lg-12 mb-4 position-relative";
 
-            const fileNameSpan = document.createElement("span");
-            fileNameSpan.textContent = image.file_name;
+            const img = document.createElement("img");
+            img.src = image.file_url; 
+            img.alt = image.file_name;
+            img.className = "img-fluid w-100 rounded";
 
             const deleteIconSpan = document.createElement("span");
-            deleteIconSpan.className = "delete-icon";
+            deleteIconSpan.className = "delete-icon position-absolute top-0 end-0 m-2 text-danger";
+            deleteIconSpan.style.cursor = 'pointer';
+            deleteIconSpan.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+            deleteIconSpan.style.borderRadius = '50%';
+            deleteIconSpan.style.padding = '5px';
 
             const icon = document.createElement("i");
-            icon.className = "fas fa-trash";
+            icon.className = "fas fa-trash fa-lg";
 
             deleteIconSpan.onclick = () => deleteImage(image.file_url);
 
             deleteIconSpan.appendChild(icon);
-            attachment.appendChild(fileNameSpan);
-            attachment.appendChild(deleteIconSpan);
 
-            container.appendChild(attachment);
+            let truncatedFileName = image.file_name;
+            if (truncatedFileName.length > 15) {
+                truncatedFileName = truncatedFileName.substring(0, 15) + '...';
+            }
+
+            const fileNameParagraph = document.createElement("p");
+            fileNameParagraph.textContent = truncatedFileName;
+            fileNameParagraph.className = "text-center mt-2";
+
+            colDiv.appendChild(img);
+            colDiv.appendChild(deleteIconSpan);
+            colDiv.appendChild(fileNameParagraph);
+            container.appendChild(colDiv);
         });
+
         const button = document.getElementById('buttonSend');
-        button.disabled = false; 
+        button.disabled = false;
     }, 500);
 }
 
@@ -111,8 +128,7 @@ function openFilePicker(callback) {
     console.log('openFilePicker');
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = "image/*"; // Acepta solo imágenes
-
+    input.accept = "image/*"; 
     input.addEventListener("change", (event) => {
         const file = event.target.files[0];
         if (file && callback) {
@@ -199,6 +215,7 @@ function dataSend(){
     let type = getParameterURL('type');
     let checksSelected = getCheckboxStates();
     let inputComment = document.getElementById('commentCheck').value;
+    let textAlert = document.getElementById('textModalSuccess');
     let dicDaga;
     if(type){
         dicData = {
@@ -256,24 +273,26 @@ function dataSend(){
                 if(!dicListRecord){
                     let configuration = JSON.parse( localStorage.getItem('configuration'));
                     const dicData = {
-                                'folio': configuration.folio,
-                                'rondin': configuration.nombre_rondin,
-                                'ubicacion': configuration.ubicacion,
-                                'tagId': tagId,
-                                'list_checks': checksSelected,
-                                'comment': inputComment,
-                                'list_img': listImagesDic,
-                            }
+                        'folio': configuration.folio,
+                        'rondin': configuration.nombre_rondin,
+                        'ubicacion': configuration.ubicacion,
+                        'tagId': tagId,
+                        'list_checks': checksSelected,
+                        'comment': inputComment,
+                        'list_img': listImagesDic,
+                    }
                     createDicRecord(configuration, dicData);
                 }else{
                     updateDicRecord(dicListRecord, dicData);
                 }
+                textAlert.textContent = '¡Se a registrado su Rondin Check!';
                 let modal = new bootstrap.Modal(document.getElementById('alertaModalSuccess'));
                 modal.show();
                 setTimeout(() => {
                     setRedirection();
                 }, 2000);
             }else{
+                textAlert.textContent = '¡Se a registrado su inspección de Área!';
                 let modal = new bootstrap.Modal(document.getElementById('alertaModalSuccess'));
                 modal.show();
             }
@@ -363,15 +382,20 @@ function createDicRecord(configuration, dicData){
         status: "completed",
         information: dicData,
     };
-    const foundIndex = resultList.findIndex(item => item.title === dicData.location);
+
+    const foundIndex = resultList.findIndex(item => 
+        item.title.tagId.includes(dicData.tagId) 
+    );
+
     if (foundIndex !== -1) {
         resultList[foundIndex] = {
             ...resultList[foundIndex],
-            ...updatedData,           
+            ...updatedData,
         };
     }
     localStorage.setItem('dicListRecord', JSON.stringify(resultList));
 }
+
 
 function updateDicRecord(dicList, data){
     //---Update Dic
@@ -381,15 +405,18 @@ function updateDicRecord(dicList, data){
     };
     dicList = JSON.parse(dicList);
     if(dicList){
-        const foundIndex = dicList.findIndex(item => item.title === data.location);
+        const foundIndex = dicList.findIndex(item => 
+            item.title.tagId.includes(dicData.tagId) // Buscar en el array tagId
+        );
         if (foundIndex !== -1) {
+            // Actualizar el elemento encontrado
             dicList[foundIndex] = {
                 ...dicList[foundIndex],
-                ...updatedData,           
+                ...updatedData,
             };
         }
-        localStorage.setItem('dicListRecord', JSON.stringify(dicList));
     }
+    localStorage.setItem('dicListRecord', JSON.stringify(dicList));
 }
 
 function setRedirection() {

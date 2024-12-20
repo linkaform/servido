@@ -8,6 +8,7 @@ function resquestLocation(){
     let tagId = getParameterURL('tagId');
     //---Modal Components
     const textLocation = document.getElementById('textLocation');
+    const textUbication = document.getElementById('textUbicacion');
 	const JWT = getCookie("userJwt");
 	fetch(getUrlRequest('script'), {
 		method: 'POST',
@@ -25,9 +26,11 @@ function resquestLocation(){
 	.then((res) => {
 		//---Information FOrm
 		const data = res.response && res.response.data ? res.response.data : {};
-
 		if(res.response.data && res.response.data.name_location && res.response.data.name_location != ''){
             textLocation.textContent = res.response.data.name_location;
+        }
+        if(res.response.data && res.response.data.ubication_location && res.response.data.ubication_location != ''){
+            textUbication.textContent = res.response.data.ubication_location;
         }
         if(res.response.data && res.response.data.image_location && res.response.data.image_location.length > 0 ){
             const imageElement = document.getElementById('imgLocation');
@@ -57,10 +60,8 @@ async function get_validation_flow() {
                 redirectionInspectionArea();
             });
         }else{
-
             const buttonStartRondin = document.getElementById("buttonStartRondin");
             const buttonInspectionArea = document.getElementById("buttonInspectionArea");
-
             resquestLocation();
             //---Asign Events
             buttonStartRondin.classList.remove('hidden');
