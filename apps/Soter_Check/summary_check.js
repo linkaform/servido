@@ -51,7 +51,7 @@ function checkDrawSummary() {
             iconDiv.innerHTML = '<i class="fas fa-map-marker-alt"></i>';
             const textDiv = document.createElement('div');
             textDiv.className = 'task-text ';
-            textDiv.textContent = item.title; 
+            textDiv.textContent = item.title.nombre; 
             li.appendChild(iconDiv);
             li.appendChild(textDiv);
             li.addEventListener('click', () => showInformation(item));

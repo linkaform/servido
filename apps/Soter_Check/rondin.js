@@ -57,6 +57,7 @@ async function get_validation_flow() {
                 redirectionInspectionArea();
             });
         }else{
+
             const buttonStartRondin = document.getElementById("buttonStartRondin");
             const buttonInspectionArea = document.getElementById("buttonInspectionArea");
 

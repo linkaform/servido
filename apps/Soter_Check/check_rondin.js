@@ -194,13 +194,14 @@ function dataSend(){
     const button = document.getElementById('buttonSend');
     button.disabled = true; 
     //---TYPE
-    const tagId = getParameterURL('tagId');
+    let tagId = getParameterURL('tagId');
     let dicFetch = {}
     let type = getParameterURL('type');
-    const checksSelected = getCheckboxStates();
-    const inputComment = document.getElementById('commentCheck').value;
+    let checksSelected = getCheckboxStates();
+    let inputComment = document.getElementById('commentCheck').value;
+    let dicDaga;
     if(type){
-        const dicData = {
+        dicData = {
             'tagId': tagId,
             'list_checks': checksSelected,
             'comment': inputComment,
@@ -214,8 +215,7 @@ function dataSend(){
     }else{
         //---Get data form
         let configuration = JSON.parse( localStorage.getItem('configuration'));
-        const tagId = getParameterURL('tagId');
-        const dicData = {
+        dicData = {
             'folio': configuration.folio,
             'rondin': configuration.nombre_rondin,
             'ubicacion': configuration.ubicacion,
@@ -236,7 +236,7 @@ function dataSend(){
         }
 
     }
-    const JWT = getCookie("userJwt");
+    let JWT = getCookie("userJwt");
     //---Request
     fetch(getUrlRequest('script'), {
         method: 'POST',
@@ -249,7 +249,7 @@ function dataSend(){
     })
     .then(res => res.json())
     .then(res => {
-        const data = res.response && res.response.data ? res.response.data : {};
+        let data = res.response && res.response.data ? res.response.data : {};
         if (data.status_create == '201') {
             if(!type){
                 let dicListRecord = localStorage.getItem('dicListRecord');
@@ -266,7 +266,7 @@ function dataSend(){
                             }
                     createDicRecord(configuration, dicData);
                 }else{
-                    updateDicRecord(dicListRecord,dicData);
+                    updateDicRecord(dicListRecord, dicData);
                 }
                 let modal = new bootstrap.Modal(document.getElementById('alertaModalSuccess'));
                 modal.show();

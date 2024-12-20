@@ -146,6 +146,7 @@ function setFinishRondin(){
     //----Update Status
     setRequestStatus();
     //----Redirection
+    localStorage.removeItem('configuration');
     setRedirection('summary_check');
 }
 
