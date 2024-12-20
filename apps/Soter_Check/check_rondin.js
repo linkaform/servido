@@ -145,7 +145,7 @@ function handleFile(file) {
     formData.append('is_image', true);
     formData.append('form_id',  126213);
 
-    fetch(getUrlRequest('script'), {
+    fetch(getUrlRequest('uploadPicture'), {
         method: 'POST',
         body: formData
     })
@@ -197,9 +197,9 @@ function dataSend(){
     const tagId = getParameterURL('tagId');
     let dicFetch = {}
     let type = getParameterURL('type');
+    const checksSelected = getCheckboxStates();
+    const inputComment = document.getElementById('commentCheck').value;
     if(type){
-        const checksSelected = getCheckboxStates();
-        const inputComment = document.getElementById('commentCheck').value;
         const dicData = {
             'tagId': tagId,
             'list_checks': checksSelected,
@@ -207,7 +207,7 @@ function dataSend(){
             'list_img': listImagesDic,
         }
         dicFetch = {
-            script_id: 'create_record_check.py',
+            script_name: 'create_record_check.py',
             formInformation: dicData,
             option: 'add_inspection_check',
         }
@@ -215,8 +215,6 @@ function dataSend(){
         //---Get data form
         let configuration = JSON.parse( localStorage.getItem('configuration'));
         const tagId = getParameterURL('tagId');
-        const checksSelected = getCheckboxStates();
-        const inputComment = document.getElementById('commentCheck').value;
         const dicData = {
             'folio': configuration.folio,
             'rondin': configuration.nombre_rondin,
@@ -231,7 +229,7 @@ function dataSend(){
         recordConfig = JSON.parse(recordConfig);
 
         dicFetch = {
-            script_id: 'create_record_check.py',
+            script_name: 'create_record_check.py',
             formInformation: dicData,
             folioUpdate:recordConfig.folio,
             option: 'add_record_check',
@@ -256,6 +254,16 @@ function dataSend(){
             if(!type){
                 let dicListRecord = localStorage.getItem('dicListRecord');
                 if(!dicListRecord){
+                    let configuration = JSON.parse( localStorage.getItem('configuration'));
+                    const dicData = {
+                                'folio': configuration.folio,
+                                'rondin': configuration.nombre_rondin,
+                                'ubicacion': configuration.ubicacion,
+                                'tagId': tagId,
+                                'list_checks': checksSelected,
+                                'comment': inputComment,
+                                'list_img': listImagesDic,
+                            }
                     createDicRecord(configuration, dicData);
                 }else{
                     updateDicRecord(dicListRecord,dicData);
@@ -282,17 +290,18 @@ function getInformationLocation(location){
     const textDir = document.getElementById('textDir');
     const textUbic = document.getElementById('textUbic');
     const textType = document.getElementById('textType');
-
+    let JWT = getCookie("userJwt");
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 'create_record_check.py',
+            script_name: 'create_record_check.py',
             tagId: tagId,
             option: 'get_catalog',
         }),
         headers:{
             'Content-Type': 'application/json',
-            'Access-Control-Request-Headers':'*'
+            'Access-Control-Request-Headers':'*',
+            'Authorization': 'Bearer '+JWT
         },
     })
     .then(res => res.json())
@@ -436,16 +445,18 @@ async function get_validation_flow() {
 async function validationTagId() {
     let statusTag = '';
     let tagId = getParameterURL('tagId');
+    const JWT = getCookie("userJwt");
     const response = await fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 'create_record_check.py',
+            script_name: 'create_record_check.py',
             tagId: tagId,
             option: 'get_information_tag',
         }),
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Request-Headers': '*',
+            'Authorization': 'Bearer '+JWT
         },
     });
     const res = await response.json();

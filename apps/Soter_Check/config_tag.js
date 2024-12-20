@@ -1,17 +1,8 @@
 let listCatalog = [];
 
 window.onload = function(){
-    setRequestTag();
-    //---Asign Events
-    document.getElementById('selectUbicacion').addEventListener('change', function() {
-        drawOptionsArea(document.getElementById('selectUbicacion').value)
-    });
-    document.getElementById('selectArea').addEventListener('change', function() {
-        drawImageArea(document.getElementById('selectArea').value)
-    });
-    document.getElementById("buttonSend").addEventListener("click", () => {
-        setRequestUpdateTag();
-    });
+    get_validation_flow();
+
 }
 
 function setRequestUpdateTag(){
@@ -19,10 +10,11 @@ function setRequestUpdateTag(){
     buttonSend.disabled = false;
     let idCatalog =  document.getElementById('selectArea').value;
     let idTag =  document.getElementById('inputIdTag').value;
+    let JWT = getCookie("userJwt");
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 'create_record_check.py',
+            script_name: 'create_record_check.py',
             tagId:idTag,
             idCatalog:idCatalog,
             option: 'update_information_tag',
@@ -30,6 +22,7 @@ function setRequestUpdateTag(){
         headers:{
             'Content-Type': 'application/json',
             'Access-Control-Request-Headers':'*',
+            'Authorization': 'Bearer '+JWT
         },
     })
     .then(res => res.json())
@@ -41,19 +34,49 @@ function setRequestUpdateTag(){
     })
 }
 
+//----Validation Flow
+async function get_validation_flow() {
+    const statusSession = getSession('login');
+    if(statusSession == 'Active'){
+         setRequestTag();
+        //---Asign Events
+        document.getElementById('selectUbicacion').addEventListener('change', function() {
+            drawOptionsArea(document.getElementById('selectUbicacion').value)
+        });
+        document.getElementById('selectArea').addEventListener('change', function() {
+            drawImageArea(document.getElementById('selectArea').value)
+        });
+        document.getElementById("buttonSend").addEventListener("click", () => {
+            setRequestUpdateTag();
+    });
+    }else {
+        redirectionLogin();
+    }
+}
+
+function redirectionLogin() {
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/login.html`
+    window.location.href = urlRedirection;
+}
 
 function setRequestTag() {
     let tagId = getParameterURL('tagId');
+    let JWT = getCookie("userJwt");
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 'create_record_check.py',
+            script_name: 'create_record_check.py',
             tagId:tagId,
             option: 'get_information_tag',
         }),
         headers:{
             'Content-Type': 'application/json',
             'Access-Control-Request-Headers':'*',
+            'Authorization': 'Bearer '+JWT
         },
     })
     .then(res => res.json())
@@ -87,7 +110,7 @@ function drawOptionsUbicacion(catalogList) {
     selectUbicacion.innerHTML = '';
     //--Config
     const option_empty = document.createElement('option');
-    option_empty.textContent = 'Seleccione una Ubicaciónn';
+    option_empty.textContent = 'Seleccione una Ubicación';
     option_empty.value = "";
     selectUbicacion.appendChild(option_empty);
     listUbicacion.forEach(item => {
@@ -106,7 +129,7 @@ function drawOptionsArea(ubicacion) {
         selectArea.innerHTML = '';
         //--Config
         const option_empty = document.createElement('option');
-        option_empty.textContent = 'Seleccione una Ubicaciónn';
+        option_empty.textContent = 'Seleccione una Ubicación';
         option_empty.value = "";
         selectArea.appendChild(option_empty);
         listAreas.forEach(item => {

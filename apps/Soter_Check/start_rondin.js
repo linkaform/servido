@@ -36,7 +36,7 @@ function resquestLocation(){
 	fetch(getUrlRequest('script'), {
 		method: 'POST',
 		body: JSON.stringify({
-			script_id: 'create_record_check.py',
+			script_name: 'create_record_check.py',
 			tagId: tagId,
 			option: 'get_config',
 		}),
@@ -138,7 +138,7 @@ function setRequestCreatedBitacora(){
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 'create_record_check.py',
+            script_name: 'create_record_check.py',
             tagId: tagId,
             config: valueSelect,
             option: 'add_record_bitacora',

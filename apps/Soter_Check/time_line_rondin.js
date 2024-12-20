@@ -69,7 +69,7 @@ function drawConfigLocation(dataConfig) {
             iconDiv.innerHTML = '<i class="fas fa-map-marker-alt"></i>';
             const textDiv = document.createElement('div');
             textDiv.className = 'task-text ';
-            textDiv.textContent = item.title; 
+            textDiv.textContent = item.title.nombre; 
             li.appendChild(iconDiv);
             li.appendChild(textDiv);
             if(item.status != 'completed'){
@@ -156,7 +156,7 @@ function setRequestStatus() {
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 'create_record_check.py',
+            script_name: 'create_record_check.py',
             folioUpdate:recordConfig.folio,
             option: 'update_record_bitacora',
         }),
