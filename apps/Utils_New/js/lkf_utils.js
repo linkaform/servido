@@ -1,13 +1,15 @@
 
 //----Por probar
 // Settings
-var url = "https://app.linkaform.com/api/";
-//var url = "http://127.0.0.1:8011/api/";
 // var url = "https://app.linkaform.com/api/";
-//var url = "http://192.168.0.25:8000/api/";
+//var url = "http://127.0.0.1:8011/api/";
+var url = "https://app.linkaform.com/api/";
+// var url = "http://192.168.0.25:8000/api/";
 // End Settings
 
 // Funciones Genericas Servido
+let urlScripts='infosync/scripts/run/';
+let urlLogin='infosync/user_admin/login/';
 
 
 //Funcion para retornar cambios en dos objetos con las mismas keys 

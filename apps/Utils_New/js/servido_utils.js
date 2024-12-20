@@ -1,14 +1,8 @@
-//-----URL SCRIPTS
-//const URLENVSCRIPT = "https://preprod.linkaform.com/";
-const URLENVSCRIPT = "https://app.linkaform.com";
-//const URLENVSCRIPT = "http://192.168.0.25:8000";
-//const URLENVSCRIPT = "http://127.0.0.1:8011";
-
 //-----URL LOGIN
-//const URLENVLOGIN = "https://preprod.linkaform.com/";
-const URLENVLOGIN = "https://app.linkaform.com";
-//const URLENVLOGIN = "http://192.168.0.25:8000";
-//const URLENVLOGIN = "http://127.0.0.1:8011";
+//const URL = "https://preprod.linkaform.com/";
+const URL = "https://app.linkaform.com";
+// const URL = "http://192.168.0.25:8000";
+// const URL = "http://127.0.0.1:8011";
 
 
 //-Funciona para definir una cookie
@@ -545,9 +539,11 @@ function loadComponent(content, file) {
 
 function getUrlRequest(type) {
     if(type == 'script'){
-        return `${URLENVSCRIPT}/api/infosync/scripts/run/`
+        return `${URL}/api/infosync/scripts/run/`
     }else if(type == 'login'){
-        return `${URLENVLOGIN}/api/infosync/user_admin/login/`
+        return `${URL}/api/infosync/user_admin/login/`
+    }else if(type == 'uploadPicture'){
+        return `${URL}/api/infosync/cloud_upload/`
     }
     return ''
 }
