@@ -9,6 +9,7 @@ function resquestLocation(){
     //---Modal Components
     const textLocation = document.getElementById('textLocation');
     const textUbication = document.getElementById('textUbicacion');
+    const textTime = document.getElementById('textTime');
 	const JWT = getCookie("userJwt");
 	fetch(getUrlRequest('script'), {
 		method: 'POST',
@@ -30,13 +31,15 @@ function resquestLocation(){
             textLocation.textContent = res.response.data.name_location;
         }
         if(res.response.data && res.response.data.ubication_location && res.response.data.ubication_location != ''){
-            textUbication.textContent = res.response.data.ubication_location;
+            textTime.textContent = res.response.data.ubication_location;
+        }
+        if(res.response.data && res.response.data.last_record && res.response.data.last_record != ''){
+            textUbication.textContent = res.response.data.last_record;
         }
         if(res.response.data && res.response.data.image_location && res.response.data.image_location.length > 0 ){
-            const imageElement = document.getElementById('imgLocation');
+            const imageElement = document.getElementById('imageLocation');
             imageElement.src = res.response.data.image_location[0].file_url;
         }
-
 		//---Hide Loading
 		setTimeout(() => {
 			const loading = document.getElementById('loading');

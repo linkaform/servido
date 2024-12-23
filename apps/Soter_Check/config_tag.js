@@ -16,6 +16,7 @@ function setRequestUpdateTag(){
         body: JSON.stringify({
             script_name: 'create_record_check.py',
             tagId:idTag,
+            listImagesDic:listImagesDic,
             idCatalog:idCatalog,
             option: 'update_information_tag',
         }),
