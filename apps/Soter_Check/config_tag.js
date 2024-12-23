@@ -1,8 +1,8 @@
 let listCatalog = [];
+let listImagesDic = [];
 
 window.onload = function(){
     get_validation_flow();
-
 }
 
 function setRequestUpdateTag(){
@@ -49,7 +49,16 @@ async function get_validation_flow() {
         });
         document.getElementById("buttonSend").addEventListener("click", () => {
             setRequestUpdateTag();
-    });
+        });
+
+        document.getElementById("cameraButton").addEventListener("click", () => {
+            openCamera(handleFile);
+        });
+
+        document.getElementById("galleryButton").addEventListener("click", () => {
+            openFilePicker(handleFile);
+        });
+
     }else {
         redirectionLogin();
     }
@@ -86,8 +95,6 @@ function setRequestTag() {
         const inputIdTag = document.getElementById('inputIdTag');
         inputIdTag.value = tagId;
         if(data.status_request == 'included'){
-
-            console.log('data.data_tag',data.data_tag)
             drawInformation(data.data_tag);
         }else if(data.status_request == 'not_included'){
             drawOptionsUbicacion(data.catalog_list)
@@ -176,8 +183,11 @@ function drawInformation(data) {
     const inputUbicacion =  document.getElementById("inputUbicacion");
     const inputArea =  document.getElementById("inputArea");
 
+    const contentImages =  document.getElementById("content-images");
+
 
     //----Hidden
+    contentImages.style.display = 'none';
     selectComponentUbi.style.display = 'none';
     selectComponentArea.style.display = 'none';
     buttonSend.style.display = 'none';
@@ -203,11 +213,163 @@ function getDataSelect() {
     const selectedTextArea = selectArea.options[selectArea.selectedIndex].text;
 
     const inputIdTag = document.getElementById('inputIdTag').value;
+
+    let image = null
+    if(listImagesDic != null && listImagesDic.length > 0){
+        image = listImagesDic[0] && listImagesDic[0].file_url ? listImagesDic[0].file_url : null;
+    }
+
     const dicRes = {
         "ubicacion_catalog":selectedTextUbicacion,
         "nombre_area_catalog":selectedTextArea,
         "tag_id_catalog": inputIdTag,
-        "imagen_area_catalog": null
+        "imagen_area_catalog": image
     }
     return dicRes;
+}
+
+//---Function Images
+function openCamera(callback) {
+    console.log('openCamera');
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.capture = "environment"; 
+
+    input.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file && callback) {
+            callback(file);
+        }
+    });
+    input.click();
+}
+
+function openFilePicker(callback) {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*"; 
+    input.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file && callback) {
+            callback(file); 
+        }
+    });
+
+    input.click();
+}
+
+function handleFile(file) {
+    if (!file) {
+        alert('No existe archivo');
+        return ;
+    }
+    //--Clean List
+    listImagesDic = [];
+
+    //--Show Loading
+    const divContent = document.getElementById('divListImages');
+    divContent.style.display = 'none'; 
+
+    const divLoader = document.getElementById('divLoadingImage');
+    divLoader.style.display = 'flex';
+    
+    const button = document.getElementById('buttonSend');
+    button.disabled = true; 
+
+    //--Fetch
+    const formData = new FormData();
+    formData.append('File', file);
+    formData.append('field_id', '6740cbd734849293fe5a2735');
+    formData.append('is_image', true);
+    formData.append('form_id',  126213);
+
+    fetch(getUrlRequest('uploadPicture'), {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(res => {
+        imgUrl = res.file ? res.file : '';
+        imgName = res.file_name ? res.file_name : '';
+        listImagesDic.push({'file_name':imgName,'file_url':imgUrl});
+        divContent.style.display = 'block'; 
+        divLoader.style.display = 'none'; 
+        setTimeout(() => { 
+            setElementImages(listImagesDic);
+        }, 500);
+    })
+    .catch((error) => console.error("Error en el fetch:", error));
+}   
+
+function setElementImages(data) {
+    const container = document.getElementById('divListImages');
+    const loader = document.getElementById('divLoadingImage');
+    loader.style.display = 'flex';
+    container.innerHTML = ''; 
+
+    setTimeout(() => {
+        loader.style.display = 'none';
+
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "row justify-content-center"; 
+
+        data.forEach(image => {
+            const colDiv = document.createElement("div");
+            colDiv.className = "col-12 col-md-6 col-lg-6 mb-4 position-relative"; 
+
+            const img = document.createElement("img");
+            img.src = image.file_url; 
+            img.alt = image.file_name;
+            img.className = "img-fluid w-100 rounded";
+
+            const deleteIconSpan = document.createElement("span");
+            deleteIconSpan.className = "delete-icon position-absolute top-0 end-0 m-2 text-danger";
+            deleteIconSpan.style.cursor = 'pointer';
+            deleteIconSpan.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+            deleteIconSpan.style.borderRadius = '50%';
+            deleteIconSpan.style.padding = '5px';
+
+            const icon = document.createElement("i");
+            icon.className = "fas fa-trash fa-lg";
+
+            deleteIconSpan.onclick = () => deleteImage(image.file_url);
+
+            deleteIconSpan.appendChild(icon);
+
+            let truncatedFileName = image.file_name;
+            if (truncatedFileName.length > 15) {
+                truncatedFileName = truncatedFileName.substring(0, 15) + '...';
+            }
+
+            const fileNameParagraph = document.createElement("p");
+            fileNameParagraph.textContent = truncatedFileName;
+            fileNameParagraph.className = "text-center mt-2";
+
+            colDiv.appendChild(img);
+            colDiv.appendChild(deleteIconSpan);
+            colDiv.appendChild(fileNameParagraph);
+
+            rowDiv.appendChild(colDiv);
+        });
+
+        container.appendChild(rowDiv);
+
+        if(document.getElementById('selectUbicacion').value != '' && document.getElementById('selectArea').value!=''){
+            const button = document.getElementById('buttonSend');
+            button.disabled = false;
+        }
+    }, 500);
+}
+
+function deleteImage(value) {
+    //---Delte dic in list 
+    listImagesDic.forEach((dict, index )=> {
+        if (dict['file_url'] && dict['file_url'] == value) {
+            if (index > -1) {
+                listImagesDic.splice(index); 
+            }
+        }
+    });
+    setElementImages(listImagesDic);
 }

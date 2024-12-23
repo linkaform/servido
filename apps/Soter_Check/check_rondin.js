@@ -65,9 +65,13 @@ function setElementImages(data) {
 
     setTimeout(() => {
         loader.style.display = 'none';
+
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "row justify-content-center"; 
+
         data.forEach(image => {
             const colDiv = document.createElement("div");
-            colDiv.className = "col-12 col-md-12 col-lg-12 mb-4 position-relative";
+            colDiv.className = "col-12 col-md-6 col-lg-6 mb-4 position-relative"; 
 
             const img = document.createElement("img");
             img.src = image.file_url; 
@@ -100,8 +104,11 @@ function setElementImages(data) {
             colDiv.appendChild(img);
             colDiv.appendChild(deleteIconSpan);
             colDiv.appendChild(fileNameParagraph);
-            container.appendChild(colDiv);
+
+            rowDiv.appendChild(colDiv);
         });
+
+        container.appendChild(rowDiv);
 
         const button = document.getElementById('buttonSend');
         button.disabled = false;
