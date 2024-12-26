@@ -58,6 +58,8 @@ async function get_validation_flow() {
         if(configuration){
             resquestLocation();
             const buttonInspectionArea = document.getElementById("buttonInspectionArea");
+            buttonInspectionArea.classList.remove('btn-secondary');
+            buttonInspectionArea.classList.add('btn-primary');
             buttonInspectionArea.classList.remove('hidden');
             buttonInspectionArea.addEventListener("click", () => {
                 redirectionInspectionArea();

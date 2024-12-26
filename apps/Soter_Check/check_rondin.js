@@ -238,11 +238,13 @@ function dataSend(){
         }
     }else{
         //---Get data form
-        let configuration = JSON.parse( localStorage.getItem('configuration'));
+        let nameLocation = document.getElementById('titleLocation').textContent;
+        let configuration = JSON.parse(localStorage.getItem('configuration'));
         dicData = {
             'folio': configuration.folio,
             'rondin': configuration.nombre_rondin,
             'ubicacion': configuration.ubicacion,
+            'location': nameLocation,
             'tagId': tagId,
             'list_checks': checksSelected,
             'comment': inputComment,
@@ -258,7 +260,6 @@ function dataSend(){
             folioUpdate:recordConfig.folio,
             option: 'add_record_check',
         }
-
     }
     let JWT = getCookie("userJwt");
     //---Request
@@ -299,9 +300,29 @@ function dataSend(){
                     setRedirection();
                 }, 2000);
             }else{
+                //----Redirection Data
+                dicInspectionRecord = [
+                    {
+                        title:{
+                            nombre:document.getElementById('titleLocation').textContent,
+                        },
+                        status: "completed",
+                        information: {
+                            'tagId': tagId,
+                            'list_checks': checksSelected,
+                            'comment': inputComment,
+                            'list_img': listImagesDic,
+                        }
+                    },
+                ]
+                localStorage.setItem('dicListRecordInspection', JSON.stringify(dicInspectionRecord));
+                //-----Modal
                 textAlert.textContent = '¡Se a registrado su inspección de Área!';
                 let modal = new bootstrap.Modal(document.getElementById('alertaModalSuccess'));
                 modal.show();
+                setTimeout(() => {
+                    setRedirectionSummary();
+                }, 3500);
             }
         } else {
             let modal = new bootstrap.Modal(document.getElementById('alertaModalFail'));
@@ -332,6 +353,10 @@ function getInformationLocation(location){
     })
     .then(res => res.json())
     .then(res => {
+        if(res.response.data && res.response.data.image_location && res.response.data.image_location.length > 0 ){
+            const imageElement = document.getElementById('imageLocation');
+            imageElement.src = res.response.data.image_location[0].file_url;
+        }
         if(res.response.data && res.response.data.name_location && res.response.data.name_location != ''){
             textTitle.textContent = res.response.data.name_location;
         }
@@ -349,10 +374,6 @@ function getInformationLocation(location){
             textType.textContent = `${res.response.data.type_location}`;
         }else{
             textType.textContent = `N/A`;
-        }
-        if(res.response.data && res.response.data.image_location && res.response.data.image_location.length > 0 ){
-            const imageElement = document.getElementById('imgLocation');
-            imageElement.src = res.response.data.image_location[0].file_url;
         }
     })
 }
@@ -433,6 +454,16 @@ function setRedirection() {
     const puerto = window.location.port;            
     //---URL REDIRECTION LOGIN
     let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/time_line_rondin.html`;
+    window.location.href = urlRedirection;
+}
+
+function setRedirectionSummary() {
+    //----Url
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/summary_check.html`;
     window.location.href = urlRedirection;
 }
 
@@ -554,7 +585,7 @@ function loadCheckArea(area) {
         const mainContent = document.getElementById('main-content');
         loading.style.display = 'none';
         mainContent.classList.remove('hidden'); 
-    }, 2000);
+    }, 2500);
 }
 
 function validationConfigTag(dicData) {

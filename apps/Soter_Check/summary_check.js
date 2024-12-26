@@ -1,17 +1,5 @@
 window.onload = function(){
-	const statusSession = getSession('login');
-	if(statusSession == 'Active'){
-		checkDrawSummary();
-		getDatesUser();
-	}else{
-        setRedirection('login');
-	}
-	setTimeout(() => {
-		const loading = document.getElementById('loading');
-		const mainContent = document.getElementById('main-content');
-		loading.style.display = 'none';
-		mainContent.classList.remove('hidden'); 
-	}, 2000);
+    get_validation_flow();
 }
 
 function setRedirection(file) {
@@ -24,7 +12,7 @@ function setRedirection(file) {
 	window.location.href = urlRedirection;
 }
 
-function checkDrawSummary() {
+function checkDrawSummary(typeData) {
 	//----Number Count
     const progressFill = document.getElementById('progressFill');
     const componentCount = document.getElementById('completedCount');
@@ -33,14 +21,22 @@ function checkDrawSummary() {
     const container = document.getElementById('taskList');
     container.innerHTML = '';
     //---Get Data
-    let dicListRecord = localStorage.getItem('dicListRecord');
+    let dicListRecord = null;
+    if(typeData == 'dicListRecordInspection'){
+        dicListRecord = localStorage.getItem('dicListRecordInspection')
+    }else if(typeData == 'dicListRecord'){
+        dicListRecord = localStorage.getItem('dicListRecord')
+    }
+    console.log('dicListRecord',dicListRecord)
     if (dicListRecord) {
         dicListRecord = JSON.parse(dicListRecord);
         let locations = dicListRecord && dicListRecord.length > 0 ? dicListRecord : [];
         let countFinish = 0;
         let countInprogress = 0;
+        console.log('locations',locations)
         locations.forEach(item => {
-            const li = document.createElement('li');
+
+            let li = document.createElement('li');
             if(item.status != 'completed'){
                 li.className = 'task-item task-pointer';
             }else{
@@ -54,16 +50,17 @@ function checkDrawSummary() {
             textDiv.textContent = item.title.nombre; 
             li.appendChild(iconDiv);
             li.appendChild(textDiv);
-            li.addEventListener('click', () => showInformation(item));
-            
             if(item.status != 'completed'){
                 countInprogress += 1;
             }else{
+                //----Modal Open
+                const key = item.information &&  item.information.tagId ? item.information.tagId : 0; 
+                const myModal = new bootstrap.Modal(document.getElementById(`modalSummary_${key}`));
+                li.addEventListener('click', () => myModal.show());
                 countFinish += 1;
             }
             container.appendChild(li);
         });
-            
         //----Assing Count
         componentCount.textContent = `${countFinish}`;
         componentTotal.textContent = `/${ countFinish + countInprogress}`;
@@ -72,6 +69,76 @@ function checkDrawSummary() {
         const progressPercentage = (countFinish / (countFinish + countInprogress)) * 100;
         progressFill.style.width = `${progressPercentage}%`;
     }
+}
+
+function checkDrawModal(typeData) {
+    let dicListRecord = null;
+    if(typeData == 'dicListRecordInspection'){
+        dicListRecord = localStorage.getItem('dicListRecordInspection')
+    }else if(typeData == 'dicListRecord'){
+        dicListRecord = localStorage.getItem('dicListRecord')
+    }
+
+    console.log('dicListRecord modal',dicListRecord)
+    if (dicListRecord) {
+        dicListRecord = JSON.parse(dicListRecord);
+        let locations = dicListRecord && dicListRecord.length > 0 ? dicListRecord : [];
+        locations.forEach(itemData => {
+            const key = itemData.information &&  itemData.information.tagId ? itemData.information.tagId : 0; 
+            createModal(key, itemData);
+        });
+    }
+}
+
+function createModal(key, data) {
+    const modalHTML = `
+        <div class="modal fade" id="modalSummary_${key}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Resumen de Inspección</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="info-section col-6">
+                            <h5 class="mb-1" id="titleLocation_${key}">Caseta de vigilancia planta 1</h5>
+                            <p class="mb-1" ><strong>Ubicación:</strong> <span id="textUbic_${key}"></span></p>
+                        </div>
+                        <hr class="border border-secondary border-2 opacity-70">
+                        <!-- Checklist -->
+                        <div >
+                            <h6 class="checklist-title"><strong>Checklist</strong></h6>
+                            <p>Elementos Seleccionados</p>
+                            <div id="listCheckDiv_${key}"></div>
+                        </div>
+                        <!-- Sección de comentarios -->
+                        <div class="comments-section">
+                            <h6 class="checklist-title"><strong>Comentarios</strong></h6>
+                            <textarea class="form-control" id="commentCheck_${key}" rows="3" disabled></textarea>
+                        </div>
+                        <!-- Adjuntar fotos -->
+                        <div class="mt-3">
+                            <h6 class="checklist-title"><strong>Imagenes en Lista</strong></h6>
+                            <div id="imageContainer_${key}" class="mt-3">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    const modalElement = document.getElementById(`modalSummary_${key}`);
+    if (modalElement) {
+        const myModal = new bootstrap.Modal(modalElement);
+        modalElement.addEventListener('hidden.bs.modal', () => {
+            modalElement.remove();
+        });
+    }
+
+    showInformation(data, key);
 }
 
 function getDatesUser() {
@@ -93,12 +160,11 @@ function getDatesUser() {
     inputUser.value = `${USERNAME}`;
 }
 
-function showInformation(data) {
-	console.log('Data',data);
+function showInformation(data, id) {
 	//---COmponents
-	const textTitle = document.getElementById('titleLocation');
-    const textUbic = document.getElementById('textUbic');
-    const textComment = document.getElementById('commentCheck');
+	const textTitle = document.getElementById(`titleLocation_${id}`);
+    const textUbic = document.getElementById(`textUbic_${id}`);
+    const textComment = document.getElementById(`commentCheck_${id}`);
 	//---Asign
 	title = data.title && data.title.nombre ? data.title.nombre : '';
 	dataInformation = data.information ? data.information : {};
@@ -112,22 +178,20 @@ function showInformation(data) {
 	}
 
 	if (dataInformation.list_checks && dataInformation.list_checks.length != 0) {
-		setElementsCheck(dataInformation.list_checks);
+		setElementsCheck(dataInformation.list_checks, id);
 	}
 
 	if (dataInformation.comment && dataInformation.comment != '') {
 		textComment.textContent = dataInformation.comment;
 	}
-
-	setImages(dataInformation.list_img);
-	const myModal = new bootstrap.Modal(document.getElementById('modalSummary'));
-    myModal.show();
+	setImages(dataInformation.list_img, id);
 }
 
-
-function setImages(listImages) {
+function setImages(listImages, id) {
 	const imageUrls = listImages;
-	const container = document.getElementById("imageContainer");
+	const container = document.getElementById(`imageContainer_${id}`);
+
+    container.innerHTML = '';
 	if (imageUrls == undefined) {
 	  	container.innerHTML = '<p class="no-images">No hay imágenes</p>';
 	} else {
@@ -148,9 +212,8 @@ function setImages(listImages) {
 	}
 }
 
-
-function setElementsCheck(list) {
-    const container = document.getElementById('listCheckDiv');
+function setElementsCheck(list, id) {
+    const container = document.getElementById(`listCheckDiv_${id}`);
     container.innerHTML = '';
     const form = document.createElement("form");
     form.id = "checkForm"; 
@@ -181,4 +244,59 @@ function setElementsCheck(list) {
         form.appendChild(row);
 	}
     container.appendChild(form);
+}
+
+//-----Flow System
+async function get_validation_flow() {
+    const statusSession = getSession('login');
+    if(statusSession == 'Active'){
+        if (localStorage.getItem('dicListRecord')) {
+            getDatesUser();
+            if(localStorage.getItem('dicListRecordInspection')){
+                checkDrawModal('dicListRecordInspection');
+                checkDrawSummary('dicListRecordInspection');
+            }else if(localStorage.getItem('dicListRecord')){
+                checkDrawModal('dicListRecord');
+                checkDrawSummary('dicListRecord');
+            }
+            //----Asign
+            document.getElementById("buttonFinish").addEventListener("click", () => {
+                redirectionRondines();
+            });
+            setTimeout(() => {
+                //---Delete Information
+                if(localStorage.getItem('dicListRecordInspection')){
+                    localStorage.removeItem('dicListRecordInspection');
+                }else if(localStorage.getItem('dicListRecord')){
+                    localStorage.removeItem('dicListRecord');
+                }
+                const loading = document.getElementById('loading');
+                const mainContent = document.getElementById('main-content');
+                loading.style.display = 'none';
+                mainContent.classList.remove('hidden'); 
+            }, 2000);
+        } else {
+            redirectionRondines();
+        }
+    }else{  
+        redirectionLogin();
+    }
+}
+
+function redirectionLogin() {
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/login.html`
+    window.location.href = urlRedirection;
+}
+
+function redirectionRondines() {
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/list_rondines.html`
+    window.location.href = urlRedirection;
 }
