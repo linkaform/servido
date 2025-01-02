@@ -86,8 +86,6 @@ var columsTable1 = [
   var dataTable1 = [
     {
       mes: '2024',
-      actividad: '',
-      cantidad: '',
       _children: [
         {
           mes: 'Enero',
@@ -273,8 +271,6 @@ var columsTable1 = [
     },
     {
         mes: '2023',
-        actividad: '',
-        cantidad: '',
         _children: [
           {
             mes: 'Enero',
@@ -665,11 +661,18 @@ var columsTable1 = [
     },
     scales: {
       x: {
-        stacked: true, // Estilo apilado
+        stacked: true,
       },
       y: {
         min: 0,
-        max: 60, // Limitar el eje Y a 60
+        max: 350,
+        title: {
+          display: true,
+          text: 'Cantidad',
+          font: {
+              size: 18
+          }
+        },
       }
     }
   };
@@ -729,6 +732,13 @@ var setOptions2 = {
         stacked: false,    // Asegúrate de que las barras no estén apiladas y estén lado a lado
       },
       y: {
+        title: {
+          display: true,
+          text: 'Porcentaje',
+          font: {
+              size: 18
+          }
+        },
         stacked: false,    // Asegúrate de que las barras no estén apiladas en el eje y
         min: 0,
         max: 100,

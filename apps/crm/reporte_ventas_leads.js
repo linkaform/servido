@@ -1,6 +1,3 @@
-// Reporte Production Forscast
-// Librerias: Chart.js
-
 let us = null;
 let usTy = null;
 let jw = null;
@@ -186,12 +183,16 @@ function runFirstElement(){
 
   if (date_from.value != null && date_to.value != null && date_from.value != "" && date_to.value != ""){
     getFirstElement(date_to.value, date_from.value);
-  }
-  else
-  {
-    Swal.fire({
-      title: 'Rango de Fechas Requerido',
-    });
+  }else if(date_from.value && !date_to.value){
+    {
+      Swal.fire({
+        title: 'Debes seleccionar una fecha hasta.',
+        type: "warning",
+        width: 800,
+      });
+    }
+  }else{
+    getFirstElement(date_to.value, date_from.value);
   }
 }
 
@@ -206,9 +207,8 @@ function getFirstElement(dateTo, dateFrom){
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
-      date_to: dateTo,
       date_from: dateFrom,
-      option: 1,
+      date_to: dateTo,
     }),
     headers:{
       'Content-Type': 'application/json',
@@ -222,25 +222,30 @@ function getFirstElement(dateTo, dateFrom){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.json.firstElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data, 350);
+      if (res.response.dataReport.firstElement.data) {
+        getDrawTable('firstElement', columsTable1, res.response.dataReport.firstElement.data, 350);
         document.getElementById("firstElement").style.removeProperty('display');
        
       }
-      
-      if (res.response.json.secondElement.data) {
-        getDrawTable('thirdElement', columsTable2, res.response.json.secondElement.data, 350);
-        document.getElementById("thirdElement").style.removeProperty('display');
-      }
 
-      if (res.response.json.thirdElement.data) {
-        getDrawGraphicFirst(res.response.json.thirdElement.data, setOptions1);
+      if (res.response.dataReport.secondElement.data) {
+        getDrawGraphicFirst(res.response.dataReport.secondElement.data, setOptions1, 'dataFetch');
         document.getElementById("secondElement").style.removeProperty('display');
       }
 
-      if (res.response.json.fourthElement.data) {
-        getDrawGraphicSecond(res.response.json.fourthElement.data, setOptions2);
-        document.getElementById("fourthElement").style.removeProperty('display');
+      if (res.response.dataReport.thirdElement.data) {
+        getDrawGraphicSecond(res.response.dataReport.thirdElement.data, setOptions2, 'dataFetch');
+        document.getElementById("thirdElement").style.removeProperty('display');
+      }
+
+      // if (res.response.dataReport.thirdElement.data) {
+      //   getDrawGraphicSecond(res.response.dataReport.thirdElement.data, setOptions2, 'dataFetch');
+      //   document.getElementById("thirdElement").style.removeProperty('display');
+      // }
+
+      if (res.response.dataReport.fifthElement.data) {
+        getDrawGraphicFourth(res.response.dataReport.fifthElement.data, setOptions4, 'dataFetch');
+        document.getElementById("fifthElement").style.removeProperty('display');
       }
       
 
@@ -296,16 +301,38 @@ function getDrawTable(id, columnsData, tableData, height = 500){
 
 //-----GRAPICH
 let chart1;
-function getDrawGraphicFirst(data, setOptions){
+function getDrawGraphicFirst(data, setOptions, option){
   //---CHART
   var ctx = document.getElementById('graphicFirst').getContext('2d');
   if (chart1) {
     chart1.destroy();
   }
+  let dataFormateada = data
+  if(option == 'dataFetch'){
+    const dataLabels = data.map(label => {
+      return label._id
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    });
+    const dataConteo = data.map(label => label.conteo);
+    dataFormateada = {
+      labels: dataLabels,
+      datasets: [
+        {
+          label: 'Leads Generados',
+          data: dataConteo,
+          backgroundColor: '#FFC145',
+          borderColor: '#FFC145',
+          borderWidth: 1,
+        },
+      ]
+    };
+  }
 
   chart1 = new Chart(ctx, {
     type: 'bar',
-    data:data,
+    data:dataFormateada,
     options: setOptions,
     plugins: [ChartDataLabels],
   });
@@ -313,16 +340,41 @@ function getDrawGraphicFirst(data, setOptions){
 
 
 let chart2;
-function getDrawGraphicSecond(data, setOptions){
+function getDrawGraphicSecond(data, setOptions, option){
   //---CHART
   var ctx = document.getElementById('graphicSecond').getContext('2d');
   if (chart2) {
     chart2.destroy();
   }
+  let dataFormateada = data
+  if(option == 'dataFetch'){
+    const dataLabels = data.map(label => `${label.mes}-${label.anio}`);
+    const dataSi = data.map(label => label.porcentaje_si);
+    const dataNo = data.map(label => label.porcentaje_no);
+    dataFormateada = {
+      labels: dataLabels,
+      datasets: [
+          {
+              label: 'Sí',
+              data: dataSi, 
+              backgroundColor: '#5CB338',
+              borderColor: 'transparent',
+              fill: true
+          },
+        {
+          label: 'No',
+          data: dataNo, 
+          backgroundColor: '#e74c3c',
+          borderColor: 'transparent',
+          fill: true
+        }
+      ]
+    }
+  }
 
   chart2 = new Chart(ctx, {
     type: 'bar',
-    data:data,
+    data:dataFormateada,
     options: setOptions,
     plugins: [ChartDataLabels],
   });
@@ -346,16 +398,37 @@ function getDrawGraphicThird(data, setOptions){
 }
 
 let chart4;
-function getDrawGraphicFourth(data, setOptions){
+function getDrawGraphicFourth(data, setOptions, option){
   //---CHART
   var ctx = document.getElementById('graphicFourth').getContext('2d');
   if (chart4) {
     chart4.destroy();
   }
+  let dataFormateada = data
+  if(option == 'dataFetch'){
+    const dataLabels = data.map(label => `${label.mes}-${label.anio}`);
+    const dataPorcentaje = data.map(label => label.porcentaje_cierre);
+    dataFormateada = {
+      labels: dataLabels,
+      datasets: [
+          {
+              label: 'Porcentaje de Cierre',
+              data: dataPorcentaje,
+              borderColor: '#E16A54',
+              backgroundColor: 'rgba(155, 89, 182, 0.2)',
+              tension: 0.4,
+              borderWidth: 2,
+              pointBackgroundColor: 'blue',
+              pointBorderColor: 'darkblue',
+              pointRadius: 3,
+          }
+      ]
+    }
+  }
 
   chart4 = new Chart(ctx, {
     type: 'line',
-    data:data,
+    data:dataFormateada,
     options: setOptions,
     plugins: [ChartDataLabels],
   });
