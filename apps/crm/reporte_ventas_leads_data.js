@@ -758,8 +758,8 @@ var data3 = {
             data: [
                 80, 90, 75, 100, 120, 140, 160, 170, 180, 200, 210, 220  // Datos de licencias vendidas
             ],
-            borderColor: '#EFF3EA',  // Color de la línea de Licencias
-            backgroundColor: 'rgba(52, 152, 219, 0.2)',  // Color de fondo de las áreas debajo de la línea
+            borderColor: '#3E7B27',  // Color de la línea de Licencias
+            backgroundColor: '#3E7B27',  // Color de fondo de las áreas debajo de la línea
             tension: 0.4,  // Curvatura de la línea
             borderWidth: 2,  // Grosor de la línea
             pointBackgroundColor: 'blue',  // Color de relleno de los puntos
@@ -772,7 +772,7 @@ var data3 = {
                 40, 45, 50, 60, 55, 70, 75, 80, 85, 95, 110, 115  // Datos de SP vendidos
             ],
             borderColor: '#4DA1A9',  // Color de la línea de SP
-            backgroundColor: 'rgba(231, 76, 60, 0.2)',  // Color de fondo de las áreas debajo de la línea
+            backgroundColor: '#4DA1A9',  // Color de fondo de las áreas debajo de la línea
             tension: 0.4,  // Curvatura de la línea
             borderWidth: 2,  // Grosor de la línea
             pointBackgroundColor: 'blue',  // Color de relleno de los puntos
@@ -842,12 +842,12 @@ var data4 = {
     ],
     datasets: [
         {
-            label: 'Porcentaje de Cierre',
+            label: 'Leads ganados',
             data: [
                 85, 80, 78, 90, 88, 92, 94, 95, 96, 98, 99, 100  // Datos de porcentaje de cierre
             ],
             borderColor: '#E16A54',  // Color de la línea de porcentaje de cierre
-            backgroundColor: 'rgba(155, 89, 182, 0.2)',  // Color de fondo de las áreas debajo de la línea
+            backgroundColor: '#E16A54',  // Color de fondo de las áreas debajo de la línea
             tension: 0.4,  // Curvatura de la línea
             borderWidth: 2,  // Grosor de la línea
             pointBackgroundColor: 'blue',  // Color de relleno de los puntos
@@ -866,17 +866,13 @@ var setOptions4 = {
         },
         title: {
             display: true,
-            text: '% Cierre Mensual',
+            text: 'Cuentas Cerradas',
             font: {
                 size: 25
             }
         },
         datalabels: {
             color: 'black',
-            formatter: function (value, context){
-                var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                return formato + '%';  // Mostrar los valores con el símbolo de porcentaje
-            },
             anchor: 'end',  // Coloca las etiquetas al final del punto
             align: 'top',  // Alinea las etiquetas por encima del punto
         }
@@ -898,10 +894,10 @@ var setOptions4 = {
         },
         y: {
             min: 0,
-            max: 100,  // El porcentaje de cierre va de 0 a 100
+            max: 160,  // El porcentaje de cierre va de 0 a 100
             title: {
                 display: true,
-                text: 'Porcentaje',
+                text: 'Cantidad',
                 font: {
                     size: 18
                 }
