@@ -28,6 +28,7 @@ let account_id=''
 let validFechaVisita = false
 let validFechaHasta = false
 let tables={}
+let requerimientos=[]
 
 window.onload = async function(){
 	// customNavbar(getValueUserLocation(), getCookie('userTurn'))
@@ -545,9 +546,45 @@ async function fillCatalogoArea(id) {
                 }
             });
         }
-        console.log("entrando")
         await catalogoPaseArea(location)
     }
+    try{
+        requerimientos = await getConfiguracionModuloSeguridad(location)
+        console.log("OLAAAA", requerimientos)
+    }catch(err){
+        console.error(err)
+    }
+
+
+}
+
+
+async function getConfiguracionModuloSeguridad(ubicacion){
+    loadingService()
+    await fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "pase_de_acceso.py",
+            option:"get_config_modulo_seguridad",
+            location:ubicacion
+        }),
+        headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            Swal.close()
+            console.log("HOLAAA", res)
+        }else{
+            errorAlert(res)
+        }
+    })
+    requerimientos= ["identificacion", "fotografia"]
+    return requerimientos
 }
 
 
@@ -1580,9 +1617,17 @@ function crearConfirmacion() {
     });
 
     let checkDocSeleccionados= []
-    $('input[name="AgregarFotoIdent"]:checked').each(function() {
-        checkDocSeleccionados.push($(this).val()); 
-    });
+    // $('input[name="AgregarFotoIdent"]:checked').each(function() {
+    //     checkDocSeleccionados.push($(this).val()); 
+    // });
+    console.log("REQUERIMIENTOS", requerimientos)
+    for(let r of requerimientos){
+        if(r == "fotografia"){
+            checkDocSeleccionados.push("agregarFoto")
+        }else if (r == "identificacion"){
+            checkDocSeleccionados.push("agregarIdentificacion")
+        }
+    }
 	let buttonDays=""
 	if(diasArr.length>0){
 		buttonDays=`
@@ -1655,7 +1700,8 @@ function crearConfirmacion() {
       }
     });
     let tieneEmailTel = data.email!="" || data.telefono!=""
-	if(data.nombreCompleto=="" && tieneEmailTel==false && fechaVisitaMain==""){
+	if(data.nombreCompleto=="" || tieneEmailTel==false || fechaVisitaMain=="" || data.ubicacion==""){
+        
 		successMsg("Validación", "Faltan datos por llenar", "warning")
 	}else {
         // if(!numValid){
@@ -2020,18 +2066,36 @@ function validDatePase(){
     $('#fechaVisitaOA').removeClass('is-invalid');
     if(fechaFijaSelected){
         let fullDate= `${$("#fechaVisita").val()}T00:00:00`
-        console.log("ASI", new Date(fullDate).toLocaleDateString(), fechaActual.toLocaleDateString())
-        if(new Date(fullDate).toLocaleDateString() >= fechaActual.toLocaleDateString()){
-            let horaActual = fechaActual.getHours()
+        fechaActual= fechaActual.toISOString().split('T')[0]
+        fechaActual= `${fechaActual}T00:00:00`
+        console.log(new Date(fullDate),fechaActual)
+        console.log("ASI", new Date(fullDate).getTime(), new Date(fechaActual).getTime())
+        if(new Date(fullDate).getTime() == new Date(fechaActual).getTime()){
+            let getFecha= new Date()
+            let horaActual = getFecha.getHours()
             if(horaActual == 23){
                 horaActual="13"
             }else{
-                horaActual=formatNumber(fechaActual.getHours() + 1)
+                horaActual=formatNumber(getFecha.getHours() + 1)
             }
-            console.log("FORMATO DE FECHA",horaActual)
             $('#horaNuevoPase').val(horaActual);
             $('#minNuevoPase').val(formatNumber("00"));
-        }else if (new Date(fullDate) < fechaActual){
+
+            $('#fechaVisita').removeClass('is-invalid');
+            $('#horaNuevoPase').removeClass('is-invalid');
+            $('#minNuevoPase').removeClass('is-invalid');
+        }else if(new Date(fullDate) >= new Date(fechaActual).getTime()){
+            let getFecha= new Date()
+            let horaActual = getFecha.getHours()
+            if(horaActual == 23){
+                horaActual="13"
+            }else{
+                horaActual=formatNumber(getFecha.getHours() + 1)
+            }
+            $('#horaNuevoPase').val(horaActual);
+            $('#minNuevoPase').val(formatNumber("00"));
+
+        }else if (new Date(fullDate) < new Date(fechaActual).getTime()){
             $('#fechaVisita').addClass('is-invalid');
             $('#horaNuevoPase').addClass('is-invalid');
             $('#minNuevoPase').addClass('is-invalid');
@@ -2041,12 +2105,13 @@ function validDatePase(){
             $('#minNuevoPase').val("00");
         }
     }
-    // }else if (rangoFechasSelected){
+    // if (rangoFechasSelected){
     //     console.log("RANGO SELECCIONADA")
     //     let date1= $("#fechaVisitaOA").val()
     //     let date2= $("#fechaHastaOA").val()
-    //     if(date1=="" && date2 !==){
-
+    //     if(date1 == "" && date2 !== ""){
+    //         $('#fechaHastaOA').addClass('is-invalid');
+    //         $('#fechaHastaOA').val('')
     //     }else{
     //         let fullDate1= `${date1}T00:00:00`
     //         let fullDate2= `${date2}T00:00:00`
@@ -2059,28 +2124,36 @@ function validDatePase(){
     //         }
     //     }
     // }
-    
 }
 
 function validRangeOfDates(id){
     let fechaVisita=$("#fechaVisitaOA").val()
     let fechaHasta=$("#fechaHastaOA").val()
     let fechaActual= new Date()
+    fechaActual= fechaActual.toISOString().split('T')[0]
+
     if(id == "fechaVisitaOA"){
         if(fechaVisita != ""){
-            if (new Date(fechaVisita).toISOString() < fechaActual.toISOString()){
+            if (new Date(fechaVisita).getTime() < new Date(fechaActual).getTime()){
                 $('#fechaVisitaOA').addClass('is-invalid');
             }else{
                 $('#fechaVisitaOA').removeClass('is-invalid');
             }
         }
+        // if(fechaVisita != "" && fechaHasta!==""){
+        //     if (new Date(fechaHasta).getTime() < new Date(fechaVisita).getTime()){
+        //         $('#fechaVisitaOA').addClass('is-invalid');
+        //     }else{
+        //         $('#fechaVisitaOA').removeClass('is-invalid');
+        //     }
+        // }
     }else if(id == "fechaHastaOA"){
         if(fechaVisita != "" && fechaHasta != "" ){
-            if (new Date(fechaVisita).toLocaleDateString() < fechaActual.toLocaleDateString()){
+            if (new Date(fechaVisita).getTime() < new Date(fechaActual).getTime()){
                 $('#fechaVisitaOA').addClass('is-invalid');
-            }else if(new Date(fechaHasta).toLocaleDateString() < fechaActual.toLocaleDateString()){
+            }else if(new Date(fechaHasta).getTime() < new Date(fechaActual).getTime()){
                 $('#fechaHastaOA').addClass('is-invalid');
-            }else if (new Date(fechaHasta).toLocaleDateString() < new Date(fechaVisita).toLocaleDateString()){
+            }else if (new Date(fechaHasta).getTime() < new Date(fechaVisita).getTime()){
                 $('#fechaHastaOA').addClass('is-invalid');
                 $('#fechaVisitaOA').addClass('is-invalid');
             }
@@ -2089,6 +2162,12 @@ function validRangeOfDates(id){
             $('#fechaHastaOA').removeClass('is-invalid');
         }
     }
+    // if (new Date(fechaVisita).getTime() < new Date(fechaHasta).getTime()){
+    //     $('#fechaVisitaOA').removeClass('is-invalid');
+    //     $('#fechaHastaOA').removeClass('is-invalid');
+    // }
+
+
 }
 
 function setModal(type = 'none',id ="", nombre='', email=''){

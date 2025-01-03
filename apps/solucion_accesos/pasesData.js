@@ -29,7 +29,7 @@ const columnsTableListPendientes = [
             //`<button  class="btn-table-bitacora" onClick="setModal('Tools',${folio})"><i class="fa-solid fa-car"></i></button> `;
         },
     },
-    {title:"", field:'nombre_pase',hozAlign:"left",headerFilter:true,width:390,headerFilter:'input', headerFilterPlaceholder: "Buscar por nombre o estatus", 
+    {title:"Nombre", field:'nombre_pase',hozAlign:"left",headerFilter:true,width:390,headerFilter:'input', headerFilterPlaceholder: "Buscar por nombre o estatus", 
          formatter: (cell, formatterParams) => {
             let data = cell.getData();
             let id = cell.getData().id ? cell.getData().id : 0;
@@ -66,6 +66,7 @@ const columnsTableListPendientes = [
         }
     },
     // { title:"Folio", field:'folio', hozAlign:"center", tooltip:true,headerFilter:true,width:100,headerTooltip:true},
+    { title:"Ubicación", field:'ubicacion', hozAlign:"left",headerFilter:true,headerTooltip:true ,width:200},
     { title:"Fecha creacion", field:'fecha_desde_visita', hozAlign:"left",headerFilter:"date",width:200, headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") },
         formatter: function(cell) {
             let data = cell.getData();
@@ -77,7 +78,6 @@ const columnsTableListPendientes = [
             let data = cell.getData();
             return data.fecha_desde_hasta.slice(0,-3)
         }},
-    // { title:"Visitante", field:'nombre_pase', hozAlign:"left",headerFilter:true,headerTooltip:true ,width:200},
     // { title:"Fotografia", field:'walkin_fotografia',hozAlign:"left",headerFilter:true,width:250,
     //         formatter: function(cell) {
     //                 let data = cell.getData();

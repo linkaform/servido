@@ -204,7 +204,6 @@ function verListaPasesTemporales(){
             Swal.close();
             let listPases = res.response.data
             let formatedList=[]
-            console.log()
             for(let obj of listPases){
                 formatedList.push({nombre: obj.nombre, folio: obj.folio, qr_code: obj.qr_code, ubicacion: obj.ubicacion, foto: obj.foto})
             }
