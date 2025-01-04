@@ -97,11 +97,17 @@
                         <h5>Fecha Hasta: </h5>
                         <input class="form-control ds-input" type="month" id="date_to" name="date_to">
                     </div>
-
+                    
                 </div>
 
                 <!--Content -->
                 <div class="row" style="margin-top:20px;"  id="divContent">
+                    <div class="card text-bg-primary px-0 col-sm-12 col-md-4 col-lg-4 ml-3 mb-4" id="divVenta" style="max-width: 30rem;">
+                        <div class="card-header">Acumulado Ventas de Licenciamiento</div>
+                        <div class="card-body">
+                          <p class="card-text" id="acumuladoVentas">$5000</p>
+                        </div>
+                    </div>
                     <!--Primer Elemento -->
                     <div class="col-sm-10 col-md-10 col-lg-12" style="align-items: center;overflow-y: scroll;">
                         <section class="title_tables">
@@ -140,6 +146,13 @@
                     <div id="fifthElement" class="col-sm-8 col-md-8 col-lg-6 mt-5" style="overflow-y: scroll;">
                         <div  style="width: 1000px;height: 500px;margin: auto;">
                             <canvas id="graphicFourth" ></canvas>
+                        </div>
+                    </div>
+
+                    <!--Sexto Elemento -->
+                    <div id="sixthElement" class="col-sm-8 col-md-8 col-lg-6 mt-5" style="overflow-y: scroll;">
+                        <div  style="width: 1000px;height: 500px;margin: auto;">
+                            <canvas id="graphicFifth" ></canvas>
                         </div>
                     </div>
 

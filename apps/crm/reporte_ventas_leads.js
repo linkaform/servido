@@ -15,6 +15,7 @@ hideElement("firstParameters");
 hideElement("firstElement");
 hideElement("secondElement");
 hideElement("thirdElement");
+hideElement("divVenta");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -128,6 +129,7 @@ loading.style.display = 'none';
 
 //-----DEMO 
 function loadDemoData(){
+  unhideElement("divVenta");
   $('.title_tables').show();
   unhideElement("title_demo")
   document.getElementById("firstParameters").style.removeProperty('display');
@@ -146,6 +148,9 @@ function loadDemoData(){
 
   getDrawGraphicFourth(data4, setOptions4);
   document.getElementById("fifthElement").style.removeProperty('display');
+
+  getDrawGraphicFifth(data5, setOptions5);
+  document.getElementById("sixthElement").style.removeProperty('display');
 
 //   getDrawTable('thirdElement', columsTable2, dataTable2, 350);
 //   document.getElementById("thirdElement").style.removeProperty('display');
@@ -196,7 +201,62 @@ function runFirstElement(){
   }
 }
 
+let result = [];
+function sumDataByYear(data) {
+  data.forEach(yearData => {
+      let yearSummary = {
+          mes: yearData.mes,
+          leads_generados: 0,
+          leads_calificados: 0,
+          demos: 0,
+          leads_ganados: 0,
+          ltv_cac: '',
+          porcentaje_demos: '',
+          porcentaje_leads_calificados: '',
+          porcentaje_cierre: '',
+          licencias_en_proceso: 0,
+          sp_en_proceso: 0,
+          licencias_vendidas: 0,
+          sp_vendidos: 0,
+          _children: []
+      };
+
+      yearData._children.forEach(monthData => {
+          yearSummary.leads_generados += monthData.leads_generados || 0;
+          yearSummary.leads_calificados += monthData.leads_calificados || 0;
+          yearSummary.demos += monthData.demos || 0;
+          yearSummary.leads_ganados += monthData.leads_ganados || 0;
+          yearSummary.ltv_cac += monthData.ltv_cac || 0;
+          yearSummary.licencias_en_proceso += monthData.licencias_en_proceso || 0;
+          yearSummary.sp_en_proceso += monthData.sp_en_proceso || 0;
+          yearSummary.licencias_vendidas += monthData.licencias_vendidas || 0;
+          yearSummary.sp_vendidos += monthData.sp_vendidos || 0;
+
+          let childMonthData = {
+              mes: monthData.mes,
+              leads_generados: monthData.leads_generados,
+              leads_calificados: monthData.leads_calificados,
+              demos: monthData.demos,
+              leads_ganados: monthData.leads_ganados,
+              ltv_cac: monthData.ltv_cac,
+              porcentaje_demos: monthData.porcentaje_demos,
+              porcentaje_leads_calificados: monthData.porcentaje_leads_calificados,
+              porcentaje_cierre: monthData.porcentaje_cierre,
+              licencias_en_proceso: monthData.licencias_en_proceso,
+              sp_en_proceso: monthData.sp_en_proceso,
+              licencias_vendidas: monthData.licencias_vendidas,
+              sp_vendidos: monthData.sp_vendidos,
+              clientes: monthData.clientes || []
+          };
+          yearSummary._children.push(childMonthData);
+      });
+
+      result.push(yearSummary);
+  });
+}
+
 function getFirstElement(dateTo, dateFrom){
+  result = []
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
@@ -222,8 +282,9 @@ function getFirstElement(dateTo, dateFrom){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.dataReport.firstElement.data) {
-        getDrawTable('firstElement', columsTable1, res.response.dataReport.firstElement.data, 350);
+      sumDataByYear(res.response.dataReport.firstElement.data);
+      if (result) {
+        getDrawTable('firstElement', columsTable1, result, 350);
         document.getElementById("firstElement").style.removeProperty('display');
        
       }
@@ -238,17 +299,31 @@ function getFirstElement(dateTo, dateFrom){
         document.getElementById("thirdElement").style.removeProperty('display');
       }
 
-      // if (res.response.dataReport.thirdElement.data) {
-      //   getDrawGraphicSecond(res.response.dataReport.thirdElement.data, setOptions2, 'dataFetch');
-      //   document.getElementById("thirdElement").style.removeProperty('display');
-      // }
+      if (res.response.dataReport.fourthElement.data) {
+        getDrawGraphicThird(res.response.dataReport.fourthElement.data, setOptions3, 'dataFetch');
+        document.getElementById("fourthElement").style.removeProperty('display');
+      }
 
       if (res.response.dataReport.fifthElement.data) {
         getDrawGraphicFourth(res.response.dataReport.fifthElement.data, setOptions4, 'dataFetch');
         document.getElementById("fifthElement").style.removeProperty('display');
       }
-      
 
+      if (res.response.dataReport.firstElement.data) {
+        getDrawGraphicFifth(res.response.dataReport.firstElement.data, setOptions5, 'dataFetch');
+        document.getElementById("firstElement").style.removeProperty('display');
+      }
+      
+      let totalLicenciasVendidas = 0;
+      
+      res.response.dataReport.firstElement.data.forEach(item => {
+        item._children.forEach(child => {
+          totalLicenciasVendidas += child.licencias_vendidas;
+        });
+      });
+      
+      $('#acumuladoVentas').text(`$${totalLicenciasVendidas}`);
+      unhideElement("divVenta");
     } else {
       hideLoading();
       if(res.code == 11){
@@ -338,6 +413,10 @@ function getDrawGraphicFirst(data, setOptions, option){
   });
 }
 
+const months = [
+  'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+];
 
 let chart2;
 function getDrawGraphicSecond(data, setOptions, option){
@@ -348,7 +427,10 @@ function getDrawGraphicSecond(data, setOptions, option){
   }
   let dataFormateada = data
   if(option == 'dataFetch'){
-    const dataLabels = data.map(label => `${label.mes}-${label.anio}`);
+    const dataLabels = data.map(label => {
+      const mesNombre = months[label.mes - 1];
+      return `${mesNombre} ${label.anio}`;
+    });
     const dataSi = data.map(label => label.porcentaje_si);
     const dataNo = data.map(label => label.porcentaje_no);
     dataFormateada = {
@@ -382,16 +464,54 @@ function getDrawGraphicSecond(data, setOptions, option){
 
 
 let chart3;
-function getDrawGraphicThird(data, setOptions){
+function getDrawGraphicThird(data, setOptions, option){
   //---CHART
   var ctx = document.getElementById('graphicThird').getContext('2d');
   if (chart3) {
     chart3.destroy();
   }
+  let dataFormateada = data
+  if(option == 'dataFetch'){
+    const dataLabels = data.map(label => {
+      const mesNombre = months[label.mes - 1];
+      return `${mesNombre} ${label.anio}`;
+    });
+    const dataLicencias = data.map(label => label.licencias_vendidas);
+    const dataSP = data.map(label => label.sp_vendidos);
+    dataFormateada = {
+      labels: dataLabels,
+      datasets: [
+          {
+              label: 'Licencias',
+              data: dataLicencias,
+              borderColor: '#074799',
+              backgroundColor: '#074799',
+              tension: 0.4,
+              borderWidth: 2,
+              pointBackgroundColor: 'blue',
+              pointBorderColor: 'darkblue',
+              pointRadius: 3,
+              yAxisID: 'y1'
+          },
+          {
+              label: 'Servicios Profesionales',
+              data: dataSP,
+              borderColor: '#F72C5B',
+              backgroundColor: '#F72C5B',
+              tension: 0.4,
+              borderWidth: 2,
+              pointBackgroundColor: 'blue',
+              pointBorderColor: 'darkblue',
+              pointRadius: 3,
+              yAxisID: 'y2'
+          }
+      ]
+    }
+  }
 
   chart3 = new Chart(ctx, {
     type: 'line',
-    data:data,
+    data:dataFormateada,
     options: setOptions,
     plugins: [ChartDataLabels],
   });
@@ -406,16 +526,19 @@ function getDrawGraphicFourth(data, setOptions, option){
   }
   let dataFormateada = data
   if(option == 'dataFetch'){
-    const dataLabels = data.map(label => `${label.mes}-${label.anio}`);
-    const dataPorcentaje = data.map(label => label.porcentaje_cierre);
+    const dataLabels = data.map(label => {
+      const mesNombre = months[label.mes - 1];
+      return `${mesNombre} ${label.anio}`;
+    });
+    const dataPorcentaje = data.map(label => label.cantidad_cuentas_cerradas);
     dataFormateada = {
       labels: dataLabels,
       datasets: [
           {
-              label: 'Porcentaje de Cierre',
+              label: 'Leads Ganados',
               data: dataPorcentaje,
               borderColor: '#E16A54',
-              backgroundColor: 'rgba(155, 89, 182, 0.2)',
+              backgroundColor: '#E16A54',
               tension: 0.4,
               borderWidth: 2,
               pointBackgroundColor: 'blue',
@@ -431,6 +554,62 @@ function getDrawGraphicFourth(data, setOptions, option){
     data:dataFormateada,
     options: setOptions,
     plugins: [ChartDataLabels],
+  });
+}
+
+//-----GRAPICH
+let chart5;
+function getDrawGraphicFifth(data, setOptions, option){
+  //---CHART
+  var ctx = document.getElementById('graphicFifth').getContext('2d');
+  
+  if (chart5) {
+    chart5.destroy();
+  }
+  let dataFormateada = data
+  if(option == 'dataFetch'){
+    console.log(data)
+    const dataLabels = data.map(label => {
+      return label._children.map(child => `${label.mes} ${child.mes}`);
+    }).flat();
+    const dataInfo = data.map(label => {
+        return label._children.map(child => `${child.ltv_cac}`);
+    }).flat();
+
+    const averageLine = new Array(dataInfo.length).fill(3.0);
+    
+    dataFormateada = {
+      labels: dataLabels,
+      datasets: [
+          {
+              label: 'Indicador de Ventas (MXN)',
+              data: dataInfo,
+              borderColor: '#E16A54',
+              backgroundColor: 'rgba(225, 106, 84, 0.2)',
+              tension: 0.4,
+              borderWidth: 2,
+              pointBackgroundColor: 'blue',
+              pointBorderColor: 'darkblue',
+              pointRadius: 3,
+          },
+          {
+              label: 'Promedio',
+              data: averageLine,
+              borderColor: '#00A8E8',
+              backgroundColor: 'rgba(0, 168, 232, 0.2)',
+              borderWidth: 2,
+              borderDash: [5, 5],
+              pointRadius: 0,
+          }
+      ]
+    }
+  }
+
+  chart5 = new Chart(ctx, {
+    type: 'line',
+    data:dataFormateada,
+    plugins: [ChartDataLabels],
+    options: setOptions,
   });
 }
 

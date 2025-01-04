@@ -29,6 +29,13 @@ var columsTable1 = [
           });
         },
     },
+    { title:"LTV/CAC",  field:'ltv_cac',hozAlign:"right",width:150,formatter: "money",
+      formatterParams: {
+          symbol: "$",
+          thousand: ",",
+          decimal: ".",
+          precision: 0,
+    }},
     { title:"% Demos por lead",  field:'porcentaje_demos',hozAlign:"right",width:150,formatter: "money",
         formatterParams: {
             symbol: "%",
@@ -86,6 +93,18 @@ var columsTable1 = [
   var dataTable1 = [
     {
       mes: '2024',
+      leads_generados: '10',
+      leads_calificados: '8',
+      demos: '4',
+      leads_ganados: '2',
+      ltv_cac: 10000,
+      porcentaje_demos: '',
+      porcentaje_leads_calificados: '',
+      porcentaje_cierre: '',
+      licencias_en_proceso: '3',
+      sp_en_proceso: '2',
+      licencias_vendidas: '10000',
+      sp_vendidos: '1',
       _children: [
         {
           mes: 'Enero',
@@ -93,6 +112,7 @@ var columsTable1 = [
           leads_calificados: '8',
           demos: '4',
           leads_ganados: '2',
+          ltv_cac: 1000,
           porcentaje_demos: '40%',
           porcentaje_leads_calificados: '80%',
           porcentaje_cierre: '25%',
@@ -108,6 +128,7 @@ var columsTable1 = [
           leads_calificados: '12',
           demos: '5',
           leads_ganados: '3',
+          ltv_cac: 1000,
           porcentaje_demos: '33%',
           porcentaje_leads_calificados: '80%',
           porcentaje_cierre: '25%',
@@ -123,6 +144,7 @@ var columsTable1 = [
           leads_calificados: '18',
           demos: '6',
           leads_ganados: '4',
+          ltv_cac: 1000,
           porcentaje_demos: '30%',
           porcentaje_leads_calificados: '90%',
           porcentaje_cierre: '22%',
@@ -138,6 +160,7 @@ var columsTable1 = [
           leads_calificados: '20',
           demos: '8',
           leads_ganados: '5',
+          ltv_cac: 1000,
           porcentaje_demos: '32%',
           porcentaje_leads_calificados: '80%',
           porcentaje_cierre: '25%',
@@ -153,6 +176,7 @@ var columsTable1 = [
           leads_calificados: '15',
           demos: '6',
           leads_ganados: '4',
+          ltv_cac: 1000,
           porcentaje_demos: '33%',
           porcentaje_leads_calificados: '83%',
           porcentaje_cierre: '27%',
@@ -168,6 +192,7 @@ var columsTable1 = [
           leads_calificados: '19',
           demos: '7',
           leads_ganados: '5',
+          ltv_cac: 1000,
           porcentaje_demos: '32%',
           porcentaje_leads_calificados: '86%',
           porcentaje_cierre: '26%',
@@ -183,6 +208,7 @@ var columsTable1 = [
           leads_calificados: '20',
           demos: '9',
           leads_ganados: '6',
+          ltv_cac: 1000,
           porcentaje_demos: '37%',
           porcentaje_leads_calificados: '83%',
           porcentaje_cierre: '30%',
@@ -198,6 +224,7 @@ var columsTable1 = [
           leads_calificados: '24',
           demos: '10',
           leads_ganados: '7',
+          ltv_cac: 1000,
           porcentaje_demos: '36%',
           porcentaje_leads_calificados: '85%',
           porcentaje_cierre: '29%',
@@ -213,6 +240,7 @@ var columsTable1 = [
           leads_calificados: '26',
           demos: '11',
           leads_ganados: '8',
+          ltv_cac: 1000,
           porcentaje_demos: '37%',
           porcentaje_leads_calificados: '87%',
           porcentaje_cierre: '31%',
@@ -228,6 +256,7 @@ var columsTable1 = [
           leads_calificados: '30',
           demos: '12',
           leads_ganados: '9',
+          ltv_cac: 1000,
           porcentaje_demos: '34%',
           porcentaje_leads_calificados: '86%',
           porcentaje_cierre: '30%',
@@ -243,6 +272,7 @@ var columsTable1 = [
           leads_calificados: '34',
           demos: '14',
           leads_ganados: '10',
+          ltv_cac: 1000,
           porcentaje_demos: '35%',
           porcentaje_leads_calificados: '85%',
           porcentaje_cierre: '29%',
@@ -258,6 +288,7 @@ var columsTable1 = [
           leads_calificados: '40',
           demos: '15',
           leads_ganados: '12',
+          ltv_cac: 1000,
           porcentaje_demos: '33%',
           porcentaje_leads_calificados: '88%',
           porcentaje_cierre: '30%',
@@ -271,6 +302,18 @@ var columsTable1 = [
     },
     {
         mes: '2023',
+        leads_generados: '10',
+        leads_calificados: '8',
+        demos: '4',
+        leads_ganados: '2',
+        ltv_cac: 10000,
+        porcentaje_demos: '',
+        porcentaje_leads_calificados: '',
+        porcentaje_cierre: '',
+        licencias_en_proceso: '3',
+        sp_en_proceso: '2',
+        licencias_vendidas: '10000',
+        sp_vendidos: '1',
         _children: [
           {
             mes: 'Enero',
@@ -278,6 +321,7 @@ var columsTable1 = [
             leads_calificados: '8',
             demos: '4',
             leads_ganados: '2',
+            ltv_cac: 1000,
             porcentaje_demos: '40%',
             porcentaje_leads_calificados: '80%',
             porcentaje_cierre: '25%',
@@ -293,6 +337,7 @@ var columsTable1 = [
             leads_calificados: '12',
             demos: '5',
             leads_ganados: '3',
+            ltv_cac: 1000,
             porcentaje_demos: '33%',
             porcentaje_leads_calificados: '80%',
             porcentaje_cierre: '25%',
@@ -308,6 +353,7 @@ var columsTable1 = [
             leads_calificados: '18',
             demos: '6',
             leads_ganados: '4',
+            ltv_cac: 1000,
             porcentaje_demos: '30%',
             porcentaje_leads_calificados: '90%',
             porcentaje_cierre: '22%',
@@ -323,6 +369,7 @@ var columsTable1 = [
             leads_calificados: '20',
             demos: '8',
             leads_ganados: '5',
+            ltv_cac: 1000,
             porcentaje_demos: '32%',
             porcentaje_leads_calificados: '80%',
             porcentaje_cierre: '25%',
@@ -338,6 +385,7 @@ var columsTable1 = [
             leads_calificados: '15',
             demos: '6',
             leads_ganados: '4',
+            ltv_cac: 1000,
             porcentaje_demos: '33%',
             porcentaje_leads_calificados: '83%',
             porcentaje_cierre: '27%',
@@ -353,6 +401,7 @@ var columsTable1 = [
             leads_calificados: '19',
             demos: '7',
             leads_ganados: '5',
+            ltv_cac: 1000,
             porcentaje_demos: '32%',
             porcentaje_leads_calificados: '86%',
             porcentaje_cierre: '26%',
@@ -368,6 +417,7 @@ var columsTable1 = [
             leads_calificados: '20',
             demos: '9',
             leads_ganados: '6',
+            ltv_cac: 1000,
             porcentaje_demos: '37%',
             porcentaje_leads_calificados: '83%',
             porcentaje_cierre: '30%',
@@ -383,6 +433,7 @@ var columsTable1 = [
             leads_calificados: '24',
             demos: '10',
             leads_ganados: '7',
+            ltv_cac: 1000,
             porcentaje_demos: '36%',
             porcentaje_leads_calificados: '85%',
             porcentaje_cierre: '29%',
@@ -398,6 +449,7 @@ var columsTable1 = [
             leads_calificados: '26',
             demos: '11',
             leads_ganados: '8',
+            ltv_cac: 1000,
             porcentaje_demos: '37%',
             porcentaje_leads_calificados: '87%',
             porcentaje_cierre: '31%',
@@ -413,6 +465,7 @@ var columsTable1 = [
             leads_calificados: '30',
             demos: '12',
             leads_ganados: '9',
+            ltv_cac: 1000,
             porcentaje_demos: '34%',
             porcentaje_leads_calificados: '86%',
             porcentaje_cierre: '30%',
@@ -428,6 +481,7 @@ var columsTable1 = [
             leads_calificados: '34',
             demos: '14',
             leads_ganados: '10',
+            ltv_cac: 1000,
             porcentaje_demos: '35%',
             porcentaje_leads_calificados: '85%',
             porcentaje_cierre: '29%',
@@ -443,6 +497,7 @@ var columsTable1 = [
             leads_calificados: '40',
             demos: '15',
             leads_ganados: '12',
+            ltv_cac: 1000,
             porcentaje_demos: '33%',
             porcentaje_leads_calificados: '88%',
             porcentaje_cierre: '30%',
@@ -635,9 +690,9 @@ var columsTable1 = [
     datasets: [
       {
         label: 'Leads Generados',
-        data: [10, 15, 20, 25, 18, 22, 24, 28], // Valores de leads generados para cada mes
-        backgroundColor: '#FFC145', // Color de las barras
-        borderColor: '#FFC145', // Color del borde de las barras
+        data: [10, 15, 20, 25, 18, 22, 24, 28],
+        backgroundColor: '#FFC145',
+        borderColor: '#FFC145',
         borderWidth: 1,
       },
     ]
@@ -689,18 +744,18 @@ var columsTable1 = [
             data: [
                 80, 80, 90, 80, 83, 86, 83, 85, 87, 86, 85, 88
             ], 
-            backgroundColor: '#5CB338', // Color de fondo para "Sí"
-            borderColor: 'transparent', // Bordes invisibles
-            fill: true                   // Rellenar la barra
+            backgroundColor: '#5CB338',
+            borderColor: 'transparent',
+            fill: true 
         },
       {
         label: 'No',
         data: [
             20, 20, 10, 20, 17, 14, 17, 15, 13, 14, 15, 12
         ], 
-        backgroundColor: '#e74c3c',  // Color de fondo para "No"
-        borderColor: 'transparent',  // Bordes invisibles
-        fill: true                   // Rellenar la barra
+        backgroundColor: '#e74c3c',
+        borderColor: 'transparent',
+        fill: true
       }
     ]
 };
@@ -729,7 +784,7 @@ var setOptions2 = {
     },
     scales: {
       x: {
-        stacked: false,    // Asegúrate de que las barras no estén apiladas y estén lado a lado
+        stacked: false,
       },
       y: {
         title: {
@@ -739,7 +794,7 @@ var setOptions2 = {
               size: 18
           }
         },
-        stacked: false,    // Asegúrate de que las barras no estén apiladas en el eje y
+        stacked: false,
         min: 0,
         max: 100,
       }
@@ -748,92 +803,120 @@ var setOptions2 = {
   
 
 var data3 = {
-    labels: [
-        'Enero 2024', 'Febrero 2024', 'Marzo 2024', 'Abril 2024', 'Mayo 2024', 'Junio 2024', 
-        'Julio 2024', 'Agosto 2024', 'Septiembre 2024', 'Octubre 2024', 'Noviembre 2024', 'Diciembre 2024'
-    ],
-    datasets: [
-        {
-            label: 'Licencias',
-            data: [
-                80, 90, 75, 100, 120, 140, 160, 170, 180, 200, 210, 220  // Datos de licencias vendidas
-            ],
-            borderColor: '#3E7B27',  // Color de la línea de Licencias
-            backgroundColor: '#3E7B27',  // Color de fondo de las áreas debajo de la línea
-            tension: 0.4,  // Curvatura de la línea
-            borderWidth: 2,  // Grosor de la línea
-            pointBackgroundColor: 'blue',  // Color de relleno de los puntos
-            pointBorderColor: 'darkblue',  // Color del borde de los puntos
-            pointRadius: 3,  // Tamaño de los puntos
-        },
-        {
-            label: 'Servicios Profesionales',
-            data: [
-                40, 45, 50, 60, 55, 70, 75, 80, 85, 95, 110, 115  // Datos de SP vendidos
-            ],
-            borderColor: '#4DA1A9',  // Color de la línea de SP
-            backgroundColor: '#4DA1A9',  // Color de fondo de las áreas debajo de la línea
-            tension: 0.4,  // Curvatura de la línea
-            borderWidth: 2,  // Grosor de la línea
-            pointBackgroundColor: 'blue',  // Color de relleno de los puntos
-            pointBorderColor: 'darkblue',  // Color del borde de los puntos
-            pointRadius: 3,  // Tamaño de los puntos
-        }
-    ]
+  labels: [
+      'Enero 2024', 'Febrero 2024', 'Marzo 2024', 'Abril 2024', 'Mayo 2024', 'Junio 2024', 
+      'Julio 2024', 'Agosto 2024', 'Septiembre 2024', 'Octubre 2024', 'Noviembre 2024', 'Diciembre 2024'
+  ],
+  datasets: [
+      {
+          label: 'Licencias',
+          data: [
+              800, 900, 750, 100, 120, 140, 160, 170, 180, 200, 210, 220
+          ],
+          borderColor: '#074799',
+          backgroundColor: '#074799',
+          tension: 0.4,
+          borderWidth: 2,
+          pointBackgroundColor: 'blue',
+          pointBorderColor: 'darkblue',
+          pointRadius: 3,
+          yAxisID: 'y1'
+      },
+      {
+          label: 'Servicios Profesionales',
+          data: [
+              40000, 45000, 50000, 6000, 5500, 7000, 7050, 8000, 8050, 9500, 11000, 11500
+          ],
+          borderColor: '#F72C5B',
+          backgroundColor: '#F72C5B',
+          tension: 0.4,
+          borderWidth: 2,
+          pointBackgroundColor: 'blue',
+          pointBorderColor: 'darkblue',
+          pointRadius: 3,
+          yAxisID: 'y2'
+      }
+  ]
 };
 
 var setOptions3 = {
-    responsive: true,
-    plugins: {
-        legend: {
-            display: true,
-            position: 'top',
-        },
-        title: {
-            display: true,
-            text: 'Ventas Mensuales',
-            font: {
-                size: 25
-            }
-        },
-        datalabels: {
-            color: 'black',
-            formatter: function (value, context){
-                var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                return formato;  // Mostrar los datos de las ventas
-            },
-            anchor: 'end',  // Coloca las etiquetas al final del punto
-            align: 'top',  // Alinea las etiquetas por encima del punto
-        }
-    },
-    scales: {
-        x: {
-            title: {
-                display: true,
-                text: 'Mes y Año',
-                font: {
-                    size: 18
-                }
-            },
-            ticks: {
-                autoSkip: true,  // Esto asegura que las etiquetas no se superpongan
-                maxRotation: 45,  // Ángulo de rotación de las etiquetas en el eje X para mejorar la visibilidad
-                minRotation: 45   // Minimiza el ángulo de rotación para asegurar una lectura cómoda
-            }
-        },
-        y: {
-            min: 0,
-            max: 250,  // Ajusta el valor máximo según tus datos
-            title: {
-                display: true,
-                text: 'Ventas',
-                font: {
-                    size: 18
-                }
-            }
-        }
-    }
+  responsive: true,
+  plugins: {
+      legend: {
+          display: true,
+          position: 'top',
+      },
+      title: {
+          display: true,
+          text: 'Ventas Mensuales',
+          font: {
+              size: 25
+          }
+      },
+      datalabels: {
+          color: 'black',
+          formatter: function (value, context){
+              var formato = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              return formato;
+          },
+          anchor: 'end',
+          align: 'top'
+      }
+  },
+  scales: {
+      x: {
+          title: {
+              display: true,
+              text: 'Mes y Año',
+              font: {
+                  size: 18
+              }
+          },
+          ticks: {
+              autoSkip: true,
+              maxRotation: 45,
+              minRotation: 45
+          }
+      },
+      y1: {
+          position: 'left',
+          title: {
+              display: true,
+              text: 'Licencias (USD)',
+              font: {
+                  size: 18
+              }
+          },
+          min: 0,
+          max: 1000,
+          ticks: {
+              stepSize: 200,
+              callback: function(value) {
+                  return '$' + value.toLocaleString();
+              }
+          }
+      },
+      y2: {
+          position: 'right',
+          title: {
+              display: true,
+              text: 'Servicios Profesionales (MXN)',
+              font: {
+                  size: 18
+              }
+          },
+          min: 0,
+          max: 60000,
+          ticks: {
+              stepSize: 2000,
+              callback: function(value) {
+                  return '$' + value.toLocaleString();
+              }
+          }
+      }
+  }
 };
+
 
 var data4 = {
     labels: [
@@ -844,15 +927,15 @@ var data4 = {
         {
             label: 'Leads ganados',
             data: [
-                85, 80, 78, 90, 88, 92, 94, 95, 96, 98, 99, 100  // Datos de porcentaje de cierre
+                15, 10, 18, 10, 18, 12, 14, 15, 16, 18, 19, 1
             ],
-            borderColor: '#E16A54',  // Color de la línea de porcentaje de cierre
-            backgroundColor: '#E16A54',  // Color de fondo de las áreas debajo de la línea
-            tension: 0.4,  // Curvatura de la línea
-            borderWidth: 2,  // Grosor de la línea
-            pointBackgroundColor: 'blue',  // Color de relleno de los puntos
-            pointBorderColor: 'darkblue',  // Color del borde de los puntos
-            pointRadius: 3,  // Tamaño de los puntos
+            borderColor: '#E16A54',
+            backgroundColor: '#E16A54',
+            tension: 0.4,
+            borderWidth: 2,
+            pointBackgroundColor: 'blue',
+            pointBorderColor: 'darkblue',
+            pointRadius: 3,
         }
     ]
 };
@@ -873,8 +956,8 @@ var setOptions4 = {
         },
         datalabels: {
             color: 'black',
-            anchor: 'end',  // Coloca las etiquetas al final del punto
-            align: 'top',  // Alinea las etiquetas por encima del punto
+            anchor: 'end',
+            align: 'top',
         }
     },
     scales: {
@@ -887,21 +970,107 @@ var setOptions4 = {
                 }
             },
             ticks: {
-                autoSkip: true,  // Evita que las etiquetas se superpongan
-                maxRotation: 45,  // Ángulo de rotación de las etiquetas
-                minRotation: 45   // Minimiza el ángulo de rotación
+                autoSkip: true,
+                maxRotation: 45,
+                minRotation: 45
             }
         },
         y: {
             min: 0,
-            max: 160,  // El porcentaje de cierre va de 0 a 100
+            max: 20,
+            ticks: {
+              stepSize: 2,
+            },
             title: {
                 display: true,
                 text: 'Cantidad',
                 font: {
-                    size: 18
+                    size: 20
                 }
             }
         }
     }
+};
+
+var data5 = {
+  labels: [
+      'Enero 2024', 'Febrero 2024', 'Marzo 2024', 'Abril 2024', 'Mayo 2024', 'Junio 2024', 
+      'Julio 2024', 'Agosto 2024', 'Septiembre 2024', 'Octubre 2024', 'Noviembre 2024', 'Diciembre 2024'
+  ],
+  datasets: [
+      {
+          label: 'Indicador de Ventas (MXN)',
+          data: [
+            4.5, 2.8, 3.6, 2.2, 4.0, 5.1, 3.2, 2.7, 3.9, 4.2, 3.1, 2.4
+          ],
+          borderColor: '#E16A54',
+          backgroundColor: 'rgba(225, 106, 84, 0.2)',
+          tension: 0.4,
+          borderWidth: 2,
+          pointBackgroundColor: 'blue',
+          pointBorderColor: 'darkblue',
+          pointRadius: 3,
+      },
+      {
+          label: 'Promedio',
+          data: new Array(12).fill(3.0),
+          borderColor: '#00A8E8',
+          backgroundColor: 'rgba(0, 168, 232, 0.2)',
+          borderWidth: 2,
+          borderDash: [5, 5],
+          pointRadius: 0,
+      }
+  ]
+};
+
+var setOptions5 = {
+  responsive: true,
+  plugins: {
+      legend: {
+          display: true,
+          position: 'top',
+      },
+      title: {
+          display: true,
+          text: 'Indicador de Ventas (MXN) y Promedio',
+          font: {
+              size: 25
+          }
+      },
+      datalabels: {
+          color: 'black',
+          anchor: 'end',
+          align: 'top',
+      }
+  },
+  scales: {
+      x: {
+          title: {
+              display: true,
+              text: 'Mes y Año',
+              font: {
+                  size: 18
+              }
+          },
+          ticks: {
+              autoSkip: true,
+              maxRotation: 45,
+              minRotation: 45
+          }
+      },
+      y: {
+          min: 0,
+          max: 10,
+          ticks: {
+            stepSize: 1,
+          },
+          title: {
+              display: true,
+              text: 'Indicador de Ventas (MXN)',
+              font: {
+                  size: 20
+              }
+          }
+      }
+  }
 };
