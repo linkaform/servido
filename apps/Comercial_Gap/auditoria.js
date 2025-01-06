@@ -99,7 +99,7 @@ function loadData(data) {
 
 //-----SET REQUEST
 async function getInformation(){
-    const scriptId = getParameterURL('scriptId');
+    const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
     const statusSession = getSession();
     if(statusSession == 'Demo' || demo){
@@ -139,7 +139,7 @@ async function getInformation(){
 
 //----CATALOG
 function get_catalog(){
-    const scriptId = getParameterURL('scriptId');
+    const scriptId = getParameterURL('script_id');
     const JWT = getCookie("userJwt");
     fetch(getUrlRequest('script'), {
         method: 'POST',

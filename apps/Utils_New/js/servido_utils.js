@@ -101,7 +101,7 @@ function setRedirectionList(){
 function getSession(location = null) {
   const USERID = getCookie("userId");
   const JWT = getCookie("userJwt");
-  const SCRIPTID = getParameterURL('scriptId');
+  const SCRIPTID = getParameterURL('script_id');
   const DEMO = getParameterURL('demo');
   const EMBEDED = getParameterURL('embeded');
 
@@ -195,7 +195,7 @@ async function sendRequestReport(script){
   const JWTSESSION =  getCookie("userJwt");
   //----Fetch
 
-  if(flagValidation){
+    if(flagValidation){
         try {
             const response = await fetch(getUrlRequest('script'), {
                 method: 'POST',
