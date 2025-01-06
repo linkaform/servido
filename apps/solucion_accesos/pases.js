@@ -1369,7 +1369,7 @@ function crearConfirmacionEditar() {
                     //     visita_a: getCookie("userName_soter"),
                     //     // custom:true,
                     //     link:{
-                    //         "link":`${protocol}//${host}/solucion_accesos/pase.html`,
+                    //         "link":`${protocol}//${host}/pase.html`,
                     //         "docs": checkDocSeleccionados,
                     //         "creado_por_id": getCookie("userId_soter"),
                     //         "creado_por_email":getCookie("userEmail")
@@ -1460,7 +1460,7 @@ function crearConfirmacionEditar() {
                         access_pass.enviar_correo_pre_registro = []
                     }
                     access_pass.link={
-                            "link":`${protocol}//${host}/solucion_accesos/pase.html`,
+                            "link":`${protocol}//${host}/pase.html`,
                             "docs": checkDocSeleccionados,
                             'qr_code':paseSelected._id,
                             "creado_por_id": getCookie("userId_soter"),
@@ -1498,7 +1498,7 @@ function crearConfirmacionEditar() {
                                 let host = window.location.host;
                                 let docs = ""
                                 
-                                let linkk=`${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id+`&user=`+getCookie("userId_soter")+ `&docs=`+ checkDocSeleccionados
+                                let linkk=`${protocol}//${host}/pase.html?id=`+data.json.id+`&user=`+getCookie("userId_soter")+ `&docs=`+ checkDocSeleccionados
 
 
 

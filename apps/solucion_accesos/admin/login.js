@@ -7,10 +7,10 @@ window.onload = function(){
 	if(user !='' && jw!=''){
 		let protocol = window.location.protocol;
 		let host = window.location.host;
-		let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
+		let urlNew = `${protocol}//${host}/turnos.html`
 		window.location.href =urlNew
-		//window.open(`${protocol}//${host}/solucion_accesos/turnos.html`, "turnos")
-		/*let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
+		//window.open(`${protocol}//${host}/turnos.html`, "turnos")
+		/*let urlNew = `${protocol}//${host}/turnos.html`
 		Object.assign(document.createElement('a'), {
 			rel: 'noopener noreferrer',
 			href: urlNew,
@@ -73,12 +73,12 @@ function changeLoginView(view){
 		console.log("HELLO")
 		let protocol = window.location.protocol;
 		let host = window.location.host;
-		let urlNew = `${protocol}//${host}/solucion_accesos/admin/crearCuenta.html`
+		let urlNew = `${protocol}//${host}/admin/crearCuenta.html`
 		window.location.href =urlNew
 	}if(view=="continue"){
 		let protocol = window.location.protocol;
 		let host = window.location.host;
-		let urlNew = `${protocol}//${host}/solucion_accesos/admin/contratos.html`
+		let urlNew = `${protocol}//${host}/admin/contratos.html`
 		window.location.href =urlNew
 	}
 	
@@ -130,13 +130,13 @@ function get_login(){
 				
 				let protocol = window.location.protocol;
 				let host = window.location.host;
-				let url = `${protocol}//${host}/solucion_accesos/turnos.html`;
+				let url = `${protocol}//${host}/turnos.html`;
 				
 				window.location.reload(); */
 
 
 
-				//window.open(`${protocol}//${host}/solucion_accesos/turnos.html`, "turnos")
+				//window.open(`${protocol}//${host}/turnos.html`, "turnos")
 				//window.location.href =url
 				/*
 				Object.assign(document.createElement('a'), {

@@ -182,33 +182,33 @@ function redirectionUrl(type = 'null',blank = false, logout=false){
     agregarPestana(type)
     // if (existingTab && type !=="login") {
     if (type !=="login") {
-        window.open(`${protocol}//${host}/solucion_accesos/${type}.html`, type)
+        window.open(`${protocol}//${host}/${type}.html`, type)
     }else if(type=='login' && logout){
-        urlNew = `${protocol}//${host}/solucion_accesos/login.html`
+        urlNew = `${protocol}//${host}/login.html`
         window.location.href = urlNew
     }else if(type=='login' && !blank){
-        urlNew = `${protocol}//${host}/solucion_accesos/login.html`
+        urlNew = `${protocol}//${host}/login.html`
         window.location.href = urlNew
     }
     /* else {
         if(type == 'users'){
-            urlNew = `${protocol}//${host}/solucion_accesos/accesos.html`
+            urlNew = `${protocol}//${host}/accesos.html`
         }else if(type == 'bitacora'){
-            urlNew = `${protocol}//${host}/solucion_accesos/bitacora.html`            
+            urlNew = `${protocol}//${host}/bitacora.html`            
         }else if(type == 'incidencias'){
-            urlNew = `${protocol}//${host}/solucion_accesos/incidencias.html`
+            urlNew = `${protocol}//${host}/incidencias.html`
         }else if(type == 'articulos'){
-            urlNew = `${protocol}//${host}/solucion_accesos/articulos.html`
+            urlNew = `${protocol}//${host}/articulos.html`
         }else if(type == 'login'){
-            urlNew = `${protocol}//${host}/solucion_accesos/login.html`
+            urlNew = `${protocol}//${host}/login.html`
         }else if(type == 'rondines'){
-            urlNew = `${protocol}//${host}/solucion_accesos/rondines.html`
+            urlNew = `${protocol}//${host}/rondines.html`
         }else if(type == 'turnos'){
-            urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
+            urlNew = `${protocol}//${host}/turnos.html`
         }else if(type == 'accesos'){
-            urlNew = `${protocol}//${host}/solucion_accesos/accesos.html`
+            urlNew = `${protocol}//${host}/accesos.html`
         }else if(type == 'notas'){
-            urlNew = `${protocol}//${host}/solucion_accesos/notas.html`
+            urlNew = `${protocol}//${host}/notas.html`
         }
         //----Validation
         if(urlNew !='' && blank){

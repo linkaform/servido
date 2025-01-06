@@ -4,10 +4,10 @@ window.onload = function(){
 	let protocol = window.location.protocol;
 	let host = window.location.host;
 	if(user !='' && jw!=''){
-		let urlNew = `${protocol}//${host}/solucion_accesos/menu.html`
+		let urlNew = `${protocol}//${host}/menu.html`
 		window.location.href =urlNew
-		//window.open(`${protocol}//${host}/solucion_accesos/turnos.html`, "turnos")
-		/*let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
+		//window.open(`${protocol}//${host}/turnos.html`, "turnos")
+		/*let urlNew = `${protocol}//${host}/turnos.html`
 		Object.assign(document.createElement('a'), {
 			rel: 'noopener noreferrer',
 			href: urlNew,
@@ -80,10 +80,10 @@ function get_login(){
 				//redirectionUrl("turnos",false)
 				let protocol = window.location.protocol;
 				let host = window.location.host;
-				let url = `${protocol}//${host}/solucion_accesos/turnos.html`;
+				let url = `${protocol}//${host}/turnos.html`;
 				
 				window.location.reload();
-				//window.open(`${protocol}//${host}/solucion_accesos/turnos.html`, "turnos")
+				//window.open(`${protocol}//${host}/turnos.html`, "turnos")
 				//window.location.href =url
 				/*
 				Object.assign(document.createElement('a'), {

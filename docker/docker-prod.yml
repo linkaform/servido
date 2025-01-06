@@ -9,8 +9,7 @@ services:
       - FLASK_APP=servido.py
     image: linkaform/servido:latest
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:8080"
     volumes:
       - ../nginx/certs:/etc/nginx/certs
       - ../servido_api/certs:/srv/servido/servido_api/certs

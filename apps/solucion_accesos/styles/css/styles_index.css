@@ -1,0 +1,79 @@
+
+@font-face {
+    font-family: 'gothambook';
+    src: url('gothambook-webfont.woff2') format('woff2'),
+         url('gothambook-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+body{
+    font-family: gothambook;
+}
+
+.wrapper {
+    width:100%;
+    margin: 1.5rem auto 4rem;
+}
+
+.header {
+    text-align: center;
+    position: relative;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #CCC;
+}
+
+
+.card-holder {
+    margin: 2em 0;
+}
+
+.card-box {
+    font-weight: 800;
+    padding: 1em 1em;
+    border-radius: 0.25em;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.bg-red {
+    background: linear-gradient(90deg, #E5514B 0% 3% , #ffffff 3% 100% );
+}
+.btn-red{
+    background: #E5514B;
+    border: none !important;
+    color: #ffffff;
+}
+
+.bg-purple {
+    background: linear-gradient(90deg, #9B59B6 0% 3% , #ffffff 3% 100% );
+}
+.btn-purple{
+    background: #9B59B6;
+    border: none !important;
+    color: #ffffff;
+}
+
+
+
+.bg-blue {
+    background: linear-gradient(90deg, #3498DC 0% 3% , #ffffff 3% 100%  );
+}
+
+.btn-blue{
+    background: #3498DC;
+    border: none !important;
+    color: #ffffff;
+}
+
+
+.bg-green {
+    background: linear-gradient(90deg, #2DCC71 0% 3% , #ffffff 3% 100%  );
+}
+.btn-green{
+    background: #2DCC71;
+    border: none !important;
+    color: #ffffff;
+}

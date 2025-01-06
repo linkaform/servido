@@ -151,7 +151,7 @@ window.addEventListener('storage', function(event) {
     if (event.key === 'cerrarSesion' && id == "") {
         let protocol = window.location.protocol;
         let host = window.location.host;
-        window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+        window.location.href =`${protocol}//${host}/login.html`;
     }
 });
 
@@ -888,8 +888,8 @@ function copyLinkPase(id, nombre, email, tel, arrayDocSel,userId, email_from){
         }
     }
     /* +`&nombre=`+nombre+`&email=`+email+`&tel=`+tel +`&emailfrom=`+email_from*/
-	navigator.clipboard.writeText(`${protocol}//${host}/solucion_accesos/pase.html?id=`+id+`&user=`+userId+ `&docs=`+ docs);
-    return `${protocol}//${host}/solucion_accesos/pase.html?id=`+id+`&user=`+userId+ `&docs=`+ docs
+	navigator.clipboard.writeText(`${protocol}//${host}/pase.html?id=`+id+`&user=`+userId+ `&docs=`+ docs);
+    return `${protocol}//${host}/pase.html?id=`+id+`&user=`+userId+ `&docs=`+ docs
 }
 
 function validarInputFile(id){
@@ -1814,7 +1814,7 @@ function crearConfirmacion() {
                         visita_a: getCookie("userName_soter"),
                 		custom:true,
                         link:{
-                            "link":`${protocol}//${host}/solucion_accesos/pase.html`,
+                            "link":`${protocol}//${host}/pase.html`,
                             "docs": checkDocSeleccionados,
                             "creado_por_id": getCookie("userId_soter"),
                             "creado_por_email":getCookie("userEmail")
@@ -1879,7 +1879,7 @@ function crearConfirmacion() {
                                 let host = window.location.host;
                                 let docs = ""
                                 
-                                let linkk=`${protocol}//${host}/solucion_accesos/pase.html?id=`+data.json.id+`&user=`+getCookie("userId_soter")+ `&docs=`+ checkDocSeleccionados
+                                let linkk=`${protocol}//${host}/pase.html?id=`+data.json.id+`&user=`+getCookie("userId_soter")+ `&docs=`+ checkDocSeleccionados
 
 
 
