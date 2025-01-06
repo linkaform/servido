@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Servido</title>
+        <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../Utils_New/css/sweetalert2.min.css" rel="stylesheet" >
+        <link href="./login.css" rel="stylesheet">
+    </head>
+    <body>
+    <div class="login-container">
+        <img src="https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_126.thumbnail" alt="Logo" class="logo">
+        <div class="mb-3 mt-3 position-relative">
+            <input type="email" class="form-control" placeholder="email@example.com" id="inputEmail">
+        </div>
+
+        <div class="mb-3 position-relative">
+            <input type="password" class="form-control" placeholder="***************" id="inputPassword">
+            <span class="toggle-password" id="spanEye">
+                <i class="bi bi-eye-slash"></i>
+            </span>
+        </div>
+        <div class="div-lost-password">
+            <a href="https://app.linkaform.com/api/infosync/password_reset/" class="text-decoration-none">¿Olvidó su contraseña?</a>
+        </div>
+        <button type="button" class="btn btn-primary w-100" id="btnRequest">Login</button>
+    </div>
+    <!-- Bootstrap JS y Script para la contraseña -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="../Utils_New/js/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="../Utils_New/js/servido_utils.js"></script>
+    <script type="text/javascript" src="./login.js"></script>
+    </body>
+</html>

@@ -1,17 +1,37 @@
 //-----URL LOGIN
-//const URL = "https://preprod.linkaform.com/";
-const URL = "https://app.linkaform.com";
-// const URL = "http://192.168.0.25:8000";
-// const URL = "http://127.0.0.1:8011";
-
+//let URL = "https://preprod.linkaform.com/";
+let URL = "https://app.linkaform.com";
+// let URL = "http://192.168.0.25:8000";
+// let URL = "http://127.0.0.1:8011";
 
 //-Funciona para definir una cookie
-function setCookie(cname, cvalue, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + (exdays*24*60*60*1000));
-  var expires = "expires="+d.toUTCString();
-  document.cookie = cname + "=" + cvalue + "; " + expires;
+function setCookie(cname, cvalue, exdays, options = {}) {
+    // Calcula la fecha de expiración
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + d.toUTCString();
+
+    // Configuración predeterminada
+    const defaultOptions = {
+        path: "/", // Hacer la cookie accesible en todo el dominio
+        domain: null, // Si no se pasa, se usará el dominio actual
+        secure: false, // Si quieres asegurarla para HTTPS, usa `true`
+        sameSite: "Lax", // Cambiar a "None" si es necesario
+    };
+
+    // Combina las opciones predeterminadas con las personalizadas
+    const { path, domain, secure, sameSite } = { ...defaultOptions, ...options };
+
+    // Construye la cookie
+    let cookie = `${cname}=${cvalue}; ${expires}; path=${path}`;
+    if (domain) cookie += `; domain=${domain}`;
+    if (secure) cookie += `; Secure`;
+    if (sameSite) cookie += `; SameSite=${sameSite}`;
+
+    // Establece la cookie
+    document.cookie = cookie;
 }
+
 //-Funciona para obtener una cookie especifica
 function getCookie(cname) {
   let name = cname + "=";
@@ -55,7 +75,7 @@ function getParameterURL(keyFound = null) {
 }
 
 //-Funciona para guardar en local storage una url y redireccionar al login
-function setRedirection() {
+function setRedirectionLogin() {
   const urlOrigin = window.location.href;      
   const protocolo = window.location.protocol;    
   const hostname = window.location.hostname;      
@@ -63,7 +83,7 @@ function setRedirection() {
   //---URL DATA STORAGE
   localStorage.setItem('urlOrigin', JSON.stringify(urlOrigin));
   //---URL REDIRECTION LOGIN
-  let urlRedirection = `${protocolo}//${hostname}:${puerto}/Servido_v2/login.html`
+  let urlRedirection = `${protocolo}//${hostname}:${puerto}/Servido_Login/login.html`
   window.location.href = urlRedirection;
 }
 
@@ -84,6 +104,7 @@ function getSession(location = null) {
   const SCRIPTID = getParameterURL('scriptId');
   const DEMO = getParameterURL('demo');
   const EMBEDED = getParameterURL('embeded');
+
   if(DEMO != "" && DEMO != null){
     return 'Demo';
   }else if(USERID != null && JWT != null && USERID != "" && JWT != ""){
@@ -91,11 +112,11 @@ function getSession(location = null) {
   }else{
     if(location != 'login' || location == null){
         if(EMBEDED == "" || EMBEDED == null){
-            setRedirection();
+            setRedirectionLogin();
         }else{
             //---Show Alert
             let div1 = document.getElementById("content-div-noseession");
-            div1.style.display = "flex";
+            div1.style.display = "block";
             let div2 = document.getElementById("content-div-empty");
             div2.style.display = "none";
             //---Hide COmponents
@@ -103,12 +124,10 @@ function getSession(location = null) {
             divElements.forEach(div => {
               div.style.display = 'none';
             });
-
             const buttonsElements = document.querySelectorAll('.btn-elements');
             buttonsElements.forEach(div => {
               div.style.display = 'none';
             });
-
         }
     }
     return 'Offline';
@@ -136,7 +155,7 @@ function getReportUrl() {
 }
 
 //-Funciona para mandar la petición a script de un report
-async function sendRequestReport(script, env = null){
+async function sendRequestReport(script){
   let dicRes = {};
   let flagValidation = true;
 
@@ -157,7 +176,7 @@ async function sendRequestReport(script, env = null){
     }
     if(required){
       if(!valor || valor.length == 0){
-        let flagValidation = false;
+        flagValidation = false;
         Swal.fire({
           title: 'Advertencia',
           html:'No es posible ejecutar reporte, faltan filtros requeridos.'
@@ -172,19 +191,13 @@ async function sendRequestReport(script, env = null){
   }
   //----Update Script id
   dicFilter['script_id'] = script;
-  //---Conditional env
-  let urlRequest = 'https://app.linkaform.com/api/infosync/scripts/run/';
-  if(env != null && env == 'test'){
-    urlRequest = 'https://preprod.linkaform.com/api/infosync/scripts/run/';
-  }
   //----Cookie 
   const JWTSESSION =  getCookie("userJwt");
   //----Fetch
 
   if(flagValidation){
-
         try {
-            const response = await fetch(urlRequest, {
+            const response = await fetch(getUrlRequest('script'), {
                 method: 'POST',
                 body: JSON.stringify(dicFilter),
                 headers: {
@@ -223,16 +236,23 @@ function setElementsStyle(){
     divEmpty.forEach(div => {
       div.style.display = 'none';
     });
-
+    const divNoSession = document.querySelectorAll('.div-content-no-session');
+    divNoSession.forEach(div => {
+      div.style.display = 'none';
+    });
   }else if(statusSession == 'Active'){
     //----Div Containers
     const divEmpty = document.querySelectorAll('.div-content-empty');
+    const divNoSession = document.querySelectorAll('.div-content-no-session');
     const divElements = document.querySelectorAll('.div-content-element');
     divElements.forEach(div => {
+      div.style.visibility = 'hidden';
+    });
+    divNoSession.forEach(div => {
       div.style.display = 'none';
     });
     divEmpty.forEach(div => {
-      div.style.display = 'block';
+      div.style.visibility = 'visible';
     });
   }
   //---Check Parameter
@@ -537,7 +557,15 @@ function loadComponent(content, file) {
     .catch(error => console.error("Error:", error));
 }
 
+//----Funciona para escoger la URL de petición
 function getUrlRequest(type) {
+    //-----HOST
+    const params = new URLSearchParams(window.location.search);
+    const env = params.get("env");
+    if(env == 'preprod'){
+        URL = "https://preprod.linkaform.com/";
+    }
+    //-----ENDPOINT
     if(type == 'script'){
         return `${URL}/api/infosync/scripts/run/`
     }else if(type == 'login'){
@@ -546,4 +574,30 @@ function getUrlRequest(type) {
         return `${URL}/api/infosync/cloud_upload/`
     }
     return ''
+}
+
+//------Funciona para saber cual era la anterior tab y redirigir
+function redirection_before_tab() {
+    // Obtener la URL de la pestaña anterior
+    const previousTab = document.referrer;
+    if (previousTab) {
+        let urlRedirection = previousTab;
+        window.location.href = urlRedirection;
+    } 
+}
+
+//-----Funciona para ocultar loading
+function hide_loading() {
+    const loading = document.getElementById('loading');
+    const mainContent = document.getElementById('wrapper');
+    loading.style.display = 'none';
+    mainContent.classList.remove('hidden'); 
+}
+
+//-----Funciona para mostrar loading
+function show_loading() {
+    const loading = document.getElementById('loading');
+    const mainContent = document.getElementById('wrapper');
+    loading.style.display = 'block';
+    mainContent.classList.add('hidden'); 
 }
