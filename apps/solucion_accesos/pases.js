@@ -75,7 +75,7 @@ function onTabChange(activeTabId, previousTabId) {
 }
 
 function getAllDataPases(tab_status='Todos'){
-    // loadingService()
+    loadingService()
     dataTableListTodos=[]
     fetch(url + urlScripts, {
         method: 'POST',

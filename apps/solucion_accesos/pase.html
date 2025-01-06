@@ -29,6 +29,12 @@
 	<link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+	<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+
  	<link rel="stylesheet" href="./style.css">
 
 </head>
@@ -111,19 +117,58 @@
                	 	<input type="email" class="form-control fill paseEntradaNuevo" id="descripcion" aria-describedby="emailHelp" placeholder="Descripción">
             	</div>
             </div>
-               <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6 my-1 mt-2 d-flex flex-column">
-            	<label>
-	            	<input type="checkbox" class="paseEntradaNuevo" name="enviarCorreoSms" value="enviar_correo_pre_registro" id="enviar_correo_pre_registro" onchange="validateEmailTelInput('enviar_correo_pre_registro')" aria-describedby="emailInputValid"><b> Enviar correo</b>
+               <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 my-1 mt-2 d-flex flex-column gap-2">
+                    
+
+               	<!-- <div>
+               		<button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+				  		Enviar correo
+					</button>
+               	</div>
+               	<div>
+               		<button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+				  Enviar sms
+				</button>
+               	</div> -->
+
+               	<label> Selecciona una opción: </label>
+               	<div class="btn-group gap-2" role="group" aria-label="Basic checkbox toggle button group">
+
+
+               		<div >
+					  <input type="checkbox" class="btn-check paseEntradaNuevo" name="enviarCorreoSms" value="enviar_correo_pre_registro" id="enviar_correo_pre_registro"  onchange="validateEmailTelInput('enviar_correo_pre_registro')" aria-describedby="emailInputValid" >
+
+					  <label class="btn btn-outline-primary" for="enviar_correo_pre_registro">Enviar correo</label>
+               		</div>
+
+               		<div >
+               			
+					  <input type="checkbox" class="btn-check  paseEntradaNuevo" name="enviarCorreoSms" value="enviar_sms_pre_registro" id="enviar_sms_pre_registro"  onchange="validateEmailTelInput('enviar_sms_pre_registro')" aria-describedby="telefonoInputValid">
+					  <label class="btn btn-outline-primary" for="enviar_sms_pre_registro">Enviar SMS</label>
+               		</div>
+					  
+					  <div id="emailInputValid" class="invalid-feedback">
+				      		El campo correo debe tener información para habilitar esta opción.
+				    	</div>
+					  <div id="telefonoInputValid" class="invalid-feedback">
+				      		El campo teléfono debe tener información para habilitar esta opción.
+				    	</div>
+				</div>
+
+
+
+            	<!-- <label>
+	            	<input type="checkbox" class="paseEntradaNuevo " name="enviarCorreoSms" value="enviar_correo_pre_registro" id="enviar_correo_pre_registro" onchange="validateEmailTelInput('enviar_correo_pre_registro')" aria-describedby="emailInputValid"  ><b> Enviar correo</b>
 	            	<div id="emailInputValid" class="invalid-feedback">
 			      		El campo correo debe tener información para habilitar esta opción.
 			    	</div>
 	        	</label>
-	        	<label>
-	            	<input type="checkbox" class="paseEntradaNuevo" name="enviarCorreoSms" value="enviar_sms_pre_registro" id="enviar_sms_pre_registro" onchange="validateEmailTelInput('enviar_sms_pre_registro')" aria-describedby="telefonoInputValid"><b> Enviar sms</b>
+	        	<label >
+	            	<input type="checkbox" class="paseEntradaNuevo " name="enviarCorreoSms" value="enviar_sms_pre_registro" id="enviar_sms_pre_registro" onchange="validateEmailTelInput('enviar_sms_pre_registro')" aria-describedby="telefonoInputValid" ><b> Enviar sms</b>
 	            	<div id="telefonoInputValid" class="invalid-feedback">
 			      		El campo teléfono debe tener información para habilitar esta opción.
 			    	</div>
-	        	</label>
+	        	</label> -->
             </div>
         </div>
         <div class="col-sm-8 col-md-8 col-lg-8 col-xl-7  mt-3" id="paseEntradaInf3" style="display:none">
@@ -133,10 +178,13 @@
             <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6" >
                 <div>
 					<div class="checkbox-group me-2 my-3">
-		            	<label>
-		                	<input type="checkbox" class="paseEntradaNuevo" name="estadoIncidencia" value="opcionesAvanzadas" id="checkOpcionesAvanzadas" onchange="onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')"><b> Opciones Avanzadas</b>
-		            	</label>
+                	  <input type="checkbox" class="btn-check  paseEntradaNuevo" name="estadoIncidencia" value="opcionesAvanzadas" id="checkOpcionesAvanzadas"   onchange="onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')" >
+					  <label class="btn btn-outline-primary" for="checkOpcionesAvanzadas">Opciones Avanzadas</label>
+						 <!-- <input type="checkbox" class="btn-check paseEntradaNuevo" name="estadoIncidencia" value="opcionesAvanzadas" id="checkOpcionesAvanzadas"  onchange="onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')">Opciones Avanzadas -->
+
+	                	<!-- <input type="checkbox" class="btn-check paseEntradaNuevo" name="estadoIncidencia" value="opcionesAvanzadas" id="checkOpcionesAvanzadas" onchange="onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')" data-toggle="toggle" data-on="Opciones Avanzadas" data-off="Habilitar opciones" data-onstyle="primary" data-offstyle="" data-width="200" > -->
 		        	</div>
+
                 	<label>Visita de: </label>
                 	<div class="d-flex flex-column justify-content-start align-items-start" >
                 		<div>
@@ -338,12 +386,12 @@
 	            	</div>
 			</div>
             <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6 my-3 d-flex flex-column">
-            	<label>
+            	<!-- <label>
 	            	<input type="checkbox" class="paseEntradaNuevo" name="AgregarFotoIdent" value="agregarFoto" id="agregarFoto" onchange="onChangeOpcionesAvanzadas('AgregarFotoIdent')"><b> Solicitar Fotografía</b>
 	        	</label>
 	        	<label>
 	            	<input type="checkbox" class="paseEntradaNuevo" name="AgregarFotoIdent" value="agregarIdentificacion" id="agregarIdentificacion" onchange="onChangeOpcionesAvanzadas('AgregarFotoIdent')"><b> Solicitar Identificación</b>
-	        	</label>
+	        	</label> -->
             </div>
             <div class="col-sm-10 col-md-12 col-lg-12 col-xl-12 my-5">
             	<div class="col-12 d-flex justify-content-center">
@@ -633,6 +681,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+
 
 <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
 
