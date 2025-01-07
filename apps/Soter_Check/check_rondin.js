@@ -327,6 +327,8 @@ function dataSend(){
         } else {
             let modal = new bootstrap.Modal(document.getElementById('alertaModalFail'));
             modal.show();
+            button.disabled = false;
+
         }
     })
 }
