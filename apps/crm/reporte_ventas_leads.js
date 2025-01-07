@@ -582,7 +582,7 @@ function getDrawGraphicFifth(data, setOptions, option){
       labels: dataLabels,
       datasets: [
           {
-              label: 'Indicador de Ventas (MXN)',
+              label: 'Indicador de Ventas',
               data: dataInfo,
               borderColor: '#E16A54',
               backgroundColor: 'rgba(225, 106, 84, 0.2)',
