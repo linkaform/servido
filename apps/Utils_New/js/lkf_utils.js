@@ -94,3 +94,32 @@ function getPAlleteColors(pallete,number){
   }
   return arrayColors;
 }
+
+//----Funciona para tomar screen de imagesnes Graficas
+function get_chartDownload(id,style, nameFile = null) 
+{
+  let title = 'file-name.png';
+  if(nameFile != null){
+    title = nameFile+'.png';
+  }
+  $('#'+id).addClass(style);
+  html2canvas(document.querySelector("#"+id)).then(canvas => {
+    getDownload(canvas.toDataURL(), title);
+  });
+  $("#"+id).removeClass(style);
+}
+
+//-----Descarga  un div en imagen
+function getDownload(uri, filename){
+  var link = document.createElement('a');
+  if (typeof link.download === 'string') {
+      link.href = uri;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  } else {
+    window.open(uri);
+  }
+}
+

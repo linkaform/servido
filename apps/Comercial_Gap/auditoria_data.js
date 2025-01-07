@@ -123,9 +123,9 @@ var setOptions3 = {
           display: false,
       },
       datalabels: {
-        color: 'black',
+        color: 'grey',
         font: {
-            size: 15
+            size: 20
         }
       }
   },
@@ -161,9 +161,9 @@ var setOptions4 = {
           display: false,
       },
       datalabels: {
-        color: 'black',
+        color: 'grey',
         font: {
-            size: 15
+            size: 20
         }
       }
   },
@@ -199,9 +199,9 @@ var setOptions5 = {
           display: false,
       },
       datalabels: {
-        color: 'black',
+        color: 'grey',
         font: {
-            size: 15
+            size: 20
         }
       }
   },

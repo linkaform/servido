@@ -115,10 +115,16 @@ function getSession(location = null) {
             setRedirectionLogin();
         }else{
             //---Show Alert
+
             let div1 = document.getElementById("content-div-noseession");
             div1.style.display = "block";
+            div1.style.height = "100vh";
             let div2 = document.getElementById("content-div-empty");
             div2.style.display = "none";
+            let div3 = document.getElementById("content-div-buttons");
+            div3.style.display = "none";
+            let div4 = document.getElementById("content-div-filter");
+            div4.style.display = "none";
             //---Hide COmponents
             const divElements = document.querySelectorAll('.div-content-element');
             divElements.forEach(div => {
@@ -128,6 +134,7 @@ function getSession(location = null) {
             buttonsElements.forEach(div => {
               div.style.display = 'none';
             });
+            document.getElementById("buttonExecution").style.display = 'none';
         }
     }
     return 'Offline';
@@ -354,16 +361,10 @@ function createElements(dataConfig = null){
                             <div
                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
-                                <div class="dropdown no-arrow">
-                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                        aria-labelledby="dropdownMenuLink">
-                                        <div class="dropdown-header">Dropdown Header:</div>
-                                        <a class="dropdown-item" href="#" onclick="get_chartDownload('${idElement}','chart_screenIV');return false;">Descargar</a>
-                                    </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-sm btn-primary me-2"  onclick="get_chartDownload('${idElement}','chart_screenIV');return false;">
+                                        <i class="fas fa-download"></i>
+                                    </button>
                                 </div>
                             </div>
                             <!-- Card Body -->
@@ -379,17 +380,13 @@ function createElements(dataConfig = null){
                             <div
                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
-                                <div class="dropdown no-arrow">
-                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                        aria-labelledby="dropdownMenuLink">
-                                        <div class="dropdown-header">Dropdown Header:</div>
-                                        <a class="dropdown-item" id="download-csv-${idElement}" href="#">Descargar CSV</a>
-                                        <a class="dropdown-item" id="download-xls-${idElement}" href="#">Descargar Excel</a>
-                                    </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-sm btn-success me-2" id="download-xls-${idElement}">
+                                        <i class="fas fa-file-excel"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" id="download-csv-${idElement}">
+                                        <i class="fas fa-file-csv"></i>
+                                    </button>
                                 </div>
                             </div>
                             <!-- Card Body -->

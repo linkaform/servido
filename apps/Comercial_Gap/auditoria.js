@@ -9,7 +9,11 @@ window.onload = function(){
     loadData();
   }else if(statusSession == 'Demo'){
     loadDemoData();
+  }else if(statusSession == 'Offline'){
+    loadDemoData();
   }
+
+  
 }
 
 function loadDemoData(){
@@ -29,9 +33,6 @@ function loadData(data) {
     const buttonExecution = document.getElementById("buttonExecution");
     buttonExecution.addEventListener("click", () => {
         getInformation();
-    });
-    buttonClose.addEventListener("click", () => {
-        console.log('Cierra sesión');
     });
     //----Assign Selector
     $('#auditoria').on('change', function() {
