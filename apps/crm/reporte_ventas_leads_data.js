@@ -2,13 +2,13 @@
 var columsTable1 = [
     { title:"Mes", field:'mes',hozAlign:"left",width:200},
     { title:"Leads generados", field:'leads_generados',hozAlign:"right",width:160 },
-    { title:"Leads calificados",  field:'leads_calificados',hozAlign:"right",width:150 },
-    { title:"Demos",  field:'demos',hozAlign:"right",width:150 },
+    { title:"Leads calificados",  field:'leads_calificados',hozAlign:"right",width:160 },
+    { title:"Demos",  field:'demos',hozAlign:"right",width:100 },
     {
         title: "Leads ganados",
         field: "leads_ganados",
         hozAlign: "right",
-        width: 150,
+        width: 140,
         cellClick: function (e, cell) {
           var data = cell.getRow().getData();
           var clientes = data.clientes;
@@ -29,14 +29,14 @@ var columsTable1 = [
           });
         },
     },
-    { title:"LTV/CAC",  field:'ltv_cac',hozAlign:"right",width:150,formatter: "money",
+    { title:"LTV/CAC",  field:'ltv_cac',hozAlign:"right",width:130,formatter: "money",
       formatterParams: {
           symbol: "$",
           thousand: ",",
           decimal: ".",
-          precision: 0,
+          precision: 2,
     }},
-    { title:"% Demos por lead",  field:'porcentaje_demos',hozAlign:"right",width:150,formatter: "money",
+    { title:"% Demos por lead",  field:'porcentaje_demos',hozAlign:"right",width:170,formatter: "money",
         formatterParams: {
             symbol: "%",
             thousand: ",",
@@ -44,7 +44,7 @@ var columsTable1 = [
             precision: 0,
             symbolAfter: true
     }},
-    { title:"% Leads calificados",  field:'porcentaje_leads_calificados',hozAlign:"right",width:150,formatter: "money",
+    { title:"% Leads calificados",  field:'porcentaje_leads_calificados',hozAlign:"right",width:170,formatter: "money",
         formatterParams: {
             symbol: "%",
             thousand: ",",
@@ -52,7 +52,7 @@ var columsTable1 = [
             precision: 0,
             symbolAfter: true
     }},
-    { title:"% de cierre",  field:'porcentaje_cierre',hozAlign:"right",width:150,formatter: "money",
+    { title:"% de cierre",  field:'porcentaje_cierre',hozAlign:"right",width:120,formatter: "money",
         formatterParams: {
             symbol: "%",
             thousand: ",",
@@ -60,28 +60,28 @@ var columsTable1 = [
             precision: 0,
             symbolAfter: true
     }},
-    { title:"Licencias en proceso",  field:'licencias_en_proceso',hozAlign:"right",width:150,formatter: "money",
+    { title:"Licencias en proceso(USD)",  field:'licencias_en_proceso',hozAlign:"right",width:230,formatter: "money",
         formatterParams: {
             symbol: "$",
             thousand: ",",
             decimal: ".",
             precision: 0,
     } },
-    { title:"S.P En proceso",  field:'sp_en_proceso',hozAlign:"right",width:150,formatter: "money",
+    { title:"S.P En proceso(MXN)",  field:'sp_en_proceso',hozAlign:"right",width:190,formatter: "money",
         formatterParams: {
             symbol: "$",
             thousand: ",",
             decimal: ".",
             precision: 0,
     } },
-    { title:"Licencias vendidas",  field:'licencias_vendidas',hozAlign:"right",width:150,formatter: "money",
+    { title:"Licencias vendidas(USD)",  field:'licencias_vendidas',hozAlign:"right",width:210,formatter: "money",
         formatterParams: {
             symbol: "$",
             thousand: ",",
             decimal: ".",
             precision: 0,
     } },
-    { title:"S.P Vendidos",  field:'sp_vendidos',hozAlign:"right",width:150,formatter: "money",
+    { title:"S.P Vendidos(MXN)",  field:'sp_vendidos',hozAlign:"right",width:180,formatter: "money",
         formatterParams: {
             symbol: "$",
             thousand: ",",
@@ -1032,7 +1032,7 @@ var setOptions5 = {
       },
       title: {
           display: true,
-          text: 'Indicador de Ventas (MXN) y Promedio',
+          text: 'LTV/CAC',
           font: {
               size: 25
           }
@@ -1066,7 +1066,7 @@ var setOptions5 = {
           },
           title: {
               display: true,
-              text: 'Indicador de Ventas (MXN)',
+              text: 'Indicador de Ventas',
               font: {
                   size: 20
               }
