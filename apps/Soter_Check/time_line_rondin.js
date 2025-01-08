@@ -1,30 +1,6 @@
 let dicConfigs = [];
-
 window.onload = function(){
-	const statusSession = getSession('login');
-	if(statusSession == 'Active'){
-		const configData = getParsedConfiguration();
-		if (configData) {
-		    getDatesUser();
-            drawConfigLocation(configData) 
-
-		} else {
-		    setRedirection('start_rondin');
-		}
-		//--Asign Events
-        document.getElementById("buttonSend").addEventListener("click", () => {
-            setFinishRondin();
-        });
-	}else{
-        setRedirection('login');
-	}
-
-	setTimeout(() => {
-		const loading = document.getElementById('loading');
-		const mainContent = document.getElementById('main-content');
-		loading.style.display = 'none';
-		mainContent.classList.remove('hidden'); 
-	}, 2000);
+	get_validation_flow();
 }
 
 function getParsedConfiguration() {
@@ -32,11 +8,9 @@ function getParsedConfiguration() {
     if (configuration) {
         return JSON.parse(configuration);
     } else {
-        console.log('No hay configuración en localStorage.');
         return null;
     }
 }
-
 
 function setRedirection(file) {
 	//----Url
@@ -83,8 +57,10 @@ function drawConfigLocation(dataConfig) {
         let locations = dicListRecord && dicListRecord.length > 0 ? dicListRecord : [];
         let countFinish = 0;
         let countInprogress = 0;
+        //----Iteration Local Storage
         locations.forEach(item => {
             const li = document.createElement('li');
+
             if(item.status == 'completed'){
                 li.className = 'task-item completed';
             }else{
@@ -95,10 +71,10 @@ function drawConfigLocation(dataConfig) {
             iconDiv.innerHTML = '<i class="fas fa-map-marker-alt"></i>';
             const textDiv = document.createElement('div');
             textDiv.className = 'task-text ';
-            textDiv.textContent = item.title; 
-
+            textDiv.textContent = item.title.nombre; 
             li.appendChild(iconDiv);
             li.appendChild(textDiv);
+
             if(item.status != 'completed'){
                 countInprogress += 1;
             }else{
@@ -127,7 +103,7 @@ function drawConfigLocation(dataConfig) {
 
             const textDiv = document.createElement('div');
             textDiv.className = 'task-text';
-            textDiv.textContent = task; 
+            textDiv.textContent = task.nombre; 
 
             li.appendChild(iconDiv);
             li.appendChild(textDiv);
@@ -143,9 +119,13 @@ function drawConfigLocation(dataConfig) {
             componentRemaning.textContent = `0`;
         }
     }
+    setTimeout(() => {
+        const loading = document.getElementById('loading');
+        const mainContent = document.getElementById('main-content');
+        loading.style.display = 'none';
+        mainContent.classList.remove('hidden'); 
+    }, 2000);
 }
-
-
 
 function validationAllStatus(dicConfig) {
     const numChecks = dicConfig.length > 0 ? dicConfig.length : 0;
@@ -168,20 +148,20 @@ function setFinishRondin(){
     buttonFinish.disabled = false; 
     //----Update Status
     setRequestStatus();
-        
     //----Redirection
-    //setRedirection('summary_check');
+    localStorage.removeItem('configuration');
+    localStorage.removeItem('recordBitacora');
+    setRedirection('summary_check');
 }
 
 function setRequestStatus() {
     let recordConfig = localStorage.getItem('recordBitacora');
     recordConfig = JSON.parse(recordConfig);
     const JWT = getCookie("userJwt");
-    let urlLinkaform = 'https://app.linkaform.com/api/infosync/scripts/run/';
-    fetch(urlLinkaform, {
+    fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 126428,
+            script_name: 'create_record_check.py',
             folioUpdate:recordConfig.folio,
             option: 'update_record_bitacora',
         }),
@@ -194,6 +174,45 @@ function setRequestStatus() {
     .then(res => res.json())
     .then(res => {
         const data = res.response && res.response.data ? res.response.data : {};
-        console.log('Data',data)
     })
+}
+
+//----Validation Flow
+async function get_validation_flow() {
+    const statusSession = getSession('login');
+    if(statusSession == 'Active'){
+        const configData = getParsedConfiguration();
+        if (configData) {
+            getDatesUser();
+            drawConfigLocation(configData);
+            //--Asign Events
+            document.getElementById("buttonSend").addEventListener("click", () => {
+                setFinishRondin();
+            });
+        } else {
+            redirectionStartRondin();
+        }
+    }else{  
+        redirectionLogin();
+    }
+}
+
+function redirectionLogin() {
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/login.html`
+    window.location.href = urlRedirection;
+}
+
+function redirectionStartRondin() {
+    //----Url
+    let tagId = getParameterURL('tagId');
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/${file}.html?tagId=${tagId}`
+    window.location.href = urlRedirection;
 }

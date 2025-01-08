@@ -13,7 +13,7 @@ function sendRequest() {
   	let password = document.getElementById("inputPassword").value;  
   	let validation = validationRequest(email, password);
   	if (validation) {
-		fetch('https://app.linkaform.com/api/infosync/user_admin/login/', {
+		fetch(getUrlRequest('login'), {
 			method: 'POST',
 			body: JSON.stringify({
 				username: email,
@@ -25,7 +25,6 @@ function sendRequest() {
 		})
 		.then((res) => res.json())
 		.then((res) => {
-			console.log('res',res);
 			if(res.hasOwnProperty('code') && res.code === 2){
 				setCookies(res);
 				getReportLocation();
@@ -72,11 +71,11 @@ function setCookies(response){
 }
 
 function getReportLocation(){
-	const LOCATION =  getCookie("locationOrigin");
+	const tagId = getCookie('tagId')
 	const protocolo = window.location.protocol;    
 	const hostname = window.location.hostname;      
 	const puerto = window.location.port;            
-	let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/rondin.html?location?${LOCATION}`;
+	let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/check_rondin.html?tagId=${tagId}`;
     window.location.href = urlRedirection;
 }
 
