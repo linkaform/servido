@@ -459,6 +459,7 @@ function setColorsDatasets(data = null, type = null){
             let array_colors = data.labels.length > 0 ? getPAlleteColors(6, data.labels.length) : getPAlleteColors(6, 5);
             if(type == 'line'){
                 data.datasets[0].borderColor = array_colors;
+                data.datasets[0].backgroundColor = array_colors;
                 data.datasets[0].fill = false;
             }else{
                 data.datasets[0].backgroundColor = array_colors;
@@ -466,10 +467,13 @@ function setColorsDatasets(data = null, type = null){
             }
 
         }else if(data.datasets.length > 1){
-            console.log('datasets.labels',data)
-            let array_colors = data.labels.length > 0 ? getPAlleteColors(6,  data.labels.length) : getPAlleteColors(6, 5);
+            let array_colors = data.labels.length > 0 ? getPAlleteColors(6,  data.datasets.length) : getPAlleteColors(6, 5);
+            console.log('varios datasets',array_colors)
+
+
             data.datasets.forEach((item, index) => {
                 if(type == 'line'){
+                    item.backgroundColor = array_colors[index];
                     item.borderColor = array_colors[index];
                     item.fill = array_colors[index];
 
@@ -480,6 +484,7 @@ function setColorsDatasets(data = null, type = null){
 
             });
         }
+        
         return data;
     }
 }
