@@ -1,17 +1,17 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'chart', col: '6', id:'chartFirst', title:'Punto X Mes'},
-            { type:'chart', col: '6', id:'chartSecond', title:'Sede X Mes'},
+            { type:'chart', col: '6', id:'chartFirst', title:'Locales por mes'},
+            { type:'chart', col: '6', id:'chartSecond', title:'Sede por mes'},
         ] 
     },
     { class:'', _children : [
-            { type:'chart', col: '6', id:'chartThird', title:'Tendencia X Punto'},
-            { type:'chart', col: '6', id:'chartFourth', title:'Tendencia X Sede'},
+            { type:'chart', col: '6', id:'chartThird', title:'Tendencia por local'},
+            { type:'chart', col: '6', id:'chartFourth', title:'Tendencia por Sede'},
         ] 
     },
     { class:'', _children : [
-            { type:'chart', col: '12', id:'chartFiveth', title:'Tedencia X Institución'},
+            { type:'chart', col: '12', id:'chartFiveth', title:'Tedencia por Institución'},
         ] 
     },
 ];
@@ -123,9 +123,9 @@ var setOptions3 = {
           display: false,
       },
       datalabels: {
-        color: 'black',
+        color: 'grey',
         font: {
-            size: 15
+            size: 20
         }
       }
   },
@@ -161,9 +161,9 @@ var setOptions4 = {
           display: false,
       },
       datalabels: {
-        color: 'black',
+        color: 'grey',
         font: {
-            size: 15
+            size: 20
         }
       }
   },
@@ -199,9 +199,9 @@ var setOptions5 = {
           display: false,
       },
       datalabels: {
-        color: 'black',
+        color: 'grey',
         font: {
-            size: 15
+            size: 20
         }
       }
   },

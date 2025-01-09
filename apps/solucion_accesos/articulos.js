@@ -46,6 +46,7 @@ window.onload = function(){
         let response2 = await fetchOnChangeCaseta('articulos_perdidos.py', 'get_articles', selectCaseta.value, selectLocation.value)
         reloadTableArticulosPer(response2.response.data)
     };
+    getStats(getCookie("userCaseta"),getCookie("userLocation"),false);
     changeButtonColor();
     //getInfoCatalogs();
     fillCatalogs();
@@ -132,6 +133,53 @@ function setModal(type = 'none',id){
     }
 }
 
+function getStats(area = "", location = "", loading = false) {
+    if (loading) {
+        loadingService();
+    }
+
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'get_stats.py',
+            option: 'get_stats',
+            area: area,
+            location: location,
+            page: 'Articulos'
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userJwt
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(res => {
+        if (res.success) {
+            const data = res.response.data;
+
+            console.log('Datos obtenidos:', data);
+            // Actualización de valores en el DOM
+            $("#textConcessionArticles").text(data.articulos_concesionados_pendientes);
+            $("#textLostArticles").text(data.articulos_perdidos);
+        } else {
+            console.error('Error en los datos recibidos:', res.error);
+            alert('Hubo un problema al obtener los datos: ' + res.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error en fetch:', error.message || error);
+    })
+    .finally(() => {
+        if (loading) {
+            Swal.close(); // Cierra el servicio de carga si estaba activo
+        }
+    });
+}
 
 function onChangeFiltroEstadoPerdido(){
     loadingService()

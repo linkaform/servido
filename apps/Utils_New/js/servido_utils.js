@@ -1,17 +1,37 @@
 //-----URL LOGIN
-//const URL = "https://preprod.linkaform.com/";
-const URL = "https://app.linkaform.com";
-// const URL = "http://192.168.0.25:8000";
-// const URL = "http://127.0.0.1:8011";
-
+//let URL = "https://preprod.linkaform.com/";
+let URL = "https://app.linkaform.com";
+// let URL = "http://192.168.0.25:8000";
+// let URL = "http://127.0.0.1:8011";
 
 //-Funciona para definir una cookie
-function setCookie(cname, cvalue, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + (exdays*24*60*60*1000));
-  var expires = "expires="+d.toUTCString();
-  document.cookie = cname + "=" + cvalue + "; " + expires;
+function setCookie(cname, cvalue, exdays, options = {}) {
+    // Calcula la fecha de expiración
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + d.toUTCString();
+
+    // Configuración predeterminada
+    const defaultOptions = {
+        path: "/", // Hacer la cookie accesible en todo el dominio
+        domain: null, // Si no se pasa, se usará el dominio actual
+        secure: false, // Si quieres asegurarla para HTTPS, usa `true`
+        sameSite: "Lax", // Cambiar a "None" si es necesario
+    };
+
+    // Combina las opciones predeterminadas con las personalizadas
+    const { path, domain, secure, sameSite } = { ...defaultOptions, ...options };
+
+    // Construye la cookie
+    let cookie = `${cname}=${cvalue}; ${expires}; path=${path}`;
+    if (domain) cookie += `; domain=${domain}`;
+    if (secure) cookie += `; Secure`;
+    if (sameSite) cookie += `; SameSite=${sameSite}`;
+
+    // Establece la cookie
+    document.cookie = cookie;
 }
+
 //-Funciona para obtener una cookie especifica
 function getCookie(cname) {
   let name = cname + "=";
@@ -55,7 +75,7 @@ function getParameterURL(keyFound = null) {
 }
 
 //-Funciona para guardar en local storage una url y redireccionar al login
-function setRedirection() {
+function setRedirectionLogin() {
   const urlOrigin = window.location.href;      
   const protocolo = window.location.protocol;    
   const hostname = window.location.hostname;      
@@ -63,7 +83,7 @@ function setRedirection() {
   //---URL DATA STORAGE
   localStorage.setItem('urlOrigin', JSON.stringify(urlOrigin));
   //---URL REDIRECTION LOGIN
-  let urlRedirection = `${protocolo}//${hostname}:${puerto}/Servido_v2/login.html`
+  let urlRedirection = `${protocolo}//${hostname}:${puerto}/Servido_Login/login.html`
   window.location.href = urlRedirection;
 }
 
@@ -81,9 +101,10 @@ function setRedirectionList(){
 function getSession(location = null) {
   const USERID = getCookie("userId");
   const JWT = getCookie("userJwt");
-  const SCRIPTID = getParameterURL('scriptId');
+  const SCRIPTID = getParameterURL('script_id');
   const DEMO = getParameterURL('demo');
   const EMBEDED = getParameterURL('embeded');
+
   if(DEMO != "" && DEMO != null){
     return 'Demo';
   }else if(USERID != null && JWT != null && USERID != "" && JWT != ""){
@@ -91,24 +112,29 @@ function getSession(location = null) {
   }else{
     if(location != 'login' || location == null){
         if(EMBEDED == "" || EMBEDED == null){
-            setRedirection();
+            setRedirectionLogin();
         }else{
             //---Show Alert
+
             let div1 = document.getElementById("content-div-noseession");
-            div1.style.display = "flex";
+            div1.style.display = "block";
+            div1.style.height = "100vh";
             let div2 = document.getElementById("content-div-empty");
             div2.style.display = "none";
+            let div3 = document.getElementById("content-div-buttons");
+            div3.style.display = "none";
+            let div4 = document.getElementById("content-div-filter");
+            div4.style.display = "none";
             //---Hide COmponents
             const divElements = document.querySelectorAll('.div-content-element');
             divElements.forEach(div => {
               div.style.display = 'none';
             });
-
             const buttonsElements = document.querySelectorAll('.btn-elements');
             buttonsElements.forEach(div => {
               div.style.display = 'none';
             });
-
+            document.getElementById("buttonExecution").style.display = 'none';
         }
     }
     return 'Offline';
@@ -136,7 +162,7 @@ function getReportUrl() {
 }
 
 //-Funciona para mandar la petición a script de un report
-async function sendRequestReport(script, env = null){
+async function sendRequestReport(script){
   let dicRes = {};
   let flagValidation = true;
 
@@ -157,7 +183,7 @@ async function sendRequestReport(script, env = null){
     }
     if(required){
       if(!valor || valor.length == 0){
-        let flagValidation = false;
+        flagValidation = false;
         Swal.fire({
           title: 'Advertencia',
           html:'No es posible ejecutar reporte, faltan filtros requeridos.'
@@ -172,19 +198,13 @@ async function sendRequestReport(script, env = null){
   }
   //----Update Script id
   dicFilter['script_id'] = script;
-  //---Conditional env
-  let urlRequest = 'https://app.linkaform.com/api/infosync/scripts/run/';
-  if(env != null && env == 'test'){
-    urlRequest = 'https://preprod.linkaform.com/api/infosync/scripts/run/';
-  }
   //----Cookie 
   const JWTSESSION =  getCookie("userJwt");
   //----Fetch
 
-  if(flagValidation){
-
+    if(flagValidation){
         try {
-            const response = await fetch(urlRequest, {
+            const response = await fetch(getUrlRequest('script'), {
                 method: 'POST',
                 body: JSON.stringify(dicFilter),
                 headers: {
@@ -223,16 +243,23 @@ function setElementsStyle(){
     divEmpty.forEach(div => {
       div.style.display = 'none';
     });
-
+    const divNoSession = document.querySelectorAll('.div-content-no-session');
+    divNoSession.forEach(div => {
+      div.style.display = 'none';
+    });
   }else if(statusSession == 'Active'){
     //----Div Containers
     const divEmpty = document.querySelectorAll('.div-content-empty');
+    const divNoSession = document.querySelectorAll('.div-content-no-session');
     const divElements = document.querySelectorAll('.div-content-element');
     divElements.forEach(div => {
+      div.style.visibility = 'hidden';
+    });
+    divNoSession.forEach(div => {
       div.style.display = 'none';
     });
     divEmpty.forEach(div => {
-      div.style.display = 'block';
+      div.style.visibility = 'visible';
     });
   }
   //---Check Parameter
@@ -283,7 +310,15 @@ function createElements(dataConfig = null){
                     //-----Title
                     const titleElement = element.title ?  element.title : "";
                     //-----Color
-                    const colorElement = element.color ? element.color : "primary";
+                    let colorElement = element.color ? `border-left-${element.color}` : "";
+                    let colorBg = element.color ? `bg-${element.color}` : "";
+                    //-----Color Hexadecimal
+                    let colorHexadecimal = element.hexadecimal ? `style="border-left-color: ${element.hexadecimal} !important; border-left-width: 5.3333px !important; "` : "";
+                    let colorBgHexadecimal = element.hexadecimal ? `style="background: ${element.hexadecimal} !important;"` : "";
+                    if(!colorHexadecimal && !colorElement){
+                        colorElement = `border-left-primary`;
+                        colorBg = `bg-primary`;
+                    }
                     //-----Class
                     const classElement = element.col ? `col-xl-${element.col} col-md-6 mb-4` : "col-xl-3 col-md-6 mb-4";
                     divElement.className = classElement;
@@ -300,14 +335,14 @@ function createElements(dataConfig = null){
                         if(progressElement){
                             progressDiv = `<div class="col">
                                 <div class="progress progress-sm mr-2">
-                                    <div class="progress-bar bg-${colorElement}" role="progressbar"
+                                    <div class="progress-bar ${colorBg}" ${colorBgHexadecimal} role="progressbar"
                                         style="width: 70%" aria-valuenow="50" aria-valuemin="0"
                                         aria-valuemax="100" id="progress-${idElement}"></div>
                                 </div>
                             </div>`;
                         }
                         //-----Element Card
-                        divElement.innerHTML = `<div class="card border-left-${colorElement} shadow h-100 py-2">
+                        divElement.innerHTML = `<div class="card ${colorElement} shadow h-100 py-2" ${colorHexadecimal} >
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
@@ -316,7 +351,7 @@ function createElements(dataConfig = null){
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto ml-3">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="text-${idElement}">70%</div>
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="text-${idElement}"></div>
                                                 </div>
                                                 ${progressDiv}
                                             </div>
@@ -334,16 +369,10 @@ function createElements(dataConfig = null){
                             <div
                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
-                                <div class="dropdown no-arrow">
-                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                        aria-labelledby="dropdownMenuLink">
-                                        <div class="dropdown-header">Dropdown Header:</div>
-                                        <a class="dropdown-item" href="#" onclick="get_chartDownload('${idElement}','chart_screenIV');return false;">Descargar</a>
-                                    </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-sm btn-primary me-2"  onclick="get_chartDownload('${idElement}','chart_screenIV');return false;">
+                                        <i class="fas fa-download"></i>
+                                    </button>
                                 </div>
                             </div>
                             <!-- Card Body -->
@@ -359,17 +388,13 @@ function createElements(dataConfig = null){
                             <div
                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
-                                <div class="dropdown no-arrow">
-                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                        aria-labelledby="dropdownMenuLink">
-                                        <div class="dropdown-header">Dropdown Header:</div>
-                                        <a class="dropdown-item" id="download-csv-${idElement}" href="#">Descargar CSV</a>
-                                        <a class="dropdown-item" id="download-xls-${idElement}" href="#">Descargar Excel</a>
-                                    </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-sm btn-success me-2" id="download-xls-${idElement}">
+                                        <i class="fas fa-file-excel"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" id="download-csv-${idElement}">
+                                        <i class="fas fa-file-csv"></i>
+                                    </button>
                                 </div>
                             </div>
                             <!-- Card Body -->
@@ -442,6 +467,7 @@ function setColorsDatasets(data = null, type = null){
             let array_colors = data.labels.length > 0 ? getPAlleteColors(6, data.labels.length) : getPAlleteColors(6, 5);
             if(type == 'line'){
                 data.datasets[0].borderColor = array_colors;
+                data.datasets[0].backgroundColor = array_colors;
                 data.datasets[0].fill = false;
             }else{
                 data.datasets[0].backgroundColor = array_colors;
@@ -449,10 +475,10 @@ function setColorsDatasets(data = null, type = null){
             }
 
         }else if(data.datasets.length > 1){
-            console.log('datasets.labels',data)
-            let array_colors = data.labels.length > 0 ? getPAlleteColors(6,  data.labels.length) : getPAlleteColors(6, 5);
+            let array_colors = data.labels.length > 0 ? getPAlleteColors(6,  data.datasets.length) : getPAlleteColors(6, 5);
             data.datasets.forEach((item, index) => {
                 if(type == 'line'){
+                    item.backgroundColor = array_colors[index];
                     item.borderColor = array_colors[index];
                     item.fill = array_colors[index];
 
@@ -463,6 +489,7 @@ function setColorsDatasets(data = null, type = null){
 
             });
         }
+        
         return data;
     }
 }
@@ -537,7 +564,15 @@ function loadComponent(content, file) {
     .catch(error => console.error("Error:", error));
 }
 
+//----Funciona para escoger la URL de petición
 function getUrlRequest(type) {
+    //-----HOST
+    const params = new URLSearchParams(window.location.search);
+    const env = params.get("env");
+    if(env == 'preprod'){
+        URL = "https://preprod.linkaform.com/";
+    }
+    //-----ENDPOINT
     if(type == 'script'){
         return `${URL}/api/infosync/scripts/run/`
     }else if(type == 'login'){
@@ -546,4 +581,43 @@ function getUrlRequest(type) {
         return `${URL}/api/infosync/cloud_upload/`
     }
     return ''
+}
+
+//------Funciona para saber cual era la anterior tab y redirigir
+function redirection_before_tab() {
+    // Obtener la URL de la pestaña anterior
+    const previousTab = document.referrer;
+    if (previousTab) {
+        let urlRedirection = previousTab;
+        window.location.href = urlRedirection;
+    } 
+}
+
+//-----Funciona para ocultar loading
+function hide_loading() {
+    const loading = document.getElementById('loading');
+    const mainContent = document.getElementById('wrapper');
+    loading.style.visibility = 'hidden';
+    mainContent.classList.remove('hidden'); 
+}
+
+//-----Funciona para mostrar loading
+function show_loading() {
+    const loading = document.getElementById('loading');
+    const mainContent = document.getElementById('wrapper');
+    loading.style.visibility = 'visible';
+    mainContent.classList.add('hidden'); 
+}
+
+
+//-----Funciona para mostrar todos los elementos (graficas, tablas, cards) bajo la estructura del template
+function showElements() {
+    const divEmpty = document.querySelectorAll('.div-content-empty');
+    const divElements = document.querySelectorAll('.div-content-element');
+    divElements.forEach(div => {
+      div.style.visibility = 'visible';
+    });
+    divEmpty.forEach(div => {
+      div.style.display = 'none';
+    });
 }

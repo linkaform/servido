@@ -40,6 +40,7 @@ window.onload = function(){
     changeButtonColor(); 
     fillCatalogs();
     getInitialData();
+    getStats(getCookie("userCaseta"),getCookie("userLocation"),false);
     selectLocation= document.getElementById("selectLocation")
     selectCaseta= document.getElementById("selectCaseta")
     setHideElements('dataHide');
@@ -63,6 +64,56 @@ window.addEventListener('storage', function(event) {
         window.location.href =`${protocol}//${host}/login.html`;
     }
 });
+
+function getStats(area = "", location = "", loading = false) {
+    if (loading) {
+        loadingService();
+    }
+
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'get_stats.py',
+            option: 'get_stats',
+            area: area,
+            location: location,
+            page: 'Accesos'
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userJwt
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(res => {
+        if (res.success) {
+            const data = res.response.data;
+
+            console.log('Datos obtenidos:', data);
+            // Actualización de valores en el DOM
+            $("#textVisitasEnElDia").text(data.visitas_en_dia);
+            $("#textPersonalDentro").text(data.personal_dentro);
+            $("#textVehiculosDentro").text(data.total_vehiculos_dentro);
+            $("#textSalidasRegistradas").text(data.salidas_registradas);
+        } else {
+            console.error('Error en los datos recibidos:', res.error);
+            alert('Hubo un problema al obtener los datos: ' + res.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error en fetch:', error.message || error);
+    })
+    .finally(() => {
+        if (loading) {
+            Swal.close(); // Cierra el servicio de carga si estaba activo
+        }
+    });
+}
 
 //funcion Escojer modales
 function setModal(type = 'none',id ="", nombre='', email=''){
@@ -922,11 +973,11 @@ function getInitialData(){
         if (res.success) {
         } 
     });*/
-    let boothStats = load_shift_json.booth_stats.access
-    $("#textVisitasEnElDia").text(boothStats.visits_per_day);
-    $("#textPersonalDentro").text(boothStats.staff_indoors);
-    $("#textVehiculosDentro").text(boothStats.vehicles_inside);
-    $("#textSalidasRegistradas").text(boothStats.registered_exits);
+    // let boothStats = load_shift_json.booth_stats.access
+    // $("#textVisitasEnElDia").text(boothStats.visits_per_day);
+    // $("#textPersonalDentro").text(boothStats.staff_indoors);
+    // $("#textVehiculosDentro").text(boothStats.vehicles_inside);
+    // $("#textSalidasRegistradas").text(boothStats.registered_exits);
 }
 
 

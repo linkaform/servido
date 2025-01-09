@@ -57,8 +57,10 @@ function drawConfigLocation(dataConfig) {
         let locations = dicListRecord && dicListRecord.length > 0 ? dicListRecord : [];
         let countFinish = 0;
         let countInprogress = 0;
+        //----Iteration Local Storage
         locations.forEach(item => {
             const li = document.createElement('li');
+
             if(item.status == 'completed'){
                 li.className = 'task-item completed';
             }else{
@@ -72,6 +74,7 @@ function drawConfigLocation(dataConfig) {
             textDiv.textContent = item.title.nombre; 
             li.appendChild(iconDiv);
             li.appendChild(textDiv);
+
             if(item.status != 'completed'){
                 countInprogress += 1;
             }else{
@@ -147,6 +150,7 @@ function setFinishRondin(){
     setRequestStatus();
     //----Redirection
     localStorage.removeItem('configuration');
+    localStorage.removeItem('recordBitacora');
     setRedirection('summary_check');
 }
 

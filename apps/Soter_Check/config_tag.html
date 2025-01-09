@@ -39,10 +39,26 @@
                 <label for="inputUser" class="form-label">Id del Tag</label>
                 <input type="text" class="form-control" id="inputIdTag" disabled>
             </div>
+
+            <!-- Adjuntar fotos -->
+            <div class="attachments-section" id="content-images">
+                <h6 class="checklist-title">Agregar foto</h6>
+                <div class="d-flex align-items-center mb-2">
+                    <span class="icon-button me-3" id="cameraButton"><i class="fas fa-camera"></i></span>
+                    <span class="icon-button" id="galleryButton"><i class="fas fa-upload"></i></span>
+                </div>
+                <!-- Div loading -->
+                <div id="divLoadingImage" class="loader-spinner"  style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i> Cargando imágenes...
+                </div>
+                <!-- Lista de imagenes -->
+                <div id="divListImages"></div>
+            </div>
+
+            <!-- Foto -->
             <div class="image-container col-6 hidden" id="image-content">
                 <img src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/673f54428183892c605a26d2.png" alt="Imagen de Area" id="imageArea">
             </div>
-
 
             <div class="alert alert-primary mt-3 hidden" role="alert" id="alert-content">
                 Este Tag ya esta configurado
