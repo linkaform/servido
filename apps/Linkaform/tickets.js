@@ -1,4 +1,17 @@
 let dataCatalogs = [];
+const cardKeys = [
+  "android",
+  "backend",
+  "bi",
+  "front",
+  "ios",
+  "licencias",
+  "mandrill",
+  "pdf",
+  "reportes",
+  "scripts",
+  "university"
+];
 
 window.onload = function(){
   createElements(dicReportContext);
@@ -63,27 +76,9 @@ async function getInformation(){
         const cardsDic = data.response_first && data.response_first.dic_cards ? data.response_first.dic_cards : {} ; 
 
         //----CARDS
-        if(cardsDic.android){drawCardElement('cardFirst',cardsDic.android);}
-
-        if(cardsDic.backend){drawCardElement('cardSecond',cardsDic.backend);}
-
-        if(cardsDic.bi){drawCardElement('cardThird',cardsDic.bi);}
-
-        if(cardsDic.front){drawCardElement('cardFourth',cardsDic.front);}
-
-        if(cardsDic.ios){drawCardElement('cardFiveth',cardsDic.ios);}
-
-        if(cardsDic.licencias){drawCardElement('cardSixth',cardsDic.licencias);}
-
-        if(cardsDic.mandrill){drawCardElement('cardSeventh',cardsDic.mandrill);}
-
-        if(cardsDic.pdf){drawCardElement('cardEigth',cardsDic.pdf);}
-
-        if(cardsDic.reportes){drawCardElement('cardNineth',cardsDic.reportes);}
-
-        if(cardsDic.scripts){drawCardElement('cardTenth',cardsDic.scripts);}
-        
-        if(cardsDic.university){drawCardElement('cardEleventh',cardsDic.university);}
+        cardKeys.forEach((key, index) => {
+          drawCardElement(`card${capitalize(index + 1)}`, cardsDic[key] || 0);
+        });
 
         //----ELEMENTS
         if(data.response_first && data.response_first.data_table ){
@@ -108,3 +103,10 @@ async function getInformation(){
     }
 }
 
+function capitalize(number) {
+  const suffixes = [
+    "First", "Second", "Third", "Fourth", "Fiveth", 
+    "Sixth", "Seventh", "Eigth", "Nineth", "Tenth", "Eleventh"
+  ];
+  return suffixes[number - 1];
+}

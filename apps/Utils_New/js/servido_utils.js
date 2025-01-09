@@ -351,7 +351,7 @@ function createElements(dataConfig = null){
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto ml-3">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="text-${idElement}">70%</div>
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="text-${idElement}"></div>
                                                 </div>
                                                 ${progressDiv}
                                             </div>
