@@ -1,22 +1,25 @@
 version: '3.4'
 
 services:
-  servido:
-    restart: "no"
-    container_name: servido
-    hostname: servido
-    environment:
-      - FLASK_APP=servido.py
+  soter:
+    hostname: soter
+    container_name: soter
     image: linkaform/servido:latest
-    ports:
-      - "8080:8080"
-    volumes:
-      - ../nginx/certs:/etc/nginx/certs
-      - ../servido_api/certs:/srv/servido/servido_api/certs
     build:
      context: ../
      dockerfile: Dockerfile_Soter
      target: production
+    environment:
+      - FLASK_APP=servido.py
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/docker/
+      - ../:/srv/servido/
+      - ../nginx/sites-available:/etc/nginx/sites-enabled
+      - ../nginx/certs:/etc/nginx/certs
+      - ../servido_api/certs:/srv/servido/servido_api/certs
     command: /docker/run_soter
+    restart: "no"
     stdin_open: true
     tty: true

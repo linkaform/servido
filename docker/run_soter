@@ -6,4 +6,4 @@ echo "RUNNING on prodution server mode!!!!"
 echo "Servido WebApp and API comming to live . . ."
 echo '================================================='
 cd /srv/servido/
-nginx -g "daemon off;"
+exec nginx -g "daemon off;"

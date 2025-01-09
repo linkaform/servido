@@ -113,8 +113,6 @@ FROM build as production
 
 RUN apt-get update && \
     apt-get remove -y --purge \
-    build-essential \
-    python-dev \
     vim \
     less
 
@@ -122,18 +120,16 @@ RUN apt-get update && \
 # RUN rm /tmp/uwsgi-2.0.20.tar.gz
 
 
-RUN mkdir -p /srv/servido/servido/
+RUN mkdir -p /srv/servido/
 
 #UWSGI SETUP
-COPY --chown=www-data:www-data ./docker/uwsgi/servido.ini /etc/uwsgi/apps-enabled/
 
 #NGINX SETUP
-#RUN echo testssssssssssss
 RUN rm -rf /etc/nginx/certs/
 RUN rm -rf /etc/nginx/sites-enabled/
 RUN echo testsssssssssssssss
 COPY --chown=www-data:www-data ./nginx /etc/nginx
-COPY --chown=www-data:www-data ./nginx/sites-available/servido.conf /etc/nginx/sites-enabled/servido.conf
+COPY --chown=www-data:www-data ./nginx/sites-available/soter.conf /etc/nginx/sites-enabled/soter.conf
 
 #COPY ALL FILES
 #RUN rm /srv/servido/servido_api/certs/*
