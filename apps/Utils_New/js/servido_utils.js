@@ -310,7 +310,15 @@ function createElements(dataConfig = null){
                     //-----Title
                     const titleElement = element.title ?  element.title : "";
                     //-----Color
-                    const colorElement = element.color ? element.color : "primary";
+                    let colorElement = element.color ? `border-left-${element.color}` : "";
+                    let colorBg = element.color ? `bg-${element.color}` : "";
+                    //-----Color Hexadecimal
+                    let colorHexadecimal = element.hexadecimal ? `style="border-left-color: ${element.hexadecimal} !important; border-left-width: 5.3333px !important; "` : "";
+                    let colorBgHexadecimal = element.hexadecimal ? `style="background: ${element.hexadecimal} !important;"` : "";
+                    if(!colorHexadecimal && !colorElement){
+                        colorElement = `border-left-primary`;
+                        colorBg = `bg-primary`;
+                    }
                     //-----Class
                     const classElement = element.col ? `col-xl-${element.col} col-md-6 mb-4` : "col-xl-3 col-md-6 mb-4";
                     divElement.className = classElement;
@@ -327,14 +335,14 @@ function createElements(dataConfig = null){
                         if(progressElement){
                             progressDiv = `<div class="col">
                                 <div class="progress progress-sm mr-2">
-                                    <div class="progress-bar bg-${colorElement}" role="progressbar"
+                                    <div class="progress-bar ${colorBg}" ${colorBgHexadecimal} role="progressbar"
                                         style="width: 70%" aria-valuenow="50" aria-valuemin="0"
                                         aria-valuemax="100" id="progress-${idElement}"></div>
                                 </div>
                             </div>`;
                         }
                         //-----Element Card
-                        divElement.innerHTML = `<div class="card border-left-${colorElement} shadow h-100 py-2">
+                        divElement.innerHTML = `<div class="card ${colorElement} shadow h-100 py-2" ${colorHexadecimal} >
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
@@ -468,9 +476,6 @@ function setColorsDatasets(data = null, type = null){
 
         }else if(data.datasets.length > 1){
             let array_colors = data.labels.length > 0 ? getPAlleteColors(6,  data.datasets.length) : getPAlleteColors(6, 5);
-            console.log('varios datasets',array_colors)
-
-
             data.datasets.forEach((item, index) => {
                 if(type == 'line'){
                     item.backgroundColor = array_colors[index];
@@ -592,7 +597,7 @@ function redirection_before_tab() {
 function hide_loading() {
     const loading = document.getElementById('loading');
     const mainContent = document.getElementById('wrapper');
-    loading.style.display = 'none';
+    loading.style.visibility = 'hidden';
     mainContent.classList.remove('hidden'); 
 }
 
@@ -600,6 +605,19 @@ function hide_loading() {
 function show_loading() {
     const loading = document.getElementById('loading');
     const mainContent = document.getElementById('wrapper');
-    loading.style.display = 'block';
+    loading.style.visibility = 'visible';
     mainContent.classList.add('hidden'); 
+}
+
+
+//-----Funciona para mostrar todos los elementos (graficas, tablas, cards) bajo la estructura del template
+function showElements() {
+    const divEmpty = document.querySelectorAll('.div-content-empty');
+    const divElements = document.querySelectorAll('.div-content-element');
+    divElements.forEach(div => {
+      div.style.visibility = 'visible';
+    });
+    divEmpty.forEach(div => {
+      div.style.display = 'none';
+    });
 }

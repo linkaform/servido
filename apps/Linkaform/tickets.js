@@ -37,80 +37,18 @@ function loadDemoData(){
 
 //-----LOAD DATA ACTIVE
 function loadData(data) {
-    //----Search Catalogs
-    get_catalog();
     //----Assing Events
-    const buttonClose = document.getElementById("buttonClose");
     const buttonExecution = document.getElementById("buttonExecution");
     buttonExecution.addEventListener("click", () => {
         getInformation();
     });
-    //----Assign Selector
-    $('#auditoria').on('change', function() {
-        const selectedValues = $(this).val(); 
-        if (selectedValues && selectedValues.length > 0) {
-            dicFind = findListDictionary(dataCatalogs, 'auditoria', selectedValues);
-            set_catalog_select(dicFind, 'sede', 'sede');
-            $('#sede').select2();
-        } else {
-            set_clean_select('sede');
-            set_clean_select('campus');
-            set_clean_select('local');
-            set_clean_select('sucursal');
-            $('#sede').select2();
-            $('#campus').select2();
-            $('#local').select2();
-            $('#sucursal').select2();
-        }
-    });
-
-    $('#sede').on('change', function() {
-        const selectedValues = $(this).val(); 
-        if (selectedValues && selectedValues.length > 0) {
-            dicFind = findListDictionary(dataCatalogs, 'sede', selectedValues);
-            set_catalog_select(dicFind, 'campus', 'campus');
-            $('#campus').select2();
-        } else {
-            set_clean_select('campus');
-            set_clean_select('local');
-            set_clean_select('sucursal');
-            $('#campus').select2();
-            $('#local').select2();
-            $('#sucursal').select2();
-        }
-    });
-
-    $('#campus').on('change', function() {
-        const selectedValues = $(this).val(); 
-        if (selectedValues && selectedValues.length > 0) {
-            dicFind = findListDictionary(dataCatalogs, 'campus', selectedValues);
-            set_catalog_select(dicFind, 'local', 'local');
-            $('#local').select2();
-        } else {
-            set_clean_select('local');
-            set_clean_select('sucursal');
-            $('#local').select2();
-            $('#sucursal').select2();
-        }
-    });
-
-    $('#local').on('change', function() {
-        const selectedValues = $(this).val(); 
-        if (selectedValues && selectedValues.length > 0) {
-            dicFind = findListDictionary(dataCatalogs, 'local', selectedValues);
-            set_catalog_select(dicFind, 'sucursal', 'sucursal');
-            $('#sucursal').select2();
-        } else {
-            set_clean_select('sucursal');
-            $('#sucursal').select2();
-        }
-    });
-    //---Hide
+    //-----Loading
     setTimeout(() => { hide_loading();}, 2000);
 }
 
 //-----SET REQUEST
 async function getInformation(){
+    show_loading();
     const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
     const statusSession = getSession();
@@ -122,17 +60,51 @@ async function getInformation(){
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-        
+        const cardsDic = data.response_first && data.response_first.dic_cards ? data.response_first.dic_cards : {} ; 
 
+        //----CARDS
+        if(cardsDic.android){drawCardElement('cardFirst',cardsDic.android);}
+
+        if(cardsDic.backend){drawCardElement('cardSecond',cardsDic.backend);}
+
+        if(cardsDic.bi){drawCardElement('cardThird',cardsDic.bi);}
+
+        if(cardsDic.front){drawCardElement('cardFourth',cardsDic.front);}
+
+        if(cardsDic.ios){drawCardElement('cardFiveth',cardsDic.ios);}
+
+        if(cardsDic.licencias){drawCardElement('cardSixth',cardsDic.licencias);}
+
+        if(cardsDic.mandrill){drawCardElement('cardSeventh',cardsDic.mandrill);}
+
+        if(cardsDic.pdf){drawCardElement('cardEigth',cardsDic.pdf);}
+
+        if(cardsDic.reportes){drawCardElement('cardNineth',cardsDic.reportes);}
+
+        if(cardsDic.scripts){drawCardElement('cardTenth',cardsDic.scripts);}
+        
+        if(cardsDic.university){drawCardElement('cardEleventh',cardsDic.university);}
+
+        //----ELEMENTS
+        if(data.response_first && data.response_first.data_table ){
+            drawTableElement('tableFirst', data.response_first.data_table, columsTable1);
+        }
+
+        if(data.response_second){
+            drawChartElement('chartFirst','line', data.response_second,setOptions1);
+        }
+
+        if(data.response_third){
+            drawChartElement('chartSecond','line', data.response_third, setOptions2);
+        }
+
+        if(data.response_fourth){
+            drawChartElement('chartThird','pie', data.response_fourth, setOptions3);
+        }
+    
         //-----Style
-        const divEmpty = document.querySelectorAll('.div-content-empty');
-        const divElements = document.querySelectorAll('.div-content-element');
-        divElements.forEach(div => {
-          div.style.visibility = 'visible';
-        });
-        divEmpty.forEach(div => {
-          div.style.display = 'none';
-        });
+        showElements();
+        hide_loading();
     }
 }
 

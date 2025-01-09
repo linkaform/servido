@@ -1,20 +1,19 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'card', col: '1', id:'cardFirst', title:'Android'},
-            { type:'card', col: '1', id:'cardSecond', title:'Backend'},
-            { type:'card', col: '1', id:'cardThird', title:'BI'},
-            { type:'card', col: '1', id:'cardFourth', title:'Front'},
-            { type:'card', col: '1', id:'cardFiveth', title:'IOS'},
-            { type:'card', col: '1', id:'cardSixth', title:'Licencias'},
-            { type:'card', col: '1', id:'cardSeventh', title:'Mandrill'},
-            { type:'card', col: '1', id:'cardEigth', title:'PDF'},
-            { type:'card', col: '1', id:'cardNineth', title:'Reportes'},
-            { type:'card', col: '1', id:'cardTenth', title:'Scripts'},
-            { type:'card', col: '1', id:'cardEleventh', title:'University'},
+            { type:'card', col: '1', id:'cardFirst', title:'Android', hexadecimal:'#3498db'},
+            { type:'card', col: '1', id:'cardSecond', title:'Backend', hexadecimal:'#2f8ac7'},
+            { type:'card', col: '1', id:'cardThird', title:'BI', hexadecimal:'#2a7db3'},
+            { type:'card', col: '1', id:'cardFourth', title:'Front', hexadecimal:'#266fa0'},
+            { type:'card', col: '1', id:'cardFiveth', title:'IOS', hexadecimal:'#21628d'},
+            { type:'card', col: '1', id:'cardSixth', title:'Licencias', hexadecimal:'#1d557b'},
+            { type:'card', col: '1', id:'cardSeventh', title:'Mandrill', hexadecimal:'#00587c'},
+            { type:'card', col: '1', id:'cardEigth', title:'PDF', hexadecimal:'#006b8b'},
+            { type:'card', col: '1', id:'cardNineth', title:'Reportes', hexadecimal:'#007e8f'},
+            { type:'card', col: '1', id:'cardTenth', title:'Scripts', hexadecimal:'#008f89'},
+            { type:'card', col: '1', id:'cardEleventh', title:'University', hexadecimal:'#00a078'},
         ] 
     },
-  
     { class:'', _children : [
             { type:'chart', col: '12', id:'chartFirst', title:'Tipos por mes'},
         ] 
@@ -29,15 +28,20 @@ let dicReportContext = [
         ] 
     },
 ];
+
+
 //-----Configuraciones de la tabla
 let columsTable1 = [
     { title:"Folio", field:'folio', width:250},
     { title:"Fecha", field:'fecha', width:250},
     { title:"Cliente", field:'cliente', width:250},
     { title:"Correo del cliente", field:'email', width:250},
+    { title:"Origen", field:'origen', width:250},
+    { title:"Infraestructura", field:'infraestructura', width:250},
     { title:"Descripción", field:'desc', width:250},
     { title:"Status", field:'status', width:250},
 ];
+
 
 
 let dataTable1 = [
@@ -282,7 +286,7 @@ var setOptions3 = {
     responsive: true,
     plugins: {
       legend: {
-        display: false,
+        display: true,
         position: 'top',
       },
       title: {
