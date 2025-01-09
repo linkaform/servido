@@ -505,7 +505,7 @@ function drawCardElement(cardId, value, scroll = null) {
 }
 
 //-Función para pintar table
-function drawTableElement(tableId, tableData, tableColums, tableConfig = null){
+function drawTableElement(tableId, tableData, tableColums, nameDownload = null, tableConfig = null ){
     //----Config default
     let configDefault = {
         height: "400px",
@@ -524,20 +524,31 @@ function drawTableElement(tableId, tableData, tableColums, tableConfig = null){
             configDefault[key] = value
         }
     }
+    let nameFileXlsx = 'data.xlsx';
+    let nameFileCsv = 'data.csv';
+    let nameSheet = 'data';
+    if(nameDownload != null){
+        nameFileXlsx = `${nameDownload}.xlsx`;
+        nameFileCsv = `${nameDownload}.csv`;
+        nameSheet = `${nameDownload}`;
+    }
+    console.log('nameFileXlsx',nameFileXlsx);
+    console.log('nameFileCsv',nameFileCsv);
+    console.log('nameSheet',nameSheet);
     //----Table
     let table = new Tabulator(`#${tableId}`, configDefault);
 
     if (document.getElementById(`download-xls-${tableId}`)){
         document.getElementById(`download-xls-${tableId}`).replaceWith(document.getElementById(`download-xls-${tableId}`).cloneNode(true));
         document.getElementById(`download-xls-${tableId}`).addEventListener("click", function (){
-        table.download("xlsx", "data.xlsx", {sheetName:"data"});
+            table.download("xlsx", nameFileXlsx , {sheetName:nameSheet});
         });
     }
 
     if (document.getElementById(`download-csv-${tableId}`)){
         document.getElementById(`download-csv-${tableId}`).replaceWith(document.getElementById(`download-csv-${tableId}`).cloneNode(true));
         document.getElementById(`download-csv-${tableId}`).addEventListener("click", function (){
-          table.download("csv", "data.csv");
+            table.download("csv", nameFileCsv);
         });
     }
 }

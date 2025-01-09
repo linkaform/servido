@@ -82,7 +82,7 @@ async function getInformation(){
 
         //----ELEMENTS
         if(data.response_first && data.response_first.data_table ){
-            drawTableElement('tableFirst', data.response_first.data_table, columsTable1);
+            drawTableElement('tableFirst', data.response_first.data_table, columsTable1, "Detalle_de_empleados");
         }
 
         if(data.response_second){

@@ -28,20 +28,23 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4 ">
-                        <h1 class="h3 mb-0 text-gray-800">Auditorias</h1>
+                    <div class="row">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4  col-6">
+                            <h1 class="h3 mb-0 text-gray-800">Auditorias</h1>
+                        </div>
+                        <div class="d-sm-flex align-items-center justify-content-end mb-4 col-6" id="content-div-buttons">
+                            <button class="btn btn-sm btn-primary shadow-sm m-1" id="buttonExecution">
+                                Ejecutar Reporte
+                            </button>
+                            <button class="btn btn-sm btn-success shadow-sm m-1 d-none" id="buttonList">
+                                Lista de Reportes
+                            </button>
+                            <button class="btn btn-sm btn-secondary shadow-sm m-1" id="buttonClose">
+                                Cerrar Sesión
+                            </button>
+                        </div>
                     </div>
-                    <div class="d-sm-flex align-items-center justify-content-end mb-4" id="content-div-buttons">
-                        <button class="btn btn-sm btn-primary shadow-sm m-1" id="buttonExecution">
-                            Ejecutar Reporte
-                        </button>
-                        <button class="btn btn-sm btn-success shadow-sm m-1 d-none" id="buttonList">
-                            Lista de Reportes
-                        </button>
-                        <button class="btn btn-sm btn-secondary shadow-sm m-1" id="buttonClose">
-                            Cerrar Sesión
-                        </button>
-                    </div>
+
                     <!-- Filter Row -->
                     <div class="row mb-4" id="content-div-filter">
 						<!-- Filtro de Selector (Dropdown) -->
