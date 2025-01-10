@@ -1880,7 +1880,12 @@ function crearConfirmacion() {
         						        </div>`,
         						    showCancelButton:false,
         						    showConfirmButton:true,
-        						    confirmButtonText: "Copiar Link"
+        						    confirmButtonText: "Copiar Link",
+                                    onClose: () => {
+                                        setTimeout(() => {
+                                            redirectionUrl("menu", false)
+                                        }, 4000)
+                                    },
     						 }).then((result)=>{
     						 	if (result.value) {
     						 		let link= copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId_soter"), getCookie('userEmail'));
