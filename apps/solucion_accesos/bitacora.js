@@ -655,6 +655,8 @@ function loadDataTables(){
                     equipos: bitacora.equipos, 
                     vehiculos: bitacora.vehiculos, 
                     foto: bitacora.foto, 
+                    foto_url: bitacora.foto_url || '', 
+                    identificacion_url: bitacora.file_url || '',
                     identificacion: bitacora.identificacion, 
                     documento: bitacora.documento||"" , 
                     visita_a: bitacora.visita_a||"" , 
@@ -699,6 +701,8 @@ function openDataModal(folio){
     let registroSeleccionado = dataTableBitacora.find(x => x.folio == folio);
     $("#nombredevisitante").text(registroSeleccionado.nombre_visitante ||"")
     $("#motivodevisita").text(registroSeleccionado.motivo_visita||"" )
+    registroSeleccionado.foto = registroSeleccionado.foto_url || ''
+    registroSeleccionado.identificacion = registroSeleccionado.identificacion_url || ''
     if(registroSeleccionado.documento !==""){
         $("#tituloDocumento").show()
         $("#documento").text(registroSeleccionado.documento ||"")
@@ -715,14 +719,14 @@ function openDataModal(folio){
 
     if(registroSeleccionado.hasOwnProperty('foto')){
         if(registroSeleccionado.foto !== null && registroSeleccionado.foto !== undefined &&  registroSeleccionado.foto.length>0){
-            $("#imgUser").attr('src',registroSeleccionado.foto[0].file_url);
+            $("#imgUser").attr('src',registroSeleccionado.foto_url);
         }else{
             $("#imgUser").attr('src',"https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png");
         }
     }
     if(registroSeleccionado.hasOwnProperty('identificacion')){
         if(registroSeleccionado.identificacion !== null && registroSeleccionado.identificacion !== undefined && registroSeleccionado.identificacion.length>0){
-            $("#imgIdentificacion").attr('src',registroSeleccionado.identificacion[0].file_url);
+            $("#imgIdentificacion").attr('src',registroSeleccionado.identificacion_url);
         }else{
             $("#imgIdentificacion").attr('src',"https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg");
         }
