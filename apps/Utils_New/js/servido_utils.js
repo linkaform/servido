@@ -162,7 +162,7 @@ function getReportUrl() {
 }
 
 //-Funciona para mandar la petición a script de un report
-async function sendRequestReport(script){
+async function sendRequestReport(script, dicFilterAd = null){
   let dicRes = {};
   let flagValidation = true;
 
@@ -198,6 +198,10 @@ async function sendRequestReport(script){
   }
   //----Update Script id
   dicFilter['script_id'] = script;
+  //----Check Filter Aditional
+  if(dicFilterAd != null){
+    dicFilter = { ...dicFilter, ...dicFilterAd };
+  }
   //----Cookie 
   const JWTSESSION =  getCookie("userJwt");
   //----Fetch

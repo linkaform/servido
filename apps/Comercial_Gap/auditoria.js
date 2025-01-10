@@ -100,16 +100,18 @@ function loadData(data) {
 
 //-----SET REQUEST
 async function getInformation(){
-    const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
+    const scriptId = getParameterURL('script_id');
     const statusSession = getSession();
+    const dicAdional = {'id_user':getCookie("userId")}
+
     if(statusSession == 'Demo' || demo){
         Swal.fire({
           title: 'Advertencia',
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReport(scriptId);
+        const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
         if(data.data_first){
             drawChartElement('chartFirst','bar',data.data_first,setOptions1);
