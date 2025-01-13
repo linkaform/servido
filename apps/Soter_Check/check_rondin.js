@@ -65,29 +65,53 @@ function setElementImages(data) {
 
     setTimeout(() => {
         loader.style.display = 'none';
-        data.forEach(image => {
-            const attachment = document.createElement("div");
-            attachment.className = "attachment";
 
-            const fileNameSpan = document.createElement("span");
-            fileNameSpan.textContent = image.file_name;
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "row justify-content-center"; 
+
+        data.forEach(image => {
+            const colDiv = document.createElement("div");
+            colDiv.className = "col-12 col-md-6 col-lg-6 mb-4 position-relative"; 
+
+            const img = document.createElement("img");
+            img.src = image.file_url; 
+            img.alt = image.file_name;
+            img.className = "img-fluid w-100 rounded";
 
             const deleteIconSpan = document.createElement("span");
-            deleteIconSpan.className = "delete-icon";
+            deleteIconSpan.className = "delete-icon position-absolute top-0 end-0 m-2 text-danger";
+            deleteIconSpan.style.cursor = 'pointer';
+            deleteIconSpan.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+            deleteIconSpan.style.borderRadius = '50%';
+            deleteIconSpan.style.padding = '5px';
 
             const icon = document.createElement("i");
-            icon.className = "fas fa-trash";
+            icon.className = "fas fa-trash fa-lg";
 
             deleteIconSpan.onclick = () => deleteImage(image.file_url);
 
             deleteIconSpan.appendChild(icon);
-            attachment.appendChild(fileNameSpan);
-            attachment.appendChild(deleteIconSpan);
 
-            container.appendChild(attachment);
+            let truncatedFileName = image.file_name;
+            if (truncatedFileName.length > 15) {
+                truncatedFileName = truncatedFileName.substring(0, 15) + '...';
+            }
+
+            const fileNameParagraph = document.createElement("p");
+            fileNameParagraph.textContent = truncatedFileName;
+            fileNameParagraph.className = "text-center mt-2";
+
+            colDiv.appendChild(img);
+            colDiv.appendChild(deleteIconSpan);
+            colDiv.appendChild(fileNameParagraph);
+
+            rowDiv.appendChild(colDiv);
         });
+
+        container.appendChild(rowDiv);
+
         const button = document.getElementById('buttonSend');
-        button.disabled = false; 
+        button.disabled = false;
     }, 500);
 }
 
@@ -111,8 +135,7 @@ function openFilePicker(callback) {
     console.log('openFilePicker');
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = "image/*"; // Acepta solo imágenes
-
+    input.accept = "image/*"; 
     input.addEventListener("change", (event) => {
         const file = event.target.files[0];
         if (file && callback) {
@@ -199,6 +222,7 @@ function dataSend(){
     let type = getParameterURL('type');
     let checksSelected = getCheckboxStates();
     let inputComment = document.getElementById('commentCheck').value;
+    let textAlert = document.getElementById('textModalSuccess');
     let dicDaga;
     if(type){
         dicData = {
@@ -214,11 +238,13 @@ function dataSend(){
         }
     }else{
         //---Get data form
-        let configuration = JSON.parse( localStorage.getItem('configuration'));
+        let nameLocation = document.getElementById('titleLocation').textContent;
+        let configuration = JSON.parse(localStorage.getItem('configuration'));
         dicData = {
             'folio': configuration.folio,
             'rondin': configuration.nombre_rondin,
             'ubicacion': configuration.ubicacion,
+            'location': nameLocation,
             'tagId': tagId,
             'list_checks': checksSelected,
             'comment': inputComment,
@@ -234,7 +260,6 @@ function dataSend(){
             folioUpdate:recordConfig.folio,
             option: 'add_record_check',
         }
-
     }
     let JWT = getCookie("userJwt");
     //---Request
@@ -256,30 +281,54 @@ function dataSend(){
                 if(!dicListRecord){
                     let configuration = JSON.parse( localStorage.getItem('configuration'));
                     const dicData = {
-                                'folio': configuration.folio,
-                                'rondin': configuration.nombre_rondin,
-                                'ubicacion': configuration.ubicacion,
-                                'tagId': tagId,
-                                'list_checks': checksSelected,
-                                'comment': inputComment,
-                                'list_img': listImagesDic,
-                            }
+                        'folio': configuration.folio,
+                        'rondin': configuration.nombre_rondin,
+                        'ubicacion': configuration.ubicacion,
+                        'tagId': tagId,
+                        'list_checks': checksSelected,
+                        'comment': inputComment,
+                        'list_img': listImagesDic,
+                    }
                     createDicRecord(configuration, dicData);
                 }else{
                     updateDicRecord(dicListRecord, dicData);
                 }
+                textAlert.textContent = '¡Se a registrado su Rondin Check!';
                 let modal = new bootstrap.Modal(document.getElementById('alertaModalSuccess'));
                 modal.show();
                 setTimeout(() => {
                     setRedirection();
                 }, 2000);
             }else{
+                //----Redirection Data
+                dicInspectionRecord = [
+                    {
+                        title:{
+                            nombre:document.getElementById('titleLocation').textContent,
+                        },
+                        status: "completed",
+                        information: {
+                            'tagId': tagId,
+                            'list_checks': checksSelected,
+                            'comment': inputComment,
+                            'list_img': listImagesDic,
+                        }
+                    },
+                ]
+                localStorage.setItem('dicListRecordInspection', JSON.stringify(dicInspectionRecord));
+                //-----Modal
+                textAlert.textContent = '¡Se a registrado su inspección de Área!';
                 let modal = new bootstrap.Modal(document.getElementById('alertaModalSuccess'));
                 modal.show();
+                setTimeout(() => {
+                    setRedirectionSummary();
+                }, 3500);
             }
         } else {
             let modal = new bootstrap.Modal(document.getElementById('alertaModalFail'));
             modal.show();
+            button.disabled = false;
+
         }
     })
 }
@@ -306,6 +355,10 @@ function getInformationLocation(location){
     })
     .then(res => res.json())
     .then(res => {
+        if(res.response.data && res.response.data.image_location && res.response.data.image_location.length > 0 ){
+            const imageElement = document.getElementById('imageLocation');
+            imageElement.src = res.response.data.image_location[0].file_url;
+        }
         if(res.response.data && res.response.data.name_location && res.response.data.name_location != ''){
             textTitle.textContent = res.response.data.name_location;
         }
@@ -323,10 +376,6 @@ function getInformationLocation(location){
             textType.textContent = `${res.response.data.type_location}`;
         }else{
             textType.textContent = `N/A`;
-        }
-        if(res.response.data && res.response.data.image_location && res.response.data.image_location.length > 0 ){
-            const imageElement = document.getElementById('imgLocation');
-            imageElement.src = res.response.data.image_location[0].file_url;
         }
     })
 }
@@ -363,15 +412,20 @@ function createDicRecord(configuration, dicData){
         status: "completed",
         information: dicData,
     };
-    const foundIndex = resultList.findIndex(item => item.title === dicData.location);
+
+    const foundIndex = resultList.findIndex(item => 
+        item.title.tagId.includes(dicData.tagId) 
+    );
+
     if (foundIndex !== -1) {
         resultList[foundIndex] = {
             ...resultList[foundIndex],
-            ...updatedData,           
+            ...updatedData,
         };
     }
     localStorage.setItem('dicListRecord', JSON.stringify(resultList));
 }
+
 
 function updateDicRecord(dicList, data){
     //---Update Dic
@@ -381,15 +435,18 @@ function updateDicRecord(dicList, data){
     };
     dicList = JSON.parse(dicList);
     if(dicList){
-        const foundIndex = dicList.findIndex(item => item.title === data.location);
+        const foundIndex = dicList.findIndex(item => 
+            item.title.tagId.includes(dicData.tagId) // Buscar en el array tagId
+        );
         if (foundIndex !== -1) {
+            // Actualizar el elemento encontrado
             dicList[foundIndex] = {
                 ...dicList[foundIndex],
-                ...updatedData,           
+                ...updatedData,
             };
         }
-        localStorage.setItem('dicListRecord', JSON.stringify(dicList));
     }
+    localStorage.setItem('dicListRecord', JSON.stringify(dicList));
 }
 
 function setRedirection() {
@@ -399,6 +456,16 @@ function setRedirection() {
     const puerto = window.location.port;            
     //---URL REDIRECTION LOGIN
     let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/time_line_rondin.html`;
+    window.location.href = urlRedirection;
+}
+
+function setRedirectionSummary() {
+    //----Url
+    const protocolo = window.location.protocol;    
+    const hostname = window.location.hostname;      
+    const puerto = window.location.port;            
+    //---URL REDIRECTION LOGIN
+    let urlRedirection = `${protocolo}//${hostname}:${puerto}/Soter_Check/summary_check.html`;
     window.location.href = urlRedirection;
 }
 
@@ -520,7 +587,7 @@ function loadCheckArea(area) {
         const mainContent = document.getElementById('main-content');
         loading.style.display = 'none';
         mainContent.classList.remove('hidden'); 
-    }, 2000);
+    }, 2500);
 }
 
 function validationConfigTag(dicData) {

@@ -32,6 +32,7 @@ window.onload = function(){
 	// let user = getCookie("userId");
 	// let userJwt = getCookie("userJwt");
     loadDataTables();
+    getStats(getCookie("userCaseta"),getCookie("userLocation"),false);
 
     $("#descargarEntradas").on("click", function() {
         descargarExcel(tables, 'tableEntradas')
@@ -45,11 +46,11 @@ window.onload = function(){
             $('#labelGuardiaDeApoyo').remove();
         })
     }
-    let boothStats = load_shift_json_log.booth_stats.log
-    $("#textVisitasEnElDia").text(boothStats.visits_per_day);
-    $("#textPersonalDentro").text(boothStats.staff_indoors);
-    $("#textVehiculosDentro").text(boothStats.vehicles_inside);
-    $("#textSalidasRegistradas").text(boothStats.registered_exits);
+    // let boothStats = load_shift_json_log.booth_stats.log
+    // $("#textVisitasEnElDia").text(boothStats.visits_per_day);
+    // $("#textPersonalDentro").text(boothStats.staff_indoors);
+    // $("#textVehiculosDentro").text(boothStats.vehicles_inside);
+    // $("#textSalidasRegistradas").text(boothStats.registered_exits);
 
     if(getValueUserLocation()=='bitacora'){
          $(document).ready(function() {
@@ -75,6 +76,56 @@ $("#checkboxTodasLasCasetas").on("click",async function()  {
         selectCaseta.disabled=false
     }
 })
+
+function getStats(area = "", location = "", loading = false) {
+    if (loading) {
+        loadingService();
+    }
+
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'get_stats.py',
+            option: 'get_stats',
+            area: area,
+            location: location,
+            page: 'Bitacoras'
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userJwt
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(res => {
+        if (res.success) {
+            const data = res.response.data;
+
+            console.log('Datos obtenidos:', data);
+            // Actualización de valores en el DOM
+            $("#textVisitasEnElDia").text(data.visitas_en_dia);
+            $("#textPersonalDentro").text(data.personal_dentro);
+            $("#textVehiculosDentro").text(data.total_vehiculos_dentro);
+            $("#textSalidasRegistradas").text(data.salidas_registradas);
+        } else {
+            console.error('Error en los datos recibidos:', res.error);
+            alert('Hubo un problema al obtener los datos: ' + res.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error en fetch:', error.message || error);
+    })
+    .finally(() => {
+        if (loading) {
+            Swal.close(); // Cierra el servicio de carga si estaba activo
+        }
+    });
+}
 
 //FUNCION para abrir modales
 function setModal(type = 'none',id=0, folio=0){
@@ -604,6 +655,8 @@ function loadDataTables(){
                     equipos: bitacora.equipos, 
                     vehiculos: bitacora.vehiculos, 
                     foto: bitacora.foto, 
+                    foto_url: bitacora.foto_url || '', 
+                    identificacion_url: bitacora.file_url || '',
                     identificacion: bitacora.identificacion, 
                     documento: bitacora.documento||"" , 
                     visita_a: bitacora.visita_a||"" , 
@@ -648,6 +701,8 @@ function openDataModal(folio){
     let registroSeleccionado = dataTableBitacora.find(x => x.folio == folio);
     $("#nombredevisitante").text(registroSeleccionado.nombre_visitante ||"")
     $("#motivodevisita").text(registroSeleccionado.motivo_visita||"" )
+    registroSeleccionado.foto = registroSeleccionado.foto_url || ''
+    registroSeleccionado.identificacion = registroSeleccionado.identificacion_url || ''
     if(registroSeleccionado.documento !==""){
         $("#tituloDocumento").show()
         $("#documento").text(registroSeleccionado.documento ||"")
@@ -664,14 +719,14 @@ function openDataModal(folio){
 
     if(registroSeleccionado.hasOwnProperty('foto')){
         if(registroSeleccionado.foto !== null && registroSeleccionado.foto !== undefined &&  registroSeleccionado.foto.length>0){
-            $("#imgUser").attr('src',registroSeleccionado.foto[0].file_url);
+            $("#imgUser").attr('src',registroSeleccionado.foto_url);
         }else{
             $("#imgUser").attr('src',"https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png");
         }
     }
     if(registroSeleccionado.hasOwnProperty('identificacion')){
         if(registroSeleccionado.identificacion !== null && registroSeleccionado.identificacion !== undefined && registroSeleccionado.identificacion.length>0){
-            $("#imgIdentificacion").attr('src',registroSeleccionado.identificacion[0].file_url);
+            $("#imgIdentificacion").attr('src',registroSeleccionado.identificacion_url);
         }else{
             $("#imgIdentificacion").attr('src',"https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg");
         }

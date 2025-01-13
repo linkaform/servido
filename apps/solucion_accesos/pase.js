@@ -83,6 +83,7 @@ window.onload = async function(){
 		$("#paseEntradaCompletadoFotos").hide()
         $("#containerUpdateButton").hide()
         $("#containerCancelButton").hide()
+        $("#fotoUsuarioAlta").hide()
 
 		onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')
 		iniciarSelectHora('horaNuevoPase','minNuevoPase', 'ampmNuevoPase')
@@ -1043,29 +1044,23 @@ function crearConfirmacionMini() {
 						</thead>
 						<tbody>
 							<tr>
-								<td><b>Tipo de pase:</b></td>
-								<td><b>Estatus:</b></td>
+								<td><b>Tipo de pase:</b> Visita General</td>
+								<td><b>Estatus:</b> Proceso</td>
 							</tr>
+                            <tr>
+                                <td></td>
+                            </tr>
 							<tr>
-								<td>Visita General</td>
-								<td><span > Proceso </span></td>
-							</tr>
-							<tr>
-								<td><b>Nombre completo:</b></td>
+								<td><b>Nombre completo:</b> `+nombre+`</td>
+                                <td><b>Email:</b> `+email+`</td>
+                            </tr>
+                            <tr>
+                                <td><span ><b>Teléfono:</b> `+tel+`</span></td>
 								<td></td>
 							</tr>
-							<tr>
-								<td>`+nombre+`</td>
-								<td></td>
-							</tr>
-							<tr>
-								<td><b>Email:</b></td>
-								<td><span ><b>Teléfono:</b></span></td>
-							</tr>
-							<tr>
-								<td> `+email+`</td>
-								<td><span > `+tel+`</span></td>
-							</tr>
+                            <tr>
+                                <td></td>
+                            </tr>
 							<tr>
 								<td><b>Foto:</b></td>
 								<td><span><b>Identificación:</b></span></td>
@@ -1700,7 +1695,7 @@ function crearConfirmacion() {
       }
     });
     let tieneEmailTel = data.email!="" || data.telefono!=""
-	if(data.nombreCompleto=="" || tieneEmailTel==false || fechaVisitaMain=="" || data.ubicacion==""){
+	if(data.nombreCompleto=="" || tieneEmailTel==false || fechaVisitaMain=="" || data.ubicacion=="" || data.temaCita==""){
         
 		successMsg("Validación", "Faltan datos por llenar", "warning")
 	}else {
@@ -1713,10 +1708,11 @@ function crearConfirmacion() {
            successMsg("Validación", "Datos invalidos, por favor verifica de nuevo.", "warning")
         }else{
             if(enviarPreSmsChecked){
+                const numeroConLadasinEspacios = numeroConLada.split(' ').join('');
                 enviarPreSmsChecked = {
                     "from": "enviar_pre_sms",
                     "mensaje": "",
-                    "numero": numeroConLada
+                    "numero": numeroConLadasinEspacios
                 }
             }
     		Swal.fire({
@@ -1732,44 +1728,30 @@ function crearConfirmacion() {
     						</thead>
     						<tbody>
     							<tr>
-    								<td><b>Tipo de pase:</b></td>
-    								<td><b>Estatus:</b></td>
-    							</tr>
-    							<tr>
-    								<td>Visita General</td>
-    								<td><span > Proceso </span></td>
-    							</tr>
-    							<tr>
-    								<td><b>Nombre completo:</b></td>
-    								<td></td>
-    							</tr>
-    							<tr>
-    								<td>`+data.nombreCompleto+`</td>
-    								<td></td>
-    							</tr>
-    							<tr>
-    								<td><b>Email:</b></td>
-    								<td><span ><b>Teléfono:</b></span></td>
-    							</tr>
-    							<tr>
-    								<td> `+data.email+`</td>
-    								<td><span > `+numeroConLada+`</span></td>
+    								<td><b>Tipo de pase:</b> Visita General</td>
+    								<td><b>Estatus:</b> Proceso</td>
     							</tr>
                                 <tr>
-                                    <td><b>Ubicación:</b></td>
-                                    <td><span ><b>Tema de la cita:</b></span></td>
-                                </tr>
-                                <tr>
-                                    <td> `+data.ubicacion+`</td>
-                                    <td><span > `+data.temaCita+`</span></td>
-                                </tr>
-                                 <tr>
-                                    <td><b>Descripción:</b></td>
+                                    <td><b>Ubicación:</b> `+data.ubicacion+`</td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>`+data.descripcion+`</td>
-                                    <td> </td>
+    								<td></td>
+                                </tr>
+                                <tr>
+    								<td><b>Nombre completo:</b> `+data.nombreCompleto+`</td>
+                                    <td><b>Email:</b> `+data.email+`</td>
+                                </tr>
+                                <tr>
+                                    <td><span ><b>Teléfono:</b> `+numeroConLada+`</span></td>
+    								<td></td>
+                                </tr>
+                                <tr>
+    								<td></td>
+                                </tr>
+                                <tr>
+                                    <td><span ><b>Tema de la cita:</b> `+data.temaCita+`</span></td>
+                                    <td><b>Descripción:</b> `+data.descripcion+`</td>
                                 </tr>
     						</tbody>
     					</table>
@@ -1898,7 +1880,12 @@ function crearConfirmacion() {
         						        </div>`,
         						    showCancelButton:false,
         						    showConfirmButton:true,
-        						    confirmButtonText: "Copiar Link"
+        						    confirmButtonText: "Copiar Link",
+                                    onClose: () => {
+                                        setTimeout(() => {
+                                            redirectionUrl("menu", false)
+                                        }, 4000)
+                                    },
     						 }).then((result)=>{
     						 	if (result.value) {
     						 		let link= copyLinkPase(data.json.id, access_pass.nombre, access_pass.email, access_pass.telefono, checkDocSeleccionados, getCookie("userId_soter"), getCookie('userEmail'));
@@ -2224,6 +2211,8 @@ function verListaPasesTemporales(){
 }
 
 function fillPassByContact(data){
+    $('#fotoUsuarioAlta').attr('src', data.fotografia[0].file_url);
+    $("#fotoUsuarioAlta").show()
     $("#nombreCompleto").val(data.nombre)
     $("#email").val(data.email)
     $("#telefono").val(data.telefono)
