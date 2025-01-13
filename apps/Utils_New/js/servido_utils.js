@@ -616,13 +616,27 @@ function hide_loading() {
     mainContent.classList.remove('hidden'); 
 }
 
-//-----Funciona para mostrar loading
-function show_loading() {
-    const loading = document.getElementById('loading');
-    const mainContent = document.getElementById('wrapper');
-    loading.style.visibility = 'visible';
-    mainContent.classList.add('hidden'); 
+
+function hideLoadingComponent() {
+    const loading = document.getElementById('content-div-loadingComponent');
+    loading.style.visibility = 'hidden';
 }
+
+//-----Funciona para mostrar loading
+function showLoadingComponent() {
+    const loading = document.getElementById('content-div-loadingComponent');
+    const empty = document.getElementById('content-div-empty');
+
+    /*
+    const divElements = document.querySelectorAll('.div-content-element');
+    divElements.forEach(div => {
+        div.style.visibility = 'hidden';
+    });
+    */
+    loading.style.visibility = 'visible';
+    empty.style.display = 'none';
+}
+
 
 
 //-----Funciona para mostrar todos los elementos (graficas, tablas, cards) bajo la estructura del template

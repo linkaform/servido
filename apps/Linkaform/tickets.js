@@ -61,7 +61,7 @@ function loadData(data) {
 
 //-----SET REQUEST
 async function getInformation(){
-    show_loading();
+    showLoadingComponent();
     const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
     const statusSession = getSession();
@@ -98,8 +98,8 @@ async function getInformation(){
         }
     
         //-----Style
+        hideLoadingComponent();
         showElements();
-        hide_loading();
     }
 }
 
