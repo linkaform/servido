@@ -500,11 +500,16 @@ function setColorsDatasets(data = null, type = null){
 
 //-Funciona para llenar datos de una card
 function drawCardElement(cardId, value, scroll = null) {
-    if(scroll != null){
-        document.getElementById(`text-${cardId}`).textContent = `${value}%`;
-        document.getElementById(`progress-${cardId}`).style.width = value;
-    }else{
-        document.getElementById(`text-${cardId}`).textContent = value;
+    const element = document.getElementById(`text-${cardId}`);
+    if (element) {
+        if(scroll != null){
+            document.getElementById(`text-${cardId}`).textContent = `${value}%`;
+            document.getElementById(`progress-${cardId}`).style.width = value;
+        }else{
+            document.getElementById(`text-${cardId}`).textContent = value;
+        }
+    } else {
+        console.error('Element not found!',`text-${cardId}`);
     }
 }
 
@@ -636,8 +641,6 @@ function showLoadingComponent() {
     loading.style.visibility = 'visible';
     empty.style.display = 'none';
 }
-
-
 
 //-----Funciona para mostrar todos los elementos (graficas, tablas, cards) bajo la estructura del template
 function showElements() {
