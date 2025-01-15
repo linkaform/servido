@@ -311,6 +311,8 @@ function createElements(dataConfig = null){
                 let children = item._children;
                 children.forEach((element, index) => {
                     const divElement = document.createElement('div');
+
+                    //#-----PROPS-----#//
                     //-----Title
                     const titleElement = element.title ?  element.title : "";
                     //-----Color
@@ -324,7 +326,7 @@ function createElements(dataConfig = null){
                         colorBg = `bg-primary`;
                     }
                     //-----Class
-                    const classElement = element.col ? `col-xl-${element.col} col-md-6 mb-4` : "col-xl-3 col-md-6 mb-4";
+                    const classElement = element.col ? `col-xl-${element.col} col-md-${element.col} col-sm-12 mb-4` : "col-xl-3 col-md-6 mb-4";
                     divElement.className = classElement;
                     //-----Progress
                     const progressElement = element.progress ? true : false;
@@ -332,7 +334,9 @@ function createElements(dataConfig = null){
                     const listProgress = element.listProgress? element.listProgress : [];
                     //-----Id
                     const idElement = element.id ? element.id : Math.floor(Math.random() * 1000);
-                    //---Type Elements
+                    //-----Id
+                    const columsKanva = element.columsKanva? element.columsKanva : [];
+                    //#-----COMPONENTS-----#//
                     if(element.type == 'card'){
                         //-----Element Progress
                         let progressDiv = '';
@@ -437,6 +441,24 @@ function createElements(dataConfig = null){
                                 ${divProgress}
                             </div>
                         </div>`;
+                    }else if(element.type == 'kanva'){
+                        if(columsKanva.length > 0){
+                            let divCustom = `<div class="row full-height">`;
+                            columsKanva.forEach((element, index) => {
+                                const titleColum = element.title ? element.title : '';
+                                const idColum = element.id ? element.id : '';
+                                const classGrid = element.grid ? element.grid : 'col-lg-2 col-md-4 col-sm-6';
+
+                                divCustom += `<div class="${classGrid}">
+                                    <h5>${titleColum}</h5>
+                                    <div class="column" id="${idColum}">
+                                    </div>
+                                </div>`;
+                            });
+                            divCustom += `</div>`;
+                            console.log('divCustom',divCustom)
+                            divElement.innerHTML = divCustom;
+                        }
                     }
                     rowDiv.appendChild(divElement);
                 });
@@ -651,5 +673,32 @@ function showElements() {
     });
     divEmpty.forEach(div => {
       div.style.display = 'none';
+    });
+}
+
+function drawKanva(data) {
+    data.forEach((element) => {
+        if (element.key) {
+            let targetDiv = document.getElementById(element.key);
+
+            if (targetDiv) {
+                let divCustom = `
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title">${element.title}</h6>
+                            <p 
+                                class="badge"
+                                style="background-color: ${element.color ? element.color : '#28a745'};"
+                            >
+                                ${element.type}
+                            </p>
+                            <p class="card-text">${element.name}</p>
+                            <small>${element.date}</small>
+                        </div>
+                    </div>
+                `;
+                targetDiv.innerHTML += divCustom;
+            } 
+        } 
     });
 }
