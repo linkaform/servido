@@ -10,7 +10,7 @@ window.onload = function(){
     userJwt = getCookie("userJwt_soter");
     validSession(user, userJwt);
     if(userA !='' && userJwt!=''){
-        drawTable('tableListTodos',columnsTableListPendientes, dataTableListTodos );
+        drawTable('tableListTodos',columnsTableListPendientes, dataTableListTodos,'<i class="fa-solid fa-magnifying-glass"></i> Buscar pases' );
     }
 
     $("#locCard").hide()
