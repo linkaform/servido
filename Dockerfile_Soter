@@ -1,5 +1,5 @@
 #FROM python:3.7.10-stretch as develop
-FROM python:3.7.16-bullseye as develop
+FROM python:3.7.16-bullseye AS develop
 
 
 RUN apt-get update && \
@@ -36,7 +36,7 @@ EXPOSE 80 443
 #### build Build ####
 ##########################
 #FROM develop as production
-FROM develop as build
+FROM develop AS build
 
 RUN apt-get update && \
     apt-get install -y \
@@ -109,7 +109,7 @@ WORKDIR /srv/servido/app/
 #### Production Build ####
 ##########################
 
-FROM build as production
+FROM build AS production
 
 RUN apt-get update && \
     apt-get remove -y --purge \

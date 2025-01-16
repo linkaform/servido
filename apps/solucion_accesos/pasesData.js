@@ -108,7 +108,7 @@ const columnsTableListPendientes = [
 
 
 //-----TABLES
-function drawTable(id, columnsData, tableData,){
+function drawTable(id, columnsData, tableData, placeholder='No hay registros disponibles') {
     let table = new Tabulator("#" + id, {
         layout:"fitDataStretch",
         data:tableData,
@@ -116,7 +116,7 @@ function drawTable(id, columnsData, tableData,){
         columns:columnsData,
         pagination:true, 
         paginationSize:40,
-        placeholder: "No hay registros disponibles",
+        placeholder: placeholder,
 
   });
     actualTab=id

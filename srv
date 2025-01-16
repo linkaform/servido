@@ -153,6 +153,37 @@ _build(){
   fi
 }
 
+
+_build_soter(){
+  _copy
+  cd ~/lkf/servido/docker
+  echo 'entra al build'
+  git checkout soter
+  echo $(pwd)
+  if [[ $FLUSH == 1 ]]; then
+    docker image rm -f linkaform/soter:latest
+    docker image rm -f linkaform/soter:develop
+    docker compose -f docker-soter.yml build --no-cache
+  else
+    docker compose -f docker-soter.yml build 
+    echo "3"
+  fi
+  if [[ $PUBLISH == 1 ]]; then
+    cd ~/lkf/servido
+    URL=$(grep SRV_URL .srv_env | awk '{print $2}')
+    echo 'LA URLLLLL ES ' $URL
+    if [[ -n $URL ]];
+      then
+        ssh $URL /usr/local/bin/update_servido.sh
+      else
+        echo "set up a valid host on you .srv_env enviorment"
+    fi
+  fi
+  docker tag linkaform/servido:latest linkaform/soter:latest
+  docker push linkaform/soter:latest
+  
+}
+
 _stop(){
   docker stop servido
   docker rm servido
@@ -165,6 +196,12 @@ case "$Command" in
     echo "Building Servido...."
 
   ;;
+
+  build_soter)
+    _build_soter
+    echo "Building Soter...."
+
+  ;;  
 
   stop)
     _stop

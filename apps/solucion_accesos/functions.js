@@ -72,7 +72,7 @@ function loadBoothsLocations(){
 }
 
 function enviarCorreoPase(bodyPost){
-    loadingService('Enviando correo...')
+    // loadingService('Enviando correo...')
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify(bodyPost),
@@ -88,8 +88,8 @@ function enviarCorreoPase(bodyPost){
             if(dataR.status_code==400 || dataR.status_code==401){
                 errorAlert(dataR)
             }else if(dataR.status_code==202 || dataR.status_code==201){
-                Swal.close()
-                successMsg("Confirmación", "Correo enviado correctamente.", "success")
+                // Swal.close()
+                // successMsg("Confirmación", "Correo enviado correctamente.", "success")
             }
         }else{
             errorAlert(res)
@@ -156,6 +156,7 @@ async function get_pdf(qr_code, account_id){
 }
 
 function descargarPdfPase(url_pase){
+    loadingService('Obteniendo tu información...')
     fetch(url_pase)
         .then(response => {
             // Verificar si la respuesta es correcta
@@ -178,6 +179,23 @@ function descargarPdfPase(url_pase){
             // Limpiar: eliminar el enlace temporal
             document.body.removeChild(a);
             URL.revokeObjectURL(url); // Liberar la URL temporal
+
+            setTimeout(() => {
+                Swal.close()
+                // successMsg("Confirmación", "Información enviada correctamente.", "success")
+                Swal.fire({
+                    type:"success",
+                    title: "Confirmación",
+                    text: "Información enviada correctamente",
+                    showConfirmButton:true,
+                    confirmButtonText: "Ok",
+                    onClose: () => {
+                        setTimeout(() => {
+                            redirectionUrl("login", false)
+                        }, 1000)
+                    }
+                })
+            }, 7000)
         })
         .catch(error => {
             console.error('Error al descargar el PDF:', error);

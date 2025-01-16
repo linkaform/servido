@@ -731,3 +731,83 @@ input[type=search]{
 .off{
   background-color: lightgray;
 }
+
+.form-radio-input {
+  display: none;
+}
+
+.form-radio-input:checked + .form-radio-label {
+  cursor: pointer;
+  background-color: #007bff;
+  padding: 5px 10px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  color: #FEFFFE;
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+.form-radio-input + .form-radio-label {
+  cursor: pointer;
+  background-color: #FEFFFE;
+  padding: 5px 10px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  color: #007bff;
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+.form-radio-input + .form-radio-label:hover {
+  background-color: #FEFFFE;
+  color: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-radio-input:checked + .form-radio-label:hover {
+  background-color: #0056b3;
+  color: #FEFFFE;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.checkbox-group-dias input[type="checkbox"] {
+  opacity: 0;
+  position: absolute;
+  pointer-events: all;
+  width: 20px; 
+  height: 20px;
+}
+
+.checkbox-group-dias label {
+  cursor: pointer;
+  background-color: #FEFFFE;
+  padding: 5px 10px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  color: #007bff;
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+  display: inline-block;
+}
+
+.checkbox-group-dias label.activo {
+  background-color: #007bff;
+  color: #FEFFFE;
+  border-color: #007bff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.checkbox-group-dias label:hover {
+  background-color: #FEFFFE;
+  color: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.checkbox-group label.activo:hover {
+  background-color: #0056b3;
+  color: #FEFFFE;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 576px) {
+  .modal-dialog {
+      max-width: 85%;
+  }
+}
