@@ -419,7 +419,7 @@ async function onChangeCatalogPase(type, id){
 }
 
 async function catalogoPaseArea(location){
-	loadingService()
+	loadingService('Obteniendo las areas de la ubicacion: ' + location)
 	await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -478,7 +478,7 @@ async function catalogoPaseArea(location){
 }
 
 async function catalogoPaseLocation(){
-    loadingService()
+    loadingService('Obteniendo tus ubicaciones disponibles...')
     await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -561,7 +561,7 @@ async function fillCatalogoArea(id) {
 
 
 async function getConfiguracionModuloSeguridad(ubicacion){
-    loadingService()
+    loadingService('Obteniendo los requerimientos de la ubicación: ' + ubicacion)
     await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -865,6 +865,14 @@ async function onChangeOpcionesAvanzadas(type){
     }
 }
 
+function toggleActiveClass(checkbox) {
+    const label = checkbox.parentElement; // Obtén el label que contiene al checkbox
+    if (checkbox.checked) {
+        label.classList.add("activo"); // Añade la clase "activo" cuando el checkbox está marcado
+    } else {
+        label.classList.remove("activo"); // Elimina la clase "activo" cuando el checkbox no está marcado
+    }
+}
 
 function getSelectedCheckRAdio(name=""){
 	 const seleccionados = $('input[name="'+name+'"]:checked');
@@ -1180,42 +1188,30 @@ function crearConfirmacionMini() {
                                     // Swal.close()
     						 		let data_for_msj = {}
     								let data_for_msj_tel={}
+                                    let envio = []
                                     
                                     if(result.value.enviarMsj){
-                                        let bodyPost={
-                                            script_name: "pase_de_acceso.py",
-                                            folio:data.json.id,
-                                            account_id:account_id
-                                        }
-                                         let msj=""
-                                        if(data.json.fecha_desde !==""){
-                                            msj=`el día ${data.json.fecha_desde}`
-                                        }else if (data.json.fecha_hasta !=="" && data.json.fecha_desde !==""){
-                                            msj= `apartir del `+data.json.fecha_desde+` hasta el `+data.json.fecha_hasta+`.`
-                                        }
-                                        data_for_msj_tel={
-                                            mensaje: `Estimado ${nombre} 😁, ${data.json.enviar_de}, te esta invitando a: ${data.json.ubicacion}, `+msj+` Descarga tu pase 💳 en: ${data.json.pdf.data.download_url}`,
-                                            numero: data.json.telefono
-                                        }
-                                        bodyPost.data_cel_msj= data_for_msj_tel
-                                        bodyPost.option= "enviar_msj"
-        								enviarSmsPase(bodyPost)
+                                        envio.push("enviar_sms")
                                     }
                                     if(result.value.enviarCorreo){
+                                        envio.unshift("enviar_correo")
+                                    }
+                                    if(envio.length>0){
                                         let bodyPost={
                                             script_name: "pase_de_acceso.py",
                                             folio:data.json.id,
-                                            account_id:account_id
+                                            account_id:account_id,
+                                            envio:envio
                                         }
                                         data_for_msj = {
-											email_to: email,
-											asunto: data.json.asunto,
+                                            email_to: email,
+                                            asunto: data.json.asunto,
                                             email_from: getCookie("userEmail"),
                                             nombre: nombre,
-											nombre_organizador: data.json.enviar_de,
-											ubicacion: data.json.ubicacion,
-											fecha: {desde: data.json.fecha_desde, hasta: data.json.fecha_hasta},
-											descripcion: data.json.descripcion,
+                                            nombre_organizador: data.json.enviar_de,
+                                            ubicacion: data.json.ubicacion,
+                                            fecha: {desde: data.json.fecha_desde, hasta: data.json.fecha_hasta},
+                                            descripcion: data.json.descripcion,
                                         }
                                         bodyPost.data_msj= data_for_msj
                                         bodyPost.option= "enviar_correo"
@@ -1224,12 +1220,15 @@ function crearConfirmacionMini() {
                                     if(result.value.descargarPdf){
                                         descargarPdfPase(data.json.pdf.data.download_url)
                                     }
-                                    setTimeout(() => {
-                                        redirectionUrl("login", false)
-                                    }, 4000)
+                                    // setTimeout(() => {
+                                    //     redirectionUrl("login", false)
+                                    // }, 4000)
     						 	}else{
                                     console.log("NO SE ESCOGIO NADI")
                                     Swal.close()
+                                    setTimeout(() => {
+                                        redirectionUrl("login", false)
+                                    }, 2000)
                                 }
     						 })
                         }
@@ -1663,7 +1662,7 @@ function crearConfirmacion() {
 	}
 	let tituloVigencia=""
 	if(fechaHastaMain || fechaVisitaMain){
-		tituloVigencia=`<div class="d-flex justify-content-start mt-3 ms-2">
+		tituloVigencia=`<div class="d-flex justify-content-start ms-2">
 							<h5><b>Vigencia y acceso:</b></h5>
 						</div>`
 	}
@@ -1675,7 +1674,7 @@ function crearConfirmacion() {
     let limiteEntradasTexto=""
     if(data.limiteEntradas!==""){
         limiteEntradasTexto=`
-            <div class="d-flex justify-content-start mt-3 ms-2">
+            <div class="d-flex justify-content-start ms-2">
                 <p><span class="me-2"><b>Limite de entradas:</b></span>`+ data.limiteEntradas+`</p>
             </div>
         `
@@ -1718,54 +1717,61 @@ function crearConfirmacion() {
     		Swal.fire({
     	        title:'Confirmación',
     	        html:`
-    				<div>
-    					<table class="table table-borderless" >
-    						<thead>
-    							<tr>
-    								<th  style=" text-align:left !important;" > <h5> <b>Sobre la visita</b></h5> </th>
-    								<th > </th>
-    							</tr>
-    						</thead>
-    						<tbody>
-    							<tr>
-    								<td><b>Tipo de pase:</b> Visita General</td>
-    								<td><b>Estatus:</b> Proceso</td>
-    							</tr>
-                                <tr>
-                                    <td><b>Ubicación:</b> `+data.ubicacion+`</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-    								<td></td>
-                                </tr>
-                                <tr>
-    								<td><b>Nombre completo:</b> `+data.nombreCompleto+`</td>
-                                    <td><b>Email:</b> `+data.email+`</td>
-                                </tr>
-                                <tr>
-                                    <td><span ><b>Teléfono:</b> `+numeroConLada+`</span></td>
-    								<td></td>
-                                </tr>
-                                <tr>
-    								<td></td>
-                                </tr>
-                                <tr>
-                                    <td><span ><b>Tema de la cita:</b> `+data.temaCita+`</span></td>
-                                    <td><b>Descripción:</b> `+data.descripcion+`</td>
-                                </tr>
-    						</tbody>
-    					</table>
-    					<hr>
-    					`+mainAccesos+`
-    					`+mainComentarios+`
-    					`+tituloVigencia+`
-    					`+fechaVisitaDiv+`
-    					`+fechaHastaDiv+`
-    					`+tituloDias+`
-                        `+limiteEntradasTexto+`
-    					`+buttonDays+`
-    				</div>
-    		
+                    <div class="container">
+                        <div class="card mb-3">
+                            <div class="card-header bg-white text-start">
+                                <h5><b>Sobre la visita</b></h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md-6 text-start mt-1">
+                                        <b>Tipo de pase:</b> Visita General
+                                    </div>
+                                    <div class="col-12 col-md-6 text-start mt-1">
+                                        <b>Estatus:</b> Proceso
+                                    </div>
+                                    <div class="col-12 col-md-6 text-start mt-1">
+                                        <b>Ubicación:</b> `+data.ubicacion+`
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md-6 text-start mt-1">
+                                        <b>Nombre completo:</b> `+data.nombreCompleto+`
+                                    </div>
+                                    <div class="col-12 col-md-6 text-start mt-1">
+                                        <b>Email:</b> `+data.email+`
+                                    </div>
+                                    <div class="col-12 col-md-6 text-start mt-1">
+                                        <b>Teléfono:</b> `+numeroConLada+`
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 text-start mt-1">
+                                        <b>Tema de la cita:</b> `+data.temaCita+`
+                                    </div>
+                                    <div class="col-12 col-md-6 text-start mt-1">
+                                        <b>Descripción:</b> `+data.descripcion+`
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="container">
+                            <div 
+                                class="overflow-container" 
+                                style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 15px; border-radius: 5px;">
+                                <!-- Secciones adicionales -->
+                                `+mainAccesos+`
+                                `+mainComentarios+`
+                                `+tituloVigencia+`
+                                `+fechaVisitaDiv+`
+                                `+fechaHastaDiv+`
+                                `+tituloDias+`
+                                `+limiteEntradasTexto+`
+                                `+buttonDays+`
+                            </div>
+                        </div>
+                    </div>
     	      `,
     	        confirmButtonColor: "#28a745",
     	        showCancelButton: true,
@@ -1778,7 +1784,34 @@ function crearConfirmacion() {
     	    })
     	    .then((result) => {
     	        if (result.value) {
-    	        	loadingService("Creando pase de entrada...")
+    	        	// loadingService("Creando pase de entrada...")
+                    Swal.fire({
+                        title: 'Creando pase de entrada...',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    
+                    setTimeout(() => {
+                        Swal.fire({
+                            title: 'Ya casi está tu pase...',
+                            allowOutsideClick: false,
+                            onBeforeOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                    }, 5000);
+                    
+                    setTimeout(() => {
+                        Swal.fire({
+                            title: 'Solo un momento más y estará listo...',
+                            allowOutsideClick: false,
+                            onBeforeOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                    }, 9000);
                     let protocol = window.location.protocol;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
                     let host = window.location.host;
                    
@@ -1884,7 +1917,7 @@ function crearConfirmacion() {
                                     onClose: () => {
                                         setTimeout(() => {
                                             redirectionUrl("menu", false)
-                                        }, 4000)
+                                        }, 2000)
                                     },
     						 }).then((result)=>{
     						 	if (result.value) {
@@ -2157,6 +2190,19 @@ function validRangeOfDates(id){
 
 }
 
+function validateField() {
+    const temaCita = document.getElementById('temaCita');
+    const errorTemaCita = document.getElementById('errorTemaCita');
+  
+    if (!temaCita.value.trim()) {
+      errorTemaCita.style.display = 'block';
+      temaCita.classList.add('is-invalid');
+    } else {
+      errorTemaCita.style.display = 'none';
+      temaCita.classList.remove('is-invalid');
+    }
+}
+
 function setModal(type = 'none',id ="", nombre='', email=''){
     if(type== "listaPasesTemporales"){
         verListaPasesTemporales()
@@ -2164,7 +2210,7 @@ function setModal(type = 'none',id ="", nombre='', email=''){
 }
 
 function verListaPasesTemporales(){
-    loadingService()
+    loadingService('Obteniendo contactos...')
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -2188,7 +2234,7 @@ function verListaPasesTemporales(){
             }
 
             if(user!="" && userJwt!=""){
-                drawTableSelect('tableListaPases',columsListaPases, formatedList,"500px",1);
+                drawTableSelect('tableListaPases',columsListaPases, formatedList,"400px",1);
                 $("#listaPasesTitulo").text("Lista de Pases")
                 $("#listModal").modal('show');
             }

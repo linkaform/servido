@@ -111,8 +111,17 @@
             	</div>
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
                 	<label for="exampleInputEmail1">Tema de la cita</label>
-               	 	<input type="email" class="form-control fill paseEntradaNuevo" id="temaCita" aria-describedby="emailHelp" placeholder="Tema de la cita">
-            	</div>
+               	 	<!-- <input type="email" class="form-control fill paseEntradaNuevo" id="temaCita" aria-describedby="emailHelp" placeholder="Tema de la cita"> -->
+					<input
+					type="text"
+					class="form-control fill paseEntradaNuevo"
+					id="temaCita"
+					placeholder="Tema de la cita"
+					onblur="validateField()"
+					onfocus="validateField()"
+					>
+					<small id="errorTemaCita" style="color: red; display: none;">Este campo es obligatorio.</small>													
+				</div>
             </div>
             <div class="d-flex flex-row flex-wrap mt-2">
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
@@ -231,7 +240,7 @@
             <div class="opcionesAvanzadasDiv col-12">
 	            <div class="col-sm-8 col-md-8 col-lg-12 col-xl-12 d-flex mt-3 flex-wrap">
 	            	
-	               <div class="col-6 d-flex p-0 m-0 flex-wrap" id="fechaVisitaDiv"> 
+	               <div class="col-sm-12 col-md-6 col-lg-6 d-flex p-0 m-0 flex-wrap" id="fechaVisitaDiv"> 
 		               	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
 		               		<label for="fechaVisitaOA">Fecha de visita: </label>
 		               		<input type="date" class="form-control paseEntradaNuevo" id="fechaVisitaOA" aria-describedby="fechaVisitaOAvalidation" placeholder="" onchange="validRangeOfDates('fechaVisitaOA')">
@@ -252,7 +261,7 @@
 		                    </div>
 		               	</div> -->
 	               </div>
-	               <div class="col-6 d-flex p-0 m-0" id="fechaHastaDiv"> 
+	               <div class="col-sm-12 col-md-6 col-lg-6 d-flex p-0 m-0" id="fechaHastaDiv"> 
 	               		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
 		               		<label for="fechaHastaOA">Fecha hasta: </label>
 		               		<input type="date" class="form-control paseEntradaNuevo" id="fechaHastaOA" aria-describedby="fechaHastaOAvalidation" placeholder="" onchange="validRangeOfDates('fechaHastaOA')">
@@ -293,39 +302,39 @@
 		                <div class="flex-grow-1 mt-4" id="diasAccesoDivDias"> 
 		               		<label>Selecione los días de acceso: </label>
 		               		<div class="d-flex flex-row flex-wrap justify-content-start align-items-center">
-	                            <div class="checkbox-group me-2">
+	                            <div class="checkbox-group me-2 checkbox-group-dias">
 	                                <label>
-	                                    <input type="checkbox" name="diasPase" value="lunes" > Lunes
+	                                    <input type="checkbox" name="diasPase" value="lunes" onchange="toggleActiveClass(this)"> Lunes
 	                                </label>
 	                            </div>
-	                            <div class="checkbox-group me-2">
+	                            <div class="checkbox-group me-2 checkbox-group-dias">
 	                                <label>
-	                                    <input type="checkbox" name="diasPase" value="martes" > Martes
+	                                    <input type="checkbox" name="diasPase" value="martes" onchange="toggleActiveClass(this)"> Martes
 	                                </label>
 	                            </div>
-	                            <div class="checkbox-group me-2">
+	                            <div class="checkbox-group me-2 checkbox-group-dias">
 	                                <label>
-	                                    <input type="checkbox" name="diasPase" value="miércoles" > Miercoles
+	                                    <input type="checkbox" name="diasPase" value="miércoles" onchange="toggleActiveClass(this)"> Miercoles
 	                                </label>
 	                            </div>
-	                            <div class="checkbox-group me-2">
+	                            <div class="checkbox-group me-2 checkbox-group-dias">
 	                                <label>
-	                                    <input type="checkbox" name="diasPase" value="jueves" > Jueves
+	                                    <input type="checkbox" name="diasPase" value="jueves" onchange="toggleActiveClass(this)"> Jueves
 	                                </label>
 	                            </div>
-	                            <div class="checkbox-group me-2">
+	                            <div class="checkbox-group me-2 checkbox-group-dias">
 	                                <label>
-	                                    <input type="checkbox" name="diasPase" value="viernes" > Viernes
+	                                    <input type="checkbox" name="diasPase" value="viernes" onchange="toggleActiveClass(this)"> Viernes
 	                                </label>
 	                            </div>
-	                            <div class="checkbox-group me-2">
+	                            <div class="checkbox-group me-2 checkbox-group-dias">
 	                                <label>
-	                                    <input type="checkbox" name="diasPase" value="sábado" > Sábado
+	                                    <input type="checkbox" name="diasPase" value="sábado" onchange="toggleActiveClass(this)"> Sábado
 	                                </label>
 	                            </div>
-	                            <div class="checkbox-group me-2">
+	                            <div class="checkbox-group me-2 checkbox-group-dias">
 	                                <label>
-	                                    <input type="checkbox" name="diasPase" value="domingo" > Domingo
+	                                    <input type="checkbox" name="diasPase" value="domingo" onchange="toggleActiveClass(this)"> Domingo
 	                                </label>
 	                            </div>
 	                        </div>
@@ -334,7 +343,7 @@
 	                <div class="col-12 d-flex p-0 m-0 my-1 mb-2" id="limiteEntradasDiv"> 
 	            		<div class="col-sm-12 col-md-12 col-lg-6 col-xl-3">
 		            		<label>Limite de entradas: </label>
-		            		<input type="text" class="form-control paseEntradaNuevo" id="limiteEntradas" placeholder="Limite de entradas"  onChange="removeNonNumeric(this)">
+		            		<input type="number" class="form-control paseEntradaNuevo" id="limiteEntradas" placeholder="Limite de entradas"  onChange="removeNonNumeric(this)" min="1" max="100">
 	            		</div>
 	            	</div>
 	               <div class="opcionesAvanzadasDiv col-12 flex-grow-1 mt-3 mx-0">
@@ -648,23 +657,25 @@
 	
     <!-- Modal List-->
 	<div class="modal fade" id="listModal" tabindex="-1"  aria-hidden="true" >
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width:600px">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5"><span id=listaPasesTitulo></span></h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		<div class="d-flex justify-content-center align-items-center">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width:600px">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5"><span id=listaPasesTitulo></span></h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<!--<div class="row m-3">
+							<input type="text" class="form-control" placeholder="Busqueda" onkeyup="functionSearchList(event);return false;">
+						</div> -->
+						<div class="m-3 mt-0 w-full" style="max-height: 500px;">
+							<div id="tableListaPases"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+						</div>
+					</div> 
 				</div>
-				<div class="modal-body">
-					<!--<div class="row m-3">
-						<input type="text" class="form-control" placeholder="Busqueda" onkeyup="functionSearchList(event);return false;">
-					</div> -->
-					<div class="m-3 mt-0" style="max-height: 500px; width: 530px;">
-						<div id="tableListaPases"></div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-					</div>
-				</div> 
 			</div>
 		</div>
 	</div>
