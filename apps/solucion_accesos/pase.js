@@ -561,7 +561,7 @@ async function fillCatalogoArea(id) {
 
 
 async function getConfiguracionModuloSeguridad(ubicacion){
-    loadingService('Obteniendo los requerimientos de la ubicación: ' + ubicacion)
+    loadingService('Obteniendo Datos de: ' + ubicacion)
     await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -777,7 +777,7 @@ async function onChangeOpcionesAvanzadas(type){
             }
 		}else{
 			$(".opcionesAvanzadasDiv").hide();
-			$("#radioFechaFija").prop('checked', true);
+			// $("#radioFechaFija").prop('checked', true);
             let tipoArea= document.getElementById("tipoArea-")
             tipoArea.innerHTML=""
             $("#tipoArea-").append($('<option disabled></option>').val("").text("Seleccione una ubicación para ver los registros..."));
@@ -787,6 +787,9 @@ async function onChangeOpcionesAvanzadas(type){
 		let selected = $('input[name="opcionesAvanzadas"]:checked');
 		let radioRangoFechas = document.getElementById('radioRangoFechas');
 		if(selected[0].id == 'radioRangoFechas'){
+			$("#divRangoFechas").removeClass('d-none');
+			$("#divFechaFija").addClass('d-none');
+            console.log("HRLLOOssssssssssssssssss")
             $("#fechaVisita").val("")
             $("#horaNuevoPase").val("00")
             $("#minNuevoPase").val("00")
@@ -805,9 +808,11 @@ async function onChangeOpcionesAvanzadas(type){
 			$("#fechaVisitaDiv").show()
 			$("#fechaHastaDiv").show()
 			$("#diasAccesoDiv").show()
-			$("#radioCualquierDia").prop('checked', true);
+			// $("#radioCualquierDia").prop('checked', true);
 			onChangeOpcionesAvanzadas('radioCualquierDia')
 		}else if(selected[0].id == 'radioFechaFija'){
+            $("#divFechaFija").removeClass('d-none');
+			$("#divRangoFechas").addClass('d-none');
             $("#fechaVisita").val("")
             $("#horaNuevoPase").val("00")
             $("#minNuevoPase").val("00")

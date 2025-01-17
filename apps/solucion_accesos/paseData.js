@@ -8,7 +8,7 @@ const columsListaPases= [
                let foto= data.foto.length>0 ? data.foto[0].file_url : "https://www.smarttools.com.mx/wp-content/uploads/2019/05/imagen-no-disponible.png"
                let id = cell.getData().id ? cell.getData().id : 0;
                let divActions = '<div id="inf'+data.folio +'"><div class="d-flex flex-row" id="listOfGuards">';
-               divActions+= '<div col-sm-12 col-md-12 col-lg-6 col-xl-6> <img id="imgGuardiaApoyo" height="60" width="60" src="'
+               divActions+= '<div col-sm-12 col-md-12 col-lg-6 col-xl-6> <img id="imgGuardiaApoyo" class="rounded-circle m-1" height="60" width="60" style="object-fit: cover;" src="'
                + foto + '"> </div > <div col-sm-12 col-md-12 col-lg-6 col-xl-6 class="flex-column ms-3"> <div> <b>'
                + data.nombre +'</b> </div></div>';
                divActions += '</div> </div>';
