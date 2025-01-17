@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Solicitudes Finales Cliente</title>
+	<!-- Custom fonts for this template-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Custom styles for this template-->
+    <link href="../Utils_New/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../Utils_New/css/styles.css" rel="stylesheet">
+    <link href="./SolicitudesCliente.css" rel="stylesheet">
+    <!-- Sweet Alerrt -->
+    <link rel="stylesheet" href="../Utils_New/css/sweetalert2.min.css">
+    <!-- Bootstrap 5 CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="bg-white py-3">
+        <!-- Contenedor del header -->
+        <div class="container">
+            <div class="d-flex align-items-center">
+                <!-- Logo alineado a la izquierda -->
+                <img src="https://assets.www.essity.com/essity/1.122.0-hotfix.3/img/logo-essity.svg" alt="Logo" class="img-fluid me-3">
+            </div>
+        </div>
+    </header>
+
+	<!-- Div Form -->
+    <div id="wrapper">
+        <div class="container my-5" id="divForm">
+            <h2 class="mb-4">Formulario de Solicitud</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="nombreCliente" class="form-label bg-font">Nombre del Cliente</label>
+                    <input type="text" class="form-control" id="nombreCliente" >
+                </div>
+                <div class="mb-3">
+                    <label for="solicitante" class="form-label bg-font">Solicitante</label>
+                    <input type="text" class="form-control" id="solicitante" >
+                </div>
+                <div class="mb-3">
+                    <label for="puesto" class="form-label bg-font">Puesto</label>
+                    <input type="text" class="form-control" id="puesto" >
+                </div>
+                <div class="mb-3">
+                    <label for="correo" class="form-label bg-font">Correo</label>
+                    <input type="email" class="form-control" id="correo" >
+                </div>
+                <div class="mb-3">
+                    <label for="telefono" class="form-label bg-font">Teléfono</label>
+                    <input type="text" class="form-control" id="telefono" >
+                </div>
+                <div class="mb-3">
+                    <label for="puntoDeVenta" class="form-label bg-font">Punto de Venta</label>
+                    <input type="text" class="form-control" id="puntoDeVenta" >
+                </div>
+                <div class="mb-3">
+                    <label for="direccion" class="form-label bg-font">Dirección</label>
+                    <textarea class="form-control" id="direccion" rows="3" ></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label bg-font">Tipo de Solicitud</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tipoSolicitud" id="cambioEquipos" value="Cambio de equipos" >
+                        <label class="form-check-label" for="cambioEquipos">Cambio de equipos</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tipoSolicitud" id="problemaProducto" value="Problema con Producto" >
+                        <label class="form-check-label" for="problemaProducto">Problema con Producto</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tipoSolicitud" id="capacitacion" value="Capacitación" >
+                        <label class="form-check-label" for="capacitacion">Capacitación</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="producto" class="form-label bg-font">Producto</label>
+                    <select class="form-select" id="producto" required>
+                        <option value="" disabled selected>Selecciona un producto</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label bg-font">Descripción</label>
+                    <textarea class="form-control" id="descripcion" rows="4" required></textarea>
+                </div>
+                <div class="d-grid gap-2">
+                    <button class="btn bg-button" type="button" id="buttonSend">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Div Success -->
+    <div class="text-center py-5 d-none" id="divSuccess">
+        <i class="fa-solid fa-circle-check fs-1"></i>
+        <h1 class="text-success">¡Registro enviado con éxito!</h1>
+        <p class="lead">Gracias por completar el formulario. Hemos recibido tu información.</p>
+    </div>
+
+    <!-- Div Error -->
+    <div class="text-center py-5 d-none" id="divError">
+        <i class="fa-solid fa-circle-check fs-1"></i>
+        <h1 class="text-danger">¡Su Registro no se a completado!</h1>
+        <p class="lead">Por favor recargue el formulario o contacte a soporte.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-div text-white text-center py-3 mt-5">
+        <div class="d-flex justify-content-center align-items-center gap-3">
+            <!-- Enlace a YouTube -->
+            <a href="https://www.youtube.com/@torkmexicocentroamerica407" target="_blank" class="text-decoration-none text-white">
+                <i class="fab fa-youtube fa-lg"></i> YouTube
+            </a>
+            <!-- Enlace a Facebook -->
+            <a href="https://www.facebook.com/TorkMexicoCentroAmerica?mibextid=wwXIfr&rdid=RC84u43T3RgfPvF5&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18C37FkCDD%2F%3Fmibextid%3DwwXIfr" target="_blank" class="text-decoration-none text-white">
+                <i class="fab fa-facebook fa-lg"></i> Facebook
+            </a>
+            <!-- Enlace a Instagram -->
+            <a href="https://www.instagram.com/tork.mxcam/?igsh=MTFycTJ0dXphaTV3Ng%3D%3D" target="_blank" class="text-decoration-none text-white">
+                <i class="fab fa-instagram fa-lg"></i> Instagram
+            </a>
+            <!-- Enlace a la página web -->
+            <a href="https://www.essity.mx/marcas/soluciones-de-higiene-profesional/" target="_blank" class="text-decoration-none text-white">
+                <i class="fas fa-globe fa-lg"></i> Sitio web
+            </a>
+        </div>
+    </footer>
+
+    <!-- Div Loading-->
+    <div id="loading">
+        <div>
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="text-center mt-3">Cargando...</p>
+        </div>
+    </div>
+	<!-- Bootstrap core JavaScript-->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<!--Utils -->
+	<script type="text/javascript" src="../../styles/js/chroma.min.js"></script>
+    <script type="text/javascript" src="../Utils_New/js/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="../Utils_New/js/lkf_utils.js"></script>
+    <script type="text/javascript" src="../Utils_New/js/servido_utils.js"></script>
+	<!--Report -->
+	<script type="text/javascript" src="./SolicitudesCliente.js"></script>
+</body>
+</html>
