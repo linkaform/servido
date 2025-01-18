@@ -67,8 +67,13 @@
 			</div>
 			<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
                 <label for="exampleInputEmail1">Nombre Completo</label>
-                <input type="text" class="form-control fill paseEntradaNuevo" id="nombreCompleto" aria-describedby="emailHelp" placeholder="Nombre completo">
-            </div>
+                <input 
+				type="text" class="form-control fill paseEntradaNuevo" id="nombreCompleto" aria-describedby="emailHelp" placeholder="Nombre completo"
+				onblur="validateField('nombreCompleto')"
+				onfocus="validateField('nombreCompleto')"
+				>
+				<small id="errorNombreCompleto" style="color: red; display: none;">Este campo es obligatorio.</small>	
+			</div>
             <div class="d-flex flex-row flex-wrap mt-2">
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
                 	<label for="exampleInputEmail1">Correo</label>
@@ -117,8 +122,8 @@
 					class="form-control fill paseEntradaNuevo"
 					id="temaCita"
 					placeholder="Tema de la cita"
-					onblur="validateField()"
-					onfocus="validateField()"
+					onblur="validateField('temaCita')"
+					onfocus="validateField('temaCita')"
 					>
 					<small id="errorTemaCita" style="color: red; display: none;">Este campo es obligatorio.</small>													
 				</div>
@@ -126,7 +131,7 @@
             <div class="d-flex flex-row flex-wrap mt-2">
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
                 	<label for="exampleInputEmail1">Descripcion</label>
-               	 	<input type="email" class="form-control fill paseEntradaNuevo" id="descripcion" aria-describedby="emailHelp" placeholder="Descripción">
+               	 	<input type="text" class="form-control fill paseEntradaNuevo" id="descripcion" aria-describedby="emailHelp" placeholder="Descripción">
             	</div>
             </div>
                <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 my-1 mt-2 d-flex flex-column gap-2">

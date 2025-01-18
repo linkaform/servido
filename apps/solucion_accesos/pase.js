@@ -1693,16 +1693,58 @@ function crearConfirmacion() {
     
     const formInputs = document.querySelectorAll('.paseEntradaNuevo');
     let hasInvalidInput = false;
+    let missingFields = [];
     formInputs.forEach(input => {
       if (input.classList.contains('is-invalid')) {
         hasInvalidInput = true;
       }
     });
-    let tieneEmailTel = data.email!="" || data.telefono!=""
-	if(data.nombreCompleto=="" || tieneEmailTel==false || fechaVisitaMain=="" || data.ubicacion=="" || data.temaCita==""){
-        
-		successMsg("Validación", "Faltan datos por llenar", "warning")
-	}else {
+    let tieneEmailTel = data.email!="" && data.telefono!=""
+    console.log('tieneemailotel', tieneEmailTel)
+	// if(data.nombreCompleto=="" || tieneEmailTel==false || fechaVisitaMain=="" || data.ubicacion=="" || data.temaCita==""){
+    //     console.log("FALTAN DATOS")
+	// 	successMsg("Validación", "Faltan datos por llenar", "warning")
+	// }
+    if (data.nombreCompleto === "" || !tieneEmailTel || fechaVisitaMain === "" || data.ubicacion === "" || data.temaCita === "") {
+        if (data.nombreCompleto === "") missingFields.push('Nombre Completo');
+        if (!tieneEmailTel) missingFields.push('Email o Teléfono');
+        if (fechaVisitaMain === "") missingFields.push('Fecha de Visita');
+        if (data.ubicacion === "") missingFields.push('Ubicación');
+        if (data.temaCita === "") missingFields.push('Tema de Cita');
+    }
+    
+    if (hasInvalidInput || missingFields.length > 0) {
+        focus = missingFields[0];
+        // successMsg("Validación", `Faltan datos por llenar: ${missingFields.join(", ")}`, "warning");
+        Swal.fire({
+            title: 'Validación',
+            text: `Faltan datos por llenar: ${missingFields.join(", ")}`,
+            type: 'warning',
+            onClose: () => {
+                if (focus === "Nombre Completo") {
+                    setTimeout(() => {
+                        document.getElementById('nombreCompleto').focus();
+                    }, 300);
+                } else if (focus === "Email o Teléfono") {
+                    setTimeout(() => {
+                        document.getElementById('email').focus();
+                    }, 300);
+                } else if (focus === "Fecha de Visita") {
+                    setTimeout(() => {
+                        document.getElementById('fechaVisita').focus();
+                    }, 300);
+                } else if (focus === "Ubicación") {
+                    setTimeout(() => {
+                        document.getElementById('ubicacion').focus();
+                    }, 300);
+                } else if (focus === "Tema de Cita") {
+                    setTimeout(() => {
+                        document.getElementById('temaCita').focus();
+                    }, 300);
+                }
+            },
+        });
+    }else {
         // if(!numValid){
         //     successMsg("Validación","Escribe un número de teléfono válido.", "warning")
         //     let inputTel= document.getElementById("telefono")
@@ -1789,34 +1831,21 @@ function crearConfirmacion() {
     	    })
     	    .then((result) => {
     	        if (result.value) {
-    	        	// loadingService("Creando pase de entrada...")
                     Swal.fire({
                         title: 'Creando pase de entrada...',
                         allowOutsideClick: false,
                         onBeforeOpen: () => {
-                            Swal.showLoading();
+                          Swal.showLoading();
+                      
+                          setTimeout(() => {
+                            Swal.getTitle().textContent = 'Ya casi está tu pase...';
+                          }, 5000);
+                      
+                          setTimeout(() => {
+                            Swal.getTitle().textContent = 'Solo un momento más y estará listo...';
+                          }, 9000);
                         }
                     });
-                    
-                    setTimeout(() => {
-                        Swal.fire({
-                            title: 'Ya casi está tu pase...',
-                            allowOutsideClick: false,
-                            onBeforeOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
-                    }, 5000);
-                    
-                    setTimeout(() => {
-                        Swal.fire({
-                            title: 'Solo un momento más y estará listo...',
-                            allowOutsideClick: false,
-                            onBeforeOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
-                    }, 9000);
                     let protocol = window.location.protocol;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
                     let host = window.location.host;
                    
@@ -2195,16 +2224,16 @@ function validRangeOfDates(id){
 
 }
 
-function validateField() {
-    const temaCita = document.getElementById('temaCita');
-    const errorTemaCita = document.getElementById('errorTemaCita');
+function validateField(field) {
+    const campo = document.getElementById(field);
+    const errorField = document.getElementById(`error${field.charAt(0).toUpperCase() + field.slice(1)}`);
   
-    if (!temaCita.value.trim()) {
-      errorTemaCita.style.display = 'block';
-      temaCita.classList.add('is-invalid');
+    if (!campo.value.trim()) {
+      errorField.style.display = 'block';
+      campo.classList.add('is-invalid');
     } else {
-      errorTemaCita.style.display = 'none';
-      temaCita.classList.remove('is-invalid');
+      errorField.style.display = 'none';
+      campo.classList.remove('is-invalid');
     }
 }
 
