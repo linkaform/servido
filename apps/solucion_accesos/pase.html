@@ -67,8 +67,13 @@
 			</div>
 			<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
                 <label for="exampleInputEmail1">Nombre Completo</label>
-                <input type="text" class="form-control fill paseEntradaNuevo" id="nombreCompleto" aria-describedby="emailHelp" placeholder="Nombre completo">
-            </div>
+                <input 
+				type="text" class="form-control fill paseEntradaNuevo" id="nombreCompleto" aria-describedby="emailHelp" placeholder="Nombre completo"
+				onblur="validateField('nombreCompleto')"
+				onfocus="validateField('nombreCompleto')"
+				>
+				<small id="errorNombreCompleto" style="color: red; display: none;">Este campo es obligatorio.</small>	
+			</div>
             <div class="d-flex flex-row flex-wrap mt-2">
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
                 	<label for="exampleInputEmail1">Correo</label>
@@ -117,8 +122,8 @@
 					class="form-control fill paseEntradaNuevo"
 					id="temaCita"
 					placeholder="Tema de la cita"
-					onblur="validateField()"
-					onfocus="validateField()"
+					onblur="validateField('temaCita')"
+					onfocus="validateField('temaCita')"
 					>
 					<small id="errorTemaCita" style="color: red; display: none;">Este campo es obligatorio.</small>													
 				</div>
@@ -126,7 +131,7 @@
             <div class="d-flex flex-row flex-wrap mt-2">
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
                 	<label for="exampleInputEmail1">Descripcion</label>
-               	 	<input type="email" class="form-control fill paseEntradaNuevo" id="descripcion" aria-describedby="emailHelp" placeholder="Descripción">
+               	 	<input type="text" class="form-control fill paseEntradaNuevo" id="descripcion" aria-describedby="emailHelp" placeholder="Descripción">
             	</div>
             </div>
                <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 my-1 mt-2 d-flex flex-column gap-2">
@@ -200,12 +205,16 @@
                 	<label>Visita de: </label>
                 	<div class="d-flex flex-column justify-content-start align-items-start" >
                 		<div>
-                			<input class="form-radio-input paseEntradaNuevo" type="radio" name="opcionesAvanzadas" id="radioFechaFija" onchange="onChangeOpcionesAvanzadas('radioRangoFechas')">
+                			<input class="form-radio-input paseEntradaNuevo" type="radio" checked name="opcionesAvanzadas" id="radioFechaFija" onchange="onChangeOpcionesAvanzadas('radioRangoFechas')">
 	                        <label class="form-radio-label" for="radioFechaFija">
 	                            Fecha Fija
 	                        </label>
+							<input class="form-radio-input paseEntradaNuevo" type="radio" name="opcionesAvanzadas" id="radioRangoFechas" onchange="onChangeOpcionesAvanzadas('radioRangoFechas');">
+							<label class="form-radio-label" for="radioRangoFechas" >
+								Rango de Fechas
+							</label>
                 		</div>
-                		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-wrap mb-3">
+                		<div id="divFechaFija" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-wrap mb-3">
 			               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
 								<label for="fechaVisita">Fecha de visita: </label>
 			               		<input type="date" class="form-control paseEntradaNuevo" id="fechaVisita" placeholder="" onchange="validDatePase()" 
@@ -227,11 +236,108 @@
 			                    </div>
 			               </div>
 			            </div>
+						<div id="divRangoFechas" class="col-sm-8 col-md-8 col-lg-12 col-xl-12 d-flex mt-3 flex-wrap d-none">
+	            	
+							<div class="col-sm-12 col-md-6 col-lg-6 d-flex p-0 m-0 flex-wrap" id="fechaVisitaDiv"> 
+									<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+										<label for="fechaVisitaOA">Fecha de visita: </label>
+										<input type="date" class="form-control paseEntradaNuevo" id="fechaVisitaOA" aria-describedby="fechaVisitaOAvalidation" placeholder="" onchange="validRangeOfDates('fechaVisitaOA')">
+										<div id="fechaVisitaOAvalidation" class="invalid-feedback">
+										   Escribe un fecha válida.
+									 </div>
+									</div>
+									<!-- <div class="col-6">
+									 <label class="form-label">Hora: *</label>
+									 <div class="time-selector">
+										 <select class="form-select time-select contentNuevoRangoVisita paseEntradaNuevo" id="horaNuevoRangoVisita" 
+										 onchange="onChangeAmpmLabel('horaNuevoRangoVisita','ampmNuevoRangoVisita')">
+										 </select>
+										 <label class="mx-1">:</label>
+										 <select class="form-select time-select contentNuevoRangoVisita paseEntradaNuevo" id="minNuevoRangoVisita">
+										 </select>
+										 <label class="ms-2" id="ampmNuevoRangoVisita"></label>
+									 </div>
+									</div> -->
+							</div>
+							<div class="col-sm-12 col-md-6 col-lg-6 d-flex p-0 m-0" id="fechaHastaDiv"> 
+									<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+										<label for="fechaHastaOA">Fecha hasta: </label>
+										<input type="date" class="form-control paseEntradaNuevo" id="fechaHastaOA" aria-describedby="fechaHastaOAvalidation" placeholder="" onchange="validRangeOfDates('fechaHastaOA')">
+										<div id="fechaHastaOAvalidation" class="invalid-feedback">
+										   Escribe un fecha válida.
+									 </div>
+									</div>
+								<!-- 	<div class="col-6">
+									 <label class="form-label">Hora: *</label>
+									 <div class="time-selector">
+										 <select class="form-select time-select contentNuevoRangoHasta paseEntradaNuevo" id="horaNuevoRangoHasta" 
+										 onchange="onChangeAmpmLabel('horaNuevoRangoHasta','ampmNuevoRangoHasta')">
+										 </select>
+										 <label class="mx-1">:</label>
+										 <select class="form-select time-select contentNuevoRangoHasta paseEntradaNuevo" id="minNuevoRangoHasta">
+										 </select>
+										 <label class="ms-2" id="ampmNuevoRangoHasta"></label>
+									 </div>
+									</div> -->
+							</div>
+							
+							<div class="col-12 mt-2">
+								<label>Días de acceso: </label>
+								<div class="d-flex flex-column justify-content-start align-items-start">
+									<div>
+										<input class="form-radio-input paseEntradaNuevo" type="radio" checked name="diasAcceso" id="radioCualquierDia" onchange="onChangeOpcionesAvanzadas('radioCualquierDia')">
+										<label class="form-radio-label" for="radioCualquierDia">
+											Cualquier día
+										</label>
+										<input class="form-radio-input paseEntradaNuevo" type="radio" name="diasAcceso" id="radioLimitarDias" onchange="onChangeOpcionesAvanzadas('radioLimitarDias')">
+										<label class="form-radio-label" for="radioLimitarDias">
+											limitar días de acceso
+										</label>
+									</div>
+								</div>
+								<div class="flex-grow-1 mt-4" id="diasAccesoDivDias"> 
+									<label>Selecione los días de acceso: </label>
+									<div class="d-flex flex-row flex-wrap justify-content-start align-items-center">
+										<div class="checkbox-group me-2 checkbox-group-dias">
+											<label>
+												<input type="checkbox" name="diasPase" value="lunes" onchange="toggleActiveClass(this)"> Lunes
+											</label>
+										</div>
+										<div class="checkbox-group me-2 checkbox-group-dias">
+											<label>
+												<input type="checkbox" name="diasPase" value="martes" onchange="toggleActiveClass(this)"> Martes
+											</label>
+										</div>
+										<div class="checkbox-group me-2 checkbox-group-dias">
+											<label>
+												<input type="checkbox" name="diasPase" value="miércoles" onchange="toggleActiveClass(this)"> Miercoles
+											</label>
+										</div>
+										<div class="checkbox-group me-2 checkbox-group-dias">
+											<label>
+												<input type="checkbox" name="diasPase" value="jueves" onchange="toggleActiveClass(this)"> Jueves
+											</label>
+										</div>
+										<div class="checkbox-group me-2 checkbox-group-dias">
+											<label>
+												<input type="checkbox" name="diasPase" value="viernes" onchange="toggleActiveClass(this)"> Viernes
+											</label>
+										</div>
+										<div class="checkbox-group me-2 checkbox-group-dias">
+											<label>
+												<input type="checkbox" name="diasPase" value="sábado" onchange="toggleActiveClass(this)"> Sábado
+											</label>
+										</div>
+										<div class="checkbox-group me-2 checkbox-group-dias">
+											<label>
+												<input type="checkbox" name="diasPase" value="domingo" onchange="toggleActiveClass(this)"> Domingo
+											</label>
+										</div>
+								 	</div>
+								</div>
+							</div>
+						</div>
                 		<div class="opcionesAvanzadasDiv">
-                			<input class="form-radio-input paseEntradaNuevo" type="radio" name="opcionesAvanzadas" id="radioRangoFechas" onchange="onChangeOpcionesAvanzadas('radioRangoFechas');">
-	                        <label class="form-radio-label" for="radioRangoFechas" >
-	                            Rango de Fechas
-	                        </label>
                 		</div>
                 		
                 	</div>
@@ -241,104 +347,15 @@
 	            <div class="col-sm-8 col-md-8 col-lg-12 col-xl-12 d-flex mt-3 flex-wrap">
 	            	
 	               <div class="col-sm-12 col-md-6 col-lg-6 d-flex p-0 m-0 flex-wrap" id="fechaVisitaDiv"> 
-		               	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-		               		<label for="fechaVisitaOA">Fecha de visita: </label>
-		               		<input type="date" class="form-control paseEntradaNuevo" id="fechaVisitaOA" aria-describedby="fechaVisitaOAvalidation" placeholder="" onchange="validRangeOfDates('fechaVisitaOA')">
-		               		<div id="fechaVisitaOAvalidation" class="invalid-feedback">
-						      	Escribe un fecha válida.
-						    </div>
-		               	</div>
-		               	<!-- <div class="col-6">
-		                    <label class="form-label">Hora: *</label>
-		                    <div class="time-selector">
-		                        <select class="form-select time-select contentNuevoRangoVisita paseEntradaNuevo" id="horaNuevoRangoVisita" 
-		                        onchange="onChangeAmpmLabel('horaNuevoRangoVisita','ampmNuevoRangoVisita')">
-		                        </select>
-		                        <label class="mx-1">:</label>
-		                        <select class="form-select time-select contentNuevoRangoVisita paseEntradaNuevo" id="minNuevoRangoVisita">
-		                        </select>
-		                        <label class="ms-2" id="ampmNuevoRangoVisita"></label>
-		                    </div>
-		               	</div> -->
+		               	
 	               </div>
 	               <div class="col-sm-12 col-md-6 col-lg-6 d-flex p-0 m-0" id="fechaHastaDiv"> 
-	               		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-		               		<label for="fechaHastaOA">Fecha hasta: </label>
-		               		<input type="date" class="form-control paseEntradaNuevo" id="fechaHastaOA" aria-describedby="fechaHastaOAvalidation" placeholder="" onchange="validRangeOfDates('fechaHastaOA')">
-		               		<div id="fechaHastaOAvalidation" class="invalid-feedback">
-						      	Escribe un fecha válida.
-						    </div>
-		               	</div>
-		               <!-- 	<div class="col-6">
-		                    <label class="form-label">Hora: *</label>
-		                    <div class="time-selector">
-		                        <select class="form-select time-select contentNuevoRangoHasta paseEntradaNuevo" id="horaNuevoRangoHasta" 
-		                        onchange="onChangeAmpmLabel('horaNuevoRangoHasta','ampmNuevoRangoHasta')">
-		                        </select>
-		                        <label class="mx-1">:</label>
-		                        <select class="form-select time-select contentNuevoRangoHasta paseEntradaNuevo" id="minNuevoRangoHasta">
-		                        </select>
-		                        <label class="ms-2" id="ampmNuevoRangoHasta"></label>
-		                    </div>
-		               	</div> -->
+	               		
 	               </div>
 
 	               <div class="col-12  mt-4" id="diasAccesoDiv"> 
-	               		<label>Días de acceso: </label>
-	                	<div class="d-flex flex-column justify-content-start align-items-start">
-	                		<div>
-	                			<input class="form-radio-input paseEntradaNuevo" type="radio" name="diasAcceso" id="radioCualquierDia" onchange="onChangeOpcionesAvanzadas('radioCualquierDia')">
-		                        <label class="form-radio-label" for="radioCualquierDia">
-		                            Cualquier día
-		                        </label>
-	                		</div>
-	                		<div class="opcionesAvanzadasDiv">
-	                			<input class="form-radio-input paseEntradaNuevo" type="radio" name="diasAcceso" id="radioLimitarDias" onchange="onChangeOpcionesAvanzadas('radioLimitarDias')">
-		                        <label class="form-radio-label" for="radioLimitarDias">
-		                            limitar días de acceso
-		                        </label>
-	                		</div>
-	                	</div>
-		                <div class="flex-grow-1 mt-4" id="diasAccesoDivDias"> 
-		               		<label>Selecione los días de acceso: </label>
-		               		<div class="d-flex flex-row flex-wrap justify-content-start align-items-center">
-	                            <div class="checkbox-group me-2 checkbox-group-dias">
-	                                <label>
-	                                    <input type="checkbox" name="diasPase" value="lunes" onchange="toggleActiveClass(this)"> Lunes
-	                                </label>
-	                            </div>
-	                            <div class="checkbox-group me-2 checkbox-group-dias">
-	                                <label>
-	                                    <input type="checkbox" name="diasPase" value="martes" onchange="toggleActiveClass(this)"> Martes
-	                                </label>
-	                            </div>
-	                            <div class="checkbox-group me-2 checkbox-group-dias">
-	                                <label>
-	                                    <input type="checkbox" name="diasPase" value="miércoles" onchange="toggleActiveClass(this)"> Miercoles
-	                                </label>
-	                            </div>
-	                            <div class="checkbox-group me-2 checkbox-group-dias">
-	                                <label>
-	                                    <input type="checkbox" name="diasPase" value="jueves" onchange="toggleActiveClass(this)"> Jueves
-	                                </label>
-	                            </div>
-	                            <div class="checkbox-group me-2 checkbox-group-dias">
-	                                <label>
-	                                    <input type="checkbox" name="diasPase" value="viernes" onchange="toggleActiveClass(this)"> Viernes
-	                                </label>
-	                            </div>
-	                            <div class="checkbox-group me-2 checkbox-group-dias">
-	                                <label>
-	                                    <input type="checkbox" name="diasPase" value="sábado" onchange="toggleActiveClass(this)"> Sábado
-	                                </label>
-	                            </div>
-	                            <div class="checkbox-group me-2 checkbox-group-dias">
-	                                <label>
-	                                    <input type="checkbox" name="diasPase" value="domingo" onchange="toggleActiveClass(this)"> Domingo
-	                                </label>
-	                            </div>
-	                        </div>
-		                </div>
+
+		                
 	                </div>
 	                <div class="col-12 d-flex p-0 m-0 my-1 mb-2" id="limiteEntradasDiv"> 
 	            		<div class="col-sm-12 col-md-12 col-lg-6 col-xl-3">
@@ -658,7 +675,7 @@
     <!-- Modal List-->
 	<div class="modal fade" id="listModal" tabindex="-1"  aria-hidden="true" >
 		<div class="d-flex justify-content-center align-items-center">
-			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="width:600px">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg w-100">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5"><span id=listaPasesTitulo></span></h1>
