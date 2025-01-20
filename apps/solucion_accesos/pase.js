@@ -371,7 +371,7 @@ async function onChangeCatalogPase(type, id){
             }),
              headers:{ 'Content-Type': 'application/json', /*'Authorization': 'Bearer '+userJwt*/}
         };
-        loadingService();
+        loadingService('Obteniendo marcas de vehiculos...');
         let respuesta = await fetch(url + urlScripts, options);
         let data = await respuesta.json();
         if(data.error){
@@ -400,7 +400,7 @@ async function onChangeCatalogPase(type, id){
             }),
              headers:{ 'Content-Type': 'application/json',/*'Authorization': 'Bearer '+ userJwt*/}
         };
-        loadingService();
+        loadingService('Obteniendo modelos de vehiculos...');
         let respuesta = await fetch(url + urlScripts, options);
         let data = await respuesta.json();
         if(data.error){
@@ -536,6 +536,24 @@ async function catalogoPaseLocation(){
 }
 
 async function fillCatalogoArea(id) {
+    const selectedValue = $("#ubicacion").val();
+    if(!selectedValue){
+        Swal.fire({
+            title: 'Debes seleccionar una ubicacion primero...',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            onClose: () => {
+                setTimeout(() => {
+                    document.getElementById('ubicacion').focus();
+                }, 300)
+            },
+        });
+        $("#checkOpcionesAvanzadas").prop("checked", false);
+        return
+    }
+    
+    onChangeOpcionesAvanzadas('checkOpcionesAvanzadas');
+
     let location = $("#"+id).val()
         console.log("entrando", location, $("#checkOpcionesAvanzadas").is(":checked"))
     if(location && $("#checkOpcionesAvanzadas").is(":checked")){
@@ -580,9 +598,6 @@ async function getConfiguracionModuloSeguridad(ubicacion){
         if (res.success) {
             Swal.close()
             console.log("HOLAAA", res)
-            setTimeout(() => {
-                document.getElementById('temaCita').focus();
-            }, 300);
         }else{
             errorAlert(res)
         }
@@ -791,6 +806,8 @@ async function onChangeOpcionesAvanzadas(type){
 		let radioRangoFechas = document.getElementById('radioRangoFechas');
 		if(selected[0].id == 'radioRangoFechas'){
 			$("#divRangoFechas").removeClass('d-none');
+			$("#radioLimiteEntradas").removeClass('d-none');
+			$("#btnLimiteEntradas").removeClass('d-none');
 			$("#divFechaFija").addClass('d-none');
             console.log("HRLLOOssssssssssssssssss")
             $("#fechaVisita").val("")
@@ -816,6 +833,8 @@ async function onChangeOpcionesAvanzadas(type){
 		}else if(selected[0].id == 'radioFechaFija'){
             $("#divFechaFija").removeClass('d-none');
 			$("#divRangoFechas").addClass('d-none');
+            $("#radioLimiteEntradas").addClass('d-none');
+			$("#btnLimiteEntradas").addClass('d-none');
             $("#fechaVisita").val("")
             $("#horaNuevoPase").val("00")
             $("#minNuevoPase").val("00")
@@ -869,6 +888,13 @@ async function onChangeOpcionesAvanzadas(type){
             selectColores.value=""
         }else{
             $("#div-equipo").hide()
+        }
+    }else if (type == "radioLimiteEntradas"){
+        if($("#radioLimiteEntradas").is(':checked')){
+            console.log("HRLLOOsssss")
+            $("#limiteEntradas").removeClass('d-none');
+        }else{
+            $("#limiteEntradas").addClass('d-none');
         }
     }
 }
@@ -2373,27 +2399,34 @@ function limpiarTomarFoto(id){
 
 //FUNCION eliminar un set repetitivo de vehiculo
 function setDeleteVehiculo(id) {
+    console.log('elimnando///id', id)
+    console.log($('#div-vehiculo').children().length)
 	const element = document.getElementById('div-vehiculo-item-'+id);
-	if(element && id!=123){
-		element.remove()
-	}
-    if ($('#div-vehiculo-item-123').is(':hidden') && $('#div-vehiculo').children().length === 1) {
-        $('#selectTipoVehiculo-123').prop('selectedIndex', 0);
-        $('#selectCatalogMarca-123').prop('selectedIndex', 0);
-        $('#selectCatalogModelo-123').prop('selectedIndex', 0);
-        $('#inputMatriculaVehiculo-123').val('');
-        $('#inputEstadoVehiculo-123').prop('selectedIndex', 0);
-        if(status_pase == "activo"){
-            let selectColores1= document.getElementById("inputColorVehiculo-123")
-                $(document).ready(function() {
-                    for(let color of coloresArray){
-                        selectColores1.innerHTML += '<option value="'+capitalizeFirstLetter(color.toLowerCase()) +'">'+color+'</option>';
-                    }
-                });
-            selectColores1.value=""
-        }
-        $('#inputColorVehiculo-123').prop('selectedIndex', 0);
-        $("#div-vehiculo-item-123").show();
+    // if ($('#div-vehiculo-item-123').is(':hidden') && $('#div-vehiculo').children().length === 1) {
+    if (id === 123 && $('#div-vehiculo').children().length === 1) {
+        // $('#selectTipoVehiculo-123').prop('selectedIndex', 0);
+        // $('#selectCatalogMarca-123').prop('selectedIndex', 0);
+        // $('#selectCatalogModelo-123').prop('selectedIndex', 0);
+        // $('#inputMatriculaVehiculo-123').val('');
+        // $('#inputEstadoVehiculo-123').prop('selectedIndex', 0);
+        // if(status_pase == "activo"){
+        //     let selectColores1= document.getElementById("inputColorVehiculo-123")
+        //         $(document).ready(function() {
+        //             for(let color of coloresArray){
+        //                 selectColores1.innerHTML += '<option value="'+capitalizeFirstLetter(color.toLowerCase()) +'">'+color+'</option>';
+        //             }
+        //         });
+        //     selectColores1.value=""
+        // }
+        // $('#inputColorVehiculo-123').prop('selectedIndex', 0);
+        // $("#div-vehiculo-item-123").show();
+        $("#div-vehiculo").hide()
+        $("#agregarVehiculo").prop("checked", false);
+    }else if(id === 123){
+        $("#div-vehiculo").children().last().remove();
+    }
+    if(element && id!=123){
+        element.remove()
     }
 }
 
@@ -2483,18 +2516,23 @@ function setAddVehiculo() {
 //FUNCION eliminar set repetitivo de equipo
 function setDeleteEquipo(id) {
 	const element = document.getElementById('div-equipo-item-'+id);
-	if(element && id!=123){
-		element.remove()
-	}
-
-    if ($('#div-equipo-item-123').is(':hidden') && $('#div-equipo').children().length === 1) {
-        $('#selectTipoEquipo-123').prop('selectedIndex', 0);
-        $('#inputNombreEquipo-123').val('');
-        $('#inputMarcaEquipo-123').val('');
-        $('#inputSerieEquipo-123').val('');
-        $('#inputModelo-123').val('');
-        $('#inputColorEquipo-123').prop('selectedIndex', 0);
-        $("#div-equipo-item-123").show();        
+    
+    // if ($('#div-equipo-item-123').is(':hidden') && $('#div-equipo').children().length === 1) {
+    if ($('#div-equipo').children().length === 1) {
+        // $('#selectTipoEquipo-123').prop('selectedIndex', 0);
+        // $('#inputNombreEquipo-123').val('');
+        // $('#inputMarcaEquipo-123').val('');
+        // $('#inputSerieEquipo-123').val('');
+        // $('#inputModelo-123').val('');
+        // $('#inputColorEquipo-123').prop('selectedIndex', 0);
+        // $("#div-equipo-item-123").show();        
+        $("#div-equipo").hide()
+        $("#agregarEquipo").prop("checked", false);
+    }else if(id === 123){
+        $("#div-equipo").children().last().remove();
+    }
+    if(element && id!=123){
+        element.remove()
     }
 }
 
