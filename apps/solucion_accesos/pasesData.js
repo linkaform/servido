@@ -42,7 +42,7 @@ const columnsTableListPendientes = [
                     // return img;
 
             let divActions = '<div id="inf'+data.id +'"><div class="d-flex flex-row" id="listOfGuards">';
-            divActions+= '<div col-sm-12 col-md-12 col-lg-6 col-xl-6> <img id="imgGuardiaApoyo" height="100" width="100" style="object-fit:fill" src="'
+            divActions+= '<div col-sm-12 col-md-12 col-lg-6 col-xl-6> <img id="imgGuardiaApoyo" class="rounded-circle m-1" height="100" width="100" style="object-fit:fill" src="'
             + img + '"> </div > <div col-sm-12 col-md-12 col-lg-6 col-xl-6 class="flex-column ms-3"> <div> <b>'
             + data.nombre_pase +'</b> </div><div id="idStatusGuardia"> '+ capitalizeFirstLetter(data.status_pase) +'</div></div>';
             divActions += '</div> </div>';

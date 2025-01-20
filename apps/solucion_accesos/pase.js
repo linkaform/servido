@@ -580,6 +580,9 @@ async function getConfiguracionModuloSeguridad(ubicacion){
         if (res.success) {
             Swal.close()
             console.log("HOLAAA", res)
+            setTimeout(() => {
+                document.getElementById('temaCita').focus();
+            }, 300);
         }else{
             errorAlert(res)
         }
