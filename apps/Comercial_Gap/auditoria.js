@@ -104,8 +104,7 @@ async function getInformation(){
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
     const statusSession = getSession();
-    const dicAdional = {'user_name':getCookie("userName")}
-
+    const dicAdional = {'user_name':getCookie("userName"),'option':'get_data'}
     if(statusSession == 'Demo' || demo){
         Swal.fire({
           title: 'Advertencia',
@@ -153,6 +152,7 @@ function get_catalog(){
         method: 'POST',
         body: JSON.stringify({
             script_id: scriptId,
+            user_name: getCookie("userName"),
             option: 'get_catalog',
         }),
         headers:{
