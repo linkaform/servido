@@ -111,7 +111,7 @@
             <div class="d-flex flex-row flex-wrap mt-2">
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
                 	<label for="exampleInputEmail1">Ubicación</label>
-                	<select type="select" class="form-select fill paseEntradaNuevo" id="ubicacion" aria-describedby="emailHelp" placeholder="Ubicación" onchange="fillCatalogoArea('ubicacion')">
+                	<select type="select" class="form-select fill paseEntradaNuevo" id="ubicacion" aria-describedby="emailHelp" placeholder="Ubicación">
                 	</select>
             	</div>
             	<div class="col-sm-10 col-md-10 col-lg-5 col-xl-6">
@@ -195,24 +195,36 @@
             <div class="col-sm-10 col-md-10 col-lg-5 col-xl-6" >
                 <div>
 					<div class="checkbox-group me-2 my-3">
-                	  <input type="checkbox" class="btn-check  paseEntradaNuevo" name="estadoIncidencia" value="opcionesAvanzadas" id="checkOpcionesAvanzadas"   onchange="onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')" >
-					  <label class="btn btn-outline-primary" for="checkOpcionesAvanzadas">Opciones Avanzadas</label>
+                	  <!-- <input type="checkbox" class="btn-check  paseEntradaNuevo" name="estadoIncidencia" value="opcionesAvanzadas" id="checkOpcionesAvanzadas"   onchange="onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')" >
+					  <label class="btn btn-outline-primary" for="checkOpcionesAvanzadas">Opciones Avanzadas</label> -->
 						 <!-- <input type="checkbox" class="btn-check paseEntradaNuevo" name="estadoIncidencia" value="opcionesAvanzadas" id="checkOpcionesAvanzadas"  onchange="onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')">Opciones Avanzadas -->
 
 	                	<!-- <input type="checkbox" class="btn-check paseEntradaNuevo" name="estadoIncidencia" value="opcionesAvanzadas" id="checkOpcionesAvanzadas" onchange="onChangeOpcionesAvanzadas('checkOpcionesAvanzadas')" data-toggle="toggle" data-on="Opciones Avanzadas" data-off="Habilitar opciones" data-onstyle="primary" data-offstyle="" data-width="200" > -->
 		        	</div>
 
-                	<label>Visita de: </label>
                 	<div class="d-flex flex-column justify-content-start align-items-start" >
-                		<div>
-                			<input class="form-radio-input paseEntradaNuevo" type="radio" checked name="opcionesAvanzadas" id="radioFechaFija" onchange="onChangeOpcionesAvanzadas('radioRangoFechas')">
-	                        <label class="form-radio-label" for="radioFechaFija">
-	                            Fecha Fija
-	                        </label>
-							<input class="form-radio-input paseEntradaNuevo" type="radio" name="opcionesAvanzadas" id="radioRangoFechas" onchange="onChangeOpcionesAvanzadas('radioRangoFechas');">
-							<label class="form-radio-label" for="radioRangoFechas" >
-								Rango de Fechas
-							</label>
+						<div class="d-flex justify-content-center align-items-center">
+							<label class="mr-2">Visita de: </label>
+							<div class="d-flex justify-content-center align-items-center gap-2">
+								<div>
+									<input class="form-radio-input paseEntradaNuevo" type="radio" checked name="opcionesAvanzadas" id="radioFechaFija" onchange="onChangeOpcionesAvanzadas('radioRangoFechas')">
+									<label class="form-radio-label" for="radioFechaFija">
+										Fecha Fija
+									</label>
+								</div>
+								<div>
+									<input class="form-radio-input paseEntradaNuevo" type="radio" name="opcionesAvanzadas" id="radioRangoFechas" onchange="onChangeOpcionesAvanzadas('radioRangoFechas');">
+									<label class="form-radio-label" for="radioRangoFechas" >
+										Rango de Fechas
+									</label>
+								</div>
+								<div>
+									<input class="btn-check paseEntradaNuevo d-none" type="checkbox" name="radioLimiteEntradas" id="radioLimiteEntradas" onchange="onChangeOpcionesAvanzadas('radioLimiteEntradas');">
+									<label class="btn btn-outline-primary d-none" for="radioLimiteEntradas" id="btnLimiteEntradas">
+										Limitar entradas
+									</label>
+								</div>
+							</div>
                 		</div>
                 		<div id="divFechaFija" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-wrap mb-3">
 			               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
@@ -293,60 +305,84 @@
 										<label class="form-radio-label" for="radioLimitarDias">
 											limitar días de acceso
 										</label>
+										<div class="w-75 mt-2 d-none" id="limiteEntradas">
+											<div class="w-100" id="limiteEntradasDiv">
+												<div class="w-100">
+													<label>Limite de entradas: </label>
+													<input type="number" class="form-control paseEntradaNuevo" id="limiteEntradas" placeholder="Limite de entradas"  onChange="removeNonNumeric(this)" min="1" max="100">
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="flex-grow-1 mt-4" id="diasAccesoDivDias"> 
-									<label>Selecione los días de acceso: </label>
+									<label>Seleccione los días de acceso: </label>
 									<div class="d-flex flex-row flex-wrap justify-content-start align-items-center">
 										<div class="checkbox-group me-2 checkbox-group-dias">
 											<label>
-												<input type="checkbox" name="diasPase" value="lunes" onchange="toggleActiveClass(this)"> Lunes
+											<input type="checkbox" name="diasPase" value="lunes" onchange="toggleActiveClass(this)"> Lunes
 											</label>
 										</div>
 										<div class="checkbox-group me-2 checkbox-group-dias">
 											<label>
-												<input type="checkbox" name="diasPase" value="martes" onchange="toggleActiveClass(this)"> Martes
+											<input type="checkbox" name="diasPase" value="martes" onchange="toggleActiveClass(this)"> Martes
 											</label>
 										</div>
 										<div class="checkbox-group me-2 checkbox-group-dias">
 											<label>
-												<input type="checkbox" name="diasPase" value="miércoles" onchange="toggleActiveClass(this)"> Miercoles
+											<input type="checkbox" name="diasPase" value="miércoles" onchange="toggleActiveClass(this)"> Miércoles
 											</label>
 										</div>
 										<div class="checkbox-group me-2 checkbox-group-dias">
 											<label>
-												<input type="checkbox" name="diasPase" value="jueves" onchange="toggleActiveClass(this)"> Jueves
+											<input type="checkbox" name="diasPase" value="jueves" onchange="toggleActiveClass(this)"> Jueves
+											</label>
+										</div>
+									</div>
+									<div class="d-flex flex-row flex-wrap justify-content-start align-items-center">
+										<div class="checkbox-group me-2 checkbox-group-dias">
+											<label>
+											<input type="checkbox" name="diasPase" value="viernes" onchange="toggleActiveClass(this)"> Viernes
 											</label>
 										</div>
 										<div class="checkbox-group me-2 checkbox-group-dias">
 											<label>
-												<input type="checkbox" name="diasPase" value="viernes" onchange="toggleActiveClass(this)"> Viernes
+											<input type="checkbox" name="diasPase" value="sábado" onchange="toggleActiveClass(this)"> Sábado
 											</label>
 										</div>
 										<div class="checkbox-group me-2 checkbox-group-dias">
 											<label>
-												<input type="checkbox" name="diasPase" value="sábado" onchange="toggleActiveClass(this)"> Sábado
+											<input type="checkbox" name="diasPase" value="domingo" onchange="toggleActiveClass(this)"> Domingo
 											</label>
 										</div>
-										<div class="checkbox-group me-2 checkbox-group-dias">
-											<label>
-												<input type="checkbox" name="diasPase" value="domingo" onchange="toggleActiveClass(this)"> Domingo
-											</label>
-										</div>
-								 	</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="w-50 mt-2 d-none" id="limiteEntradas">
+							<div class="w-100" id="limiteEntradasDiv">
+								<div class="w-100">
+									<label>Limite de entradas: </label>
+									<input type="number" class="form-control paseEntradaNuevo" id="limiteEntradas" placeholder="Limite de entradas"  onChange="removeNonNumeric(this)" min="1" max="100">
 								</div>
 							</div>
 						</div>
                 		<div class="opcionesAvanzadasDiv">
                 		</div>
-                		
+						<div class="mt-2">
+							<input type="checkbox" class="btn-check  paseEntradaNuevo" name="estadoIncidencia" value="opcionesAvanzadas" id="checkOpcionesAvanzadas"   onchange="if(this.checked){ fillCatalogoArea('ubicacion');}else{onChangeOpcionesAvanzadas('checkOpcionesAvanzadas');}">
+							<label class="btn btn-outline-primary" for="checkOpcionesAvanzadas">Areas de acceso</label>
+						</div>
+  
                 	</div>
                 </div>
             </div>
             <div class="opcionesAvanzadasDiv col-12">
 	            <div class="col-sm-8 col-md-8 col-lg-12 col-xl-12 d-flex mt-3 flex-wrap">
 	            	
-	               <div class="col-sm-12 col-md-6 col-lg-6 d-flex p-0 m-0 flex-wrap" id="fechaVisitaDiv"> 
+	               <!-- <div class="col-sm-12 col-md-6 col-lg-6 d-flex p-0 m-0 flex-wrap" id="fechaVisitaDiv"> 
 		               	
 	               </div>
 	               <div class="col-sm-12 col-md-6 col-lg-6 d-flex p-0 m-0" id="fechaHastaDiv"> 
@@ -356,13 +392,8 @@
 	               <div class="col-12  mt-4" id="diasAccesoDiv"> 
 
 		                
-	                </div>
-	                <div class="col-12 d-flex p-0 m-0 my-1 mb-2" id="limiteEntradasDiv"> 
-	            		<div class="col-sm-12 col-md-12 col-lg-6 col-xl-3">
-		            		<label>Limite de entradas: </label>
-		            		<input type="number" class="form-control paseEntradaNuevo" id="limiteEntradas" placeholder="Limite de entradas"  onChange="removeNonNumeric(this)" min="1" max="100">
-	            		</div>
-	            	</div>
+	                </div> -->
+	                
 	               <div class="opcionesAvanzadasDiv col-12 flex-grow-1 mt-3 mx-0">
 			            <h4 >Areas de acceso: </h4>
 			            <div id="area-input-form-nuevo" class="col-12 mx-0 px-0">
@@ -553,12 +584,20 @@
 				</div>
 				
 				<div class="col-sm-12 col-md-12 col-lg-10 col-xl-10 checkbox-group me-2 my-3 d-flex flex-column">
-	            	<label>
-	                	<input type="checkbox" class="paseEntradaNuevo" name="agregarVehiculo" value="opcionesAvanzadas" id="agregarVehiculo" onchange="onChangeOpcionesAvanzadas('agregarVehiculo')"><b> Agregar vehiculos</b>
-	            	</label>
-	            	<label>
-	                	<input type="checkbox" class="paseEntradaNuevo" name="agregarEquipo" value="opcionesAvanzadas" id="agregarEquipo" onchange="onChangeOpcionesAvanzadas('agregarEquipo')"><b> Agregar equipos</b>
-	            	</label>
+	            	<div>
+						<!-- <input type="checkbox" class="paseEntradaNuevo" name="agregarVehiculo" value="opcionesAvanzadas" id="agregarVehiculo" onchange="onChangeOpcionesAvanzadas('agregarVehiculo')"><b> Agregar vehiculos</b> -->
+						<input class="btn-check paseEntradaNuevo" type="checkbox" name="agregarVehiculo" id="agregarVehiculo" onchange="onChangeOpcionesAvanzadas('agregarVehiculo');">
+						<label class="btn btn-outline-primary" for="agregarVehiculo" id="btnLimiteEntradas">
+							<i class="fa-solid fa-car-side pr-2"></i>Agregar vehiculos
+						</label>
+	            	</div>
+	            	<div>
+	                	<!-- <input type="checkbox" class="paseEntradaNuevo" name="agregarEquipo" value="opcionesAvanzadas" id="agregarEquipo" onchange="onChangeOpcionesAvanzadas('agregarEquipo')"><b> Agregar equipos</b> -->
+						<input class="btn-check paseEntradaNuevo" type="checkbox" name="agregarEquipo" id="agregarEquipo" onchange="onChangeOpcionesAvanzadas('agregarEquipo');">
+						<label class="btn btn-outline-primary" for="agregarEquipo" id="btnLimiteEntradas">
+							<i class="fa-solid fa-laptop pr-2"></i></i>Agregar equipos
+						</label>
+					</div>
 	        	</div>
 	        	<div class="col-12" id="div-vehiculo">
 		        	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row div-main-vehiculo" id="div-vehiculo-item-123">

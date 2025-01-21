@@ -889,6 +889,8 @@ function llenarTablasInfoUsuario(){
 function alertSalida(folio, status_visita){
     console.log(status_visita, statusVisitaEntrada)
     console.log('Valor de casetaaaa',selectCaseta.value)
+    const outLocation = getCookie('userLocation')
+    const outCaseta = getCookie('userCaseta')
     if(status_visita== statusVisitaEntrada){
 		Swal.fire({
     	    title:'¿Estas seguro de confirmar la salida?',
@@ -906,6 +908,7 @@ function alertSalida(folio, status_visita){
     	})
     	.then((result) => {
     	    if (result.value) {
+                loadingService('Registrando la salida...')
             console.log("SDFSS",result)
                 fetch(url + urlScripts, {
                     method: 'POST',
@@ -913,8 +916,8 @@ function alertSalida(folio, status_visita){
                         script_name: 'script_turnos.py',
                         option: 'do_out',
                         qr_code: folio,
-                        location: selectLocation.value,
-                        area: selectCaseta.value
+                        location: outLocation,
+                        area: outCaseta
                     }),
                     headers:{
                         'Content-Type': 'application/json',
@@ -924,7 +927,13 @@ function alertSalida(folio, status_visita){
                 .then(res => res.json())
                 .then(res => {
                     if (res.success) {
-                    } 
+                        Swal.close();
+                        successMsg('Confirmación', "Salida confirmada correctamente.", "success")
+                        // var table = Tabulator.findTable("#tableEntradas")[0]; 
+                        // table.clearData();
+                    }else{
+                        errorAlert(res)
+                    }
                 });
 
                 let selectedSalida = dataTableBitacora.find(n => n.folio == parseInt(folio));
