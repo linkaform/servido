@@ -22,6 +22,7 @@ function loadDemoData(){
     drawChartElement('chartThird','line',dataChart3, setOptions3);
     drawChartElement('chartFourth','line',dataChart4, setOptions4);
     drawChartElement('chartFiveth','line',dataChart5, setOptions5);
+    drawTableElement('tableFirst', dataTable1, columsTable1);
     setTimeout(() => { hide_loading();}, 2000);
 }
 
@@ -103,7 +104,7 @@ async function getInformation(){
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
     const statusSession = getSession();
-    const dicAdional = {'id_user':getCookie("userId")}
+    const dicAdional = {'user_name':getCookie("userName")}
 
     if(statusSession == 'Demo' || demo){
         Swal.fire({
@@ -128,6 +129,10 @@ async function getInformation(){
         if(data.data_five){
             drawChartElement('chartFiveth','line',data.data_five, setOptions5);
         }
+        if(data.data_sixth){
+            drawTableElement('tableFirst', data.data_sixth, columsTable1);
+        }
+
         //-----Style
         const divEmpty = document.querySelectorAll('.div-content-empty');
         const divElements = document.querySelectorAll('.div-content-element');
