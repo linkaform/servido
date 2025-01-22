@@ -567,19 +567,19 @@ async function fillCatalogoArea(id) {
         }
         await catalogoPaseArea(location)
     }
-    try{
-        requerimientos = await getConfiguracionModuloSeguridad(location)
-        console.log("OLAAAA", requerimientos)
-    }catch(err){
-        console.error(err)
-    }
+    // try{
+    //     requerimientos = await getConfiguracionModuloSeguridad(location)
+    //     console.log("OLAAAA", requerimientos)
+    // }catch(err){
+    //     console.error(err)
+    // }
 
 
 }
 
+let requerimientosUbicacion = []
 
 async function getConfiguracionModuloSeguridad(ubicacion){
-    loadingService('Obteniendo Datos de: ' + ubicacion)
     await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -597,13 +597,17 @@ async function getConfiguracionModuloSeguridad(ubicacion){
     .then(res => {
         if (res.success) {
             Swal.close()
-            console.log("HOLAAA", res)
+            requerimientosUbicacion = res.response.data.requerimientos
         }else{
             errorAlert(res)
         }
     })
-    requerimientos= ["identificacion", "fotografia"]
-    return requerimientos
+    // requerimientos= ["identificacion", "fotografia"]
+    if(!requerimientosUbicacion){
+        requerimientosUbicacion = []
+    }
+    // console.log("REQUERIMIENTOS", requerimientosUbicacion)
+    return requerimientosUbicacion
 }
 
 
@@ -810,15 +814,15 @@ async function onChangeOpcionesAvanzadas(type){
 			$("#btnLimiteEntradas").removeClass('d-none');
 			$("#divFechaFija").addClass('d-none');
             console.log("HRLLOOssssssssssssssssss")
-            $("#fechaVisita").val("")
-            $("#horaNuevoPase").val("00")
-            $("#minNuevoPase").val("00")
+            // $("#fechaVisita").val("")
+            // $("#horaNuevoPase").val("00")
+            // $("#minNuevoPase").val("00")
             $("#fechaVisita").prop('disabled', true);
             $("#horaNuevoPase").prop('disabled', true)
             $("#minNuevoPase").prop('disabled', true)
 
-            $("#fechaVisitaOA").val("")
-            $("#fechaHastaOA").val("")
+            // $("#fechaVisitaOA").val("")
+            // $("#fechaHastaOA").val("")
             $("#fechaVisitaOA").prop('disabled', false);
             $("#fechaHastaOA").prop('disabled', false);
 
@@ -835,9 +839,9 @@ async function onChangeOpcionesAvanzadas(type){
 			$("#divRangoFechas").addClass('d-none');
             $("#radioLimiteEntradas").addClass('d-none');
 			$("#btnLimiteEntradas").addClass('d-none');
-            $("#fechaVisita").val("")
-            $("#horaNuevoPase").val("00")
-            $("#minNuevoPase").val("00")
+            // $("#fechaVisita").val("")
+            // $("#horaNuevoPase").val("00")
+            // $("#minNuevoPase").val("00")
             $("#fechaVisita").prop('disabled', false);
             $("#horaNuevoPase").prop('disabled', false)
             $("#minNuevoPase").prop('disabled', false)
@@ -1648,8 +1652,8 @@ function crearConfirmacion() {
     // $('input[name="AgregarFotoIdent"]:checked').each(function() {
     //     checkDocSeleccionados.push($(this).val()); 
     // });
-    console.log("REQUERIMIENTOS", requerimientos)
-    for(let r of requerimientos){
+    // console.log("REQUERIMIENTOS", requerimientosUbicacion)
+    for(let r of requerimientosUbicacion){
         if(r == "fotografia"){
             checkDocSeleccionados.push("agregarFoto")
         }else if (r == "identificacion"){

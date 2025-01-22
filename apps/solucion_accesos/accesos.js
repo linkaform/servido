@@ -65,6 +65,86 @@ window.addEventListener('storage', function(event) {
     }
 });
 
+let scanning = false;
+
+function startScanning() {
+    console.log("Iniciando escaneo...");
+
+    const constraints = { video: { facingMode: "environment" } };
+    
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then((stream) => {
+        console.log("Cámara activa");
+        const videoElement = document.createElement("video");
+        videoElement.style.width = "100%";
+        videoElement.srcObject = stream;
+        videoElement.play();
+    
+        Swal.fire({
+            title: 'Escaneo de QR',
+            html: videoElement,
+            showCancelButton: true,
+            showConfirmButton: false,
+            onBeforeOpen: () => {
+                scanQRCode(videoElement, stream);
+            },
+            onClose: () => {
+                stopScanning(stream);
+            }
+        });
+        videoElement.srcObject = stream;
+        videoElement.style.display = "block";
+        videoElement.play();
+        scanning = true;
+        scanQRCode(videoElement, stream);
+    })
+    .catch((err) => {
+        console.error("Error al acceder a la cámara:", err.name, err.message);
+    });
+}
+
+function scanQRCode(videoElement, stream) {
+    const qrCanvas = document.createElement("canvas");
+    const context = qrCanvas.getContext("2d");
+
+    function scan() {
+        if (scanning && videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+            qrCanvas.width = videoElement.videoWidth;
+            qrCanvas.height = videoElement.videoHeight;
+            context.drawImage(videoElement, 0, 0, qrCanvas.width, qrCanvas.height);
+
+            const imageData = context.getImageData(0, 0, qrCanvas.width, qrCanvas.height);
+            const qrCode = jsQR(imageData.data, qrCanvas.width, qrCanvas.height);
+
+            if (qrCode) {
+                console.log("Código QR detectado:", qrCode.data);
+
+                document.getElementById("inputCodeUser").value = qrCode.data;
+                buscarPaseEntrada();
+
+                Swal.close();
+                stopScanning(stream);
+                return;
+            }
+        }
+
+        if (scanning) {
+            requestAnimationFrame(scan);
+        }
+    }
+
+    scan();
+}
+
+
+function stopScanning(stream) {
+    scanning = false;
+
+    const tracks = stream.getTracks();
+    tracks.forEach(track => track.stop());
+}
+
+
 function getStats(area = "", location = "", loading = false) {
     if (loading) {
         loadingService();
@@ -1208,6 +1288,12 @@ function getDataListUser(){
 
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 1
 function registrarIngreso(){
+    //Validacion de Turno iniciado
+    let statusTurno = getCookie('userTurn')
+    if(statusTurno == 'Turno Cerrado' || !statusTurno){
+        errorAlert("¡Debes iniciar turno antes de registrar un ingreso!","Validación","warning" )
+        return
+    }
     loadingService()
     $("#buttonIn").hide();
     $("#buttonOut").hide();
@@ -1300,6 +1386,12 @@ function registrarIngreso(){
 }
 
 function registrarSalida(){
+    //Validacion de Turno iniciado
+    let statusTurno = getCookie('userTurn')
+    if(statusTurno == 'Turno Cerrado' || !statusTurno){
+        errorAlert("¡Debes iniciar turno antes de registrar una salida!","Validación","warning" )
+        return
+    }
     let location= selectLocation.value
     let area=selectCaseta.value 
     let tieneGafeteLocker= fullData.gafete_id !==null || fullData.locker_id !==null
