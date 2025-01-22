@@ -1288,6 +1288,12 @@ function getDataListUser(){
 
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 1
 function registrarIngreso(){
+    //Validacion de Turno iniciado
+    let statusTurno = getCookie('userTurn')
+    if(statusTurno == 'Turno Cerrado' || !statusTurno){
+        errorAlert("¡Debes iniciar turno antes de registrar un ingreso!","Validación","warning" )
+        return
+    }
     loadingService()
     $("#buttonIn").hide();
     $("#buttonOut").hide();
@@ -1380,6 +1386,12 @@ function registrarIngreso(){
 }
 
 function registrarSalida(){
+    //Validacion de Turno iniciado
+    let statusTurno = getCookie('userTurn')
+    if(statusTurno == 'Turno Cerrado' || !statusTurno){
+        errorAlert("¡Debes iniciar turno antes de registrar una salida!","Validación","warning" )
+        return
+    }
     let location= selectLocation.value
     let area=selectCaseta.value 
     let tieneGafeteLocker= fullData.gafete_id !==null || fullData.locker_id !==null
