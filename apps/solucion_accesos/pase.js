@@ -567,16 +567,17 @@ async function fillCatalogoArea(id) {
         }
         await catalogoPaseArea(location)
     }
-    try{
-        requerimientos = await getConfiguracionModuloSeguridad(location)
-        console.log("OLAAAA", requerimientos)
-    }catch(err){
-        console.error(err)
-    }
+    // try{
+    //     requerimientos = await getConfiguracionModuloSeguridad(location)
+    //     console.log("OLAAAA", requerimientos)
+    // }catch(err){
+    //     console.error(err)
+    // }
 
 
 }
 
+let requerimientosUbicacion = []
 
 async function getConfiguracionModuloSeguridad(ubicacion){
     await fetch(url + urlScripts, {
@@ -596,13 +597,17 @@ async function getConfiguracionModuloSeguridad(ubicacion){
     .then(res => {
         if (res.success) {
             Swal.close()
-            console.log("REQUERIMIENTOSSSSSSSSSSSSS", res)
+            requerimientosUbicacion = res.response.data.requerimientos
         }else{
             errorAlert(res)
         }
     })
-    requerimientos= ["identificacion", "fotografia"]
-    return requerimientos
+    // requerimientos= ["identificacion", "fotografia"]
+    if(!requerimientosUbicacion){
+        requerimientosUbicacion = []
+    }
+    // console.log("REQUERIMIENTOS", requerimientosUbicacion)
+    return requerimientosUbicacion
 }
 
 
@@ -1647,8 +1652,8 @@ function crearConfirmacion() {
     // $('input[name="AgregarFotoIdent"]:checked').each(function() {
     //     checkDocSeleccionados.push($(this).val()); 
     // });
-    console.log("REQUERIMIENTOS", requerimientos)
-    for(let r of requerimientos){
+    // console.log("REQUERIMIENTOS", requerimientosUbicacion)
+    for(let r of requerimientosUbicacion){
         if(r == "fotografia"){
             checkDocSeleccionados.push("agregarFoto")
         }else if (r == "identificacion"){
