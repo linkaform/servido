@@ -1,0 +1,5 @@
+#!/bin/bash
+
+docker compose -f docker-soter.yml build
+docker tag linkaform/servido:latest linkaform/soter:latest
+docker push linkaform/soter:latest
