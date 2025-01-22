@@ -579,7 +579,6 @@ async function fillCatalogoArea(id) {
 
 
 async function getConfiguracionModuloSeguridad(ubicacion){
-    loadingService('Obteniendo Datos de: ' + ubicacion)
     await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -597,7 +596,7 @@ async function getConfiguracionModuloSeguridad(ubicacion){
     .then(res => {
         if (res.success) {
             Swal.close()
-            console.log("HOLAAA", res)
+            console.log("REQUERIMIENTOSSSSSSSSSSSSS", res)
         }else{
             errorAlert(res)
         }
@@ -810,15 +809,15 @@ async function onChangeOpcionesAvanzadas(type){
 			$("#btnLimiteEntradas").removeClass('d-none');
 			$("#divFechaFija").addClass('d-none');
             console.log("HRLLOOssssssssssssssssss")
-            $("#fechaVisita").val("")
-            $("#horaNuevoPase").val("00")
-            $("#minNuevoPase").val("00")
+            // $("#fechaVisita").val("")
+            // $("#horaNuevoPase").val("00")
+            // $("#minNuevoPase").val("00")
             $("#fechaVisita").prop('disabled', true);
             $("#horaNuevoPase").prop('disabled', true)
             $("#minNuevoPase").prop('disabled', true)
 
-            $("#fechaVisitaOA").val("")
-            $("#fechaHastaOA").val("")
+            // $("#fechaVisitaOA").val("")
+            // $("#fechaHastaOA").val("")
             $("#fechaVisitaOA").prop('disabled', false);
             $("#fechaHastaOA").prop('disabled', false);
 
@@ -835,9 +834,9 @@ async function onChangeOpcionesAvanzadas(type){
 			$("#divRangoFechas").addClass('d-none');
             $("#radioLimiteEntradas").addClass('d-none');
 			$("#btnLimiteEntradas").addClass('d-none');
-            $("#fechaVisita").val("")
-            $("#horaNuevoPase").val("00")
-            $("#minNuevoPase").val("00")
+            // $("#fechaVisita").val("")
+            // $("#horaNuevoPase").val("00")
+            // $("#minNuevoPase").val("00")
             $("#fechaVisita").prop('disabled', false);
             $("#horaNuevoPase").prop('disabled', false)
             $("#minNuevoPase").prop('disabled', false)
