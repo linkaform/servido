@@ -1,17 +1,17 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'card', col: '1', id:'cardFirst', title:'Android', hexadecimal:'#3498db'},
-            { type:'card', col: '1', id:'cardSecond', title:'Backend', hexadecimal:'#2f8ac7'},
-            { type:'card', col: '1', id:'cardThird', title:'BI', hexadecimal:'#2a7db3'},
-            { type:'card', col: '1', id:'cardFourth', title:'Front', hexadecimal:'#266fa0'},
-            { type:'card', col: '1', id:'cardFiveth', title:'IOS', hexadecimal:'#21628d'},
-            { type:'card', col: '1', id:'cardSixth', title:'Licencias', hexadecimal:'#1d557b'},
-            { type:'card', col: '1', id:'cardSeventh', title:'Mandrill', hexadecimal:'#00587c'},
-            { type:'card', col: '1', id:'cardEigth', title:'PDF', hexadecimal:'#006b8b'},
-            { type:'card', col: '1', id:'cardNineth', title:'Reportes', hexadecimal:'#007e8f'},
-            { type:'card', col: '1', id:'cardTenth', title:'Scripts', hexadecimal:'#008f89'},
-            { type:'card', col: '1', id:'cardEleventh', title:'University', hexadecimal:'#00a078'},
+            { type:'card', col: '1', id:'cardFirst', title:'Android', hexadecimal:'#FF5733'},
+            { type:'card', col: '1', id:'cardSecond', title:'Backend', hexadecimal:'#FF8D33'},
+            { type:'card', col: '1', id:'cardThird', title:'BI', hexadecimal:'#FFC133'},
+            { type:'card', col: '1', id:'cardFourth', title:'Front', hexadecimal:'#FFE733'},
+            { type:'card', col: '1', id:'cardFiveth', title:'IOS', hexadecimal:'#D4FF33'},
+            { type:'card', col: '1', id:'cardSixth', title:'Licencias', hexadecimal:'#99FF33'},
+            { type:'card', col: '1', id:'cardSeventh', title:'Mandrill', hexadecimal:'#33FF57'},
+            { type:'card', col: '1', id:'cardEigth', title:'PDF', hexadecimal:'#33FF8D'},
+            { type:'card', col: '1', id:'cardNineth', title:'Reportes', hexadecimal:'#33FFC1'},
+            { type:'card', col: '1', id:'cardTenth', title:'Scripts', hexadecimal:'#33E7FF'},
+            { type:'card', col: '1', id:'cardEleventh', title:'University', hexadecimal:'#33C1FF'},
         ] 
     },
     { class:'', _children : [
@@ -301,12 +301,17 @@ var setOptions3 = {
   },
   responsive: true, 
     maintainAspectRatio: false ,
-  scales: {
-      y: {
-          step: 1,
-      }
-  },
+    scales: {
+        y: {
+            display: false,
+        },
+        x:{
+            display: false,
+        }
+    },
 };
+
+
 
 var dataChart3 = {
     labels: ['Punto 1','Punto 2','Punto 3','Punto 4','Punto 5'],

@@ -1,8 +1,14 @@
+
+body {
+  background:  #f8f9fc !important;
+}
+
+
 .div-content-empty{
 	height: 80vh;
 	margin-top: 500px !important;
 }
-
+/*Loader Body*/
 #loading {
   position: fixed;
   top: 0;
@@ -17,10 +23,42 @@
 }
 
 #loading .spinner-border {
+  margin-left: 10px;
   width: 3rem;
   height: 3rem;
 }
 
 .hidden {
   display: none;
+}
+
+
+/*Loader Components*/
+
+#content-div-loadingComponent {
+  position: fixed; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  z-index: 9999;
+  margin: 0 auto; 
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  padding: 1em;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  border-radius: 10px; 
+  visibility: hidden;
+  background: rgba(255, 255, 255, 0.6); 
+}
+
+
+/*
+  Set the color of the icon
+*/
+svg path,
+svg rect{
+  fill: #16102f;
 }

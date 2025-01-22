@@ -22,6 +22,7 @@ function loadDemoData(){
     drawChartElement('chartThird','line',dataChart3, setOptions3);
     drawChartElement('chartFourth','line',dataChart4, setOptions4);
     drawChartElement('chartFiveth','line',dataChart5, setOptions5);
+    drawTableElement('tableFirst', dataTable1, columsTable1);
     setTimeout(() => { hide_loading();}, 2000);
 }
 
@@ -100,16 +101,17 @@ function loadData(data) {
 
 //-----SET REQUEST
 async function getInformation(){
-    const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
+    const scriptId = getParameterURL('script_id');
     const statusSession = getSession();
+    const dicAdional = {'user_name':getCookie("userName"),'option':'get_data'}
     if(statusSession == 'Demo' || demo){
         Swal.fire({
           title: 'Advertencia',
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReport(scriptId);
+        const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
         if(data.data_first){
             drawChartElement('chartFirst','bar',data.data_first,setOptions1);
@@ -126,6 +128,10 @@ async function getInformation(){
         if(data.data_five){
             drawChartElement('chartFiveth','line',data.data_five, setOptions5);
         }
+        if(data.data_sixth){
+            drawTableElement('tableFirst', data.data_sixth, columsTable1);
+        }
+
         //-----Style
         const divEmpty = document.querySelectorAll('.div-content-empty');
         const divElements = document.querySelectorAll('.div-content-element');
@@ -146,6 +152,7 @@ function get_catalog(){
         method: 'POST',
         body: JSON.stringify({
             script_id: scriptId,
+            user_name: getCookie("userName"),
             option: 'get_catalog',
         }),
         headers:{

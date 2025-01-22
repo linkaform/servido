@@ -162,7 +162,7 @@ function getReportUrl() {
 }
 
 //-Funciona para mandar la petición a script de un report
-async function sendRequestReport(script){
+async function sendRequestReport(script, dicFilterAd = null){
   let dicRes = {};
   let flagValidation = true;
 
@@ -198,6 +198,10 @@ async function sendRequestReport(script){
   }
   //----Update Script id
   dicFilter['script_id'] = script;
+  //----Check Filter Aditional
+  if(dicFilterAd != null){
+    dicFilter = { ...dicFilter, ...dicFilterAd };
+  }
   //----Cookie 
   const JWTSESSION =  getCookie("userJwt");
   //----Fetch
@@ -307,6 +311,8 @@ function createElements(dataConfig = null){
                 let children = item._children;
                 children.forEach((element, index) => {
                     const divElement = document.createElement('div');
+
+                    //#-----PROPS-----#//
                     //-----Title
                     const titleElement = element.title ?  element.title : "";
                     //-----Color
@@ -320,7 +326,7 @@ function createElements(dataConfig = null){
                         colorBg = `bg-primary`;
                     }
                     //-----Class
-                    const classElement = element.col ? `col-xl-${element.col} col-md-6 mb-4` : "col-xl-3 col-md-6 mb-4";
+                    const classElement = element.col ? `col-xl-${element.col} col-md-${element.col} col-sm-12 mb-4` : "col-xl-3 col-md-6 mb-4";
                     divElement.className = classElement;
                     //-----Progress
                     const progressElement = element.progress ? true : false;
@@ -328,7 +334,9 @@ function createElements(dataConfig = null){
                     const listProgress = element.listProgress? element.listProgress : [];
                     //-----Id
                     const idElement = element.id ? element.id : Math.floor(Math.random() * 1000);
-                    //---Type Elements
+                    //-----Id
+                    const columsKanva = element.columsKanva? element.columsKanva : [];
+                    //#-----COMPONENTS-----#//
                     if(element.type == 'card'){
                         //-----Element Progress
                         let progressDiv = '';
@@ -433,6 +441,24 @@ function createElements(dataConfig = null){
                                 ${divProgress}
                             </div>
                         </div>`;
+                    }else if(element.type == 'kanva'){
+                        if(columsKanva.length > 0){
+                            let divCustom = `<div class="row full-height">`;
+                            columsKanva.forEach((element, index) => {
+                                const titleColum = element.title ? element.title : '';
+                                const idColum = element.id ? element.id : '';
+                                const classGrid = element.grid ? element.grid : 'col-lg-2 col-md-4 col-sm-6';
+
+                                divCustom += `<div class="${classGrid}">
+                                    <h5>${titleColum}</h5>
+                                    <div class="column" id="${idColum}">
+                                    </div>
+                                </div>`;
+                            });
+                            divCustom += `</div>`;
+                            console.log('divCustom',divCustom)
+                            divElement.innerHTML = divCustom;
+                        }
                     }
                     rowDiv.appendChild(divElement);
                 });
@@ -496,16 +522,21 @@ function setColorsDatasets(data = null, type = null){
 
 //-Funciona para llenar datos de una card
 function drawCardElement(cardId, value, scroll = null) {
-    if(scroll != null){
-        document.getElementById(`text-${cardId}`).textContent = `${value}%`;
-        document.getElementById(`progress-${cardId}`).style.width = value;
-    }else{
-        document.getElementById(`text-${cardId}`).textContent = value;
+    const element = document.getElementById(`text-${cardId}`);
+    if (element) {
+        if(scroll != null){
+            document.getElementById(`text-${cardId}`).textContent = `${value}%`;
+            document.getElementById(`progress-${cardId}`).style.width = value;
+        }else{
+            document.getElementById(`text-${cardId}`).textContent = value;
+        }
+    } else {
+        console.error('Element not found!',`text-${cardId}`);
     }
 }
 
 //-Función para pintar table
-function drawTableElement(tableId, tableData, tableColums, tableConfig = null){
+function drawTableElement(tableId, tableData, tableColums, nameDownload = null, tableConfig = null ){
     //----Config default
     let configDefault = {
         height: "400px",
@@ -524,20 +555,31 @@ function drawTableElement(tableId, tableData, tableColums, tableConfig = null){
             configDefault[key] = value
         }
     }
+    let nameFileXlsx = 'data.xlsx';
+    let nameFileCsv = 'data.csv';
+    let nameSheet = 'data';
+    if(nameDownload != null){
+        nameFileXlsx = `${nameDownload}.xlsx`;
+        nameFileCsv = `${nameDownload}.csv`;
+        nameSheet = `${nameDownload}`;
+    }
+    console.log('nameFileXlsx',nameFileXlsx);
+    console.log('nameFileCsv',nameFileCsv);
+    console.log('nameSheet',nameSheet);
     //----Table
     let table = new Tabulator(`#${tableId}`, configDefault);
 
     if (document.getElementById(`download-xls-${tableId}`)){
         document.getElementById(`download-xls-${tableId}`).replaceWith(document.getElementById(`download-xls-${tableId}`).cloneNode(true));
         document.getElementById(`download-xls-${tableId}`).addEventListener("click", function (){
-        table.download("xlsx", "data.xlsx", {sheetName:"data"});
+            table.download("xlsx", nameFileXlsx , {sheetName:nameSheet});
         });
     }
 
     if (document.getElementById(`download-csv-${tableId}`)){
         document.getElementById(`download-csv-${tableId}`).replaceWith(document.getElementById(`download-csv-${tableId}`).cloneNode(true));
         document.getElementById(`download-csv-${tableId}`).addEventListener("click", function (){
-          table.download("csv", "data.csv");
+            table.download("csv", nameFileCsv);
         });
     }
 }
@@ -601,14 +643,26 @@ function hide_loading() {
     mainContent.classList.remove('hidden'); 
 }
 
-//-----Funciona para mostrar loading
-function show_loading() {
-    const loading = document.getElementById('loading');
-    const mainContent = document.getElementById('wrapper');
-    loading.style.visibility = 'visible';
-    mainContent.classList.add('hidden'); 
+
+function hideLoadingComponent() {
+    const loading = document.getElementById('content-div-loadingComponent');
+    loading.style.visibility = 'hidden';
 }
 
+//-----Funciona para mostrar loading
+function showLoadingComponent() {
+    const loading = document.getElementById('content-div-loadingComponent');
+    const empty = document.getElementById('content-div-empty');
+
+    /*
+    const divElements = document.querySelectorAll('.div-content-element');
+    divElements.forEach(div => {
+        div.style.visibility = 'hidden';
+    });
+    */
+    loading.style.visibility = 'visible';
+    empty.style.display = 'none';
+}
 
 //-----Funciona para mostrar todos los elementos (graficas, tablas, cards) bajo la estructura del template
 function showElements() {
@@ -619,5 +673,32 @@ function showElements() {
     });
     divEmpty.forEach(div => {
       div.style.display = 'none';
+    });
+}
+
+function drawKanva(data) {
+    data.forEach((element) => {
+        if (element.key) {
+            let targetDiv = document.getElementById(element.key);
+
+            if (targetDiv) {
+                let divCustom = `
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title">${element.title}</h6>
+                            <p 
+                                class="badge"
+                                style="background-color: ${element.color ? element.color : '#28a745'};"
+                            >
+                                ${element.type}
+                            </p>
+                            <p class="card-text">${element.name}</p>
+                            <small>${element.date}</small>
+                        </div>
+                    </div>
+                `;
+                targetDiv.innerHTML += divCustom;
+            } 
+        } 
     });
 }

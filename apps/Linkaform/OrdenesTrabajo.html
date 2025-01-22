@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Auditorias</title>
+	<title>Ordenes de Trabajo</title>
 	<!-- Custom fonts for this template-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Custom styles for this template-->
@@ -30,7 +30,7 @@
                     <!-- Page Heading -->
                     <div class="row">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4  col-6">
-                            <h1 class="h3 mb-0 text-gray-800">Auditorias</h1>
+                            <h1 class="h3 mb-0 text-gray-800">Ordenes de Trabajo</h1>
                         </div>
                         <div class="d-sm-flex align-items-center justify-content-end mb-4 col-6" id="content-div-buttons">
                             <button class="btn btn-sm btn-primary shadow-sm m-1" id="buttonExecution">
@@ -44,49 +44,23 @@
                             </button>
                         </div>
                     </div>
-
                     <!-- Filter Row -->
                     <div class="row mb-4" id="content-div-filter">
-						<!-- Filtro de Selector (Dropdown) -->
-						<div class="col-xl-3 col-lg-6 col-md-12 ">
-						    <label for="categoria" class="form-label">Auditoria</label>
-						    <select class="form-select filters-servido" id="auditoria"  multiple="multiple" >
-						        <option value="" >Selecciona una opción</option>
-						    </select>
-						</div>
-
                         <!-- Filtro de Selector (Dropdown) -->
                         <div class="col-xl-3 col-lg-6 col-md-12 ">
-                            <label for="categoria" class="form-label">Sede</label>
-                            <select class="form-select filters-servido" id="sede"  multiple="multiple" >
+                            <label  class="form-label">Persona</label>
+                            <select class="form-select filters-servido" id="type"  multiple="multiple" >
                                 <option value="" >Selecciona una opción</option>
-                            </select>
-                        </div>
-
-                        <!-- Filtro de Selector (Dropdown) -->
-                        <div class="col-xl-3 col-lg-6 col-md-12 ">
-                            <label for="categoria" class="form-label">Campus</label>
-                            <select class="form-select filters-servido" id="campus"  multiple="multiple" >
-                                <option value="" >Selecciona una opción</option>
-                            </select>
-                        </div>
-
-                        <!-- Filtro de Selector (Dropdown) -->
-                        <div class="col-xl-3 col-lg-6 col-md-12 ">
-                            <label for="categoria" class="form-label">Local</label>
-                            <select class="form-select filters-servido" id="local"  multiple="multiple" >
-                                <option value="" >Selecciona una opción</option>
-                            </select>
-                        </div>
-
-                        <!-- Filtro de Selector (Dropdown) -->
-                        <div class="col-xl-3 col-lg-6 col-md-12 ">
-                            <label for="categoria" class="form-label">Sucursal</label>
-                            <select class="form-select filters-servido" id="sucursal"  multiple="multiple" >
-                                <option value="" >Selecciona una opción</option>
+                                <option value="roman" >Roman</option>
+                                <option value="misael" >Misael</option>
+                                <option value="josue" >Josue</option>
+                                <option value="jose_pato" >Jose Patricio</option>
+                                <option value="omar" >Omar</option>
+                                <option value="karina" >Karina</option>
                             </select>
                         </div>
                     </div>
+
                     <!-- Content Empty -->
                     <div class="row div-content-empty mt-5" id="content-div-empty">
                         <div class="container mt-5">
@@ -104,6 +78,28 @@
                             <p/>
                             <p class="text-dark fs-2 text-center">Su sessión a expirado, favor de loguearse de nuevo.</p>
                         </div>
+                    </div>
+
+                    <!-- New Loader-->
+                    <div class="loader" id="content-div-loadingComponent">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="100px" height="150px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                            <rect x="0" y="0" width="4" height="20" fill="#333">
+                                <animate attributeName="opacity" attributeType="XML"
+                                values="1; .2; 1" 
+                                begin="0s" dur="0.6s" repeatCount="indefinite" />
+                            </rect>
+                            <rect x="7" y="0" width="4" height="20" fill="#333">
+                                <animate attributeName="opacity" attributeType="XML"
+                                values="1; .2; 1" 
+                                begin="0.2s" dur="0.6s" repeatCount="indefinite" />
+                            </rect>
+                            <rect x="14" y="0" width="4" height="20" fill="#333">
+                                <animate attributeName="opacity" attributeType="XML"
+                                values="1; .2; 1" 
+                                begin="0.4s" dur="0.6s" repeatCount="indefinite" />
+                            </rect>
+                        </svg>
                     </div>
                 </div>
                 <!-- Body -->
@@ -143,7 +139,7 @@
     <script type="text/javascript" src="../Utils_New/js/lkf_utils.js"></script>
     <script type="text/javascript" src="../Utils_New/js/servido_utils.js"></script>
 	<!--Report -->
-	<script type="text/javascript" src="./auditoria.js"></script>
-    <script type="text/javascript" src="./auditoria_data.js"></script>
+	<script type="text/javascript" src="./OrdenesTrabajo.js"></script>
+    <script type="text/javascript" src="./OrdenesTrabajo_data.js"></script>
 </body>
 </html>
