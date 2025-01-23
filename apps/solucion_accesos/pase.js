@@ -162,7 +162,7 @@ async function getCatalogsIngresoPase(){
     await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
-            script_name: "pase_de_acceso.py",
+            script_name: "pase_de_acceso_use_api.py",
             option: "catalogos_pase_no_jwt",
             qr_code:id,
             account_id:account_id
@@ -364,7 +364,7 @@ async function onChangeCatalogPase(type, id){
         const options = {
             method: 'POST', 
             body: JSON.stringify({
-                script_name:'pase_de_acceso.py',
+                script_name:'pase_de_acceso_use_api.py',
                 option:"catalago_vehiculo",
                 tipo:inputMarca.value,
                 account_id:account_id
@@ -392,7 +392,7 @@ async function onChangeCatalogPase(type, id){
         const options = {
             method: 'POST', 
             body: JSON.stringify({
-                script_name:'pase_de_acceso.py',
+                script_name:'pase_de_acceso_use_api.py',
                 option:'catalago_vehiculo',
                 tipo:inputTipo.value,
                 marca: inputMarca.value,
@@ -1150,7 +1150,7 @@ function crearConfirmacionMini() {
 	        	fetch(url + urlScripts, {
 			        method: 'POST',
 			        body: JSON.stringify({
-			            script_name: "pase_de_acceso.py",
+			            script_name: "pase_de_acceso_use_api.py",
 		                option: 'update_pass',
 		                access_pass: access_pass,
 		                folio:id,
@@ -1236,7 +1236,7 @@ function crearConfirmacionMini() {
                                     }
                                     if(envio.length>0){
                                         let bodyPost={
-                                            script_name: "pase_de_acceso.py",
+                                            script_name: "pase_de_acceso_use_api.py",
                                             folio:data.json.id,
                                             account_id:account_id,
                                             envio:envio

@@ -131,7 +131,7 @@ async function get_pdf(qr_code, account_id){
     await fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
-                script_name:"pase_de_acceso.py",
+                script_name:"pase_de_acceso_use_api.py",
                 option:"get_pdf",
                 qr_code: qr_code,
                 account_id: parseInt(account_id) 
