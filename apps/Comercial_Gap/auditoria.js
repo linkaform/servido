@@ -152,7 +152,7 @@ function get_catalog(){
         method: 'POST',
         body: JSON.stringify({
             script_id: scriptId,
-            user_name: getCookie("userName"),
+            user_name: getCookie("userName").replace(/"/g, ''),
             option: 'get_catalog',
         }),
         headers:{
