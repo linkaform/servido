@@ -20,11 +20,15 @@ let dicReportContext = [
     },
 ];
 //-----Tabla
+let printIcon = function(cell, formatterParams){ //plain text value
+    return "<i class='fa fa-print'></i>";
+};
+
 let columsTable1 = [
-    { title:"Folio", field:'folio', hozAlign:"left", formatter:"link", formatterParams:
-        {url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
-        target:"_blank",},headerFilter:"input", width:150
-    },
+    {formatter:printIcon, width:40, hozAlign:"center", cellClick:function(e, cell){
+        getDownloadPdf(cell.getRow().getData().id_record);
+    }},
+    { title:"Folio", field:'folio', hozAlign:"left",headerFilter:"input", width:150},
     { title:"Nombre", field:'nombre', hozAlign:"left",  width:300},
     { title:"Sede", field:'sede', hozAlign:"left",  width:250},
     { title:"Campus", field:'campus', hozAlign:"left",  width:250},

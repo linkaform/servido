@@ -12,10 +12,9 @@ window.onload = function(){
   }else if(statusSession == 'Offline'){
     loadDemoData();
   }
-
-  
 }
 
+//-----FUNCTIONS DEMO
 function loadDemoData(){
     drawChartElement('chartFirst','bar',dataChart1,setOptions1);
     drawChartElement('chartSecond','bar',dataChart2, setOptions2);
@@ -26,6 +25,7 @@ function loadDemoData(){
     setTimeout(() => { hide_loading();}, 2000);
 }
 
+//-----FUNCTION ACTIVE
 function loadData(data) {
     //----Search Catalogs
     get_catalog();
@@ -168,4 +168,41 @@ function get_catalog(){
             set_catalog_select(data, 'auditoria', 'auditoria');
         }
     })
+}
+
+//----DOWNLOAPDF
+function getDownloadPdf(id_record = 0){
+    //---Alert
+    Swal.fire('Espere Por Favor');
+    Swal.showLoading();
+    //---Request
+    const scriptId = getParameterURL('script_id');
+    const JWT = getCookie("userJwt");
+    fetch(getUrlRequest('script'), {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: 128556,
+            id_record: id_record,
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+JWT
+        },
+    })
+    .then((res) => res.json())
+    .then((res) => {
+        const data = res.response && res.response.data ? res.response.data : [];
+        if(data.status  == '200'){
+            Swal.close();
+            link = data.url;
+            Object.assign(document.createElement('a'), {
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                href: link,
+            }).click();
+        }else{
+            Swal.close();
+        }
+    })
+  return link;
 }
