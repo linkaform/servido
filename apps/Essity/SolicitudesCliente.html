@@ -32,11 +32,22 @@
     <div id="wrapper">
         <div class="container my-5" id="divForm">
             <h2 class="mb-4">Formulario de Solicitud</h2>
-            <form>
-                <div class="mb-3">
-                    <label for="nombreCliente" class="form-label bg-font">Nombre del Cliente</label>
-                    <input type="text" class="form-control" id="nombreCliente" >
+
+            <div class="card mb-4">
+                <div class="card-body bg-card">
+                    <div class="d-flex justify-content-start">
+                        <h5 class="card-title">País:</h5>
+                        <p class="card-text ml-2" id="textCountry"></p>
+                    </div>
+                    <div class="d-flex justify-content-start">
+                        <h5 class="card-title">Cliente:</h5>
+                        <p class="card-text ml-2" id="textClient"></p>
+                    </div>
                 </div>
+            </div>
+
+
+            <form>
                 <div class="mb-3">
                     <label for="solicitante" class="form-label bg-font">Solicitante</label>
                     <input type="text" class="form-control" id="solicitante" >
@@ -75,12 +86,37 @@
                         <input class="form-check-input" type="radio" name="tipoSolicitud" id="capacitacion" value="Capacitación" >
                         <label class="form-check-label" for="capacitacion">Capacitación</label>
                     </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tipoSolicitud" id="otro" value="Otro" >
+                        <label class="form-check-label" for="otro">Otro</label>
+                    </div>
                 </div>
+                <!-- Campo oculto para ingresar texto -->
+                <div class="mt-3" id="otroInputContainer" style="display: none;">
+                    <label for="otroTexto" class="form-label">Especifica tu solicitud:</label>
+                    <input type="text" class="form-control" id="otroTexto" placeholder="Describe">
+                </div>
+
                 <div class="mb-3">
                     <label for="producto" class="form-label bg-font">Producto</label>
                     <select class="form-select" id="producto" required>
                         <option value="" disabled selected>Selecciona un producto</option>
                     </select>
+                </div>
+                <!-- Columna de texto -->
+                <div class="card mb-4 p-2" style="display:none;" id="divDataProduct">
+                    <h4>Características:</h4>
+                    <ul>
+                        <li><p id="textFeature"></p></li>
+                    </ul>
+                    <h4>Características del sistema dispensador:</h4>
+                    <ul>
+                        <li><p id="textFeatureSystem"></p></li>
+                    </ul>
+                    <!-- Columna de imagen -->
+                    <div class="col-md-4 text-center">
+                        <img src="" id="imgProduct" alt="Dispensador y rollo" class="img-fluid">
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="descripcion" class="form-label bg-font">Descripción</label>
@@ -97,7 +133,11 @@
     <div class="text-center py-5 d-none" id="divSuccess">
         <i class="fa-solid fa-circle-check fs-1"></i>
         <h1 class="text-success">¡Registro enviado con éxito!</h1>
-        <p class="lead">Gracias por completar el formulario. Hemos recibido tu información.</p>
+        <p class="lead" style="display:inline;">
+            Hemos recibido su información con número de folio 
+            <h3 style="color: black; display: inline;" id="textFolio"></h3>, 
+        </p>
+        <p class="lead" > Mantenga este número de folio para seguimiento.</p>
     </div>
 
     <!-- Div Error -->
