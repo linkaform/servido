@@ -104,7 +104,7 @@ async function getInformation(){
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
     const statusSession = getSession();
-    const dicAdional = {'user_name':getCookie("userName"),'option':'get_data'}
+    const dicAdional = {'user_name':getCookie("userName").replace(/"/g, ''),'option':'get_data'}
     if(statusSession == 'Demo' || demo){
         Swal.fire({
           title: 'Advertencia',
