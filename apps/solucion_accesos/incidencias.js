@@ -200,6 +200,9 @@ function verFallaModal(folio){
     divFotos.innerHTML=""
     let fotos=""
     if(selected.hasOwnProperty('falla_evidencia')){
+        if(!selected.falla_evidencia){
+            selected.falla_evidencia=[]
+        }
         for(let foto of selected.falla_evidencia){
             fotos += `<img src="`+foto.file_url+`" style="object-fit: contain;"  class="me-2">`
         }
@@ -328,6 +331,7 @@ function limpiarTomarFoto(id){
 
 function verIncidencia(folio){
     let selectedIncidencia = dataTableIncidencias.find(x => x.folio == folio)
+    console.log("SELECTED",selectedIncidencia)
     $("#fechaHoraIncidencia").text(capitalizeFirstLetter(selectedIncidencia.fecha_hora_incidencia ||""))
     $("#ubicacionIncidencia").text(capitalizeFirstLetter(selectedIncidencia.ubicacion_incidencia ||""))
     $("#areaIncidencia").text(capitalizeFirstLetter(selectedIncidencia.area_incidencia ||""))
@@ -335,14 +339,17 @@ function verIncidencia(folio){
     $("#comentarioIncidencia").text(selectedIncidencia.comentario_incidencia ||"")
     $("#prioridadIncidencia").text(capitalizeFirstLetter(selectedIncidencia.prioridad_incidencia ||""))
     // $("#tipoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.tipo_incidencia ||""))
-    $("#tipoDanoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.tipo_dano_incidencia.length>0 ? 
-        selectedIncidencia.tipo_dano_incidencia[0] :""))
-    $("#danoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.dano_incidencia ||""))
+    // $("#tipoDanoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.tipo_dano_incidencia.length>0 ? 
+    //     selectedIncidencia.tipo_dano_incidencia[0] :""))
+    // $("#danoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.dano_incidencia ||""))
     $("#notificacionIncidencia").text(capitalizeFirstLetter(selectedIncidencia.notificacion_incidencia ||""))
 
     let divFotos = document.getElementById("evidenciaIncidencia")
     divFotos.innerHTML=""
     let fotos=""
+    if(!selectedIncidencia.evidencia_incidencia){
+        selectedIncidencia.evidencia_incidencia=[]
+    }
     if(selectedIncidencia.hasOwnProperty('evidencia_incidencia')){
         for(let foto of selectedIncidencia.evidencia_incidencia){
             fotos += `<img src="`+foto.file_url+`" style="object-fit: contain;"  class="me-2">`
@@ -352,6 +359,9 @@ function verIncidencia(folio){
     let divDoc = document.getElementById("documentosIncidencia")
     divDoc.innerHTML=""
     let doc=""
+    if(!selectedIncidencia.documento_incidencia){
+        selectedIncidencia.documento_incidencia=[]
+    }
     if(selectedIncidencia.hasOwnProperty('documento_incidencia')){
         for(let file of selectedIncidencia.documento_incidencia){
             doc += `<a href="`+file.file_url+`" target="_blank" class="me-2">`+file.file_name+`</a>`
@@ -1197,7 +1207,7 @@ function llenarEditarIncidencia(selectArea,selectedIncidencia,selectUbicacion,se
     $('#importanciaEditarIncidencia').val(selectedIncidencia.prioridad_incidencia)
     $('#tipoIncidenciaEditarIncidencia').val(selectedIncidencia.tipo_incidencia)
     $('#comentarioEditarIncidencia').val(selectedIncidencia.comentario_incidencia)
-    $('#tipoDanoEditarIncidencia').val(selectedIncidencia.tipo_dano_incidencia[0]|| "")
+    // $('#tipoDanoEditarIncidencia').val(selectedIncidencia.tipo_dano_incidencia[0]|| "")
     $('#danoEditarIncidencia').val(selectedIncidencia.dano_incidencia)
     $('#notificacionEditarIncidencia').val(selectedIncidencia.notificacion_incidencia)
     $('#editIncidentModal').modal('show');
@@ -1339,6 +1349,7 @@ function llenarEditarFalla(selectArea,selectedFalla,selectUbicacion,selectFalla)
         $('#horaResolucionEditarFalla').val(hour2[0])
         $('#minResolucionEditarFalla').val(hour2[1])
         onChangeAmpmLabel('horaResolucionEditarFalla','ampmEditarFalla')
+        // onChangeAmpmLabel('horaResolucionEditarFalla','ampmEditarFalla')
     }
 
     onChangeCatalogoFalla('fallaEditarFalla', 'Editar',selectedFalla)
@@ -1395,10 +1406,13 @@ function cerrarModal(id){
 //FUNCION para elimiinar un registro desde la tabla
 function alertEliminar(folio, type){
     let bodyInf={}
+    let txtAlertEliminar = ''
     if(type=='fallas'){
         bodyInf={script_name:"fallas.py", option:"delete_failure",folio:folio}
+        txtAlertEliminar = 'falla'
     }else{
         bodyInf={script_name:"incidencias.py", option:"delete_incidence", folio:folio}
+        txtAlertEliminar = 'incidencia'
     }
     Swal.fire({
         title:'¿Estas seguro de querer eliminar el registro?',
@@ -1447,7 +1461,7 @@ function alertEliminar(folio, type){
                         Swal.close();
                         Swal.fire({
                             title: "Success",
-                            text: "Se elimino la incidenci correctamente.",
+                            text: `Se elimino la ${txtAlertEliminar} correctamente.`,
                             type: "success",
                             showConfirmButton:false,
                             timer:1200
@@ -1733,6 +1747,10 @@ function editarIncidencia(){
     let personas= getDataGrupoRepetitivo('persona-input-form-editar','.persona-div-editar', 2)
     let acciones= getDataGrupoRepetitivo('dano-input-form-editar','.dano-div-editar', 2)
 
+    //Obtener el valor del radio que se tiene seleccionado
+    let deci = document.querySelectorAll('input[name="tomarFotoIncidencia"]:checked');
+    let values = Array.from(deci).map(checkbox => checkbox.value);
+
     let tipoDano = document.querySelectorAll('input[name="estadoIncidenciaEditar"]:checked');
     let valuesTipoDano = Array.from(tipoDano).map(checkbox => checkbox.value);
 
@@ -1781,7 +1799,7 @@ function editarIncidencia(){
         'incidencia': data.incidenciaEditarIncidencia,
         'comentario_incidencia': data.comentarioEditarIncidencia,
         'tipo_dano_incidencia': valuesTipoDano.length>0? valuesTipoDano :"",
-        'dano_incidencia':data.danoEditarIncidencia,
+        // 'dano_incidencia':data.danoEditarIncidencia,
         'personas_involucradas_incidencia':personas,
         'acciones_tomadas_incidencia':acciones,
         'evidencia_incidencia':arraySuccessFoto,
@@ -1790,7 +1808,12 @@ function editarIncidencia(){
         'notificacion_incidencia':data.notificacionEditarIncidencia
     };
     let cleanSelected = (({ actions, checkboxColumn, folio,...rest }) => rest)(selected);
-
+    if(!selected.evidencia_incidencia){
+        selected.evidencia_incidencia = []
+    }
+    if(!selected.documento_incidencia){
+        selected.documento_incidencia = []
+    }
     //let validateObj = encontrarCambios(cleanSelected,data_incidence_update)
     for(let o of selected.evidencia_incidencia){
         data_incidence_update.evidencia_incidencia.unshift(o)
@@ -1815,6 +1838,7 @@ function editarIncidencia(){
     }
     let noOptional = (({ acciones_tomadas_incidencia, personas_involucradas_incidencia, documento_incidencia, evidencia_incidencia, reporta_incidencia,
         tipo_dano_incidencia, view,check,...rest  }) => rest)(data_incidence_update);
+    console.log("NO OPTIONAAAAAAAAAAAAAAAL",noOptional)
     if(!validarObjeto(noOptional)){
         successMsg("Validación","Faltan campos por llenar, los campos marcados con asterisco son obligatorios.", "warning");
         $("#loadingButtonEditarIncidencia").hide();
@@ -2195,7 +2219,7 @@ function nuevaFalla(){
                     $("#loadingButtonAgregarFalla").hide();
                     $("#buttonAgregarFalla").show();
                 }else if(data.status_code==202 || data.status_code==201){
-                    successMsg("Confirmación", 'Nueva falla creada correctamente')
+                    successMsg("Confirmación", 'Registro creado correctamente')
                     let selectedFalla = {}
                     selectedFalla.folio = data.json.folio
                     for (let key in data_failure){
@@ -2991,6 +3015,8 @@ function setRequestFileImg(type, id="") {
         idInput = 'inputFileEvidenciaIncidenciaEditar';
     }else if(type =="inputEvidenciaIncidencia"){
         idInput = 'inputFileEvidenciaIncidencia';
+    }else if(type =="inputEvidenciaFallaEditar"){
+        idInput = 'inputFileEvidenciaFallaEditar';
     }
     const fileInput = document.getElementById(idInput);
     const file = fileInput.files[0];
