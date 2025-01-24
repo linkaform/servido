@@ -887,6 +887,11 @@ function llenarTablasInfoUsuario(){
 
 //FUNCION confirmar la salida a un registro individual desde la tabla
 function alertSalida(folio, status_visita){
+    let statusTurno = getCookie('userTurn')
+    if(statusTurno == 'Turno Cerrado' || !statusTurno){
+        errorAlert("¡Debes iniciar turno antes de registrar una salida!","Validación","warning" )
+        return
+    }
     console.log(status_visita, statusVisitaEntrada)
     console.log('Valor de casetaaaa',selectCaseta.value)
     const outLocation = getCookie('userLocation')
