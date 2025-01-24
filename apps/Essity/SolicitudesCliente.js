@@ -211,6 +211,15 @@ function setParams() {
 //-----VALIDATION
 function getValidation(data){
 
+    if (!data.solicitante || data.solicitante.trim() === "") {
+        Swal.fire({
+            title: "Error",
+            html: "Por favor, ingrese un solicitante.",
+            icon: "error",
+        });
+        return false;
+    }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data.correo)) {
         Swal.fire({
@@ -234,17 +243,16 @@ function getValidation(data){
     if (!data.tipoSolicitud || data.tipoSolicitud.trim() === "") {
         Swal.fire({
             title: "Error",
-            html:"Por favor, selecciona o escribe un tipo de solicitud válido.",
+            html:"Por favor, selecciona o escribe un tipo de solicitud.",
             icon: "error",
         });
         return false;
     }
 
     if (!data.catalog ) {
-        
         Swal.fire({
             title: "Error",
-            html:"Por favor, selecciona un catálogo válido.",
+            html:"Por favor, selecciona un producto válido.",
             icon: "error",
         });
         return false;
@@ -253,7 +261,7 @@ function getValidation(data){
     if (!data.client || data.client.trim() === "") {
         Swal.fire({
             title: "Error",
-            html:"Por favor, selecciona un cliente válido.",
+            html:"Por favor, ingresa el cliente.",
             icon: "error",
         });
         return false;
@@ -262,7 +270,7 @@ function getValidation(data){
     if (!data.country || data.country.trim() === "") {
         Swal.fire({
             title: "Error",
-            html:"Por favor, selecciona un cliente válido.",
+            html:"Por favor, selecciona un pais.",
             icon: "error",
         });
         return false;
