@@ -1298,8 +1298,8 @@ function registrarIngreso(){
     $("#buttonIn").hide();
     $("#buttonOut").hide();
     
-    let location= selectLocation.value
-    let area=selectCaseta.value 
+    let location= getCookie('userLocation')
+    let area=getCookie('userCaseta')
 
     getSelectedCheckbox('tableEquipos', 'checkboxGroupEquipos', selectedEquipos);
     let selectedEq= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id)).map(({ check, id, ...rest }) => rest)
@@ -1392,8 +1392,8 @@ function registrarSalida(){
         errorAlert("¡Debes iniciar turno antes de registrar una salida!","Validación","warning" )
         return
     }
-    let location= selectLocation.value
-    let area=selectCaseta.value 
+    let location= getCookie('userLocation')
+    let area=getCookie('userCaseta')
     let tieneGafeteLocker= fullData.gafete_id !==null || fullData.locker_id !==null
     let salida=false
     if(gafeteId=="" &&  tieneGafeteLocker == true){
