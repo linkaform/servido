@@ -946,7 +946,7 @@ function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
             }
              if(inputsHijos=='.deposito-nuevo' ||inputsHijos=='.deposito-editar'){
                 objTemporal.tipo_deposito= datoInput1;
-                objTemporal.cantidad= dataInput2;
+                objTemporal.cantidad= parseInt(dataInput2);
             }
             if(inputsHijos=='.com-div-nuevo' ||inputsHijos=='.com-div-nuevo'){
                 objTemporal.tipo_comentario= datoInput1;
