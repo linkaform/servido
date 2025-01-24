@@ -338,9 +338,12 @@ function verIncidencia(folio){
     $("#incidenciaIncidencia").text(capitalizeFirstLetter(selectedIncidencia.incidencia ||""))
     $("#comentarioIncidencia").text(selectedIncidencia.comentario_incidencia ||"")
     $("#prioridadIncidencia").text(capitalizeFirstLetter(selectedIncidencia.prioridad_incidencia ||""))
-    // $("#tipoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.tipo_incidencia ||""))
-    // $("#tipoDanoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.tipo_dano_incidencia.length>0 ? 
-    //     selectedIncidencia.tipo_dano_incidencia[0] :""))
+    $("#tipoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.tipo_incidencia ||""))
+    if(!selectedIncidencia.tipo_dano_incidencia){
+        selectedIncidencia.tipo_dano_incidencia=[]
+    }
+    $("#tipoDanoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.tipo_dano_incidencia.length>0 ? 
+        selectedIncidencia.tipo_dano_incidencia[0] :""))
     // $("#danoIncidencia").text(capitalizeFirstLetter(selectedIncidencia.dano_incidencia ||""))
     $("#notificacionIncidencia").text(capitalizeFirstLetter(selectedIncidencia.notificacion_incidencia ||""))
 
@@ -1180,7 +1183,7 @@ function llenarEditarIncidencia(selectArea,selectedIncidencia,selectUbicacion,se
     }
     $(`#cargar-deposito`).append(addDeposito);
 
-    if(selectedIncidencia.incidencia=="Deposito"){
+    if(selectedIncidencia.incidencia=="Depósitos"){
         verInputsDeposito('editar')
     }else if (selectedIncidencia.incidencia=="Daños"){
         verInputsDeposito('editar')
@@ -1722,7 +1725,7 @@ function editarFallaModal(folio, fecha, ubicacion, area, falla, comentarios, gua
 
 function verInputsDeposito(editAdd){
     let selectedOption= document.getElementById('incidencia'+capitalizeFirstLetter(editAdd)+'Incidencia')
-    if(selectedOption.value =="Deposito"){
+    if(selectedOption.value =="Depósitos"){
         $('#tipoDaño-'+capitalizeFirstLetter(editAdd)).hide();
         $('#depositos-padre-'+editAdd).show();
     }else if(selectedOption.value =="Daños"){
@@ -1755,7 +1758,7 @@ function editarIncidencia(){
     let valuesTipoDano = Array.from(tipoDano).map(checkbox => checkbox.value);
 
     let depositos=""
-    if(data.incidenciaEditarIncidencia=="Deposito"){
+    if(data.incidenciaEditarIncidencia=="Depósitos"){
         depositos=[]
         depositosPadre= getDataGrupoRepetitivo('depositos-padre-editar','.deposito-editar', 2)
         depositosPadre=eliminarObjetosConPropiedadesVacias(depositosPadre)
@@ -1827,7 +1830,7 @@ function editarIncidencia(){
     for(let o of accionArray){
         data_incidence_update.acciones_tomadas_incidencia.unshift(o)
     }
-    if(data_incidence_update.incidencia=="Deposito"){
+    if(data_incidence_update.incidencia=="Depósitos"){
         data_incidence_update.datos_deposito_incidencia=[]
         for(let o of depositoArray){
             data_incidence_update.datos_deposito_incidencia.unshift(o)
@@ -2137,12 +2140,12 @@ function getTotal(id, editAdd="nuevo"){
     total += parseFloat(cant.value);
     totalText.textContent ="$ " + total;
 
-    /*if(editAdd=="editar"){
+    if(editAdd=="editar"){
         let depositos= getDataGrupoRepetitivo('depositos-inputs-editar','.deposito-editar', 2)
         depositos=eliminarObjetosConPropiedadesVacias(depositos)
         let depositosExistentes= getAcciones('cargar-deposito')
         console.log("depositos",depositos, depositosExistentes )
-    }*/
+    }
 }
 
 //FUNCION crear nueva incidencia y validar la informacion
@@ -2939,10 +2942,10 @@ function getAcciones(tipo){
         }else if(tipo=='cargar-deposito'){
             dato1 = accion.querySelector("span[id^='tipo-']");
             dato2 = accion.querySelector("span[id^='cantidad-']");
-            obj={tipo_deposito: "", cantidad: ""}
+            obj={tipo_deposito: "", cantidad: 0}
             if (dato1 && dato2) {
                 obj.tipo_deposito = dato1.textContent.trim();
-                obj.cantidad = dato2.textContent.trim();
+                obj.cantidad = parseInt(dato2.textContent.trim());
             }
         }
         return obj
