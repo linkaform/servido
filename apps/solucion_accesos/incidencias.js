@@ -2685,7 +2685,8 @@ async function guardarArchivos(id, isImage){
 }
 
 //FUNCION para agregar foto en el modal de agregar nota
-function setAddPersona(editAdd ="nueva"){
+function setAddPersona(editAdd ="nuevo"){
+    console.log("ENTRO en agregar una persona")
     let randomID = Date.now();
     let newItem=`
         <div class="d-flex mb-3 div-persona-`+editAdd+`-`+randomID+`" id="div-persona-`+randomID+`">
@@ -2705,7 +2706,7 @@ function setAddPersona(editAdd ="nueva"){
             </div>
         </div>
     `;
-    $('#persona-input-form-'+editAdd).append(newItem) 
+    $('#sets-persona-input-form-'+editAdd).prepend(newItem) 
 }
 
 
@@ -2713,6 +2714,11 @@ function setAddPersona(editAdd ="nueva"){
 function setDeletePersona(editAdd ="nuevo",id){
     const elements = document.querySelectorAll('.persona-div-'+editAdd);
     const count = elements.length;
+    if(id == 123){
+        console.log("ENTRO EN ELIMINAR",id)
+        $("#repPersonaNuevoIncidencia").val("")
+        $("#repTipoDanoNuevoIncidencia").val("")
+    }
     if(count > 1){
         const elements = document.getElementsByClassName('div-persona-'+editAdd+'-'+id);
         while(elements.length > 0 && id !==123){
@@ -2722,7 +2728,7 @@ function setDeletePersona(editAdd ="nuevo",id){
 }
 
 //FUNCION para agregar foto en el modal de agregar nota
-function setAddDaño(editAdd ="nueva"){
+function setAddDaño(editAdd ="nuevo"){
     let randomID = Date.now();
     let newItem=`
         <div class="d-flex mb-3 div-dano-`+editAdd+`-`+randomID+`" id="div-dano-`+randomID+`">
@@ -2740,7 +2746,7 @@ function setAddDaño(editAdd ="nueva"){
         </div>
 
     `;
-    $('#dano-input-form-'+editAdd).append(newItem) 
+    $('#sets-dano-input-form-'+editAdd).prepend(newItem) 
 }
 
 
@@ -2748,6 +2754,11 @@ function setAddDaño(editAdd ="nueva"){
 function setDeleteDaño(editAdd ="nuevo",id){
     const elements = document.querySelectorAll('.dano-div-'+editAdd);
     const count = elements.length;
+    if(id == 123){
+        console.log("ENTRO EN ELIMINAR",id)
+        $("#repResponsableNuevoIncidencia").val("")
+        $("#repAccionNuevoIncidencia").val("")
+    }
     if(count > 1){
         const elements = document.getElementsByClassName('div-dano-'+editAdd+'-'+id);
         while(elements.length > 0 && id !==123){
