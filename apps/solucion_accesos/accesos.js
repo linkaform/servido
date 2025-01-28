@@ -116,10 +116,13 @@ function scanQRCode(videoElement, stream) {
             const imageData = context.getImageData(0, 0, qrCanvas.width, qrCanvas.height);
             const qrCode = jsQR(imageData.data, qrCanvas.width, qrCanvas.height);
 
-            if (qrCode) {
+            if (qrCode && qrCode.data.trim() !== "") {
                 console.log("Código QR detectado:", qrCode.data);
 
                 document.getElementById("inputCodeUser").value = qrCode.data;
+                if(!autoAccesoHabilitado){
+                    $("#pruebadebtn").hide();
+                }
                 buscarPaseEntrada();
 
                 Swal.close();
@@ -1139,6 +1142,15 @@ function crearNuevaVisita(){
         });
     }
 }
+
+let autoAccesoHabilitado = false;
+
+function toggleAutoAcceso(checkbox) {
+    autoAccesoHabilitado = checkbox.checked;
+    if(autoAccesoHabilitado){
+        startScanning();
+    }
+}
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
 function buscarPaseEntrada() {
@@ -1209,6 +1221,25 @@ function buscarPaseEntrada() {
                         setHideElements('buttonsModal');
                         setHideElements('dataShow');
                         setHideElements(fullData.tipo_movimiento) //Oculta o muestra los botones correspondientes dependiendo de si es Entrada o Salida
+                        if(autoAccesoHabilitado){
+                            if(fullData.tipo_movimiento == "Entrada"){
+                                $("#divEscaneoPase").hide();
+                                $("#divBotonesPase").hide();
+                                setTimeout(() => {
+                                    registrarIngreso();
+                                    $("#divEscaneoPase").show();
+                                    $("#divBotonesPase").show();
+                                }, 2000);
+                            }else if(fullData.tipo_movimiento == "Salida"){
+                                $("#divEscaneoPase").hide();
+                                $("#divBotonesPase").hide();
+                                setTimeout(() => {
+                                    registrarSalida();
+                                    $("#divEscaneoPase").show();
+                                    $("#divBotonesPase").show();
+                                }, 2000);
+                            }
+                        }
                     }
                     
                 }else{
@@ -1288,13 +1319,16 @@ function getDataListUser(){
 
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 1
 function registrarIngreso(){
+    if(!autoAccesoHabilitado){
+        $("#pruebadebtn").show();
+    }
     //Validacion de Turno iniciado
     let statusTurno = getCookie('userTurn')
     if(statusTurno == 'Turno Cerrado' || !statusTurno){
         errorAlert("¡Debes iniciar turno antes de registrar un ingreso!","Validación","warning" )
         return
     }
-    loadingService()
+    loadingService('Registrando entrada...')
     $("#buttonIn").hide();
     $("#buttonOut").hide();
     
@@ -1350,11 +1384,22 @@ function registrarIngreso(){
             let data = {};
             setHideElements('buttonsModal');
             setDataInformation('informatioUser',data)
-            Swal.fire({
-                title   :"Exito!",
-                text: "Movimiento de usuario registrado",
-                icon: "success"
-            });
+            if(autoAccesoHabilitado){
+                Swal.fire({
+                    title: "Exito!",
+                    text: "Movimiento de usuario registrado",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                startScanning();
+            }else{
+                Swal.fire({
+                    title   :"Exito!",
+                    text: "Movimiento de usuario registrado",
+                    icon: "success"
+                });
+            }
 
             setCleanData();
             setHideElements('dataHide');
@@ -1386,6 +1431,9 @@ function registrarIngreso(){
 }
 
 function registrarSalida(){
+    if(!autoAccesoHabilitado){
+        $("#pruebadebtn").show();
+    }
     //Validacion de Turno iniciado
     let statusTurno = getCookie('userTurn')
     if(statusTurno == 'Turno Cerrado' || !statusTurno){
@@ -1407,7 +1455,7 @@ function registrarSalida(){
     if(!salida){
         errorAlert("¡Debes recibir el gafete antes de registrar la salida!","Validación","warning" )
     } else{
-        loadingService()
+        loadingService('Registrando salida...')
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -1430,11 +1478,22 @@ function registrarSalida(){
                 let data = {};
                 setHideElements('buttonsModal');
                 setDataInformation('informatioUser',data)
-                Swal.fire({
-                    title: "Exito!",
-                    text: "Salida registrada correctamente",
-                    icon: "success"
-                });
+                if(autoAccesoHabilitado){
+                    Swal.fire({
+                        title: "Exito!",
+                        text: "Salida registrada correctamente",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    startScanning();
+                }else{
+                    Swal.fire({
+                        title: "Exito!",
+                        text: "Salida registrada correctamente",
+                        icon: "success"
+                    });
+                }
                 setCleanData();
                 setHideElements('dataHide');
                 setHideElements('buttonsOptions');

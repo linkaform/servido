@@ -18,8 +18,8 @@
 	
 	<!-- NUEVO CODIGO -->
 	<div class="d-flex justify-content-center flex-wrap ">
-		<div class="col-3 mainSection " id="cartaUser" style="display:none !important;" >
-			<div class="customShadow p-4 ms-4" style="height:100%">
+		<div class="col-lg-3 col-md-6 col-12 mainSection " id="cartaUser" style="display:none !important;" >
+			<div class="customShadow p-4 mx-4" style="height:100%">
 				<div class="d-flex flex-row justify-content-between">
 					<div class="col-6">
 						<h5 class="ms-2 mb-0">Folio: &nbsp;&nbsp; <span id="folio"></span></h5>
@@ -85,7 +85,7 @@
 				<hr class="m-3 p-0 ms-0">
 				<div>
 					<p class="text-gray">Disponible los días:</p>
-					<div class="d-flex justify-content-around">
+					<div class="d-flex justify-content-around flex-wrap gap-1">
 						<button type="button" class="btn btn-outline-success btn-custom week" id="lunes">L</button>
 						<button type="button" class="btn btn-outline-success btn-custom week" id="martes">M</button>
 						<button type="button" class="btn btn-outline-success btn-custom week" id="miércoles">M</button>
@@ -97,14 +97,14 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-9 mainSection d-flex justify-content-center mt-4" >
-			<section class=" d-flex flex-wrap">
-				<div class="input-group ms-4" role="group" style="width: 450px;">
+		<div class="col-lg-9 col-md-6 col-12 mainSection d-flex justify-content-center mt-4" >
+			<section class="d-flex justify-content-center flex-wrap w-100">
+				<!-- <div class="input-group ms-4" role="group" id="divEscaneoPase">
 					<input type="text" class="form-control" placeholder="Escanear pase" id="inputCodeUser" autofocus onchange="buscarPaseEntrada();return false;">
 					<button class="input-group-text bg-warning-subtle cursor-pointer" id="buttonBuscarPaseEntrada" onclick="buscarPaseEntrada();return false;" style="background-color: white!important;" ><i class="fa-solid fa-magnifying-glass" ></i></button>
 					<button class="input-group-text bg-warning-subtle cursor-pointer" onclick="setModal('listaPases')" style="background-color: white!important;" id="pasesActivos"><i class="fa-solid fa-list"></i></button>
 				</div>
-				<div class="ms-3 ">
+				<div class="ms-3 " id="divBotonesPase">
 					<button type="button" class="btn btn-success btn-sm me-2" style="display: none;" id="buttonIn" onclick="registrarIngreso();return false;">
 					<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso</button>
 					<button type="button" class=" btn btn-danger btn-sm me-2" style="display: none;" id="buttonOut" onclick="registrarSalida();return false;">
@@ -123,10 +123,46 @@
 					id="buttonAddCommentarioAccesoModal" style="display: none; margin-left: 3px;">
 						<i class="fa-solid fa-plus"></i> Agregar comentario
 					</button>
+					<input type="checkbox" class="btn-check" name="habilitar_auto_acceso" value="habilitar_auto_acceso" id="habilitar_auto_acceso" onchange="toggleAutoAcceso(this)">
+					<label class="btn btn-sm btn-outline-dark" for="habilitar_auto_acceso" id="pruebadebtn">Habilitar auto acceso</label>
+				</div> -->
+				<!-- Top Bar -->
+				<div class="row mb-4 g-2 w-100 mx-4">
+					<div class="col-12 col-md-6">
+						<div class="input-group" role="group" id="divEscaneoPase">
+							<input type="text" class="form-control" placeholder="Escanear pase" id="inputCodeUser" autofocus onchange="buscarPaseEntrada();return false;">
+							<button class="input-group-text bg-warning-subtle cursor-pointer" id="buttonBuscarPaseEntrada" onclick="buscarPaseEntrada();return false;" style="background-color: white!important;" ><i class="fa-solid fa-magnifying-glass" ></i></button>
+							<button class="input-group-text bg-warning-subtle cursor-pointer" onclick="setModal('listaPases')" style="background-color: white!important;" id="pasesActivos"><i class="fa-solid fa-list"></i></button>
+						</div>
+					</div>
+					<div class="col-12 col-md-6 d-flex flex-wrap gap-2 justify-content-md-center align-items-center">
+						<button type="button" class="btn btn-success btn-sm me-2" style="display: none;" id="buttonIn" onclick="registrarIngreso();return false;">
+						<i class="fa-solid fa-person-walking-arrow-right"></i> Registrar Ingreso</button>
+						<button type="button" class=" btn btn-danger btn-sm me-2" style="display: none;" id="buttonOut" onclick="registrarSalida();return false;">
+						<i class="fa-sharp fa-solid fa-door-open"></i> Registrar Salida</button>
+						<button type="button" class="btn btn-primary btn-sm me-2" onclick="setModal('gafeteModal');" style="display: none;" id="buttonAsignarGafete">  <i class="fa-sharp fa-solid fa-id-card"></i> Asignar Gafete</button>
+						<button type="button" class="btn btn-primary btn-sm me-2" onclick="setModal('recibirGafete');" style="display: none;" id="buttonRecibirGafete">  <i class="fa-sharp fa-solid fa-id-card"></i> Recibir Gafete</button>
+						<button type="button" class="btn btn-warning btn-sm me-2" style="display: none;" id="buttonClean" onclick="setCleanData2()">
+						<i class="fa-solid fa-broom"></i> Limpiar</button>
+						<button id="start-scan" class="btn btn-warning btn-sm me-2" onclick="startScanning()">
+						<i class="fa-solid fa-expand"></i> Escanear un pase</button>
+						<button type="button" class="btn btn-success btn-sm me-2" id="buttonNew" onclick="setModal('nuevaVisitaModal');">
+						<i class="fa-solid fa-plus"></i> Nueva Visita</button>
+						<button type="button" class="btn btn-primary btn-sm me-2" id="pasesTemporales" onclick="setModal('listaPasesTemporales')">
+							<i class="fa-solid fa-list me-2"></i>Pases temporales</button>
+						<button type="button" class="btn btn-success btn-sm btn-danger" onclick="setModal('comentarioAccesoModal')" 
+						id="buttonAddCommentarioAccesoModal" style="display: none; margin-left: 3px;">
+							<i class="fa-solid fa-plus"></i> Agregar comentario
+						</button>
+						<div>
+							<input type="checkbox" class="btn-check" name="habilitar_auto_acceso" value="habilitar_auto_acceso" id="habilitar_auto_acceso" onchange="toggleAutoAcceso(this)">
+							<label class="btn btn-sm btn-outline-dark" for="habilitar_auto_acceso" id="pruebadebtn">Habilitar auto acceso</label>
+						</div>
+					</div>
 				</div>
 				<!-- SECCION DE TABLAS-->
-				<section class="section-data mainSectionMargins " id="mainSection4" style="display:none">
-					<div class="d-flex flex-wrap  row p-2">
+				<section class="section-data w-100" id="mainSection4" style="display:none">
+					<div class="row mx-2">
 						<!-- <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
 							<div class="d-flex justify-content-between mb-2 mt-2">
 								<div>
@@ -336,15 +372,15 @@
 
 	<div id="divSpinner" style="display:none;margin-top:100px;"></div>
 
-	<div class="mainSectionMargins mb-3 mt-5" id="mainSection1" >
+	<div class="mainSectionMargins mb-3 mt-2" id="mainSection1" >
 		<div class="d-flex justify-content-center ">
-			<div class="col-5 d-flex flex-row flex-wrap justify-content-center">
-				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-4">
-					<div class="card m-2 div-card-portal  customShadow">
+			<div class="col-4 col-sm-12 col-md-12 col-lg-4 d-flex flex-row flex-wrap justify-content-center">
+				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-5">
+					<div class="card div-card-portal  customShadow">
 					    <locationcard-component> </locationcard-component>
 					</div>
 				</div>
-				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+				<!-- <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
 					<div class="card  m-2 div-card-portal customShadow">
 					    <div class="card-body p-3">
 					        <div class="d-flex justify-content-evenly">
@@ -387,10 +423,58 @@
 				            <h5 class="card-title text-center text-uppercase text-dark">Salidas Registradas</h5>
 					    </div>
 					</div>
-				</div>
+				</div> -->
 			</div>	
 		</div>
+		<!-- Statistics Cards -->
+		<div class="row text-center w-75 mx-auto">
+			<div class="col-12 col-md-6 mb-3">
+				<div class="card">
+					<div class="card-body">
+						<div class="d-flex gap-2 justify-content-center align-items-center">
+							<span class="h1 font-weight-bold mb-0 text-dark text-center" id="textVisitasEnElDia"> </span>
+							<i class="fa-solid fa-house"  style="font-size: 40px;"></i>
+						</div>
+						<p class="card-text mt-2">VISITAS EN EL DÍA</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-md-6 mb-3">
+				<div class="card">
+					<div class="card-body">
+						<div class="d-flex gap-2 justify-content-center align-items-center">
+							<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textPersonalDentro"> </p>
+							<i class="fa-solid fa-users" style="font-size: 40px;"></i>
+						</div>
+						<p class="card-text mt-2">PERSONAL DENTRO</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-md-6 mb-3">
+				<div class="card">
+					<div class="card-body">
+						<div class="d-flex gap-2 justify-content-center align-items-center">
+							<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textVehiculosDentro"> </p>
+							<i class="fa-solid fa-car" style="font-size: 40px;"></i>
+						</div>
+						<p class="card-text mt-2">VEHÍCULOS DENTRO</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-md-6 mb-3">
+				<div class="card">
+					<div class="card-body">
+						<div class="d-flex gap-2 justify-content-center align-items-center">
+							<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textSalidasRegistradas"> </p>
+							<i class="fa-solid fa-door-open"  style="font-size: 40px;"></i>
+						</div>
+						<p class="card-text mt-2">SALIDAS REGISTRADAS</p>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
+
 
 	
 
