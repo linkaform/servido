@@ -18,6 +18,7 @@ let currentStream=null;
 let fotosNuevoIncidente={}
 let fotoNuevaFalla={}
 let fotosNuevoIncidenteEditar={}
+let folioGlobalFalla=''
 
 window.onload = function(){
 	user= getCookie("userId_soter");
@@ -96,6 +97,15 @@ window.onload = function(){
             this.value = valor; // Asignar el valor filtrado al input
         });
     });
+}
+
+let fallaCerrada = false;
+
+function toggleFallaCerrada(checkbox) {
+    fallaCerrada = checkbox.checked;
+    if(fallaCerrada){
+        console.log("Habilitado")
+    }
 }
 
 function getStats(area = "", location = "", loading = false) {
@@ -182,65 +192,154 @@ function setModal(type = 'none',id){
 
 
 function verFallaModal(folio){
-    let selected= dataTableFallas.find(x => x.folio == folio)
-    $('#fallaVista').text(selected.falla);
-    $('#objetoAfectadoVista').text(selected.falla_objeto_afectado);
-    $('#ubicacionVista').text(selected.falla_ubicacion);
-    $('#areaVista').text(selected.falla_caseta);
-    $('#estatusVista').text(selected.falla_estatus);
-    $('#comentarioVista').text(selected.falla_comentarios);
-    $('#fechaFallaVista').text(selected.falla_fecha_hora);
-    $('#reportaVista').text(selected.falla_reporta_nombre);
-    $('#folioVista').text(selected.falla_folio_accion_correctiva);
-    $('#comentarioSolucionVista').text(selected.falla_comentario_solucion);
-    $('#fechaSolucionVista').text(selected.falla_fecha_hora_solucion);
-    $('#responsableVista').text(selected.falla_responsable_solucionar_nombre)
+    folioGlobalFalla = folio
+    let selected= {}
+    loadingService("Obteniendo falla...")
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name:'fallas.py',
+            option:'get_failure_by_folio',
+            folio:folio,
+            location: getCookie('userLocation'),
+            area: getCookie('userCaseta'),
+        }),
+        headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if(res.success){
+            if(user !='' && userJwt!=''){
+                Swal.close();
+                selected = res.response.data[0]
+                console.log("SELECTEDDDDDDDDDDDDDD",selected)
+                if(selected.falla_estatus == 'resuelto'){
+                    $('#btnCerrarFallaSeguimiento').hide();
+                }
 
-    let divFotos = document.getElementById("evidenciaFalla")
-    divFotos.innerHTML=""
-    let fotos=""
-    if(selected.hasOwnProperty('falla_evidencia')){
-        if(!selected.falla_evidencia){
-            selected.falla_evidencia=[]
-        }
-        for(let foto of selected.falla_evidencia){
-            fotos += `<img src="`+foto.file_url+`" style="object-fit: contain;"  class="me-2">`
-        }
-    }
-    divFotos.innerHTML = fotos
-    let divDoc = document.getElementById("documentosFalla")
-    divDoc.innerHTML=""
-    let doc=""
-    if(selected.hasOwnProperty('falla_documento')){
-        console.log('holi')
-        for(let file of selected.falla_documento){
-            doc += `<a href="`+file.file_url+`" target="_blank" class="me-2">`+file.file_name+`</a>`
+                $('#fallaVista').text(selected.falla);
+                $('#objetoAfectadoVista').text(selected.falla_objeto_afectado);
+                $('#ubicacionVista').text(selected.falla_ubicacion);
+                $('#areaVista').text(selected.falla_caseta);
+                $('#estatusVista').text(selected.falla_estatus);
+                $('#comentarioVista').text(selected.falla_comentarios);
+                $('#fechaFallaVista').text(selected.falla_fecha_hora);
+                $('#reportaVista').text(selected.falla_reporta_nombre);
+                $('#folioVista').text(selected.falla_folio_accion_correctiva);
+                $('#comentarioSolucionVista').text(selected.falla_comentario_solucion);
+                $('#fechaSolucionVista').text(selected.falla_fecha_hora_solucion);
+                $('#responsableVista').text(selected.falla_responsable_solucionar_nombre)
 
-        }
-    }
-    divDoc.innerHTML = doc
+                let divFotos = document.getElementById("evidenciaFalla")
+                divFotos.innerHTML=""
+                let fotos=""
+                if(selected.hasOwnProperty('falla_evidencia')){
+                    if(!selected.falla_evidencia){
+                        selected.falla_evidencia=[]
+                    }
+                    for(let foto of selected.falla_evidencia){
+                        fotos += `<img src="`+foto.file_url+`" style="object-fit: contain;"  class="me-2">`
+                    }
+                }
+                divFotos.innerHTML = fotos
+                let divDoc = document.getElementById("documentosFalla")
+                divDoc.innerHTML=""
+                let doc=""
+                if(selected.hasOwnProperty('falla_documento')){
+                    console.log('holi')
+                    for(let file of selected.falla_documento){
+                        doc += `<a href="`+file.file_url+`" target="_blank" class="me-2">`+file.file_name+`</a>`
 
-    let divFotos2 = document.getElementById("evidenciaSolucionFalla")
-    divFotos2.innerHTML=""
-    let fotos2=""
-    if(selected.hasOwnProperty('falla_evidencia_solucion') && selected.falla_evidencia_solucion!==undefined){
-        for(let foto of selected.falla_evidencia_solucion){
-            fotos2 += `<img src="`+foto.file_url+`" style="object-fit: contain;"  class="me-2">`
-        }
-    }
-    divFotos2.innerHTML = fotos2
-    let divDoc2 = document.getElementById("documentosSolucionFalla")
-    divDoc2.innerHTML=""
-    let doc2=""
-    if(selected.hasOwnProperty('falla_documento_solucion') && selected.falla_documento_solucion!==undefined){
-        for(let file of selected.falla_documento_solucion){
-            doc2 += `<a href="`+file.file_url+`" target="_blank" class="me-2">`+file.file_name+`</a>`
+                    }
+                }
+                divDoc.innerHTML = doc
 
-        }
-    }
+                let tbody = document.querySelector("#table-seguimientos tbody");
+                tbody.innerHTML = "";
 
-    divDoc2.innerHTML = doc2
-    $('#fallaVer').modal('show');
+                if (selected.hasOwnProperty('falla_grupo_seguimiento') && Array.isArray(selected.falla_grupo_seguimiento)) {
+                    for (let seguimiento of selected.falla_grupo_seguimiento) {
+                        let row = document.createElement("tr");
+                        let seguimientoImg = seguimiento['66f2dfb2c80d24e5e82332b5'][0]?.file_url
+                        let seguimientoDoc = seguimiento['66f2dfb2c80d24e5e82332b6'][0]?.file_url
+
+                        row.innerHTML = `
+                            <td>${seguimiento['66f2dfb2c80d24e5e82332b4'] || 'N/A'}</td>
+                            <td>${seguimiento['66f2dfb2c80d24e5e82332b3'] || 'N/A'}</td>
+                            <td>${seguimientoImg ? `<img src="${seguimientoImg}" style="max-width: 100px; max-height: 100px;">` : 'N/A'}</td>
+                            <td>${seguimientoDoc ? `<a href="${seguimientoDoc}" target="_blank">${seguimiento['66f2dfb2c80d24e5e82332b6'][0]?.file_name}</a>` : 'N/A'}</td>
+                            <td>${seguimiento['679a485c66c5d089fa6b8ef9'] || 'N/A'}</td>
+                            <td>${seguimiento['679a485c66c5d089fa6b8efa'] || 'N/A'}</td>
+                        `;
+
+                        tbody.appendChild(row);
+                    }
+                }
+
+                $('#fallaVer').modal('show');
+            }
+        }
+    })
+}
+
+function cerrarFallaSeguimiento() {
+    Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Una vez cerrada la falla no se pueden agregar mas seguimientos.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, cerrar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.value) {
+            loadingService("Cerrando falla...");
+            let data_failure_update = {
+                'falla_estatus': 'resuelto',
+            };
+
+            fetch(url + urlScripts, {
+                method: 'POST',
+                body: JSON.stringify({
+                    script_name: "fallas.py",
+                    option: "update_failure",
+                    data_failure_update: data_failure_update,
+                    folio: folioGlobalFalla
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + userJwt
+                },
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    let data = res.response.data;
+                    console.log("DATA", data);
+                    Swal.fire({
+                        title: "Confirmación",
+                        text: "Falla cerrada correctamente.",
+                        icon: "success"
+                    }).then(() => {
+                        let selectedFalla = dataTableFallas.find(x => x.folio === folioGlobalFalla);
+                        let formatDate= data.json.falla_fecha_hora_solucion.slice(0,-3)
+                        selectedFalla.falla_fecha_hora_solucion= formatDate
+                        selectedFalla.falla_estatus = 'resuelto'
+                        tables["tableFallas"].setData(dataTableFallas);
+                        let modal = bootstrap.Modal.getInstance(document.getElementById('fallaVer'));
+                        modal.hide();
+                    });
+                } else {
+                    errorAlert(res);
+                }
+            });
+        }
+    });
 }
 
 
@@ -792,6 +891,7 @@ function getAllDataFallas(){
                                 'falla_evidencia_solucion':falla.falla_evidencia_solucion,
                                 'falla_documento_solucion':falla.falla_documento_solucion,
                                 'falla_fecha_hora_solucion':dateFormat2,
+                                'falla_grupo_seguimiento': falla.falla_grupo_seguimiento
                             })
                         }
                     }else{
@@ -1315,6 +1415,10 @@ async function abrirModalNuevaEditarFalla(folio=null,nuevoEditar='Nuevo'){
     if(nuevoEditar == 'Nuevo'){
         $('#newFailModal').modal('show');
     }else{
+        if(selectedFalla.falla_estatus=="resuelto"){
+            successMsg("Validación","No se puede editar una falla resuelta.", "warning");
+            return
+        }
         llenarEditarFalla(selectArea,selectedFalla,selectUbicacion,selectFalla)
     }
 }
@@ -2376,6 +2480,54 @@ function editarFalla(){
 
 
 function funcionSeguimientoFalla(){
+    let fechaInicio = document.getElementById("fechaInicioFalla").value;
+    let horaInicio = document.getElementById("horaInicioFalla").value;
+    let fechaFin = document.getElementById("fechaFinFalla").value;
+    let horaFin = document.getElementById("horaFinFalla").value;
+    let folioSeguimientoVal = document.getElementById("folioSeguimiento").value;
+
+    let valid = true;
+
+    if (!fechaInicio) {
+        document.getElementById("errorFechaInicio").style.display = "block";
+        valid = false;
+    } else {
+        document.getElementById("errorFechaInicio").style.display = "none";
+    }
+
+    if (!horaInicio) {
+        document.getElementById("errorHoraInicio").style.display = "block";
+        valid = false;
+    } else {
+        document.getElementById("errorHoraInicio").style.display = "none";
+    }
+
+    if (!fechaFin) {
+        document.getElementById("errorFechaFin").style.display = "block";
+        valid = false;
+    } else {
+        document.getElementById("errorFechaFin").style.display = "none";
+    }
+
+    if (!horaFin) {
+        document.getElementById("errorHoraFin").style.display = "block";
+        valid = false;
+    } else {
+        document.getElementById("errorHoraFin").style.display = "none";
+    }
+
+    if (!folioSeguimientoVal) {
+        document.getElementById("errorFolioSeguimiento").style.display = "block";
+        valid = false;
+    } else {
+        document.getElementById("errorFolioSeguimiento").style.display = "none";
+    }
+
+    if (!valid) {
+        successMsg("Validación", "Faltan campos por llenar, los campos marcados con asterisco son obligatorios.", "warning");
+        return;
+    }
+
     $("#loadingButtonSeguimientoFalla").show();
     $("#buttonSeguimientoFalla").hide();
     let data = getInputsValueByClass("seguimientoFalla")
@@ -2394,25 +2546,37 @@ function funcionSeguimientoFalla(){
         }
     }
     let data_failure_update={
-        'falla_estatus': statusFallaResuelto.toLowerCase(),
-        'falla_folio_accion_correctiva': data.folioAccionSeguimientoFalla,
-        'falla_comentario_solucion': data.comentarioSeguimientoFalla,
+        'falla_folio_accion_correctiva': data.folioSeguimiento,
+        'falla_comentario_solucion': data.comentarioSeguimiento,
+        'fechaInicioFallaCompleta': data.fechaInicioFalla + " " + data.horaInicioFalla + ":00",
+        'fechaFinFallaCompleta': data.fechaFinFalla + " " + data.horaFinFalla + ":00",
         'falla_evidencia_solucion': arraySuccessFoto,
         'falla_documento_solucion': arraySuccessArchivo
     }
+    let status_falla_seguimiento = 'abierto'
+    if(fallaCerrada){
+        status_falla_seguimiento = 'resuelto'
+    }
     if(data_failure_update.falla_evidencia_solucion.length==0){
-        delete data_failure_update.falla_evidencia_solucion
+        data_failure_update.falla_evidencia_solucion = []
     }
     if(data_failure_update.falla_documento_solucion.length==0){
-        delete data_failure_update.falla_documento_solucion
+        data_failure_update.falla_documento_solucion = []
     }
+    console.log("SELECTEDDDDDDDD", selected)
     console.log("DATAA",data_failure_update, selected.folio)
+    let falla_grupo_seguimiento = data_failure_update
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name: "fallas.py",
-            option:"update_failure",
-            data_failure_update: data_failure_update,
+            option:"update_failure_seguimiento",
+            // option:"update_failure",
+            // data_failure_update: data_failure_update,
+            status: status_falla_seguimiento,
+            falla_grupo_seguimiento: falla_grupo_seguimiento,
+            location: getCookie('userLocation'),
+            area: getCookie('userCaseta'),
             folio:selected.folio
         }),
         headers:
@@ -2430,31 +2594,34 @@ function funcionSeguimientoFalla(){
                 $("#loadingButtonSeguimientoFalla").hide();
                 $("#buttonSeguimientoFalla").show();
             }else if(data.status_code==202 || data.status_code==201){
-                successMsg('Confirmación', 'Falla resulta correctamente.')
+                successMsg('Confirmación', 'Seguimiento registrado correctamente.')
                 console.log("FALLA", selected.folio)
                 let selectedFalla = dataTableFallas.find(x => x.folio === selected.folio);
                 let formatDate= data.json.falla_fecha_hora_solucion.slice(0,-3)
                 selectedFalla.falla_fecha_hora_solucion= formatDate
-                for (let key in data_failure_update){
-                    if(key=='falla_evidencia_solucion'){
-                        selectedFalla.falla_evidencia_solucion=[]
-                        if(data_failure_update.falla_evidencia_solucion.length>0){
-                            for (let d of data_failure_update.falla_evidencia_solucion){
-                                console.log("FALLAS EVIDENCIA SOL")
-                                selectedFalla.falla_evidencia_solucion.unshift(d)
-                            }
-                        }
-                    }else if(key=='falla_documento_solucion'){
-                        selectedFalla.falla_documento_solucion=[]
-                        if(data_failure_update.falla_documento_solucion.length>0){
-                            for (let d of data_failure_update.falla_documento_solucion){
-                                selectedFalla.falla_documento_solucion.unshift(d)
-                            }
-                        }
-                    }else{
-                        selectedFalla[key]= data_failure_update[key]
-                    }
+                if(fallaCerrada){
+                    selectedFalla.falla_estatus = 'resuelto'
                 }
+                // for (let key in data_failure_update){
+                //     if(key=='falla_evidencia_solucion'){
+                //         selectedFalla.falla_evidencia_solucion=[]
+                //         if(data_failure_update.falla_evidencia_solucion.length>0){
+                //             for (let d of data_failure_update.falla_evidencia_solucion){
+                //                 console.log("FALLAS EVIDENCIA SOL")
+                //                 selectedFalla.falla_evidencia_solucion.unshift(d)
+                //             }
+                //         }
+                //     }else if(key=='falla_documento_solucion'){
+                //         selectedFalla.falla_documento_solucion=[]
+                //         if(data_failure_update.falla_documento_solucion.length>0){
+                //             for (let d of data_failure_update.falla_documento_solucion){
+                //                 selectedFalla.falla_documento_solucion.unshift(d)
+                //             }
+                //         }
+                //     }else{
+                //         selectedFalla[key]= data_failure_update[key]
+                //     }
+                // }
                 tables["tableFallas"].setData(dataTableFallas);
                 $("#cerrarFallaModal").modal('hide')
                 $("#loadingButtonSeguimientoFalla").hide();

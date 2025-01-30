@@ -1095,7 +1095,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="mb-3 col-6">
+                        <!-- <div class="mb-3 col-6">
                             <label class="form-label">Folio de reporte accion correctiva: </label>
                             <input type="text" class="form-control seguimientoFalla" id="folioAccionSeguimientoFalla">
                         </div>
@@ -1103,7 +1103,7 @@
                             <label class="form-label">Comentario: </label>
                             <textarea type="text" rows="1" class="form-control seguimientoFalla" id="comentarioSeguimientoFalla"></textarea>
                         </div>
-                         <div id="evidenciaFS-input-form-editar" >
+                        <div id="evidenciaFS-input-form-editar" >
                             <div class="d-flex mb-3 col-12 div-evidenciaFS-editar-123" id="id-evidenciaFS-div-123">
                                 <div class="flex-grow-1">
                                     <label class="form-label">Evidencia de solucion: </label>
@@ -1134,17 +1134,92 @@
                                     </button>
                                 </div>
                             </div>
+                        </div> -->
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="form-label" for="folioSeguimiento">*Accion realizada:</label>
+                                <input class="form-control seguimientoFalla" type="text" name="folioSeguimiento" id="folioSeguimiento">
+                                <span class="error-message" id="errorFolioSeguimiento" style="color: rgb(214, 0, 0); display: none; font-size: 15px;">*Campo requerido</span>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <label class="form-label" for="comentarioSeguimiento">Comentario:</label>
+                                <input class="form-control seguimientoFalla" type="text" name="comentarioSeguimiento" id="comentarioSeguimiento">
+                            </div>
+                            <div class="col-12 mt-2">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label" for="fechaInicioFalla">*Fecha de inicio:</label>
+                                        <input class="form-control seguimientoFalla" type="date" name="fechaInicioFalla" id="fechaInicioFalla">
+                                        <span class="error-message" id="errorFechaInicio" style="color: rgb(214, 0, 0); display: none; font-size: 15px;">*Campo requerido</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label" for="horaInicioFalla">*Hora de inicio:</label>
+                                        <input class="form-control seguimientoFalla" type="time" name="horaInicioFalla" id="horaInicioFalla">
+                                        <span class="error-message" id="errorHoraInicio" style="color: rgb(214, 0, 0); display: none; font-size: 15px;">*Campo requerido</span>
+                                    </div>
+                                    <div class="col-6 mt-2">
+                                        <label class="form-label" for="fechaFinFalla">*Fecha de fin:</label>
+                                        <input class="form-control seguimientoFalla" type="date" name="fechaFinFalla" id="fechaFinFalla">
+                                        <span class="error-message" id="errorFechaFin" style="color: rgb(214, 0, 0); display: none; font-size: 15px;">*Campo requerido</span>
+                                    </div>
+                                    <div class="col-6 mt-2">
+                                        <label class="form-label" for="horaFinFalla">*Hora de fin:</label>
+                                        <input class="form-control seguimientoFalla" type="time" name="horaFinFalla" id="horaFinFalla">
+                                        <span class="error-message" id="errorHoraFin" style="color: rgb(214, 0, 0); display: none; font-size: 15px;">*Campo requerido</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-10 mt-4">
+                                <div id="evidenciaFS-input-form-editar" >
+                                    <div class="d-flex mb-3 col-12 div-evidenciaFS-editar-123" id="id-evidenciaFS-div-123">
+                                        <div class="flex-grow-1">
+                                            <label class="form-label">Evidencia de solucion: </label>
+                                            <input type="file" class="form-control-file evidenciaFS-div-editar seguimientoFalla" onchange="guardarArchivos('evidenciaFS-editar',true);" id="evidenciaFS-editar">
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('editar','evidenciaFS');return false;">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('editar',123, 'evidenciaFS');return false;">
+                                                <i class="fa-solid fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="documentoFS-input-form-editar">
+                                    <div class="d-flex mb-3 col-12 div-documentoFS-editar-123" id="id-documentoFS-div-123">
+                                        <div class="flex-grow-1">
+                                            <label class="form-label">Documento de solucion: </label>
+                                            <input type="file" class="form-control-file documentoFS-div-editar seguimientoFalla" onchange="guardarArchivos('documentoFS-editar', false);" id="documentoFS-editar">
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('editar', 'documentoFS');return false;">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('editar',123, 'documentoFS');return false;">
+                                                <i class="fa-solid fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <small class="text-black-50 mt-3">* Campos son obligatorios</small>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success btn-sm" id="buttonSeguimientoFalla" onclick="funcionSeguimientoFalla()">Actualizar</button>
-                    <button class="btn btn-success btn-sm" type="button" id="loadingButtonSeguimientoFalla" style="display:none" disabled>
-                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
-                        Cargando...
-                    </button>
+                <div class="modal-footer d-flex justify-content-between">
+                    <div>
+                        <input type="checkbox" class="btn-check" name="marcar_falla_cerrada" value="marcar_falla_cerrada" id="marcar_falla_cerrada" onchange="toggleFallaCerrada(this)">
+                        <label class="btn btn-sm btn-outline-danger" for="marcar_falla_cerrada" id="pruebadebtn">Marcar como cerrada</label>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-success btn-sm" id="buttonSeguimientoFalla" onclick="funcionSeguimientoFalla()">Actualizar</button>
+                        <button class="btn btn-success btn-sm" type="button" id="loadingButtonSeguimientoFalla" style="display:none" disabled>
+                            <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                            Cargando...
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1191,7 +1266,7 @@
                         </div>
                         
                         <hr>
-                        <h5>Información de la solucion</h5>
+                        <!-- <h5>Información de la solucion</h5>
                         <div class="d-flex flex-wrap justify-content-start align-items-start">
                             <div class="mb-3 col-6">
                                 <label class="form-label fw-bold">Folio de accion correctiva:&nbsp;&nbsp; <span class="fw-normal" id="folioVista"></span></label>
@@ -1217,11 +1292,38 @@
                                     </div>
                                 </div>
                             </div>
+                        </div> -->
+                        <div class="row">
+                            <div class="col-8">
+                                <h5>Informacion de la solucion</h5>
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label fw-bold">Responsable:&nbsp;&nbsp; <span class="fw-normal" id="responsableVista"></span></label>
+                            </div>
+                            <div class="col-12">
+                                <div id=div-table-seguimientos>
+                                    <p>Seguimientos</p>
+                                    <table class="table table-striped" id="table-seguimientos">
+                                        <thead>
+                                            <th scope="col">Accion correctiva</th>
+                                            <th scope="col">Comentarios</th>
+                                            <th scope="col">Evidencia</th>
+                                            <th scope="col">Documento</th>
+                                            <th scope="col">Fecha Inicio</th>
+                                            <th scope="col">Fecha Fin</th>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                    <div class="d-flex justify-content-start w-100">
+                        <button id="btnCerrarFallaSeguimiento" type="button" class="btn btn-danger btn-sm" onclick="cerrarFallaSeguimiento()">Cerrar falla</button>
+                    </div>
                 </div>
             </div>
         </div>
