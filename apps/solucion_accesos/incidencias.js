@@ -356,6 +356,7 @@ function cerrarFallaModal(folio){
     if(selected.falla_estatus== statusFallaResuelto.toLowerCase()){
         successMsg("Esta falla ya se encuentra resuelta.", 'Validación', 'warning')
     }else{
+        $("#marcar_falla_cerrada").prop("checked", false);
         $('#cerrarFallaModal').modal('show');
     }
 }
