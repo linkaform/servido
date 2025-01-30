@@ -18,9 +18,9 @@ let mapIcon = function(cell, formatterParams){
 let userIcon = function(cell, formatterParams){ 
     const type = cell.getRow().getData().type;
     if(type == 'Técnico'){
-        return "<i class='fas fa-tools'></i>";
+        return "<i class='fa-solid fa-user-gear'></i>";
     }else if(type == 'Ayudante'){
-        return "<i class='fas fa-user-cog'></i>";
+        return "<i class='fa-solid fa-users-gear'></i>";
     }
 };
 
