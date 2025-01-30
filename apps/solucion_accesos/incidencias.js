@@ -219,6 +219,8 @@ function verFallaModal(folio){
                 console.log("SELECTEDDDDDDDDDDDDDD",selected)
                 if(selected.falla_estatus == 'resuelto'){
                     $('#btnCerrarFallaSeguimiento').hide();
+                }else{
+                    $('#btnCerrarFallaSeguimiento').show();
                 }
 
                 $('#fallaVista').text(selected.falla);
