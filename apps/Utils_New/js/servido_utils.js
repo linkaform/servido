@@ -315,6 +315,10 @@ function createElements(dataConfig = null){
                     //#-----PROPS-----#//
                     //-----Title
                     const titleElement = element.title ?  element.title : "";
+                    ///----PDF
+                    const optionPDF = element.optionPDF ?  element.optionPDF : false;
+                    ///----PDF
+                    const optionExpanded = element.optionExpanded ?  element.optionExpanded : false;
                     //-----Color
                     let colorElement = element.color ? `border-left-${element.color}` : "";
                     let colorBg = element.color ? `bg-${element.color}` : "";
@@ -391,18 +395,34 @@ function createElements(dataConfig = null){
                             </div>
                         </div>`;
                     }else if(element.type == 'table'){
-                        //-----Element Card
+                        //-----Option PDF
+                        let buttonPDF = '';
+                        if(optionPDF){
+                            buttonPDF = `<button class="btn btn-sm btn-danger ml-2" id="download-pdf-${idElement}">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </button>`
+                        }
+                        //-----Option Expanded All
+                        let buttonExpanded = '';
+                        if(optionExpanded){
+                            buttonExpanded = `<button class="btn btn-sm btn-primary mr-2" id="button-expand-all-${idElement}">
+                                <i class="fa-solid fa-expand"></i>
+                            </button>`
+                        }
+                        //-----Element Table
                         divElement.innerHTML = `<div class="card shadow mb-4">
                             <div
                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
                                 <div class="d-flex justify-content-end">
+                                    ${buttonExpanded}
                                     <button class="btn btn-sm btn-success me-2" id="download-xls-${idElement}">
                                         <i class="fas fa-file-excel"></i>
                                     </button>
                                     <button class="btn btn-sm btn-warning" id="download-csv-${idElement}">
                                         <i class="fas fa-file-csv"></i>
                                     </button>
+                                    ${buttonPDF}
                                 </div>
                             </div>
                             <!-- Card Body -->
@@ -442,23 +462,25 @@ function createElements(dataConfig = null){
                             </div>
                         </div>`;
                     }else if(element.type == 'kanva'){
-                        if(columsKanva.length > 0){
-                            let divCustom = `<div class="row full-height">`;
-                            columsKanva.forEach((element, index) => {
-                                const titleColum = element.title ? element.title : '';
-                                const idColum = element.id ? element.id : '';
-                                const classGrid = element.grid ? element.grid : 'col-lg-2 col-md-4 col-sm-6';
+                        if (columsKanva.length > 0) {
+                                let divCustom = `<div class="row full-height">`;
 
-                                divCustom += `<div class="${classGrid}">
-                                    <h5>${titleColum}</h5>
-                                    <div class="column" id="${idColum}">
-                                    </div>
-                                </div>`;
-                            });
-                            divCustom += `</div>`;
-                            console.log('divCustom',divCustom)
-                            divElement.innerHTML = divCustom;
-                        }
+                                columsKanva.forEach((colElement) => {
+                                    const titleColum = colElement.title ? colElement.title : '';
+                                    const idColum = colElement.id ? colElement.id : '';
+                                    const classGrid = colElement.grid ? colElement.grid : 'col-lg-2 col-md-4 col-sm-6';
+
+                                    divCustom += `
+                                        <div class="${classGrid} column dropzone" ondragover="allowDrop(event)" ondrop="dropCard(event)">
+                                            <h5>${titleColum}</h5>
+                                            <div  id="${idColum}" >
+                                            </div>
+                                        </div>`;
+                                });
+
+                                divCustom += `</div>`;
+                                divElement.innerHTML = divCustom;
+                            }
                     }
                     rowDiv.appendChild(divElement);
                 });
@@ -536,7 +558,7 @@ function drawCardElement(cardId, value, scroll = null) {
 }
 
 //-Función para pintar table
-function drawTableElement(tableId, tableData, tableColums, nameDownload = null, tableConfig = null ){
+function drawTableElement(tableId, tableData, tableColums, nameDownload = null, tableConfig = null, desingPDF = null ){
     //----Config default
     let configDefault = {
         height: "400px",
@@ -563,12 +585,8 @@ function drawTableElement(tableId, tableData, tableColums, nameDownload = null, 
         nameFileCsv = `${nameDownload}.csv`;
         nameSheet = `${nameDownload}`;
     }
-    console.log('nameFileXlsx',nameFileXlsx);
-    console.log('nameFileCsv',nameFileCsv);
-    console.log('nameSheet',nameSheet);
-    //----Table
+    //----Table Options XLS
     let table = new Tabulator(`#${tableId}`, configDefault);
-
     if (document.getElementById(`download-xls-${tableId}`)){
         document.getElementById(`download-xls-${tableId}`).replaceWith(document.getElementById(`download-xls-${tableId}`).cloneNode(true));
         document.getElementById(`download-xls-${tableId}`).addEventListener("click", function (){
@@ -576,12 +594,40 @@ function drawTableElement(tableId, tableData, tableColums, nameDownload = null, 
         });
     }
 
+    //----Table Options CSV
     if (document.getElementById(`download-csv-${tableId}`)){
         document.getElementById(`download-csv-${tableId}`).replaceWith(document.getElementById(`download-csv-${tableId}`).cloneNode(true));
         document.getElementById(`download-csv-${tableId}`).addEventListener("click", function (){
             table.download("csv", nameFileCsv);
         });
     }
+
+    //----Table Options PDF
+    if (document.getElementById(`download-pdf-${tableId}`)){
+        document.getElementById(`download-pdf-${tableId}`).replaceWith(document.getElementById(`download-pdf-${tableId}`).cloneNode(true));
+        document.getElementById(`download-pdf-${tableId}`).addEventListener("click", function (){
+            table.download("pdf", "data.pdf", desingPDF);
+        });
+    }
+
+    //----Table Options EXPANDED
+    let isExpanded = false;
+
+    if (document.getElementById(`button-expand-all-${tableId}`)) {
+        document.getElementById(`button-expand-all-${tableId}`).addEventListener("click", function () {
+            table.getRows().forEach(row => {
+                if (row.getTreeChildren().length > 0) {
+                    if (isExpanded) {
+                        row.treeCollapse();
+                    } else {
+                        row.treeExpand();
+                    }
+                }
+            });
+            isExpanded = !isExpanded;
+        });
+    }
+
 }
 
 //--Funciona para cargar  estilos
@@ -683,7 +729,12 @@ function drawKanva(data) {
 
             if (targetDiv) {
                 let divCustom = `
-                    <div class="card mb-3">
+                    <div 
+                        class="card mb-3 draggable" 
+                        draggable="true" 
+                        ondragstart="dragCard(event)" 
+                        id="card-${element.key}"
+                    >
                         <div class="card-body">
                             <h6 class="card-title">${element.title}</h6>
                             <p 
@@ -698,7 +749,37 @@ function drawKanva(data) {
                     </div>
                 `;
                 targetDiv.innerHTML += divCustom;
-            } 
-        } 
+            }
+        }
     });
+}
+
+// Drag and Drop Handlers
+function dragCard(event) {
+    // Guardar el ID del elemento que se está arrastrando
+    event.dataTransfer.setData("text", event.target.id);
+}
+
+function allowDrop(event) {
+    // Permitir el drop solo en zonas válidas
+    console.log('Es valido?',event.target.classList.contains("dropzone"))
+    if (event.target.classList.contains("dropzone")) {
+        event.preventDefault();
+    }
+}
+
+function dropCard(event) {
+    // Prevenir el comportamiento predeterminado
+    event.preventDefault();
+
+    // Verificar que el objetivo es una zona de drop válida
+    console.log('Es valido?',event.target.classList.contains("dropzone"))
+    if (event.target.classList.contains("dropzone")) {
+        // Obtener el ID del elemento arrastrado
+        const cardId = event.dataTransfer.getData("text");
+        const draggedElement = document.getElementById(cardId);
+
+        // Añadir el elemento arrastrado al contenedor destino
+        event.target.appendChild(draggedElement);
+    }
 }
