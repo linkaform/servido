@@ -1,5 +1,4 @@
 let dataCatalogs = [];
-
 window.onload = function(){
   createElements(dicReportContext);
   setElementsStyle();
@@ -10,13 +9,11 @@ window.onload = function(){
     loadDemoData();
   }else if(statusSession == 'Offline'){
     loadDemoData();
-  }
-
-  
+  } 
 }
 
 function loadDemoData(){
-    drawTableElement('tableFirst', dataTable1, columsTable1);
+    drawTableElement('tableFirst', dataTable1, columsTable1, 'Ordenes_Checks', undefined, designPDF);
     setTimeout(() => { hide_loading();}, 2000);
 }
 

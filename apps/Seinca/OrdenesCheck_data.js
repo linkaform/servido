@@ -1,11 +1,10 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'table', col: '12', id:'tableFirst', title:'Detalle de empleados'},
+            { type:'table', col: '12', id:'tableFirst', title:'Detalle de empleados', optionPDF:true, optionExpanded:true},
         ] 
     },
 ];
-
 
 //-----Configuraciones de la tabla
 let mapIcon = function(cell, formatterParams){ 
@@ -16,30 +15,43 @@ let mapIcon = function(cell, formatterParams){
     return '';
 };
 
+let userIcon = function(cell, formatterParams){ 
+    const type = cell.getRow().getData().type;
+    if(type == 'Técnico'){
+        return "<i class='fas fa-tools'></i>";
+    }else if(type == 'Ayudante'){
+        return "<i class='fas fa-user-cog'></i>";
+    }
+};
+
 
 let columsTable1 = [
-    { title:"Empleado", field:'empleado', hozAlign:"left",headerFilter: true, width:250},
+    { title:"Empleado", field:'empleado', hozAlign:"left", headerHozAlign: "left",headerFilter: true, width:250},
+    { formatter:userIcon, hozAlign:"center", download: false, width:50},
     { formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
         const url = cell.getRow().getData().url_check_in;
         if(url){ window.open(url,'_blank'); }
-    },width:50},
-    { title:"Check In", field:'check_in', hozAlign:"center",headerFilter: true, width:200},
+    }, download: false, width:50},
+    { title:"Check In", field:'check_in', hozAlign:"center", headerHozAlign: "center", headerFilter: true, width:200},
     { formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
         const url = cell.getRow().getData().url_check_out;
         if(url){ window.open(url,'_blank'); }
-    },width:50},
-    { title:"Check Out", field:'check_out', hozAlign:"center", headerFilter: true, width:200},
-    { title:"Hrs Ordinarias", field:'hrs_ord', hozAlign:"center", width:200},
-    { title:"Hrs Extra", field:'hrs_ext', hozAlign:"center", width:200},
-    { title:"Horas Nocturna", field:'hrs_noc', hozAlign:"center", width:200},
-    { title:"Horas Extraordinaria Sabatina", field:'hrs_ord_ext_sab', hozAlign:"center", width:250},
-    { title:"Horas Ordinaria Sabatina", field:'hrs_ord_sab', hozAlign:"center", width:250},
-    { title:"Total", field:'total', hozAlign:"center", width:100},
+    }, download: false, width:50},
+    { title:"Check Out", field:'check_out',  hozAlign:"center", headerHozAlign: "center", headerFilter: true, width:200},
+    { title:"Hrs Ordinarias", field:'hrs_ord', hozAlign:"center", headerHozAlign: "center", width:180},
+    { title:"Hrs Extra", field:'hrs_ext', hozAlign:"center", headerHozAlign: "center", width:180},
+    { title:"Hrs Nocturna", field:'hrs_noc', hozAlign:"center", headerHozAlign: "center", width:180},
+    { title:"Hrs Extraordinaria Sabatina", field:'hrs_ord_ext_sab', hozAlign:"center", headerHozAlign: "center", width:250},
+    { title:"Hrs Ordinaria Sabatina", field:'hrs_ord_sab', hozAlign:"center", headerHozAlign: "center", width:250},
+    { title:"Total", field:'total', hozAlign:"center", headerHozAlign: "center", width:250},
 ];
+
+
 
 let dataTable1 = [
     {
         empleado: 'Empleado 1',
+        type:'Ayudante',
         check_in: '',
         check_out: '',
         hrs_ord: '6',
@@ -77,6 +89,7 @@ let dataTable1 = [
     },
     ...Array.from({ length: 14 }, (_, i) => ({
         empleado: `Empleado ${i + 2}`,
+        type: i%2 ? 'Ayudante' : 'Técnico',
         check_in: '',
         check_out: '',
         hrs_ord: '5',
@@ -113,3 +126,55 @@ let dataTable1 = [
         ]
     }))
 ];
+
+//----Diseño de PDF
+const designPDF ={
+    orientation:"landscape",
+    theme: 'grid',
+    autoTable:function(doc)
+    { 
+        let margins = 30;
+        let leftMargin = 40;
+        let marginsIndent = 40;
+        doc.setFontSize(15);
+        doc.setTextColor(23,32,42);
+        doc.text("Consolidado de Horas Extra", 370, 40);
+
+        let imageUrl = 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/679bcc5ae9370faf752d46dc.png'; 
+        doc.addImage(imageUrl, 'JPEG', 730, -20, 80, 80);
+
+        return {
+            styles: {
+                cellPadding: 2, 
+                fontSize: 8,
+                halign : 'center'
+            },
+            headStyles: {
+                fillColor: [38, 107, 115],
+                valign: 'middle'
+            },
+            alternateRowStyles: {
+                fillColor : [220, 230, 241]
+            },
+            columnStyles: {
+                0: {cellWidth: 'auto',},
+                1: {cellWidth: 'auto',},
+                2: {cellWidth: 'auto',},
+                3: {cellWidth: 'auto',},
+                4: {cellWidth: 'auto',},
+                5: {cellWidth: 'auto',},
+                6: {cellWidth: 'auto',},
+                7: {cellWidth: 'auto',},
+                8: {cellWidth: 'auto', fontSize: 9,fontStyle: 'bold',valign: 'middle'},
+            },
+            margin: { top: 10 },
+            startY: 80,
+        };
+    },
+    createdCell: function(cell, opts) {
+        if (opts.column.index == 1) {        
+            cell.styles.textColor = "#20a8d8";
+            cell.styles.fillColor = "#000";
+        }
+    },
+}
