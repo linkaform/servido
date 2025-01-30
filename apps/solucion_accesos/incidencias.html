@@ -1086,7 +1086,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="cerrarFallaModal" tabindex="-1"  aria-hidden="true">
+    <div class="modal fade" id="cerrarFallaModal" tabindex="-1"  aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1158,14 +1158,12 @@
                                         <span class="error-message" id="errorHoraInicio" style="color: rgb(214, 0, 0); display: none; font-size: 15px;">*Campo requerido</span>
                                     </div>
                                     <div class="col-6 mt-2">
-                                        <label class="form-label" for="fechaFinFalla">*Fecha de fin:</label>
+                                        <label class="form-label" for="fechaFinFalla">Fecha de fin:</label>
                                         <input class="form-control seguimientoFalla" type="date" name="fechaFinFalla" id="fechaFinFalla">
-                                        <span class="error-message" id="errorFechaFin" style="color: rgb(214, 0, 0); display: none; font-size: 15px;">*Campo requerido</span>
                                     </div>
                                     <div class="col-6 mt-2">
-                                        <label class="form-label" for="horaFinFalla">*Hora de fin:</label>
+                                        <label class="form-label" for="horaFinFalla">Hora de fin:</label>
                                         <input class="form-control seguimientoFalla" type="time" name="horaFinFalla" id="horaFinFalla">
-                                        <span class="error-message" id="errorHoraFin" style="color: rgb(214, 0, 0); display: none; font-size: 15px;">*Campo requerido</span>
                                     </div>
                                 </div>
                             </div>
@@ -1207,13 +1205,13 @@
                     </div>
                     <small class="text-black-50 mt-3">* Campos son obligatorios</small>
                 </div>
-                <div class="modal-footer d-flex justify-content-between">
+                <div class="modal-footer d-flex justify-content-end">
                     <div>
                         <input type="checkbox" class="btn-check" name="marcar_falla_cerrada" value="marcar_falla_cerrada" id="marcar_falla_cerrada" onchange="toggleFallaCerrada(this)">
                         <label class="btn btn-sm btn-outline-danger" for="marcar_falla_cerrada" id="pruebadebtn">Marcar como cerrada</label>
                     </div>
                     <div>
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                        <!-- <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button> -->
                         <button type="button" class="btn btn-success btn-sm" id="buttonSeguimientoFalla" onclick="funcionSeguimientoFalla()">Actualizar</button>
                         <button class="btn btn-success btn-sm" type="button" id="loadingButtonSeguimientoFalla" style="display:none" disabled>
                             <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>

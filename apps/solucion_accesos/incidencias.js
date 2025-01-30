@@ -2505,20 +2505,6 @@ function funcionSeguimientoFalla(){
         document.getElementById("errorHoraInicio").style.display = "none";
     }
 
-    if (!fechaFin) {
-        document.getElementById("errorFechaFin").style.display = "block";
-        valid = false;
-    } else {
-        document.getElementById("errorFechaFin").style.display = "none";
-    }
-
-    if (!horaFin) {
-        document.getElementById("errorHoraFin").style.display = "block";
-        valid = false;
-    } else {
-        document.getElementById("errorHoraFin").style.display = "none";
-    }
-
     if (!folioSeguimientoVal) {
         document.getElementById("errorFolioSeguimiento").style.display = "block";
         valid = false;
@@ -2556,6 +2542,9 @@ function funcionSeguimientoFalla(){
         'falla_evidencia_solucion': arraySuccessFoto,
         'falla_documento_solucion': arraySuccessArchivo
     }
+    if (!fechaFin && !horaFin) {
+        data_failure_update.fechaFinFallaCompleta = null;
+    }
     let status_falla_seguimiento = 'abierto'
     if(fallaCerrada){
         status_falla_seguimiento = 'resuelto'
@@ -2567,7 +2556,7 @@ function funcionSeguimientoFalla(){
         data_failure_update.falla_documento_solucion = []
     }
     console.log("SELECTEDDDDDDDD", selected)
-    console.log("DATAA",data_failure_update, selected.folio)
+    console.log("DATAAAAAAAAAAAFAILUREUPDATE",data_failure_update, selected.folio)
     let falla_grupo_seguimiento = data_failure_update
     fetch(url + urlScripts, {
         method: 'POST',
