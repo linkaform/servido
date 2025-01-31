@@ -589,23 +589,11 @@ async function enviarSmsPaseE(qr="") {
     if(data.status_pase.toLowerCase()=='activo'){
         if(data.telefono_pase!==""){
             loadingService('Obteniendo pase...')
-            let pdf = await get_pdf(selectedGlobalPase, account_id)
             let bodyPost={
-                    script_name: "pase_de_acceso.py",
+                    script_name: "pase_de_acceso_use_api.py",
                     folio:data._id,
                     account_id:account_id 
                 }
-            let msj=""
-            if(data.fecha_desde_visita !==""){
-                msj=`el día ${data.fecha_desde_visita}`
-            }else if (data.fecha_desde_hasta !=="" && data.fecha_desde_visita !==""){
-                msj= `apartir del `+data.fecha_desde_visita+` hasta el `+data.fecha_desde_hasta+`.`
-            }
-            data_for_msj_tel={
-                mensaje: `Estimado ${data.nombre_pase} 😁, ${data.visita_a.length>0 ? data.visita_a[0].nombre :''}, te esta invitando a: ${data.ubicacion}, `+msj+` Descarga tu pase 💳 en: ${pdf.download_url}`,
-                numero: data.telefono_pase
-            }
-            bodyPost.data_cel_msj= data_for_msj_tel
             bodyPost.option= "enviar_msj"
             await enviarSmsPase(bodyPost)
         }else{
