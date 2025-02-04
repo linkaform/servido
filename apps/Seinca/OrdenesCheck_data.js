@@ -38,6 +38,28 @@ let columsTable1 = [
         if(url){ window.open(url,'_blank'); }
     }, download: false, width:50},
     { title:"Check Out", field:'check_out',  hozAlign:"center", headerHozAlign: "center", headerFilter: true, width:200},
+    { title:"Hrs Nocturna", field:'hrs_noct', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:1,}, width:200},
+    { title:"Hrs Extra al 35%", field:'hrs_ext', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:1,}, width:200},
+    { title:"Hrs Extra al 100%", field:'hrs_ext_full', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:1,}, width:200},
+    { title:"Total", field:'total', hozAlign:"center", headerHozAlign: "center", width:250},
+
+
+];
+
+/*
+let columsTable1 = [
+    { title:"Empleado", field:'empleado', hozAlign:"left", headerHozAlign: "left",headerFilter: true, width:250},
+    { formatter:userIcon, hozAlign:"center", download: false, width:50},
+    { formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
+        const url = cell.getRow().getData().url_check_in;
+        if(url){ window.open(url,'_blank'); }
+    }, download: false, width:50},
+    { title:"Check In", field:'check_in', hozAlign:"center", headerHozAlign: "center", headerFilter: true, width:200},
+    { formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
+        const url = cell.getRow().getData().url_check_out;
+        if(url){ window.open(url,'_blank'); }
+    }, download: false, width:50},
+    { title:"Check Out", field:'check_out',  hozAlign:"center", headerHozAlign: "center", headerFilter: true, width:200},
     { title:"Hrs Ordinarias", field:'hrs_ord', hozAlign:"center", headerHozAlign: "center", width:180},
     { title:"Hrs Extra", field:'hrs_ext', hozAlign:"center", headerHozAlign: "center", width:180},
     { title:"Hrs Nocturna", field:'hrs_noc', hozAlign:"center", headerHozAlign: "center", width:180},
@@ -46,6 +68,7 @@ let columsTable1 = [
     { title:"Total", field:'total', hozAlign:"center", headerHozAlign: "center", width:250},
 ];
 
+*/
 
 
 let dataTable1 = [
@@ -59,28 +82,24 @@ let dataTable1 = [
         hrs_noc: '4',
         hrs_ord_ext_sab: '1',
         hrs_ord_sab: '0.5',
-        total: '13.5',
+        total: '12',
         _children: [
             {
                 check_in: '2025-01-29 12:51:17',
                 check_out: '2025-01-29 18:53:10',
-                hrs_ord: '3',
+                hrs_noct: '3',
                 hrs_ext: '2',
-                hrs_noc: '1',
-                hrs_ord_sab: '0.5',
-                hrs_ord_ext_sab: '1',
-                total: '7.5',
+                hrs_ext_full: '1',
+                total: '6',
                 url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
                 url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
             },
             {
                 check_in: '2025-01-29 8:00:00',
                 check_out: '2025-01-29 12:38:08',
-                hrs_ord: '3',
-                hrs_ext: '',
-                hrs_noc: '3',
-                hrs_ord_sab: '',
-                hrs_ord_ext_sab: '',
+                hrs_noct: '3',
+                hrs_ext: '2',
+                hrs_ext_full: '1',
                 total: '6',
                 url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
                 url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
@@ -92,34 +111,29 @@ let dataTable1 = [
         type: i%2 ? 'Ayudante' : 'Técnico',
         check_in: '',
         check_out: '',
-        hrs_ord: '5',
-        hrs_ext: '1',
-        hrs_noc: '3',
-        hrs_ord_ext_sab: '1',
-        hrs_ord_sab: '0.5',
-        total: '10.5',
+        hrs_noct: '6',
+        hrs_ext: '4',
+        hrs_ext_full: '2',
+        total: '6',
+        total: '12',
         _children: [
             {
                 check_in: '2025-01-29 09:00:00',
                 check_out: '2025-01-29 14:00:00',
-                hrs_ord: '4',
-                hrs_ext: '1',
-                hrs_noc: '2',
-                hrs_ord_sab: '0.5',
-                hrs_ord_ext_sab: '1',
-                total: '8.5',
+                 hrs_noct: '3',
+                hrs_ext: '2',
+                hrs_ext_full: '1',
+                total: '6',
                 url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
                 url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
             },
             {
                 check_in: '2025-01-29 15:00:00',
                 check_out: '2025-01-29 19:00:00',
-                hrs_ord: '3',
-                hrs_ext: '1',
-                hrs_noc: '2',
-                hrs_ord_sab: '0.5',
-                hrs_ord_ext_sab: '1',
-                total: '7.5',
+                hrs_noct: '3',
+                hrs_ext: '2',
+                hrs_ext_full: '1',
+                total: '6',
                 url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
                 url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
             }
