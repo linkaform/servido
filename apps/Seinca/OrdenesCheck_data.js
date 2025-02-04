@@ -41,7 +41,7 @@ let columsTable1 = [
     { title:"Hrs Nocturna", field:'hrs_noct', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:1,}, width:200},
     { title:"Hrs Extra al 35%", field:'hrs_ext', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:1,}, width:200},
     { title:"Hrs Extra al 100%", field:'hrs_ext_full', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:1,}, width:200},
-    { title:"Total", field:'total', hozAlign:"center", headerHozAlign: "center", width:250},
+    { title:"Total", field:'total', hozAlign:"center", headerHozAlign: "center",bottomCalc:"sum", bottomCalcParams:{precision:1,}, width:250},
 
 
 ];
