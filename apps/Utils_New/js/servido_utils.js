@@ -340,6 +340,9 @@ function createElements(dataConfig = null){
                     const idElement = element.id ? element.id : Math.floor(Math.random() * 1000);
                     //-----Id
                     const columsKanva = element.columsKanva? element.columsKanva : [];
+                    //-----Components Form
+                    const formElements = element.formElements? element.formElements : [];
+
                     //#-----COMPONENTS-----#//
                     if(element.type == 'card'){
                         //-----Element Progress
@@ -389,7 +392,7 @@ function createElements(dataConfig = null){
                             </div>
                             <!-- Card Body -->
                             <div class="card-body">
-                                <div id="secondElement">
+                                <div>
                                     <canvas id="${idElement}" height="400"></canvas>
                                 </div>
                             </div>
@@ -481,6 +484,38 @@ function createElements(dataConfig = null){
                                 divCustom += `</div>`;
                                 divElement.innerHTML = divCustom;
                             }
+                    }else if(element.type == 'calendar'){
+                        divElement.innerHTML = `<div class="card shadow mb-4">
+                            <div
+                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="${idElement}" ></div>
+                            </div>
+                        </div>`;
+                    }else if(element.type == 'modal'){
+                        let htmlFormElements = ``
+                        if (formElements.length > 0) {
+                            formElements.forEach((itemElement, index) => {
+                                htmlFormElements += drawModalBody(itemElement.type, itemElement.id, itemElement.title);
+                            });
+                        }
+                        divElement.innerHTML = `<div class="modal fade" id="${idElement}" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">${titleElement}</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        ${htmlFormElements}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
                     }
                     rowDiv.appendChild(divElement);
                 });
@@ -722,6 +757,7 @@ function showElements() {
     });
 }
 
+//-----Prototipo de KANVAAS
 function drawKanva(data) {
     data.forEach((element) => {
         if (element.key) {
@@ -754,7 +790,6 @@ function drawKanva(data) {
     });
 }
 
-// Drag and Drop Handlers
 function dragCard(event) {
     // Guardar el ID del elemento que se está arrastrando
     event.dataTransfer.setData("text", event.target.id);
@@ -782,4 +817,43 @@ function dropCard(event) {
         // Añadir el elemento arrastrado al contenedor destino
         event.target.appendChild(draggedElement);
     }
+}
+
+//-----Funcion para Calendario
+function drawCalendar(id, data, config = null){
+    //----Config Default
+    let configDefault = {
+        locale : 'es',
+        selectable : false,
+        aspectRatio: 2,
+        schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+        initialView: window.innerWidth < 768 ? 'dayGridMonth' : 'dayGridMonth', 
+        height: window.innerWidth < 768 ? 800 : 1200,
+        headerToolbar: {
+            left: 'prev,next', 
+            center: 'title',
+            right: 'today',
+        },
+        windowResize: function (view) {
+            const newView = window.innerWidth < 768 ? 'dayGridMonth' : 'dayGridMonth';
+            calendar.changeView(newView);
+        },
+    }
+    if(config){ configDefault = config;}
+    
+    //----Data Events
+    configDefault['events'] = data ? data : [];
+
+    //----Start Calendar
+    const calendarDiv = document.getElementById(id);
+    const calendar = new FullCalendar.Calendar(calendarDiv, configDefault);
+    calendar.render();
+}
+
+//-----Función para crear Modal BOdy
+function drawModalBody(type, id, title){
+    if (type == 'p') {
+        return  `<p><strong>${title}</strong> <span id="${id}"></span></p>`
+    }
+    return '';
 }
