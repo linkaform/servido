@@ -6,11 +6,12 @@ let dicReportContext = [
     },
     { class:'', _children : [
             { type:'modal', col: '12', id:'modalData', title:'Datos del mantenimiento', formElements : [
-                    {type:'p', title:'Folio:', id:'textFolio'},
-                    {type:'p', title:'Instrumento:', id:'textInstrument'},
                     {type:'p', title:'Cliente:', id:'textClient'},
+                    {type:'p', title:'Instrumento:', id:'textInstrument'},
                     {type:'p', title:'Marca:', id:'textBrand'},
                     {type:'p', title:'Model:', id:'textModel'},
+                    {type:'p', title:'Serie:', id:'textSerie'},
+                    {type:'p', title:'Folio:', id:'textFolio'},
                 ]
             },
         ] 

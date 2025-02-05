@@ -86,11 +86,13 @@ function getCatalog(){
 //----SHOW INFORMATION
 function showInformation(info){
     let event = info.event && info.event.extendedProps ? info.event.extendedProps : {};
+    console.log('event',event)
     document.getElementById('textFolio').textContent = event.folio ?  event.folio : '';
     document.getElementById('textInstrument').textContent = event.instrument ? event.instrument : '';
     document.getElementById('textClient').textContent = event.client ? event.client : '';
     document.getElementById('textBrand').textContent = event.brand ? event.brand : '';
     document.getElementById('textModel').textContent = event.model ? event.model: '';
+    document.getElementById('textSerie').textContent = event.serie ? event.serie: '';
     let eventModal = new bootstrap.Modal(document.getElementById('modalData'));
     eventModal.show();
 }
