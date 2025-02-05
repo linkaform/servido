@@ -47,7 +47,7 @@ async function getInformation(){
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
 
         if(data.response_first){
-            drawCalendar('calendarFirst', data.response_first);
+            drawCalendar('calendarFirst', data.response_first, configCustom);
         }
         //-----Style
         hideLoadingComponent();
