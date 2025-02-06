@@ -698,7 +698,8 @@ function changeStatusTurn(buttonClick){
                         casetaActualizarEstatus(turnoAbierto, casetaNoDisponible)
                         turnoAbierto(idGuardiasEnTurno.length >0 ? idGuardiasEnTurno :[])
                         $("#textGuardiaEnTurno").text(res.response.data.json.boot_status.guard_on_duty)
-                        $("#textFechaInicioCaseta").text(res.response.data.json.created_at)
+                        let fechaFormateadaInicioCaseta = formatInicioFechaTurno(res.response.data.json.created_at)
+                        $("#textFechaInicioCaseta").text(fechaFormateadaInicioCaseta)
                         thisUserCheckInId=res.response.data.json.id
                         setCookie('casetaFolioTurnoAbierto',data.json.folio , 7)
                         Swal.fire({
@@ -729,6 +730,22 @@ function changeStatusTurn(buttonClick){
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
 }
 
+function formatInicioFechaTurno(fecha){
+    const timestamp = fecha;
+    const fechaS = new Date(timestamp * 1000);
+
+    const opcionesFecha = { day: "numeric", month: "long", year: "numeric" };
+    const opcionesHora = { hour: "2-digit", minute: "2-digit", second: "2-digit" };
+
+    const fechaFormateada = fechaS.toLocaleDateString("es-MX", opcionesFecha);
+    const horaFormateada = fechaS.toLocaleTimeString("es-MX", {
+    ...opcionesHora,
+    hour12: false,
+    });
+
+    const resultado = `${fechaFormateada}, ${horaFormateada} hrs`;
+    return resultado
+}
 
 //FUNCION que muestra un alert de confirmacion y las validaciones necesarias ANTES de cambiar el estatus del turno y despues llama a la funcion changeStatusTurn
 function AlertAndActionChangeStatusTurn(){
