@@ -39,7 +39,7 @@ let columsTable1 = [
     { title:"Sede", field:'sede', hozAlign:"left",  width:250},
     { title:"Campus", field:'campus', hozAlign:"left",  width:250},
     { title:"Local", field:'local', hozAlign:"left",  width:250},
-    { title:"Sucursal", field:'sucursal', hozAlign:"left",  width:250},
+    { title:"Punto", field:'sucursal', hozAlign:"left",  width:250},
     { title:"Titulo", field:'titulo', hozAlign:"left",  width:300},
     { title:"Calificación", field:'points', hozAlign:"right", bottomCalc:"avg",bottomCalcParams:{precision:2}, width:150},
 ];
