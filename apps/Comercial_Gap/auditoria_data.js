@@ -35,13 +35,14 @@ let columsTable1 = [
         getDownloadPdf(cell.getRow().getData().id_record);
     }},
     { title:"Folio", field:'folio', hozAlign:"left",headerFilter:"input", width:150},
+    { title:"Fecha", field:'date', hozAlign:"left",headerFilter:"input", width:150},
     { title:"Nombre", field:'nombre', hozAlign:"left",  width:300},
     { title:"Sede", field:'sede', hozAlign:"left",  width:250},
     { title:"Campus", field:'campus', hozAlign:"left",  width:250},
     { title:"Local", field:'local', hozAlign:"left",  width:250},
     { title:"Punto", field:'sucursal', hozAlign:"left",  width:250},
     { title:"Titulo", field:'titulo', hozAlign:"left",  width:300},
-    { title:"Calificación", field:'points', hozAlign:"right", bottomCalc:"avg",bottomCalcParams:{precision:2}, width:150},
+    { title:"Calificación", field:'points', hozAlign:"right", bottomCalc:"avg",bottomCalcParams:{precision:2}, width:200},
 ];
 
 

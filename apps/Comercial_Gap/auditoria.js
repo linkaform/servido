@@ -120,18 +120,18 @@ async function getInformation(){
         }
 
         if(data.data_five){
-            drawChartElement('chartFiveth','line',data.data_five, setOptions5);
+            drawChartElement('chartFiveth','line',data.data_five, setOptions5, false);
         }
         if(data.data_sixth){
-            drawChartElement('chartSixth','line',data.data_sixth, setOptions5);
+            drawChartElement('chartSixth','line',data.data_sixth, setOptions5, false);
         }
 
         if(data.data_seventh){
-            drawChartElement('chartSeventh','line',data.data_seventh, setOptions5);
+            drawChartElement('chartSeventh','line',data.data_seventh, setOptions5, false);
         }
 
         if(data.data_eigth){
-            drawChartElement('chartEigth','line',data.data_eigth, setOptions5);
+            drawChartElement('chartEigth','line',data.data_eigth, setOptions5, false);
         }
 
         if(data.data_nineth){
