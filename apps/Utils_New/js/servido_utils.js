@@ -527,19 +527,22 @@ function createElements(dataConfig = null){
 
 //-Funciona para pintar graficas de manera generica
 let chartInstances = {};
-function drawChartElement(canvasId, type, datasets, dataconfig) {
+function drawChartElement(canvasId, type, datasets, dataconfig, datalabels = true) {
     if (document.getElementById(canvasId)){
         var ctx = document.getElementById(canvasId).getContext('2d');
         if (chartInstances[canvasId]) {
             chartInstances[canvasId].destroy();
         }
-        datasets = setColorsDatasets(datasets, type)
-        chartInstances[canvasId] = new Chart(ctx, {
+        let config = {
             type: type, 
-            data: datasets,
-            plugins: [ChartDataLabels],
+            data: datasets, 
             options: dataconfig
-        });
+        }
+        if(datalabels){
+            config['plugins'] = [ChartDataLabels];
+        }
+        datasets = setColorsDatasets(datasets, type)
+        chartInstances[canvasId] = new Chart(ctx, config);
     }
 }
 

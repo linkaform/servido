@@ -1,22 +1,8 @@
-let dataCatalogs = [];
-const cardKeys = [
-  "android",
-  "backend",
-  "bi",
-  "front",
-  "ios",
-  "licencias",
-  "mandrill",
-  "pdf",
-  "reportes",
-  "scripts",
-  "university"
-];
-
 window.onload = function(){
   createElements(dicReportContext);
   setElementsStyle();
   const statusSession = getSession();
+  console.log('statusSession',statusSession)
   if(statusSession == 'Active'){
     loadData();
   }else if(statusSession == 'Demo'){
@@ -24,8 +10,6 @@ window.onload = function(){
   }else if(statusSession == 'Offline'){
     loadDemoData();
   }
-
-  
 }
 
 function loadDemoData(){
@@ -34,18 +18,13 @@ function loadDemoData(){
     drawCardElement('cardThird',40);
     drawCardElement('cardFourth',50);
     drawCardElement('cardFiveth',60);
-    drawCardElement('cardSixth',70);
-    drawCardElement('cardSeventh',60);
-    drawCardElement('cardEigth',10);
-    drawCardElement('cardNineth',50);
-    drawCardElement('cardTenth',60);
-    drawCardElement('cardEleventh',90);
-    drawTableElement('tableFirst', dataTable1, columsTable1);
+    
+
+    drawTableElement('tableFirst', dataTest, colTest);
     drawChartElement('chartFirst','line',dataChart1,setOptions1);
-    drawChartElement('chartSecond','line',dataChart2, setOptions2);
-    drawChartElement('chartThird','pie',dataChart3, setOptions3);
     setTimeout(() => { hide_loading();}, 2000);
 }
+
 
 //-----LOAD DATA ACTIVE
 function loadData(data) {
@@ -103,9 +82,6 @@ async function getInformation(){
 }
 
 function capitalize(number) {
-  const suffixes = [
-    "First", "Second", "Third", "Fourth", "Fiveth", 
-    "Sixth", "Seventh", "Eigth", "Nineth", "Tenth", "Eleventh"
-  ];
+  const suffixes = ["First", "Second", "Third", "Fourth", "Fiveth", ];
   return suffixes[number - 1];
 }

@@ -29,6 +29,31 @@ function set_catalog_select(listDic, key, id) {
     });
 }
 
+
+//----Funciona para buscar dentro de una lista de diccionarios, y llenar con valores unicos un selector
+function setSelect(listDic, labelKey, idKey, idElement) {
+    const selectElement = document.getElementById(idElement);
+    if (!selectElement) {
+      console.error(`No se encontró un elemento con el id: ${id}`);
+      return;
+    }
+    selectElement.innerHTML = '';
+    //----Opción
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Seleccione una opción';
+    selectElement.appendChild(defaultOption);
+
+    listDic.forEach(item => {
+      const optionElement = document.createElement('option');
+      optionElement.value = item[idKey];
+      optionElement.textContent = item[labelKey];
+      selectElement.appendChild(optionElement);
+    });
+}
+
+
+
 //----Funciona para limpiar un selector y dejarlo con una opción pre definida
 function set_clean_select(id) {
   const selectElement = document.getElementById(id);

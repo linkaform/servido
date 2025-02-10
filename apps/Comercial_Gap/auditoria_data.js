@@ -1,17 +1,23 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'chart', col: '6', id:'chartFirst', title:'Locales por mes'},
-            { type:'chart', col: '6', id:'chartSecond', title:'Sede por mes'},
+            { type:'chart', col: '6', id:'chartFirst', title:'Sede por mes'},
+            { type:'chart', col: '6', id:'chartSecond', title:'Campus por mes'},
         ] 
     },
     { class:'', _children : [
-            { type:'chart', col: '6', id:'chartThird', title:'Tendencia por local'},
-            { type:'chart', col: '6', id:'chartFourth', title:'Tendencia por Sede'},
+            { type:'chart', col: '6', id:'chartThird', title:'Punto por mes'},
+            { type:'chart', col: '6', id:'chartFourth', title:'Auditorias'},
         ] 
     },
     { class:'', _children : [
-            { type:'chart', col: '12', id:'chartFiveth', title:'Tedencia por Institución'},
+            { type:'chart', col: '6', id:'chartFiveth', title:'Tendencia por Institución'},
+            { type:'chart', col: '6', id:'chartSixth', title:'Tendencia por Sede'},
+        ] 
+    },
+    { class:'', _children : [
+            { type:'chart', col: '6', id:'chartSeventh', title:'Tedencia por Campus'},
+            { type:'chart', col: '6', id:'chartEigth', title:'Tedencia por Punto'},
         ] 
     },
     { class:'', _children : [
@@ -35,7 +41,7 @@ let columsTable1 = [
     { title:"Local", field:'local', hozAlign:"left",  width:250},
     { title:"Sucursal", field:'sucursal', hozAlign:"left",  width:250},
     { title:"Titulo", field:'titulo', hozAlign:"left",  width:300},
-    { title:"Points", field:'points', hozAlign:"right",  width:50},
+    { title:"Calificación", field:'points', hozAlign:"right", bottomCalc:"avg",bottomCalcParams:{precision:2}, width:150},
 ];
 
 
@@ -157,6 +163,7 @@ let dataTable1 = [
 
 
 //-----Configuiraciónes de las graficas
+//---Bar
 var setOptions1 = {
     responsive: true,
     plugins: {
@@ -205,27 +212,6 @@ var dataChart1 = {
             backgroundColor: '#3357FF', 
         },
     ]
-
-};
-
-var setOptions2 = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top',
-      },
-      title: {
-          display: false,
-      },
-      datalabels: {
-          color: 'white',
-          font: {
-              size: 15
-           }
-        }
-  },
 };
 
 var dataChart2 = {
@@ -252,96 +238,91 @@ var dataChart2 = {
     ]
 };
 
-var setOptions3 = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false,
-        position: 'top',
-      },
-      title: {
-          display: false,
-      },
-      datalabels: {
-        color: 'grey',
-        font: {
-            size: 20
-        }
-      }
-  },
-  responsive: true, 
-    maintainAspectRatio: false ,
-  scales: {
-      y: {
-          step: 1,
-      }
-  },
-};
-
 var dataChart3 = {
-    labels: ['Punto 1','Punto 2','Punto 3','Punto 4','Punto 5'],
+    labels: ['2024-Oct','2024-Nov','2024-Dic','2025-Ene','2025-Feb'],
     datasets: [
         {
-          label: 'Tedencia',
-          data: [40,50,30,90,100],
-          backgroundColor: [],
-          borderColor: [],
+            label: 'Punto 1',
+            data: [200, 150, 180, 60, 130],
+            backgroundColor: '#FF5733', // Naranja
+            borderColor: '#FF5733',
+        },
+        {
+            label: 'Punto 2',
+            data: [170, 120, 140, 70, 110],
+            backgroundColor: '#33FF57', // Verde
+            borderColor: '#33FF57',
+        },
+        {
+            label: 'Punto 3',
+            data: [190, 160, 170, 80, 140],
+            backgroundColor: '#3357FF', // Azul
+            borderColor: '#3357FF',
         },
     ]
 };
+
+//---Radar
+var dataChart4 = {
+    labels: [
+        "Limpieza y Sanitizacion",
+        "Instalaciones",
+        "Materias Primas",
+    ],
+    datasets: [
+        {
+            "borderColor": [],
+            "data": [
+                20.416333333333338,
+                4.456666666666666,
+                9.328333333333333,
+            ],
+            "backgroundColor": ['#FF5733','#33FF57','#3357FF'],
+            "label": "Puntaje"
+        }
+    ]
+}
 
 var setOptions4 = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false,
-        position: 'top',
+            display: false,
+            position: 'top',
       },
       title: {
-          display: false,
+        display: false,
       },
       datalabels: {
-        color: 'grey',
-        font: {
-            size: 20
-        }
-      }
-  },
-  responsive: true, 
-    maintainAspectRatio: false ,
-  scales: {
-      y: {
-          step: 1,
-      }
-  },
-};
-
-var dataChart4 = {
-    labels: ['Sede 1','Sede 2','Sede 3','Sede 4','Sede 5'],
-    datasets: [
-        {
-          label: 'Tedencia',
-          data: [30,80,70,350,100],
-          backgroundColor: [],
-          borderColor: [],
+            color: 'white',
+            font: {
+                size: 15
+            }
         },
-    ]
+    },
+    scales: {
+        r: { 
+            beginAtZero: true,
+        }
+    }
 };
 
+//--Line
 var setOptions5 = {
     responsive: true,
     plugins: {
       legend: {
-        display: false,
+        display: true,
         position: 'top',
       },
       title: {
           display: false,
       },
       datalabels: {
-        color: 'grey',
+        color: 'black',
         font: {
-            size: 20
+            size: 15
         }
       }
   },
@@ -355,14 +336,97 @@ var setOptions5 = {
 };
 
 var dataChart5 = {
-    labels: ['Institución 1','Institución 2','Institución 3','Institución 4','Institución 5'],
+    labels: ['2024-Oct','2024-Nov','2024-Dic','2025-Ene','2025-Feb'],
     datasets: [
         {
-          label: 'Tedencia',
-          data: [150,100,128,150,100],
-          backgroundColor: [],
-          borderColor: [],
+            label: 'Institución 1',
+            data: [135, 120, 140, 110, 125],
+            fill: false,
+            backgroundColor: '#FF5733', 
+        },
+        {
+            label: 'Institución 2',
+            data: [145, 100, 130, 140, 115],
+            fill: false,
+            backgroundColor: '#33FF57',
+        },
+        {
+            label: 'Institución 3',
+            data: [125, 110, 120, 135, 150],
+            fill: false,
+            backgroundColor: '#3357FF', 
         },
     ]
 };
 
+var dataChart6 = {
+    labels: ['2024-Oct','2024-Nov','2024-Dic','2025-Ene','2025-Feb'],
+    datasets: [
+        {
+            label: 'Sede 1',
+            data: [115, 120, 140, 190, 125],
+            fill: false,
+            backgroundColor: '#FF5733', 
+        },
+        {
+            label: 'Sede 2',
+            data: [195, 100, 30, 145, 115],
+            fill: false,
+            backgroundColor: '#33FF57',
+        },
+        {
+            label: 'Sede 3',
+            data: [95, 110, 130, 135, 190],
+            fill: false,
+            backgroundColor: '#3357FF', 
+        },
+    ]
+};
+
+var dataChart7 = {
+    labels: ['2024-Oct','2024-Nov','2024-Dic','2025-Ene','2025-Feb'],
+    datasets: [
+        {
+            label: 'Campus 1',
+            data: [15, 20, 40, 10, 25],
+            fill: false,
+            backgroundColor: '#FF5733', 
+        },
+        {
+            label: 'Campus 2',
+            data: [95, 60, 30, 45, 15],
+            fill: false,
+            backgroundColor: '#33FF57',
+        },
+        {
+            label: 'Campus 3',
+            data: [65, 90, 30, 35, 90],
+            fill: false,
+            backgroundColor: '#3357FF', 
+        },
+    ]
+};
+
+var dataChart8 = {
+    labels: ['2024-Oct','2024-Nov','2024-Dic','2025-Ene','2025-Feb'],
+    datasets: [
+        {
+            label: 'Punto 1',
+            data: [125, 230, 140, 210, 125],
+            fill: false,
+            backgroundColor: '#FF5733', 
+        },
+        {
+            label: 'Punto 2',
+            data: [195, 260, 130, 245, 315],
+            fill: false,
+            backgroundColor: '#33FF57',
+        },
+        {
+            label: 'Punto 3',
+            data: [465, 390, 320, 315, 190],
+            fill: false,
+            backgroundColor: '#3357FF', 
+        },
+    ]
+};

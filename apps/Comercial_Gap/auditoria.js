@@ -17,10 +17,13 @@ window.onload = function(){
 //-----FUNCTIONS DEMO
 function loadDemoData(){
     drawChartElement('chartFirst','bar',dataChart1,setOptions1);
-    drawChartElement('chartSecond','bar',dataChart2, setOptions2);
-    drawChartElement('chartThird','line',dataChart3, setOptions3);
-    drawChartElement('chartFourth','line',dataChart4, setOptions4);
+    drawChartElement('chartSecond','bar',dataChart2, setOptions1);
+    drawChartElement('chartThird','bar',dataChart3, setOptions1);
+    drawChartElement('chartFourth','radar',dataChart4, setOptions4, false);
     drawChartElement('chartFiveth','line',dataChart5, setOptions5);
+    drawChartElement('chartSixth','line',dataChart6, setOptions5);
+    drawChartElement('chartSeventh','line',dataChart7, setOptions5);
+    drawChartElement('chartEigth','line',dataChart8, setOptions5);
     drawTableElement('tableFirst', dataTable1, columsTable1);
     setTimeout(() => { hide_loading();}, 2000);
 }
@@ -45,7 +48,6 @@ function loadData(data) {
         } else {
             set_clean_select('sede');
             set_clean_select('campus');
-            set_clean_select('local');
             set_clean_select('sucursal');
             $('#sede').select2();
             $('#campus').select2();
@@ -62,10 +64,8 @@ function loadData(data) {
             $('#campus').select2();
         } else {
             set_clean_select('campus');
-            set_clean_select('local');
             set_clean_select('sucursal');
             $('#campus').select2();
-            $('#local').select2();
             $('#sucursal').select2();
         }
     });
@@ -74,20 +74,6 @@ function loadData(data) {
         const selectedValues = $(this).val(); 
         if (selectedValues && selectedValues.length > 0) {
             dicFind = findListDictionary(dataCatalogs, 'campus', selectedValues);
-            set_catalog_select(dicFind, 'local', 'local');
-            $('#local').select2();
-        } else {
-            set_clean_select('local');
-            set_clean_select('sucursal');
-            $('#local').select2();
-            $('#sucursal').select2();
-        }
-    });
-
-    $('#local').on('change', function() {
-        const selectedValues = $(this).val(); 
-        if (selectedValues && selectedValues.length > 0) {
-            dicFind = findListDictionary(dataCatalogs, 'local', selectedValues);
             set_catalog_select(dicFind, 'sucursal', 'sucursal');
             $('#sucursal').select2();
         } else {
@@ -95,6 +81,7 @@ function loadData(data) {
             $('#sucursal').select2();
         }
     });
+
     //---Hide
     setTimeout(() => { hide_loading();}, 2000);
 }
@@ -113,23 +100,40 @@ async function getInformation(){
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
+
         if(data.data_first){
-            drawChartElement('chartFirst','bar',data.data_first,setOptions1);
+            drawChartElement('chartFirst','bar',data.data_first, setOptions1);
         }
+
         if(data.data_second){
-            drawChartElement('chartSecond','bar',data.data_second, setOptions2);
+            drawChartElement('chartSecond','bar',data.data_second, setOptions1);
         }
+
         if(data.data_third){
-            drawChartElement('chartThird','line',data.data_third, setOptions3);
+            drawChartElement('chartThird','bar',data.data_third, setOptions1);
         }
+
         if(data.data_fourth){
-            drawChartElement('chartFourth','line',data.data_fourth, setOptions4);
+            drawChartElement('chartFourth','radar',data.data_fourth, setOptions4, false);
         }
+
         if(data.data_five){
             drawChartElement('chartFiveth','line',data.data_five, setOptions5);
         }
         if(data.data_sixth){
-            drawTableElement('tableFirst', data.data_sixth, columsTable1);
+            drawChartElement('chartSixth','line',data.data_sixth, setOptions5);
+        }
+
+        if(data.data_seventh){
+            drawChartElement('chartSeventh','line',data.data_seventh, setOptions5);
+        }
+
+        if(data.data_eigth){
+            drawChartElement('chartEigth','line',data.data_eigth, setOptions5);
+        }
+
+        if(data.data_nineth){
+            drawTableElement('tableFirst', data.data_nineth, columsTable1);
         }
 
         //-----Style
@@ -163,9 +167,14 @@ function get_catalog(){
     .then((res) => res.json())
     .then((res) => {
         const data = res.response && res.response.data ? res.response.data : [];
-        if(data.length > 0){
-            dataCatalogs = data;
-            set_catalog_select(data, 'auditoria', 'auditoria');
+        const data_catalog = data.res_catalog ? data.res_catalog : [];
+        const data_forms = data.res_forms ? data.res_forms : [];
+
+        if(data_catalog.length > 0){
+            set_catalog_select(data_catalog, 'auditoria', 'auditoria');
+        }
+        if(data_forms.length > 0){
+            setSelect(data_forms, 'name', 'id', 'formIds');
         }
     })
 }

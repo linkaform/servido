@@ -18,7 +18,6 @@ window.onload = function(){
     setTimeout(() => { hide_loading();}, 2000);
 }
 
-
 //----REQUEST
 function getData(){
     //----Text
