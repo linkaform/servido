@@ -43,6 +43,8 @@ function loadData(data) {
         const selectedValues = $(this).val(); 
         if (selectedValues && selectedValues.length > 0) {
             dicFind = findListDictionary(dataCatalogs, 'auditoria', selectedValues);
+            console.log('dataCatalogs',dataCatalogs)
+            console.log('selectedValues',selectedValues)
             set_catalog_select(dicFind, 'sede', 'sede');
             $('#sede').select2();
         } else {
@@ -167,14 +169,14 @@ function get_catalog(){
     .then((res) => res.json())
     .then((res) => {
         const data = res.response && res.response.data ? res.response.data : [];
-        const data_catalog = data.res_catalog ? data.res_catalog : [];
-        const data_forms = data.res_forms ? data.res_forms : [];
+        dataCatalogs = data.res_catalog ? data.res_catalog : [];
+        const dataForms = data.res_forms ? data.res_forms : [];
 
-        if(data_catalog.length > 0){
-            set_catalog_select(data_catalog, 'auditoria', 'auditoria');
+        if(dataCatalogs.length > 0){
+            set_catalog_select(dataCatalogs, 'auditoria', 'auditoria');
         }
-        if(data_forms.length > 0){
-            setSelect(data_forms, 'name', 'id', 'formIds');
+        if(dataForms.length > 0){
+            setSelect(dataForms, 'name', 'id', 'formIds');
         }
     })
 }
