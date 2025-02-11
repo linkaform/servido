@@ -7,7 +7,7 @@ let dicReportContext = [
     },
     { class:'', _children : [
             { type:'chart', col: '6', id:'chartThird', title:'Punto por mes'},
-            { type:'chart', col: '6', id:'chartFourth', title:'Auditorias'},
+            { type:'chart', col: '6', id:'chartFourth', title:'Promedio por Sección'},
         ] 
     },
     { class:'', _children : [
