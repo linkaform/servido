@@ -17,7 +17,7 @@ let mapIcon = function(cell, formatterParams){
 
 let userIcon = function(cell, formatterParams){ 
     const type = cell.getRow().getData().type;
-    if(type == 'Técnico'){
+    if(type == 'Tecnico'){
         return "<i class='fa-solid fa-user-gear'></i>";
     }else if(type == 'Ayudante'){
         return "<i class='fa-solid fa-users-gear'></i>";
@@ -30,6 +30,7 @@ let columsTable1 = [
     { formatter:userIcon, hozAlign:"center", download: false, width:50},
     { formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
         const url = cell.getRow().getData().url_check_in;
+        console.log('url',url)
         if(url){ window.open(url,'_blank'); }
     }, download: false, width:50},
     { title:"Check In", field:'check_in', hozAlign:"center", headerHozAlign: "center", headerFilter: true, width:200},
@@ -45,31 +46,6 @@ let columsTable1 = [
 
 
 ];
-
-/*
-let columsTable1 = [
-    { title:"Empleado", field:'empleado', hozAlign:"left", headerHozAlign: "left",headerFilter: true, width:250},
-    { formatter:userIcon, hozAlign:"center", download: false, width:50},
-    { formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
-        const url = cell.getRow().getData().url_check_in;
-        if(url){ window.open(url,'_blank'); }
-    }, download: false, width:50},
-    { title:"Check In", field:'check_in', hozAlign:"center", headerHozAlign: "center", headerFilter: true, width:200},
-    { formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
-        const url = cell.getRow().getData().url_check_out;
-        if(url){ window.open(url,'_blank'); }
-    }, download: false, width:50},
-    { title:"Check Out", field:'check_out',  hozAlign:"center", headerHozAlign: "center", headerFilter: true, width:200},
-    { title:"Hrs Ordinarias", field:'hrs_ord', hozAlign:"center", headerHozAlign: "center", width:180},
-    { title:"Hrs Extra", field:'hrs_ext', hozAlign:"center", headerHozAlign: "center", width:180},
-    { title:"Hrs Nocturna", field:'hrs_noc', hozAlign:"center", headerHozAlign: "center", width:180},
-    { title:"Hrs Extraordinaria Sabatina", field:'hrs_ord_ext_sab', hozAlign:"center", headerHozAlign: "center", width:250},
-    { title:"Hrs Ordinaria Sabatina", field:'hrs_ord_sab', hozAlign:"center", headerHozAlign: "center", width:250},
-    { title:"Total", field:'total', hozAlign:"center", headerHozAlign: "center", width:250},
-];
-
-*/
-
 
 let dataTable1 = [
     {
