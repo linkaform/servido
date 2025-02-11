@@ -39,10 +39,10 @@ let columsTable1 = [
         if(url){ window.open(url,'_blank'); }
     }, download: false, width:50},
     { title:"Check Out", field:'check_out',  hozAlign:"center", headerHozAlign: "center", headerFilter: true, width:200},
-    { title:"Hrs Nocturna", field:'hrs_noct', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:1,}, width:200},
-    { title:"Hrs Extra al 35%", field:'hrs_ext', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:1,}, width:200},
-    { title:"Hrs Extra al 100%", field:'hrs_ext_full', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:1,}, width:200},
-    { title:"Total", field:'total', hozAlign:"center", headerHozAlign: "center",bottomCalc:"sum", bottomCalcParams:{precision:1,}, width:250},
+    { title:"Hrs Nocturna", field:'hrs_noct', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:2,}, width:200},
+    { title:"Hrs Extra al 35%", field:'hrs_ext', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:2,}, width:200},
+    { title:"Hrs Extra al 100%", field:'hrs_ext_full', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:2,}, width:200},
+    { title:"Total", field:'total', hozAlign:"center", headerHozAlign: "center",bottomCalc:"sum", bottomCalcParams:{precision:2,}, width:250},
 
 
 ];
