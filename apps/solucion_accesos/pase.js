@@ -1732,7 +1732,7 @@ function crearConfirmacion() {
         hasInvalidInput = true;
       }
     });
-    let tieneEmailTel = data.email!="" && data.telefono!=""
+    let tieneEmailTel = data.email!="" || data.telefono!=""
     console.log('tieneemailotel', tieneEmailTel)
 	// if(data.nombreCompleto=="" || tieneEmailTel==false || fechaVisitaMain=="" || data.ubicacion=="" || data.temaCita==""){
     //     console.log("FALTAN DATOS")
