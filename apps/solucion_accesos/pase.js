@@ -1187,18 +1187,18 @@ function crearConfirmacionMini() {
     			    			      	<div class='align-items-start m-2'>
     			    			      	  	El pase de entrada se ha generado correctamente. Por favor, selecciona alguna de las siguientes opciones.
     			    			    	</div>
-    			    			    	<div class="d-flex  flex-column align-items-start justify-content-start mt-2">
-    			    			    		<div class="m-0 p-0">
-    				    			    		<label>
-    								            	<input type="checkbox" name="opcionesCorreoMsj" id="enviarMensaje" value="enviarMensaje">
-    								            	<i class="fa-solid fa-comment-sms ms-2"></i> <b>Enviar mensaje</b>
-    									        </label><br>
+    			    			    	<div class="row justify-content-center mt-2">
+    			    			    		<div class="col-8">
+                                                <input class="btn-check paseEntradaNuevo" type="checkbox" name="opcionesCorreoMsj" id="enviarMensaje" value="enviarMensaje">
+                                                <label class="btn btn-outline-primary w-100" for="enviarMensaje">
+                                                    <i class="fa-solid fa-comment-sms"></i> Enviar mensaje
+                                                </label>
     									    </div>
-    								        <div class="m-0 p-0">
-    								        	<label>
-    								            	<input type="checkbox" name="opcionesCorreoMsj" id="enviarCorreo" value="enviarCorreo">
-    								            	<i class="fa-solid fa-envelope ms-2"></i> <b>Enviar correo</b>
-    								        	</label><br>
+    								        <div class="col-8">
+                                                <input class="btn-check paseEntradaNuevo" type="checkbox" name="opcionesCorreoMsj" id="enviarCorreo" value="enviarCorreo">
+                                                <label class="btn btn-outline-primary w-100" for="enviarCorreo">
+                                                    <i class="fa-solid fa-envelope"></i> Enviar correo
+                                                </label>
     								        </div>
     			    			    	</div>
     			    			    	<img class="mt-1" alt="Código QR" id="codigo" width=250 height=250 src=${data.json.qr_pase[0].file_url}>
