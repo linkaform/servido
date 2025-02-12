@@ -650,7 +650,7 @@ function loadDataTables(){
                     visita_a:bitacora.visita_a, 
                     caseta_entrada:bitacora.caseta_entrada,
                     caseta_salida:bitacora.caseta_salida, 
-                    fecha_salida:bitacora.fecha_salida,
+                    fecha_salida:bitacora.fecha_salida || '',
                     comentarios:bitacora.comentarios||[] , 
                     equipos: bitacora.equipos, 
                     vehiculos: bitacora.vehiculos, 
@@ -932,6 +932,19 @@ function alertSalida(folio, status_visita){
                 .then(res => res.json())
                 .then(res => {
                     if (res.success) {
+                        let selectedBitacora = dataTableBitacora.find(x => x.codigo_qr === folio);
+                        let formatDate = new Intl.DateTimeFormat('sv-SE', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            hour12: false
+                        }).format(new Date()).replace(',', '');
+                        selectedBitacora.fecha_salida = formatDate
+                        tables["tableEntradas"].setData(dataTableBitacora);
+                        let modal = bootstrap.Modal.getInstance(document.getElementById('fallaVer'));
                         Swal.close();
                         successMsg('Confirmación', "Salida confirmada correctamente.", "success")
                         // var table = Tabulator.findTable("#tableEntradas")[0]; 
