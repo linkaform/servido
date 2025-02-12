@@ -206,6 +206,8 @@ function getAllData(area="", location="", loading=false){
         if (res.success) {
             let data=res.response.data
             if(res.response){
+                setCookie("userName_soter", data.guard.name, 7);
+                $("#textName").text(getCookie('userName_soter'));
                 setCookie('oneLoad',false,7)
                 let loc= data.location
                 let guard= data.guard
