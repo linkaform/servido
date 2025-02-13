@@ -342,6 +342,10 @@ function createElements(dataConfig = null){
                     const columsKanva = element.columsKanva? element.columsKanva : [];
                     //-----Components Form
                     const formElements = element.formElements? element.formElements : [];
+                    //-----Filter Modal
+                    const filterCustom = element.filterCustom? element.filterCustom : false;
+                    //-----Button Filter Modal
+                    const optionButtonModal  = element.optionButtonModal ? element.optionButtonModal  : false;
 
                     //#-----COMPONENTS-----#//
                     if(element.type == 'card'){
@@ -379,12 +383,21 @@ function createElements(dataConfig = null){
                             </div>
                         `;
                     }else if(element.type == 'chart'){
+                        //-----Option Modal Custom
+                        let buttonModal = '';
+                        if(filterCustom){
+                            buttonModal = `<button class="btn btn-sm btn-secondary mr-2" id="modal-filter-${idElement}">
+                                <i class="fa-solid fa-filter"></i>
+                            </button>`
+                        }
+
                         //-----Element Card
                         divElement.innerHTML = `<div class="card shadow mb-4">
                             <div
                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
                                 <div class="d-flex justify-content-end">
+                                    ${buttonModal}
                                     <button class="btn btn-sm btn-primary me-2"  onclick="get_chartDownload('${idElement}','chart_screenIV');return false;">
                                         <i class="fas fa-download"></i>
                                     </button>
@@ -495,10 +508,18 @@ function createElements(dataConfig = null){
                             </div>
                         </div>`;
                     }else if(element.type == 'modal'){
+                        //----Button
+                        let buttonSucces = '';
+                        if(optionButtonModal){
+                            buttonSucces = `<button class="btn btn-success ml-2" id="button-succes-${idElement}">
+                                Guardar
+                            </button>`
+                        }
+                        //----Elements
                         let htmlFormElements = ``
                         if (formElements.length > 0) {
                             formElements.forEach((itemElement, index) => {
-                                htmlFormElements += drawModalBody(itemElement.type, itemElement.id, itemElement.title);
+                                htmlFormElements += drawModalBody(itemElement);
                             });
                         }
                         divElement.innerHTML = `<div class="modal fade" id="${idElement}" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
@@ -511,10 +532,15 @@ function createElements(dataConfig = null){
                                         ${htmlFormElements}
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        ${buttonSucces}
+                                        <button type="button" class="btn ml-2 btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                     </div>
                                 </div>
                             </div>
+                        </div>`;
+                    }else if(element.type == 'separator'){
+                        divElement.innerHTML = `<div class="col-12 mt-2 mb-2 p-2  ">
+                            <h3 class="border-bottom pb-2">${titleElement}</h3>
                         </div>`;
                     }
                     rowDiv.appendChild(divElement);
@@ -854,9 +880,23 @@ function drawCalendar(id, data, config = null){
 }
 
 //-----Función para crear Modal BOdy
-function drawModalBody(type, id, title){
+function drawModalBody(itemElement){
+    //---Props
+    const type = itemElement.type ? itemElement.type : '';
+    const title = itemElement.title ? itemElement.title : '';
+    const id = itemElement.id ? itemElement.id : '';
+    const checked = itemElement.checked ? itemElement.checked : '';
+    const name = itemElement.name ? itemElement.name : '';
+
+    //---Elements
     if (type == 'p') {
         return  `<p><strong>${title}</strong> <span id="${id}"></span></p>`
+    }else if(type == 'switch'){
+        const element = `<div class="form-check form-switch">
+            <input class="form-check-input switch ${name}" type="checkbox" name="${name}" id="${id}" ${checked}>
+            <label class="form-check-label">${title}</label>
+        </div>`;
+        return element;
     }
     return '';
 }

@@ -30,7 +30,6 @@ let columsTable1 = [
     { formatter:userIcon, hozAlign:"center", download: false, width:50},
     { formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
         const url = cell.getRow().getData().url_check_in;
-        console.log('url',url)
         if(url){ window.open(url,'_blank'); }
     }, download: false, width:50},
     { title:"Check In", field:'check_in', hozAlign:"center", headerHozAlign: "center", headerFilter: true, width:200},

@@ -86,7 +86,6 @@ function getCatalog(){
 //----SHOW INFORMATION
 function showInformation(info){
     let event = info.event && info.event.extendedProps ? info.event.extendedProps : {};
-    console.log('event',event)
     document.getElementById('textFolio').textContent = event.folio ?  event.folio : '';
     document.getElementById('textInstrument').textContent = event.instrument ? event.instrument : '';
     document.getElementById('textClient').textContent = event.client ? event.client : '';
