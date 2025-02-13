@@ -553,9 +553,10 @@ async function enviarCorreoPaseE(qr="") {
         if(data.email_pase!==""){
             loadingService('Enviando correo...')
             let bodyPost={
-                script_name: "pase_de_acceso.py",
+                script_name: "pase_de_acceso_use_api.py",
                 folio:data._id,
-                account_id:account_id
+                account_id:account_id,
+                envio: ['enviar_correo']
             }
             console.log('VISIT A', data)
             data_for_msj = {
