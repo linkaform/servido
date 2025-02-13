@@ -101,10 +101,33 @@ window.onload = function(){
 
 let fallaCerrada = false;
 
-function toggleFallaCerrada(checkbox) {
-    fallaCerrada = checkbox.checked;
-    if(fallaCerrada){
-        console.log("Habilitado")
+function toggleFallaCerrada() {
+    fallaCerrada = false
+    console.log('onchange',fallaCerrada)
+    if ($('#marcar_falla_cerrada').prop('checked')){
+        Swal.fire({
+            title:'¿Estas seguro de querer marcar cerrada la falla?',
+            html:`
+            <div class="m-2"> Esta accion no se puede deshacer. </div>`,
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonColor: colors[0],
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: colors[1],
+            confirmButtonText: "Si",
+            heightAuto:false,
+            reverseButtons: true
+        })
+        .then((result) => {
+            if (result.value) {
+                fallaCerrada = true
+                console.log("Habilitado", fallaCerrada)
+            }else{
+                fallaCerrada = false
+                $('#marcar_falla_cerrada').prop('checked', false);
+                console.log("Deshabilitado", fallaCerrada)
+            }
+        })
     }
 }
 
