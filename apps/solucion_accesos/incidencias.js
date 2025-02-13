@@ -532,18 +532,21 @@ function verIncidencia(folio){
     //let dep=""
     //let divVistaDepo= document.getElementById('accionIncidencia')
     //divVistaDepo.innerHTML=""
+    let totalDepositoVista = 0;
     if(selectedIncidencia.hasOwnProperty('datos_deposito_incidencia')){
             let tabla = document.getElementById("table-depositos");
             let tbody = tabla.getElementsByTagName("tbody")[0];
             tbody.innerHTML="";
             if(selectedIncidencia.datos_deposito_incidencia.length>0){
                 for(let p of selectedIncidencia.datos_deposito_incidencia){
+                    totalDepositoVista += p.cantidad
                     let newRow = $('<tr>');
                     newRow.append($('<td>').text(p.tipo_deposito));
                     newRow.append($('<td>').text(p.cantidad));
                     newRow.append('</tr>');
                     $('#table-depositos').append(newRow);
                 }
+                $('#containerDepositoVista').html(`<p><b>Total: </b>${totalDepositoVista}</p>`);
             }else{
                 let newRow = $('<tr>');
                     newRow.append($('<td>').text('No hay datos disponibles.'));
