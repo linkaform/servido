@@ -1710,9 +1710,15 @@ function crearConfirmacion() {
 	}
 
     let limiteEntradasTexto=""
+    console.log('datalimiteentradas', data.limiteEntradas)
+    console.log($('#limiteEntradasNum').val())
+    if(!data.limiteEntradas){
+        data.limiteEntradas = $('#limiteEntradasNum').val();
+    }
+    console.log('datalimiteentradas', data.limiteEntradas)
     if(data.limiteEntradas!==""){
         limiteEntradasTexto=`
-            <div class="d-flex justify-content-start ms-2">
+            <div class="d-flex justify-content-start mt-2">
                 <p><span class="me-2"><b>Limite de entradas:</b></span>`+ data.limiteEntradas+`</p>
             </div>
         `
