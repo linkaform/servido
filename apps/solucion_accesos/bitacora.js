@@ -563,7 +563,7 @@ function reloadTableBitacoras(data){
                     status_gafete:bitacora.status_gafete, 
                     visita_a:bitacora.visita_a, 
                     caseta_entrada:bitacora.caseta_entrada,
-                    caseta_salida:bitacora.caseta_salida, 
+                    caseta_salida:bitacora.nombre_area_salida, 
                     fecha_salida:bitacora.fecha_salida,
                     comentarios:bitacora.comentarios||[] , 
                     equipos: bitacora.equipos, 
@@ -649,7 +649,7 @@ function loadDataTables(){
                     status_gafete:bitacora.status_gafete, 
                     visita_a:bitacora.visita_a, 
                     caseta_entrada:bitacora.caseta_entrada,
-                    caseta_salida:bitacora.caseta_salida, 
+                    caseta_salida:bitacora.nombre_area_salida || '', 
                     fecha_salida:bitacora.fecha_salida || '',
                     comentarios:bitacora.comentarios||[] , 
                     equipos: bitacora.equipos, 
@@ -943,6 +943,7 @@ function alertSalida(folio, status_visita){
                             hour12: false
                         }).format(new Date()).replace(',', '');
                         selectedBitacora.fecha_salida = formatDate
+                        selectedBitacora.caseta_salida = outCaseta
                         tables["tableEntradas"].setData(dataTableBitacora);
                         let modal = bootstrap.Modal.getInstance(document.getElementById('fallaVer'));
                         Swal.close();
