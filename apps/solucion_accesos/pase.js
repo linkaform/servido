@@ -29,6 +29,8 @@ let validFechaVisita = false
 let validFechaHasta = false
 let tables={}
 let requerimientos=[]
+let equiposregistrados=[]
+let vehiculosregistrados=[]
 
 window.onload = async function(){
 	// customNavbar(getValueUserLocation(), getCookie('userTurn'))
@@ -108,6 +110,7 @@ $(document).ready(function () {
 
       if ($(this).text() === 'Actualizar mi información') {
           $(this).text('Cancelar');
+          actualizarInformacionPaseActivo();
       } else {
           $(this).text('Actualizar mi información');
       }
@@ -215,8 +218,8 @@ async function getCatalogsIngresoPase(){
                         srcurlImgUser = data.pass_selected.foto?.[0]?.file_url ?? ""
                         srcurlImgCard = data.pass_selected.identificacion?.[0]?.file_url ?? ""
                         
-                        let equiposregistrados = data.pass_selected.grupo_equipos || []
-                        let vehiculosregistrados = data.pass_selected.grupo_vehiculos || []
+                        equiposregistrados = data.pass_selected.grupo_equipos || []
+                        vehiculosregistrados = data.pass_selected.grupo_vehiculos || []
                         let horavisita = data.pass_selected.fecha_de_expedicion
 
                         if(!srcurlImgUser && !srcurlImgCard){
@@ -248,8 +251,8 @@ async function getCatalogsIngresoPase(){
                         $("#containerContinueButton").hide()
                         $("#containerUpdateButton").show()
 
-                        rellenarVehiculos(vehiculosregistrados);
-                        rellenarEquipos(equiposregistrados);
+                        // rellenarVehiculos(vehiculosregistrados);
+                        // rellenarEquipos(equiposregistrados);
                     }else{
                         $("#paseEntradaInfo").show()
                         $("#paseEntradaInf5").show()
@@ -271,6 +274,15 @@ async function getCatalogsIngresoPase(){
             }
         })
 
+}
+
+function actualizarInformacionPaseActivo(){
+    if(vehiculosregistrados){
+        rellenarVehiculos(vehiculosregistrados);
+    }
+    if(equiposregistrados){
+        rellenarEquipos(equiposregistrados);
+    }
 }
 
 function rellenarVehiculos(vehiculosregistrados) {
