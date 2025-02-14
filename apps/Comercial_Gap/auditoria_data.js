@@ -1,23 +1,23 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'chart', col: '6', id:'chartFirst', title:'Sede por mes'},
-            { type:'chart', col: '6', id:'chartSecond', title:'Campus por mes'},
+            { type:'chart', col: '6', id:'chartFirst', title:'Promedio Sede por mes'},
+            { type:'chart', col: '6', id:'chartSecond', title:'Promedio Campus por mes'},
         ] 
     },
     { class:'', _children : [
-            { type:'chart', col: '6', id:'chartThird', title:'Punto por mes'},
+            { type:'chart', col: '6', id:'chartThird', title:'Promedio Punto por mes'},
             { type:'chart', col: '6', id:'chartFourth', title:'Promedio por Sección'},
         ] 
     },
     { class:'', _children : [
-            { type:'chart', col: '6', id:'chartFiveth', title:'Tendencia por Institución'},
-            { type:'chart', col: '6', id:'chartSixth', title:'Tendencia por Sede'},
+            { type:'chart', col: '6', id:'chartFiveth', title:'Promedio Tendencia por Institución'},
+            { type:'chart', col: '6', id:'chartSixth', title:'Promedio Tendencia por Sede'},
         ] 
     },
     { class:'', _children : [
-            { type:'chart', col: '6', id:'chartSeventh', title:'Tedencia por Campus'},
-            { type:'chart', col: '6', id:'chartEigth', title:'Tedencia por Punto'},
+            { type:'chart', col: '6', id:'chartSeventh', title:'Promedio Tedencia por Campus'},
+            { type:'chart', col: '6', id:'chartEigth', title:'Promedio Tedencia por Punto'},
         ] 
     },
     { class:'', _children : [
@@ -42,7 +42,10 @@ let columsTable1 = [
     { title:"Local", field:'local', hozAlign:"left",  width:250},
     { title:"Punto", field:'sucursal', hozAlign:"left",  width:250},
     { title:"Titulo", field:'titulo', hozAlign:"left",  width:300},
-    { title:"Calificación", field:'points', hozAlign:"right", bottomCalc:"avg",bottomCalcParams:{precision:2}, width:200},
+    { title:"Calificación", field:'points', hozAlign:"right", bottomCalc:"avg", bottomCalc: (values, data, calcParams) => {
+        let avg = values.length ? (values.reduce((sum, val) => sum + val, 0) / values.length).toFixed(2) : "0.00";
+        return `Promedio: ${avg}`; 
+    }, width:250},
 ];
 
 

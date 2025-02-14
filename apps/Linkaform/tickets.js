@@ -24,8 +24,6 @@ window.onload = function(){
   }else if(statusSession == 'Offline'){
     loadDemoData();
   }
-
-  
 }
 
 function loadDemoData(){
