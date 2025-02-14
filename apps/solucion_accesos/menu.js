@@ -1,4 +1,5 @@
 window.onload = async function(){
+  getAllData()
 	setValueUserLocation('menu')
     user = getCookie("userId_soter");
     userJwt=getCookie('userJwt_soter');
@@ -126,4 +127,34 @@ function showCustomMenu(menus, idHtmlMenu){
         errorAlert("No se encontraron los menus, revisa la configuracion")
     }
 	divMenu.innerHTML = htmlPase + htmlTurnos + addHtml
+}
+
+async function getAllData(area="", location=""){
+  await fetch(url + urlScripts, {
+      method: 'POST',
+      body: JSON.stringify({
+          script_name:'script_turnos.py',
+          option:'load_shift',
+          area:area,
+          location:location
+      }),
+      headers:
+      {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer '+userJwt
+      },
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      let data=res.response.data
+      if(res.response){
+        let guard= data.guard
+        if(guard.picture){
+            localStorage.setItem("imagenURL", guard.picture);
+            $("#imageUserNavbar").attr("src", localStorage.getItem("imagenURL"))
+        }
+      }
+    }
+  })
 }
