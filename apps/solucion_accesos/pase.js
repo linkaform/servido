@@ -522,6 +522,8 @@ async function catalogoPaseLocation(){
                     $("#ubicacion").append($('<option ></option>').val(i).text(i));
                     $("#ubicacion").val(i)
                 }
+                let ubicacionConfig = $('.ubicacionConfig').val();
+                getConfiguracionModuloSeguridad(ubicacionConfig)
             }
             if(arrayAreas.ubicaciones_user.length==0){
                 let ubicacion= document.getElementById("ubicacion")
@@ -596,7 +598,6 @@ async function getConfiguracionModuloSeguridad(ubicacion){
     .then(res => res.json())
     .then(res => {
         if (res.success) {
-            Swal.close()
             requerimientosUbicacion = res.response.data.requerimientos
         }else{
             errorAlert(res)
