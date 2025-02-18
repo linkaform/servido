@@ -20,7 +20,6 @@ let dicReportContext = [
 
 //-----Configuraciones de la tabla
 let columsTable1 = [
-    { title:"Piso", field:'piso', width:100, hozAlign:"center", cssClass: "center-title"},
     { title:"Habitaciones Inspeccionadas", field:'habitacionesinspeccionadas', width:1000, cssClass: "center-title", columns: [
         { 
             title: "", 
@@ -36,12 +35,26 @@ let columsTable1 = [
             },
             cellClick: function (e, cell) {
                 let cellData = cell.getValue();
-                console.log("Número de la habitación:", cellData.numero);
-                console.log("ID de la habitación:", cellData.id);
+                var inspecciones = cellData.inspecciones;
                 if(!cellData.id){
                     Swal.fire({
                         title: 'Detalle',
                         html: 'Esta habitacion aun no tiene inspecciones realizadas.'
+                    });
+                }else if(inspecciones.length > 1){
+                    var content = "<ul>";
+                    inspecciones.forEach(function (inspeccion, index) {
+                        content += "<li>" + `<a href="https://app.linkaform.com/#/records/detail/${inspeccion}" target="_blank">`+ index + "</a>"  + "</li>";
+                    });
+                    content += "</ul>";
+            
+                    tippy(cell.getElement(), {
+                        content: content,
+                        theme: "light",  
+                        trigger: "click",
+                        arrow: true,     
+                        placement: "top",
+                        interactive: true,
                     });
                 }else{
                     window.open(`https://app.linkaform.com/#/records/detail/${cellData.id}`, "_blank");
@@ -262,7 +275,7 @@ let columsTable1 = [
 let dataTable1 = [
     {
         piso: "9",
-        hab1: { numero: "901", id: "abc123", status: "revisada" },
+        hab1: { numero: "901", id: "abc123", status: "revisada", inspecciones: ['insp1', 'insp2'] },
         hab2: { numero: "902", id: "" },
         hab3: { numero: "903", id: "" },
         hab4: { numero: "904", id: "" },
@@ -274,7 +287,7 @@ let dataTable1 = [
     },
     {
         piso: "8",
-        hab1: { numero: "801", id: "" },
+        hab1: { numero: "801", id: "abc123", status: "revisada", inspecciones: ['insp1'] },
         hab2: { numero: "802", id: "" },
         hab3: { numero: "803", id: "" },
         hab4: { numero: "804", id: "" },

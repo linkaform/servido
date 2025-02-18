@@ -1,5 +1,4 @@
 let dataCatalogs = [];
-let cantidadHabitacionesPiso = {};
 const cardKeys = [
   "totalinspecciones",
   "calificacionpromedio",
@@ -57,9 +56,21 @@ function loadData(data) {
   buttonExecution.addEventListener("click", () => {
     getInformation();
   });
-  const selectChange = document.getElementById("ubicacion");
-  selectChange.addEventListener("change", () => {
-    getCantidadHabitaciones();
+  const selectChange = document.getElementById("mes");
+  const selectDateFrom = document.getElementById("filterDateFrom");
+  const selectDateTo = document.getElementById("filterDateTo");
+  const sDateFrom = document.getElementById("dateFrom");
+  const sDateTo = document.getElementById("dateTo");
+  selectChange.addEventListener("change", (e) => {
+    if(e.target.value === 'custom'){
+      selectDateFrom.classList.remove("d-none")
+      selectDateTo.classList.remove("d-none")
+    }else{
+      selectDateFrom.classList.add("d-none")
+      selectDateTo.classList.add("d-none")
+      sDateFrom.value = ''
+      sDateTo.value = ''
+    }
   })
   //-----Loading
   setTimeout(() => { hide_loading();}, 2000);
@@ -73,7 +84,9 @@ async function getInformation(){
     const statusSession = getSession();
     const dicAdional = {
       'option':'report',
-      'habitaciones_x_piso': cantidadHabitacionesPiso
+    }
+    const dicAdicional2 = {
+      'option':'cards',
     }
     if(statusSession == 'Demo' || demo){
         Swal.fire({
@@ -83,23 +96,27 @@ async function getInformation(){
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-        const cardsDic = data.response_first && data.response_first.dic_cards ? data.response_first.dic_cards : {} ; 
 
         //----CARDS
-        // cardKeys.forEach((key, index) => {
-        //   drawCardElement(`card${capitalize(index + 1)}`, cardsDic[key] || 0);
-        // });
+        const cardsData = data.cards_response
+        if(cardsData){
+          cardKeys.forEach((key, index) => {
+            drawCardElement(`card${capitalize(index + 1)}`, cardsData[key] || 0);
+          });
+        }
 
         //----ELEMENTS
+        const cantidadHabitacionesPiso = data.cantidad_habitaciones || []
         let columnsTable1 = generarColumnasDinamicas(cantidadHabitacionesPiso);
         if(data.firstTable){
           console.log(data.firstTable)
           drawTableElement('tableFirst', data.firstTable, columnsTable1, null, customConfig1);
         }
 
-        // if(data.response_second){
-        //     drawChartElement('chartFirst','line', data.response_second,setOptions1);
-        // }
+        const graphicData = data.graphic_response
+        if(graphicData){
+            drawChartElement('chartFirst','bar', graphicData, setOptions1);
+        }
     
         //-----Style
         hideLoadingComponent();
@@ -137,82 +154,58 @@ function get_catalog(){
   })
 }
 
-async function getCantidadHabitaciones(){
-  Swal.fire({
-    title: "Cargando...",
-    html: "Obteniendo las areas",
-    allowOutsideClick: false,
-    onBeforeOpen: () => {
-        Swal.showLoading();
-    },
-  });
-  const ubicacion = document.getElementById("ubicacion").value;
-  const scriptId = getParameterURL('script_id');
-  const JWT = getCookie("userJwt");
-  await fetch(getUrlRequest('script'), {
-    method: 'POST',
-    body: JSON.stringify({
-      script_id: scriptId,
-      option: 'second_filter',
-      ubicacion: ubicacion,
-    }),
-    headers:{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+JWT
-    },
-  })
-  .then((res) => res.json())
-  .then((res) => {
-      const data = res.response ? res.response.data : [];
-      const dataCantidadHabitaciones = data.cantidad_habitaciones
-      cantidadHabitacionesPiso = dataCantidadHabitaciones
-      set_catalog_select(data.areas, 'area', 'area');
-      Swal.close();
-  })
-}
-
 function generarColumnasDinamicas(data) {
   let maxHabitaciones = 0;
   Object.values(data).forEach(habitaciones => {
-      if (habitaciones > maxHabitaciones) {
-          maxHabitaciones = habitaciones;
-      }
+    if (habitaciones > maxHabitaciones) {
+      maxHabitaciones = habitaciones;
+    }
   });
 
   let columnsTable = [
-      { title: "Piso", field: 'piso', width: 100 },
-      {
-        title: "Habitaciones Inspeccionadas", field: 'habitacionesinspeccionadas', width: 1000, headerSort: false, columns: []
-      }
+    {
+      title: "Habitaciones Inspeccionadas", field: 'habitacionesinspeccionadas', width: 1000, headerSort: false, columns: []
+    }
   ];
 
   for (let i = 1; i <= maxHabitaciones; i++) {
-      columnsTable[1].columns.push({
-          title: "",
-          field: `hab${i}`,
-          hozAlign: "center",
-          headerSort: false,
-          formatter: function (cell) {
-              var value = cell.getValue();
-              if (value?.status === "revisada") {
-                  cell.getElement().style.backgroundColor = "lightgreen";
-              }
-              return value?.numero;
-          },
-          cellClick: function (e, cell) {
-              let cellData = cell.getValue();
-              console.log("Número de la habitación:", cellData.numero);
-              console.log("ID de la habitación:", cellData.id);
-              if (!cellData.id) {
-                  Swal.fire({
-                      title: 'Detalle',
-                      html: 'Esta habitación aún no tiene inspecciones realizadas.'
-                  });
-              } else {
-                  window.open(`https://app.linkaform.com/#/records/detail/${cellData.id}`, "_blank");
-              }
+    columnsTable[0].columns.push({
+      title: "",
+      field: `hab${i}`,
+      hozAlign: "center",
+      headerSort: false,
+      formatter: function (cell) {
+          var value = cell.getValue();
+          if (value?.status === "revisada") {
+              cell.getElement().style.backgroundColor = "lightgreen";
           }
-      });
+          return value?.numero;
+      },
+      cellClick: function (e, cell) {
+        let cellData = cell.getValue();
+        var inspecciones = cellData.inspecciones;
+        if (!cellData.id) {
+          Swal.fire({
+            title: 'Detalle',
+            html: 'Esta habitación aún no tiene inspecciones realizadas.'
+          });
+        }else if(inspecciones?.length > 0){
+          var content = "<ul class='list-group'>";
+          content += "<li class='list-group-item'>" + `<a href="https://app.linkaform.com/#/records/detail/${cellData.id}" target="_blank"> Inspeccion 1`+ "</a>" + "</li>";
+          inspecciones.forEach(function (inspeccion, index) {
+            content += "<li class='list-group-item'>" + `<a href="https://app.linkaform.com/#/records/detail/${inspeccion}" target="_blank"> Inspeccion `+ (index+2) + "</a>"  + "</li>";
+          });
+          content += "</ul>";
+
+          Swal.fire({
+            title: 'Inspecciones',
+            html: content
+          });
+        }else{
+          window.open(`https://app.linkaform.com/#/records/detail/${cellData.id}`, "_blank");
+        }
+      }
+    });
   }
 
   return columnsTable;

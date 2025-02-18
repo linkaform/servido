@@ -65,23 +65,33 @@
 
                         <!-- Filtro de Selector (Dropdown) -->
                         <div class="col-xl-3 col-lg-6 col-md-12 ">
-                            <label  class="form-label">Tipo de Area</label>
-                            <select class="form-select filters-servido" id="area">
+                            <label  class="form-label">Fecha</label>
+                            <select class="form-select filters-servido" id="mes">
                                 <option value="" >Selecciona una opción</option>
-                                <option value="habitacion" >Habitacion</option>
-                                <option value="almacen" >Almacen</option>
-                                <option value="gimnasio" >Gimnasio</option>
+                                <option value="custom" >Custom</option>
+                                <option value="enero" >Enero</option>
+                                <option value="febrero" >Febrero</option>
+                                <option value="marzo" >Marzo</option>
+                                <option value="abril" >Abril</option>
+                                <option value="mayo" >Mayo</option>
+                                <option value="junio" >Junio</option>
+                                <option value="julio" >Julio</option>
+                                <option value="agosto" >Agosto</option>
+                                <option value="septiembre" >Septiembre</option>
+                                <option value="octubre" >Octubre</option>
+                                <option value="noviembre" >Noviembre</option>
+                                <option value="diciembre" >Diciembre</option>
                             </select>
                         </div>
                         
                         <!-- Filtro de Fecha -->
-						<div class="col-xl-3 col-lg-6 col-md-12 ">
+						<div class="col-xl-3 col-lg-6 col-md-12 d-none" id="filterDateFrom">
 						    <label class="form-label">Fecha Desde</label>
                             <input type="date" class="form-control filters-servido" id="dateFrom" >
 						</div>
 
                         <!-- Filtro de Fecha -->
-                        <div class="col-xl-3 col-lg-6 col-md-12 ">
+                        <div class="col-xl-3 col-lg-6 col-md-12 d-none" id="filterDateTo">
                             <label class="form-label">Fecha Hasta</label>
                             <input type="date" class="form-control filters-servido" id="dateTo" >
                         </div>
