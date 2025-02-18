@@ -1068,6 +1068,7 @@ function getInitialData(){
 function crearNuevaVisita(){
     loadingService()
     let nombre=$("#inputNombreNV").val();
+    let emailNV=$("#inputEmailNV").val();
     let empresa=$("#inputRazonSocialNV").val();
     let areaQueVisita=$("#inputAreaVisitaNV").val();
     let visitaA=$("#selectVisitaNV").val();
@@ -1078,10 +1079,11 @@ function crearNuevaVisita(){
             perfil_pase: "Visita General",
             telefono: "",
             visita_a:visitaA,
-            email: getCookie("userEmail"),
+            email: emailNV,
             empresa: empresa,
             foto:fotosNuevaVisita.foto,
             identificacion: fotosNuevaVisita.identificacion,
+            site: 'accesos'
             //area_que_visita:areaQueVisita,
             //motivo_visita:motivoVisita,
         }
