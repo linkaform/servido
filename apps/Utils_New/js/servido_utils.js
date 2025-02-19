@@ -348,6 +348,8 @@ function createElements(dataConfig = null){
                     const optionButtonModal  = element.optionButtonModal ? element.optionButtonModal  : false;
                     //-----Button Filter Modal
                     const chartChange = element.chartChange ? element.chartChange  : false;
+                    //-----Card Icon
+                    const cardIcon = element.cardIcon ? element.cardIcon : '<i class="fas fa-clipboard-list fa-2x text-gray-300"></i>';
                     //#-----COMPONENTS-----#//
                     if(element.type == 'card'){
                         //-----Element Progress
@@ -377,7 +379,7 @@ function createElements(dataConfig = null){
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            ${cardIcon}
                                         </div>
                                     </div>
                                 </div>
