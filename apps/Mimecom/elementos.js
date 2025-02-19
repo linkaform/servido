@@ -18,16 +18,16 @@ window.onload = function(){
 function loadDemoData(){
     //---Data
     setEvents();
-
     //---Definitions ELements
     drawChartElement('chartFirst','line',dataChart1A,setOptions1A);
     drawChartElement('chartSecond','line',dataChart2A, setOptions2A);
-    drawChartElement('chartThird','bar',dataChart3, setOptions3);
-    drawChartElement('chartFourth','bar',dataChart4, setOptions4);
-    drawChartElement('chartFiveth','bar',dataChart5, setOptions5);
+    drawChartElement('chartThird','bar',dataChart3, setOptions3BarHorizontal);
+    drawChartElement('chartFourth','bar',dataChart4, setOptions4BarHorizontal);
+    drawChartElement('chartFiveth','bar',dataChart5, setOptions5Bar);
     drawChartElement('chartSixth','line',dataChart6D, setOptions6D);
     setTimeout(() => { hide_loading();}, 2000);
 }
+
 
 //-----FUNCTION ACTIVE
 function loadData(data) {
@@ -148,6 +148,11 @@ function setEvents() {
         const eventModal = new bootstrap.Modal(document.getElementById('modalFilterSecond'));
         eventModal.show();
     });
+    document.getElementById("modal-filter-chartThird").addEventListener("click", () => {
+        const eventModal = new bootstrap.Modal(document.getElementById('modalFilterThird'));
+        eventModal.show();
+    });
+
     document.getElementById("modal-filter-chartSixth").addEventListener("click", () => {
         const eventModal = new bootstrap.Modal(document.getElementById('modalFilterSixth'));
         eventModal.show();
@@ -160,10 +165,32 @@ function setEvents() {
     document.getElementById("switch2A").addEventListener("change", setupSwitches('switchChartSecond'));
     document.getElementById("switch2B").addEventListener("change", setupSwitches('switchChartSecond'));
 
+    document.getElementById("switch3BarHorizontal").addEventListener("change", setupSwitches('switchChartThird'));
+    document.getElementById("switch3Bar").addEventListener("change", setupSwitches('switchChartThird'));
+    document.getElementById("switch3Line").addEventListener("change", setupSwitches('switchChartThird'));
+    document.getElementById("switch3Pie").addEventListener("change", setupSwitches('switchChartThird'));
+
+    
+    document.getElementById("switch4BarHorizontal").addEventListener("change", setupSwitches('switchChartFourth'));
+    document.getElementById("switch4Bar").addEventListener("change", setupSwitches('switchChartFourth'));
+    document.getElementById("switch4Line").addEventListener("change", setupSwitches('switchChartFourth'));
+    document.getElementById("switch4Pie").addEventListener("change", setupSwitches('switchChartFourth'));
+
+
+    document.getElementById("switch5BarHorizontal").addEventListener("change", setupSwitches('switchChartFiveth'));
+    document.getElementById("switch5Bar").addEventListener("change", setupSwitches('switchChartFiveth'));
+    document.getElementById("switch5Line").addEventListener("change", setupSwitches('switchChartFiveth'));
+    document.getElementById("switch5Pie").addEventListener("change", setupSwitches('switchChartFiveth'));
+
+
     document.getElementById("switch6A").addEventListener("change", setupSwitches('switchChartSixth'));
     document.getElementById("switch6B").addEventListener("change", setupSwitches('switchChartSixth'));
     document.getElementById("switch6C").addEventListener("change", setupSwitches('switchChartSixth'));
     document.getElementById("switch6D").addEventListener("change", setupSwitches('switchChartSixth'));
+
+
+
+
 
     //----Save Filter
     document.getElementById("button-succes-modalFilterFirst").addEventListener("click", () => {
@@ -189,6 +216,18 @@ function setEvents() {
         }, 500);
     });
 
+    document.getElementById("button-succes-modalFilterThird").addEventListener("click", () => {
+        setFilterTypeChart('switchChartThird');
+        setTimeout(function(){
+            const modalElement = document.getElementById('modalFilterThird');
+            const eventModal = bootstrap.Modal.getInstance(modalElement);
+            if (eventModal) {
+                eventModal.hide();
+            }
+        }, 500);
+    });
+
+
     document.getElementById("button-succes-modalFilterSixth").addEventListener("click", () => {
         setFilterChart('switchChartSixth');
         setTimeout(function(){
@@ -210,6 +249,18 @@ function setFilterChart(classSwitch){
         let itemDic = dicOptionsChart.find(item => item.key === switchId);
         if (itemDic) {
             drawChartElement(itemDic.id,'line', itemDic.data, itemDic.configs);
+        }
+    });
+}
+
+function setFilterTypeChart(classSwitch){
+    let switches = document.querySelectorAll(`.${classSwitch}:checked`);
+    if (switches.length === 0) return null;
+    switches.forEach(switchElement => {
+        let switchId = switchElement.id; // Obtiene el ID del switch
+        let itemDic = dicOptionsChartTotals.find(item => item.key === switchId);
+        if (itemDic) {
+            drawChartElement(itemDic.id,itemDic.type, itemDic.data, itemDic.configs);
         }
     });
 }
