@@ -8,8 +8,8 @@ let dicReportContext = [
         ] 
     },
     { class:'', _children : [
-            { type:'table', col: '8', id:'tableFirst', title:'Incidencias habitaciones'},
-            { type:'table', col: '4', id:'tableSecond', title:'Top 10 incidencias'},
+            { type:'table', col: '12', id:'tableFirst', title:'Incidencias habitaciones'},
+            { type:'table', col: '12', id:'tableSecond', title:'Top 10 incidencias'},
         ] 
     },
     { class:'', _children : [
@@ -384,9 +384,9 @@ let dataTable1 = [
 ];
 
 let columsTable2 = [
-    { title:"Pregunta", field:'pregunta', width:200},
-    { title:"Area", field:'area', width:200},
-    { title:"No's", field:'nos', width:150},
+    { title:"Pregunta", field:'pregunta', width:700},
+    { title:"Area", field:'area', width:400},
+    { title:"No's", field:'nos', width:100},
 ];
 
 let dataTable2 = [
