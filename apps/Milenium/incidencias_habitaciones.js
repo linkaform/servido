@@ -178,8 +178,12 @@ function generarColumnasDinamicas(data) {
       headerSort: false,
       formatter: function (cell) {
           var value = cell.getValue();
+          var inspecciones = value?.inspecciones;
           if (value?.status === "revisada") {
               cell.getElement().style.backgroundColor = "lightgreen";
+          }
+          if(inspecciones?.length > 0){
+            value.numero = value.numero + '(' + (inspecciones.length+1) + ')'
           }
           return value?.numero;
       },
