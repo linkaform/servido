@@ -4,9 +4,9 @@ let dicReportContext = [
             { type:'separator', col: '12', title:'Hurtos'},
             { type:'chart', col: '6', id:'chartFirst', title:'Tipo de Incidencia', filterCustom : true},
             { type:'chart', col: '6', id:'chartSecond', title:'Tipo de novedad', filterCustom : true},
-            { type:'chart', col: '6', id:'chartThird', title:'Incidencias Totales'},
-            { type:'chart', col: '6', id:'chartFourth', title:'Novedades Totales'},
-            { type:'chart', col: '12', id:'chartFiveth', title:'Retenciones y Recuperaciones'},
+            { type:'chart', col: '6', id:'chartThird', title:'Incidencias Totales',chartChange : true},
+            { type:'chart', col: '6', id:'chartFourth', title:'Novedades Totales',chartChange : true},
+            { type:'chart', col: '12', id:'chartFiveth', title:'Retenciones y Recuperaciones',chartChange : true},
         ] 
     },
     { class:'', _children : [
@@ -15,24 +15,45 @@ let dicReportContext = [
         ] 
     },
     { class:'', _children : [
+            /*Filtrado de graficas */
             { type:'modal', col: '12', id:'modalFilterFirst', title:'Filtrado de Tipo de Incidencia', optionButtonModal:true, formElements : [
-                    {type:'p', title:'Cliente:', id:'textClient'},
                     {type:'switch', title:'Grafíca por Día', id:'switch1A', name:'switchChartFirst', checked:'checked' },
                     {type:'switch', title:'Grafíca por Cuadrante', id:'switch1B', name:'switchChartFirst'},
                 ]
             },
             { type:'modal', col: '12', id:'modalFilterSecond', title:'Filtrado de Tipo de Novedad', optionButtonModal:true, formElements : [
-                    {type:'p', title:'Cliente:', id:'textClient'},
                     {type:'switch', title:'Grafíca por Día', id:'switch2A', name:'switchChartSecond', checked:'checked' },
                     {type:'switch', title:'Grafíca por Cuadrante', id:'switch2B', name:'switchChartSecond'},
                 ]
             },
             { type:'modal', col: '12', id:'modalFilterSixth', title:'Filtrado de Retenciones y Recuperaciones', optionButtonModal:true, formElements : [
-                    {type:'p', title:'Cliente:', id:'textClient'},
                     {type:'switch', title:'Grafíca por Cuadrante', id:'switch6A', name:'switchChartSixth', checked:'checked' },
                     {type:'switch', title:'Grafíca por Día', id:'switch6B', name:'switchChartSixth'},
                     {type:'switch', title:'Grafíca por Hora', id:'switch6C', name:'switchChartSixth'},
                     {type:'switch', title:'Grafíca por Piso', id:'switch6D', name:'switchChartSixth'},
+                ]
+            },
+
+            /*Cambio de graficas */
+            { type:'modal', col: '12', id:'modalFilterThird', title:'Tipo de Grafíca por Incidencias Totales', optionButtonModal:true, formElements : [
+                    {type:'switch', title:'Grafíca de tipo Barra Horizontal', id:'switch3BarHorizontal', name:'switchChartThird', checked:'checked' },
+                    {type:'switch', title:'Grafíca de tipo Barra Vertical', id:'switch3Bar', name:'switchChartThird'},
+                    {type:'switch', title:'Grafíca de tipo Tendencia', id:'switch3Line', name:'switchChartThird'},
+                    {type:'switch', title:'Grafíca de tipo Pie', id:'switch3Pie', name:'switchChartThird'},
+                ]
+            },
+            { type:'modal', col: '12', id:'modalFilterFourth', title:'Tipo de Grafíca por Novedades Totales', optionButtonModal:true, formElements : [
+                    {type:'switch', title:'Grafíca de tipo Barra Vertical', id:'switch4Bar', name:'switchChartFourth', checked:'checked' },
+                    {type:'switch', title:'Grafíca de tipo Barra Horizontal', id:'switch4BarHorizontal', name:'switchChartFourth'},
+                    {type:'switch', title:'Grafíca de tipo Tendencia', id:'switch4Line', name:'switchChartFourth'},
+                    {type:'switch', title:'Grafíca de tipo Pie', id:'switch4Pie', name:'switchChartFourth'},
+                ]
+            },
+            { type:'modal', col: '12', id:'modalFilterFiveth', title:'Tipo de Grafíca por Retenciones y Recuperaciones', optionButtonModal:true, formElements : [
+                    {type:'switch', title:'Grafíca de tipo Barra Horizontal', id:'switch5BarHorizontal', name:'switchChartFiveth', checked:'checked' },
+                    {type:'switch', title:'Grafíca de tipo Barra Vertical', id:'switch5Bar', name:'switchChartFiveth'},
+                    {type:'switch', title:'Grafíca de tipo Tendencia', id:'switch5Line', name:'switchChartFiveth'},
+                    {type:'switch', title:'Grafíca de tipo Pie', id:'switch5Pie', name:'switchChartFiveth'},
                 ]
             },
         ] 
@@ -54,9 +75,18 @@ var setOptions1A = {
             text: 'Tipo de Incidencia / Día',
         },
         datalabels: {
-            color: 'white',
+            color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -81,9 +111,18 @@ var setOptions1B = {
             text: 'Tipo de Incidencia / Cuadrante',
         },
         datalabels: {
-            color: 'white',
+            color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -158,9 +197,18 @@ var setOptions2A = {
             text: 'Tipo de Novedad / Día',
         },
         datalabels: {
-            color: 'white',
+            color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -185,9 +233,18 @@ var setOptions2B = {
             text: 'Tipo de Novedad / Cuadrante',
         },
         datalabels: {
-            color: 'white',
+            color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -274,7 +331,7 @@ var dataChart2B = {
 
 
 //----Chart Third
-var setOptions3 = {
+var setOptions3BarHorizontal = {
     responsive: true,
     plugins: {
         legend: {
@@ -285,9 +342,18 @@ var setOptions3 = {
             display: false,
         },
         datalabels: {
-            color: 'white',
+            color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -300,6 +366,79 @@ var setOptions3 = {
         },
         x: {
             beginAtZero: true
+        }
+    },
+};
+
+var setOptions3Bar = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        title: {
+            display: false,
+        },
+        datalabels: {
+            color: 'black',
+            font: {
+                size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
+        }
+    },
+    responsive: true, 
+    maintainAspectRatio: false ,
+    scales: {
+        y: {
+            step: 1,
+        },
+    },
+};
+
+var setOptions3Pie = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        title: {
+            display: false,
+        },
+        datalabels: {
+            color: 'black',
+            font: {
+                size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
+        }
+    },
+    responsive: true, 
+    maintainAspectRatio: false ,
+    scales: {
+        y: {
+            display: false,
+        },
+        x: {
+            display: false,
         }
     },
 };
@@ -317,7 +456,7 @@ var dataChart3 = {
 };
 
 //----Chart Fourth
-var setOptions4 = {
+var setOptions4BarHorizontal = {
     responsive: true,
     plugins: {
         legend: {
@@ -328,9 +467,18 @@ var setOptions4 = {
             display: false,
         },
         datalabels: {
-            color: 'white',
+            color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -347,6 +495,80 @@ var setOptions4 = {
     },
 };
 
+var setOptions4Bar = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        title: {
+            display: false,
+        },
+        datalabels: {
+            color: 'black',
+            font: {
+                size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
+        }
+    },
+    responsive: true, 
+    maintainAspectRatio: false ,
+    scales: {
+        y: {
+            step: 1,
+        },
+    },
+};
+
+var setOptions4Pie = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        title: {
+            display: false,
+        },
+        datalabels: {
+            color: 'black',
+            font: {
+                size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
+        }
+    },
+    responsive: true, 
+    maintainAspectRatio: false ,
+    scales: {
+        y: {
+            display: false,
+        },
+        x: {
+            display: false,
+        }
+    },
+};
+
+
 var dataChart4 = {
     labels: ['Hurto a cliente en local','Hurto interno en local','Hurto interno en Stand','Hurto  Externo','Hurto  moto/descuido'],
     datasets: [
@@ -361,7 +583,7 @@ var dataChart4 = {
 
 
 //----Chart Fiveth
-var setOptions5 = {
+var setOptions5BarHorizontal = {
     responsive: true,
     plugins: {
         legend: {
@@ -372,9 +594,57 @@ var setOptions5 = {
             display: false,
         },
         datalabels: {
-            color: 'white',
+            color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
+        }
+    },
+    responsive: true, 
+    maintainAspectRatio: false ,
+    indexAxis: 'y',
+    scales: {
+        y: {
+            step: 1,
+        },
+        x: {
+            beginAtZero: true
+        }
+    },
+};
+
+var setOptions5Bar = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        title: {
+            display: false,
+        },
+        datalabels: {
+            color: 'black',
+            font: {
+                size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -386,6 +656,46 @@ var setOptions5 = {
         },
     },
 };
+
+var setOptions5Pie = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        title: {
+            display: false,
+        },
+        datalabels: {
+            color: 'black',
+            font: {
+                size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
+        }
+    },
+    responsive: true, 
+    maintainAspectRatio: false ,
+    scales: {
+        y: {
+            display: false,
+        },
+        x: {
+            display: false,
+        }
+    },
+};
+
+
 
 var dataChart5 = {
     labels: ['Personas Retenidas','Denuncias','Recuperaciones'],
@@ -416,6 +726,15 @@ var setOptions6A = {
             font: {
                 size: 15
             }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
         }
     },
     responsive: true, 
@@ -442,6 +761,15 @@ var setOptions6B = {
             color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -470,6 +798,15 @@ var setOptions6C = {
             font: {
                 size: 15
             }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
         }
     },
     responsive: true, 
@@ -496,6 +833,15 @@ var setOptions6D = {
             color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -583,7 +929,7 @@ var dataChart6D = {
 
 //-----Configuiraciónes de las graficas
 let dicOptionsChart = [
-    {'key':'switch1A','id':'chartFirst','data': dataChart1A, 'configs': setOptions1A},
+    {'key':'switch1ALine','id':'chartFirst','data': dataChart1A, 'configs': setOptions1A},
     {'key':'switch1B','id':'chartFirst','data': dataChart1B, 'configs': setOptions1B},
     {'key':'switch2A','id':'chartSecond','data': dataChart2A, 'configs': setOptions2A},
     {'key':'switch2B','id':'chartSecond','data': dataChart2B, 'configs': setOptions2B},
@@ -594,6 +940,22 @@ let dicOptionsChart = [
 ]
 
 
+let dicOptionsChartTotals = [
+    {'key':'switch3BarHorizontal', 'id':'chartThird','data': dataChart3, 'configs': setOptions3BarHorizontal, 'type':'bar'},
+    {'key':'switch3Bar', 'id':'chartThird','data': dataChart3, 'configs': setOptions3Bar, 'type':'bar'},
+    {'key':'switch3Line', 'id':'chartThird','data': dataChart3, 'configs': setOptions3Bar, 'type':'line'},
+    {'key':'switch3Pie', 'id':'chartThird','data': dataChart3, 'configs': setOptions3Pie, 'type':'pie'},
+
+    {'key':'switch4BarHorizontal', 'id':'chartFourth','data': dataChart4, 'configs': setOptions4BarHorizontal, 'type':'bar'},
+    {'key':'switch4Bar', 'id':'chartFourth','data': dataChart4, 'configs': setOptions4Bar, 'type':'bar'},
+    {'key':'switch4Line', 'id':'chartFourth','data': dataChart4, 'configs': setOptions4Bar, 'type':'line'},
+    {'key':'switch4Pie', 'id':'chartFourth','data': dataChart4, 'configs': setOptions4Pie, 'type':'pie'},
+
+    {'key':'switch5Bar', 'id':'chartFiveth','data': dataChart5, 'configs': setOptions5Bar, 'type':'bar'},
+    {'key':'switch5BarHorizontal', 'id':'chartFiveth','data': dataChart5, 'configs': setOptions5BarHorizontal, 'type':'bar'},
+    {'key':'switch5Line', 'id':'chartFiveth','data': dataChart5, 'configs': setOptions5Bar, 'type':'line'},
+    {'key':'switch5Pie', 'id':'chartFiveth','data': dataChart5, 'configs': setOptions5Pie, 'type':'pie'},
+]
 
 
 
