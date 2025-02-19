@@ -148,17 +148,17 @@ function setEvents() {
         const eventModal = new bootstrap.Modal(document.getElementById('modalFilterSecond'));
         eventModal.show();
     });
-    document.getElementById("modal-filter-chartThird").addEventListener("click", () => {
+    document.getElementById("modal-change-chartThird").addEventListener("click", () => {
         const eventModal = new bootstrap.Modal(document.getElementById('modalFilterThird'));
         eventModal.show();
     });
 
-    document.getElementById("modal-filter-chartFourth").addEventListener("click", () => {
+    document.getElementById("modal-change-chartFourth").addEventListener("click", () => {
         const eventModal = new bootstrap.Modal(document.getElementById('modalFilterFourth'));
         eventModal.show();
     });
 
-    document.getElementById("modal-filter-chartFiveth").addEventListener("click", () => {
+    document.getElementById("modal-change-chartFiveth").addEventListener("click", () => {
         const eventModal = new bootstrap.Modal(document.getElementById('modalFilterFiveth'));
         eventModal.show();
     });

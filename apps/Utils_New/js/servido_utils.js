@@ -346,7 +346,8 @@ function createElements(dataConfig = null){
                     const filterCustom = element.filterCustom? element.filterCustom : false;
                     //-----Button Filter Modal
                     const optionButtonModal  = element.optionButtonModal ? element.optionButtonModal  : false;
-
+                    //-----Button Filter Modal
+                    const chartChange = element.chartChange ? element.chartChange  : false;
                     //#-----COMPONENTS-----#//
                     if(element.type == 'card'){
                         //-----Element Progress
@@ -390,7 +391,13 @@ function createElements(dataConfig = null){
                                 <i class="fa-solid fa-filter"></i>
                             </button>`
                         }
-
+                        //-----Option Modal Change Bar
+                        let buttonChangeChart = '';
+                        if(chartChange){
+                            buttonChangeChart = `<button class="btn btn-sm btn-warning mr-2" id="modal-change-${idElement}">
+                                <i class="fa-solid fa-chart-simple"></i>
+                            </button>`
+                        }
                         //-----Element Card
                         divElement.innerHTML = `<div class="card shadow mb-4">
                             <div
@@ -398,6 +405,7 @@ function createElements(dataConfig = null){
                                 <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
                                 <div class="d-flex justify-content-end">
                                     ${buttonModal}
+                                    ${buttonChangeChart}
                                     <button class="btn btn-sm btn-primary me-2"  onclick="get_chartDownload('${idElement}','chart_screenIV');return false;">
                                         <i class="fas fa-download"></i>
                                     </button>

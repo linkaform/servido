@@ -4,9 +4,9 @@ let dicReportContext = [
             { type:'separator', col: '12', title:'Hurtos'},
             { type:'chart', col: '6', id:'chartFirst', title:'Tipo de Incidencia', filterCustom : true},
             { type:'chart', col: '6', id:'chartSecond', title:'Tipo de novedad', filterCustom : true},
-            { type:'chart', col: '6', id:'chartThird', title:'Incidencias Totales',filterCustom : true},
-            { type:'chart', col: '6', id:'chartFourth', title:'Novedades Totales',filterCustom : true},
-            { type:'chart', col: '12', id:'chartFiveth', title:'Retenciones y Recuperaciones',filterCustom : true},
+            { type:'chart', col: '6', id:'chartThird', title:'Incidencias Totales',chartChange : true},
+            { type:'chart', col: '6', id:'chartFourth', title:'Novedades Totales',chartChange : true},
+            { type:'chart', col: '12', id:'chartFiveth', title:'Retenciones y Recuperaciones',chartChange : true},
         ] 
     },
     { class:'', _children : [
@@ -15,6 +15,7 @@ let dicReportContext = [
         ] 
     },
     { class:'', _children : [
+            /*Filtrado de graficas */
             { type:'modal', col: '12', id:'modalFilterFirst', title:'Filtrado de Tipo de Incidencia', optionButtonModal:true, formElements : [
                     {type:'switch', title:'Grafíca por Día', id:'switch1A', name:'switchChartFirst', checked:'checked' },
                     {type:'switch', title:'Grafíca por Cuadrante', id:'switch1B', name:'switchChartFirst'},
@@ -32,21 +33,23 @@ let dicReportContext = [
                     {type:'switch', title:'Grafíca por Piso', id:'switch6D', name:'switchChartSixth'},
                 ]
             },
-            { type:'modal', col: '12', id:'modalFilterThird', title:'Filtrado de Incidencias Totales', optionButtonModal:true, formElements : [
+
+            /*Cambio de graficas */
+            { type:'modal', col: '12', id:'modalFilterThird', title:'Tipo de Grafíca por Incidencias Totales', optionButtonModal:true, formElements : [
                     {type:'switch', title:'Grafíca de tipo Barra Horizontal', id:'switch3BarHorizontal', name:'switchChartThird', checked:'checked' },
                     {type:'switch', title:'Grafíca de tipo Barra Vertical', id:'switch3Bar', name:'switchChartThird'},
                     {type:'switch', title:'Grafíca de tipo Tendencia', id:'switch3Line', name:'switchChartThird'},
                     {type:'switch', title:'Grafíca de tipo Pie', id:'switch3Pie', name:'switchChartThird'},
                 ]
             },
-            { type:'modal', col: '12', id:'modalFilterFourth', title:'Filtrado de Novedades Totales', optionButtonModal:true, formElements : [
+            { type:'modal', col: '12', id:'modalFilterFourth', title:'Tipo de Grafíca por Novedades Totales', optionButtonModal:true, formElements : [
                     {type:'switch', title:'Grafíca de tipo Barra Vertical', id:'switch4Bar', name:'switchChartFourth', checked:'checked' },
                     {type:'switch', title:'Grafíca de tipo Barra Horizontal', id:'switch4BarHorizontal', name:'switchChartFourth'},
                     {type:'switch', title:'Grafíca de tipo Tendencia', id:'switch4Line', name:'switchChartFourth'},
                     {type:'switch', title:'Grafíca de tipo Pie', id:'switch4Pie', name:'switchChartFourth'},
                 ]
             },
-            { type:'modal', col: '12', id:'modalFilterFiveth', title:'Filtrado de Retenciones y Recuperaciones', optionButtonModal:true, formElements : [
+            { type:'modal', col: '12', id:'modalFilterFiveth', title:'Tipo de Grafíca por Retenciones y Recuperaciones', optionButtonModal:true, formElements : [
                     {type:'switch', title:'Grafíca de tipo Barra Horizontal', id:'switch5BarHorizontal', name:'switchChartFiveth', checked:'checked' },
                     {type:'switch', title:'Grafíca de tipo Barra Vertical', id:'switch5Bar', name:'switchChartFiveth'},
                     {type:'switch', title:'Grafíca de tipo Tendencia', id:'switch5Line', name:'switchChartFiveth'},
@@ -78,11 +81,11 @@ var setOptions1A = {
             }
         },
         tooltip: {
-            titleFont: { size: 20 }, // Tamaño del título del tooltip
-            bodyFont: { size: 17 }, // Tamaño del texto del tooltip
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
             callbacks: {
                 label: function (tooltipItem) {
-                    return `Cantidad: ${tooltipItem.raw}`; // Personalizar el texto
+                    return `${tooltipItem.raw}`; 
                 }
             }
         }
@@ -111,6 +114,15 @@ var setOptions1B = {
             color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -189,6 +201,15 @@ var setOptions2A = {
             font: {
                 size: 15
             }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
         }
     },
     responsive: true, 
@@ -215,6 +236,15 @@ var setOptions2B = {
             color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -316,6 +346,15 @@ var setOptions3BarHorizontal = {
             font: {
                 size: 15
             }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
         }
     },
     responsive: true, 
@@ -346,6 +385,15 @@ var setOptions3Bar = {
             font: {
                 size: 15
             }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
         }
     },
     responsive: true, 
@@ -371,6 +419,15 @@ var setOptions3Pie = {
             color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -414,6 +471,15 @@ var setOptions4BarHorizontal = {
             font: {
                 size: 15
             }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
         }
     },
     responsive: true, 
@@ -444,6 +510,15 @@ var setOptions4Bar = {
             font: {
                 size: 15
             }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
         }
     },
     responsive: true, 
@@ -469,6 +544,15 @@ var setOptions4Pie = {
             color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -514,6 +598,15 @@ var setOptions5BarHorizontal = {
             font: {
                 size: 15
             }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
         }
     },
     responsive: true, 
@@ -544,6 +637,15 @@ var setOptions5Bar = {
             font: {
                 size: 15
             }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
         }
     },
     responsive: true, 
@@ -569,6 +671,15 @@ var setOptions5Pie = {
             color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -615,6 +726,15 @@ var setOptions6A = {
             font: {
                 size: 15
             }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
         }
     },
     responsive: true, 
@@ -641,6 +761,15 @@ var setOptions6B = {
             color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
@@ -669,6 +798,15 @@ var setOptions6C = {
             font: {
                 size: 15
             }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
         }
     },
     responsive: true, 
@@ -695,6 +833,15 @@ var setOptions6D = {
             color: 'black',
             font: {
                 size: 15
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
             }
         }
     },
