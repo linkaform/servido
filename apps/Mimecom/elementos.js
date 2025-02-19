@@ -153,6 +153,16 @@ function setEvents() {
         eventModal.show();
     });
 
+    document.getElementById("modal-filter-chartFourth").addEventListener("click", () => {
+        const eventModal = new bootstrap.Modal(document.getElementById('modalFilterFourth'));
+        eventModal.show();
+    });
+
+    document.getElementById("modal-filter-chartFiveth").addEventListener("click", () => {
+        const eventModal = new bootstrap.Modal(document.getElementById('modalFilterFiveth'));
+        eventModal.show();
+    });
+
     document.getElementById("modal-filter-chartSixth").addEventListener("click", () => {
         const eventModal = new bootstrap.Modal(document.getElementById('modalFilterSixth'));
         eventModal.show();
@@ -226,6 +236,30 @@ function setEvents() {
             }
         }, 500);
     });
+
+    document.getElementById("button-succes-modalFilterFourth").addEventListener("click", () => {
+        setFilterTypeChart('switchChartFourth');
+        setTimeout(function(){
+            const modalElement = document.getElementById('modalFilterFourth');
+            const eventModal = bootstrap.Modal.getInstance(modalElement);
+            if (eventModal) {
+                eventModal.hide();
+            }
+        }, 500);
+    });
+
+
+    document.getElementById("button-succes-modalFilterFiveth").addEventListener("click", () => {
+        setFilterTypeChart('switchChartFiveth');
+        setTimeout(function(){
+            const modalElement = document.getElementById('modalFilterFiveth');
+            const eventModal = bootstrap.Modal.getInstance(modalElement);
+            if (eventModal) {
+                eventModal.hide();
+            }
+        }, 500);
+    });
+
 
 
     document.getElementById("button-succes-modalFilterSixth").addEventListener("click", () => {
