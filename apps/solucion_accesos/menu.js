@@ -30,6 +30,7 @@ function showCustomMenu(menus, idHtmlMenu){
 	let addHtml= ''
   let htmlPase=''
   let htmlTurnos=''
+  let htmlAccesos=''
 	for (let menu of menus ){
 
 		if(menu=='pases'){
@@ -53,17 +54,17 @@ function showCustomMenu(menus, idHtmlMenu){
 			htmlTurnos=`<div class="col">
               <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('turnos');return false;">
                 <i class="fa-solid fa-shield-halved fs-1 mb-3"></i>
-                <p>Turnos / Accesos</p>
+                <p>Turnos</p>
               </div>
             </div>`
 		}
-		if(menu=='accesos' && !menus.includes('turnos')){
+		if(menu=='accesos'){
 			//de momento se quedara que si tienes acceso a turnos puedes entrar a accesos y viceversa, solo se habilitar la card de turnos,
 			//ya que para entrar a acessos tienes que tener turno iniciado
-			addHtml+=`<div class="col">
-              <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('turnos');return false;">
-                <i class="fa-solid fa-shield-halved fs-1 mb-3"></i>
-                <p>Turnos / Accesos</p>
+			htmlAccesos=`<div class="col">
+              <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('accesos');return false;">
+                <i class="fa-solid fa-user-lock fs-1 mb-3"></i>
+                <p>Accesos</p>
               </div>
             </div>`
 		}
@@ -126,7 +127,7 @@ function showCustomMenu(menus, idHtmlMenu){
     if(!menus.length>0){
         errorAlert("No se encontraron los menus, revisa la configuracion")
     }
-	divMenu.innerHTML = htmlPase + htmlTurnos + addHtml
+	divMenu.innerHTML = htmlPase + htmlTurnos + htmlAccesos + addHtml
 }
 
 async function getAllData(area="", location=""){
