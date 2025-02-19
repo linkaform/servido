@@ -281,7 +281,7 @@ function verModalMessageModal(nombre, email){
     $("#textMsjCorreo").text(email)
     $("#titulo").val("Mensaje de "+nombrePase+" enviado desde Accesos.")
 
-    $("#msj").val(nombrePase +" quiere ponerse en contacto contigo.")
+    $("#msj").val(nombrePase +" ha ingresado por " + getCookie('userCaseta') + ".")
     $("#messageModal").modal("show")
 }
 
@@ -1068,7 +1068,6 @@ function getInitialData(){
 function crearNuevaVisita(){
     loadingService()
     let nombre=$("#inputNombreNV").val();
-    let emailNV=$("#inputEmailNV").val();
     let empresa=$("#inputRazonSocialNV").val();
     let areaQueVisita=$("#inputAreaVisitaNV").val();
     let visitaA=$("#selectVisitaNV").val();
@@ -1079,7 +1078,7 @@ function crearNuevaVisita(){
             perfil_pase: "Visita General",
             telefono: "",
             visita_a:visitaA,
-            email: emailNV,
+            // email: emailNV,
             empresa: empresa,
             foto:fotosNuevaVisita.foto,
             identificacion: fotosNuevaVisita.identificacion,
