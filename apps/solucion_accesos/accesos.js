@@ -244,8 +244,9 @@ function verModalPhone(nombre, email){
 }
 
 async function enviarAvisoLlegada(){
-    data_for_msj.mensaje= 'El usuario ha llegado y te espera abajo en el lobby'
-    data_for_msj.titulo= 'Aviso de llegada'
+    let nombreVisitante = $("#nameUserInf").text();
+    data_for_msj.titulo= `Tu vista ${nombreVisitante} esta en la puerta`
+    data_for_msj.mensaje= `Tu vista ${nombreVisitante} esta en la puerta. Favor de pasar a recepcion para darle la bienvendia`
     data_for_msj.email_from= getCookie('userEmail')
     data_for_msj.email_to = email_to_user
     data_for_msj.nombre = name_to_user
