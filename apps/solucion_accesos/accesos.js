@@ -1354,6 +1354,7 @@ function getDataListUser(){
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 1
 function registrarIngreso(){
     const ubicacionActual = getCookie('userLocation');
+    const srcCompanyLogo = getCookie('lkfLogo');
     if(!autoAccesoHabilitado){
         $("#pruebadebtn").show();
     }
@@ -1423,7 +1424,10 @@ function registrarIngreso(){
             if(autoAccesoHabilitado){
                 Swal.fire({
                     html: `
-                        <h1>¡Bienvenido a <b>${ubicacionActual}</b>! 🏨</h1>
+                        <div>
+                            <img src=${srcCompanyLogo} alt="companylogo">
+                        </div>
+                        <h1 class="mt-4">¡Bienvenido a <b>${ubicacionActual}</b>! 🏨</h1>
                         <p class="mt-2 mb-1">Tu ingreso ha sido registrado y el anfitrión ha sido notificado.</p>
                         <p>En un momento bajará por ti, espera pacientemente. ⏳</p>
                     `,
@@ -1436,13 +1440,17 @@ function registrarIngreso(){
                     width: "40%",
                     padding: "2rem",
                 });
+                enviarAvisoLlegada();
                 setTimeout(()=>{
                     startScanning();
                 }, 10000);
             }else{
                 Swal.fire({
                     html: `
-                        <h1>¡Bienvenido a <b>${ubicacionActual}</b>! 🏨</h1>
+                        <div>
+                            <img src=${srcCompanyLogo} alt="companylogo">
+                        </div>
+                        <h1 class="mt-4">¡Bienvenido a <b>${ubicacionActual}</b>! 🏨</h1>
                         <p class="mt-2 mb-1">Tu ingreso ha sido registrado y el anfitrión ha sido notificado.</p>
                         <p>En un momento bajará por ti, espera pacientemente. ⏳</p>
                     `,
@@ -1452,6 +1460,7 @@ function registrarIngreso(){
                     showConfirmButton: true,
                     width: "40%",
                 });
+                enviarAvisoLlegada();
             }
 
             setCleanData();
@@ -1489,6 +1498,7 @@ function registrarSalida(){
     }
     //Validacion de Turno iniciado
     let statusTurno = getCookie('userTurn')
+    const srcCompanyLogo = getCookie('lkfLogo');
     if(statusTurno == 'Turno Cerrado' || !statusTurno){
         errorAlert("¡Debes iniciar turno antes de registrar una salida!","Validación","warning" )
         return
@@ -1534,7 +1544,10 @@ function registrarSalida(){
                 if(autoAccesoHabilitado){
                     Swal.fire({
                         html: `
-                            <h1>Gracias por tu visita</h1>
+                            <div>
+                                <img src=${srcCompanyLogo} alt="companylogo">
+                            </div>
+                            <h1 class="mt-4">Gracias por tu visita</h1>
                             <p class="mt-2 mb-1">Tu salida ha sido registrada correctamente, ¡Hasta pronto!</p>
                         `,
                         icon: "success",
@@ -1551,13 +1564,11 @@ function registrarSalida(){
                     }, 7000);
                 }else{
                     Swal.fire({
-                        title: "Exito!",
-                        text: "Salida registrada correctamente",
-                        icon: "success"
-                    });
-                    Swal.fire({
                         html: `
-                            <h1>Gracias por tu visita</h1>
+                            <div>
+                                <img src=${srcCompanyLogo} alt="companylogo">
+                            </div>
+                            <h1 class="mt-4">Gracias por tu visita</h1>
                             <p class="mt-2 mb-1">Tu salida ha sido registrada correctamente, ¡Hasta pronto!</p>
                         `,
                         icon: "success",
