@@ -29,6 +29,8 @@ let gafeteRegistroIngreso={}
 let gafeteId=""
 let currentStream = null;
 let data_for_msj={}
+let email_to_user="";
+let name_to_user="";
 
 
 window.onload = function(){
@@ -81,7 +83,7 @@ function startScanning() {
         videoElement.play();
     
         Swal.fire({
-            title: 'Escaneo de QR',
+            title: 'Escanea aqui tu pase',
             html: videoElement,
             showCancelButton: true,
             showConfirmButton: false,
@@ -90,7 +92,8 @@ function startScanning() {
             },
             onClose: () => {
                 stopScanning(stream);
-            }
+            },
+            width: '40%'
         });
         videoElement.srcObject = stream;
         videoElement.style.display = "block";
@@ -240,6 +243,36 @@ function verModalPhone(nombre, email){
     }
 }
 
+async function enviarAvisoLlegada(){
+    data_for_msj.mensaje= 'El usuario ha llegado y te espera abajo en el lobby'
+    data_for_msj.titulo= 'Aviso de llegada'
+    data_for_msj.email_from= getCookie('userEmail')
+    data_for_msj.email_to = email_to_user
+    data_for_msj.nombre = name_to_user
+    if(data_for_msj.mensaje=="" && data_for_msj.titulo!=="" && data_for_msj.email_from!=="" && data_for_msj.email_to!==""){
+        console.log('Faltan datos...')
+    }else{
+        console.log(data_for_msj)
+        await fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name: "script_turnos.py",
+                option: 'enviar_msj',
+                data_msj: data_for_msj
+            }),
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                console.log('Exito al enviar aviso')
+            }
+        });
+    }
+}
 
 function enviarMensaje(){
     loadingService()
@@ -1320,6 +1353,7 @@ function getDataListUser(){
 
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 1
 function registrarIngreso(){
+    const ubicacionActual = getCookie('userLocation');
     if(!autoAccesoHabilitado){
         $("#pruebadebtn").show();
     }
@@ -1329,6 +1363,7 @@ function registrarIngreso(){
         errorAlert("¡Debes iniciar turno antes de registrar un ingreso!","Validación","warning" )
         return
     }
+    enviarAvisoLlegada();
     loadingService('Registrando entrada...')
     $("#buttonIn").hide();
     $("#buttonOut").hide();
@@ -1387,18 +1422,35 @@ function registrarIngreso(){
             setDataInformation('informatioUser',data)
             if(autoAccesoHabilitado){
                 Swal.fire({
-                    title: "Exito!",
-                    text: "Movimiento de usuario registrado",
+                    html: `
+                        <h1>¡Bienvenido a <b>${ubicacionActual}</b>! 🏨</h1>
+                        <p class="mt-2 mb-1">Tu ingreso ha sido registrado y el anfitrión ha sido notificado.</p>
+                        <p>En un momento bajará por ti, espera pacientemente. ⏳</p>
+                    `,
                     icon: "success",
+                    iconColor: "#4CAF50",
+                    background: "#fefefe",
                     showConfirmButton: false,
-                    timer: 2000
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    width: "40%",
+                    padding: "2rem",
                 });
-                startScanning();
+                setTimeout(()=>{
+                    startScanning();
+                }, 10000);
             }else{
                 Swal.fire({
-                    title   :"Exito!",
-                    text: "Movimiento de usuario registrado",
-                    icon: "success"
+                    html: `
+                        <h1>¡Bienvenido a <b>${ubicacionActual}</b>! 🏨</h1>
+                        <p class="mt-2 mb-1">Tu ingreso ha sido registrado y el anfitrión ha sido notificado.</p>
+                        <p>En un momento bajará por ti, espera pacientemente. ⏳</p>
+                    `,
+                    icon: "success",
+                    iconColor: "#4CAF50",
+                    background: "#fefefe",
+                    showConfirmButton: true,
+                    width: "40%",
                 });
             }
 
@@ -1481,18 +1533,38 @@ function registrarSalida(){
                 setDataInformation('informatioUser',data)
                 if(autoAccesoHabilitado){
                     Swal.fire({
-                        title: "Exito!",
-                        text: "Salida registrada correctamente",
+                        html: `
+                            <h1>Gracias por tu visita</h1>
+                            <p class="mt-2 mb-1">Tu salida ha sido registrada correctamente, ¡Hasta pronto!</p>
+                        `,
                         icon: "success",
+                        iconColor: "#4CAF50",
+                        background: "#fefefe",
                         showConfirmButton: false,
-                        timer: 2000
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        width: "40%",
+                        padding: "2rem",
                     });
-                    startScanning();
+                    setTimeout(()=>{
+                        startScanning();
+                    }, 7000);
                 }else{
                     Swal.fire({
                         title: "Exito!",
                         text: "Salida registrada correctamente",
                         icon: "success"
+                    });
+                    Swal.fire({
+                        html: `
+                            <h1>Gracias por tu visita</h1>
+                            <p class="mt-2 mb-1">Tu salida ha sido registrada correctamente, ¡Hasta pronto!</p>
+                        `,
+                        icon: "success",
+                        iconColor: "#4CAF50",
+                        background: "#fefefe",
+                        showConfirmButton: true,
+                        width: "40%",
                     });
                 }
                 setCleanData();
@@ -1808,6 +1880,8 @@ function dataUserInf(dataUser){
             for(let v of dataUser.visita_a){
                 let nom= v.nombre || ""
                 let em= v.email || ""
+                email_to_user = v.email || ""
+                name_to_user = v.nombre || ""
                 let randomID=Math.floor(Math.random() * 1000000);
                 visit +=`
                     <div class="d-flex flex-row justify-content-between align-items-start">
@@ -2491,6 +2565,7 @@ function setCleanData(){
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
     setHideElements('buttonNew');
+    $("#pruebadebtn").show();
 }
 
 
