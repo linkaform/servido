@@ -1427,7 +1427,7 @@ function registrarIngreso(){
                         <div>
                             <img src=${srcCompanyLogo} alt="companylogo">
                         </div>
-                        <h1 class="mt-4">¡Bienvenido a <b>${ubicacionActual}</b>! 🏨</h1>
+                        <h1 class="mt-4">¡Bienvenido a <b>${ubicacionActual}</b>!</h1>
                         <p class="mt-2 mb-1">Tu ingreso ha sido registrado y el anfitrión ha sido notificado.</p>
                         <p>En un momento bajará por ti, espera pacientemente. ⏳</p>
                     `,
@@ -1450,7 +1450,7 @@ function registrarIngreso(){
                         <div>
                             <img src=${srcCompanyLogo} alt="companylogo">
                         </div>
-                        <h1 class="mt-4">¡Bienvenido a <b>${ubicacionActual}</b>! 🏨</h1>
+                        <h1 class="mt-4">¡Bienvenido a <b>${ubicacionActual}</b>!</h1>
                         <p class="mt-2 mb-1">Tu ingreso ha sido registrado y el anfitrión ha sido notificado.</p>
                         <p>En un momento bajará por ti, espera pacientemente. ⏳</p>
                     `,
