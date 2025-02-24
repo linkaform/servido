@@ -1,15 +1,15 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'card', col: '3', id:'cardFirst', title:'Total de Inspecciones', hexadecimal:'#FF5733'},
-            { type:'card', col: '3', id:'cardSecond', title:'Calificacion Promedio', hexadecimal:'#FF8D33'},
-            { type:'card', col: '3', id:'cardThird', title:'Porcentaje de Inspeccion', hexadecimal:'#FFC133'},
-            { type:'card', col: '3', id:'cardFourth', title:"Total de No's", hexadecimal:'#FFE733'},
+            { type:'card', col: '3', id:'cardFirst', title:'Total de Inspecciones', hexadecimal:'#FF5733', cardIcon: '<i class="fa-solid fa-list-ol mr-4 fa-2x text-gray-300"></i>'},
+            { type:'card', col: '3', id:'cardSecond', title:'Calificacion Promedio', hexadecimal:'#FF8D33', cardIcon: '<i class="fa-solid fa-ranking-star mr-4 fa-2x text-gray-300"></i>'},
+            { type:'card', col: '3', id:'cardThird', title:'Porcentaje de Inspeccion', hexadecimal:'#FFC133', cardIcon: '<i class="fa-solid fa-percent mr-4 fa-2x text-gray-300"></i>'},
+            { type:'card', col: '3', id:'cardFourth', title:"Total de No's", hexadecimal:'#FFE733', cardIcon: '<i class="fa-solid fa-circle-xmark mr-4 fa-2x text-gray-300"></i>'},
         ] 
     },
     { class:'', _children : [
-            { type:'table', col: '8', id:'tableFirst', title:'Incidencias habitaciones'},
-            { type:'table', col: '4', id:'tableSecond', title:'Top 10 incidencias'},
+            { type:'table', col: '12', id:'tableFirst', title:'Incidencias habitaciones'},
+            { type:'table', col: '12', id:'tableSecond', title:'Top 10 incidencias'},
         ] 
     },
     { class:'', _children : [
@@ -384,9 +384,9 @@ let dataTable1 = [
 ];
 
 let columsTable2 = [
-    { title:"Pregunta", field:'pregunta', width:200},
-    { title:"Area", field:'area', width:200},
-    { title:"No's", field:'nos', width:150},
+    { title:"Pregunta", field:'pregunta', width:700},
+    { title:"Area", field:'area', width:400},
+    { title:"No's", field:'nos', width:100},
 ];
 
 let dataTable2 = [

@@ -20,7 +20,7 @@ let customConfig1 = {
   ],
 }
 let customConfig2 = {
-  height: "500px",
+  height: "600px",
 }
 
 window.onload = function(){
@@ -109,8 +109,10 @@ async function getInformation(){
         const cantidadHabitacionesPiso = data.cantidad_habitaciones || []
         let columnsTable1 = generarColumnasDinamicas(cantidadHabitacionesPiso);
         if(data.firstTable){
-          console.log(data.firstTable)
           drawTableElement('tableFirst', data.firstTable, columnsTable1, null, customConfig1);
+        }
+        if(data.secondTable){
+          drawTableElement('tableSecond', data.secondTable, columsTable2, null, customConfig2);
         }
 
         const graphicData = data.graphic_response
@@ -176,8 +178,12 @@ function generarColumnasDinamicas(data) {
       headerSort: false,
       formatter: function (cell) {
           var value = cell.getValue();
+          var inspecciones = value?.inspecciones;
           if (value?.status === "revisada") {
               cell.getElement().style.backgroundColor = "lightgreen";
+          }
+          if(inspecciones?.length > 0){
+            value.numero = value.numero + '(' + (inspecciones.length+1) + ')'
           }
           return value?.numero;
       },
