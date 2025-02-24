@@ -35,7 +35,7 @@ window.onload = function () {
 
         if (!newPass || !confirmPass || !actualPass) {
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'Por favor, completa todos los campos.',
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
@@ -45,7 +45,7 @@ window.onload = function () {
 
         if (newPass.length < 6 || confirmPass.length < 6) {
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'La contraseña debe tener al menos 6 caracteres.',
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
@@ -55,7 +55,7 @@ window.onload = function () {
 
         if (newPass !== confirmPass) {
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'Las contraseñas no coinciden. Por favor, inténtalo de nuevo.',
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
@@ -65,6 +65,23 @@ window.onload = function () {
 
         getLoginCreds(userNameUrl, actualPass, newPass, confirmPass);
         document.getElementById('update_pass_form').reset();
+    });
+
+    const toggleButtons = document.querySelectorAll(".toggle-password");
+
+    toggleButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const targetId = button.getAttribute("data-target");
+            const passwordInput = document.getElementById(targetId);
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                button.innerHTML = `<i class="fa-regular fa-eye"></i>`;
+            } else {
+                passwordInput.type = "password";
+                button.innerHTML = `<i class="fa-regular fa-eye-slash"></i>`;
+            }
+        });
     });
 
     activateAccount();
@@ -119,7 +136,7 @@ function getLoginCreds(userUsername, userPassword, newPass, confirmPass){
                 updatePassword(newPass, confirmPass);
             }else{
                 Swal.fire({
-                    title: 'Error',
+                    title: 'Aviso',
                     text: res.error,
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
@@ -169,7 +186,7 @@ async function updatePassword(newPass, confirmPass){
             })
         }else{
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'Hubo un error al actualizar la contraseña',
                 icon: 'error',
                 confirmButtonText: 'Aceptar'

@@ -21,38 +21,51 @@
 </head>
 <body>
     <section class="bg-light">
-        <div class="container d-flex justify-content-center align-items-center vh-100" style="max-width: 800px;">
+        <div class="container d-flex justify-content-center align-items-center vh-100" style="max-width: 600px;">
             <div class="row w-100">
                 <div class="col-12">
-                    <div class="card shadow-sm">
-                        <div class="card-header text-white p-4 d-flex justify-content-between align-items-center flex-wrap-reverse gap-3" style="background: white;">
-                            <h3 class="text-black mb-0">Actualiza tu contraseña</h3>
-                            <a class="navbar-brand" href="https://app.soter.mx" target="_blank">
-                                <img style="height: 30px;" src="https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_10.png" alt="logoSoter">
-                            </a>
+                    <div class="card shadow border-light rounded-lg">
+                        <div class="card-header text-white pt-4 border-0" style="background: white;">
+                            <div class="w-100 d-flex flex-column justify-content-center align-items-center pt-4 gap-4">
+                                <a class="navbar-brand" href="https://app.soter.mx" target="_blank">
+                                    <img style="height: 50px;" src="https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_10.png" alt="logoSoter">
+                                </a>
+                                <div>
+                                    <h2 class="text-black">Activa tu cuenta</h2>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <form id="update_pass_form">
-                                <div class="mb-3">
-                                    <p>Hola, <b id="userNameSpan"></b>. Es momento de crear tu nueva contraseña, rellena los campos a continuación.</p>
+                                <div class="mb-3 mx-4">
+                                    <p class="text-center text-muted text-break">Hola, <b id="userNameSpan"></b>. Te hemos asignado una contraseña temporal, por favor cámbiala para activar tu cuenta.</p>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 mx-4">
                                     <label for="actual_pass" class="form-label">Contraseña actual:</label>
-                                    <input type="password" class="form-control" id="actual_pass" name="actual_pass" required placeholder="Ingresa tu contraseña actual">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control rounded-sm" id="actual_pass" name="actual_pass" required>
+                                        <span class="input-group-text toggle-password" data-target="actual_pass"><i class="fa-regular fa-eye-slash"></i></span>
+                                    </div>
                                     <small id="actual_pass_error" class="text-danger" style="display: none;">Ingresa al menos 6 caracteres.</small>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 mx-4">
                                     <label for="new_pass" class="form-label">Nueva contraseña:</label>
-                                    <input type="password" class="form-control" id="new_pass" name="new_pass" required placeholder="Ingresa tu nueva contraseña">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control rounded-sm" id="new_pass" name="new_pass" required>
+                                        <span class="input-group-text toggle-password" data-target="new_pass"><i class="fa-regular fa-eye-slash"></i></span>
+                                    </div>
                                     <small id="new_pass_error" class="text-danger" style="display: none;">Ingresa al menos 6 caracteres.</small>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-5 mx-4">
                                     <label for="confirm_pass" class="form-label">Repite tu nueva contraseña:</label>
-                                    <input type="password" class="form-control" id="confirm_pass" name="confirm_pass" required placeholder="Confirma tu nueva contraseña">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control rounded-sm" id="confirm_pass" name="confirm_pass" required>
+                                        <span class="input-group-text toggle-password" data-target="confirm_pass"><i class="fa-regular fa-eye-slash"></i></span>
+                                    </div>
                                     <small id="confirm_pass_error" class="text-danger" style="display: none;">Ingresa al menos 6 caracteres.</small>
                                 </div>
-                                <div class="w-100 d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-success px-4 py-2">Confirmar</button>
+                                <div class="d-flex justify-content-center pb-5 mx-4">
+                                    <button type="submit" class="btn btn-primary rounded-sm w-100">Confirmar</button>
                                 </div>
                             </form>
                         </div>
