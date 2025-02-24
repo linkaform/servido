@@ -245,15 +245,15 @@ function verModalPhone(nombre, email){
 
 async function enviarAvisoLlegada(){
     let nombreVisitante = $("#nameUserInf").text();
-    data_for_msj.titulo= `Tu vista ${nombreVisitante} esta en la puerta`
-    data_for_msj.mensaje= `Tu vista ${nombreVisitante} esta en la puerta. Favor de pasar a recepcion para darle la bienvendia`
+    data_for_msj.titulo = `Tu visita ${nombreVisitante} está en la puerta`;
+    data_for_msj.mensaje = `Tu visita ${nombreVisitante} está en la puerta. Por favor, pasa a recepción para darle la bienvenida.`;
     data_for_msj.email_from= getCookie('userEmail')
     data_for_msj.email_to = email_to_user
     data_for_msj.nombre = name_to_user
+    data_for_msj.enviado_desde = 'Accesos Aviso'
     if(data_for_msj.mensaje=="" && data_for_msj.titulo!=="" && data_for_msj.email_from!=="" && data_for_msj.email_to!==""){
         console.log('Faltan datos...')
     }else{
-        console.log(data_for_msj)
         await fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
