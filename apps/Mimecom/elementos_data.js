@@ -75,9 +75,9 @@ var setOptions1A = {
             text: 'Tipo de Incidencia / Día',
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -111,9 +111,9 @@ var setOptions1B = {
             text: 'Tipo de Incidencia / Cuadrante',
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -197,9 +197,9 @@ var setOptions2A = {
             text: 'Tipo de Novedad / Día',
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -233,9 +233,9 @@ var setOptions2B = {
             text: 'Tipo de Novedad / Cuadrante',
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -342,9 +342,9 @@ var setOptions3BarHorizontal = {
             display: false,
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -381,9 +381,9 @@ var setOptions3Bar = {
             display: false,
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -416,9 +416,9 @@ var setOptions3Pie = {
             display: false,
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -467,9 +467,9 @@ var setOptions4BarHorizontal = {
             display: false,
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -506,9 +506,9 @@ var setOptions4Bar = {
             display: false,
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -541,9 +541,9 @@ var setOptions4Pie = {
             display: false,
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -594,9 +594,9 @@ var setOptions5BarHorizontal = {
             display: false,
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -633,9 +633,9 @@ var setOptions5Bar = {
             display: false,
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -668,9 +668,9 @@ var setOptions5Pie = {
             display: false,
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -722,9 +722,9 @@ var setOptions6A = {
             title:'Elementos Encontrados / Cuadrante'
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -758,9 +758,9 @@ var setOptions6B = {
             title:'Elementos Encontrados / Día'
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -794,9 +794,9 @@ var setOptions6C = {
             title:'Elementos Encontrados / Hora'
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
@@ -830,9 +830,9 @@ var setOptions6D = {
             title:'Elementos Encontrados / Piso'
         },
         datalabels: {
-            color: 'black',
+            color: 'red',
             font: {
-                size: 15
+                size: 19
             }
         },
         tooltip: {
