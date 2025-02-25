@@ -35,26 +35,32 @@ function showCustomMenu(menus, idHtmlMenu){
 
 		if(menu=='pases'){
 			htmlPase=`<div class="col">
-              <div class="menu-grid-item text-center p-4"  onclick="redirectionUrl('pases');return false;">
-                <i class="fa-solid fa-passport fs-1 mb-3"></i>
-                <p>Pases de Entrada</p>
+              <div class="menu-grid-item text-center p-4 d-flex flex-column align-items-center justify-content-center"  onclick="redirectionUrl('pases');return false;">
+                <div>
+                  <i class="fa-solid fa-passport fs-1 mb-3"></i>
+                  <p>Pases de Entrada</p>
+                </div>  
               </div>
             </div>`
 		}
 		if(menu=='bitacoras'){
 			addHtml+=`<div class="col">
-               <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('bitacora');return false;">
-                 <i class="fa-solid fa-book fs-1 mb-3"></i>
-                 <p>Bitacoras</p>
+               <div class="menu-grid-item text-center p-4 d-flex flex-column align-items-center justify-content-center" onclick="redirectionUrl('bitacora');return false;">
+                <div>
+                  <i class="fa-solid fa-book fs-1 mb-3"></i>
+                  <p>Bitacoras</p>
+                </div>  
                </div>
              </div>`
 
 		}
 		if(menu=='turnos'){
 			htmlTurnos=`<div class="col">
-              <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('turnos');return false;">
-                <i class="fa-solid fa-shield-halved fs-1 mb-3"></i>
-                <p>Turnos</p>
+              <div class="menu-grid-item text-center p-4 d-flex flex-column align-items-center justify-content-center" onclick="redirectionUrl('turnos');return false;">
+                <div>
+                  <i class="fa-solid fa-shield-halved fs-1 mb-3"></i>
+                  <p>Turnos</p>
+                </div>  
               </div>
             </div>`
 		}
@@ -62,61 +68,55 @@ function showCustomMenu(menus, idHtmlMenu){
 			//de momento se quedara que si tienes acceso a turnos puedes entrar a accesos y viceversa, solo se habilitar la card de turnos,
 			//ya que para entrar a acessos tienes que tener turno iniciado
 			htmlAccesos=`<div class="col">
-              <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('accesos');return false;">
-                <i class="fa-solid fa-user-lock fs-1 mb-3"></i>
-                <p>Accesos</p>
+              <div class="menu-grid-item text-center p-4 d-flex flex-column align-items-center justify-content-center" onclick="redirectionUrl('accesos');return false;">
+                <div>
+                  <i class="fa-solid fa-user-lock fs-1 mb-3"></i>
+                  <p>Accesos</p>
+                </div>  
               </div>
             </div>`
 		}
 		if(menu=='rondines'){
 			addHtml+=`<div class="col">
-               <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('rondines');return false;">
-                 <i class="fa-solid fa-route fs-1 mb-3"></i>
-                 <p>Rondines</p>
+               <div class="menu-grid-item text-center p-4 d-flex flex-column align-items-center justify-content-center" onclick="redirectionUrl('rondines');return false;">
+                  <div>
+                    <i class="fa-solid fa-route fs-1 mb-3"></i>
+                    <p>Rondines</p>
+                  </div>  
                </div>
              </div>`
 		}
 		if(menu=='notas'){
 			addHtml+= `<div class="col">
-               <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('notas');return false;">
-                 <i class="fa-regular fa-note-sticky fs-1 mb-3"></i>
-                 <p>Notas</p>
+               <div class="menu-grid-item text-center p-4 d-flex flex-column align-items-center justify-content-center" onclick="redirectionUrl('notas');return false;">
+                  <div>
+                    <i class="fa-regular fa-note-sticky fs-1 mb-3"></i>
+                    <p>Notas</p>
+                  </div>
                </div>
              </div>`
 		}
 		if(menu=='articulos'){
 			addHtml+=`<div class="col">
-               <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('articulos');return false;">
-                 <i class="fa-solid fa-glasses fs-1 mb-3"></i>
-                 <p>Objetos Perdidos</p>
+               <div class="menu-grid-item text-center p-4 d-flex flex-column align-items-center justify-content-center" onclick="redirectionUrl('articulos');return false;">
+                  <div>
+                    <i class="fa-solid fa-glasses fs-1 mb-3"></i>
+                    <p>Articulos Perdidos / Consesionados</p>
+                  </div>  
                </div>
              </div>`
 		}
-        if(menu=='articulos'){
-            addHtml+=`<div class="col">
-               <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('articulos');return false;">
-                 <i class="fa-solid fa-hammer fs-1 mb-3"></i>
-                 <p>Articulos consesionados</p>
-               </div>
-             </div>`
-        }
 		if(menu=='incidencias'){
 			addHtml+=`<div class="col">
-               <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('incidencias');return false;">
-                 <i class="fa-solid fa-triangle-exclamation fs-1 mb-3"></i>
-                 <p>Incidencias</p>
+               <div class="menu-grid-item text-center p-4 d-flex flex-column align-items-center justify-content-center" onclick="redirectionUrl('incidencias');return false;">
+                  <div>
+                    <i class="fa-solid fa-triangle-exclamation fs-1 mb-3"></i>
+                    <p>Incidencias / Fallas</p>
+                  </div>
                </div>
              </div>
              `
 		}
-        if(menu == "fallas"){
-            addHtml+= `<div class="col">
-               <div class="menu-grid-item text-center p-4" onclick="redirectionUrl('incidencias');return false;">
-                 <i class="fa-regular fa-rectangle-xmark fs-1 mb-3"></i>
-                 <p>Fallas</p>
-               </div>
-             </div>`
-        }
              // `<div class="col">
              //   <div class="menu-grid-item text-center p-4">
              //     <i class="fa-solid fa-cube fs-1 mb-3"></i>
