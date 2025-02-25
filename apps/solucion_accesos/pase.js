@@ -1843,6 +1843,9 @@ function crearConfirmacion() {
                                     <div class="col-12 col-md-6 text-start mt-1">
                                         <b>Teléfono:</b> `+numeroConLada+`
                                     </div>
+                                    <div class="col-12 col-md-6 text-start mt-1">
+                                        <b>Empresa:</b> `+data.empresa+`
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12 col-md-6 text-start mt-1">
@@ -1903,6 +1906,7 @@ function crearConfirmacion() {
                    
     		        let access_pass={
     		            nombre: data.nombreCompleto,
+                        empresa: data.empresa,
     		            email:data.email,
     		            /*areas: areas,
     		            comentarios:comentarios,*/
