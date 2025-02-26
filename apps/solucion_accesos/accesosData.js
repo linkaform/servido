@@ -41,12 +41,12 @@ const columsListaPases= [
           formatter: (cell, formatterParams) => {
                let data = cell.getData();
                if(!data.hasOwnProperty('foto') || data.foto==undefined){
-                    data.foto=[{file_name: "notfound", file_url: "https://www.smarttools.com.mx/wp-content/uploads/2019/05/imagen-no-disponible.png"}]
+                    data.foto=[{file_name: "notfound", file_url: "https://img.wattpad.com/8f19b412f2223afe4288ed0904120a48b7a38ce1/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f5650722d38464e2d744a515349673d3d2d3234323931353831302e313434336539633161633764383437652e6a7067"}]
                }
-               let foto= data.foto.length>0 ? data.foto[0].file_url : "https://www.smarttools.com.mx/wp-content/uploads/2019/05/imagen-no-disponible.png"
+               let foto= data.foto.length>0 ? data.foto[0].file_url : "https://img.wattpad.com/8f19b412f2223afe4288ed0904120a48b7a38ce1/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f5650722d38464e2d744a515349673d3d2d3234323931353831302e313434336539633161633764383437652e6a7067"
                let id = cell.getData().id ? cell.getData().id : 0;
                let divActions = '<div id="inf'+data.folio +'"><div class="d-flex flex-row" id="listOfGuards">';
-               divActions+= '<div col-sm-12 col-md-12 col-lg-6 col-xl-6> <img id="imgGuardiaApoyo" height="60" width="60" src="'
+               divActions+= '<div col-sm-12 col-md-12 col-lg-6 col-xl-6> <img class="rounded-circle m-1" id="imgGuardiaApoyo" height="80" width="80" style="object-fit:fill" src="'
                + foto + '"> </div > <div col-sm-12 col-md-12 col-lg-6 col-xl-6 class="flex-column ms-3"> <div> <b>'
                + data.nombre +'</b> </div></div>';
                divActions += '</div> </div>';
