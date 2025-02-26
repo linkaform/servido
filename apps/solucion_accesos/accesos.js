@@ -31,7 +31,7 @@ let currentStream = null;
 let data_for_msj={}
 let email_to_user="";
 let name_to_user="";
-
+let scanTimeout;
 
 window.onload = function(){
     setValueUserLocation('accesos');
@@ -57,6 +57,27 @@ window.onload = function(){
     //$("#mainSection1").hide()
     $("#cartaUser").hide()
     $('#mainSection2').show()
+
+    document.getElementById("inputCodeUser").addEventListener("input", (event) => {
+        clearTimeout(scanTimeout);
+        
+        scanTimeout = setTimeout(() => {
+            let inputValue = event.target.value.trim();
+            if (inputValue !== "") {
+                console.log("Código QR detectado:", inputValue);
+                buscarPaseEntrada();
+                event.target.value = "";
+            }
+        }, 500);
+    });
+
+    document.getElementById("inputCodeUser").addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            console.log("Código QR detectado:", event.target.value);
+            buscarPaseEntrada();
+            event.target.value = "";
+        }
+    });
 }
 
 window.addEventListener('storage', function(event) {
@@ -68,12 +89,45 @@ window.addEventListener('storage', function(event) {
 });
 
 let scanning = false;
+let scannerOption = false;
+let cameraOption = false;
 
 function startScanning() {
-    console.log("Iniciando escaneo...");
+    if(!scannerOption && !cameraOption){
+        Swal.fire({
+            title: 'Dispositivo a utilizar',
+            text: 'Selecciona el dispositivo que deseas utilizar para escanear el código QR',
+            showCancelButton: true,
+            showConfirmButton: true,
+            confirmButtonText: 'Cámara',
+            cancelButtonText: 'Scanner',
+            reverseButtons: true,
+            buttonsStyling: false,
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-warning me-2'
+            }
+        }).then((result) => {
+            if (result.value) {
+                scannerOption = false;
+                cameraOption = true;
+                scanWithCamera();            
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                cameraOption = false;
+                scannerOption = true;
+                scanWithScanner();
+            }
+        });
+    }else if(cameraOption){
+        scanWithCamera();
+    }else if(scannerOption){
+        Swal.close();
+    }
+}
 
+function scanWithCamera(){
     const constraints = { video: { facingMode: "environment" } };
-    
+            
     navigator.mediaDevices.getUserMedia(constraints)
     .then((stream) => {
         console.log("Cámara activa");
@@ -104,6 +158,23 @@ function startScanning() {
     .catch((err) => {
         console.error("Error al acceder a la cámara:", err.name, err.message);
     });
+}
+
+function scanWithScanner(){
+    Swal.fire({
+        title: 'Habilitando opcion Scanner',
+        text: 'Verifica que tu escaner esté conectado y encendido...',
+        type: 'info',
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+    })
+    setTimeout(()=> {
+        Swal.close();
+        setTimeout(() => {
+            document.getElementById("inputCodeUser").focus();
+        }, 500);
+    }, 5000);
 }
 
 function scanQRCode(videoElement, stream) {
@@ -1183,6 +1254,8 @@ let autoAccesoHabilitado = false;
 function toggleAutoAcceso(checkbox) {
     autoAccesoHabilitado = checkbox.checked;
     if(autoAccesoHabilitado){
+        scannerOption = false;
+        cameraOption = false;
         startScanning();
     }
 }
@@ -1278,7 +1351,21 @@ function buscarPaseEntrada() {
                     }
                     
                 }else{
-                    errorAlert(res)
+                    Swal.fire({
+                        title: "Advertencia",
+                        html: res.error.msg.msg,
+                        type: "error",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                    })
+                    setTimeout(()=>{
+                        Swal.close();
+                        setTimeout(() => {
+                            document.getElementById("inputCodeUser").focus();
+                        }, 500);
+                    }, 4000)
+                    // errorAlert(res)
                     setCleanData();
                     setHideElements('dataHide');
                     $("#buttonNew").show();
@@ -1365,7 +1452,6 @@ function registrarIngreso(){
         errorAlert("¡Debes iniciar turno antes de registrar un ingreso!","Validación","warning" )
         return
     }
-    enviarAvisoLlegada();
     loadingService('Registrando entrada...')
     $("#buttonIn").hide();
     $("#buttonOut").hide();
@@ -1440,6 +1526,11 @@ function registrarIngreso(){
                     allowEscapeKey: false,
                     width: "40%",
                     padding: "2rem",
+                    onClose: () => {
+                        setTimeout(() => {
+                            document.getElementById("inputCodeUser").focus();
+                        }, 100);
+                    }
                 });
                 enviarAvisoLlegada();
                 setTimeout(()=>{
@@ -1458,10 +1549,18 @@ function registrarIngreso(){
                     icon: "success",
                     iconColor: "#4CAF50",
                     background: "#fefefe",
-                    showConfirmButton: true,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                     width: "40%",
                 });
                 enviarAvisoLlegada();
+                setTimeout(()=>{
+                    Swal.close();
+                    setTimeout(() => {
+                        document.getElementById("inputCodeUser").focus();
+                    }, 500);
+                }, 4000)
             }
 
             setCleanData();
@@ -1559,6 +1658,11 @@ function registrarSalida(){
                         allowEscapeKey: false,
                         width: "40%",
                         padding: "2rem",
+                        onClose: () => {
+                            setTimeout(() => {
+                                document.getElementById("inputCodeUser").focus();
+                            }, 100);
+                        }
                     });
                     setTimeout(()=>{
                         startScanning();
@@ -1577,6 +1681,11 @@ function registrarSalida(){
                         background: "#fefefe",
                         showConfirmButton: true,
                         width: "40%",
+                        onClose: () => {
+                            setTimeout(() => {
+                                document.getElementById("inputCodeUser").focus();
+                            }, 100);
+                        }
                     });
                 }
                 setCleanData();
