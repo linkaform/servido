@@ -1349,7 +1349,7 @@ function buscarPaseEntrada() {
                             }
                         }
                     }
-                    
+                    $("#pruebadebtn").hide();
                 }else{
                     Swal.fire({
                         title: "Advertencia",
