@@ -35,7 +35,7 @@ window.onload = function(){
     fillCatalogs();
     //getInfoAndCatalogos();
     let checkboxCasetas = document.getElementById('checkboxTodasLasCasetas');
-    checkboxCasetas.checked = true; 
+    checkboxCasetas.checked = false; 
     
     getStats(getCookie("userCaseta"),getCookie("userLocation"),false);
 	selectLocation= document.getElementById("selectLocation")
@@ -63,8 +63,8 @@ window.onload = function(){
             $('#labelGuardiaDeApoyo').remove();
         })
     }
-    selectCaseta.value=""
-    selectCaseta.disabled=true
+    selectCaseta.value=getCookie('userCaseta')
+    selectCaseta.disabled=false
 
 
          const buttons = document.querySelectorAll('.time-button');
@@ -501,6 +501,7 @@ function verIncidencia(folio){
     let per=""
     let divVistaPersona= document.getElementById('personasInvolucradasIncidencia')
     divVistaPersona.innerHTML=""
+    divVistaPersona.classList.add('d-flex','flex-column', 'gap-3')
     if(selectedIncidencia.hasOwnProperty('personas_involucradas_incidencia')){
         for(let p of selectedIncidencia.personas_involucradas_incidencia){
             per += `
@@ -2138,6 +2139,10 @@ function nuevaIncidencia(){
     $("#buttonAgregarIncidencia").hide();
 
     let personas= getDataGrupoRepetitivo('persona-input-form-nuevo','.persona-div-nuevo' , 2)
+    let personasGrupo = getDataGrupoRepetitivo('sets-persona-input-form-nuevo','.persona-div-nuevo' , 2)
+    personasGrupo.forEach(persona => {
+        personas.push(persona);
+    });
     let acciones= getDataGrupoRepetitivo('dano-input-form-nuevo','.dano-div-nuevo' , 2)
     let depositos= getDataGrupoRepetitivo('depositos-padre-nuevo','.deposito-nuevo' , 2)
 
