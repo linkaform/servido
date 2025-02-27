@@ -183,7 +183,6 @@ function setEvents() {
                 element.addEventListener("change", () => setupSwitches(chart));
             }
         });
-
         setupSwitches(chart);
     });
 
@@ -290,8 +289,9 @@ function setEventsLoad() {
                 element.addEventListener("change", () => setupSwitches(chart));
             }
         });
+        setupSwitches(chart);
     });
-
+    
     //----Save Filter
     document.getElementById("button-succes-modalFilterFirst").addEventListener("click", () => {
         const dic_return = setFilterChart('switchChartFirst', true, 'chartFirst' );
