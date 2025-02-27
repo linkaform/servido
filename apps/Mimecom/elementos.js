@@ -157,7 +157,7 @@ function setupSwitches(switchClass) {
 //----Events Demo
 function setEvents() {
     //----Input FIlter
-    $('#time').on('change', function() {
+    $('#type_date').on('change', function() {
         const selectedValue = $(this).val(); 
         onChangeSelect(selectedValue);
     });
@@ -263,7 +263,7 @@ function setEvents() {
 //----Events Load
 function setEventsLoad() {
     //----Input FIlter
-    $('#time').on('change', function() {
+    $('#type_date').on('change', function() {
         const selectedValue = $(this).val(); 
         onChangeSelect(selectedValue);
     });
