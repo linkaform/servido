@@ -134,6 +134,11 @@ function onChangeSelect(value) {
 //----Setup Switch Active/Demo
 function setupSwitches(switchClass) {
     const switches = document.querySelectorAll(`.${switchClass}`);
+    let checkedSwitch = Array.from(switches).find(s => s.checked);
+    if (!checkedSwitch && switches.length > 0) {
+        switches[0].checked = true; 
+        checkedSwitch = switches[0];
+    }
     switches.forEach(switchEl => {
         switchEl.addEventListener("change", function () {
             if (this.checked) {
@@ -147,6 +152,7 @@ function setupSwitches(switchClass) {
         });
     });
 }
+
 
 //----Events Demo
 function setEvents() {
@@ -177,7 +183,11 @@ function setEvents() {
                 element.addEventListener("change", () => setupSwitches(chart));
             }
         });
+
+        setupSwitches(chart);
     });
+
+
 
     //----Save Filter
     document.getElementById("button-succes-modalFilterFirst").addEventListener("click", () => {
