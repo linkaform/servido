@@ -929,7 +929,7 @@ var dataChart6D = {
 
 //-----Configuiraciónes de las graficas
 let dicOptionsChart = [
-    {'key':'switch1ALine','id':'chartFirst','data': dataChart1A, 'configs': setOptions1A},
+    {'key':'switch1A','id':'chartFirst','data': dataChart1A, 'configs': setOptions1A},
     {'key':'switch1B','id':'chartFirst','data': dataChart1B, 'configs': setOptions1B},
     {'key':'switch2A','id':'chartSecond','data': dataChart2A, 'configs': setOptions2A},
     {'key':'switch2B','id':'chartSecond','data': dataChart2B, 'configs': setOptions2B},
@@ -958,14 +958,24 @@ let dicOptionsChartTotals = [
 ]
 
 
+const switchGroups = {
+    "switchChartFirst": ["switch1A", "switch1B"],
+    "switchChartSecond": ["switch2A", "switch2B"],
+    "switchChartThird": ["switch3BarHorizontal", "switch3Bar", "switch3Line", "switch3Pie"],
+    "switchChartFourth": ["switch4BarHorizontal", "switch4Bar", "switch4Line", "switch4Pie"],
+    "switchChartFiveth": ["switch5BarHorizontal", "switch5Bar", "switch5Line", "switch5Pie"],
+    "switchChartSixth": ["switch6A", "switch6B", "switch6C", "switch6D"]
+};
 
 
-
-
-
-
-
-
+const modalMappings = {
+    "modal-filter-chartFirst": "modalFilterFirst",
+    "modal-filter-chartSecond": "modalFilterSecond",
+    "modal-change-chartThird": "modalFilterThird",
+    "modal-change-chartFourth": "modalFilterFourth",
+    "modal-change-chartFiveth": "modalFilterFiveth",
+    "modal-filter-chartSixth": "modalFilterSixth"
+};
 
 
 

@@ -31,32 +31,20 @@ function loadDemoData(){
 
 //-----FUNCTION ACTIVE
 function loadData(data) {
-    //----Search Catalogs
-    get_catalog();
-    //----Assing Events
-    const buttonClose = document.getElementById("buttonClose");
-    const buttonExecution = document.getElementById("buttonExecution");
-    buttonExecution.addEventListener("click", () => {
-        getInformation();
-    });
-    //---Select 
-    $('#time').on('change', function() {
-        const selectedValue = $(this).val(); 
-        onChangeSelect(selectedValue);
-    });
-
-
+    //---Data
+    setEventsLoad();
 
     //---Hide
     setTimeout(() => { hide_loading();}, 2000);
 }
 
 //-----SET REQUEST
-async function getInformation(){
+async function getInformation(dicAditional){
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
     const statusSession = getSession();
-    const dicAdional = {'user_name':getCookie("userName").replace(/"/g, ''),'option':'get_data'}
+    const dicAdional =  dicAditional;
+
     if(statusSession == 'Demo' || demo){
         Swal.fire({
           title: 'Advertencia',
@@ -65,8 +53,37 @@ async function getInformation(){
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-        
 
+        if(data.chartFirst){
+            let itemDic = dicOptionsChart.find(item => item.key === dicAdional.chartFirst);
+            console.log('itemDic',itemDic)
+            drawChartElement('chartFirst','line',data.chartFirst, itemDic.configs);
+        }
+        if(data.chartSecond){
+            let itemDic = dicOptionsChart.find(item => item.key === dicAdional.chartSecond);
+            console.log('itemDic',itemDic)
+            drawChartElement('chartSecond','line', data.chartSecond, itemDic.configs);
+        }
+        if(data.chartThird){
+            let itemDic = dicOptionsChartTotals.find(item => item.key === dicAdional.chartThird);
+            console.log('itemDic',itemDic)
+            drawChartElement('chartThird',itemDic.type, data.chartThird, itemDic.configs);
+        }
+        if(data.chartFourth){
+            let itemDic = dicOptionsChartTotals.find(item => item.key === dicAdional.chartFourth);
+            console.log('chartFourth',itemDic.type, data.chartFourth, itemDic.configs)
+            drawChartElement('chartFourth',itemDic.type, data.chartFourth, itemDic.configs);
+        }
+        if(data.chartFiveth){
+            let itemDic = dicOptionsChartTotals.find(item => item.key === dicAdional.chartFiveth);
+            console.log('chartFiveth',itemDic.type, data.chartFiveth, itemDic.configs)
+            drawChartElement('chartFiveth',itemDic.type, data.chartFiveth, itemDic.configs);
+        }
+        if(data.chartSixth){
+            let itemDic = dicOptionsChart.find(item => item.key === dicAdional.chartSixth);
+            console.log('chartSixth','line',data.chartSixth, itemDic.configs)
+            drawChartElement('chartSixth','line',data.chartSixth, itemDic.configs);
+        }
         //-----Style
         const divEmpty = document.querySelectorAll('.div-content-empty');
         const divElements = document.querySelectorAll('.div-content-element');
@@ -79,30 +96,28 @@ async function getInformation(){
     }
 }
 
-//----CATALOG
-function get_catalog(){
-    const scriptId = getParameterURL('script_id');
-    const JWT = getCookie("userJwt");
-    fetch(getUrlRequest('script'), {
-        method: 'POST',
-        body: JSON.stringify({
-            script_id: scriptId,
-            user_name: getCookie("userName").replace(/"/g, ''),
-            option: 'get_catalog',
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+JWT
-        },
-    })
-    .then((res) => res.json())
-    .then((res) => {
-        const data = res.response && res.response.data ? res.response.data : [];
-       
-    })
+//-----Get switches
+function getSwitchsAll() {
+    let dic_return = {}; 
+    const dic_first = setFilterChart('switchChartFirst', true, 'chartFirst' );
+    const dic_Second = setFilterChart('switchChartSecond', true, 'chartSecond' );
+    const dic_Third = setFilterChart('switchChartThird', true, 'chartThird' );
+    const dic_Fourth = setFilterChart('switchChartFourth', true, 'chartFourth' );
+    const dic_Fiveth = setFilterChart('switchChartFiveth', true, 'chartFiveth' );
+    const dic_Sixth = setFilterChart('switchChartSixth', true, 'chartSixth' );
+
+
+    dic_return = { ...dic_return,  ...(dic_first  || {})  };  
+    dic_return = { ...dic_return,  ...(dic_Second || {})  };  
+    dic_return = { ...dic_return,  ...(dic_Third  || {})  };  
+    dic_return = { ...dic_return,  ...(dic_Fourth || {})  };  
+    dic_return = { ...dic_return,  ...(dic_Fiveth || {})  };  
+    dic_return = { ...dic_return,  ...(dic_Sixth  || {})  };  
+
+    return dic_return;
 }
 
-//----Events
+//----Custom Date  Active/Demo
 function onChangeSelect(value) {
     const divFromInput = document.getElementById('divDateFrom');
     const divToInput = document.getElementById('divDateTo');
@@ -116,6 +131,7 @@ function onChangeSelect(value) {
     }
 }
 
+//----Setup Switch Active/Demo
 function setupSwitches(switchClass) {
     const switches = document.querySelectorAll(`.${switchClass}`);
     switches.forEach(switchEl => {
@@ -132,6 +148,7 @@ function setupSwitches(switchClass) {
     });
 }
 
+//----Events Demo
 function setEvents() {
     //----Input FIlter
     $('#time').on('change', function() {
@@ -140,67 +157,27 @@ function setEvents() {
     });
 
     //----Buttons Modal
-    document.getElementById("modal-filter-chartFirst").addEventListener("click", () => {
-        const eventModal = new bootstrap.Modal(document.getElementById('modalFilterFirst'));
-        eventModal.show();
-    });
-    document.getElementById("modal-filter-chartSecond").addEventListener("click", () => {
-        const eventModal = new bootstrap.Modal(document.getElementById('modalFilterSecond'));
-        eventModal.show();
-    });
-    document.getElementById("modal-change-chartThird").addEventListener("click", () => {
-        const eventModal = new bootstrap.Modal(document.getElementById('modalFilterThird'));
-        eventModal.show();
-    });
+    Object.entries(modalMappings).forEach(([buttonId, modalId]) => {
+        const button = document.getElementById(buttonId);
+        const modalElement = document.getElementById(modalId);
 
-    document.getElementById("modal-change-chartFourth").addEventListener("click", () => {
-        const eventModal = new bootstrap.Modal(document.getElementById('modalFilterFourth'));
-        eventModal.show();
+        if (button && modalElement) {
+            button.addEventListener("click", () => {
+                const eventModal = new bootstrap.Modal(modalElement);
+                eventModal.show();
+            });
+        }
     });
 
-    document.getElementById("modal-change-chartFiveth").addEventListener("click", () => {
-        const eventModal = new bootstrap.Modal(document.getElementById('modalFilterFiveth'));
-        eventModal.show();
+    //---Asign Function Change Switch
+    Object.entries(switchGroups).forEach(([chart, switches]) => {
+        switches.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener("change", () => setupSwitches(chart));
+            }
+        });
     });
-
-    document.getElementById("modal-filter-chartSixth").addEventListener("click", () => {
-        const eventModal = new bootstrap.Modal(document.getElementById('modalFilterSixth'));
-        eventModal.show();
-    });
-
-    //----Switch
-    document.getElementById("switch1A").addEventListener("change", setupSwitches('switchChartFirst'));
-    document.getElementById("switch1B").addEventListener("change", setupSwitches('switchChartFirst'));
-
-    document.getElementById("switch2A").addEventListener("change", setupSwitches('switchChartSecond'));
-    document.getElementById("switch2B").addEventListener("change", setupSwitches('switchChartSecond'));
-
-    document.getElementById("switch3BarHorizontal").addEventListener("change", setupSwitches('switchChartThird'));
-    document.getElementById("switch3Bar").addEventListener("change", setupSwitches('switchChartThird'));
-    document.getElementById("switch3Line").addEventListener("change", setupSwitches('switchChartThird'));
-    document.getElementById("switch3Pie").addEventListener("change", setupSwitches('switchChartThird'));
-
-    
-    document.getElementById("switch4BarHorizontal").addEventListener("change", setupSwitches('switchChartFourth'));
-    document.getElementById("switch4Bar").addEventListener("change", setupSwitches('switchChartFourth'));
-    document.getElementById("switch4Line").addEventListener("change", setupSwitches('switchChartFourth'));
-    document.getElementById("switch4Pie").addEventListener("change", setupSwitches('switchChartFourth'));
-
-
-    document.getElementById("switch5BarHorizontal").addEventListener("change", setupSwitches('switchChartFiveth'));
-    document.getElementById("switch5Bar").addEventListener("change", setupSwitches('switchChartFiveth'));
-    document.getElementById("switch5Line").addEventListener("change", setupSwitches('switchChartFiveth'));
-    document.getElementById("switch5Pie").addEventListener("change", setupSwitches('switchChartFiveth'));
-
-
-    document.getElementById("switch6A").addEventListener("change", setupSwitches('switchChartSixth'));
-    document.getElementById("switch6B").addEventListener("change", setupSwitches('switchChartSixth'));
-    document.getElementById("switch6C").addEventListener("change", setupSwitches('switchChartSixth'));
-    document.getElementById("switch6D").addEventListener("change", setupSwitches('switchChartSixth'));
-
-
-
-
 
     //----Save Filter
     document.getElementById("button-succes-modalFilterFirst").addEventListener("click", () => {
@@ -274,27 +251,137 @@ function setEvents() {
     });
 }
 
-function setFilterChart(classSwitch){
-    let switches = document.querySelectorAll(`.${classSwitch}:checked`);
-    if (switches.length === 0) return null;
+//----Events Load
+function setEventsLoad() {
+    //----Input FIlter
+    $('#time').on('change', function() {
+        const selectedValue = $(this).val(); 
+        onChangeSelect(selectedValue);
+    });
 
-    switches.forEach(switchElement => {
-        let switchId = switchElement.id; // Obtiene el ID del switch
-        let itemDic = dicOptionsChart.find(item => item.key === switchId);
-        if (itemDic) {
-            drawChartElement(itemDic.id,'line', itemDic.data, itemDic.configs);
+    //----Buttons Modal
+    Object.entries(modalMappings).forEach(([buttonId, modalId]) => {
+        const button = document.getElementById(buttonId);
+        const modalElement = document.getElementById(modalId);
+
+        if (button && modalElement) {
+            button.addEventListener("click", () => {
+                const eventModal = new bootstrap.Modal(modalElement);
+                eventModal.show();
+            });
         }
+    });
+
+    //---Asign Function Change Switch
+    Object.entries(switchGroups).forEach(([chart, switches]) => {
+        switches.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener("change", () => setupSwitches(chart));
+            }
+        });
+    });
+
+    //----Save Filter
+    document.getElementById("button-succes-modalFilterFirst").addEventListener("click", () => {
+        const dic_return = setFilterChart('switchChartFirst', true, 'chartFirst' );
+        getInformation(dic_return);
+        setTimeout(function(){
+            const modalElement = document.getElementById('modalFilterFirst');
+            const eventModal = bootstrap.Modal.getInstance(modalElement);
+            if (eventModal) {
+                eventModal.hide();
+            }
+        }, 500);
+    });
+
+    document.getElementById("button-succes-modalFilterSecond").addEventListener("click", () => {
+        const dic_return = setFilterChart('switchChartSecond', true, 'chartSecond' )
+        getInformation(dic_return);
+        setTimeout(function(){
+            const modalElement = document.getElementById('modalFilterSecond');
+            const eventModal = bootstrap.Modal.getInstance(modalElement);
+            if (eventModal) {
+                eventModal.hide();
+            }
+        }, 500);
+    });
+
+    document.getElementById("button-succes-modalFilterThird").addEventListener("click", () => {
+        const dic_return = setFilterChart('switchChartThird', true, 'chartThird' );
+        getInformation(dic_return);
+        setTimeout(function(){
+            const modalElement = document.getElementById('modalFilterThird');
+            const eventModal = bootstrap.Modal.getInstance(modalElement);
+            if (eventModal) {
+                eventModal.hide();
+            }
+        }, 500);
+    });
+
+    document.getElementById("button-succes-modalFilterFourth").addEventListener("click", () => {
+        const dic_return = setFilterChart('switchChartFourth', true, 'chartFourth' );
+        getInformation(dic_return);
+        setTimeout(function(){
+            const modalElement = document.getElementById('modalFilterFourth');
+            const eventModal = bootstrap.Modal.getInstance(modalElement);
+            if (eventModal) {
+                eventModal.hide();
+            }
+        }, 500);
+    });
+
+    document.getElementById("button-succes-modalFilterFiveth").addEventListener("click", () => {
+        const dic_return = setFilterChart('switchChartFiveth', true, 'chartFiveth' );
+        getInformation(dic_return);
+        setTimeout(function(){
+            const modalElement = document.getElementById('modalFilterFiveth');
+            const eventModal = bootstrap.Modal.getInstance(modalElement);
+            if (eventModal) {
+                eventModal.hide();
+            }
+        }, 500);
+    });
+
+    document.getElementById("button-succes-modalFilterSixth").addEventListener("click", () => {
+        const dic_return = setFilterChart('switchChartSixth', true, 'chartSixth' );
+        getInformation(dic_return);
+        setTimeout(function(){
+            const modalElement = document.getElementById('modalFilterSixth');
+            const eventModal = bootstrap.Modal.getInstance(modalElement);
+            if (eventModal) {
+                eventModal.hide();
+            }
+        }, 500);
+    });
+
+    //---Request All
+    document.getElementById("buttonExecution").addEventListener("click", () => {
+        let dic_all = getSwitchsAll();
+        getInformation(dic_all);
     });
 }
 
-function setFilterTypeChart(classSwitch){
+//----Events Filter Chart Active/ Demo
+function setFilterChart(classSwitch, filter = null, nameElement = null) {
     let switches = document.querySelectorAll(`.${classSwitch}:checked`);
     if (switches.length === 0) return null;
-    switches.forEach(switchElement => {
-        let switchId = switchElement.id; // Obtiene el ID del switch
-        let itemDic = dicOptionsChartTotals.find(item => item.key === switchId);
-        if (itemDic) {
-            drawChartElement(itemDic.id,itemDic.type, itemDic.data, itemDic.configs);
+
+    for (let switchElement of switches) {
+        let switchId = switchElement.id; 
+        let itemDic = dicOptionsChart.find(item => item.key === switchId);
+
+        if (filter == null) {
+            if (itemDic) {
+                drawChartElement(itemDic.id, itemDic.type, itemDic.data, itemDic.configs);
+            }
+        } else {
+            if(switchId !=null && nameElement !=null){
+                let dic_return = {}
+                dic_return[nameElement] = switchId;
+                return dic_return;
+            }
         }
-    });
+    }
+    return null; 
 }
