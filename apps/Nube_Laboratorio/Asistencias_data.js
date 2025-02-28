@@ -17,30 +17,38 @@ let columsTable1 = [
     { title:"Fecha",field:'date',headerTooltip: true,hozAlign:"left", width:150},
     { title:"Taller Perfume",headerTooltip: true,hozAlign:"left",
         columns:[
-            {title:"Sí", field:"yesT1", headerTooltip: true,hozAlign:"center", width:60},
-            {title:"No", field:"noT1", headerTooltip: true,hozAlign:"center", width:60},
+            {title:"Sí", field:"yesT1", headerTooltip: true,hozAlign:"center", width:90},
+            {title:"No", field:"noT1", headerTooltip: true,hozAlign:"center", width:90},
         ],
     width:300},
     { title:"Taller Memoria Olfativa",headerTooltip: true,hozAlign:"left", 
         columns:[
-            {title:"Sí", field:"yesT2", headerTooltip: true,hozAlign:"center", width:60},
-            {title:"No", field:"noT2", headerTooltip: true,hozAlign:"center", width:60},
+            {title:"Sí", field:"yesT2", headerTooltip: true,hozAlign:"center", width:90},
+            {title:"No", field:"noT2", headerTooltip: true,hozAlign:"center", width:90},
         ],
     width:300},
     { title:"Taller Caja misteriosa",headerTooltip: true,hozAlign:"left", 
         columns:[
-            {title:"Sí", field:"yesT3", headerTooltip: true,hozAlign:"center", width:60},
-            {title:"No", field:"noT3", headerTooltip: true,hozAlign:"center", width:60},
+            {title:"Sí", field:"yesT3", headerTooltip: true,hozAlign:"center", width:90},
+            {title:"No", field:"noT3", headerTooltip: true,hozAlign:"center", width:90},
         ],
     width:300},
     { title:"Taller Sellos de mi mundo",headerTooltip: true,hozAlign:"left", 
         columns:[
-            {title:"Sí", field:"yesT4", headerTooltip: true,hozAlign:"center", width:60},
-            {title:"No", field:"noT4", headerTooltip: true,hozAlign:"center", width:60},
+            {title:"Sí", field:"yesT4", headerTooltip: true,hozAlign:"center", width:90},
+            {title:"No", field:"noT4", headerTooltip: true,hozAlign:"center", width:90},
         ],
     width:300},
 ];
 
+let configTableCustom1 = {
+    height: "400px",
+    theme: "bootstrap5", 
+    columnMinWidth: 100,
+    autoColumns: false, 
+    scrollX: false, 
+    dataTree:true,
+}
 
 let dataTable1 = [
     {

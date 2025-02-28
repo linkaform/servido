@@ -13,7 +13,7 @@ window.onload = function(){
 }
 
 function loadDemoData(){
-    drawTableElement('tableFirst', dataTable1, columsTable1);
+    drawTableElement('tableFirst', dataTable1, columsTable1, undefined, configTableCustom1);
     setTimeout(() => { hide_loading();}, 2000);
 }
 
