@@ -43,10 +43,11 @@ let columsTable1 = [
 
 let configTableCustom1 = {
     height: "400px",
+    layout:"fitDataFill",
     theme: "bootstrap5", 
     columnMinWidth: 100,
     autoColumns: false, 
-    scrollX: false, 
+    scrollX: true, 
     dataTree:true,
 }
 
