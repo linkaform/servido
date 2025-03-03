@@ -1,7 +1,7 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'table', col: '12', id:'tableFirst', title:'Detalle de Asistencias'},
+            { type:'table', col: '12', id:'tableFirst', title:'Detalle de Asistencias', optionExpanded:true},
         ] 
     },
 ];
@@ -11,35 +11,42 @@ let columsTable1 = [
     { title:"No.", field:'num',headerTooltip: true,hozAlign:"center", width:80},
     { title:"Institución Educativa",field:'institution',headerTooltip: true,hozAlign:"center", width:150},
     { title:"Grupo",field:'group',headerTooltip: true,hozAlign:"center", width:100},
+    { title:"Mentor",field:'mentor',headerTooltip: true,hozAlign:"center", width:200},
     { title:"Tipo Documento",field:'type_doc',headerTooltip: true,hozAlign:"center", width:170},
     { title:"Número identificación", field:'num_id',headerTooltip: true,hozAlign:"center", width:150},
     { title:"Nombres y Apellidos del estudiante",field:'name',headerTooltip: true,hozAlign:"left", width:300},
-    { title:"Fecha",field:'date',headerTooltip: true,hozAlign:"left", width:150},
     { title:"Taller Perfume",headerTooltip: true,hozAlign:"left",
         columns:[
-            {title:"Sí", field:"yesT1", headerTooltip: true,hozAlign:"center", width:90},
+            {title:"Sí", field:"yesT1", headerTooltip: true,hozAlign:"center", width:150},
             {title:"No", field:"noT1", headerTooltip: true,hozAlign:"center", width:90},
         ],
     width:300},
     { title:"Taller Memoria Olfativa",headerTooltip: true,hozAlign:"left", 
         columns:[
-            {title:"Sí", field:"yesT2", headerTooltip: true,hozAlign:"center", width:90},
+            {title:"Sí", field:"yesT2", headerTooltip: true,hozAlign:"center", width:150},
             {title:"No", field:"noT2", headerTooltip: true,hozAlign:"center", width:90},
         ],
     width:300},
     { title:"Taller Caja misteriosa",headerTooltip: true,hozAlign:"left", 
         columns:[
-            {title:"Sí", field:"yesT3", headerTooltip: true,hozAlign:"center", width:90},
+            {title:"Sí", field:"yesT3", headerTooltip: true,hozAlign:"center", width:150},
             {title:"No", field:"noT3", headerTooltip: true,hozAlign:"center", width:90},
         ],
     width:300},
     { title:"Taller Sellos de mi mundo",headerTooltip: true,hozAlign:"left", 
         columns:[
-            {title:"Sí", field:"yesT4", headerTooltip: true,hozAlign:"center", width:90},
+            {title:"Sí", field:"yesT4", headerTooltip: true,hozAlign:"center", width:150},
             {title:"No", field:"noT4", headerTooltip: true,hozAlign:"center", width:90},
         ],
     width:300},
+    { title:"Total Asistencias",field:'total',headerTooltip: true,hozAlign:"right", width:200},
+    { title:"% de Cumplimiento",field:'compliance',headerTooltip: true,hozAlign:"right", width:200},
 ];
+
+
+
+
+
 
 let configTableCustom1 = {
     height: "400px",
@@ -56,10 +63,10 @@ let dataTable1 = [
         'num': 1,
         'institution': 'Institución A',
         'group': 'Grupo 1',
+        'mentor': 'Mentor 1',
         'type_doc': 'C.C.',
         'num_id': '1011516711',
         'name': 'Alberto Martinez',
-        'date': '2025/02/01',
         'yesT1': 1,
         'noT1': 0,
         'yesT2': 0,
@@ -67,12 +74,19 @@ let dataTable1 = [
         'yesT3': 1,
         'noT3': 0,
         'yesT4': 0,
-        'noT4': 1
+        'noT4': 1,
+        'total': 2,
+        'compliance': '50.00%',
+        '_children': [
+            { 'num': '', 'yesT1': '2025/02/01', 'yesT2': '2025/02/01', 'yesT3': '2025/02/01', 'yesT4': '2025/02/01' }
+        ]
+
     },
     {
         'num': 2,
         'institution': 'Institución B',
         'group': 'Grupo 2',
+        'mentor': 'Mentor 2',
         'type_doc': 'T.I.',
         'num_id': '1023456789',
         'name': 'Beatriz Gómez',
@@ -84,12 +98,18 @@ let dataTable1 = [
         'yesT3': 1,
         'noT3': 0,
         'yesT4': 0,
-        'noT4': 1
+        'noT4': 1,
+        'total': 2,
+        'compliance': '50.00%',
+        '_children': [
+            { 'num': '', 'yesT1': '2025/02/01', 'yesT2': '2025/02/01', 'yesT3': '2025/02/01', 'yesT4': '2025/02/01' }
+        ]
     },
     {
         'num': 3,
         'institution': 'Institución C',
         'group': 'Grupo 3',
+        'mentor': 'Mentor 3',
         'type_doc': 'R.C.',
         'num_id': '1034567890',
         'name': 'Carlos Rodríguez',
@@ -101,12 +121,18 @@ let dataTable1 = [
         'yesT3': 0,
         'noT3': 1,
         'yesT4': 1,
-        'noT4': 0
+        'noT4': 0,
+        'total': 3,
+        'compliance': '75.00%',
+        '_children': [
+            { 'num': '', 'yesT1': '2025/02/01', 'yesT2': '2025/02/01', 'yesT3': '2025/02/01', 'yesT4': '2025/02/01' }
+        ]
     },
     {
         'num': 4,
         'institution': 'Institución D',
         'group': 'Grupo 1',
+        'mentor': 'Mentor 4',
         'type_doc': 'C.C.',
         'num_id': '1045678901',
         'name': 'Diana Fernández',
@@ -118,12 +144,18 @@ let dataTable1 = [
         'yesT3': 0,
         'noT3': 1,
         'yesT4': 1,
-        'noT4': 0
+        'noT4': 0,
+        'total': 2,
+        'compliance': '50.00%',
+        '_children': [
+            { 'num': '', 'yesT1': '2025/02/01', 'yesT2': '2025/02/01', 'yesT3': '2025/02/01', 'yesT4': '2025/02/01' }
+        ]
     },
     {
         'num': 5,
         'institution': 'Institución E',
         'group': 'Grupo 2',
+        'mentor': 'Mentor 1',
         'type_doc': 'T.I.',
         'num_id': '1056789012',
         'name': 'Eduardo López',
@@ -135,12 +167,18 @@ let dataTable1 = [
         'yesT3': 1,
         'noT3': 0,
         'yesT4': 0,
-        'noT4': 1
+        'noT4': 1,
+        'total': 2,
+        'compliance': '50.00%',
+        '_children': [
+            { 'num': '', 'yesT1': '2025/02/01', 'yesT2': '2025/02/01', 'yesT3': '2025/02/01', 'yesT4': '2025/02/01' }
+        ]
     },
     {
         'num': 6,
         'institution': 'Institución F',
         'group': 'Grupo 3',
+        'mentor': 'Mentor 3',
         'type_doc': 'R.C.',
         'num_id': '1067890123',
         'name': 'Fernanda Castillo',
@@ -152,12 +190,18 @@ let dataTable1 = [
         'yesT3': 0,
         'noT3': 1,
         'yesT4': 1,
-        'noT4': 0
+        'noT4': 0,
+        'total': 2,
+        'compliance': '50.00%',
+        '_children': [
+            { 'num': '', 'yesT1': '2025/02/01', 'yesT2': '2025/02/01', 'yesT3': '2025/02/01', 'yesT4': '2025/02/01' }
+        ]
     },
     {
         'num': 7,
         'institution': 'Institución G',
         'group': 'Grupo 1',
+        'mentor': 'Mentor 5',
         'type_doc': 'C.C.',
         'num_id': '1078901234',
         'name': 'Gabriel Ruiz',
@@ -169,57 +213,11 @@ let dataTable1 = [
         'yesT3': 1,
         'noT3': 0,
         'yesT4': 0,
-        'noT4': 1
-    },
-    {
-        'num': 8,
-        'institution': 'Institución H',
-        'group': 'Grupo 2',
-        'type_doc': 'T.I.',
-        'num_id': '1089012345',
-        'name': 'Héctor Vargas',
-        'date': '2025/02/08',
-        'yesT1': 0,
-        'noT1': 1,
-        'yesT2': 1,
-        'noT2': 0,
-        'yesT3': 0,
-        'noT3': 1,
-        'yesT4': 1,
-        'noT4': 0
-    },
-    {
-        'num':9,
-        'institution':'Institución 1',
-        'group':'Grupo 2',
-        'type_doc':'R.C.',
-        'num_id':'1011516711',
-        'name':'Alberto Martinez',
-        'date':'2025/02/01',
-        'yesT1':0,
-        'noT1':1,
-        'yesT2':0,
-        'noT2':1,
-        'yesT3':1,
-        'noT3':0,
-        'yesT4':1,
-        'noT4':0,
-    },
-    {
-        'num': 10,
-        'institution': 'Institución G',
-        'group': 'Grupo 1',
-        'type_doc': 'C.C.',
-        'num_id': '1078901234',
-        'name': 'Gabriel Ruiz',
-        'date': '2025/02/07',
-        'yesT1': 1,
-        'noT1': 0,
-        'yesT2': 1,
-        'noT2': 0,
-        'yesT3': 1,
-        'noT3': 0,
-        'yesT4': 0,
-        'noT4': 1
-    },
+        'noT4': 1,
+        'total': 3,
+        'compliance': '75.00%',
+        '_children': [
+            { 'num': '', 'yesT1': '2025/02/01', 'yesT2': '2025/02/01', 'yesT3': '2025/02/01', 'yesT4': '2025/02/01' }
+        ]
+    }
 ];
