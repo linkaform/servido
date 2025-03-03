@@ -11,10 +11,10 @@ let columsTable1 = [
     { title:"No.", field:'num',headerTooltip: true,hozAlign:"center", width:80},
     { title:"Institución Educativa",field:'institution',headerTooltip: true,hozAlign:"center", width:150},
     { title:"Grupo",field:'group',headerTooltip: true,hozAlign:"center", width:100},
-    { title:"Mentor",field:'mentor',headerTooltip: true,hozAlign:"center", width:200},
+    { title:"Mentor",field:'mentor',headerTooltip: true,hozAlign:"center", headerFilter:"input", width:200},
     { title:"Tipo Documento",field:'type_doc',headerTooltip: true,hozAlign:"center", width:170},
     { title:"Número identificación", field:'num_id',headerTooltip: true,hozAlign:"center", width:150},
-    { title:"Nombres y Apellidos del estudiante",field:'name',headerTooltip: true,hozAlign:"left", width:300},
+    { title:"Nombres y Apellidos del estudiante",field:'name',headerTooltip: true,hozAlign:"left",headerFilter:"input", width:300},
     { title:"Taller Perfume",headerTooltip: true,hozAlign:"left",
         columns:[
             {title:"Sí", field:"yesT1", headerTooltip: true,hozAlign:"center", width:150},
@@ -39,8 +39,8 @@ let columsTable1 = [
             {title:"No", field:"noT4", headerTooltip: true,hozAlign:"center", width:90},
         ],
     width:300},
-    { title:"Total Asistencias",field:'total',headerTooltip: true,hozAlign:"right", width:200},
-    { title:"% de Cumplimiento",field:'compliance',headerTooltip: true,hozAlign:"right", width:200},
+    { title:"Total Asistencias",field:'total',headerTooltip: true,hozAlign:"right", headerFilter:"input", width:200},
+    { title:"% de Cumplimiento",field:'compliance',headerTooltip: true,hozAlign:"right",headerFilter:"input",  width:200},
 ];
 
 
