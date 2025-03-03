@@ -70,7 +70,6 @@
                 <div class="mb-3">
                     <label for="telefono" class="form-label bg-font">
                         Teléfono
-                        <span class="text-danger">*</span>
                     </label>
                     <input type="text" class="form-control" id="telefono" >
                 </div>
@@ -138,9 +137,28 @@
                     <label for="descripcion" class="form-label bg-font">Descripción</label>
                     <textarea class="form-control" id="descripcion" rows="4" required></textarea>
                 </div>
-                <div class="mb-3">
+               
+
+
+                <!-- Adjuntar fotos -->
+                <div class="attachments-section" id="content-images">
+                    <h6 class="checklist-title">Agregar foto</h6>
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="icon-button me-3" id="cameraButton"><i class="fas fa-camera"></i></span>
+                        <span class="icon-button" id="galleryButton"><i class="fas fa-upload"></i></span>
+                    </div>
+                    <!-- Div loading -->
+                    <div id="divLoadingImage" class="loader-spinner"  style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Cargando imágenes...
+                    </div>
+                    <!-- Lista de imagenes -->
+                    <div id="divListImages"></div>
+                </div>
+
+                 <div class="mt-3">
                     <small class="text-danger">Los campos con * son requeridos.</small>
                 </div>
+
                 <div class="d-grid gap-2">
                     <button class="btn bg-button" type="button" id="buttonSend">Enviar</button>
                 </div>
