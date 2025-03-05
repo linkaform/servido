@@ -45,6 +45,18 @@ let columsTable1 = [
 
 
 
+//----Config Table
+let columsTable1Prod = [
+    { title:"No.", field:'num',headerTooltip: true,hozAlign:"center", width:80},
+    { title:"Institución Educativa",field:'institution',headerTooltip: true,hozAlign:"center", width:150},
+    { title:"Grupo",field:'group',headerTooltip: true,hozAlign:"center", width:100},
+    { title:"Mentor",field:'mentor',headerTooltip: true,hozAlign:"center", headerFilter:"input", width:200},
+    { title:"Tipo Documento",field:'type_doc',headerTooltip: true,hozAlign:"center", width:170},
+    { title:"Número identificación", field:'num_id',headerTooltip: true,hozAlign:"center", width:150},
+    { title:"Nombres y Apellidos del estudiante",field:'name',headerTooltip: true,hozAlign:"left",headerFilter:"input", width:300},
+    { title:"Total Asistencias",field:'total',headerTooltip: true,hozAlign:"right", headerFilter:"input", width:200},
+    { title:"% de Cumplimiento",field:'compliance',headerTooltip: true,hozAlign:"right",headerFilter:"input",  width:200},
+];
 
 
 
@@ -78,7 +90,7 @@ let dataTable1 = [
         'total': 2,
         'compliance': '50.00%',
         '_children': [
-            { 'num': '', 'yesT1': '2025/02/01', 'yesT2': '2025/02/01', 'yesT3': '2025/02/01', 'yesT4': '2025/02/01' }
+            {  'yesT1': '2025/02/01', 'yesT2': '2025/02/01', 'yesT3': '2025/02/01', 'yesT4': '2025/02/01' }
         ]
 
     },

@@ -1,4 +1,6 @@
-let dataCatalogs = [];
+let dataCatalogInstitucion = [];
+
+
 window.onload = function(){
   createElements(dicReportContext);
   setElementsStyle();
@@ -12,11 +14,11 @@ window.onload = function(){
   } 
 }
 
+//-----LOAD DATA DEMO
 function loadDemoData(){
     drawTableElement('tableFirst', dataTable1, columsTable1, undefined, configTableCustom1);
     setTimeout(() => { hide_loading();}, 2000);
 }
-
 
 //-----LOAD DATA ACTIVE
 function loadData(data) {
@@ -27,12 +29,41 @@ function loadData(data) {
     buttonExecution.addEventListener("click", () => {
         getInformation();
     });
+
+    //----Assign Selector
+    $('#institucion').on('change', function() {
+        const selectedValues = $(this).val(); 
+        if (selectedValues && selectedValues.length > 0) {
+            dicFind = findListDictionary(dataCatalogInstitucion, 'institucion', selectedValues);
+            set_catalog_select(dicFind, 'grupo', 'grupo');
+            $('#grupo').select2();
+        } else {
+            set_clean_select('grupo');
+            set_clean_select('mentor');
+            $('#grupo').select2();
+            $('#mentor').select2();
+        }
+    });
+
+    $('#grupo').on('change', function() {
+        const selectedValues = $(this).val(); 
+        if (selectedValues && selectedValues.length > 0) {
+            dicFind = findListDictionary(dataCatalogInstitucion, 'grupo', selectedValues);
+            set_catalog_select(dicFind, 'mentor', 'mentor');
+            $('#grupo').select2();
+        } else {
+            set_clean_select('mentor');
+            $('#mentor').select2();
+        }
+    });
+
+
     //-----Loading
     setTimeout(() => { hide_loading();}, 2000);
 }
 
 
-//-----SET REQUEST
+//-----SET REQUEST ACTIVE
 async function getInformation(){
     showLoadingComponent();
     const scriptId = getParameterURL('script_id');
@@ -47,8 +78,13 @@ async function getInformation(){
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId,dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-        if(data.response_first){
-            drawTableElement('tableFirst', data.response_first, columsTable1, 'Ordenes_Checks', undefined, designPDF);
+        const colums = data.colums ? data.colums : [];
+        const dataTable = data.data  ? data.data : [];
+        console.log('dataTable',dataTable)
+        if(dataTable){
+            let insertIndex = columsTable1Prod.findIndex(col => col.field === 'name') + 1;
+            columsTable1Prod.splice(insertIndex, 0, ...colums);
+            drawTableElement('tableFirst', dataTable, columsTable1Prod, undefined, configTableCustom1);
         }
         //-----Style
         hideLoadingComponent();
@@ -73,9 +109,16 @@ function get_catalog(){
     })
     .then((res) => res.json())
     .then((res) => {
-        const data = res.response && res.response.data ? res.response.data : [];
-        if(data.length > 0){
-            set_catalog_select(data, 'empleado', 'empleado');
+        const catalog_institucion = res.response && res.response.catalog_institucion ? res.response.catalog_institucion : [];
+        const catalog_taller = res.response && res.response.catalog_taller ? res.response.catalog_taller : [];
+
+        if(catalog_institucion.length > 0){
+            dataCatalogInstitucion = catalog_institucion;
+            set_catalog_select(catalog_institucion, 'institucion', 'institucion');
+        }
+
+        if(catalog_taller.length > 0){
+            set_catalog_select(catalog_taller, 'taller', 'taller');
         }
     })
 }
