@@ -43,8 +43,6 @@ function loadData(data) {
         const selectedValues = $(this).val(); 
         if (selectedValues && selectedValues.length > 0) {
             dicFind = findListDictionary(dataCatalogs, 'auditoria', selectedValues);
-            console.log('dataCatalogs',dataCatalogs)
-            console.log('selectedValues',selectedValues)
             set_catalog_select(dicFind, 'sede', 'sede');
             $('#sede').select2();
         } else {

@@ -80,11 +80,11 @@ async function getInformation(){
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
         const colums = data.colums ? data.colums : [];
         const dataTable = data.data  ? data.data : [];
-        console.log('dataTable',dataTable)
         if(dataTable){
-            let insertIndex = columsTable1Prod.findIndex(col => col.field === 'name') + 1;
-            columsTable1Prod.splice(insertIndex, 0, ...colums);
-            drawTableElement('tableFirst', dataTable, columsTable1Prod, undefined, configTableCustom1);
+            let updatedColumnsTable = [...columsTable1Prod];
+            let insertIndex = updatedColumnsTable.findIndex(col => col.field === 'name') + 1;
+            updatedColumnsTable.splice(insertIndex, 0, ...colums);
+            drawTableElement('tableFirst', dataTable, updatedColumnsTable, undefined, configTableCustom1);
         }
         //-----Style
         hideLoadingComponent();
