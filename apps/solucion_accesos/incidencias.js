@@ -286,19 +286,19 @@ function verFallaModal(folio){
                 let tbody = document.querySelector("#table-seguimientos tbody");
                 tbody.innerHTML = "";
 
-                if (selected.hasOwnProperty('falla_grupo_seguimiento') && Array.isArray(selected.falla_grupo_seguimiento)) {
-                    for (let seguimiento of selected.falla_grupo_seguimiento) {
+                if (selected.hasOwnProperty('falla_grupo_seguimiento_formated') && Array.isArray(selected.falla_grupo_seguimiento_formated)) {
+                    for (let seguimiento of selected.falla_grupo_seguimiento_formated) {
                         let row = document.createElement("tr");
-                        let seguimientoImg = seguimiento['66f2dfb2c80d24e5e82332b5'][0]?.file_url
-                        let seguimientoDoc = seguimiento['66f2dfb2c80d24e5e82332b6'][0]?.file_url
+                        let seguimientoImg = seguimiento['evidencia'][0]?.file_url
+                        let seguimientoDoc = seguimiento['documento'][0]?.file_url
 
                         row.innerHTML = `
-                            <td>${seguimiento['66f2dfb2c80d24e5e82332b4'] || 'N/A'}</td>
-                            <td>${seguimiento['66f2dfb2c80d24e5e82332b3'] || 'N/A'}</td>
+                            <td>${seguimiento['accion_correctiva'] || 'N/A'}</td>
+                            <td>${seguimiento['comentario'] || 'N/A'}</td>
                             <td>${seguimientoImg ? `<img src="${seguimientoImg}" style="max-width: 100px; max-height: 100px;">` : 'N/A'}</td>
-                            <td>${seguimientoDoc ? `<a href="${seguimientoDoc}" target="_blank">${seguimiento['66f2dfb2c80d24e5e82332b6'][0]?.file_name}</a>` : 'N/A'}</td>
-                            <td>${seguimiento['679a485c66c5d089fa6b8ef9'] || 'N/A'}</td>
-                            <td>${seguimiento['679a485c66c5d089fa6b8efa'] || 'N/A'}</td>
+                            <td>${seguimientoDoc ? `<a href="${seguimientoDoc}" target="_blank">${seguimiento['documento'][0]?.file_name}</a>` : 'N/A'}</td>
+                            <td>${seguimiento['fecha_inicio'] || 'N/A'}</td>
+                            <td>${seguimiento['fecha_fin'] || 'N/A'}</td>
                         `;
 
                         tbody.appendChild(row);
@@ -921,7 +921,7 @@ function getAllDataFallas(){
                                 'falla_evidencia_solucion':falla.falla_evidencia_solucion,
                                 'falla_documento_solucion':falla.falla_documento_solucion,
                                 'falla_fecha_hora_solucion':dateFormat2,
-                                'falla_grupo_seguimiento': falla.falla_grupo_seguimiento
+                                'falla_grupo_seguimiento': falla.falla_grupo_seguimiento_formated
                             })
                         }
                     }else{
