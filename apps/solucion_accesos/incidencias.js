@@ -1501,11 +1501,28 @@ async function onChangeCatalogoFalla(catalog, abrirEditar, selectedFalla={}){
         let selectUbicacion = document.getElementById(catalog)
         let selectArea = document.getElementById('area'+abrirEditar+'Falla')
         optionsCaseta = arrayUserBoothsLocations.filter(booth => {
-        return booth.ubi == selectUbicacion.value ;
+            return booth.ubi == selectUbicacion.value;
         });
+        if (Array.isArray(optionsCaseta)) {
+            let uniqueOptions = {};
+            optionsCaseta = optionsCaseta.filter(booth => {
+                if (!uniqueOptions[booth.name]) {
+                    uniqueOptions[booth.name] = true;
+                    return true;
+                }
+                return false;
+            });
+        } else {
+            optionsCaseta = [];
+        }
         selectArea.innerHTML=""; 
         for (let obj of optionsCaseta){
+            if(!obj.name){
+                obj.name = 'No hay áreas registradas'
+                selectArea.innerHTML += '<option value="">'+obj.name+'</option>';
+            }else{
                 selectArea.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
+            }
         }
         selectArea.value=""
     } else if (catalog =='falla'+abrirEditar+'Falla'){
