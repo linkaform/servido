@@ -75,42 +75,38 @@ function initializeCatalogs(){
 }
 
 function fillCatalogs(){
-     if(getCookie("arrayUserBoothsLocations") == ""){
-        fetch(url + urlScripts, {
-        method: 'POST',
-        body: JSON.stringify({
-            script_name: 'script_turnos.py',
-            option:'get_user_booths'
-        }),
-        headers:
-            {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt
-            },
-        })
-        .then(res => res.json())
-        .then(res => {
-            if (res.success) {
-                if(user !='' && userJwt!=''){
-                    let userBooths=res.response.data
-                    if(userBooths.length>0){
-                        for(let booth of userBooths){
-                            arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, 
-                            address: booth.address, city:booth.city})
-                        }
-                    }else{
-                        arrayUserBoothsLocations=[]
+    fetch(url + urlScripts, {
+    method: 'POST',
+    body: JSON.stringify({
+        script_name: 'script_turnos.py',
+        option:'get_user_booths',
+        turn_areas: false,
+    }),
+    headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            if(user !='' && userJwt!=''){
+                let userBooths=res.response.data
+                if(userBooths.length>0){
+                    for(let booth of userBooths){
+                        arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, 
+                        address: booth.address, city:booth.city})
                     }
-                    loadCatalogsLocation(arrayUserBoothsLocations)
-                    loadCatalogsCaseta(getCookie('userLocation') ,arrayUserBoothsLocations)
-                    setCookie("arrayUserBoothsLocations", JSON.stringify(arrayUserBoothsLocations),7);
+                }else{
+                    arrayUserBoothsLocations=[]
                 }
+                loadCatalogsLocation(arrayUserBoothsLocations)
+                loadCatalogsCaseta(getCookie('userLocation') ,arrayUserBoothsLocations)
+                setCookie("arrayUserBoothsLocations", JSON.stringify(arrayUserBoothsLocations),7);
             }
-        });
-    } else{
-        loadCatalogsLocation(JSON.parse(getCookie('arrayUserBoothsLocations')))
-        loadCatalogsCaseta(getCookie('userLocation') ,JSON.parse(getCookie('arrayUserBoothsLocations')))
-    }
+        }
+    });
 }
 
 function loadCatalogsLocation(arrayUserBoothsLocations){

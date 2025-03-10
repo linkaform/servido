@@ -983,7 +983,8 @@ function getInfoAndCatalogos(){
         method: 'POST',
         body: JSON.stringify({
             script_name: 'script_turnos.py',
-            option:'get_user_booths'
+            option:'get_user_booths',
+            turn_areas: false,
         }),
         headers:
             {
@@ -1518,8 +1519,10 @@ async function onChangeCatalogoFalla(catalog, abrirEditar, selectedFalla={}){
         selectArea.innerHTML=""; 
         for (let obj of optionsCaseta){
             if(!obj.name){
-                obj.name = 'No hay áreas registradas'
-                selectArea.innerHTML += '<option value="">'+obj.name+'</option>';
+                if(optionsCaseta.length < 1){
+                    obj.name = 'No hay áreas registradas'
+                    selectArea.innerHTML += '<option value="">'+obj.name+'</option>';
+                }
             }else{
                 selectArea.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
             }

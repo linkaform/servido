@@ -353,7 +353,8 @@ function loadBooths(){
     method: 'POST',
     body: JSON.stringify({
         script_name: 'script_turnos.py',
-        option:'get_user_booths'
+        option:'get_user_booths',
+        turn_areas: true,
     }),
     headers:
         {
