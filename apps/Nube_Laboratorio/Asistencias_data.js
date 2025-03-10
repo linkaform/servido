@@ -39,7 +39,7 @@ let columsTable1 = [
             {title:"No", field:"noT4", headerTooltip: true,hozAlign:"center", width:90},
         ],
     width:300},
-    { title:"Total Asistencias",field:'total',headerTooltip: true,hozAlign:"right", headerFilter:"input", width:200},
+    { title:"Total Asistencias",field:'total',headerTooltip: true,hozAlign:"right", headerFilter:"input",bottomCalc:"sum", bottomCalcParams:{precision:0}, width:200},
     { title:"% de Cumplimiento",field:'compliance',headerTooltip: true,hozAlign:"right",headerFilter:"input",  width:200},
 ];
 

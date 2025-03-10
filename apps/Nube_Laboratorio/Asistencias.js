@@ -30,34 +30,6 @@ function loadData(data) {
         getInformation();
     });
 
-    //----Assign Selector
-    $('#institucion').on('change', function() {
-        const selectedValues = $(this).val(); 
-        if (selectedValues && selectedValues.length > 0) {
-            dicFind = findListDictionary(dataCatalogInstitucion, 'institucion', selectedValues);
-            set_catalog_select(dicFind, 'grupo', 'grupo');
-            $('#grupo').select2();
-        } else {
-            set_clean_select('grupo');
-            set_clean_select('mentor');
-            $('#grupo').select2();
-            $('#mentor').select2();
-        }
-    });
-
-    $('#grupo').on('change', function() {
-        const selectedValues = $(this).val(); 
-        if (selectedValues && selectedValues.length > 0) {
-            dicFind = findListDictionary(dataCatalogInstitucion, 'grupo', selectedValues);
-            set_catalog_select(dicFind, 'mentor', 'mentor');
-            $('#grupo').select2();
-        } else {
-            set_clean_select('mentor');
-            $('#mentor').select2();
-        }
-    });
-
-
     //-----Loading
     setTimeout(() => { hide_loading();}, 2000);
 }
@@ -115,6 +87,8 @@ function get_catalog(){
         if(catalog_institucion.length > 0){
             dataCatalogInstitucion = catalog_institucion;
             set_catalog_select(catalog_institucion, 'institucion', 'institucion');
+            set_catalog_select(catalog_institucion, 'grupo', 'grupo');
+            set_catalog_select(catalog_institucion, 'mentor', 'mentor');
         }
 
         if(catalog_taller.length > 0){
