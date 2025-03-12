@@ -172,7 +172,6 @@ async function updatePassword(newPass, confirmPass){
     })
     .then(res => {
         if(res.status == 202){
-            clearCookies(["userId_soter", "userJwt_soter"]);
             Swal.fire({
                 title: 'Contraseña actualizada',
                 text: 'La contraseña ha sido actualizada con éxito',
@@ -181,7 +180,7 @@ async function updatePassword(newPass, confirmPass){
                 allowEscapeKey: false,
                 confirmButtonText: 'Aceptar',
                 onClose: () => {
-                    window.location.href = 'https://app.soter.mx/login.html';
+                    setUserActiveInForm()
                 },
             })
         }else{
@@ -198,3 +197,39 @@ async function updatePassword(newPass, confirmPass){
         Swal.close()
     })
 };
+
+const LKF_ENDPOINT_UPDATE_USER_REGISTER = 'https://app.linkaform.com/api/infosync/scripts/run/'
+
+async function setUserActiveInForm(){
+    const userJwt = getCookie('userJwt_soter')
+    const userId = parseInt(getCookie('userId_soter'))
+
+    try{
+        const res = await fetch(LKF_ENDPOINT_UPDATE_USER_REGISTER, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_id: 130440,
+                userId: userId,
+                username: userNameUrl,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + userJwt
+            }
+        })
+        const data = await res.json()
+        if (data.reponse == 200 || data.reponse == 201 || data.reponse == 202){
+            clearCookies(["userId_soter", "userJwt_soter"]);
+            window.location.href = 'https://app.soter.mx/login.html';
+        }else{
+            Swal.fire({
+                title: 'Aviso',
+                text: 'Hubo un error al actualizar tu cuenta',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            })
+        }
+    }catch(e){
+        throw new Error('Error updating register in lkf', e)
+    }
+}
