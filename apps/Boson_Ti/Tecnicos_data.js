@@ -11,7 +11,8 @@ let dicReportContext = [
     },
     { class:'', _children : [
             { type:'chart', col: '6', id:'chartSecond', title:'Ordenes X Status'},
-            { type:'chart', col: '6', id:'chartThird', title:'Ranking de Técnicos'},
+            { type:'chart', col: '6', id:'chartThird', title:'Ordenes X Tipo'},
+            { type:'chart', col: '12', id:'chartFourth', title:'Ranking de Técnicos'},
         ] 
     },
     { class:'', _children : [
@@ -207,6 +208,46 @@ let dataChart2 = {
 var setOptions3 = {
     responsive: true,
     plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        title: {
+            display: false,
+        },
+        datalabels: {
+            color: 'black',
+            font: {
+                size: 15
+            }
+        }
+    },
+    maintainAspectRatio: false ,
+    scales: {
+        y: {
+            display: false,
+        },
+        x: {
+            display: false,
+        }
+    },
+};
+
+let dataChart3 = {
+    labels: ['Instalación','Mantenimiento Correctivo','Maquínaria','Electroníca','Automotríz'],
+    datasets: [
+        {
+            label: 'Total',
+            data: [75, 41, 23, 56, 78,],
+            fill: false,
+            backgroundColor: ['#3498db', '#2773a5', '#1b4f72']
+        },
+    ]
+};
+
+var setOptions4 = {
+    responsive: true,
+    plugins: {
       legend: {
         display: true,
         position: 'top',
@@ -229,7 +270,7 @@ var setOptions3 = {
   },
 };
 
-let dataChart3 = {
+let dataChart4 = {
     labels: ['Tecnico 4','Tecnico 3 ','Tecnico 10','Tenico 80 '],
     datasets: [
         {
