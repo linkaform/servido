@@ -19,7 +19,6 @@ function loadDemoData(){
     
     drawCardElement('cardFirst',60);
     drawCardElement('cardSecond',30);
-    drawCardElement('cardThird',20);
     drawChartElement('chartFirst','bar',dataChart1,setOptions1);
     drawChartElement('chartSecond','pie',dataChart2,setOptions2 , undefined, true);
     drawChartElement('chartThird','bar',dataChart3,setOptions3 );
