@@ -20,9 +20,10 @@ function loadDemoData(){
     drawCardElement('cardFirst',60);
     drawCardElement('cardSecond',30);
     drawChartElement('chartFirst','bar',dataChart1,setOptions1);
-    drawChartElement('chartSecond','pie',dataChart2,setOptions2 , undefined, true);
-    drawChartElement('chartThird','pie',dataChart3,setOptions3 );
-    drawChartElement('chartFourth','bar',dataChart4,setOptions4 );
+    drawChartElement('chartSecond','pie',dataChart2,setOptions2, undefined, true);
+    drawChartElement('chartThird','pie',dataChart3,setOptions3);
+    drawChartElement('chartFourth','bar',dataChart4,setOptions4);
+    drawChartElement('chartFiveth','bar',dataChart5,setOptions5);
     drawTableElement('tableFirst', dataTable1, columsTable1Prod);
     console.log(getPAlleteColors(6,5))
     setTimeout(() => { hide_loading();}, 2000);

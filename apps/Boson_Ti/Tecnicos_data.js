@@ -12,7 +12,8 @@ let dicReportContext = [
     { class:'', _children : [
             { type:'chart', col: '6', id:'chartSecond', title:'Ordenes X Status'},
             { type:'chart', col: '6', id:'chartThird', title:'Ordenes X Tipo'},
-            { type:'chart', col: '12', id:'chartFourth', title:'Ranking de Técnicos'},
+            { type:'chart', col: '4', id:'chartFourth', title:'Ranking de Técnicos'},
+            { type:'chart', col: '8', id:'chartFiveth', title:'Ordenes X Cliente'},
         ] 
     },
     { class:'', _children : [
@@ -24,17 +25,16 @@ let dicReportContext = [
 //----Config Table
 let columsTable1Prod = [
     { title:"Folio", field:'folio',headerTooltip: true,hozAlign:"center", width:150},
-    { title:"Técnico",field:'tecnico',headerTooltip: true,hozAlign:"left", width:200},
-    { title:"Zona",field:'zona',headerTooltip: true,hozAlign:"left", width:150},
-    { title:"Cliente",field:'cliente',headerTooltip: true,hozAlign:"left", width:250},
-    { title:"Tipo",field:'tipo',headerTooltip: true,hozAlign:"left", width:150},
+    { title:"Técnico",field:'tecnico',headerTooltip: true,hozAlign:"left",headerFilter:true, width:200},
+    { title:"Zona",field:'zona',headerTooltip: true,hozAlign:"left", headerFilter:true, width:150},
+    { title:"Cliente",field:'cliente',headerTooltip: true,hozAlign:"left", headerFilter:true, width:250},
+    { title:"Tipo",field:'tipo',headerTooltip: true,hozAlign:"left", headerFilter:true, width:150},
     { title:"Hora Inicio",field:'hora_inicio',headerTooltip: true,hozAlign:"center", width:150},
     { title:"Hora Fin",field:'hora_fin',headerTooltip: true,hozAlign:"center", width:150},
     { title:"Hora Efectivas",field:'horas_efectivas',headerTooltip: true,hozAlign:"center", width:180},
     { title:"Total Pendientes",field:'total_pendientes',headerTooltip: true,hozAlign:"center", width:180},
     { title:"Total Cerradas",field:'total_cerradas',headerTooltip: true,hozAlign:"center", width:180},
     { title:"% de Productividad",field:'percentage',headerTooltip: true,hozAlign:"center", width:230},
-   
 ];
 
 
@@ -276,6 +276,42 @@ let dataChart4 = {
         {
             label: 'Ordenes Completadas',
             data: [135, 120, 80, 50],
+            fill: false,
+        },
+    ]
+};
+
+var setOptions5 = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      title: {
+          display: false,
+      },
+      datalabels: {
+        color: 'black',
+        font: {
+            size: 15
+        }
+      }
+    },
+    maintainAspectRatio: false ,
+    scales: {
+    y: {
+        step: 1,
+    }
+  },
+};
+
+let dataChart5 = {
+    labels: ['Empresa A','Empresa B','Empresa C','Empresa D','Empresa E'],
+    datasets: [
+        {
+            label: 'Ordenes',
+            data: [205, 320, 90, 150, 102],
             fill: false,
         },
     ]
