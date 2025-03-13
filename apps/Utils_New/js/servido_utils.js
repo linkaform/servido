@@ -563,7 +563,7 @@ function createElements(dataConfig = null){
 
 //-Funciona para pintar graficas de manera generica
 let chartInstances = {};
-function drawChartElement(canvasId, type, datasets, dataconfig, datalabels = true) {
+function drawChartElement(canvasId, type, datasets, dataconfig, datalabels = true, flagColors = false) {
     if (document.getElementById(canvasId)){
         var ctx = document.getElementById(canvasId).getContext('2d');
         if (chartInstances[canvasId]) {
@@ -577,7 +577,10 @@ function drawChartElement(canvasId, type, datasets, dataconfig, datalabels = tru
         if(datalabels){
             config['plugins'] = [ChartDataLabels];
         }
-        datasets = setColorsDatasets(datasets, type)
+        if(!flagColors){
+            datasets = setColorsDatasets(datasets, type);
+            console.log('datasets',flagColors)
+        }
         chartInstances[canvasId] = new Chart(ctx, config);
     }
 }
