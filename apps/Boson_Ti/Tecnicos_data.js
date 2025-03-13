@@ -11,11 +11,11 @@ let dicReportContext = [
     },
     { class:'', _children : [
             { type:'chart', col: '6', id:'chartSecond', title:'Ordenes X Status'},
-            { type:'chart', col: '6', id:'chartThird', title:'Ranking de Tecnicos'},
+            { type:'chart', col: '6', id:'chartThird', title:'Ranking de Técnicos'},
         ] 
     },
     { class:'', _children : [
-            { type:'table', col: '12', id:'tableFirst', title:'Detalle de Asistencias', optionExpanded:true},
+            { type:'table', col: '12', id:'tableFirst', title:'Detalle de Técnicos', optionExpanded:true},
         ] 
     },
 ];
@@ -39,84 +39,84 @@ let columsTable1Prod = [
 
 const dataTable1 =  [
     { 
-        "folio": "516-15878", "tecnico": "Juan Pérez", "zona": "Norte", "cliente": "Empresa A", 
+        "tecnico": "Juan Pérez", "zona": "Norte", "cliente": "Empresa A", 
         "tipo": "Maquinaria", "horas_efectivas": 5, "total_pendientes": 1, "total_cerradas": 2, "percentage": 66,
         "_children": [
-            {"hora_inicio": "08:00", "hora_fin": "12:30", "horas_efectivas": 4.5},
-            {"hora_inicio": "09:00", "hora_fin": "10:00", "horas_efectivas": 1}
+            {"folio":"15-3511","hora_inicio": "08:00", "hora_fin": "12:30", "horas_efectivas": 4.5},
+            {"folio":"15-3511","hora_inicio": "09:00", "hora_fin": "10:00", "horas_efectivas": 1}
         ]
     },
     { 
-        "folio": "516-15879", "tecnico": "María López", "zona": "Sur", "cliente": "Empresa B", 
+        "tecnico": "María López", "zona": "Sur", "cliente": "Empresa B", 
         "tipo": "Construcción", "horas_efectivas": 7, "total_pendientes": 0, "total_cerradas": 3, "percentage": 100,
         "_children": [
-            {"hora_inicio": "07:30", "hora_fin": "11:30", "horas_efectivas": 4},
-            {"hora_inicio": "12:00", "hora_fin": "14:00", "horas_efectivas": 2},
-            {"hora_inicio": "15:00", "hora_fin": "16:00", "horas_efectivas": 1}
+            {"folio":"15-1324","hora_inicio": "07:30", "hora_fin": "11:30", "horas_efectivas": 4},
+            {"folio":"15-1324","hora_inicio": "12:00", "hora_fin": "14:00", "horas_efectivas": 2},
+            {"folio":"15-1324","hora_inicio": "15:00", "hora_fin": "16:00", "horas_efectivas": 1}
         ]
     },
     { 
-        "folio": "516-15880", "tecnico": "Carlos Ramírez", "zona": "Este", "cliente": "Empresa C", 
+        "tecnico": "Carlos Ramírez", "zona": "Este", "cliente": "Empresa C", 
         "tipo": "Electrónica", "horas_efectivas": 6, "total_pendientes": 2, "total_cerradas": 1, "percentage": 33,
         "_children": [
-            {"hora_inicio": "08:15", "hora_fin": "12:00", "horas_efectivas": 3.75},
-            {"hora_inicio": "13:00", "hora_fin": "15:30", "horas_efectivas": 2.5}
+            {"folio":"15-12489","hora_inicio": "08:15", "hora_fin": "12:00", "horas_efectivas": 3.75},
+            {"folio":"15-12489","hora_inicio": "13:00", "hora_fin": "15:30", "horas_efectivas": 2.5}
         ]
     },
     { 
-        "folio": "516-15881", "tecnico": "Ana Torres", "zona": "Oeste", "cliente": "Empresa D", 
+        "tecnico": "Ana Torres", "zona": "Oeste", "cliente": "Empresa D", 
         "tipo": "Automotriz", "horas_efectivas": 8, "total_pendientes": 1, "total_cerradas": 4, "percentage": 80,
         "_children": [
-            {"hora_inicio": "06:00", "hora_fin": "10:00", "horas_efectivas": 4},
-            {"hora_inicio": "11:00", "hora_fin": "15:00", "horas_efectivas": 4}
+            {"folio":"15-7895","hora_inicio": "06:00", "hora_fin": "10:00", "horas_efectivas": 4},
+            {"folio":"15-7895","hora_inicio": "11:00", "hora_fin": "15:00", "horas_efectivas": 4}
         ]
     },
     { 
-        "folio": "516-15882", "tecnico": "Luis Gómez", "zona": "Centro", "cliente": "Empresa E", 
+        "tecnico": "Luis Gómez", "zona": "Centro", "cliente": "Empresa E", 
         "tipo": "Agrícola", "horas_efectivas": 4, "total_pendientes": 1, "total_cerradas": 2, "percentage": 50,
         "_children": [
-            {"hora_inicio": "09:00", "hora_fin": "11:30", "horas_efectivas": 2.5},
-            {"hora_inicio": "13:30", "hora_fin": "15:00", "horas_efectivas": 1.5}
+            {"folio":"15-235457","hora_inicio": "09:00", "hora_fin": "11:30", "horas_efectivas": 2.5},
+            {"folio":"15-235457","hora_inicio": "13:30", "hora_fin": "15:00", "horas_efectivas": 1.5}
         ]
     },
     { 
-        "folio": "516-15883", "tecnico": "Javier Medina", "zona": "Norte", "cliente": "Empresa F", 
+        "tecnico": "Javier Medina", "zona": "Norte", "cliente": "Empresa F", 
         "tipo": "Médica", "horas_efectivas": 5.5, "total_pendientes": 2, "total_cerradas": 1, "percentage": 33,
         "_children": [
-            {"hora_inicio": "07:00", "hora_fin": "09:30", "horas_efectivas": 2.5},
-            {"hora_inicio": "10:30", "hora_fin": "13:30", "horas_efectivas": 3}
+            {"folio":"15-235457","hora_inicio": "07:00", "hora_fin": "09:30", "horas_efectivas": 2.5},
+            {"folio":"15-235457","hora_inicio": "10:30", "hora_fin": "13:30", "horas_efectivas": 3}
         ]
     },
     { 
-        "folio": "516-15884", "tecnico": "Beatriz Salgado", "zona": "Sur", "cliente": "Empresa G", 
+        "tecnico": "Beatriz Salgado", "zona": "Sur", "cliente": "Empresa G", 
         "tipo": "Industrial", "horas_efectivas": 6.5, "total_pendientes": 1, "total_cerradas": 3, "percentage": 75,
         "_children": [
-            {"hora_inicio": "06:30", "hora_fin": "10:00", "horas_efectivas": 3.5},
-            {"hora_inicio": "11:30", "hora_fin": "15:00", "horas_efectivas": 3}
+            {"folio":"15-12343","hora_inicio": "06:30", "hora_fin": "10:00", "horas_efectivas": 3.5},
+            {"folio":"15-12343","hora_inicio": "11:30", "hora_fin": "15:00", "horas_efectivas": 3}
         ]
     },
     { 
-        "folio": "516-15885", "tecnico": "Raúl Ortega", "zona": "Este", "cliente": "Empresa H", 
+        "tecnico": "Raúl Ortega", "zona": "Este", "cliente": "Empresa H", 
         "tipo": "Alimenticia", "horas_efectivas": 7, "total_pendientes": 0, "total_cerradas": 3, "percentage": 100,
         "_children": [
-            {"hora_inicio": "07:00", "hora_fin": "11:00", "horas_efectivas": 4},
-            {"hora_inicio": "12:30", "hora_fin": "15:30", "horas_efectivas": 3}
+            {"folio":"15-12343","hora_inicio": "07:00", "hora_fin": "11:00", "horas_efectivas": 4},
+            {"folio":"15-12343","hora_inicio": "12:30", "hora_fin": "15:30", "horas_efectivas": 3}
         ]
     },
     { 
-        "folio": "516-15886", "tecnico": "Gabriela Ríos", "zona": "Oeste", "cliente": "Empresa I", 
+        "tecnico": "Gabriela Ríos", "zona": "Oeste", "cliente": "Empresa I", 
         "tipo": "Farmacéutica", "horas_efectivas": 5, "total_pendientes": 1, "total_cerradas": 2, "percentage": 66,
         "_children": [
-            {"hora_inicio": "08:00", "hora_fin": "12:00", "horas_efectivas": 4},
-            {"hora_inicio": "14:00", "hora_fin": "15:00", "horas_efectivas": 1}
+            {"folio":"15-15476","hora_inicio": "08:00", "hora_fin": "12:00", "horas_efectivas": 4},
+            {"folio":"15-15476","hora_inicio": "14:00", "hora_fin": "15:00", "horas_efectivas": 1}
         ]
     },
     { 
-        "folio": "516-15887", "tecnico": "Fernando Castillo", "zona": "Centro", "cliente": "Empresa J", 
+        "tecnico": "Fernando Castillo", "zona": "Centro", "cliente": "Empresa J", 
         "tipo": "Telecomunicaciones", "horas_efectivas": 6, "total_pendientes": 2, "total_cerradas": 1, "percentage": 33,
         "_children": [
-            {"hora_inicio": "07:30", "hora_fin": "10:30", "horas_efectivas": 3},
-            {"hora_inicio": "12:00", "hora_fin": "15:00", "horas_efectivas": 3}
+            {"folio":"15-15476","hora_inicio": "07:30", "hora_fin": "10:30", "horas_efectivas": 3},
+            {"folio":"15-15476","hora_inicio": "12:00", "hora_fin": "15:00", "horas_efectivas": 3}
         ]
     }
 ];
