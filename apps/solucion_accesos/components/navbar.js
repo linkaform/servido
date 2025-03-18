@@ -181,8 +181,13 @@ function redirectionUrl(type = 'null',blank = false, logout=false){
     const pestanas = JSON.parse(localStorage.getItem("pestanas_key")) || [];
     agregarPestana(type)
     // if (existingTab && type !=="login") {
+    const isMobile = /iPhone|iPad|Android|Mobile/i.test(navigator.userAgent);
     if (type !=="login" && type !=="menu") {
-        window.open(`${protocol}//${host}/${type}.html`, type)
+        if (isMobile) {
+            window.location.href = `${protocol}//${host}/${type}.html`;
+        } else {
+            window.open(`${protocol}//${host}/${type}.html`, type);
+        }
     }else if(type=='login' && logout){
         urlNew = `${protocol}//${host}/login.html`
         window.location.href = urlNew
