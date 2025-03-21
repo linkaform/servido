@@ -1203,12 +1203,20 @@ async function abrirModalNuevaEditarIncidencia(folio=null,nuevoEditar='Nuevo'){
 function llenarEditarIncidencia(selectArea,selectedIncidencia,selectUbicacion,selectIncidencia){
     selectIncidencia.value= selectedIncidencia.incidencia
     selectUbicacion.value=selectedIncidencia.ubicacion_incidencia;
-     let optionsCaseta = arrayUserBoothsLocations.filter(booth => {
-        return booth.ubi == selectedIncidencia.ubicacion_incidencia;
+    const uniqueNames = new Set();
+    let optionsCaseta = arrayUserBoothsLocations.filter(booth => {
+        if (booth.name && booth.ubi === selectUbicacion.value) {
+            if (!uniqueNames.has(booth.name)) {
+                uniqueNames.add(booth.name);
+                return booth.ubi == selectedIncidencia.ubicacion_incidencia;
+            }
+        }
     });
     selectArea.innerHTML=""; 
     for (let obj of optionsCaseta){
-        selectArea.innerHTML += '<option value="'+obj.name.toString()+'">'+obj.name+'</option>';
+        if(obj.name){
+            selectArea.innerHTML += '<option value="'+obj.name.toString()+'">'+obj.name+'</option>';
+        }
     }
 
     let addPersona=""
@@ -1353,12 +1361,20 @@ async function onChangeCatalogoIncidencia(catalog, abrirEditar){
         cleanCatalag(['area'+abrirEditar+'Incidencia'])
         let selectUbicacion = document.getElementById(catalog)
         let selectArea = document.getElementById('area'+abrirEditar+'Incidencia')
+        const uniqueNames = new Set();
         optionsCaseta = arrayUserBoothsLocations.filter(booth => {
-        return booth.ubi == selectUbicacion.value ;
+            if (booth.name && booth.ubi === selectUbicacion.value) {
+                if (!uniqueNames.has(booth.name)) {
+                    uniqueNames.add(booth.name);
+                    return booth.ubi == selectUbicacion.value ;
+                }
+            }
         });
         selectArea.innerHTML=""; 
         for (let obj of optionsCaseta){
+            if(obj.name){
                 selectArea.innerHTML += '<option value="'+obj.name+'">'+obj.name+'</option>';
+            }
         }
         selectArea.value=""
     }else if (catalog =='ubicacion'+abrirEditar+'Falla'){
