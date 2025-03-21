@@ -1150,8 +1150,24 @@ async function abrirModalNuevaEditarIncidencia(folio=null,nuevoEditar='Nuevo'){
     let selectReporta = document.getElementById('reporta'+nuevoEditar+'Incidencia')
     let selectedIncidencia =""
     if(nuevoEditar=="Editar"){selectedIncidencia = dataTableIncidencias.find(x => x.folio == folio) }
+     
+    let locationsUnique = new Set();
+    if(getCookie("arrayUserBoothsLocations")==""){
+        getInfoAndCatalogos()
+    }else{
+        arrayUserBoothsLocations=JSON.parse(getCookie('arrayUserBoothsLocations'))
+    }
+    arrayUserBoothsLocations.forEach(function(booth) {
+        locationsUnique.add(booth.ubi);
+    });
+
+    optionsLocation = Array.from(locationsUnique);
+    for(let ubi of optionsLocation){
+        selectUbicacion.innerHTML += '<option value="'+ubi+'">'+ubi+'</option>';
+    }
+    const ubicacionInicial = selectUbicacion.options[0].text; 
     try {
-        let requests=[{script_name:'incidencias.py',option:'catalogo_area_empleado'},
+        let requests=[{script_name:'incidencias.py',option:'catalogo_area_empleado', location: ubicacionInicial},
                     {script_name:'incidencias.py',option:'catalogo_incidencias'}]
         catalogsData = await cargarCatalogos(requests);
     } catch (error) {
@@ -1173,20 +1189,6 @@ async function abrirModalNuevaEditarIncidencia(folio=null,nuevoEditar='Nuevo'){
                 selectIncidencia.value=""
             }
         }
-    } 
-    let locationsUnique = new Set();
-    if(getCookie("arrayUserBoothsLocations")==""){
-        getInfoAndCatalogos()
-    }else{
-        arrayUserBoothsLocations=JSON.parse(getCookie('arrayUserBoothsLocations'))
-    }
-    arrayUserBoothsLocations.forEach(function(booth) {
-        locationsUnique.add(booth.ubi);
-    });
-
-    optionsLocation = Array.from(locationsUnique);
-    for(let ubi of optionsLocation){
-        selectUbicacion.innerHTML += '<option value="'+ubi+'">'+ubi+'</option>';
     }
 
     selectArea.innerHTML += '<option disabled> Selecciona una ubicación... </option>';
@@ -1377,6 +1379,8 @@ async function onChangeCatalogoIncidencia(catalog, abrirEditar){
             }
         }
         selectArea.value=""
+        let ubicacionABuscar = selectUbicacion.options[selectUbicacion.selectedIndex].text;
+        searchEmployeeByLocation(ubicacionABuscar, abrirEditar)
     }else if (catalog =='ubicacion'+abrirEditar+'Falla'){
         let optionsCaseta = new Set();
         cleanCatalag(['area'+abrirEditar+'Falla'])
@@ -3307,5 +3311,41 @@ function setRequestFileImg(type, id="") {
         });
     }else{
         return 'Error';
+    }
+}
+
+async function searchEmployeeByLocation(location, nuevoEditar='Nuevo'){
+    const select = document.getElementById("reporta"+nuevoEditar+"Incidencia");
+    select.innerHTML = "<option>Obteniendo empleados...</option>";
+
+    const res = await fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "incidencias.py",
+            option: "catalogo_area_empleado",
+            location: location
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userJwt
+        }
+    })
+    const data = await res.json()
+
+    if(data.success){
+        employees = data.response.data
+        select.innerHTML = "";
+        const optionDefault = document.createElement("option");
+        optionDefault.value = '';
+        optionDefault.selected = true;
+        optionDefault.textContent = '';
+        select.appendChild(optionDefault);
+
+        employees.forEach(employee => {
+            const option = document.createElement("option");
+            option.value = employee;
+            option.textContent = employee;
+            select.appendChild(option);
+        });
     }
 }
