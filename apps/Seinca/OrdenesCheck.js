@@ -14,7 +14,7 @@ window.onload = function(){
 
 function loadDemoData(){
     drawTableElement('tableFirst', dataTable1, columsTable1, 'Ordenes_Checks', undefined, designPDF);
-    drawTableElement('tableSecond', dataTable2, columsTable2, 'Ordenes_Tardanza', undefined, designPDF);
+    drawTableElement('tableSecond', dataTable2, columsTable2, 'Ordenes_Tardanza', configTableCustom2, designPDF2);
     setTimeout(() => { hide_loading();}, 2000);
 }
 
@@ -50,7 +50,7 @@ async function getInformation(){
             drawTableElement('tableFirst', data.response_first, columsTable1, 'Ordenes_Checks', undefined, designPDF);
         }
         if(data.response_second){
-            drawTableElement('tableSecond', data.response_second, columsTable2, 'Ordenes_Tardanza', undefined, designPDF);
+            drawTableElement('tableSecond', data.response_second, columsTable2, 'Ordenes_Tardanza', configTableCustom2, designPDF2);
         }
         //-----Style
         hideLoadingComponent();

@@ -1,8 +1,8 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'table', col: '12', id:'tableFirst', title:'Detalle de empleados', optionPDF:true, optionExpanded:true},
-            { type:'table', col: '6', id:'tableSecond', title:'Tardanza', optionPDF:true, optionExpanded:true},
+            { type:'table', col: '12', id:'tableFirst', title:'Horas Extra', optionPDF:true, optionExpanded:true},
+            { type:'table', col: '6', id:'tableSecond', title:'Tardanzas', optionPDF:true, optionExpanded:true},
         ] 
     },
 ];
@@ -116,7 +116,6 @@ let dataTable1 = [
 ];
 
 
-
 let columsTable2 = [
     { title:"Empleado", field:'empleado', hozAlign:"left", headerHozAlign: "left",headerFilter: true, width:250},
     { formatter:userIcon, hozAlign:"center", download: false, width:50},
@@ -146,9 +145,6 @@ let columsTable2 = [
     }, download: false, width:50},
     { title:"Check Out", field:'check_out',  hozAlign:"center", headerHozAlign: "center", headerFilter: true, width:200},
 ];
-
-
-
 
 let dataTable2 = [
     {
@@ -193,6 +189,17 @@ let dataTable2 = [
     }))
 ];
 
+let configTableCustom2 = {
+    height: "400px",
+    layout:"fitDataFill",
+    theme: "bootstrap5", 
+    columnMinWidth: 100,
+    autoColumns: false, 
+    scrollX: true, 
+    dataTree:true,
+    dataTreeStartExpanded:true,
+}
+
 //----Diseño de PDF
 const designPDF ={
     orientation:"landscape",
@@ -205,6 +212,58 @@ const designPDF ={
         doc.setFontSize(15);
         doc.setTextColor(23,32,42);
         doc.text("Consolidado de Horas Extra", 370, 40);
+
+        let imageUrl = 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/679bcc5ae9370faf752d46dc.png'; 
+        doc.addImage(imageUrl, 'JPEG', 730, -20, 80, 80);
+
+        return {
+            styles: {
+                cellPadding: 2, 
+                fontSize: 8,
+                halign : 'center'
+            },
+            headStyles: {
+                fillColor: [38, 107, 115],
+                valign: 'middle'
+            },
+            alternateRowStyles: {
+                fillColor : [220, 230, 241]
+            },
+            columnStyles: {
+                0: {cellWidth: 'auto',},
+                1: {cellWidth: 'auto',},
+                2: {cellWidth: 'auto',},
+                3: {cellWidth: 'auto',},
+                4: {cellWidth: 'auto',},
+                5: {cellWidth: 'auto',},
+                6: {cellWidth: 'auto',},
+                7: {cellWidth: 'auto',},
+                8: {cellWidth: 'auto', fontSize: 9,fontStyle: 'bold',valign: 'middle'},
+            },
+            margin: { top: 10 },
+            startY: 80,
+        };
+    },
+    createdCell: function(cell, opts) {
+        if (opts.column.index == 1) {        
+            cell.styles.textColor = "#20a8d8";
+            cell.styles.fillColor = "#000";
+        }
+    },
+}
+
+//----Diseño de PDF
+const designPDF2 ={
+    orientation:"landscape",
+    theme: 'grid',
+    autoTable:function(doc)
+    { 
+        let margins = 30;
+        let leftMargin = 40;
+        let marginsIndent = 40;
+        doc.setFontSize(15);
+        doc.setTextColor(23,32,42);
+        doc.text("Tardanzas", 370, 40);
 
         let imageUrl = 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/679bcc5ae9370faf752d46dc.png'; 
         doc.addImage(imageUrl, 'JPEG', 730, -20, 80, 80);
