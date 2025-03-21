@@ -1,4 +1,6 @@
-let dataCatalogs = [];
+let dataCatalogInstitucion = [];
+
+
 window.onload = function(){
   createElements(dicReportContext);
   setElementsStyle();
@@ -12,9 +14,12 @@ window.onload = function(){
   } 
 }
 
+//-----LOAD DATA DEMO
 function loadDemoData(){
-    drawTableElement('tableFirst', dataTable1, columsTable1, 'Ordenes_Checks', undefined, designPDF);
-    drawTableElement('tableSecond', dataTable2, columsTable2, 'Ordenes_Tardanza', undefined, designPDF);
+    drawTableElement('tableFirst', dataTable1, columsTable1, undefined, configTableCustom1);
+    drawChartElement('chartFirst','bar',dataChart1,setOptions1);
+    drawChartElement('chartSecond','bar',dataChart2,setOptions2);
+
     setTimeout(() => { hide_loading();}, 2000);
 }
 
@@ -27,11 +32,13 @@ function loadData(data) {
     buttonExecution.addEventListener("click", () => {
         getInformation();
     });
+
     //-----Loading
     setTimeout(() => { hide_loading();}, 2000);
 }
 
-//-----SET REQUEST
+
+//-----SET REQUEST ACTIVE
 async function getInformation(){
     showLoadingComponent();
     const scriptId = getParameterURL('script_id');
@@ -44,20 +51,14 @@ async function getInformation(){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReport(scriptId,dicAdional);
-        const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-        if(data.response_first){
-            drawTableElement('tableFirst', data.response_first, columsTable1, 'Ordenes_Checks', undefined, designPDF);
-        }
-        if(data.response_second){
-            drawTableElement('tableSecond', data.response_second, columsTable2, 'Ordenes_Tardanza', undefined, designPDF);
-        }
         //-----Style
         hideLoadingComponent();
         showElements();
     }
 }
 
+
+//-----GET CATALOG
 function get_catalog(){
     const scriptId = getParameterURL('script_id');
     const JWT = getCookie("userJwt");
@@ -74,9 +75,18 @@ function get_catalog(){
     })
     .then((res) => res.json())
     .then((res) => {
-        const data = res.response && res.response.data ? res.response.data : [];
-        if(data.length > 0){
-            set_catalog_select(data, 'empleado', 'empleado');
+        const catalog_institucion = res.response && res.response.catalog_institucion ? res.response.catalog_institucion : [];
+        const catalog_taller = res.response && res.response.catalog_taller ? res.response.catalog_taller : [];
+
+        if(catalog_institucion.length > 0){
+            dataCatalogInstitucion = catalog_institucion;
+            set_catalog_select(catalog_institucion, 'institucion', 'institucion');
+            set_catalog_select(catalog_institucion, 'grupo', 'grupo');
+            set_catalog_select(catalog_institucion, 'mentor', 'mentor');
+        }
+
+        if(catalog_taller.length > 0){
+            set_catalog_select(catalog_taller, 'taller', 'taller');
         }
     })
 }

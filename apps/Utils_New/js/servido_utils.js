@@ -344,6 +344,8 @@ function createElements(dataConfig = null){
                     const formElements = element.formElements? element.formElements : [];
                     //-----Filter Modal
                     const filterCustom = element.filterCustom? element.filterCustom : false;
+                    //-----Button Update Chart
+                    const buttonLeftArrow = element.buttonLeftArrow? element.buttonLeftArrow : false;
                     //-----Button Filter Modal
                     const optionButtonModal  = element.optionButtonModal ? element.optionButtonModal  : false;
                     //-----Button Filter Modal
@@ -400,6 +402,13 @@ function createElements(dataConfig = null){
                                 <i class="fa-solid fa-chart-simple"></i>
                             </button>`
                         }
+                        //-----Option Button Update
+                        let buttonLeftArrowChart = '';
+                        if(buttonLeftArrow){
+                            buttonLeftArrowChart = `<button class="btn btn-sm btn-primary mr-2" id="button-left-${idElement}">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>`
+                        }
                         //-----Element Card
                         divElement.innerHTML = `<div class="card shadow mb-4">
                             <div
@@ -408,6 +417,7 @@ function createElements(dataConfig = null){
                                 <div class="d-flex justify-content-end">
                                     ${buttonModal}
                                     ${buttonChangeChart}
+                                    ${buttonLeftArrowChart}
                                     <button class="btn btn-sm btn-primary me-2"  onclick="get_chartDownload('${idElement}','chart_screenIV');return false;">
                                         <i class="fas fa-download"></i>
                                     </button>

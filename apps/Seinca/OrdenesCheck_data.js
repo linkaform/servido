@@ -2,6 +2,7 @@
 let dicReportContext = [
     { class:'', _children : [
             { type:'table', col: '12', id:'tableFirst', title:'Detalle de empleados', optionPDF:true, optionExpanded:true},
+            { type:'table', col: '5', id:'tableSecond', title:'Tardanza', optionPDF:true, optionExpanded:true},
         ] 
     },
 ];
@@ -42,8 +43,6 @@ let columsTable1 = [
     { title:"Hrs Extra al 35%", field:'hrs_ext', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:2,}, width:200},
     { title:"Hrs Extra al 100%", field:'hrs_ext_full', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:2,}, width:200},
     { title:"Total", field:'total', hozAlign:"center", headerHozAlign: "center",bottomCalc:"sum", bottomCalcParams:{precision:2,}, width:250},
-
-
 ];
 
 let dataTable1 = [
@@ -109,6 +108,84 @@ let dataTable1 = [
                 hrs_ext: '2',
                 hrs_ext_full: '1',
                 total: '6',
+                url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
+                url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
+            }
+        ]
+    }))
+];
+
+
+
+let columsTable2 = [
+    { title:"Empleado", field:'empleado', hozAlign:"left", headerHozAlign: "left",headerFilter: true, width:250},
+    { formatter:userIcon, hozAlign:"center", download: false, width:50},
+    { formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
+        const url = cell.getRow().getData().url_check_in;
+        if(url){ window.open(url,'_blank'); }
+    }, download: false, width:50},
+    { 
+        title:"Check In", 
+        field:'check_in', 
+        hozAlign:"center", 
+        headerHozAlign: "center", 
+        headerFilter: true, 
+        width:200,
+        formatter: function(cell, formatterParams) {
+            let data = cell.getRow().getData();
+            if (data.url_check_in) {
+                cell.getElement().style.backgroundColor = "#FFA500"; 
+                cell.getElement().style.color = "#000"; 
+            }
+            return cell.getValue();
+        }
+    },
+    { formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
+        const url = cell.getRow().getData().url_check_out;
+        if(url){ window.open(url,'_blank'); }
+    }, download: false, width:50},
+    { title:"Check Out", field:'check_out',  hozAlign:"center", headerHozAlign: "center", headerFilter: true, width:200},
+];
+
+
+
+
+let dataTable2 = [
+    {
+        empleado: 'Empleado 1',
+        type:'Ayudante',
+        check_in: '',
+        check_out: '',
+        _children: [
+            {
+                check_in: '2025-01-29 12:51:17',
+                check_out: '2025-01-29 18:53:10',
+                url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
+                url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
+            },
+            {
+                check_in: '2025-01-29 8:00:00',
+                check_out: '2025-01-29 12:38:08',
+                url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
+                url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
+            }
+        ]
+    },
+    ...Array.from({ length: 14 }, (_, i) => ({
+        empleado: `Empleado ${i + 2}`,
+        type: i%2 ? 'Ayudante' : 'Técnico',
+        check_in: '',
+        check_out: '',
+        _children: [
+            {
+                check_in: '2025-01-29 09:00:00',
+                check_out: '2025-01-29 14:00:00',
+                url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
+                url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
+            },
+            {
+                check_in: '2025-01-29 15:00:00',
+                check_out: '2025-01-29 19:00:00',
                 url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
                 url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
             }
