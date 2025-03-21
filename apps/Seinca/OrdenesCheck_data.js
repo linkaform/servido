@@ -2,7 +2,7 @@
 let dicReportContext = [
     { class:'', _children : [
             { type:'table', col: '12', id:'tableFirst', title:'Detalle de empleados', optionPDF:true, optionExpanded:true},
-            { type:'table', col: '5', id:'tableSecond', title:'Tardanza', optionPDF:true, optionExpanded:true},
+            { type:'table', col: '6', id:'tableSecond', title:'Tardanza', optionPDF:true, optionExpanded:true},
         ] 
     },
 ];
