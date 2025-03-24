@@ -16,10 +16,14 @@ window.onload = function(){
 
 //-----LOAD DATA DEMO
 function loadDemoData(){
+    //---Load Elements
     drawTableElement('tableFirst', dataTable1, columsTable1, undefined, configTableCustom1);
     drawChartElement('chartFirst','bar',dataChart1,setOptions1);
     drawChartElement('chartSecond','bar',dataChart2,setOptions2);
-
+    //----Events
+    document.getElementById("button-custom-tableFirst").addEventListener("click", () => {
+        confirmAdjustment();
+    });
     setTimeout(() => { hide_loading();}, 2000);
 }
 
@@ -36,7 +40,6 @@ function loadData(data) {
     //-----Loading
     setTimeout(() => { hide_loading();}, 2000);
 }
-
 
 //-----SET REQUEST ACTIVE
 async function getInformation(){
@@ -56,7 +59,6 @@ async function getInformation(){
         showElements();
     }
 }
-
 
 //-----GET CATALOG
 function get_catalog(){
@@ -89,4 +91,20 @@ function get_catalog(){
             set_catalog_select(catalog_taller, 'taller', 'taller');
         }
     })
+}
+
+//-----Show Alert
+function confirmAdjustment() {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you agree to make the adjustment?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log("Adjustment confirmed!");
+        }
+    });
 }

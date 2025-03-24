@@ -1,12 +1,12 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'table', col: '12', id:'tableFirst', title:'Table Count'},
+            { type:'table', col: '12', id:'tableFirst', title:'Table Count',buttonCustom:true},
         ] 
     },
     { class:'', _children : [
             { type:'chart', col: '6', id:'chartFirst', title:'Adjustment x Wharehouse'},
-            { type:'chart', col: '6', id:'chartSecond', title:'Adjustment X Crop', buttonLeftArrow:true},
+            { type:'chart', col: '6', id:'chartSecond', title:'Adjustment X Crop'},
         ] 
     },
 ];
@@ -66,7 +66,7 @@ let configTableCustom1 = {
     autoColumns: false, 
     scrollX: true, 
     dataTree:true,
-    footerElement:"<div style='text-align:right; padding:5px; font-weight:bold;'>Total Abs: 0</div>" // Agrega una fila extra con un total adicional
+    footerElement:"<div style='text-align:right; padding:5px; font-weight:bold;'>Total Abs: 42</div>" 
 }
 
 const dataTable1 = [
@@ -79,7 +79,7 @@ const dataTable1 = [
         difference: 2,
         final_count: 137,
         stock: 137,
-        adjustment: 0
+        adjustment: 2
     },
     {
         wharehouse: "Greenhouse 1",
@@ -90,7 +90,7 @@ const dataTable1 = [
         difference: 0,
         final_count: 253,
         stock: 253,
-        adjustment: 3
+        adjustment: 0
     },
     {
         wharehouse: "Greenhouse 1",
@@ -101,7 +101,7 @@ const dataTable1 = [
         difference: 5,
         final_count: 215,
         stock: 220,
-        adjustment: -5
+        adjustment: 5
     },
     {
         wharehouse: "Greenhouse 1",
@@ -112,7 +112,7 @@ const dataTable1 = [
         difference: 2,
         final_count: 182,
         stock: 185,
-        adjustment: 3
+        adjustment: 2
     },
     {
         wharehouse: "Greenhouse 1",
@@ -134,7 +134,7 @@ const dataTable1 = [
         difference: -5,
         final_count: 295,
         stock: 298,
-        adjustment: 3
+        adjustment: 5
     },
     {
         wharehouse: "Greenhouse 2",
@@ -145,7 +145,7 @@ const dataTable1 = [
         difference: 3,
         final_count: 278,
         stock: 278,
-        adjustment: 0
+        adjustment: 3
     },
     {
         wharehouse: "Greenhouse 2",
@@ -156,7 +156,7 @@ const dataTable1 = [
         difference: 2,
         final_count: 152,
         stock: 155,
-        adjustment: 3
+        adjustment: 2
     },
     {
         wharehouse: "Greenhouse 3",
@@ -167,7 +167,7 @@ const dataTable1 = [
         difference: 5,
         final_count: 230,
         stock: 232,
-        adjustment: 2
+        adjustment: 5
     },
     {
         wharehouse: "Greenhouse 3",
@@ -211,7 +211,7 @@ const dataTable1 = [
         difference: 5,
         final_count: 285,
         stock: 288,
-        adjustment: 3
+        adjustment: 5
     },
     {
         wharehouse: "Greenhouse 4",
@@ -222,7 +222,7 @@ const dataTable1 = [
         difference: 5,
         final_count: 245,
         stock: 247,
-        adjustment: 2
+        adjustment: 5
     },
     {
         wharehouse: "Greenhouse 4",

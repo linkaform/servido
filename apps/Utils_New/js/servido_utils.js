@@ -350,6 +350,9 @@ function createElements(dataConfig = null){
                     const optionButtonModal  = element.optionButtonModal ? element.optionButtonModal  : false;
                     //-----Button Filter Modal
                     const chartChange = element.chartChange ? element.chartChange  : false;
+                    //-----Button Filter Modal
+                    const optionButtonCustom  = element.buttonCustom ? element.buttonCustom  : false;
+
                     //-----Card Icon
                     const cardIcon = element.cardIcon ? element.cardIcon : '<i class="fas fa-clipboard-list fa-2x text-gray-300"></i>';
                     //#-----COMPONENTS-----#//
@@ -445,12 +448,21 @@ function createElements(dataConfig = null){
                                 <i class="fa-solid fa-expand"></i>
                             </button>`
                         }
+                        //----BUtton Custom Table
+                        let buttonCustom = '';
+                        if(optionButtonCustom){
+                            buttonCustom = `<button class="btn btn-sm btn-primary mr-2" id="button-custom-${idElement}">
+                                <i class="fa-solid fa-bars"></i>
+                            </button>`
+                        }
+
                         //-----Element Table
                         divElement.innerHTML = `<div class="card shadow mb-4">
                             <div
                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
                                 <div class="d-flex justify-content-end">
+                                    ${buttonCustom}
                                     ${buttonExpanded}
                                     <button class="btn btn-sm btn-success me-2" id="download-xls-${idElement}">
                                         <i class="fas fa-file-excel"></i>
