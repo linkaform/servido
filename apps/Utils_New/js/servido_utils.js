@@ -330,7 +330,7 @@ function createElements(dataConfig = null){
                         colorBg = `bg-primary`;
                     }
                     //-----Class
-                    const classElement = element.col ? `col-xl-${element.col} col-md-${element.col} col-sm-12 mb-4` : "col-xl-3 col-md-6 mb-4";
+                    const classElement = element.col ? `col-xl-${element.col} col-lg-${element.col} col-md-12 col-sm-12 col-xs-12 mb-4` : "col-xl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12  mb-4";
                     divElement.className = classElement;
                     //-----Progress
                     const progressElement = element.progress ? true : false;
