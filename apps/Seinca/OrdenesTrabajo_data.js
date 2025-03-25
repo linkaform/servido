@@ -13,7 +13,7 @@ let columsTable1 = [
         formatterParams: {
             url: function(cell) {
                 let data = cell.getData();
-                return data._id ? "https://app.linkaform.com/#/records/detail/" + data._id : "#"; 
+                return data.record_id ? "https://app.linkaform.com/#/records/detail/" + data.record_id : "#"; 
             }, 
             target: "_blank"
         },
