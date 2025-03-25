@@ -9,8 +9,17 @@ let dicReportContext = [
 //----Config Table
 let columsTable1 = [
     { title:"Supervisor", field:'supervisor',headerTooltip: true,hozAlign:"left", width:200},
-    { title:"Folio", field:'folio', headerTooltip: true,hozAlign:"center", width:150},
-    { title:"Cliente", field:'cliente', headerTooltip: true,hozAlign:"left", width:200},
+    { title: "Folio", field: 'folio', hozAlign: "left", formatter: "link", 
+        formatterParams: {
+            url: function(cell) {
+                let data = cell.getData();
+                return data._id ? "https://app.linkaform.com/#/records/detail/" + data._id : "#"; 
+            }, 
+            target: "_blank"
+        },
+        headerFilter: "input", width: 150 
+    },
+    { title:"Cliente", field:'cliente', headerTooltip: true,hozAlign:"left", width:310},
     { title:"Localidad", field:'localidad', headerTooltip: true,hozAlign:"left", width:140},
     { title:"Tipo", field:'tipo', headerTooltip: true,hozAlign:"center", width:140},
 ];

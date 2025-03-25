@@ -19,14 +19,11 @@ function loadDemoData(){
 
 //-----LOAD DATA ACTIVE
 function loadData(data) {
-    //----Search Catalogs
-    get_catalog();
     //----Assing Events
     const buttonExecution = document.getElementById("buttonExecution");
     buttonExecution.addEventListener("click", () => {
         getInformation();
     });
-
     //-----Loading
     setTimeout(() => { hide_loading();}, 2000);
 }
@@ -44,6 +41,12 @@ async function getInformation(){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
+        const responseRequest = await sendRequestReport(scriptId,dicAdional);
+        const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
+        if(data.response_first){
+            drawTableElement('tableFirst', data.response_first, columsTable1, undefined, configTableCustom1);
+        }
+
         //-----Style
         hideLoadingComponent();
         showElements();
