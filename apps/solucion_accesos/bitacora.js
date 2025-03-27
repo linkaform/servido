@@ -22,7 +22,7 @@ window.onload = function(){
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
 	selectLocation= document.getElementById("selectLocation")
 	selectLocation.onchange = function() {
-        let response = fetchOnChangeLocation(selectLocation.value)
+        getBitacoraByLocation(selectLocation.value)
     };
  	selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = async function() {
@@ -1415,3 +1415,37 @@ function printTable(table){
     tab.print(false, true);
 }
 
+async function getBitacoraByLocation(location, area){
+    loadingService()
+    try{
+        const res = await fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name: "script_turnos.py",
+                option: "list_bitacora",
+                location: location,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + userJwt
+            }
+        })
+        const data = await res.json()
+        if (data.success){
+            reloadTableBitacoras(data.response.data)
+            loadCatalogsCaseta(location,JSON.parse(getCookie('arrayUserBoothsLocations')).length>0? JSON.parse(getCookie('arrayUserBoothsLocations')): arrayUserBoothsLocations )
+            let selectCaseta= document.getElementById("selectCaseta")
+            selectCaseta.value = ""
+            Swal.close()
+        }else{
+            Swal.fire({
+                title: 'Aviso',
+                text: 'Hubo un error al obtener la bitacora',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            })
+        }
+    }catch(e){
+        throw new Error('Error in lkf', e)
+    }
+}
