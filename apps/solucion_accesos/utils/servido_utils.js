@@ -442,7 +442,7 @@ function descargarExcel(tables, table){
     tables[table].getData().forEach(function(row) {
         let fila = '';
         Object.keys(row).forEach(function(key, index) {
-            if(row[key]!==undefined && key !== 'actions' &&  key !== 'checkboxColumn' ) {
+            if(row[key] !== undefined && row[key] !== null && key !== 'actions' && key !== 'checkboxColumn' ) {
                 fila += '"' + row[key].toString().replace(/"/g, '""') + '"';
                 if (index < Object.keys(row).length - 1) {
                     fila += '\t'; 
