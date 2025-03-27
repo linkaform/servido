@@ -20,7 +20,19 @@ const columsData1 = [
 		},
 	},
 	{ title:"Folio", field:'folio',hozAlign:"left",headerFilter:true,},
-	{ title:"Entrada", field:'fecha_entrada',hozAlign:"left", headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
+	{ title:"Entrada", field:'fecha_entrada',hozAlign:"left", headerFilter:"input", 
+		headerFilterFunc: function(headerValue, rowValue) {
+			if (!headerValue) return true;
+			if (!rowValue) return false;
+	
+			let filtroFecha = new Date(headerValue).getTime();
+			let celdaFecha = new Date(rowValue).getTime();
+	
+			return celdaFecha >= filtroFecha;
+		},
+		headerFilterParams: {
+			elementAttributes: { type: "datetime-local" }
+		}},
 	{ title:"Visitante", field:'nombre_visitante',hozAlign:"left",headerFilter:true},
 	{ title:"Tipo", field:'perfil_visita',hozAlign:"left",headerFilter:true},
 	{ title:"Contratista", field:'contratista',hozAlign:"left",headerFilter:true},
@@ -34,7 +46,19 @@ const columsData1 = [
 	},
 	{ title:"Caseta Entrada", field:'caseta_entrada',hozAlign:"left",headerFilter:true},
 	{ title:"Caseta Salida", field:'caseta_salida',hozAlign:"center",tooltip:true},
-	{ title:"Salida", field:'fecha_salida',hozAlign:"left",headerFilter:"date", headerFilterFunc:dateFilter, headerFilterParams:{ min: new Date(""), max: new Date("") }},
+	{ title:"Salida", field:'fecha_salida',hozAlign:"left",headerFilter:"input",
+		headerFilterFunc: function(headerValue, rowValue) {
+			if (!headerValue) return true;
+			if (!rowValue) return false;
+	
+			let filtroFecha = new Date(headerValue).getTime();
+			let celdaFecha = new Date(rowValue).getTime();
+	
+			return celdaFecha <= filtroFecha;
+		},
+		headerFilterParams: {
+			elementAttributes: { type: "datetime-local" }
+		}},
 	{ title:"Comentarios", field:'comentarios',hozAlign:"left",headerFilter:true ,
 	formatter: function(cell) {
   		let comment=""
