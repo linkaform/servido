@@ -114,7 +114,25 @@
 	                                </label>
 	                            </div>
 	                        </div>
-	                        <div class=" d-flex mb-2 ms-1 justify-content-end align-items-center">
+							<div class="d-flex align-items-center gap-4 me-4">
+								<div class="row">
+									<div class="col-5 justify-content-center align-content-center px-0">
+										<p class="m-0 p-0 text-center">Fecha desde:</p>
+									</div>
+									<div class="col-7 justify-content-center align-content-center px-0">
+										<input type="date" class="form-control" id="dateFromFilter" onchange="onChangeDateFrom(this.value);" >
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-5 justify-content-center align-content-center px-0">
+										<p class="m-0 p-0 text-center">Fecha hasta:</p>
+									</div>
+									<div class="col-7 justify-content-center align-content-center px-0">
+										<input type="date" class="form-control" id="dateToFilter" onchange="onChangeDateTo(this.value);" >
+									</div>
+								</div>
+							</div>
+	                        <div class=" d-flex ms-1 justify-content-end align-items-center">
 								<button type="button" class="btn btn-primary btn-sm " id="descargarEntradas" ><i class="fa-solid fa-file-excel" ></i> Descargar	</button>
                         	</div>
 						</div>

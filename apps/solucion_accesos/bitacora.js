@@ -556,7 +556,7 @@ function reloadTableBitacoras(data){
                 for (let bitacora of lista){
                     dataTableBitacora.push({
                     folio:bitacora.folio ,
-                    fecha_entrada:bitacora.fecha_entrada ,
+                    fecha_entrada: bitacora.fecha_entrada.split(" ")[0],
                     nombre_visitante:bitacora.nombre_visitante, 
                     perfil_visita:bitacora.perfil_visita,
                     contratista:bitacora.contratista,
@@ -564,7 +564,7 @@ function reloadTableBitacoras(data){
                     visita_a:bitacora.visita_a, 
                     caseta_entrada:bitacora.caseta_entrada,
                     caseta_salida:bitacora.nombre_area_salida, 
-                    fecha_salida:bitacora.fecha_salida,
+                    fecha_salida: bitacora.fecha_salida ? bitacora.fecha_salida.split(" ")[0] : '',
                     comentarios:bitacora.comentarios||[] , 
                     equipos: bitacora.equipos, 
                     vehiculos: bitacora.vehiculos, 
@@ -642,7 +642,7 @@ function loadDataTables(){
                 let lista= res.response.data
                 for (bitacora of lista){
                     dataTableBitacora.push({folio:bitacora.folio ,
-                    fecha_entrada:bitacora.fecha_entrada ,
+                    fecha_entrada: bitacora.fecha_entrada.split(" ")[0],
                     nombre_visitante:bitacora.nombre_visitante, 
                     perfil_visita:bitacora.perfil_visita,
                     contratista:bitacora.contratista,
@@ -650,7 +650,7 @@ function loadDataTables(){
                     visita_a:bitacora.visita_a, 
                     caseta_entrada:bitacora.caseta_entrada,
                     caseta_salida:bitacora.nombre_area_salida || '', 
-                    fecha_salida:bitacora.fecha_salida || '',
+                    fecha_salida: bitacora.fecha_salida ? bitacora.fecha_salida.split(" ")[0] : '',
                     comentarios:bitacora.comentarios||[] , 
                     equipos: bitacora.equipos, 
                     vehiculos: bitacora.vehiculos, 
@@ -1415,7 +1415,7 @@ function printTable(table){
     tab.print(false, true);
 }
 
-async function getBitacoraByLocation(location, area){
+async function getBitacoraByLocation(location){
     loadingService()
     try{
         const res = await fetch(url + urlScripts, {
@@ -1448,4 +1448,74 @@ async function getBitacoraByLocation(location, area){
     }catch(e){
         throw new Error('Error in lkf', e)
     }
+}
+
+async function getBitacoraByDate(location, area='', movement=[], dateFrom='', dateTo=''){
+    loadingService()
+
+    bodyRequest = {
+        script_name: "script_turnos.py",
+        option: "list_bitacora",
+        location: location,
+    }
+    
+    if (area) bodyRequest.area = area;
+    if (movement.length > 0) bodyRequest.prioridades = movement;
+    bodyRequest.dateFrom = dateFrom;
+    bodyRequest.dateTo = dateTo;
+
+    try{
+        const res = await fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify(bodyRequest),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + userJwt
+            }
+        })
+        const data = await res.json()
+        if (data.success){
+            reloadTableBitacoras(data.response.data)
+            Swal.close()
+        }else{
+            Swal.fire({
+                title: 'Aviso',
+                text: 'Hubo un error al obtener la bitacora',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            })
+        }
+    }catch(e){
+        throw new Error('Error in lkf', e)
+    }
+}
+
+async function onChangeDateFrom(dateFrom){
+    let prioridades = document.querySelectorAll('input[name="estadoBitacora"]:checked');
+    let dateTo = document.getElementById("dateToFilter").value;
+    if (dateFrom > dateTo && dateTo !== ''){
+        Swal.fire({
+            title: 'Aviso',
+            text: 'La fecha desde debe ser menor a la fecha hasta...',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+        return
+    }
+    getBitacoraByDate(selectLocation.value, selectCaseta.value, movement=prioridades, dateFrom=dateFrom, dateTo=dateTo)
+}
+
+async function onChangeDateTo(dateTo){
+    let prioridades = document.querySelectorAll('input[name="estadoBitacora"]:checked');
+    let dateFrom = document.getElementById("dateFromFilter").value;
+    if (dateTo < dateFrom){
+        Swal.fire({
+            title: 'Aviso',
+            text: 'La fecha hasta debe ser mayor a la fecha desde...',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+        return
+    }
+    getBitacoraByDate(selectLocation.value, selectCaseta.value, movement=prioridades, dateFrom=dateFrom, dateTo=dateTo)
 }
