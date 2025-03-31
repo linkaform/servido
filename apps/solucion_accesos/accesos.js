@@ -346,6 +346,26 @@ async function enviarAvisoLlegada(){
     }
 }
 
+async function enviarAvisoSlack(slack_email){
+    const format_slack_email = slack_email[0].email[0]
+    const res = await fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "send_slack.py",
+            slack_email: format_slack_email
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userJwt
+        }
+    })
+    const data = await res.json()
+
+    if(data.success){
+        console.log(data)        
+    }
+}
+
 function enviarMensaje(){
     loadingService()
     data_for_msj.mensaje= $("#msj").val()
@@ -1512,7 +1532,7 @@ function registrarIngreso(){
                 Swal.fire({
                     html: `
                         <div>
-                            <img src=${srcCompanyLogo} alt="companylogo">
+                            <img src=${srcCompanyLogo} alt="companylogo" class="w-50">
                         </div>
                         <h1 class="mt-4">¡Bienvenido a <b>${ubicacionActual}</b>!</h1>
                         <p class="mt-2 mb-1">Tu ingreso ha sido registrado y el anfitrión ha sido notificado.</p>
@@ -1533,6 +1553,7 @@ function registrarIngreso(){
                     }
                 });
                 enviarAvisoLlegada();
+                enviarAvisoSlack(slack_email=fullData.visita_a);
                 setTimeout(()=>{
                     startScanning();
                 }, 10000);
@@ -1540,7 +1561,7 @@ function registrarIngreso(){
                 Swal.fire({
                     html: `
                         <div>
-                            <img src=${srcCompanyLogo} alt="companylogo">
+                            <img src=${srcCompanyLogo} alt="companylogo" class="w-50">
                         </div>
                         <h1 class="mt-4">¡Bienvenido a <b>${ubicacionActual}</b>!</h1>
                         <p class="mt-2 mb-1">Tu ingreso ha sido registrado y el anfitrión ha sido notificado.</p>
@@ -1555,6 +1576,7 @@ function registrarIngreso(){
                     width: "40%",
                 });
                 enviarAvisoLlegada();
+                enviarAvisoSlack(slack_email=fullData.visita_a);
                 setTimeout(()=>{
                     Swal.close();
                     setTimeout(() => {
@@ -1645,7 +1667,7 @@ function registrarSalida(){
                     Swal.fire({
                         html: `
                             <div>
-                                <img src=${srcCompanyLogo} alt="companylogo">
+                                <img src=${srcCompanyLogo} alt="companylogo" class="w-50">
                             </div>
                             <h1 class="mt-4">Gracias por tu visita</h1>
                             <p class="mt-2 mb-1">Tu salida ha sido registrada correctamente, ¡Hasta pronto!</p>
@@ -1671,7 +1693,7 @@ function registrarSalida(){
                     Swal.fire({
                         html: `
                             <div>
-                                <img src=${srcCompanyLogo} alt="companylogo">
+                                <img src=${srcCompanyLogo} alt="companylogo" class="w-50">
                             </div>
                             <h1 class="mt-4">Gracias por tu visita</h1>
                             <p class="mt-2 mb-1">Tu salida ha sido registrada correctamente, ¡Hasta pronto!</p>
