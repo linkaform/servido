@@ -1,5 +1,5 @@
 window.onload = async function(){
-  getAllData()
+  // getAllData()
 	setValueUserLocation('menu')
     user = getCookie("userId_soter");
     userJwt=getCookie('userJwt_soter');
