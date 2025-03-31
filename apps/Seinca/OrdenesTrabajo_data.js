@@ -6,9 +6,8 @@ let dicReportContext = [
     },
 ];
 
-//----Config Table
 let columsTable1 = [
-    { title:"Supervisor", field:'supervisor',headerTooltip: true,hozAlign:"left", width:200},
+    { title: "Supervisor", field: 'supervisor', headerTooltip: true, hozAlign: "left", width: 200, responsive: 2 },
     { title: "Folio", field: 'folio', hozAlign: "left", formatter: "link", 
         formatterParams: {
             url: function(cell) {
@@ -17,23 +16,24 @@ let columsTable1 = [
             }, 
             target: "_blank"
         },
-        headerFilter: "input", width: 150 
+        headerFilter: "input", width: 150, responsive: 1 
     },
-    { title:"Cliente", field:'cliente', headerTooltip: true,hozAlign:"left", width:310},
-    { title:"Localidad", field:'localidad', headerTooltip: true,hozAlign:"left", width:140},
-    { title:"Tipo", field:'tipo', headerTooltip: true,hozAlign:"center", width:140},
+    { title: "Cliente", field: 'cliente', headerTooltip: true, hozAlign: "left", width: 310, responsive: 3 },
+    { title: "Localidad", field: 'localidad', headerTooltip: true, hozAlign: "left", width: 140, responsive: 4 },
+    { title: "Tipo", field: 'tipo', headerTooltip: true, hozAlign: "center", width: 140, responsive: 5 },
 ];
 
 let configTableCustom1 = {
     height: "400px",
-    layout:"fitDataFill",
+    layout: "fitDataFill",
     theme: "bootstrap5", 
     columnMinWidth: 100,
     autoColumns: false, 
     scrollX: true, 
-    dataTree:true,
-    dataTreeStartExpanded:true,
-}
+    dataTree: true,
+    dataTreeStartExpanded: true,
+    responsiveLayout: "collapse" // Esto convierte las columnas en filas en pantallas pequeñas
+};
 
 let dataTable1 = [
     {
