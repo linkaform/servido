@@ -17,10 +17,12 @@ let columsTable1 = [
         formatter: function(cell) {
             let data = cell.getData();
             let value = cell.getValue();
-            if (window.innerWidth < 500) {
-                return value; 
+            if (window.innerWidth < 600) {
+                return data.supervisor; 
             }else{
+                console.log('Entra Almacenes')
                 if(data.cliente == undefined){
+                    console.log('Value',value)
                     return value; 
                 }else{
                     return ''
@@ -60,7 +62,7 @@ let configTableCustom1 = {
     },
     rowFormatter: function(row) {
 
-        if (window.innerWidth < 500 ) {
+        if (window.innerWidth < 600 ) {
             let data = row.getData();
             let emptyFields = ["folio", "cliente", "localidad", "tipo", "created_at"].every(
                 key => !data[key]
