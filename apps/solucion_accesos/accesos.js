@@ -348,6 +348,34 @@ async function enviarAvisoLlegada(){
     }
 }
 
+async function enviarBienvenidaAUsuario(){
+    data_for_msj.titulo = `🎉 ¡Bienvenido/a, tu ingreso ha sido registrado! 🎉`;
+    data_for_msj.email_to = email_to_user
+    data_for_msj.enviado_desde = 'Accesos Bienvenida'
+    if(data_for_msj.mensaje=="" && data_for_msj.titulo!=="" && data_for_msj.email_from!=="" && data_for_msj.email_to!==""){
+        console.log('Faltan datos...')
+    }else{
+        await fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name: "script_turnos.py",
+                option: 'enviar_msj',
+                data_msj: data_for_msj
+            }),
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                console.log('Exito al enviar aviso')
+            }
+        });
+    }
+}
+
 async function enviarAvisoSlack(slack_email){
     const format_slack_email = slack_email[0].email[0]
     const res = await fetch(url + urlScripts, {
@@ -1555,6 +1583,7 @@ function registrarIngreso(){
                     }
                 });
                 enviarAvisoLlegada();
+                enviarBienvenidaAUsuario();
                 enviarAvisoSlack(slack_email=fullData.visita_a);
                 setTimeout(()=>{
                     startScanning();
@@ -1578,6 +1607,7 @@ function registrarIngreso(){
                     width: "40%",
                 });
                 enviarAvisoLlegada();
+                enviarBienvenidaAUsuario();
                 enviarAvisoSlack(slack_email=fullData.visita_a);
                 setTimeout(()=>{
                     Swal.close();
