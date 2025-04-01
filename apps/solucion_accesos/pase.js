@@ -673,9 +673,9 @@ function setDeleteCom(editAdd ="nuevo", id, classNam){
 async function setAddArea(editAdd ="nuevo", classNam){
     let randomID = Date.now()+ Math.floor(Math.random() * 1000);
     let newItem=`
-        <div class="d-flex mb-3 col-12  div-`+classNam+`-`+editAdd+`-`+randomID+`" id="id-`+classNam+`-div-`+randomID+`">
-            <div class="col-sm-12 col-md-12 col-lg-11 col-xl-11 d-flex flex-wrap justify-content-between">
-                <div class="col-sm-10 col-md-10 col-lg-6 col-xl-5">
+        <div class="d-flex mb-3 col-12 mx-0 px-0 div-`+classNam+`-`+editAdd+`-`+randomID+`" id="id-`+classNam+`-div-`+randomID+`">
+            <div class="d-flex flex-grow-1 flex-wrap">
+                <div class="col-sm-10 col-md-10 col-lg-6 col-xl-6">
 	                <label for="exampleInputPassword1">Area: </label>
 	                <select type="select" class="form-select fill paseEntradaNuevo area-div-nuevo" id="tipoArea-`+randomID+`">
 	                	
@@ -690,6 +690,7 @@ async function setAddArea(editAdd ="nuevo", classNam){
                 <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteArea('`+editAdd+`',`+randomID+`,'`+classNam+`');return false;">
                    <i class="fa-solid fa-minus"></i>
                 </button>
+                <button type="button" class="invisible"></button>
             </div>
         </div>
     `;
