@@ -847,3 +847,21 @@ input[type=search]{
 .scanner-btn:hover {
   background-color: #0056b3;
 }
+
+.hover-custom-class{
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.hover-custom-class:hover {
+  background-color: #dee2e6;
+  transform: scale(1.02);
+  border-radius: 5px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hover-custom-class:active {
+  background-color: #ced4da;
+  transform: scale(0.98);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}

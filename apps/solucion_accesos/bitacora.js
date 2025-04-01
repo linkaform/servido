@@ -110,7 +110,9 @@ function getStats(area = "", location = "", loading = false) {
             // Actualización de valores en el DOM
             $("#textVisitasEnElDia").text(data.visitas_en_dia);
             $("#textPersonalDentro").text(data.personal_dentro);
+            $("#textPersonasDentro").text(data.personas_dentro);
             $("#textVehiculosDentro").text(data.total_vehiculos_dentro);
+            $("#textEquiposDentro").text(data.total_equipos_dentro);
             $("#textSalidasRegistradas").text(data.salidas_registradas);
         } else {
             console.error('Error en los datos recibidos:', res.error);
