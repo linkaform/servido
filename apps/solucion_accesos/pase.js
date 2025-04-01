@@ -1758,8 +1758,11 @@ function crearConfirmacion() {
     //     console.log("FALTAN DATOS")
 	// 	successMsg("Validación", "Faltan datos por llenar", "warning")
 	// }
-    if (data.nombreCompleto === "" || !tieneEmailTel || fechaVisitaMain === "" || data.ubicacion === "" || data.temaCita === "") {
+    if (data.nombreCompleto === "" || !tieneEmailTel || fechaVisitaMain === "" || data.ubicacion === "" || data.temaCita === ""
+        || data.empresa === ""
+    ) {
         if (data.nombreCompleto === "") missingFields.push('Nombre Completo');
+        if (data.empresa === "") missingFields.push('Empresa');
         if (!tieneEmailTel) missingFields.push('Email o Teléfono');
         if (fechaVisitaMain === "") missingFields.push('Fecha de Visita');
         if (data.ubicacion === "") missingFields.push('Ubicación');
@@ -1793,6 +1796,10 @@ function crearConfirmacion() {
                 } else if (focus === "Tema de Cita") {
                     setTimeout(() => {
                         document.getElementById('temaCita').focus();
+                    }, 300);
+                } else if (focus === "Empresa") {
+                    setTimeout(() => {
+                        document.getElementById('empresa').focus();
                     }, 300);
                 }
             },
