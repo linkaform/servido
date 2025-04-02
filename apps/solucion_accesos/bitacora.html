@@ -66,18 +66,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-2 d-flex">
-							<div class="card flex-grow-1">
-								<div class="card-body shadow-sm hover-custom-class">
-									<div class="d-flex justify-content-evenly">
-										<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textPersonalDentro"></p>
-										<i class="fa-solid fa-user-tie" style="font-size: 30px; display: flex; align-items: center;"></i>
-									</div>
-									<h5 class="card-title text-center text-uppercase text-dark" style="font-size: 12px;">Personal Dentro</h5>
-								</div>
-							</div>
-						</div>
-						<div class="col-2 d-flex">
+						<div class="col-3 d-flex">
 							<div class="card flex-grow-1">
 								<div class="card-body shadow-sm hover-custom-class">
 									<div class="d-flex justify-content-evenly">
@@ -88,7 +77,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-2 d-flex">
+						<div class="col-3 d-flex">
 							<div class="card flex-grow-1">
 								<div class="card-body shadow-sm hover-custom-class">
 									<div class="d-flex justify-content-evenly">
@@ -139,6 +128,24 @@
 	                            </div>
 	                        </div>
 							<div class="d-flex align-items-center gap-4 me-4">
+								<div class="row">
+									<div class="col-12 justify-content-center align-content-center px-0 d-flex justify-content-center align-items-center gap-2">
+										<p class="m-0 p-0 text-center">Fecha:</p>
+										<select name="fechaOptions" id="fechaOptions" class="form-select" style="width: 200px;" onchange="selectedFechaOptions(this)">
+											<option value="hoy">Hoy</option>
+											<option value="ayer">Ayer</option>
+											<option value="estasemana">Esta semana</option>
+											<option value="semanapasada">Semana pasada</option>
+											<option value="estemes">Este mes</option>
+											<option value="mespasado">Mes pasado</option>
+											<option value="ultimos7dias">Ultimos 7 dias</option>
+											<option value="ultimos30dias">Ultimos 30 dias</option>
+											<option value="custom">Rango personalizado</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div id="customDateDiv" class="d-flex align-items-center gap-4 me-4 d-none">
 								<div class="row">
 									<div class="col-5 justify-content-center align-content-center px-0">
 										<p class="m-0 p-0 text-center">Fecha desde:</p>

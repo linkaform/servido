@@ -1494,6 +1494,7 @@ async function getBitacoraByDate(location, area='', movement=[], dateFrom='', da
 
 async function onChangeDateFrom(dateFrom){
     let prioridades = document.querySelectorAll('input[name="estadoBitacora"]:checked');
+    let values = Array.from(prioridades).map(checkbox => checkbox.value) || [];
     let dateTo = document.getElementById("dateToFilter").value;
     if (dateFrom > dateTo && dateTo !== ''){
         Swal.fire({
@@ -1504,11 +1505,12 @@ async function onChangeDateFrom(dateFrom){
         })
         return
     }
-    getBitacoraByDate(selectLocation.value, selectCaseta.value, movement=prioridades, dateFrom=dateFrom, dateTo=dateTo)
+    getBitacoraByDate(selectLocation.value, selectCaseta.value, movement=values, dateFrom=dateFrom, dateTo=dateTo)
 }
 
 async function onChangeDateTo(dateTo){
     let prioridades = document.querySelectorAll('input[name="estadoBitacora"]:checked');
+    let values = Array.from(prioridades).map(checkbox => checkbox.value) || [];
     let dateFrom = document.getElementById("dateFromFilter").value;
     if (dateTo < dateFrom){
         Swal.fire({
@@ -1519,5 +1521,80 @@ async function onChangeDateTo(dateTo){
         })
         return
     }
-    getBitacoraByDate(selectLocation.value, selectCaseta.value, movement=prioridades, dateFrom=dateFrom, dateTo=dateTo)
+    getBitacoraByDate(selectLocation.value, selectCaseta.value, movement=values, dateFrom=dateFrom, dateTo=dateTo)
+}
+
+function selectedFechaOptions(option){
+    if(option.value == 'custom'){
+        $("#customDateDiv").removeClass("d-none");
+    }else{
+        $("#customDateDiv").addClass("d-none");
+    }
+
+    getFechas(option);
+}
+
+function getFechas(option) {
+    const now = new Date();
+    let dateFrom, dateTo;
+    let prioridades = document.querySelectorAll('input[name="estadoBitacora"]:checked');
+    let values = Array.from(prioridades).map(checkbox => checkbox.value) || [];
+
+    switch (option.value) {
+        case 'hoy':
+            dateFrom = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            dateTo = new Date();
+            break;
+
+        case 'ayer':
+            dateFrom = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+            dateTo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+            break;
+
+        case 'estasemana':
+            const startOfWeek = new Date(now);
+            startOfWeek.setDate(now.getDate() - now.getDay());
+            dateFrom = startOfWeek;
+            dateTo = new Date();
+            break;
+
+        case 'semanapasada':
+            const startLastWeek = new Date(now);
+            startLastWeek.setDate(now.getDate() - now.getDay() - 7);
+            dateFrom = startLastWeek;
+            dateTo = new Date(startLastWeek);
+            dateTo.setDate(dateTo.getDate() + 6);
+            break;
+
+        case 'estemes':
+            dateFrom = new Date(now.getFullYear(), now.getMonth(), 1);
+            dateTo = new Date();
+            break;
+
+        case 'mespasado':
+            dateFrom = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+            dateTo = new Date(now.getFullYear(), now.getMonth(), 0);
+            break;
+
+        case 'ultimos7dias':
+            dateFrom = new Date();
+            dateFrom.setDate(now.getDate() - 7);
+            dateTo = new Date();
+            break;
+
+        case 'ultimos30dias':
+            dateFrom = new Date();
+            dateFrom.setDate(now.getDate() - 30);
+            dateTo = new Date();
+            break;
+
+        default:
+            console.error("Opción no válida");
+            return;
+    }
+
+    dateFrom = dateFrom.toISOString().split('T')[0];
+    dateTo = dateTo.toISOString().split('T')[0];
+
+    getBitacoraByDate(selectLocation.value, selectCaseta.value, movement = values, dateFrom, dateTo);
 }
