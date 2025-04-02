@@ -19,7 +19,7 @@ const columsData1 = [
 			//`<button  class="btn-table-bitacora" onClick="setModal('Tools',${folio})"><i class="fa-solid fa-car"></i></button> `;
 		},
 	},
-	{ title:"Folio", field:'folio',hozAlign:"left",headerFilter:true,},
+	// { title:"Folio", field:'folio',hozAlign:"left",headerFilter:true,},
 	{ title:"Entrada", field:'fecha_entrada',hozAlign:"left"},
 	{ title:"Visitante", field:'nombre_visitante',hozAlign:"left",headerFilter:true},
 	{ title:"Tipo", field:'perfil_visita',hozAlign:"left",headerFilter:true},
