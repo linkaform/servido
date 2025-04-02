@@ -701,6 +701,8 @@ function openDataModal(folio){
     */
 
     let registroSeleccionado = dataTableBitacora.find(x => x.folio == folio);
+    console.log(registroSeleccionado)
+    $("#foliodevisitante").text(folio ||"")
     $("#nombredevisitante").text(registroSeleccionado.nombre_visitante ||"")
     $("#motivodevisita").text(registroSeleccionado.motivo_visita||"" )
     registroSeleccionado.foto = registroSeleccionado.foto_url || ''
@@ -712,9 +714,9 @@ function openDataModal(folio){
         $("#tituloDocumento").hide()
     }
 
-     if(registroSeleccionado.a_quien_visita !==""){
+     if(registroSeleccionado.visita_a !== ""){
         $("#tituloaquienvisita").show()
-        $("#aquienvisita").text(registroSeleccionado.a_quien_visita||"" )
+        $("#aquienvisita").text(registroSeleccionado.visita_a[0].nombre || "" )
     }else{
         $("#tituloaquienvisita").hide()
     }
