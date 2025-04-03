@@ -23,7 +23,7 @@ window.onload = function(){
     
 
     setValueUserLocation('turnos');
-    getAllData(getCookie("userCaseta"),getCookie("userLocation"),false);
+    getAllData("", "", true);
     getStats(getCookie("userCaseta"),getCookie("userLocation"),false);
     changeButtonColor();
     customNavbar(getValueUserLocation(), getStatusTurn());
