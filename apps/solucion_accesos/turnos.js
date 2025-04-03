@@ -370,8 +370,10 @@ function loadBooths(){
                 let userBooths=res.response.data
                  if(userBooths.length>0){
                     for(let booth of userBooths){
-                        dataTableCambiarCaseta.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, address: booth.address, city:booth.city})
-                        arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, address: booth.address, city:booth.city})
+                        if(booth.area){
+                            dataTableCambiarCaseta.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, address: booth.address, city:booth.city})
+                            arrayUserBoothsLocations.push({name:booth.area, ubi:booth.location, status:booth.status , guard: booth.employee, folio: booth.folio, address: booth.address, city:booth.city})
+                        }
                     }
                 }else{
                     dataTableCambiarCaseta=[]
@@ -407,8 +409,8 @@ function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
     }
     $("#textPosition").text(pos)
 
-    setCookie('userCaseta',getCookie('userCaseta') ? getCookie('userCaseta'): caseta ,7)
-    setCookie('userLocation',getCookie('userLocation') ? getCookie('userLocation'):ubicacion ,7)
+    setCookie('userCaseta', caseta, 7)
+    setCookie('userLocation', ubicacion, 7)
     $("#textCaseta").text(getCookie('userCaseta'))
     $("#textUbicacion").text(getCookie('userLocation'))
     setCookie('userCasetaStatus', booth_status.status,7)
