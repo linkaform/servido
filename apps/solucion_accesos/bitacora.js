@@ -35,10 +35,10 @@ window.onload = function(){
     getStats(getCookie("userCaseta"),getCookie("userLocation"),false);
 
     $("#descargarEntradas").on("click", function() {
-        descargarExcel(tables, 'tableEntradas')
+        descargarExcelWithTabulator(tables, 'tableEntradas')
     });
     $("#descargarSalidas").on("click", function() {
-        descargarExcel(tables, 'tableSalidas')
+        descargarExcelWithTabulator(tables, 'tableSalidas')
     });
     if(getValueUserLocation()=='bitacoras'){
          $(document).ready(function() {
@@ -548,6 +548,23 @@ function agregarVehiculo(){
     }*/
 }
 
+function calcularDuracion(fechaEntrada, fechaSalida) {
+    if (!fechaEntrada || !fechaSalida) return "N/A";
+
+    let entrada = new Date(fechaEntrada);
+    let salida = new Date(fechaSalida);
+
+    if (isNaN(entrada) || isNaN(salida)) return "N/A";
+
+    let diferenciaMs = salida - entrada;
+    if (diferenciaMs < 0) return "Error";
+
+    let horas = Math.floor(diferenciaMs / (1000 * 60 * 60));
+    let minutos = Math.floor((diferenciaMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    return `${horas}h ${minutos}m`;
+}
+
 function reloadTableBitacoras(data){
     if(data){
         dataTableBitacora=[]
@@ -558,7 +575,7 @@ function reloadTableBitacoras(data){
                 for (let bitacora of lista){
                     dataTableBitacora.push({
                     folio:bitacora.folio ,
-                    fecha_entrada: bitacora.fecha_entrada.split(" ")[0],
+                    fecha_entrada: bitacora.fecha_entrada,
                     nombre_visitante:bitacora.nombre_visitante, 
                     perfil_visita:bitacora.perfil_visita,
                     contratista:bitacora.contratista,
@@ -566,7 +583,8 @@ function reloadTableBitacoras(data){
                     visita_a:bitacora.visita_a, 
                     caseta_entrada:bitacora.caseta_entrada,
                     caseta_salida:bitacora.nombre_area_salida, 
-                    fecha_salida: bitacora.fecha_salida ? bitacora.fecha_salida.split(" ")[0] : '',
+                    fecha_salida: bitacora.fecha_salida ? bitacora.fecha_salida : '',
+                    duracion_visita: bitacora.fecha_salida ? calcularDuracion(bitacora.fecha_entrada, bitacora.fecha_salida) : "",
                     comentarios:bitacora.comentarios||[] , 
                     equipos: bitacora.equipos, 
                     vehiculos: bitacora.vehiculos, 
@@ -644,7 +662,7 @@ function loadDataTables(){
                 let lista= res.response.data
                 for (bitacora of lista){
                     dataTableBitacora.push({folio:bitacora.folio ,
-                    fecha_entrada: bitacora.fecha_entrada.split(" ")[0],
+                    fecha_entrada: bitacora.fecha_entrada,
                     nombre_visitante:bitacora.nombre_visitante, 
                     perfil_visita:bitacora.perfil_visita,
                     contratista:bitacora.contratista,
@@ -652,7 +670,8 @@ function loadDataTables(){
                     visita_a:bitacora.visita_a, 
                     caseta_entrada:bitacora.caseta_entrada,
                     caseta_salida:bitacora.nombre_area_salida || '', 
-                    fecha_salida: bitacora.fecha_salida ? bitacora.fecha_salida.split(" ")[0] : '',
+                    fecha_salida: bitacora.fecha_salida ? bitacora.fecha_salida : '',
+                    duracion_visita: bitacora.fecha_salida ? calcularDuracion(bitacora.fecha_entrada, bitacora.fecha_salida) : "",
                     comentarios:bitacora.comentarios||[] , 
                     equipos: bitacora.equipos, 
                     vehiculos: bitacora.vehiculos, 
@@ -947,7 +966,9 @@ function alertSalida(folio, status_visita){
                             hour12: false
                         }).format(new Date()).replace(',', '');
                         selectedBitacora.fecha_salida = formatDate
+                        selectedBitacora.duracion_visita = selectedBitacora.fecha_salida ? calcularDuracion(selectedBitacora.fecha_entrada, selectedBitacora.fecha_salida) : "",
                         selectedBitacora.caseta_salida = outCaseta
+
                         tables["tableEntradas"].setData(dataTableBitacora);
                         let modal = bootstrap.Modal.getInstance(document.getElementById('fallaVer'));
                         Swal.close();
@@ -1421,36 +1442,34 @@ function printTable(table){
 
 async function getBitacoraByLocation(location){
     loadingService()
-    try{
-        const res = await fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_name: "script_turnos.py",
-                option: "list_bitacora",
-                location: location,
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + userJwt
-            }
-        })
-        const data = await res.json()
-        if (data.success){
-            reloadTableBitacoras(data.response.data)
-            loadCatalogsCaseta(location,JSON.parse(getCookie('arrayUserBoothsLocations')).length>0? JSON.parse(getCookie('arrayUserBoothsLocations')): arrayUserBoothsLocations )
-            let selectCaseta= document.getElementById("selectCaseta")
-            selectCaseta.value = ""
-            Swal.close()
-        }else{
-            Swal.fire({
-                title: 'Aviso',
-                text: 'Hubo un error al obtener la bitacora',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            })
+    const res = await fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: "script_turnos.py",
+            option: "list_bitacora",
+            location: location,
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userJwt
         }
-    }catch(e){
-        throw new Error('Error in lkf', e)
+    })
+    const data = await res.json()
+    if (data.success){
+        reloadTableBitacoras(data.response.data)
+        const cookieData = getCookie('arrayUserBoothsLocations');
+        const parsedData = cookieData ? JSON.parse(cookieData) : arrayUserBoothsLocations;
+        loadCatalogsCaseta(location, parsedData.length > 0 ? parsedData : arrayUserBoothsLocations);
+        let selectCaseta= document.getElementById("selectCaseta")
+        selectCaseta.value = ""
+        Swal.close()
+    }else{
+        Swal.fire({
+            title: 'Aviso',
+            text: 'Hubo un error al obtener la bitacora',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        })
     }
 }
 
@@ -1468,29 +1487,25 @@ async function getBitacoraByDate(location, area='', movement=[], dateFrom='', da
     bodyRequest.dateFrom = dateFrom;
     bodyRequest.dateTo = dateTo;
 
-    try{
-        const res = await fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify(bodyRequest),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + userJwt
-            }
-        })
-        const data = await res.json()
-        if (data.success){
-            reloadTableBitacoras(data.response.data)
-            Swal.close()
-        }else{
-            Swal.fire({
-                title: 'Aviso',
-                text: 'Hubo un error al obtener la bitacora',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            })
+    const res = await fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify(bodyRequest),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userJwt
         }
-    }catch(e){
-        throw new Error('Error in lkf', e)
+    })
+    const data = await res.json()
+    if (data.success){
+        reloadTableBitacoras(data.response.data)
+        Swal.close()
+    }else{
+        Swal.fire({
+            title: 'Aviso',
+            text: 'Hubo un error al obtener la bitacora',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        })
     }
 }
 
@@ -1599,4 +1614,25 @@ function getFechas(option) {
     dateTo = dateTo.toISOString().split('T')[0];
 
     getBitacoraByDate(selectLocation.value, selectCaseta.value, movement = values, dateFrom, dateTo);
+}
+
+function descargarExcelWithTabulator(tables, table) {
+    let columns = tables[table].getColumns();
+    let columnasExportar = [];
+
+    columns.forEach(column => {
+        let field = column.getField();
+        if (field !== 'actions' && field !== 'checkboxColumn') {
+            columnasExportar.push(field);
+        }
+    });
+
+    tables[table].download("xlsx", table + ".xlsx", {
+        sheetName: "Datos",
+        columnHeaders: true,
+        columnGroups: false,
+        rowGroups: false,
+        columnCalcs: false,
+        columns: columnasExportar.map(field => ({ field }))
+    });
 }

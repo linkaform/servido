@@ -35,6 +35,7 @@ const columsData1 = [
 	{ title:"Caseta Entrada", field:'caseta_entrada',hozAlign:"left",headerFilter:true},
 	{ title:"Caseta Salida", field:'caseta_salida',hozAlign:"center",tooltip:true},
 	{ title:"Salida", field:'fecha_salida',hozAlign:"left"},
+	{ title:"Duracion", field:'duracion_visita',hozAlign:"left"},
 	{ title:"Comentarios", field:'comentarios',hozAlign:"left",headerFilter:true ,
 	formatter: function(cell) {
   		let comment=""
