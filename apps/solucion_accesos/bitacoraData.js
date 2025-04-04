@@ -70,6 +70,189 @@ const columsData1 = [
      
 ];
 
+const columsDataEquiposDentro = [
+	{ title:"Opciones", field: "actions" , hozAlign: "left", resizable:false,width:180,
+		formatter: (cell, formatterParams) => {
+			//----Button Trash
+			let data=cell.getData()
+			let folio = cell.getData().folio ? cell.getData().folio : 0;
+			let divActions = '<div class="row d-flex">';
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('Data','${folio}')" ><i class="fa-solid fa-user"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('Card','${folio}')"><i class="fa-solid fa-address-card"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('equiposModal','${data.id}', '${folio}')"><i class="fa-solid fa-hammer"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('vehiculosModal','${data.id}', '${folio}')" ><i class="fa-solid fa-car"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="alertSalida('${data.codigo_qr}', '${data.status_visita}')" ><i class="fa-solid fa-arrow-right-from-bracket"></i></button>`;
+			divActions += '</div>';
+			return divActions;
+			//`<button  class="btn-table-bitacora" onClick="setModal('Tools',${folio})"><i class="fa-solid fa-car"></i></button> `;
+		},
+	},
+	// { title:"Folio", field:'folio',hozAlign:"left",headerFilter:true,},
+	{ title:"Entrada", field:'fecha_entrada',hozAlign:"left"},
+	{ title:"Visitante", field:'nombre_visitante',hozAlign:"left",headerFilter:true},
+	{ title:"Tipo", field:'perfil_visita',hozAlign:"left",headerFilter:true},
+	{ title:"Contratista", field:'contratista',hozAlign:"left",headerFilter:true},
+	{ title:"Gafete", field:'id_gafet',hozAlign:"left",headerFilter:true},
+	{ title:"Visita a", field:'visita_a',hozAlign:"left",headerFilter:true, 
+		formatter: function(cell) {
+		            let data = cell.getData();
+		            let visit = data.visita_a.length>0 ? data.visita_a[0].nombre: ""
+		            return visit
+		        },
+	},
+	{ title:"Caseta Entrada", field:'caseta_entrada',hozAlign:"left",headerFilter:true},
+	{
+		title: "Equipos Dentro",
+		field: "equipos",
+		hozAlign: "left",
+		tooltip: false,
+		formatter: function(cell) {
+		  const equipos = cell.getValue();
+		  if (!Array.isArray(equipos) || equipos.length === 0) return "Sin equipos";
+	  
+		  return equipos.map(equipo => {
+			const tipo = equipo.tipo_equipo || "—";
+			const marca = equipo.marca_articulo || "—";
+			const modelo = equipo.modelo_articulo || "—";
+			const serie = equipo.numero_serie || "—";
+	  
+			return `
+			  <div style="margin-bottom:8px; border-bottom:1px dashed #ccc; padding-bottom:5px;">
+				<strong>🛠️ Tipo:</strong> ${tipo}<br>
+				<strong>Marca:</strong> ${marca}<br>
+				<strong>Modelo:</strong> ${modelo}<br>
+				<strong>S/N:</strong> ${serie}
+			  </div>
+			`;
+		  }).join("");
+		}
+	},
+	{ title:"Comentarios", field:'comentarios',hozAlign:"left",headerFilter:true ,
+	formatter: function(cell) {
+  		let comment=""
+  		let tipo=""
+        let data = cell.getData();
+        let arrayComentarios=[]
+        if(data.hasOwnProperty('comentarios')){
+        	if(data.comentarios.length>0){
+				arrayComentarios = data.comentarios
+        	}else{
+        		arrayComentarios=[]
+        	}
+        }
+        let html=""
+
+        if( arrayComentarios.length > 0 ){
+        	for(let com of arrayComentarios){
+            	comment= com.comentario
+            	tipo= com.tipo_comentario
+            	html+= `<li>`+ capitalizeFirstLetter(tipo)+`: `+comment+` </li>`
+        	}
+        }
+   		let base=`<div class="lista-container" style="max-height: 100px; overflow-y: auto;">
+					<ul class="scrollable-list">
+						`+html+`
+					</ul>
+				</div>
+		`;
+        return base
+	    }
+	},
+     
+];
+
+//WIP Vehiculos
+const columsDataVehiculosDentro = [
+	{ title:"Opciones", field: "actions" , hozAlign: "left", resizable:false,width:180,
+		formatter: (cell, formatterParams) => {
+			//----Button Trash
+			let data=cell.getData()
+			let folio = cell.getData().folio ? cell.getData().folio : 0;
+			let divActions = '<div class="row d-flex">';
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('Data','${folio}')" ><i class="fa-solid fa-user"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('Card','${folio}')"><i class="fa-solid fa-address-card"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('equiposModal','${data.id}', '${folio}')"><i class="fa-solid fa-hammer"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="setModal('vehiculosModal','${data.id}', '${folio}')" ><i class="fa-solid fa-car"></i></button>`;
+			divActions += `<button class="btn-table-bitacora" onClick="alertSalida('${data.codigo_qr}', '${data.status_visita}')" ><i class="fa-solid fa-arrow-right-from-bracket"></i></button>`;
+			divActions += '</div>';
+			return divActions;
+			//`<button  class="btn-table-bitacora" onClick="setModal('Tools',${folio})"><i class="fa-solid fa-car"></i></button> `;
+		},
+	},
+	// { title:"Folio", field:'folio',hozAlign:"left",headerFilter:true,},
+	{ title:"Entrada", field:'fecha_entrada',hozAlign:"left"},
+	{ title:"Visitante", field:'nombre_visitante',hozAlign:"left",headerFilter:true},
+	{ title:"Tipo", field:'perfil_visita',hozAlign:"left",headerFilter:true},
+	{ title:"Contratista", field:'contratista',hozAlign:"left",headerFilter:true},
+	{ title:"Gafete", field:'id_gafet',hozAlign:"left",headerFilter:true},
+	{ title:"Visita a", field:'visita_a',hozAlign:"left",headerFilter:true, 
+		formatter: function(cell) {
+		            let data = cell.getData();
+		            let visit = data.visita_a.length>0 ? data.visita_a[0].nombre: ""
+		            return visit
+		        },
+	},
+	{ title:"Caseta Entrada", field:'caseta_entrada',hozAlign:"left",headerFilter:true},
+	{
+		title: "Vehiculos Dentro",
+		field: "vehiculos",
+		hozAlign: "left",
+		tooltip: false,
+		formatter: function(cell) {
+		  const equipos = cell.getValue();
+		  if (!Array.isArray(equipos) || equipos.length === 0) return "Sin equipos";
+	  
+		  return equipos.map(equipo => {
+			const tipo = equipo.tipo_equipo || "—";
+			const marca = equipo.marca_articulo || "—";
+			const modelo = equipo.modelo_articulo || "—";
+			const serie = equipo.numero_serie || "—";
+	  
+			return `
+			  <div style="margin-bottom:8px; border-bottom:1px dashed #ccc; padding-bottom:5px;">
+				<strong>🛠️ Tipo:</strong> ${tipo}<br>
+				<strong>Marca:</strong> ${marca}<br>
+				<strong>Modelo:</strong> ${modelo}<br>
+				<strong>S/N:</strong> ${serie}
+			  </div>
+			`;
+		  }).join("");
+		}
+	},
+	{ title:"Comentarios", field:'comentarios',hozAlign:"left",headerFilter:true ,
+	formatter: function(cell) {
+  		let comment=""
+  		let tipo=""
+        let data = cell.getData();
+        let arrayComentarios=[]
+        if(data.hasOwnProperty('comentarios')){
+        	if(data.comentarios.length>0){
+				arrayComentarios = data.comentarios
+        	}else{
+        		arrayComentarios=[]
+        	}
+        }
+        let html=""
+
+        if( arrayComentarios.length > 0 ){
+        	for(let com of arrayComentarios){
+            	comment= com.comentario
+            	tipo= com.tipo_comentario
+            	html+= `<li>`+ capitalizeFirstLetter(tipo)+`: `+comment+` </li>`
+        	}
+        }
+   		let base=`<div class="lista-container" style="max-height: 100px; overflow-y: auto;">
+					<ul class="scrollable-list">
+						`+html+`
+					</ul>
+				</div>
+		`;
+        return base
+	    }
+	},
+     
+];
+
 const columsData2 = [
 	{ title: "Opciones", field: "actions" , hozAlign: "left", resizable:false,
 		formatter: (cell, formatterParams) => {

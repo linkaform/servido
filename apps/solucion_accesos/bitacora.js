@@ -620,6 +620,60 @@ function reloadTableBitacoras(data){
     }
 }
 
+function reloadTableBitacorasWithEquipos(data){
+    if(data){
+        dataTableBitacora=[]
+       //dataTableLocker=[]
+        if(user !='' && userJwt!=''){
+            let lista= data
+            if(lista.length>0){
+                for (let bitacora of lista){
+                    dataTableBitacora.push({
+                    folio:bitacora.folio ,
+                    fecha_entrada: bitacora.fecha_entrada,
+                    nombre_visitante:bitacora.nombre_visitante, 
+                    perfil_visita:bitacora.perfil_visita,
+                    contratista:bitacora.contratista,
+                    status_gafete:bitacora.status_gafete, 
+                    visita_a:bitacora.visita_a, 
+                    caseta_entrada:bitacora.caseta_entrada,
+                    equipos_dentro:bitacora.equipos || [], 
+                    comentarios:bitacora.comentarios||[] , 
+                    equipos: bitacora.equipos, 
+                    vehiculos: bitacora.vehiculos, 
+                    foto: bitacora.foto, 
+                    identificacion: bitacora.identificacion, 
+                    documento: bitacora.documento||"" , 
+                    visita_a: bitacora.visita_a||"" , 
+                    perfil_visita: bitacora.perfil_visita||"" ,
+                    id: bitacora._id, 
+                    motivo_visita:bitacora.motivo_visita, 
+                    grupo_areas_acceso:bitacora.grupo_areas_acceso, 
+                    codigo_qr: bitacora.codigo_qr , 
+                    status_visita:bitacora.status_visita,
+                    id_gafet:bitacora.id_gafet
+                })
+                }
+            }
+            console.log("LKAROGOO", dataTableBitacora.length)
+            if(tables['tableEntradas']){
+                tables['tableEntradas'].setColumns(columsDataEquiposDentro);
+                tables['tableEntradas'].setData(dataTableBitacora)
+            }else{
+                drawTable('tableEntradas',columsDataEquiposDentro,dataTableBitacora);
+            }
+            /*
+            if(tables['tableSalidas']){
+                tables['tableSalidas'].setData(dataTableLocker)
+            }else{
+                drawTable('tableSalidas',columsData2,dataTableLocker);
+            }*/
+        }else{
+            redirectionUrl('login',false);
+        }
+    }
+}
+
 function reloadTableLockers(data){
     //dataTableBitacora=[]
     dataTableLocker=[]
@@ -1473,7 +1527,7 @@ async function getBitacoraByLocation(location){
     }
 }
 
-async function getBitacoraByDate(location, area='', movement=[], dateFrom='', dateTo=''){
+async function getBitacoraByDate(location, area='', movement=[], dateFrom='', dateTo='', option=''){
     loadingService()
 
     bodyRequest = {
@@ -1497,7 +1551,11 @@ async function getBitacoraByDate(location, area='', movement=[], dateFrom='', da
     })
     const data = await res.json()
     if (data.success){
-        reloadTableBitacoras(data.response.data)
+        if(option == 'Equipos'){
+            reloadTableBitacorasWithEquipos(data.response.data)
+        }else{
+            reloadTableBitacoras(data.response.data)
+        }
         Swal.close()
     }else{
         Swal.fire({
@@ -1635,4 +1693,8 @@ function descargarExcelWithTabulator(tables, table) {
         columnCalcs: false,
         columns: columnasExportar.map(field => ({ field }))
     });
+}
+
+function getBitacoraWithEquipos(){
+    getBitacoraByDate(selectLocation.value, selectCaseta.value, movement = ['entrada'], dateFrom='', dateTo='', option='Equipos');
 }

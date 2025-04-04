@@ -34,7 +34,7 @@
 					</div>
 					<div class="col-8 row align-items-center">
 						<div class="col-2 d-flex">
-							<div class="card flex-grow-1">
+							<div class="card flex-grow-1" onclick="$('#estadoBitacoraSalida').prop('checked', true); $('#estadoBitacoraEntrada').prop('checked', true); getFechas({ value: 'hoy' });">
 								<div class="card-body shadow-sm hover-custom-class">
 									<div class="d-flex justify-content-evenly">
 										<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textVisitasEnElDia"></p>
@@ -45,7 +45,7 @@
 							</div>
 						</div>
 						<div class="col-2 d-flex">
-							<div class="card flex-grow-1">
+							<div class="card flex-grow-1" onclick="$('#estadoBitacoraEntrada').prop('checked', false); $('#estadoBitacoraSalida').prop('checked', true); getFechas({ value: 'hoy' });">
 								<div class="card-body shadow-sm hover-custom-class">
 									<div class="d-flex justify-content-evenly">
 										<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textSalidasRegistradas"></p>
@@ -56,7 +56,7 @@
 							</div>
 						</div>
 						<div class="col-2 d-flex">
-							<div class="card flex-grow-1">
+							<div class="card flex-grow-1" onclick="$('#estadoBitacoraSalida').prop('checked', false); $('#estadoBitacoraEntrada').prop('checked', true); getFechas({ value: 'hoy' });">
 								<div class="card-body shadow-sm hover-custom-class">
 									<div class="d-flex justify-content-evenly">
 										<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textPersonasDentro"></p>
@@ -78,7 +78,7 @@
 							</div>
 						</div>
 						<div class="col-3 d-flex">
-							<div class="card flex-grow-1">
+							<div class="card flex-grow-1" onclick="getBitacoraWithEquipos();">
 								<div class="card-body shadow-sm hover-custom-class">
 									<div class="d-flex justify-content-evenly">
 										<p class="h1 font-weight-bold mb-0 text-dark text-center" id="textEquiposDentro"></p>
@@ -118,12 +118,12 @@
 	                            <label class="me-3 ms-1"><b>Tipo de Movimiento: </b></label>
 	                            <div class="checkbox-group me-2">
 	                                <label>
-	                                    <input type="checkbox" name="estadoBitacora" value="entrada" onchange="onChangeFiltroEstadoBitacora()"> Entrada
+	                                    <input type="checkbox" id="estadoBitacoraEntrada" name="estadoBitacora" value="entrada" onchange="onChangeFiltroEstadoBitacora()"> Entrada
 	                                </label>
 	                            </div>
 	                            <div class="checkbox-group me-2">
 	                                <label>
-	                                    <input type="checkbox" name="estadoBitacora" value="salida" onchange="onChangeFiltroEstadoBitacora()"> Salida
+	                                    <input type="checkbox" id="estadoBitacoraSalida" name="estadoBitacora" value="salida" onchange="onChangeFiltroEstadoBitacora()"> Salida
 	                                </label>
 	                            </div>
 	                        </div>
