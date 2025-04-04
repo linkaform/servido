@@ -40,7 +40,8 @@ window.onload = function(){
     validSession(user, userJwt);
 
     changeButtonColor(); 
-    fillCatalogs();
+    // fillCatalogs();
+    getAllData("", "");
     getInitialData();
     getStats(getCookie("userCaseta"),getCookie("userLocation"),false);
     selectLocation= document.getElementById("selectLocation")
@@ -3145,3 +3146,42 @@ function setRequestFileImg(type) {
 //     closeSession();
 //     redirectionUrl('login',false);
 // }
+
+async function getAllData(area="", location=""){
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name:'script_turnos.py',
+            option:'load_shift',
+            area:area,
+            location:location
+        }),
+        headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            if(res.response){
+                const status = res.response.data.guard.status
+                if(status === 'in'){
+                    const locationUser = res.response.data.guard.location
+                    const casetaUser = res.response.data.guard.area
+                    $("#selectLocation").append(`<option value="${locationUser}">${locationUser}</option>`);
+                    $("#selectLocation").val(locationUser);
+                    $("#selectCaseta").append(`<option value="${casetaUser}">${casetaUser}</option>`);
+                    $("#selectCaseta").val(casetaUser);
+                }else{
+                    Swal.fire({
+                        title: "Recomendacion",
+                        text: "Inicia un Turno antes de utilizar las funciones de Accesos para su correcto funcionamiento.",
+                        type: "success"
+                    });
+                }
+            }
+        }
+    });
+}
