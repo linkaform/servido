@@ -77,12 +77,12 @@ $("#checkboxTodasLasCasetas").on("click",async function()  {
     }
 })
 
-function getStats(area = "", location = "", loading = false) {
+async function getStats(area = "", location = "", loading = false) {
     if (loading) {
         loadingService();
     }
 
-    fetch(url + urlScripts, {
+    await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name: 'get_stats.py',
@@ -774,7 +774,7 @@ function openDataModal(folio){
     */
 
     let registroSeleccionado = dataTableBitacora.find(x => x.folio == folio);
-    console.log(registroSeleccionado)
+    console.log('registrooooooooooooo', registroSeleccionado)
     $("#foliodevisitante").text(folio ||"")
     $("#nombredevisitante").text(registroSeleccionado.nombre_visitante ||"")
     $("#motivodevisita").text(registroSeleccionado.motivo_visita||"" )

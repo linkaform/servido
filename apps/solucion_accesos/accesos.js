@@ -223,12 +223,12 @@ function stopScanning(stream) {
 }
 
 
-function getStats(area = "", location = "", loading = false) {
+async function getStats(area = "", location = "", loading = false) {
     if (loading) {
         loadingService();
     }
 
-    fetch(url + urlScripts, {
+    await fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
             script_name: 'get_stats.py',
@@ -1628,6 +1628,7 @@ function registrarIngreso(){
             $("#buttonNew").show();
             $("#inputCodeUser").val('');
             $("#buttonAddCommentarioAccesoModal").hide();
+            getStats(getCookie("userCaseta"),getCookie("userLocation"),false);
         }else{
             errorAlert(res)
             setCleanData();
@@ -1751,6 +1752,7 @@ function registrarSalida(){
                 $("#buttonAddCommentarioAccesoModal").hide();
                 //setHideElements(fullData.tipo_movimiento)
                 $("#buttonRecibirGafete").hide()
+                getStats(getCookie("userCaseta"),getCookie("userLocation"),false);
             }else{
                 errorAlert(res)
                 $("#buttonOut").show();
