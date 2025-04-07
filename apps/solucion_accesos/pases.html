@@ -13,7 +13,24 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 	<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/css/intlTelInput.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css">
+
+    <!-- Scripts: jQuery siempre primero -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Luego Bootstrap y demás -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+    <!-- intl-tel-input debe ir antes de tu código -->
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/js/intlTelInput.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.15/build/js/utils.js"></script>
+
 
 	<link rel="stylesheet" href="./style.css">
 
@@ -493,14 +510,16 @@
                                 <label for="exampleInputEmail1">Teléfono</label> <br>
                                 <!-- <input type="text" class="form-control fill paseEntradaEdit" id="telefono" aria-describedby="emailHelp" placeholder="Telefono"> -->
                                 <input type="tel" id="telefono" class="form-control fill paseEntradaEdit" aria-describedby="telefonoValid" 
-                                placeholder="Número de teléfono" onchange="validateEmailTelInput('telefono')">
+                                placeholder="Número de teléfono" onchange="validateEmailTelInputEdit('telefono')">
                                 <div id="telefonoValid" class="invalid-feedback">
                                     Escribe un teléfono válido.
                                 </div>
                             </div>
                             <script>
+                                let iti;
+
                                 const input = document.querySelector("#telefono");
-                                const iti = window.intlTelInput(input, {
+                                iti = window.intlTelInput(input, {
                                     initialCountry: "auto", // Detecta el país automáticamente
                                     geoIpLookup: function(callback) {
                                      fetch("https://ipinfo.io/json", { headers: { Accept: "application/json" } })
@@ -802,14 +821,16 @@
                         <label for="exampleInputEmail1">Teléfono</label> <br>
                         <!-- <input type="text" class="form-control fill paseEntradaEdit" id="telefono" aria-describedby="emailHelp" placeholder="Telefono"> -->
                         <input type="tel" id="telefono2" class="form-control fill paseEntradaEdit" aria-describedby="telefonoValid2" 
-                        placeholder="Número de teléfono" onchange="validateEmailTelInput('telefono2')">
+                        placeholder="Número de teléfono" onchange="validateEmailTelInputEdit('telefono2')">
                         <div id="telefonoValid2" class="invalid-feedback">
                             Escribe un teléfono válido.
                         </div>
                     </div>
                     <script>
+                        let iti2;
+
                         const input2 = document.querySelector("#telefono2");
-                        const iti2 = window.intlTelInput(input2, {
+                        iti2 = window.intlTelInput(input2, {
                             initialCountry: "auto", // Detecta el país automáticamente
                             geoIpLookup: function(callback) {
                              fetch("https://ipinfo.io/json", { headers: { Accept: "application/json" } })

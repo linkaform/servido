@@ -1240,10 +1240,9 @@ function crearConfirmacionEditar() {
             </div>
         `
     }
-    let numValid = iti.isValidNumber()
     let numeroConLada = ""
     if(numValid){
-        numeroConLada = iti.getNumber();
+        numeroConLada = numeroConLadaPre
     }
     let selectedOpcionFechas = $('input[name="opcionesAvanzadas"]:checked');
     let html = []//getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
@@ -1566,5 +1565,110 @@ function crearConfirmacionEditar() {
     }else{
         successMsg("Validación", "Faltan datos por llenar", "warning")  
         // }
+    }
+}
+
+let numValid;
+let numeroConLadaPre;
+
+function validateEmailTelInputEdit(id) {
+    let value= $("#"+id).val()
+    if(id=="email"){
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailPattern.test(value)) {
+            $("#"+id).removeClass('is-invalid');
+            $("#enviar_correo_pre_registro").removeClass("is-invalid")
+        } else {
+            $("#"+id).addClass('is-invalid');
+        }
+        if (value=="") {
+            $("#"+id).removeClass('is-invalid');
+            $("#enviar_correo_pre_registro").removeClass("is-invalid")
+        }
+    }if(id=="email2"){
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailPattern.test(value)) {
+            $("#"+id).removeClass('is-invalid');
+        } else {
+            $("#"+id).addClass('is-invalid');
+        }
+        if (value=="") {
+            $("#"+id).removeClass('is-invalid');
+        }
+    }else if (id == "enviar_correo_pre_registro"){
+        let isChecked = $("#"+id).is(":checked")
+        let email = $("#email").val()
+        if(isChecked) {
+            if(email==""){
+                $("#"+id).addClass("is-invalid")
+                $("#email").addClass("is-invalid")
+            }else{
+                validateEmailTelInput('email')
+                $("#"+id).removeClass("is-invalid")
+            }
+        }else{
+            $("#"+id).removeClass("is-invalid")
+            if(email==""){
+                $("#email").removeClass("is-invalid")
+            }
+        }
+    }else if (id == "enviar_sms_pre_registro"){
+        console.log("SMSSSS?", id)
+        let isChecked = $("#"+id).is(":checked")
+        let telefono = $("#telefono").val()
+        if(isChecked) {
+            if(telefono==""){
+                $("#"+id).addClass("is-invalid")
+                $("#telefonoValid").show();
+                $("#telefono").addClass("is-invalid")
+            }else{
+                validateEmailTelInput('telefono')
+                // $("#telefonoValid").hide();
+                $("#"+id).removeClass("is-invalid")
+            }
+        }else{
+            $("#"+id).removeClass("is-invalid")
+            if(telefono==""){
+                $("#telefono").removeClass("is-invalid")
+                $("#telefonoValid").hide();
+            }
+        }
+    }else if (id == 'telefono' ){
+        removeNonNumeric(input)
+        numValid = iti.isValidNumber()
+        numeroConLadaPre = iti.getNumber();
+
+        if(numValid==false ){
+            $('#telefono').addClass('is-invalid');
+            $("#telefonoValid").show();
+        }else{
+            formatearTelefono('telefono')
+
+            $('#telefono').removeClass('is-invalid');
+            $("#telefonoValid").hide();
+            $("#enviar_sms_pre_registro").removeClass("is-invalid")
+        }
+        if (numValid==false && $("#telefono").val() == "") {
+            $("#"+id).removeClass('is-invalid');
+            $("#telefonoValid").hide();
+            $("#enviar_correo_pre_registro").removeClass("is-invalid")
+        }
+    }else if (id == 'telefono2' ){
+        removeNonNumeric(input)
+        numValid = iti2.isValidNumber()
+        numeroConLadaPre = iti2.getNumber();
+
+        if(numValid==false ){
+            $('#'+id).addClass('is-invalid');
+            $("#telefonoValid2").show();
+        }else{
+            $('#'+id).removeClass('is-invalid');
+            $("#telefonoValid2").hide();
+        }
+        if (numValid==false && $("#"+id).val() == "") {
+            $("#"+id).removeClass('is-invalid');
+            $("#telefonoValid2").hide();
+        }
+
     }
 }
