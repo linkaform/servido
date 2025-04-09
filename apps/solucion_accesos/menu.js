@@ -125,7 +125,20 @@ function showCustomMenu(menus, idHtmlMenu){
              // </div>`
 	}
     if(!menus.length>0){
-        errorAlert("No se encontraron los menus, revisa la configuracion")
+      $('#buttonTurnos').hide();
+      $('#buttonNotas').hide();
+      Swal.fire({
+        type:"warning",
+        title: "Menús no configurados",
+        html: `
+          Actualmente no tienes menús configurados.<br>
+          Por favor, solicita al administrador que los registre para continuar.<br><br>
+          <small style="color: gray;">
+            Nota: una vez que se configuren tus menús, cierra e inicia sesión nuevamente para cargarlos correctamente.
+          </small>
+        `,
+        showConfirmButton:true,
+      })
     }
 	divMenu.innerHTML = htmlPase + htmlTurnos + htmlAccesos + addHtml
 }
