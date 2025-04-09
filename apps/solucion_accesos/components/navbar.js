@@ -14,12 +14,14 @@ class lkfNavbarComponent extends HTMLElement{
 			<img src="https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_10.png" height="40" class="d-inline-block align-top ms-3" id="imageLinkaform" alt="">
         </div>
         <div class="d-flex flex-grow-1" ><button id='buttonPases' class="btn btn-sm btn-secondary custom-navbar-button ocultar"  onclick="redirectionUrl('pases');return false;" >Pases de entrada</button></div>
-        <div class="navbar-brand navbarShowHide customNoBorder">
-            <button id='buttonAccesos' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu"  onclick="redirectionUrl('accesos');return false;" >Accesos</button>   
-            <button id='buttonBitacoras' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu" onclick="redirectionUrl('bitacora');return false;" >Bitacoras</button>   
-            <button id='buttonIncidencias' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
-            <button id='buttonArticulos' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
-            <button id='buttonRondines' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu" onclick="redirectionUrl('rondines');return false;">Rondines</button>   
+        <div class="navbarShowHide customNoBorder d-flex justify-content-center align-items-center mx-3 gap-2">
+            <div>
+                <button id='buttonAccesos' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu"  onclick="redirectionUrl('accesos');return false;" >Accesos</button>   
+                <button id='buttonBitacoras' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu" onclick="redirectionUrl('bitacora');return false;" >Bitacoras</button>   
+                <button id='buttonIncidencias' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu" onclick="redirectionUrl('incidencias');return false;" >Incidencias</button>   
+                <button id='buttonArticulos' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu" onclick="redirectionUrl('articulos');return false;">Articulos</button>   
+                <button id='buttonRondines' class="btn btn-sm btn-secondary custom-navbar-button ocultar menu" onclick="redirectionUrl('rondines');return false;">Rondines</button>   
+            </div>
             <div class="btn p-0 ms-2 customNoBorder" id="userMenu">
 			  <button type="button" class=" rounded-circle btn btn-secondary" id="imageUserButton" data-bs-toggle="dropdown" >
 				<img src="" id="imageUserNavbar">
