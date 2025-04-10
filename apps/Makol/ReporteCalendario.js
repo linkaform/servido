@@ -100,6 +100,9 @@ function showInformation(info){
     document.getElementById('p-textModel').style.display = 'block';
     document.getElementById('p-textSerie').style.display = 'block';
 
+    document.getElementById('p-textTypeAsistance').style.display = 'block';
+    document.getElementById('p-textStatus').style.display = 'block';
+
     if(typeDate == null && typeDate != 'ots'){
         document.getElementById('textFolio').textContent = event.folio ?  event.folio : '';
         document.getElementById('textInstrument').textContent = event.instrument ? event.instrument : '';
@@ -107,6 +110,10 @@ function showInformation(info){
         document.getElementById('textBrand').textContent = event.brand ? event.brand : '';
         document.getElementById('textModel').textContent = event.model ? event.model: '';
         document.getElementById('textSerie').textContent = event.serie ? event.serie: '';
+        
+        document.getElementById('p-textTypeAsistance').style.display = 'none';
+        document.getElementById('p-textStatus').style.display = 'none';
+
     }else{
         document.getElementById('textFolio').textContent = event.folio ?  event.folio : '';
         document.getElementById('textClient').textContent = event.client ? event.client : '';
