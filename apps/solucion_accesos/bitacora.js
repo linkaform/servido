@@ -5,6 +5,10 @@ let selectedVehiculos=[]
 let idNuevoEquipoVehiculo=""
 let seleccionadoBitacora={}
 
+let offset = 0;
+const limit = 15;
+let total = 0;
+
 window.onload = function(){
 	setValueUserLocation('bitacoras');
     user= getCookie("userId_soter");
@@ -26,12 +30,15 @@ window.onload = function(){
     };
  	selectCaseta= document.getElementById("selectCaseta")
     selectCaseta.onchange = async function() {
-        let response = await fetchOnChangeCaseta('script_turnos.py', 'list_bitacora', selectCaseta.value, selectLocation.value,prioridades=['entrada'])
-        reloadTableBitacoras(response.response.data)
+        let response = await fetchOnChangeCaseta('script_turnos.py', 'list_bitacora', selectCaseta.value, selectLocation.value)
+        total = response.response.data.total_records;
+        actualizarPaginacion();
+        reloadTableBitacoras(response.response.data.records)
     };
 	// let user = getCookie("userId");
 	// let userJwt = getCookie("userJwt");
-    loadDataTables();
+    // loadDataTables();
+    cargarDatos();
     getStats(getCookie("userCaseta"),getCookie("userLocation"),false);
 
     $("#descargarEntradas").on("click", function() {
@@ -62,6 +69,21 @@ window.onload = function(){
     selectCaseta.value=""
     selectCaseta.disabled=true
 
+
+    document.getElementById("btnSiguiente").addEventListener("click", () => {
+        const nuevoOffset = offset + limit;
+        if (nuevoOffset < total) {
+          cargarDatos(nuevoOffset);
+        }
+      });
+      
+    document.getElementById("btnAnterior").addEventListener("click", () => {
+        const nuevoOffset = offset - limit;
+        if (nuevoOffset >= 0) {
+            cargarDatos(nuevoOffset);
+        }
+    });
+      
 }
 
 $("#checkboxTodasLasCasetas").on("click",async function()  {
@@ -105,9 +127,6 @@ async function getStats(area = "", location = "", loading = false) {
     .then(res => {
         if (res.success) {
             const data = res.response.data;
-
-            console.log('Datos obtenidos:', data);
-            // Actualización de valores en el DOM
             $("#textVisitasEnElDia").text(data.visitas_en_dia);
             $("#textPersonalDentro").text(data.personal_dentro);
             $("#textPersonasDentro").text(data.personas_dentro);
@@ -602,7 +621,6 @@ function reloadTableBitacoras(data){
                 })
                 }
             }
-            console.log("LKAROGOO", dataTableBitacora.length)
             if(tables['tableEntradas']){
                 tables['tableEntradas'].setData(dataTableBitacora)
             }else{
@@ -713,7 +731,7 @@ function loadDataTables(){
     .then(res => {
         if (res.success) {
             if(user !='' && userJwt!=''){
-                let lista= res.response.data
+                let lista= res.response.data.records
                 for (bitacora of lista){
                     dataTableBitacora.push({folio:bitacora.folio ,
                     fecha_entrada: bitacora.fecha_entrada,
@@ -1534,6 +1552,8 @@ async function getBitacoraByDate(location, area='', movement=[], dateFrom='', da
         script_name: "script_turnos.py",
         option: "list_bitacora",
         location: location,
+        limit: limit,
+        offset: offset,
     }
     
     if (area) bodyRequest.area = area;
@@ -1551,10 +1571,12 @@ async function getBitacoraByDate(location, area='', movement=[], dateFrom='', da
     })
     const data = await res.json()
     if (data.success){
+        total = data.response.data.total_records;
+        actualizarPaginacion();
         if(option == 'Equipos'){
-            reloadTableBitacorasWithEquipos(data.response.data)
+            reloadTableBitacorasWithEquipos(data.response.data.records)
         }else{
-            reloadTableBitacoras(data.response.data)
+            reloadTableBitacoras(data.response.data.records)
         }
         Swal.close()
     }else{
@@ -1609,7 +1631,7 @@ function selectedFechaOptions(option){
     getFechas(option);
 }
 
-function getFechas(option) {
+function getFechas(option, retorna=false) {
     const now = new Date();
     let dateFrom, dateTo;
     let prioridades = document.querySelectorAll('input[name="estadoBitacora"]:checked');
@@ -1662,16 +1684,29 @@ function getFechas(option) {
             dateFrom.setDate(now.getDate() - 30);
             dateTo = new Date();
             break;
+        case 'vacio':
+            dateFrom = '';
+            dateTo = '';
+            if(retorna){
+                return {dateFrom, dateTo};
+            }
+            break;
 
         default:
             console.error("Opción no válida");
             return;
     }
 
-    dateFrom = dateFrom.toISOString().split('T')[0];
-    dateTo = dateTo.toISOString().split('T')[0];
+    if(dateFrom && dateTo){
+        dateFrom = dateFrom.toISOString().split('T')[0];
+        dateTo = dateTo.toISOString().split('T')[0];
+    }
 
-    getBitacoraByDate(selectLocation.value, selectCaseta.value, movement = values, dateFrom, dateTo);
+    if(retorna){
+        return {dateFrom, dateTo}
+    }else{
+        getBitacoraByDate(selectLocation.value, selectCaseta.value, movement = values, dateFrom, dateTo);
+    }
 }
 
 function descargarExcelWithTabulator(tables, table) {
@@ -1697,4 +1732,112 @@ function descargarExcelWithTabulator(tables, table) {
 
 function getBitacoraWithEquipos(){
     getBitacoraByDate(selectLocation.value, selectCaseta.value, movement = ['entrada'], dateFrom='', dateTo='', option='Equipos');
+}
+
+async function cargarDatos(offsetActual = 0) {
+    const selectedValue = document.getElementById('fechaOptions');
+    const {dateFrom, dateTo} = getFechas(selectedValue, true);
+
+    let prioridades = document.querySelectorAll('input[name="estadoBitacora"]:checked');
+    let values = Array.from(prioridades).map(checkbox => checkbox.value) || [];
+
+    mostrarCarga();
+    await fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'script_turnos.py',
+            option: 'list_bitacora',
+            location: getCookie('userLocation'),
+            area: selectCaseta.value,
+            limit: limit,
+            offset: offsetActual,
+            dateFrom: dateFrom,
+            dateTo: dateTo,
+            prioridades: values
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+userJwt
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            if(user !='' && userJwt!=''){
+                let lista= res.response.data.records
+                total = res.response.data.total_records;
+                offset = offsetActual;
+                dataTableBitacora = [];
+
+                for (bitacora of lista){
+                    dataTableBitacora.push({folio:bitacora.folio ,
+                    fecha_entrada: bitacora.fecha_entrada,
+                    nombre_visitante:bitacora.nombre_visitante, 
+                    perfil_visita:bitacora.perfil_visita,
+                    contratista:bitacora.contratista,
+                    status_gafete:bitacora.status_gafete, 
+                    visita_a:bitacora.visita_a, 
+                    caseta_entrada:bitacora.caseta_entrada,
+                    caseta_salida:bitacora.nombre_area_salida || '', 
+                    fecha_salida: bitacora.fecha_salida ? bitacora.fecha_salida : '',
+                    duracion_visita: bitacora.fecha_salida ? calcularDuracion(bitacora.fecha_entrada, bitacora.fecha_salida) : "",
+                    comentarios:bitacora.comentarios||[] , 
+                    equipos: bitacora.equipos, 
+                    vehiculos: bitacora.vehiculos, 
+                    foto: bitacora.foto, 
+                    foto_url: bitacora.foto_url || '', 
+                    identificacion_url: bitacora.file_url || '',
+                    identificacion: bitacora.identificacion, 
+                    documento: bitacora.documento||"" , 
+                    visita_a: bitacora.visita_a||"" , 
+                    perfil_visita: bitacora.perfil_visita||"" ,
+                    id: bitacora._id, 
+                    motivo_visita:bitacora.motivo_visita, 
+                    grupo_areas_acceso:bitacora.grupo_areas_acceso , 
+                    codigo_qr: bitacora.codigo_qr, 
+                    status_visita:bitacora.status_visita,
+                    id_gafet:bitacora.id_gafet
+                })
+                }
+                actualizarPaginacion();
+                drawTable('tableEntradas',columsData1,dataTableBitacora);
+                drawTable('tableSalidas',columsData2,dataTableLocker);
+                ocultarCarga();
+            }else{
+                redirectionUrl('login',false);
+            }
+        } else {
+            ocultarCarga();
+            errorAlert(res)
+        }
+    });
+
+}
+  
+function actualizarPaginacion() {
+    const paginaActual = Math.floor(offset / limit) + 1;
+    const totalPaginas = Math.ceil(total / limit);
+
+    document.getElementById("infoPaginacion").textContent =
+        `Total registros: ${total} | Página: ${paginaActual} de ${totalPaginas} | Registros por página: ${limit}`;
+
+    document.getElementById("btnAnterior").disabled = paginaActual <= 1;
+    document.getElementById("btnSiguiente").disabled = paginaActual >= totalPaginas;
+}
+
+function mostrarCarga() {
+    const container = document.getElementById('tableContainerBitacora');
+    const overlay = document.getElementById('overlayCarga');
+    
+    container.style.height = '600px';
+    overlay.classList.remove('d-none');
+}
+
+function ocultarCarga() {
+    const container = document.getElementById('tableContainerBitacora');
+    const overlay = document.getElementById('overlayCarga');
+    
+    container.style.height = '';
+
+    overlay.classList.add('d-none');
 }

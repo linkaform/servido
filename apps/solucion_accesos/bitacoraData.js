@@ -306,17 +306,24 @@ dataTableLocker = [
 
 
 //-----TABLES
-function drawTable(id, columnsData, tableData,){
-    var  table = new Tabulator("#" + id, {
-	    layout:"fitDataStretch",
-	    data:tableData,
-	    textDirection:"ltr",
-	    columns:columnsData,
-	    pagination:true, 
-	    paginationSize:40,
-        placeholder: "No hay registros disponibles", 
+function drawTable(id, columnsData, tableData) {
+    if (!window.tables) window.tables = {};
+
+    if (tables[id] instanceof Tabulator) {
+        tables[id].destroy();
+    }
+
+    const table = new Tabulator("#" + id, {
+        layout: "fitDataStretch",
+        data: tableData,
+        textDirection: "ltr",
+        columns: columnsData,
+        pagination: false,
+        paginationSize: 40,
+        placeholder: "No hay registros disponibles",
     });
-    tables[id]=table;
+
+    tables[id] = table;
 }
 
 
