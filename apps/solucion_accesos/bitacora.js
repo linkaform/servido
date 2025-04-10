@@ -6,7 +6,7 @@ let idNuevoEquipoVehiculo=""
 let seleccionadoBitacora={}
 
 let offset = 0;
-const limit = 15;
+const limit = 25;
 let total = 0;
 
 window.onload = function(){
