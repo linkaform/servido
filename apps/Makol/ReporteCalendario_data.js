@@ -12,11 +12,17 @@ let dicReportContext = [
                     {type:'p', title:'Model:', id:'textModel'},
                     {type:'p', title:'Serie:', id:'textSerie'},
                     {type:'p', title:'Folio:', id:'textFolio'},
+                    {type:'p', title:'Tipo de Asistencia:', id:'textTypeAsistance'},
+                    {type:'p', title:'Estatus:', id:'textStatus'},
                 ]
             },
         ] 
     },
 ];
+
+
+
+
 
 let events =  [
     {

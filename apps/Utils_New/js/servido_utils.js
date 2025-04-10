@@ -925,7 +925,7 @@ function drawModalBody(itemElement){
 
     //---Elements
     if (type == 'p') {
-        return  `<p><strong>${title}</strong> <span id="${id}"></span></p>`
+        return  `<p id="p-${id}"><strong>${title}</strong> <span id="${id}"></span></p>`
     }else if(type == 'switch'){
         const element = `<div class="form-check form-switch">
             <input class="form-check-input switch ${name}" type="checkbox" name="${name}" id="${id}" ${checked}>

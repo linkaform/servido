@@ -45,9 +45,16 @@ async function getInformation(){
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
+        let dataResponseFirst = [];
+        if (data.response_first_a) {
+            dataResponseFirst = dataResponseFirst.concat(data.response_first_a);
+        }
 
-        if(data.response_first){
-            drawCalendar('calendarFirst', data.response_first, configCustom);
+        if (data.response_first_b) {
+            dataResponseFirst = dataResponseFirst.concat(data.response_first_b);
+        }
+        if(dataResponseFirst.length > 0){
+            drawCalendar('calendarFirst',dataResponseFirst, configCustom);
         }
         //-----Style
         hideLoadingComponent();
@@ -86,12 +93,31 @@ function getCatalog(){
 //----SHOW INFORMATION
 function showInformation(info){
     let event = info.event && info.event.extendedProps ? info.event.extendedProps : {};
-    document.getElementById('textFolio').textContent = event.folio ?  event.folio : '';
-    document.getElementById('textInstrument').textContent = event.instrument ? event.instrument : '';
-    document.getElementById('textClient').textContent = event.client ? event.client : '';
-    document.getElementById('textBrand').textContent = event.brand ? event.brand : '';
-    document.getElementById('textModel').textContent = event.model ? event.model: '';
-    document.getElementById('textSerie').textContent = event.serie ? event.serie: '';
+    let typeDate = event.type ?  event.type : null;
+    //----Clean
+    document.getElementById('p-textInstrument').style.display = 'block';
+    document.getElementById('p-textBrand').style.display = 'block';
+    document.getElementById('p-textModel').style.display = 'block';
+    document.getElementById('p-textSerie').style.display = 'block';
+
+    if(typeDate == null && typeDate != 'ots'){
+        document.getElementById('textFolio').textContent = event.folio ?  event.folio : '';
+        document.getElementById('textInstrument').textContent = event.instrument ? event.instrument : '';
+        document.getElementById('textClient').textContent = event.client ? event.client : '';
+        document.getElementById('textBrand').textContent = event.brand ? event.brand : '';
+        document.getElementById('textModel').textContent = event.model ? event.model: '';
+        document.getElementById('textSerie').textContent = event.serie ? event.serie: '';
+    }else{
+        document.getElementById('textFolio').textContent = event.folio ?  event.folio : '';
+        document.getElementById('textClient').textContent = event.client ? event.client : '';
+        document.getElementById('textTypeAsistance').textContent = event.type_asistance ? event.type_asistance: '';
+        document.getElementById('textStatus').textContent = event.status ? event.status: '';
+
+        document.getElementById('p-textInstrument').style.display = 'none';
+        document.getElementById('p-textBrand').style.display = 'none';
+        document.getElementById('p-textModel').style.display = 'none';
+        document.getElementById('p-textSerie').style.display = 'none';
+    }
     let eventModal = new bootstrap.Modal(document.getElementById('modalData'));
     eventModal.show();
 }
