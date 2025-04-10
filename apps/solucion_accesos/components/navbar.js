@@ -153,7 +153,6 @@ function getIdsMenu(idClass){
 function showSpecificMenu(menus, showPic){
     if (menus.length>0){
         for (let m of menus){
-        console.log("MENUS", m)
             $('#button'+capitalizeFirstLetter(m)).removeClass('ocultar')
         }
     }else{
