@@ -6,7 +6,7 @@ let idNuevoEquipoVehiculo=""
 let seleccionadoBitacora={}
 
 let offset = 0;
-const limit = 25;
+let limit = 25;
 let total = 0;
 
 window.onload = function(){
@@ -69,19 +69,34 @@ window.onload = function(){
     selectCaseta.value=""
     selectCaseta.disabled=true
 
+    document.getElementById("btnPrimerPagina").addEventListener("click", () => {
+        const registrosXPagina = document.getElementById('registrosXPagina').value;
+        limit = parseInt(registrosXPagina);
+        cargarDatos();
+    });
 
     document.getElementById("btnSiguiente").addEventListener("click", () => {
         const nuevoOffset = offset + limit;
         if (nuevoOffset < total) {
           cargarDatos(nuevoOffset);
         }
-      });
+    });
       
     document.getElementById("btnAnterior").addEventListener("click", () => {
         const nuevoOffset = offset - limit;
         if (nuevoOffset >= 0) {
             cargarDatos(nuevoOffset);
         }
+    });
+
+    document.getElementById("btnUltimaPagina").addEventListener("click", () => {
+        const registrosXPagina = parseInt(document.getElementById('registrosXPagina').value);
+        limit = registrosXPagina;
+
+        const ultimaPagina = Math.ceil(total / limit);
+        offset = (ultimaPagina - 1) * limit;
+    
+        cargarDatos(offset);
     });
       
 }
@@ -1818,18 +1833,24 @@ function actualizarPaginacion() {
     const paginaActual = Math.floor(offset / limit) + 1;
     const totalPaginas = Math.ceil(total / limit);
 
-    document.getElementById("infoPaginacion").textContent =
-        `Total registros: ${total} | Página: ${paginaActual} de ${totalPaginas} | Registros por página: ${limit}`;
+    const registrosXPagina = document.getElementById('registrosXPagina').value;
+    document.getElementById("totalDeRegistros").textContent =
+        `1 - ${registrosXPagina} de ${total} registros`;
 
+    document.getElementById("btnPrimerPagina").disabled = paginaActual <= 1;
     document.getElementById("btnAnterior").disabled = paginaActual <= 1;
     document.getElementById("btnSiguiente").disabled = paginaActual >= totalPaginas;
+    document.getElementById("btnUltimaPagina").disabled = paginaActual >= totalPaginas;
+
+    $('#paginaActualInput').val(paginaActual);
+    $('#totalDePaginasSpan').text(totalPaginas);
 }
 
 function mostrarCarga() {
     const container = document.getElementById('tableContainerBitacora');
     const overlay = document.getElementById('overlayCarga');
     
-    container.style.height = '600px';
+    container.style.height = '100%';
     overlay.classList.remove('d-none');
 }
 
@@ -1840,4 +1861,21 @@ function ocultarCarga() {
     container.style.height = '';
 
     overlay.classList.add('d-none');
+}
+
+function actualizarBitacoraConSelect() {
+    const registrosXPagina = document.getElementById('registrosXPagina').value;
+    limit = parseInt(registrosXPagina);
+    cargarDatos();
+}
+
+function actualizarBitacoraConInput(){
+    const pagina = parseInt(document.getElementById('paginaActualInput').value);
+    const registrosXPagina = parseInt(document.getElementById('registrosXPagina').value);
+    
+    if (!isNaN(pagina) && pagina > 0) {
+        limit = registrosXPagina;
+        offset = (pagina - 1) * limit;
+        cargarDatos(offset);
+    }
 }
