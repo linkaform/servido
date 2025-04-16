@@ -1,10 +1,10 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'table', col: '12', id:'tableFirst', title:'Almacen Monterrey', optionExpanded:true},
-            { type:'table', col: '6', id:'tableSecond', title:'Almacen Monterrey (Sin disponibilidad para surtir)', optionExpanded:true},
-            { type:'table', col: '12', id:'tableThird', title:'Almacen Guadalajara', optionExpanded:true},
-            { type:'table', col: '6', id:'tableFourth', title:'Almacen Guadalajara (Sin disponibilidad para surtir)', optionExpanded:true},
+            { type:'table', col: '12', id:'tableFirst', title:'Almacen Monterrey'},
+            { type:'table', col: '6', id:'tableSecond', title:'Almacen Monterrey (Sin disponibilidad para surtir)'},
+            { type:'table', col: '12', id:'tableThird', title:'Almacen Guadalajara'},
+            { type:'table', col: '6', id:'tableFourth', title:'Almacen Guadalajara (Sin disponibilidad para surtir)'},
         ] 
     },
 ];

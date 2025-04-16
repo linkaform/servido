@@ -69,16 +69,15 @@ async function getInformation(){
         if (data.tableFirst) {
             drawTableElement('tableFirst', data.tableFirst, columsTable1);
         }
-        if (data.tableFirst) {
-            drawTableElement('tableSecond', data.tableFirst, columsTable1);
+        if (data.tableSecond) {
+            drawTableElement('tableSecond', data.tableSecond, columsTable1);
         }
-        if (data.tableFirst) {
-            drawTableElement('tableThird', data.tableFirst, columsTable1);
+        if (data.tableThird) {
+            drawTableElement('tableThird', data.tableThird, columsTable1);
         }
-        if (data.tableFirst) {
-            drawTableElement('tableFourth', data.tableFirst, columsTable1);
+        if (data.tableFourth) {
+            drawTableElement('tableFourth', data.tableFourth, columsTable1);
         }
-
         //-----Style
         hideLoadingComponent();
         showElements();
@@ -95,7 +94,6 @@ function getRowsData() {
         ...selectedFirst,
         ...selectedThird,
     ];
-
     console.log(allSelected);
 }
 
@@ -143,7 +141,6 @@ function get_catalog(){
     })
 }
 
-
 //-------GET CATALOG LINE
 function getCatalogLine() {
     const familySelect = document.getElementById('product_family');
@@ -188,7 +185,6 @@ function getCatalogLine() {
     .then((res) => res.json())
     .then((res) => {
         const catalog = res.response && res.response.product_line ? res.response.product_line : {};
-        console.log('catalog',res.response.product_line)
         if(catalog){
             setCatalogSimple(catalog,'product_line');
         }
