@@ -298,7 +298,6 @@ function setElementsStyle(){
 function createElements(dataConfig = null){
     if(dataConfig != null && dataConfig.length > 0){
         const container = document.getElementById('content-list');
-
         dataConfig.forEach((item, index) => {
             const rowDiv = document.createElement('div');
             rowDiv.classList.add('row','div-content-element', 'ml-1', 'mr-1');
@@ -414,8 +413,7 @@ function createElements(dataConfig = null){
                         }
                         //-----Element Card
                         divElement.innerHTML = `<div class="card shadow mb-4">
-                            <div
-                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
                                 <div class="d-flex justify-content-end">
                                     ${buttonModal}
@@ -574,6 +572,26 @@ function createElements(dataConfig = null){
                         divElement.innerHTML = `<div class="col-12 mt-2 mb-2 p-2  ">
                             <h3 class="border-bottom pb-2">${titleElement}</h3>
                         </div>`;
+                    }else if(element.type == 'carrousel-img'){
+                        divElement.innerHTML = ` 
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="carousel-${idElement}" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner" id="carouselInner-${idElement}"></div>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${idElement}" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon"></span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-${idElement}" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
                     }
                     rowDiv.appendChild(divElement);
                 });
@@ -601,11 +619,68 @@ function drawChartElement(canvasId, type, datasets, dataconfig, datalabels = tru
         }
         if(!flagColors){
             datasets = setColorsDatasets(datasets, type);
-            console.log('datasets',flagColors)
         }
         chartInstances[canvasId] = new Chart(ctx, config);
     }
 }
+
+//-Funciona para pintar las imagenes dentro de un Carrousel
+function drawCarrouselImgs(divId, listImg){
+    const container = document.getElementById(`carouselInner-${divId}`);
+    if (!container) return;
+    const chunkSize = 10; // 2 filas de 5 columnas
+    const slides = [];
+
+    // Divide en bloques de 10 imágenes
+    for (let i = 0; i < listImg.length; i += chunkSize) {
+        slides.push(listImg.slice(i, i + chunkSize));
+    }
+
+    // Limpia el contenido anterior
+    container.innerHTML = '';
+
+
+    slides.forEach((slideImages, index) => {
+        const isActive = index === 0 ? ' active' : '';
+        const slide = document.createElement('div');
+        slide.className = `carousel-item${isActive}`;
+
+        const innerContainer = document.createElement('div');
+        innerContainer.className = 'container';
+
+        // Primer fila
+        const row1 = document.createElement('div');
+        row1.className = 'row';
+        for (let i = 0; i < 5; i++) {
+            const col = document.createElement('div');
+            col.className = 'col';
+            if (slideImages[i]) {
+                col.innerHTML = `<img src="${slideImages[i]}" class="d-block w-100 img-fluid" alt="">`;
+            }
+            row1.appendChild(col);
+        }
+
+        // Segunda fila
+        const row2 = document.createElement('div');
+        row2.className = 'row mt-2';
+        for (let i = 5; i < 10; i++) {
+            const col = document.createElement('div');
+            col.className = 'col';
+            if (slideImages[i]) {
+                col.innerHTML = `<img src="${slideImages[i]}" class="d-block w-100 img-fluid" alt="">`;
+            }
+            row2.appendChild(col);
+        }
+
+        innerContainer.appendChild(row1);
+        innerContainer.appendChild(row2);
+        slide.appendChild(innerContainer);
+        container.appendChild(slide);
+    });
+}
+
+
+
 
 //-Funciona para agregar diferentes paletas de color
 function setColorsDatasets(data = null, type = null){

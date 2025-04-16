@@ -51,6 +51,37 @@ function setSelect(listDic, labelKey, idKey, idElement) {
     });
 }
 
+//----Funciona para buscar dentro de una lista de diccionarios, y llenar con valores unicos un selector
+function setCatalogSimple(list, id) {
+  console.log('list',list)
+  const selectElement = document.getElementById(id);
+  if (!selectElement) {
+    console.error(`No se encontró un elemento con el id: ${id}`);
+    return;
+  }
+
+  // Obtener valores únicos
+  const uniqueValues = Array.from(new Set(list));
+
+  // Limpiar el select
+  selectElement.innerHTML = '';
+
+  // Opción por defecto
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.textContent = 'Seleccione una opción';
+  selectElement.appendChild(defaultOption);
+
+  // Agregar opciones
+  uniqueValues.forEach(value => {
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = value;
+    selectElement.appendChild(option);
+  });
+}
+
+
 
 
 //----Funciona para limpiar un selector y dejarlo con una opción pre definida
