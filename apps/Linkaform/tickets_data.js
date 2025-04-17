@@ -2,14 +2,14 @@
 let dicReportContext = [
     { class:'', _children : [
             { type:'card', col: '1', id:'cardFirst', title:'Android', hexadecimal:'#FF5733'},
-            { type:'card', col: '1', id:'cardSecond', title:'Backend', hexadecimal:'#5C7285'},
+            { type:'card', col: '1', id:'cardSecond', title:'Backend', hexadecimal:'#818C78'},
             { type:'card', col: '1', id:'cardThird', title:'BI', hexadecimal:'#FFC133'},
             { type:'card', col: '1', id:'cardFourth', title:'Front', hexadecimal:'#FFE733'},
-            { type:'card', col: '1', id:'cardFiveth', title:'IOS', hexadecimal:'#D4FF33'},
-            { type:'card', col: '1', id:'cardSixth', title:'Licencias', hexadecimal:'#99FF33'},
-            { type:'card', col: '1', id:'cardSeventh', title:'Mandrill', hexadecimal:'#33FF57'},
-            { type:'card', col: '1', id:'cardEigth', title:'PDF', hexadecimal:'#33FF8D'},
-            { type:'card', col: '1', id:'cardNineth', title:'Reportes', hexadecimal:'#33FFC1'},
+            { type:'card', col: '1', id:'cardFiveth', title:'IOS', hexadecimal:'#A733FF'},
+            { type:'card', col: '1', id:'cardSixth', title:'Licencias', hexadecimal:'#60B5FF'},
+            { type:'card', col: '1', id:'cardSeventh', title:'Mandrill', hexadecimal:'#A73333'},
+            { type:'card', col: '1', id:'cardEigth', title:'PDF', hexadecimal:'#41644A'},
+            { type:'card', col: '1', id:'cardNineth', title:'Reportes', hexadecimal:'#334CFF'},
             { type:'card', col: '1', id:'cardTenth', title:'Scripts', hexadecimal:'#33E7FF'},
             { type:'card', col: '1', id:'cardEleventh', title:'University', hexadecimal:'#33C1FF'},
         ] 
@@ -28,6 +28,7 @@ let dicReportContext = [
         ] 
     },
 ];
+
 
 
 //-----Configuraciones de la tabla
