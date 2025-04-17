@@ -83,15 +83,15 @@ async function getInformation(){
         }
 
         if(data.response_second){
-            drawChartElement('chartFirst','line', data.response_second,setOptions1);
+            drawChartElement('chartFirst','line', data.response_second,setOptions1,undefined, true);
         }
 
         if(data.response_third){
-            drawChartElement('chartSecond','line', data.response_third, setOptions2);
+            drawChartElement('chartSecond','line', data.response_third, setOptions2,undefined, true);
         }
 
         if(data.response_fourth){
-            drawChartElement('chartThird','pie', data.response_fourth, setOptions3);
+            drawChartElement('chartThird','pie', data.response_fourth, setOptions3,undefined, true);
         }
     
         //-----Style

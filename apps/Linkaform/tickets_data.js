@@ -2,7 +2,7 @@
 let dicReportContext = [
     { class:'', _children : [
             { type:'card', col: '1', id:'cardFirst', title:'Android', hexadecimal:'#FF5733'},
-            { type:'card', col: '1', id:'cardSecond', title:'Backend', hexadecimal:'#FF8D33'},
+            { type:'card', col: '1', id:'cardSecond', title:'Backend', hexadecimal:'#5C7285'},
             { type:'card', col: '1', id:'cardThird', title:'BI', hexadecimal:'#FFC133'},
             { type:'card', col: '1', id:'cardFourth', title:'Front', hexadecimal:'#FFE733'},
             { type:'card', col: '1', id:'cardFiveth', title:'IOS', hexadecimal:'#D4FF33'},
