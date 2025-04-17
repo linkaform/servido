@@ -1,17 +1,37 @@
 //-----URL LOGIN
-//const URL = "https://preprod.linkaform.com/";
-const URL = "https://app.linkaform.com";
-// const URL = "http://192.168.0.25:8000";
-// const URL = "http://127.0.0.1:8011";
-
+//let URL = "https://preprod.linkaform.com/";
+let URL = "https://app.linkaform.com";
+// let URL = "http://192.168.0.25:8000";
+// let URL = "http://127.0.0.1:8011";
 
 //-Funciona para definir una cookie
-function setCookie(cname, cvalue, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + (exdays*24*60*60*1000));
-  var expires = "expires="+d.toUTCString();
-  document.cookie = cname + "=" + cvalue + "; " + expires;
+function setCookie(cname, cvalue, exdays, options = {}) {
+    // Calcula la fecha de expiración
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + d.toUTCString();
+
+    // Configuración predeterminada
+    const defaultOptions = {
+        path: "/", // Hacer la cookie accesible en todo el dominio
+        domain: null, // Si no se pasa, se usará el dominio actual
+        secure: false, // Si quieres asegurarla para HTTPS, usa `true`
+        sameSite: "Lax", // Cambiar a "None" si es necesario
+    };
+
+    // Combina las opciones predeterminadas con las personalizadas
+    const { path, domain, secure, sameSite } = { ...defaultOptions, ...options };
+
+    // Construye la cookie
+    let cookie = `${cname}=${cvalue}; ${expires}; path=${path}`;
+    if (domain) cookie += `; domain=${domain}`;
+    if (secure) cookie += `; Secure`;
+    if (sameSite) cookie += `; SameSite=${sameSite}`;
+
+    // Establece la cookie
+    document.cookie = cookie;
 }
+
 //-Funciona para obtener una cookie especifica
 function getCookie(cname) {
   let name = cname + "=";
@@ -55,7 +75,7 @@ function getParameterURL(keyFound = null) {
 }
 
 //-Funciona para guardar en local storage una url y redireccionar al login
-function setRedirection() {
+function setRedirectionLogin() {
   const urlOrigin = window.location.href;      
   const protocolo = window.location.protocol;    
   const hostname = window.location.hostname;      
@@ -63,7 +83,7 @@ function setRedirection() {
   //---URL DATA STORAGE
   localStorage.setItem('urlOrigin', JSON.stringify(urlOrigin));
   //---URL REDIRECTION LOGIN
-  let urlRedirection = `${protocolo}//${hostname}:${puerto}/Servido_v2/login.html`
+  let urlRedirection = `${protocolo}//${hostname}:${puerto}/Servido_Login/login.html`
   window.location.href = urlRedirection;
 }
 
@@ -81,9 +101,10 @@ function setRedirectionList(){
 function getSession(location = null) {
   const USERID = getCookie("userId");
   const JWT = getCookie("userJwt");
-  const SCRIPTID = getParameterURL('scriptId');
+  const SCRIPTID = getParameterURL('script_id');
   const DEMO = getParameterURL('demo');
   const EMBEDED = getParameterURL('embeded');
+
   if(DEMO != "" && DEMO != null){
     return 'Demo';
   }else if(USERID != null && JWT != null && USERID != "" && JWT != ""){
@@ -91,24 +112,29 @@ function getSession(location = null) {
   }else{
     if(location != 'login' || location == null){
         if(EMBEDED == "" || EMBEDED == null){
-            setRedirection();
+            setRedirectionLogin();
         }else{
             //---Show Alert
+
             let div1 = document.getElementById("content-div-noseession");
-            div1.style.display = "flex";
+            div1.style.display = "block";
+            div1.style.height = "100vh";
             let div2 = document.getElementById("content-div-empty");
             div2.style.display = "none";
+            let div3 = document.getElementById("content-div-buttons");
+            div3.style.display = "none";
+            let div4 = document.getElementById("content-div-filter");
+            div4.style.display = "none";
             //---Hide COmponents
             const divElements = document.querySelectorAll('.div-content-element');
             divElements.forEach(div => {
               div.style.display = 'none';
             });
-
             const buttonsElements = document.querySelectorAll('.btn-elements');
             buttonsElements.forEach(div => {
               div.style.display = 'none';
             });
-
+            document.getElementById("buttonExecution").style.display = 'none';
         }
     }
     return 'Offline';
@@ -136,7 +162,7 @@ function getReportUrl() {
 }
 
 //-Funciona para mandar la petición a script de un report
-async function sendRequestReport(script, env = null){
+async function sendRequestReport(script, dicFilterAd = null){
   let dicRes = {};
   let flagValidation = true;
 
@@ -157,7 +183,7 @@ async function sendRequestReport(script, env = null){
     }
     if(required){
       if(!valor || valor.length == 0){
-        let flagValidation = false;
+        flagValidation = false;
         Swal.fire({
           title: 'Advertencia',
           html:'No es posible ejecutar reporte, faltan filtros requeridos.'
@@ -172,19 +198,17 @@ async function sendRequestReport(script, env = null){
   }
   //----Update Script id
   dicFilter['script_id'] = script;
-  //---Conditional env
-  let urlRequest = 'https://app.linkaform.com/api/infosync/scripts/run/';
-  if(env != null && env == 'test'){
-    urlRequest = 'https://preprod.linkaform.com/api/infosync/scripts/run/';
+  //----Check Filter Aditional
+  if(dicFilterAd != null){
+    dicFilter = { ...dicFilter, ...dicFilterAd };
   }
   //----Cookie 
   const JWTSESSION =  getCookie("userJwt");
   //----Fetch
 
-  if(flagValidation){
-
+    if(flagValidation){
         try {
-            const response = await fetch(urlRequest, {
+            const response = await fetch(getUrlRequest('script'), {
                 method: 'POST',
                 body: JSON.stringify(dicFilter),
                 headers: {
@@ -223,16 +247,23 @@ function setElementsStyle(){
     divEmpty.forEach(div => {
       div.style.display = 'none';
     });
-
+    const divNoSession = document.querySelectorAll('.div-content-no-session');
+    divNoSession.forEach(div => {
+      div.style.display = 'none';
+    });
   }else if(statusSession == 'Active'){
     //----Div Containers
     const divEmpty = document.querySelectorAll('.div-content-empty');
+    const divNoSession = document.querySelectorAll('.div-content-no-session');
     const divElements = document.querySelectorAll('.div-content-element');
     divElements.forEach(div => {
+      div.style.visibility = 'hidden';
+    });
+    divNoSession.forEach(div => {
       div.style.display = 'none';
     });
     divEmpty.forEach(div => {
-      div.style.display = 'block';
+      div.style.visibility = 'visible';
     });
   }
   //---Check Parameter
@@ -267,7 +298,6 @@ function setElementsStyle(){
 function createElements(dataConfig = null){
     if(dataConfig != null && dataConfig.length > 0){
         const container = document.getElementById('content-list');
-
         dataConfig.forEach((item, index) => {
             const rowDiv = document.createElement('div');
             rowDiv.classList.add('row','div-content-element', 'ml-1', 'mr-1');
@@ -280,12 +310,26 @@ function createElements(dataConfig = null){
                 let children = item._children;
                 children.forEach((element, index) => {
                     const divElement = document.createElement('div');
+
+                    //#-----PROPS-----#//
                     //-----Title
                     const titleElement = element.title ?  element.title : "";
+                    ///----PDF
+                    const optionPDF = element.optionPDF ?  element.optionPDF : false;
+                    ///----PDF
+                    const optionExpanded = element.optionExpanded ?  element.optionExpanded : false;
                     //-----Color
-                    const colorElement = element.color ? element.color : "primary";
+                    let colorElement = element.color ? `border-left-${element.color}` : "";
+                    let colorBg = element.color ? `bg-${element.color}` : "";
+                    //-----Color Hexadecimal
+                    let colorHexadecimal = element.hexadecimal ? `style="border-left-color: ${element.hexadecimal} !important; border-left-width: 5.3333px !important; "` : "";
+                    let colorBgHexadecimal = element.hexadecimal ? `style="background: ${element.hexadecimal} !important;"` : "";
+                    if(!colorHexadecimal && !colorElement){
+                        colorElement = `border-left-primary`;
+                        colorBg = `bg-primary`;
+                    }
                     //-----Class
-                    const classElement = element.col ? `col-xl-${element.col} col-md-6 mb-4` : "col-xl-3 col-md-6 mb-4";
+                    const classElement = element.col ? `col-xl-${element.col} col-lg-${element.col} col-md-12 col-sm-12 col-xs-12 mb-4` : "col-xl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12  mb-4";
                     divElement.className = classElement;
                     //-----Progress
                     const progressElement = element.progress ? true : false;
@@ -293,21 +337,38 @@ function createElements(dataConfig = null){
                     const listProgress = element.listProgress? element.listProgress : [];
                     //-----Id
                     const idElement = element.id ? element.id : Math.floor(Math.random() * 1000);
-                    //---Type Elements
+                    //-----Id
+                    const columsKanva = element.columsKanva? element.columsKanva : [];
+                    //-----Components Form
+                    const formElements = element.formElements? element.formElements : [];
+                    //-----Filter Modal
+                    const filterCustom = element.filterCustom? element.filterCustom : false;
+                    //-----Button Update Chart
+                    const buttonLeftArrow = element.buttonLeftArrow? element.buttonLeftArrow : false;
+                    //-----Button Filter Modal
+                    const optionButtonModal  = element.optionButtonModal ? element.optionButtonModal  : false;
+                    //-----Button Filter Modal
+                    const chartChange = element.chartChange ? element.chartChange  : false;
+                    //-----Button Filter Modal
+                    const optionButtonCustom  = element.buttonCustom ? element.buttonCustom  : false;
+
+                    //-----Card Icon
+                    const cardIcon = element.cardIcon ? element.cardIcon : '<i class="fas fa-clipboard-list fa-2x text-gray-300"></i>';
+                    //#-----COMPONENTS-----#//
                     if(element.type == 'card'){
                         //-----Element Progress
                         let progressDiv = '';
                         if(progressElement){
                             progressDiv = `<div class="col">
                                 <div class="progress progress-sm mr-2">
-                                    <div class="progress-bar bg-${colorElement}" role="progressbar"
+                                    <div class="progress-bar ${colorBg}" ${colorBgHexadecimal} role="progressbar"
                                         style="width: 70%" aria-valuenow="50" aria-valuemin="0"
                                         aria-valuemax="100" id="progress-${idElement}"></div>
                                 </div>
                             </div>`;
                         }
                         //-----Element Card
-                        divElement.innerHTML = `<div class="card border-left-${colorElement} shadow h-100 py-2">
+                        divElement.innerHTML = `<div class="card ${colorElement} shadow h-100 py-2" ${colorHexadecimal} >
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
@@ -316,60 +377,98 @@ function createElements(dataConfig = null){
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto ml-3">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="text-${idElement}">70%</div>
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="text-${idElement}"></div>
                                                 </div>
                                                 ${progressDiv}
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            ${cardIcon}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         `;
                     }else if(element.type == 'chart'){
+                        //-----Option Modal Custom
+                        let buttonModal = '';
+                        if(filterCustom){
+                            buttonModal = `<button class="btn btn-sm btn-secondary mr-2" id="modal-filter-${idElement}">
+                                <i class="fa-solid fa-filter"></i>
+                            </button>`
+                        }
+                        //-----Option Modal Change Bar
+                        let buttonChangeChart = '';
+                        if(chartChange){
+                            buttonChangeChart = `<button class="btn btn-sm btn-warning mr-2" id="modal-change-${idElement}">
+                                <i class="fa-solid fa-chart-simple"></i>
+                            </button>`
+                        }
+                        //-----Option Button Update
+                        let buttonLeftArrowChart = '';
+                        if(buttonLeftArrow){
+                            buttonLeftArrowChart = `<button class="btn btn-sm btn-primary mr-2" id="button-left-${idElement}">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>`
+                        }
                         //-----Element Card
                         divElement.innerHTML = `<div class="card shadow mb-4">
-                            <div
-                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
-                                <div class="dropdown no-arrow">
-                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                        aria-labelledby="dropdownMenuLink">
-                                        <div class="dropdown-header">Dropdown Header:</div>
-                                        <a class="dropdown-item" href="#" onclick="get_chartDownload('${idElement}','chart_screenIV');return false;">Descargar</a>
-                                    </div>
+                                <div class="d-flex justify-content-end">
+                                    ${buttonModal}
+                                    ${buttonChangeChart}
+                                    ${buttonLeftArrowChart}
+                                    <button class="btn btn-sm btn-primary me-2"  onclick="get_chartDownload('${idElement}','chart_screenIV');return false;">
+                                        <i class="fas fa-download"></i>
+                                    </button>
                                 </div>
                             </div>
                             <!-- Card Body -->
                             <div class="card-body">
-                                <div id="secondElement">
+                                <div>
                                     <canvas id="${idElement}" height="400"></canvas>
                                 </div>
                             </div>
                         </div>`;
                     }else if(element.type == 'table'){
-                        //-----Element Card
+                        //-----Option PDF
+                        let buttonPDF = '';
+                        if(optionPDF){
+                            buttonPDF = `<button class="btn btn-sm btn-danger ml-2" id="download-pdf-${idElement}">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </button>`
+                        }
+                        //-----Option Expanded All
+                        let buttonExpanded = '';
+                        if(optionExpanded){
+                            buttonExpanded = `<button class="btn btn-sm btn-primary mr-2" id="button-expand-all-${idElement}">
+                                <i class="fa-solid fa-expand"></i>
+                            </button>`
+                        }
+                        //----BUtton Custom Table
+                        let buttonCustom = '';
+                        if(optionButtonCustom){
+                            buttonCustom = `<button class="btn btn-sm btn-primary mr-2" id="button-custom-${idElement}">
+                                <i class="fa-solid fa-bars"></i>
+                            </button>`
+                        }
+
+                        //-----Element Table
                         divElement.innerHTML = `<div class="card shadow mb-4">
                             <div
                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
-                                <div class="dropdown no-arrow">
-                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                        aria-labelledby="dropdownMenuLink">
-                                        <div class="dropdown-header">Dropdown Header:</div>
-                                        <a class="dropdown-item" id="download-csv-${idElement}" href="#">Descargar CSV</a>
-                                        <a class="dropdown-item" id="download-xls-${idElement}" href="#">Descargar Excel</a>
-                                    </div>
+                                <div class="d-flex justify-content-end">
+                                    ${buttonCustom}
+                                    ${buttonExpanded}
+                                    <button class="btn btn-sm btn-success me-2" id="download-xls-${idElement}">
+                                        <i class="fas fa-file-excel"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" id="download-csv-${idElement}">
+                                        <i class="fas fa-file-csv"></i>
+                                    </button>
+                                    ${buttonPDF}
                                 </div>
                             </div>
                             <!-- Card Body -->
@@ -408,6 +507,91 @@ function createElements(dataConfig = null){
                                 ${divProgress}
                             </div>
                         </div>`;
+                    }else if(element.type == 'kanva'){
+                        if (columsKanva.length > 0) {
+                                let divCustom = `<div class="row full-height">`;
+
+                                columsKanva.forEach((colElement) => {
+                                    const titleColum = colElement.title ? colElement.title : '';
+                                    const idColum = colElement.id ? colElement.id : '';
+                                    const classGrid = colElement.grid ? colElement.grid : 'col-lg-2 col-md-4 col-sm-6';
+
+                                    divCustom += `
+                                        <div class="${classGrid} column dropzone" ondragover="allowDrop(event)" ondrop="dropCard(event)">
+                                            <h5>${titleColum}</h5>
+                                            <div  id="${idColum}" >
+                                            </div>
+                                        </div>`;
+                                });
+
+                                divCustom += `</div>`;
+                                divElement.innerHTML = divCustom;
+                            }
+                    }else if(element.type == 'calendar'){
+                        divElement.innerHTML = `<div class="card shadow mb-4">
+                            <div
+                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="${idElement}" ></div>
+                            </div>
+                        </div>`;
+                    }else if(element.type == 'modal'){
+                        //----Button
+                        let buttonSucces = '';
+                        if(optionButtonModal){
+                            buttonSucces = `<button class="btn btn-success ml-2" id="button-succes-${idElement}">
+                                Guardar
+                            </button>`
+                        }
+                        //----Elements
+                        let htmlFormElements = ``
+                        if (formElements.length > 0) {
+                            formElements.forEach((itemElement, index) => {
+                                htmlFormElements += drawModalBody(itemElement);
+                            });
+                        }
+                        divElement.innerHTML = `<div class="modal fade" id="${idElement}" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">${titleElement}</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        ${htmlFormElements}
+                                    </div>
+                                    <div class="modal-footer">
+                                        ${buttonSucces}
+                                        <button type="button" class="btn ml-2 btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    }else if(element.type == 'separator'){
+                        divElement.innerHTML = `<div class="col-12 mt-2 mb-2 p-2  ">
+                            <h3 class="border-bottom pb-2">${titleElement}</h3>
+                        </div>`;
+                    }else if(element.type == 'carrousel-img'){
+                        divElement.innerHTML = ` 
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="carousel-${idElement}" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner" id="carouselInner-${idElement}"></div>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${idElement}" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon"></span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-${idElement}" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
                     }
                     rowDiv.appendChild(divElement);
                 });
@@ -419,21 +603,84 @@ function createElements(dataConfig = null){
 
 //-Funciona para pintar graficas de manera generica
 let chartInstances = {};
-function drawChartElement(canvasId, type, datasets, dataconfig) {
+function drawChartElement(canvasId, type, datasets, dataconfig, datalabels = true, flagColors = false) {
     if (document.getElementById(canvasId)){
         var ctx = document.getElementById(canvasId).getContext('2d');
         if (chartInstances[canvasId]) {
             chartInstances[canvasId].destroy();
         }
-        datasets = setColorsDatasets(datasets, type)
-        chartInstances[canvasId] = new Chart(ctx, {
+        let config = {
             type: type, 
-            data: datasets,
-            plugins: [ChartDataLabels],
+            data: datasets, 
             options: dataconfig
-        });
+        }
+        if(datalabels){
+            config['plugins'] = [ChartDataLabels];
+        }
+        if(!flagColors){
+            datasets = setColorsDatasets(datasets, type);
+        }
+        chartInstances[canvasId] = new Chart(ctx, config);
     }
 }
+
+//-Funciona para pintar las imagenes dentro de un Carrousel
+function drawCarrouselImgs(divId, listImg){
+    const container = document.getElementById(`carouselInner-${divId}`);
+    if (!container) return;
+    const chunkSize = 10; // 2 filas de 5 columnas
+    const slides = [];
+
+    // Divide en bloques de 10 imágenes
+    for (let i = 0; i < listImg.length; i += chunkSize) {
+        slides.push(listImg.slice(i, i + chunkSize));
+    }
+
+    // Limpia el contenido anterior
+    container.innerHTML = '';
+
+
+    slides.forEach((slideImages, index) => {
+        const isActive = index === 0 ? ' active' : '';
+        const slide = document.createElement('div');
+        slide.className = `carousel-item${isActive}`;
+
+        const innerContainer = document.createElement('div');
+        innerContainer.className = 'container';
+
+        // Primer fila
+        const row1 = document.createElement('div');
+        row1.className = 'row';
+        for (let i = 0; i < 5; i++) {
+            const col = document.createElement('div');
+            col.className = 'col';
+            if (slideImages[i]) {
+                col.innerHTML = `<img src="${slideImages[i]}" class="d-block w-100 img-fluid" alt="">`;
+            }
+            row1.appendChild(col);
+        }
+
+        // Segunda fila
+        const row2 = document.createElement('div');
+        row2.className = 'row mt-2';
+        for (let i = 5; i < 10; i++) {
+            const col = document.createElement('div');
+            col.className = 'col';
+            if (slideImages[i]) {
+                col.innerHTML = `<img src="${slideImages[i]}" class="d-block w-100 img-fluid" alt="">`;
+            }
+            row2.appendChild(col);
+        }
+
+        innerContainer.appendChild(row1);
+        innerContainer.appendChild(row2);
+        slide.appendChild(innerContainer);
+        container.appendChild(slide);
+    });
+}
+
+
+
 
 //-Funciona para agregar diferentes paletas de color
 function setColorsDatasets(data = null, type = null){
@@ -442,6 +689,7 @@ function setColorsDatasets(data = null, type = null){
             let array_colors = data.labels.length > 0 ? getPAlleteColors(6, data.labels.length) : getPAlleteColors(6, 5);
             if(type == 'line'){
                 data.datasets[0].borderColor = array_colors;
+                data.datasets[0].backgroundColor = array_colors;
                 data.datasets[0].fill = false;
             }else{
                 data.datasets[0].backgroundColor = array_colors;
@@ -449,10 +697,10 @@ function setColorsDatasets(data = null, type = null){
             }
 
         }else if(data.datasets.length > 1){
-            console.log('datasets.labels',data)
-            let array_colors = data.labels.length > 0 ? getPAlleteColors(6,  data.labels.length) : getPAlleteColors(6, 5);
+            let array_colors = data.labels.length > 0 ? getPAlleteColors(6,  data.datasets.length) : getPAlleteColors(6, 5);
             data.datasets.forEach((item, index) => {
                 if(type == 'line'){
+                    item.backgroundColor = array_colors[index];
                     item.borderColor = array_colors[index];
                     item.fill = array_colors[index];
 
@@ -463,22 +711,28 @@ function setColorsDatasets(data = null, type = null){
 
             });
         }
+        
         return data;
     }
 }
 
 //-Funciona para llenar datos de una card
 function drawCardElement(cardId, value, scroll = null) {
-    if(scroll != null){
-        document.getElementById(`text-${cardId}`).textContent = `${value}%`;
-        document.getElementById(`progress-${cardId}`).style.width = value;
-    }else{
-        document.getElementById(`text-${cardId}`).textContent = value;
+    const element = document.getElementById(`text-${cardId}`);
+    if (element) {
+        if(scroll != null){
+            document.getElementById(`text-${cardId}`).textContent = `${value}%`;
+            document.getElementById(`progress-${cardId}`).style.width = value;
+        }else{
+            document.getElementById(`text-${cardId}`).textContent = value;
+        }
+    } else {
+        console.error('Element not found!',`text-${cardId}`);
     }
 }
 
 //-Función para pintar table
-function drawTableElement(tableId, tableData, tableColums, tableConfig = null){
+function drawTableElement(tableId, tableData, tableColums, nameDownload = null, tableConfig = null, desingPDF = null ){
     //----Config default
     let configDefault = {
         height: "400px",
@@ -497,22 +751,57 @@ function drawTableElement(tableId, tableData, tableColums, tableConfig = null){
             configDefault[key] = value
         }
     }
-    //----Table
+    let nameFileXlsx = 'data.xlsx';
+    let nameFileCsv = 'data.csv';
+    let nameSheet = 'data';
+    if(nameDownload != null){
+        nameFileXlsx = `${nameDownload}.xlsx`;
+        nameFileCsv = `${nameDownload}.csv`;
+        nameSheet = `${nameDownload}`;
+    }
+    //----Table Options XLS
     let table = new Tabulator(`#${tableId}`, configDefault);
-
     if (document.getElementById(`download-xls-${tableId}`)){
         document.getElementById(`download-xls-${tableId}`).replaceWith(document.getElementById(`download-xls-${tableId}`).cloneNode(true));
         document.getElementById(`download-xls-${tableId}`).addEventListener("click", function (){
-        table.download("xlsx", "data.xlsx", {sheetName:"data"});
+            table.download("xlsx", nameFileXlsx , {sheetName:nameSheet});
         });
     }
 
+    //----Table Options CSV
     if (document.getElementById(`download-csv-${tableId}`)){
         document.getElementById(`download-csv-${tableId}`).replaceWith(document.getElementById(`download-csv-${tableId}`).cloneNode(true));
         document.getElementById(`download-csv-${tableId}`).addEventListener("click", function (){
-          table.download("csv", "data.csv");
+            table.download("csv", nameFileCsv);
         });
     }
+
+    //----Table Options PDF
+    if (document.getElementById(`download-pdf-${tableId}`)){
+        document.getElementById(`download-pdf-${tableId}`).replaceWith(document.getElementById(`download-pdf-${tableId}`).cloneNode(true));
+        document.getElementById(`download-pdf-${tableId}`).addEventListener("click", function (){
+            table.download("pdf", "data.pdf", desingPDF);
+        });
+    }
+
+    //----Table Options EXPANDED
+    let isExpanded = false;
+
+    if (document.getElementById(`button-expand-all-${tableId}`)) {
+        document.getElementById(`button-expand-all-${tableId}`).addEventListener("click", function () {
+            table.getRows().forEach(row => {
+                if (row.getTreeChildren().length > 0) {
+                    if (isExpanded) {
+                        row.treeCollapse();
+                    } else {
+                        row.treeExpand();
+                    }
+                }
+            });
+            isExpanded = !isExpanded;
+        });
+    }
+
 }
 
 //--Funciona para cargar  estilos
@@ -537,7 +826,15 @@ function loadComponent(content, file) {
     .catch(error => console.error("Error:", error));
 }
 
+//----Funciona para escoger la URL de petición
 function getUrlRequest(type) {
+    //-----HOST
+    const params = new URLSearchParams(window.location.search);
+    const env = params.get("env");
+    if(env == 'preprod'){
+        URL = "https://preprod.linkaform.com/";
+    }
+    //-----ENDPOINT
     if(type == 'script'){
         return `${URL}/api/infosync/scripts/run/`
     }else if(type == 'login'){
@@ -546,4 +843,170 @@ function getUrlRequest(type) {
         return `${URL}/api/infosync/cloud_upload/`
     }
     return ''
+}
+
+//------Funciona para saber cual era la anterior tab y redirigir
+function redirection_before_tab() {
+    // Obtener la URL de la pestaña anterior
+    const previousTab = document.referrer;
+    if (previousTab) {
+        let urlRedirection = previousTab;
+        window.location.href = urlRedirection;
+    } 
+}
+
+//-----Funciona para ocultar loading
+function hide_loading() {
+    const loading = document.getElementById('loading');
+    const mainContent = document.getElementById('wrapper');
+    loading.style.visibility = 'hidden';
+    mainContent.classList.remove('hidden'); 
+}
+
+
+function hideLoadingComponent() {
+    const loading = document.getElementById('content-div-loadingComponent');
+    loading.style.visibility = 'hidden';
+}
+
+//-----Funciona para mostrar loading
+function showLoadingComponent() {
+    const loading = document.getElementById('content-div-loadingComponent');
+    const empty = document.getElementById('content-div-empty');
+
+    /*
+    const divElements = document.querySelectorAll('.div-content-element');
+    divElements.forEach(div => {
+        div.style.visibility = 'hidden';
+    });
+    */
+    loading.style.visibility = 'visible';
+    empty.style.display = 'none';
+}
+
+//-----Funciona para mostrar todos los elementos (graficas, tablas, cards) bajo la estructura del template
+function showElements() {
+    const divEmpty = document.querySelectorAll('.div-content-empty');
+    const divElements = document.querySelectorAll('.div-content-element');
+    divElements.forEach(div => {
+      div.style.visibility = 'visible';
+    });
+    divEmpty.forEach(div => {
+      div.style.display = 'none';
+    });
+}
+
+//-----Prototipo de KANVAAS
+function drawKanva(data) {
+    data.forEach((element) => {
+        if (element.key) {
+            let targetDiv = document.getElementById(element.key);
+
+            if (targetDiv) {
+                let divCustom = `
+                    <div 
+                        class="card mb-3 draggable" 
+                        draggable="true" 
+                        ondragstart="dragCard(event)" 
+                        id="card-${element.key}"
+                    >
+                        <div class="card-body">
+                            <h6 class="card-title">${element.title}</h6>
+                            <p 
+                                class="badge"
+                                style="background-color: ${element.color ? element.color : '#28a745'};"
+                            >
+                                ${element.type}
+                            </p>
+                            <p class="card-text">${element.name}</p>
+                            <small>${element.date}</small>
+                        </div>
+                    </div>
+                `;
+                targetDiv.innerHTML += divCustom;
+            }
+        }
+    });
+}
+
+function dragCard(event) {
+    // Guardar el ID del elemento que se está arrastrando
+    event.dataTransfer.setData("text", event.target.id);
+}
+
+function allowDrop(event) {
+    // Permitir el drop solo en zonas válidas
+    console.log('Es valido?',event.target.classList.contains("dropzone"))
+    if (event.target.classList.contains("dropzone")) {
+        event.preventDefault();
+    }
+}
+
+function dropCard(event) {
+    // Prevenir el comportamiento predeterminado
+    event.preventDefault();
+
+    // Verificar que el objetivo es una zona de drop válida
+    console.log('Es valido?',event.target.classList.contains("dropzone"))
+    if (event.target.classList.contains("dropzone")) {
+        // Obtener el ID del elemento arrastrado
+        const cardId = event.dataTransfer.getData("text");
+        const draggedElement = document.getElementById(cardId);
+
+        // Añadir el elemento arrastrado al contenedor destino
+        event.target.appendChild(draggedElement);
+    }
+}
+
+//-----Funcion para Calendario
+function drawCalendar(id, data, config = null){
+    //----Config Default
+    let configDefault = {
+        locale : 'es',
+        selectable : false,
+        aspectRatio: 2,
+        schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+        initialView: window.innerWidth < 768 ? 'dayGridMonth' : 'dayGridMonth', 
+        height: window.innerWidth < 768 ? 800 : 1200,
+        headerToolbar: {
+            left: 'prev,next', 
+            center: 'title',
+            right: 'today',
+        },
+        windowResize: function (view) {
+            const newView = window.innerWidth < 768 ? 'dayGridMonth' : 'dayGridMonth';
+            calendar.changeView(newView);
+        },
+    }
+    if(config){ configDefault = config;}
+    
+    //----Data Events
+    configDefault['events'] = data ? data : [];
+
+    //----Start Calendar
+    const calendarDiv = document.getElementById(id);
+    const calendar = new FullCalendar.Calendar(calendarDiv, configDefault);
+    calendar.render();
+}
+
+//-----Función para crear Modal BOdy
+function drawModalBody(itemElement){
+    //---Props
+    const type = itemElement.type ? itemElement.type : '';
+    const title = itemElement.title ? itemElement.title : '';
+    const id = itemElement.id ? itemElement.id : '';
+    const checked = itemElement.checked ? itemElement.checked : '';
+    const name = itemElement.name ? itemElement.name : '';
+
+    //---Elements
+    if (type == 'p') {
+        return  `<p id="p-${id}"><strong>${title}</strong> <span id="${id}"></span></p>`
+    }else if(type == 'switch'){
+        const element = `<div class="form-check form-switch">
+            <input class="form-check-input switch ${name}" type="checkbox" name="${name}" id="${id}" ${checked}>
+            <label class="form-check-label">${title}</label>
+        </div>`;
+        return element;
+    }
+    return '';
 }

@@ -30,7 +30,7 @@ window.onload = function(){
     account_id= parseInt(getCookie('userId_soter'))||""
     // fillCatalogs();
     // getAllData();
-    getAllDataPases()
+    // getAllDataPases()
 }
 
 function setModal(type = 'none',id ="", nombre='', email=''){

@@ -293,7 +293,6 @@ function getPAlleteColors(pallete,number){
   }else if(pallete == 13){
     arrayColors = chroma.scale(["#007CB3", "#EFB03B"]).mode('lch').colors(number);
   }
-
   return arrayColors;
 }
 

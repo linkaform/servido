@@ -24,6 +24,7 @@ window.onload = function(){
 
     setValueUserLocation('turnos');
     getAllData(getCookie("userCaseta"),getCookie("userLocation"),false);
+    getStats(getCookie("userCaseta"),getCookie("userLocation"),false);
     changeButtonColor();
     customNavbar(getValueUserLocation(), getStatusTurn());
     drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,[], "420px");
@@ -294,6 +295,54 @@ function getAllData(area="", location="", loading=false){
     });
 }
 
+function getStats(area = "", location = "", loading = false) {
+    if (loading) {
+        loadingService();
+    }
+
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'get_stats.py',
+            option: 'get_stats',
+            area: area,
+            location: location,
+            page: 'Turnos'
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userJwt
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(res => {
+        if (res.success) {
+            const data = res.response.data;
+
+            // Actualización de valores en el DOM
+            $("#textPersonalDentro").text(data.in_invitees);
+            $("#textArticulosConsesionados").text(data.articulos_concesionados);
+            $("#textIncidentesPendientes").text(data.incidentes_pendites);
+            $("#textVehiculosEstacionados").text(data.total_vehiculos_dentro);
+            $("#textGafetesPendientes").text(data.gafetes_pendientes);
+        } else {
+            console.error('Error en los datos recibidos:', res.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error en fetch:', error.message || error);
+    })
+    .finally(() => {
+        if (loading) {
+            Swal.close(); // Cierra el servicio de carga si estaba activo
+        }
+    });
+}
 
 function loadBooths(){
     $("#buttonCambiarCaseta").hide();
@@ -381,11 +430,11 @@ function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
      }
      $("#textFechaInicioCaseta").text(casetaOcupadaFecha);
 
-     $("#textPersonalDentro").text(booth_stats.in_invitees);
-     $("#textArticulosConsesionados").text(booth_stats.articulos_concesionados);
-     $("#textIncidentesPendientes").text(booth_stats.incidentes_pendites);
-     $("#textVehiculosEstacionados").text(booth_stats.vehiculos_estacionados);
-     $("#textGafetesPendientes").text(booth_stats.gefetes_pendientes);
+    //  $("#textPersonalDentro").text(booth_stats.in_invitees);
+    //  $("#textArticulosConsesionados").text(booth_stats.articulos_concesionados);
+    //  $("#textIncidentesPendientes").text(booth_stats.incidentes_pendites);
+    //  $("#textVehiculosEstacionados").text(booth_stats.vehiculos_estacionados);
+    //  $("#textGafetesPendientes").text(booth_stats.gefetes_pendientes);
     $("#textEstatusCaseta").removeClass();
     $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
     setCookie("userTurn",guard.status_turn, 7);

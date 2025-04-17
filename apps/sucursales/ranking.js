@@ -263,11 +263,6 @@ function getDrawTable(id, columnsData, tableData){
             // Parametros - Posición weigth / Posición heigt / Weigth / Heigth 
             doc.addImage(img_apymsa1, 'PNG', 25, 2, 180, 80);
             doc.addImage(img_apymsa2, 'PNG', 600, 20, 200, 60);
-
-
-
-
-
             doc.setFontSize(11);
             return {
               styles: {
@@ -337,8 +332,6 @@ function getDownloadPdf(id = 0){
       if (res.response.json.download.data){
         Swal.close()
         link = res.response.json.download.data.download_url;
-        console.log('LINK',link)
-
         Object.assign(document.createElement('a'), {
           target: '_blank',
           rel: 'noopener noreferrer',

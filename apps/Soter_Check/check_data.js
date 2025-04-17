@@ -117,7 +117,7 @@ const checkListData = [
       "Raiser 4,5, con presiones correctas sin fugas y libres de obstrucción",
       "Orden y Limpieza",
       "Personal en esta área con su EPP completo",
-      "Tractores sin enganchar al cargar en rampa de enarques",
+      "Tractores sin enganchar al cargar en rampa de embarques",
       "Semáforos funcionando correctamente",
       "Calzas y gatas colocadas según el estatus de la cajas",
       "Operadores parados  cumpliendo las medidas de seguridad",
