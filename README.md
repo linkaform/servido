@@ -34,7 +34,7 @@ Open Source project formed by a collection of templates that helps you building 
 
 ```
 cd docker
-docker-compose up -d
+docker compose up -d
 ```
 
 Once the project is running you can access:
