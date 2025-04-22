@@ -1,10 +1,14 @@
+
+
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'card', col: '3', id:'cardFirst', title:'Total de Inspecciones', hexadecimal:'#FF5733', cardIcon: '<i class="fa-solid fa-list-ol mr-4 fa-2x text-gray-300"></i>'},
-            { type:'card', col: '3', id:'cardSecond', title:'Calificacion Promedio', hexadecimal:'#FF8D33', cardIcon: '<i class="fa-solid fa-ranking-star mr-4 fa-2x text-gray-300"></i>'},
-            { type:'card', col: '3', id:'cardThird', title:'Porcentaje de Inspeccion', hexadecimal:'#FFC133', cardIcon: '<i class="fa-solid fa-percent mr-4 fa-2x text-gray-300"></i>'},
-            { type:'card', col: '3', id:'cardFourth', title:"Total de No's", hexadecimal:'#FFE733', cardIcon: '<i class="fa-solid fa-circle-xmark mr-4 fa-2x text-gray-300"></i>'},
+            { type:'card', col: '2', id:'cardFirst', title:'Total de Inspecciones', hexadecimal:'#FF5733', cardIcon: '<i class="fa-solid fa-list-ol mr-4 fa-2x text-gray-300"></i>'},
+            { type:'card', col: '2', id:'cardSecond', title:'Total en Proceso', hexadecimal:'#A569BD', cardIcon: '<i class="fa-solid fa-list-ol mr-4 fa-2x text-gray-300"></i>'},
+            { type:'card', col: '2', id:'cardThird', title:'Total en Incompletas', hexadecimal:'#F7DC6F', cardIcon: '<i class="fa-solid fa-list-ol mr-4 fa-2x text-gray-300"></i>'},
+            { type:'card', col: '2', id:'cardFourth', title:'Total Completadas', hexadecimal:'#3498DB', cardIcon: '<i class="fa-solid fa-list-ol mr-4 fa-2x text-gray-300"></i>'},
+            { type:'card', col: '2', id:'cardFiveth', title:'Calificacion Promedio', hexadecimal:'#FF8D33', cardIcon: '<i class="fa-solid fa-ranking-star mr-4 fa-2x text-gray-300"></i>'},
+            { type:'card', col: '2', id:'cardSixth', title:"Total de Puntos", hexadecimal:'#FFE733', cardIcon: '<i class="fa-solid fa-circle-xmark mr-4 fa-2x text-gray-300"></i>'},
         ] 
     },
     { class:'', _children : [
@@ -13,10 +17,54 @@ let dicReportContext = [
         ] 
     },
     { class:'', _children : [
-            { type:'chart', col: '12', id:'chartFirst', title:'Desempeño mensual'},
+            { type:'chart', col: '8', id:'chartFirst', title:'Desempeño mensual'},
+            { type:'chart', col: '4', id:'chartSecond', title:'Progreso en Auditorias'},
+        ] 
+    },
+    { class:'', _children : [
+            { type:'carrousel-img', col: '12', id:'carrouselFirst', title:'Evidencias'},
         ] 
     },
 ];
+
+/*
+    
+*/
+
+//------Variables de Diseño
+const cardKeys = [
+    "total_inspecciones",
+    "total_proceso",
+    "total_completada",
+    "total_nos",
+    "promedio_cumplimiento",
+];
+//porcentaje_inspeccion
+
+
+
+
+let customConfig1 = {
+    height: "500px",
+    layout: "fitData",
+    rowFormatter: function(row) {
+        row.getElement().style.fontSize = "10px";
+        row.getElement().style.height = "20px";
+    },
+    cellFormatter: function(cell) {
+        cell.getElement().style.padding = "1px 1px";
+    },
+    initialSort: [
+        { column: "piso", dir: "desc" }
+    ],
+}
+
+
+let customConfig2 = {
+    height: "600px",
+}
+
+
 
 //-----Configuraciones de la tabla
 let columsTable1 = [
@@ -28,9 +76,17 @@ let columsTable1 = [
             hozAlign:"center",
             formatter: function(cell) {
                 var value = cell.getValue();
-                if (value.status === "revisada") {
+                const status = value.status?.toLowerCase().trim();
+                console.log('cell',cell)
+                if (status === "offline") {
+                    cell.getElement().style.backgroundColor = "lightgray";
+                } else if (status === "proceso") {
+                    console.log('|||||', value.status);
+                    cell.getElement().style.backgroundColor = "yellow";
+                } else if (status === "completada") {
                     cell.getElement().style.backgroundColor = "lightgreen";
                 }
+
                 return value.numero;
             },
             cellClick: function (e, cell) {
@@ -68,7 +124,14 @@ let columsTable1 = [
             hozAlign:"center",
             formatter: function(cell) {
                 var value = cell.getValue();
-                if (value.status === "revisada") {
+                 const status = value.status?.toLowerCase().trim();
+                 console.log('cell',cell)
+                if (status === "offline") {
+                    cell.getElement().style.backgroundColor = "lightgray";
+                } else if (status === "proceso") {
+                    console.log('|||||', value.status);
+                    cell.getElement().style.backgroundColor = "yellow";
+                } else if (status === "completada") {
                     cell.getElement().style.backgroundColor = "lightgreen";
                 }
                 return value.numero;
@@ -94,7 +157,14 @@ let columsTable1 = [
             hozAlign:"center",
             formatter: function(cell) {
                 var value = cell.getValue();
-                if (value.status === "revisada") {
+                 const status = value.status?.toLowerCase().trim();
+                 console.log('cell',cell)
+                if (status === "offline") {
+                    cell.getElement().style.backgroundColor = "lightgray";
+                } else if (status === "proceso") {
+                    console.log('|||||', value.status);
+                    cell.getElement().style.backgroundColor = "yellow";
+                } else if (status === "completada") {
                     cell.getElement().style.backgroundColor = "lightgreen";
                 }
                 return value.numero;
@@ -120,7 +190,14 @@ let columsTable1 = [
             hozAlign:"center",
             formatter: function(cell) {
                 var value = cell.getValue();
-                if (value.status === "revisada") {
+                 const status = value.status?.toLowerCase().trim();
+                 console.log('cell',cell)
+                if (status === "offline") {
+                    cell.getElement().style.backgroundColor = "lightgray";
+                } else if (status === "proceso") {
+                    console.log('|||||', value.status);
+                    cell.getElement().style.backgroundColor = "yellow";
+                } else if (status === "completada") {
                     cell.getElement().style.backgroundColor = "lightgreen";
                 }
                 return value.numero;
@@ -146,7 +223,14 @@ let columsTable1 = [
             hozAlign:"center",
             formatter: function(cell) {
                 var value = cell.getValue();
-                if (value.status === "revisada") {
+                 const status = value.status?.toLowerCase().trim();
+                 console.log('cell',cell)
+                if (status === "offline") {
+                    cell.getElement().style.backgroundColor = "lightgray";
+                } else if (status === "proceso") {
+                    console.log('|||||', value.status);
+                    cell.getElement().style.backgroundColor = "yellow";
+                } else if (status === "completada") {
                     cell.getElement().style.backgroundColor = "lightgreen";
                 }
                 return value.numero;
@@ -172,7 +256,14 @@ let columsTable1 = [
             hozAlign:"center",
             formatter: function(cell) {
                 var value = cell.getValue();
-                if (value.status === "revisada") {
+                 const status = value.status?.toLowerCase().trim();
+                 console.log('cell',cell)
+                if (status === "offline") {
+                    cell.getElement().style.backgroundColor = "lightgray";
+                } else if (status === "proceso") {
+                    console.log('|||||', value.status);
+                    cell.getElement().style.backgroundColor = "yellow";
+                } else if (status === "completada") {
                     cell.getElement().style.backgroundColor = "lightgreen";
                 }
                 return value.numero;
@@ -198,7 +289,14 @@ let columsTable1 = [
             hozAlign:"center",
             formatter: function(cell) {
                 var value = cell.getValue();
-                if (value.status === "revisada") {
+                 const status = value.status?.toLowerCase().trim();
+                 console.log('cell',cell)
+                if (status === "offline") {
+                    cell.getElement().style.backgroundColor = "lightgray";
+                } else if (status === "proceso") {
+                    console.log('|||||', value.status);
+                    cell.getElement().style.backgroundColor = "yellow";
+                } else if (status === "completada") {
                     cell.getElement().style.backgroundColor = "lightgreen";
                 }
                 return value.numero;
@@ -224,7 +322,14 @@ let columsTable1 = [
             hozAlign:"center",
             formatter: function(cell) {
                 var value = cell.getValue();
-                if (value.status === "revisada") {
+                 const status = value.status?.toLowerCase().trim();
+                 console.log('cell',cell)
+                if (status === "offline") {
+                    cell.getElement().style.backgroundColor = "lightgray";
+                } else if (status === "proceso") {
+                    console.log('|||||', value.status);
+                    cell.getElement().style.backgroundColor = "yellow";
+                } else if (status === "completada") {
                     cell.getElement().style.backgroundColor = "lightgreen";
                 }
                 return value.numero;
@@ -250,7 +355,14 @@ let columsTable1 = [
             hozAlign:"center",
             formatter: function(cell) {
                 var value = cell.getValue();
-                if (value.status === "revisada") {
+                 const status = value.status?.toLowerCase().trim();
+                 console.log('cell',cell)
+                if (status === "offline") {
+                    cell.getElement().style.backgroundColor = "lightgray";
+                } else if (status === "proceso") {
+                    console.log('|||||', value.status);
+                    cell.getElement().style.backgroundColor = "yellow";
+                } else if (status === "completada") {
                     cell.getElement().style.backgroundColor = "lightgreen";
                 }
                 return value.numero;
@@ -417,6 +529,7 @@ let dataTable2 = [
     },
 ];
 
+
 //-----Configuiraciónes de las graficas
 var setOptions1 = {
     responsive: true,
@@ -466,4 +579,46 @@ var dataChart1 = {
             pointBackgroundColor: 'rgba(255, 0, 0, 1)',
         }
     ]
+};
+
+//----Example
+const percentage = 72; // Cambia este valor entre 0 y 100
+
+const COLORS = (val) => {
+  if (val <= 35) return '#ff4c4c';     // rojo
+  if (val <= 70) return '#ffcc00';     // amarillo
+  return '#88e025';                    // verde
+};
+
+var setOptions2 = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        title: {
+            display: false,
+        },
+        datalabels: {
+            color: 'black',
+            font: {
+                size: 15
+            }
+        },
+        tooltip: { enabled: false },
+    },
+    responsive: true, 
+    maintainAspectRatio: false ,
+};
+
+var dataChart2 = {
+   datasets: [{
+        data: [percentage, 100 - percentage],
+        backgroundColor: [COLORS(percentage), '#eaeaea'],
+        borderWidth: 0,
+        cutout: '80%',
+        circumference: 180,
+        rotation: 270
+    }]
 };

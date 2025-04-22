@@ -579,15 +579,7 @@ function createElements(dataConfig = null){
                                     <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div id="carousel-${idElement}" class="carousel slide" data-bs-ride="carousel">
-                                        <div class="carousel-inner" id="carouselInner-${idElement}"></div>
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${idElement}" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon"></span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-${idElement}" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon"></span>
-                                        </button>
-                                    </div>
+                                    <div id="carousel-${idElement}" class="row overflow-auto custom-carousel"></div>
                                 </div>
                             </div>
                         `;
@@ -625,59 +617,33 @@ function drawChartElement(canvasId, type, datasets, dataconfig, datalabels = tru
 }
 
 //-Funciona para pintar las imagenes dentro de un Carrousel
-function drawCarrouselImgs(divId, listImg){
-    const container = document.getElementById(`carouselInner-${divId}`);
+function drawCarrouselImgs(divId, listImg) {
+    const container = document.getElementById(`carousel-${divId}`);
+    console.log('Entra--------',container)
     if (!container) return;
-    const chunkSize = 10; // 2 filas de 5 columnas
-    const slides = [];
-
-    // Divide en bloques de 10 imágenes
-    for (let i = 0; i < listImg.length; i += chunkSize) {
-        slides.push(listImg.slice(i, i + chunkSize));
-    }
-
     // Limpia el contenido anterior
     container.innerHTML = '';
 
-
-    slides.forEach((slideImages, index) => {
-        const isActive = index === 0 ? ' active' : '';
-        const slide = document.createElement('div');
-        slide.className = `carousel-item${isActive}`;
-
-        const innerContainer = document.createElement('div');
-        innerContainer.className = 'container';
-
-        // Primer fila
-        const row1 = document.createElement('div');
-        row1.className = 'row';
-        for (let i = 0; i < 5; i++) {
+    listImg.forEach(imgObj => {
+        const fileUrl = imgObj?.file_url;
+        if (fileUrl) {
             const col = document.createElement('div');
-            col.className = 'col';
-            if (slideImages[i]) {
-                col.innerHTML = `<img src="${slideImages[i]}" class="d-block w-100 img-fluid" alt="">`;
-            }
-            row1.appendChild(col);
-        }
+            col.className = 'col-xl-2 col-lg-2 col-sm-12 mb-3';
 
-        // Segunda fila
-        const row2 = document.createElement('div');
-        row2.className = 'row mt-2';
-        for (let i = 5; i < 10; i++) {
-            const col = document.createElement('div');
-            col.className = 'col';
-            if (slideImages[i]) {
-                col.innerHTML = `<img src="${slideImages[i]}" class="d-block w-100 img-fluid" alt="">`;
-            }
-            row2.appendChild(col);
-        }
+            const img = document.createElement('img');
+            img.src = fileUrl;
+            img.alt = '';
+            img.className = 'img-fluid';
+            img.style.width = '360px';
+            img.style.height = '360px';
+            img.style.objectFit = 'cover';
 
-        innerContainer.appendChild(row1);
-        innerContainer.appendChild(row2);
-        slide.appendChild(innerContainer);
-        container.appendChild(slide);
+            col.appendChild(img);
+            container.appendChild(col);
+        }
     });
 }
+
 
 
 

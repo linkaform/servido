@@ -62,3 +62,8 @@ svg path,
 svg rect{
   fill: #16102f;
 }
+
+.custom-carousel {
+    max-height: 500px;
+    height: 500px;
+}
