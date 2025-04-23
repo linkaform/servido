@@ -23,6 +23,7 @@ let columsTable1 = [
     { title:"Ciudad", field:'city',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:250},
     { title:"Cadena", field:'market',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:250},
     { title:"Tienda", field:'store',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:250},
+    { title:"Kilometraje", field:'km',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
     { title:"Fecha Inicio", field:'dateStart',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
     { title:"Hrs Jornada", field:'hourStart',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
     { title:"Fecha Final", field:'dateEnd',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
@@ -57,6 +58,7 @@ let  dataTable1 = [
         "hourEnd": "2025/04/13",
         "time": "09:00:00",
         "hoursday": "Hrs traslados: 01:00:00",
+        "km":5,
         "_children": [
           {
             "user": "402-1987",
@@ -97,6 +99,7 @@ let  dataTable1 = [
         "hourEnd": "2025/04/13",
         "time": "08:00:00",
         "hoursday": "Hrs traslados: 01:00:00",
+        "km":7,
         "_children": [
           {
             "user": "512-8844",
@@ -137,6 +140,7 @@ let  dataTable1 = [
         "hourEnd": "2025/04/13",
         "time": "07:30:00",
         "hoursday": "Hrs traslados: 00:45:00",
+        "km":9,
         "_children": [
           {
             "user": "781-1133",
@@ -177,6 +181,7 @@ let  dataTable1 = [
         "hourEnd": "2025/04/13",
         "time": "07:00:00",
         "hoursday": "Hrs traslados: 01:00:00",
+        "km":8,
         "_children": [
           {
             "user": "621-7720",
