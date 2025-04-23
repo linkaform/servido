@@ -1,27 +1,5 @@
+
 let dataCatalogs = [];
-const cardKeys = [
-  "totalinspecciones",
-  "calificacionpromedio",
-  "porcentajeinspeccion",
-  "totalnos",
-];
-let customConfig1 = {
-  height: "500px",
-  layout: "fitData",
-  rowFormatter: function(row) {
-    row.getElement().style.fontSize = "10px";
-    row.getElement().style.height = "20px";
-  },
-  cellFormatter: function(cell) {
-      cell.getElement().style.padding = "1px 1px";
-  },
-  initialSort: [
-    { column: "piso", dir: "desc" }
-  ],
-}
-let customConfig2 = {
-  height: "600px",
-}
 
 window.onload = function(){
   createElements(dicReportContext);
@@ -41,16 +19,21 @@ function loadDemoData(){
     drawCardElement('cardSecond', 30);
     drawCardElement('cardThird', 40);
     drawCardElement('cardFourth', 50);
+    drawCardElement('cardFiveth', 50);
+    drawCardElement('cardSixth', 50);
+
     drawTableElement('tableFirst', dataTable1, columsTable1, null, customConfig1);
     drawTableElement('tableSecond', dataTable2, columsTable2, null, customConfig2);
     drawChartElement('chartFirst','bar',dataChart1,setOptions1);
+    drawChartElement('chartSecond','doughnut',dataChart2,setOptions2,undefined,true);
     setTimeout(() => { hide_loading();}, 2000);
 }
 
 //-----LOAD DATA ACTIVE
 function loadData(data) {
   //----Search Catalogs
-  get_catalog();
+  //get_catalog();
+  
   //----Assing Events
   const buttonExecution = document.getElementById("buttonExecution");
   buttonExecution.addEventListener("click", () => {
@@ -96,30 +79,54 @@ async function getInformation(){
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-
+        
         //----CARDS
         const cardsData = data.cards_response
         if(cardsData){
-          cardKeys.forEach((key, index) => {
-            drawCardElement(`card${capitalize(index + 1)}`, cardsData[key] || 0);
-          });
+          drawCardElement('cardFirst', cardsData.total_inspecciones ? cardsData.total_inspecciones: 0)
+          drawCardElement('cardSecond', cardsData.total_proceso ? cardsData.total_proceso: 0)
+          drawCardElement('cardThird', cardsData.total_incompleta ? cardsData.total_incompleta : 0)
+          drawCardElement('cardFourth', cardsData.total_completada ? cardsData.total_completada : 0)
+          drawCardElement('cardFiveth',cardsData.promedio_cumplimiento ? cardsData.promedio_cumplimiento : 0)
+          drawCardElement('cardSixth',cardsData.total_nos ? cardsData.total_nos : 0)
         }
-
-        //----ELEMENTS
-        const cantidadHabitacionesPiso = data.cantidad_habitaciones || []
+        //----TABLE
+        const cantidadHabitacionesPiso = data.cantidad_habitaciones || [];
         let columnsTable1 = generarColumnasDinamicas(cantidadHabitacionesPiso);
         if(data.firstTable){
           drawTableElement('tableFirst', data.firstTable, columnsTable1, null, customConfig1);
         }
+
         if(data.secondTable){
           drawTableElement('tableSecond', data.secondTable, columsTable2, null, customConfig2);
         }
 
-        const graphicData = data.graphic_response
-        if(graphicData){
-            drawChartElement('chartFirst','bar', graphicData, setOptions1);
+        //----CHART
+        if(data.graphic_response){
+          drawChartElement('chartFirst','bar',  data.graphic_response, setOptions1);
         }
-    
+
+        if(cardsData.porcentaje_inspeccion){
+          const percentage = cardsData.porcentaje_inspeccion;
+          let data = {
+             datasets: [{
+                  data: [percentage, 100 - percentage],
+                  backgroundColor: [COLORS(percentage), '#eaeaea'],
+                  borderWidth: 0,
+                  cutout: '80%',
+                  circumference: 180,
+                  rotation: 270
+              }]
+          };
+          drawChartElement('chartSecond', 'doughnut', data, setOptions2, undefined, true);
+        }
+
+        //----Carrousel
+        if(data.firstImgs){
+          drawCarrouselImgs('carrouselFirst', data.firstImgs);
+        }
+
+
         //-----Style
         hideLoadingComponent();
         showElements();
@@ -151,7 +158,7 @@ function get_catalog(){
   .then((res) => {
       const data = res.response ? res.response.data.response : [];
       if(data.length > 0){
-        set_catalog_select(data, 'ubicacion', 'ubicacion');
+        set_catalog_select(data, 'hotel', 'hotel');
       }
   })
 }
@@ -179,7 +186,11 @@ function generarColumnasDinamicas(data) {
       formatter: function (cell) {
           var value = cell.getValue();
           var inspecciones = value?.inspecciones;
-          if (value?.status === "revisada") {
+          if (value?.status === "offline") {
+              cell.getElement().style.backgroundColor = "lightgray";
+          } else if (value?.status === "proceso") {
+              cell.getElement().style.backgroundColor = "yellow";
+          } else if (value?.status === "completada") {
               cell.getElement().style.backgroundColor = "lightgreen";
           }
           if(inspecciones?.length > 0){
@@ -216,3 +227,6 @@ function generarColumnasDinamicas(data) {
 
   return columnsTable;
 }
+
+
+
