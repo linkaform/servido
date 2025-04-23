@@ -2,9 +2,9 @@
 let dicReportContext = [
     { class:'', _children : [
             { type:'table', col: '12', id:'tableFirst', title:'Almacen Monterrey'},
-            { type:'table', col: '6', id:'tableSecond', title:'Almacen Monterrey (Sin disponibilidad para surtir)'},
+            { type:'table', col: '8', id:'tableSecond', title:'Almacen Monterrey (Sin disponibilidad para surtir)'},
             { type:'table', col: '12', id:'tableThird', title:'Almacen Guadalajara'},
-            { type:'table', col: '6', id:'tableFourth', title:'Almacen Guadalajara (Sin disponibilidad para surtir)'},
+            { type:'table', col: '8', id:'tableFourth', title:'Almacen Guadalajara (Sin disponibilidad para surtir)'},
         ] 
     },
 ];
@@ -22,12 +22,12 @@ let columsTable1 = [
     { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", headerFilter:"input", width: 150 },
     { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 250 },
     { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left",  headerFilter:"input", width: 200 },
-    { title: "% Inicial", field: "percentage_start", headerTooltip: true, hozAlign: "left", width: 125, formatterParams: { precision: 2,symbolAfter:"%"} },
-    { title: "Stock", field: "stock", headerTooltip: true, hozAlign: "center", width: 125, formatterParams: { precision: 2} },
-    { title: "Requiere", field: "procurment_qty", headerTooltip: true, hozAlign: "center", width: 125, formatterParams: { precision: 2} },
-    { title: "Traspaso", field: "handover", headerTooltip: true, hozAlign: "center", width: 125, formatterParams: { precision: 2} },
-    { title: "Stock Final", field: "stock_final", headerTooltip: true, hozAlign: "center", width: 150, formatterParams: { precision: 2} },
-    { title: "% Final", field: "percentage_finish", headerTooltip: true, hozAlign: "center", width: 125, formatterParams: { precision: 2,symbolAfter:"%"} },
+    { title: "% Inicial", field: "percentage_start", headerTooltip: true, hozAlign: "left", width: 125, formatter:'money', formatterParams: { precision: 2,symbolAfter:"%"} },
+    { title: "Stock", field: "stock", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
+    { title: "Requiere", field: "procurment_qty", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
+    { title: "Traspaso", field: "handover", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
+    { title: "Stock Final", field: "stock_final", headerTooltip: true, hozAlign: "center", width: 150, formatter:'money', formatterParams: { precision: 2} },
+    { title: "% Final", field: "percentage_finish", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2,symbolAfter:"%"} },
     { title: "Origen", field: "from", headerTooltip: true, hozAlign: "left", headerFilter:"input", width: 200 },
     {
         title: "Ajuste Traspaso", field: "adjust", headerTooltip: true, hozAlign: "left", width: 200,
@@ -59,11 +59,13 @@ const dataTable1 = [
 
 //----TABLE Monterrey
 let columsTable2 = [
-    { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", width: 100 },
-    { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 300 },
-    { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left", width: 250 },
-    { title: "% Inicial", field: "percentage_start", headerTooltip: true, hozAlign: "left", width: 150 },
-    { title: "Stock", field: "stock", headerTooltip: true, hozAlign: "center", width: 150 },
+    { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", headerFilter:"input", width: 150 },
+    { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 250 },
+    { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left",  headerFilter:"input", width: 200 },
+    { title: "% Inicial", field: "percentage_start", headerTooltip: true, hozAlign: "left", width: 125, formatter:'money', formatterParams: { precision: 2,symbolAfter:"%"} },
+    { title: "Stock", field: "stock", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
+    { title: "Requiere", field: "procurment_qty", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
+
 ];
 
 const dataTable2 = [
@@ -89,16 +91,16 @@ let columsTable3 = [
             cell.getRow().toggleSelect();
         }
     },
-    { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", width: 150 },
+    { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", headerFilter:"input", width: 150 },
     { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 250 },
-    { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left", width: 125 },
-    { title: "% Inicial", field: "percentage_start", headerTooltip: true, hozAlign: "left", width: 150 },
-    { title: "Stock", field: "stock", headerTooltip: true, hozAlign: "center", width: 150 },
-    { title: "Requiere", field: "procurment_qty", headerTooltip: true, hozAlign: "center", width: 125 },
-    { title: "Traspaso", field: "handover", headerTooltip: true, hozAlign: "center", width: 100 },
-    { title: "Stock Final", field: "stock_final", headerTooltip: true, hozAlign: "center", width: 75 },
-    { title: "% Final", field: "percentage_finish", headerTooltip: true, hozAlign: "center", width: 50 },
-    { title: "Origen", field: "from", headerTooltip: true, hozAlign: "left", width: 200 },
+    { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left",  headerFilter:"input", width: 200 },
+    { title: "% Inicial", field: "percentage_start", headerTooltip: true, hozAlign: "left", width: 125, formatter:'money', formatterParams: { precision: 2,symbolAfter:"%"} },
+    { title: "Stock", field: "stock", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
+    { title: "Requiere", field: "procurment_qty", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
+    { title: "Traspaso", field: "handover", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
+    { title: "Stock Final", field: "stock_final", headerTooltip: true, hozAlign: "center", width: 150, formatter:'money', formatterParams: { precision: 2} },
+    { title: "% Final", field: "percentage_finish", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2,symbolAfter:"%"} },
+    { title: "Origen", field: "from", headerTooltip: true, hozAlign: "left", headerFilter:"input", width: 200 },
     {
         title: "Ajuste Traspaso", field: "adjust", headerTooltip: true, hozAlign: "left", width: 200,
         editor: "number", editorParams: { min: 0 }
@@ -126,11 +128,13 @@ const dataTable3 = [
 
 
 let columsTable4     = [
-    { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", width: 100 },
+    { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", headerFilter:"input", width: 150 },
     { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 250 },
-    { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left", width: 250 },
-    { title: "% Inicial", field: "percentage_start", headerTooltip: true, hozAlign: "left", width: 150 },
-    { title: "Stock", field: "stock", headerTooltip: true, hozAlign: "center", width: 150 },
+    { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left",  headerFilter:"input", width: 200 },
+    { title: "% Inicial", field: "percentage_start", headerTooltip: true, hozAlign: "left", width: 125, formatter:'money', formatterParams: { precision: 2,symbolAfter:"%"} },
+    { title: "Stock", field: "stock", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
+    { title: "Requiere", field: "procurment_qty", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
+
 ];
 
 const dataTable4 = [

@@ -70,13 +70,13 @@ async function getInformation(){
             drawTableElement('tableFirst', data.tableFirst, columsTable1);
         }
         if (data.tableSecond) {
-            drawTableElement('tableSecond', data.tableSecond, columsTable1);
+            drawTableElement('tableSecond', data.tableSecond, columsTable2);
         }
         if (data.tableThird) {
-            drawTableElement('tableThird', data.tableThird, columsTable1);
+            drawTableElement('tableThird', data.tableThird, columsTable3);
         }
         if (data.tableFourth) {
-            drawTableElement('tableFourth', data.tableFourth, columsTable1);
+            drawTableElement('tableFourth', data.tableFourth, columsTable4);
         }
         //-----Style
         hideLoadingComponent();
