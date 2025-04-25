@@ -1,7 +1,7 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'table', col: '7', id:'tableFirst', title:'Ordenes de Trabajo'},
+            { type:'table', col: '7', id:'tableFirst', title:'Técnicos'},
         ] 
     },
 ];
