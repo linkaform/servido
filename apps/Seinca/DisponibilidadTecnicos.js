@@ -11,6 +11,7 @@ window.onload = function(){
     loadDemoData();
   } 
 }
+
 //-----LOAD DATA DEMO
 function loadDemoData(){
     drawTableElement('tableFirst', dataTable1, columsTable1, undefined, configTableCustom1);
@@ -19,6 +20,9 @@ function loadDemoData(){
 
 //-----LOAD DATA ACTIVE
 function loadData(data) {
+    //----Catalog
+    get_catalog();
+
     //----Assing Events
     const buttonExecution = document.getElementById("buttonExecution");
     buttonExecution.addEventListener("click", () => {
@@ -43,6 +47,7 @@ async function getInformation(){
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId,dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
+        
         if(data.response_first){
             drawTableElement('tableFirst', data.response_first, columsTable1, undefined, configTableCustom1);
         }
@@ -53,3 +58,26 @@ async function getInformation(){
     }
 }
 
+//-----GET CATALOG ACTIVE
+function get_catalog(){
+    const scriptId = getParameterURL('script_id');
+    const JWT = getCookie("userJwt");
+    fetch(getUrlRequest('script'), {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: scriptId,
+            option: 'catalog',
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+JWT
+        },
+    })
+    .then((res) => res.json())
+    .then((res) => {
+        const data = res.response && res.response.data ? res.response.data : [];
+        if(data.length > 0){
+            setCatalogSimple(data, 'tecnico');
+        }
+    })
+}

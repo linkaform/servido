@@ -7,18 +7,20 @@ let dicReportContext = [
 ];
 
 let columsTable1 = [
-    { title: "Técnico", field: 'tecnician', headerTooltip: true, hozAlign: "left", width: 250, responsive: 1,},
+    { title: "Técnico", field: 'tecnician', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 250, responsive: 1,},
     { title: "Disponibilidad", field: 'disponibility', 
         formatter: function(cell) {
             let value = cell.getValue();
-            if (value == 'Disponible') {
+            if (value == 'Salida') {
                 cell.getElement().style.backgroundColor = "#82e0aa";
-            }else if(value == 'Ocupado'){
+                return "Disponible"; 
+            }else if(value == 'Entrada'){
                 cell.getElement().style.backgroundColor = "#f5b7b1";
+                return "Ocupado"; 
             }
             return value || ""; 
         },
-        headerTooltip: true, hozAlign: "left", width: 150, responsive: 2 
+        headerTooltip: true, hozAlign: "left", width: 200, responsive: 2 
     },
     { title: "Cliente", field: 'client', headerTooltip: true, hozAlign: "left", width: 250, responsive: 2},
     { title: "Localidad", field: 'locality', headerTooltip: true, hozAlign: "left", width: 250, responsive: 2 },
