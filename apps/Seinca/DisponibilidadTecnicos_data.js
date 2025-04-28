@@ -1,7 +1,7 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'table', col: '8', id:'tableFirst', title:'Técnicos'},
+            { type:'table', col: '9', id:'tableFirst', title:'Técnicos'},
         ] 
     },
 ];
@@ -24,7 +24,7 @@ let columsTable1 = [
     },
     { title: "Cliente", field: 'client', headerTooltip: true, hozAlign: "left", width: 250, responsive: 2},
     { title: "Localidad", field: 'locality', headerTooltip: true, hozAlign: "left", width: 250, responsive: 2 },
-    { title: "Hora llegada", field: 'hour_arrive', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
+    { title: "Hora llegada", field: 'hour_arrive', headerTooltip: true, hozAlign: "center", width: 250, responsive: 2},
 ];
 
 let configTableCustom1 = {
