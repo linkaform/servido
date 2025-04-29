@@ -11,10 +11,10 @@ let columsTable1 = [
     { title: "Disponibilidad", field: 'disponibility', 
         formatter: function(cell) {
             let value = cell.getValue();
-            if (value == 'Salida') {
+            if (value == 'Salida' || value == 'Pendiente') {
                 cell.getElement().style.backgroundColor = "#82e0aa";
                 return "Disponible"; 
-            }else if(value == 'Entrada'){
+            }else if(value == 'Entrada' || value == 'Registrar_entrada'){
                 cell.getElement().style.backgroundColor = "#f5b7b1";
                 return "Ocupado"; 
             }
