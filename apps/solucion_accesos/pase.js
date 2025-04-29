@@ -592,6 +592,7 @@ async function fillCatalogoArea(id) {
 }
 
 let requerimientosUbicacion = []
+let enviosPor = []
 
 async function getConfiguracionModuloSeguridad(ubicacion){
     await fetch(url + urlScripts, {
@@ -611,6 +612,7 @@ async function getConfiguracionModuloSeguridad(ubicacion){
     .then(res => {
         if (res.success) {
             requerimientosUbicacion = res.response.data.requerimientos
+            enviosPor = res.response.data.envios
         }else{
             errorAlert(res)
         }
@@ -618,6 +620,9 @@ async function getConfiguracionModuloSeguridad(ubicacion){
     // requerimientos= ["identificacion", "fotografia"]
     if(!requerimientosUbicacion){
         requerimientosUbicacion = []
+    }
+    if(!enviosPor){
+        enviosPor = []
     }
     // console.log("REQUERIMIENTOS", requerimientosUbicacion)
     return requerimientosUbicacion
@@ -1545,7 +1550,7 @@ async function descargarPdfPaseActivo() {
 
 
 function crearConfirmacion() {
-    let enviarPreSmsChecked = document.getElementById('enviar_sms_pre_registro').checked;
+    // let enviarPreSmsChecked = document.getElementById('enviar_sms_pre_registro').checked;
 
 	let data= getInputsValueByClass('paseEntradaNuevo')
 	// let comentarios= getDataGrupoRepetitivo('com-input-form-nuevo','.com-div-nuevo' , 0)
@@ -1663,6 +1668,7 @@ function crearConfirmacion() {
     });
 
     let checkDocSeleccionados= []
+    let enviosSeleccionados = []
     // $('input[name="AgregarFotoIdent"]:checked').each(function() {
     //     checkDocSeleccionados.push($(this).val()); 
     // });
@@ -1672,6 +1678,13 @@ function crearConfirmacion() {
             checkDocSeleccionados.push("agregarFoto")
         }else if (r == "identificacion"){
             checkDocSeleccionados.push("agregarIdentificacion")
+        }
+    }
+    for(let r of enviosPor){
+        if(r == "correo"){
+            enviosSeleccionados.push("enviar_correo_pre_registro")
+        }else if (r == "sms"){
+            enviosSeleccionados.push("enviar_sms_pre_registro")
         }
     }
 	let buttonDays=""
@@ -1813,14 +1826,14 @@ function crearConfirmacion() {
         if(hasInvalidInput == true){
            successMsg("Validación", "Datos invalidos, por favor verifica de nuevo.", "warning")
         }else{
-            if(enviarPreSmsChecked){
-                const numeroConLadasinEspacios = numeroConLada.split(' ').join('');
-                enviarPreSmsChecked = {
-                    "from": "enviar_pre_sms",
-                    "mensaje": "",
-                    "numero": numeroConLadasinEspacios
-                }
-            }
+            // if(enviarPreSmsChecked){
+            //     const numeroConLadasinEspacios = numeroConLada.split(' ').join('');
+            //     enviarPreSmsChecked = {
+            //         "from": "enviar_pre_sms",
+            //         "mensaje": "",
+            //         "numero": numeroConLadasinEspacios
+            //     }
+            // }
     		Swal.fire({
     	        title:'Confirmación',
     	        html:`
@@ -1962,8 +1975,8 @@ function crearConfirmacion() {
     		        if(diasArr.length>0){
     		        	access_pass.config_dias_acceso = diasArr 
     		        }
-                    if(checkPregistro.length>0){
-                        access_pass.enviar_correo_pre_registro = checkPregistro
+                    if(enviosSeleccionados.length>0){
+                        access_pass.enviar_correo_pre_registro = enviosSeleccionados
                     }
     	        	fetch(url + urlScripts, {
     			        method: 'POST',
@@ -1972,7 +1985,7 @@ function crearConfirmacion() {
     		                option: 'create_access_pass',
     		                location:getCookie('userLocation'),
     		                access_pass: access_pass,
-                            enviar_pre_sms: enviarPreSmsChecked
+                            // enviar_pre_sms: enviarPreSmsChecked
     			        }),
     			        headers:{
     			            'Content-Type': 'application/json',
