@@ -625,7 +625,14 @@ function abrirAsignarGafeteModal(){
     });
 }
 
+let peticionHecha = false;
+
 function abrirModalNuevaVisita(){
+    if(peticionHecha){
+        $("#newVisitModal").modal('show');
+        return
+    }
+
     loadingService()
     $("#inputNombreNV").val("")
     $("#selectVisitaNV").val("")
@@ -656,6 +663,7 @@ function abrirModalNuevaVisita(){
         }).then(res => res.json())
         .then(res => {
             if(res.success){
+                peticionHecha = true;
                 let data= res.response.data
                 Swal.close()
                 $("#newVisitModal").modal('show');
