@@ -39,6 +39,16 @@ let columsTable1 = [
         if(url){ window.open(url,'_blank'); }
     }, download: false, width:50},
     { title:"Check Out", field:'check_out',  hozAlign:"center", headerHozAlign: "center", headerFilter: true, width:200},
+
+    { title:"Cliente", field:'cliente', hozAlign:"left", headerHozAlign: "center",width:250},
+    { title:"Localidad", field:'localidad', hozAlign:"left", headerHozAlign: "center",width:250},
+    { title:"Supervisor", field:'supervisor', hozAlign:"left", headerHozAlign: "center",width:250},
+    { 
+        title: "Firma", 
+        field: "columna_imaginaria", 
+        visible: false, 
+        download: true 
+    },
     { title:"Hrs Nocturna", field:'hrs_noct', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:2,}, width:200},
     { title:"Hrs Extra al 35%", field:'hrs_ext', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:2,}, width:200},
     { title:"Hrs Extra al 100%", field:'hrs_ext_full', hozAlign:"center", headerHozAlign: "center", bottomCalc:"sum", bottomCalcParams:{precision:2,}, width:200},
@@ -236,9 +246,13 @@ const designPDF ={
                 3: {cellWidth: 'auto',},
                 4: {cellWidth: 'auto',},
                 5: {cellWidth: 'auto',},
-                6: {cellWidth: 'auto',},
+                6: {cellWidth: 100,},
                 7: {cellWidth: 'auto',},
-                8: {cellWidth: 'auto', fontSize: 9,fontStyle: 'bold',valign: 'middle'},
+                8: {cellWidth: 'auto',},
+                9: {cellWidth: 'auto',},
+                10: {cellWidth: 'auto',},
+                11: {cellWidth: 'auto',},
+                12: {cellWidth: 'auto', fontSize: 9,fontStyle: 'bold',valign: 'middle'},
             },
             margin: { top: 10 },
             startY: 80,

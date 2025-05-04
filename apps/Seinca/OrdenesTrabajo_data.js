@@ -20,9 +20,7 @@ let columsTable1 = [
             if (window.innerWidth < 600) {
                 return data.supervisor; 
             }else{
-                console.log('Entra Almacenes')
                 if(data.cliente == undefined){
-                    console.log('Value',value)
                     return value; 
                 }else{
                     return ''
