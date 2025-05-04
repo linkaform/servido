@@ -21,7 +21,9 @@ let columsTable1 = [
     },
     { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", headerFilter:"input", width: 150 },
     { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 250 },
-    { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left",  headerFilter:"input", width: 200 },
+    { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left",  headerFilter:"input", width: 125 },
+    { title: "UoM", field: "uom", headerTooltip: true, hozAlign: "center", width: 100 ,  },
+    { title: "Standar Pack", field: "standar_pack", headerTooltip: true, hozAlign: "center", width: 150 ,  formatter:'money', formatterParams: { precision: 2}},
     { title: "% Inicial", field: "percentage_start", headerTooltip: true, hozAlign: "left", width: 125, formatter:'money', formatterParams: { precision: 2,symbolAfter:"%"} },
     { title: "Stock", field: "stock", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
     { title: "Requiere", field: "procurment_qty", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
@@ -29,6 +31,9 @@ let columsTable1 = [
     { title: "Stock Final", field: "stock_final", headerTooltip: true, hozAlign: "center", width: 150, formatter:'money', formatterParams: { precision: 2} },
     { title: "% Final", field: "percentage_finish", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2,symbolAfter:"%"} },
     { title: "Origen", field: "from", headerTooltip: true, hozAlign: "left", headerFilter:"input", width: 200 },
+    { title: "Max Stock", field: "from_max_stock", headerTooltip: true, hozAlign: "center", width: 150 ,  formatter:'money', formatterParams: { precision: 2}},
+    { title: "Origen Stock", field: "from_initial_stock", headerTooltip: true, hozAlign: "center", width: 150 ,  formatter:'money', formatterParams: { precision: 2}},
+    { title: "Origen Final Stock", field: "from_final_stock", headerTooltip: true, hozAlign: "center", width: 150 ,  formatter:'money', formatterParams: { precision: 2}},
     {
         title: "Ajuste Traspaso", field: "adjust", headerTooltip: true, hozAlign: "left", width: 200,
         editor: "number", editorParams: { min: 0 }
@@ -93,7 +98,9 @@ let columsTable3 = [
     },
     { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", headerFilter:"input", width: 150 },
     { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 250 },
-    { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left",  headerFilter:"input", width: 200 },
+    { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left",  headerFilter:"input", width: 125 },
+    { title: "UoM", field: "uom", headerTooltip: true, hozAlign: "center", width: 100 ,  },
+    { title: "Standar Pack", field: "standar_pack", headerTooltip: true, hozAlign: "center", width: 150 ,  formatter:'money', formatterParams: { precision: 2}},
     { title: "% Inicial", field: "percentage_start", headerTooltip: true, hozAlign: "left", width: 125, formatter:'money', formatterParams: { precision: 2,symbolAfter:"%"} },
     { title: "Stock", field: "stock", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
     { title: "Requiere", field: "procurment_qty", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
@@ -101,6 +108,9 @@ let columsTable3 = [
     { title: "Stock Final", field: "stock_final", headerTooltip: true, hozAlign: "center", width: 150, formatter:'money', formatterParams: { precision: 2} },
     { title: "% Final", field: "percentage_finish", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2,symbolAfter:"%"} },
     { title: "Origen", field: "from", headerTooltip: true, hozAlign: "left", headerFilter:"input", width: 200 },
+    { title: "Max Stock", field: "from_max_stock", headerTooltip: true, hozAlign: "center", width: 150 ,  formatter:'money', formatterParams: { precision: 2}},
+    { title: "Origen Stock", field: "from_initial_stock", headerTooltip: true, hozAlign: "center", width: 150 ,  formatter:'money', formatterParams: { precision: 2}},
+    { title: "Origen Final Stock", field: "from_final_stock", headerTooltip: true, hozAlign: "center", width: 150 ,  formatter:'money', formatterParams: { precision: 2}},
     {
         title: "Ajuste Traspaso", field: "adjust", headerTooltip: true, hozAlign: "left", width: 200,
         editor: "number", editorParams: { min: 0 }

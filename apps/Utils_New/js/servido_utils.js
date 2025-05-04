@@ -1,5 +1,5 @@
 //-----URL LOGIN
-//let URL = "https://preprod.linkaform.com/";
+// let URL = "https://preprod.linkaform.com/";
 let URL = "https://app.linkaform.com";
 // let URL = "http://192.168.0.25:8000";
 // let URL = "http://127.0.0.1:8011";
@@ -798,7 +798,9 @@ function getUrlRequest(type) {
     const params = new URLSearchParams(window.location.search);
     const env = params.get("env");
     if(env == 'preprod'){
-        URL = "https://preprod.linkaform.com/";
+        URL = "https://preprod.linkaform.com";
+    }else if(env == 'local'){
+        URL = "http://192.168.0.25:8000";
     }
     //-----ENDPOINT
     if(type == 'script'){
