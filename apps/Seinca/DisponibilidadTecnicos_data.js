@@ -14,7 +14,7 @@ let columsTable1 = [
             if (value == 'Pendiente') {
                 cell.getElement().style.backgroundColor = "#82e0aa";
                 return "Disponible"; 
-            }else if(value == 'Check in' || value == 'Check out'){
+            }else if(value == 'Check_in' || value == 'Check_out'){
                 cell.getElement().style.backgroundColor = "#f5b7b1";
                 return "Ocupado"; 
             }
