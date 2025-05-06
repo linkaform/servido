@@ -47,6 +47,10 @@ function loadData(data) {
     buttonExecution.addEventListener("click", () => {
         getInformation();
     });
+     //---Events
+    document.getElementById("getSelected").addEventListener("click", () => {
+        getRowsData();
+    });
 
     //-----Loading
     setTimeout(() => { hide_loading();}, 2000);
@@ -86,15 +90,68 @@ async function getInformation(){
 
 //----GET DATA
 function getRowsData() {
+    //-----Loader
+    Swal.fire({
+        title: 'Se ha enviado información',
+        html: 'Por favor espera...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+
+    //-----Get Data 
     const selectedFirst = getSelectedDataClean('tableFirst');
     const selectedThird = getSelectedDataClean('tableThird');
-
     // Si quieres todos en uno
     const allSelected = [
         ...selectedFirst,
         ...selectedThird,
     ];
-    console.log(allSelected);
+
+    if(allSelected.length > 0){
+        //----Fetch data
+        const JWT = getCookie("userJwt");
+        fetch(getUrlRequest('script'), {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name: 'crea_transpaso_sipre.py',
+                option: 'send_data',
+                data: allSelected,
+            }),
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+JWT
+            },
+        })
+        .then((res) => res.json())
+        .then((res) => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Información recibida',
+                text: `Folio: 001`, 
+                confirmButtonText: 'Aceptar'
+            });
+            console.log('Respuesta',res)        
+        })
+        .catch(error => {
+            // Manejo de error
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo enviar la información. Inténtalo de nuevo.',
+                confirmButtonText: 'Cerrar'
+            });
+        });
+    }else{
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo enviar la información. Seleccione filas.',
+            confirmButtonText: 'Cerrar'
+        });
+    }
 }
 
 function getSelectedDataClean(tableId) {
@@ -190,3 +247,4 @@ function getCatalogLine() {
         }
     })
 }
+
