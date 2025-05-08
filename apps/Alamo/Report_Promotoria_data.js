@@ -7,11 +7,11 @@ let dicReportContext = [
         ] 
     },
     { class:'', _children : [
-            { type:'table', col: '12', id:'tableFirst', title:'Detalle de Asistencias', optionExpanded:true},
+            { type:'table', col: '12', id:'tableFirst', title:'Datos de Promotores', optionExpanded:true},
         ] 
     },
     { class:'', _children : [
-            { type:'chart', col: '12', id:'chartFirst', title:'Tipos por mes'},
+            { type:'chart', col: '12', id:'chartFirst', title:'Visitas por promotor'},
         ] 
     },
 ];
@@ -29,8 +29,6 @@ let columsTable1 = [
   { title:"Fecha Final", field:'dateEnd',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
   { title:"Hrs Final Jornada", field:'hourEnd',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
   { title:"Duración de la visita", field:'time',headerTooltip: true,hozAlign:"left", width:150},
-  { title:"Total horas x día en traslados", field:'hoursday',headerTooltip: true,hozAlign:"left", width:100},
-  { title:"Evidencia", field:'evidence',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:100},
 ];
 
 
