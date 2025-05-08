@@ -1,9 +1,9 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'table', col: '12', id:'tableFirst', title:'Almacen Monterrey'},
+            { type:'table', col: '12', id:'tableFirst', title:'Almacen Monterrey', buttonCustom:true},
             { type:'table', col: '8', id:'tableSecond', title:'Almacen Monterrey (Sin disponibilidad para surtir)'},
-            { type:'table', col: '12', id:'tableThird', title:'Almacen Guadalajara'},
+            { type:'table', col: '12', id:'tableThird', title:'Almacen Guadalajara', buttonCustom:true},
             { type:'table', col: '8', id:'tableFourth', title:'Almacen Guadalajara (Sin disponibilidad para surtir)'},
         ] 
     },

@@ -22,9 +22,14 @@ function loadDemoData(){
     drawTableElement('tableThird', dataTable3, columsTable3);
     drawTableElement('tableFourth', dataTable4, columsTable4);
 
+  
     //---Events
-    document.getElementById("getSelected").addEventListener("click", () => {
-        getRowsData();
+    document.getElementById("button-custom-tableFirst").addEventListener("click", () => {
+        getRowsData('mty');
+    });
+
+    document.getElementById("button-custom-tableThird").addEventListener("click", () => {
+        getRowsData('gdl');
     });
 
     document.getElementById('product_family').addEventListener('change', function () {
@@ -47,9 +52,14 @@ function loadData(data) {
     buttonExecution.addEventListener("click", () => {
         getInformation();
     });
-     //---Events
-    document.getElementById("getSelected").addEventListener("click", () => {
-        getRowsData();
+
+    //---Events
+    document.getElementById("button-custom-tableFirst").addEventListener("click", () => {
+        getRowsData('mty');
+    });
+
+    document.getElementById("button-custom-tableThird").addEventListener("click", () => {
+        getRowsData('gdl');
     });
 
     //-----Loading
@@ -89,7 +99,7 @@ async function getInformation(){
 }
 
 //----GET DATA
-function getRowsData() {
+function getRowsData(type = null) {
     //-----Loader
     Swal.fire({
         title: 'Se ha enviado información',
@@ -99,57 +109,69 @@ function getRowsData() {
             Swal.showLoading();
         }
     });
+    //----Sesion
+    const statusSession = getSession();
+    if(statusSession == 'Active'){
+        ///---Asign 
+        let allSelected = []
+        if(type == 'mty'){
+            allSelected = getSelectedDataClean('tableFirst');
+        }else if(type == 'gdl'){
+            allSelected = getSelectedDataClean('tableThird');
+        }
+       
+        if(allSelected.length > 0){
+            //----Fetch data
+            const JWT = getCookie("userJwt");
+            fetch(getUrlRequest('script'), {
+                method: 'POST',
+                body: JSON.stringify({
+                    script_name: 'crea_transpaso_sipre.py',
+                    option: 'send_data',
+                    to: type,
+                    data: allSelected,
+                }),
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+JWT
+                },
+            })
+            .then((res) => res.json())
+            .then((res) => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Información recibida',
+                    text: `Folio: 001`, 
+                    confirmButtonText: 'Aceptar'
+                });
 
+                //---Manda la petición de nuevo
+                getInformation();
 
-    //-----Get Data 
-    const selectedFirst = getSelectedDataClean('tableFirst');
-    const selectedThird = getSelectedDataClean('tableThird');
-    // Si quieres todos en uno
-    const allSelected = [
-        ...selectedFirst,
-        ...selectedThird,
-    ];
-
-    if(allSelected.length > 0){
-        //----Fetch data
-        const JWT = getCookie("userJwt");
-        fetch(getUrlRequest('script'), {
-            method: 'POST',
-            body: JSON.stringify({
-                script_name: 'crea_transpaso_sipre.py',
-                option: 'send_data',
-                data: allSelected,
-            }),
-            headers:{
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+JWT
-            },
-        })
-        .then((res) => res.json())
-        .then((res) => {
-            Swal.fire({
-                icon: 'success',
-                title: 'Información recibida',
-                text: `Folio: 001`, 
-                confirmButtonText: 'Aceptar'
+            })
+            .catch(error => {
+                // Manejo de error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo enviar la información. Inténtalo de nuevo.',
+                    confirmButtonText: 'Cerrar'
+                });
             });
-            console.log('Respuesta',res)        
-        })
-        .catch(error => {
-            // Manejo de error
+        }else{
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'No se pudo enviar la información. Inténtalo de nuevo.',
+                text: 'No se pudo enviar la información. Seleccione filas.',
                 confirmButtonText: 'Cerrar'
             });
-        });
-    }else{
+        }
+    }else if(statusSession == 'Demo'){
         Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudo enviar la información. Seleccione filas.',
-            confirmButtonText: 'Cerrar'
+            icon: 'success',
+            title: 'Información recibida',
+            text: `Folio: 001`, 
+            confirmButtonText: 'Aceptar'
         });
     }
 }
