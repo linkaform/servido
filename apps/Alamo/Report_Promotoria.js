@@ -51,16 +51,16 @@ async function getInformation(){
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-        if (data.cardFirst) {
+        if (data.cardFirst !== null) {
             drawCardElement('cardFirst',data.cardFirst);
         }
-        if (data.cardSecond) {
+        if (data.cardSecond !== null) {
             drawCardElement('cardSecond',data.cardSecond);
         }
-        if (data.chartFirst) {
+        if (data.chartFirst !== null) {
             drawChartElement('chartFirst','bar',data.chartFirst,setOptions1);
         }
-        if (data.tableFirst) {
+        if (data.tableFirst !== null) {
             drawTableElement('tableFirst', data.tableFirst, columsTable1);
         }
         //-----Style
