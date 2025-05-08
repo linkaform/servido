@@ -49,6 +49,20 @@ async function getInformation(){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
+        const responseRequest = await sendRequestReport(scriptId);
+        const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
+        if (data.cardFirst) {
+            drawCardElement('cardFirst',data.cardFirst);
+        }
+        if (data.cardSecond) {
+            drawCardElement('cardSecond',data.cardSecond);
+        }
+        if (data.chartFirst) {
+            drawChartElement('chartFirst','bar',data.chartFirst,setOptions1);
+        }
+        if (data.tableFirst) {
+            drawTableElement('tableFirst', data.tableFirst, columsTable1);
+        }
         //-----Style
         hideLoadingComponent();
         showElements();

@@ -18,19 +18,19 @@ let dicReportContext = [
 
 //----Config Table
 let columsTable1 = [
-    { title:"Usuario", field:'user',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:200},
-    { title:"Fecha", field:'date',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:100},
-    { title:"Ciudad", field:'city',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:250},
-    { title:"Cadena", field:'market',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:250},
-    { title:"Tienda", field:'store',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:250},
-    { title:"Kilometraje", field:'km',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
-    { title:"Fecha Inicio", field:'dateStart',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
-    { title:"Hrs Jornada", field:'hourStart',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
-    { title:"Fecha Final", field:'dateEnd',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
-    { title:"Hrs Final Jornada", field:'hourEnd',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
-    { title:"Duración de la visita", field:'time',headerTooltip: true,hozAlign:"left", width:150},
-    { title:"Total horas x día en traslados", field:'hoursday',headerTooltip: true,hozAlign:"left", width:100},
-    { title:"Evidencia", field:'evidence',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:100},
+  { title:"Usuario", field:'user',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:200},
+  { title:"Fecha", field:'date',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:100},
+  { title:"Ciudad", field:'city',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:250},
+  { title:"Cadena", field:'market',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:250},
+  { title:"Tienda", field:'store',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:250},
+  { title:"Kilometraje", field:'km',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
+  { title:"Fecha Inicio", field:'dateStart',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
+  { title:"Hrs Jornada", field:'hourStart',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
+  { title:"Fecha Final", field:'dateEnd',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
+  { title:"Hrs Final Jornada", field:'hourEnd',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:150},
+  { title:"Duración de la visita", field:'time',headerTooltip: true,hozAlign:"left", width:150},
+  { title:"Total horas x día en traslados", field:'hoursday',headerTooltip: true,hozAlign:"left", width:100},
+  { title:"Evidencia", field:'evidence',headerTooltip: true,hozAlign:"left",headerWordWrap:true, width:100},
 ];
 
 
