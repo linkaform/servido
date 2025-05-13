@@ -20,7 +20,7 @@ let columsTable1 = [
             }
             return value || ""; 
         },
-        headerTooltip: true, hozAlign: "left", width: 200, responsive: 1 
+        headerTooltip: true, hozAlign: "left", width: 150, responsive: 1 
     },
     { title: "Cliente", field: 'client', headerTooltip: true, hozAlign: "left", width: 250, responsive: 2},
     { title: "Localidad", field: 'locality', headerTooltip: true, hozAlign: "left", width: 250, responsive: 2 },
