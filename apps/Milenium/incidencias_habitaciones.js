@@ -32,7 +32,7 @@ function loadDemoData(){
 //-----LOAD DATA ACTIVE
 function loadData(data) {
   //----Search Catalogs
-  //get_catalog();
+  get_catalog();
   
   //----Assing Events
   const buttonExecution = document.getElementById("buttonExecution");
@@ -147,7 +147,7 @@ function get_catalog(){
       method: 'POST',
       body: JSON.stringify({
           script_id: scriptId,
-          option: 'first_filter',
+          option: 'filter',
       }),
       headers:{
           'Content-Type': 'application/json',
@@ -156,12 +156,14 @@ function get_catalog(){
   })
   .then((res) => res.json())
   .then((res) => {
-      const data = res.response ? res.response.data.response : [];
+      const data = res.response && res.response.data  ? res.response.data : [];
       if(data.length > 0){
-        set_catalog_select(data, 'hotel', 'hotel');
+        setSelect(data, 'form_name', 'form_id', 'hotel')
+        //set_catalog_select(data, 'hotel', 'hotel');
       }
   })
 }
+
 
 function generarColumnasDinamicas(data) {
   let maxHabitaciones = 0;
