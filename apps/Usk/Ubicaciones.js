@@ -47,7 +47,7 @@ async function getInformation(){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : [];
         if(data.length > 0){
-            drawTableElement('tableFirst', data , columnsTable1, null, customConfig1);
+            drawTableElement('tableFirst', data , columnsTable1, null, configTableCustom1);
         }
         //-----Style
         hideLoadingComponent();
