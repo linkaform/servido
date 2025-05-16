@@ -7,7 +7,7 @@ let dicReportContext = [
 ];
 
 //----Config Table
-let columsTable1Prod = [
+let columnsTable1 = [
     { title:"Orden", field:'Orden',headerTooltip: true,hozAlign:"center", responsive: 1, width:100},
     { title:"Estatus",field:'Estatus',headerTooltip: true,hozAlign:"left",headerFilter:true, responsive: 2, width:150},
     { title:"Ubicacion",field:'Ubicacion',headerTooltip: true,hozAlign:"left",headerFilter:true, responsive: 2, width:250},
