@@ -105,7 +105,7 @@ function getRowsData(type = null) {
         title: 'Se ha enviado información',
         html: 'Por favor espera...',
         allowOutsideClick: false,
-        didOpen: () => {
+        onBeforeOpen: () => {
             Swal.showLoading();
         }
     });
@@ -121,46 +121,35 @@ function getRowsData(type = null) {
         }
        
         if(allSelected.length > 0){
-            //----Fetch data
-            const JWT = getCookie("userJwt");
-            fetch(getUrlRequest('script'), {
-                method: 'POST',
-                body: JSON.stringify({
-                    script_name: 'crea_transpaso_sipre.py',
-                    option: 'send_data',
-                    to: type,
-                    data: allSelected,
-                }),
-                headers:{
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer '+JWT
-                },
-            })
-            .then((res) => res.json())
-            .then((res) => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Información recibida',
-                    text: `Folio: 001`, 
-                    confirmButtonText: 'Aceptar'
-                });
-
-                //---Manda la petición de nuevo
-                getInformation();
-
-            })
-            .catch(error => {
-                // Manejo de error
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'No se pudo enviar la información. Inténtalo de nuevo.',
-                    confirmButtonText: 'Cerrar'
-                });
+            Swal.fire({
+                title: '¿Desea realizar el traspaso?',
+                text: 'Confirme si desea continuar con el traspaso.',
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    Swal.fire({
+                        title: 'Realizando traspaso...',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    sendTraspaso(type, allSelected);
+                } else {
+                    Swal.fire({
+                        type: 'info',
+                        title: 'Traspaso cancelado',
+                        text: 'No se realizó ningún traspaso.',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
             });
         }else{
             Swal.fire({
-                icon: 'error',
+                type: 'error',
                 title: 'Error',
                 text: 'No se pudo enviar la información. Seleccione filas.',
                 confirmButtonText: 'Cerrar'
@@ -168,10 +157,37 @@ function getRowsData(type = null) {
         }
     }else if(statusSession == 'Demo'){
         Swal.fire({
-            icon: 'success',
-            title: 'Información recibida',
-            text: `Folio: 001`, 
-            confirmButtonText: 'Aceptar'
+            title: '¿Desea realizar el traspaso?',
+            text: 'Confirme si desea continuar con el traspaso.',
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.value) {
+                Swal.fire({
+                    title: 'Realizando traspaso...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                setTimeout(() => {
+                    Swal.fire({
+                        type: 'success',
+                        title: 'Traspaso realizado',
+                        text: 'El traspaso se ha realizado exitosamente.',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }, 2000);
+            } else {
+                Swal.fire({
+                    type: 'info',
+                    title: 'Traspaso cancelado',
+                    text: 'No se realizó ningún traspaso.',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
         });
     }
 }
@@ -270,3 +286,37 @@ function getCatalogLine() {
     })
 }
 
+const sendTraspaso = async (type, allSelected) => {
+    const JWT = getCookie("userJwt");
+    try {
+        const respuesta = await fetch(getUrlRequest('script'), {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name: 'do_traspaso_lkf.py',
+                to: type,
+                data: allSelected,
+            }),
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JWT
+            },
+        });
+        const data = await respuesta.json();
+        const sipre_folio = data?.response?.sipre_folio;
+        Swal.fire({
+            type: 'success',
+            title: 'Traspaso realizado',
+            html: 'El traspaso se ha realizado exitosamente. Guardado en SIPRE con folio: <strong>' + sipre_folio + '</strong>',
+            confirmButtonText: 'Aceptar'
+        });
+        console.log(data);
+    } catch (error) {
+        Swal.fire({
+            type: 'error',
+            title: 'Traspaso fallido',
+            text: 'El traspaso tuvo un error al realizarse, revisa el log.',
+            confirmButtonText: 'Aceptar'
+        });
+        console.error('Error:', error);
+    }
+}
