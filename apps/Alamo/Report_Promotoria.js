@@ -25,7 +25,7 @@ function loadDemoData(){
 //-----LOAD DATA ACTIVE
 function loadData(data) {
     //----Search Catalogs
-    //get_catalog();
+    get_filters();
     //----Assing Events
     const buttonExecution = document.getElementById("buttonExecution");
     buttonExecution.addEventListener("click", () => {
@@ -70,7 +70,7 @@ async function getInformation(){
 }
 
 //-----GET CATALOG
-function get_catalog(){
+function get_filters(){
     const scriptId = getParameterURL('script_id');
     const JWT = getCookie("userJwt");
     fetch(getUrlRequest('script'), {
@@ -86,18 +86,10 @@ function get_catalog(){
     })
     .then((res) => res.json())
     .then((res) => {
-        const catalog_institucion = res.response && res.response.catalog_institucion ? res.response.catalog_institucion : [];
-        const catalog_taller = res.response && res.response.catalog_taller ? res.response.catalog_taller : [];
+        const data = res.response && res.response.data ? res.response.data : [];
 
-        if(catalog_institucion.length > 0){
-            dataCatalogInstitucion = catalog_institucion;
-            set_catalog_select(catalog_institucion, 'institucion', 'institucion');
-            set_catalog_select(catalog_institucion, 'grupo', 'grupo');
-            set_catalog_select(catalog_institucion, 'mentor', 'mentor');
-        }
-
-        if(catalog_taller.length > 0){
-            set_catalog_select(catalog_taller, 'taller', 'taller');
+        if(data.length > 0){
+            setCatalogSimple(data, 'promotor')
         }
     })
 }
