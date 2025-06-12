@@ -339,9 +339,6 @@ function createElements(dataConfig = null){
                     //-----File URL
                     const fileURL = element.fileURL ? element.fileURL : 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6792643a1eea22cd5b0fc601.png';
                     
-
-
-
                     //-----Id KANVA
                     const columsKanva = element.columsKanva? element.columsKanva : [];
                     //-----Components Form
@@ -618,11 +615,15 @@ function createElements(dataConfig = null){
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="h5 font-weight-bold text-${colorElement} text-uppercase mb-1">
-                                                ${titleElement}
+                                                <div class="col-auto">
+                                                    ${titleElement}
+                                                </div>
                                             </div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto ml-3">
+                                            <div>
+                                                <div class="col-auto">
                                                     <span class="h6 mb-0 mr-3 font-weight-bold text-gray-800" id="textA-${idElement}"></span>
+                                                </div>
+                                                <div class="col-auto">
                                                     <span class="h6 mb-0 mr-3 font-weight-bold text-gray-800" id="textB-${idElement}"></span>
                                                 </div>
                                             </div>
@@ -759,8 +760,67 @@ function drawCardImageElement(cardId, valueA, valueB) {
     } else {
         console.error('Element not found!',`text-${cardId}`);
     }
-        
 }
+
+function drawMapElement(elementId , title , data, configs = null, gradient = null) {
+    const element = document.getElementById(`${elementId}`);
+    if (element) {
+
+        let configMap = {
+            name: 'Información',
+            states: {
+                hover: {
+                    color: '#416CA6'
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}'
+            }
+        }
+        if(configs){
+            configMap = configs;
+        }
+
+        if (data && Array.isArray(data) && data.length > 0) {
+            configMap.data = data;
+        }
+
+
+        (async () => {
+            const topology = await fetch('https://code.highcharts.com/mapdata/countries/mx/mx-all.topo.json').then(response => response.json());
+            Highcharts.mapChart(`${elementId}`, {
+                chart: {
+                    map: topology
+                },
+
+                title: {
+                    text: `${title}`
+                },
+
+                subtitle: {
+                    text: 'Source map: <a href="https://code.highcharts.com/mapdata/countries/mx/mx-all.topo.json">Mexico</a>'
+                },
+
+                mapNavigation: {
+                    enabled: true,
+                    buttonOptions: {
+                        verticalAlign: 'bottom'
+                    }
+                },
+
+                colorAxis: {
+                    min: 0
+                },
+
+                series: [configMap]
+            });
+        })();
+    } else {
+        console.error('Element not found!',`text-${cardId}`);
+    }
+}
+
 
 //-Función para pintar table
 function drawTableElement(tableId, tableData, tableColums, nameDownload = null, tableConfig = null, desingPDF = null ){

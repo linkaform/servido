@@ -1,7 +1,7 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-        { type:'card', col: '4', id:'cardFirst', title:'Total de Entregas ', hexadecimal:'#416CA6'},
+        { type:'card', col: '4', id:'cardFirst', title:'Total de Entregas a Realizar ', hexadecimal:'#416CA6'},
         { type:'card', col: '4', id:'cardSecond', title:'Entregas Realizadas', hexadecimal:'#416CA6'},
         { type:'card', col: '4', id:'cardThird', title:'% de Avance', hexadecimal:'#416CA6'},
     ]},
@@ -10,9 +10,15 @@ let dicReportContext = [
             { type:'chart', col: '6', id:'chartSecond', title:'Progreso de entrega por tienda'},
     ]},
     { class:'', _children : [
-        { type:'card-custom-image', col: '4', id:'cardStoreA', title:'Tienda 1', hexadecimal:'#416CA6'},
-        { type:'card-custom-image', col: '4', id:'cardStoreB', title:'TIenda 2', hexadecimal:'#416CA6'},
-        { type:'card-custom-image', col: '4', id:'cardStoreC', title:'Tienda 3', hexadecimal:'#416CA6'},
+        { type:'card-custom-image', col: '4', id:'cardStoreA', title:'OXXO', hexadecimal:'#416CA6',
+            fileURL:'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/684b242e9cdc856478e11330.png'
+        },
+        { type:'card-custom-image', col: '4', id:'cardStoreB', title:'Fragua', hexadecimal:'#416CA6',
+            fileURL:'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/684b242d9cdc856478e1132f.png'
+        },
+        { type:'card-custom-image', col: '4', id:'cardStoreC', title:'Neto', hexadecimal:'#416CA6',
+            fileURL:'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/684b242c9cdc856478e1132e.png'
+        },
     ]},
     { class:'', _children : [
         { type:'chart', col: '12', id:'chartThird', title:'Progreso de entrega por estado'},
@@ -21,9 +27,17 @@ let dicReportContext = [
         { type:'map', col: '12', id:'mapFirst', title:'Mapa'},
     ]},
     { class:'', _children : [
-            { type:'chart', col: '6', id:'chartFourth', title:'Acumulado de entregas por día'},
-            { type:'chart', col: '6', id:'chartFiveth', title:'Progreso de entrega por sucursal'},
+        { type:'chart', col: '6', id:'chartFourth', title:'Acumulado de entregas por día'},
+        { type:'chart', col: '6', id:'chartFiveth', title:'Progreso de entrega por sucursal'},
     ]},
+    { class:'', _children : [
+        { type:'modal', col: '12', id:'modalFilterFirst', title:'Datos de Estado', optionButtonModal:true, formElements : [
+                {type:'p', title:'Example', id:'switch1A'},
+            ]
+        },
+            
+    ]},
+
 ];
 
 //---Chart First
@@ -120,17 +134,17 @@ var setOptions2A = {
 };
 
 var dataChart2A = {
-    labels: ['Tienda 1','Tienda 2','Tienda 3','Tienda 4'],
+    labels: ['OXXO','Fragua','Neto'],
     datasets: [
         {
             label: 'Realizado',
-            data: [20, 50, 80, 70],
+            data: [20, 50, 80],
             fill: false,
             backgroundColor: '#416CA6', 
         },
         {
             label: 'Pendientes',
-            data: [80,50,20,30],
+            data: [80,50,20],
             fill: false,
             backgroundColor: '#CFCAC7',
         },
@@ -258,7 +272,7 @@ var dataChart4A = {
       ],
     datasets: [
         {
-            label: 'Tienda 1',
+            label: 'Cadena 1',
             data: [10, 20, 35, 40, 60, 70, 85, 95, 105, 110, 120, 130, 135],
             borderColor: '#999999',
             backgroundColor: '#999999',
@@ -268,7 +282,7 @@ var dataChart4A = {
             tension: 0.4
         },
         {
-            label: 'Tienda 2',
+            label: 'Cadena 2',
             data: [5, 10, 20, 30, 35, 50, 60, 70, 75, 80, 90, 100, 105],
             borderColor: '#5B9BD5',
             backgroundColor: '#5B9BD5',
@@ -278,7 +292,7 @@ var dataChart4A = {
             tension: 0.4
         },
         {
-            label: 'Tienda 3',
+            label: 'Cadena 3',
             data: [15, 30, 55, 70, 95, 120, 145, 165, 180, 190, 210, 230, 240],
             borderColor: '#CFCAC7',
             backgroundColor: '#CFCAC7',
@@ -342,3 +356,36 @@ var dataChart5A = {
     ]
 };
 
+
+
+//-----Data Example Map
+const dataMap1 = [
+    ['mx-ve', 27], ['mx-gj', 40], ['mx-qt', 21], ['mx-mi', 31], ['mx-hg', 42]
+];
+
+const configMap1 = {
+    name: 'Numeros',
+    states: {
+        hover: {
+            color: '#416CA6'
+        }
+    },
+    dataLabels: {
+        enabled: true,
+        format: '{point.name}'
+    },
+    // 👇 Evento de clic en un estado
+    point: {
+        events: {
+            click: function () {
+                const modalElement = document.getElementById('modalFilterFirst');
+                if (modalElement) {
+                    const eventModal = new bootstrap.Modal(modalElement);
+                    eventModal.show();
+                } else {
+                    console.error('No se encontró el modal con ID: modalFilterFirst');
+                }
+            }
+        }
+    }
+}
