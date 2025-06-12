@@ -1,5 +1,5 @@
 //----Funciona para buscar dentro de una lista de diccionarios, y llenar con valores unicos un selector
-function set_catalog_select(listDic, key, id) {
+function set_catalog_select(listDic, key, id, allOption = false) {
     const selectElement = document.getElementById(id);
     if (!selectElement) {
       console.error(`No se encontró un elemento con el id: ${id}`);
@@ -20,6 +20,22 @@ function set_catalog_select(listDic, key, id) {
     defaultOption.textContent = 'Seleccione una opción';
     selectElement.appendChild(defaultOption);
 
+
+
+    //-----Option All
+    if(allOption){
+      const allOption = document.createElement('option');
+      allOption.value = 'all';
+      allOption.textContent = 'Seleccionar todo';
+      selectElement.appendChild(allOption);
+
+
+      const noneOption = document.createElement('option');
+      noneOption.value = 'none';
+      noneOption.textContent = 'Deseleccionar todo';
+      selectElement.appendChild(noneOption);
+    }
+
     // Crear y añadir opciones al select
     uniqueValues.forEach(value => {
       const optionElement = document.createElement('option');
@@ -28,6 +44,23 @@ function set_catalog_select(listDic, key, id) {
       selectElement.appendChild(optionElement);
     });
 }
+
+//-----Funciona en conjunto con set_catalog_select para poner una opción que seleccione todo y una que lo deseleccione
+function controllerAllOptions(idElement) {
+  $(`#${idElement}`).on('change', function () {
+    const selected = $(this).val();
+    if (selected.includes('all')) {
+        const allValues = $(`#${idElement} option`)
+            .map(function () { return this.value; })
+            .get()
+            .filter(v => v !== 'all' && v !== 'none');
+        $(`#${idElement}`).val(allValues).trigger('change');
+    } else if (selected.includes('none')) {
+        $(`#${idElement}`).val(null).trigger('change');
+    }
+  });
+}
+
 
 //----Funciona para buscar dentro de una lista de diccionarios, y llenar con valores unicos un selector
 function setSelect(listDic, labelKey, idKey, idElement) {
@@ -80,9 +113,6 @@ function setCatalogSimple(list, id) {
     selectElement.appendChild(option);
   });
 }
-
-
-
 
 //----Funciona para limpiar un selector y dejarlo con una opción pre definida
 function set_clean_select(id) {

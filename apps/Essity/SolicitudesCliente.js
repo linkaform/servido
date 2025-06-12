@@ -73,7 +73,6 @@ function sendRequest() {
     listImagesDic
     dataForm['listImagesDic'] = listImagesDic;
     if(validation){
-        console.log('dataForm',dataForm)
         //---Show Loading
         const loading = document.getElementById("loading");
         loading.style.visibility = 'visible';

@@ -27,6 +27,10 @@ function loadData(data) {
     buttonExecution.addEventListener("click", () => {
         getInformation();
     });
+
+    //-----Select All
+    controllerAllOptions("empleado"); 
+
     //-----Loading
     setTimeout(() => { hide_loading();}, 2000);
 }
@@ -58,6 +62,9 @@ async function getInformation(){
     }
 }
 
+
+
+//------CATALOG
 function get_catalog(){
     const scriptId = getParameterURL('script_id');
     const JWT = getCookie("userJwt");
@@ -76,7 +83,10 @@ function get_catalog(){
     .then((res) => {
         const data = res.response && res.response.data ? res.response.data : [];
         if(data.length > 0){
-            set_catalog_select(data, 'empleado', 'empleado');
+            set_catalog_select(data, 'empleado', 'empleado', true);
         }
     })
 }
+
+
+//------SELECT ACTIVE

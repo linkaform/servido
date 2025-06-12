@@ -310,7 +310,6 @@ function createElements(dataConfig = null){
                 let children = item._children;
                 children.forEach((element, index) => {
                     const divElement = document.createElement('div');
-
                     //#-----PROPS-----#//
                     //-----Title
                     const titleElement = element.title ?  element.title : "";
@@ -337,7 +336,13 @@ function createElements(dataConfig = null){
                     const listProgress = element.listProgress? element.listProgress : [];
                     //-----Id
                     const idElement = element.id ? element.id : Math.floor(Math.random() * 1000);
-                    //-----Id
+                    //-----File URL
+                    const fileURL = element.fileURL ? element.fileURL : 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6792643a1eea22cd5b0fc601.png';
+                    
+
+
+
+                    //-----Id KANVA
                     const columsKanva = element.columsKanva? element.columsKanva : [];
                     //-----Components Form
                     const formElements = element.formElements? element.formElements : [];
@@ -583,7 +588,52 @@ function createElements(dataConfig = null){
                                 </div>
                             </div>
                         `;
+                    }else if(element.type == 'map'){
+                        //-----Element Card
+                        divElement.innerHTML = `<div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">${titleElement}</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div>
+                                    <div id="${idElement}" style="height: 600px;width:100%;"></div>
+                                </div>
+                            </div>
+                        </div>`;
+                    }else if(element.type == 'card-custom-image'){
 
+                        if(progressElement){
+                            progressDiv = `<div class="col">
+                                <div class="progress progress-sm mr-2">
+                                    <div class="progress-bar ${colorBg}" ${colorBgHexadecimal} role="progressbar"
+                                        style="width: 70%" aria-valuenow="50" aria-valuemin="0"
+                                        aria-valuemax="100" id="progress-${idElement}"></div>
+                                </div>
+                            </div>`;
+                        }
+
+                        divElement.innerHTML = `<div class="card ${colorElement} shadow h-100 py-2" ${colorHexadecimal} >
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="h5 font-weight-bold text-${colorElement} text-uppercase mb-1">
+                                                ${titleElement}
+                                            </div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto ml-3">
+                                                    <span class="h6 mb-0 mr-3 font-weight-bold text-gray-800" id="textA-${idElement}"></span>
+                                                    <span class="h6 mb-0 mr-3 font-weight-bold text-gray-800" id="textB-${idElement}"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row no-gutters align-items-center justify-content-center mt-3">
+                                        <img src="${fileURL}" alt="Imagen circular" class="img-card">
+                                    </div>
+                                </div>
+                            </div>
+                        `;
                     }
                     rowDiv.appendChild(divElement);
                 });
@@ -645,9 +695,6 @@ function drawCarrouselImgs(divId, listImg) {
 }
 
 
-
-
-
 //-Funciona para agregar diferentes paletas de color
 function setColorsDatasets(data = null, type = null){
     if(data != null){
@@ -695,6 +742,24 @@ function drawCardElement(cardId, value, scroll = null) {
     } else {
         console.error('Element not found!',`text-${cardId}`);
     }
+}
+
+//-Funciona para llenar datos de una card custom con imagen
+function drawCardImageElement(cardId, valueA, valueB) {
+    const elementA = document.getElementById(`textA-${cardId}`);
+    if (elementA) {
+        document.getElementById(`textA-${cardId}`).textContent = `${valueA}`;
+    } else {
+        console.error('Element not found!',`text-${cardId}`);
+    }
+
+    const elementB = document.getElementById(`textB-${cardId}`);
+    if (elementB) {
+        document.getElementById(`textB-${cardId}`).textContent = `${valueB}`;
+    } else {
+        console.error('Element not found!',`text-${cardId}`);
+    }
+        
 }
 
 //-Función para pintar table
