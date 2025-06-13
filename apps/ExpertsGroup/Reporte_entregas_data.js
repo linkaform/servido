@@ -1,38 +1,40 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-        { type:'card', col: '4', id:'cardFirst', title:'Total de Entregas a Realizar ', hexadecimal:'#416CA6'},
-        { type:'card', col: '4', id:'cardSecond', title:'Entregas Realizadas', hexadecimal:'#416CA6'},
-        { type:'card', col: '4', id:'cardThird', title:'% de Avance', hexadecimal:'#416CA6'},
+        { type:'card', col: '4', id:'cardFirst', title:'Total Deliveries to be Made', hexadecimal:'#0099F9'},
+        { type:'card', col: '4', id:'cardSecond', title:'Deliveries Made', hexadecimal:'#0099F9'},
+        { type:'card', col: '4', id:'cardThird', title:'% Progress', hexadecimal:'#0099F9'},
     ]},
     { class:'', _children : [
-            { type:'chart', col: '6', id:'chartFirst', title:'Porcentaje'},
-            { type:'chart', col: '6', id:'chartSecond', title:'Progreso de entrega por tienda'},
+            { type:'chart', col: '8', id:'chartFirst', title:'Percentage'},
+            { type:'chart', col: '4', id:'chartSecond', title:'Delivery progress by store'},
     ]},
     { class:'', _children : [
-        { type:'card-custom-image', col: '4', id:'cardStoreA', title:'OXXO', hexadecimal:'#416CA6',
+        { type:'card-custom-image', col: '4', id:'cardStoreA', title:'OXXO', hexadecimal:'#0099F9',
             fileURL:'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/684b242e9cdc856478e11330.png'
         },
-        { type:'card-custom-image', col: '4', id:'cardStoreB', title:'Fragua', hexadecimal:'#416CA6',
+        { type:'card-custom-image', col: '4', id:'cardStoreB', title:'Fragua', hexadecimal:'#0099F9',
             fileURL:'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/684b242d9cdc856478e1132f.png'
         },
-        { type:'card-custom-image', col: '4', id:'cardStoreC', title:'Neto', hexadecimal:'#416CA6',
+        { type:'card-custom-image', col: '4', id:'cardStoreC', title:'Neto', hexadecimal:'#0099F9',
             fileURL:'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/684b242c9cdc856478e1132e.png'
         },
     ]},
     { class:'', _children : [
-        { type:'chart', col: '12', id:'chartThird', title:'Progreso de entrega por estado'},
+        { type:'chart', col: '12', id:'chartThird', title:'Delivery progress by status'},
     ]},
     { class:'', _children : [
         { type:'map', col: '12', id:'mapFirst', title:'Mapa'},
     ]},
     { class:'', _children : [
-        { type:'chart', col: '6', id:'chartFourth', title:'Acumulado de entregas por día'},
-        { type:'chart', col: '6', id:'chartFiveth', title:'Progreso de entrega por sucursal'},
+        { type:'chart', col: '6', id:'chartFourth', title:'Accumulated deliveries per day'},
+        { type:'chart', col: '6', id:'chartFiveth', title:'Delivery progress by Brand'},
     ]},
     { class:'', _children : [
         { type:'modal', col: '12', id:'modalFilterFirst', title:'Datos de Estado', optionButtonModal:true, formElements : [
-                {type:'p', title:'Example', id:'switch1A'},
+                {type:'p', title:'Deliveries made : 90', id:'textA'},
+                {type:'p', title:'Pending deliveries: 50', id:'textA'},
+                {type:'p', title:'Percentage : 50', id:'textA'},
             ]
         },
             
@@ -72,13 +74,13 @@ var setOptions1A = {
 };
 
 var dataChart1A = {
-    labels: ['Realizado','Faltantes'],
+    labels: ['Deliveries Made','Deliveries to be Made'],
     datasets: [
         {
             label: 'Porcentaje',
             data: [73,27],
             fill: false,
-            backgroundColor: ['#416CA6', '#CFCAC7'], 
+            backgroundColor: ['#0099F9', '#8C8C8C'], 
         },
     ]
 };
@@ -118,13 +120,10 @@ var setOptions2A = {
     responsive: true, 
     maintainAspectRatio: false ,
     scales: {
-        y: {
-            step: 1,
-        }
-    },
-    scales: {
         x: {
-            stacked: true
+            stacked: true,
+            barPercentage: 0.8,        // Reduce el ancho de la barra (valor entre 0 y 1)
+            categoryPercentage: 0.5    // Reduce el espacio que cada categoría ocupa
         },
         y: {
             stacked: true,
@@ -134,22 +133,25 @@ var setOptions2A = {
 };
 
 var dataChart2A = {
-    labels: ['OXXO','Fragua','Neto'],
+    labels: ['OXXO', 'Fragua', 'Neto'],
     datasets: [
         {
-            label: 'Realizado',
+            label: 'Deliveries Made',
             data: [20, 50, 80],
-            fill: false,
-            backgroundColor: '#416CA6', 
+            backgroundColor: '#0099F9',
+            barPercentage: 0.7,        
+            categoryPercentage: 0.6    
         },
         {
-            label: 'Pendientes',
-            data: [80,50,20],
-            fill: false,
-            backgroundColor: '#CFCAC7',
-        },
+            label: 'Deliveries to be Made',
+            data: [80, 50, 20],
+            backgroundColor: '#8C8C8C',
+            barPercentage: 0.7,
+            categoryPercentage: 0.6
+        }
     ]
 };
+
 
 //----Chart Third
 var setOptions3A = {
@@ -204,16 +206,20 @@ var dataChart3A = {
     labels: ['Guanajuato','Queretaro','Michoacán de Ocampo', 'Veracruz de Ignacio de la Llave','Hidalgo'],
     datasets: [
         {
-            label: 'Realizado',
+            label: 'Deliveries Made',
             data: [40, 70, 60, 55, 30],
             fill: false,
-            backgroundColor: '#416CA6',
+            barPercentage: 0.5,        
+            categoryPercentage: 0.5,
+            backgroundColor: '#0099F9',
         },
         {
-            label: 'Pendientes',
+            label: 'Deliveries to be Made',
             data: [60, 30, 40, 45, 70],
             fill: false,
-            backgroundColor: '#CFCAC7',
+            barPercentage: 0.5,        
+            categoryPercentage: 0.5,
+            backgroundColor: '#8C8C8C',
         },
     ]
 };
@@ -272,7 +278,7 @@ var dataChart4A = {
       ],
     datasets: [
         {
-            label: 'Cadena 1',
+            label: 'Oxxo',
             data: [10, 20, 35, 40, 60, 70, 85, 95, 105, 110, 120, 130, 135],
             borderColor: '#999999',
             backgroundColor: '#999999',
@@ -282,7 +288,7 @@ var dataChart4A = {
             tension: 0.4
         },
         {
-            label: 'Cadena 2',
+            label: 'Fragua',
             data: [5, 10, 20, 30, 35, 50, 60, 70, 75, 80, 90, 100, 105],
             borderColor: '#5B9BD5',
             backgroundColor: '#5B9BD5',
@@ -292,10 +298,10 @@ var dataChart4A = {
             tension: 0.4
         },
         {
-            label: 'Cadena 3',
+            label: 'Neto',
             data: [15, 30, 55, 70, 95, 120, 145, 165, 180, 190, 210, 230, 240],
-            borderColor: '#CFCAC7',
-            backgroundColor: '#CFCAC7',
+            borderColor: '#8C8C8C',
+            backgroundColor: '#8C8C8C',
             fill: true,
             pointStyle: 'circle',
             pointRadius: 4,
@@ -303,7 +309,6 @@ var dataChart4A = {
         }
       ]
 };
-
 
 //----Chart Fiveth
 var setOptions5A = {
@@ -345,18 +350,16 @@ var setOptions5A = {
 };
 
 var dataChart5A = {
-    labels: ['Entrega','Pendiente'],
+    labels: ['Deliveries Made','Deliveries to be Made'],
     datasets: [
         {
             label: 'Total',
             data: [20, 80],
             fill: false,
-            backgroundColor: ['#416CA6', '#CFCAC7'], 
+            backgroundColor: ['#0099F9', '#8C8C8C'], 
         },
     ]
 };
-
-
 
 //-----Data Example Map
 const dataMap1 = [
@@ -367,7 +370,7 @@ const configMap1 = {
     name: 'Numeros',
     states: {
         hover: {
-            color: '#416CA6'
+            color: '#0099F9'
         }
     },
     dataLabels: {

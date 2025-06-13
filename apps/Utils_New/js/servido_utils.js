@@ -630,7 +630,7 @@ function createElements(dataConfig = null){
                                         </div>
                                     </div>
                                     <div class="row no-gutters align-items-center justify-content-center mt-3">
-                                        <img src="${fileURL}" alt="Imagen circular" class="img-card">
+                                        <img src="${fileURL}" alt="Imagen circular"  id="image-${idElement}">
                                     </div>
                                 </div>
                             </div>
@@ -762,6 +762,7 @@ function drawCardImageElement(cardId, valueA, valueB) {
     }
 }
 
+//-Funciona para crear un mapa chart en reporte
 function drawMapElement(elementId , title , data, configs = null, gradient = null) {
     const element = document.getElementById(`${elementId}`);
     if (element) {
@@ -810,7 +811,11 @@ function drawMapElement(elementId , title , data, configs = null, gradient = nul
                 },
 
                 colorAxis: {
-                    min: 0
+                    min: 0,
+                    stops: [
+                        [0, '#CFCAC7'],   
+                        [1, '#416CA6']    
+                    ]
                 },
 
                 series: [configMap]
