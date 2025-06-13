@@ -121,10 +121,12 @@ var setOptions2A = {
     maintainAspectRatio: false ,
     scales: {
         x: {
+            stacked: true,
             barPercentage: 0.8,        // Reduce el ancho de la barra (valor entre 0 y 1)
             categoryPercentage: 0.5    // Reduce el espacio que cada categoría ocupa
         },
         y: {
+            stacked: true,
             beginAtZero: true
         }
     }
@@ -140,6 +142,13 @@ var dataChart2A = {
             barPercentage: 0.7,        
             categoryPercentage: 0.6    
         },
+        {
+            label: 'Deliveries to be Made',
+            data: [80, 50, 20],
+            backgroundColor: '#8C8C8C',
+            barPercentage: 0.7,
+            categoryPercentage: 0.6
+        }
     ]
 };
 
@@ -183,7 +192,11 @@ var setOptions3A = {
         }
     },
     scales: {
+        x: {
+            stacked: true
+        },
         y: {
+            stacked: true,
             beginAtZero: true
         }
     }
@@ -194,11 +207,19 @@ var dataChart3A = {
     datasets: [
         {
             label: 'Deliveries Made',
-            data: [30, 40, 55,  60,  70, ],
+            data: [40, 70, 60, 55, 30],
             fill: false,
             barPercentage: 0.5,        
             categoryPercentage: 0.5,
             backgroundColor: '#0099F9',
+        },
+        {
+            label: 'Deliveries to be Made',
+            data: [60, 30, 40, 45, 70],
+            fill: false,
+            barPercentage: 0.5,        
+            categoryPercentage: 0.5,
+            backgroundColor: '#8C8C8C',
         },
     ]
 };
@@ -259,8 +280,8 @@ var dataChart4A = {
         {
             label: 'Oxxo',
             data: [10, 20, 35, 40, 60, 70, 85, 95, 105, 110, 120, 130, 135],
-            borderColor: '#999999',
-            backgroundColor: '#999999',
+            borderColor: '#00C49A',
+            backgroundColor: '#00C49A',
             fill: false,
             pointStyle: 'circle',
             pointRadius: 6,
