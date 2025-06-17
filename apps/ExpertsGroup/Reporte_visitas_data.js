@@ -3,7 +3,7 @@ let dicReportContext = [
     { class:'', _children : [
             { type:'table', col: '8', id:'tableFirst', title:'Table chain'},
             { type:'chart', col: '4', id:'chartFirst', title:'Progress Total'},
-            { type:'chart', col: '12', id:'chartSecond', title:'Progress by state'},
+            { type:'chart', col: '12', id:'chartSecond', title:'Progress by Store'},
             { type:'map', col: '12', id:'mapFirst', title:'Map'},
     ]},
    
