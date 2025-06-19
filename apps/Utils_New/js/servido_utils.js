@@ -353,9 +353,16 @@ function createElements(dataConfig = null){
                     const chartChange = element.chartChange ? element.chartChange  : false;
                     //-----Button Filter Modal
                     const optionButtonCustom  = element.buttonCustom ? element.buttonCustom  : false;
+                    
+                    //-----Button Filter Modal
+                    const selectLanguage  = element.language ? element.language  : 'es';
 
                     //-----Card Icon
                     const cardIcon = element.cardIcon ? element.cardIcon : '<i class="fas fa-clipboard-list fa-2x text-gray-300"></i>';
+                    //----Modal Size
+                    const modalSize = element.modalSize ? element.modalSize : '';
+
+
                     //#-----COMPONENTS-----#//
                     if(element.type == 'card'){
                         //-----Element Progress
@@ -540,22 +547,35 @@ function createElements(dataConfig = null){
                             </div>
                         </div>`;
                     }else if(element.type == 'modal'){
-                        //----Button
+                        let textClose = selectLanguage == 'es' ? 'Cerrar' : 'Close';
+                        let textSave = selectLanguage == 'es' ? 'Guardar' : 'Save';
+
                         let buttonSucces = '';
                         if(optionButtonModal){
                             buttonSucces = `<button class="btn btn-success ml-2" id="button-succes-${idElement}">
-                                Guardar
-                            </button>`
+                                ${textSave}
+                            </button>`;
                         }
-                        //----Elements
-                        let htmlFormElements = ``
+
+                        let htmlFormElements = ``;
                         if (formElements.length > 0) {
                             formElements.forEach((itemElement, index) => {
                                 htmlFormElements += drawModalBody(itemElement);
                             });
                         }
+
+                        // --- Tamaño del modal
+                        let modalSizeClass = '';
+                        if (modalSize === 'lg') {
+                            modalSizeClass = 'modal-lg';
+                        } else if (modalSize === 'xl') {
+                            modalSizeClass = 'modal-xl';
+                        } else if (modalSize === 'sm') {
+                            modalSizeClass = 'modal-sm';
+                        }
+
                         divElement.innerHTML = `<div class="modal fade" id="${idElement}" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog ${modalSizeClass}">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title">${titleElement}</h5>
@@ -565,7 +585,7 @@ function createElements(dataConfig = null){
                                     </div>
                                     <div class="modal-footer">
                                         ${buttonSucces}
-                                        <button type="button" class="btn ml-2 btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="button" class="btn ml-2 btn-secondary" data-bs-dismiss="modal">${textClose}</button>
                                     </div>
                                 </div>
                             </div>
@@ -599,17 +619,6 @@ function createElements(dataConfig = null){
                             </div>
                         </div>`;
                     }else if(element.type == 'card-custom-image'){
-
-                        if(progressElement){
-                            progressDiv = `<div class="col">
-                                <div class="progress progress-sm mr-2">
-                                    <div class="progress-bar ${colorBg}" ${colorBgHexadecimal} role="progressbar"
-                                        style="width: 70%" aria-valuenow="50" aria-valuemin="0"
-                                        aria-valuemax="100" id="progress-${idElement}"></div>
-                                </div>
-                            </div>`;
-                        }
-
                         divElement.innerHTML = `<div class="card ${colorElement} shadow h-100 py-2" ${colorHexadecimal} >
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -619,18 +628,25 @@ function createElements(dataConfig = null){
                                                     ${titleElement}
                                                 </div>
                                             </div>
-                                            <div>
-                                                <div class="col-auto">
-                                                    <span class="h6 mb-0 mr-3 font-weight-bold text-gray-800" id="textA-${idElement}"></span>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <span class="h6 mb-0 mr-3 font-weight-bold text-gray-800" id="textB-${idElement}"></span>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="row no-gutters align-items-center justify-content-center mt-3">
                                         <img src="${fileURL}" alt="Imagen circular"  id="image-${idElement}">
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="col-12 mb-2">
+                                            <div class="d-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded p-2">
+                                                <i class="fas fa-store me-2"></i>
+                                                <span class="h6 mb-0 font-weight-bold text-success" id="textA-${idElement}">1041</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning rounded p-2">
+                                                <i class="fas fa-clock me-2"></i>
+                                                <span class="h6 mb-0 font-weight-bold text-warning" id="textB-${idElement}">439</span>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -1103,6 +1119,12 @@ function drawModalBody(itemElement){
         const element = `<div class="form-check form-switch">
             <input class="form-check-input switch ${name}" type="checkbox" name="${name}" id="${id}" ${checked}>
             <label class="form-check-label">${title}</label>
+        </div>`;
+        return element;
+    }else if(type == 'div'){
+        const element = `<div class="col-12">
+            <p><strong>${title}</strong></p>
+            <div id="${id}"></div>
         </div>`;
         return element;
     }

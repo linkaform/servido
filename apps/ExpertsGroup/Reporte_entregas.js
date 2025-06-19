@@ -31,8 +31,6 @@ function loadDemoData(){
     drawChartElement('chartFourth','line',dataChart4A, setOptions4A, undefined, true);
     drawChartElement('chartFiveth','doughnut',dataChart5A, setOptions5A, undefined, true);
 
-
-
     //----TEST MAP
     drawMapElement('mapFirst', 'Delivery progress by state' , dataMap1, configMap1)
     setTimeout(() => { hide_loading();}, 2000);

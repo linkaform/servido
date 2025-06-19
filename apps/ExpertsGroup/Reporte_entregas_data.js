@@ -11,7 +11,7 @@ let dicReportContext = [
     ]},
     { class:'', _children : [
         { type:'card-custom-image', col: '4', id:'cardStoreA', title:'OXXO', hexadecimal:'#0099F9',
-            fileURL:'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/684b242e9cdc856478e11330.png'
+            fileURL:'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/68544635d311142deb781303.png'
         },
         { type:'card-custom-image', col: '4', id:'cardStoreB', title:'Fragua', hexadecimal:'#0099F9',
             fileURL:'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/684b242d9cdc856478e1132f.png'
@@ -31,13 +31,10 @@ let dicReportContext = [
         { type:'chart', col: '6', id:'chartFiveth', title:'Delivery progress by Brand'},
     ]},
     { class:'', _children : [
-        { type:'modal', col: '12', id:'modalFilterFirst', title:'Datos de Estado', optionButtonModal:true, formElements : [
-                {type:'p', title:'Deliveries made : 90', id:'textA'},
-                {type:'p', title:'Pending deliveries: 50', id:'textA'},
-                {type:'p', title:'Percentage : 50', id:'textA'},
+        { type:'modal', col: '12', id:'modalFilterFirst', title:'Data by State', optionButtonModal:false, language:'en', modalSize:'lg', formElements : [
+                {type:'div', title:'Table Data', id:'tableAModal'},
             ]
         },
-            
     ]},
 
 ];
@@ -361,6 +358,97 @@ var dataChart5A = {
     ]
 };
 
+//----Config Table Modal
+let columsTableModal1 = [
+    { title: "STORE", field: 'store', hozAlign: "left", width: 200 },
+    { title: "CR", field: 'cr', hozAlign: "left", width: 200 },
+    { title: "NAME", field: 'name', hozAlign: "left", width: 200 },
+    {
+        title: "ESTATUS",
+        field: 'status',
+        hozAlign: "left",
+        width: 250,
+        formatter: function(cell) {
+            const value = cell.getValue();
+            let color = value === 'Visited' ? 'green' : value === 'Not visited' ? 'red' : 'black';
+            return `<span style="color:${color}; font-weight:600">${value}</span>`;
+        }
+    },
+];
+
+
+
+let dataTableModal1 = [
+    {
+        store : 'Example',
+        cr : '10',
+        name : 'Oxxo',
+        status : 'Visited',
+    },
+    {
+        store : 'Super Uno',
+        cr : '11',
+        name : 'Extra',
+        status : 'Not visited',
+    },
+    {
+        store : 'MiniMarket',
+        cr : '12',
+        name : '7-Eleven',
+        status : 'Visited',
+    },
+    {
+        store : 'Corner Shop',
+        cr : '13',
+        name : 'Circle K',
+        status : 'Visited',
+    },
+    {
+        store : 'La Esquina',
+        cr : '14',
+        name : 'Oxxo',
+        status : 'Not visited',
+    },
+    {
+        store : 'Tienda Central',
+        cr : '15',
+        name : 'Super Q',
+        status : 'Visited',
+    },
+    {
+        store : 'Express',
+        cr : '16',
+        name : 'Kiosko',
+        status : 'Not visited',
+    },
+    {
+        store : 'Gasolinera Norte',
+        cr : '17',
+        name : 'Oxxo Gas',
+        status : 'Visited',
+    },
+    {
+        store : 'Abastos MX',
+        cr : '18',
+        name : 'SuperCity',
+        status : 'Visited',
+    },
+    {
+        store : 'Bodega A',
+        cr : '19',
+        name : 'Bodega Exprés',
+        status : 'Not visited',
+    },
+    {
+        store : 'Sucursal 21',
+        cr : '20',
+        name : 'Tiendas 3B',
+        status : 'Visited',
+    },
+];
+
+
+
 //-----Data Example Map
 const dataMap1 = [
     ['mx-ve', 27], ['mx-gj', 40], ['mx-qt', 21], ['mx-mi', 31], ['mx-hg', 42]
@@ -383,6 +471,8 @@ const configMap1 = {
             click: function () {
                 const modalElement = document.getElementById('modalFilterFirst');
                 if (modalElement) {
+                    drawTableElement('tableAModal', dataTableModal1, columsTableModal1);
+                    //---Mostral Modal
                     const eventModal = new bootstrap.Modal(modalElement);
                     eventModal.show();
                 } else {

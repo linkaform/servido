@@ -20,18 +20,27 @@
 </head>
 <style>
     #image-cardStoreA{
-      width: 450px !important;
-      height: 200px !important;
+        width: 200px !important;
+        height: 200px !important;
+        object-fit: contain;
+        margin-bottom: 25px;
+        border-radius: 100%;
     }
 
     #image-cardStoreB{
-      width: 350px !important;
-      height: 250px !important;
+        width: 250px !important;
+        height: 220px !important;
+        object-fit: contain;
+        border-radius: 100%;
     }
 
     #image-cardStoreC{
-      width: 450px !important;
-      height: 200px !important;
+        width: 200px !important;
+        height: 180px !important;
+        object-fit: contain;
+        margin-bottom: 25px;
+        border-radius: 100%;
+        border: 1px solid;
     }
 </style>
 <body>
@@ -64,8 +73,8 @@
                     <!-- Filter Row -->
                     <div class="row mb-4" id="content-div-filter">
                         <!-- Filtro de Selector (Dropdown) -->
-                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                            <label for="categoria" class="form-label">Capture period</label>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                            <label for="categoria" class="form-label">Capture period:</label>
                             <select class="form-select filters-servido" id="month">
                                 <option value="">Select a month</option>
                                 <option value="1">January</option>
@@ -83,13 +92,22 @@
                             </select>
                         </div>
 
-                         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                            <label for="categoria" class="form-label">Capture period</label>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                            <label for="categoria" class="form-label">Capture period:</label>
                             <select class="form-select filters-servido" id="year" >
                                 <option value="">Select a </option>
                                 <option value="25">2025</option>
                                 <option value="26">2026</option>
                                 <option value="27">2027</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                            <label for="categoria" class="form-label">Chain:</label>
+                            <select class="form-select filters-servido" id="chain" >
+                                <option value="">Select chain </option>
+                                <option value="OXXO">OXXO</option>
+                                <option value="Fragua">Fragua</option>
+                                <option value="Neto">Neto</option>
                             </select>
                         </div>
                     </div>
