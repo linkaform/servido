@@ -30,6 +30,7 @@ let columsTable1 = [
     { title: "Traspaso", field: "handover", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
     { title: "Stock Final", field: "stock_final", headerTooltip: true, hozAlign: "center", width: 150, formatter:'money', formatterParams: { precision: 2} },
     { title: "% Final", field: "percentage_finish", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2,symbolAfter:"%"} },
+    { title: "Peso Unit", field: "peso_unitario", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2,symbolAfter:"%"} },
     { title: "Origen", field: "from", headerTooltip: true, hozAlign: "left", headerFilter:"input", width: 200 },
     { title: "Max Stock", field: "from_max_stock", headerTooltip: true, hozAlign: "center", width: 150 ,  formatter:'money', formatterParams: { precision: 2}},
     { title: "Origen Stock", field: "from_initial_stock", headerTooltip: true, hozAlign: "center", width: 150 ,  formatter:'money', formatterParams: { precision: 2}},
