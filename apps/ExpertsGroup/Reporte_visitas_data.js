@@ -23,7 +23,7 @@ var columsTable1 = [
         formatterParams: {
             min: 0,
             max: 100,
-            color: "8C8C8C",
+            color: "#8C8C8C",
             legend: true
         }
     }
