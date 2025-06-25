@@ -85,7 +85,7 @@ function setSelect(listDic, labelKey, idKey, idElement) {
 }
 
 //----Funciona para buscar dentro de una lista de diccionarios, y llenar con valores unicos un selector
-function setCatalogSimple(list, id) {
+function setCatalogSimple(list, id, language = false) {
   console.log('list',list)
   const selectElement = document.getElementById(id);
   if (!selectElement) {
@@ -102,7 +102,11 @@ function setCatalogSimple(list, id) {
   // Opción por defecto
   const defaultOption = document.createElement('option');
   defaultOption.value = '';
-  defaultOption.textContent = 'Seleccione una opción';
+  if(!language){
+    defaultOption.textContent = 'Seleccione una opción';
+  }else{
+    defaultOption.textContent = 'Select a option';
+  }
   selectElement.appendChild(defaultOption);
 
   // Agregar opciones

@@ -19,7 +19,6 @@ function loadDemoData(){
   //---Definitions ELements
   drawTableElement('tableFirst', dataTable1, columsTable1);
   drawChartElement('chartFirst','pie',dataChart1A,setOptions1A, undefined, true);
-  drawChartElement('chartSecond','bar',dataChart2A,setOptions2A, undefined, true);
   //----TEST MAP
   drawMapElement('mapFirst', 'Delivery progress by state' , dataMap1, configMap1)
   setTimeout(() => { hide_loading();}, 2000);
@@ -28,8 +27,14 @@ function loadDemoData(){
 
 //-----FUNCTION ACTIVE
 function loadData(data) {
-    //---Data
-    setEventsLoad();
+    //----Search Catalogs
+    get_catalog();
+    //----Assing Events
+    const buttonExecution = document.getElementById("buttonExecution");
+    buttonExecution.addEventListener("click", () => {
+        getInformation();
+    });
+
     //---Hide
     setTimeout(() => { hide_loading();}, 2000);
 }
@@ -49,8 +54,15 @@ async function getInformation(dicAditional){
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-
-        
+        if(data.tableFirst){
+          drawTableElement('tableFirst', data.tableFirst, columsTable1);   
+        }
+        if(data.chartFirst){
+          drawChartElement('chartFirst','pie',data.chartFirst,setOptions1A, undefined, true);     
+        }
+        if(data.mapFirst){
+          drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1)   
+        }
         //-----Style
         const divEmpty = document.querySelectorAll('.div-content-empty');
         const divElements = document.querySelectorAll('.div-content-element');
@@ -63,3 +75,26 @@ async function getInformation(dicAditional){
     }
 }
 
+//----CATALOG
+function get_catalog(){
+    const scriptId = getParameterURL('script_id');
+    const JWT = getCookie("userJwt");
+    fetch(getUrlRequest('script'), {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: scriptId,
+            option: 'catalog',
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+JWT
+        },
+    })
+    .then((res) => res.json())
+    .then((res) => {
+        const data = res.response && res.response.data ? res.response.data : [];
+        if(data.length > 0){
+          setCatalogSimple(data, 'chain', true);
+        }
+    })
+}
