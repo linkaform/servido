@@ -53,7 +53,8 @@ async function getInformation(dicAditional){
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
-        if ( typeof responseRequest === 'object' && responseRequest !== null ) {
+        if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
+            console.log('Entra',responseRequest)
             const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
             if(data.tableFirst){
               drawTableElement('tableFirst', data.tableFirst, columsTable1);   
