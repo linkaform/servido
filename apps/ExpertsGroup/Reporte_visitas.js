@@ -20,7 +20,7 @@ function loadDemoData(){
   drawTableElement('tableFirst', dataTable1, columsTable1);
   drawChartElement('chartFirst','pie',dataChart1A,setOptions1A, undefined, true);
   //----TEST MAP
-  drawMapElement('mapFirst', 'Delivery progress by state' , dataMap1, configMap1)
+  drawMapElement('mapFirst', 'Delivery progress by state' , dataMap1, configMap1, configToltipMap)
   setTimeout(() => { hide_loading();}, 2000);
 }
 
@@ -61,7 +61,7 @@ async function getInformation(dicAditional){
           drawChartElement('chartFirst','pie',data.chartFirst,setOptions1A, undefined, true);     
         }
         if(data.mapFirst){
-          drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1)   
+          drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1, configToltipMap)   
         }
         //-----Style
         const divEmpty = document.querySelectorAll('.div-content-empty');

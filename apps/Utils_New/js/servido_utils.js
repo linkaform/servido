@@ -779,7 +779,7 @@ function drawCardImageElement(cardId, valueA, valueB) {
 }
 
 //-Funciona para crear un mapa chart en reporte
-function drawMapElement(elementId , title , data, configs = null, gradient = null) {
+function drawMapElement(elementId , title , data, configs = null, toltip = null) {
     const element = document.getElementById(`${elementId}`);
     if (element) {
 
@@ -825,13 +825,14 @@ function drawMapElement(elementId , title , data, configs = null, gradient = nul
                         verticalAlign: 'bottom'
                     }
                 },
-
+                tooltip: toltip,
                 colorAxis: {
                     min: 0,
+                    max: 100,
                     stops: [
-                        [0, '#CFCAC7'],   
-                        [1, '#416CA6']    
-                    ]
+                        [0, '#8C8C8C'],   
+                        [1, '#0099F9']  
+                    ],
                 },
 
                 series: [configMap]

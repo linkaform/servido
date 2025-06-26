@@ -99,3 +99,15 @@ const configMap1 = {
         format: '{point.name}'
     },
 }
+
+const configToltipMap =  {
+    formatter: function () {
+        const value = this.point.value;
+        const stateName = this.point.name || this.key;
+        let text = `Percentage Advance: ${value}%`;
+        if (value > 100) {
+            text += ' (EXCEEDED)';
+        }
+        return `<b>${stateName}</b><br>${text}`;
+    }
+}
