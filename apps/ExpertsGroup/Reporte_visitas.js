@@ -53,25 +53,27 @@ async function getInformation(dicAditional){
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
-        const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-        if(data.tableFirst){
-          drawTableElement('tableFirst', data.tableFirst, columsTable1);   
+        if ( typeof variable === 'object' && variable !== null ) {
+            const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
+            if(data.tableFirst){
+              drawTableElement('tableFirst', data.tableFirst, columsTable1);   
+            }
+            if(data.chartFirst){
+              drawChartElement('chartFirst','pie',data.chartFirst,setOptions1A, undefined, true);     
+            }
+            if(data.mapFirst){
+              drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1, configToltipMap)   
+            }
+            //-----Style
+            const divEmpty = document.querySelectorAll('.div-content-empty');
+            const divElements = document.querySelectorAll('.div-content-element');
+            divElements.forEach(div => {
+              div.style.visibility = 'visible';
+            });
+            divEmpty.forEach(div => {
+              div.style.display = 'none';
+            });
         }
-        if(data.chartFirst){
-          drawChartElement('chartFirst','pie',data.chartFirst,setOptions1A, undefined, true);     
-        }
-        if(data.mapFirst){
-          drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1, configToltipMap)   
-        }
-        //-----Style
-        const divEmpty = document.querySelectorAll('.div-content-empty');
-        const divElements = document.querySelectorAll('.div-content-element');
-        divElements.forEach(div => {
-          div.style.visibility = 'visible';
-        });
-        divEmpty.forEach(div => {
-          div.style.display = 'none';
-        });
     }
 }
 
