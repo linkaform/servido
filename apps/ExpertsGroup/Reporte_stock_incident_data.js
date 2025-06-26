@@ -30,7 +30,7 @@ const greenBackgroundFormatter = (cell) => {
 
 
 var columsTable1 = [
-    { title: "CR", field: "cr", hozAlign: "left", width: 300 },
+    { title: "CR", field: "cr", hozAlign: "left", width: 100},
     { title: "Store", field: "store", hozAlign: "left", width: 200 },
     { title: "Chain", field: "chain", hozAlign: "left", width: 200 },
     { title: "State", field: "state", hozAlign: "left", width: 200 },
@@ -191,7 +191,7 @@ var dataTable1 = [
 
 //-------TABLE 2
 var columsTable2 = [
-    { title: "CR", field: "cr", hozAlign: "left", width: 300 },
+    { title: "CR", field: "cr", hozAlign: "left", width:100},
     { title: "Store", field: "store", hozAlign: "left", width: 200 },
     { title: "Chain", field: "chain", hozAlign: "left", width: 200 },
     { title: "State", field: "state", hozAlign: "left", width: 200 },
@@ -329,7 +329,7 @@ var dataTable2 = [
 
 //-------TABLE 3
 var columsTable3 = [
-    { title: "CR", field: "cr", hozAlign: "left", width: 300 },
+    { title: "CR", field: "cr", hozAlign: "left", width: 100 },
     { title: "Store", field: "store", hozAlign: "left", width: 200 },
     { title: "Chain", field: "chain", hozAlign: "left", width: 200 },
     { title: "State", field: "state", hozAlign: "left", width: 200 },
