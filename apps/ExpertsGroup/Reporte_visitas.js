@@ -53,7 +53,7 @@ async function getInformation(dicAditional){
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
-        if ( typeof variable === 'object' && variable !== null ) {
+        if ( typeof responseRequest === 'object' && responseRequest !== null ) {
             const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
             if(data.tableFirst){
               drawTableElement('tableFirst', data.tableFirst, columsTable1);   
