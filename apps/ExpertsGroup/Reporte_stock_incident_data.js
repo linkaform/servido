@@ -18,7 +18,7 @@ const greenBackgroundFormatter = (cell) => {
     if(value == 0){
       return '-'; 
     }
-    
+
     element.style.backgroundColor = "";
     element.style.borderRadius = "";
     element.style.padding = "";
@@ -41,7 +41,7 @@ var columsTable1 = [
     { title: "Municipality", field: "municipality", hozAlign: "left", width: 200 },
     { title: "Total Ganchos", field: "total", hozAlign: "left", width: 160 },
     { title: "6X9", field: "6x9", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
-    { title: "5X9TR", field: "5x9", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
+    { title: "5X9TR", field: "5x9tr", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
     { title: "COUNTER", field: "counter", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 160 },
     { title: "6X9TR", field: "6x9tr", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
     { title: "2X9", field: "2x9", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
