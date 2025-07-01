@@ -30,7 +30,7 @@
                     <!-- Page Heading -->
                     <div class="row">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4  col-6">
-                            <h1 class="h3 mb-0 text-gray-800"> Stock & Incidents Report</h1>
+                            <h1 class="h3 mb-0 text-gray-800">Reporte de Mantenimientos</h1>
                         </div>
                         <div class="d-sm-flex align-items-center justify-content-end mb-4 col-6" id="content-div-buttons">
                             <button class="btn btn-sm btn-primary shadow-sm m-1" id="buttonExecution">
@@ -47,27 +47,22 @@
 
                     <!-- Filter Row -->
                     <div class="row mb-4" id="content-div-filter">
-                        <!-- Filtro de Selector (Dropdown) -->
+                        <!-- Filtro de Fecha -->
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
-                            <label for="categoria" class="form-label">Capture period:</label>
-                            <select class="form-select filters-servido" id="month" required>
-                                <option value="">Select a month</option>
-                                <option value="6">June</option>
-                                <option value="7">July</option>
-                                <option value="8">August</option>
-                                <option value="9">September</option>
-                                <option value="10">October</option>
-                                <option value="11">November</option>
-                                <option value="12">December</option>
-                            </select>
+                            <label class="form-label">Fecha Desde</label>
+                            <input type="date" class="form-control filters-servido" id="dateFrom" >
                         </div>
+
+                        <!-- Filtro de Fecha -->
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
-                            <label for="categoria" class="form-label">Chain:</label>
-                            <select class="form-select filters-servido" id="chain" >
-                                <option value="">Select chain </option>
-                                <option value="OXXO">OXXO</option>
-                                <option value="Fragua">Fragua</option>
-                                <option value="Neto">Neto</option>
+                            <label class="form-label">Fecha Hasta</label>
+                            <input type="date" class="form-control filters-servido" id="dateTo" >
+                        </div>
+
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                            <label for="categoria" class="form-label">Estación de servicio:</label>
+                            <select class="form-select filters-servido" id="servicio" >
+                                <option value="">Seleccione  Opción </option>
                             </select>
                         </div>
                     </div>
@@ -133,7 +128,7 @@
     <script type="text/javascript" src="../Utils_New/js/lkf_utils.js"></script>
     <script type="text/javascript" src="../Utils_New/js/servido_utils.js"></script>
 	<!--Report -->
-	<script type="text/javascript" src="./Reporte_stock_incident.js"></script>
-    <script type="text/javascript" src="./Reporte_stock_incident_data.js"></script>
+	<script type="text/javascript" src="./Reporte_mantenimientos.js"></script>
+    <script type="text/javascript" src="./Reporte_mantenimientos_data.js"></script>
 </body>
 </html>

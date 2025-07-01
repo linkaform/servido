@@ -1,7 +1,7 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-        { type:'table', col: '12', id:'tableFirst', title:'Out of Stock by Display Type'},
+        { type:'table', col: '12', id:'tableFirst', title:'Display Type'},
         { type:'table', col: '12', id:'tableSecond', title:'Out of Stock by Store', optionExpanded:true},
         { type:'table', col: '12', id:'tableThird', title:'Incidents'},
     ]},
@@ -20,7 +20,7 @@ const greenBackgroundFormatter = (cell) => {
     element.style.padding = "";
 
     if (isNumber) {
-    element.style.backgroundColor = "#d4edda";
+    element.style.backgroundColor = "#49C2F2";
     element.style.borderRadius = "4px";
     element.style.padding = "2px 5px";
     }
@@ -32,13 +32,13 @@ const greenBackgroundFormatter = (cell) => {
 var columsTable1 = [
     { title: "CR", field: "cr", hozAlign: "left", width: 100},
     { title: "Store", field: "store", hozAlign: "left", width: 200 },
-    { title: "Chain", field: "chain", hozAlign: "left", width: 200 },
+    { title: "Chain", field: "chain", hozAlign: "left", width: 130 },
     { title: "State", field: "state", hozAlign: "left", width: 200 },
     { title: "Municipality", field: "municipality", hozAlign: "left", width: 200 },
-    { title: "Total", field: "total", hozAlign: "left", width: 200 },
+    { title: "Total Ganchos", field: "total", hozAlign: "left", width: 160 },
     { title: "6X9", field: "6x9", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
     { title: "5X9TR", field: "5x9", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
-    { title: "COUNTER", field: "counter", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 180 },
+    { title: "COUNTER", field: "counter", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 160 },
     { title: "6X9TR", field: "6x9tr", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
     { title: "2X9", field: "2x9", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
     { title: "5X9", field: "5x9", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
@@ -197,7 +197,7 @@ var columsTable2 = [
     { title: "State", field: "state", hozAlign: "left", width: 200 },
     { title: "Municipality", field: "municipality", hozAlign: "left", width: 200 },
     { title: "UPC", field: "upc", hozAlign: "left", width: 200 },
-    { title: "Total", field: "total", hozAlign: "left", width: 200 },
+    { title: "Total Ganchos", field: "total", hozAlign: "left", width: 200 },
     
 ];
 
@@ -336,6 +336,10 @@ var columsTable3 = [
     { title: "Municipality", field: "municipality", hozAlign: "left", width: 200 },
     { title: "Type of Incident", field: "incident", hozAlign: "left", width: 200 },
     { title: "Comments", field: "comments", hozAlign: "left", width: 200 },
+    {title:"Image", field:"url_image", formatter:"image", width: 150 , formatterParams:{
+      height:"150px",
+      width:"150px",
+    }}
 ];
 
 var dataTable3 = [
@@ -347,6 +351,7 @@ var dataTable3 = [
     municipality: 'MORELIA',
     incident: 'Tiendas Cerradas',
     comments: 'Lorem ipsum',
+    url_image: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/683dcbb99122a4bc15f217b6.jpg',
   },
   {
     cr: '1151',
@@ -356,6 +361,7 @@ var dataTable3 = [
     municipality: 'GUADALAJARA',
     incident: 'Falla de Energía',
     comments: 'Sin servicio eléctrico desde temprano',
+    url_image: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/683dcbb99122a4bc15f217b6.jpg',
   },
   {
     cr: '1152',
@@ -365,6 +371,7 @@ var dataTable3 = [
     municipality: 'COYOACÁN',
     incident: 'Sin Conexión',
     comments: 'Pérdida de internet reportada',
+    url_image: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/683dcbb99122a4bc15f217b6.jpg',
   },
   {
     cr: '1153',
@@ -374,6 +381,7 @@ var dataTable3 = [
     municipality: 'PUEBLA',
     incident: 'Inventario Incompleto',
     comments: 'Faltan productos en anaquel',
+    url_image: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/683dcbb99122a4bc15f217b6.jpg',
   },
   {
     cr: '1154',
@@ -383,6 +391,7 @@ var dataTable3 = [
     municipality: 'LEÓN',
     incident: 'Personal Incompleto',
     comments: 'Solo 1 cajero presente',
+    url_image: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/683dcbb99122a4bc15f217b6.jpg',
   },
   {
     cr: '1155',
@@ -392,6 +401,7 @@ var dataTable3 = [
     municipality: 'MÉRIDA',
     incident: 'Cierre Anticipado',
     comments: 'Se cerró por mantenimiento',
+    url_image: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/683dcbb99122a4bc15f217b6.jpg',
   },
   {
     cr: '1156',
@@ -401,6 +411,7 @@ var dataTable3 = [
     municipality: 'TIJUANA',
     incident: 'Fuga de Agua',
     comments: 'Reportada en bodega',
+    url_image: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/683dcbb99122a4bc15f217b6.jpg',
   },
   {
     cr: '1157',
@@ -410,6 +421,7 @@ var dataTable3 = [
     municipality: 'MAZATLÁN',
     incident: 'Falta de Personal',
     comments: 'Sin supervisor en turno',
+    url_image: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/683dcbb99122a4bc15f217b6.jpg',
   },
   {
     cr: '1158',
@@ -419,6 +431,7 @@ var dataTable3 = [
     municipality: 'MONTERREY',
     incident: 'Sistema Caído',
     comments: 'No se puede facturar',
+    url_image: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/683dcbb99122a4bc15f217b6.jpg',
   },
   {
     cr: '1159',
@@ -428,5 +441,6 @@ var dataTable3 = [
     municipality: 'CANCÚN',
     incident: 'Alarma Activada',
     comments: 'Se activó por error',
+    url_image: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/683dcbb99122a4bc15f217b6.jpg',
   },
 ];
