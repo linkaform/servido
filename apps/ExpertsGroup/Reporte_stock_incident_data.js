@@ -196,8 +196,8 @@ var columsTable2 = [
     { title: "Chain", field: "chain", hozAlign: "left", width: 200 },
     { title: "State", field: "state", hozAlign: "left", width: 200 },
     { title: "Municipality", field: "municipality", hozAlign: "left", width: 200 },
-    { title: "UPC", field: "upc", hozAlign: "left", width: 200 },
-    { title: "Total Ganchos", field: "total", hozAlign: "left", width: 200 },
+    { title: "UPC", field: "upc", hozAlign: "left", width: 300 },
+    { title: "Total Ganchos", field: "total", hozAlign: "left", width: 150 },
     
 ];
 
