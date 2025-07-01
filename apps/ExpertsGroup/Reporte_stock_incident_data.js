@@ -15,14 +15,18 @@ const greenBackgroundFormatter = (cell) => {
     const element = cell.getElement();
     const isNumber = !isNaN(parseFloat(value)) && isFinite(value);
 
+    if(value == 0){
+      return '-'; 
+    }
+    
     element.style.backgroundColor = "";
     element.style.borderRadius = "";
     element.style.padding = "";
 
     if (isNumber) {
-    element.style.backgroundColor = "#49C2F2";
-    element.style.borderRadius = "4px";
-    element.style.padding = "2px 5px";
+      element.style.backgroundColor = "#49C2F2";
+      element.style.borderRadius = "4px";
+      element.style.padding = "2px 5px";
     }
 
     return value; 
