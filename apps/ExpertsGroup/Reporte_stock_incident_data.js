@@ -34,11 +34,11 @@ const greenBackgroundFormatter = (cell) => {
 
 
 var columsTable1 = [
-    { title: "CR", field: "cr", hozAlign: "left", width: 100},
-    { title: "Store", field: "store", hozAlign: "left", width: 200 },
-    { title: "Chain", field: "chain", hozAlign: "left", width: 130 },
-    { title: "State", field: "state", hozAlign: "left", width: 200 },
-    { title: "Municipality", field: "municipality", hozAlign: "left", width: 200 },
+    { title: "CR", field: "cr", hozAlign: "left", headerFilter:true ,width: 100},
+    { title: "Store", field: "store", hozAlign: "left", headerFilter:true ,width: 200 },
+    { title: "Chain", field: "chain", hozAlign: "left", headerFilter:true ,width: 130 },
+    { title: "State", field: "state", hozAlign: "left", headerFilter:true ,width: 200 },
+    { title: "Municipality", field: "municipality", hozAlign: "left", headerFilter:true ,width: 200 },
     { title: "Total Ganchos", field: "total", hozAlign: "left", width: 160 },
     { title: "6X9", field: "6x9", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
     { title: "5X9TR", field: "5x9tr", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
@@ -195,11 +195,11 @@ var dataTable1 = [
 
 //-------TABLE 2
 var columsTable2 = [
-    { title: "CR", field: "cr", hozAlign: "left", width:100},
-    { title: "Store", field: "store", hozAlign: "left", width: 200 },
-    { title: "Chain", field: "chain", hozAlign: "left", width: 200 },
-    { title: "State", field: "state", hozAlign: "left", width: 200 },
-    { title: "Municipality", field: "municipality", hozAlign: "left", width: 200 },
+    { title: "CR", field: "cr", hozAlign: "left", headerFilter:true ,width:100},
+    { title: "Store", field: "store", hozAlign: "left", headerFilter:true ,width: 200 },
+    { title: "Chain", field: "chain", hozAlign: "left", headerFilter:true ,width: 200 },
+    { title: "State", field: "state", hozAlign: "left", headerFilter:true ,width: 200 },
+    { title: "Municipality", field: "municipality", hozAlign: "left", headerFilter:true ,width: 200 },
     { title: "UPC", field: "upc", hozAlign: "left", width: 300 },
     { title: "Total Ganchos", field: "total", hozAlign: "left", width: 150 },
     
@@ -333,17 +333,17 @@ var dataTable2 = [
 
 //-------TABLE 3
 var columsTable3 = [
-    { title: "CR", field: "cr", hozAlign: "left", width: 100 },
-    { title: "Store", field: "store", hozAlign: "left", width: 200 },
-    { title: "Chain", field: "chain", hozAlign: "left", width: 200 },
-    { title: "State", field: "state", hozAlign: "left", width: 200 },
-    { title: "Municipality", field: "municipality", hozAlign: "left", width: 200 },
-    { title: "Type of Incident", field: "incident", hozAlign: "left", width: 200 },
-    { title: "Comments", field: "comments", hozAlign: "left", width: 200 },
-    {title:"Image", field:"url_image", formatter:"image", width: 150 , formatterParams:{
-      height:"150px",
-      width:"150px",
-    }}
+  { title: "CR", field: "cr", hozAlign: "left", headerFilter:true, width: 100 },
+  { title: "Store", field: "store", hozAlign: "left", headerFilter:true, width: 200 },
+  { title: "Chain", field: "chain", hozAlign: "left", headerFilter:true, width: 200 },
+  { title: "State", field: "state", hozAlign: "left", headerFilter:true, width: 200 },
+  { title: "Municipality", field: "municipality", hozAlign: "left", headerFilter:true, width: 200 },
+  { title: "Type of Incident", field: "incident", hozAlign: "left", width: 200 },
+  { title: "Comments", field: "comments", hozAlign: "left", width: 200 },
+  {title:"Image", field:"url_image", formatter:"image", width: 150 , formatterParams:{
+    height:"150px",
+    width:"150px",
+  }}
 ];
 
 var dataTable3 = [

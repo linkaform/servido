@@ -82,7 +82,7 @@ var setOptions2A = {
 };
 
 var dataChart2A = {
-    labels: ['Tipo de material','Tipo de trabajo','Despacho','Tipo de sistemas'],
+    labels: ['Tipo de material','Tipo de trabajo','Tipo de sistemas'],
     datasets: [
         {
             label: 'Señalética',
@@ -139,37 +139,17 @@ var dataChart2A = {
             backgroundColor: 'rgba(75, 192, 192, 0.7)',
             stack: 'Material 2'
         },
-
-        {
-            label: 'Nulo',
-            data: [null, null, 200, null],
-            backgroundColor: 'rgba(54, 162, 235, 0.7)',
-            stack: 'Material 3'
-        },
-        {
-            label: 'Intermitente',
-            data: [null, null, 100, null],
-            backgroundColor: 'rgba(75, 192, 192, 0.7)',
-            stack: 'Material 3'
-        },
-        {
-            label: 'Accesorios',
-            data: [null, null, 50, null],
-            backgroundColor: 'rgba(54, 162, 235, 0.7)',
-            stack: 'Material 3'
-        },
-
         {
             label: 'Material',
-            data: [null, null, null, 250],
+            data: [null, null, 250],
             backgroundColor: 'rgba(54, 162, 235, 0.7)',
-            stack: 'Material 4'
+            stack: 'Material 3'
         },
         {
             label: 'Trabajo',
-            data: [null, null, null, 100],
+            data: [null, null, 100],
             backgroundColor: 'rgba(75, 192, 192, 0.7)',
-            stack: 'Material 4'
+            stack: 'Material 3'
         },
     ]
 };

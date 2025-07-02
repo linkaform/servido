@@ -39,10 +39,14 @@ function loadDemoData(){
 
 //-----FUNCTION ACTIVE
 function loadData(data) {
-    //---Data
-    setEventsLoad();
-    //---Hide
-    setTimeout(() => { hide_loading();}, 2000);
+  //---Data
+  const buttonExecution = document.getElementById("buttonExecution");
+  buttonExecution.addEventListener("click", () => {
+      getInformation();
+  });
+
+  //---Hide
+  setTimeout(() => { hide_loading();}, 2000);
 }
 
 //-----SET REQUEST
@@ -60,7 +64,50 @@ async function getInformation(dicAditional){
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
+        //----Cards
+        if(data.cardFirst){
+          drawCardElement('cardFirst',1500);
+        }
+        if(data.cardSecond){
+          drawCardElement('cardSecond',1200);
+        }
+        if(data.cardThird){
+          drawCardElement('cardThird',75);
+        }
 
+        //----Card Custom
+        if(data.cardStoreA){
+          drawCardImageElement('cardStoreA',  data.cardStoreA.visited ? `Stores Visited: ${data.cardStoreA.visited}` : 'Stores Visited: 0',
+          data.cardStoreA.visited ? `Pending delivery: ${data.cardStoreA.pending}` : 'Pending delivery: 0 ');
+        }
+        if(data.cardStoreB){
+          drawCardImageElement('cardStoreB',  data.cardStoreB.visited ? `Stores Visited: ${data.cardStoreB.visited}` : 'Stores Visited: 0',
+          data.cardStoreB.visited ? `Pending delivery: ${data.cardStoreB.pending}` : 'Pending delivery: 0 ');
+        }
+        if(data.cardStoreC){
+          drawCardImageElement('cardStoreC',  data.cardStoreC.visited ? `Stores Visited: ${data.cardStoreC.visited}` : 'Stores Visited: 0',
+          data.cardStoreC.visited ? `Pending delivery: ${data.cardStoreC.pending}` : 'Pending delivery: 0 ');
+        }
+        ///-----Charts
+        if(data.chartFirst){
+          drawChartElement('chartFirst','doughnut',data.chartFirst,setOptions1A, undefined, true);
+        }
+        if(data.chartSecond){
+          drawChartElement('chartSecond','bar',data.chartSecond, setOptions2A, undefined, true);
+        }
+        if(data.chartThird){
+          drawChartElement('chartThird','bar',data.chartThird, setOptions3A, undefined, true);
+        }
+        if(data.chartFourth){
+          drawChartElement('chartFourth','line',data.chartFourth, setOptions4A, undefined, true);
+        }
+        if(data.chartFiveth){
+          drawChartElement('chartFiveth','doughnut',data.chartFiveth, setOptions5A, undefined, true);
+        }
+
+        if(data.mapFirst){
+          drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1, configToltipMap)
+        }
         
         //-----Style
         const divEmpty = document.querySelectorAll('.div-content-empty');

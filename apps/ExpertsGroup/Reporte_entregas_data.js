@@ -376,8 +376,6 @@ let columsTableModal1 = [
     },
 ];
 
-
-
 let dataTableModal1 = [
     {
         store : 'Example',
@@ -446,8 +444,6 @@ let dataTableModal1 = [
         status : 'Visited',
     },
 ];
-
-
 
 //-----Data Example Map
 const dataMap1 = [
