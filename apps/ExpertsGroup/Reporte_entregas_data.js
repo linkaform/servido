@@ -465,15 +465,8 @@ const configMap1 = {
     point: {
         events: {
             click: function () {
-                const modalElement = document.getElementById('modalFilterFirst');
-                if (modalElement) {
-                    drawTableElement('tableAModal', dataTableModal1, columsTableModal1);
-                    //---Mostral Modal
-                    const eventModal = new bootstrap.Modal(modalElement);
-                    eventModal.show();
-                } else {
-                    console.error('No se encontró el modal con ID: modalFilterFirst');
-                }
+                const stateKey = this['hc-key'];
+                getDataTableDetail(stateKey)
             }
         }
     }
@@ -483,7 +476,7 @@ const configToltipMap =  {
     formatter: function () {
         const value = this.point.value;
         const stateName = this.point.name || this.key;
-        let text = `Percentage Advance: ${value}%`;
+        let text = `Total Records: ${value}`;
         if (value > 100) {
             text += ' (EXCEEDED)';
         }

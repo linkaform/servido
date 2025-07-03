@@ -75,7 +75,7 @@
                         <!-- Filtro de Selector (Dropdown) -->
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
                             <label for="categoria" class="form-label">Capture period:</label>
-                            <select class="form-select filters-servido" id="month">
+                            <select class="form-select filters-servido" id="month" required>
                                 <option value="">Select a month</option>
                                 <option value="1">January</option>
                                 <option value="2">February</option>
@@ -89,16 +89,6 @@
                                 <option value="10">October</option>
                                 <option value="11">November</option>
                                 <option value="12">December</option>
-                            </select>
-                        </div>
-
-                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
-                            <label for="categoria" class="form-label">Capture period:</label>
-                            <select class="form-select filters-servido" id="year" >
-                                <option value="">Select a </option>
-                                <option value="25">2025</option>
-                                <option value="26">2026</option>
-                                <option value="27">2027</option>
                             </select>
                         </div>
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
@@ -129,6 +119,29 @@
                             <p class="text-dark fs-2 text-center">Su sessión a expirado, favor de loguearse de nuevo.</p>
                         </div>
                     </div>
+
+                    <!-- Example New Loader-->
+                    <div class="loader" id="content-div-loadingComponent">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="100px" height="150px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                            <rect x="0" y="0" width="4" height="20" fill="#333">
+                                <animate attributeName="opacity" attributeType="XML"
+                                values="1; .2; 1" 
+                                begin="0s" dur="0.6s" repeatCount="indefinite" />
+                            </rect>
+                            <rect x="7" y="0" width="4" height="20" fill="#333">
+                                <animate attributeName="opacity" attributeType="XML"
+                                values="1; .2; 1" 
+                                begin="0.2s" dur="0.6s" repeatCount="indefinite" />
+                            </rect>
+                            <rect x="14" y="0" width="4" height="20" fill="#333">
+                                <animate attributeName="opacity" attributeType="XML"
+                                values="1; .2; 1" 
+                                begin="0.4s" dur="0.6s" repeatCount="indefinite" />
+                            </rect>
+                        </svg>
+                    </div>
+                    
                 </div>
                 <!-- Body -->
             </div>

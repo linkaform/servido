@@ -36,7 +36,6 @@ function loadDemoData(){
     setTimeout(() => { hide_loading();}, 2000);
 }
 
-
 //-----FUNCTION ACTIVE
 function loadData(data) {
   //---Data
@@ -63,61 +62,121 @@ async function getInformation(dicAditional){
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
-        const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-        //----Cards
-        if(data.cardFirst){
-          drawCardElement('cardFirst',1500);
-        }
-        if(data.cardSecond){
-          drawCardElement('cardSecond',1200);
-        }
-        if(data.cardThird){
-          drawCardElement('cardThird',75);
-        }
+        if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
+          const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
+          //----Cards
+          if(data.cardFirst){
+            drawCardElement('cardFirst',data.cardFirst);
+          }
+          if(data.cardSecond){
+            drawCardElement('cardSecond',data.cardSecond);
+          }
+          if(data.cardThird){
+            drawCardElement('cardThird',data.cardThird);
+          }
 
-        //----Card Custom
-        if(data.cardStoreA){
-          drawCardImageElement('cardStoreA',  data.cardStoreA.visited ? `Stores Visited: ${data.cardStoreA.visited}` : 'Stores Visited: 0',
-          data.cardStoreA.visited ? `Pending delivery: ${data.cardStoreA.pending}` : 'Pending delivery: 0 ');
-        }
-        if(data.cardStoreB){
-          drawCardImageElement('cardStoreB',  data.cardStoreB.visited ? `Stores Visited: ${data.cardStoreB.visited}` : 'Stores Visited: 0',
-          data.cardStoreB.visited ? `Pending delivery: ${data.cardStoreB.pending}` : 'Pending delivery: 0 ');
-        }
-        if(data.cardStoreC){
-          drawCardImageElement('cardStoreC',  data.cardStoreC.visited ? `Stores Visited: ${data.cardStoreC.visited}` : 'Stores Visited: 0',
-          data.cardStoreC.visited ? `Pending delivery: ${data.cardStoreC.pending}` : 'Pending delivery: 0 ');
-        }
-        ///-----Charts
-        if(data.chartFirst){
-          drawChartElement('chartFirst','doughnut',data.chartFirst,setOptions1A, undefined, true);
-        }
-        if(data.chartSecond){
-          drawChartElement('chartSecond','bar',data.chartSecond, setOptions2A, undefined, true);
-        }
-        if(data.chartThird){
-          drawChartElement('chartThird','bar',data.chartThird, setOptions3A, undefined, true);
-        }
-        if(data.chartFourth){
-          drawChartElement('chartFourth','line',data.chartFourth, setOptions4A, undefined, true);
-        }
-        if(data.chartFiveth){
-          drawChartElement('chartFiveth','doughnut',data.chartFiveth, setOptions5A, undefined, true);
-        }
+          //----Card Custom
+          const selectedChain = document.getElementById('chain')?.value?.toUpperCase();
+          // No hay valor seleccionado, mostrar todos si existen
+          if (data.cardStoreA) {
+            drawCardImageElement('cardStoreA',
+              data.cardStoreA.visited ? `Stores Visited: ${data.cardStoreA.visited}` : 'Stores Visited: 0',
+              data.cardStoreA.pending ? `Pending delivery: ${data.cardStoreA.pending}` : 'Pending delivery: 0'
+            );
+          }
+          if (data.cardStoreB) {
+            drawCardImageElement('cardStoreB',
+              data.cardStoreB.visited ? `Stores Visited: ${data.cardStoreB.visited}` : 'Stores Visited: 0',
+              data.cardStoreB.pending ? `Pending delivery: ${data.cardStoreB.pending}` : 'Pending delivery: 0'
+            );
+          }
+          if (data.cardStoreC) {
+            drawCardImageElement('cardStoreC',
+              data.cardStoreC.visited ? `Stores Visited: ${data.cardStoreC.visited}` : 'Stores Visited: 0',
+              data.cardStoreC.pending ? `Pending delivery: ${data.cardStoreC.pending}` : 'Pending delivery: 0'
+            );
+          }
+          
 
-        if(data.mapFirst){
-          drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1, configToltipMap)
+          ///-----Charts
+          if(data.chartFirst){
+            drawChartElement('chartFirst','doughnut',data.chartFirst,setOptions1A, undefined, true);
+          }
+          if(data.chartSecond){
+            drawChartElement('chartSecond','bar',data.chartSecond, setOptions2A, undefined, true);
+          }
+          if(data.chartThird){
+            drawChartElement('chartThird','bar',data.chartThird, setOptions3A, undefined, true);
+          }
+          if(data.chartFourth){
+            drawChartElement('chartFourth','line',data.chartFourth, setOptions4A, undefined, true);
+          }
+          if(data.chartFiveth){
+            drawChartElement('chartFiveth','doughnut',data.chartFiveth, setOptions5A, undefined, true);
+          }
+
+          if(data.mapFirst){
+            drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1, configToltipMap)
+          }
+          
+          //-----Style
+          const divEmpty = document.querySelectorAll('.div-content-empty');
+          const divElements = document.querySelectorAll('.div-content-element');
+          divElements.forEach(div => {
+            div.style.visibility = 'visible';
+          });
+          divEmpty.forEach(div => {
+            div.style.display = 'none';
+          });
         }
-        
-        //-----Style
-        const divEmpty = document.querySelectorAll('.div-content-empty');
-        const divElements = document.querySelectorAll('.div-content-element');
-        divElements.forEach(div => {
-          div.style.visibility = 'visible';
-        });
-        divEmpty.forEach(div => {
-          div.style.display = 'none';
-        });
     }
 }
 
+//----DATA TABLE DETAIL
+function getDataTableDetail(state){
+    const scriptId = getParameterURL('script_id');
+    const JWT = getCookie("userJwt");
+    const MONTH = document.getElementById('month').value;
+    fetch(getUrlRequest('script'), {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: scriptId,
+            option: 'table_detail',
+            month: MONTH,
+            state: state,
+        }),
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer '+JWT
+        },
+    })
+    .then((res) => res.json())
+    .then((res) => {
+      const data = res.response && res.response.data ? res.response.data : [];
+      console.log('Data',data)
+      if(data.length > 0){
+        drawTableElement('tableAModal', data, columsTableModal1);
+
+        const modalElement = document.getElementById('modalFilterFirst');
+        if (modalElement) {
+          //---Mostral Modal
+          const eventModal = new bootstrap.Modal(modalElement);
+          eventModal.show();
+        } else {
+          console.error('No se encontró el modal con ID: modalFilterFirst');
+        }
+      }else{
+        Swal.fire({
+          title: 'Advertencia',
+          html:'No fue posible encontrar la información solicitada.'
+        });
+      }
+    })
+}
+
+
+function hideAllCardStores() {
+  document.getElementById('cardStoreA')?.classList.add('hidden');
+  document.getElementById('cardStoreB')?.classList.add('hidden');
+  document.getElementById('cardStoreC')?.classList.add('hidden');
+}
