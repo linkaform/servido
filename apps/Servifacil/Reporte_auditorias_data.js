@@ -10,12 +10,66 @@ let dicReportContext = [
         { type:'chart', col: '6', id:'chartThird', title:'Resultados por sección'},
         { type:'chart', col: '6', id:'chartFourth', title:'Histórico por estación'},
     ]},
+    { class:'', _children : [
+        { type:'table', col: '12', id:'tableFirst', title:'Resultados por Pregunta'},
+    ]},
 ];
 
-//---Chart First
 
-const dataValues = [73, 27, 55];
-const totalValues = [100, 50, 60];
+
+//-----Table
+let columsTable1 = [
+    { title: "Pregunta", field: 'pregunta', headerTooltip: true, hozAlign: "left", width: 1050, responsive: 2},
+    { title: "Apariciones", field: 'aparicion', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2 },
+    { title: "Respuestas positivas", field: 'positivos', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
+    { title: "Respuestas negativas", field: 'negativos', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
+    { title: "% de Cumplimiento", field: 'porcentaje', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
+];
+
+let dataTable1 = [
+    {
+        'pregunta':'1. Muestra limpieza en pisos, registros pluviales, perimetrales, áreas verdes del área de tanques',
+        'aparicion':'5',
+        'positivos':'4',
+        'negativos':'1',
+        'porcentaje':'',
+    },
+    {
+        'pregunta':'2. Se encuentra limpio el interior de los registros pequeños, bocatomas, motobombas, observación y monitoreo (donde aplique).',
+        'aparicion':'8',
+        'positivos':'8',
+        'negativos':'0',
+        'porcentaje':'100',
+    },
+    {
+        'pregunta':'3. ¿La pintura del área de tanques MAGNA, PREMIUM, DIÉSEL y pozos de observación se encuentra en buenas condiciones?',
+        'aparicion':'9',
+        'positivos':'4',
+        'negativos':'5',
+        'porcentaje':'55.6',
+    },
+    {
+        'pregunta':'4. ¿La pintura de tierras físicas, tapas metálicas de drenaje aceitoso, nichos, guarnición, marcaje en pisos, muros, etc., está en buenas condiciones?',
+        'aparicion':'2',
+        'positivos':'1',
+        'negativos':'1',
+        'porcentaje':'50',
+    },
+    {
+        'pregunta':'5. La estación cuenta tanto con señalamientos corporativos como oficiales vigentes y estos se encuentran en buenas condiciones.',
+        'aparicion':'1',
+        'positivos':'1',
+        'negativos':'0',
+        'porcentaje':'100',
+    }
+];
+
+
+
+
+//---Chart First
+const dataValues = [9, 7, 2];
+const totalValues = [10, 10, 10];
 
 var setOptions1A = {
     responsive: true,
@@ -60,16 +114,13 @@ var dataChart1A = {
             label: 'Total',
             data: dataValues,
             fill: false,
-            backgroundColor: ['#DC7633', '#EC7063', '#58D68D'],
+            backgroundColor: ['#04BF45', '#F24405', '#F20505'],
         },
     ]
 };
-
-
-
 //---Chart Second
-const dataValues2 = [103, 37, 78];
-const totalValues2 = [110, 60, 80];
+const dataValues2 = [10, 8, 7];
+const totalValues2 = [10, 10, 10];
 
 var setOptions2A = {
     responsive: true,
@@ -114,15 +165,13 @@ var dataChart2A = {
             label: 'Total',
             data: dataValues2,
             fill: false,
-            backgroundColor: ['#58D68D', '#DC7633', '#58D68D'],
+            backgroundColor: ['#04BF45', '#EAF205', '#F24405'],
         },
     ]
 };
-
-
 //---Chart Third
-const dataValues3 = [37, 83, 78, 65 , 85];
-const totalValues3 = [60, 110, 80, 70, 80];
+const dataValues3 = [8.5, 8.3, 7.8, 6.5 , 3.5];
+const totalValues3 = [10, 10, 10, 10, 10];
 
 var setOptions3A = {
     responsive: true,
@@ -167,12 +216,10 @@ var dataChart3A = {
             label: 'Total',
             data: dataValues3,
             fill: false,
-            backgroundColor: ['#DC7633', '#EC7063', '#58D68D','#58D68D','#58D68D'],
+            backgroundColor: ['#EAF205', '#EAF205', '#F24405','#F24405','#F20505'],
         },
     ]
 };
-
-
 
 //---Chart Fourth
 var setOptions4A = {

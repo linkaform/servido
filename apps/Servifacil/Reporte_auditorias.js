@@ -21,11 +21,9 @@ function loadDemoData(){
     drawChartElement('chartSecond','bar',dataChart2A,setOptions2A, undefined, true);
     drawChartElement('chartThird','bar',dataChart3A,setOptions3A, undefined, true);
     drawChartElement('chartFourth','line',dataChart4A,setOptions4A);
-
-
+    drawTableElement('tableFirst', dataTable1, columsTable1);
     drawCardElement('cardFirst',20);
     drawCardElement('cardSecond',30);
-
   setTimeout(() => { hide_loading();}, 2000);
 }
 
