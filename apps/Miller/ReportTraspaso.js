@@ -32,7 +32,7 @@ function loadDemoData(){
         getRowsData('gdl');
     });
 
-    document.getElementById('product_family').addEventListener('change', function () {
+    document.getElementById('product_families').addEventListener('change', function () {
         getCatalogLine();
     });
     //---Catalog
@@ -231,14 +231,14 @@ function get_catalog(){
     .then((res) => {
         const catalog = res.response && res.response.dataCatalogProductFamily ? res.response.dataCatalogProductFamily : {};
         if(catalog){
-            setCatalogSimple(catalog,'product_family');
+            setCatalogSimple(catalog,'product_families');
         }
     })
 }
 
 //-------GET CATALOG LINE
 function getCatalogLine() {
-    const familySelect = document.getElementById('product_family');
+    const familySelect = document.getElementById('product_families');
     const lineSelect = document.getElementById('product_line');
 
 
