@@ -165,7 +165,7 @@ var dataChart2A = {
             label: 'Total',
             data: dataValues2,
             fill: false,
-            backgroundColor: ['#04BF45', '#EAF205', '#F24405'],
+            backgroundColor: ['#04BF45', '#F1C40F', '#F24405'],
         },
     ]
 };
@@ -216,7 +216,7 @@ var dataChart3A = {
             label: 'Total',
             data: dataValues3,
             fill: false,
-            backgroundColor: ['#EAF205', '#EAF205', '#F24405','#F24405','#F20505'],
+            backgroundColor: ['#F1C40F', '#F1C40F', '#F24405','#F24405','#F20505'],
         },
     ]
 };
