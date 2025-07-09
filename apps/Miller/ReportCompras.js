@@ -17,12 +17,12 @@ window.onload = function () {
 //-----LOAD DATA DEMO
 function loadDemoData() {
     //---Elements
-    drawTableElement('tableFirst', dataTable1, columsTable1);
-    drawTableElement('tableThird', dataTable3, columsTable3);
+    // drawTableElement('tableFirst', dataTable1, columsTable1);
+    drawTableElement('tableThird', dataTable3, columsTable3, undefined, configTableCustom3);
     //---Events
-    document.getElementById("button-custom-tableFirst").addEventListener("click", () => {
-        getRowsData('mty');
-    });
+    // document.getElementById("button-custom-tableFirst").addEventListener("click", () => {
+    //     getRowsData('mty');
+    // });
     document.getElementById("button-custom-tableThird").addEventListener("click", () => {
         getRowsData('gdl');
     });
@@ -45,9 +45,9 @@ function loadData() {
         getInformation();
     });
     //---Events
-    document.getElementById("button-custom-tableFirst").addEventListener("click", () => {
-        getRowsData('mty');
-    });
+    // document.getElementById("button-custom-tableFirst").addEventListener("click", () => {
+    //     getRowsData('mty');
+    // });
     document.getElementById("button-custom-tableThird").addEventListener("click", () => {
         getRowsData('gdl');
     });
@@ -72,14 +72,14 @@ async function getInformation() {
         }
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-        if (data.almacen_monterrey) {
-            drawTableElement('tableFirst', data?.almacen_monterrey, columsTable1);
-        }
+        // if (data.almacen_monterrey) {
+        //     drawTableElement('tableFirst', data?.almacen_monterrey, columsTable1);
+        // }
         // if (data.tableSecond) {
         //     drawTableElement('tableSecond', data.tableSecond, columsTable2);
         // }
         if (data.almacen_guadalajara) {
-            drawTableElement('tableThird', data?.almacen_guadalajara, columsTable3);
+            drawTableElement('tableThird', data?.almacen_guadalajara, columsTable3, undefined, configTableCustom3);
         }
         // if (data.tableFourth) {
         //     drawTableElement('tableFourth', data.tableFourth, columsTable4);
@@ -107,7 +107,7 @@ function getRowsData(type = null) {
         ///---Asign 
         let allSelected = []
         if (type == 'mty') {
-            allSelected = getSelectedDataClean('tableFirst');
+            // allSelected = getSelectedDataClean('tableFirst');
         } else if (type == 'gdl') {
             allSelected = getSelectedDataClean('tableThird');
         }
