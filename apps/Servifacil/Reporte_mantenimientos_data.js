@@ -2,8 +2,10 @@
 let dicReportContext = [
     { class:'', _children : [
             { type:'chart', col: '12', id:'chartFirst', title:'ODT por Solicitud'},
-            { type:'chart', col: '6', id:'chartSecond', title:'ODT por Subtipo'},
-            { type:'chart', col: '6', id:'chartThird', title:'ODT por Status'},
+            { type:'chart', col: '6', id:'chartSecond', title:'ODT por Tipo de Material'},
+            { type:'chart', col: '6', id:'chartThird', title:'ODT por Tipo de Trabajo'},
+            { type:'chart', col: '4', id:'chartFourth', title:'ODT por Tipo de Sistemas'},
+            { type:'chart', col: '8', id:'chartFiveth', title:'ODT por Status'},
     ]},
 ];
 
@@ -82,81 +84,100 @@ var setOptions2A = {
 };
 
 var dataChart2A = {
-    labels: ['Tipo de material','Tipo de trabajo','Tipo de sistemas'],
+    labels: ['Señalética','Refacciones','Dispensarios','Electrico','Civil'],
     datasets: [
         {
-            label: 'Señalética',
-            data: [300, null, null, null],
-            backgroundColor: 'rgba(54, 162, 235, 0.7)',
-            stack: 'Material 1'
+            label: 'Total',
+            data: [300, 200, 300, 200, 150],
+            backgroundColor: [],
         },
-        {
-            label: 'Refacciones',
-            data: [200, null, null, null],
-            backgroundColor: 'rgba(75, 192, 192, 0.7)',
-            stack: 'Material 1'
-        },
-        {
-            label: 'Dispensarios',
-            data: [300, null, null, null],
-            backgroundColor: 'rgba(54, 162, 235, 0.7)',
-            stack: 'Material 1'
-        },
-        {
-            label: 'Electrico',
-            data: [200, null, null, null],
-            backgroundColor: 'rgba(75, 192, 192, 0.7)',
-            stack: 'Material 1'
-        },
-        {
-            label: 'Civil',
-            data: [200, null, null, null],
-            backgroundColor: 'rgba(75, 192, 192, 0.7)',
-            stack: 'Material 1'
-        },
+    ]
+};
 
+var setOptions3A = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        datalabels: {
+            color: 'white',
+            font: {
+                size: 19
+            },
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    // Esto devuelve el label del dataset + valor
+                    const label = tooltipItem.dataset.label || '';
+                    const value = tooltipItem.raw;
+                    return `${label}: ${value}`;
+                }
+            }
+        }
+    },
+    responsive: true, 
+    maintainAspectRatio: false ,
+};
+
+var dataChart3A = {
+    labels: ['Imagen','Hidrosanitario','Dispensario','Civil','Material','Trabajo'],
+    datasets: [
         {
-            label: 'Imagen',
-            data: [null, 400, null, null],
+            label: 'Total',
+            data: [400, 100, 500, 100, 250, 100],
+            backgroundColor: [],
+        },
+    ]
+};
+
+var setOptions4A = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        datalabels: {
+            color: 'white',
+            font: {
+                size: 19
+            },
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    // Esto devuelve el label del dataset + valor
+                    const label = tooltipItem.dataset.label || '';
+                    const value = tooltipItem.raw;
+                    return `${label}: ${value}`;
+                }
+            }
+        }
+    },
+    responsive: true, 
+    maintainAspectRatio: false ,
+};
+var dataChart4A = {
+    labels: ['Trabajo','Material'],
+    datasets: [
+        {
+            label: 'Total',
+            data: [300, 250],
             backgroundColor: 'rgba(54, 162, 235, 0.7)',
-            stack: 'Material 2'
-        },
-        {
-            label: 'Hidrosanitario',
-            data: [null, 100, null, null],
-            backgroundColor: 'rgba(75, 192, 192, 0.7)',
-            stack: 'Material 2'
-        },
-        {
-            label: 'Dispensario',
-            data: [null, 500, null, null],
-            backgroundColor: 'rgba(54, 162, 235, 0.7)',
-            stack: 'Material 2'
-        },
-        {
-            label: 'Civil',
-            data: [null, 100, null, null],
-            backgroundColor: 'rgba(75, 192, 192, 0.7)',
-            stack: 'Material 2'
-        },
-        {
-            label: 'Material',
-            data: [null, null, 250],
-            backgroundColor: 'rgba(54, 162, 235, 0.7)',
-            stack: 'Material 3'
-        },
-        {
-            label: 'Trabajo',
-            data: [null, null, 100],
-            backgroundColor: 'rgba(75, 192, 192, 0.7)',
-            stack: 'Material 3'
         },
     ]
 };
 
 
-//---Chart Second
-var setOptions3A = {
+//---Chart 5A
+var setOptions5A = {
     responsive: true,
     plugins: {
         legend: {
@@ -183,7 +204,7 @@ var setOptions3A = {
     maintainAspectRatio: false ,
 };
 
-var dataChart3A = {
+var dataChart5A = {
     labels: ['Pendiente','Revisado por Supervisor','Autorizado por Gerente','No autorizado por Gerente','En espera de material','Entrega de material a Supervisor de Operaciones','Recepción de material a Líder de estación','Resuelta'],
     datasets: [
         {
