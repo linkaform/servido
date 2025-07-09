@@ -1,5 +1,5 @@
 //-----URL LOGIN
-// let URL = "https://preprod.linkaform.com/";
+// let URL = "https://preprod.linkaform.com";
 let URL = "https://app.linkaform.com";
 // let URL = "http://192.168.0.25:8000";
 // let URL = "http://127.0.0.1:8011";
