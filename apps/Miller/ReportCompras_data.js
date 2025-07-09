@@ -18,7 +18,7 @@ let columsTable1 = [
         }
     },
     { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", headerFilter: "input", width: 150 },
-    { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 550 },
+    { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 250 },
     { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left", headerFilter: "input", width: 150 },
     { title: "Familia", field: "family", headerTooltip: true, hozAlign: "left", headerFilter: "input", width: 150 },
     { title: "Peso Unit", field: "peso", headerTooltip: true, hozAlign: "center", width: 125 },
@@ -26,10 +26,10 @@ let columsTable1 = [
     { title: "Transito", field: "transit", headerTooltip: true, hozAlign: "center", width: 125, formatter: 'money', formatterParams: { precision: 2 } },
     { title: "Compra", field: "purchase", headerTooltip: true, hozAlign: "center", width: 125, formatter: 'money', formatterParams: { precision: 2 } },
     { title: "Peso Compra", field: "peso_compra", headerTooltip: true, hozAlign: "center", width: 150, formatter: 'money', formatterParams: { precision: 2 } },
-    // {
-    //     title: "Ajuste Traspaso", field: "adjust", headerTooltip: true, hozAlign: "left", width: 200,
-    //     editor: "number", editorParams: { min: 0 }
-    // },
+    {
+        title: "Orden de Compra", field: "adjust", headerTooltip: true, hozAlign: "left", width: 200,
+        editor: "number", editorParams: { min: 0 }
+    },
 ];
 
 const dataTable1 = [
@@ -60,7 +60,7 @@ let columsTable3 = [
         }
     },
     { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", headerFilter: "input", width: 150 },
-    { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 550 },
+    { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 250 },
     { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left", headerFilter: "input", width: 150 },
     { title: "Familia", field: "family", headerTooltip: true, hozAlign: "left", headerFilter: "input", width: 150 },
     { title: "Peso Unit", field: "peso", headerTooltip: true, hozAlign: "center", width: 125 },
@@ -68,10 +68,10 @@ let columsTable3 = [
     { title: "Transito", field: "transit", headerTooltip: true, hozAlign: "center", width: 125, formatter: 'money', formatterParams: { precision: 2 } },
     { title: "Compra", field: "purchase", headerTooltip: true, hozAlign: "center", width: 125, formatter: 'money', formatterParams: { precision: 2 } },
     { title: "Peso Compra", field: "peso_compra", headerTooltip: true, hozAlign: "center", width: 150, formatter: 'money', formatterParams: { precision: 2 } },
-    // {
-    //     title: "Ajuste Traspaso", field: "adjust", headerTooltip: true, hozAlign: "left", width: 200,
-    //     editor: "number", editorParams: { min: 0 }
-    // },
+    {
+        title: "Orden de Compra", field: "adjust", headerTooltip: true, hozAlign: "left", width: 200,
+        editor: "number", editorParams: { min: 0 }
+    },
 ];
 
 

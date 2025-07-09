@@ -27,7 +27,7 @@ function loadDemoData() {
         getRowsData('gdl');
     });
     document.getElementById('product_families').addEventListener('change', function () {
-        getCatalogLine();
+        // getCatalogLine();
     });
     //---Catalog
     get_catalog();
@@ -67,17 +67,20 @@ async function getInformation() {
             html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     } else if (scriptId != null && statusSession == 'Active' && !demo) {
-        // const responseRequest = await sendRequestReport(scriptId);
-        // const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-        // if (data.tableFirst) {
-        //     drawTableElement('tableFirst', data.tableFirst, columsTable1);
-        // }
+        const dicAdional = {
+            option: 'get_report',
+        }
+        const responseRequest = await sendRequestReport(scriptId, dicAdional);
+        const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
+        if (data.almacen_monterrey) {
+            drawTableElement('tableFirst', data?.almacen_monterrey, columsTable1);
+        }
         // if (data.tableSecond) {
         //     drawTableElement('tableSecond', data.tableSecond, columsTable2);
         // }
-        // if (data.tableThird) {
-        //     drawTableElement('tableThird', data.tableThird, columsTable3);
-        // }
+        if (data.almacen_guadalajara) {
+            drawTableElement('tableThird', data?.almacen_guadalajara, columsTable3);
+        }
         // if (data.tableFourth) {
         //     drawTableElement('tableFourth', data.tableFourth, columsTable4);
         // }
@@ -208,7 +211,7 @@ function get_catalog() {
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 125216,
+            script_id: scriptId,
             option: 'get_catalog',
         }),
         headers: {
@@ -218,7 +221,7 @@ function get_catalog() {
     })
         .then((res) => res.json())
         .then((res) => {
-            const catalog = res.response && res.response.dataCatalogProductFamily ? res.response.dataCatalogProductFamily : {};
+            const catalog = res.response && res.response.product_families ? res.response.product_families : {};
             if (catalog) {
                 setCatalogSimple(catalog, 'product_families');
             }
