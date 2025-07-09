@@ -20,6 +20,8 @@ function loadDemoData(){
   drawChartElement('chartFirst','bar',dataChart1A,setOptions1A);
   drawChartElement('chartSecond','bar',dataChart2A,setOptions2A);
   drawChartElement('chartThird','bar',dataChart3A,setOptions3A);
+  drawChartElement('chartFourth','bar',dataChart4A,setOptions4A);
+  drawChartElement('chartFiveth','bar',dataChart5A,setOptions5A);
   setTimeout(() => { hide_loading();}, 2000);
 }
 
