@@ -19,7 +19,7 @@ let dicReportContext = [
 
 //-----Table
 let columsTable1 = [
-    { title: "Pregunta", field: 'pregunta', headerTooltip: true, hozAlign: "left", width: 1050, responsive: 2},
+    { title: "Pregunta", field: 'pregunta',  headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 1050, responsive: 2},
     { title: "Apariciones", field: 'aparicion', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2 },
     { title: "Respuestas positivas", field: 'positivos', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
     { title: "Respuestas negativas", field: 'negativos', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
@@ -32,7 +32,7 @@ let dataTable1 = [
         'aparicion':'5',
         'positivos':'4',
         'negativos':'1',
-        'porcentaje':'',
+        'porcentaje':'80',
     },
     {
         'pregunta':'2. Se encuentra limpio el interior de los registros pequeños, bocatomas, motobombas, observación y monitoreo (donde aplique).',
