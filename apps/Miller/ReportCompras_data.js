@@ -29,7 +29,7 @@ let dicReportContext = [
 //     { title: "Compra", field: "purchase", headerTooltip: true, hozAlign: "center", width: 125, formatter: 'money', formatterParams: { precision: 2 } },
 //     { title: "Peso Compra", field: "peso_compra", headerTooltip: true, hozAlign: "center", width: 150, formatter: 'money', formatterParams: { precision: 2 } },
 //     {
-//         title: "Orden de Compra", field: "adjust", headerTooltip: true, hozAlign: "left", width: 200,
+//         title: "Orden de Compra", field: "qty_purchase", headerTooltip: true, hozAlign: "left", width: 200,
 //         editor: "number", editorParams: { min: 0 }
 //     },
 // ];
@@ -73,7 +73,7 @@ let columsTable3 = [
     { title: "Compra", field: "purchase", headerTooltip: true, hozAlign: "center", width: 125, formatter: 'money', formatterParams: { precision: 2 } },
     { title: "Peso Compra", field: "peso_compra", headerTooltip: true, hozAlign: "center", width: 150, formatter: 'money', formatterParams: { precision: 2 } },
     {
-        title: "Orden de Compra", field: "adjust", headerTooltip: true, hozAlign: "left", width: 200,
+        title: "Orden de Compra", field: "qty_purchase", headerTooltip: true, hozAlign: "left", width: 200,
         editor: "number", editorParams: { min: 0 }
     },
 ];

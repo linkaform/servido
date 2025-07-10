@@ -129,7 +129,7 @@ function getRowsData(type = null) {
                             Swal.showLoading();
                         }
                     });
-                    sendTraspaso(type, allSelected);
+                    sendCompra(type, allSelected);
                 } else {
                     Swal.fire({
                         type: 'info',
@@ -278,7 +278,7 @@ function getCatalogLine() {
         })
 }
 
-const sendTraspaso = async (type, allSelected) => {
+const sendCompra = async (type, allSelected) => {
     const JWT = getCookie("userJwt");
     try {
         const respuesta = await fetch(getUrlRequest('script'), {
@@ -297,16 +297,16 @@ const sendTraspaso = async (type, allSelected) => {
         const sipre_folio = data?.response?.sipre_folio;
         Swal.fire({
             type: 'success',
-            title: 'Traspaso realizado',
-            html: 'El traspaso se ha realizado exitosamente. Guardado en SIPRE con folio: <strong>' + sipre_folio + '</strong>',
+            title: 'Orden de Compra realizada',
+            html: 'La orden de compra se ha realizado exitosamente.',
             confirmButtonText: 'Aceptar'
         });
         console.log(data);
     } catch (error) {
         Swal.fire({
             type: 'error',
-            title: 'Traspaso fallido',
-            text: 'El traspaso tuvo un error al realizarse, revisa el log.',
+            title: 'Orden de Compra fallida',
+            text: 'La orden de compra tuvo un error al realizarse, revisa el log.',
             confirmButtonText: 'Aceptar'
         });
         console.error('Error:', error);
