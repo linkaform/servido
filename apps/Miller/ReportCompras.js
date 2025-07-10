@@ -17,17 +17,17 @@ window.onload = function () {
 //-----LOAD DATA DEMO
 function loadDemoData() {
     //---Elements
-    drawTableElement('tableFirst', dataTable1, columsTable1);
-    drawTableElement('tableThird', dataTable3, columsTable3);
+    // drawTableElement('tableFirst', dataTable1, columsTable1);
+    drawTableElement('tableThird', dataTable3, columsTable3, undefined, configTableCustom3);
     //---Events
-    document.getElementById("button-custom-tableFirst").addEventListener("click", () => {
-        getRowsData('mty');
-    });
+    // document.getElementById("button-custom-tableFirst").addEventListener("click", () => {
+    //     getRowsData('mty');
+    // });
     document.getElementById("button-custom-tableThird").addEventListener("click", () => {
         getRowsData('gdl');
     });
     document.getElementById('product_families').addEventListener('change', function () {
-        getCatalogLine();
+        // getCatalogLine();
     });
     //---Catalog
     get_catalog();
@@ -45,9 +45,9 @@ function loadData() {
         getInformation();
     });
     //---Events
-    document.getElementById("button-custom-tableFirst").addEventListener("click", () => {
-        getRowsData('mty');
-    });
+    // document.getElementById("button-custom-tableFirst").addEventListener("click", () => {
+    //     getRowsData('mty');
+    // });
     document.getElementById("button-custom-tableThird").addEventListener("click", () => {
         getRowsData('gdl');
     });
@@ -67,17 +67,20 @@ async function getInformation() {
             html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     } else if (scriptId != null && statusSession == 'Active' && !demo) {
-        // const responseRequest = await sendRequestReport(scriptId);
-        // const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-        // if (data.tableFirst) {
-        //     drawTableElement('tableFirst', data.tableFirst, columsTable1);
+        const dicAdional = {
+            option: 'get_report',
+        }
+        const responseRequest = await sendRequestReport(scriptId, dicAdional);
+        const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
+        // if (data.almacen_monterrey) {
+        //     drawTableElement('tableFirst', data?.almacen_monterrey, columsTable1);
         // }
         // if (data.tableSecond) {
         //     drawTableElement('tableSecond', data.tableSecond, columsTable2);
         // }
-        // if (data.tableThird) {
-        //     drawTableElement('tableThird', data.tableThird, columsTable3);
-        // }
+        if (data.almacen_guadalajara) {
+            drawTableElement('tableThird', data?.almacen_guadalajara, columsTable3, undefined, configTableCustom3);
+        }
         // if (data.tableFourth) {
         //     drawTableElement('tableFourth', data.tableFourth, columsTable4);
         // }
@@ -104,7 +107,7 @@ function getRowsData(type = null) {
         ///---Asign 
         let allSelected = []
         if (type == 'mty') {
-            allSelected = getSelectedDataClean('tableFirst');
+            // allSelected = getSelectedDataClean('tableFirst');
         } else if (type == 'gdl') {
             allSelected = getSelectedDataClean('tableThird');
         }
@@ -126,7 +129,7 @@ function getRowsData(type = null) {
                             Swal.showLoading();
                         }
                     });
-                    sendTraspaso(type, allSelected);
+                    sendCompra(type, allSelected);
                 } else {
                     Swal.fire({
                         type: 'info',
@@ -208,7 +211,7 @@ function get_catalog() {
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 125216,
+            script_id: scriptId,
             option: 'get_catalog',
         }),
         headers: {
@@ -218,7 +221,7 @@ function get_catalog() {
     })
         .then((res) => res.json())
         .then((res) => {
-            const catalog = res.response && res.response.dataCatalogProductFamily ? res.response.dataCatalogProductFamily : {};
+            const catalog = res.response && res.response.product_families ? res.response.product_families : {};
             if (catalog) {
                 setCatalogSimple(catalog, 'product_families');
             }
@@ -275,7 +278,7 @@ function getCatalogLine() {
         })
 }
 
-const sendTraspaso = async (type, allSelected) => {
+const sendCompra = async (type, allSelected) => {
     const JWT = getCookie("userJwt");
     try {
         const respuesta = await fetch(getUrlRequest('script'), {
@@ -294,16 +297,16 @@ const sendTraspaso = async (type, allSelected) => {
         const sipre_folio = data?.response?.sipre_folio;
         Swal.fire({
             type: 'success',
-            title: 'Traspaso realizado',
-            html: 'El traspaso se ha realizado exitosamente. Guardado en SIPRE con folio: <strong>' + sipre_folio + '</strong>',
+            title: 'Orden de Compra realizada',
+            html: 'La orden de compra se ha realizado exitosamente.',
             confirmButtonText: 'Aceptar'
         });
         console.log(data);
     } catch (error) {
         Swal.fire({
             type: 'error',
-            title: 'Traspaso fallido',
-            text: 'El traspaso tuvo un error al realizarse, revisa el log.',
+            title: 'Orden de Compra fallida',
+            text: 'La orden de compra tuvo un error al realizarse, revisa el log.',
             confirmButtonText: 'Aceptar'
         });
         console.error('Error:', error);
