@@ -20,6 +20,7 @@ function loadDemoData(){
   drawTableElement('tableFirst', dataTable1, columsTable1);
   drawTableElement('tableSecond', dataTable2, columsTable2);
   drawTableElement('tableThird', dataTable3, columsTable3);
+  drawTableElement('tableFourth', dataTable4, columsTable4);
 
   //----TEST MAP
   setTimeout(() => { hide_loading();}, 2000);
@@ -60,7 +61,10 @@ async function getInformation(dicAditional){
               drawTableElement('tableSecond', data.tableSecond, columsTable2);   
             }
             if(data.tableThird){
-              drawTableElement('tableThird', data.tableThird, columsTable3);   
+              drawTableElement('tableThird', data.tableThird, columsTable4);   
+            }
+            if(data.tableFourth){
+              drawTableElement('tableFourth', data.tableFourth, columsTable4);   
             }
             //-----Style
             const divEmpty = document.querySelectorAll('.div-content-empty');

@@ -3,7 +3,8 @@ let dicReportContext = [
     { class:'', _children : [
         { type:'table', col: '12', id:'tableFirst', title:'Display Type'},
         { type:'table', col: '12', id:'tableSecond', title:'Out of Stock by Store', optionExpanded:true},
-        { type:'table', col: '12', id:'tableThird', title:'Incidents'},
+        { type:'table', col: '12', id:'tableThird', title:'Inventory', optionExpanded:true},
+        { type:'table', col: '12', id:'tableFourth', title:'Incidents'},
     ]},
    
 ];
@@ -336,9 +337,151 @@ var dataTable2 = [
   },
 ];
 
-
 //-------TABLE 3
 var columsTable3 = [
+    { title: "CR", field: "cr", hozAlign: "left" , formatter:"link" , formatterParams:{
+      url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
+      target:"_blank",
+    }, headerFilter:true ,width:100},
+    { title: "Store", field: "store", hozAlign: "left", headerFilter:true ,width: 200 },
+    { title: "Chain", field: "chain", hozAlign: "left", headerFilter:true ,width: 200 },
+    { title: "State", field: "state", hozAlign: "left", headerFilter:true ,width: 200 },
+    { title: "Municipality", field: "municipality", hozAlign: "left", headerFilter:true ,width: 200 },
+    { title: "UPC", field: "upc", hozAlign: "left", width: 300 },
+    { title: "Total peg", field: "total", hozAlign: "left", width: 150 },
+    
+];
+
+
+var dataTable3 = [
+  {
+    cr: '1150',
+    store: 'MERCADO CENT',
+    chain: 'NETO',
+    state: 'MICHOACAN',
+    municipality: 'MORELIA',
+    total: '7',
+    _children: [
+      { upc: 'AIRBNB 500-5000 MXN', total: '3' },
+      { upc: 'GOOGLE PLAY 200MX', total: '2' },
+      { upc: 'YOUTUBE RED 300MXN', total: '2' },
+    ]
+  },
+  {
+    cr: '1151',
+    store: 'TIENDA NORTE',
+    chain: 'NETO',
+    state: 'JALISCO',
+    municipality: 'GUADALAJARA',
+    total: '5',
+    _children: [
+      { upc: 'SPOTIFY 100MX', total: '2' },
+      { upc: 'NETFLIX 300MXN', total: '3' },
+    ]
+  },
+  {
+    cr: '1152',
+    store: 'CENTRO SUR',
+    chain: 'NETO',
+    state: 'CDMX',
+    municipality: 'COYOACÁN',
+    total: '4',
+    _children: [
+      { upc: 'PLAYSTATION CARD 400MXN', total: '2' },
+      { upc: 'GOOGLE PLAY 100MX', total: '2' },
+    ]
+  },
+  {
+    cr: '1153',
+    store: 'PLAZA ESTE',
+    chain: 'NETO',
+    state: 'PUEBLA',
+    municipality: 'PUEBLA',
+    total: '6',
+    _children: [
+      { upc: 'XBOX LIVE 3M', total: '3' },
+      { upc: 'APPLE GIFT 200MX', total: '3' },
+    ]
+  },
+  {
+    cr: '1154',
+    store: 'TIENDA OESTE',
+    chain: 'NETO',
+    state: 'GUANAJUATO',
+    municipality: 'LEÓN',
+    total: '3',
+    _children: [
+      { upc: 'AMAZON MX 100MXN', total: '1' },
+      { upc: 'DISNEY+ 1M', total: '2' },
+    ]
+  },
+  {
+    cr: '1155',
+    store: 'MERCADO SUR',
+    chain: 'NETO',
+    state: 'YUCATÁN',
+    municipality: 'MÉRIDA',
+    total: '4',
+    _children: [
+      { upc: 'CLARO VIDEO 200MXN', total: '2' },
+      { upc: 'HBO MAX 300MX', total: '2' },
+    ]
+  },
+  {
+    cr: '1156',
+    store: 'TIENDA RÍO',
+    chain: 'NETO',
+    state: 'BAJA CALIFORNIA',
+    municipality: 'TIJUANA',
+    total: '5',
+    _children: [
+      { upc: 'XBOX GAMEPASS 1M', total: '3' },
+      { upc: 'SKYPE CREDIT 100MX', total: '2' },
+    ]
+  },
+  {
+    cr: '1157',
+    store: 'PLAZA MAR',
+    chain: 'NETO',
+    state: 'SINALOA',
+    municipality: 'MAZATLÁN',
+    total: '4',
+    _children: [
+      { upc: 'NINTENDO ESHOP 300MXN', total: '2' },
+      { upc: 'CRUNCHYROLL 1M', total: '2' },
+    ]
+  },
+  {
+    cr: '1158',
+    store: 'TIENDA COLINAS',
+    chain: 'NETO',
+    state: 'NUEVO LEÓN',
+    municipality: 'MONTERREY',
+    total: '5',
+    _children: [
+      { upc: 'GOOGLE PLAY 500MXN', total: '3' },
+      { upc: 'AMAZON PRIME 1M', total: '2' },
+    ]
+  },
+  {
+    cr: '1159',
+    store: 'CENTRO PLAZA',
+    chain: 'NETO',
+    state: 'QUINTANA ROO',
+    municipality: 'CANCÚN',
+    total: '6',
+    _children: [
+      { upc: 'APPLE MUSIC 100MXN', total: '3' },
+      { upc: 'NETFLIX 200MXN', total: '3' },
+    ]
+  },
+];
+
+
+
+
+//-------TABLE 4
+var columsTable4 = [
   { title: "CR", field: "cr", hozAlign: "left" , formatter:"link" , formatterParams:{
       url:function(cell){return "https://app.linkaform.com/#/records/detail/" + cell.getData().record_id}, 
       target:"_blank",
@@ -359,7 +502,7 @@ var columsTable3 = [
   }
 ];
 
-var dataTable3 = [
+var dataTable4 = [
   {
     cr: '1150',
     store: 'MERCADO CENT',
