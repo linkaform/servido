@@ -61,7 +61,7 @@ async function getInformation(dicAditional){
               drawTableElement('tableSecond', data.tableSecond, columsTable2);   
             }
             if(data.tableThird){
-              drawTableElement('tableThird', data.tableThird, columsTable4);   
+              drawTableElement('tableThird', data.tableThird, columsTable3);   
             }
             if(data.tableFourth){
               drawTableElement('tableFourth', data.tableFourth, columsTable4);   
