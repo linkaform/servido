@@ -32,7 +32,7 @@ function loadDemoData(){
     drawChartElement('chartFiveth','doughnut',dataChart5A, setOptions5A, undefined, true);
 
     //----TEST MAP
-    drawMapElement('mapFirst', 'Delivery progress by state' , dataMap1, configMap1, configToltipMap)
+    drawMapElement('mapFirst', 'Delivery progress by state' , dataMap1, configMap1, configTooltipMap)
     setTimeout(() => { hide_loading();}, 2000);
 }
 
@@ -78,23 +78,44 @@ async function getInformation(dicAditional){
           //----Card Custom
           const selectedChain = document.getElementById('chain')?.value?.toUpperCase();
           // No hay valor seleccionado, mostrar todos si existen
-          if (data.cardStoreA) {
-            drawCardImageElement('cardStoreA',
-              data.cardStoreA.visited ? `Stores Visited: ${data.cardStoreA.visited}` : 'Stores Visited: 0',
-              data.cardStoreA.pending ? `Pending delivery: ${data.cardStoreA.pending}` : 'Pending delivery: 0'
-            );
-          }
-          if (data.cardStoreB) {
-            drawCardImageElement('cardStoreB',
-              data.cardStoreB.visited ? `Stores Visited: ${data.cardStoreB.visited}` : 'Stores Visited: 0',
-              data.cardStoreB.pending ? `Pending delivery: ${data.cardStoreB.pending}` : 'Pending delivery: 0'
-            );
-          }
-          if (data.cardStoreC) {
-            drawCardImageElement('cardStoreC',
-              data.cardStoreC.visited ? `Stores Visited: ${data.cardStoreC.visited}` : 'Stores Visited: 0',
-              data.cardStoreC.pending ? `Pending delivery: ${data.cardStoreC.pending}` : 'Pending delivery: 0'
-            );
+          if(selectedChain != ''){
+            if (data.cardStoreA) {
+              drawCardImageElement('cardStoreA',
+                data.cardStoreA.visited && selectedChain == 'OXXO'? `Stores Visited: ${data.cardStoreA.visited}` : 'Stores Visited: N/A',
+                data.cardStoreA.pending && selectedChain == 'OXXO'? `Pending delivery: ${data.cardStoreA.pending}` : 'Pending delivery: N/A'
+              );
+            }
+            if (data.cardStoreB) {
+              drawCardImageElement('cardStoreB',
+                data.cardStoreB.visited && selectedChain == 'FRAGUA'? `Stores Visited: ${data.cardStoreB.visited}` : 'Stores Visited: N/A',
+                data.cardStoreB.pending && selectedChain == 'FRAGUA'? `Pending delivery: ${data.cardStoreB.pending}` : 'Pending delivery: N/A'
+              );
+            }
+            if (data.cardStoreC) {
+              drawCardImageElement('cardStoreC',
+                data.cardStoreC.visited && selectedChain == 'NETO'? `Stores Visited: ${data.cardStoreC.visited}` : 'Stores Visited: N/A',
+                data.cardStoreC.pending && selectedChain == 'NETO'? `Pending delivery: ${data.cardStoreC.pending}` : 'Pending delivery: N/A'
+              );
+            }
+          }else{
+            if (data.cardStoreA) {
+              drawCardImageElement('cardStoreA',
+                data.cardStoreA.visited ? `Stores Visited: ${data.cardStoreA.visited}` : 'Stores Visited: N/A',
+                data.cardStoreA.pending ? `Pending delivery: ${data.cardStoreA.pending}` : 'Pending delivery: N/A'
+              );
+            }
+            if (data.cardStoreB) {
+              drawCardImageElement('cardStoreB',
+                data.cardStoreB.visited ? `Stores Visited: ${data.cardStoreB.visited}` : 'Stores Visited: N/A',
+                data.cardStoreB.pending ? `Pending delivery: ${data.cardStoreB.pending}` : 'Pending delivery: N/A'
+              );
+            }
+            if (data.cardStoreC) {
+              drawCardImageElement('cardStoreC',
+                data.cardStoreC.visited ? `Stores Visited: ${data.cardStoreC.visited}` : 'Stores Visited: N/A',
+                data.cardStoreC.pending ? `Pending delivery: ${data.cardStoreC.pending}` : 'Pending delivery: N/A'
+              );
+            }
           }
           
 
@@ -111,12 +132,13 @@ async function getInformation(dicAditional){
           if(data.chartFourth){
             drawChartElement('chartFourth','line',data.chartFourth, setOptions4A, undefined, true);
           }
+          /*
           if(data.chartFiveth){
             drawChartElement('chartFiveth','doughnut',data.chartFiveth, setOptions5A, undefined, true);
-          }
+          }*/
 
           if(data.mapFirst){
-            drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1, configToltipMap)
+            drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1, configTooltipMap)
           }
           
           //-----Style

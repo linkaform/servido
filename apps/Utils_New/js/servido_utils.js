@@ -643,7 +643,7 @@ function createElements(dataConfig = null){
                                         <div class="col-12">
                                             <div class="d-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning rounded p-2">
                                                 <i class="fas fa-clock me-2"></i>
-                                                <span class="h6 mb-0 font-weight-bold text-warning" id="textB-${idElement}">439</span>
+                                                <span class="h6 mb-0 font-weight-bold" style="color: #B58A09;" id="textB-${idElement}">439</span>
                                             </div>
                                         </div>
 

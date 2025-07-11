@@ -6,8 +6,8 @@ let dicReportContext = [
         { type:'card', col: '4', id:'cardThird', title:'% Progress', hexadecimal:'#0099F9'},
     ]},
     { class:'', _children : [
-            { type:'chart', col: '8', id:'chartFirst', title:'Percentage'},
-            { type:'chart', col: '4', id:'chartSecond', title:'Delivery progress by store'},
+            { type:'chart', col: '7', id:'chartFirst', title:'Percentage'},
+            { type:'chart', col: '5', id:'chartSecond', title:'Delivery progress by store'},
     ]},
     { class:'', _children : [
         { type:'card-custom-image', col: '4', id:'cardStoreA', title:'OXXO', hexadecimal:'#0099F9',
@@ -27,8 +27,8 @@ let dicReportContext = [
         { type:'map', col: '12', id:'mapFirst', title:'Mapa'},
     ]},
     { class:'', _children : [
-        { type:'chart', col: '6', id:'chartFourth', title:'Accumulated deliveries per day'},
-        { type:'chart', col: '6', id:'chartFiveth', title:'Delivery progress by Brand'},
+        { type:'chart', col: '12', id:'chartFourth', title:'Deliveries per day'},
+        //{ type:'chart', col: '6', id:'chartFiveth', title:'Delivery progress by Brand'},
     ]},
     { class:'', _children : [
         { type:'modal', col: '12', id:'modalFilterFirst', title:'Data by State', optionButtonModal:false, language:'en', modalSize:'lg', formElements : [
@@ -120,7 +120,7 @@ var setOptions2A = {
         x: {
             stacked: true,
             barPercentage: 0.8,        // Reduce el ancho de la barra (valor entre 0 y 1)
-            categoryPercentage: 0.5    // Reduce el espacio que cada categoría ocupa
+            categoryPercentage: 0.7    // Reduce el espacio que cada categoría ocupa
         },
         y: {
             stacked: true,
@@ -472,14 +472,25 @@ const configMap1 = {
     }
 }
 
-const configToltipMap =  {
+const dicObjetiveState = {
+    6:{
+        'mx-ve':1318,
+        'mx-mi':597,
+    },
+    7:{
+        'mx-ve':266,
+        'mx-mi':150,
+    },
+}
+
+const configTooltipMap = {
     formatter: function () {
         const value = this.point.value;
+        const stateKey =this.point['hc-key'];
         const stateName = this.point.name || this.key;
-        let text = `Total Records: ${value}`;
-        if (value > 100) {
-            text += ' (EXCEEDED)';
-        }
+        const monthSelect = document.getElementById("month").value  || 7;
+        const totalRecord = dicObjetiveState[monthSelect]?.[stateKey] || 0;
+        const text = `Total Visitas: ${value} de ${totalRecord}`;
         return `<b>${stateName}</b><br>${text}`;
     }
 }
