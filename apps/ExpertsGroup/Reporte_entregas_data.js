@@ -21,7 +21,7 @@ let dicReportContext = [
         },
     ]},
     { class:'', _children : [
-        { type:'chart', col: '12', id:'chartThird', title:'Delivery progress by status'},
+        { type:'chart', col: '12', id:'chartThird', title:'Delivery progress by state'},
     ]},
     { class:'', _children : [
         { type:'map', col: '12', id:'mapFirst', title:'Mapa'},
