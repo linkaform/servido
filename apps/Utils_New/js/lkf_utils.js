@@ -102,6 +102,7 @@ function setCatalogSimple(list, id, language = false) {
   // Opción por defecto
   const defaultOption = document.createElement('option');
   defaultOption.value = '';
+  defaultOption.disabled = true;
   if(!language){
     defaultOption.textContent = 'Seleccione una opción';
   }else{
