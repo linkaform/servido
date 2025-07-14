@@ -248,7 +248,7 @@ function get_catalog(){
     .then((res) => {
         const catalog = res.response && res.response.dataCatalogProductFamily ? res.response.dataCatalogProductFamily : {};
         if(catalog){
-            setCatalogSimple(catalog,'product_families');
+            setCatalogSimple(catalog,'product_families', undefined, true);
             if (isProductFamiliesOpen) {
                 $('#product_families').trigger('change');
                 $('#product_families').select2('close');
