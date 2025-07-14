@@ -1,5 +1,5 @@
 let dataCatalogInstitucion = [];
-
+let isProductFamiliesOpen = false;
 
 window.onload = function () {
     createElements(dicReportContext);
@@ -12,6 +12,14 @@ window.onload = function () {
     } else if (statusSession == 'Offline') {
         loadDemoData();
     }
+
+    $('#product_families').on('select2:open', function () {
+        isProductFamiliesOpen = true;
+    });
+
+    $('#product_families').on('select2:close', function () {
+        isProductFamiliesOpen = false;
+    });
 }
 
 //-----LOAD DATA DEMO
@@ -37,6 +45,7 @@ function loadDemoData() {
 
 //-----LOAD DATA ACTIVE
 function loadData() {
+    showLoadingProductFamilies();
     //----Search Catalogs
     get_catalog();
     //----Assing Events
@@ -204,6 +213,13 @@ function getSelectedDataClean(tableId) {
     return cleanedData;
 }
 
+function showLoadingProductFamilies() {
+    const select = $('#product_families');
+    select.empty();
+    select.append('<option disabled>Cargando...</option>');
+    select.trigger('change');
+}
+
 //-----GET CATALOG
 function get_catalog() {
     const scriptId = getParameterURL('script_id');
@@ -224,6 +240,11 @@ function get_catalog() {
             const catalog = res.response && res.response.product_families ? res.response.product_families : {};
             if (catalog) {
                 setCatalogSimple(catalog, 'product_families');
+                if (isProductFamiliesOpen) {
+                    $('#product_families').trigger('change');
+                    $('#product_families').select2('close');
+                    $('#product_families').select2('open');
+                }
             }
         })
 }
@@ -280,35 +301,36 @@ function getCatalogLine() {
 
 const sendCompra = async (type, allSelected) => {
     const JWT = getCookie("userJwt");
-    try {
-        const respuesta = await fetch(getUrlRequest('script'), {
-            method: 'POST',
-            body: JSON.stringify({
-                // script_name: 'do_traspaso_lkf.py',
-                to: type,
-                data: allSelected,
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + JWT
-            },
-        });
-        const data = await respuesta.json();
-        const sipre_folio = data?.response?.sipre_folio;
-        Swal.fire({
-            type: 'success',
-            title: 'Orden de Compra realizada',
-            html: 'La orden de compra se ha realizado exitosamente.',
-            confirmButtonText: 'Aceptar'
-        });
-        console.log(data);
-    } catch (error) {
-        Swal.fire({
-            type: 'error',
-            title: 'Orden de Compra fallida',
-            text: 'La orden de compra tuvo un error al realizarse, revisa el log.',
-            confirmButtonText: 'Aceptar'
-        });
-        console.error('Error:', error);
-    }
+    // try {
+    //     const respuesta = await fetch(getUrlRequest('script'), {
+    //         method: 'POST',
+    //         body: JSON.stringify({
+    //             // script_name: 'do_traspaso_lkf.py',
+    //             to: type,
+    //             data: allSelected,
+    //         }),
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': 'Bearer ' + JWT
+    //         },
+    //     });
+    //     const data = await respuesta.json();
+    //     const sipre_folio = data?.response?.sipre_folio;
+    //     Swal.fire({
+    //         type: 'success',
+    //         title: 'Orden de Compra realizada',
+    //         html: 'La orden de compra se ha realizado exitosamente.',
+    //         confirmButtonText: 'Aceptar'
+    //     });
+    //     console.log(data);
+    // } catch (error) {
+    //     Swal.fire({
+    //         type: 'error',
+    //         title: 'Orden de Compra fallida',
+    //         text: 'La orden de compra tuvo un error al realizarse, revisa el log.',
+    //         confirmButtonText: 'Aceptar'
+    //     });
+    //     console.error('Error:', error);
+    // }
+    console.log('entro en sendCompra')
 }
