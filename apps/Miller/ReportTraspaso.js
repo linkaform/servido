@@ -1,4 +1,5 @@
 let dataCatalogInstitucion = [];
+let isProductFamiliesOpen = false;
 
 
 window.onload = function(){
@@ -12,6 +13,14 @@ window.onload = function(){
   }else if(statusSession == 'Offline'){
     loadDemoData();
   } 
+
+    $('#product_families').on('select2:open', function () {
+        isProductFamiliesOpen = true;
+    });
+
+    $('#product_families').on('select2:close', function () {
+        isProductFamiliesOpen = false;
+    });
 }
 
 //-----LOAD DATA DEMO
@@ -45,6 +54,7 @@ function loadDemoData(){
 
 //-----LOAD DATA ACTIVE
 function loadData(data) {
+    showLoadingProductFamilies();
     //----Search Catalogs
     get_catalog();
     //----Assing Events
@@ -212,6 +222,13 @@ function getSelectedDataClean(tableId) {
     return cleanedData;
 }
 
+function showLoadingProductFamilies() {
+    const select = $('#product_families');
+    select.empty();
+    select.append('<option disabled>Cargando...</option>');
+    select.trigger('change');
+}
+
 //-----GET CATALOG
 function get_catalog(){
     const scriptId = getParameterURL('script_id');
@@ -232,6 +249,11 @@ function get_catalog(){
         const catalog = res.response && res.response.dataCatalogProductFamily ? res.response.dataCatalogProductFamily : {};
         if(catalog){
             setCatalogSimple(catalog,'product_families');
+            if (isProductFamiliesOpen) {
+                $('#product_families').trigger('change');
+                $('#product_families').select2('close');
+                $('#product_families').select2('open');
+            }
         }
     })
 }
