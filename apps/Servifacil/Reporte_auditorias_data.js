@@ -5,10 +5,10 @@ let dicReportContext = [
             { type:'card', col: '6', id:'cardSecond', title:'Total Evaluaciones', hexadecimal:'#818C78'},
     ]},
     { class:'', _children : [
-        { type:'chart', col: '6', id:'chartFirst', title:'Auditorias por estación'},
-        { type:'chart', col: '6', id:'chartSecond', title:'Auditorias por Supervisor'},
-        { type:'chart', col: '6', id:'chartThird', title:'Resultados por sección'},
-        { type:'chart', col: '6', id:'chartFourth', title:'Histórico por estación'},
+        { type:'chart', col: '12', id:'chartFirst', title:'Auditorias por estación'},
+        { type:'chart', col: '12', id:'chartSecond', title:'Auditorias por Supervisor'},
+        { type:'chart', col: '12', id:'chartThird', title:'Resultados por sección'},
+        { type:'chart', col: '12', id:'chartFourth', title:'Histórico por estación'},
     ]},
     { class:'', _children : [
         { type:'table', col: '12', id:'tableFirst', title:'Resultados por Pregunta'},
@@ -20,9 +20,9 @@ let dicReportContext = [
 //-----Table
 let columsTable1 = [
     { title: "Pregunta", field: 'pregunta',  headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 1050, responsive: 2},
-    { title: "Apariciones", field: 'aparicion', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2 },
-    { title: "Respuestas positivas", field: 'positivos', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
-    { title: "Respuestas negativas", field: 'negativos', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
+    { title: "Evaluaciones", field: 'evaluaciones', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2 },
+    { title: "R. Positivas", field: 'positivos', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
+    { title: "R. Negativas", field: 'negativos', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
     { title: "% de Cumplimiento", field: 'porcentaje', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
 ];
 
@@ -90,19 +90,7 @@ var setOptions1A = {
                 return `${value} / ${percentage}%`;
             }
         },
-        tooltip: {
-            titleFont: { size: 20 },
-            bodyFont: { size: 17 },
-            callbacks: {
-                label: function (context) {
-                    const index = context.dataIndex;
-                    const value = context.raw;
-                    const total = totalValues[index] || 1;
-                    const percentage = ((value / total) * 100).toFixed(1);
-                    return `${value} / ${percentage}%`;
-                }
-            }
-        }
+        
     },
     maintainAspectRatio: false,
 };

@@ -43,12 +43,12 @@ function loadData(data) {
 }
 
 //-----SET REQUEST
-async function getInformation(dicAditional){
+async function getInformation(){
+    showLoadingComponent();
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
     const statusSession = getSession();
-    const dicAdional =  dicAditional;
-
+    const dicAdional =  {'option':'report'};
     if(statusSession == 'Demo' || demo){
         Swal.fire({
           title: 'Advertencia',
@@ -58,24 +58,34 @@ async function getInformation(dicAditional){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
         if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
             const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-            if(data.tableFirst){
-              drawTableElement('tableFirst', data.tableFirst, columsTable1);   
+            
+            if(data.response_first){
+                formatChartData(data.response_first, 'response_first', 'chartFirst');
             }
-            if(data.chartFirst){
-              drawChartElement('chartFirst','pie',data.chartFirst,setOptions1A, undefined, true);     
+            if(data.response_second){
+                formatChartData(data.response_second, 'response_second', 'chartSecond');
             }
-            if(data.mapFirst){
-              drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1, configToltipMap)   
+            if(data.response_third){
+                formatChartData(data.response_third, 'response_third', 'chartThird');
             }
+            if(data.response_fourth){
+                drawChartElement('chartFourth','line',data.response_fourth,setOptions4A);
+            }
+            if(data.response_fiveth){
+                drawTableElement('tableFirst', data.response_fiveth, columsTable1);
+            }
+            console.log('data.response_cards',data.response_cards)
+            if(data.response_cards && data.response_cards.cardFirst){
+                drawCardElement('cardFirst',data.response_cards.cardSecond);
+            }
+            if(data.response_cards && data.response_cards.cardSecond){
+                drawCardElement('cardSecond',data.response_cards.cardSecond);
+            }
+
             //-----Style
-            const divEmpty = document.querySelectorAll('.div-content-empty');
-            const divElements = document.querySelectorAll('.div-content-element');
-            divElements.forEach(div => {
-              div.style.visibility = 'visible';
-            });
-            divEmpty.forEach(div => {
-              div.style.display = 'none';
-            });
+            hideLoadingComponent();
+            showElements();
+
         }
     }
 }
@@ -99,7 +109,89 @@ function get_catalog(){
     .then((res) => {
         const data = res.response && res.response.data ? res.response.data : [];
         if(data.length > 0){
-          setCatalogSimple(data, 'chain', true);
+          setCatalogSimple(data, 'estacion', true);
         }
     })
+}
+
+//-----Function Format
+function formatChartData(data,type, divId){
+    let listLabel = [];
+    let listData = [];
+    let listCant = [];
+    let listBackGround = [];
+
+    data.forEach(item => {
+        if (type === 'response_first') {
+            listLabel.push(item.estacion || '');
+        } else if (type === 'response_second') {
+            listLabel.push(item.supervisor || '');
+        } else if (type === 'response_third') {
+           listLabel.push(item.pagina || '');
+        }
+
+        listData.push(item.ratio || 0);
+        listCant.push(item.cant || 0);
+        let color = '';
+        if(item.ratio > 90){
+            color = '#04BF45';
+        }else if(item.ratio >= 80 && item.ratio <= 89.99){
+            color = '#F1C40F';
+        }else if(item.ratio >= 60 && item.ratio <= 79.99){
+            color = '#F24405';
+        }else if(item.ratio < 59.99){
+            color = '#F20505';
+        }
+        listBackGround.push(color|| '');
+    });
+
+    let optionsCustom = {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top',
+            },
+            datalabels: {
+                color: 'white',
+                font: {
+                    size: 13
+                },
+                formatter: function (value, context) {
+                    const index = context.dataIndex;
+                    const total = listCant[index] || 1; 
+                    return `${value} / ${total}%`;
+                }
+            },
+            tooltip: {
+                titleFont: { size: 20 },
+                bodyFont: { size: 17 },
+                callbacks: {
+                    label: function (context) {
+                        const index = context.dataIndex;
+                        const value = context.raw;
+                        const total = listCant[index] || 1; 
+                        return `${value} / ${total}%`;
+                    }
+                }
+            }
+        },
+        maintainAspectRatio: false,
+    };
+
+    let dataChart = {
+        labels: listLabel,
+        datasets: [
+            {
+                label: 'Total',
+                data: listData,
+                fill: false,
+                backgroundColor: listBackGround,
+            },
+        ]
+    };
+
+    if(divId !=''){
+        drawChartElement(divId,'bar',dataChart, optionsCustom, undefined, true);
+    }
 }

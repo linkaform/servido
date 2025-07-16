@@ -61,7 +61,6 @@ function controllerAllOptions(idElement) {
   });
 }
 
-
 //----Funciona para buscar dentro de una lista de diccionarios, y llenar con valores unicos un selector
 function setSelect(listDic, labelKey, idKey, idElement) {
     const selectElement = document.getElementById(idElement);
