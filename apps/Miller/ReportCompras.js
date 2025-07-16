@@ -294,7 +294,7 @@ function getCatalogLine() {
         .then((res) => {
             const catalog = res.response && res.response.product_line ? res.response.product_line : {};
             if (catalog) {
-                setCatalogSimple(catalog, 'product_line');
+                setCatalogSimple(catalog, 'product_line', undefined, true);
             }
         })
 }

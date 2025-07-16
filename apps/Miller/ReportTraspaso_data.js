@@ -21,6 +21,7 @@ let columsTable1 = [
     },
     { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", headerFilter:"input", width: 150 },
     { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 250 },
+    { title: "Familia", field: "product_family", headerTooltip: true, hozAlign: "left", headerFilter: "input", width: 150 },
     { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left",  headerFilter:"input", width: 125 },
     { title: "UoM", field: "uom", headerTooltip: true, hozAlign: "center", width: 100 ,  },
     { title: "Standar Pack", field: "standar_pack", headerTooltip: true, hozAlign: "center", width: 150 ,  formatter:'money', formatterParams: { precision: 2}},
@@ -68,6 +69,7 @@ const dataTable1 = [
 let columsTable2 = [
     { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", headerFilter:"input", width: 150 },
     { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 250 },
+    { title: "Familia", field: "product_family", headerTooltip: true, hozAlign: "left", headerFilter: "input", width: 150 },
     { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left",  headerFilter:"input", width: 200 },
     { title: "% Inicial", field: "percentage_start", headerTooltip: true, hozAlign: "left", width: 125, formatter:'money', formatterParams: { precision: 2,symbolAfter:"%"} },
     { title: "Stock", field: "stock", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },
@@ -100,6 +102,7 @@ let columsTable3 = [
     },
     { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", headerFilter:"input", width: 150 },
     { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 250 },
+    { title: "Familia", field: "product_family", headerTooltip: true, hozAlign: "left", headerFilter: "input", width: 150 },
     { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left",  headerFilter:"input", width: 125 },
     { title: "UoM", field: "uom", headerTooltip: true, hozAlign: "center", width: 100 ,  },
     { title: "Standar Pack", field: "standar_pack", headerTooltip: true, hozAlign: "center", width: 150 ,  formatter:'money', formatterParams: { precision: 2}},
@@ -144,6 +147,7 @@ const dataTable3 = [
 let columsTable4     = [
     { title: "SKU", field: "sku", headerTooltip: true, hozAlign: "center", headerFilter:"input", width: 150 },
     { title: "Descripción", field: "desc", headerTooltip: true, hozAlign: "left", width: 250 },
+    { title: "Familia", field: "product_family", headerTooltip: true, hozAlign: "left", headerFilter: "input", width: 150 },
     { title: "Linea", field: "line", headerTooltip: true, hozAlign: "left",  headerFilter:"input", width: 200 },
     { title: "% Inicial", field: "percentage_start", headerTooltip: true, hozAlign: "left", width: 125, formatter:'money', formatterParams: { precision: 2,symbolAfter:"%"} },
     { title: "Stock", field: "stock", headerTooltip: true, hozAlign: "center", width: 125, formatter:'money', formatterParams: { precision: 2} },

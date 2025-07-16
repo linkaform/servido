@@ -41,9 +41,6 @@ function loadDemoData(){
         getRowsData('gdl');
     });
 
-    document.getElementById('product_families').addEventListener('change', function () {
-        getCatalogLine();
-    });
     //---Catalog
     get_catalog();
     
@@ -248,62 +245,12 @@ function get_catalog(){
     .then((res) => {
         const catalog = res.response && res.response.dataCatalogProductFamily ? res.response.dataCatalogProductFamily : {};
         if(catalog){
-            setCatalogSimple(catalog,'product_families');
+            setCatalogSimple(catalog,'product_families', undefined, true);
             if (isProductFamiliesOpen) {
                 $('#product_families').trigger('change');
                 $('#product_families').select2('close');
                 $('#product_families').select2('open');
             }
-        }
-    })
-}
-
-//-------GET CATALOG LINE
-function getCatalogLine() {
-    const familySelect = document.getElementById('product_families');
-    const lineSelect = document.getElementById('product_line');
-
-
-    //---Validation Select
-    if (!familySelect || !lineSelect) {
-        return;
-    }
-    const selectedFamily = familySelect.value;
-
-    //---Clean
-    lineSelect.innerHTML = '';
-      
-    const defaultOption = document.createElement('option');
-    defaultOption.value = '';
-    defaultOption.textContent = 'Seleccione una opción';
-    lineSelect.appendChild(defaultOption);
-
-    //---Validation Empty
-    if (!selectedFamily) {
-        return;
-    }
-
-
-
-    const scriptId = getParameterURL('script_id');
-    const JWT = getCookie("userJwt");
-    fetch(getUrlRequest('script'), {
-        method: 'POST',
-        body: JSON.stringify({
-            script_id: 125216,
-            option: 'get_product_line',
-            product_code: selectedFamily,
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+JWT
-        },
-    })
-    .then((res) => res.json())
-    .then((res) => {
-        const catalog = res.response && res.response.product_line ? res.response.product_line : {};
-        if(catalog){
-            setCatalogSimple(catalog,'product_line');
         }
     })
 }
