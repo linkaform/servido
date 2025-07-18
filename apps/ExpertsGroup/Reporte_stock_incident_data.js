@@ -491,7 +491,17 @@ var columsTable4 = [
   { title: "State", field: "state", hozAlign: "left", headerFilter:true, width: 200 },
   { title: "Municipality", field: "municipality", hozAlign: "left", headerFilter:true, width: 200 },
   { title: "Type of Incident", field: "incident", hozAlign: "left", width: 200 },
-  { title: "Comments", field: "comments", hozAlign: "left", width: 200 },
+  {
+    title: "Comments",
+    field: "comments",
+    hozAlign: "left",
+    width: 200,
+    formatter: function(cell) {
+      const value = cell.getValue();
+      return `<div style="white-space: normal; word-wrap: break-word;">${value}</div>`;
+    },
+    cellVerticalAlignment: "top",
+  },
   { title: "Imagen", field: "url_image", width: 150,
     formatter: function(cell, formatterParams, onRendered) {
       const url = cell.getValue();

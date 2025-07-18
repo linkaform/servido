@@ -21,6 +21,9 @@ let dicReportContext = [
         },
     ]},
     { class:'', _children : [
+        { type:'table', col: '12', id:'tableFirst', title:'Status by Store'},
+    ]},
+    { class:'', _children : [
         { type:'chart', col: '12', id:'chartThird', title:'Delivery progress by state'},
     ]},
     { class:'', _children : [
@@ -37,6 +40,103 @@ let dicReportContext = [
         },
     ]},
 
+];
+
+
+
+
+//---Table
+let columnsTable1 = [
+    { title: "CHAIN", field: 'chain', headerFilter: "input", hozAlign: "left", width: 250 },
+    { title: "STATE", field: 'state', headerFilter: "input", hozAlign: "left", width: 300 },
+    { title: "CR", field: 'cr', headerFilter: "input", hozAlign: "left", width: 200 },
+    { title: "NAME", field: 'name', headerFilter: "input", hozAlign: "left", width: 250 },
+    {
+        title: "ESTATUS",
+        field: 'status',
+        hozAlign: "left",
+        headerFilter: "input",
+        width: 250,
+        formatter: function(cell) {
+            const value = cell.getValue();
+            let color = value === 'Visited' ? 'green' : value === 'Not visited' ? 'red' : 'black';
+            return `<span style="color:${color}; font-weight:600">${value}</span>`;
+        }
+    },
+];
+
+
+let dataTable1 = [
+    {
+        chain : 'OXXO',
+        state: 'Michoacán',
+        cr : '11',
+        name : 'Extra',
+        status : 'Not visited',
+    },
+    {
+        chain : 'OXXO',
+        state: 'Michoacán',
+        cr : '12',
+        name : '7-Eleven',
+        status : 'Visited',
+    },
+    {
+        chain : 'OXXO',
+        state: 'Michoacán',
+        cr : '13',
+        name : 'Circle K',
+        status : 'Visited',
+    },
+    {
+        chain : 'FRAGUA',
+        state: 'Michoacán',
+        cr : '14',
+        name : 'Oxxo',
+        status : 'Not visited',
+    },
+    {
+        chain : 'FRAGUA',
+        state: 'Michoacán',
+        cr : '15',
+        name : 'Super Q',
+        status : 'Visited',
+    },
+    {
+        chain : 'FRAGUA',
+        state: 'Veracrúz',
+        cr : '16',
+        name : 'Kiosko',
+        status : 'Not visited',
+    },
+    {
+        chain : 'FRAGUA',
+        state: 'Veracrúz',
+        cr : '17',
+        name : 'Oxxo Gas',
+        status : 'Visited',
+    },
+    {
+        chain : 'NETO',
+        state: 'Veracrúz',
+        cr : '18',
+        name : 'SuperCity',
+        status : 'Visited',
+    },
+    {
+        chain : 'NETO',
+        state: 'Veracrúz',
+        cr : '19',
+        name : 'Bodega Exprés',
+        status : 'Not visited',
+    },
+    {
+        chain : 'NETO',
+        state: 'Veracrúz',
+        cr : '20',
+        name : 'Tiendas 3B',
+        status : 'Visited',
+    },
 ];
 
 //---Chart First

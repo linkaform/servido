@@ -25,6 +25,8 @@ function loadDemoData(){
     drawCardImageElement('cardStoreB','Stores Visited: 243 ','Pending delivery: 101');
     drawCardImageElement('cardStoreC','Stores Visited: 0 ','Pending delivery: 0');
 
+    drawTableElement('tableFirst', dataTable1 ,columnsTable1 );
+
     drawChartElement('chartFirst','doughnut',dataChart1A,setOptions1A, undefined, true);
     drawChartElement('chartSecond','bar',dataChart2A, setOptions2A, undefined, true);
     drawChartElement('chartThird','bar',dataChart3A, setOptions3A, undefined, true);
@@ -132,11 +134,9 @@ async function getInformation(dicAditional){
           if(data.chartFourth){
             drawChartElement('chartFourth','line',data.chartFourth, setOptions4A, undefined, true);
           }
-          /*
-          if(data.chartFiveth){
-            drawChartElement('chartFiveth','doughnut',data.chartFiveth, setOptions5A, undefined, true);
-          }*/
-
+          if(data.tableFirst){
+            drawTableElement('tableFirst', data.tableFirst ,columnsTable1 );
+          }
           if(data.mapFirst){
             drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1, configTooltipMap)
           }
