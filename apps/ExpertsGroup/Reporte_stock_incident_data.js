@@ -3,6 +3,16 @@ let dicReportContext = [
     { class:'', _children : [
         { type:'table', col: '12', id:'tableFirst', title:'Display Type'},
         { type:'table', col: '12', id:'tableSecond', title:'Out of Stock by Store', optionExpanded:true},
+    ]},
+    { class:'', _children : [
+        { type:'table', col: '5', id:'tableFiveth', title:'OOS Entry vs OOS Exit by brand', optionExpanded:true},
+        { type:'chart', col: '7', id:'chartFirst', title:'OOS Entry vs OOS Exit by brand'},
+
+        { type:'table', col: '7', id:'tableSixth', title:'OOS Entry vs OOS Exit detail by state', optionExpanded:true},
+        { type:'chart', col: '5', id:'chartSecond', title:'OOS Entry vs OOS Exit detail by state'},
+
+    ]},
+    { class:'', _children : [
         { type:'table', col: '12', id:'tableThird', title:'Inventory', optionExpanded:true},
         { type:'table', col: '12', id:'tableFourth', title:'Incidents'},
     ]},
@@ -51,7 +61,6 @@ var columsTable1 = [
     { title: "2X9", field: "2x9", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
     { title: "5X9", field: "5x9", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
     { title: "3X9", field: "3x9", hozAlign: "center",  headerHozAlign:"center", formatter: greenBackgroundFormatter, width: 100 },
-    
 ];
 
 var dataTable1 = [
@@ -209,9 +218,7 @@ var columsTable2 = [
     { title: "Municipality", field: "municipality", hozAlign: "left", headerFilter:true ,width: 200 },
     { title: "UPC", field: "upc", hozAlign: "left", width: 300 },
     { title: "Total peg", field: "total", hozAlign: "left", width: 150 },
-    
 ];
-
 
 var dataTable2 = [
   {
@@ -349,9 +356,7 @@ var columsTable3 = [
     { title: "Municipality", field: "municipality", hozAlign: "left", headerFilter:true ,width: 200 },
     { title: "UPC", field: "upc", hozAlign: "left", width: 300 },
     { title: "Total peg", field: "total", hozAlign: "left", width: 150 },
-    
 ];
-
 
 var dataTable3 = [
   {
@@ -476,9 +481,6 @@ var dataTable3 = [
     ]
   },
 ];
-
-
-
 
 //-------TABLE 4
 var columsTable4 = [
@@ -614,3 +616,371 @@ var dataTable4 = [
     url_image: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/683dcbb99122a4bc15f217b6.jpg',
   },
 ];
+
+//-------TABLE 5
+var columsTable5 = [
+    { title: "Chain", field: "chain", hozAlign: "left", headerFilter:true, width: 200 },
+    { 
+        title: "Visited", 
+        field: "visited", 
+        hozAlign: "left", 
+        headerFilter:true, 
+        formatterParams: {
+            "symbol": "",
+            "symbolAfter": "",
+            "decimal": ".",
+            "thousand": ",",
+            "precision": 0
+          },
+        formatter: "money",
+        width: 140 
+    },
+    { 
+        title: "%OOS Entry", 
+        field: "oss_entry", 
+        hozAlign: "left", 
+        headerFilter:true, 
+        formatterParams: {
+            "symbol": "",
+            "symbolAfter": "%",
+            "decimal": ".",
+            "thousand": ",",
+            "precision": 0
+          },
+        formatter: "money",
+        width: 180 
+    },
+    { 
+        title: "%OOS Exit", 
+        field: "oss_exit", 
+        hozAlign: "left", 
+        headerFilter:true,
+        formatterParams: {
+            "symbol": "",
+            "symbolAfter": "%",
+            "decimal": ".",
+            "thousand": ",",
+            "precision": 0
+          },
+        formatter: "money",
+        width: 180 
+    },
+];
+
+var dataTable5 = [
+    {
+        'chain':'iTUNES',
+        'visited':'2272',
+        'oss_entry':'24.3',
+        'oss_exit':'5.9',
+    },
+    {
+        'chain':'NETFLIX',
+        'visited':'1954',
+        'oss_entry':'14.1',
+        'oss_exit':'5.9',
+    },
+    {
+        'chain':'ROBLOX',
+        'visited':'2042',
+        'oss_entry':'22.1',
+        'oss_exit':'5.9',
+    },
+    {
+        'chain':'SONY',
+        'visited':'1744',
+        'oss_entry':'15.4',
+        'oss_exit':'5.9',
+    },
+    {
+        'chain':'SPOTIFY',
+        'visited':'1963',
+        'oss_entry':'17.3',
+        'oss_exit':'5.9',
+    },
+     {
+        'chain':'XBOX',
+        'visited':'1789',
+        'oss_entry':'24.7',
+        'oss_exit':'5.9',
+    },
+];
+
+//-------TABLE 6
+var columsTable6 = [
+    { title: "Plaza Promotora", field: "plaza", hozAlign: "left", headerFilter:true, width: 200 },
+    { title: "Chain", field: "chain", hozAlign: "left", headerFilter:true, width: 200 },
+    { title: "Card", field: "card", hozAlign: "left", headerFilter:true, width: 200 },
+    { 
+        title: "Total Visited", 
+        field: "visited", 
+        hozAlign: "left", 
+        headerFilter:true, 
+        formatterParams: {
+            "symbol": "",
+            "symbolAfter": "",
+            "decimal": ".",
+            "thousand": ",",
+            "precision": 0
+          },
+        formatter: "money",
+        width: 140 
+    },
+    { 
+        title: "%OOS Entry", 
+        field: "oss_entry", 
+        hozAlign: "left", 
+        headerFilter:true, 
+        formatterParams: {
+            "symbol": "",
+            "symbolAfter": "%",
+            "decimal": ".",
+            "thousand": ",",
+            "precision": 0
+          },
+        formatter: "money",
+        width: 130 
+    },
+    { 
+        title: "%OOS Exit", 
+        field: "oss_exit", 
+        hozAlign: "left", 
+        headerFilter:true,
+        formatterParams: {
+            "symbol": "",
+            "symbolAfter": "%",
+            "decimal": ".",
+            "thousand": ",",
+            "precision": 0
+          },
+        formatter: "money",
+        width: 130 
+    },
+];
+
+var dataTable6 = [
+    {
+        'plaza':'Aguascalientes',
+        'chain':'AMAZON',
+        'card':'AMAZON PRIME 300-500MXN',
+        'visited':'33',
+        'oss_entry':'3',
+        'oss_exit':'0',
+    },
+    {
+        'plaza':'Guadalajara',
+        'chain':'iTUNES',
+        'card':'iTUNES CARD 200-400MXN',
+        'visited':'2272',
+        'oss_entry':'24.3',
+        'oss_exit':'5.9',
+    },
+    {
+        'plaza':'CDMX',
+        'chain':'NETFLIX',
+        'card':'NETFLIX GIFT 300-600MXN',
+        'visited':'1954',
+        'oss_entry':'14.1',
+        'oss_exit':'5.9',
+    },
+    {
+        'plaza':'Monterrey',
+        'chain':'ROBLOX',
+        'card':'ROBLOX CREDITS 100-500MXN',
+        'visited':'2042',
+        'oss_entry':'22.1',
+        'oss_exit':'5.9',
+    },
+    {
+        'plaza':'Puebla',
+        'chain':'SONY',
+        'card':'PLAYSTATION PLUS 400-800MXN',
+        'visited':'1744',
+        'oss_entry':'15.4',
+        'oss_exit':'5.9',
+    },
+    {
+        'plaza':'Querétaro',
+        'chain':'SPOTIFY',
+        'card':'SPOTIFY PREMIUM 100-300MXN',
+        'visited':'1963',
+        'oss_entry':'17.3',
+        'oss_exit':'5.9',
+    },
+    {
+        'plaza':'Cancún',
+        'chain':'XBOX',
+        'card':'XBOX LIVE 200-500MXN',
+        'visited':'1789',
+        'oss_entry':'24.7',
+        'oss_exit':'5.9',
+    },
+    {
+        'plaza':'León',
+        'chain':'AMAZON',
+        'card':'AMAZON PRIME 500-1000MXN',
+        'visited':'1420',
+        'oss_entry':'10.2',
+        'oss_exit':'4.8',
+    },
+    {
+        'plaza':'Toluca',
+        'chain':'iTUNES',
+        'card':'iTUNES CARD 100-200MXN',
+        'visited':'980',
+        'oss_entry':'11.5',
+        'oss_exit':'3.2',
+    },
+    {
+        'plaza':'Mérida',
+        'chain':'NETFLIX',
+        'card':'NETFLIX GIFT 500-800MXN',
+        'visited':'1340',
+        'oss_entry':'12.0',
+        'oss_exit':'3.9',
+    },
+    {
+        'plaza':'Tijuana',
+        'chain':'ROBLOX',
+        'card':'ROBLOX CREDITS 200-400MXN',
+        'visited':'1150',
+        'oss_entry':'19.4',
+        'oss_exit':'4.1',
+    },
+    {
+        'plaza':'Veracruz',
+        'chain':'SONY',
+        'card':'PLAYSTATION PLUS 600-900MXN',
+        'visited':'870',
+        'oss_entry':'13.8',
+        'oss_exit':'4.5',
+    },
+    {
+        'plaza':'Saltillo',
+        'chain':'SPOTIFY',
+        'card':'SPOTIFY PREMIUM 200-500MXN',
+        'visited':'1530',
+        'oss_entry':'16.2',
+        'oss_exit':'3.8',
+    },
+    {
+        'plaza':'Chihuahua',
+        'chain':'XBOX',
+        'card':'XBOX GAME PASS 300-600MXN',
+        'visited':'1210',
+        'oss_entry':'20.1',
+        'oss_exit':'5.0',
+    },
+    {
+        'plaza':'Morelia',
+        'chain':'AMAZON',
+        'card':'AMAZON PRIME 200-400MXN',
+        'visited':'1320',
+        'oss_entry':'9.8',
+        'oss_exit':'4.0',
+    }
+];
+
+
+//------CHART 1
+var setOptions1A = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        datalabels: {
+            color: 'white',
+            font: {
+                size: 19
+            },
+            formatter: function(value) {
+                return value;
+            }
+        },
+    },
+    responsive: true, 
+    maintainAspectRatio: false ,
+    indexAxis: 'y', // barras horizontales
+    scales: {
+        x: { stacked: true },
+        y: { stacked: true }
+    }
+};
+
+var dataChart1A = {
+    labels: ['iTUNES', 'NETFLIX', 'ROBLOX', 'SONY', 'SPOTIFY'],
+    datasets: [
+        {
+            label: '%OOS Entry',
+            data: [120, 200, 150, 300, 250],
+            backgroundColor: 'cyan'
+        },
+        {
+            label: '%OOS Exit',
+            data: [80, 150, 120, 250, 200],
+            backgroundColor: 'magenta'
+        }
+    ]
+};
+
+
+//----Chart Second
+var setOptions2A = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        datalabels: {
+            color: 'white',
+            font: {
+                size: 19
+            },
+            formatter: function(value) {
+                return value;
+            }
+        },
+    },
+    responsive: true, 
+    maintainAspectRatio: false ,
+    scales: {
+        x: {
+            stacked: true,
+            barPercentage: 0.8,        
+            categoryPercentage: 0.7    
+        },
+        y: {
+            stacked: true,
+            beginAtZero: true
+        }
+    },
+    indexAxis: 'y', // barras horizontales
+    scales: {
+        x: { stacked: true },
+        y: { stacked: true }
+    }
+};
+
+var dataChart2A = {
+    labels: ['AMAZON PRIME 300-500MXN', 'iTUNES CARD 200-400MXN', 'NETFLIX GIFT 300-600MXN','ROBLOX CREDITS 100-500MXN','PLAYSTATION PLUS 400-800MXN'],
+    datasets: [
+        {
+            label: '%OOS Entry',
+            data: [20, 50, 80, 70,90],
+            backgroundColor: 'cyan',
+        },
+        {
+            label: '%OOS Exit',
+            data: [80, 50, 100,120,190],
+            backgroundColor: 'magenta',
+        }
+    ]
+};
+
+
+
+
+
