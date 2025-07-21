@@ -49,6 +49,7 @@ let dicReportContext = [
 let columnsTable1 = [
     { title: "CHAIN", field: 'chain', headerFilter: "input", hozAlign: "left", width: 250 },
     { title: "STATE", field: 'state', headerFilter: "input", hozAlign: "left", width: 300 },
+    { title: "CITY", field: 'city', headerFilter: "input", hozAlign: "left", width: 300 },
     { title: "CR", field: 'cr', headerFilter: "input", hozAlign: "left", width: 200 },
     { title: "NAME", field: 'name', headerFilter: "input", hozAlign: "left", width: 250 },
     {
@@ -59,8 +60,17 @@ let columnsTable1 = [
         width: 250,
         formatter: function(cell) {
             const value = cell.getValue();
+            const rowData = cell.getRow().getData(); // accede a toda la fila
+            const detailUrl = rowData.record_id;   // aquí está tu dato con la URL
+
             let color = value === 'Visited' ? 'green' : value === 'Not visited' ? 'red' : 'black';
-            return `<span style="color:${color}; font-weight:600">${value}</span>`;
+            if (value === 'Visited' && detailUrl) {
+                return `<a href="https://app.linkaform.com/#/records/detail/${detailUrl}" target="_blank" style="color:${color}; font-weight:600; text-decoration:underline;">
+                            ${value}
+                        </a>`;
+            } else {
+                return `<span style="color:${color}; font-weight:600">${value}</span>`;
+            }
         }
     },
 ];
