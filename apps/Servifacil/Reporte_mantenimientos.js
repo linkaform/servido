@@ -42,6 +42,7 @@ function loadData(data) {
 
 //-----SET REQUEST
 async function getInformation(dicAditional){
+    showLoadingComponent();
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
     const statusSession = getSession();
@@ -56,24 +57,24 @@ async function getInformation(dicAditional){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
         if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
             const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-            if(data.tableFirst){
-              drawTableElement('tableFirst', data.tableFirst, columsTable1);   
+            if(data.response_first){
+                drawChartElement('chartFirst','bar',data.response_first,setOptions1A);
             }
-            if(data.chartFirst){
-              drawChartElement('chartFirst','pie',data.chartFirst,setOptions1A, undefined, true);     
+            if(data.response_second){
+                drawChartElement('chartSecond','bar',data.response_second,setOptions2A);
             }
-            if(data.mapFirst){
-              drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1, configToltipMap)   
+            if(data.response_third){
+                drawChartElement('chartThird','bar',data.response_third,setOptions3A);
+            }
+            if(data.response_fourth){
+                drawChartElement('chartFourth','bar',data.response_fourth,setOptions4A);
+            }
+            if(data.response_fiveth){
+                drawChartElement('chartFiveth','bar',data.response_fiveth,setOptions5A);
             }
             //-----Style
-            const divEmpty = document.querySelectorAll('.div-content-empty');
-            const divElements = document.querySelectorAll('.div-content-element');
-            divElements.forEach(div => {
-              div.style.visibility = 'visible';
-            });
-            divEmpty.forEach(div => {
-              div.style.display = 'none';
-            });
+            hideLoadingComponent();
+            showElements();
         }
     }
 }
@@ -97,7 +98,7 @@ function get_catalog(){
     .then((res) => {
         const data = res.response && res.response.data ? res.response.data : [];
         if(data.length > 0){
-          setCatalogSimple(data, 'chain', true);
+          setCatalogSimple(data, 'estacion', true);
         }
     })
 }

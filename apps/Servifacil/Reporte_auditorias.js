@@ -74,7 +74,6 @@ async function getInformation(){
             if(data.response_fiveth){
                 drawTableElement('tableFirst', data.response_fiveth, columsTable1);
             }
-            console.log('data.response_cards',data.response_cards)
             if(data.response_cards && data.response_cards.cardFirst){
                 drawCardElement('cardFirst',data.response_cards.cardFirst);
             }
