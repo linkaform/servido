@@ -217,24 +217,6 @@ var setOptions4A = {
             display: true,
             position: 'top',
         },
-        datalabels: {
-            color: 'black',
-            anchor: 'center',
-            align: 'center',
-            font: {
-                size: 19,
-                weight: 'bold'
-            },
-        },
-        tooltip: {
-            titleFont: { size: 20 }, 
-            bodyFont: { size: 17 }, 
-            callbacks: {
-                label: function (tooltipItem) {
-                    return `${tooltipItem.raw}`; 
-                }
-            }
-        }
     },
     responsive: true, 
     maintainAspectRatio: false ,

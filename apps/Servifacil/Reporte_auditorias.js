@@ -76,7 +76,7 @@ async function getInformation(){
             }
             console.log('data.response_cards',data.response_cards)
             if(data.response_cards && data.response_cards.cardFirst){
-                drawCardElement('cardFirst',data.response_cards.cardSecond);
+                drawCardElement('cardFirst',data.response_cards.cardFirst);
             }
             if(data.response_cards && data.response_cards.cardSecond){
                 drawCardElement('cardSecond',data.response_cards.cardSecond);
@@ -160,7 +160,7 @@ function formatChartData(data,type, divId){
                 formatter: function (value, context) {
                     const index = context.dataIndex;
                     const total = listCant[index] || 1; 
-                    return `${value} / ${total}%`;
+                    return `${value}% / ${total}`;
                 }
             },
             tooltip: {
@@ -171,7 +171,7 @@ function formatChartData(data,type, divId){
                         const index = context.dataIndex;
                         const value = context.raw;
                         const total = listCant[index] || 1; 
-                        return `${value} / ${total}%`;
+                        return `${value} % / ${total}`;
                     }
                 }
             }
