@@ -23,7 +23,19 @@ let columsTable1 = [
     { title: "Evaluaciones", field: 'evaluaciones', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2 },
     { title: "R. Positivas", field: 'positivos', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
     { title: "R. Negativas", field: 'negativos', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
-    { title: "% de Cumplimiento", field: 'porcentaje', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
+    { 
+        title: "% de Cumplimiento", 
+        field: 'porcentaje', 
+        headerTooltip: true, 
+        hozAlign: "center",
+        formatter: function(cell){
+            let value = cell.getValue();
+            return value.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + "%";
+        },
+        width: 190, 
+        responsive: 2
+    }
+
 ];
 
 let dataTable1 = [
