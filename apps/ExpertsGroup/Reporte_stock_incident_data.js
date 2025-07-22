@@ -5,8 +5,8 @@ let dicReportContext = [
         { type:'table', col: '12', id:'tableSecond', title:'Out of Stock by Store', optionExpanded:true},
     ]},
     { class:'', _children : [
-        { type:'table', col: '12', id:'tableFiveth', title:'OOS Entry vs OOS Exit by brand', optionExpanded:true},
-        { type:'table', col: '12', id:'tableSixth', title:'OOS Entry vs OOS Exit detail by state', optionExpanded:true},
+        { type:'table', col: '12', id:'tableFiveth', title:'OOS Entry vs OOS Exit by brand'},
+        { type:'table', col: '12', id:'tableSixth', title:'OOS Entry vs OOS Exit detail by state'},
     ]},
     { class:'', _children : [
         { type:'table', col: '12', id:'tableThird', title:'Inventory', optionExpanded:true},
@@ -679,6 +679,7 @@ var columsTable5 = [
             }, 50);
             return canvas;
         },
+        download: false,
         width:200,
         hozAlign:"center"
     }
@@ -881,6 +882,7 @@ var columsTable6 = [
             }, 50);
             return canvas;
         },
+        download: false,
         width:200,
         hozAlign:"center"
     }
