@@ -5,12 +5,8 @@ let dicReportContext = [
         { type:'table', col: '12', id:'tableSecond', title:'Out of Stock by Store', optionExpanded:true},
     ]},
     { class:'', _children : [
-        { type:'table', col: '5', id:'tableFiveth', title:'OOS Entry vs OOS Exit by brand', optionExpanded:true},
-        { type:'chart', col: '7', id:'chartFirst', title:'OOS Entry vs OOS Exit by brand'},
-
-        { type:'table', col: '7', id:'tableSixth', title:'OOS Entry vs OOS Exit detail by state', optionExpanded:true},
-        { type:'chart', col: '5', id:'chartSecond', title:'OOS Entry vs OOS Exit detail by state'},
-
+        { type:'table', col: '12', id:'tableFiveth', title:'OOS Entry vs OOS Exit by brand', optionExpanded:true},
+        { type:'table', col: '12', id:'tableSixth', title:'OOS Entry vs OOS Exit detail by state', optionExpanded:true},
     ]},
     { class:'', _children : [
         { type:'table', col: '12', id:'tableThird', title:'Inventory', optionExpanded:true},
@@ -619,12 +615,8 @@ var dataTable4 = [
 
 //-------TABLE 5
 var columsTable5 = [
-    { title: "Chain", field: "chain", hozAlign: "left", headerFilter:true, width: 200 },
-    { 
-        title: "Visited", 
-        field: "visited", 
-        hozAlign: "left", 
-        headerFilter:true, 
+    { title: "Chain", field: "chain", hozAlign: "left", headerFilter:true, width: 250 },
+    { title: "Visited", field: "visited", hozAlign: "center", headerFilter:true, 
         formatterParams: {
             "symbol": "",
             "symbolAfter": "",
@@ -633,13 +625,9 @@ var columsTable5 = [
             "precision": 0
           },
         formatter: "money",
-        width: 140 
+        width: 200
     },
-    { 
-        title: "%OOS Entry", 
-        field: "oss_entry", 
-        hozAlign: "left", 
-        headerFilter:true, 
+    { title: "%OOS Entry", field: "oss_entry", hozAlign: "center", headerFilter:true, 
         formatterParams: {
             "symbol": "",
             "symbolAfter": "%",
@@ -648,13 +636,9 @@ var columsTable5 = [
             "precision": 0
           },
         formatter: "money",
-        width: 180 
+        width: 250 
     },
-    { 
-        title: "%OOS Exit", 
-        field: "oss_exit", 
-        hozAlign: "left", 
-        headerFilter:true,
+    { title: "%OOS Exit",  field: "oss_exit", hozAlign: "center", headerFilter:true,
         formatterParams: {
             "symbol": "",
             "symbolAfter": "%",
@@ -663,8 +647,41 @@ var columsTable5 = [
             "precision": 0
           },
         formatter: "money",
-        width: 180 
+        width: 250 
     },
+    { title:"Gráfica",field:"datos",
+        formatter: function(cell){
+            let canvas = document.createElement("canvas");
+            canvas.height = 150; // más compacto
+            setTimeout(() => {
+                new Chart(canvas, {
+                    type: 'bar',
+                    data: cell.getValue(),
+                    options: {
+                        indexAxis: 'y', // horizontal
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: {
+                                stacked: true,
+                                barPercentage: 0.6,        
+                                categoryPercentage: 0.7    
+                            },
+                            y: {
+                                stacked: true,
+                                beginAtZero: true
+                            }
+                        },
+                        indexAxis: 'y', // barras horizontales
+                    }
+                });
+            }, 50);
+            return canvas;
+        },
+        width:200,
+        hozAlign:"center"
+    }
 ];
 
 var dataTable5 = [
@@ -673,49 +690,135 @@ var dataTable5 = [
         'visited':'2272',
         'oss_entry':'24.3',
         'oss_exit':'5.9',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'chain':'NETFLIX',
         'visited':'1954',
         'oss_entry':'14.1',
         'oss_exit':'5.9',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'chain':'ROBLOX',
         'visited':'2042',
         'oss_entry':'22.1',
         'oss_exit':'5.9',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'chain':'SONY',
         'visited':'1744',
         'oss_entry':'15.4',
         'oss_exit':'5.9',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'chain':'SPOTIFY',
         'visited':'1963',
         'oss_entry':'17.3',
         'oss_exit':'5.9',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
-     {
+    {
         'chain':'XBOX',
         'visited':'1789',
         'oss_entry':'24.7',
         'oss_exit':'5.9',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
 ];
 
 //-------TABLE 6
 var columsTable6 = [
-    { title: "Plaza Promotora", field: "plaza", hozAlign: "left", headerFilter:true, width: 200 },
-    { title: "Chain", field: "chain", hozAlign: "left", headerFilter:true, width: 200 },
-    { title: "Card", field: "card", hozAlign: "left", headerFilter:true, width: 200 },
-    { 
-        title: "Total Visited", 
-        field: "visited", 
-        hozAlign: "left", 
-        headerFilter:true, 
+    { title: "Plaza Promotora", field: "plaza", hozAlign: "left", headerFilter:true, width: 250 },
+    { title: "Chain", field: "chain", hozAlign: "left", headerFilter:true, width: 250 },
+    { title: "Card", field: "card", hozAlign: "left", headerFilter:true, width: 350 },
+    { title: "Total Visited",  field: "visited", hozAlign: "left", headerFilter:true, 
         formatterParams: {
             "symbol": "",
             "symbolAfter": "",
@@ -724,13 +827,9 @@ var columsTable6 = [
             "precision": 0
           },
         formatter: "money",
-        width: 140 
+        width: 200 
     },
-    { 
-        title: "%OOS Entry", 
-        field: "oss_entry", 
-        hozAlign: "left", 
-        headerFilter:true, 
+    { title: "%OOS Entry", field: "oss_entry", hozAlign: "left", headerFilter:true, 
         formatterParams: {
             "symbol": "",
             "symbolAfter": "%",
@@ -739,13 +838,9 @@ var columsTable6 = [
             "precision": 0
           },
         formatter: "money",
-        width: 130 
+        width: 200 
     },
-    { 
-        title: "%OOS Exit", 
-        field: "oss_exit", 
-        hozAlign: "left", 
-        headerFilter:true,
+    { title: "%OOS Exit",  field: "oss_exit", hozAlign: "left", headerFilter:true,
         formatterParams: {
             "symbol": "",
             "symbolAfter": "%",
@@ -754,8 +849,41 @@ var columsTable6 = [
             "precision": 0
           },
         formatter: "money",
-        width: 130 
+        width: 200 
     },
+    { title:"Gráfica",field:"datos",
+        formatter: function(cell){
+            let canvas = document.createElement("canvas");
+            canvas.height = 150; // más compacto
+            setTimeout(() => {
+                new Chart(canvas, {
+                    type: 'bar',
+                    data: cell.getValue(),
+                    options: {
+                        indexAxis: 'y', // horizontal
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: {
+                                stacked: true,
+                                barPercentage: 0.6,        
+                                categoryPercentage: 0.7    
+                            },
+                            y: {
+                                stacked: true,
+                                beginAtZero: true
+                            }
+                        },
+                        indexAxis: 'y', // barras horizontales
+                    }
+                });
+            }, 50);
+            return canvas;
+        },
+        width:200,
+        hozAlign:"center"
+    }
 ];
 
 var dataTable6 = [
@@ -766,6 +894,21 @@ var dataTable6 = [
         'visited':'33',
         'oss_entry':'3',
         'oss_exit':'0',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'plaza':'Guadalajara',
@@ -774,6 +917,21 @@ var dataTable6 = [
         'visited':'2272',
         'oss_entry':'24.3',
         'oss_exit':'5.9',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'plaza':'CDMX',
@@ -782,6 +940,21 @@ var dataTable6 = [
         'visited':'1954',
         'oss_entry':'14.1',
         'oss_exit':'5.9',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'plaza':'Monterrey',
@@ -790,6 +963,21 @@ var dataTable6 = [
         'visited':'2042',
         'oss_entry':'22.1',
         'oss_exit':'5.9',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'plaza':'Puebla',
@@ -798,6 +986,21 @@ var dataTable6 = [
         'visited':'1744',
         'oss_entry':'15.4',
         'oss_exit':'5.9',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'plaza':'Querétaro',
@@ -806,6 +1009,21 @@ var dataTable6 = [
         'visited':'1963',
         'oss_entry':'17.3',
         'oss_exit':'5.9',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'plaza':'Cancún',
@@ -814,6 +1032,21 @@ var dataTable6 = [
         'visited':'1789',
         'oss_entry':'24.7',
         'oss_exit':'5.9',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'plaza':'León',
@@ -822,6 +1055,21 @@ var dataTable6 = [
         'visited':'1420',
         'oss_entry':'10.2',
         'oss_exit':'4.8',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'plaza':'Toluca',
@@ -830,6 +1078,21 @@ var dataTable6 = [
         'visited':'980',
         'oss_entry':'11.5',
         'oss_exit':'3.2',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'plaza':'Mérida',
@@ -838,6 +1101,21 @@ var dataTable6 = [
         'visited':'1340',
         'oss_entry':'12.0',
         'oss_exit':'3.9',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'plaza':'Tijuana',
@@ -846,6 +1124,21 @@ var dataTable6 = [
         'visited':'1150',
         'oss_entry':'19.4',
         'oss_exit':'4.1',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'plaza':'Veracruz',
@@ -854,6 +1147,21 @@ var dataTable6 = [
         'visited':'870',
         'oss_entry':'13.8',
         'oss_exit':'4.5',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'plaza':'Saltillo',
@@ -862,6 +1170,21 @@ var dataTable6 = [
         'visited':'1530',
         'oss_entry':'16.2',
         'oss_exit':'3.8',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'plaza':'Chihuahua',
@@ -870,6 +1193,21 @@ var dataTable6 = [
         'visited':'1210',
         'oss_entry':'20.1',
         'oss_exit':'5.0',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     },
     {
         'plaza':'Morelia',
@@ -878,6 +1216,21 @@ var dataTable6 = [
         'visited':'1320',
         'oss_entry':'9.8',
         'oss_exit':'4.0',
+        'datos':{
+            'labels': ['Valor'],
+            'datasets': [
+                {
+                    'label': '%OOS Entry',
+                    'data': [20, 50, 80, 70,90],
+                    'backgroundColor': 'cyan',
+                },
+                {
+                    'label': '%OOS Exit',
+                    'data': [80, 50, 100,120,190],
+                    'backgroundColor': 'magenta',
+                }
+            ]
+        }
     }
 ];
 
@@ -965,7 +1318,7 @@ var setOptions2A = {
 };
 
 var dataChart2A = {
-    labels: ['AMAZON PRIME 300-500MXN', 'iTUNES CARD 200-400MXN', 'NETFLIX GIFT 300-600MXN','ROBLOX CREDITS 100-500MXN','PLAYSTATION PLUS 400-800MXN'],
+    labels: ['Valor'],
     datasets: [
         {
             label: '%OOS Entry',
