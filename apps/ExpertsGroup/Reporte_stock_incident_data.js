@@ -816,7 +816,7 @@ var dataTable5 = [
 
 //-------TABLE 6
 var columsTable6 = [
-    { title: "Plaza Promotora", field: "plaza", hozAlign: "left", headerFilter:true, width: 250 },
+    { title: "State", field: "plaza", hozAlign: "left", headerFilter:true, width: 250 },
     { title: "Chain", field: "chain", hozAlign: "left", headerFilter:true, width: 250 },
     { title: "Card", field: "card", hozAlign: "left", headerFilter:true, width: 350 },
     { title: "Total Visited",  field: "visited", hozAlign: "left", headerFilter:true, 
