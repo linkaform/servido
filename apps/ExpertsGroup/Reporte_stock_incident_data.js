@@ -649,40 +649,24 @@ var columsTable5 = [
         formatter: "money",
         width: 250 
     },
-    { title:"Gráfica",field:"datos",
-        formatter: function(cell){
-            let canvas = document.createElement("canvas");
-            canvas.height = 150; // más compacto
-            setTimeout(() => {
-                new Chart(canvas, {
-                    type: 'bar',
-                    data: cell.getValue(),
-                    options: {
-                        indexAxis: 'y', // horizontal
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: {
-                            x: {
-                                stacked: true,
-                                barPercentage: 0.6,        
-                                categoryPercentage: 0.7    
-                            },
-                            y: {
-                                stacked: true,
-                                beginAtZero: true
-                            }
-                        },
-                        indexAxis: 'y', // barras horizontales
-                    }
-                });
-            }, 50);
-            return canvas;
-        },
-        download: false,
-        width:200,
-        hozAlign:"center"
+    { 
+        title: "Progress", 
+        field: "progress", 
+        hozAlign: "left", 
+        width: 250,
+        formatter: function(cell) {
+            let value = cell.getValue() || 0;
+            return `
+                <div style="position:relative; width:100%; background:#eee; border-radius:3px;">
+                    <div style="width:${value}%; background:#3b82f6; height:18px; border-radius:3px;"></div>
+                    <div style="position:absolute; top:0; left:0; width:100%; height:18px; line-height:18px; text-align:center; font-size:12px; color:black;">
+                        ${value}%
+                    </div>
+                </div>
+            `;
+        }
     }
+
 ];
 
 var dataTable5 = [
@@ -691,126 +675,42 @@ var dataTable5 = [
         'visited':'2272',
         'oss_entry':'24.3',
         'oss_exit':'5.9',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':30,
     },
     {
         'chain':'NETFLIX',
         'visited':'1954',
         'oss_entry':'14.1',
         'oss_exit':'5.9',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':90,
     },
     {
         'chain':'ROBLOX',
         'visited':'2042',
         'oss_entry':'22.1',
         'oss_exit':'5.9',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':40,
     },
     {
         'chain':'SONY',
         'visited':'1744',
         'oss_entry':'15.4',
         'oss_exit':'5.9',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':70,
     },
     {
         'chain':'SPOTIFY',
         'visited':'1963',
         'oss_entry':'17.3',
         'oss_exit':'5.9',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':80,
     },
     {
         'chain':'XBOX',
         'visited':'1789',
         'oss_entry':'24.7',
         'oss_exit':'5.9',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':90,
     },
 ];
 
@@ -852,40 +752,24 @@ var columsTable6 = [
         formatter: "money",
         width: 200 
     },
-    { title:"Gráfica",field:"datos",
-        formatter: function(cell){
-            let canvas = document.createElement("canvas");
-            canvas.height = 150; // más compacto
-            setTimeout(() => {
-                new Chart(canvas, {
-                    type: 'bar',
-                    data: cell.getValue(),
-                    options: {
-                        indexAxis: 'y', // horizontal
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: {
-                            x: {
-                                stacked: true,
-                                barPercentage: 0.6,        
-                                categoryPercentage: 0.7    
-                            },
-                            y: {
-                                stacked: true,
-                                beginAtZero: true
-                            }
-                        },
-                        indexAxis: 'y', // barras horizontales
-                    }
-                });
-            }, 50);
-            return canvas;
-        },
-        download: false,
-        width:200,
-        hozAlign:"center"
+    { 
+        title: "Progress", 
+        field: "progress", 
+        hozAlign: "left", 
+        width: 250,
+        formatter: function(cell) {
+            let value = cell.getValue() || 0;
+            return `
+                <div style="position:relative; width:100%; background:#eee; border-radius:3px;">
+                    <div style="width:${value}%; background:#3b82f6; height:18px; border-radius:3px;"></div>
+                    <div style="position:absolute; top:0; left:0; width:100%; height:18px; line-height:18px; text-align:center; font-size:12px; color:black;">
+                        ${value}%
+                    </div>
+                </div>
+            `;
+        }
     }
+
 ];
 
 var dataTable6 = [
@@ -896,21 +780,7 @@ var dataTable6 = [
         'visited':'33',
         'oss_entry':'3',
         'oss_exit':'0',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':90,
     },
     {
         'plaza':'Guadalajara',
@@ -919,21 +789,7 @@ var dataTable6 = [
         'visited':'2272',
         'oss_entry':'24.3',
         'oss_exit':'5.9',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':70,
     },
     {
         'plaza':'CDMX',
@@ -942,21 +798,7 @@ var dataTable6 = [
         'visited':'1954',
         'oss_entry':'14.1',
         'oss_exit':'5.9',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':60,
     },
     {
         'plaza':'Monterrey',
@@ -965,21 +807,7 @@ var dataTable6 = [
         'visited':'2042',
         'oss_entry':'22.1',
         'oss_exit':'5.9',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':50,
     },
     {
         'plaza':'Puebla',
@@ -988,21 +816,7 @@ var dataTable6 = [
         'visited':'1744',
         'oss_entry':'15.4',
         'oss_exit':'5.9',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':40,
     },
     {
         'plaza':'Querétaro',
@@ -1011,21 +825,7 @@ var dataTable6 = [
         'visited':'1963',
         'oss_entry':'17.3',
         'oss_exit':'5.9',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':32,
     },
     {
         'plaza':'Cancún',
@@ -1034,21 +834,7 @@ var dataTable6 = [
         'visited':'1789',
         'oss_entry':'24.7',
         'oss_exit':'5.9',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':78,
     },
     {
         'plaza':'León',
@@ -1057,21 +843,7 @@ var dataTable6 = [
         'visited':'1420',
         'oss_entry':'10.2',
         'oss_exit':'4.8',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':72,
     },
     {
         'plaza':'Toluca',
@@ -1080,21 +852,7 @@ var dataTable6 = [
         'visited':'980',
         'oss_entry':'11.5',
         'oss_exit':'3.2',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':90,
     },
     {
         'plaza':'Mérida',
@@ -1103,21 +861,7 @@ var dataTable6 = [
         'visited':'1340',
         'oss_entry':'12.0',
         'oss_exit':'3.9',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':94,
     },
     {
         'plaza':'Tijuana',
@@ -1126,21 +870,7 @@ var dataTable6 = [
         'visited':'1150',
         'oss_entry':'19.4',
         'oss_exit':'4.1',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':93,
     },
     {
         'plaza':'Veracruz',
@@ -1149,21 +879,7 @@ var dataTable6 = [
         'visited':'870',
         'oss_entry':'13.8',
         'oss_exit':'4.5',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':70,
     },
     {
         'plaza':'Saltillo',
@@ -1172,21 +888,7 @@ var dataTable6 = [
         'visited':'1530',
         'oss_entry':'16.2',
         'oss_exit':'3.8',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':45,
     },
     {
         'plaza':'Chihuahua',
@@ -1195,21 +897,7 @@ var dataTable6 = [
         'visited':'1210',
         'oss_entry':'20.1',
         'oss_exit':'5.0',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':46,
     },
     {
         'plaza':'Morelia',
@@ -1218,124 +906,8 @@ var dataTable6 = [
         'visited':'1320',
         'oss_entry':'9.8',
         'oss_exit':'4.0',
-        'datos':{
-            'labels': ['Valor'],
-            'datasets': [
-                {
-                    'label': '%OOS Entry',
-                    'data': [20, 50, 80, 70,90],
-                    'backgroundColor': 'cyan',
-                },
-                {
-                    'label': '%OOS Exit',
-                    'data': [80, 50, 100,120,190],
-                    'backgroundColor': 'magenta',
-                }
-            ]
-        }
+        'progress':47,
     }
 ];
-
-
-//------CHART 1
-var setOptions1A = {
-    responsive: true,
-    plugins: {
-        legend: {
-            display: true,
-            position: 'top',
-        },
-        datalabels: {
-            color: 'white',
-            font: {
-                size: 19
-            },
-            formatter: function(value) {
-                return value;
-            }
-        },
-    },
-    responsive: true, 
-    maintainAspectRatio: false ,
-    indexAxis: 'y', // barras horizontales
-    scales: {
-        x: { stacked: true },
-        y: { stacked: true }
-    }
-};
-
-var dataChart1A = {
-    labels: ['iTUNES', 'NETFLIX', 'ROBLOX', 'SONY', 'SPOTIFY'],
-    datasets: [
-        {
-            label: '%OOS Entry',
-            data: [120, 200, 150, 300, 250],
-            backgroundColor: 'cyan'
-        },
-        {
-            label: '%OOS Exit',
-            data: [80, 150, 120, 250, 200],
-            backgroundColor: 'magenta'
-        }
-    ]
-};
-
-
-//----Chart Second
-var setOptions2A = {
-    responsive: true,
-    plugins: {
-        legend: {
-            display: true,
-            position: 'top',
-        },
-        datalabels: {
-            color: 'white',
-            font: {
-                size: 19
-            },
-            formatter: function(value) {
-                return value;
-            }
-        },
-    },
-    responsive: true, 
-    maintainAspectRatio: false ,
-    scales: {
-        x: {
-            stacked: true,
-            barPercentage: 0.8,        
-            categoryPercentage: 0.7    
-        },
-        y: {
-            stacked: true,
-            beginAtZero: true
-        }
-    },
-    indexAxis: 'y', // barras horizontales
-    scales: {
-        x: { stacked: true },
-        y: { stacked: true }
-    }
-};
-
-var dataChart2A = {
-    labels: ['Valor'],
-    datasets: [
-        {
-            label: '%OOS Entry',
-            data: [20, 50, 80, 70,90],
-            backgroundColor: 'cyan',
-        },
-        {
-            label: '%OOS Exit',
-            data: [80, 50, 100,120,190],
-            backgroundColor: 'magenta',
-        }
-    ]
-};
-
-
-
 
 
