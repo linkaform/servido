@@ -24,9 +24,7 @@ function loadDemoData(){
   drawTableElement('tableFiveth', dataTable5, columsTable5);
   drawTableElement('tableSixth', dataTable6, columsTable6);
 
-
-  //drawChartElement('chartFirst','bar',dataChart1A,setOptions1A, undefined, true);
-  //drawChartElement('chartSecond','bar',dataChart2A,setOptions2A, undefined, true);
+  drawChartElement('chartFirst','bar',dataChart1A,setOptions1A);
   //----TEST MAP
   setTimeout(() => { hide_loading();}, 2000);
 }
