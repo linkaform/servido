@@ -69,6 +69,15 @@ async function getInformation(dicAditional){
             if(data.tableFourth){
               drawTableElement('tableFourth', data.tableFourth, columsTable4);   
             }
+            if(data.tableFiveth){
+              drawTableElement('tableFiveth', data.tableFiveth, columsTable5);   
+            }
+            if(data.tableSixth){
+              drawTableElement('tableSixth', data.tableSixth, columsTable6);   
+            }
+            if(data.chartFirst){
+               drawChartElement('chartFirst','bar',data.chartFirst,setOptions1A);
+            }
             //-----Style
             const divEmpty = document.querySelectorAll('.div-content-empty');
             const divElements = document.querySelectorAll('.div-content-element');
