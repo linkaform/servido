@@ -4,13 +4,11 @@ let dicReportContext = [
         { type:'table', col: '12', id:'tableFirst', title:'Display Type'},
         { type:'table', col: '12', id:'tableSecond', title:'Out of Stock by Store', optionExpanded:true},
     ]},
-    /*
     { class:'', _children : [
         { type:'chart', col: '12', id:'chartFirst', title:'Out of Stock by Estate'},
         { type:'table', col: '12', id:'tableFiveth', title:'OOS Entry vs OOS Exit by brand'},
         { type:'table', col: '12', id:'tableSixth', title:'OOS Entry vs OOS Exit detail by UPC'},
     ]},
-    */
     { class:'', _children : [
         { type:'table', col: '12', id:'tableThird', title:'Inventory', optionExpanded:true},
         { type:'table', col: '12', id:'tableFourth', title:'Incidents'},
