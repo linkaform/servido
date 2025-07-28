@@ -14,9 +14,9 @@ let dicReportContext = [
         { type:'table', col: '12', id:'tableFirst', title:'Resultados por Pregunta'},
     ]},
     { class:'', _children : [
-        { type:'chart', col: '12', id:'chartFiveth', title:'Progreso por Pregunta'},
-        { type:'chart', col: '12', id:'chartSixth', title:'Progreso por Pregunta'},
-        { type:'chart', col: '12', id:'chartSeventh', title:'Progreso por Pregunta'},
+        { type:'chart', col: '12', id:'chartFiveth', title:'Progreso por Pregunta 1 de 3'},
+        { type:'chart', col: '12', id:'chartSixth', title:'Progreso por Pregunta 2 de 3'},
+        { type:'chart', col: '12', id:'chartSeventh', title:'Progreso por Pregunta 3 de 3'},
     ]},
 ];
 
