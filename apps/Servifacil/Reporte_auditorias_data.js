@@ -13,8 +13,12 @@ let dicReportContext = [
     { class:'', _children : [
         { type:'table', col: '12', id:'tableFirst', title:'Resultados por Pregunta'},
     ]},
+    { class:'', _children : [
+        { type:'chart', col: '12', id:'chartFiveth', title:'Progreso por Pregunta'},
+        { type:'chart', col: '12', id:'chartSixth', title:'Progreso por Pregunta'},
+        { type:'chart', col: '12', id:'chartSeventh', title:'Progreso por Pregunta'},
+    ]},
 ];
-
 
 
 //-----Table
@@ -75,8 +79,6 @@ let dataTable1 = [
         'porcentaje':'100',
     }
 ];
-
-
 
 
 //---Chart First
@@ -260,6 +262,105 @@ var dataChart4A = {
             data: [81, 33, 59, 47],
             fill: false,
             backgroundColor: ['#0099F9', '#8C8C8C'],
+        },
+    ]
+};
+
+
+//---Chart Fiveth
+var setOptions5A = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        datalabels: { 
+            color: 'white', 
+        }
+    },
+    scales: {
+        x: {
+            display: false, 
+        }
+    }
+};
+
+var dataChart5A = {
+    labels: ['Pregunta 1','Pregunta 2','Pregunta 3','Pregunta 4'],
+    datasets: [
+        {
+            label: 'Total',
+            data: [45, 60, 78, 32],
+            fill: false,
+            backgroundColor: [],
+        },
+    ]
+};
+
+//---Chart Sixth
+var setOptions6A = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        datalabels: { 
+            color: 'white', 
+        }
+    },
+    scales: {
+        x: {
+            display: false, 
+        }
+    }
+};
+
+
+var dataChart6A = {
+    labels: ['Pregunta 5','Pregunta 6','Pregunta 7','Pregunta 8'],
+    datasets: [
+        {
+            label: 'Total',
+            data: [45, 60, 78, 32],
+            fill: false,
+            backgroundColor: [],
+        },
+    ]
+};
+
+//---Chart Sixth
+var setOptions7A = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        datalabels: { 
+            color: 'white', 
+        }
+    },
+    scales: {
+        x: {
+            display: false, 
+        }
+    }
+};
+
+
+var dataChart7A = {
+    labels: ['Pregunta 9','Pregunta 10','Pregunta 11','Pregunta 12'],
+    datasets: [
+        {
+            label: 'Total',
+            data: [45, 60, 78, 32],
+            fill: false,
+            backgroundColor: [],
         },
     ]
 };

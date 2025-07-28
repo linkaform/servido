@@ -21,10 +21,15 @@ function loadDemoData(){
     drawChartElement('chartSecond','bar',dataChart2A,setOptions2A, undefined, true);
     drawChartElement('chartThird','bar',dataChart3A,setOptions3A, undefined, true);
     drawChartElement('chartFourth','line',dataChart4A,setOptions4A);
+
+    drawChartElement('chartFiveth','bar',dataChart5A,setOptions5A);
+    drawChartElement('chartSixth','bar',dataChart6A,setOptions6A);
+    drawChartElement('chartSeventh','bar',dataChart7A,setOptions7A);
+
     drawTableElement('tableFirst', dataTable1, columsTable1);
     drawCardElement('cardFirst',20);
     drawCardElement('cardSecond',30);
-  setTimeout(() => { hide_loading();}, 2000);
+    setTimeout(() => { hide_loading();}, 2000);
 }
 
 
@@ -71,6 +76,16 @@ async function getInformation(){
             if(data.response_fourth){
                 drawChartElement('chartFourth','line',data.response_fourth,setOptions4A);
             }
+            if(data.response_sixth){
+                drawChartElement('chartFiveth','bar',data.response_sixth,setOptions5A);
+            }
+            if(data.response_seventh){
+                drawChartElement('chartSixth','bar',data.response_seventh,setOptions6A);
+            }
+            if(data.response_eigth){
+                drawChartElement('chartSeventh','bar',data.response_eigth,setOptions7A);
+            }
+
             if(data.response_fiveth){
                 drawTableElement('tableFirst', data.response_fiveth, columsTable1);
             }
