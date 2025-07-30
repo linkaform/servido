@@ -80,23 +80,35 @@ async function getInformation(dicAditional){
           //----Card Custom
           const selectedChain = document.getElementById('chain')?.value?.toUpperCase();
           // No hay valor seleccionado, mostrar todos si existen
-          if(selectedChain != ''){
+          if (selectedChain != '') {
             if (data.cardStoreA) {
               drawCardImageElement('cardStoreA',
-                data.cardStoreA.visited && selectedChain == 'OXXO'? `Stores Visited: ${data.cardStoreA.visited}` : 'Stores Visited: N/A',
-                data.cardStoreA.pending && selectedChain == 'OXXO'? `Pending delivery: ${data.cardStoreA.pending}` : 'Pending delivery: N/A'
+                (data.cardStoreA.visited !== undefined && selectedChain == 'OXXO') 
+                  ? `Stores Visited: ${data.cardStoreA.visited}` 
+                  : 'Stores Visited: N/A',
+                (data.cardStoreA.pending !== undefined && selectedChain == 'OXXO') 
+                  ? `Pending delivery: ${data.cardStoreA.pending}` 
+                  : 'Pending delivery: N/A'
               );
             }
             if (data.cardStoreB) {
               drawCardImageElement('cardStoreB',
-                data.cardStoreB.visited && selectedChain == 'FRAGUA'? `Stores Visited: ${data.cardStoreB.visited}` : 'Stores Visited: N/A',
-                data.cardStoreB.pending && selectedChain == 'FRAGUA'? `Pending delivery: ${data.cardStoreB.pending}` : 'Pending delivery: N/A'
+                (data.cardStoreB.visited !== undefined && selectedChain == 'FRAGUA') 
+                  ? `Stores Visited: ${data.cardStoreB.visited}` 
+                  : 'Stores Visited: N/A',
+                (data.cardStoreB.pending !== undefined && selectedChain == 'FRAGUA') 
+                  ? `Pending delivery: ${data.cardStoreB.pending}` 
+                  : 'Pending delivery: N/A'
               );
             }
             if (data.cardStoreC) {
               drawCardImageElement('cardStoreC',
-                data.cardStoreC.visited && selectedChain == 'NETO'? `Stores Visited: ${data.cardStoreC.visited}` : 'Stores Visited: N/A',
-                data.cardStoreC.pending && selectedChain == 'NETO'? `Pending delivery: ${data.cardStoreC.pending}` : 'Pending delivery: N/A'
+                (data.cardStoreC.visited !== undefined && selectedChain == 'NETO') 
+                  ? `Stores Visited: ${data.cardStoreC.visited}` 
+                  : 'Stores Visited: N/A',
+                (data.cardStoreC.pending !== undefined && selectedChain == 'NETO') 
+                  ? `Pending delivery: ${data.cardStoreC.pending}` 
+                  : 'Pending delivery: N/A'
               );
             }
           }else{
