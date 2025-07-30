@@ -102,20 +102,20 @@ async function getInformation(dicAditional){
           }else{
             if (data.cardStoreA) {
               drawCardImageElement('cardStoreA',
-                data.cardStoreA.visited ? `Stores Visited: ${data.cardStoreA.visited}` : 'Stores Visited: N/A',
-                data.cardStoreA.pending ? `Pending delivery: ${data.cardStoreA.pending}` : 'Pending delivery: N/A'
+                data.cardStoreA.visited ? `Stores Visited: ${data.cardStoreA.visited}` : 'Stores Visited: 0',
+                data.cardStoreA.pending ? `Pending delivery: ${data.cardStoreA.pending}` : 'Pending delivery: 0'
               );
             }
             if (data.cardStoreB) {
               drawCardImageElement('cardStoreB',
-                data.cardStoreB.visited ? `Stores Visited: ${data.cardStoreB.visited}` : 'Stores Visited: N/A',
-                data.cardStoreB.pending ? `Pending delivery: ${data.cardStoreB.pending}` : 'Pending delivery: N/A'
+                data.cardStoreB.visited ? `Stores Visited: ${data.cardStoreB.visited}` : 'Stores Visited: 0',
+                data.cardStoreB.pending ? `Pending delivery: ${data.cardStoreB.pending}` : 'Pending delivery: 0'
               );
             }
             if (data.cardStoreC) {
               drawCardImageElement('cardStoreC',
-                data.cardStoreC.visited ? `Stores Visited: ${data.cardStoreC.visited}` : 'Stores Visited: N/A',
-                data.cardStoreC.pending ? `Pending delivery: ${data.cardStoreC.pending}` : 'Pending delivery: N/A'
+                data.cardStoreC.visited ? `Stores Visited: ${data.cardStoreC.visited}` : 'Stores Visited: 0',
+                data.cardStoreC.pending ? `Pending delivery: ${data.cardStoreC.pending}` : 'Pending delivery: 0'
               );
             }
           }
