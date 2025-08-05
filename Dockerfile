@@ -56,10 +56,10 @@ RUN apt-get update && \
 
 RUN cd /tmp/
 ### install uwsgi 2.18 ###
-RUN wget http://ftp.us.debian.org/debian/pool/main/libm/libmatheval/libmatheval1_1.1.11+dfsg-3_amd64.deb
-RUN wget http://ftp.us.debian.org/debian/pool/main/u/uwsgi/uwsgi-core_2.0.18-1_amd64.deb
-RUN wget http://ftp.us.debian.org/debian/pool/main/u/uwsgi/uwsgi_2.0.18-1_amd64.deb
-RUN wget http://ftp.us.debian.org/debian/pool/main/u/uwsgi/uwsgi-plugin-python_2.0.18-1_amd64.deb
+RUN wget "https://f001.backblazeb2.com/file/lkf-media/xxx_obsolete_deb/libmatheval1_1.1.11%2Bdfsg-3_amd64.deb"
+RUN wget https://f001.backblazeb2.com/file/lkf-media/xxx_obsolete_deb/uwsgi-core_2.0.18-1_amd64.deb
+RUN wget https://f001.backblazeb2.com/file/lkf-media/xxx_obsolete_deb/uwsgi_2.0.18-1_amd64.deb
+RUN wget https://f001.backblazeb2.com/file/lkf-media/xxx_obsolete_deb/uwsgi-plugin-python_2.0.18-1_amd64.deb
 RUN dpkg -i libmatheval1_1.1.11+dfsg-3_amd64.deb \
      uwsgi-core_2.0.18-1_amd64.deb \
      uwsgi_2.0.18-1_amd64.deb \

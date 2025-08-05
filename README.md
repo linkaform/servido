@@ -7,26 +7,9 @@
 Docker y docker compose
 
 
-### Docker-compose install
+### docker compose install
 
 
-1. To download and install the Compose CLI plugin, run:
-```
-DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
-mkdir -p $DOCKER_CONFIG/cli-plugins
-curl -SL https://github.com/docker/compose/releases/download/v2.20.3/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
-```
-
-
-2. Apply executable permissions to the binary:
-```
- chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
-```
-
-3.  Test the installation.
-```
- sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
-```
 
 Open Source project formed by a collection of templates that helps you building Microsites or your own Business Intelligence
 
@@ -46,14 +29,14 @@ Once the project is running you can access:
 
 ```
 cd docker
-docker-compose up
+docker compose up
 ```
 
 ### Running the project on background
 
 ```
 cd docker
-docker-compose up -d
+docker compose up -d
 ```
 
 
@@ -61,8 +44,8 @@ docker-compose up -d
 
 ```
 cd docker
-docker-compose -f docker-prod.yml build --no-cache servido
-docker-compose -f docker-prod.yml  build servido
+docker compose -f docker-prod.yml build --no-cache servido
+docker compose -f docker-prod.yml  build servido
 ```
 
 ### Uploading Image
@@ -83,7 +66,7 @@ docker run  -i -t linkaform/servido:develop bash
 
 ```
 cd docker
-docker-compose -f docker-prod.yml build servido
+docker compose -f docker-prod.yml build servido
 ```
 
 ```
