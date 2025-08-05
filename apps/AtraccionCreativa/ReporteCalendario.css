@@ -1,0 +1,540 @@
+/* === CALENDARIO === */
+#firstElement {
+    min-height: 600px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Toolbar del calendario */
+.fc-toolbar {
+    background: #f8f9fa;
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.fc-toolbar-title {
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    color: #495057 !important;
+}
+
+/* Botones del calendario */
+.fc-button {
+    background: white !important;
+    border: 1px solid #dee2e6 !important;
+    color: #495057 !important;
+    border-radius: 6px !important;
+    padding: 8px 16px !important;
+    margin: 0 4px !important;
+}
+
+.fc-button:hover {
+    background: #007bff !important;
+    border-color: #007bff !important;
+    color: white !important;
+}
+
+.fc-button-active {
+    background: #007bff !important;
+    border-color: #007bff !important;
+    color: white !important;
+}
+
+/* Días de la semana */
+.fc-col-header-cell {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    padding: 12px 8px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Celdas de días */
+.fc-daygrid-day {
+    min-height: 100px;
+    border: 1px solid #dee2e6;
+}
+
+.fc-day-today {
+    background: #e3f2fd !important;
+}
+
+.fc-daygrid-day-number {
+    color: #495057;
+    font-weight: 500;
+    padding: 8px;
+}
+
+/* Eventos */
+.fc-event {
+    border: none !important;
+    border-radius: 4px !important;
+    margin: 2px !important;
+    padding: 4px 6px !important;
+    font-size: 12px !important;
+    cursor: pointer !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+.fc-event:hover {
+    opacity: 0.8 !important;
+}
+
+/* === MODAL SWEETALERT === */
+.swal2-popup {
+    border-radius: 8px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.swal2-title {
+    color: #495057 !important;
+    font-size: 1.3rem !important;
+    font-weight: 600 !important;
+}
+
+.swal2-html-container {
+    font-size: 0.95rem !important;
+}
+
+.swal2-confirm {
+    background: #007bff !important;
+    border-radius: 6px !important;
+    padding: 8px 24px !important;
+    font-weight: 500 !important;
+}
+
+/* === CARD DEL CALENDARIO === */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.card-header {
+    border-radius: 8px 8px 0 0 !important;
+    border: none;
+}
+
+.card-body {
+    padding: 0;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .fc-toolbar {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .fc-toolbar-title {
+        font-size: 1.2rem !important;
+    }
+
+    .fc-daygrid-day {
+        min-height: 80px;
+    }
+
+    #firstElement {
+        min-height: 500px;
+    }
+}
+
+/* AGREGAR al final del archivo */
+
+/* === STATS CARDS === */
+.stats-container {
+    margin-bottom: 2rem;
+}
+
+.stats-title {
+    color: #495057;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #dee2e6;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card-body {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 1.2rem;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-title {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin: 0 0 0.25rem 0;
+    font-weight: 500;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #495057;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.stat-percentage {
+    font-size: 0.75rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.stat-progress {
+    height: 4px;
+    background: #f8f9fa;
+    overflow: hidden;
+}
+
+.stat-progress-bar {
+    height: 100%;
+    transition: width 0.6s ease;
+}
+
+/* Card total especial */
+.stat-card-total {
+    background: linear-gradient(135deg, #495057, #343a40);
+    color: white;
+    border-left: 4px solid #ffc107 !important;
+}
+
+.stat-card-total .stat-title,
+.stat-card-total .stat-percentage {
+    color: #f8f9fa;
+}
+
+.stat-card-total .stat-number {
+    color: white;
+}
+
+.total-icon {
+    background: rgba(255, 193, 7, 0.2) !important;
+    color: #ffc107 !important;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .stat-card {
+        height: 100px;
+    }
+
+    .stat-card-body {
+        padding: 0.75rem;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        margin-right: 0.75rem;
+    }
+
+    .stat-number {
+        font-size: 1.2rem;
+    }
+
+    .stat-title {
+        font-size: 0.8rem;
+    }
+}
+
+/* === DONUT CHART (opcional) === */
+.donut-container {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.donut-chart-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.donut-legend {
+    flex: 1;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    margin-right: 0.5rem;
+}
+
+.legend-text {
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+/* AGREGAR al final del archivo */
+
+/* === LIST CARD (simplificada) === */
+.list-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #dee2e6;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    height: 100%;
+    /* Para que todas tengan la misma altura */
+}
+
+.list-card-header {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.list-card-title {
+    margin: 0;
+    color: #495057;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.title-icon {
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.total-badge {
+    background: #007bff;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.list-card-body {
+    padding: 1rem;
+    max-height: 300px;
+    /* Altura máxima fija */
+    overflow-y: auto;
+}
+
+.list-item {
+    margin-bottom: 0.75rem;
+}
+
+.list-item:last-child {
+    margin-bottom: 0;
+}
+
+.list-item-content {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.list-item-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+.list-item-text {
+    flex: 1;
+}
+
+.item-type {
+    color: #495057;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.item-quantity {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-left: 1rem;
+}
+
+/* === TABLE CARD (simplificada) === */
+.table-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #dee2e6;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    height: 100%;
+    /* Para que todas tengan la misma altura */
+}
+
+.table-card-header {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table-card-title {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.total-summary {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.table-card-body {
+    padding: 0;
+    max-height: 300px;
+    /* Altura máxima fija */
+    overflow-y: auto;
+}
+
+.custom-table {
+    width: 100%;
+}
+
+.table-header {
+    background: #f8f9fa;
+    display: flex;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table-row {
+    display: flex;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid #f8f9fa;
+    transition: background-color 0.2s ease;
+}
+
+.table-row:hover {
+    background: #f8f9fa;
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.col-type {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.col-qty {
+    flex: 1;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.type-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1200px) {
+
+    .list-card-body,
+    .table-card-body {
+        max-height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .list-card-header,
+    .table-card-header {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+        padding: 0.75rem 1rem;
+    }
+
+    .list-item-content {
+        padding: 0.4rem 0;
+    }
+
+    .item-quantity {
+        margin-left: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .table-header,
+    .table-row {
+        padding: 0.5rem 1rem;
+    }
+
+    .list-card-body,
+    .table-card-body {
+        max-height: 200px;
+        padding: 0.75rem;
+    }
+}
