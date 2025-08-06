@@ -234,7 +234,7 @@ function initializeCalendar() {
     calendar = new FullCalendar.Calendar(calendarEl, {
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         selectable: true,
-        editable: false, // Solo lectura
+        editable: false,
         aspectRatio: 1.8,
         scrollTime: '06:00',
         headerToolbar: {
@@ -248,6 +248,10 @@ function initializeCalendar() {
             week: 'Semana',
             day: 'Día'
         },
+
+        // AGREGAR: Configuración específica para colores
+        eventDisplay: 'block', // Asegurar que se muestren como bloques
+
         eventContent: function (arg) {
             var event = arg.event;
             var startTime = getHours(event.startStr);
@@ -259,15 +263,35 @@ function initializeCalendar() {
 
             var html = '<b>' + startTime + '-' + endTime + ' ' + event.extendedProps.tecnico + '</b><br>' + event.title;
 
-            var containerStyle = 'max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;';
+            // MODIFICAR: Asegurar que el color se aplique
+            var containerStyle = `
+                max-width: 250px; 
+                white-space: nowrap; 
+                overflow: hidden; 
+                text-overflow: ellipsis;
+                background-color: ${event.backgroundColor || event.color} !important;
+                border-color: ${event.borderColor || event.color} !important;
+                color: white !important;
+                padding: 2px 4px;
+                border-radius: 3px;
+            `;
+
             html = '<div style="' + containerStyle + '">' + html + '</div>';
 
             return { html: html };
         },
+
+        // AGREGAR: Callback para asegurar colores en diferentes vistas
+        eventDidMount: function (info) {
+            // Aplicar colores manualmente si no se muestran
+            info.el.style.backgroundColor = info.event.color || info.event.backgroundColor;
+            info.el.style.borderColor = info.event.color || info.event.borderColor;
+        },
+
         eventClick: function (info) {
             showEventDetails(info.event);
         },
-        initialView: 'dayGridMonth', // Vista mensual por defecto
+        initialView: 'dayGridMonth',
         events: defaultEvents
     });
 
