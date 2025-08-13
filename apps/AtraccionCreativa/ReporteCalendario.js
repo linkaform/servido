@@ -112,7 +112,7 @@ function createReportElements(dicReportContext) {
 
     dicReportContext.forEach((section, sectionIndex) => {
         const rowDiv = document.createElement('div');
-        rowDiv.classList.add('row', 'div-content-element', 'ml-1', 'mr-1');
+        rowDiv.classList.add('row', 'ml-1', 'mr-1');
 
         // Agregar clase específica de la sección
         if (section.class) {
@@ -283,7 +283,7 @@ function showStats() {
 
 //-----LOAD DATA ACTIVE
 function loadData() {
-    // Primera fila de cards
+    // ============= PRIMERA FILA: 3 CARDS =============
     createListCard('statsOrdersContainer', dataTable1, 'Órdenes de Servicio', {
         titleIcon: '📊',
         colorPalette: ['#007bff', '#28a745', '#dc3545', '#ffc107', '#17a2b8', '#6f42c1', '#fd7e14', '#20c997']
@@ -299,12 +299,17 @@ function loadData() {
         colorPalette: ['#007bff', '#17a2b8', '#ffc107', '#fd7e14', '#28a745', '#dc3545']
     });
 
+    // ============= SEGUNDA FILA: 3 GRÁFICAS =============
+    drawChartElement('chartFirst', 'bar', dataChart1, setOptions1, true, true);
+    drawChartElement('chartSecond', 'doughnut', dataChart2, setOptions2, false, true);
+    drawChartElement('chartThird', 'doughnut', dataChart3, setOptions3, true, true);
+
+    // ============= TERCERA FILA: 3 CARDS MÁS =============
     createTableCard('statsTypeContainer', dataTable4, 'UDS por tipo de Mantto', {
         titleIcon: '🔧',
         colorPalette: ['#6f42c1', '#e83e8c', '#fd7e14', '#20c997']
     });
 
-    // Segunda fila de cards - NUEVAS
     createListCard('statsEstadosContainer', dataTable5, 'UDS por Estado', {
         titleIcon: '🗺️',
         colorPalette: ['#e74c3c', '#3498db', '#f39c12', '#2ecc71', '#9b59b6', '#1abc9c', '#e67e22']
@@ -315,25 +320,27 @@ function loadData() {
         colorPalette: ['#8e44ad', '#2980b9', '#27ae60', '#f39c12']
     });
 
+    // ============= CUARTA FILA: 2 GRÁFICAS + 1 TABLA =============
+    drawChartElement('chartFourth', 'bar', dataChart1, setOptions1, true, true);
+    drawTableElement('tableFirst', dataTable1, columsTable1);
+    drawChartElement('chartFifth', 'bar', dataChart1, setOptions1, true, true);
+
+    // ============= QUINTA FILA: 1 CARD + ESPACIOS VACÍOS =============
     createListCard('statsCanalContainer', dataTable7, 'UDS por Canal', {
         titleIcon: '📱',
         colorPalette: ['#c0392b', '#8e44ad', '#2980b9', '#16a085']
     });
 
-    //----Assing Events
-    const buttonExecution = document.getElementById("buttonExecution");
-    buttonExecution.addEventListener("click", () => {
-        getInformation();
-    });
+    // ============= SEXTA FILA: 1 GRÁFICA + ESPACIOS VACÍOS =============
+    drawChartElement('chartSixth', 'bar', dataChart6, setOptions6, true, true);
 
-    // Mostrar calendario
+    // Mostrar todo
     setTimeout(() => {
         showStats();
         showCalendar();
         initializeCalendar();
     }, 500);
 
-    //-----Loading
     setTimeout(() => { hide_loading(); }, 2000);
 }
 
@@ -538,21 +545,21 @@ async function getInformation() {
         });
         hideLoadingComponent();
     } else if (scriptId != null && statusSession == 'Active' && !demo) {
-        const dicAdional = {
-            option: 'get_report',
-        }
-        const responseRequest = await sendRequestReport(scriptId, dicAdional);
-        const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
+        // const dicAdional = {
+        //     option: 'get_report',
+        // }
+        // const responseRequest = await sendRequestReport(scriptId, dicAdional);
+        // const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
 
-        if (data.almacen_guadalajara) {
-            drawTableElement('tableThird', data?.almacen_guadalajara, columsTable3, undefined, configTableCustom3);
-        }
+        // if (data.almacen_guadalajara) {
+        //     drawTableElement('tableThird', data?.almacen_guadalajara, columsTable3, undefined, configTableCustom3);
+        // }
 
-        // Si hay datos del calendario, cargarlos
-        if (data.calendar_events) {
-            loadCalendarEvents(data.calendar_events);
-            showCalendar();
-        }
+        // // Si hay datos del calendario, cargarlos
+        // if (data.calendar_events) {
+        //     loadCalendarEvents(data.calendar_events);
+        //     showCalendar();
+        // }
 
         hideLoadingComponent();
         showElements();
