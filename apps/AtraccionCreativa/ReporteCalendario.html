@@ -55,20 +55,9 @@
 
                     <!-- Filter Row -->
                     <div class="row mb-4" id="content-div-filter">
-                        <!-- <div class="col-xl-2 col-lg-6 col-md-12 ">
-                            <label class="form-label">Familia</label>
-                            <select class="form-select filters-servido" id="product_families" multiple="multiple">
-                                <option value="">Selecciona una opción</option>
-                            </select>
-                        </div> -->
-
-                        <!-- <div class="col-xl-2 col-lg-6 col-md-12 ">
-                            <label class="form-label">Linea(Opcional)</label>
-                            <select class="form-select filters-servido" id="product_line">
-                                <option value="">Selecciona una opción</option>
-                            </select>
-                        </div> -->
+                        <!-- Filtros aquí si es necesario -->
                     </div>
+
                     <!-- Content Empty -->
                     <div class="row div-content-empty mt-5" id="content-div-empty">
                         <div class="container mt-5">
@@ -79,6 +68,7 @@
                                 visualizar resultados</p>
                         </div>
                     </div>
+
                     <!-- Content NoSession -->
                     <div class="row div-content-no-session mt-5" id="content-div-noseession">
                         <div class="container mt-5">
@@ -110,7 +100,7 @@
                         </svg>
                     </div>
 
-                    <!-- CAMBIAR el contenedor del calendario -->
+                    <!-- Calendario de Órdenes de Servicio -->
                     <div class="row mt-4" id="content-div-calendar" style="display: none;">
                         <div class="col-12 mb-5">
                             <div class="card shadow">
@@ -124,44 +114,17 @@
                         </div>
                     </div>
 
-                    <!-- CAMBIAR la sección de stats para 3 por fila -->
-
-                    <!-- Stats Section -->
-                    <div class="row mb-4" id="content-div-stats" style="display: none;">
-                        <!-- Primera fila -->
-                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                            <div id="statsOrdersContainer"></div>
-                        </div>
-                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                            <div id="statsIgualaContainer"></div>
-                        </div>
-                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                            <div id="statsStatusContainer"></div>
-                        </div>
-
-                        <!-- Segunda fila -->
-                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                            <div id="statsTypeContainer"></div>
-                        </div>
-                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                            <div id="statsEstadosContainer"></div>
-                        </div>
-                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                            <div id="statsMueblesContainer"></div>
-                        </div>
-
-                        <!-- Tercera fila -->
-                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                            <div id="statsCanalContainer"></div>
-                        </div>
-                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                            <!-- Card de resumen o extra -->
-                            <div id="statsExtraContainer"></div>
-                        </div>
-                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                            <!-- Espacio para futuras cards -->
-                            <div id="statsExtra2Container"></div>
-                        </div>
+                    <!-- NUEVO: Contenedor dinámico para Stats -->
+                    <div id="content-div-stats" class="dynamic-stats-container" style="display: none;">
+                        <!-- 
+                        Los elementos se crearán dinámicamente con createReportElements():
+                        - FILA 1: 3 Cards
+                        - FILA 2: 3 Gráficas  
+                        - FILA 3: 3 Cards
+                        - FILA 4: 2 Gráficas + 1 Tabla
+                        - FILA 5: 1 Card + espacios vacíos
+                        - FILA 6: 1 Gráfica + espacios vacíos
+                        -->
                     </div>
 
                 </div>

@@ -538,3 +538,51 @@
         padding: 0.75rem;
     }
 }
+
+/* AGREGAR/MODIFICAR estas reglas al final del archivo */
+
+/* === IGUALAR ALTURAS DE CARDS === */
+/* Aplicar flexbox a TODAS las filas que contengan cards */
+.row:has(.list-card),
+.row:has(.table-card),
+.cards-row {
+    display: flex !important;
+    align-items: stretch !important;
+    /* Hace que todas las columnas tengan la misma altura */
+}
+
+/* Hacer que las columnas se comporten como flexbox */
+.row:has(.list-card)>[class*="col-"],
+.row:has(.table-card)>[class*="col-"],
+.cards-row>[class*="col-"] {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Las cards ocupan todo el espacio vertical disponible */
+.list-card,
+.table-card {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 350px;
+    /* Altura mínima garantizada */
+}
+
+/* El body de las cards crece para llenar el espacio disponible */
+.list-card-body,
+.table-card-body {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    max-height: 300px;
+    /* Altura máxima para evitar crecimiento infinito */
+}
+
+/* Para navegadores que no soportan :has() (IE, Safari viejo) */
+.row .col-xl-4:has(.list-card),
+.row .col-xl-4:has(.table-card),
+.row .col-md-6:has(.list-card),
+.row .col-md-6:has(.table-card) {
+    display: flex !important;
+    flex-direction: column !important;
+}
