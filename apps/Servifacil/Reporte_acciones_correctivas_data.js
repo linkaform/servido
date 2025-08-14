@@ -11,11 +11,64 @@ let dicReportContext = [
 let columsTable1 = [
     { title: "Folio", field: 'folio', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 200},
     { title: "Estación de Servicio", field: 'estacion', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 200},
-    { title: "Acción Correctiva", field: 'accion', headerTooltip: true,  hozAlign: "left", width: 250},
-    { title: "Días para cumplimiento", field: 'cumplimiento', headerTooltip: true,  hozAlign: "left", width: 130},
+    { title: "Acción Correctiva", field: 'accion', headerTooltip: true,  hozAlign: "left", width: 450},
+    { title: "Días para cumplimiento", field: 'cumplimiento', headerTooltip: true,  hozAlign: "right", width: 130},
     { title: "Fecha Inicio", field: 'fecha_inicio', headerTooltip: true,  hozAlign: "left", width: 200},
     { title: "Fecha Limite", field: 'fecha_limite', headerTooltip: true,  hozAlign: "left", width: 200},
-    { title: "Días para Vencimiento", field: 'dia_vencimiento', headerTooltip: true,  hozAlign: "left", width: 150},
+    { 
+        title: "Días para Vencimiento", 
+        field: 'dia_vencimiento', 
+        headerTooltip: true,  
+        hozAlign: "center", 
+        width: 150,
+        formatter: function(cell, formatterParams, onRendered) {
+            const value = cell.getValue();
+            
+            if (value === null || value === undefined) {
+                return '<span style="color: #999; font-style: italic;">Sin fecha</span>';
+            }
+            
+            let backgroundColor = '';
+            let textColor = 'white';
+            let icon = '';
+            let text = value;
+            
+            if (value < 0) {
+                backgroundColor = '#dc3545';
+                icon = '🔴';
+                text = `${Math.abs(value)} días retrasado`;
+            } else if (value === 0) {
+                backgroundColor = '#ffc107';
+                textColor = 'black';
+                icon = '⚠️';
+                text = 'Último día';
+            } else if (value <= 3) {
+                backgroundColor = '#fd7e14';
+                icon = '🟡';
+                text = `${value} días restantes`;
+            } else {
+                backgroundColor = '#28a745';
+                icon = '🟢';
+                text = `${value} días restantes`;
+            }
+            
+            return `
+                <div style="
+                    background-color: ${backgroundColor}; 
+                    color: ${textColor}; 
+                    font-weight: bold; 
+                    padding: 6px 10px; 
+                    border-radius: 6px; 
+                    text-align: center;
+                    font-size: 12px;
+                    line-height: 1.2;
+                ">
+                    <div>${icon}</div>
+                    <div>${text}</div>
+                </div>
+            `;
+        }
+    },
     { title: "Estatus", field: 'ultima_accion', headerTooltip: true,  hozAlign: "left", width: 100},
 ];
 
