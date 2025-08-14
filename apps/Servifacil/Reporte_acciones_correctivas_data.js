@@ -1,30 +1,28 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'chart', col: '12', id:'chartFirst', title:'Acciones Correctivos por Estación'},
-            { type:'chart', col: '6', id:'chartSecond', title:'Acciones Correctivos por Status'},
-            { type:'chart', col: '6', id:'chartThird', title:'ODT por Status'},
-            { type:'table', col: '12', id:'tableFirst', title:'Datos de Ordenes'},
+            { type:'chart', col: '12', id:'chartFirst', title:'Acciones Correctivas por Estación'},
+            { type:'chart', col: '6', id:'chartSecond', title:'Acciones Correctivas por Estatus'},
+            { type:'chart', col: '6', id:'chartThird', title:'Porcentaje de cumplimiento'},
+            { type:'table', col: '12', id:'tableFirst', title:'Cumplimiento de acciones correctivas'},
     ]},
 ];
 
 let columsTable1 = [
     { title: "Folio", field: 'folio', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 200},
     { title: "Estación de Servicio", field: 'estacion', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 200},
-    { title: "Sucursal", field: 'sucursal', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 250},
     { title: "Acción Correctiva", field: 'accion', headerTooltip: true,  hozAlign: "left", width: 250},
     { title: "Días para cumplimiento", field: 'cumplimiento', headerTooltip: true,  hozAlign: "left", width: 130},
     { title: "Fecha Inicio", field: 'fecha_inicio', headerTooltip: true,  hozAlign: "left", width: 200},
     { title: "Fecha Limite", field: 'fecha_limite', headerTooltip: true,  hozAlign: "left", width: 200},
     { title: "Días para Vencimiento", field: 'dia_vencimiento', headerTooltip: true,  hozAlign: "left", width: 150},
-    { title: "Ultima Acción", field: 'ultima_accion', headerTooltip: true,  hozAlign: "left", width: 100},
+    { title: "Estatus", field: 'ultima_accion', headerTooltip: true,  hozAlign: "left", width: 100},
 ];
 
 let dataTable1 = [
   {
     folio: "AC-1001",
     estacion: "ES Toluca 01",
-    sucursal: "Sucursal Norte",
     accion: "Revisión tanque",
     cumplimiento: 5,
     fecha_inicio: "2025-06-20",
@@ -35,7 +33,6 @@ let dataTable1 = [
   {
     folio: "AC-1002",
     estacion: "ES Lerma 02",
-    sucursal: "Sucursal Sur",
     accion: "Cambio válvula",
     cumplimiento: 10,
     fecha_inicio: "2025-06-15",
@@ -46,7 +43,6 @@ let dataTable1 = [
   {
     folio: "AC-1003",
     estacion: "ES Metepec 03",
-    sucursal: "Sucursal Oriente",
     accion: "Revisión extintor",
     cumplimiento: 3,
     fecha_inicio: "2025-06-22",
@@ -57,7 +53,6 @@ let dataTable1 = [
   {
     folio: "AC-1004",
     estacion: "ES Zinacantepec 04",
-    sucursal: "Sucursal Poniente",
     accion: "Cambio de señalética",
     cumplimiento: 7,
     fecha_inicio: "2025-06-18",
@@ -68,7 +63,6 @@ let dataTable1 = [
   {
     folio: "AC-1005",
     estacion: "ES Temoaya 05",
-    sucursal: "Sucursal Centro",
     accion: "Ajuste presión",
     cumplimiento: 2,
     fecha_inicio: "2025-06-23",
@@ -79,7 +73,6 @@ let dataTable1 = [
   {
     folio: "AC-1006",
     estacion: "ES Almoloya 06",
-    sucursal: "Sucursal Altos",
     accion: "Inspección rutina",
     cumplimiento: 4,
     fecha_inicio: "2025-06-21",
@@ -90,7 +83,6 @@ let dataTable1 = [
   {
     folio: "AC-1007",
     estacion: "ES Xonacatlán 07",
-    sucursal: "Sucursal Express",
     accion: "Reemplazo lámpara",
     cumplimiento: 8,
     fecha_inicio: "2025-06-17",
@@ -101,7 +93,6 @@ let dataTable1 = [
   {
     folio: "AC-1008",
     estacion: "ES Otzolotepec 08",
-    sucursal: "Sucursal Urbana",
     accion: "Actualización bitácora",
     cumplimiento: 6,
     fecha_inicio: "2025-06-19",
@@ -112,7 +103,6 @@ let dataTable1 = [
   {
     folio: "AC-1009",
     estacion: "ES Capultitlán 09",
-    sucursal: "Sucursal Valles",
     accion: "Revisión eléctrica",
     cumplimiento: 9,
     fecha_inicio: "2025-06-16",
@@ -123,7 +113,6 @@ let dataTable1 = [
   {
     folio: "AC-1010",
     estacion: "ES Cacalomacán 10",
-    sucursal: "Sucursal Central",
     accion: "Instalación sensor",
     cumplimiento: 1,
     fecha_inicio: "2025-06-24",
@@ -324,7 +313,7 @@ var setOptions3A = {
 };
 
 var dataChart3A = {
-    labels: ['Tareas Realizadas ','Tareas Pendientes'],
+    labels: ['Tareas Validadas ','Tareas Pendientes'],
     datasets: [
         {
             label: 'Porcentaje',

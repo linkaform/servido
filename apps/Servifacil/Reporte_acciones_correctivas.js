@@ -55,14 +55,17 @@ async function getInformation(dicAditional){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
         if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
             const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-            if(data.tableFirst){
-              drawTableElement('tableFirst', data.tableFirst, columsTable1);   
+            if (data.response_first) {
+              drawChartElement('chartFirst', 'bar', data.response_first, setOptions1A);
             }
-            if(data.chartFirst){
-              drawChartElement('chartFirst','pie',data.chartFirst,setOptions1A, undefined, true);     
+            if (data.response_second) {
+              drawChartElement('chartSecond', 'bar', data.response_second, setOptions2A);
             }
-            if(data.mapFirst){
-              drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1, configToltipMap)   
+            if (data.response_third) {
+              drawChartElement('chartThird','doughnut',data.response_third,setOptions3A);
+            }
+            if (data.response_fourth) {
+              drawTableElement('tableFirst', data.response_fourth, columsTable1);
             }
             //-----Style
             const divEmpty = document.querySelectorAll('.div-content-empty');
@@ -96,7 +99,7 @@ function get_catalog(){
     .then((res) => {
         const data = res.response && res.response.data ? res.response.data : [];
         if(data.length > 0){
-          setCatalogSimple(data, 'chain', true);
+          setCatalogSimple(data, 'servicio', true);
         }
     })
 }
