@@ -19,7 +19,7 @@ function loadDemoData(){
   //---Definitions ELements
   drawChartElement('chartFirst','bar',dataChart1A,setOptions1A);
   drawChartElement('chartSecond','bar',dataChart2A,setOptions2A);
-  drawChartElement('chartThird','doughnut',dataChart3A,setOptions3A);
+  drawChartElement('chartThird','doughnut',dataChart3A,setOptions3A, true, true);
   drawTableElement('tableFirst', dataTable1, columsTable1);
   setTimeout(() => { hide_loading();}, 2000);
 }
@@ -62,7 +62,7 @@ async function getInformation(dicAditional){
               drawChartElement('chartSecond', 'bar', data.response_second, setOptions2A);
             }
             if (data.response_third) {
-              drawChartElement('chartThird','doughnut',data.response_third,setOptions3A);
+              drawChartElement('chartThird','doughnut',data.response_third,setOptions3A, true, true);
             }
             if (data.response_fourth) {
               drawTableElement('tableFirst', data.response_fourth, columsTable1);

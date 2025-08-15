@@ -9,7 +9,29 @@ let dicReportContext = [
 ];
 
 let columsTable1 = [
-    { title: "Folio", field: 'folio', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 200},
+    { 
+        title: "Folio", 
+        field: 'folio', 
+        headerTooltip: true, 
+        headerFilter:"input", 
+        hozAlign: "left", 
+        width: 200,
+        formatter: function(cell, formatterParams, onRendered) {
+            const folio = cell.getValue();
+            const rowData = cell.getRow().getData();
+            const recordId = rowData._id;
+            
+            if (recordId) {
+                return `<a href="https://app.linkaform.com/#/records/detail/${recordId}" 
+                           target="_blank" 
+                           style="color: #007bff; text-decoration: underline; cursor: pointer;">
+                           ${folio}
+                        </a>`;
+            } else {
+                return folio;
+            }
+        }
+    },
     { title: "Estación de Servicio", field: 'estacion', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 200},
     { title: "Acción Correctiva", field: 'accion', headerTooltip: true,  hozAlign: "left", width: 450},
     { title: "Días para cumplimiento", field: 'cumplimiento', headerTooltip: true,  hozAlign: "right", width: 130},
@@ -203,7 +225,10 @@ var setOptions1A = {
             bodyFont: { size: 17 }, 
             callbacks: {
                 label: function (tooltipItem) {
-                    return `${tooltipItem.raw}`; 
+                    const datasetLabel = tooltipItem.dataset.label || '';
+                    const value = tooltipItem.raw;
+                    
+                    return `${datasetLabel}: ${value}`;
                 }
             }
         }
@@ -349,20 +374,29 @@ var setOptions3A = {
             font: {
                 size: 19
             },
+            formatter: function(value, context) {
+                if (value === null || value === undefined || value === 0) {
+                    return '';
+                }
+                return value + '%';
+            }
         },
         tooltip: {
             titleFont: { size: 20 }, 
             bodyFont: { size: 17 }, 
             callbacks: {
                 label: function (tooltipItem) {
-                    return `${tooltipItem.raw}`; 
+                    const value = tooltipItem.raw;
+                    if (value === null || value === undefined || value === 0) {
+                        return null;
+                    }
+                    return `${tooltipItem.dataset.label}: ${value}%`;
                 }
             }
         }
     },
-   
     responsive: true, 
-    maintainAspectRatio: false ,
+    maintainAspectRatio: false,
 };
 
 var dataChart3A = {
@@ -371,8 +405,10 @@ var dataChart3A = {
         {
             label: 'Porcentaje',
             data: [73,27],
-            fill: false,
-            backgroundColor: ['#0099F9', '#8C8C8C'], 
+            backgroundColor: [
+                '#0099F9',
+                '#FF6384'
+            ],
         },
     ]
 };
