@@ -54,8 +54,12 @@ let columsTable1 = [
             let textColor = 'white';
             let icon = '';
             let text = value;
-            
-            if (value < 0) {
+
+            if (cell.getRow().getData().ultima_accion == 'Validada') {
+                backgroundColor = '#28a745';
+                icon = '✅';
+                text = `Acción Realizada`;
+            } else if (value < 0) {
                 backgroundColor = '#dc3545';
                 icon = '🔴';
                 text = `${Math.abs(value)} días retrasado`;
@@ -400,14 +404,15 @@ var setOptions3A = {
 };
 
 var dataChart3A = {
-    labels: ['Tareas Validadas ','Tareas Pendientes'],
+    labels: ['Tareas Validadas ','Tareas Pendientes', 'Tareas en Validación'],
     datasets: [
         {
             label: 'Porcentaje',
-            data: [73,27],
+            data: [73, 17, 10],
             backgroundColor: [
                 '#0099F9',
-                '#FF6384'
+                '#FF6384',
+                '#FFC107'
             ],
         },
     ]
