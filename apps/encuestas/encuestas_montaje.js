@@ -154,13 +154,7 @@ function runFirstElement(){
   if ($("#date_from").length > 0 && $("#date_to").length > 0) {
     let date_from = document.getElementById("date_from");
     let date_to = document.getElementById("date_to");  
-    if (date_from.value!="" && date_to.value!="") {
-      getFirstElement(date_to.value, date_from.value);
-    }else{
-      Swal.fire({
-        title: 'Rango de fechas requerido',
-      });
-    }
+    getFirstElement(date_to.value, date_from.value);
   }else{
     getFirstElement();
   }
