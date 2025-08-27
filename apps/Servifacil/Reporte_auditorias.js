@@ -159,6 +159,13 @@ function formatChartData(data,type, divId){
         listBackGround.push(color|| '');
     });
 
+    //-----Size Font
+    let fontSize = 16;
+    if(data.length > 10 ){
+        fontSize = 13;
+    }else if(data.length > 20){
+        fontSize = 1;
+    }
     let optionsCustom = {
         responsive: true,
         plugins: {
@@ -169,12 +176,20 @@ function formatChartData(data,type, divId){
             datalabels: {
                 color: 'white',
                 font: {
-                    size: 13
+                    size: fontSize
                 },
+                align: 'center',
+                textAlign: 'center', 
                 formatter: function (value, context) {
                     const index = context.dataIndex;
                     const total = listCant[index] || 1; 
-                    return `${value}% / ${total}`;
+                    if(data.length > 20 ){
+                        const message = `${value} - ${total}`;
+                        return message.split(" ");  
+                    }else{
+                        const message = `${value}% / ${total}`;
+                        return message;  
+                    }
                 }
             },
             tooltip: {
