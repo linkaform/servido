@@ -41,6 +41,7 @@ let columsTable1 = [
     },
     { title: "Cliente", field: 'cliente', headerTooltip: true, hozAlign: "left", width: 310, responsive: 2 },
     { title: "Localidad", field: 'localidad', headerTooltip: true, hozAlign: "left", width: 140, responsive: 2},
+    { title: "Comentarios", field: 'comentarios', headerTooltip: true, hozAlign: "left", width: 250, responsive: 2 },
     { title: "Tipo", field: 'tipo', headerTooltip: true, hozAlign: "center", width: 140, responsive: 2 },
     { title: "Fecha", field: 'created_at', headerTooltip: true, hozAlign: "center", width: 150, responsive: 2},
 ];
@@ -62,7 +63,7 @@ let configTableCustom1 = {
 
         if (window.innerWidth < 600 ) {
             let data = row.getData();
-            let emptyFields = ["folio", "cliente", "localidad", "tipo", "created_at"].every(
+            let emptyFields = ["folio", "cliente", "localidad", "comentarios", "tipo", "created_at"].every(
                 key => !data[key]
             );
 
@@ -78,22 +79,22 @@ let dataTable1 = [
     {
         'supervisor': 'Jose Luis Benítez Benítez',
         '_children': [
-            {  'supervisor': 'Jose Luis Benítez Benítez','folio': '2001-8369', 'cliente': 'CCN', 'localidad': 'Localidad 1', 'tipo': 'Servicio' ,'created_at':'2025/03/01'},
-            {  'supervisor': 'Jose Luis Benítez Benítez','folio': '2002-8369', 'cliente': 'Concesionario', 'localidad': 'Localidad 2', 'tipo': 'Servicio' ,'created_at':'2025/03/01'}
+            {  'supervisor': 'Jose Luis Benítez Benítez','folio': '2001-8369', 'cliente': 'CCN', 'localidad': 'Localidad 1', 'tipo': 'Servicio' ,'comentarios':'Test','created_at':'2025/03/01'},
+            {  'supervisor': 'Jose Luis Benítez Benítez','folio': '2002-8369', 'cliente': 'Concesionario', 'localidad': 'Localidad 2', 'tipo': 'Servicio' ,'comentarios':'Test','created_at':'2025/03/01'}
         ]
     },
     {
         'supervisor': 'María Fernández López',
         '_children': [
-            { 'folio': '2003-4578', 'cliente': 'ABC Corp', 'localidad': 'Localidad 3', 'tipo': 'Instalación' ,'created_at':'2025/03/01'}
+            { 'folio': '2003-4578', 'cliente': 'ABC Corp', 'localidad': 'Localidad 3', 'tipo': 'Instalación' ,'comentarios':'Test','created_at':'2025/03/01'}
         ]
     },
     {
         'supervisor': 'Carlos Ramírez Ortega',
         '_children': [
-            { 'folio': '2004-1123', 'cliente': 'XYZ Ltd.', 'localidad': 'Localidad 4', 'tipo': 'Mantenimiento' ,'created_at':'2025/03/01'},
-            { 'folio': '2005-3345', 'cliente': 'Empresa 123', 'localidad': 'Localidad 5', 'tipo': 'Reparación' ,'created_at':'2025/03/01'},
-            { 'folio': '2006-9987', 'cliente': 'Servicio Rápido', 'localidad': 'Localidad 6', 'tipo': 'Diagnóstico' ,'created_at':'2025/03/01'}
+            { 'folio': '2004-1123', 'cliente': 'XYZ Ltd.', 'localidad': 'Localidad 4', 'tipo': 'Mantenimiento' ,'comentarios':'Test','created_at':'2025/03/01'},
+            { 'folio': '2005-3345', 'cliente': 'Empresa 123', 'localidad': 'Localidad 5', 'tipo': 'Reparación' ,'comentarios':'Test','created_at':'2025/03/01'},
+            { 'folio': '2006-9987', 'cliente': 'Servicio Rápido', 'localidad': 'Localidad 6', 'tipo': 'Diagnóstico' ,'comentarios':'Test','created_at':'2025/03/01'}
         ]
     },
     {
@@ -103,27 +104,27 @@ let dataTable1 = [
     {
         'supervisor': 'Luis García Herrera',
         '_children': [
-            { 'folio': '2007-7777', 'cliente': 'Global Tech', 'localidad': 'Localidad 7', 'tipo': 'Servicio' ,'created_at':'2025/03/01'},
-            { 'folio': '2008-8888', 'cliente': 'Fast Solutions', 'localidad': 'Localidad 8', 'tipo': 'Instalación' ,'created_at':'2025/03/01'}
+            { 'folio': '2007-7777', 'cliente': 'Global Tech', 'localidad': 'Localidad 7', 'tipo': 'Servicio' ,'comentarios':'Test','created_at':'2025/03/01'},
+            { 'folio': '2008-8888', 'cliente': 'Fast Solutions', 'localidad': 'Localidad 8', 'tipo': 'Instalación' ,'comentarios':'Test','created_at':'2025/03/01'}
         ]
     },
     {
         'supervisor': 'Sofía Méndez Pérez',
         '_children': [
-            { 'folio': '2009-3333', 'cliente': 'Tienda Online', 'localidad': 'Localidad 9', 'tipo': 'Revisión' ,'created_at':'2025/03/01'}
+            { 'folio': '2009-3333', 'cliente': 'Tienda Online', 'localidad': 'Localidad 9', 'tipo': 'Revisión' ,'comentarios':'Test','created_at':'2025/03/01'}
         ]
     },
     {
         'supervisor': 'Ricardo Gómez Ruiz',
         '_children': [
-            { 'folio': '2010-5555', 'cliente': 'ElectroHogar', 'localidad': 'Localidad 10', 'tipo': 'Mantenimiento' ,'created_at':'2025/03/01'},
-            { 'folio': '2011-6666', 'cliente': 'Automotriz X', 'localidad': 'Localidad 11', 'tipo': 'Reparación' ,'created_at':'2025/03/01'}
+            { 'folio': '2010-5555', 'cliente': 'ElectroHogar', 'localidad': 'Localidad 10', 'tipo': 'Mantenimiento' ,'comentarios':'Test','created_at':'2025/03/01'},
+            { 'folio': '2011-6666', 'cliente': 'Automotriz X', 'localidad': 'Localidad 11', 'tipo': 'Reparación' ,'comentarios':'Test','created_at':'2025/03/01'}
         ]
     },
     {
         'supervisor': 'Gabriela Castro León',
         '_children': [
-            { 'folio': '2012-1111', 'cliente': 'Farmacia Nacional', 'localidad': 'Localidad 12', 'tipo': 'Diagnóstico' ,'created_at':'2025/03/01'}
+            { 'folio': '2012-1111', 'cliente': 'Farmacia Nacional', 'localidad': 'Localidad 12', 'tipo': 'Diagnóstico' ,'comentarios':'Test','created_at':'2025/03/01'}
         ]
     },
     {
@@ -133,20 +134,20 @@ let dataTable1 = [
     {
         'supervisor': 'Patricia Herrera Silva',
         '_children': [
-            { 'folio': '2013-9999', 'cliente': 'Supermercado Express', 'localidad': 'Localidad 13', 'tipo': 'Revisión' ,'created_at':'2025/03/01'}
+            { 'folio': '2013-9999', 'cliente': 'Supermercado Express', 'localidad': 'Localidad 13', 'tipo': 'Revisión' ,'comentarios':'Test','created_at':'2025/03/01'}
         ]
     },
     {
         'supervisor': 'Daniel Soto Pineda',
         '_children': [
-            { 'folio': '2014-2222', 'cliente': 'Distribuidora YZ', 'localidad': 'Localidad 14', 'tipo': 'Servicio' ,'created_at':'2025/03/01'},
-            { 'folio': '2015-4444', 'cliente': 'Almacenes Pérez', 'localidad': 'Localidad 15', 'tipo': 'Instalación' ,'created_at':'2025/03/01'}
+            { 'folio': '2014-2222', 'cliente': 'Distribuidora YZ', 'localidad': 'Localidad 14', 'tipo': 'Servicio' ,'comentarios':'Test','created_at':'2025/03/01'},
+            { 'folio': '2015-4444', 'cliente': 'Almacenes Pérez', 'localidad': 'Localidad 15', 'tipo': 'Instalación' ,'comentarios':'Test','created_at':'2025/03/01'}
         ]
     },
     {
         'supervisor': 'Carolina Ríos López',
         '_children': [
-            { 'folio': '2016-7777', 'cliente': 'Ferretería Martínez', 'localidad': 'Localidad 16', 'tipo': 'Mantenimiento' ,'created_at':'2025/03/01'}
+            { 'folio': '2016-7777', 'cliente': 'Ferretería Martínez', 'localidad': 'Localidad 16', 'tipo': 'Mantenimiento' ,'comentarios':'Test','created_at':'2025/03/01'}
         ]
     },
     {
@@ -156,14 +157,14 @@ let dataTable1 = [
     {
         'supervisor': 'Isabel Romero Guzmán',
         '_children': [
-            { 'folio': '2017-5555', 'cliente': 'Constructora Omega', 'localidad': 'Localidad 17', 'tipo': 'Revisión' ,'created_at':'2025/03/01'},
-            { 'folio': '2018-6666', 'cliente': 'Refaccionaria Beta', 'localidad': 'Localidad 18', 'tipo': 'Reparación' ,'created_at':'2025/03/01'}
+            { 'folio': '2017-5555', 'cliente': 'Constructora Omega', 'localidad': 'Localidad 17', 'tipo': 'Revisión' ,'comentarios':'Test','created_at':'2025/03/01'},
+            { 'folio': '2018-6666', 'cliente': 'Refaccionaria Beta', 'localidad': 'Localidad 18', 'tipo': 'Reparación' ,'comentarios':'Test','created_at':'2025/03/01'}
         ]
     },
     {
         'supervisor': 'Esteban Salinas Muñoz',
         '_children': [
-            { 'folio': '2019-8888', 'cliente': 'Panadería La Estrella', 'localidad': 'Localidad 19', 'tipo': 'Servicio' ,'created_at':'2025/03/01'}
+            { 'folio': '2019-8888', 'cliente': 'Panadería La Estrella', 'localidad': 'Localidad 19', 'tipo': 'Servicio' ,'comentarios':'Test','created_at':'2025/03/01'}
         ]
     }
 ];
