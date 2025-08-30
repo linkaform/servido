@@ -273,6 +273,7 @@ var setOptions3A = {
             text: 'Tienda',
         },
         datalabels: {
+            display: false,
             color: 'white',
             font: {
                 size: 19
@@ -620,6 +621,39 @@ const dicObjetiveState = {
         'mx-ve': 1075,
         'mx-yu': 10,
         'mx-za': 194,
+    },
+    9:{
+        'mx-ag': 1,
+        'mx-bc': 540,
+        'mx-bs': 63,
+        'mx-cm': 57,
+        'mx-cs': 401,
+        'mx-ch': 370,
+        'mx-co': 147,
+        'mx-cl': 0,
+        'mx-dg': 98,
+        'mx-mx': 5,
+        'mx-gj': 37,
+        'mx-gr': 369,
+        'mx-hg': 5,
+        'mx-ja': 49,
+        'mx-mi': 352,
+        'mx-na': 3,
+        'mx-nl': 3,
+        'mx-oa': 325,
+        'mx-pu': 6,
+        'mx-qr': 2,
+        'mx-qt': 0,
+
+        'mx-sl': 43,
+        'mx-si': 272,
+        'mx-so': 117,
+        'mx-tb': 188,
+        'mx-tm': 437,
+        'mx-tl': 0,
+        'mx-ve': 514,
+        'mx-yu': 2,
+        'mx-za': 137,
     }
 }
 
