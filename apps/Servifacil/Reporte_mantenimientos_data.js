@@ -6,6 +6,7 @@ let dicReportContext = [
             { type:'chart', col: '6', id:'chartThird', title:'ODT por Tipo de Trabajo'},
             { type:'chart', col: '4', id:'chartFourth', title:'ODT por Tipo de Sistemas'},
             { type:'chart', col: '8', id:'chartFiveth', title:'ODT por Status'},
+            { type:'chart', col: '12', id:'chartSixth', title:'ODT por Supervisor'},
     ]},
 ];
 
@@ -212,6 +213,52 @@ var dataChart5A = {
             data: [73,27,89,85,41,23,14,78],
             fill: false,
             backgroundColor: ['#0099F9', '#8C8C8C'], 
+        },
+    ]
+};
+
+//---Chart 6A
+var setOptions6A = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        datalabels: {
+            color: 'white',
+            font: {
+                size: 19
+            },
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
+        }
+    },
+    responsive: true, 
+    maintainAspectRatio: false ,
+};
+
+var dataChart6A = {
+    labels: ['Supervisor 1','Supervisor 2','Supervisor 3','Supervisor 4','Supervisor 5'],
+    datasets: [
+        {
+            label: 'Pendientes',
+            data: [7,2,8,8,4,2,1,7],
+            fill: false,
+            backgroundColor: [], 
+        },
+        {
+            label: 'Resueltas',
+            data: [3,7,9,5,1,3,4,8],
+            fill: false,
+            backgroundColor: [], 
         },
     ]
 };

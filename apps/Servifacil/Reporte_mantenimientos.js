@@ -22,6 +22,7 @@ function loadDemoData(){
   drawChartElement('chartThird','bar',dataChart3A,setOptions3A);
   drawChartElement('chartFourth','bar',dataChart4A,setOptions4A);
   drawChartElement('chartFiveth','bar',dataChart5A,setOptions5A);
+  drawChartElement('chartSixth','bar',dataChart6A,setOptions6A);
   setTimeout(() => { hide_loading();}, 2000);
 }
 
@@ -71,6 +72,9 @@ async function getInformation(dicAditional){
             }
             if(data.response_fiveth){
                 drawChartElement('chartFiveth','bar',data.response_fiveth,setOptions5A);
+            }
+            if(data.response_sixth){
+                drawChartElement('chartSixth','bar',data.response_sixth,setOptions6A);
             }
             //-----Style
             hideLoadingComponent();
