@@ -337,11 +337,6 @@ function validationsForm(data){
     if (!/^\d+$/.test(data.inputPhone)) {
       alert('El numero debe contener solo digitos')
       return false;
-    }else{
-      if (data.inputPhone.length < 10 || data.inputPhone.length > 15) {
-        alert('El número debe tener entre 7 y 15 dígitos.')
-        return false;
-      }
     }
   }
   if(data.inputCheck == '' || data.inputCheck == null){
