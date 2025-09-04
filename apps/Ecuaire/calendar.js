@@ -180,7 +180,7 @@ function getFirstElement(gestor, cliente){
       $('.title_tables').show();
       
       //----Res
-      if (res.response && res.response.data && res.response.data.length > 0) {
+      if (res.response && res.response.data ) {
         getDrawCalendar('firstElement',  res.response.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
@@ -204,7 +204,8 @@ function getFirstElement(gestor, cliente){
 };
 
 //----CALENDAR
-function getDrawCalendar(id,  events){
+let isProcessing = false; // flag global
+function getDrawCalendar(id, events){
   const calendarEl = document.getElementById(id);
 
   const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -221,30 +222,33 @@ function getDrawCalendar(id,  events){
     },
     dateClick: function (info) {
       const modal = new bootstrap.Modal(document.getElementById('eventModal'));
-      document.getElementById('eventDate').value = info.dateStr; // Guardar la fecha seleccionada
+      document.getElementById('eventDate').value = info.dateStr;
       modal.show();
     },
     eventClick: function (info) {
       let event = info.event;
       let title = event.title || 'N/A';
-      let contacto = event.extendedProps.contacto || 'N/A';
-      let celular = event.extendedProps.celular || 'N/A';
-      let check_equipo = event.extendedProps.check_equipo || 'No';
-      let check_list = event.extendedProps.check_list || 'N/A';
-      let status = event.extendedProps.status || 'N/A';
-      let description = event.extendedProps.description || 'N/A';
+
+      let contacto = (event.extendedProps.contacto !== undefined) ? event.extendedProps.contacto : 'N/A';
+      let celular = (event.extendedProps.celular !== undefined) ? event.extendedProps.celular : 'N/A';
+      let check_equipo = (event.extendedProps.check_equipo !== undefined) ? event.extendedProps.check_equipo : 'No';
+      let check_list = (event.extendedProps.check_list !== undefined) ? event.extendedProps.check_list : 'N/A';
+      let status = (event.extendedProps.status !== undefined) ? event.extendedProps.status : 'N/A';
+      let description = (event.extendedProps.description !== undefined) ? event.extendedProps.description : 'N/A';
+
       let equipo = '';
-      if(check_equipo == 'Sí'){
-        equipo =  event.extendedProps.catalog_serie || 'No';
-      }else if(check_equipo == 'No'){
-        equipo =  event.extendedProps.input_equipo || 'No';
+      if (check_equipo == 'Sí' || check_equipo == 'sí') { 
+        equipo = event.extendedProps.catalog_serie ;
+      } else if (check_equipo == 'No' || check_equipo == 'no') {
+        equipo = event.extendedProps.input_equipo;
       }
+
       document.getElementById('modalCliente').textContent = title;
       document.getElementById('modalContacto').textContent = contacto;
       document.getElementById('modalTelefono').textContent = celular;
       document.getElementById('modalEquipo').textContent = equipo;
       document.getElementById('modalCheckList').textContent = check_list;
-      document.getElementById('modalStatus').textContent = event.status;
+      document.getElementById('modalStatus').textContent = status;
       let eventModal = new bootstrap.Modal(document.getElementById('viewModal'));
       eventModal.show();
     },
@@ -255,49 +259,66 @@ function getDrawCalendar(id,  events){
     },
   });
   calendar.render();
-  document.getElementById("buttonSave").addEventListener("click", () => {
-    //----Fecht
-    dicData = getDataForm();
-    fetch('https://app.linkaform.com/api/infosync/scripts/run/', {
-      method: 'POST',
-      body: JSON.stringify({
-        script_id: 126611,
-        option: 'creation_record',
-        formInformation: dicData,
-      }),
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+userJwt
-      },
-    })
-    .then(res => res.json())
-    .then(res => {
-      if (res.success) {
-        let status = res.response && res.response.status ?  res.response.status : '400';
-        if(status == '201'){
-          const modal = bootstrap.Modal.getInstance(document.getElementById('eventModal'));
-          modal.hide();
-          alert('Se a guardado su evento');
-          const title = document.getElementById('inputClient').value;
-          const date = document.getElementById('eventDate').value;
-          calendar.addEvent({
-            title: title,
-            start: date,
-            allDay: true
-          });
-          //----Close Modal
-          cleanForm();
-          e.target.reset();
-          
-        }else{
-          const modal = bootstrap.Modal.getInstance(document.getElementById('eventModal'));
-          modal.hide();
-          alert('No se a guardado su evento');
-        }
-      }   
-    })
- });
+
+  //------EVENT Create Click
+  document.getElementById("buttonSave").addEventListener("click", (e) => {
+    if (isProcessing) return; // evita ejecución doble
+    isProcessing = true;
+
+    document.getElementById("buttonSave").disabled = true;
+
+    let dataValidation = formatData();
+    const validation = validationsForm(dataValidation);
+
+    if(validation){
+      dicData = getDataForm();
+      fetch('https://app.linkaform.com/api/infosync/scripts/run/', {
+        method: 'POST',
+        body: JSON.stringify({
+          script_id: 126611,
+          option: 'creation_record',
+          formInformation: dicData,
+        }),
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer '+userJwt
+        },
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          let status = res.response && res.response.status ? res.response.status : '400';
+          if(status == '201'){
+            const modal = bootstrap.Modal.getInstance(document.getElementById('eventModal'));
+            modal.hide();
+            alert('Se ha guardado su evento');
+            const title = document.getElementById('inputClient').value;
+            const date = document.getElementById('eventDate').value;
+            calendar.addEvent({
+              title: title,
+              start: date,
+              allDay: true
+            });
+            cleanForm();
+            e.target.reset();
+          }else{
+            const modal = bootstrap.Modal.getInstance(document.getElementById('eventModal'));
+            modal.hide();
+            alert('No se ha guardado su evento');
+          }
+        }  
+      })
+      .finally(() => {
+        isProcessing = false; // liberar para siguiente intento
+        document.getElementById("buttonSave").disabled = false;
+      });
+    }else{
+      isProcessing = false;
+      document.getElementById("buttonSave").disabled = false;
+    }
+  });
 }
+
 
 function setFormItem(option) {
   const classDivCatalog = document.querySelectorAll(".div-catalog-item");
@@ -323,25 +344,30 @@ function setFormItem(option) {
 function validationsForm(data){
   if(data.inputClient == '' || data.inputClient == null){
     alert('Seleccione Cliente')
+    document.getElementById("buttonSave").disabled = false; 
     return false;
   }
   if(data.inputNameContac == '' || data.inputNameContac == null){
     alert('Ingrese datos requeridos de Nombre de contacto')
+    document.getElementById("buttonSave").disabled = false; 
     return false;
   }
   if(data.inputTextJob == '' || data.inputTextJob == null){
     alert('Ingrese datos requeridos de Trabajo a realizar')
+    document.getElementById("buttonSave").disabled = false; 
     return false;
   }
   if(data.inputPhone != '' || data.inputPhone != null){
     if (!/^\d+$/.test(data.inputPhone)) {
       alert('El numero debe contener solo digitos')
+      document.getElementById("buttonSave").disabled = false; 
       return false;
     }
   }
   if(data.inputCheck == '' || data.inputCheck == null){
     console.log('data.inputCheck',data.inputCheck)
     alert('Seleccione un tipo de checklist')
+    document.getElementById("buttonSave").disabled = false; 
     return false;
   }
   let checkboxCatalog = document.getElementById('checkItemYes');
@@ -349,42 +375,33 @@ function validationsForm(data){
   if (checkboxCatalog.checked) {
     if(data.inputItem == '' || data.inputItem == null){
       alert('Seleccione Cliente')
+      document.getElementById("buttonSave").disabled = false; 
       return false;
     }
   }
   if (checkboxInput.checked) {
     if(data.inputTextItem == '' || data.inputTextItem == null){
       alert('Ingrese datos del Equipo')
+      document.getElementById("buttonSave").disabled = false; 
       return false;
     }
   }
   if(data.inputTextOrden == '' || data.inputTextOrden == null){
     alert('Especifique Orden')
+    document.getElementById("buttonSave").disabled = false; 
     return false;
   }
   if(data.inputUser == '' || data.inputUser == null){
     alert('Seleccione un Usuario')
+    document.getElementById("buttonSave").disabled = false; 
     return false;
   }
   return true;  
 }
 
 function getDataForm() {
-  //---Get Data
-  const inputs = document.querySelectorAll(".input-form-event");
-  const datos = {};
-  inputs.forEach((input) => {
-    if (input.type === "radio") {
-      if (input.checked) {
-        datos[input.id] = input.value;
-      }
-    } else if (input.tagName.toLowerCase() === "select") {
-      datos[input.id] = input.value; 
-    } else {
-      datos[input.id] = input.value;
-    }
-  });
   //---Validations
+  let datos = formatData()
   const validation = validationsForm(datos);
   if(validation){
     //---AutoComplete
@@ -395,7 +412,7 @@ function getDataForm() {
     }
     if(datos.checkItemYes){
       let searchItem = datos.inputItem;
-      const dicItem = catalog_items.find(item => item.nombre_equipo === searchItem);
+      const dicItem = catalog_items.find(item => item.chasis === searchItem);
       datos['dicItem'] = dicItem;
     }
     if(datos.inputUser){
@@ -462,7 +479,7 @@ function get_catalogs() {
           selectCliente.appendChild(option);
         });
 
-        
+
         //----Select Client
         const selectClient = document.getElementById("inputClient");
         catalog_client.forEach(item => {
@@ -475,13 +492,13 @@ function get_catalogs() {
         $('#selectCliente').select2();
       }
       if(data.catalog_items){
-        let catalogSortI = data.catalog_items.sort((a, b) => a.nombre_equipo.localeCompare(b.nombre_equipo));
+        let catalogSortI = data.catalog_items.sort((a, b) => a.chasis.localeCompare(b.chasis));
         catalog_items = catalogSortI;
         const selectItem = document.getElementById("inputItem");
         catalog_items.forEach(item => {
           const option = document.createElement("option");
-          option.value = item.nombre_equipo;
-          option.textContent = item.nombre_equipo;
+          option.value = item.chasis;
+          option.textContent = item.chasis;
           selectItem.appendChild(option);
         });
       }
@@ -535,4 +552,21 @@ function cleanForm() {
   classDivItem.forEach((elemento) => {
     elemento.style.display = "none";
   });
+}
+
+function formatData(){
+  const inputs = document.querySelectorAll(".input-form-event");
+  const datos = {};
+  inputs.forEach((input) => {
+    if (input.type === "radio") {
+      if (input.checked) {
+        datos[input.id] = input.value;
+      }
+    } else if (input.tagName.toLowerCase() === "select") {
+      datos[input.id] = input.value; 
+    } else {
+      datos[input.id] = input.value;
+    }
+  });
+  return datos
 }
