@@ -95,8 +95,8 @@ window.onload = function(){
 
     //--ASSING VALUES
     get_catalogs();
-    $("#selectActividad").select2({
-      placeholder: "Busca una actividad",
+    $("#selectCliente").select2({
+      placeholder: "Busca un Cliente",
       allowClear: true, 
     });
     $("#selectGestor").select2({
@@ -148,21 +148,21 @@ loading.style.display = 'none';
 
 function runFirstElement() {
   let gestor = $('#selectGestor').val();
-  let actividad = $('#selectActividad').val();
-  firstElement = getFirstElement(gestor, actividad);
+  let cliente = $('#selectCliente').val();
+  firstElement = getFirstElement(gestor, cliente);
 }
 
-function getFirstElement(gestor, actividad){
+function getFirstElement(gestor, cliente){
   //----Hide Css
   $("#divContent").hide();
   $('.load-wrapp').show();
 
-  fetch('https://preprod.linkaform.com/api/infosync/scripts/run/', {
+  fetch('https://app.linkaform.com/api/infosync/scripts/run/', {
     method: 'POST',
     body: JSON.stringify({
       script_id: scriptId,
       gestor: gestor,
-      actividad: actividad,
+      cliente: cliente,
       option: 'get_records',
 
     }),
@@ -258,7 +258,7 @@ function getDrawCalendar(id,  events){
   document.getElementById("buttonSave").addEventListener("click", () => {
     //----Fecht
     dicData = getDataForm();
-    fetch('https://preprod.linkaform.com/api/infosync/scripts/run/', {
+    fetch('https://app.linkaform.com/api/infosync/scripts/run/', {
       method: 'POST',
       body: JSON.stringify({
         script_id: 126611,
@@ -459,13 +459,15 @@ function get_catalogs() {
         );
         catalog_client = catalogSortCli;
 
-        const selectActividad = document.getElementById("selectActividad");
+        const selectCliente = document.getElementById("selectCliente");
         catalog_client.forEach(item => {
           const option = document.createElement("option");
           option.value = item.nombre_comercial;
           option.textContent = item.nombre_comercial;
-          selectActividad.appendChild(option);
+          selectCliente.appendChild(option);
         });
+
+        
         //----Select Client
         const selectClient = document.getElementById("inputClient");
         catalog_client.forEach(item => {
@@ -475,7 +477,7 @@ function get_catalogs() {
           selectClient.appendChild(option);
         });
         //---Selector
-        $('#selectActividad').select2();
+        $('#selectCliente').select2();
       }
       if(data.catalog_items){
         let catalogSortI = data.catalog_items.sort((a, b) => a.nombre_equipo.localeCompare(b.nombre_equipo));
