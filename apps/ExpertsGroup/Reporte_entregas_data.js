@@ -642,7 +642,7 @@ const dicObjetiveState = {
         'mx-nl': 14,
         'mx-oa': 228,
         'mx-pu': 3,
-        'mx-qr': 0,         
+        'mx-qr': 412,         
         'mx-qt': 0,
         'mx-sl': 414,
         'mx-si': 675,
