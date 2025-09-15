@@ -62,7 +62,7 @@ async function getInformation(){
     const demo = getParameterURL('demo');
     const statusSession = getSession();
     const dicAdional = {'option':'get_records'}
-    
+
     if(statusSession == 'Demo' || demo){
         Swal.fire({
           title: 'Advertencia',
@@ -70,7 +70,7 @@ async function getInformation(){
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         //----Request
-        const responseRequest = await sendRequestReport(scriptId);
+        const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const dataCalendario = responseRequest.response && responseRequest.response.dataCalendario && responseRequest.response.dataCalendario.length > 0 ? responseRequest.response.dataCalendario : [];
         drawCalendar('calendarFirst', dataCalendario, configCustom);
         console.log('data',dataCalendario)
