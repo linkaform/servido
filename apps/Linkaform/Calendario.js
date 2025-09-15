@@ -4,7 +4,8 @@ let informationEquipo = [];
 let informationForma = [];
 let isProcessing = false; 
 let dateClick = '';
-
+//-----IMPORTANT
+let calendarInstance = null;
 
 window.onload = function(){
   createElements(dicReportContext);
@@ -110,20 +111,19 @@ async function setCreateRecord(){
         .then((res) => {
             let status = res.response && res.response.status ? res.response.status : '400';
             if(status == '201'){
+                //-----Event In
+                const title = document.getElementById('inputSelectCliente').value;
+                calendarInstance.addEvent({
+                    title: document.getElementById('inputSelectCliente').value,
+                    start: dateClick,
+                    allDay: true
+                });
                 //----Close Modal
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalForm'));
                 modal.hide();
-                cleanForm();
                 alert('Se ha guardado su evento');
-
-                //-----Event In
-                const title = document.getElementById('inputSelectCliente').value;
-                const date = dateClick;
-                calendar.addEvent({
-                    title: title,
-                    start: date,
-                    allDay: true
-                });
+                cleanForm();
+                isProcessing = false;
             }else{
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalForm'));
                 modal.hide();

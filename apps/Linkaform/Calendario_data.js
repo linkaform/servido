@@ -153,6 +153,7 @@ let configCustom = {
     eventClick: function (info) {
         const event = info.event;
         const props = event.extendedProps || {};
+        console.log('props',props)
         // Función helper para asignar valor por defecto
         const getValue = (key, defaultVal = 'N/A') => props[key] ?? defaultVal;
         const data = {
