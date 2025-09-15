@@ -711,7 +711,6 @@ function drawCarrouselImgs(divId, listImg) {
     });
 }
 
-
 //-Funciona para agregar diferentes paletas de color
 function setColorsDatasets(data = null, type = null){
     if(data != null){
@@ -1110,22 +1109,67 @@ function drawModalBody(itemElement){
     const type = itemElement.type ? itemElement.type : '';
     const title = itemElement.title ? itemElement.title : '';
     const id = itemElement.id ? itemElement.id : '';
-    const checked = itemElement.checked ? itemElement.checked : '';
     const name = itemElement.name ? itemElement.name : '';
+    const classInput = itemElement.classInput ? itemElement.classInput : '';
+    const hideComponent = itemElement.hideComponent ? itemElement.hideComponent : false;
 
     //---Elements
     if (type == 'p') {
         return  `<p id="p-${id}"><strong>${title}</strong> <span id="${id}"></span></p>`
     }else if(type == 'switch'){
-        const element = `<div class="form-check form-switch">
+        const checked = itemElement.checked ? itemElement.checked : '';
+        const element = `<div class="form-check form-switch" ${hideComponent ? 'style="display:none;"' : ''}>
             <input class="form-check-input switch ${name}" type="checkbox" name="${name}" id="${id}" ${checked}>
             <label class="form-check-label">${title}</label>
         </div>`;
         return element;
     }else if(type == 'div'){
-        const element = `<div class="col-12">
+        const element = `<div class="col-12 ">
             <p><strong>${title}</strong></p>
             <div id="${id}"></div>
+        </div>`;
+        return element;
+    }else if(type == 'input-select'){
+        const element = `<div class="mb-3" ${hideComponent ? 'style="display:none;"' : ''}>
+            <label class="form-label">${title}</label>
+            <select class="form-select ${classInput}" id="${id}">
+                <option value="">Seleccione Opción</option>
+            </select>
+        </div>`;
+        return element;
+    }else if(type == 'input-text'){
+        const element = `<div class="mb-3" ${hideComponent ? 'style="display:none;"' : ''}>
+            <label class="form-label">${title}</label>
+            <input type="text" class="form-control ${classInput}" id="${id}">
+        </div>`;
+        return element;
+    }else if(type == 'input-number'){
+        const element = `<div class="mb-3" ${hideComponent ? 'style="display:none;"' : ''}>
+            <label class="form-label ">${title}</label>
+            <input type="number" class="form-control ${classInput}" id="${id}">
+        </div>`;
+        return element;
+    }else if(type == 'input-switch'){
+        const options = itemElement.switchs ? itemElement.switchs : ["Sí", "No"];  
+        const element = `<div class="mb-3"  ${hideComponent ? 'style="display:none;"' : ''}>
+            <label class="form-label">${title}</label>
+            ${options.map((opt, index) => `
+                <div class="form-check">
+                    <input 
+                        class="form-check-input ${classInput}" 
+                        type="radio"  
+                        id="${id}_option_${index}"  
+                        name="${name}" 
+                        value="${opt}">
+                    <label class="form-check-label" for="${name}_option_${index}">${opt}</label>
+                </div>
+            `).join('')}
+        </div>`;
+        return element;
+    }else if(type == 'input-textArea'){
+        const element = `<div class="form-floating" ${hideComponent ? 'style="display:none;"' : ''}>
+            <textarea class="form-control ${classInput}" placeholder="${title}" id="${id}" style="height: 100px"></textarea>
+            <label for="floatingTextarea2">${title}</label>
         </div>`;
         return element;
     }
