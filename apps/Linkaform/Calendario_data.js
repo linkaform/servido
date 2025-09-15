@@ -153,10 +153,8 @@ let configCustom = {
     eventClick: function (info) {
         const event = info.event;
         const props = event.extendedProps || {};
-
         // Función helper para asignar valor por defecto
         const getValue = (key, defaultVal = 'N/A') => props[key] ?? defaultVal;
-
         const data = {
             modalCliente: event.title || 'N/A',
             textFolio: getValue('folio'),

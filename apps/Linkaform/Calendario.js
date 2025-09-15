@@ -73,7 +73,6 @@ async function getInformation(){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const dataCalendario = responseRequest.response && responseRequest.response.dataCalendario && responseRequest.response.dataCalendario.length > 0 ? responseRequest.response.dataCalendario : [];
         drawCalendar('calendarFirst', dataCalendario, configCustom);
-        console.log('data',dataCalendario)
         //-----Style
         hideLoadingComponent();
         showElements();
@@ -119,7 +118,7 @@ async function setCreateRecord(){
 
                 //-----Event In
                 const title = document.getElementById('inputSelectCliente').value;
-                const date = document.getElementById('eventDate').value;
+                const date = dateClick;
                 calendar.addEvent({
                     title: title,
                     start: date,
@@ -129,6 +128,7 @@ async function setCreateRecord(){
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalForm'));
                 modal.hide();
                 alert('No se ha guardado su evento');
+                isProcessing = false;
             }
         })
     }else{
