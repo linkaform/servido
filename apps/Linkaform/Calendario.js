@@ -61,7 +61,8 @@ async function getInformation(){
     const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
     const statusSession = getSession();
-    const dicAdional = {'option':'report'}
+    const dicAdional = {'option':'get_records'}
+    
     if(statusSession == 'Demo' || demo){
         Swal.fire({
           title: 'Advertencia',
