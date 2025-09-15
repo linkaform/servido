@@ -1080,27 +1080,30 @@ function drawCalendar(id, data, config = null){
         selectable : false,
         aspectRatio: 2,
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-        initialView: window.innerWidth < 768 ? 'dayGridMonth' : 'dayGridMonth', 
+        initialView: window.innerWidth < 768 ? 'dayGridMonth' : 'dayGridMonth',
         height: window.innerWidth < 768 ? 800 : 1200,
-        headerToolbar: {
+        headerToolbar: { 
             left: 'prev,next', 
-            center: 'title',
-            right: 'today',
+            center: 'title', 
+            right: 'today', 
         },
         windowResize: function (view) {
             const newView = window.innerWidth < 768 ? 'dayGridMonth' : 'dayGridMonth';
-            calendar.changeView(newView);
+            calendarInstance.changeView(newView);
         },
     }
-    if(config){ configDefault = config;}
-    
+
+    if(config){
+        configDefault = config;
+    }
+
     //----Data Events
     configDefault['events'] = data ? data : [];
 
     //----Start Calendar
     const calendarDiv = document.getElementById(id);
-    const calendar = new FullCalendar.Calendar(calendarDiv, configDefault);
-    calendar.render();
+    calendarInstance = new FullCalendar.Calendar(calendarDiv, configDefault);
+    calendarInstance.render();
 }
 
 //-----Función para crear Modal BOdy
