@@ -111,7 +111,7 @@ async function setCreateRecord(){
         .then((res) => {
             let status = res.response && res.response.status_request ? res.response.status_request : '400';
             let folio = res.response && res.response.folio_request ? res.response.folio_request : '';
-            
+
             if(status == '201'){
                 //-----Event In
                 const title = document.getElementById('inputSelectCliente').value;
@@ -120,17 +120,21 @@ async function setCreateRecord(){
                     start: dateClick,
                     allDay: true
                 });
+                //----Clean
+                cleanForm();
+                isProcessing = false;
+                document.getElementById("button-succes-modalForm").disabled = false;
                 //----Close Modal
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalForm'));
                 modal.hide();
                 alert(`Se ha programado el servicio con folio ${folio}`);
-                cleanForm();
-                isProcessing = false;
+              
             }else{
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalForm'));
                 modal.hide();
                 alert('No se ha programado su servicio');
                 isProcessing = false;
+                document.getElementById("button-succes-modalForm").disabled = false;
             }
         })
     }else{
@@ -180,6 +184,7 @@ function validationsForm(data) {
 
 //-----GET DATA 
 function cleanForm() {
+    console.log('Entra a cleanForm')
     //---Clean
     const elements = document.querySelectorAll('.classFormInputs');
     elements.forEach(element => {

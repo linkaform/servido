@@ -8,9 +8,11 @@ let dicReportContext = [
             { type:'modal', col: '12', id:'modalInformation', title:'Datos de Tarea', formElements : [
                     {type:'p', title:'Folio:', id:'textFolio'},
                     {type:'p', title:'Cliente:', id:'textClient'},
+                    {type:'p', title:'Nombre del contacto:', id:'textContacto'},
                     {type:'p', title:'Equipo:', id:'textEquipo'},
                     {type:'p', title:'Marca:', id:'textMarca'},
                     {type:'p', title:'Modelo:', id:'textModelo'},
+                    {type:'p', title:'Trabajo a realizar:', id:'textTrabajo'},
                     {type:'p', title:'Estatus:', id:'textStatus'},
                 ]
             },
@@ -158,8 +160,10 @@ let configCustom = {
         const getValue = (key, defaultVal = 'N/A') => props[key] ?? defaultVal;
         const data = {
             modalCliente: event.title || 'N/A',
-            textFolio: getValue('folio'),
-            textClient: getValue('contacto'),
+            textFolio: event.id  || 'N/A',
+            textClient: getValue('cliente'),
+            textContacto: getValue('contacto'),
+            textTrabajo: getValue('trabajo_area'),
             textEquipo: (() => {
                 const check = getValue('check_equipo', 'No').toLowerCase();
                 if (check == 'sí') return props.catalog_equipo || 'N/A';
