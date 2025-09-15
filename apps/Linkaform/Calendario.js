@@ -109,7 +109,9 @@ async function setCreateRecord(){
         })
         .then((res) => res.json())
         .then((res) => {
-            let status = res.response && res.response.status ? res.response.status : '400';
+            let status = res.response && res.response.status_request ? res.response.status_request : '400';
+            let folio = res.response && res.response.folio_request ? res.response.folio_request : '';
+            
             if(status == '201'){
                 //-----Event In
                 const title = document.getElementById('inputSelectCliente').value;
@@ -121,13 +123,13 @@ async function setCreateRecord(){
                 //----Close Modal
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalForm'));
                 modal.hide();
-                alert('Se ha guardado su evento');
+                alert(`Se ha programado el servicio con folio ${folio}`);
                 cleanForm();
                 isProcessing = false;
             }else{
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalForm'));
                 modal.hide();
-                alert('No se ha guardado su evento');
+                alert('No se ha programado su servicio');
                 isProcessing = false;
             }
         })
