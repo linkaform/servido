@@ -1,23 +1,11 @@
-.title_tables h3 {
-  color: black;
-  font: 33px gothambook;
-  margin-top: 30px;
-  text-align: left;
-}
 
-
-.hrFirstElement {
-  border-top: 1px solid #707b7c;
-  width: 500px;
-  margin-left: 0%;
+    #canvas {
+        border: 1px solid black;
+       
 }
-
-.hrSecondElement {
-  border-top: 1px solid #707b7c;
-  width: 550px;
-  margin-left: 0%;
-}
-
-body{
-  font-family: gothambook;
-}
+    
+    
+          
+      
+    
+    
