@@ -571,7 +571,7 @@ function createListCard(containerId, data, title, options = {}) {
     const container = document.getElementById(containerId);
     if (!container) {
         console.error(`Contenedor ${containerId} no encontrado`);
-        return;
+        return; 
     }
 
     // Configuración por defecto

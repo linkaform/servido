@@ -330,8 +330,12 @@ function createElements(dataConfig = null){
                     //-----Class
                     const classElement = element.col ? `col-xl-${element.col} col-lg-${element.col} col-md-12 col-sm-12 col-xs-12 mb-4` : "col-xl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12  mb-4";
                     divElement.className = classElement;
+                    
                     //-----Progress
                     const progressElement = element.progress ? true : false;
+                    //-----Badge
+                    const badgeElement = element.badge ? true : false;
+
                     //-----List Progress
                     const listProgress = element.listProgress? element.listProgress : [];
                     //-----Id
@@ -651,6 +655,25 @@ function createElements(dataConfig = null){
                                 </div>
                             </div>
                         `;
+                    }else if(element.type == 'card-table'){
+
+                        //-----Badge
+                        let badgeItem = '';
+                        if(badgeElement){
+                            badgeItem = `<p class="total-badge" id="text-badge-${idElement}"></p>`;
+                        }
+
+                        //-----Element Card
+                        divElement.innerHTML = `<div id="${idElement}" class="custom-card-container shadow">
+                                <div class="list-card">
+                                    <div class="list-card-header">
+                                        <h5 class="list-card-title text-primary">${titleElement}</h5>
+                                        ${badgeItem}
+                                    </div>
+                                    <div class="list-card-body" id="div-card-table-body-${idElement}"></div>
+                                </div>
+                            </div>
+                        `;
                     }
                     rowDiv.appendChild(divElement);
                 });
@@ -842,7 +865,6 @@ function drawMapElement(elementId , title , data, configs = null, toltip = null)
     }
 }
 
-
 //-Función para pintar table
 function drawTableElement(tableId, tableData, tableColums, nameDownload = null, tableConfig = null, desingPDF = null ){
     //----Config default
@@ -913,8 +935,58 @@ function drawTableElement(tableId, tableData, tableColums, nameDownload = null, 
             isExpanded = !isExpanded;
         });
     }
-
 }
+
+//- Función para crear una table Card
+function drawCardTable(cardId, listDic = [], valueBadge){
+    // Si listDic no es un array, lo forzamos a []
+    if (!Array.isArray(listDic)) {
+        listDic = [];
+    }
+
+    // Contenedor del body
+    const bodyDiv = document.getElementById(`div-card-table-body-${cardId}`);
+    if(!bodyDiv) return;
+
+    // Limpiar contenido previo
+    bodyDiv.innerHTML = '';
+
+    // Actualizar badge si existe
+    const badgeEl = document.getElementById(`text-badge-${cardId}`);
+    if(badgeEl && valueBadge !== undefined){
+        badgeEl.textContent = valueBadge;
+    }
+
+    // Obtener paleta de colores según tamaño de la lista
+    let listColors = [];
+    if(listDic.length > 0){
+        listColors = getPAlleteColors(6, listDic.length);
+    }
+
+    // Iterar sobre la lista de items
+    listDic.forEach((item, index) => {
+        const color = listColors[index] || '#999999';
+
+        const listItem = document.createElement('div');
+        listItem.className = 'list-item';
+
+        listItem.innerHTML = `
+            <div class="list-item-content">
+                <div class="list-item-indicator" style="background-color: ${color};"></div>
+                <div class="list-item-text">
+                    <span class="item-type">${item.title ?? ''}</span>
+                </div>
+                <div class="item-quantity" style="color: ${color};">
+                    ${item.value ?? 0}
+                </div>
+            </div>
+        `;
+
+        bodyDiv.appendChild(listItem);
+    });
+}
+
+
 
 //--Funciona para cargar  estilos
 function setStylesLoading(state = null){

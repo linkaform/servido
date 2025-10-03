@@ -55,5 +55,71 @@ body {
 }
 
 
-/* Card Image */
+/* Card Table */
+.list-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #dee2e6;
+  margin-bottom: 2rem;
+  overflow: hidden;
+  height: 100%;
+  /* Para que todas tengan la misma altura */
+}
 
+.list-card-header {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.list-card-title {
+  margin: 0;
+  color: #495057;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.list-card-body {
+  padding: 1rem;
+  max-height: 425px;
+  min-height: 425px;
+  overflow-y: auto;
+  box-sizing: border-box; /* clave para que no se descuadre */
+}
+
+.list-item:last-child {
+    margin-bottom: 0;
+}
+
+.list-item-content {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.list-item-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+.list-item-text {
+    flex: 1;
+}
+
+.total-badge {
+  background: #007bff;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
