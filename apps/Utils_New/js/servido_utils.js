@@ -709,7 +709,6 @@ function drawChartElement(canvasId, type, datasets, dataconfig, datalabels = tru
 //-Funciona para pintar las imagenes dentro de un Carrousel
 function drawCarrouselImgs(divId, listImg) {
     const container = document.getElementById(`carousel-${divId}`);
-    console.log('Entra--------',container)
     if (!container) return;
     // Limpia el contenido anterior
     container.innerHTML = '';

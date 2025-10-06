@@ -181,7 +181,26 @@ function getPAlleteColors(pallete,number){
     arrayColors = chroma.scale(["#dc3545", "#28a745"]).mode('lch').colors(number);
   }else if(pallete == 13){
     arrayColors = chroma.scale(["#007CB3", "#EFB03B"]).mode('lch').colors(number);
+  }else if(pallete==14){
+    arrayColors = chroma.scale([
+      '#3498db', // Azul principal
+      '#1b4f72', // Azul oscuro profundo
+      '#27ae60', // Verde elegante
+      '#2e86c1', // Azul medio
+      '#117a65', // Verde oscuro
+      '#5dade2', // Azul pastel
+      '#1abc9c', // Turquesa
+      '#16a085', // Verde azulado intenso
+      '#76d7c4', // Verde agua claro
+      '#2c3e50', // Gris azulado oscuro
+      '#73c6b6', // Verde menta
+      '#2874a6', // Azul fuerte
+      '#239b56', // Verde fuerte
+      '#7fb3d5', // Azul pastel grisáceo
+      '#148f77'  // Teal profundo
+    ]).mode('lch').colors(number);
   }
+
   return arrayColors;
 }
 

@@ -75,7 +75,8 @@ async function getInformation(){
             console.log('response',response);
 
             if (response.calendarFirst) {
-                drawCalendar('calendarFirst', response.calendarFirst, configCustom);
+                dataFormat = setFormatColor(response.calendarFirst);
+                drawCalendar('calendarFirst', dataFormat, configCustom);
             }
             
             if (response.tableFirst) {
@@ -83,7 +84,7 @@ async function getInformation(){
             }
             
             if (response.cardTableFirst) {
-                drawCardTable('cardTableFirst', response.cardTableFirs);                
+                drawCardTable('cardTableFirst', response.cardTableFirst);                
             }
             
             if (response.cardTableSecond) {
@@ -107,31 +108,33 @@ async function getInformation(){
             }
             
             if (response.chartFirst) {
-                drawChartElement('chartFirst', 'bar', response.chartFirst, setOptions1, true, true);
+                drawChartElement('chartFirst', 'bar', response.chartFirst, setOptions1, true, false);
             }
             
             if (response.chartSecond) {
-                drawChartElement('chartSecond', 'doughnut', response.chartSecond, setOptions2, false, true);
+                drawChartElement('chartSecond', 'doughnut', response.chartSecond, setOptions3, false, false);
             }
             
             if (response.chartThird) {
-                drawChartElement('chartThird', 'doughnut', response.chartThird, setOptions3, true, true);
+                drawChartElement('chartThird', 'doughnut', response.chartThird, setOptions3, true, false);
             }
             
             if (response.chartFourth) {
-                drawChartElement('chartFourth', 'bar', response.chartFourth, setOptions4, true, true);
+                drawChartElement('chartFourth', 'bar', response.chartFourth, setOptions4, true, false);
             }
             
             if (response.chartFiveth) {
-                drawChartElement('chartFiveth', 'bar', response.chartFiveth, setOptions5, true, true);
+                drawChartElement('chartFiveth', 'bar', response.chartFiveth, setOptions5, true, false);
             }
+            
             
             if (response.chartSixth) {
-                drawChartElement('chartSixth', 'bar', response.chartSixth, setOptions6, true, true);
+                drawChartElement('chartSixth', 'bar', response.chartSixth, setOptions6, true, false);
             }
-            
+
+
             if (response.chartSeventh) {
-                drawChartElement('chartSeventh', 'bar', response.chartSeventh, setOptions7, true, true);
+                drawChartElement('chartSeventh', 'bar', response.chartSeventh, setOptions7, true, false);
             }
             showElements();
         }
@@ -141,39 +144,37 @@ async function getInformation(){
     }
 }
 
-//-----GET CATALOG
-function get_catalog(){
-    const scriptId = getParameterURL('script_id');
-    const JWT = getCookie("userJwt");
-    fetch(getUrlRequest('script'), {
-        method: 'POST',
-        body: JSON.stringify({
-            script_id: scriptId,
-            option: 'get_catalog',
-        }),
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+JWT
-        },
-    })
-    .then((res) => res.json())
-    .then((res) => {
-        const catalog_cliente = res.response && res.response.data && res.response.data.catalog_cliente ? res.response.data.catalog_cliente : [];
-        const catalog_equipo = res.response && res.response.data && res.response.data.catalog_equipo ? res.response.data.catalog_equipo : [];
-        const catalog_forma = res.response && res.response.data && res.response.data.catalog_forma ? res.response.data.catalog_forma : [];
+function setFormatColor(dataList) {
+    if (!Array.isArray(dataList)) return dataList;
 
-        if(catalog_cliente.length > 0){
-            informationCliente = catalog_cliente;
-            set_catalog_select(catalog_cliente, 'razon_cliente', 'cliente');
-            set_catalog_select(catalog_cliente, 'razon_cliente', 'inputSelectCliente');
+    const coordinadoresSet = new Set();
+    dataList.forEach(item => {
+        const coord = item.extendedProps?.coordinator;
+        if (coord) {
+            coordinadoresSet.add(coord);
         }
-        if(catalog_equipo.length > 0){
-            informationEquipo = catalog_equipo;
-            set_catalog_select(catalog_equipo, 'nombre_equipo', 'inputSelectEquipo');
+    });
+
+    const coordinadores = Array.from(coordinadoresSet);
+
+    const colors = getPAlleteColors(14, coordinadores.length);
+
+    const colorMap = {};
+    coordinadores.forEach((coord, index) => {
+        colorMap[coord] = colors[index % colors.length]; // por si hay más coordinadores que colores
+    });
+
+    const formattedData = dataList.map(item => {
+        const coord = item.extendedProps?.coordinator;
+        if (coord && colorMap[coord]) {
+            return {
+                ...item,
+                backgroundColor: colorMap[coord]
+            };
+        } else {
+            return item;
         }
-        if(catalog_forma.length > 0){
-            informationForma = catalog_forma;
-            set_catalog_select(catalog_forma, 'forma', 'inputSelectForma');
-        }
-    })
+    });
+
+    return formattedData;
 }

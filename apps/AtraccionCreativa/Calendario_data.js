@@ -38,13 +38,13 @@ let dicReportContext = [
     { class:'', _children : [
             { type: 'chart', col: '4', id: 'chartFourth', title: 'Grafíca UDS por tipo de Mantto' },
             { type: 'chart', col: '4', id: 'chartFiveth', title: 'Grafíca UDS por Estado' },
-            { type: 'chart', col: '4', id: 'chartSeventh', title: 'Grafíca UDS por Tipo de Mueble'},
+            { type: 'chart', col: '4', id: 'chartSixth', title: 'Grafíca UDS por Tipo de Mueble'},
 
         ] 
     },
     { class:'', _children : [
             { type:'card-table', col: '6', id:'cardTableSixth', badge:false, title:'UDS por Canal'},
-            { type: 'chart', col: '6', id: 'chartSixth', title: 'Grafíca UDS por Canal'},
+            { type: 'chart', col: '6', id: 'chartSeventh', title: 'Grafíca UDS por Canal'},
         ] 
     },
 ];
@@ -272,7 +272,7 @@ var setOptions2 = {
             },
             callbacks: {
                 label: function (tooltipItem) {
-                    return `${tooltipItem.raw}%`;
+                    return `${tooltipItem.raw}`;
                 }
             }
         }
@@ -294,7 +294,7 @@ var setOptions2 = {
             ctx.textBaseline = 'middle';
             ctx.font = 'bold 36px Arial';
             ctx.fillStyle = '#333';
-            ctx.fillText(value + '%', centerX, centerY);
+            ctx.fillText(value , centerX, centerY);
             ctx.restore();
         }
     }
@@ -348,7 +348,7 @@ var setOptions3 = {
             borderWidth: 2,
             padding: 8,
             formatter: function (value, context) {
-                return value + '%';
+                return value ;
             }
         },
         tooltip: {
@@ -515,6 +515,7 @@ var dataChart5 = {
     ]
 };
 
+
 var setOptions6 = {
     indexAxis: 'y',
     responsive: true,
@@ -580,6 +581,7 @@ var dataChart6 = {
     ]
 };
 
+
 var setOptions7 = {
     indexAxis: 'y',
     responsive: true,
@@ -644,9 +646,6 @@ var dataChart7 = {
         },
     ]
 };
-
-
-
 //----Config Calendar
 let configCustom = {
     locale : 'es',
