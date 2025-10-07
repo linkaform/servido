@@ -7,6 +7,7 @@ let dataCatalogs="";
 let id ="" 
 let caseta=""
 let ubicacion=""
+let account_id=""
 let paseDeAccesoScript= "pase_de_acceso.py"
 let fotosNuevaVisita={foto:[], identificacion:[]}
 
@@ -31,6 +32,7 @@ window.onload = function(){
 
 	ubicacion = urlParams.get('ubicacion') !== null ? urlParams.get('ubicacion') :'' ;
 	caseta = urlParams.get('caseta') !== null ? urlParams.get('caseta') : '' ;
+	account_id = urlParams.get('acc_id') !== null ? urlParams.get('acc_id') : '' ;
 	id = urlParams.get('id');
 	if(id){
 		getExtraInformation()
@@ -420,7 +422,8 @@ function AlertSendDataUser() {
 		            script_name: paseDeAccesoScript,
 	                option: 'create_access_pass',
 	                location:location,
-	                access_pass: access_pass
+	                access_pass: access_pass,
+					account_id: account_id
 		        }),
 		        headers:{
 		            'Content-Type': 'application/json',
