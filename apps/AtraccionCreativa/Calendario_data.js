@@ -125,7 +125,7 @@ let events = [
 let columsTable1 = [
     { title: "División", field: "division", headerTooltip: true, hozAlign: "center", width: 120 },
     { title: "Asignadas", field: "assigned", headerTooltip: true, hozAlign: "left", width: 150 },
-    { title: "Pendientes", field: "pending", headerTooltip: true, hozAlign: "left", width: 150 },
+    { title: "Consumidas", field: "pending", headerTooltip: true, hozAlign: "left", width: 150 },
     { title: "Restantes", field: "remaining", headerTooltip: true, hozAlign: "left", width: 150 },
 ];
 
@@ -190,6 +190,11 @@ let cardTableSixthData = [
 var setOptions1 = {
     indexAxis: 'y',
     responsive: true,
+    layout: {
+        padding: {
+            right: 30  // deja espacio para etiquetas largas
+        }
+    },
     plugins: {
         legend: {
             display: false,
@@ -200,12 +205,12 @@ var setOptions1 = {
         datalabels: {
             color: 'black',
             font: {
-                size: 15,
+                size: 17,
                 weight: 'bold'
             },
             anchor: 'end',
             align: 'right',
-            offset: 10,
+            offset: 5,
             formatter: function (value) {
                 return value;
             }
@@ -382,6 +387,11 @@ var dataChart3 = {
 var setOptions4 = {
     indexAxis: 'y',
     responsive: true,
+    layout: {
+        padding: {
+            right: 30  // deja espacio para etiquetas largas
+        }
+    },
     plugins: {
         legend: {
             display: false,
@@ -392,12 +402,12 @@ var setOptions4 = {
         datalabels: {
             color: 'black',
             font: {
-                size: 15,
+                size: 17,
                 weight: 'bold'
             },
             anchor: 'end',
             align: 'right',
-            offset: 10,
+            offset: 5,
             formatter: function (value) {
                 return value;
             }
@@ -450,6 +460,11 @@ var dataChart4 = {
 var setOptions5 = {
     indexAxis: 'y',
     responsive: true,
+    layout: {
+        padding: {
+            right: 30  // deja espacio para etiquetas largas
+        }
+    },
     plugins: {
         legend: {
             display: false,
@@ -460,12 +475,12 @@ var setOptions5 = {
         datalabels: {
             color: 'black',
             font: {
-                size: 15,
+                size: 17,
                 weight: 'bold'
             },
             anchor: 'end',
             align: 'right',
-            offset: 10,
+            offset: 5,
             formatter: function (value) {
                 return value;
             }
@@ -519,6 +534,11 @@ var dataChart5 = {
 var setOptions6 = {
     indexAxis: 'y',
     responsive: true,
+    layout: {
+        padding: {
+            right: 30  // deja espacio para etiquetas largas
+        }
+    },
     plugins: {
         legend: {
             display: false,
@@ -529,12 +549,12 @@ var setOptions6 = {
         datalabels: {
             color: 'black',
             font: {
-                size: 15,
+                size: 17,
                 weight: 'bold'
             },
             anchor: 'end',
             align: 'right',
-            offset: 10,
+            offset: 5,
             formatter: function (value) {
                 return value;
             }
@@ -585,6 +605,11 @@ var dataChart6 = {
 var setOptions7 = {
     indexAxis: 'y',
     responsive: true,
+    layout: {
+        padding: {
+            right: 30  // deja espacio para etiquetas largas
+        }
+    },
     plugins: {
         legend: {
             display: false,
@@ -593,17 +618,15 @@ var setOptions7 = {
             display: false,
         },
         datalabels: {
-            color: 'black',
+            color: 'black',  
             font: {
-                size: 15,
+                size: 17,
                 weight: 'bold'
             },
             anchor: 'end',
             align: 'right',
-            offset: 10,
-            formatter: function (value) {
-                return value;
-            }
+            offset: 5,     
+            formatter: (value) => value
         }
     },
     maintainAspectRatio: false,
