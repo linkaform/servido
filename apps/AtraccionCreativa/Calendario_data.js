@@ -43,8 +43,8 @@ let dicReportContext = [
         ] 
     },
     { class:'', _children : [
-            { type:'card-table', col: '6', id:'cardTableSixth', badge:false, title:'UDS por Canal'},
-            { type: 'chart', col: '6', id: 'chartSeventh', title: 'Grafíca UDS por Canal'},
+            { type:'card-table', col: '6', id:'cardTableSixth', badge:false, title:'UDS por Distribuidor'},
+            { type: 'chart', col: '6', id: 'chartSeventh', title: 'Grafíca UDS por Distribuidor'},
         ] 
     },
 ];
