@@ -12,12 +12,20 @@ let dicReportContext = [
     ]},
     { class:'', _children : [
         { type:'table', col: '12', id:'tableFirst', title:'Resultados por Pregunta'},
+        { type:'table', col: '12', id:'tableSecond', title:'Porcentajes en riesgo'},
     ]},
     { class:'', _children : [
         { type:'chart', col: '12', id:'chartFiveth', title:'Progreso por Pregunta 1 de 3'},
         { type:'chart', col: '12', id:'chartSixth', title:'Progreso por Pregunta 2 de 3'},
         { type:'chart', col: '12', id:'chartSeventh', title:'Progreso por Pregunta 3 de 3'},
     ]},
+    { class:'', _children : [
+            { type:'modal', col: '12', id:'modalInformation', title:'Información de pregunta', formElements : [
+                    {type:'div', title:'Lista de Folios:', id:'divModalList'},
+                ]
+            },
+        ] 
+    },
 ];
 
 
@@ -39,7 +47,6 @@ let columsTable1 = [
         width: 190, 
         responsive: 2
     }
-
 ];
 
 let dataTable1 = [
@@ -78,6 +85,115 @@ let dataTable1 = [
         'negativos':'0',
         'porcentaje':'100',
     }
+];
+
+//-----Table
+let columsTable2 = [
+    { title: "Pregunta", field: 'pregunta',  headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 1050, responsive: 2},
+    { 
+        title: "% de Cumplimiento", 
+        field: 'porcentaje', 
+        headerTooltip: true,  
+        hozAlign: "center", 
+        width: 150,
+        formatter: function(cell, formatterParams, onRendered) {
+            const value = cell.getValue();
+            console.log('value',value)
+            if (value === null || value === undefined) {
+                return '<span style="color: #999; font-style: italic;">Sin Cumplimiento</span>';
+            }
+            
+            let backgroundColor = '';
+            let textColor = 'white';
+            let icon = '';
+            let text = value;
+
+            if (value <= 50) {
+                backgroundColor = '#dc3545';
+                icon = '🔴';
+                text = `${Math.abs(value)} %`;
+            } else if (value  >= 51 &&  value <= 80) {
+                backgroundColor = '#fd7e14';
+                icon = '🟡';
+                text = `${value}%`;
+            }  else if (value  >= 81 &&  value <= 99) {
+                backgroundColor = '#28a745';
+                icon = '🟢';
+                text = `${value}%`;
+            }
+            return `
+                <div style="
+                    background-color: ${backgroundColor}; 
+                    color: ${textColor}; 
+                    font-weight: bold; 
+                    padding: 6px 10px; 
+                    border-radius: 6px; 
+                    text-align: center;
+                    font-size: 12px;
+                    line-height: 1.2;
+                ">
+                    <div>${icon}</div>
+                    <div>${text}</div>
+                </div>
+            `;
+        },
+        cellClick: function(e, cell) {
+            const rowData = cell.getRow().getData();
+            const label = rowData.pregunta; // obtiene la columna 'pregunta'
+            if (label) {
+                getInformationQuest(label);
+                new bootstrap.Modal(document.getElementById('modalInformation')).show();
+            }
+        }
+    },
+    { 
+        title: "Progress", 
+        field: "porcentaje", 
+        sorter: "number", 
+        hozAlign: "left", 
+        formatter: "progress", 
+        editable: true, 
+        headerSort: false,
+        formatterParams: {
+            min: 0,
+            max: 100,
+            color: function(value){
+                if(value <= 50){
+                    return "#e74c3c"; // rojo
+                } else if(value <= 80){
+                    return "#f1c40f"; // amarillo
+                } else {
+                    return "#2ecc71"; // verde
+                }
+            },
+            legendColor: false, // desactiva gradiente si lo tuviera
+            legendAlign: "center"
+        }
+    }
+];
+
+
+let dataTable2 = [
+    {
+        'pregunta':'33. Calcomanías "Servifácil", acrílico 3D de banderas y números de posición en buenas condiciones',
+        'porcentaje':'33',
+    },
+    {
+        'pregunta':'28. La pintura del área de despacho se encuentra en buenas condiciones: FLECHAS Y CEBRA PEATONAL',
+        'porcentaje':'50',
+    },
+    {
+        'pregunta':'23. Se encuentra limpia la parte interna de los dispensarios',
+        'porcentaje':'55.6',
+    },
+    {
+        'pregunta':'20. Se encuentran en buenas condiciones cada uno de los elementos del área de tanques',
+        'porcentaje':'67',
+    },
+    {
+        'pregunta':'15. Casco de seguridad',
+        'porcentaje':'93',
+    },
 ];
 
 
@@ -266,7 +382,6 @@ var dataChart4A = {
     ]
 };
 
-
 //---Chart Fiveth
 var setOptions5A = {
     responsive: true,
@@ -277,14 +392,18 @@ var setOptions5A = {
             position: 'top',
         },
         datalabels: { 
-            color: 'white', 
+            color: 'black', 
+            font: {
+                weight: 'bold',
+                size: 10
+            },
         }
     },
     scales: {
         x: {
             display: false, 
         }
-    }
+    },
 };
 
 var dataChart5A = {
@@ -292,7 +411,7 @@ var dataChart5A = {
     datasets: [
         {
             label: 'Total',
-            data: [45, 60, 78, 32],
+            data: [80, 60, 78, 32],
             fill: false,
             backgroundColor: [],
         },
@@ -309,58 +428,90 @@ var setOptions6A = {
             position: 'top',
         },
         datalabels: { 
-            color: 'white', 
+            color: 'black', 
+            font: {
+                weight: 'bold',
+                size: 10
+            },
         }
     },
     scales: {
         x: {
             display: false, 
         }
-    }
+    },
 };
-
 
 var dataChart6A = {
     labels: ['Pregunta 5','Pregunta 6','Pregunta 7','Pregunta 8'],
     datasets: [
         {
             label: 'Total',
-            data: [45, 60, 78, 32],
+            data: [0, 60, 78, 32],
             fill: false,
             backgroundColor: [],
         },
     ]
 };
 
-//---Chart Sixth
+//---Chart Seventh
 var setOptions7A = {
     responsive: true,
     maintainAspectRatio: false,
+    interaction: {
+        mode: 'nearest',
+        intersect: true
+    },
     plugins: {
+        tooltip: {
+            enabled: true
+        },
         legend: {
             display: true,
             position: 'top',
         },
         datalabels: { 
-            color: 'white', 
+            color: 'black', 
+            font: {
+                weight: 'bold',
+                size: 10
+            },
         }
     },
     scales: {
         x: {
-            display: false, 
+            display: true, 
         }
-    }
+    },
 };
-
 
 var dataChart7A = {
     labels: ['Pregunta 9','Pregunta 10','Pregunta 11','Pregunta 12'],
     datasets: [
         {
             label: 'Total',
-            data: [45, 60, 78, 32],
+            data: [0, 60, 78, 32],
             fill: false,
             backgroundColor: [],
         },
+    ]
+};
+
+let dicSearchFolio = {
+    '15. Casco de seguridad': [
+        {folio: '1001-01', grading: 'Positivo', idRecord: '9001'},
+        {folio: '1001-02', grading: 'Negativo', idRecord: '9002'}
+    ],
+    '20. Se encuentran en buenas condiciones cada uno de los elementos del área de tanques': [
+        {folio: '1002-01', grading: 'Positivo', idRecord: '9003'}
+    ],
+    '23. Se encuentra limpia la parte interna de los dispensarios': [
+        {folio: '1003-01', grading: 'Negativo', idRecord: '9004'}
+    ],
+    '28. La pintura del área de despacho se encuentra en buenas condiciones: FLECHAS Y CEBRA PEATONAL': [
+        {folio: '1004-01', grading: 'Positivo', idRecord: '9005'}
+    ],
+    '33. Calcomanías "Servifácil", acrílico 3D de banderas y números de posición en buenas condiciones': [
+        {folio: '1005-01', grading: 'Positivo', idRecord: '9006'}
     ]
 };

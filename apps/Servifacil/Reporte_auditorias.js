@@ -22,11 +22,14 @@ function loadDemoData(){
     drawChartElement('chartThird','bar',dataChart3A,setOptions3A, undefined, true);
     drawChartElement('chartFourth','line',dataChart4A,setOptions4A);
 
+    //---Example re format colors for value 0
     drawChartElement('chartFiveth','bar',dataChart5A,setOptions5A);
     drawChartElement('chartSixth','bar',dataChart6A,setOptions6A);
     drawChartElement('chartSeventh','bar',dataChart7A,setOptions7A);
 
+
     drawTableElement('tableFirst', dataTable1, columsTable1);
+    drawTableElement('tableSecond', dataTable2, columsTable2);
     drawCardElement('cardFirst',20);
     drawCardElement('cardSecond',30);
     setTimeout(() => { hide_loading();}, 2000);
@@ -222,5 +225,50 @@ function formatChartData(data,type, divId){
 
     if(divId !=''){
         drawChartElement(divId,'bar',dataChart, optionsCustom, undefined, true);
+    }
+}
+
+//----Function Get Folio
+function getInformationQuest(questName) {
+    const divModalList = document.getElementById('divModalList');
+    if (!divModalList) return;
+
+    // Limpiar contenido previo
+    divModalList.innerHTML = '';
+
+    // Revisar si existe la key en dicSearchFolio
+    if (dicSearchFolio.hasOwnProperty(questName)) {
+        const dataArray = dicSearchFolio[questName];
+
+        dataArray.forEach(item => {
+            // Crear li con estructura de Bootstrap
+            const li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+
+            // Crear enlace con folio
+            const a = document.createElement('a');
+            a.href = `https://example.com/folio/${item.idRecord}`;
+            a.target = '_blank';
+            a.className = 'fw-bold text-decoration-none';
+            a.textContent = `Folio: ${item.folio}`;
+
+            // Crear badge con grading
+            const span = document.createElement('span');
+            span.className = `badge rounded-pill ${
+                item.grading.toLowerCase() === 'positivo' ? 'bg-success' :
+                item.grading.toLowerCase() === 'negativo' ? 'bg-danger' : 'bg-warning text-dark'
+            }`;
+            span.textContent = item.grading;
+
+            // Añadir elementos al li
+            li.appendChild(a);
+            li.appendChild(span);
+
+            // Añadir li al divModalList
+            divModalList.appendChild(li);
+        });
+    } else {
+        // Si no hay coincidencia
+        divModalList.innerHTML = '<li class="list-group-item">No se encontraron resultados.</li>';
     }
 }

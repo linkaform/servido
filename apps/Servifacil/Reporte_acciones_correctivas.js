@@ -20,7 +20,15 @@ function loadDemoData(){
   drawChartElement('chartFirst','bar',dataChart1A,setOptions1A);
   drawChartElement('chartSecond','bar',dataChart2A,setOptions2A);
   drawChartElement('chartThird','doughnut',dataChart3A,setOptions3A, true, true);
-  drawTableElement('tableFirst', dataTable1, columsTable1);
+  drawChartElement('chartFourth','doughnut',dataChart4A,setOptions4A, true, true);
+  drawChartElement('chartFiveth','doughnut',dataChart4A,setOptions4A, true, true);
+
+  drawCardElement('cardFirst',45);
+  drawCardElement('cardSecond',18);
+
+  drawTableElement('tableFirst', dataTable1, columsTable1, null, configTableCustomFooter);
+  drawTableElement('tableSecond', dataTable2, columsTable2, null, configTableCustomFooter);
+  drawTableElement('tableThird', dataTable3, columsTable3, null, configTableCustomFooter);
   setTimeout(() => { hide_loading();}, 2000);
 }
 

@@ -1,13 +1,36 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'chart', col: '12', id:'chartFirst', title:'Acciones Correctivas por Estación'},
-            { type:'chart', col: '6', id:'chartSecond', title:'Acciones Correctivas por Estatus'},
-            { type:'chart', col: '6', id:'chartThird', title:'Porcentaje de cumplimiento'},
-            { type:'table', col: '12', id:'tableFirst', title:'Cumplimiento de acciones correctivas'},
+        { type:'chart', col: '12', id:'chartFirst', title:'Acciones Correctivas por Estación'},
+        { type:'chart', col: '6', id:'chartSecond', title:'Acciones Correctivas por Estatus'},
+        { type:'chart', col: '6', id:'chartThird', title:'Porcentaje de cumplimiento'},
+        { type:'table', col: '12', id:'tableFirst', title:'Cumplimiento de acciones correctivas'},
+    ]},
+    { class:'', _children : [
+        { 
+            type:'tabs', 
+            col: '12', 
+            id:'tabFirst', 
+            optionsTabs:[
+                {id:'tabOperaciones',name:'Operaciones'},
+                {id:'tabMantenimiento',name:'Mantenimiento'},
+            ],
+            elementsTabs:[
+                {tabId:'tabMantenimiento', type:'card', id:'cardFirst', title:'Tareas Pendientes Mantenimiento', hexadecimal:'#FF5733'}, 
+                {tabId:'tabMantenimiento', type:'chart', id:'chartFourth', title:'Porcentaje de cumplimiento Mantenimiento'}, 
+                {tabId:'tabMantenimiento', type:'table', id:'tableSecond', title:'Cumplimiento de acciones correctivas Mantenimiento'}, 
+
+                {tabId:'tabOperaciones', type:'card', id:'cardSecond', title:'Tareas Pendientes Operaciones', hexadecimal:'#FF5733'}, 
+                {tabId:'tabOperaciones', type:'chart', id:'chartFiveth', title:'Porcentaje de cumplimiento Operaciones'}, 
+                {tabId:'tabOperaciones', type:'table', id:'tableThird', title:'Cumplimiento de acciones correctivas Operaciones'} 
+            ]
+        },
     ]},
 ];
 
+
+
+//-----Tables
 let columsTable1 = [
     { 
         title: "Folio", 
@@ -201,13 +224,422 @@ let dataTable1 = [
   }
 ];
 
+let columsTable2 = [
+    { 
+        title: "Folio", 
+        field: 'folio', 
+        headerTooltip: true, 
+        headerFilter:"input", 
+        hozAlign: "left", 
+        width: 200,
+        formatter: function(cell, formatterParams, onRendered) {
+            const folio = cell.getValue();
+            const rowData = cell.getRow().getData();
+            const recordId = rowData._id;
+            
+            if (recordId) {
+                return `<a href="https://app.linkaform.com/#/records/detail/${recordId}" 
+                           target="_blank" 
+                           style="color: #007bff; text-decoration: underline; cursor: pointer;">
+                           ${folio}
+                        </a>`;
+            } else {
+                return folio;
+            }
+        }
+    },
+    { title: "Estación de Servicio", field: 'estacion', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 200},
+    { title: "Acción Correctiva", field: 'accion', headerTooltip: true,  hozAlign: "left", width: 450},
+    { title: "Días para cumplimiento", field: 'cumplimiento', headerTooltip: true,  hozAlign: "right", width: 130},
+    { title: "Fecha Inicio", field: 'fecha_inicio', headerTooltip: true,  hozAlign: "left", width: 200},
+    { title: "Fecha Limite", field: 'fecha_limite', headerTooltip: true,  hozAlign: "left", width: 200},
+    { title: "Fecha de Solución", field: 'fecha_solucion', headerTooltip: true,  hozAlign: "left", width: 200},
+    { 
+        title: "Días para Vencimiento", 
+        field: 'dia_vencimiento', 
+        headerTooltip: true,  
+        hozAlign: "center", 
+        width: 150,
+        formatter: function(cell, formatterParams, onRendered) {
+            const value = cell.getValue();
+            
+            if (value === null || value === undefined) {
+                return '<span style="color: #999; font-style: italic;">Sin fecha</span>';
+            }
+            
+            let backgroundColor = '';
+            let textColor = 'white';
+            let icon = '';
+            let text = value;
+
+            if (cell.getRow().getData().ultima_accion == 'Validada') {
+                backgroundColor = '#28a745';
+                icon = '✅';
+                text = `Acción Realizada`;
+            } else if (value < 0) {
+                backgroundColor = '#dc3545';
+                icon = '🔴';
+                text = `${Math.abs(value)} días retrasado`;
+            } else if (value === 0) {
+                backgroundColor = '#ffc107';
+                textColor = 'black';
+                icon = '⚠️';
+                text = 'Último día';
+            } else if (value <= 3) {
+                backgroundColor = '#fd7e14';
+                icon = '🟡';
+                text = `${value} días restantes`;
+            } else {
+                backgroundColor = '#28a745';
+                icon = '🟢';
+                text = `${value} días restantes`;
+            }
+            
+            return `
+                <div style="
+                    background-color: ${backgroundColor}; 
+                    color: ${textColor}; 
+                    font-weight: bold; 
+                    padding: 6px 10px; 
+                    border-radius: 6px; 
+                    text-align: center;
+                    font-size: 12px;
+                    line-height: 1.2;
+                ">
+                    <div>${icon}</div>
+                    <div>${text}</div>
+                </div>
+            `;
+        }
+    },
+];
+
+let dataTable2 = [
+    {
+        folio: "MT-2001",
+        estacion: "ES Toluca 01",
+        accion: "Mantenimiento preventivo de bombas",
+        cumplimiento: 85,
+        fecha_inicio: "2025-07-01",
+        fecha_limite: "2025-07-05",
+        fecha_solucion: "2025-07-04",
+        dia_vencimiento: 1,
+        ultima_accion: "Validado"
+    },
+    {
+        folio: "MT-2002",
+        estacion: "ES Lerma 02",
+        accion: "Revisión de sistema eléctrico",
+        cumplimiento: 100,
+        fecha_inicio: "2025-07-02",
+        fecha_limite: "2025-07-06",
+        fecha_solucion: "2025-07-05",
+        dia_vencimiento: 0,
+        ultima_accion: "Finalizado"
+    },
+    {
+        folio: "MT-2003",
+        estacion: "ES Metepec 03",
+        accion: "Cambio de luminarias",
+        cumplimiento: 70,
+        fecha_inicio: "2025-07-03",
+        fecha_limite: "2025-07-08",
+        fecha_solucion: "2025-07-06",
+        dia_vencimiento: 2,
+        ultima_accion: "En ejecución"
+    },
+    {
+        folio: "MT-2004",
+        estacion: "ES Zinacantepec 04",
+        accion: "Revisión de líneas hidráulicas",
+        cumplimiento: 90,
+        fecha_inicio: "2025-07-01",
+        fecha_limite: "2025-07-07",
+        fecha_solucion: "2025-07-07",
+        dia_vencimiento: 0,
+        ultima_accion: "Documentado"
+    },
+    {
+        folio: "MT-2005",
+        estacion: "ES Temoaya 05",
+        accion: "Limpieza general de área de tanques",
+        cumplimiento: 60,
+        fecha_inicio: "2025-07-04",
+        fecha_limite: "2025-07-09",
+        fecha_solucion: "2025-07-08",
+        dia_vencimiento: 1,
+        ultima_accion: "Revisado"
+    },
+    {
+        folio: "MT-2006",
+        estacion: "ES Almoloya 06",
+        accion: "Sustitución de válvulas",
+        cumplimiento: 80,
+        fecha_inicio: "2025-07-02",
+        fecha_limite: "2025-07-06",
+        fecha_solucion: "2025-07-06",
+        dia_vencimiento: 0,
+        ultima_accion: "Autorizado"
+    },
+    {
+        folio: "MT-2007",
+        estacion: "ES Xonacatlán 07",
+        accion: "Reparación de fugas menores",
+        cumplimiento: 95,
+        fecha_inicio: "2025-07-01",
+        fecha_limite: "2025-07-05",
+        fecha_solucion: "2025-07-04",
+        dia_vencimiento: 1,
+        ultima_accion: "Cerrado"
+    },
+    {
+        folio: "MT-2008",
+        estacion: "ES Otzolotepec 08",
+        accion: "Pruebas de presión en tuberías",
+        cumplimiento: 75,
+        fecha_inicio: "2025-07-03",
+        fecha_limite: "2025-07-08",
+        fecha_solucion: "2025-07-07",
+        dia_vencimiento: 1,
+        ultima_accion: "Observaciones atendidas"
+    },
+    {
+        folio: "MT-2009",
+        estacion: "ES Capultitlán 09",
+        accion: "Pintura de señalamientos",
+        cumplimiento: 88,
+        fecha_inicio: "2025-07-02",
+        fecha_limite: "2025-07-06",
+        fecha_solucion: "2025-07-05",
+        dia_vencimiento: 1,
+        ultima_accion: "Verificado"
+    },
+    {
+        folio: "MT-2010",
+        estacion: "ES Cacalomacán 10",
+        accion: "Limpieza de filtros de ventilación",
+        cumplimiento: 65,
+        fecha_inicio: "2025-07-05",
+        fecha_limite: "2025-07-10",
+        fecha_solucion: "2025-07-09",
+        dia_vencimiento: 1,
+        ultima_accion: "En curso"
+    }
+];
+
+let columsTable3 = [
+    { 
+        title: "Folio", 
+        field: 'folio', 
+        headerTooltip: true, 
+        headerFilter:"input", 
+        hozAlign: "left", 
+        width: 200,
+        formatter: function(cell, formatterParams, onRendered) {
+            const folio = cell.getValue();
+            const rowData = cell.getRow().getData();
+            const recordId = rowData._id;
+            
+            if (recordId) {
+                return `<a href="https://app.linkaform.com/#/records/detail/${recordId}" 
+                           target="_blank" 
+                           style="color: #007bff; text-decoration: underline; cursor: pointer;">
+                           ${folio}
+                        </a>`;
+            } else {
+                return folio;
+            }
+        }
+    },
+    { title: "Estación de Servicio", field: 'estacion', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 200},
+    { title: "Acción Correctiva", field: 'accion', headerTooltip: true,  hozAlign: "left", width: 450},
+    { title: "Días para cumplimiento", field: 'cumplimiento', headerTooltip: true,  hozAlign: "right", width: 130},
+    { title: "Fecha Inicio", field: 'fecha_inicio', headerTooltip: true,  hozAlign: "left", width: 200},
+    { title: "Fecha Limite", field: 'fecha_limite', headerTooltip: true,  hozAlign: "left", width: 200},
+    { title: "Fecha de Solución", field: 'fecha_solucion', headerTooltip: true,  hozAlign: "left", width: 200},
+    { 
+        title: "Días para Vencimiento", 
+        field: 'dia_vencimiento', 
+        headerTooltip: true,  
+        hozAlign: "center", 
+        width: 150,
+        formatter: function(cell, formatterParams, onRendered) {
+            const value = cell.getValue();
+            
+            if (value === null || value === undefined) {
+                return '<span style="color: #999; font-style: italic;">Sin fecha</span>';
+            }
+            
+            let backgroundColor = '';
+            let textColor = 'white';
+            let icon = '';
+            let text = value;
+
+            if (cell.getRow().getData().ultima_accion == 'Validada') {
+                backgroundColor = '#28a745';
+                icon = '✅';
+                text = `Acción Realizada`;
+            } else if (value < 0) {
+                backgroundColor = '#dc3545';
+                icon = '🔴';
+                text = `${Math.abs(value)} días retrasado`;
+            } else if (value === 0) {
+                backgroundColor = '#ffc107';
+                textColor = 'black';
+                icon = '⚠️';
+                text = 'Último día';
+            } else if (value <= 3) {
+                backgroundColor = '#fd7e14';
+                icon = '🟡';
+                text = `${value} días restantes`;
+            } else {
+                backgroundColor = '#28a745';
+                icon = '🟢';
+                text = `${value} días restantes`;
+            }
+            
+            return `
+                <div style="
+                    background-color: ${backgroundColor}; 
+                    color: ${textColor}; 
+                    font-weight: bold; 
+                    padding: 6px 10px; 
+                    border-radius: 6px; 
+                    text-align: center;
+                    font-size: 12px;
+                    line-height: 1.2;
+                ">
+                    <div>${icon}</div>
+                    <div>${text}</div>
+                </div>
+            `;
+        }
+    },
+];
+
+let dataTable3 = [
+    {
+        folio: "OP-3001",
+        estacion: "ES Toluca 01",
+        accion: "Recepción de combustible",
+        cumplimiento: 100,
+        fecha_inicio: "2025-07-01",
+        fecha_limite: "2025-07-01",
+        fecha_solucion: "2025-07-01",
+        dia_vencimiento: 0,
+        ultima_accion: "Completado"
+    },
+    {
+        folio: "OP-3002",
+        estacion: "ES Lerma 02",
+        accion: "Verificación de inventarios",
+        cumplimiento: 90,
+        fecha_inicio: "2025-07-02",
+        fecha_limite: "2025-07-02",
+        fecha_solucion: "2025-07-02",
+        dia_vencimiento: 0,
+        ultima_accion: "Aprobado"
+    },
+    {
+        folio: "OP-3003",
+        estacion: "ES Metepec 03",
+        accion: "Revisión de bitácoras de despacho",
+        cumplimiento: 80,
+        fecha_inicio: "2025-07-03",
+        fecha_limite: "2025-07-03",
+        fecha_solucion: "2025-07-03",
+        dia_vencimiento: 0,
+        ultima_accion: "Cerrado"
+    },
+    {
+        folio: "OP-3004",
+        estacion: "ES Zinacantepec 04",
+        accion: "Conciliación de ventas",
+        cumplimiento: 95,
+        fecha_inicio: "2025-07-04",
+        fecha_limite: "2025-07-04",
+        fecha_solucion: "2025-07-04",
+        dia_vencimiento: 0,
+        ultima_accion: "Validado"
+    },
+    {
+        folio: "OP-3005",
+        estacion: "ES Temoaya 05",
+        accion: "Entrega de reportes diarios",
+        cumplimiento: 70,
+        fecha_inicio: "2025-07-05",
+        fecha_limite: "2025-07-05",
+        fecha_solucion: "2025-07-05",
+        dia_vencimiento: 0,
+        ultima_accion: "En revisión"
+    },
+    {
+        folio: "OP-3006",
+        estacion: "ES Almoloya 06",
+        accion: "Control de turnos de personal",
+        cumplimiento: 85,
+        fecha_inicio: "2025-07-06",
+        fecha_limite: "2025-07-06",
+        fecha_solucion: "2025-07-06",
+        dia_vencimiento: 0,
+        ultima_accion: "Cerrado"
+    },
+    {
+        folio: "OP-3007",
+        estacion: "ES Xonacatlán 07",
+        accion: "Verificación de alarmas",
+        cumplimiento: 88,
+        fecha_inicio: "2025-07-07",
+        fecha_limite: "2025-07-07",
+        fecha_solucion: "2025-07-07",
+        dia_vencimiento: 0,
+        ultima_accion: "Confirmado"
+    },
+    {
+        folio: "OP-3008",
+        estacion: "ES Otzolotepec 08",
+        accion: "Revisión de control volumétrico",
+        cumplimiento: 92,
+        fecha_inicio: "2025-07-08",
+        fecha_limite: "2025-07-08",
+        fecha_solucion: "2025-07-08",
+        dia_vencimiento: 0,
+        ultima_accion: "Validado"
+    },
+    {
+        folio: "OP-3009",
+        estacion: "ES Capultitlán 09",
+        accion: "Corte de turno matutino",
+        cumplimiento: 100,
+        fecha_inicio: "2025-07-09",
+        fecha_limite: "2025-07-09",
+        fecha_solucion: "2025-07-09",
+        dia_vencimiento: 0,
+        ultima_accion: "Completado"
+    },
+    {
+        folio: "OP-3010",
+        estacion: "ES Cacalomacán 10",
+        accion: "Supervisión de despacho",
+        cumplimiento: 75,
+        fecha_inicio: "2025-07-10",
+        fecha_limite: "2025-07-10",
+        fecha_solucion: "2025-07-10",
+        dia_vencimiento: 0,
+        ultima_accion: "Observaciones"
+    }
+];
 
 
-
-
-
-
-
+let configTableCustomFooter = {
+    height: "450px",
+    theme: "bootstrap5",
+    columnMinWidth: 100,
+    pagination: true,                // Activa paginación
+    paginationMode: "local",         // Paginación local
+    paginationSize: 4,              // Registros por página
+    paginationCounter: "rows",       // Muestra "x de y filas"
+};
 
 //---Chart First
 var setOptions1A = {
@@ -246,8 +678,6 @@ var setOptions1A = {
         }
     }
 };
-
-
 
 var dataChart1A = {
     labels: ['Estación 1','Estación 2','Estación 3','Estación 4','Estación 5','Estación 6'],
@@ -294,7 +724,6 @@ var dataChart1A = {
         },
     ]
 };
-
 
 //---Chart Second
 var setOptions2A = {
@@ -365,7 +794,7 @@ var dataChart2A = {
 };
 
 
-//---Chart Second
+//---Chart Third
 var setOptions3A = {
     responsive: true,
     plugins: {
@@ -404,18 +833,114 @@ var setOptions3A = {
 };
 
 var dataChart3A = {
-    labels: ['Tareas Validadas ','Tareas Pendientes', 'Tareas en Validación'],
+    labels: ['Tareas Validadas ','Tareas No Realizadas', 'Tareas en Validación'],
     datasets: [
         {
             label: 'Porcentaje',
             data: [73, 17, 10],
-            backgroundColor: [
-                '#0099F9',
-                '#FF6384',
-                '#FFC107'
-            ],
+            backgroundColor:  ["#28A745", "#DC3545", "#FFC107"],
         },
     ]
 };
 
 
+
+
+//---Chart Fourth
+var setOptions4A = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        datalabels: {
+            color: 'white',
+            font: {
+                size: 19
+            },
+            formatter: function(value, context) {
+                if (value === null || value === undefined || value === 0) {
+                    return '';
+                }
+                return value + '%';
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    const value = tooltipItem.raw;
+                    if (value === null || value === undefined || value === 0) {
+                        return null;
+                    }
+                    return `${tooltipItem.dataset.label}: ${value}%`;
+                }
+            }
+        }
+    },
+    responsive: true, 
+    maintainAspectRatio: false,
+};
+
+var dataChart4A = {
+    labels: ['Tareas Validadas ','Tareas No Realizadas', 'Tareas en Validación'],
+    datasets: [
+        {
+            label: 'Porcentaje',
+            data: [73, 17, 10],
+            backgroundColor:  ["#28A745", "#DC3545", "#FFC107"],
+        },
+    ]
+};
+
+
+//---Chart Fiveth
+var setOptions5A = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        datalabels: {
+            color: 'white',
+            font: {
+                size: 19
+            },
+            formatter: function(value, context) {
+                if (value === null || value === undefined || value === 0) {
+                    return '';
+                }
+                return value + '%';
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    const value = tooltipItem.raw;
+                    if (value === null || value === undefined || value === 0) {
+                        return null;
+                    }
+                    return `${tooltipItem.dataset.label}: ${value}%`;
+                }
+            }
+        }
+    },
+    responsive: true, 
+    maintainAspectRatio: false,
+};
+
+var dataChart5A = {
+    labels: ['Tareas Validadas ','Tareas No Realizadas', 'Tareas en Validación'],
+    datasets: [
+        {
+            label: 'Porcentaje',
+            data: [73, 17, 10],
+            backgroundColor:  ["#28A745", "#DC3545", "#FFC107"],
+        },
+    ]
+};
