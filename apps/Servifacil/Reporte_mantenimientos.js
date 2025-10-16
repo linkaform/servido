@@ -59,7 +59,12 @@ async function getInformation(dicAditional){
         if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
             const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
             if(data.response_first){
-                drawChartElement('chartFirst','bar',data.response_first,setOptions1A);
+                const estacionValue = document.querySelector('#estacion').value; 
+                if (estacionValue && estacionValue.trim() !== '') {
+                    drawChartElement('chartFirst', 'bar', data.response_first, setOptions1A);
+                } else {
+                    drawChartElement('chartFirst', 'bar', data.response_first, setOptions1B);
+                }
             }
             if(data.response_second){
                 drawChartElement('chartSecond','bar',data.response_second,setOptions2A);

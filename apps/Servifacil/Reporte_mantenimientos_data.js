@@ -52,6 +52,45 @@ var dataChart1A = {
     ]
 };
 
+var setOptions1B = {
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        datalabels: {
+            color: 'white',
+            font: {
+                size: 19
+            },
+            formatter: function(value) {
+                return value === 0 ? '' : value;  // Si es 0, no muestra nada
+            }
+        },
+        tooltip: {
+            titleFont: { size: 20 }, 
+            bodyFont: { size: 17 }, 
+            callbacks: {
+                label: function (tooltipItem) {
+                    return `${tooltipItem.raw}`; 
+                }
+            }
+        }
+    },
+    scales: {
+        x: {
+            stacked: true,
+        },
+        y: {
+            stacked: true,
+            ticks: {
+                stepSize: 1
+            },
+        }
+    },
+    maintainAspectRatio: false,
+};
 
 //---Chart Second
 var setOptions2A = {
