@@ -679,8 +679,30 @@ const dicObjetiveState = {
         'mx-co': 678,
         'mx-gj': 49,
         'mx-sl': 52
+    },
+    11: {
+        'mx-bc': 32,
+        'mx-bs': 5,
+        'mx-cm': 14,
+        'mx-cs': 124,
+        'mx-ch': 62,
+        'mx-co': 60,
+        'mx-dg': 31,
+        'mx-gj': 1,
+        'mx-gr': 154,
+        'mx-hg': 5,
+        'mx-ja': 14,
+        'mx-mi': 92,
+        'mx-oa': 146,
+        'mx-pu': 4,
+        'mx-sl': 8,
+        'mx-si': 45,
+        'mx-so': 40,
+        'mx-tb': 51,
+        'mx-tm': 84,
+        'mx-ve': 202,
+        'mx-za': 44,
     }
-
 }
 
 const configTooltipMap = {
