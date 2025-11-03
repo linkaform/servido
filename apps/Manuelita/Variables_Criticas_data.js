@@ -7,9 +7,9 @@ let dicReportContext = [
         ] 
     },
     { class:'', _children : [
-            { type:'separator', col: '12', title:'Lectura Bx'},
-            { type:'table', col: '4', id:'tableSecond', title:'Datos de Lectura Bx'},
-            { type:'chart', col: '8', id:'chartSecond', title:'Linea de tiempo de Lectura Bx'},
+            { type:'separator', col: '12', title:'Lectura Brix'},
+            { type:'table', col: '4', id:'tableSecond', title:'Datos de Lectura Brix'},
+            { type:'chart', col: '8', id:'chartSecond', title:'Linea de tiempo de Lectura Brix'},
         ] 
     },
     { class:'', _children : [
@@ -25,8 +25,8 @@ let dicReportContext = [
         ] 
     },
     { class:'', _children : [
-            { type:'separator', col: '12', title:'Lentura Pool'},
-            { type:'table', col: '4', id:'tableFiveth', title:'Datos de Lentura Pool'},
+            { type:'separator', col: '12', title:'Lectura Pool'},
+            { type:'table', col: '4', id:'tableFiveth', title:'Datos de Lectura Pool'},
             { type:'chart', col: '8', id:'chartFiveth', title:'Linea de tiempo de Lentura Pool'},
         ] 
     },

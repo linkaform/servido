@@ -29,6 +29,12 @@ function loadDemoData(){
     drawChartElement('chartFiveth', 'bar', dataChart5, setOptions5, undefined, true);
 
 
+    //----Input FIlter
+    $('#type_date').on('change', function() {
+        const selectedValue = $(this).val(); 
+        onChangeSelect(selectedValue);
+    });
+    
     setTimeout(() => { hide_loading();}, 2000);
 }
 
@@ -65,3 +71,17 @@ async function getInformation(){
 }
 
 
+
+//----Custom Dates Active/Demo
+function onChangeSelect(value) {
+    const divFromInput = document.getElementById('divDateFrom');
+    const divToInput = document.getElementById('divDateTo');
+    const className = 'd-none';
+    if (value == '10') {
+        divFromInput.classList.remove(className);
+        divToInput.classList.remove(className); 
+    } else {
+        divFromInput.classList.add(className);
+        divToInput.classList.add(className);
+    }
+}

@@ -47,16 +47,31 @@
 
                     <!-- Filter Row -->
                     <div class="row mb-4" id="content-div-filter">
-						<!-- Filtro de Fecha -->
-						<div class="col-xl-2 col-lg-6 col-md-12 ">
-						    <label class="form-label">Fecha Desde</label>
-                            <input type="date" class="form-control filters-servido" id="dateFrom" >
-						</div>
+                        <!-- Filtro de Selector (Dropdown) -->
+                        <div class="col-xl-3 col-lg-6 col-md-12 ">
+                            <label for="categoria" class="form-label">Periodo de captura</label>
+                            <select class="form-select filters-servido" id="type_date" >
+                                <option value="">Selecciona una opción</option>
+                                <option value="1">Hoy</option>
+                                <option value="2">Ayer</option>
+                                <option value="3">Esta Semana</option>
+                                <option value="4">Semana Pasada</option>
+                                <option value="5">Últimos 15 días</option>
+                                <option value="6">Este Mes</option>
+                                <option value="7">Mes Anterior</option>
+                                <option value="8">Este Año</option>
+                                <option value="9">Año pasado</option>
+                                <option value="10">Personalizado</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3 col-md-6 d-none" id="divDateFrom">
+                            <label for="fecha" class="form-label">Fecha Desde:</label>
+                            <input type="date" class="form-control filters-servido" id="date_from">
+                        </div>
 
-                        <!-- Filtro de Fecha -->
-                        <div class="col-xl-2 col-lg-6 col-md-12 ">
-                            <label class="form-label">Fecha Hasta</label>
-                            <input type="date" class="form-control filters-servido" id="dateTo" >
+                        <div class="col-xl-3 col-md-6 d-none" id="divDateTo">
+                            <label for="fecha" class="form-label">Fecha Hasta:</label>
+                            <input type="date" class="form-control filters-servido" id="date_to">
                         </div>
                       
                     </div>
