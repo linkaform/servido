@@ -27,7 +27,7 @@ let dicReportContext = [
     { class:'', _children : [
             { type:'separator', col: '12', title:'Lectura Pool'},
             { type:'table', col: '4', id:'tableFiveth', title:'Datos de Lectura Pool'},
-            { type:'chart', col: '8', id:'chartFiveth', title:'Linea de tiempo de Lentura Pool'},
+            { type:'chart', col: '8', id:'chartFiveth', title:'Linea de tiempo de Lectura Pool'},
         ] 
     },
 ];
