@@ -79,6 +79,9 @@ async function getInformation(){
             if(data.response_fourth){
                 drawChartElement('chartFourth','line',data.response_fourth,setOptions4A);
             }
+            if(data.response_fiveth){
+                drawTableElement('tableFirst', data.response_fiveth, columsTable1);
+            }
             if(data.response_sixth){
                 drawChartElement('chartFiveth','bar',data.response_sixth,setOptions5A);
             }
@@ -88,9 +91,8 @@ async function getInformation(){
             if(data.response_eigth){
                 drawChartElement('chartSeventh','bar',data.response_eigth,setOptions7A);
             }
-
-            if(data.response_fiveth){
-                drawTableElement('tableFirst', data.response_fiveth, columsTable1);
+            if(data.response_nineth){
+                drawTableElement('tableSecond', data.response_nineth, columsTable2);
             }
             if(data.response_cards && data.response_cards.cardFirst){
                 drawCardElement('cardFirst',data.response_cards.cardFirst);

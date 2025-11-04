@@ -137,6 +137,7 @@ let columsTable2 = [
                 </div>
             `;
         },
+        /*
         cellClick: function(e, cell) {
             const rowData = cell.getRow().getData();
             const label = rowData.pregunta; // obtiene la columna 'pregunta'
@@ -145,6 +146,7 @@ let columsTable2 = [
                 new bootstrap.Modal(document.getElementById('modalInformation')).show();
             }
         }
+        */
     },
     { 
         title: "Progress", 
