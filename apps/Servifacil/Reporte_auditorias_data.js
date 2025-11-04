@@ -480,7 +480,7 @@ var setOptions7A = {
     },
     scales: {
         x: {
-            display: true, 
+            display: false, 
         }
     },
 };
