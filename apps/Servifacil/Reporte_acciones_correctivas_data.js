@@ -312,6 +312,7 @@ let columsTable2 = [
             `;
         }
     },
+    { title: "Estatus", field: 'ultima_accion', headerTooltip: true,  hozAlign: "left", width: 100},
 ];
 
 let dataTable2 = [
@@ -515,6 +516,7 @@ let columsTable3 = [
             `;
         }
     },
+    { title: "Estatus", field: 'ultima_accion', headerTooltip: true,  hozAlign: "left", width: 100},
 ];
 
 let dataTable3 = [
@@ -863,7 +865,7 @@ var setOptions4A = {
                 if (value === null || value === undefined || value === 0) {
                     return '';
                 }
-                return value + '%';
+                return value;
             }
         },
         tooltip: {
@@ -875,7 +877,7 @@ var setOptions4A = {
                     if (value === null || value === undefined || value === 0) {
                         return null;
                     }
-                    return `${tooltipItem.dataset.label}: ${value}%`;
+                    return `${tooltipItem.dataset.label}: ${value}`;
                 }
             }
         }
@@ -913,7 +915,7 @@ var setOptions5A = {
                 if (value === null || value === undefined || value === 0) {
                     return '';
                 }
-                return value + '%';
+                return value ;
             }
         },
         tooltip: {
@@ -925,7 +927,7 @@ var setOptions5A = {
                     if (value === null || value === undefined || value === 0) {
                         return null;
                     }
-                    return `${tooltipItem.dataset.label}: ${value}%`;
+                    return `${tooltipItem.dataset.label}: ${value}`;
                 }
             }
         }
