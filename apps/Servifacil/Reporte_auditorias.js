@@ -1,4 +1,5 @@
 let dataCatalogs = [];
+let dicSearchFolio = {};
 
 window.onload = function(){
   createElements(dicReportContext);
@@ -16,6 +17,28 @@ window.onload = function(){
 
 //-----FUNCTIONS DEMO
 function loadDemoData(){
+    //----Data Example
+    dicSearchFolio = {
+        '15. Casco de seguridad': [
+            {folio: '1001-01', grading: 'Positivo', idRecord: '9001'},
+            {folio: '1001-02', grading: 'Negativo', idRecord: '9002'}
+        ],
+        '20. Se encuentran en buenas condiciones cada uno de los elementos del área de tanques': [
+            {folio: '1002-01', grading: 'Positivo', idRecord: '9003'}
+        ],
+        '23. Se encuentra limpia la parte interna de los dispensarios': [
+            {folio: '1003-01', grading: 'Negativo', idRecord: '9004'}
+        ],
+        '28. La pintura del área de despacho se encuentra en buenas condiciones: FLECHAS Y CEBRA PEATONAL': [
+            {folio: '1004-01', grading: 'Positivo', idRecord: '9005'}
+        ],
+        '33. Calcomanías "Servifácil", acrílico 3D de banderas y números de posición en buenas condiciones': [
+            {folio: '1005-01', grading: 'Positivo', idRecord: '9006'}
+        ]
+    };
+
+
+
     //---Definitions ELements
     drawChartElement('chartFirst','bar',dataChart1A,setOptions1A, undefined, true);
     drawChartElement('chartSecond','bar',dataChart2A,setOptions2A, undefined, true);
@@ -93,6 +116,9 @@ async function getInformation(){
             }
             if(data.response_nineth){
                 drawTableElement('tableSecond', data.response_nineth, columsTable2);
+            }
+            if(data.response_modal_information){
+                dicSearchFolio = data.response_modal_information;
             }
             if(data.response_cards && data.response_cards.cardFirst){
                 drawCardElement('cardFirst',data.response_cards.cardFirst);
@@ -249,7 +275,7 @@ function getInformationQuest(questName) {
 
             // Crear enlace con folio
             const a = document.createElement('a');
-            a.href = `https://example.com/folio/${item.idRecord}`;
+            a.href = `https://app.linkaform.com/#/records/detail/${item.idRecord}`;
             a.target = '_blank';
             a.className = 'fw-bold text-decoration-none';
             a.textContent = `Folio: ${item.folio}`;

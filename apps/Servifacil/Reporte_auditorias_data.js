@@ -137,7 +137,6 @@ let columsTable2 = [
                 </div>
             `;
         },
-        /*
         cellClick: function(e, cell) {
             const rowData = cell.getRow().getData();
             const label = rowData.pregunta; // obtiene la columna 'pregunta'
@@ -146,7 +145,6 @@ let columsTable2 = [
                 new bootstrap.Modal(document.getElementById('modalInformation')).show();
             }
         }
-        */
     },
     { 
         title: "Progress", 
@@ -499,21 +497,3 @@ var dataChart7A = {
     ]
 };
 
-let dicSearchFolio = {
-    '15. Casco de seguridad': [
-        {folio: '1001-01', grading: 'Positivo', idRecord: '9001'},
-        {folio: '1001-02', grading: 'Negativo', idRecord: '9002'}
-    ],
-    '20. Se encuentran en buenas condiciones cada uno de los elementos del área de tanques': [
-        {folio: '1002-01', grading: 'Positivo', idRecord: '9003'}
-    ],
-    '23. Se encuentra limpia la parte interna de los dispensarios': [
-        {folio: '1003-01', grading: 'Negativo', idRecord: '9004'}
-    ],
-    '28. La pintura del área de despacho se encuentra en buenas condiciones: FLECHAS Y CEBRA PEATONAL': [
-        {folio: '1004-01', grading: 'Positivo', idRecord: '9005'}
-    ],
-    '33. Calcomanías "Servifácil", acrílico 3D de banderas y números de posición en buenas condiciones': [
-        {folio: '1005-01', grading: 'Positivo', idRecord: '9006'}
-    ]
-};
