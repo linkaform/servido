@@ -17,11 +17,11 @@ let dicReportContext = [
             ],
             elementsTabs:[
                 {tabId:'tabMantenimiento', type:'card', id:'cardFirst', title:'Tareas Pendientes Mantenimiento', hexadecimal:'#FF5733'}, 
-                {tabId:'tabMantenimiento', type:'chart', id:'chartFourth', title:'Porcentaje de cumplimiento Mantenimiento'}, 
+                {tabId:'tabMantenimiento', type:'chart', id:'chartFourth', title:'Cumplimiento Mantenimiento'}, 
                 {tabId:'tabMantenimiento', type:'table', id:'tableSecond', title:'Cumplimiento de acciones correctivas Mantenimiento'}, 
 
                 {tabId:'tabOperaciones', type:'card', id:'cardSecond', title:'Tareas Pendientes Operaciones', hexadecimal:'#FF5733'}, 
-                {tabId:'tabOperaciones', type:'chart', id:'chartFiveth', title:'Porcentaje de cumplimiento Operaciones'}, 
+                {tabId:'tabOperaciones', type:'chart', id:'chartFiveth', title:'Cumplimiento Operaciones'}, 
                 {tabId:'tabOperaciones', type:'table', id:'tableThird', title:'Cumplimiento de acciones correctivas Operaciones'} 
             ]
         },
