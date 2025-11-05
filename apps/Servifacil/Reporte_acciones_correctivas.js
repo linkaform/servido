@@ -74,23 +74,28 @@ async function getInformation(dicAditional){
             if (data.response_fourth) {
               drawTableElement('tableFirst', data.response_fourth, columsTable1);
             }
+
+            //--OPeraciones
             if (data.response_fiveth) {
-                drawCardElement('cardFirst',data.response_fiveth);
+                drawCardElement('cardSecond',data.response_fiveth);
             }
             if (data.response_sixth) {
-                drawChartElement('chartFourth','doughnut',data.response_sixth,setOptions4A, true, true);
+                drawChartElement('chartFiveth','doughnut',data.response_sixth,setOptions4A, true, true);
             }
             if (data.response_seventh) {
-                drawTableElement('tableSecond', data.response_seventh, columsTable2, null, configTableCustomFooter);
+                drawTableElement('tableThird', data.response_seventh, columsTable2, null, configTableCustomFooter);
             }
+
+
+            //--Mantenimiento
             if (data.response_eigth) {
-                drawCardElement('cardSecond',data.response_eigth);
+                drawCardElement('cardFirst',data.response_eigth);
             }
             if (data.response_nineth) {
-                drawChartElement('chartFiveth','doughnut',data.response_nineth,setOptions4A, true, true);
+                drawChartElement('chartFourth','doughnut',data.response_nineth,setOptions4A, true, true);
             }
             if (data.response_tenth) {
-                drawTableElement('tableThird', data.response_tenth, columsTable3, null, configTableCustomFooter);
+                drawTableElement('tableSecond', data.response_tenth, columsTable3, null, configTableCustomFooter);
             }
             //-----Style
             const divEmpty = document.querySelectorAll('.div-content-empty');

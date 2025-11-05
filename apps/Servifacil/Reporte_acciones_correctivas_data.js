@@ -231,7 +231,7 @@ let columsTable2 = [
         headerTooltip: true, 
         headerFilter:"input", 
         hozAlign: "left", 
-        width: 200,
+        width: 150,
         formatter: function(cell, formatterParams, onRendered) {
             const folio = cell.getValue();
             const rowData = cell.getRow().getData();
@@ -248,7 +248,7 @@ let columsTable2 = [
             }
         }
     },
-    { title: "Estación de Servicio", field: 'estacion', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 200},
+    { title: "Estación de Servicio", field: 'estacion', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 150},
     { title: "Acción Correctiva", field: 'accion', headerTooltip: true,  hozAlign: "left", width: 450},
     { title: "Días para cumplimiento", field: 'cumplimiento', headerTooltip: true,  hozAlign: "right", width: 130},
     { title: "Fecha Inicio", field: 'fecha_inicio', headerTooltip: true,  hozAlign: "left", width: 200},
@@ -435,7 +435,7 @@ let columsTable3 = [
         headerTooltip: true, 
         headerFilter:"input", 
         hozAlign: "left", 
-        width: 200,
+        width: 150,
         formatter: function(cell, formatterParams, onRendered) {
             const folio = cell.getValue();
             const rowData = cell.getRow().getData();
@@ -452,7 +452,7 @@ let columsTable3 = [
             }
         }
     },
-    { title: "Estación de Servicio", field: 'estacion', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 200},
+    { title: "Estación de Servicio", field: 'estacion', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 150},
     { title: "Acción Correctiva", field: 'accion', headerTooltip: true,  hozAlign: "left", width: 450},
     { title: "Días para cumplimiento", field: 'cumplimiento', headerTooltip: true,  hozAlign: "right", width: 130},
     { title: "Fecha Inicio", field: 'fecha_inicio', headerTooltip: true,  hozAlign: "left", width: 200},
@@ -637,7 +637,7 @@ let configTableCustomFooter = {
     height: "450px",
     theme: "bootstrap5",
     columnMinWidth: 100,
-    pagination: true,                // Activa paginación
+    pagination: false,                // Activa paginación
     paginationMode: "local",         // Paginación local
     paginationSize: 4,              // Registros por página
     paginationCounter: "rows",       // Muestra "x de y filas"
@@ -859,13 +859,16 @@ var setOptions4A = {
         datalabels: {
             color: 'white',
             font: {
-                size: 19
+                size: 16
             },
             formatter: function(value, context) {
-                if (value === null || value === undefined || value === 0) {
-                    return '';
-                }
-                return value;
+                if (!value) return '';
+
+                const extra = context.dataset.extraData
+                    ? context.dataset.extraData[context.dataIndex]
+                    : '';
+
+                return `${value}%/${extra}`;
             }
         },
         tooltip: {
@@ -892,6 +895,7 @@ var dataChart4A = {
         {
             label: 'Porcentaje',
             data: [73, 17, 10],
+            extraData: [73, 17, 10],
             backgroundColor:  ["#28A745", "#DC3545", "#FFC107"],
         },
     ]
@@ -909,13 +913,16 @@ var setOptions5A = {
         datalabels: {
             color: 'white',
             font: {
-                size: 19
+                size: 16
             },
             formatter: function(value, context) {
-                if (value === null || value === undefined || value === 0) {
-                    return '';
-                }
-                return value ;
+                if (!value) return '';
+
+                const extra = context.dataset.extraData
+                    ? context.dataset.extraData[context.dataIndex]
+                    : '';
+
+                return `${value}%/${extra}`;
             }
         },
         tooltip: {
@@ -942,6 +949,7 @@ var dataChart5A = {
         {
             label: 'Porcentaje',
             data: [73, 17, 10],
+            extraData: [73, 17, 10],
             backgroundColor:  ["#28A745", "#DC3545", "#FFC107"],
         },
     ]
