@@ -56,7 +56,7 @@ let columsTable1 = [
         }
     },
     { title: "Estación de Servicio", field: 'estacion', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 200},
-    { title: "Acción Correctiva", field: 'accion', headerTooltip: true,  hozAlign: "left", width: 450},
+    { title: "Acción Correctiva", field: 'accion', headerTooltip: true,  tooltip: true,  hozAlign: "left", width: 450},
     { title: "Días para cumplimiento", field: 'cumplimiento', headerTooltip: true,  hozAlign: "right", width: 130},
     { title: "Fecha Inicio", field: 'fecha_inicio', headerTooltip: true,  hozAlign: "left", width: 200},
     { title: "Fecha Limite", field: 'fecha_limite', headerTooltip: true,  hozAlign: "left", width: 200},
@@ -249,7 +249,7 @@ let columsTable2 = [
         }
     },
     { title: "Estación de Servicio", field: 'estacion', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 150},
-    { title: "Acción Correctiva", field: 'accion', headerTooltip: true,  hozAlign: "left", width: 450},
+    { title: "Acción Correctiva", field: 'accion', headerTooltip: true,  tooltip: true, hozAlign: "left", width: 450},
     { title: "Días para cumplimiento", field: 'cumplimiento', headerTooltip: true,  hozAlign: "right", width: 130},
     { title: "Fecha Inicio", field: 'fecha_inicio', headerTooltip: true,  hozAlign: "left", width: 200},
     { title: "Fecha Limite", field: 'fecha_limite', headerTooltip: true,  hozAlign: "left", width: 200},
@@ -453,7 +453,7 @@ let columsTable3 = [
         }
     },
     { title: "Estación de Servicio", field: 'estacion', headerTooltip: true, headerFilter:"input", hozAlign: "left", width: 150},
-    { title: "Acción Correctiva", field: 'accion', headerTooltip: true,  hozAlign: "left", width: 450},
+    { title: "Acción Correctiva", field: 'accion', headerTooltip: true,  tooltip: true, hozAlign: "left", width: 450},
     { title: "Días para cumplimiento", field: 'cumplimiento', headerTooltip: true,  hozAlign: "right", width: 130},
     { title: "Fecha Inicio", field: 'fecha_inicio', headerTooltip: true,  hozAlign: "left", width: 200},
     { title: "Fecha Limite", field: 'fecha_limite', headerTooltip: true,  hozAlign: "left", width: 200},
