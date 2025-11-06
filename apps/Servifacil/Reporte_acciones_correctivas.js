@@ -78,6 +78,8 @@ async function getInformation(dicAditional){
             //--OPeraciones
             if (data.response_fiveth) {
                 drawCardElement('cardSecond',data.response_fiveth);
+            }else{
+                drawCardElement('cardSecond',0);
             }
             if (data.response_sixth) {
                 drawChartElement('chartFiveth','doughnut',data.response_sixth,setOptions4A, true, true);
@@ -90,6 +92,8 @@ async function getInformation(dicAditional){
             //--Mantenimiento
             if (data.response_eigth) {
                 drawCardElement('cardFirst',data.response_eigth);
+            }else{
+                drawCardElement('cardFirst',0);
             }
             if (data.response_nineth) {
                 drawChartElement('chartFourth','doughnut',data.response_nineth,setOptions4A, true, true);
