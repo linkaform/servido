@@ -1,5 +1,4 @@
 window.onload = function(){
-  createElements(dicReportContext);
   setElementsStyle();
   const statusSession = getSession();
   if(statusSession == 'Active'){
@@ -13,6 +12,8 @@ window.onload = function(){
 
 //-----LOAD DATA DEMO
 function loadDemoData(){
+
+    createElements(dicReportContextClarificacion);
     drawTableElement('tableFirst', dataTable1, columsTable1);
     drawChartElement('chartFirst', 'bar', dataChart1, setOptions1, undefined, true);
 
@@ -21,13 +22,6 @@ function loadDemoData(){
 
     drawTableElement('tableThird', dataTable3, columsTable3);
     drawChartElement('chartThird', 'bar', dataChart3, setOptions3, undefined, true);
-
-    drawTableElement('tableFourth', dataTable4, columsTable4);
-    drawChartElement('chartFourth', 'bar', dataChart4, setOptions4, undefined, true);
-
-    drawTableElement('tableFiveth', dataTable5, columsTable5);
-    drawChartElement('chartFiveth', 'bar', dataChart5, setOptions5, undefined, true);
-
 
     //----Input FIlter
     $('#type_date').on('change', function() {

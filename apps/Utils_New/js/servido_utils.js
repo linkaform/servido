@@ -1203,7 +1203,7 @@ function drawModalBody(itemElement){
     }else if(type == 'div'){
         const element = `<div class="col-12 ">
             <p><strong>${title}</strong></p>
-            <div id="${id}"></div>
+            <div id="${id}" class="${classInput}"></div>
         </div>`;
         return element;
     }else if(type == 'input-select'){

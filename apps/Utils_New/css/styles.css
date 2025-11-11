@@ -123,3 +123,22 @@ body {
   font-size: 0.8rem;
   font-weight: 600;
 }
+
+.img-personal {
+  width: 60px;
+  height: 60px;
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.list-group-item {
+  border: none;
+  padding: 12px;
+}
+
+.list-group-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}

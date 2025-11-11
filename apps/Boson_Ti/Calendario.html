@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Variables Criticas</title>
+	<title>Asistencias</title>
 	<!-- Custom fonts for this template-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Custom styles for this template-->
@@ -30,7 +30,7 @@
                     <!-- Page Heading -->
                     <div class="row">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4  col-6">
-                            <h1 class="h3 mb-0 text-gray-800">Variables Criticas</h1>
+                            <h1 class="h3 mb-0 text-gray-800">Calendario</h1>
                         </div>
                         <div class="d-sm-flex align-items-center justify-content-end mb-4 col-6" id="content-div-buttons">
                             <button class="btn btn-sm btn-primary shadow-sm m-1" id="buttonExecution">
@@ -47,45 +47,11 @@
 
                     <!-- Filter Row -->
                     <div class="row mb-4" id="content-div-filter">
-                        <!-- Filtro de Selector (Dropdown) -->
-                        <div class="col-xl-3 col-lg-6 col-md-12 ">
-                            <label for="categoria" class="form-label">Periodo de captura</label>
-                            <select class="form-select filters-servido" id="type_date" >
-                                <option value="">Selecciona una opción</option>
-                                <option value="1">Hoy</option>
-                                <option value="2">Ayer</option>
-                                <option value="3">Esta Semana</option>
-                                <option value="4">Semana Pasada</option>
-                                <option value="5">Últimos 15 días</option>
-                                <option value="6">Este Mes</option>
-                                <option value="7">Mes Anterior</option>
-                                <option value="8">Este Año</option>
-                                <option value="9">Año pasado</option>
-                                <option value="10">Personalizado</option>
-                            </select>
+                        <div class="col-xl-2 col-lg-6 col-md-12 ">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFilter">Seleccionar Personal</button>
                         </div>
-                        <div class="col-xl-3 col-md-6 d-none" id="divDateFrom">
-                            <label for="fecha" class="form-label">Fecha Desde:</label>
-                            <input type="date" class="form-control filters-servido" id="date_from">
-                        </div>
-
-                        <div class="col-xl-3 col-md-6 d-none" id="divDateTo">
-                            <label for="fecha" class="form-label">Fecha Hasta:</label>
-                            <input type="date" class="form-control filters-servido" id="date_to">
-                        </div>
-
-                        <div class="col-xl-3 col-lg-6 col-md-12 ">
-                            <label for="categoria" class="form-label">Bitacora</label>
-                            <select class="form-select filters-servido" id="bitacora" >
-                                <option value="">Selecciona una opción</option>
-                                <option value="clarificacion">Clarificación</option>
-                                <option value="energia">Energia</option>
-                                <option value="molinos">Molinos</option>
-                                <option value="supervisor">Supervisor</option>
-                            </select>
-                        </div>
-
                     </div>
+
                     <!-- Content Empty -->
                     <div class="row div-content-empty mt-5" id="content-div-empty">
                         <div class="container mt-5">
@@ -95,6 +61,7 @@
                             <p class="text-dark fs-2 text-center">Seleccione filtros o ejecute el reporte para visualizar resultados</p>
                         </div>
                     </div>
+
                     <!-- Content NoSession -->
                     <div class="row div-content-no-session mt-5" id="content-div-noseession">
                         <div class="container mt-5">
@@ -159,6 +126,9 @@
 
     <!-- HTML2Canvas-->
     <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
+    
+    <!-- Calendar -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 
 	<!--Utils -->
 	<script type="text/javascript" src="../../styles/js/chroma.min.js"></script>
@@ -166,7 +136,7 @@
     <script type="text/javascript" src="../Utils_New/js/lkf_utils.js"></script>
     <script type="text/javascript" src="../Utils_New/js/servido_utils.js"></script>
 	<!--Report -->
-	<script type="text/javascript" src="./Variables_Criticas.js"></script>
-    <script type="text/javascript" src="./Variables_Criticas_data.js"></script>
+	<script type="text/javascript" src="./Calendario.js"></script>
+    <script type="text/javascript" src="./Calendario_data.js"></script>
 </body>
 </html>
