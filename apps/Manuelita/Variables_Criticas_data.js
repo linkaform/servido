@@ -21,11 +21,11 @@ let dicReportContextClarificacion = [
 ];
 
 //----Config Table
-let columsTable1 = [
+let columsTableClarificacion1 = [
     { title:"Hora", field:'hour',headerTooltip: true,hozAlign:"center", width:200},
     { title:"Turbiedad",field:'turbiedad',headerTooltip: true,hozAlign:"center", width:150},
 ];
-let dataTable1 = [
+let dataTableClarificacion1 = [
     { 'hour': '2025-11-11 07:00', 'turbiedad': '312' },
     { 'hour': '2025-11-11 08:00', 'turbiedad': '45' },
     { 'hour': '2025-11-11 09:00', 'turbiedad': '687' },
@@ -47,11 +47,11 @@ let dataTable1 = [
     { 'hour': '2025-11-12 01:00', 'turbiedad': '510' },
 ];
 
-let columsTable2 = [
+let columsTableClarificacion2 = [
     { title:"Hora", field:'hour',headerTooltip: true,hozAlign:"center", width:200},
     { title:"Jugo Mezclado",field:'jugo',headerTooltip: true,hozAlign:"center", width:150},
 ];
-let dataTable2 = [
+let dataTableClarificacion2 = [
     { 'hour': '2025-11-11 07:00', 'jugo': '235' },
     { 'hour': '2025-11-11 08:00', 'jugo': '0' },
     { 'hour': '2025-11-11 09:00', 'jugo': '541' },
@@ -74,13 +74,12 @@ let dataTable2 = [
 ];
 
 
-let columsTable3 = [
+let columsTableClarificacion3 = [
     { title:"Hora", field:'hour',headerTooltip: true,hozAlign:"center", width:200},
     { title:"Cachaza mezcla",field:'cachaza_mezcla',headerTooltip: true,hozAlign:"center", width:180},
     { title:"Cachaza filtro prensa",field:'cachaza_filtro_prensa',headerTooltip: true,hozAlign:"center", width:150},
 ];
-
-let dataTable3 = [
+let dataTableClarificacion3 = [
     { hour: '2025-11-11 07:00', cachaza_mezcla: '3.45', cachaza_filtro_prensa: '6.00' },
     { hour: '2025-11-11 08:00', cachaza_mezcla: '0', cachaza_filtro_prensa: '6.00' },
     { hour: '2025-11-11 09:00', cachaza_mezcla: '', cachaza_filtro_prensa: '6.00' },
@@ -103,9 +102,8 @@ let dataTable3 = [
 ];
 
 
-
 //-----Configuiraciónes de las graficas
-var setOptions1 = {
+var setOptionsClarificacion1 = {
     responsive: true,
     plugins: {
         legend: {
@@ -130,7 +128,7 @@ var setOptions1 = {
         }
     },
 };
-var dataChart1 = {
+var dataChartClarificacion1 = {
     labels: [
         '2025-11-11 07:00','2025-11-11 08:00','2025-11-11 09:00','2025-11-11 10:00',
         '2025-11-11 11:00','2025-11-11 12:00','2025-11-11 13:00','2025-11-11 14:00',
@@ -150,7 +148,7 @@ var dataChart1 = {
     ]
 };
 
-var setOptions2 = {
+var setOptionsClarificacion2 = {
     responsive: true,
     plugins: {
         legend: {
@@ -175,7 +173,7 @@ var setOptions2 = {
         }
     },
 };
-var dataChart2 = {
+var dataChartClarificacion2 = {
     labels: [
         '2025-11-11 07:00','2025-11-11 08:00','2025-11-11 09:00','2025-11-11 10:00',
         '2025-11-11 11:00','2025-11-11 12:00','2025-11-11 13:00','2025-11-11 14:00',
@@ -195,7 +193,7 @@ var dataChart2 = {
     ]
 };
 
-var setOptions3 = {
+var setOptionsClarificacion3 = {
     responsive: true,
     plugins: {
         legend: {
@@ -221,7 +219,7 @@ var setOptions3 = {
         }
     },
 };
-var dataChart3 = {
+var dataChartClarificacion3 = {
     labels: [
         '2025-11-11 07:00','2025-11-11 08:00','2025-11-11 09:00','2025-11-11 10:00',
         '2025-11-11 11:00','2025-11-11 12:00','2025-11-11 13:00','2025-11-11 14:00',

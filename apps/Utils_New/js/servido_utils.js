@@ -1062,12 +1062,11 @@ function showLoadingComponent() {
     const loading = document.getElementById('content-div-loadingComponent');
     const empty = document.getElementById('content-div-empty');
 
-    /*
     const divElements = document.querySelectorAll('.div-content-element');
     divElements.forEach(div => {
         div.style.visibility = 'hidden';
     });
-    */
+    
     loading.style.visibility = 'visible';
     empty.style.display = 'none';
 }
