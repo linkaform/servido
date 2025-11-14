@@ -13,9 +13,9 @@ let dicReportContextClarificacion = [
         ] 
     },
     { class:'', _children : [
-            { type:'separator', col: '12', title:'Lectura Pool'},
-            { type:'table', col: '4', id:'tableThird', title:'Datos de Lectura Pool'},
-            { type:'chart', col: '8', id:'chartThird', title:'Linea de tiempo de Lectura Pool'},
+            { type:'separator', col: '12', title:'Lectura Pol'},
+            { type:'table', col: '4', id:'tableThird', title:'Datos de Lectura Pol'},
+            { type:'chart', col: '8', id:'chartThird', title:'Linea de tiempo de Lectura Pol'},
         ] 
     },
 ];
@@ -101,7 +101,6 @@ let dataTableClarificacion3 = [
     { hour: '2025-11-12 01:00', cachaza_mezcla: '4.00', cachaza_filtro_prensa: '6.00' }
 ];
 
-
 //-----Configuiraciónes de las graficas
 var setOptionsClarificacion1 = {
     responsive: true,
@@ -116,8 +115,9 @@ var setOptionsClarificacion1 = {
         datalabels: {
             color: 'white',
             font: {
-                size: 15
-            }
+                size: 10
+            },
+            display: true,
         }
     },
     responsive: true, 
@@ -161,8 +161,9 @@ var setOptionsClarificacion2 = {
         datalabels: {
             color: 'white',
             font: {
-                size: 15
-            }
+                size: 10
+            },
+            display: true,
         }
     },
     responsive: true, 
@@ -207,8 +208,9 @@ var setOptionsClarificacion3 = {
             color: 'white',
              display: false,
             font: {
-                size: 15
-            }
+                size: 10
+            },
+            display: true,
         }
     },
     responsive: true, 
