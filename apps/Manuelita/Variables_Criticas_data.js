@@ -113,11 +113,15 @@ var setOptionsClarificacion1 = {
             display: false,
         },
         datalabels: {
-            color: 'white',
-            font: {
-                size: 10
-            },
+            color: 'black',
             display: true,
+            anchor: 'end',        // Ubica el label al final de la barra
+            align: 'end',         // Alinea al extremo
+            clamp: true,          // evita que el texto se salga
+            rotation: -90,        // Texto vertical
+            font: {
+                size: 12
+            }
         }
     },
     responsive: true, 
@@ -161,7 +165,7 @@ var setOptionsClarificacion2 = {
         datalabels: {
             color: 'white',
             font: {
-                size: 10
+                size: 16
             },
             display: true,
         }
@@ -196,6 +200,7 @@ var dataChartClarificacion2 = {
 
 var setOptionsClarificacion3 = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
         legend: {
             display: true,
@@ -205,22 +210,24 @@ var setOptionsClarificacion3 = {
             display: false,
         },
         datalabels: {
-            color: 'white',
-             display: false,
-            font: {
-                size: 10
-            },
+            color: 'black',
             display: true,
+            anchor: 'end',        // Ubica el label al final de la barra
+            align: 'end',         // Alinea al extremo
+            clamp: true,          // evita que el texto se salga
+            rotation: -90,        // Texto vertical
+            font: {
+                size: 9
+            }
         }
     },
-    responsive: true, 
-    maintainAspectRatio: false ,
     scales: {
         y: {
             step: 1,
         }
-    },
+    }
 };
+
 var dataChartClarificacion3 = {
     labels: [
         '2025-11-11 07:00','2025-11-11 08:00','2025-11-11 09:00','2025-11-11 10:00',
