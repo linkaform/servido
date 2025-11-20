@@ -104,10 +104,16 @@ function declareteCreateElements() {
         createElements(dicReportContextClarificacion);
     }else if(valueSelector == 'energia'){
         flagStatus = true;
+        clearDivContentElements()
+        createElements(dicReportContextEnergia);
     }else if(valueSelector == 'molinos'){
         flagStatus = true;
+        clearDivContentElements()
+        createElements(dicReportContextMolinos);
     }else if(valueSelector == 'supervisor'){
         flagStatus = true;
+        clearDivContentElements()
+        createElements(dicReportContextSupervisor);
     }
     return flagStatus;
 }
@@ -117,12 +123,11 @@ function clearDivContentElements() {
   elements.forEach(el => el.remove());
 }
 
-
 function setDataInformation(data){
     const valueSelector = document.getElementById("bitacora").value;
     if(valueSelector == 'clarificacion'){
         if(data.tableClarificacion){
-             drawTableElement('tableFirst', data.tableClarificacion, columsTableClarificacion1);
+            drawTableElement('tableFirst', data.tableClarificacion, columsTableClarificacion1);
         }
         if(data.chartClarificacion){
             drawChartElement('chartFirst', 'bar', data.chartClarificacion, setOptionsClarificacion1, undefined, true);
@@ -140,7 +145,91 @@ function setDataInformation(data){
             drawChartElement('chartThird', 'bar', data.chartPool, setOptionsClarificacion3, undefined, true);
         }
     }else if(valueSelector == 'energia'){
+        if(data.tableConductividad){
+            drawTableElement('tableFirst', data.tableConductividad, columsTableEnergia1);
+        }
+        if(data.chartConductividad){
+            drawChartElement('chartFirst', 'bar', data.chartConductividad, setOptionsEnergia1, undefined, true);
+        }
+        if(data.tableSolidosTotales){
+            drawTableElement('tableSecond', data.tableSolidosTotales, columsTableEnergia2);
+        }
+        if(data.chartSolidosTotales){
+            drawChartElement('chartSecond', 'bar', data.chartSolidosTotales, setOptionsEnergia2, undefined, true);
+        }
+        if(data.tablePh){
+            drawTableElement('tableThird', data.tablePh, columsTableEnergia3);
+        }
+        if(data.chartPh){
+            drawChartElement('chartThird', 'bar', data.chartPh, setOptionsEnergia3, undefined, true);
+        }
+        if(data.tableFosfatos){
+            drawTableElement('tableFourth', data.tableFosfatos, columsTableEnergia4);
+        }
+        if(data.chartFosfatos){
+            drawChartElement('chartFourth', 'bar', data.chartFosfatos, setOptionsEnergia4, undefined, true);
+        }
+        if(data.tableFlujoAgua){
+            drawTableElement('tableFiveth', data.tableFlujoAgua, columsTableEnergia5);
+        }
+        if(data.chartFlujoAgua){
+            drawChartElement('chartFiveth', 'bar', data.chartFlujoAgua, setOptionsEnergia5, undefined, true);
+        }
     }else if(valueSelector == 'molinos'){
+        if(data.tablePolBagazo){
+            drawTableElement('tableFirst', data.tablePolBagazo, columsTableMolinos1);
+        }
+        if(data.chartPolBagazo){
+            drawChartElement('chartFirst', 'bar', data.chartPolBagazo, setOptionsMolinos1, undefined, true);
+        }
+        if(data.tableHumedadBagazo){
+            drawTableElement('tableSecond', data.tableHumedadBagazo, columsTableMolinos2);
+        }
+        if(data.chartHumedadBagazo){
+            drawChartElement('chartSecond', 'bar', data.chartHumedadBagazo, setOptionsMolinos2, undefined, true);
+        }
     }else if(valueSelector == 'supervisor'){
+        if(data.tablePH){
+            drawTableElement('tableFirst', data.tablePH, columsTableSupervisor1);
+        }
+        if(data.chartPH){
+            drawChartElement('chartFirst', 'bar', data.chartPH, setOptionsSupervisor1, undefined, true);
+        }
+        if(data.tableBrix){
+            drawTableElement('tableSecond', data.tableBrix, columsTableSupervisor2);
+        }
+        if(data.chartBrix){
+            drawChartElement('chartSecond', 'bar', data.chartBrix, setOptionsSupervisor2, undefined, true);
+        }
+        if(data.tablePureza){
+            drawTableElement('tableThird', data.tablePureza, columsTableSupervisor3);
+        }
+        if(data.chartPureza){
+            drawChartElement('chartThird', 'bar', data.chartPureza, setOptionsSupervisor3, undefined, true);
+        }
+        if(data.tablePol){
+            drawTableElement('tableFourth', data.tablePol, columsTableSupervisor4);
+        }
+        if(data.chartPol){
+            drawChartElement('chartFourth', 'bar', data.chartPol, setOptionsSupervisor4, undefined, true);
+        }
+        if(data.tableHumedad){
+            drawTableElement('tableFiveth', data.tableHumedad, columsTableSupervisor5);
+        }
+        if(data.chartHumedad){
+            drawChartElement('chartFiveth', 'bar', data.chartHumedad, setOptionsSupervisor5, undefined, true);
+        }
+        if(data.tableColor){
+            drawTableElement('tableSixth', data.tableColor, columsTableSupervisor6);
+        }
+        if(data.chartColor){
+            drawChartElement('chartSixth', 'bar', data.chartColor, setOptionsSupervisor6, undefined, true);
+        }
+        if(data.tableTurbiedad){
+            drawTableElement('tableSeventh', data.tableTurbiedad, columsTableSupervisor7);
+        }
+        if(data.chartTurbiedad){
+            drawChartElement('chartSeventh', 'bar', data.chartTurbiedad, setOptionsSupervisor7, undefined, true);
+        }
     }
 }
