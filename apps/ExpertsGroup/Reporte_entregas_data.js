@@ -702,6 +702,29 @@ const dicObjetiveState = {
         'mx-tm': 84,
         'mx-ve': 202,
         'mx-za': 44,
+    },
+    12: {
+        'mx-bc': 1,
+        'mx-bs': 8,
+        'mx-cm': 10,
+        'mx-cs': 110,
+        'mx-ch': 38,
+        'mx-co': 10,
+        'mx-dg': 5,
+        'mx-gr': 236,
+        'mx-hg': 1,
+        'mx-ja': 20,
+        'mx-mi': 127,
+        'mx-na': 1,
+        'mx-oa': 165,
+        'mx-qr': 1,
+        'mx-sl': 12,
+        'mx-si': 7,
+        'mx-so': 29,
+        'mx-tb': 98,
+        'mx-tm': 108,
+        'mx-ve': 110,
+        'mx-za': 8
     }
 }
 
