@@ -251,11 +251,15 @@ var setOptionsClarificacion2 = {
             display: false,
         },
         datalabels: {
-            color: 'white',
-            font: {
-                size: 16
-            },
+            color: 'black',
             display: true,
+            anchor: 'end',        // Ubica el label al final de la barra
+            align: 'end',         // Alinea al extremo
+            clamp: true,          // evita que el texto se salga
+            rotation: -90,        // Texto vertical
+            font: {
+                size: 12
+            }
         }
     },
     responsive: true, 
