@@ -323,29 +323,29 @@ var dataChart1 = {
             label: 'Diamond Berries',
             data: [7, 12, 4, 9, 3, 11],
             fill: false,
-            backgroundColor:['#8DB3C7'],  
-            borderColor:['#8DB3C7']   
+            backgroundColor:['#2ABF5E'],  
+            borderColor:['#2ABF5E']   
         },
         {
             label: 'San Agustin',
             data: [5, 9, 14, 6, 7, 2],
             fill: false,
-            backgroundColor:['#7FA7BD'],
-            borderColor:['#7FA7BD']   
+            backgroundColor:['#8CA285'],
+            borderColor:['#8CA285']   
         },
         {
             label: 'San Isidro Mezatepec',
             data: [10, 3, 8, 12, 4, 9],
             fill: false,
-            backgroundColor:['#6F9BB3'], 
-            borderColor:['#6F9BB3']  
+            backgroundColor:['#FE8703'], 
+            borderColor:['#FE8703']  
         },
         {
             label: 'Unión de San Antonio',
             data: [11, 6, 13, 5, 10, 7],
             fill: false,
-            backgroundColor:['#5F8FA8'], 
-            borderColor:['#5F8FA8']  
+            backgroundColor:['#EDCD81'], 
+            borderColor:['#EDCD81']  
         },
     ]
 };
