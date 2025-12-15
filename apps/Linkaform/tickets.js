@@ -38,7 +38,11 @@ function loadDemoData(){
     drawCardElement('cardNineth',50);
     drawCardElement('cardTenth',60);
     drawCardElement('cardEleventh',90);
+
     drawTableElement('tableFirst', dataTable1, columsTable1);
+    drawTableElement('tableSecond', dataTable2, columsTable2);
+    drawTableElement('tableThird', dataTable3, columsTable3);
+
     drawChartElement('chartFirst','line',dataChart1,setOptions1);
     drawChartElement('chartSecond','line',dataChart2, setOptions2);
     drawChartElement('chartThird','pie',dataChart3, setOptions3);
@@ -92,6 +96,18 @@ async function getInformation(){
 
         if(data.response_fourth){
             drawChartElement('chartThird','pie', data.response_fourth, setOptions3,undefined, true);
+        }
+
+        if(data.response_fiveth){
+            const columsDinamicTable2 = data.response_fiveth.columsTable ? data.response_fiveth.columsTable :[];
+            const dataDinamicTable2 = data.response_fiveth.dataTable ? data.response_fiveth.dataTable :[];
+            drawTableElement('tableSecond', dataDinamicTable2, columsDinamicTable2);
+        }
+
+        if(data.response_sixth){
+            const columsDinamicTable3 = data.response_sixth.columsTable ? data.response_sixth.columsTable :[];
+            const dataDinamicTable3 = data.response_sixth.dataTable ? data.response_sixth.dataTable :[];
+            drawTableElement('tableThird', dataDinamicTable3, columsDinamicTable3);
         }
     
         //-----Style
