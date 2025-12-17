@@ -330,6 +330,9 @@ function cleanForm() {
             element.value = '';
         }
     });
+    document.getElementById('inputDescSocial').textContent =  '';
+    document.getElementById('inputDescCliente').textContent = '';
+    document.getElementById('inputDescEmail').textContent = '';
 }
 
 //-----FORM DATA
