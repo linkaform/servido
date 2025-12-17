@@ -5,120 +5,117 @@ let dicReportContext = [
         ] 
     },
     { class:'', _children : [
-        { type:'modal', col: '12', id:'modalFilter', modalSize:'xl', title:'Filtrado de Tareas', formElements : [
-                {type:'input-text', title:'Busqueda de Empleados:', id:'textSearch'},
-                {type:'div', title:'Empleados:', id:'divEmpleados', classInput:'row'},
-            ]
-        },] 
+            { type:'modal', col: '12', id:'modalInformation', title:'Datos de Tarea', formElements : [
+                    {type:'p', title:'Fecha/hora Programación de Servicio:', id:'textFecha'},
+                    {type:'p', title:'Cliente:', id:'textCliente'},
+                    {type:'p', title:'Razón Social:', id:'textSocial'},
+                    {type:'p', title:'Email Cliente:', id:'textEmailCliente'},
+                    {type:'p', title:'Email:', id:'textEmail'},
+                    {type:'p', title:'Dirección de Servicios:', id:'textDireccion'},
+                    {type:'p', title:'Nick/Eco:', id:'textNick'},
+                    {type:'p', title:'Forma:', id:'textForm'},
+                ]
+            },
+        ] 
+    },
+    { class:'', _children : [
+            { type:'modal', col: '12', id:'modalForm', title:'Creación de Tarea', optionButtonModal:true, formElements : [
+                {type:'input-datetime', title:'Fecha/hora Programación de Servicio', id:'inputDatetimeServicio', classInput:'classFormInputs'},
+                {type:'input-select', title:'Cliente**:', id:'inputSelectCliente', classInput:'classFormInputs'},
+                {type:'p', title:'Razón Social:', id:'inputDescSocial', classInput:'classFormInputs'},
+                {type:'p', title:'Email Cliente:', id:'inputDescCliente', classInput:'classFormInputs'},
+                {type:'p', title:'Email :', id:'inputDescEmail', classInput:'classFormInputs'},
+                {type:'input-text', title:'Dirección de Servicios**:', id:'inputTextDireccion', classInput:'classFormInputs'},
+                {type:'input-text', title:'Nick/Eco**:', id:'inputTextNick', classInput:'classFormInputs'},
+                {type:'input-select', title:'Nombre de la forma**:', id:'inputSelectForma', classInput:'classFormInputs'},
+            ]},
+        ] 
     },
 ];
 
 let events = [
     {
-        "extendedProps": {
-            "folio":"2025-01",
-            "contacto": "Juan Pérez",
-            "celular": "555-123-4567",
-            "check_equipo": "Sí",
-            "catalog_equipo": "Identificador Biomédico",
-            "catalog_marca": "BioTech",
-            "catalog_modelo": "BTX-1000",
-            "input_equipo": "Ejemplo Equipo  ",
-            "input_marca": "Ejemplo Marca ",
-            "input_modelo": "Ejemplo Modelo ",
-            "trabajo_area": "Laboratorio Clínico",
-            "check_list": "Revisión completa",
-            "status": "Pendiente",
-            "numero_orden": "ORD-001"
+        extendedProps: {
+            textFecha: "2025-12-03 09:00",
+            textCliente: "Clínica Santa María",
+            textSocial: "SALUDESA S.A. de C.V.",
+            textEmailCliente: "contacto@santamaria.com",
+            textEmail: "soporte@saludesa.com",
+            textDireccion: "Av. Reforma 123, CDMX",
+            textNick: "santamaria_lab",
+            textForm: "Mantenimiento preventivo de equipo biomédico"
         },
-        "allDay": true,
-        "description": "EQUIPO DE IDENTIFICACION MICROBIANA",
-        "title": "SALUDESA",
-        "color": "#e74c3c",
-        "start": "2025-09-05",
-        "eventBackgroundColor": "#e74c3c"
+        title: "SALUDESA",
+        description: "Servicio programado",
+        start: "2025-12-03T09:00:00",
+        end: "2025-12-03T11:00:00",
+        allDay: false,
+        eventBackgroundColor: "#e74c3c"
     },
     {
-        "extendedProps": {
-            "folio":"2025-02",
-            "contacto": "María López",
-            "celular": "555-987-6543",
-            "check_equipo": "No",
-            "catalog_equipo": "Ejemplo Equipo",
-            "catalog_marca": "Ejemplo Marca",
-            "catalog_modelo": "Ejemplo Modelo",
-            "input_equipo": "Microscopio",
-            "input_marca": "Nikon",
-            "input_modelo": "CX-200",
-            "trabajo_area": "Microbiología",
-            "check_list": "Checklist inicial",
-            "status": "Completado",
-            "numero_orden": "ORD-002"
+        extendedProps: {
+            textFecha: "2025-12-08 14:30",
+            textCliente: "Laboratorio BioPlus",
+            textSocial: "BIOPLUS MX",
+            textEmailCliente: "info@bioplus.mx",
+            textEmail: "agenda@saludesa.com",
+            textDireccion: "Calle Insurgentes 456, Guadalajara",
+            textNick: "bioplus_gdl",
+            textForm: "Instalación y calibración de equipo"
         },
-        "allDay": true,
-        "description": "EQUIPO DE IDENTIFICACION MICROBIANA",
-        "title": "SALUDESA",
-        "color": "#e74c3c",
-        "start": "2025-09-20",
-        "eventBackgroundColor": "#58d68d"
+        title: "SALUDESA",
+        description: "Servicio técnico",
+        start: "2025-12-08T14:30:00",
+        end: "2025-12-08T16:00:00",
+        allDay: false,
+        eventBackgroundColor: "#58d68d"
     },
     {
-        "extendedProps": {
-            "folio":"2025-03",
-            "contacto": "Luis Martínez",
-            "celular": "555-222-3344",
-            "check_equipo": "Sí",
-            "catalog_equipo": "Centrífuga",
-            "catalog_marca": "ThermoFisher",
-            "catalog_modelo": "T-Spin 300",
-            "input_equipo": "Ejemplo Equipo",
-            "input_marca": "Ejemplo Marca",
-            "input_modelo": "Ejemplo Modelo",
-            "trabajo_area": "Biología Molecular",
-            "check_list": "Checklist final",
-            "status": "En proceso",
-            "numero_orden": "ORD-003"
+        extendedProps: {
+            textFecha: "2025-12-15 10:00",
+            textCliente: "Hospital Central",
+            textSocial: "Hospital Central del Norte",
+            textEmailCliente: "mantenimiento@hospitalcentral.com",
+            textEmail: "servicios@saludesa.com",
+            textDireccion: "Blvd. Salud 789, Monterrey",
+            textNick: "hospital_central",
+            textForm: "Revisión correctiva de equipo especializado"
         },
-        "allDay": true,
-        "description": "EQUIPO DE IDENTIFICACION MICROBIANA",
-        "title": "SALUDESA",
-        "color": "#e74c3c",
-        "start": "2025-09-07",
-        "eventBackgroundColor": "#58d68d"
+        title: "SALUDESA",
+        description: "Revisión técnica",
+        start: "2025-12-15T10:00:00",
+        end: "2025-12-15T13:00:00",
+        allDay: false,
+        eventBackgroundColor: "#f4d03f"
     },
     {
-        "extendedProps": {
-            "folio":"2025-04",
-            "contacto": "Ana Gómez",
-            "celular": "555-444-8899",
-            "check_equipo": "No",
-            "catalog_equipo": "Ejemplo Equipo",
-            "catalog_marca": "Ejemplo Marca",
-            "catalog_modelo": "Ejemplo Modelo",
-            "input_equipo": "Espectrofotómetro",
-            "input_marca": "Agilent",
-            "input_modelo": "Spec-200",
-            "trabajo_area": "Química Clínica",
-            "check_list": "Checklist preventivo",
-            "status": "Pendiente",
-            "numero_orden": "ORD-004"
+        extendedProps: {
+            textFecha: "2025-12-21 08:30",
+            textCliente: "Diagnósticos del Sur",
+            textSocial: "Diagnósticos del Sur S.C.",
+            textEmailCliente: "admin@diagnosticossur.com",
+            textEmail: "agenda@saludesa.com",
+            textDireccion: "Av. Universidad 321, Puebla",
+            textNick: "diag_sur",
+            textForm: "Capacitación de uso de equipo"
         },
-        "allDay": true,
-        "description": "EQUIPO DE IDENTIFICACION MICROBIANA",
-        "title": "SALUDESA",
-        "color": "#e74c3c",
-        "start": "2025-09-04",
-        "eventBackgroundColor": "#58d68d"
+        title: "SALUDESA",
+        description: "Capacitación",
+        start: "2025-12-21T08:30:00",
+        end: "2025-12-21T10:30:00",
+        allDay: false,
+        eventBackgroundColor: "#5dade2"
     }
 ];
 
-//---- Config Calendar
+
+//----Config Calendar
 let configCustom = {
     locale: 'es',
     selectable: false,
     aspectRatio: 2,
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-    initialView: window.innerWidth < 768 ? 'timeGridDay' : 'dayGridMonth',
+    initialView: window.innerWidth < 768 ? 'dayGridMonth' : 'dayGridMonth',
     height: window.innerWidth < 768 ? 800 : 1200,
     headerToolbar: {
         left: 'prev,next today',
@@ -129,31 +126,40 @@ let configCustom = {
         today: 'Hoy',
         month: 'Mes',
         week: 'Semana',
-        day: 'Día',
-        list: 'Lista'
-    }
-};
+        day: 'Día'
+    },
+    dateClick: function (info) {
+        dateClick = info.dateStr;
+        new bootstrap.Modal(document.getElementById('modalForm')).show();
+    },
+    eventClick: function (info) {
+        const event = info.event;
+        const props = event.extendedProps || {};
+        console.log('props',props)
+        // Función helper para asignar valor por defecto
+        const getValue = (key, defaultVal = 'N/A') => {
+            const value = props[key];
+            return value === null || value === undefined || value === '' 
+                ? defaultVal 
+                : value;
+        };
 
 
-const lisDataEmployee = [
-    { nombre: 'Luis Martínez', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '01' },
-    { nombre: 'María López', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '02' },
-    { nombre: 'Carlos Ramírez', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '03' },
-    { nombre: 'Ana Torres', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '04' },
-    { nombre: 'José Hernández', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '05' },
-    { nombre: 'Fernanda Salinas', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '06' },
-    { nombre: 'Ricardo Ponce', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '07' },
-    { nombre: 'Laura Chávez', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '08' },
-    { nombre: 'Miguel Rivas', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '09' },
-    { nombre: 'Paola Méndez', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '10' },
-    { nombre: 'Arturo Gómez', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '11' },
-    { nombre: 'Sofía Aguilar', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '12' },
-    { nombre: 'Andrés Navarro', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '13' },
-    { nombre: 'Valeria Ortiz', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '14' },
-    { nombre: 'Emilio Vargas', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '15' },
-    { nombre: 'Claudia Rivera', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '16' },
-    { nombre: 'Jorge Castillo', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '17' },
-    { nombre: 'Patricia Vega', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '18' },
-    { nombre: 'Oscar Barrera', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '19' },
-    { nombre: 'Elena Ruiz', img: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/6912726edca16c0be6bd7cab.png', idUser: '20' }
-];
+        const data = {
+            modalCliente: event.title || 'N/A',
+            textFecha: getValue('textFecha'),
+            textCliente: getValue('textCliente'),
+            textSocial: getValue('textSocial'),
+            textEmailCliente: getValue('textEmailCliente'),
+            textEmail: getValue('textEmail'),
+            textDireccion: getValue('textDireccion'),
+            textNick: getValue('textNick'),
+            textForm: getValue('textForm'),
+        };
+        Object.entries(data).forEach(([id, value]) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        });
+        new bootstrap.Modal(document.getElementById('modalInformation')).show();
+    },
+}

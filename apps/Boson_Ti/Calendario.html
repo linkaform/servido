@@ -48,7 +48,16 @@
                     <!-- Filter Row -->
                     <div class="row mb-4" id="content-div-filter">
                         <div class="col-xl-2 col-lg-6 col-md-12 ">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFilter">Seleccionar Personal</button>
+                            <label  class="form-label">Cliente</label>
+                            <select class="form-select filters-servido" id="cliente">
+                                <option value="" >Selecciona una opción</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-2 col-lg-6 col-md-12 ">
+                            <label  class="form-label">Técnico</label>
+                            <select class="form-select filters-servido" id="tecnico">
+                                <option value="" >Selecciona una opción</option>
+                            </select>
                         </div>
                     </div>
 
@@ -61,7 +70,6 @@
                             <p class="text-dark fs-2 text-center">Seleccione filtros o ejecute el reporte para visualizar resultados</p>
                         </div>
                     </div>
-
                     <!-- Content NoSession -->
                     <div class="row div-content-no-session mt-5" id="content-div-noseession">
                         <div class="container mt-5">
