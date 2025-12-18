@@ -10,7 +10,7 @@ let dicReportContext = [
                     {type:'p', title:'Cliente:', id:'textCliente'},
                     {type:'p', title:'Razón Social:', id:'textSocial'},
                     {type:'p', title:'Email Cliente:', id:'textEmailCliente'},
-                    {type:'p', title:'Email:', id:'textEmail'},
+                    {type:'p', title:'Técnico:', id:'textTecnico'},
                     {type:'p', title:'Dirección de Servicios:', id:'textDireccion'},
                     {type:'p', title:'Nick/Eco:', id:'textNick'},
                     {type:'p', title:'Forma:', id:'textForm'},
@@ -24,10 +24,10 @@ let dicReportContext = [
                 {type:'input-select', title:'Cliente**:', id:'inputSelectCliente', classInput:'classFormInputs'},
                 {type:'p', title:'Razón Social:', id:'inputDescSocial', classInput:'classFormInputs'},
                 {type:'p', title:'Email Cliente:', id:'inputDescCliente', classInput:'classFormInputs'},
-                {type:'p', title:'Email :', id:'inputDescEmail', classInput:'classFormInputs'},
                 {type:'input-text', title:'Dirección de Servicios**:', id:'inputTextDireccion', classInput:'classFormInputs'},
                 {type:'input-text', title:'Nick/Eco**:', id:'inputTextNick', classInput:'classFormInputs'},
                 {type:'input-select', title:'Nombre de la forma**:', id:'inputSelectForma', classInput:'classFormInputs'},
+                {type:'input-select', title:'Técnico Seleccionado**:', id:'inputSelectTecnico', classInput:'classFormInputs'},
             ]},
         ] 
     },
@@ -114,8 +114,9 @@ let configCustom = {
     locale: 'es',
     selectable: false,
     aspectRatio: 2,
+    eventDisplay: 'block',
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-    initialView: window.innerWidth < 768 ? 'dayGridMonth' : 'dayGridMonth',
+    initialView: window.innerWidth < 768 ? 'timeGridDay' : 'timeGridDay',
     height: window.innerWidth < 768 ? 800 : 1200,
     headerToolbar: {
         left: 'prev,next today',
@@ -129,13 +130,22 @@ let configCustom = {
         day: 'Día'
     },
     dateClick: function (info) {
-        dateClick = info.dateStr;
+        const dateStr = info.dateStr;
+        const input = document.getElementById('inputDatetimeServicio');
+        const dateFormat = dateStr.includes('T');
+        if (dateFormat) {
+            const valueDatetime = dateStr.slice(0, 16);
+            input.value = valueDatetime;
+            input.disabled = true;
+        } else {
+            input.value = '';
+            input.disabled = false;
+        }
         new bootstrap.Modal(document.getElementById('modalForm')).show();
     },
     eventClick: function (info) {
         const event = info.event;
         const props = event.extendedProps || {};
-        console.log('props',props)
         // Función helper para asignar valor por defecto
         const getValue = (key, defaultVal = 'N/A') => {
             const value = props[key];
@@ -151,7 +161,7 @@ let configCustom = {
             textCliente: getValue('textCliente'),
             textSocial: getValue('textSocial'),
             textEmailCliente: getValue('textEmailCliente'),
-            textEmail: getValue('textEmail'),
+            textTecnico: getValue('textTecnico'),
             textDireccion: getValue('textDireccion'),
             textNick: getValue('textNick'),
             textForm: getValue('textForm'),

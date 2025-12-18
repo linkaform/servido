@@ -1,41 +1,3 @@
-
-function getDataClient(nombreCliente) {
-
-    const clearFields = () => {
-        ['inputDescSocial', 'inputDescCliente', 'inputDescEmail'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.textContent = '';
-        });
-    };
-
-    // 👉 Si viene vacío, limpiar y salir
-    if (!nombreCliente) {
-        clearFields();
-        return;
-    }
-
-    if (!Array.isArray(informationCliente)) {
-        clearFields();
-        return;
-    }
-
-    // Buscar coincidencia
-    const cliente = informationCliente.find(
-        item => item.nombre_cliente === nombreCliente
-    );
-
-    // Si no se encuentra, limpiar
-    if (!cliente) {
-        clearFields();
-        return;
-    }
-
-    // Rellenar datos
-    document.getElementById('inputDescSocial').textContent = cliente.razon_cliente ?? '';
-    document.getElementById('inputDescCliente').textContent = cliente.nombre_cliente ?? '';
-    document.getElementById('inputDescEmail').textContent = cliente.email_cliente || cliente.email || '';
-}
-
 let informationTecnico = [];
 let informationForma = [];
 
@@ -103,7 +65,6 @@ async function getInformation(){
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const dataCalendario = responseRequest.response && responseRequest.response.dataCalendario && responseRequest.response.dataCalendario.length > 0 ? responseRequest.response.dataCalendario : [];
         const newFormatDataCalendario = setColorTecnico(dataCalendario);
-        console.log(newFormatDataCalendario)
         drawCalendar('calendarFirst', newFormatDataCalendario, configCustom);
         //-----Style
         hideLoadingComponent();
@@ -140,6 +101,7 @@ function get_catalog(){
         if(catalog_tecnico.length > 0){
             informationTecnico = catalog_tecnico;
             set_catalog_select(catalog_tecnico, 'nombre_tecnico', 'tecnico');
+            set_catalog_select(catalog_tecnico, 'nombre_tecnico', 'inputSelectTecnico');
         }
         if(catalog_forma.length > 0){
             informationForma = catalog_forma;
@@ -167,10 +129,9 @@ function setColorTecnico(data = []) {
         backgroundColor: tecnicoColorMap[event.description],
         eventColor: tecnicoColorMap[event.description],
         borderColor: tecnicoColorMap[event.description],
-        textColor: '#fff' // opcional
+        textColor: "#ffffff",
     }));
 }
-
 //-----SET REQUEST CREATE
 async function setCreateRecord(){
     //---Parametros
@@ -262,7 +223,6 @@ function getDataClient(nombreCliente) {
     // Rellenar datos
     document.getElementById('inputDescSocial').textContent = cliente.razon_cliente ?? '';
     document.getElementById('inputDescCliente').textContent = cliente.nombre_cliente ?? '';
-    document.getElementById('inputDescEmail').textContent = cliente.email_cliente || cliente.email || '';
 }
 
 
@@ -284,6 +244,7 @@ function validationsForm(data) {
     if (!data.inputDatetimeServicio) return showError("Seleccione Fecha de Programación de Servicio", "inputDatetimeServicio");
     if (!data.inputSelectCliente) return showError("Seleccione un Cliente", "inputSelectCliente");
     if (!data.inputSelectForma) return showError("Seleccione una forma", "inputSelectForma");
+    if (!data.inputSelectForma) return showError("Seleccione un Técnico", "inputSelectTecnico");
     if (!data.inputTextDireccion) return showError("Especifique una Dirección", "inputTextDireccion");
     if (!data.inputTextNick) return showError("Especifique un Nick/Eco", "inputTextNick");
 
@@ -305,6 +266,14 @@ function getInformationCatalog(datos) {
             compare: "forma",
             assign: "dicForm"
         },
+        {
+            key: "inputSelectTecnico",
+            catalog: informationTecnico,
+            compare: "nombre_tecnico",
+            assign: "dicTecnico"
+        },
+
+        
     ];
 
     mappings.forEach(({ key, catalog, compare, assign, condition }) => {
@@ -330,9 +299,11 @@ function cleanForm() {
             element.value = '';
         }
     });
+
+
+    document.getElementById('inputDatetimeServicio').disabled = false;
     document.getElementById('inputDescSocial').textContent =  '';
     document.getElementById('inputDescCliente').textContent = '';
-    document.getElementById('inputDescEmail').textContent = '';
 }
 
 //-----FORM DATA
