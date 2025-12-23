@@ -23,13 +23,12 @@ window.onload = function(){
 function loadDemoData(){
     //----Set Events
     drawCalendar('calendarFirst', events, configCustom);
-
+    document.getElementById('button-succes-modalForm').innerText = 'Enviar';
     document.getElementById("button-succes-modalForm").addEventListener("click", () => {
         const modal = bootstrap.Modal.getInstance(document.getElementById('modalForm'));
         modal.hide();
         alert('No se ha guardado su evento');
     });
-
     //---Hide Loader
     setTimeout(() => { hide_loading();}, 2000);
 }
@@ -38,6 +37,10 @@ function loadDemoData(){
 function loadData(data) {
     //----Search Catalogs
     get_catalog();
+    //----Change title
+    document.getElementById('button-succes-modalForm').innerText = 'Enviar';
+
+
     //----Assing Events
     document.getElementById("buttonExecution").addEventListener("click", () => {getInformation();});
     document.getElementById("button-succes-modalForm").addEventListener("click", () => {setCreateRecord();});
@@ -171,7 +174,7 @@ async function setCreateRecord(){
                 //----Close Modal
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalForm'));
                 modal.hide();
-                alert('Su programación se a creado, procederemos a recargar');
+                alert('Programación de servicio creado con éxito');
                 //----Update
                 setTimeout(() => {
                     getInformation();
