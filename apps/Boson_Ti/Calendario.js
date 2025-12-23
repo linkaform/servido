@@ -147,7 +147,7 @@ async function setCreateRecord(){
 
     //---Data Information
     let formData = getFormData();
-    const validation = validationsForm(formData)
+    const validation = validationsForm(formData);
     if(validation){
         formData = getInformationCatalog(formData);
         fetch(getUrlRequest('script'), {
@@ -228,8 +228,6 @@ function getDataClient(nombreCliente) {
     document.getElementById('inputDescCliente').textContent = cliente.nombre_cliente ?? '';
 }
 
-
-
 //-----VALIDATION FORM
 function validationsForm(data) {
 
@@ -244,10 +242,11 @@ function validationsForm(data) {
     };
 
     // Validaciones principales
+    console.log('data',data)
     if (!data.inputDatetimeServicio) return showError("Seleccione Fecha de Programación de Servicio", "inputDatetimeServicio");
     if (!data.inputSelectCliente) return showError("Seleccione un Cliente", "inputSelectCliente");
+    if (!data.inputSelectTecnico) return showError("Seleccione un Técnico", "inputSelectTecnico");
     if (!data.inputSelectForma) return showError("Seleccione una forma", "inputSelectForma");
-    if (!data.inputSelectForma) return showError("Seleccione un Técnico", "inputSelectTecnico");
     if (!data.inputTextDireccion) return showError("Especifique una Dirección", "inputTextDireccion");
     if (!data.inputTextNick) return showError("Especifique un Nick/Eco", "inputTextNick");
 
