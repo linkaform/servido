@@ -136,7 +136,7 @@ function setDataInformation(data){
             drawTableElement('tableSecond', data.tableJugoMezclado, columsTableClarificacion2);
         }
         if(data.chartJugoMezclado){
-            drawChartElement('chartSecond', 'bar', data.chartJugoMezclado, setOptionsClarificacion2, undefined, true);
+            drawChartElement('chartSecond', 'line', data.chartJugoMezclado, setOptionsClarificacion2, undefined, true);
         }
         if(data.tablePool){
             drawTableElement('tableThird', data.tablePool, columsTableClarificacion3);
