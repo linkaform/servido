@@ -18,7 +18,7 @@ function loadDemoData(){
     drawChartElement('chartFirst', 'bar', dataChartClarificacion1, setOptionsClarificacion1, undefined, true);
 
     drawTableElement('tableSecond', dataTableClarificacion2, columsTableClarificacion2);
-    drawChartElement('chartSecond', 'bar', dataChartClarificacion2, setOptionsClarificacion2, undefined, true);
+    drawChartElement('chartSecond', 'line', dataChartClarificacion2, setOptionsClarificacion2, undefined, true);
 
     drawTableElement('tableThird', dataTableClarificacion3, columsTableClarificacion3);
     drawChartElement('chartThird', 'bar', dataChartClarificacion3, setOptionsClarificacion3, undefined, true);
@@ -155,7 +155,7 @@ function setDataInformation(data){
             drawTableElement('tableSecond', data.tableSolidosTotales, columsTableEnergia2);
         }
         if(data.chartSolidosTotales){
-            drawChartElement('chartSecond', 'bar', data.chartSolidosTotales, setOptionsEnergia2, undefined, true);
+            drawChartElement('chartSecond', 'line', data.chartSolidosTotales, setOptionsEnergia2, undefined, true);
         }
         if(data.tablePh){
             drawTableElement('tableThird', data.tablePh, columsTableEnergia3);

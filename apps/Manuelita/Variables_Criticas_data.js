@@ -241,35 +241,80 @@ var dataChartClarificacion1 = {
 };
 
 var setOptionsClarificacion2 = {
-    responsive: true,
-    plugins: {
-        legend: {
-            display: true,
-            position: 'top',
-        },
-        title: {
-            display: false,
-        },
-        datalabels: {
-            color: 'black',
-            display: true,
-            anchor: 'end',        // Ubica el label al final de la barra
-            align: 'end',         // Alinea al extremo
-            clamp: true,          // evita que el texto se salga
-            rotation: -90,        // Texto vertical
-            font: {
-                size: 12
-            }
-        }
+  responsive: true,
+  maintainAspectRatio: false,
+
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
     },
-    responsive: true, 
-    maintainAspectRatio: false ,
-    scales: {
-        y: {
-            step: 1,
-        }
+    title: {
+      display: false,
     },
+    datalabels: {
+      color: 'black',
+      display: true,
+      anchor: 'end',
+      align: 'end',
+      clamp: true,
+      rotation: -90,
+      font: {
+        size: 12
+      }
+    },
+
+    annotation: {
+      annotations: {
+        maxLine: {
+          type: 'line',
+          yMin: 8.2,
+          yMax: 8.2,
+          borderColor: 'red',
+          borderWidth: 2,
+          label: {
+            content: 'MAX',
+            enabled: true,
+            position: 'start'
+          }
+        },
+        minLine: {
+          type: 'line',
+          yMin: 7.6,
+          yMax: 7.6,
+          borderColor: 'red',
+          borderWidth: 2,
+          label: {
+            content: 'MIN',
+            enabled: true,
+            position: 'start'
+          }
+        },
+        avgLine: {
+          type: 'line',
+          yMin: 7.9,
+          yMax: 7.9,
+          borderColor: 'green',
+          borderDash: [6, 6],
+          borderWidth: 2,
+          label: {
+            content: 'MEDIA',
+            enabled: true,
+            position: 'start'
+          }
+        }
+      }
+    }
+  },
+  scales: {
+    y: {
+      ticks: {
+        stepSize: 1
+      }
+    }
+  }
 };
+
 var dataChartClarificacion2 = {
     labels: [
         '2025-11-11 07:00','2025-11-11 08:00','2025-11-11 09:00','2025-11-11 10:00',
@@ -281,7 +326,7 @@ var dataChartClarificacion2 = {
     datasets: [
         {
             label: 'Cantidad',
-            data: ['235','0','541','286','0','0','123','846','0','125','0','0','139','0','123','234','0','0','278'],
+            data: ['5','0','1','8','0','0','3','8','0','12','0','0','9','0','3','4','0','0','8'],
             fill: false,
             backgroundColor: '#007bff',
             borderColor: '#0056b3',
@@ -440,6 +485,34 @@ var setOptionsEnergia2 = {
             rotation: -90,        
             font: {
                 size: 12
+            }
+        },
+        annotation: {
+            annotations: {
+                maxLine: {
+                    type: 'line',
+                    yMin: 12,
+                    yMax: 12,
+                    borderColor: 'red',
+                    borderWidth: 2,
+                    label: {
+                        content: 'MAX',
+                        enabled: true,
+                        position: 'start'
+                    }
+                },
+                minLine: {
+                    type: 'line',
+                    yMin: 3.5,
+                    yMax: 3.5,
+                    borderColor: 'red',
+                    borderWidth: 2,
+                    label: {
+                        content: 'MIN',
+                        enabled: true,
+                        position: 'start'
+                    }
+                },
             }
         }
     },
