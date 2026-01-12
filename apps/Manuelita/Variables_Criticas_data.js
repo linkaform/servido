@@ -491,8 +491,8 @@ var setOptionsEnergia2 = {
             annotations: {
                 maxLine: {
                     type: 'line',
-                    yMin: 12,
-                    yMax: 12,
+                    yMin: 1100,
+                    yMax: 1100,
                     borderColor: 'red',
                     borderWidth: 2,
                     label: {
@@ -503,8 +503,8 @@ var setOptionsEnergia2 = {
                 },
                 minLine: {
                     type: 'line',
-                    yMin: 3.5,
-                    yMax: 3.5,
+                    yMin: 300,
+                    yMax: 300,
                     borderColor: 'red',
                     borderWidth: 2,
                     label: {
