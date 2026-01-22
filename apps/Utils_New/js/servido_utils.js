@@ -638,8 +638,6 @@ function buildTabsHTML({ idElement, optionsTabs = [], elementsTabs = [] }) {
         </div>
     `).join('');
 
-    console.log('divOptions',divOptions)
-
     return `
         <div class="card shadow mb-4">
             <div class="card-body">

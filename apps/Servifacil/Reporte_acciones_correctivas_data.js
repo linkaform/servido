@@ -651,6 +651,28 @@ var setOptions1A = {
         legend: {
             display: true,
             position: 'top',
+            labels: {
+                generateLabels(chart) {
+                    const hasData =
+                        chart.data.labels?.length &&
+                        chart.data.datasets.some(ds =>
+                        ds.data.some(v => v !== null && v !== undefined && v !== 0)
+                    );
+
+                    // 🔔 Aviso visual cuando no hay datos
+                    if (!hasData) {
+                        return [{
+                            text: 'Sin información disponible',
+                            fillStyle: '#ccc',
+                            strokeStyle: '#ccc',
+                            lineWidth: 0,
+                            hidden: false
+                        }];
+                    }
+                    // Leyenda normal
+                    return Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                }
+            }
         },
         datalabels: {
             color: 'white',
@@ -734,6 +756,28 @@ var setOptions2A = {
         legend: {
             display: true,
             position: 'top',
+            labels: {
+                generateLabels(chart) {
+                    const hasData =
+                        chart.data.labels?.length &&
+                        chart.data.datasets.some(ds =>
+                        ds.data.some(v => v !== null && v !== undefined && v !== 0)
+                    );
+
+                    // 🔔 Aviso visual cuando no hay datos
+                    if (!hasData) {
+                        return [{
+                            text: 'Sin información disponible',
+                            fillStyle: '#ccc',
+                            strokeStyle: '#ccc',
+                            lineWidth: 0,
+                            hidden: false
+                        }];
+                    }
+                    // Leyenda normal
+                    return Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                }
+            }
         },
         datalabels: {
             color: 'white',
@@ -850,43 +894,65 @@ var dataChart3A = {
 
 //---Chart Fourth
 var setOptions4A = {
-    responsive: true,
-    plugins: {
-        legend: {
-            display: true,
-            position: 'top',
-        },
-        datalabels: {
-            color: 'white',
-            font: {
-                size: 16
-            },
-            formatter: function(value, context) {
-                if (!value) return '';
+  responsive: true,
+  maintainAspectRatio: false,
 
-                const extra = context.dataset.extraData
-                    ? context.dataset.extraData[context.dataIndex]
-                    : '';
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+      labels: {
+        generateLabels(chart) {
+          const hasData =
+            chart.data.labels?.length &&
+            chart.data.datasets.some(ds =>
+              ds.data.some(v => v !== null && v !== undefined && v !== 0)
+            );
 
-                return `${value}%/${extra}`;
-            }
-        },
-        tooltip: {
-            titleFont: { size: 20 }, 
-            bodyFont: { size: 17 }, 
-            callbacks: {
-                label: function (tooltipItem) {
-                    const value = tooltipItem.raw;
-                    if (value === null || value === undefined || value === 0) {
-                        return null;
-                    }
-                    return `${tooltipItem.dataset.label}: ${value}`;
-                }
-            }
+          // 🔔 Aviso visual cuando no hay datos
+          if (!hasData) {
+            return [{
+              text: 'Sin información disponible',
+              fillStyle: '#ccc',
+              strokeStyle: '#ccc',
+              lineWidth: 0,
+              hidden: false
+            }];
+          }
+
+          // Leyenda normal
+          return Chart.defaults.plugins.legend.labels.generateLabels(chart);
         }
+      }
     },
-    responsive: true, 
-    maintainAspectRatio: false,
+
+    datalabels: {
+      color: 'white',
+      font: { size: 16 },
+      display: ctx => ctx.dataset.data.some(v => v),
+      formatter: function (value, context) {
+        if (!value) return '';
+
+        const extra = context.dataset.extraData
+          ? context.dataset.extraData[context.dataIndex]
+          : '';
+
+        return `${value}%/${extra}`;
+      }
+    },
+
+    tooltip: {
+      titleFont: { size: 20 },
+      bodyFont: { size: 17 },
+      callbacks: {
+        label: function (tooltipItem) {
+          const value = tooltipItem.raw;
+          if (!value) return null;
+          return `${tooltipItem.dataset.label}: ${value}`;
+        }
+      }
+    }
+  }
 };
 
 var dataChart4A = {
@@ -909,6 +975,28 @@ var setOptions5A = {
         legend: {
             display: true,
             position: 'top',
+            labels: {
+                generateLabels(chart) {
+                    const hasData =
+                        chart.data.labels?.length &&
+                        chart.data.datasets.some(ds =>
+                        ds.data.some(v => v !== null && v !== undefined && v !== 0)
+                    );
+
+                    // 🔔 Aviso visual cuando no hay datos
+                    if (!hasData) {
+                        return [{
+                            text: 'Sin información disponible',
+                            fillStyle: '#ccc',
+                            strokeStyle: '#ccc',
+                            lineWidth: 0,
+                            hidden: false
+                        }];
+                    }
+                    // Leyenda normal
+                    return Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                }
+            }
         },
         datalabels: {
             color: 'white',
