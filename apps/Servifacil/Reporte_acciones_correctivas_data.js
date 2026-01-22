@@ -847,26 +847,49 @@ var setOptions3A = {
         legend: {
             display: true,
             position: 'top',
-            labels: {
-                generateLabels(chart) {
-                    const { data } = chart;
 
-                    return data.labels.map((label, i) => {
-                        const value = data.datasets[0].data[i];
-                        return {
-                            text: label,
-                            fillStyle: data.datasets[0].backgroundColor[i],
-                            strokeStyle: data.datasets[0].backgroundColor[i],
-                            hidden: isNaN(value) || value === 0,
-                            index: i
-                        };
-                    });
-                }
+            labels: {
+            generateLabels(chart) {
+            const { data } = chart;
+
+            const hasData =
+            data.labels?.length &&
+            data.datasets.some(ds =>
+            ds.data.some(v => v !== null && v !== undefined && v !== 0)
+            );
+
+            // 🔔 Estado vacío
+            if (!hasData) {
+            return [{
+            text: 'Sin información disponible',
+            fillStyle: '#ccc',
+            strokeStyle: '#ccc',
+            lineWidth: 0,
+            hidden: false
+            }];
+            }
+
+            // ✅ Leyenda por labels (por slice)
+            return data.labels.map((label, i) => {
+            const value = data.datasets[0].data[i];
+            const bg = data.datasets[0].backgroundColor[i];
+
+            return {
+            text: label,
+            fillStyle: bg,
+            strokeStyle: bg,
+            hidden: !chart.getDataVisibility(i),
+            index: i
+            };
+            });
+            }
             },
-            // Permite ocultar por slice
+
+            // 🖱️ Toggle por slice
             onClick(e, legendItem, legend) {
-            const index = legendItem.index;
-            legend.chart.toggleDataVisibility(index);
+            if (legendItem.index === undefined) return;
+
+            legend.chart.toggleDataVisibility(legendItem.index);
             legend.chart.update();
             }
         },
@@ -923,26 +946,49 @@ var setOptions4A = {
     legend: {
         display: true,
         position: 'top',
-        labels: {
-            generateLabels(chart) {
-                const { data } = chart;
 
-                return data.labels.map((label, i) => {
-                    const value = data.datasets[0].data[i];
-                    return {
-                        text: label,
-                        fillStyle: data.datasets[0].backgroundColor[i],
-                        strokeStyle: data.datasets[0].backgroundColor[i],
-                        hidden: isNaN(value) || value === 0,
-                        index: i
-                    };
-                });
-            }
+        labels: {
+        generateLabels(chart) {
+        const { data } = chart;
+
+        const hasData =
+        data.labels?.length &&
+        data.datasets.some(ds =>
+        ds.data.some(v => v !== null && v !== undefined && v !== 0)
+        );
+
+        // 🔔 Estado vacío
+        if (!hasData) {
+        return [{
+        text: 'Sin información disponible',
+        fillStyle: '#ccc',
+        strokeStyle: '#ccc',
+        lineWidth: 0,
+        hidden: false
+        }];
+        }
+
+        // ✅ Leyenda por labels (por slice)
+        return data.labels.map((label, i) => {
+        const value = data.datasets[0].data[i];
+        const bg = data.datasets[0].backgroundColor[i];
+
+        return {
+        text: label,
+        fillStyle: bg,
+        strokeStyle: bg,
+        hidden: !chart.getDataVisibility(i),
+        index: i
+        };
+        });
+        }
         },
-        // Permite ocultar por slice
+
+        // 🖱️ Toggle por slice
         onClick(e, legendItem, legend) {
-        const index = legendItem.index;
-        legend.chart.toggleDataVisibility(index);
+        if (legendItem.index === undefined) return;
+
+        legend.chart.toggleDataVisibility(legendItem.index);
         legend.chart.update();
         }
     },
