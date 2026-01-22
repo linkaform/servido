@@ -82,6 +82,7 @@ async function getInformation(dicAditional){
                 drawCardElement('cardSecond',0);
             }
             if (data.response_sixth) {
+                console.log('data.response_sixth',data.response_sixth)
                 drawChartElement('chartFiveth','doughnut',data.response_sixth,setOptions4A, true, true);
             }
             if (data.response_seventh) {
@@ -96,6 +97,7 @@ async function getInformation(dicAditional){
                 drawCardElement('cardFirst',0);
             }
             if (data.response_nineth) {
+                console.log('data.response_nineth',data.response_nineth)
                 drawChartElement('chartFourth','doughnut',data.response_nineth,setOptions4A, true, true);
             }
             if (data.response_tenth) {

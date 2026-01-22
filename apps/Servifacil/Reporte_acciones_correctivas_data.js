@@ -847,6 +847,28 @@ var setOptions3A = {
         legend: {
             display: true,
             position: 'top',
+            labels: {
+                generateLabels(chart) {
+                    const { data } = chart;
+
+                    return data.labels.map((label, i) => {
+                        const value = data.datasets[0].data[i];
+                        return {
+                            text: label,
+                            fillStyle: data.datasets[0].backgroundColor[i],
+                            strokeStyle: data.datasets[0].backgroundColor[i],
+                            hidden: isNaN(value) || value === 0,
+                            index: i
+                        };
+                    });
+                }
+            },
+            // Permite ocultar por slice
+            onClick(e, legendItem, legend) {
+            const index = legendItem.index;
+            legend.chart.toggleDataVisibility(index);
+            legend.chart.update();
+            }
         },
         datalabels: {
             color: 'white',
@@ -899,33 +921,31 @@ var setOptions4A = {
 
   plugins: {
     legend: {
-      display: true,
-      position: 'top',
-      labels: {
-        generateLabels(chart) {
-          const hasData =
-            chart.data.labels?.length &&
-            chart.data.datasets.some(ds =>
-              ds.data.some(v => v !== null && v !== undefined && v !== 0)
-            );
+        display: true,
+        position: 'top',
+        labels: {
+            generateLabels(chart) {
+                const { data } = chart;
 
-          // 🔔 Aviso visual cuando no hay datos
-          if (!hasData) {
-            return [{
-              text: 'Sin información disponible',
-              fillStyle: '#ccc',
-              strokeStyle: '#ccc',
-              lineWidth: 0,
-              hidden: false
-            }];
-          }
-
-          // Leyenda normal
-          return Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                return data.labels.map((label, i) => {
+                    const value = data.datasets[0].data[i];
+                    return {
+                        text: label,
+                        fillStyle: data.datasets[0].backgroundColor[i],
+                        strokeStyle: data.datasets[0].backgroundColor[i],
+                        hidden: isNaN(value) || value === 0,
+                        index: i
+                    };
+                });
+            }
+        },
+        // Permite ocultar por slice
+        onClick(e, legendItem, legend) {
+        const index = legendItem.index;
+        legend.chart.toggleDataVisibility(index);
+        legend.chart.update();
         }
-      }
     },
-
     datalabels: {
       color: 'white',
       font: { size: 16 },
