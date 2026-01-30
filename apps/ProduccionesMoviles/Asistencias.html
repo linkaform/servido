@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Asistencias</title>
+	<!-- Custom fonts for this template-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Custom styles for this template-->
+    <link href="../Utils_New/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../Utils_New/css/styles.css" rel="stylesheet">
+    <!-- Sweet Alerrt -->
+    <link rel="stylesheet" href="../Utils_New/css/sweetalert2.min.css">
+    <!-- Bootstrap 5 CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Tabulator CSS con tema Bootstrap 5 -->
+	<link href="https://cdn.jsdelivr.net/npm/tabulator-tables@5.5.0/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet">
+    <!--Select 2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+<body>
+	<!-- Page Wrapper -->
+    <div id="wrapper" class="">
+    	<!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+        	<!-- Main Content -->
+            <div id="content-list" class="mt-4">
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <div class="row">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4  col-6">
+                            <h1 class="h3 mb-0 text-gray-800">Asistencias</h1>
+                        </div>
+                        <div class="d-sm-flex align-items-center justify-content-end mb-4 col-6" id="content-div-buttons">
+                            <button class="btn btn-sm btn-primary shadow-sm m-1" id="buttonExecution">
+                                Ejecutar Reporte
+                            </button>
+                            <button class="btn btn-sm btn-success shadow-sm m-1 d-none" id="buttonList">
+                                Lista de Reportes
+                            </button>
+                            <button class="btn btn-sm btn-secondary shadow-sm m-1" id="buttonClose">
+                                Cerrar Sesión
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Filter Row -->
+                    <div class="row mb-4" id="content-div-filter">
+                        <!-- Filtro de Fecha -->
+                        <div class="col-xl-3 col-lg-6 col-md-12 " id="filterDateFrom">
+                            <label class="form-label">Fecha Desde</label>
+                            <input type="date" class="form-control filters-servido" id="dateFrom" >
+                        </div>
+
+                        <!-- Filtro de Fecha -->
+                        <div class="col-xl-3 col-lg-6 col-md-12 " id="filterDateTo">
+                            <label class="form-label">Fecha Hasta</label>
+                            <input type="date" class="form-control filters-servido" id="dateTo" >
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-4 col-6 mb-2 d-flex align-items-center">
+                            <span class="legend-color" style="background:#c6e0b4;">
+                                <strong>D</strong>&nbsp;– Descanso
+                            </span>
+                        </div>
+
+                        <div class="col-md-3 col-sm-4 col-6 mb-2 d-flex align-items-center">
+                            <span class="legend-color" style="background:#f4b183;">
+                                <strong>F</strong>&nbsp;– Falta
+                            </span>
+                        </div>
+
+                        <div class="col-md-3 col-sm-4 col-6 mb-2 d-flex align-items-center">
+                            <span class="legend-color" style="background:#ffe699;">
+                                <strong>CM</strong>&nbsp;– Cita médica
+                            </span>
+                        </div>
+
+                        <div class="col-md-3 col-sm-4 col-6 mb-2 d-flex align-items-center">
+                            <span class="legend-color" style="background:#bfbfbf;">
+                                <strong>INC</strong>&nbsp;– Incapacidad
+                            </span>
+                        </div>
+
+                        <div class="col-md-3 col-sm-4 col-6 mb-2 d-flex align-items-center">
+                            <span class="legend-color" style="background:#14EBE7;">
+                                <strong>A</strong>&nbsp;– Asistencia
+                            </span>
+                        </div>
+
+                        <div class="col-md-3 col-sm-4 col-6 mb-2 d-flex align-items-center">
+                            <span class="legend-color" style="background:#ffff00;">
+                                <strong>B</strong>&nbsp;– Baja
+                            </span>
+                        </div>
+
+                        <div class="col-md-3 col-sm-4 col-6 mb-2 d-flex align-items-center">
+                            <span class="legend-color" style="background:#2f5597;color: white;">
+                                <strong>VC</strong>&nbsp;– Vacaciones
+                            </span>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Content Empty -->
+                    <div class="row div-content-empty mt-5" id="content-div-empty">
+                        <div class="container mt-5">
+                            <p class="text-white  text-center">
+                                <i class="fas fa-chart-bar text-dark fs-1 text-center"></i>
+                            <p/>
+                            <p class="text-dark fs-2 text-center">Seleccione filtros o ejecute el reporte para visualizar resultados</p>
+                        </div>
+                    </div>
+                    <!-- Content NoSession -->
+                    <div class="row div-content-no-session mt-5" id="content-div-noseession">
+                        <div class="container mt-5">
+                            <p class="text-white  text-center">
+                                <i class="fas fa-chart-bar text-dark fs-1 text-center"></i>
+                            <p/>
+                            <p class="text-dark fs-2 text-center">Su sessión a expirado, favor de loguearse de nuevo.</p>
+                        </div>
+                    </div>
+
+                    <!-- New Loader-->
+                    <div class="loader" id="content-div-loadingComponent">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="100px" height="150px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                            <rect x="0" y="0" width="4" height="20" fill="#333">
+                                <animate attributeName="opacity" attributeType="XML"
+                                values="1; .2; 1" 
+                                begin="0s" dur="0.6s" repeatCount="indefinite" />
+                            </rect>
+                            <rect x="7" y="0" width="4" height="20" fill="#333">
+                                <animate attributeName="opacity" attributeType="XML"
+                                values="1; .2; 1" 
+                                begin="0.2s" dur="0.6s" repeatCount="indefinite" />
+                            </rect>
+                            <rect x="14" y="0" width="4" height="20" fill="#333">
+                                <animate attributeName="opacity" attributeType="XML"
+                                values="1; .2; 1" 
+                                begin="0.4s" dur="0.6s" repeatCount="indefinite" />
+                            </rect>
+                        </svg>
+                    </div>
+                </div>
+                <!-- Body -->
+            </div>
+            <!-- End of Main Content -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- Div Loading-->
+    <div id="loading">
+        <div>
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="text-center mt-3">Cargando...</p>
+        </div>
+    </div>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	
+    <!--Chart-->
+	<script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	
+    <!--Table -->
+    <script type="text/javascript" src="../assets/libs/js/tabulator.min.js"></script>
+    <script type="text/javascript" src="../assets/libs/js/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="../assets/libs/js/jspdf.umd.min.js"></script>
+    <script type="text/javascript" src="../assets/libs/js/jspdf.plugin.autotable.min.js"></script>
+    
+    <!-- Select 2-->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- HTML2Canvas-->
+    <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
+
+	<!--Utils -->
+	<script type="text/javascript" src="../../styles/js/chroma.min.js"></script>
+    <script type="text/javascript" src="../Utils_New/js/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="../Utils_New/js/lkf_utils.js"></script>
+    <script type="text/javascript" src="../Utils_New/js/servido_utils.js"></script>
+	<!--Report -->
+	<script type="text/javascript" src="./Asistencias.js"></script>
+    <script type="text/javascript" src="./Asistencias_data.js"></script>
+</body>
+</html>
