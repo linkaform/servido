@@ -119,11 +119,26 @@ let dataTable1 = [
 
 ];
 
-
+let mapIcon = function(cell, formatterParams){ 
+    const empleado = cell.getRow().getData().empleado;
+    if(!empleado){
+        return "<i class='fa-solid fa-map'></i>";
+    }
+    return '';
+};
 
 let columsTable2 = [
     { title:"Empleado", field:'employee',  headerFilter:"input",  width:450},
+    //-----Configuraciones de la tabla
+    { title:"Geo Inicio",formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
+        const url = cell.getRow().getData().url_check_out;
+        if(url){ window.open(url,'_blank'); }
+    }, download: false, width:150},
     { title:"Fecha Inicio", field:'date_in',  headerFilter:"input",  width:190},
+    { title:"Geo Fin",formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
+        const url = cell.getRow().getData().url_check_out;
+        if(url){ window.open(url,'_blank'); }
+    }, download: false, width:120},
     { title:"Fecha Fin", field:'date_out',  headerFilter:"input",  width:190},
     { title:"Tiempo de Trabajo", field:'time_job',  headerFilter:"input",  width:130},
     { title:"Horas de Trabajo", field:'hour_job',  headerFilter:"input",  width:180},
@@ -137,6 +152,8 @@ let dataTable2 = [
     date_out: "2026-01-18 16:24",
     time_job: "08:12",
     hour_job: 8.2,
+    url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
+    url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
   },
   {
     employee: "Empleado 02",
@@ -144,6 +161,8 @@ let dataTable2 = [
     date_out: "2026-01-18 18:00",
     time_job: "09:00",
     hour_job: 9.0,
+    url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
+    url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
   },
   {
     employee: "Empleado 03",
@@ -151,6 +170,8 @@ let dataTable2 = [
     date_out: "2026-01-18 16:15",
     time_job: "08:30",
     hour_job: 8.5,
+    url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
+    url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
   },
   {
     employee: "Empleado 04",
@@ -158,6 +179,8 @@ let dataTable2 = [
     date_out: "2026-01-18 19:40",
     time_job: "09:30",
     hour_job: 9.5,
+    url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
+    url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
   },
   {
     employee: "Empleado 05",
@@ -165,6 +188,8 @@ let dataTable2 = [
     date_out: "2026-01-18 17:00",
     time_job: "08:30",
     hour_job: 8.5,
+    url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
+    url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
   },
   {
     employee: "Empleado 06",
@@ -172,6 +197,8 @@ let dataTable2 = [
     date_out: "2026-01-18 20:00",
     time_job: "09:00",
     hour_job: 9.0,
+    url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
+    url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
   },
   {
     employee: "Empleado 07",
@@ -179,6 +206,8 @@ let dataTable2 = [
     date_out: "2026-01-18 15:30",
     time_job: "08:30",
     hour_job: 8.5,
+    url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
+    url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
   },
   {
     employee: "Empleado 08",
@@ -186,6 +215,8 @@ let dataTable2 = [
     date_out: "2026-01-18 21:15",
     time_job: "09:00",
     hour_job: 9.0,
+    url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
+    url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
   },
   {
     employee: "Empleado 09",
@@ -193,6 +224,8 @@ let dataTable2 = [
     date_out: "2026-01-18 16:00",
     time_job: "08:00",
     hour_job: 8.0,
+    url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
+    url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
   },
   {
     employee: "Empleado 10",
@@ -200,6 +233,8 @@ let dataTable2 = [
     date_out: "2026-01-18 18:00",
     time_job: "08:30",
     hour_job: 8.5,
+    url_check_in: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8',
+    url_check_out: 'https://maps.app.goo.gl/Rp8r3GXDKf1r2gWc8'
   },
 ];
 
