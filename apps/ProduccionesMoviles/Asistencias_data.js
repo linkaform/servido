@@ -130,15 +130,15 @@ let mapIcon = function(cell, formatterParams){
 let columsTable2 = [
     { title:"Empleado", field:'employee',  headerFilter:"input",  width:450},
     //-----Configuraciones de la tabla
-    { title:"Geo Inicio",formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
+    { formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
         const url = cell.getRow().getData().url_check_out;
         if(url){ window.open(url,'_blank'); }
-    }, download: false, width:150},
+    }, download: false, width:50},
     { title:"Fecha Inicio", field:'date_in',  headerFilter:"input",  width:190},
-    { title:"Geo Fin",formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
+    { formatter:mapIcon, hozAlign:"center", cellClick:function(e, cell){
         const url = cell.getRow().getData().url_check_out;
         if(url){ window.open(url,'_blank'); }
-    }, download: false, width:120},
+    }, download: false, width:50},
     { title:"Fecha Fin", field:'date_out',  headerFilter:"input",  width:190},
     { title:"Tiempo de Trabajo", field:'time_job',  headerFilter:"input",  width:130},
     { title:"Horas de Trabajo", field:'hour_job',  headerFilter:"input",  width:180},
