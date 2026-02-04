@@ -1,5 +1,7 @@
 let informationTecnico = [];
 let informationForma = [];
+let informationCompany = [];
+let informationCliente = [];
 
 let isProcessing = false; 
 let dateClick = '';
@@ -67,7 +69,7 @@ async function getInformation(){
         //----Request
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const dataCalendario = responseRequest.response && responseRequest.response.dataCalendario && responseRequest.response.dataCalendario.length > 0 ? responseRequest.response.dataCalendario : [];
-        const newFormatDataCalendario = setColorTecnico(dataCalendario);
+        const newFormatDataCalendario = setColor(dataCalendario);
         drawCalendar('calendarFirst', newFormatDataCalendario, configCustom);
         //-----Style
         hideLoadingComponent();
@@ -95,6 +97,7 @@ function get_catalog(){
         const catalog_cliente = res.response && res.response.data && res.response.data.catalog_cliente ? res.response.data.catalog_cliente : [];
         const catalog_tecnico = res.response && res.response.data && res.response.data.catalog_tecnico ? res.response.data.catalog_tecnico : [];
         const catalog_forma = res.response && res.response.data && res.response.data.catalog_forma ? res.response.data.catalog_forma : [];
+        const catalog_company = res.response && res.response.data && res.response.data.catalog_company ? res.response.data.catalog_company : [];
 
         if(catalog_cliente.length > 0){
             informationCliente = catalog_cliente;
@@ -110,31 +113,47 @@ function get_catalog(){
             informationForma = catalog_forma;
             set_catalog_select(catalog_forma, 'forma', 'inputSelectForma');
         }
+        if(catalog_company.length > 0){
+            informationCompany = catalog_company;
+            set_catalog_select(catalog_company, 'company', 'company');
+            set_catalog_select(catalog_company, 'company', 'inputSelectCompany');
+        }
     })
 }
 
 //-----SET PROD
-function setColorTecnico(data = []) {
+function setColor(data = []) {
     if (!Array.isArray(data) || data.length === 0) return data;
 
-    const tecnicos = [...new Set(
-        data.map(e => e.description).filter(Boolean)
-    )];
+    return data.map(event => {
+        const company = event?.extendedProps?.textCompany;
+        const status = event?.extendedProps?.textStatus;
 
-    const colors = getPAlleteColors(14, tecnicos.length);
-    const tecnicoColorMap = {};
-    tecnicos.forEach((tecnico, index) => {
-        tecnicoColorMap[tecnico] = colors[index];
+        let backgroundColor = '#9e9e9e'; // gris por defecto
+        let textColor = '#ffffff';
+
+        // PRIORIDAD 1: Finalizado
+        if (status === 'Finalizado' || status === 'finalizado') {
+            backgroundColor = '#ff9800'; // naranja
+        }
+        // PRIORIDAD 2: Compañía
+        else if (company === 'Boson TI' || company === 'Boson') {
+            backgroundColor = '#4caf50'; // verde
+        }
+        else if (company === 'Ditran') {
+            backgroundColor = '#2196f3'; // azul
+        }
+
+        return {
+            ...event,
+            backgroundColor,
+            borderColor: backgroundColor,
+            eventColor: backgroundColor,
+            textColor,
+        };
     });
-
-    return data.map(event => ({
-        ...event,
-        backgroundColor: tecnicoColorMap[event.description],
-        eventColor: tecnicoColorMap[event.description],
-        borderColor: tecnicoColorMap[event.description],
-        textColor: "#ffffff",
-    }));
 }
+
 //-----SET REQUEST CREATE
 async function setCreateRecord(){
     //---Parametros
@@ -257,6 +276,12 @@ function validationsForm(data) {
 function getInformationCatalog(datos) {
     const mappings = [
         {
+            key: "inputSelectCompany",
+            catalog: informationCompany,
+            compare: "company",
+            assign: "dicCompany"
+        },
+        {
             key: "inputSelectCliente",
             catalog: informationCliente,
             compare: "nombre_cliente",
@@ -274,8 +299,6 @@ function getInformationCatalog(datos) {
             compare: "nombre_tecnico",
             assign: "dicTecnico"
         },
-
-        
     ];
 
     mappings.forEach(({ key, catalog, compare, assign, condition }) => {
@@ -301,7 +324,6 @@ function cleanForm() {
             element.value = '';
         }
     });
-
 
     document.getElementById('inputDatetimeServicio').disabled = false;
     document.getElementById('inputDescSocial').textContent =  '';

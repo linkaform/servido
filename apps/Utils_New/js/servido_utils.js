@@ -1189,7 +1189,7 @@ function drawModalBody(itemElement){
 
     //---Elements
     if (type == 'p') {
-        return  `<p id="p-${id}"><strong>${title}</strong> <span id="${id}"></span></p>`
+        return  `<p id="p-${id}" class="p-text-modal"><strong>${title}</strong> <span id="${id}"></span></p>`
     }else if(type == 'switch'){
         const checked = itemElement.checked ? itemElement.checked : '';
         const element = `<div class="form-check form-switch" ${hideComponent ? 'style="display:none;"' : ''}>
@@ -1257,7 +1257,21 @@ function drawModalBody(itemElement){
             <label for="${id}">${title}</label>
         </div>`;
         return element;
+    }else if (type === 'input-link-text') {
+        const element = `
+            <div class="mb-2" id="container-${id}" ${hideComponent ? 'style="display:none;"' : ''}>
+                <span id="text-${id}" class="me-1">${title}</span>
+                <a
+                    href="#"
+                    id="${id}"
+                    target="_blank"
+                    class="link-primary"
+                >
+                    Ver enlace
+                </a>
+            </div>
+        `;
+        return element;
     }
-
     return '';
 }

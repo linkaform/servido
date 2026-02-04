@@ -6,6 +6,7 @@ let dicReportContext = [
     },
     { class:'', _children : [
             { type:'modal', col: '12', id:'modalInformation', title:'Datos de Tarea', formElements : [
+                    {type:'p', title:'Compañia:', id:'textCompany'},
                     {type:'p', title:'Fecha/hora Programación de Servicio:', id:'textFecha'},
                     {type:'p', title:'Cliente:', id:'textCliente'},
                     {type:'p', title:'Razón Social:', id:'textSocial'},
@@ -14,12 +15,15 @@ let dicReportContext = [
                     {type:'p', title:'Dirección de Servicios:', id:'textDireccion'},
                     {type:'p', title:'Nick/Eco:', id:'textNick'},
                     {type:'p', title:'Forma:', id:'textForm'},
+                    {type:'p', title:'Status:', id:'textStatus'},
+                    {type:'input-link-text', title:'Folio:', id:'folio-record'},
                 ]
             },
         ] 
     },
     { class:'', _children : [
             { type:'modal', col: '12', id:'modalForm', title:'Creación de Tarea', optionButtonModal:true, formElements : [
+                {type:'input-select', title:'Compañia**:', id:'inputSelectCompany', classInput:'classFormInputs'},
                 {type:'input-datetime', title:'Fecha/hora Programación de Servicio', id:'inputDatetimeServicio', classInput:'classFormInputs'},
                 {type:'input-select', title:'Cliente**:', id:'inputSelectCliente', classInput:'classFormInputs'},
                 {type:'p', title:'Razón Social:', id:'inputDescSocial', classInput:'classFormInputs'},
@@ -146,6 +150,7 @@ let configCustom = {
     eventClick: function (info) {
         const event = info.event;
         const props = event.extendedProps || {};
+        console.log('props',props);
         // Función helper para asignar valor por defecto
         const getValue = (key, defaultVal = 'N/A') => {
             const value = props[key];
@@ -165,11 +170,21 @@ let configCustom = {
             textDireccion: getValue('textDireccion'),
             textNick: getValue('textNick'),
             textForm: getValue('textForm'),
+            textStatus: getValue('textStatus'),
+            textCompany: getValue('textCompany'),
         };
         Object.entries(data).forEach(([id, value]) => {
             const el = document.getElementById(id);
             if (el) el.textContent = value;
         });
+
+        const idRecord = props.id_record ? props.id_record : '0000';
+        const folioRecord = props.folio ? props.folio : '0000';
+
+        const link = document.getElementById('folio-record');
+        link.href = `https://app.linkaform.com/#/records/detail/${idRecord}`;
+        link.innerText = folioRecord;
+
         new bootstrap.Modal(document.getElementById('modalInformation')).show();
     },
 }

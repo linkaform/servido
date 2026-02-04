@@ -142,3 +142,9 @@ body {
   width: 18px;
   height: 18px;
 }
+
+.p-text-modal{
+  word-break: break-word;      
+  overflow-wrap: anywhere;     
+  white-space: normal;         
+}
