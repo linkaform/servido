@@ -8,7 +8,7 @@ let id =""
 let caseta=""
 let ubicacion=""
 let account_id=""
-let paseDeAccesoScript= "pase_de_acceso.py"
+let paseDeAccesoScript= "pase_de_acceso_use_api.py"
 let fotosNuevaVisita={foto:[], identificacion:[]}
 
 window.onload = function(){
@@ -32,14 +32,13 @@ window.onload = function(){
 
 	ubicacion = urlParams.get('ubicacion') !== null ? urlParams.get('ubicacion') :'' ;
 	caseta = urlParams.get('caseta') !== null ? urlParams.get('caseta') : '' ;
-	account_id = urlParams.get('acc_id') !== null ? urlParams.get('acc_id') : '' ;
+	account_id = urlParams.get('acc_id') !== null ? urlParams.get('acc_id') : 10 ;
 	id = urlParams.get('id');
 	if(id){
 		getExtraInformation()
 	}
 	$("#textLocation").text(ubicacion);
 	$("#textModule").text(caseta);
-    getCatalogsIngreso();
 }	
 
 
@@ -73,156 +72,6 @@ function getExtraInformation(){
 }
 
 
-//FUNCION para obtener los catalogos
-function getCatalogsIngreso() {
-    try {
-        let tiposUnicos = [...new Set(catalogoVehiculos.map(v => v["Tipo de vehículo"]))];
-        
-        let selectVehiculos = document.getElementById("selectTipoVehiculo-123");
-        selectVehiculos.innerHTML = '<option value="" selected disabled>Selecciona un tipo de vehículo...</option>'; 
-        
-        for (let tipo of tiposUnicos) {
-            console.log(tipo);
-            selectVehiculos.innerHTML += '<option value="' + tipo + '">' + tipo + '</option>';
-        }
-        
-        selectVehiculos.value = "";
-        
-    } catch (error) {
-        console.error("Error al cargar catálogo:", error);
-        errorAlert({error: true, message: "Error al cargar el catálogo de vehículos"});
-    }
-}
-
-
-
-//FUNCION rellenar catalogos al momento de escojer una opcion
-// async function onChangeCatalog(type, id){
-//     if(type == "vehiculo"){
-//         console.log("AL CAMBIO",type, id)
-//         let inputMarca= document.getElementById("selectTipoVehiculo-123");
-//         const options = {
-//             method: 'POST', 
-//             body: JSON.stringify({
-//                 script_name:'get_vehiculos.py',
-//                 tipo:inputMarca.value
-//             }),
-//              headers:{ 'Content-Type': 'application/json'}
-//         };
-//         loadingService();
-//         let respuesta = await fetch(url + urlScripts, options);
-//         let data = await respuesta.json();
-//         if(data.error){
-//             errorAlert(data)
-//         }else{
-//             Swal.close();
-//             let list =data.response.data
-//             let selectVehiculosMarca= document.getElementById("selectCatalogMarca-123")
-//             selectVehiculosMarca.innerHTML=""; 
-//             for (let obj in list){
-//             console.log(list[obj])
-
-//                 selectVehiculosMarca.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
-//             }
-//             selectVehiculosMarca.value=""
-//         }
-//     }else if (type == "marca"){
-//         let inputTipo= document.getElementById("selectTipoVehiculo-123");
-//         let inputMarca= document.getElementById("selectCatalogMarca-123");
-//         console.log("DETALLES",inputTipo.value, inputMarca.value)
-//         const options = {
-//             method: 'POST', 
-//             body: JSON.stringify({
-//                 script_name:'script_turnos.py',
-//                 option:'vehiculo_tipo',
-//                 tipo:inputTipo.value,
-//                 marca: inputMarca.value
-//             }),
-//              headers:{ 'Content-Type': 'application/json','Authorization': 'Bearer '+ userJwt}
-//         };
-//         loadingService();
-//         let respuesta = await fetch(url + urlScripts, options);
-//         let data = await respuesta.json();
-//         if(data.error){
-//             errorAlert(data)
-//         }else{
-//             Swal.close();
-//             let list =data.response.data
-//             let selectVehiculosModelo= document.getElementById("selectCatalogModelo-123")
-//             selectVehiculosModelo.innerHTML=""; 
-//                 console.log("OBJ",selectVehiculosModelo.value)
-//             for (let obj in list){
-//                 selectVehiculosModelo.innerHTML += '<option value="'+list[obj]+'">'+list[obj]+'</option>';
-//             }
-//             selectVehiculosModelo.value=""
-//         }
-//     }
-// }
-async function onChangeCatalog(type, id) {
-    if (type == "vehiculo") {
-        console.log("AL CAMBIO", type, id);
-        
-        let inputTipo = document.getElementById("selectTipoVehiculo-" + id);
-        let tipoSeleccionado = inputTipo.value;
-        
-        let vehiculosFiltrados = catalogoVehiculos.filter(v => v["Tipo de vehículo"] === tipoSeleccionado);
-        let marcasUnicas = [...new Set(vehiculosFiltrados.map(v => v.Marca))];
-        
-        let selectVehiculosMarca = document.getElementById("selectCatalogMarca-" + id);
-        selectVehiculosMarca.innerHTML = '<option value="" selected disabled>Selecciona una marca...</option>'; 
-        
-        for (let marca of marcasUnicas) {
-            console.log(marca);
-            selectVehiculosMarca.innerHTML += '<option value="' + marca + '">' + marca + '</option>';
-        }
-        
-        selectVehiculosMarca.value = "";
-        
-        let selectVehiculosModelo = document.getElementById("selectCatalogModelo-" + id);
-        selectVehiculosModelo.innerHTML = '<option value="" selected disabled>Selecciona una marca primero...</option>';
-        selectVehiculosModelo.value = "";
-        
-    } else if (type == "marca") {
-        let inputTipo = document.getElementById("selectTipoVehiculo-" + id);
-        let inputMarca = document.getElementById("selectCatalogMarca-" + id);
-        
-        let tipoSeleccionado = inputTipo.value;
-        let marcaSeleccionada = inputMarca.value;
-        
-        console.log("DETALLES", tipoSeleccionado, marcaSeleccionada);
-        
-        let vehiculosFiltrados = catalogoVehiculos.filter(v => 
-            v["Tipo de vehículo"] === tipoSeleccionado && v.Marca === marcaSeleccionada
-        );
-        let modelosUnicos = [...new Set(vehiculosFiltrados.map(v => v.Modelo))];
-        
-        let selectVehiculosModelo = document.getElementById("selectCatalogModelo-" + id);
-        selectVehiculosModelo.innerHTML = '<option value="" selected disabled>Selecciona un modelo...</option>'; 
-        
-        for (let modelo of modelosUnicos) {
-            console.log("MODELO", modelo);
-            selectVehiculosModelo.innerHTML += '<option value="' + modelo + '">' + modelo + '</option>';
-        }
-        
-        selectVehiculosModelo.value = "";
-    }
-}
-
-
-//FUNCION para obtener activar y rellenar catalagos en la seccion de agregar vehiculo
-function filterCatalogBy(key, value ){
-	/*INFO: 
-	key: podemos filtrar por 'type' (marca) o 'brand' (modelo)
-	value: valor de type o model segun corresponda
-	*/
-	let dataCatalogChild="";
-	if(key == 'type'){
-		dataCatalogChild = dataCatalogs.brands_cars.filter(obj => obj.type == value);
-	}else{
-		dataCatalogChild = dataCatalogs.model_cars.filter(obj => obj.brand == value);
-	}
-	return dataCatalogChild;
-}
 
 
 //FUNCION para validar que se llenaron datos antes de enviar el formulario
@@ -246,18 +95,8 @@ function getValidation(allData) {
 
 //FUNCION: para obtener las listas de quipos y vehiculos
 function getListVehiculosEquipos(location, caseta, name, company, visit, motivo){
-	let listInputsVehicule={};
 	let listInputsEquipo={};
-	//INFO: Separar elementos por id y ponerlos en arrays
-	let divVehiculos = document.getElementById("div-vehiculo");
-    let inputsV = divVehiculos.querySelectorAll('.group-vehiculo');
-    inputsV.forEach(function(input) {
-    var idV = input.id.split('-')[1];
-        if (!listInputsVehicule[idV]) {
-            listInputsVehicule[idV] = [];
-        }
-        listInputsVehicule[idV].push(input);
-    });
+
     let divEquipo = document.getElementById("div-equipo");
     let inputsE = divEquipo.querySelectorAll('.group-equipo');
     inputsE.forEach(function(input) {
@@ -274,58 +113,13 @@ function getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
 		'companyUser':company,
 		'visitUser':visit,
 		'visitMotivo':motivo,
-		'listCarUser':listInputsVehicule,	
 		'listItemUser':listInputsEquipo,
 	}
     let htmlAppendEquipos="";
-    let htmlAppendVehiculos="";
 
     let arrayEquipos=[]
-    let arrayVehiculos=[]
-	let flagValidation = getValidation(allData);
-	/*
-	if(flagValidation){
-		for (let equipo in listInputsEquipo) {
-			console.log(listInputsEquipo[equipo])
-		    htmlAppendEquipos +="<div class='col-sm-12 col-md-12 col-lg-5 col-xl-5'>"
-			htmlAppendEquipos +="<table class='table table-borderless customShadow' style=' font-size: .8em; background-color: lightgray !important;'>"
-			htmlAppendEquipos +="<tbody> <tr> <td><b>Tipo de Equipo:</b></td> <td> <span > "+ listInputsEquipo[equipo][0].value +"</span></td> </tr>"
-			htmlAppendEquipos +="<tr> <td><b>Nombre:</b></td> <td> <span > "+ listInputsEquipo[equipo][1].value +"</span></td> </tr>"	
-			htmlAppendEquipos +="<tr> <td><b>Marca:</b></td> <td> <span > "+ listInputsEquipo[equipo][2].value +"</span></td> </tr>"
-			htmlAppendEquipos +="<tr> <td><b>Modelo:</b></td> <td> <span > "+ listInputsEquipo[equipo][4].value +"</span></td> </tr>"
-			htmlAppendEquipos +="<tr> <td><b>No. Serie:</b></td> <td> <span > "+ listInputsEquipo[equipo][3].value +"</span></td> </tr>"
-		    htmlAppendEquipos +="<tr> <td><b>Color:</b></td> <td> <span > "+ listInputsEquipo[equipo][5].value +"</span></td> </tr>"
-			htmlAppendEquipos +="</tbody> </table>	</div>";	
-		    let objEquipo={
-                'nombre':listInputsEquipo[equipo][1].value,
-                'marca':listInputsEquipo[equipo][2].value,
-                'color':listInputsEquipo[equipo][5].value,
-                'tipo':listInputsEquipo[equipo][0].value,
-                'serie':listInputsEquipo[equipo][4].value ,
-            }
-		    arrayEquipos.push(objEquipo)
-		}
-		for (let vehiculo in listInputsVehicule) {
-			htmlAppendVehiculos +="<div class='col-sm-12 col-md-12 col-lg-5 col-xl-5'>"
-			htmlAppendVehiculos +="<table class='table table-borderless customShadow' style='border: none; font-size: .8em; background-color: lightgray!important;'>"
-			htmlAppendVehiculos +="<tbody> <tr> <td><b>Tipo de Vehiculo:</b></td> <td><span > "+ listInputsVehicule[vehiculo][0].value +"</span></td> </tr>"
-			htmlAppendVehiculos +="<tr> <td><b>Marca:</b></td> <td><span > "+ listInputsVehicule[vehiculo][1].value +"</span></td> </tr>"
-			htmlAppendVehiculos +="<tr> <td><b>Modelo:</b></td> <td><span > "+ listInputsVehicule[vehiculo][2].value +"</span></td> </tr>"
-			htmlAppendVehiculos +="<tr> <td><b>Matricula:</b></td> <td><span > "+ listInputsVehicule[vehiculo][3].value +"</span></td> </tr>"
-			htmlAppendVehiculos +="<tr> <td> <b> Color: </b></td> <td><span > "+ listInputsVehicule[vehiculo][4].value +"</span></td> </tr> </tbody> </table> </div>";
-			let objVehiculo={ 
-				'tipo':listInputsVehicule[vehiculo][0].value,
-                'marca':listInputsVehicule[vehiculo][1].value,
-                'modelo':listInputsVehicule[vehiculo][2].value,
-                'estado':'',
-                'placas':listInputsVehicule[vehiculo][3].value,
-                'color':listInputsVehicule[vehiculo][4].value
-		    }
-		    arrayVehiculos.push(objVehiculo)
-		}
-	}
-*/
-	return { htmlAppendEquipos, htmlAppendVehiculos,arrayEquipos,arrayVehiculos}
+
+	return { htmlAppendEquipos,arrayEquipos}
 }
 
 
@@ -399,10 +193,6 @@ function AlertSendDataUser() {
 				<div class="d-flex justify-content-between flex-wrap"> 
 					`+ html.htmlAppendEquipos +`
 				</div>
-				<div class="d-flex justify-content-start" ><h5> Vehiculos: </h5></div>
-				<div class="d-flex justify-content-between flex-wrap"> 
-					`+ html.htmlAppendVehiculos +`
-				</div>
 			</div>
 		<section>
       `,
@@ -427,32 +217,10 @@ function AlertSendDataUser() {
 	            empresa: company,
 	            foto:fotosNuevaVisita.foto,
 	            identificacion: fotosNuevaVisita.identificacion,
-	            //motivo_visita:motivo,
-	            //areaQueVisita:areaQueVisita,
-	            //equipos:arrayEquipos,
-	            //vehiculos: html.arrayVehiculos
+	           
 	        }
         	
-        	/*let data_pase = {
-		        "visitante_pase":'alta_de_nuevo_visitante',
-		        //"ubicacion_pase":location  || '',
-		        "nombre_pase":name|| '',
-		        //"email_pase":'',
-		        //"telefono_pase":'',
-		        "empresa_pase":company|| '',
-		        //"perfil_pase":'',
-		        'visita_a_pase':[{
-		            'nombre_completo':visit|| '',
-		        }],
-		        //'authorized_pase':'',
-		        //'visita_de_pase':'',
-		        //'fecha_desde_pase':'',
-		        //'areas_group_pase':[],
-		        'vehiculos_group_pase': html.arrayVehiculos,
-		        'equipo_group_pase':html.arrayEquipos,
-		        'instrucciones_group_pase':['Sin comentarios'],
-		        'status_pase':'activo'
-		    }*/
+        
         	//FETCH PARA CREAR PASE DE ENTRADA
         	fetch(url + urlScripts, {
 		        method: 'POST',
@@ -702,117 +470,11 @@ function setTranslateImageCard(context, video, canvas){
 }
 
 
-function setDeleteVehiculo(id) {
-	 // Si es el vehículo original (123), no eliminar
-	 if (id === 123) {
-        alert("No puedes eliminar el vehículo principal");
-        return;
-    }
-	const vehiculo = document.getElementById(`div-vehiculo-${id}`);
-	if (vehiculo) {
-		vehiculo.remove();
-	}
-}
-
-//FUNCION eliminar set repetitivo de vehiculo
-function setAddVehiculo() {
-	let randomID = Date.now();
-	//---Structure HTML
-    let newItem=`
-	<div class="div-main-vehiculo" id="div-vehiculo-${randomID}">
-		<div class="row align-items-center">
-			<div class="col-9 div-vehiculo-row-1 div-row-vehiculo">
-				<label class="form-label">Tipo de Vehiculo:</label>
-				<select class="form-select"
-					id="selectTipoVehiculo-`+randomID+`"
-					onchange='onChangeCatalog("vehiculo", `+ randomID +`)'>
-				</select>
-			</div>
-
-			<div class="col-3 pt-4 mt-2 text-sart">
-				<button type="button"
-					class="btn btn-success button-add-register"
-					onclick="setAddVehiculo();return false;">
-					<i class="fa-solid fa-plus"></i>
-				</button>
-
-				<button type="button"
-					class="btn btn-danger button-delete-register"
-					onclick="setDeleteVehiculo(`+ randomID +`);return false;">
-					<i class="fa-solid fa-minus"></i>
-				</button>
-			</div>
-		</div>
-
-		<div class="col-9 div-vehiculo-row-1 div-row-vehiculo">
-			<div id='divCatalogMarca123'>
-				<label class="form-label">Marca: </label>
-				<select class="form-select" aria-label="Default select example" id="selectCatalogMarca-`+randomID+`" onChange='onChangeCatalog("marca",`+ randomID+`)'>
-					<option disabled>Escoge un tipo de vehiculo...</option>
-				</select>
-			</div>
-			<div id='divCatalogModelo123'>
-				<label class="form-label">Modelo: </label>
-					<select class="form-select" aria-label="Default select example" id="selectCatalogModelo-`+randomID+`" >
-						<option disabled>Escoge una marca...</option>
-					</select>
-			</div>
-			<div class="div-row-vehiculo">
-				<label class="form-label">Matrícula del Vehiculo:</label>
-				<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo-`+ randomID+`>
-			</div>
-			<div class="div-row-vehiculo">
-				<label class="form-label">Color:</label>
-				<input type="text" class="form-control group-vehiculo" id="inputColor-`+ randomID+`>
-				<hr >
-			</div>
-		</div>
-	</div>
-		`;
-    $('#contenedor-vehiculos').append(newItem);
-
-    $(".select-item-register").select2({
-        tags: true
-    });
-    
-    // Cargar el catálogo de tipos de vehículo para el nuevo select
-    cargarTiposVehiculoEnSelect(randomID);
-}
-
-function cargarTiposVehiculoEnSelect(id) {
-    try {
-        let tiposUnicos = [...new Set(catalogoVehiculos.map(v => v["Tipo de vehículo"]))];
-        
-        let selectVehiculos = document.getElementById("selectTipoVehiculo-" + id);
-        if (!selectVehiculos) return;
-        
-        for (let tipo of tiposUnicos) {
-            selectVehiculos.innerHTML += '<option value="' + tipo + '">' + tipo + '</option>';
-        }
-    } catch (error) {
-        console.error("Error al cargar tipos de vehículo:", error);
-    }
-}
-
-// // Función para eliminar vehículo
-// function setDeleteVehiculo(id) {
-//     // Si es el vehículo original (123), no eliminar
-//     if (id === 123) {
-//         alert("No puedes eliminar el vehículo principal");
-//         return;
-//     }
-    
-//     // Eliminar el div completo
-//     let divVehiculo = document.getElementById("div-vehiculo-" + id);
-//     if (divVehiculo) {
-//         divVehiculo.remove();
-//     }
-// }
 
 //FUNCION eliminar set repetitivo de equipo
 function setDeleteEquipo(id) {
 	 if (id === 123) {
-        alert("No puedes eliminar el vehículo principal");
+        alert("No puedes eliminar el equipo principal");
         return;
     }
 	const eq = document.getElementById(`div-equipo-${id}`);
@@ -846,10 +508,6 @@ function setAddEquipo() {
 			<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteEquipo(`+randomID+`);return false;">
 				<i class="fa-solid fa-minus"></i>
 			</button>
-		</div>
-		<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
-			<label class="form-label ">Nombre del Equipo:</label>
-			<input type="text" class="form-control group-equipo" id="inputNombreEquipo-`+randomID+`">
 		</div>
 		<div class="col-9 div-equipo-row-`+randomID+` div-row-equipo">
 			<label class="form-label ">Marca:</label>

@@ -19,25 +19,27 @@
 <body >
 	<nav class="navbar header " id="myCustomNavBar">
         <div class=" navbar-brand">
-			<img src="https://app.linkaform.com/img/login-linkaform-logo.png" height="30" class="d-inline-block align-top" alt="">
+			<img src="https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png" height="80" class="d-inline-block align-top p-1" alt="">
         </div>
     </nav>
 	<!-- Information Plant-->
-	<section class="marginSection mainSection ms-5 ml-5">
+	<section class="marginSection mainSection ms-5 ml-5 mt-5">
 		<div class="row p-3">
-			<h2 class="text-center mb-5">Registro de Ingreso</h2>
-			<div class="col-12">
-				<p><span class="h5"><b>Ubicación:</b></span>&nbsp;&nbsp; <span id="textLocation"> </span></p>
-			</div>
-			<div class="col-12">
-				<p><span class="h5"><b>Caseta:</b></span>&nbsp;&nbsp; <span id="textModule"> </span></p>
-			</div>
+			
 		</div>
 	</section>
 
 	<!-- Information User -->
 	<section class="m-5 mt-0" >
 		<div class="row p-3">
+            <h2 class="text-center ">Registro de Ingreso</h2>
+			<div class="col-12">
+				<p><span class="h5"><b>Ubicación:</b></span>&nbsp;&nbsp; <span id="textLocation"> </span></p>
+			</div>
+			<div class="col-12">
+				<p><span class="h5"><b>Caseta:</b></span>&nbsp;&nbsp; <span id="textModule"> </span></p>
+			</div>
+            
 			<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4  mb-1">
 				<label class="form-label">Nombre Completo:*</label>
 				<input type="text" class="form-control" id="inputName">
@@ -87,48 +89,7 @@
 				<label class="form-label">Motivo de la visita: *</label>
 				<textarea class="form-control"  id="inputMotivoDeLaVisita" rows="3"></textarea>
 			</div>
-			<div id="contenedor-vehiculos">
-				<div class="col-sm-12 row div-main-vehiculo" id="div-vehiculo-123">
-					<div class="col-9 div-vehiculo-row-1 div-row-vehiculo" >
-						<div class="div-vehiculo-row-1 div-row-vehiculo" >
-							<label class="form-label">Tipo de Vehiculo: </label>
-							<select class="form-select" aria-label="Default select example" id="selectTipoVehiculo-123" onChange='onChangeCatalog("vehiculo",123)'>
-							</select>
-						</div>
-					</div>
-					<div class="col-3 pt-4 mt-2 div-vehiculo-row-1 ">
-						<button type="button" class="btn btn-success button-add-register" onclick="setAddVehiculo();return false;">
-							<i class="fa-solid fa-plus"></i>
-						</button>
-						<button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteVehiculo(123);return false;">
-							<i class="fa-solid fa-minus"></i>
-						</button>
-					</div>
-					<div class="col-9 div-vehiculo-row-1 div-row-vehiculo">
-						<div id='divCatalogMarca123'>
-							<label class="form-label">Marca: </label>
-							<select class="form-select" aria-label="Default select example" id="selectCatalogMarca-123" onChange='onChangeCatalog("marca",123)'>
-								<option disabled>Escoge un tipo de vehiculo...</option>
-							</select>
-						</div>
-						<div id='divCatalogModelo123'>
-							<label class="form-label">Modelo: </label>
-								<select class="form-select" aria-label="Default select example" id="selectCatalogModelo-123" >
-									<option disabled>Escoge una marca...</option>
-								</select>
-						</div>
-						<div class="div-row-vehiculo">
-							<label class="form-label">Matrícula del Vehiculo:</label>
-							<input type="text" class="form-control group-vehiculo" id="inputMatriculaVehiculo">
-						</div>
-						<div class="div-row-vehiculo">
-							<label class="form-label">Color:</label>
-							<input type="text" class="form-control group-vehiculo" id="inputColor">
-							<hr >
-						</div>
-					</div>
-				</div>
-			</div>
+			
 			<!-- EQUIPOS -->
 			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12  mb-1 row" id="div-equipo">
 				
@@ -154,9 +115,7 @@
 					</div>
 				</div>
 				<div class="col-9 div-equipo-row-1 div-row-equipo mb-2">
-				<label class="form-label ">Nombre del Equipo:</label>
-					<input type="text" class="form-control group-equipo" id="inputNombreEquipo-123">
-				</div>
+			
 				<div class="col-9 div-equipo-row-1 div-row-equipo mb-2">
 					<label class="form-label">Marca:</label>
 					<input type="text" class="form-control group-equipo" id="inputMatriculaVehiculo-123">
@@ -191,7 +150,7 @@
 <script src="./functions.js"></script>
 <script  type="text/javascript" src="./components/locationCard.js"></script>
 <script  type="text/javascript" src="./components/navbar.js"></script>
-<script  src="./ingreso.js"></script>
+<script  src="./3b-ingreso.js"></script>
 <!-- Jquery -->
 <!-- Tabulator -->
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
