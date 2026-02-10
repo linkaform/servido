@@ -125,87 +125,228 @@ function getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
 
 //FUNCION: enviar dialogo de confirmacion
 function AlertSendDataUser() {
-	let location= $("#textLocation").text();
-	let caseta= $("#textModule").text(); 
+	let location = $("#textLocation").text();
+	let caseta = $("#textModule").text(); 
 	let name = $("#inputName").val();
 	let company = $("#inputNombreEmpresa").val();
 	let visit = $("#inputAquienVisita").val();
-	let motivo= $("#inputMotivoDeLaVisita").val();
-	let html = getListVehiculosEquipos(location, caseta, name, company, visit, motivo)
+	let motivo = $("#inputMotivoDeLaVisita").val();
+	let html = getListVehiculosEquipos(location, caseta, name, company, visit, motivo);
+
 	Swal.fire({
-        title:'Confirmación',
-        html:`
-	      	</section>
-			<div class=-flex flex-column " >
-				<table class="table table-borderless customShadow" >
-					<thead>
-						<tr>
-							<th  style="background-color: lightgray; text-align:left !important;" > Detalle del visitante  </th>
-							<th  style="background-color: lightgray;"> </th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><b>Ubicacion:</b></td>
-							<td> <span > `+location+`</span></td>
-						</tr>
-						<tr>
-							<td><b>Caseta:</b></td>
-							<td><span > `+caseta+`</span></td>
-						</tr>
-						<tr>
-							<td><b>Nombre:</b></td>
-							<td><span >`+name+`</span></td>
-						</tr>
-						<tr>
-							<td><b>Empresa:</b></td>
-							<td><span > `+company+`</span></td>
-						</tr>
-						<tr>
-							<td><b>identificación:</b></td>
-							<td> <img src="`+urlImgCard+`" width="185px" height="148px" s></td>
-						</tr>
-						<tr>
-							<td><b>Fotografia:</b></td>
-							<td> <img src="`+urlImgUser+`" width="185px" height="148px"  ></td>
-						</tr>
-					</tbody>
-				</table>
-				<hr>
-				<table class="table table-borderless customShadow" style="border: none;">
-					<thead>
-						<tr>
-							<th scope='row' style="background-color: lightgray; text-align:left !important;" class="m-0"> Detalle de la visita </th>
-							<th scope='row' style="background-color: lightgray;"> </th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><b>Visita a:</b></td>
-							<td> <span > `+visit+`</span></td>
-						</tr>
-					</tbody>
-				</table>
-				<div> <h5> Motivo de la visita:</h5> </div>
-				<div style="color:#777777; "> <span>`+motivo+`</span> </div>
-				<hr>
-				<div class="d-flex justify-content-start" ><h5> Equipos:</h5></div>
-				<div class="d-flex justify-content-between flex-wrap"> 
-					`+ html.htmlAppendEquipos +`
+		title: `
+			<div style="color:#2c3e50;font-size:1.25em;font-weight:700;">
+				Confirmar registro
+			</div>
+		`,
+		html: `
+		<style>
+          
+			.modal-container{
+				max-height:65vh;
+				overflow-y:auto;
+				padding:5px 6px;
+				font-size:.92em;
+				color:#2c3e50;
+			}
+
+			.info-section{
+				background:#f9fafb;
+				border-radius:10px;
+				padding:14px;
+				border:1px solid #eceff1;
+			}
+
+			/* GRID INFO */
+			.info-grid{
+				display:grid;
+				grid-template-columns:1fr 1fr;
+				gap:12px 20px;
+			}
+
+			.info-row{
+				display:flex;
+				align-items:flex-start;
+				gap:8px;
+			}
+
+			.info-icon{
+				font-size:.85em;
+				color:#ff6b35;
+				margin-top:2px;
+				min-width:18px;
+			}
+
+			.info-label{
+				font-weight:600;
+				color:#495057;
+				font-size:.85em;
+				min-width:75px;
+			}
+
+			.info-value{
+				color:#6c757d;
+				font-size:.88em;
+				line-height:1.4;
+			}
+
+			.section-divider{
+				border:0;
+				height:1px;
+				background:linear-gradient(to right,transparent,#ff6b35,transparent);
+				margin:18px 0;
+			}
+
+			.section-header{
+				font-weight:700;
+				font-size:.95em;
+				margin-bottom:10px;
+				display:flex;
+				align-items:center;
+				gap:6px;
+				color:#2c3e50;
+			}
+
+			.photo-grid{
+				display:grid;
+				grid-template-columns:1fr 1fr;
+				gap:14px;
+				margin-top:10px;
+			}
+            .photo-item img{
+                width:150px;
+                aspect-ratio: 5 / 4; 
+                object-fit: cover;
+                border-radius:8px;
+                border:1px solid #e0e0e0;
+            }
+
+			.motivo-text{
+				background:#fff;
+				padding:10px;
+				border-radius:8px;
+				border:1px solid #e5e7eb;
+				font-size:.88em;
+				color:#6c757d;
+			}
+
+			.equipos-grid{
+				display:flex;
+				flex-wrap:wrap;
+				gap:8px;
+			}
+
+			/* Responsive */
+			@media(max-width:576px){
+				.info-grid{
+					grid-template-columns:1fr;
+				}
+				.photo-grid{
+					grid-template-columns:1fr;
+				}
+			}
+
+			.swal2-image{
+				object-fit:contain!important;
+				max-width:110px!important;
+			}
+            .swal2-image {
+                margin-bottom: 0 !important;
+            }
+
+            .swal2-title {
+                margin-top: 0 !important;
+            }
+
+		</style>
+
+		<div class="modal-container">
+
+            <div class="info-grid">
+                <div class="info-row">
+                    <i class="fas fa-map-marker-alt info-icon"></i>
+                    <span class="info-label">Ubicación</span>
+                    <span class="info-value">${location}</span>
+                </div>
+
+                <div class="info-row">
+                    <i class="fas fa-door-open info-icon"></i>
+                    <span class="info-label">Caseta</span>
+                    <span class="info-value">${caseta}</span>
+                </div>
+
+                <div class="info-row">
+                    <i class="fas fa-user info-icon"></i>
+                    <span class="info-label">Nombre</span>
+                    <span class="info-value">${name}</span>
+                </div>
+
+                <div class="info-row">
+                    <i class="fas fa-building info-icon"></i>
+                    <span class="info-label">Empresa</span>
+                    <span class="info-value">${company}</span>
+                </div>
+            </div>
+
+			<hr class="section-divider">
+
+			<div class="section-header">
+				<i class="fas fa-images" style="color:#ff6b35;font-size:.9em;"></i>
+				Documentos
+			</div>
+
+			<div class="photo-grid">
+				<div class="photo-item">
+					<img src="${urlImgCard}">
+				</div>
+				<div class="photo-item">
+					<img src="${urlImgUser}">
 				</div>
 			</div>
-		<section>
-      `,
-        type: "warning",
-        showCancelButton: true,
-        imageUrl: "https://app.linkaform.com/img/login-linkaform-logo.png",
-        confirmButtonColor: "#28a745",
-        cancelButtonColor: "#dc3545",
-        confirmButtonText: " Guardar y Generar Qr",
-        heightAuto:false,
-        width:750,
-    })
-    .then((result) => {
+
+			<hr class="section-divider">
+
+			<div class="section-header">
+				<i class="fas fa-handshake" style="color:#ff6b35;font-size:.9em;"></i>
+				Detalles de visita
+			</div>
+
+			<div class="info-section">
+				<div class="info-row">
+					<i class="fas fa-user-tie info-icon"></i>
+					<span class="info-label">Visita a</span>
+					<span class="info-value">${visit}</span>
+				</div>
+			</div>
+
+			<div style="margin-top:10px">
+				<div class="section-header" style="font-size:.85em">
+					<i class="fas fa-comment-dots" style="font-size:.8em"></i>
+					Motivo
+				</div>
+				<div class="motivo-text">${motivo}</div>
+			</div>
+
+			<hr class="section-divider">
+
+			<div class="section-header">
+				<i class="fas fa-toolbox" style="color:#ff6b35;font-size:.9em;"></i>
+				Equipos
+			</div>
+
+			<div class="equipos-grid">
+				${html.htmlAppendEquipos}
+			</div>
+		</div>
+		`,
+		showCancelButton:true,
+		imageUrl:"https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png",
+		confirmButtonColor:"#ff6b35",
+		cancelButtonColor:"#b0b3b8",
+		confirmButtonText:"Generar QR",
+		cancelButtonText:"Cancelar",
+		width:"500px"
+	}) .then((result) => {
         if (result.value) {
         	loadingService()
 	        let access_pass={
@@ -277,7 +418,6 @@ function AlertSendDataUser() {
         }
 	});
 }
-
 
 //FUNCION obtener la url de la imagen despues de gurdarla
 function setRequestFileImg(type) {
