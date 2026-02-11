@@ -867,7 +867,7 @@ function AlertSendDataUser() {
 		if (result.value) {
 			loadingService()
 			let access_pass={
-				ubicacion:[location],
+				ubicaciones:[location],
 				nombre: name,
 				perfil_pase:"Walkin",
 				telefono: telefono,
@@ -939,10 +939,9 @@ function AlertSendDataUser() {
                             </div>
                         `
                     });
-                    
 					new QRious({
 						element: document.querySelector("#codigo"),
-						value: 'Te damos la bienvenida ' + name + '\n Registro creado en ' + location + ', ' + caseta,
+						value:  res?.response?.data?.json?.id ?? "QR no disponible, ocurrio un error al generar el qr",
 						size: 200,
 						backgroundAlpha: 0, 
 						foreground: "#505050", 
