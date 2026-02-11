@@ -731,3 +731,30 @@ input[type=search]{
 .off{
   background-color: lightgray;
 }
+
+.section-loader {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  border-radius: 10px;
+}
+
+.section-spinner {
+  width: 4.5rem;
+  height: 4.5rem;
+}
+
+.photo-loader {
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
