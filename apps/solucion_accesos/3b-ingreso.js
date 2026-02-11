@@ -76,14 +76,7 @@ async function cargarConfiguracionModulo() {
         });
 
         const data = await response.json();
-        aplicarConfiguracion({
-            success: true,
-            response: {
-                data: {
-                    requerimientos: ["fotografia", ]
-                }
-            }
-        });
+        aplicarConfiguracion(data);
 
     } catch (error) {
         console.error(error);
