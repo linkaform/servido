@@ -861,7 +861,7 @@ function AlertSendDataUser() {
         cancelButtonText: "Cancelar",   
         cancelButtonColor: "#b0b3b8",    
         reverseButtons: true ,
-        confirmButtonText: "Generar QR",   
+        confirmButtonText: "Crear pase",   
         confirmButtonColor: "#ff6b35" 
 	}).then((result) => {
 		if (result.value) {
