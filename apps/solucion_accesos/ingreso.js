@@ -8,7 +8,7 @@ let id =""
 let caseta=""
 let ubicacion=""
 let account_id=""
-let paseDeAccesoScript= "pase_de_acceso.py"
+let paseDeAccesoScript= "pase_de_acceso_use_api.py"
 let fotosNuevaVisita={foto:[], identificacion:[]}
 
 window.onload = function(){

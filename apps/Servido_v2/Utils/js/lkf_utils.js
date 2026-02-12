@@ -666,9 +666,9 @@ function successMsg(title, text, type = "success"){
     });
 }
 
-function loadingService(){
+function loadingService(text){
     Swal.fire({
-        title: 'Procesando...',
+        title: text,
         allowOutsideClick: false,
         onBeforeOpen: () => {
             Swal.showLoading();

@@ -904,49 +904,209 @@ function AlertSendDataUser() {
 			.then(res => res.json())
 			.then(res => {
 				if (res.success) {
-					Swal.close()
-					Swal.fire({
-                        imageUrl: "https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png",
-                        imageHeight: 110,
-                        showConfirmButton: true,
-                        confirmButtonColor: "#8ebd73",
-                        confirmButtonText: "Aceptar",
-                        html: `
-                            <div class="mb-3 mt-2 text-center">
-                    
-                                <!-- Texto principal -->
-                                <div style="font-weight:bold; font-size:1.1em; color:#8ebd73;">
-                                    ¡Tu información fue guardada correctamente!
-                                </div>
-                    
-                                <!-- Información extra -->
-                                <div class="d-flex justify-content-center mt-3">
-                    
-                                    <div class='align-items-start m-2'>
-                                        <i class="fa-solid fa-street-view"></i>
-                                    </div>
-                    
-                                    <div class="d-flex flex-column text-start">
-                                        <div>${location}</div>
-                                        <div>${caseta}</div> 
-                                    </div>
-                    
-                                </div>
-                    
-                                <!-- QR -->
-                                <img class="mt-3" alt="Código QR" id="codigo">
-                    
-                            </div>
-                        `
-                    });
-					new QRious({
-						element: document.querySelector("#codigo"),
-						value:  res?.response?.data?.json?.id ?? "QR no disponible, ocurrio un error al generar el qr",
-						size: 200,
-						backgroundAlpha: 0, 
-						foreground: "#505050", 
-						level: "L", 
+					const qrCode = res?.response?.data?.json?.id;
+					loadingService("Generando pdf...")
+					fetch(url + urlScripts, {
+						method: 'POST',
+						body: JSON.stringify({
+							script_name: paseDeAccesoScript,
+							option: 'get_pdf',
+							qr_code:qrCode,
+							account_id:account_id,
+						}),
+						headers:{
+							'Content-Type': 'application/json',
+							'Authorization': 'Bearer '+userJwt
+						},
+					})
+					.then(res => res.json())
+					.then(async (res) => {
+						Swal.close()
+
+						if (res.success) {
+							try {
+								const downloadUrl = res?.response?.data?.data?.download_url || 
+												  res?.response?.data?.json?.download_url;
+								const fileName = res?.response?.data?.data?.file_name || 
+											   res?.response?.data?.json?.file_name || 
+											   'Pase_de_Acceso';
+								console.log("RESPONSE PDF completa:", downloadUrl,fileName);
+					
+								if (!downloadUrl) {
+									throw new Error('URL de descarga no disponible');
+								}
+					
+								Swal.fire({
+									imageUrl: "https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png",
+									imageHeight: 110,
+									showConfirmButton: true,
+									confirmButtonColor: "#8ebd73",
+									confirmButtonText: '<i class="fas fa-download me-2"></i>Descargar PDF',
+									showCancelButton: true,
+									cancelButtonText: "Cerrar",
+									cancelButtonColor: "#6c757d",
+									reverseButtons:true,
+									html: `
+										<div class="mb-3 mt-2 text-center">
+								
+											<!-- Texto principal -->
+											<div style="font-weight:bold; font-size:1.1em; color:#8ebd73;">
+												¡Tu información fue guardada correctamente!
+											</div>
+								
+											<!-- Información extra -->
+											<div class="d-flex justify-content-center mt-3">
+								
+												<div class='align-items-start m-2'>
+													<i class="fa-solid fa-street-view"></i>
+												</div>
+								
+												<div class="d-flex flex-column text-start">
+													<div>${location}</div>
+													<div>${caseta}</div> 
+												</div>
+								
+											</div>
+								
+											<!-- QR -->
+											<img class="mt-3" alt="Código QR" id="codigo">
+											
+											<!-- Indicador de PDF listo -->
+											<div class="mt-3 p-2" style="background-color: #e8f5e9; border-radius: 8px; border: 1px solid #8ebd73;">
+												<i class="fas fa-file-pdf me-2" style="color:#8ebd73;"></i>
+												<span style="color: #2e7d32; font-weight: 500;">PDF listo para descargar</span>
+											</div>
+								
+										</div>
+									`
+								}).then(async (result) => {
+									if (result.value) {
+										try {
+											const response = await fetch(downloadUrl);
+											console.log("entrando",response)
+											if (!response.ok) {
+												throw new Error('Error al descargar el archivo');
+											}
+											
+											const blob = await response.blob();
+											const url = window.URL.createObjectURL(blob);
+											
+											const link = document.createElement('a');
+											link.href = url;
+											link.download = (fileName.split('/').pop() || 'Pase_de_Acceso') + '.pdf';
+											document.body.appendChild(link);
+											link.click();
+											
+											document.body.removeChild(link);
+											window.URL.revokeObjectURL(url);
+											
+											Swal.fire({
+												icon: 'success',
+												title: '¡Descargado!',
+												text: 'Tu pase de acceso ha sido descargado correctamente',
+												confirmButtonColor: "#8ebd73",
+												confirmButtonText: "Aceptar",
+												timer: 2500,
+												timerProgressBar: true
+											});
+											
+										} catch (error) {
+											console.error('Error al descargar:', error);
+											Swal.fire({
+												icon: 'error',
+												title: 'Error al descargar',
+												html: `No se pudo descargar el PDF.<br><a href="${downloadUrl}" target="_blank" class="btn btn-sm btn-primary mt-2">Abrir en nueva pestaña</a>`,
+												confirmButtonColor: "#8ebd73"
+											});
+										}
+									}
+								});
+								
+								setTimeout(() => {
+									new QRious({
+										element: document.querySelector("#codigo"),
+										value: qrCode ?? "QR no disponible, ocurrió un error al generar el QR",
+										size: 200,
+										backgroundAlpha: 0, 
+										foreground: "#505050", 
+										level: "L", 
+									});
+								}, 100);
+								
+								window.onload();
+								
+							} catch (error) {
+								console.error('Error al generar PDF:', error);
+								Swal.fire({
+									icon: 'error',
+									title: 'Error al generar PDF',
+									text: 'No se pudo generar el PDF, pero tu pase fue creado correctamente',
+									confirmButtonColor: "#8ebd73",
+									confirmButtonText: "Aceptar"
+								});
+								
+							}
+							
+						} else {
+							Swal.close();
+							errorAlert(res);
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: 'Ocurrió un error al procesar la solicitud',
+							confirmButtonColor: "#8ebd73"
+						});
 					});
+
+
+					// Swal.fire({
+                    //     imageUrl: "https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png",
+                    //     imageHeight: 110,
+                    //     showConfirmButton: true,
+                    //     confirmButtonColor: "#8ebd73",
+                    //     confirmButtonText: "Aceptar",
+                    //     html: `
+                    //         <div class="mb-3 mt-2 text-center">
+                    
+                    //             <!-- Texto principal -->
+                    //             <div style="font-weight:bold; font-size:1.1em; color:#8ebd73;">
+                    //                 ¡Tu información fue guardada correctamente!
+                    //             </div>
+                    
+                    //             <!-- Información extra -->
+                    //             <div class="d-flex justify-content-center mt-3">
+                    
+                    //                 <div class='align-items-start m-2'>
+                    //                     <i class="fa-solid fa-street-view"></i>
+                    //                 </div>
+                    
+                    //                 <div class="d-flex flex-column text-start">
+                    //                     <div>${location}</div>
+                    //                     <div>${caseta}</div> 
+                    //                 </div>
+                    
+                    //             </div>
+                    
+                    //             <!-- QR -->
+                    //             <img class="mt-3" alt="Código QR" id="codigo">
+                    
+                    //         </div>
+                    //     `
+                    // })
+
+					
+					// new QRious({
+					// 	element: document.querySelector("#codigo"),
+					// 	value:  res?.response?.data?.json?.id ?? "QR no disponible, ocurrio un error al generar el qr",
+					// 	size: 200,
+					// 	backgroundAlpha: 0, 
+					// 	foreground: "#505050", 
+					// 	level: "L", 
+					// });
                     window.onload()
 				}else{
 					Swal.close()
