@@ -946,6 +946,9 @@ function AlertSendDataUser() {
 									cancelButtonText: "Cerrar",
 									cancelButtonColor: "#6c757d",
 									reverseButtons:true,
+									allowOutsideClick: false, 
+									allowEscapeKey: false,      
+									allowEnterKey: false,  
 									html: `
 										<div class="mb-3 mt-2 text-center">
 								
@@ -1009,6 +1012,7 @@ function AlertSendDataUser() {
 												timer: 2500,
 												timerProgressBar: true
 											});
+											window.location.reload();
 											
 										} catch (error) {
 											console.error('Error al descargar:', error);
@@ -1018,7 +1022,10 @@ function AlertSendDataUser() {
 												html: `No se pudo descargar el PDF.<br><a href="${downloadUrl}" target="_blank" class="btn btn-sm btn-primary mt-2">Abrir en nueva pestaña</a>`,
 												confirmButtonColor: "#8ebd73"
 											});
+											window.location.reload();
 										}
+									}else{
+										window.location.reload();
 									}
 								});
 								
@@ -1033,8 +1040,6 @@ function AlertSendDataUser() {
 									});
 								}, 100);
 								
-								window.onload();
-								
 							} catch (error) {
 								console.error('Error al generar PDF:', error);
 								Swal.fire({
@@ -1044,7 +1049,7 @@ function AlertSendDataUser() {
 									confirmButtonColor: "#8ebd73",
 									confirmButtonText: "Aceptar"
 								});
-								
+								window.location.reload();
 							}
 							
 						} else {
@@ -1061,8 +1066,6 @@ function AlertSendDataUser() {
 							confirmButtonColor: "#8ebd73"
 						});
 					});
-
-
 					// Swal.fire({
                     //     imageUrl: "https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png",
                     //     imageHeight: 110,
