@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Ingreso</title>
+    <link rel="icon" type='image/svg+xml' href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'><path  d='M512 80c8.8 0 16 7.2 16 16V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V96c0-8.8 7.2-16 16-16H512zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zM208 256a64 64 0 1 0 0-128 64 64 0 1 0 0 128zm-32 32c-44.2 0-80 35.8-80 80c0 8.8 7.2 16 16 16H304c8.8 0 16-7.2 16-16c0-44.2-35.8-80-80-80H176zM376 144c-13.3 0-24 10.7-24 24s10.7 24 24 24h80c13.3 0 24-10.7 24-24s-10.7-24-24-24H376zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24h80c13.3 0 24-10.7 24-24s-10.7-24-24-24H376z'%3E%3C/path%3E%3C/svg%3E" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css">
+    
+    <style>
+        :root {
+            --primary-red: #d32f2f;
+            --dark-text: #2c3e50;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+        
+        body {
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding-bottom: 3rem;
+        }
+        
+        /* Header */
+        .custom-header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .header-title {
+            color: var(--dark-text);
+            font-weight: 700;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        /* Main Container */
+        .main-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 2.5rem;
+            margin-top: 120px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Info Banner */
+        .info-banner {
+            background: rgba(231, 76, 60, 0.08);
+            border: 1px solid rgba(231, 76, 60, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .info-item i {
+            font-size: 1.2rem;
+            color: var(--primary-red);
+            opacity: 0.7;
+        }
+        
+        .info-item-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 0.2rem;
+        }
+        
+        .info-item-value {
+            font-weight: 600;
+            color: var(--dark-text);
+        }
+        
+        /* Section Titles */
+        .section-title {
+            color: var(--dark-text);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-red);
+        }
+        
+        /* Form Groups */
+        .form-group-custom {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label-custom {
+            color: var(--dark-text);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .form-control, .form-select, textarea {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.65rem 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus, textarea:focus {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.15);
+        }
+        
+        /* Photo Section */
+        .photo-section {
+            background: var(--light-bg);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .photo-section:hover {
+            border-color: var(--primary-red);
+            background: rgba(231, 76, 60, 0.03);
+        }
+        
+        .photo-label {
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .photo-preview {
+            margin: 1rem auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Equipment Card */
+        .equipment-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .equipment-card-title {
+            color: var(--dark-text);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .equipment-card-title i {
+            color: var(--primary-red);
+        }
+        
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(135deg, #229954 0%, #1e8449 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #7f8c8d 0%, #707b7c 100%);
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+        }
+        
+        .btn-lg {
+            padding: 0.9rem 2.5rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Spacers */
+        .spacer-lg {
+            height: 2.5rem;
+        }
+        
+        .spacer-md {
+            height: 1.5rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1.5rem;
+                margin-top: 100px;
+            }
+            
+            .header-title {
+                font-size: 1.2rem;
+            }
+            
+            .info-banner {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .custom-header {
+                padding: 0.75rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar custom-header" id="myCustomNavBar">
+        <div class="container-fluid">
+            <div class="d-none d-md-flex align-items-center justify-content-between w-100">
+                <img src="https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png" 
+                     height="60" 
+                     alt="Logo 3B">
+                <h2 class="header-title">Registro de Ingreso</h2>
+                <div style="width: 60px;"></div> 
+            </div>
+            
+            <div class="d-flex d-md-none align-items-center" style="gap: 2rem;">
+                <img src="https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png" 
+                     height="0" 
+                     alt="Logo 3B">
+                <h2 class="header-title mb-0">Registro de Ingreso</h2>
+            </div>
+        </div>
+    </nav>
+    <section class="container">
+        <div class="main-container">
+            <div class="info-banner">
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <div class="info-item-label">Ubicación</div>
+                        <div class="info-item-value" id="textLocation">-</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-door-open"></i>
+                    <div>
+                        <div class="info-item-label">Caseta</div>
+                        <div class="info-item-value" id="textModule">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="section-title">Información Personal</h5>
+            
+            <div class="row">
+                <div class="col-md-6 form-group-custom">
+                    <label class="form-label-custom">Nombre Completo *</label>
+                    <input type="text" class="form-control" id="inputName" 
+                           placeholder="Nombre completo" required>
+                </div>
+            
+                <div class="col-md-6 form-group-custom">
+                    <label class="form-label-custom">Empresa *</label>
+                    <input type="text" class="form-control" id="inputNombreEmpresa" 
+                           placeholder="Nombre de la empresa" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-group-custom">
+                    <label class="form-label-custom">Email</label>
+                    <input type="email" class="form-control" id="inputEmail" placeholder="correo@ejemplo.com">
+                    <div class="invalid-feedback">
+                        Ingresa un correo válido.
+                    </div>
+                </div>
+                
+                <div class="col-md-6 form-group-custom">
+                    <label class="form-label-custom">Teléfono</label>
+                    <input type="tel" class="form-control" id="inputTelefono" placeholder="10 dígitos">
+                    <div class="invalid-feedback">
+                        Ingresa un teléfono válido (10 dígitos).
+                    </div>
+                </div>
+            </div>
+            <div class="spacer-md"></div>
+
+            
+            <div id="photoWrapper" class="position-relative">
+                <div id="photoLoader" class="photo-loader d-none">
+                    <div class="spinner-border text-danger" style="width:4rem;height:4rem;" role="status"></div>
+                    <p class="mt-3 fw-bold">Cargando configuración...</p>
+                </div>
+
+                <div id="photoContent">  
+                    <div class="row">
+                        <div class="col-md-6" id="colFotografia">
+                            <div class="photo-section" id="fotoWrapper" style="position: relative;">
+                                <label class="photo-label">
+                                    <i class="fas fa-portrait me-2" style="color: var(--primary-red);"></i>
+                                    Fotografía *
+                                </label>
+                                <button type="button" 
+                                class="btn btn-danger btn-sm" 
+                                id="buttonResetUser" 
+                                style="position: absolute; top: 5px; right: 5px; display: none; z-index: 10; padding: 0.2rem 0.5rem;" 
+                                onclick="resetUserPhoto()">
+                                        <i class="fas fa-times"></i>
+                                </button>
+                                <div class="d-flex justify-content-center gap-2 ">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="getScreenUser();return false;" id="buttonTakeUser">
+                                        <i class="fas fa-camera me-1"></i> Tomar Foto
+                                    </button>
+                                </div>
+                                <div id="containerUser" style="display:flex; justify-content:center; min-height:10px; align-items:center;">
+                                    <canvas id="canvasPhotoUser" style="display:none;" width="200" height="125"></canvas>
+                                    <img id="imgUser" class="photo-preview" src="" style="display:none;width:150px;height:120px; object-fit:cover;">
+                                </div>
+                                <div class="my-2">
+                                    <button type="button" class="btn btn-secondary btn-sm" style="display:none;" id="buttonSaveUser">
+                                        <i class="fas fa-save me-1"></i> Guardar
+                                    </button>
+                                </div>
+                                <input type="file" class="form-control mt-2" id="inputFileUser" disabled>
+                                <div class="text-danger small mt-2 d-none" id="errorFoto">
+                                    La fotografía es obligatoria.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="colIdentificacion">
+                            <div class="photo-section position-relative" id="idWrapper" style="position: relative;">
+                                <label class="photo-label">
+                                    <i class="fas fa-id-card me-2" style="color: var(--primary-red);"></i>
+                                    Identificación *
+                                </label>
+                        
+                                <button type="button" 
+                                class="btn btn-danger btn-sm" 
+                                id="buttonResetCard" 
+                                style="position: absolute; top: 5px; right: 5px; display: none; z-index: 10; padding: 0.2rem 0.5rem;" 
+                                onclick="resetCardPhoto()">
+                                        <i class="fas fa-times"></i>
+                                </button>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="getScreenCard();return false;" id="buttonTakeCard">
+                                        <i class="fas fa-camera me-1"></i> Tomar Foto
+                                    </button>
+                                </div>
+                        
+                                <div id="containerCard" style="display:flex; justify-content:center; min-height:10px; align-items:center;">
+                                    <canvas id="canvasPhoto" style="display:none;" width="200" height="125"></canvas>
+                                    <img id="imgCard" class="photo-preview" src="" style="display:none;width:150px;height:120px; object-fit:cover;">
+                                </div>
+                                <div class="my-2">
+                                    <button type="button" class="btn btn-secondary btn-sm" style="display:none;" id="buttonSaveCard">
+                                        <i class="fas fa-save me-1"></i> Guardar
+                                    </button>
+                                </div>
+                                <input type="file" class="form-control mt-2" id="inputFileCard" disabled>
+                        
+                                <div class="text-danger small mt-2 d-none" id="errorIdentificacion">
+                                    La identificación es obligatoria.
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="spacer-lg"></div>
+
+            <h5 class="section-title">Información de Visita</h5>
+            
+            <div class="row mb-3">
+                <label class="form-label-custom">¿A quién visita? *</label>
+                <div class="col-md-6">
+                    <label class="form-label-custom">Nombre <span style="font-size: 0.85rem; color: #6c757d;">(opcional)</span></label>
+                    <input type="text" class="form-control" id="inputNombreVisita" placeholder="Nombre completo">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label-custom">Email <span style="font-size: 0.85rem; color: #6c757d;">(opcional)</span></label>
+                    <input type="email" class="form-control" id="inputEmailVisita" placeholder="correo@ejemplo.com">   
+                    <div class="invalid-feedback">
+                        Ingresa un correo válido.
+                    </div>
+                </div>
+                <!-- <div class="col-md-6">
+                    <label class="form-label" style="font-size: 0.85rem; color: #6c757d;">Teléfono (opcional)</label>
+                    <input type="tel" class="form-control" id="inputTelefonoVisita" placeholder="10 dígitos">
+                </div> -->
+                <div class="col-md-6 form-group-custom">
+                    <label class="form-label-custom">Teléfono <span style="font-size: 0.85rem; color: #6c757d;">(opcional)</span></label>
+                    <input type="tel" class="form-control" id="inputTelefonoVisita" placeholder="10 dígitos" >
+                    <div class="invalid-feedback">
+                        Ingresa un teléfono válido (10 dígitos).
+                    </div>
+                </div>
+
+
+                <div class="text-danger small mt-2 d-none" id="errorVisita">
+                    Debes llenar al menos uno de los campos: Nombre, Email o Teléfono.
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 form-group-custom">
+                    <label class="form-label-custom">Motivo de la visita *</label>
+                    <textarea class="form-control" id="inputMotivoDeLaVisita" 
+                              rows="3" placeholder="Motivo de su visita" required></textarea>
+                </div>
+            </div>
+            <div class="spacer-lg"></div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="section-title mb-0">Equipos (Opcional)</h5>
+                <button type="button" id="btnAgregarEquipo" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus me-1"></i> 
+                    <span class="btn-text">Agregar Equipo</span>
+                </button>
+            </div>
+
+            <div id="formEquipoContainer" style="display: none;">
+                <div class="equipment-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="equipment-card-title mb-0">
+                            <i class="fas fa-toolbox"></i>
+                            Detalles del Equipo
+                        </h6>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="ocultarEquipo()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 form-group-custom">
+                            <label class="form-label-custom">Tipo de Equipo *</label>
+                            <select class="form-select" id="selectTipoEquipo">
+                                <option value="">Seleccione...</option>
+                                <option value="Herramienta"> Herramienta</option>
+                                <option value="Computo"> Cómputo</option>
+                                <option value="Tablet"> Tablet</option>
+                                <option value="Otra"> Otra</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group-custom">
+                            <label class="form-label-custom">Marca</label>
+                            <input type="text" class="form-control" id="inputMarcaEquipo" placeholder="Marca del equipo">
+                        </div>
+                        <div class="col-md-6 form-group-custom">
+                            <label class="form-label-custom">Modelo</label>
+                            <input type="text" class="form-control" id="inputModeloEquipo" placeholder="Modelo">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group-custom">
+                            <label class="form-label-custom">No. Serie</label>
+                            <input type="text" class="form-control" id="inputNoSerieEquipo" placeholder="Número de serie">
+                        </div>
+                        <div class="col-md-6 form-group-custom">
+                            <label class="form-label-custom">Color</label>
+                            <select class="form-select" id="selectColorEquipo"></select>
+                        </div>
+                    </div>
+
+                    <div id="div-equipos-agregados" class="mt-3"></div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-3">
+                        <button type="button" class="btn btn-secondary" onclick="resetEquipoForm()">
+                            <i class="fas fa-rotate-left me-1"></i> Limpiar
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="setAddEquipo()">
+                            <i class="fas fa-check me-1"></i> Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spacer-lg"></div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="button" class="btn btn-primary btn-lg" onclick="AlertSendDataUser();return false;">
+                    <i class="fas fa-arrow-right me-2"></i>
+                    Continuar
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Spinner -->
+    <div id="divSpinner" style="display:none;margin-top: 100px;"></div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css"/>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"></script>
+
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+    <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+    <script src="https://unpkg.com/qrious@4.0.2/dist/qrious.js"></script>
+    <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
+    <script src="catalogoVehiculos.js"></script>
+    <script type="text/javascript" src="../utils/servido_utils.js"></script>
+    <script src="./functions.js"></script>
+    <script type="text/javascript" src="./components/locationCard.js"></script>
+    <script type="text/javascript" src="./components/navbar.js"></script>
+    <script src="./3b-ingreso.js"></script>
+</body>
+</html>
