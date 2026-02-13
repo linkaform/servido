@@ -6,6 +6,7 @@ let dicReportContext = [
     },
     { class:'', _children : [
             { type:'modal', col: '12', id:'modalInformation', title:'Datos de Tarea', formElements : [
+                    {type:'p', title:'Forma:', id:'textForm'},
                     {type:'p', title:'Compañia:', id:'textCompany'},
                     {type:'p', title:'Fecha/hora Programación de Servicio:', id:'textFecha'},
                     {type:'p', title:'Cliente:', id:'textCliente'},
@@ -14,7 +15,6 @@ let dicReportContext = [
                     {type:'p', title:'Técnico:', id:'textTecnico'},
                     {type:'p', title:'Dirección de Servicios:', id:'textDireccion'},
                     {type:'p', title:'Nick/Eco:', id:'textNick'},
-                    {type:'p', title:'Forma:', id:'textForm'},
                     {type:'p', title:'Status:', id:'textStatus'},
                     {type:'input-link-text', title:'Folio:', id:'folio-record'},
                 ]
@@ -29,9 +29,10 @@ let dicReportContext = [
                 {type:'p', title:'Razón Social:', id:'inputDescSocial', classInput:'classFormInputs'},
                 {type:'p', title:'Email Cliente:', id:'inputDescCliente', classInput:'classFormInputs'},
                 {type:'input-text', title:'Dirección de Servicios**:', id:'inputTextDireccion', classInput:'classFormInputs'},
-                {type:'input-text', title:'Nick/Eco**:', id:'inputTextNick', classInput:'classFormInputs'},
+                //{type:'input-text', title:'Nick/Eco**:', id:'inputTextNick', classInput:'classFormInputs'},
                 {type:'input-select', title:'Nombre de la forma**:', id:'inputSelectForma', classInput:'classFormInputs'},
                 {type:'input-select', title:'Técnico Seleccionado**:', id:'inputSelectTecnico', classInput:'classFormInputs'},
+                {type:'div', title:'Técnicos Auxiliares:', id:'divSelectTecnicosAux', classInput:'classFormInputs'},
             ]},
         ] 
     },

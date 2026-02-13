@@ -2,6 +2,7 @@ let informationTecnico = [];
 let informationForma = [];
 let informationCompany = [];
 let informationCliente = [];
+let informationApoyo = [];
 
 let isProcessing = false; 
 let dateClick = '';
@@ -41,7 +42,7 @@ function loadData(data) {
     get_catalog();
     //----Change title
     document.getElementById('button-succes-modalForm').innerText = 'Enviar';
-
+    
 
     //----Assing Events
     document.getElementById("buttonExecution").addEventListener("click", () => {getInformation();});
@@ -98,6 +99,7 @@ function get_catalog(){
         const catalog_tecnico = res.response && res.response.data && res.response.data.catalog_tecnico ? res.response.data.catalog_tecnico : [];
         const catalog_forma = res.response && res.response.data && res.response.data.catalog_forma ? res.response.data.catalog_forma : [];
         const catalog_company = res.response && res.response.data && res.response.data.catalog_company ? res.response.data.catalog_company : [];
+        const catalog_apoyo = res.response && res.response.data && res.response.data.catalog_apoyo ? res.response.data.catalog_apoyo : [];
 
         if(catalog_cliente.length > 0){
             informationCliente = catalog_cliente;
@@ -118,6 +120,10 @@ function get_catalog(){
             set_catalog_select(catalog_company, 'company', 'company');
             set_catalog_select(catalog_company, 'company', 'inputSelectCompany');
         }
+        if(catalog_apoyo.length > 0){
+            informationApoyo = catalog_apoyo;
+            setDivTecnicianAux();
+        }
     })
 }
 
@@ -135,6 +141,14 @@ function setColor(data = []) {
         // PRIORIDAD 1: Finalizado
         if (status === 'Finalizado' || status === 'finalizado') {
             backgroundColor = '#ff9800'; // naranja
+        }
+        // PRIORIDAD 2: Cancelado
+        else if (status === 'Cancelado' || status === 'cancelado') {
+            backgroundColor = '#D73219'; // rojo
+        }
+        // PRIORIDAD 3: Reprogramado
+        else if (status === 'Reprogramado' || status === 'reprogramado') {
+            backgroundColor = '#D7195F'; // rosa
         }
         // PRIORIDAD 2: Compañía
         else if (company === 'Boson TI' || company === 'Boson') {
@@ -169,6 +183,8 @@ async function setCreateRecord(){
     const validation = validationsForm(formData);
     if(validation){
         formData = getInformationCatalog(formData);
+        formData = getTecnicosAuxSeleccionados(formData);
+
         fetch(getUrlRequest('script'), {
             method: 'POST',
             body: JSON.stringify({
@@ -267,7 +283,7 @@ function validationsForm(data) {
     if (!data.inputSelectTecnico) return showError("Seleccione un Técnico", "inputSelectTecnico");
     if (!data.inputSelectForma) return showError("Seleccione una forma", "inputSelectForma");
     if (!data.inputTextDireccion) return showError("Especifique una Dirección", "inputTextDireccion");
-    if (!data.inputTextNick) return showError("Especifique un Nick/Eco", "inputTextNick");
+    //if (!data.inputTextNick) return showError("Especifique un Nick/Eco", "inputTextNick");
 
     return true;
 }
@@ -301,6 +317,7 @@ function getInformationCatalog(datos) {
         },
     ];
 
+
     mappings.forEach(({ key, catalog, compare, assign, condition }) => {
         if (datos[key] && (!condition || condition(datos))) {
             const match = catalog.find(item => item[compare] === datos[key]);
@@ -313,7 +330,7 @@ function getInformationCatalog(datos) {
 
 //-----GET DATA 
 function cleanForm() {
-    //---Clean
+    // --- Limpiar inputs principales
     const elements = document.querySelectorAll('.classFormInputs');
     elements.forEach(element => {
         if (element.tagName === 'INPUT') {
@@ -325,9 +342,17 @@ function cleanForm() {
         }
     });
 
+    // --- Restaurar estados específicos
     document.getElementById('inputDatetimeServicio').disabled = false;
-    document.getElementById('inputDescSocial').textContent =  '';
+    document.getElementById('inputDescSocial').textContent = '';
     document.getElementById('inputDescCliente').textContent = '';
+
+    // --- Limpiar completamente los técnicos auxiliares
+    const containerAux = document.getElementById('divSelectTecnicosAux');
+    if (containerAux) {
+        containerAux.innerHTML = ''; // elimina todo
+        setDivTecnicianAux();        // crea solo uno nuevo
+    }
 }
 
 //-----FORM DATA
@@ -353,3 +378,85 @@ function getFormData(){
     return datos
 }
 
+//-----Tecnicos Auxiliares
+function setDivTecnicianAux() {
+
+    const container = document.getElementById('divSelectTecnicosAux');
+    if (!container) return;
+
+    const selectClass = 'select-tecnico-aux';
+    const randomId = `selectAux_${crypto.randomUUID()}`;
+
+    // Ordenar apoyos A → Z
+    const apoyosOrdenados = Array.isArray(informationApoyo)
+        ? [...informationApoyo].sort((a, b) =>
+            (a.apoyo || '').localeCompare(b.apoyo || '', 'es', { sensitivity: 'base' })
+        )
+        : [];
+
+    // Wrapper
+    const wrapper = document.createElement('div');
+    wrapper.className = 'mb-3 d-flex align-items-center gap-2';
+
+    // Select
+    const select = document.createElement('select');
+    select.className = `form-select ${selectClass}`;
+    select.id = randomId;
+
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Seleccione Opción';
+    select.appendChild(defaultOption);
+
+    apoyosOrdenados.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.apoyo;
+        option.textContent = item.apoyo;
+        select.appendChild(option);
+    });
+
+    // Botón eliminar
+    const btnDelete = document.createElement('button');
+    btnDelete.type = 'button';
+    btnDelete.className = 'btn btn-outline-danger';
+    btnDelete.innerHTML = '<i class="fa-solid fa-trash"></i>';
+
+    btnDelete.addEventListener('click', () => {
+        const totalSelects = container.querySelectorAll(`.${selectClass}`).length;
+        if (totalSelects <= 1) {
+            alert('Debe existir al menos un técnico auxiliar');
+            return;
+        }
+        wrapper.remove();
+    });
+
+    // Botón agregar
+    const btnAdd = document.createElement('button');
+    btnAdd.type = 'button';
+    btnAdd.className = 'btn btn-outline-success';
+    btnAdd.innerHTML = '<i class="fa-solid fa-plus"></i>';
+
+    btnAdd.addEventListener('click', () => {
+        setDivTecnicianAux();
+    });
+
+    // Append
+    wrapper.appendChild(select);
+    wrapper.appendChild(btnAdd);
+    wrapper.appendChild(btnDelete);
+    container.appendChild(wrapper);
+}
+
+
+function getTecnicosAuxSeleccionados(formData) {
+
+    const listaApoyo = Array.from(
+        document.querySelectorAll('.select-tecnico-aux')
+    )
+    .map(select => select.value)
+    .filter(value => value !== '');
+
+    formData['lista_apoyo'] = listaApoyo;
+
+    return formData;
+}
