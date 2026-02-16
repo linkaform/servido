@@ -321,55 +321,55 @@ function getValidation(allData) {
     });
 
 
-    const input = document.querySelector("#inputTelefono");
+	const input = document.querySelector("#inputTelefono");
+	const iti = window.intlTelInput(input, {
+		initialCountry: "mx",
+		preferredCountries: ["mx"],
+		separateDialCode: true,
+		utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"
+	});
+	
+	input.addEventListener("blur", function () {
+		const value = input.value.trim();
+		
+		if (value === "") {
+			input.classList.remove("is-invalid");
+			input.classList.remove("is-valid");
+		} else if (iti.isValidNumber()) {
+			input.classList.remove("is-invalid");
+			input.classList.add("is-valid");
+		} else {
+			input.classList.add("is-invalid");
+			input.classList.remove("is-valid");
+		}
+	});
 
-    const iti = window.intlTelInput(input, {
-        initialCountry: "mx",
-        preferredCountries: ["mx"],
-        separateDialCode: true,
-        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"
-    });
-    
-    input.addEventListener("blur", function () {
-        if (value === "") {
-            input2.classList.remove("is-invalid");
-            input2.classList.remove("is-valid");
-        }else if (iti.isValidNumber()) {
-            input.classList.remove("is-invalid");
-            input.classList.add("is-valid");
-        } else {
-            input.classList.add("is-invalid");
-            input.classList.remove("is-valid");
-        }
-    });
-
-    const input2 = document.querySelector("#inputTelefonoVisita");
-
-    const iti2 = window.intlTelInput(input2, {
-        initialCountry: "mx",
-        preferredCountries: ["mx"],
-        separateDialCode: true,
-        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"
-    });
-    
-    input2.addEventListener("blur", function () {
-        const value = input2.value.trim();
-    
-        if (value === "") {
-            input2.classList.remove("is-invalid");
-            input2.classList.remove("is-valid");
-        } else if (iti2.isValidNumber()) {
-            input2.classList.remove("is-invalid");
-            input2.classList.add("is-valid");
-        } else {
-            input2.classList.add("is-invalid");
-            input2.classList.remove("is-valid");
-        }
-    });
+	const input2 = document.querySelector("#inputTelefonoVisita");
+	const iti2 = window.intlTelInput(input2, {
+		initialCountry: "mx",
+		preferredCountries: ["mx"],
+		separateDialCode: true,
+		utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"
+	});
+	
+	input2.addEventListener("blur", function () {
+		const value = input2.value.trim();
+		
+		if (value === "") {
+			input2.classList.remove("is-invalid");
+			input2.classList.remove("is-valid");
+		} else if (iti2.isValidNumber()) {
+			input2.classList.remove("is-invalid");
+			input2.classList.add("is-valid");
+		} else {
+			input2.classList.add("is-invalid");
+			input2.classList.remove("is-valid");
+		}
+	});
     
 	document.getElementById('motivoSelect').addEventListener('change', function() {
 		const otroContainer = document.getElementById('otroMotivoContainer');
-		const motivoInput = document.getElementById('motivo');
+		const motivoInput = document.getElementById('inputMotivoDeLaVisita');
 		
 		if (this.value === 'otro') {
 			otroContainer.style.display = 'block';
@@ -586,13 +586,51 @@ function AlertSendDataUser() {
 
 	Swal.fire({
 		title: `
-			<div style="color:#2c3e50;font-size:1.25em;font-weight:700;">
+			<div style="color:#2c3e50;font-size:.8em;font-weight:700;">
 				Confirmar registro
 			</div>
+		
 		`,
 		html: `
 		<style>
-          
+			.swal2-title {
+				display: flex !important;
+				flex-direction: column !important;
+				align-items: center !important;
+				padding: 10px 24px !important;
+			}
+			.custom-buttons-container {
+				display: flex !important;
+				gap: 10px !important;
+				justify-content: center !important;
+				margin-top: 10px !important;
+			}
+			.custom-btn {  
+				padding: 10px 20px !important;
+				border: none !important;
+				border-radius: 5px !important;
+				font-weight: 600 !important;
+				cursor: pointer !important;
+				font-size: 14px !important;
+				color: white !important;
+				transition: all 0.2s ease !important;
+			}
+			
+			.custom-confirm-btn {
+				background-color: #28a745 !important;
+			}
+			.custom-confirm-btn:hover {
+				background-color: #218838 !important;
+			}
+			
+			.custom-cancel-btn {
+				background-color: #b0b3b8 !important;
+			}
+			
+			.custom-cancel-btn:hover {
+				background-color: #9a9da1 !important;
+			}
+		
 			.modal-container{
 				max-height:65vh;
 				overflow-y:auto;
@@ -600,45 +638,38 @@ function AlertSendDataUser() {
 				font-size:.92em;
 				color:#2c3e50;
 			}
-
 			.info-section{
 				background:#f9fafb;
 				border-radius:10px;
 				padding:14px;
 				border:1px solid #eceff1;
 			}
-
 			/* GRID INFO */
 			.info-grid{
 				display:grid;
 				grid-template-columns:1fr 1fr;
 				gap:12px 20px;
 			}
-
 			.info-row{
 				display:flex;
 				flex-direction:column;
 				align-items:flex-start;
 				gap:4px;
 			}
-
 			.info-icon-label{
 				display:flex;
 				align-items:center;
 				gap:6px;
 			}
-
 			.info-icon{
 				font-size:.85em;
 				color:#ff6b35;
 			}
-
 			.info-label{
 				font-weight:600;
 				color:#495057;
 				font-size:.85em;
 			}
-
 			.info-value{
 				color:#6c757d;
 				font-size:.88em;
@@ -647,14 +678,12 @@ function AlertSendDataUser() {
 				text-align:left;
 				width:100%;
 			}
-
 			.section-divider{
 				border:0;
 				height:1px;
 				background:linear-gradient(to right,transparent,#ff6b35,transparent);
 				margin:18px 0;
 			}
-
 			.section-header{
 				font-weight:700;
 				font-size:.95em;
@@ -664,7 +693,6 @@ function AlertSendDataUser() {
 				gap:6px;
 				color:#2c3e50;
 			}
-
 			.photo-grid{
 				display:grid;
 				grid-template-columns:1fr 1fr;
@@ -679,21 +707,18 @@ function AlertSendDataUser() {
 				border-radius:8px;
 				border:1px solid #e0e0e0;
 			}
-
 			/* EQUIPOS */
 			.equipos-grid{
 				display:flex;
 				flex-direction:column;
 				gap:10px;
 			}
-
 			.equipo-item{
 				background:#fff;
 				border:1px solid #e5e7eb;
 				border-radius:8px;
 				overflow:hidden;
 			}
-
 			.equipo-header{
 				display:flex;
 				justify-content:space-between;
@@ -703,11 +728,9 @@ function AlertSendDataUser() {
 				background:#f9fafb;
 				transition:all 0.3s ease;
 			}
-
 			.equipo-header:hover{
 				background:#f1f3f5;
 			}
-
 			.equipo-title{
 				display:flex;
 				align-items:center;
@@ -715,44 +738,36 @@ function AlertSendDataUser() {
 				font-size:.9em;
 				color:#2c3e50;
 			}
-
 			.equipo-toggle{
 				color:#6c757d;
 				font-size:.8em;
 				transition:transform 0.3s ease;
 			}
-
 			.equipo-toggle.rotated{
 				transform:rotate(180deg);
 			}
-
 			.equipo-details{
 				padding:0 14px 12px 14px;
 				background:#fff;
 			}
-
 			.equipo-info-row{
 				display:flex;
 				padding:6px 0;
 				border-bottom:1px solid #f1f3f5;
 			}
-
 			.equipo-info-row:last-child{
 				border-bottom:none;
 			}
-
 			.equipo-label{
 				font-weight:600;
 				color:#495057;
 				font-size:.85em;
 				min-width:80px;
 			}
-
 			.equipo-value{
 				color:#6c757d;
 				font-size:.85em;
 			}
-
 			/* Responsive */
 			@media(max-width:576px){
 				.info-grid{
@@ -762,24 +777,35 @@ function AlertSendDataUser() {
 					grid-template-columns:1fr;
 				}
 			}
-
 			.swal2-image{
 				object-fit:contain!important;
-				max-width:110px!important;
+				max-width:90px!important;
+				margin: 0 !important;
+				padding: 0 !important;
 			}
-			
-			.swal2-image {
-				margin-bottom: 0 !important;
+		
+			.swal2-popup {
+				display: grid !important;
+				grid-template-rows: auto auto 1fr auto;
 			}
 
 			.swal2-title {
-				margin-top: 0 !important;
+				grid-row: 1 !important;
+			}
+
+			.swal2-actions {
+				grid-row: 2 !important;
+				margin-top: 5px !important;
+				margin-bottom: 10px !important;
+				gap: 12px !important; 
+			}
+			.swal2-html-container {
+				grid-row: 3 !important;
 			}
 
 		</style>
-
+			
 		<div class="modal-container">
-
 			<div class="info-grid">
 				<div class="info-row">
 					<div class="info-icon-label">
@@ -788,7 +814,6 @@ function AlertSendDataUser() {
 					</div>
 					<span class="info-value">${location}</span>
 				</div>
-
 				<div class="info-row">
 					<div class="info-icon-label">
 						<i class="fas fa-door-open info-icon"  style="color: var(--primary-red);"></i>
@@ -796,7 +821,6 @@ function AlertSendDataUser() {
 					</div>
 					<span class="info-value">${caseta}</span>
 				</div>
-
 				<div class="info-row">
 					<div class="info-icon-label">
 						<i class="fas fa-user info-icon" style="color: var(--primary-red);"></i>
@@ -804,7 +828,6 @@ function AlertSendDataUser() {
 					</div>
 					<span class="info-value">${name}</span>
 				</div>
-
 				<div class="info-row">
 					<div class="info-icon-label">
 						<i class="fas fa-building info-icon" style="color: var(--primary-red);"></i>
@@ -812,7 +835,6 @@ function AlertSendDataUser() {
 					</div>
 					<span class="info-value">${company}</span>
 				</div>
-
 				<div class="info-row">
 					<div class="info-icon-label">
 						<i class="fas fa-envelope info-icon" style="color: var(--primary-red);"></i>
@@ -820,7 +842,6 @@ function AlertSendDataUser() {
 					</div>
 					<span class="info-value">${email}</span>
 				</div>
-
 				<div class="info-row">
 					<div class="info-icon-label">
 						<i class="fas fa-phone info-icon" style="color: var(--primary-red);"></i>
@@ -828,7 +849,6 @@ function AlertSendDataUser() {
 					</div>
 					<span class="info-value">${telefono}</span>
 				</div>
-
 				<div class="info-row">
 				<div class="info-icon-label">
 					<i class="fas fa-user-tie info-icon" style="color: var(--primary-red);"></i>
@@ -848,14 +868,11 @@ function AlertSendDataUser() {
 					<span class="info-value">${motivo}</span>
 				</div>
 			</div>
-
 			<hr class="section-divider">
-
 			<div class="section-header">
 				<i class="fas fa-images" style="color: var(--primary-red); font-size:.9em;"></i>
 				Documentos
 			</div>
-
 			<div class="photo-grid">
 				<div class="photo-item">
 					<img src="${urlImgUser}">
@@ -864,28 +881,44 @@ function AlertSendDataUser() {
 					<img src="${urlImgCard}">
 				</div>
 			</div>
-
 			<hr class="section-divider">
-
 			<div class="section-header">
 				<i class="fas fa-toolbox" style="color: var(--primary-red); font-size:.9em;"></i>
 				Equipos (${equipos.length})
 			</div>
-
 			<div class="equipos-grid">
 				${equiposHTML}
 			</div>
 		</div>
 		`,
 		imageUrl:"https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png",
-        showCancelButton: true,
-        cancelButtonText: "Cancelar",   
-        cancelButtonColor: "#b0b3b8",    
-        reverseButtons: true ,
-        confirmButtonText: "Crear pase",   
-        confirmButtonColor: "#ff6b35" 
+		showConfirmButton: true,
+		showCancelButton: true,
+		confirmButtonText: 'Crear pase',
+		cancelButtonText: 'Cancelar',
+	
+		customClass: {
+			confirmButton: 'custom-btn custom-confirm-btn',
+			cancelButton: 'custom-btn custom-cancel-btn'
+		},
+		buttonsStyling: false,
+	
+		allowOutsideClick: false,
+		allowEscapeKey: false,
+		didOpen: () => {
+			const title = Swal.getTitle();
+			const actions = Swal.getActions();
+		
+			if (title && actions) {
+				title.insertAdjacentElement('afterend', actions);
+			}
+		},
 	}).then((result) => {
-		if (result.value) {
+		console.log("result",result)
+		if (result.dismiss === Swal.DismissReason.cancel) {
+			return;
+		}
+		console.log('Crear pase clicked!');
 			loadingService()
 			let access_pass={
 				
@@ -1098,8 +1131,7 @@ function AlertSendDataUser() {
 				});
 			});
 			
-		}
-	});
+		});
 }
 function setRequestFileImg(type) {
 	let idInput = '';
@@ -1183,8 +1215,8 @@ function getScreenCard(){
             navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
             .then(function(stream) {
                 let video = document.createElement('video');
-                video.style.width = '200px';
-                video.style.height = '125px';
+                video.style.width = '180px';
+                video.style.height = '180px';
                 document.getElementById('containerCard').appendChild(video);
                 video.srcObject = stream;
                 video.play();
@@ -1217,8 +1249,8 @@ function getScreenUser(){
 	        navigator.mediaDevices.getUserMedia({ video: true })
 	        .then(function(stream) {
 	            let video = document.createElement('video');
-	            video.style.width = '200px';
-	            video.style.height = '125px';
+	            video.style.width = '180px';
+	            video.style.height = '180px';
 	            document.getElementById('containerUser').appendChild(video);
 	            video.srcObject = stream;
 	            video.play();
