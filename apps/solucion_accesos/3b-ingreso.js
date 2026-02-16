@@ -367,7 +367,20 @@ function getValidation(allData) {
         }
     });
     
-
+	document.getElementById('motivoSelect').addEventListener('change', function() {
+		const otroContainer = document.getElementById('otroMotivoContainer');
+		const motivoInput = document.getElementById('motivo');
+		
+		if (this.value === 'otro') {
+			otroContainer.style.display = 'block';
+			motivoInput.required = true;
+			motivoInput.value = ''; 
+		} else {
+			otroContainer.style.display = 'none';
+			motivoInput.required = false;
+			motivoInput.value = this.value; 
+		}
+	});
 //FUNCION: enviar dialogo de confirmacion
 function AlertSendDataUser() {  
     let isValid = true;
@@ -506,8 +519,16 @@ function AlertSendDataUser() {
     let name = $("#inputName").val();
     let company = $("#inputNombreEmpresa").val();
     let telefono = $("#inputTelefono").val();
-    let motivo = $("#inputMotivoDeLaVisita").val();
+    // let motivo = $("#inputMotivoDeLaVisita").val();
     let equipos = equiposAgregados.map(({ id, ...rest }) => rest);
+	const selectMotivo = document.getElementById('motivoSelect').value;
+    const inputMotivo = document.getElementById('inputMotivoDeLaVisita').value;
+    let motivo=""
+    if (selectMotivo === 'otro') {
+        motivo= inputMotivo.trim();
+    } else {
+        motivo= selectMotivo;
+    }
 
 	let equiposHTML = '';
 	if (equipos.length > 0) {
@@ -873,20 +894,17 @@ function AlertSendDataUser() {
 				perfil_pase:"Walkin",
 				telefono: telefono,
 				  visita_a: {
-                    nombre: visitNombre,
-                    email: visitEmail,
-                    telefono: visitTelefono
-                },
+					nombre: visitNombre,
+					email: visitEmail,
+					telefono: visitTelefono
+				},
 				email: email,
 				empresa: company,
 				foto:fotosNuevaVisita.foto,
 				identificacion: fotosNuevaVisita.identificacion,
 				equipos: equipos,
 				motivo: motivo,
-                created_from:"auto_registro",
-                // config_limitar_acceso:1,
-                // tipo_visita_pase:"fecha_fija",
-                // status_pase:"Proceso"
+				created_from:"auto_registro",
 			}
 			
 			fetch(url + urlScripts, {
@@ -904,10 +922,8 @@ function AlertSendDataUser() {
 			})
 			.then(res => res.json())
 			.then(res => {
-
-
 				const statusCode = res?.response?.data?.status_code || res?.status_code;
-    
+			
 				if (!res.success || (statusCode && statusCode >= 400)) {
 					Swal.close();
 					Swal.fire({
@@ -919,169 +935,157 @@ function AlertSendDataUser() {
 					});
 					return;
 				}
-
+			
 				
 				if (res.success) {
 					const qrCode = res?.response?.data?.json?.id;
-					loadingService("Generando pdf...")
-					fetch(url + urlScripts, {
-						method: 'POST',
-						body: JSON.stringify({
-							script_name: paseDeAccesoScript,
-							option: 'get_pdf',
-							qr_code:qrCode,
-							account_id:account_id,
-						}),
-						headers:{
-							'Content-Type': 'application/json',
-							'Authorization': 'Bearer '+userJwt
+					
+					// Cerrar el loading y mostrar el modal inmediatamente
+					Swal.close();
+					
+					Swal.fire({
+						imageUrl: "https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png",
+						imageHeight: 110,
+						showConfirmButton: true,
+						confirmButtonColor: "#e74c3c",
+						confirmButtonText: 'Descargar PDF <i class="fas fa-download me-2"></i>',
+						showCancelButton: true,
+						cancelButtonText: "Aceptar",
+						cancelButtonColor: "#efefef",
+						allowOutsideClick: false,
+						allowEscapeKey: false,
+						buttonsStyling: false, 
+						customClass: {
+							confirmButton: 'btn-descargar-pdf',
+							cancelButton: 'btn-aceptar-pdf',
+							actions: 'swal-actions-custom'
 						},
-					})
-					.then(res => res.json())
-					.then(async (res) => {
-						Swal.close()
-						const statusCode = res?.response?.data?.status_code || res?.status_code;
-    
-						if (!res.success || (statusCode && statusCode >= 400)) {
-							Swal.close();
-							Swal.fire({
-								icon: 'error',
-								title: 'Error',
-								text: 'Ocurrió un error al crear el pase',
-								confirmButtonColor: "#e74c3c",
-								confirmButtonText: "Aceptar"
-							});
-							return;
-						}
-
-						if (res.success) {
+						html: `
+							<div class="mb-3 mt-2 text-center">
+								<div style="font-weight:bold; font-size:1.1em; color:#333;">
+									¡Información guardada correctamente!
+								</div>
+								<div class="d-flex justify-content-center align-items-center mt-3 mb-3" style="gap: 0.5rem;">
+									<i class="fa-solid fa-map-marker-alt" style="color:#666;"></i>
+									<div class="d-flex text-start" style="gap: 0.75rem;">
+										<div style="color:#666; font-size:0.95em;">${location}</div>
+										<div style="color:#666; font-size:0.95em;">${caseta}</div> 
+									</div>
+								</div>
+								<img class="mt-2" alt="Código QR" id="codigo">
+							</div>
+						`
+					}).then(async (result) => {
+						if (result.value) {
+							// AQUÍ SE LLAMA AL SERVICIO CUANDO HACE CLIC EN "Descargar PDF"
+							loadingService("Generando PDF...");
+							
 							try {
-								const downloadUrl = res?.response?.data?.data?.download_url || 
-												  res?.response?.data?.json?.download_url;
-								const fileName = res?.response?.data?.data?.file_name || 
-											   res?.response?.data?.json?.file_name || 
-											   'Pase_de_Acceso';
-								if (!downloadUrl) {
-									throw new Error('URL de descarga no disponible');
-								}
-								Swal.fire({
-									imageUrl: "https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png",
-									imageHeight: 110,
-									showConfirmButton: true,
-									confirmButtonColor: "#e74c3c",
-									confirmButtonText: 'Descargar PDF <i class="fas fa-download me-2"></i>',
-									showCancelButton: true,
-									cancelButtonText: "Aceptar",
-									cancelButtonColor: "#efefef",
-									allowOutsideClick: false,
-									allowEscapeKey: false,
-									buttonsStyling: false, 
-									customClass: {
-										confirmButton: 'btn-descargar-pdf',
-										cancelButton: 'btn-aceptar-pdf',
-										actions: 'swal-actions-custom'
+								const pdfResponse = await fetch(url + urlScripts, {
+									method: 'POST',
+									body: JSON.stringify({
+										script_name: paseDeAccesoScript,
+										option: 'get_pdf',
+										qr_code: qrCode,
+										account_id: account_id,
+									}),
+									headers:{
+										'Content-Type': 'application/json',
+										'Authorization': 'Bearer '+userJwt
 									},
-									html: `
-										<div class="mb-3 mt-2 text-center">
-											<div style="font-weight:bold; font-size:1.1em; color:#333;">
-												¡Información guardada correctamente!
-											</div>
-											<div class="d-flex justify-content-center align-items-center mt-3 mb-3" style="gap: 0.5rem;">
-												<i class="fa-solid fa-map-marker-alt" style="color:#666;"></i>
-												<div class="d-flex text-start" style="gap: 0.75rem;">
-													<div style="color:#666; font-size:0.95em;">${location}</div>
-													<div style="color:#666; font-size:0.95em;">${caseta}</div> 
-												</div>
-											</div>
-											<img class="mt-2" alt="Código QR" id="codigo">
-										</div>
-									`
-								}).then(async (result) => {
-									if (result.value) {
-										try {
-											const response = await fetch(downloadUrl);
-											console.log("entrando",response)
-											if (!response.ok) {
-												throw new Error('Error al descargar el archivo');
-											}
-											
-											const blob = await response.blob();
-											const url = window.URL.createObjectURL(blob);
-											
-											const link = document.createElement('a');
-											link.href = url;
-											link.download = (fileName.split('/').pop() || 'Pase_de_Acceso') + '.pdf';
-											document.body.appendChild(link);
-											link.click();
-											
-											document.body.removeChild(link);
-											window.URL.revokeObjectURL(url);
-											
-											Swal.fire({
-												icon: 'success',
-												title: '¡Descargado!',
-												text: 'Tu pase de acceso ha sido descargado correctamente',
-												confirmButtonColor: "#8ebd73",
-												confirmButtonText: "Aceptar",
-												timer: 2500,
-												timerProgressBar: true
-											});
-											window.location.reload();
-											
-										} catch (error) {
-											console.error('Error al descargar:', error);
-											Swal.fire({
-												icon: 'error',
-												title: 'Error al descargar',
-												html: `No se pudo descargar el PDF.<br><a href="${downloadUrl}" target="_blank" class="btn btn-sm btn-primary mt-2">Abrir en nueva pestaña</a>`,
-												confirmButtonColor: "#8ebd73"
-											});
-											window.location.reload();
-										}
-									}else{
-										window.location.reload();
-									}
 								});
 								
-								setTimeout(() => {
-									new QRious({
-										element: document.querySelector("#codigo"),
-										value: qrCode ?? "QR no disponible, ocurrió un error al generar el QR",
-										size: 200,
-										backgroundAlpha: 0, 
-										foreground: "#505050", 
-										level: "L", 
+								const pdfRes = await pdfResponse.json();
+								Swal.close();
+								
+								const statusCode = pdfRes?.response?.data?.status_code || pdfRes?.status_code;
+			
+								if (!pdfRes.success || (statusCode && statusCode >= 400)) {
+									Swal.fire({
+										icon: 'error',
+										title: 'Error',
+										text: 'Ocurrió un error al crear el pase',
+										confirmButtonColor: "#e74c3c",
+										confirmButtonText: "Aceptar"
 									});
-								}, 100);
+									return;
+								}
+			
+								if (pdfRes.success) {
+									const downloadUrl = pdfRes?.response?.data?.data?.download_url || 
+													  pdfRes?.response?.data?.json?.download_url;
+									const fileName = pdfRes?.response?.data?.data?.file_name || 
+												   pdfRes?.response?.data?.json?.file_name || 
+												   'Pase_de_Acceso';
+									
+									if (!downloadUrl) {
+										throw new Error('URL de descarga no disponible');
+									}
+									
+									const response = await fetch(downloadUrl);
+									
+									if (!response.ok) {
+										throw new Error('Error al descargar el archivo');
+									}
+									
+									const blob = await response.blob();
+									const blobUrl = window.URL.createObjectURL(blob);
+									
+									const link = document.createElement('a');
+									link.href = blobUrl;
+									link.download = (fileName.split('/').pop() || 'Pase_de_Acceso') + '.pdf';
+									document.body.appendChild(link);
+									link.click();
+									
+									document.body.removeChild(link);
+									window.URL.revokeObjectURL(blobUrl);
+									
+									Swal.fire({
+										icon: 'success',
+										title: '¡Descargado!',
+										text: 'Tu pase de acceso ha sido descargado correctamente',
+										confirmButtonColor: "#8ebd73",
+										confirmButtonText: "Aceptar",
+										timer: 2500,
+										timerProgressBar: true
+									});
+									window.location.reload();
+									
+								} else {
+									errorAlert(pdfRes);
+								}
 								
 							} catch (error) {
-								console.error('Error al generar PDF:', error);
+								console.error('Error al descargar:', error);
+								Swal.close();
 								Swal.fire({
 									icon: 'error',
-									title: 'Error al generar PDF',
-									text: error,
-									confirmButtonColor: "#8ebd73",
-									confirmButtonText: "Aceptar"
+									title: 'Error al descargar',
+									text: 'No se pudo descargar el PDF. Intenta nuevamente.',
+									confirmButtonColor: "#8ebd73"
 								});
 								window.location.reload();
 							}
 						} else {
-							Swal.close();
-							errorAlert(res);
+							window.location.reload();
 						}
-					})
-					.catch(error => {
-						console.error('Error:', error);
-						Swal.fire({
-							icon: 'error',
-							title: 'Error',
-							text: 'Ocurrió un error al procesar la solicitud',
-							confirmButtonColor: "#8ebd73"
-						});
 					});
-				}else{
-					Swal.close()
-					errorAlert(res)
+					
+					// Generar el QR después de mostrar el modal
+					setTimeout(() => {
+						new QRious({
+							element: document.querySelector("#codigo"),
+							value: qrCode ?? "QR no disponible, ocurrió un error al generar el QR",
+							size: 200,
+							backgroundAlpha: 0, 
+							foreground: "#505050", 
+							level: "L", 
+						});
+					}, 100);
+					
+				} else {
+					Swal.close();
+					errorAlert(res);
 				}
 			}).catch(error => {
 				console.error('Error en create_access_pass:', error);
@@ -1097,7 +1101,6 @@ function AlertSendDataUser() {
 		}
 	});
 }
-//FUNCION obtener la url de la imagen despues de gurdarla
 function setRequestFileImg(type) {
 	let idInput = '';
 	if(type == 'inputCard'){

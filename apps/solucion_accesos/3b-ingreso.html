@@ -456,13 +456,23 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-12 form-group-custom">
-                    <label class="form-label-custom">Motivo de la visita *</label>
-                    <textarea class="form-control" id="inputMotivoDeLaVisita" 
-                              rows="3" placeholder="Motivo de su visita" required></textarea>
-                </div>
+            <div class="mb-3">
+                <label for="motivo" class="form-label">Motivo de la visita</label>
+                <select class="form-select" id="motivoSelect" required>
+                    <option value="" selected disabled>Selecciona un motivo</option>
+                    <option value="Motivo 1">Motivo 1</option>
+                    <option value="Motivo 2">Motivo 2</option>
+                    <option value="Motivo 3">Motivo 3</option>
+                    <option value="otro">Otro</option>
+                </select>
             </div>
+            
+            <div class="mb-3" id="otroMotivoContainer" style="display: none;">
+                <label for="inputMotivoDeLaVisita" class="form-label">Especifica el motivo</label>
+                <input type="text" class="form-control" id="inputMotivoDeLaVisita" placeholder="Escribe el motivo">
+            </div>
+
+
             <div class="spacer-lg"></div>
 
             <div class="d-flex justify-content-between align-items-center mb-3">
