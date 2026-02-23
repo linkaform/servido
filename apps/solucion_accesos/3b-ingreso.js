@@ -924,7 +924,7 @@ function AlertSendDataUser() {
 				
 				ubicaciones:[location],
 				nombre: name,
-				perfil_pase:"Walkin",
+				perfil_pase:caseta=="Lobby"? "Internos": "Walkin",
 				telefono: telefono,
 				  visita_a: {
 					nombre: visitNombre,
