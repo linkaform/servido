@@ -920,11 +920,12 @@ function AlertSendDataUser() {
 		}
 		console.log('Crear pase clicked!');
 			loadingService()
+            let perfil= caseta=="Lobby"? "Internos": "Walkin"
 			let access_pass={
 				
 				ubicaciones:[location],
 				nombre: name,
-				perfil_pase:caseta=="Lobby"? "Internos": "Walkin",
+				perfil_pase: perfil,
 				telefono: telefono,
 				  visita_a: {
 					nombre: visitNombre,
