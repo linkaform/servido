@@ -584,6 +584,19 @@ function AlertSendDataUser() {
 		}
 	}
 
+	window.toggleVehiculo = function(index) {
+		const details = document.getElementById('vehiculo-' + index);
+		const toggle = document.getElementById('toggle-' + index);
+		
+		if (details.style.display === 'none') {
+			details.style.display = 'block';
+			toggle.classList.add('rotated');
+		} else {
+			details.style.display = 'none';
+			toggle.classList.remove('rotated');
+		}
+	}
+
 	Swal.fire({
 		title: `
 			<div style="color:#2c3e50;font-size:.8em;font-weight:700;">
@@ -891,7 +904,7 @@ function AlertSendDataUser() {
 			</div>
 		</div>
 		`,
-		imageUrl:"https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png",
+		imageUrl:"https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/694ace05f1bef74262302cc9.png",
 		showConfirmButton: true,
 		showCancelButton: true,
 		confirmButtonText: 'Crear pase',
@@ -978,7 +991,7 @@ function AlertSendDataUser() {
 					Swal.close();
 					
 					Swal.fire({
-						imageUrl: "https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png",
+						imageUrl: "https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/694ace05f1bef74262302cc9.png",
 						imageHeight: 110,
 						showConfirmButton: true,
 						confirmButtonColor: "#e74c3c",
@@ -1197,7 +1210,6 @@ function setRequestFileImg(type) {
 	}
 }
 
-
 //FUNCION validar que el canvas este limpio
 function isCanvasBlank(canvas) {
     const context = canvas.getContext('2d');
@@ -1206,7 +1218,6 @@ function isCanvasBlank(canvas) {
     );
     return !pixelBuffer.some(color => color !== 0);
 }
-
 
 //FUNCION obtener la imagen del canvas
 function getScreenCard(){
@@ -1238,7 +1249,6 @@ function getScreenCard(){
         }
     }
 }
-
 
 //FUNCION obtener la imagen del canvas
 function getScreenUser(){
@@ -1273,7 +1283,6 @@ function getScreenUser(){
 	    }
 	}
 }
-
 
 //FUNCION obtener la imagen del canvas parte2
 function setTranslateImageUser(context, video, canvas){
@@ -1342,6 +1351,18 @@ function setDeleteEquipo(id) {
 	}
 }
 
+//FUNCION eliminar set repetitivo de equipo
+function setDeleteVehiculo(id) {
+	if (id === 123) {
+	   alert("No puedes eliminar el equipo principal");
+	   return;
+   }
+   const eq = document.getElementById(`div-vehiculo-${id}`);
+   if (eq) {
+	   eq.remove();
+   }
+}
+
 document.getElementById('btnAgregarEquipo').addEventListener('click', function() {
     document.getElementById('formEquipoContainer').style.display = 'block';
     document.getElementById('formEquipoContainer').scrollIntoView({ 
@@ -1355,6 +1376,10 @@ function ocultarEquipo() {
     document.getElementById('formEquipoContainer').style.display = 'none';
 }
 
+function ocultarEquipo() {
+    document.getElementById('formVehiculoContainer').style.display = 'none';
+}
+
 // Función para limpiar el formulario de equipo
 function resetEquipoForm() {
     document.getElementById('selectTipoEquipo').value = '';
@@ -1364,7 +1389,64 @@ function resetEquipoForm() {
     document.getElementById('selectColorEquipo').value = '';
 }
 
+function resetVehiculoForm() {
+    document.getElementById('selectTipoVehiculo').value = '';
+    document.getElementById('selectEstadoVehiculo').value = '';
+    document.getElementById('inputMarcaVehiculo').value = '';
+    document.getElementById('inputModeloVehiculo').value = '';
+    document.getElementById('inputPlacasVehiculo').value = '';
+    document.getElementById('selectColorVehiculo').value = '';
+}
 
+function setAddVehiculo() {
+    const tipo = document.getElementById('selectTipoVehiculo').value;
+    const estado = document.getElementById('selectEstadoVehiculo').value;
+    const marca = document.getElementById('inputMarcaVehiculo').value;
+    const modelo = document.getElementById('inputModeloVehiculo').value;
+    const placas = document.getElementById('inputPlacasVehiculo').value;
+    const color = document.getElementById('selectColorVehiculo').value;
+
+    if (!tipo || !estado || !marca || !modelo || !placas || !color) {
+        alert("Por favor completa todos los campos antes de agregar el vehículo.");
+        return;
+    }
+
+    const randomID = Date.now();
+
+    const vehiculo = { id: randomID, tipo, estado, marca, modelo, placas, color };
+    vehiculosAgregados.push(vehiculo);
+
+    const newCard = document.createElement('div');
+    newCard.className = 'card mb-2 shadow-sm';
+    newCard.id = `vehiculo-${randomID}`;
+    newCard.innerHTML = `
+        <div class="card-header d-flex justify-content-between align-items-center" 
+             style="cursor:pointer; background-color:#fff;" 
+             onclick="toggleVehiculo(${randomID})">
+            <div class="fw-bold" style="color:#1F2A44;">
+                <i class="fa-solid fa-car-side me-1"></i> ${tipo} - ${placas}
+            </div>
+            <div>
+                <button class="btn btn-sm btn-danger" onclick="deleteVehiculo(${randomID}); event.stopPropagation();">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-2 d-none" id="body-vehiculo-${randomID}" style="font-size:0.9em;">
+            <div class="d-flex flex-wrap gap-2">
+                <span><strong>Estado:</strong> ${estado}</span>
+                <span><strong>Marca:</strong> ${marca}</span>
+                <span><strong>Modelo:</strong> ${modelo}</span>
+                <span><strong>Placas:</strong> ${placas}</span>
+                <span><strong>Color:</strong> ${color}</span>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('div-vehiculos-agregados').appendChild(newCard);
+
+    resetVehiculoForm();
+}
 function setAddEquipo() {
     const tipo = document.getElementById('selectTipoEquipo').value;
     const marca = document.getElementById('inputMarcaEquipo').value;
@@ -1414,12 +1496,29 @@ function setAddEquipo() {
     document.getElementById('selectColorEquipo').value = '';
 }
 
+function deleteVehiculo(id) {
+    const index = vehiculosAgregados.findIndex(v => v.id === id);
+    if (index !== -1) {
+        vehiculosAgregados.splice(index, 1);
+    }
+
+    const card = document.getElementById(`vehiculo-${id}`);
+    if (card) {
+        card.remove();
+    }
+}
 function deleteEquipo(id) {
     const index = equiposAgregados.findIndex(eq => eq.id === id);
     if (index !== -1) equiposAgregados.splice(index, 1);
 
     const card = document.getElementById(`equipo-${id}`);
     if (card) card.remove();
+}
+function toggleVehiculo(id) {
+    const body = document.getElementById(`body-vehiculo-${id}`);
+    if (body) {
+        body.classList.toggle('d-none');
+    }
 }
 function toggleEquipo(id) {
     const body = document.getElementById(`body-equipo-${id}`);
