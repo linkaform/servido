@@ -421,7 +421,7 @@
 
             <h5 class="section-title">Información de Visita</h5>
             
-            <div class="row mb-3">
+            <div class="row">
                 <label class="form-label-custom">¿A quién visita? *</label>
                 <div class="col-md-6">
                     <label class="form-label-custom">Nombre <span style="font-size: 0.85rem; color: #6c757d;">(opcional)</span></label>
@@ -452,7 +452,7 @@
                 </div>
             </div>
 
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <label for="motivo" class="form-label">Motivo de la visita</label>
                 <select class="form-select" id="motivoSelect" required>
                     <option value="" selected disabled>Selecciona un motivo</option>
@@ -462,13 +462,11 @@
                     <option value="otro">Otro</option>
                 </select>
             </div>
-            
-            <div class="mb-3" id="otroMotivoContainer" style="display: none;">
+             -->
+            <div class="mb-3" id="otroMotivoContainer">
                 <label for="inputMotivoDeLaVisita" class="form-label">Especifica el motivo</label>
                 <input type="text" class="form-control" id="inputMotivoDeLaVisita" placeholder="Escribe el motivo">
             </div>
-
-
 
 			<div class="spacer-lg"></div>
 
@@ -493,36 +491,37 @@
 			
 					<!-- FILA 1 -->
 					<div class="row">
-						<div class="col-md-4 form-group-custom">
+						<div class="col-md-6 form-group-custom">
 							<label class="form-label-custom">Tipo de Vehículo *</label>
 							<select class="form-select" id="selectTipoVehiculo">
 								<option value="">Seleccione tipo...</option>
 							</select>
 						</div>
-			
-						<div class="col-md-4 form-group-custom">
+						<div class="col-md-6 form-group-custom">
 							<label class="form-label-custom">Marca *</label>
 							<select class="form-select" id="selectMarcaVehiculo" disabled>
 								<option value="">Seleccione marca...</option>
 							</select>
 						</div>
-			
-						<div class="col-md-4 form-group-custom">
+					</div>
+
+					<!-- FILA 2 -->
+					<div class="row">
+						<div class="col-md-6 form-group-custom">
 							<label class="form-label-custom">Modelo *</label>
 							<select class="form-select" id="selectModeloVehiculo" disabled>
 								<option value="">Seleccione modelo...</option>
 							</select>
 						</div>
-					</div>
-			
-					<!-- FILA 2 -->
-					<div class="row">
 						<div class="col-md-6 form-group-custom">
 							<label class="form-label-custom">Estado *</label>
 							<select class="form-select" id="selectEstadoVehiculo">
 							</select>
 						</div>
-			
+					</div>
+
+					<!-- FILA 3 -->
+					<div class="row">
 						<div class="col-md-6 form-group-custom">
 							<label class="form-label-custom">Color *</label>
 							<select class="form-select" id="selectColorVehiculo">
@@ -536,16 +535,11 @@
 								<option value="Otro">Otro</option>
 							</select>
 						</div>
-					</div>
-			
-					<!-- FILA 3 -->
-					<div class="row">
 						<div class="col-md-6 form-group-custom">
 							<label class="form-label-custom">Placas *</label>
 							<input type="text" class="form-control" id="inputPlacasVehiculo" placeholder="ABC-123-A">
 						</div>
 					</div>
-			
 					<div class="d-flex justify-content-end gap-2 mt-3">
 						<button type="button" class="btn btn-secondary" onclick="resetVehiculoForm()">
 							<i class="fas fa-rotate-left me-1"></i> Limpiar

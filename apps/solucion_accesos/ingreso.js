@@ -139,9 +139,6 @@ function configurarRequerido(tipo, requerido) {
     }
 }
 
-
-
-
 function aplicarConfiguracion(data) {
 
     if (!data.success) return;
@@ -390,20 +387,7 @@ function getValidation(allData) {
 		}
 	});
     
-	document.getElementById('motivoSelect').addEventListener('change', function() {
-		const otroContainer = document.getElementById('otroMotivoContainer');
-		const motivoInput = document.getElementById('inputMotivoDeLaVisita');
-		
-		if (this.value === 'otro') {
-			otroContainer.style.display = 'block';
-			motivoInput.required = true;
-			motivoInput.value = ''; 
-		} else {
-			otroContainer.style.display = 'none';
-			motivoInput.required = false;
-			motivoInput.value = this.value; 
-		}
-	});
+
 //FUNCION: enviar dialogo de confirmacion
 function AlertSendDataUser() {  
     let isValid = true;
@@ -532,6 +516,17 @@ function AlertSendDataUser() {
         });
         return;
     }
+
+
+	window.toggleVehiculoDetalle = function(index) {
+		const details = document.getElementById('vehiculo-' + index);
+		const toggle = document.getElementById('toggle-vehiculo-' + index);
+		if (details && toggle) {
+		  const isOpen = details.style.display !== 'none';
+		  details.style.display = isOpen ? 'none' : 'block';
+		  toggle.classList.toggle('rotated', !isOpen);
+		}
+	  };
 
 	if (!ultimaValidacion()) {
 		return; 
@@ -989,7 +984,7 @@ function AlertSendDataUser() {
 				${vehiculosHTML}
 			</div>
 
-			<div class="section-header">
+			<div class="section-header mt-3">
 				<i class="fas fa-toolbox" style="color: var(--primary-red); font-size:.9em;"></i>
 				Equipos (${equipos.length})
 			</div>
@@ -998,7 +993,7 @@ function AlertSendDataUser() {
 			</div>
 		</div>
 		`,
-		imageUrl:"https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png",
+		imageUrl:"https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/694ace05f1bef74262302cc9.png",
 		showConfirmButton: true,
 		showCancelButton: true,
 		confirmButtonText: 'Crear pase',
@@ -1085,7 +1080,7 @@ function AlertSendDataUser() {
 					Swal.close();
 					
 					Swal.fire({
-						imageUrl: "https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png",
+						imageUrl: "https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/694ace05f1bef74262302cc9.png",
 						imageHeight: 110,
 						showConfirmButton: true,
 						confirmButtonColor: "#e74c3c",
@@ -1455,25 +1450,27 @@ document.getElementById('btnAgregarEquipo').addEventListener('click', function()
         block: 'nearest' 
     });
 });
-document.addEventListener("DOMContentLoaded", function () {
-
-    const btnAgregar = document.getElementById('btnAgregarVehiculo');
-    const formContainer = document.getElementById('formVehiculoContainer');
-
-    btnAgregar.addEventListener('click', function () {
-
-        if (formContainer.style.display === 'block') {
-            formContainer.style.display = 'none';
-        } else {
-            formContainer.style.display = 'block';
-            formContainer.scrollIntoView({
-                behavior: 'smooth',
-                block: 'nearest'
-            });
-        }
-
-    });
-})
+function initVehiculo() {
+	const btnAgregar = document.getElementById('btnAgregarVehiculo');
+	const formContainer = document.getElementById('formVehiculoContainer');
+	
+	if (!btnAgregar || !formContainer) return;
+  
+	btnAgregar.addEventListener('click', function () {
+	  if (formContainer.style.display === 'block') {
+		formContainer.style.display = 'none';
+	  } else {
+		formContainer.style.display = 'block';
+		formContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+	  }
+	});
+  }
+  
+  if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', initVehiculo);
+  } else {
+	initVehiculo();
+  }
 document.addEventListener("DOMContentLoaded", function () {
 
     const selectEstado = document.getElementById("selectEstadoVehiculo");
@@ -1631,20 +1628,32 @@ function ocultarVehiculo() {
 }
 // Función para limpiar el formulario de equipo
 function resetEquipoForm() {
-    document.getElementById('selectTipoEquipo').value = '';
-    document.getElementById('inputMarcaEquipo').value = '';
-    document.getElementById('inputModeloEquipo').value = '';
-    document.getElementById('inputNoSerieEquipo').value = '';
-    document.getElementById('selectColorEquipo').value = '';
+    const fields = [
+        'selectTipoEquipo',
+        'inputMarcaEquipo',
+        'inputModeloEquipo',
+        'inputNoSerieEquipo',
+        'selectColorEquipo'
+    ];
+    fields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
 }
 
 function resetVehiculoForm() {
-    document.getElementById('selectTipoVehiculo').value = '';
-    document.getElementById('selectEstadoVehiculo').value = '';
-    document.getElementById('inputMarcaVehiculo').value = '';
-    document.getElementById('inputModeloVehiculo').value = '';
-    document.getElementById('inputPlacasVehiculo').value = '';
-    document.getElementById('selectColorVehiculo').value = '';
+    const fields = [
+        'selectTipoVehiculo',
+        'selectMarcaVehiculo',
+        'selectModeloVehiculo',
+        'selectEstadoVehiculo',
+        'inputPlacasVehiculo',
+        'selectColorVehiculo'
+    ];
+    fields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
 }
 function setAddEquipo() {
     const tipo = document.getElementById('selectTipoEquipo').value;
@@ -1703,8 +1712,8 @@ function setAddVehiculo() {
     const placas = document.getElementById('inputPlacasVehiculo')?.value;
     const color = document.getElementById('selectColorVehiculo')?.value;
 
-    if (!tipo || !estado || !marca || !modelo || !placas || !color) {
-        alert("Por favor completa todos los campos antes de agregar el vehículo.");
+    if (!tipo ) {
+        alert("Por favor completa el campo tipo antes de agregar el vehículo.");
         return;
     }
 
