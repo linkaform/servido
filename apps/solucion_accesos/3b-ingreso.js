@@ -321,53 +321,66 @@ function getValidation(allData) {
     });
 
 
-    const input = document.querySelector("#inputTelefono");
+	const input = document.querySelector("#inputTelefono");
+	const iti = window.intlTelInput(input, {
+		initialCountry: "mx",
+		preferredCountries: ["mx"],
+		separateDialCode: true,
+		utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"
+	});
+	
+	input.addEventListener("blur", function () {
+		const value = input.value.trim();
+		
+		if (value === "") {
+			input.classList.remove("is-invalid");
+			input.classList.remove("is-valid");
+		} else if (iti.isValidNumber()) {
+			input.classList.remove("is-invalid");
+			input.classList.add("is-valid");
+		} else {
+			input.classList.add("is-invalid");
+			input.classList.remove("is-valid");
+		}
+	});
 
-    const iti = window.intlTelInput(input, {
-        initialCountry: "mx",
-        preferredCountries: ["mx"],
-        separateDialCode: true,
-        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"
-    });
+	const input2 = document.querySelector("#inputTelefonoVisita");
+	const iti2 = window.intlTelInput(input2, {
+		initialCountry: "mx",
+		preferredCountries: ["mx"],
+		separateDialCode: true,
+		utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"
+	});
+	
+	input2.addEventListener("blur", function () {
+		const value = input2.value.trim();
+		
+		if (value === "") {
+			input2.classList.remove("is-invalid");
+			input2.classList.remove("is-valid");
+		} else if (iti2.isValidNumber()) {
+			input2.classList.remove("is-invalid");
+			input2.classList.add("is-valid");
+		} else {
+			input2.classList.add("is-invalid");
+			input2.classList.remove("is-valid");
+		}
+	});
     
-    input.addEventListener("blur", function () {
-        if (value === "") {
-            input2.classList.remove("is-invalid");
-            input2.classList.remove("is-valid");
-        }else if (iti.isValidNumber()) {
-            input.classList.remove("is-invalid");
-            input.classList.add("is-valid");
-        } else {
-            input.classList.add("is-invalid");
-            input.classList.remove("is-valid");
-        }
-    });
-
-    const input2 = document.querySelector("#inputTelefonoVisita");
-
-    const iti2 = window.intlTelInput(input2, {
-        initialCountry: "mx",
-        preferredCountries: ["mx"],
-        separateDialCode: true,
-        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"
-    });
-    
-    input2.addEventListener("blur", function () {
-        const value = input2.value.trim();
-    
-        if (value === "") {
-            input2.classList.remove("is-invalid");
-            input2.classList.remove("is-valid");
-        } else if (iti2.isValidNumber()) {
-            input2.classList.remove("is-invalid");
-            input2.classList.add("is-valid");
-        } else {
-            input2.classList.add("is-invalid");
-            input2.classList.remove("is-valid");
-        }
-    });
-    
-
+	document.getElementById('motivoSelect').addEventListener('change', function() {
+		const otroContainer = document.getElementById('otroMotivoContainer');
+		const motivoInput = document.getElementById('inputMotivoDeLaVisita');
+		
+		if (this.value === 'otro') {
+			otroContainer.style.display = 'block';
+			motivoInput.required = true;
+			motivoInput.value = ''; 
+		} else {
+			otroContainer.style.display = 'none';
+			motivoInput.required = false;
+			motivoInput.value = this.value; 
+		}
+	});
 //FUNCION: enviar dialogo de confirmacion
 function AlertSendDataUser() {  
     let isValid = true;
@@ -506,8 +519,16 @@ function AlertSendDataUser() {
     let name = $("#inputName").val();
     let company = $("#inputNombreEmpresa").val();
     let telefono = $("#inputTelefono").val();
-    let motivo = $("#inputMotivoDeLaVisita").val();
+    // let motivo = $("#inputMotivoDeLaVisita").val();
     let equipos = equiposAgregados.map(({ id, ...rest }) => rest);
+	const selectMotivo = document.getElementById('motivoSelect').value;
+    const inputMotivo = document.getElementById('inputMotivoDeLaVisita').value;
+    let motivo=""
+    if (selectMotivo === 'otro') {
+        motivo= inputMotivo.trim();
+    } else {
+        motivo= selectMotivo;
+    }
 
 	let equiposHTML = '';
 	if (equipos.length > 0) {
@@ -563,15 +584,66 @@ function AlertSendDataUser() {
 		}
 	}
 
+	window.toggleVehiculo = function(index) {
+		const details = document.getElementById('vehiculo-' + index);
+		const toggle = document.getElementById('toggle-' + index);
+		
+		if (details.style.display === 'none') {
+			details.style.display = 'block';
+			toggle.classList.add('rotated');
+		} else {
+			details.style.display = 'none';
+			toggle.classList.remove('rotated');
+		}
+	}
+
 	Swal.fire({
 		title: `
-			<div style="color:#2c3e50;font-size:1.25em;font-weight:700;">
+			<div style="color:#2c3e50;font-size:.8em;font-weight:700;">
 				Confirmar registro
 			</div>
+		
 		`,
 		html: `
 		<style>
-          
+			.swal2-title {
+				display: flex !important;
+				flex-direction: column !important;
+				align-items: center !important;
+				padding: 10px 24px !important;
+			}
+			.custom-buttons-container {
+				display: flex !important;
+				gap: 10px !important;
+				justify-content: center !important;
+				margin-top: 10px !important;
+			}
+			.custom-btn {  
+				padding: 10px 20px !important;
+				border: none !important;
+				border-radius: 5px !important;
+				font-weight: 600 !important;
+				cursor: pointer !important;
+				font-size: 14px !important;
+				color: white !important;
+				transition: all 0.2s ease !important;
+			}
+			
+			.custom-confirm-btn {
+				background-color: #28a745 !important;
+			}
+			.custom-confirm-btn:hover {
+				background-color: #218838 !important;
+			}
+			
+			.custom-cancel-btn {
+				background-color: #b0b3b8 !important;
+			}
+			
+			.custom-cancel-btn:hover {
+				background-color: #9a9da1 !important;
+			}
+		
 			.modal-container{
 				max-height:65vh;
 				overflow-y:auto;
@@ -579,45 +651,38 @@ function AlertSendDataUser() {
 				font-size:.92em;
 				color:#2c3e50;
 			}
-
 			.info-section{
 				background:#f9fafb;
 				border-radius:10px;
 				padding:14px;
 				border:1px solid #eceff1;
 			}
-
 			/* GRID INFO */
 			.info-grid{
 				display:grid;
 				grid-template-columns:1fr 1fr;
 				gap:12px 20px;
 			}
-
 			.info-row{
 				display:flex;
 				flex-direction:column;
 				align-items:flex-start;
 				gap:4px;
 			}
-
 			.info-icon-label{
 				display:flex;
 				align-items:center;
 				gap:6px;
 			}
-
 			.info-icon{
 				font-size:.85em;
 				color:#ff6b35;
 			}
-
 			.info-label{
 				font-weight:600;
 				color:#495057;
 				font-size:.85em;
 			}
-
 			.info-value{
 				color:#6c757d;
 				font-size:.88em;
@@ -626,14 +691,12 @@ function AlertSendDataUser() {
 				text-align:left;
 				width:100%;
 			}
-
 			.section-divider{
 				border:0;
 				height:1px;
 				background:linear-gradient(to right,transparent,#ff6b35,transparent);
 				margin:18px 0;
 			}
-
 			.section-header{
 				font-weight:700;
 				font-size:.95em;
@@ -643,7 +706,6 @@ function AlertSendDataUser() {
 				gap:6px;
 				color:#2c3e50;
 			}
-
 			.photo-grid{
 				display:grid;
 				grid-template-columns:1fr 1fr;
@@ -658,21 +720,18 @@ function AlertSendDataUser() {
 				border-radius:8px;
 				border:1px solid #e0e0e0;
 			}
-
 			/* EQUIPOS */
 			.equipos-grid{
 				display:flex;
 				flex-direction:column;
 				gap:10px;
 			}
-
 			.equipo-item{
 				background:#fff;
 				border:1px solid #e5e7eb;
 				border-radius:8px;
 				overflow:hidden;
 			}
-
 			.equipo-header{
 				display:flex;
 				justify-content:space-between;
@@ -682,11 +741,9 @@ function AlertSendDataUser() {
 				background:#f9fafb;
 				transition:all 0.3s ease;
 			}
-
 			.equipo-header:hover{
 				background:#f1f3f5;
 			}
-
 			.equipo-title{
 				display:flex;
 				align-items:center;
@@ -694,44 +751,36 @@ function AlertSendDataUser() {
 				font-size:.9em;
 				color:#2c3e50;
 			}
-
 			.equipo-toggle{
 				color:#6c757d;
 				font-size:.8em;
 				transition:transform 0.3s ease;
 			}
-
 			.equipo-toggle.rotated{
 				transform:rotate(180deg);
 			}
-
 			.equipo-details{
 				padding:0 14px 12px 14px;
 				background:#fff;
 			}
-
 			.equipo-info-row{
 				display:flex;
 				padding:6px 0;
 				border-bottom:1px solid #f1f3f5;
 			}
-
 			.equipo-info-row:last-child{
 				border-bottom:none;
 			}
-
 			.equipo-label{
 				font-weight:600;
 				color:#495057;
 				font-size:.85em;
 				min-width:80px;
 			}
-
 			.equipo-value{
 				color:#6c757d;
 				font-size:.85em;
 			}
-
 			/* Responsive */
 			@media(max-width:576px){
 				.info-grid{
@@ -741,24 +790,35 @@ function AlertSendDataUser() {
 					grid-template-columns:1fr;
 				}
 			}
-
 			.swal2-image{
 				object-fit:contain!important;
-				max-width:110px!important;
+				max-width:90px!important;
+				margin: 0 !important;
+				padding: 0 !important;
 			}
-			
-			.swal2-image {
-				margin-bottom: 0 !important;
+		
+			.swal2-popup {
+				display: grid !important;
+				grid-template-rows: auto auto 1fr auto;
 			}
 
 			.swal2-title {
-				margin-top: 0 !important;
+				grid-row: 1 !important;
+			}
+
+			.swal2-actions {
+				grid-row: 2 !important;
+				margin-top: 5px !important;
+				margin-bottom: 10px !important;
+				gap: 12px !important; 
+			}
+			.swal2-html-container {
+				grid-row: 3 !important;
 			}
 
 		</style>
-
+			
 		<div class="modal-container">
-
 			<div class="info-grid">
 				<div class="info-row">
 					<div class="info-icon-label">
@@ -767,7 +827,6 @@ function AlertSendDataUser() {
 					</div>
 					<span class="info-value">${location}</span>
 				</div>
-
 				<div class="info-row">
 					<div class="info-icon-label">
 						<i class="fas fa-door-open info-icon"  style="color: var(--primary-red);"></i>
@@ -775,7 +834,6 @@ function AlertSendDataUser() {
 					</div>
 					<span class="info-value">${caseta}</span>
 				</div>
-
 				<div class="info-row">
 					<div class="info-icon-label">
 						<i class="fas fa-user info-icon" style="color: var(--primary-red);"></i>
@@ -783,7 +841,6 @@ function AlertSendDataUser() {
 					</div>
 					<span class="info-value">${name}</span>
 				</div>
-
 				<div class="info-row">
 					<div class="info-icon-label">
 						<i class="fas fa-building info-icon" style="color: var(--primary-red);"></i>
@@ -791,7 +848,6 @@ function AlertSendDataUser() {
 					</div>
 					<span class="info-value">${company}</span>
 				</div>
-
 				<div class="info-row">
 					<div class="info-icon-label">
 						<i class="fas fa-envelope info-icon" style="color: var(--primary-red);"></i>
@@ -799,7 +855,6 @@ function AlertSendDataUser() {
 					</div>
 					<span class="info-value">${email}</span>
 				</div>
-
 				<div class="info-row">
 					<div class="info-icon-label">
 						<i class="fas fa-phone info-icon" style="color: var(--primary-red);"></i>
@@ -807,7 +862,6 @@ function AlertSendDataUser() {
 					</div>
 					<span class="info-value">${telefono}</span>
 				</div>
-
 				<div class="info-row">
 				<div class="info-icon-label">
 					<i class="fas fa-user-tie info-icon" style="color: var(--primary-red);"></i>
@@ -827,14 +881,11 @@ function AlertSendDataUser() {
 					<span class="info-value">${motivo}</span>
 				</div>
 			</div>
-
 			<hr class="section-divider">
-
 			<div class="section-header">
 				<i class="fas fa-images" style="color: var(--primary-red); font-size:.9em;"></i>
 				Documentos
 			</div>
-
 			<div class="photo-grid">
 				<div class="photo-item">
 					<img src="${urlImgUser}">
@@ -843,50 +894,64 @@ function AlertSendDataUser() {
 					<img src="${urlImgCard}">
 				</div>
 			</div>
-
 			<hr class="section-divider">
-
 			<div class="section-header">
 				<i class="fas fa-toolbox" style="color: var(--primary-red); font-size:.9em;"></i>
 				Equipos (${equipos.length})
 			</div>
-
 			<div class="equipos-grid">
 				${equiposHTML}
 			</div>
 		</div>
 		`,
-		imageUrl:"https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png",
-        showCancelButton: true,
-        cancelButtonText: "Cancelar",   
-        cancelButtonColor: "#b0b3b8",    
-        reverseButtons: true ,
-        confirmButtonText: "Crear pase",   
-        confirmButtonColor: "#ff6b35" 
+		imageUrl:"https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/694ace05f1bef74262302cc9.png",
+		showConfirmButton: true,
+		showCancelButton: true,
+		confirmButtonText: 'Crear pase',
+		cancelButtonText: 'Cancelar',
+	
+		customClass: {
+			confirmButton: 'custom-btn custom-confirm-btn',
+			cancelButton: 'custom-btn custom-cancel-btn'
+		},
+		buttonsStyling: false,
+	
+		allowOutsideClick: false,
+		allowEscapeKey: false,
+		didOpen: () => {
+			const title = Swal.getTitle();
+			const actions = Swal.getActions();
+		
+			if (title && actions) {
+				title.insertAdjacentElement('afterend', actions);
+			}
+		},
 	}).then((result) => {
-		if (result.value) {
+		console.log("result",result)
+		if (result.dismiss === Swal.DismissReason.cancel) {
+			return;
+		}
+		console.log('Crear pase clicked!');
 			loadingService()
+            let perfil= caseta=="Lobby"? "Internos": "Walkin"
 			let access_pass={
 				
 				ubicaciones:[location],
 				nombre: name,
-				perfil_pase:"Walkin",
+				perfil_pase: perfil,
 				telefono: telefono,
 				  visita_a: {
-                    nombre: visitNombre,
-                    email: visitEmail,
-                    telefono: visitTelefono
-                },
+					nombre: visitNombre,
+					email: visitEmail,
+					telefono: visitTelefono
+				},
 				email: email,
 				empresa: company,
 				foto:fotosNuevaVisita.foto,
 				identificacion: fotosNuevaVisita.identificacion,
 				equipos: equipos,
 				motivo: motivo,
-                created_from:"auto_registro",
-                // config_limitar_acceso:1,
-                // tipo_visita_pase:"fecha_fija",
-                // status_pase:"Proceso"
+				created_from:"auto_registro",
 			}
 			
 			fetch(url + urlScripts, {
@@ -904,10 +969,8 @@ function AlertSendDataUser() {
 			})
 			.then(res => res.json())
 			.then(res => {
-
-
 				const statusCode = res?.response?.data?.status_code || res?.status_code;
-    
+			
 				if (!res.success || (statusCode && statusCode >= 400)) {
 					Swal.close();
 					Swal.fire({
@@ -919,169 +982,157 @@ function AlertSendDataUser() {
 					});
 					return;
 				}
-
+			
 				
 				if (res.success) {
 					const qrCode = res?.response?.data?.json?.id;
-					loadingService("Generando pdf...")
-					fetch(url + urlScripts, {
-						method: 'POST',
-						body: JSON.stringify({
-							script_name: paseDeAccesoScript,
-							option: 'get_pdf',
-							qr_code:qrCode,
-							account_id:account_id,
-						}),
-						headers:{
-							'Content-Type': 'application/json',
-							'Authorization': 'Bearer '+userJwt
+					
+					// Cerrar el loading y mostrar el modal inmediatamente
+					Swal.close();
+					
+					Swal.fire({
+						imageUrl: "https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/694ace05f1bef74262302cc9.png",
+						imageHeight: 110,
+						showConfirmButton: true,
+						confirmButtonColor: "#e74c3c",
+						confirmButtonText: 'Descargar PDF <i class="fas fa-download me-2"></i>',
+						showCancelButton: true,
+						cancelButtonText: "Aceptar",
+						cancelButtonColor: "#efefef",
+						allowOutsideClick: false,
+						allowEscapeKey: false,
+						buttonsStyling: false, 
+						customClass: {
+							confirmButton: 'btn-descargar-pdf',
+							cancelButton: 'btn-aceptar-pdf',
+							actions: 'swal-actions-custom'
 						},
-					})
-					.then(res => res.json())
-					.then(async (res) => {
-						Swal.close()
-						const statusCode = res?.response?.data?.status_code || res?.status_code;
-    
-						if (!res.success || (statusCode && statusCode >= 400)) {
-							Swal.close();
-							Swal.fire({
-								icon: 'error',
-								title: 'Error',
-								text: 'Ocurrió un error al crear el pase',
-								confirmButtonColor: "#e74c3c",
-								confirmButtonText: "Aceptar"
-							});
-							return;
-						}
-
-						if (res.success) {
+						html: `
+							<div class="mb-3 mt-2 text-center">
+								<div style="font-weight:bold; font-size:1.1em; color:#333;">
+									¡Información guardada correctamente!
+								</div>
+								<div class="d-flex justify-content-center align-items-center mt-3 mb-3" style="gap: 0.5rem;">
+									<i class="fa-solid fa-map-marker-alt" style="color:#666;"></i>
+									<div class="d-flex text-start" style="gap: 0.75rem;">
+										<div style="color:#666; font-size:0.95em;">${location}</div>
+										<div style="color:#666; font-size:0.95em;">${caseta}</div> 
+									</div>
+								</div>
+								<img class="mt-2" alt="Código QR" id="codigo">
+							</div>
+						`
+					}).then(async (result) => {
+						if (result.value) {
+							// AQUÍ SE LLAMA AL SERVICIO CUANDO HACE CLIC EN "Descargar PDF"
+							loadingService("Generando PDF...");
+							
 							try {
-								const downloadUrl = res?.response?.data?.data?.download_url || 
-												  res?.response?.data?.json?.download_url;
-								const fileName = res?.response?.data?.data?.file_name || 
-											   res?.response?.data?.json?.file_name || 
-											   'Pase_de_Acceso';
-								if (!downloadUrl) {
-									throw new Error('URL de descarga no disponible');
-								}
-								Swal.fire({
-									imageUrl: "https://s203.q4cdn.com/155743495/files/design/site_logo/Logo-Tiendas-3B.png",
-									imageHeight: 110,
-									showConfirmButton: true,
-									confirmButtonColor: "#e74c3c",
-									confirmButtonText: 'Descargar PDF <i class="fas fa-download me-2"></i>',
-									showCancelButton: true,
-									cancelButtonText: "Aceptar",
-									cancelButtonColor: "#efefef",
-									allowOutsideClick: false,
-									allowEscapeKey: false,
-									buttonsStyling: false, 
-									customClass: {
-										confirmButton: 'btn-descargar-pdf',
-										cancelButton: 'btn-aceptar-pdf',
-										actions: 'swal-actions-custom'
+								const pdfResponse = await fetch(url + urlScripts, {
+									method: 'POST',
+									body: JSON.stringify({
+										script_name: paseDeAccesoScript,
+										option: 'get_pdf',
+										qr_code: qrCode,
+										account_id: account_id,
+									}),
+									headers:{
+										'Content-Type': 'application/json',
+										'Authorization': 'Bearer '+userJwt
 									},
-									html: `
-										<div class="mb-3 mt-2 text-center">
-											<div style="font-weight:bold; font-size:1.1em; color:#333;">
-												¡Información guardada correctamente!
-											</div>
-											<div class="d-flex justify-content-center align-items-center mt-3 mb-3" style="gap: 0.5rem;">
-												<i class="fa-solid fa-map-marker-alt" style="color:#666;"></i>
-												<div class="d-flex text-start" style="gap: 0.75rem;">
-													<div style="color:#666; font-size:0.95em;">${location}</div>
-													<div style="color:#666; font-size:0.95em;">${caseta}</div> 
-												</div>
-											</div>
-											<img class="mt-2" alt="Código QR" id="codigo">
-										</div>
-									`
-								}).then(async (result) => {
-									if (result.value) {
-										try {
-											const response = await fetch(downloadUrl);
-											console.log("entrando",response)
-											if (!response.ok) {
-												throw new Error('Error al descargar el archivo');
-											}
-											
-											const blob = await response.blob();
-											const url = window.URL.createObjectURL(blob);
-											
-											const link = document.createElement('a');
-											link.href = url;
-											link.download = (fileName.split('/').pop() || 'Pase_de_Acceso') + '.pdf';
-											document.body.appendChild(link);
-											link.click();
-											
-											document.body.removeChild(link);
-											window.URL.revokeObjectURL(url);
-											
-											Swal.fire({
-												icon: 'success',
-												title: '¡Descargado!',
-												text: 'Tu pase de acceso ha sido descargado correctamente',
-												confirmButtonColor: "#8ebd73",
-												confirmButtonText: "Aceptar",
-												timer: 2500,
-												timerProgressBar: true
-											});
-											window.location.reload();
-											
-										} catch (error) {
-											console.error('Error al descargar:', error);
-											Swal.fire({
-												icon: 'error',
-												title: 'Error al descargar',
-												html: `No se pudo descargar el PDF.<br><a href="${downloadUrl}" target="_blank" class="btn btn-sm btn-primary mt-2">Abrir en nueva pestaña</a>`,
-												confirmButtonColor: "#8ebd73"
-											});
-											window.location.reload();
-										}
-									}else{
-										window.location.reload();
-									}
 								});
 								
-								setTimeout(() => {
-									new QRious({
-										element: document.querySelector("#codigo"),
-										value: qrCode ?? "QR no disponible, ocurrió un error al generar el QR",
-										size: 200,
-										backgroundAlpha: 0, 
-										foreground: "#505050", 
-										level: "L", 
+								const pdfRes = await pdfResponse.json();
+								Swal.close();
+								
+								const statusCode = pdfRes?.response?.data?.status_code || pdfRes?.status_code;
+			
+								if (!pdfRes.success || (statusCode && statusCode >= 400)) {
+									Swal.fire({
+										icon: 'error',
+										title: 'Error',
+										text: 'Ocurrió un error al crear el pase',
+										confirmButtonColor: "#e74c3c",
+										confirmButtonText: "Aceptar"
 									});
-								}, 100);
+									return;
+								}
+			
+								if (pdfRes.success) {
+									const downloadUrl = pdfRes?.response?.data?.data?.download_url || 
+													  pdfRes?.response?.data?.json?.download_url;
+									const fileName = pdfRes?.response?.data?.data?.file_name || 
+												   pdfRes?.response?.data?.json?.file_name || 
+												   'Pase_de_Acceso';
+									
+									if (!downloadUrl) {
+										throw new Error('URL de descarga no disponible');
+									}
+									
+									const response = await fetch(downloadUrl);
+									
+									if (!response.ok) {
+										throw new Error('Error al descargar el archivo');
+									}
+									
+									const blob = await response.blob();
+									const blobUrl = window.URL.createObjectURL(blob);
+									
+									const link = document.createElement('a');
+									link.href = blobUrl;
+									link.download = (fileName.split('/').pop() || 'Pase_de_Acceso') + '.pdf';
+									document.body.appendChild(link);
+									link.click();
+									
+									document.body.removeChild(link);
+									window.URL.revokeObjectURL(blobUrl);
+									
+									Swal.fire({
+										icon: 'success',
+										title: '¡Descargado!',
+										text: 'Tu pase de acceso ha sido descargado correctamente',
+										confirmButtonColor: "#8ebd73",
+										confirmButtonText: "Aceptar",
+										timer: 2500,
+										timerProgressBar: true
+									});
+									window.location.reload();
+									
+								} else {
+									errorAlert(pdfRes);
+								}
 								
 							} catch (error) {
-								console.error('Error al generar PDF:', error);
+								console.error('Error al descargar:', error);
+								Swal.close();
 								Swal.fire({
 									icon: 'error',
-									title: 'Error al generar PDF',
-									text: error,
-									confirmButtonColor: "#8ebd73",
-									confirmButtonText: "Aceptar"
+									title: 'Error al descargar',
+									text: 'No se pudo descargar el PDF. Intenta nuevamente.',
+									confirmButtonColor: "#8ebd73"
 								});
 								window.location.reload();
 							}
 						} else {
-							Swal.close();
-							errorAlert(res);
+							window.location.reload();
 						}
-					})
-					.catch(error => {
-						console.error('Error:', error);
-						Swal.fire({
-							icon: 'error',
-							title: 'Error',
-							text: 'Ocurrió un error al procesar la solicitud',
-							confirmButtonColor: "#8ebd73"
-						});
 					});
-				}else{
-					Swal.close()
-					errorAlert(res)
+					
+					// Generar el QR después de mostrar el modal
+					setTimeout(() => {
+						new QRious({
+							element: document.querySelector("#codigo"),
+							value: qrCode ?? "QR no disponible, ocurrió un error al generar el QR",
+							size: 200,
+							backgroundAlpha: 0, 
+							foreground: "#505050", 
+							level: "L", 
+						});
+					}, 100);
+					
+				} else {
+					Swal.close();
+					errorAlert(res);
 				}
 			}).catch(error => {
 				console.error('Error en create_access_pass:', error);
@@ -1094,10 +1145,8 @@ function AlertSendDataUser() {
 				});
 			});
 			
-		}
-	});
+		});
 }
-//FUNCION obtener la url de la imagen despues de gurdarla
 function setRequestFileImg(type) {
 	let idInput = '';
 	if(type == 'inputCard'){
@@ -1161,7 +1210,6 @@ function setRequestFileImg(type) {
 	}
 }
 
-
 //FUNCION validar que el canvas este limpio
 function isCanvasBlank(canvas) {
     const context = canvas.getContext('2d');
@@ -1171,7 +1219,6 @@ function isCanvasBlank(canvas) {
     return !pixelBuffer.some(color => color !== 0);
 }
 
-
 //FUNCION obtener la imagen del canvas
 function getScreenCard(){
 	if(!flagVideoCard){
@@ -1180,8 +1227,8 @@ function getScreenCard(){
             navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }})
             .then(function(stream) {
                 let video = document.createElement('video');
-                video.style.width = '200px';
-                video.style.height = '125px';
+                video.style.width = '180px';
+                video.style.height = '180px';
                 document.getElementById('containerCard').appendChild(video);
                 video.srcObject = stream;
                 video.play();
@@ -1203,7 +1250,6 @@ function getScreenCard(){
     }
 }
 
-
 //FUNCION obtener la imagen del canvas
 function getScreenUser(){
 	//-----Save Photo
@@ -1214,8 +1260,8 @@ function getScreenUser(){
 	        navigator.mediaDevices.getUserMedia({ video: true })
 	        .then(function(stream) {
 	            let video = document.createElement('video');
-	            video.style.width = '200px';
-	            video.style.height = '125px';
+	            video.style.width = '180px';
+	            video.style.height = '180px';
 	            document.getElementById('containerUser').appendChild(video);
 	            video.srcObject = stream;
 	            video.play();
@@ -1237,7 +1283,6 @@ function getScreenUser(){
 	    }
 	}
 }
-
 
 //FUNCION obtener la imagen del canvas parte2
 function setTranslateImageUser(context, video, canvas){
@@ -1306,6 +1351,18 @@ function setDeleteEquipo(id) {
 	}
 }
 
+//FUNCION eliminar set repetitivo de equipo
+function setDeleteVehiculo(id) {
+	if (id === 123) {
+	   alert("No puedes eliminar el equipo principal");
+	   return;
+   }
+   const eq = document.getElementById(`div-vehiculo-${id}`);
+   if (eq) {
+	   eq.remove();
+   }
+}
+
 document.getElementById('btnAgregarEquipo').addEventListener('click', function() {
     document.getElementById('formEquipoContainer').style.display = 'block';
     document.getElementById('formEquipoContainer').scrollIntoView({ 
@@ -1319,6 +1376,10 @@ function ocultarEquipo() {
     document.getElementById('formEquipoContainer').style.display = 'none';
 }
 
+function ocultarEquipo() {
+    document.getElementById('formVehiculoContainer').style.display = 'none';
+}
+
 // Función para limpiar el formulario de equipo
 function resetEquipoForm() {
     document.getElementById('selectTipoEquipo').value = '';
@@ -1328,7 +1389,64 @@ function resetEquipoForm() {
     document.getElementById('selectColorEquipo').value = '';
 }
 
+function resetVehiculoForm() {
+    document.getElementById('selectTipoVehiculo').value = '';
+    document.getElementById('selectEstadoVehiculo').value = '';
+    document.getElementById('inputMarcaVehiculo').value = '';
+    document.getElementById('inputModeloVehiculo').value = '';
+    document.getElementById('inputPlacasVehiculo').value = '';
+    document.getElementById('selectColorVehiculo').value = '';
+}
 
+function setAddVehiculo() {
+    const tipo = document.getElementById('selectTipoVehiculo').value;
+    const estado = document.getElementById('selectEstadoVehiculo').value;
+    const marca = document.getElementById('inputMarcaVehiculo').value;
+    const modelo = document.getElementById('inputModeloVehiculo').value;
+    const placas = document.getElementById('inputPlacasVehiculo').value;
+    const color = document.getElementById('selectColorVehiculo').value;
+
+    if (!tipo || !estado || !marca || !modelo || !placas || !color) {
+        alert("Por favor completa todos los campos antes de agregar el vehículo.");
+        return;
+    }
+
+    const randomID = Date.now();
+
+    const vehiculo = { id: randomID, tipo, estado, marca, modelo, placas, color };
+    vehiculosAgregados.push(vehiculo);
+
+    const newCard = document.createElement('div');
+    newCard.className = 'card mb-2 shadow-sm';
+    newCard.id = `vehiculo-${randomID}`;
+    newCard.innerHTML = `
+        <div class="card-header d-flex justify-content-between align-items-center" 
+             style="cursor:pointer; background-color:#fff;" 
+             onclick="toggleVehiculo(${randomID})">
+            <div class="fw-bold" style="color:#1F2A44;">
+                <i class="fa-solid fa-car-side me-1"></i> ${tipo} - ${placas}
+            </div>
+            <div>
+                <button class="btn btn-sm btn-danger" onclick="deleteVehiculo(${randomID}); event.stopPropagation();">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-2 d-none" id="body-vehiculo-${randomID}" style="font-size:0.9em;">
+            <div class="d-flex flex-wrap gap-2">
+                <span><strong>Estado:</strong> ${estado}</span>
+                <span><strong>Marca:</strong> ${marca}</span>
+                <span><strong>Modelo:</strong> ${modelo}</span>
+                <span><strong>Placas:</strong> ${placas}</span>
+                <span><strong>Color:</strong> ${color}</span>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('div-vehiculos-agregados').appendChild(newCard);
+
+    resetVehiculoForm();
+}
 function setAddEquipo() {
     const tipo = document.getElementById('selectTipoEquipo').value;
     const marca = document.getElementById('inputMarcaEquipo').value;
@@ -1378,12 +1496,29 @@ function setAddEquipo() {
     document.getElementById('selectColorEquipo').value = '';
 }
 
+function deleteVehiculo(id) {
+    const index = vehiculosAgregados.findIndex(v => v.id === id);
+    if (index !== -1) {
+        vehiculosAgregados.splice(index, 1);
+    }
+
+    const card = document.getElementById(`vehiculo-${id}`);
+    if (card) {
+        card.remove();
+    }
+}
 function deleteEquipo(id) {
     const index = equiposAgregados.findIndex(eq => eq.id === id);
     if (index !== -1) equiposAgregados.splice(index, 1);
 
     const card = document.getElementById(`equipo-${id}`);
     if (card) card.remove();
+}
+function toggleVehiculo(id) {
+    const body = document.getElementById(`body-vehiculo-${id}`);
+    if (body) {
+        body.classList.toggle('d-none');
+    }
 }
 function toggleEquipo(id) {
     const body = document.getElementById(`body-equipo-${id}`);

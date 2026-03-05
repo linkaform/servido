@@ -92,7 +92,6 @@
             color: var(--dark-text);
         }
         
-        /* Section Titles */
         .section-title {
             color: var(--dark-text);
             font-weight: 700;
@@ -102,7 +101,6 @@
             border-bottom: 2px solid var(--primary-red);
         }
         
-        /* Form Groups */
         .form-group-custom {
             margin-bottom: 1.5rem;
         }
@@ -126,7 +124,6 @@
             box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.15);
         }
         
-        /* Photo Section */
         .photo-section {
             background: var(--light-bg);
             border: 2px dashed var(--border-color);
@@ -155,7 +152,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
-        /* Equipment Card */
         .equipment-card {
             background: white;
             border: 1px solid var(--border-color);
@@ -235,7 +231,6 @@
             font-size: 1.1rem;
         }
         
-        /* Spacers */
         .spacer-lg {
             height: 2.5rem;
         }
@@ -244,7 +239,6 @@
             height: 1.5rem;
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
             .main-container {
                 padding: 1.5rem;
@@ -341,7 +335,7 @@
             
             <div id="photoWrapper" class="position-relative">
                 <div id="photoLoader" class="photo-loader d-none">
-                    <div class="spinner-border text-danger" style="width:4rem;height:4rem;" role="status"></div>
+                    <div class="spinner-border text-blue" style="width:4rem;height:4rem;" role="status"></div>
                     <p class="mt-3 fw-bold">Cargando configuración...</p>
                 </div>
 
@@ -366,7 +360,7 @@
                                     </button>
                                 </div>
                                 <div id="containerUser" style="display:flex; justify-content:center; min-height:10px; align-items:center;">
-                                    <canvas id="canvasPhotoUser" style="display:none;" width="200" height="125"></canvas>
+                                    <canvas id="canvasPhotoUser" style="display:none;" width="200" height="150"></canvas>
                                     <img id="imgUser" class="photo-preview" src="" style="display:none;width:150px;height:120px; object-fit:cover;">
                                 </div>
                                 <div class="my-2">
@@ -401,7 +395,7 @@
                                 </div>
                         
                                 <div id="containerCard" style="display:flex; justify-content:center; min-height:10px; align-items:center;">
-                                    <canvas id="canvasPhoto" style="display:none;" width="200" height="125"></canvas>
+                                    <canvas id="canvasPhoto" style="display:none;" width="200" height="150"></canvas>
                                     <img id="imgCard" class="photo-preview" src="" style="display:none;width:150px;height:120px; object-fit:cover;">
                                 </div>
                                 <div class="my-2">
@@ -456,13 +450,23 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-12 form-group-custom">
-                    <label class="form-label-custom">Motivo de la visita *</label>
-                    <textarea class="form-control" id="inputMotivoDeLaVisita" 
-                              rows="3" placeholder="Motivo de su visita" required></textarea>
-                </div>
+            <div class="mb-3">
+                <label for="motivo" class="form-label">Motivo de la visita</label>
+                <select class="form-select" id="motivoSelect" required>
+                    <option value="" selected disabled>Selecciona un motivo</option>
+                    <option value="Motivo 1">Motivo 1</option>
+                    <option value="Motivo 2">Motivo 2</option>
+                    <option value="Motivo 3">Motivo 3</option>
+                    <option value="otro">Otro</option>
+                </select>
             </div>
+            
+            <div class="mb-3" id="otroMotivoContainer" style="display: none;">
+                <label for="inputMotivoDeLaVisita" class="form-label">Especifica el motivo</label>
+                <input type="text" class="form-control" id="inputMotivoDeLaVisita" placeholder="Escribe el motivo">
+            </div>
+
+
             <div class="spacer-lg"></div>
 
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -520,7 +524,6 @@
                         </div>
                     </div>
 
-                    <div id="div-equipos-agregados" class="mt-3"></div>
 
                     <div class="d-flex justify-content-end gap-2 mt-3">
                         <button type="button" class="btn btn-secondary" onclick="resetEquipoForm()">
@@ -532,6 +535,9 @@
                     </div>
                 </div>
             </div>
+
+
+            <div id="div-equipos-agregados" class="mt-3"></div>
 
             <div class="spacer-lg"></div>
 
