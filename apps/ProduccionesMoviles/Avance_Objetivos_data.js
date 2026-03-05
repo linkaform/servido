@@ -22,10 +22,10 @@ let dicReportContext = [
     ]},
     { class:'', _children : [
         { type:'table', col: '7', id:'tableFourth', title:'Cumplimiento por Supervisor/Demostrador' , optionExpanded:true},
-        { type:'chart', col: '5', id:'chartFourth', title:'% Alcance'},
+        { type:'chart', col: '5', id:'chartFourth', title:'% Alcance por Supervisor'},
     ]},
     { class:'', _children : [
-        { type:'table', col: '12', id:'tableFiveth', title:'Cumplimiento por Tienda'},
+        { type:'table', col: '12', id:'tableFiveth', title:'Cumplimiento por Tienda' , optionExpanded:true},
     ]},
 ];
 
@@ -75,12 +75,19 @@ const avgRootOnly = function(values, data, calcParams){
 function alcanceFormatter(cell){
     let value = cell.getValue();
 
+    // si no existe valor no aplicar formato
+    if(value === null || value === undefined || value === ""){
+        return "";
+    }
+
+    let el = cell.getElement();
+
     if(value >= 80){
-        cell.getElement().style.backgroundColor = "#2ecc71"; // verde
-        cell.getElement().style.color = "#fff";
+        el.style.backgroundColor = "#2ecc71"; // verde
+        el.style.color = "#fff";
     }else{
-        cell.getElement().style.backgroundColor = "#e74c3c"; // rojo
-        cell.getElement().style.color = "#fff";
+        el.style.backgroundColor = "#e74c3c"; // rojo
+        el.style.color = "#fff";
     }
 
     return value + "%";
@@ -365,82 +372,12 @@ let columsTable5 = [
     { title:"Demostrador(a)", field:"demostrador", tooltipsHeader:true, width:220 },
     { title:"Supervisor", field:"supervisor", tooltipsHeader:true, width:200 },
     { title:"Estado", field:"estado", hozAlign:"center", tooltipsHeader:true, width:120 },
-
     { title:"Objetivo Total", field:"objetivo_total", hozAlign:"center", tooltipsHeader:true, width:150 },
     { title:"Cumplimiento Total", field:"cumplimiento_total", hozAlign:"center", tooltipsHeader:true, width:170 },
     { title:"Alcance Total", field:"alcance_total", hozAlign:"center", formatter:alcanceFormatter, tooltipsHeader:true, width:150 },
-
-    {
-        title:"KAOMYCIN",
-        columns:[
-            { title:"Objetivo Kaomycin", field:"objetivo_kaomycin", hozAlign:"center", tooltipsHeader:true, width:150 },
-            { title:"SO Kaomycin", field:"so_kaomycin", hozAlign:"center", tooltipsHeader:true, width:150 },
-        ]
-    },
-
-    {
-        title:"VENASTAT",
-        columns:[
-            { title:"Objetivo Venastat", field:"objetivo_venastat", hozAlign:"center", tooltipsHeader:true, width:150 },
-            { title:"SO Venastat", field:"so_venastat", hozAlign:"center", tooltipsHeader:true, width:150 },
-        ]
-    },
-
-    {
-        title:"PICOSEND",
-        columns:[
-            { title:"Objetivo Picosend", field:"objetivo_picosend", hozAlign:"center", tooltipsHeader:true, width:150 },
-            { title:"SO Picosend", field:"so_picosend", hozAlign:"center", tooltipsHeader:true, width:150 },
-        ]
-    },
-
-    {
-        title:"EYE-MO",
-        columns:[
-            { title:"Objetivo Eye Mo", field:"objetivo_eyemo", hozAlign:"center", tooltipsHeader:true, width:150 },
-            { title:"SO Eye Mo", field:"so_eyemo", hozAlign:"center", tooltipsHeader:true, width:150 },
-        ]
-    },
-
-    {
-        title:"PRINDEX",
-        columns:[
-            { title:"Objetivo Prindex", field:"objetivo_prindex", hozAlign:"center", tooltipsHeader:true, width:150 },
-            { title:"SO Prindex", field:"so_prindex", hozAlign:"center", tooltipsHeader:true, width:150 },
-        ]
-    }
-
 ];
-
-
+    
 let dataTable5 = [
-    {
-        cadena:"Walmart",
-        id:1067,
-        nombre_tienda:"SC DIAMANTE",
-        demostrador:"Medina Jovita - Vaczate Romero Vic",
-        supervisor:"Guerrero",
-        estado:"Guerrero",
-
-        objetivo_total:124,
-        cumplimiento_total:12,
-        alcance_total:10.00,
-
-        objetivo_kaomycin:12,
-        so_kaomycin:0,
-
-        objetivo_venastat:0,
-        so_venastat:0,
-
-        objetivo_picosend:79,
-        so_picosend:0,
-
-        objetivo_eyemo:9,
-        so_eyemo:5,
-
-        objetivo_prindex:1,
-        so_prindex:0
-    },
     {
         cadena:"Soriana",
         id:916,
@@ -453,20 +390,13 @@ let dataTable5 = [
         cumplimiento_total:3,
         alcance_total:7.00,
 
-        objetivo_kaomycin:5,
-        so_kaomycin:1,
-
-        objetivo_venastat:4,
-        so_venastat:0,
-
-        objetivo_picosend:3,
-        so_picosend:2,
-
-        objetivo_eyemo:5,
-        so_eyemo:0,
-
-        objetivo_prindex:7,
-        so_prindex:0
+        _children:[
+            { nombre_tienda:'KAOMYCIN', demostrador:'Objetivo: 5', supervisor:'SO: 1' },
+            { nombre_tienda:'VENASTAT', demostrador:'Objetivo: 4', supervisor:'SO: 0' },
+            { nombre_tienda:'PICOSEND', demostrador:'Objetivo: 3', supervisor:'SO: 2' },
+            { nombre_tienda:'EYE-MO', demostrador:'Objetivo: 5', supervisor:'SO: 0' },
+            { nombre_tienda:'PRINDEX', demostrador:'Objetivo: 7', supervisor:'SO: 0' }
+        ]
     },
     {
         cadena:"Chedraui",
@@ -480,20 +410,13 @@ let dataTable5 = [
         cumplimiento_total:17,
         alcance_total:15.00,
 
-        objetivo_kaomycin:11,
-        so_kaomycin:3,
-
-        objetivo_venastat:2,
-        so_venastat:0,
-
-        objetivo_picosend:80,
-        so_picosend:9,
-
-        objetivo_eyemo:10,
-        so_eyemo:1,
-
-        objetivo_prindex:3,
-        so_prindex:1
+        _children:[
+            { nombre_tienda:'KAOMYCIN', demostrador:'Objetivo: 11', supervisor:'SO: 3' },
+            { nombre_tienda:'VENASTAT', demostrador:'Objetivo: 2', supervisor:'SO: 0' },
+            { nombre_tienda:'PICOSEND', demostrador:'Objetivo: 80', supervisor:'SO: 9' },
+            { nombre_tienda:'EYE-MO', demostrador:'Objetivo: 10', supervisor:'SO: 1' },
+            { nombre_tienda:'PRINDEX', demostrador:'Objetivo: 3', supervisor:'SO: 1' }
+        ]
     },
     {
         cadena:"Walmart",
@@ -507,20 +430,13 @@ let dataTable5 = [
         cumplimiento_total:45,
         alcance_total:76.00,
 
-        objetivo_kaomycin:14,
-        so_kaomycin:11,
-
-        objetivo_venastat:0,
-        so_venastat:0,
-
-        objetivo_picosend:5,
-        so_picosend:4,
-
-        objetivo_eyemo:16,
-        so_eyemo:12,
-
-        objetivo_prindex:2,
-        so_prindex:0
+        _children:[
+            { nombre_tienda:'KAOMYCIN', demostrador:'Objetivo: 14', supervisor:'SO: 11' },
+            { nombre_tienda:'VENASTAT', demostrador:'Objetivo: 0', supervisor:'SO: 0' },
+            { nombre_tienda:'PICOSEND', demostrador:'Objetivo: 5', supervisor:'SO: 4' },
+            { nombre_tienda:'EYE-MO', demostrador:'Objetivo: 16', supervisor:'SO: 12' },
+            { nombre_tienda:'PRINDEX', demostrador:'Objetivo: 2', supervisor:'SO: 0' }
+        ]
     },
     {
         cadena:"Walmart",
@@ -534,20 +450,13 @@ let dataTable5 = [
         cumplimiento_total:73,
         alcance_total:80.00,
 
-        objetivo_kaomycin:19,
-        so_kaomycin:13,
-
-        objetivo_venastat:0,
-        so_venastat:0,
-
-        objetivo_picosend:15,
-        so_picosend:9,
-
-        objetivo_eyemo:15,
-        so_eyemo:11,
-
-        objetivo_prindex:5,
-        so_prindex:1
+        _children:[
+            { nombre_tienda:'KAOMYCIN', demostrador:'Objetivo: 19', supervisor:'SO: 13' },
+            { nombre_tienda:'VENASTAT', demostrador:'Objetivo: 0', supervisor:'SO: 0' },
+            { nombre_tienda:'PICOSEND', demostrador:'Objetivo: 15', supervisor:'SO: 9' },
+            { nombre_tienda:'EYE-MO', demostrador:'Objetivo: 15', supervisor:'SO: 11' },
+            { nombre_tienda:'PRINDEX', demostrador:'Objetivo: 5', supervisor:'SO: 1' }
+        ]
     }
 ];
 
@@ -635,20 +544,40 @@ let setOptions3 = {
             display: true,
             position: 'top',
         },
-        title: {
-            display: false,
-        },
         datalabels: {
             color: 'white',
-            font: {
-                size: 15
-            },
-            formatter: function (value, context){
-                return value + '%' ;
+            font: { size: 15 },
+            formatter: function(value){
+                return value + '%';
+            }
+        },
+
+        annotation: {
+            annotations: {
+                meta100: {
+                    type: 'line',
+                    yMin: 100,
+                    yMax: 100,
+                    borderColor: 'red',
+                    borderWidth: 2,
+                    borderDash: [6,6],
+                    label: {
+                        display: true,
+                        content: 'Meta 100%',
+                        position: 'end'
+                    }
+                }
             }
         }
     },
-    maintainAspectRatio: false ,
+
+    scales:{
+        y:{
+            beginAtZero:true
+        }
+    },
+
+    maintainAspectRatio:false
 };
 
 let dataChart3 = {

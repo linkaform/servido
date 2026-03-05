@@ -1,4 +1,5 @@
 window.onload = function(){
+    Chart.register(ChartDataLabels);
     createElements(dicReportContext);
     setElementsStyle();
     const statusSession = getSession();
