@@ -14,11 +14,11 @@ let dicReportContext = [
     { class:'', _children : [
         { type:'separator', col: '12', title:'DETALLE'},
         { type:'table', col: '7', id:'tableSecond', title:'Cumplimiento por Cadena'},
-        { type:'chart', col: '5', id:'chartSecond', title:'% Alcance'},
+        { type:'chart', col: '5', id:'chartSecond', title:'% Alcance por Cadena'},
     ]},
     { class:'', _children : [
         { type:'table', col: '7', id:'tableThird', title:'Cumplimiento por Marca'},
-        { type:'chart', col: '5', id:'chartThird', title:'% Alcance'},
+        { type:'chart', col: '5', id:'chartThird', title:'% Alcance  por Marca'},
     ]},
     { class:'', _children : [
         { type:'table', col: '7', id:'tableFourth', title:'Cumplimiento por Supervisor/Demostrador' , optionExpanded:true},
