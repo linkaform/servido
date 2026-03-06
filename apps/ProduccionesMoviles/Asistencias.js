@@ -45,8 +45,23 @@ async function getInformation(){
         const responseRequest = await sendRequestReport(scriptId, dicAditional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
         //----ELEMENTS
-        if(data.table_first){
-            drawTableElement('tableFirstA', data.table_first, columsTable1A);
+        if(data.response_first){
+            let columsTable = data.response_first.data_colums ? data.response_first.data_colums : [];
+            let dataTable = data.response_first.data_table ? data.response_first.data_table : [];
+
+            columsTable = columsTable.map(col => {
+                if (Array.isArray(col.columns)) {
+                    col.columns = col.columns.map(subCol => ({
+                        ...subCol,
+                        formatter: statusFormatter
+                    }));
+                }
+                return col;
+            });
+            drawTableElement('tableFirst', dataTable, columsTable);
+        }
+        if(data.response_second){
+            drawTableElement('tableSecond', data.response_second, columsTable2);
         }
         //-----Style
         hideLoadingComponent();
