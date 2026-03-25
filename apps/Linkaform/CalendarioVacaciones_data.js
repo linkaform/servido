@@ -11,6 +11,10 @@ let dicReportContext = [
                     {type:'p', title:'Email del Usuario:', id:'textUserEmail'},
                     {type:'p', title:'Movimiento:', id:'textTypeMovement'},
                     {type:'p', title:'Total de días:', id:'textTotalDays'},
+
+                    {type:'p', title:'Fecha de Inicio:', id:'textDateStart'},
+                    {type:'p', title:'Fecha de Fin:', id:'textDateEnd'},
+
                     {type:'p', title:'Status:', id:'textStatus'},
                     {type:'p', title:'Numero de Emergencia:', id:'textPhoneEmergency'},
                     {type:'p', title:'Comentarios:', id:'textComments'},
@@ -215,16 +219,22 @@ let events = [
 
 //----Config Calendar
 let configCustom = {
-    locale : 'es',
-    selectable : false,
+    locale: 'es',
+    selectable: false,
     aspectRatio: 2,
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-    initialView: window.innerWidth < 768 ? 'dayGridMonth' : 'dayGridMonth', 
+    initialView: window.innerWidth < 768 ? 'timeGridDay' : 'dayGridMonth',
     height: window.innerWidth < 768 ? 800 : 1200,
     headerToolbar: {
-        left: 'prev,next', 
+        left: 'prev,next today',
         center: 'title',
-        right: 'today',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    buttonText: {
+        today: 'Hoy',
+        month: 'Mes',
+        week: 'Semana',
+        day: 'Día'
     },
     dateClick: function (info) {
         dateClick = info.dateStr;
@@ -233,24 +243,26 @@ let configCustom = {
     eventClick: function (info) {
         const event = info.event;
         const props = event.extendedProps || {};
-        console.log('props',props)
-        // Función helper para asignar valor por defecto
-        const getValue = (key, defaultVal = 'N/A') => props[key] ?? defaultVal;
+
         const data = {
             modalCliente: event.title || 'N/A',
-            textFolio: props.textFolio  || 'N/A',
-            textUserName: props.textUserName  || 'N/A',
-            textUserEmail: props.textUserEmail  || 'N/A',
-            textTypeMovement: props.textTypeMovement  || 'N/A',
-            textTotalDays: props.textTotalDays  || 'N/A',
-            textStatus: props.textStatus  || 'N/A',
-            textPhoneEmergency: props.textPhoneEmergency  || 'N/A',
-            textComments: props.textComments  || 'N/A',
+            textFolio: props.textFolio || 'N/A',
+            textUserName: props.textUserName || 'N/A',
+            textUserEmail: props.textUserEmail || 'N/A',
+            textTypeMovement: props.textTypeMovement || 'N/A',
+            textTotalDays: props.textTotalDays || 'N/A',
+            textDateStart: props.date_start || 'N/A',
+            textDateEnd: props.date_end || 'N/A',
+            textStatus: props.textStatus || 'N/A',
+            textPhoneEmergency: props.textPhoneEmergency || 'N/A',
+            textComments: props.textComments || 'N/A',
         };
+
         Object.entries(data).forEach(([id, value]) => {
             const el = document.getElementById(id);
             if (el) el.textContent = value;
         });
+
         new bootstrap.Modal(document.getElementById('modalInformation')).show();
     },
-}
+};
