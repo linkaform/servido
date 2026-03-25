@@ -54,7 +54,7 @@ async function getInformation(){
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         //----Request
         const responseRequest = await sendRequestReport(scriptId, dicAdional);
-        const dataCalendario = responseRequest.response && responseRequest.response.data.response_first && responseRequest.response.data.response_first.length > 0 ? responseRequest.response.data.response_first : [];
+        const dataCalendario = responseRequest.response && responseRequest.response.data.dataCalendario && responseRequest.response.data.dataCalendario.length > 0 ? responseRequest.response.data.dataCalendario : [];
         drawCalendar('calendarFirst', dataCalendario, configCustom);
         //-----Style
         hideLoadingComponent();
