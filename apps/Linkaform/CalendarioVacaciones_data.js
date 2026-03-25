@@ -5,10 +5,10 @@ let dicReportContext = [
         ] 
     },
     { class:'', _children : [
-            { type:'modal', col: '12', id:'modalInformation', title:'Datos de Salida', formElements : [
+            { type:'modal', col: '12', id:'modalInformation', title:'Detalles', formElements : [
                     {type:'p', title:'Folio:', id:'textFolio'},
                     {type:'p', title:'Usuario:', id:'textUserName'},
-                    {type:'p', title:'Email de Usuario:', id:'textUserEmail'},
+                    {type:'p', title:'Email del Usuario:', id:'textUserEmail'},
                     {type:'p', title:'Movimiento:', id:'textTypeMovement'},
                     {type:'p', title:'Total de días:', id:'textTotalDays'},
                     {type:'p', title:'Status:', id:'textStatus'},
@@ -226,20 +226,26 @@ let configCustom = {
         center: 'title',
         right: 'today',
     },
+    dateClick: function (info) {
+        dateClick = info.dateStr;
+        new bootstrap.Modal(document.getElementById('modalForm')).show();
+    },
     eventClick: function (info) {
         const event = info.event;
         const props = event.extendedProps || {};
+        console.log('props',props)
+        // Función helper para asignar valor por defecto
         const getValue = (key, defaultVal = 'N/A') => props[key] ?? defaultVal;
         const data = {
             modalCliente: event.title || 'N/A',
-            textFolio: event.textFolio  || 'N/A',
-            textUserName: event.textUserName  || 'N/A',
-            textUserEmail: event.textUserEmail  || 'N/A',
-            textTypeMovement: event.textTypeMovement  || 'N/A',
-            textTotalDays: event.textTotalDays  || 'N/A',
-            textStatus: event.textStatus  || 'N/A',
-            textPhoneEmergency: event.textPhoneEmergency  || 'N/A',
-            textComments: event.textComments  || 'N/A',
+            textFolio: props.textFolio  || 'N/A',
+            textUserName: props.textUserName  || 'N/A',
+            textUserEmail: props.textUserEmail  || 'N/A',
+            textTypeMovement: props.textTypeMovement  || 'N/A',
+            textTotalDays: props.textTotalDays  || 'N/A',
+            textStatus: props.textStatus  || 'N/A',
+            textPhoneEmergency: props.textPhoneEmergency  || 'N/A',
+            textComments: props.textComments  || 'N/A',
         };
         Object.entries(data).forEach(([id, value]) => {
             const el = document.getElementById(id);

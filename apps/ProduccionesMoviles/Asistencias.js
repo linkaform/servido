@@ -77,17 +77,30 @@ function getDayName(dateStr) {
 }
 
 function statusFormatter(cell) {
-  const value = cell.getValue();
-  const status = STATUS_MAP[value];
+    const value = cell.getValue();
+    const status = STATUS_MAP[value];
 
-  if (!status) return value;
+    const el = cell.getElement();
 
-  cell.getElement().style.backgroundColor = status.color;
-  if (status.textColor) {
-    cell.getElement().style.color = status.textColor;
-  }
-  cell.getElement().style.textAlign = "center";
-  cell.getElement().style.fontWeight = "bold";
+    if (!status) return value;
 
-  return value;
+    el.style.backgroundColor = status.color;
+    el.style.textAlign = "center";
+    el.style.fontWeight = "bold";
+
+    if (status.textColor) {
+        el.style.color = status.textColor;
+    }
+
+    if (value === "CM_R" || value === "INC_R") {
+        const shortValue = value.replace("_R", ""); // quita el _R
+
+        return `
+            <span style="display:flex;align-items:center;justify-content:center;gap:6px;">
+            ⚠️ ${shortValue}
+            </span>
+        `;
+    }
+
+    return value;
 }
