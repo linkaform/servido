@@ -171,7 +171,7 @@ let configCustom = {
             textDireccion: getValue('textDireccion'),
             textNick: getValue('textNick'),
             textForm: getValue('textForm'),
-            textStatus: getValue('textStatus'),
+            textStatus: getValue('textStatus').replace('_',' '),
             textCompany: getValue('textCompany'),
         };
         Object.entries(data).forEach(([id, value]) => {

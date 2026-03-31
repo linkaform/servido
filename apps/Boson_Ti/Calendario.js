@@ -133,7 +133,8 @@ function setColor(data = []) {
 
     return data.map(event => {
         const status = (event?.extendedProps?.textStatus || '').toLowerCase();
-
+        console.log('status',status)
+        console.log('---------------')
         let backgroundColor = '#9e9e9e'; 
         let textColor = '#ffffff';
 
@@ -149,11 +150,11 @@ function setColor(data = []) {
         else if (status === 'asignado') {
             backgroundColor = '#2196f3'; 
         }
-        else if (status === 'cita confirmada') {
+        else if (status === 'cita_confirmada') {
             backgroundColor = '#fbc02d'; 
             textColor = '#000000'; 
         }
-        else if (status === 'en proceso') {
+        else if (status === 'en_proceso') {
             backgroundColor = '#9c27b0'; 
         }
         else if (status === 'validado') {
