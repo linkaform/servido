@@ -132,30 +132,32 @@ function setColor(data = []) {
     if (!Array.isArray(data) || data.length === 0) return data;
 
     return data.map(event => {
-        const company = event?.extendedProps?.textCompany;
-        const status = event?.extendedProps?.textStatus;
+        const status = (event?.extendedProps?.textStatus || '').toLowerCase();
 
-        let backgroundColor = '#9e9e9e'; // gris por defecto
+        let backgroundColor = '#9e9e9e'; 
         let textColor = '#ffffff';
 
-        // PRIORIDAD 1: Finalizado
-        if (status === 'Finalizado' || status === 'finalizado') {
-            backgroundColor = '#ff9800'; // naranja
+        if (status === 'finalizado') {
+            backgroundColor = '#ff9800'; 
         }
-        // PRIORIDAD 2: Cancelado
-        else if (status === 'Cancelado' || status === 'cancelado') {
-            backgroundColor = '#D73219'; // rojo
+        else if (status === 'cancelado') {
+            backgroundColor = '#D73219'; 
         }
-        // PRIORIDAD 3: Reprogramado
-        else if (status === 'Reprogramado' || status === 'reprogramado') {
-            backgroundColor = '#D7195F'; // rosa
+        else if (status === 'reprogramado') {
+            backgroundColor = '#f06292'; 
         }
-        // PRIORIDAD 2: Compañía
-        else if (company === 'Boson TI' || company === 'Boson') {
-            backgroundColor = '#4caf50'; // verde
+        else if (status === 'asignado') {
+            backgroundColor = '#2196f3'; 
         }
-        else if (company === 'Ditran') {
-            backgroundColor = '#2196f3'; // azul
+        else if (status === 'cita confirmada') {
+            backgroundColor = '#fbc02d'; 
+            textColor = '#000000'; 
+        }
+        else if (status === 'en proceso') {
+            backgroundColor = '#9c27b0'; 
+        }
+        else if (status === 'validado') {
+            backgroundColor = '#4caf50'; 
         }
 
         return {
