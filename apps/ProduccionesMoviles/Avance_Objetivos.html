@@ -48,8 +48,17 @@
                     <div class="row mb-4" id="content-div-filter">
                         <!-- Filtro de Fecha -->
                         <div class="col-xl-2 col-lg-3 col-md-12 " id="filterDateTo">
+                            <label class="form-label">Año</label>
+                            <select class="form-select filters-servido" id="year" required>
+                                <option value="">Seleccione  Opción </option>
+                            </select>
+                        </div>
+
+                        <div class="col-xl-2 col-lg-3 col-md-12 " id="filterDateTo">
                             <label class="form-label">Mes</label>
-                            <input type="month" class="form-control filters-servido" id="month" >
+                            <select class="form-select filters-servido" id="month" required>
+                                <option value="">Seleccione  Opción </option>
+                            </select>
                         </div>
 
                         <!-- Cadena -->
@@ -63,22 +72,15 @@
                         <!-- Marca -->
                         <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12">
                             <label for="marca" class="form-label">Marca:</label>
-                            <select class="form-select filters-servido" id="marca" multiple>
+                            <select class="form-select filters-servido" id="marca" >
                                 <option value="">Seleccione  Opción </option>
                             </select>
                         </div>
 
-                        <!-- Cadena -->
+
                         <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12">
-                            <label for="supervisor" class="form-label">Supervisor:</label>
-                            <select class="form-select filters-servido" id="cadena" >
-                                <option value="">Seleccione  Opción </option>
-                            </select>
-                        </div>
-
-                         <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12">
                             <label for="tienda" class="form-label">Tienda:</label>
-                            <select class="form-select filters-servido" id="tienda" multiple>
+                            <select class="form-select filters-servido" id="tienda" >
                                 <option value="">Seleccione  Opción </option>
                             </select>
                         </div>

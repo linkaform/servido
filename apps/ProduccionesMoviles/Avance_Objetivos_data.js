@@ -227,7 +227,7 @@ let dataTable2 = [
 ];
 
 let columsTable3 = [
-    { title:"Cadena", field:'cadena',  width:300},
+    { title:"Marca", field:'marca',  width:300},
     { title:"Objetivo", field:'objetivo',  headerFilter:"input",  hozAlign:"center", formatter: "money", formatterParams: moneyFormaterDecimal, width:200},
     { title:"Sell Out", field:'sell_out',  headerFilter:"input",  hozAlign:"center", formatter: "money", formatterParams: moneyFormaterDecimal, width:200},
     { title:"Alcance", field:'alcance',  headerFilter:"input",  hozAlign:"center", formatter:alcanceFormatter, width:200},
@@ -236,55 +236,55 @@ let columsTable3 = [
 
 let dataTable3 = [
     {
-        cadena: "Herklin",
+        marca: "Herklin",
         objetivo: 2069,
         sell_out: 1832,
         alcance: 88.55,
     },
     {
-        cadena: "Kaomycin",
+        marca: "Kaomycin",
         objetivo: 1028,
         sell_out: 899,
         alcance: 87.45,
     },
     {
-        cadena: "Venastat",
+        marca: "Venastat",
         objetivo: 183,
         sell_out: 206,
         alcance: 112.57,
     },
     {
-        cadena: "Picosend",
+        marca: "Picosend",
         objetivo: 680,
         sell_out: 442,
         alcance: 65.00,
     },
     {
-        cadena: "Eye Mo",
+        marca: "Eye Mo",
         objetivo: 647,
         sell_out: 646,
         alcance: 99.85,
     },
     {
-        cadena: "Prindex",
+        marca: "Prindex",
         objetivo: 229,
         sell_out: 137,
         alcance: 59.83,
     },
     {
-        cadena: "Pilexil",
+        marca: "Pilexil",
         objetivo: 270,
         sell_out: 136,
         alcance: 50.37,
     },
     {
-        cadena: "Leti At4",
+        marca: "Leti At4",
         objetivo: 245,
         sell_out: 126,
         alcance: 51.43,
     },
     {
-        cadena: "Leti SR",
+        marca: "Leti SR",
         objetivo: 84,
         sell_out: 19,
         alcance: 22.62,
@@ -294,7 +294,6 @@ let dataTable3 = [
 
 let columsTable4 = [
     { title:"Supervisor", field:'supervisor',  width:200},
-    { title:"Demostrador", field:'demostrador',  width:200},
     { title:"Objetivo", field:'objetivo',  headerFilter:"input",  hozAlign:"center", formatter: "money", formatterParams: moneyFormaterDecimal, width:200},
     { title:"Sell Out", field:'sell_out',  headerFilter:"input",  hozAlign:"center", formatter: "money", formatterParams: moneyFormaterDecimal, width:200},
     { title:"Alcance", field:'alcance',  headerFilter:"input",  hozAlign:"center", formatter:alcanceFormatter, width:200},
@@ -366,15 +365,15 @@ let dataTable4 = [
 
 
 let columsTable5 = [
-    { title:"Cadena", field:"cadena", tooltipsHeader:true, width:150 },
-    { title:"ID", field:"id", hozAlign:"center", tooltipsHeader:true, width:90 },
-    { title:"Nombre tienda", field:"nombre_tienda", tooltipsHeader:true, width:220 },
-    { title:"Demostrador(a)", field:"demostrador", tooltipsHeader:true, width:220 },
-    { title:"Supervisor", field:"supervisor", tooltipsHeader:true, width:200 },
-    { title:"Estado", field:"estado", hozAlign:"center", tooltipsHeader:true, width:120 },
-    { title:"Objetivo Total", field:"objetivo_total", hozAlign:"center", tooltipsHeader:true, width:150 },
-    { title:"Cumplimiento Total", field:"cumplimiento_total", hozAlign:"center", tooltipsHeader:true, width:170 },
-    { title:"Alcance Total", field:"alcance_total", hozAlign:"center", formatter:alcanceFormatter, tooltipsHeader:true, width:150 },
+    { title:"Nombre tienda", field:"nombre_tienda", headerTooltip:true, width:220 },
+    //{ title:"ID", field:"id", hozAlign:"center", headerTooltip:true, width:90 },
+    { title:"Cadena", field:"cadena", headerTooltip:true, width:150 },
+    { title:"Estado", field:"estado", hozAlign:"center", headerTooltip:true, width:120 },
+    { title:"Supervisor", field:"supervisor", headerTooltip:true, width:200 },
+    //{ title:"Demostrador(a)", field:"demostrador", headerTooltip:true, width:220 },
+    { title:"Objetivo Total", field:"objetivo_total", hozAlign:"center", headerTooltip:true, width:150 },
+    { title:"Cumplimiento Total", field:"cumplimiento_total", hozAlign:"center", headerTooltip:true, width:170 },
+    { title:"Alcance Total", field:"alcance_total", hozAlign:"center", formatter:alcanceFormatter, headerTooltip:true, width:150 },
 ];
 
 let dataTable5 = [

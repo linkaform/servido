@@ -41,6 +41,8 @@ function loadData(data) {
     buttonExecution.addEventListener("click", () => {
         getInformation();
     });
+    //----Search Catalogs
+    get_catalog();
     //-----Loading
     setTimeout(() => { hide_loading();}, 2000);
 }
@@ -60,15 +62,92 @@ async function getInformation(){
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReport(scriptId, dicAditional);
-        const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-        //----ELEMENTS
-        if(data.table_first){
-            drawTableElement('tableFirstA', data.table_first, columsTable1A);
+
+        if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
+        
+            const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
+            //----ELEMENTS
+            if(data.cardFirst){
+                drawCardElement('cardFirst',data.cardFirst);
+            }
+            if(data.cardSecond){
+                drawCardElement('cardSecond',data.cardSecond);
+            }
+            if(data.cardThird){
+                drawCardElement('cardThird',data.cardThird);
+            }
+            if(data.cardFourth){
+                drawCardElement('cardFourth',data.cardFourth);
+            }
+
+            if(data.tableFirst){
+                drawTableElement('tableFirst', data.tableFirst, columsTable1);
+            }
+            if(data.tableSecond){
+                drawTableElement('tableSecond', data.tableSecond, columsTable2);
+            }
+            if(data.tableThird){
+                drawTableElement('tableThird', data.tableThird, columsTable3);
+            }
+            if(data.tableFourth){
+                drawTableElement('tableFourth', data.tableFourth, columsTable4);
+            }
+            if(data.tableFiveth){
+                drawTableElement('tableFiveth', data.tableFiveth, columsTable5);
+            }
+
+            if(data.chartFirst){
+                drawChartElement('chartFirst','doughnut',data.chartFirst,setOptions1);
+            }
+            if(data.chartSecond){
+                drawChartElement('chartSecond','bar',data.chartSecond,setOptions2);
+            }
+            if(data.chartThird){
+                drawChartElement('chartThird','bar',data.chartThird,setOptions3);
+            }
+            if(data.chartFourth){
+                drawChartElement('chartFourth','bar',data.chartFourth,setOptions4);
+            }
+            showElements();
         }
         //-----Style
         hideLoadingComponent();
-        showElements();
     }
 }
 
 
+//----CATALOG
+function get_catalog(){
+    const scriptId = getParameterURL('script_id');
+    const JWT = getCookie("userJwt");
+    fetch(getUrlRequest('script'), {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: scriptId,
+            option: 'catalog',
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+JWT
+        },
+    })
+    .then((res) => res.json())
+    .then((res) => {
+        const data = res.response && res.response.data ? res.response.data : [];
+        if(data.cadena && data.cadena.length > 0){
+            setCatalogSimple(data.cadena, 'cadena', true);
+        }
+        if(data.marca && data.marca.length > 0){
+            setCatalogSimple(data.marca, 'marca', true);
+        }
+        if(data.tienda && data.tienda.length > 0){
+            setCatalogSimple(data.tienda, 'tienda', true);
+        }
+        if(data.month && data.month.length > 0){
+            setCatalogSimple(data.month, 'month', true);
+        }
+        if(data.year && data.year.length > 0){
+            setCatalogSimple(data.year, 'year', true);
+        }
+    })
+}

@@ -95,8 +95,6 @@ function get_catalog(){
     .then((res) => res.json())
     .then((res) => {
         const data = res.response && res.response.data ? res.response.data : [];
-        if(data.length > 0){
-          setCatalogSimple(data, 'chain', true);
-        }
+        
     })
 }
