@@ -92,8 +92,8 @@ function statusFormatter(cell) {
         el.style.color = status.textColor;
     }
 
-    if (value === "CM_R" || value === "INC_R") {
-        const shortValue = value.replace("_R", ""); // quita el _R
+    if (value === "CM_R" || value === "INC_R" || value === "RCE_R") {
+        const shortValue = value.replace("_R", ""); 
 
         return `
             <span style="display:flex;align-items:center;justify-content:center;gap:6px;">

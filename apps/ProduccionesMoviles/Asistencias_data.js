@@ -16,6 +16,10 @@ const STATUS_MAP = {
   CM_R: { label: "CITA MEDICA",  color: "#ffe699" },
   INC:{ label: "INCAPACIDAD",  color: "#bfbfbf" },
   INC_R:{ label: "INCAPACIDAD",  color: "#bfbfbf" },
+
+  RCE_R:{ label: "REUNIÓN CON EQUIPO",  color: "#C509C8" },
+  RCE:{ label: "REUNIÓN CON EQUIPO",  color: "#C509C8" },
+
   A:  { label: "ASISTENCIA",   color: "#14EBE7" },
   B:  { label: "BAJA",         color: "#ffff00" },
   VC: { label: "VACACIONES",   color: "#2f5597", textColor:"#fff" },
