@@ -15,8 +15,8 @@ function setCookie(cname, cvalue, exdays, options = {}) {
     const defaultOptions = {
         path: "/", // Hacer la cookie accesible en todo el dominio
         domain: null, // Si no se pasa, se usará el dominio actual
-        secure: false, // Si quieres asegurarla para HTTPS, usa `true`
-        sameSite: "Lax", // Cambiar a "None" si es necesario
+        secure: true, // Si quieres asegurarla para HTTPS, usa `true`
+        sameSite: "None", // Cambiar a "None" si es necesario
     };
 
     // Combina las opciones predeterminadas con las personalizadas
