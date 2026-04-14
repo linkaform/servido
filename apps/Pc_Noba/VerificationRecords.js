@@ -84,7 +84,7 @@ function getInformationRecord(idRecord) {
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
-            script_id: 128252,
+            script_id: 150668,
             option: 'get_information',
             id_record: idRecord,
         }),
