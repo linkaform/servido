@@ -539,14 +539,9 @@ function AlertSendDataUser() {
     let telefono = $("#inputTelefono").val();
     // let motivo = $("#inputMotivoDeLaVisita").val();
     let equipos = equiposAgregados.map(({ id, ...rest }) => rest);
-	const selectMotivo = document.getElementById('motivoSelect').value;
     const inputMotivo = document.getElementById('inputMotivoDeLaVisita').value;
     let motivo=""
-    if (selectMotivo === 'otro') {
-        motivo= inputMotivo.trim();
-    } else {
-        motivo= selectMotivo;
-    }
+    motivo= inputMotivo.trim();
 
 	let equiposHTML = '';
 	if (equipos.length > 0) {
