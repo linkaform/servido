@@ -1,11 +1,27 @@
-window.onload = function () {
+window.onload = function() {
+    showLoader();
+
     const RECORDID = getParameterURL('record_id');
+
     if (RECORDID) {
         getInformationRecord(RECORDID);
     } else {
         setStyleNone();
+        hideLoader();
     }
 };
+
+// Mostrar loader
+function showLoader() {
+    document.getElementById("loaderOverlay").style.display = "flex";
+}
+
+// Ocultar loader
+function hideLoader() {
+    document.getElementById("loaderOverlay").style.display = "none";
+}
+
+
 
 ///-------Style NONE (ERROR)
 function setStyleNone({
@@ -94,7 +110,7 @@ function getInformationRecord(idRecord) {
     })
     .then((res) => res.json())
     .then((res) => {
-        const data = res?.responsible?.data;
+        const data = res?.response?.data;
         if (data && Object.keys(data).length > 0) {
             setStyleSuccess({
                 folio: data.folio || '',
@@ -103,8 +119,10 @@ function getInformationRecord(idRecord) {
                 status: data.status || '',
                 responsible: data.responsible || ''
             });
+            hideLoader();
         } else {
             setStyleNone();
+            hideLoader();
         }
     })
     .catch((error) => {
@@ -112,5 +130,6 @@ function getInformationRecord(idRecord) {
         setStyleNone({
             description: "Ocurrió un error al consultar la información"
         });
+        hideLoader();
     });
 }

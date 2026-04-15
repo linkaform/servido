@@ -19,10 +19,10 @@
 </head>
 
 <body>
+    <!-- Body -->
     <div class="container py-4 py-md-5">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-8 col-xl-7">
-
                 <!-- Header -->
                 <div class="text-center mb-4 mb-md-5">
                     <div class="icon-wrapper mb-3 mb-md-4">
@@ -39,10 +39,8 @@
                         <div class="d-flex align-items-center justify-content-center gap-3">
                             <i class="fas fa-circle-check check-icon flex-shrink-0"></i>
                             <div class="text-center">
-                                <h2 class="mb-1" id="textTitle">Registro Válido</h2>
-                                <p class="text-muted mb-0 small" id="textDescription">
-                                    El registro ha sido verificado correctamente
-                                </p>
+                                <h2 class="mb-1" id="textTitle">Registro </h2>
+                                <p class="text-muted mb-0 small" id="textDescription"></p>
                             </div>
                         </div>
                     </div>
@@ -56,7 +54,7 @@
                                 <i class="fas fa-file-lines flex-shrink-0 mt-1"></i>
                                 <div class="flex-grow-1">
                                     <p class="info-label mb-1">Folio de Registro</p>
-                                    <p class="info-value mb-0" id="textFolio">REG-2026-041324</p>
+                                    <p class="info-value mb-0" id="textFolio">N/A</p>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +65,7 @@
                                 <i class="fas fa-calendar-days flex-shrink-0 mt-1"></i>
                                 <div class="flex-grow-1">
                                     <p class="info-label mb-1">Fecha de Verificación</p>
-                                    <p class="info-value mb-0" id="textDate">13 de abril de 2026</p>
+                                    <p class="info-value mb-0" id="textDate">N/A</p>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +76,7 @@
                                 <i class="fa-solid fa-user flex-shrink-0 mt-1"></i>
                                 <div class="flex-grow-1">
                                     <p class="info-label mb-1">Cliente</p>
-                                    <p class="info-value mb-0" id="textClient">Cliente 001</p>
+                                    <p class="info-value mb-0" id="textClient">N/A</p>
                                 </div>
                             </div>
                         </div>
@@ -89,8 +87,8 @@
                             <div class="d-flex gap-3 gap-md-4">
                                 <i class="fas fa-chart-line flex-shrink-0 mt-1"></i>
                                 <div class="flex-grow-1">
-                                    <p class="info-label mb-1">Estatus</p>
-                                    <p class="info-value mb-0" id="textStatus">Verificado</p>
+                                    <p class="info-label mb-1">Tipo</p>
+                                    <p class="info-value mb-0" id="textStatus">N/A</p>
                                 </div>
                             </div>
                         </div>
@@ -100,14 +98,21 @@
                             <div class="d-flex gap-3 gap-md-4">
                                 <i class="fas fa-user-check flex-shrink-0 mt-1"></i>
                                 <div class="flex-grow-1">
-                                    <p class="info-label mb-1">Auditor Responsable</p>
-                                    <p class="info-value mb-0" id="textResponsible">María González Hernández</p>
+                                    <p class="info-label mb-1">Responsable</p>
+                                    <p class="info-value mb-0" id="textResponsible">N/A</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <!-- Loader -->
+    <div id="loaderOverlay" class="loader-overlay">
+        <div class="loader-content text-center">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-3 mb-0">Validando registro...</p>
         </div>
     </div>
 
