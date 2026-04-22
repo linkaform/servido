@@ -243,7 +243,7 @@ let configCustom = {
     eventClick: function (info) {
         const event = info.event;
         const props = event.extendedProps || {};
-
+        console.log('event',event)
         const data = {
             modalCliente: event.title || 'N/A',
             textFolio: props.textFolio || 'N/A',
