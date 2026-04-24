@@ -141,6 +141,7 @@ function getSession(location = null) {
   }
 }
 
+
 //-Funciona para cerrar la sesión 
 function closeSession(){
   let cookies = document.cookie.split(";");
@@ -1274,4 +1275,125 @@ function drawModalBody(itemElement){
         return element;
     }
     return '';
+}
+
+
+
+
+//-------------UPDATE A SESSIÓN---------//
+//-Funciona para obtener los valores de sesion
+function getSessionNew(location = null) {
+    const useFallback = syncSessionStorage();
+    const SCRIPTID = getParameterURL('script_id');
+    const DEMO = getParameterURL('demo');
+    const EMBEDED = getParameterURL('embeded');
+
+
+    // -------- DEMO (se mantiene igual)
+    if (DEMO != "" && DEMO != null) {
+        return 'Demo';
+    // -------- ACTIVO 
+    } else if (useFallback === false) {
+        return 'Offline';
+    // -------- OFFLINE / UI CONTROL
+    } else {
+
+        if (location != 'login' || location == null) {
+            // --- Si NO es embeded
+            if (EMBEDED == "" || EMBEDED == null) {
+                setRedirectionLogin();
+            } else {
+
+                // 👇 SOLO si viene de fallback (true)
+                if (useFallback === true) {
+
+                    let div1 = document.getElementById("content-div-noseession");
+                    div1.style.display = "block";
+                    div1.style.height = "100vh";
+
+                    let div2 = document.getElementById("content-div-empty");
+                    div2.style.display = "none";
+
+                    let div3 = document.getElementById("content-div-buttons");
+                    div3.style.display = "none";
+
+                    let div4 = document.getElementById("content-div-filter");
+                    div4.style.display = "none";
+
+                    //---Hide components
+                    const divElements = document.querySelectorAll('.div-content-element');
+                    divElements.forEach(div => div.style.display = 'none');
+
+                    const buttonsElements = document.querySelectorAll('.btn-elements');
+                    buttonsElements.forEach(div => div.style.display = 'none');
+
+                    document.getElementById("buttonExecution").style.display = 'none';
+                }
+            }
+        }
+
+        return 'Offline';
+    }
+}
+
+//-Funciona para Ejecutar flujo de actualización nuevo
+function syncSessionStorage() {
+    const USERID_COOKIE = getCookie("userId");
+    const JWT_COOKIE = getCookie("userJwt");
+    let LS_DATA = getLocalStorageJSON("authData");
+
+    const now = new Date().getTime();
+    const DAYS_7 = 7 * 24 * 60 * 60 * 1000;
+
+    // -------- 1. Validar expiración
+    if (LS_DATA && LS_DATA.timestamp) {
+        const isExpired = (now - LS_DATA.timestamp) > DAYS_7;
+
+        if (isExpired) {
+            localStorage.removeItem("authData");
+            LS_DATA = null;
+        }
+    }
+
+    // -------- 2. Existe cookie (PRIORIDAD)
+    if (USERID_COOKIE && JWT_COOKIE) {
+
+        if (!LS_DATA) {
+            setLocalStorageJSON("authData", {
+                userId: USERID_COOKIE,
+                jwt: JWT_COOKIE,
+                timestamp: now
+            });
+        } else {
+            LS_DATA.timestamp = now;
+            setLocalStorageJSON("authData", LS_DATA);
+        }
+
+        return true;
+    }
+
+    // -------- 3. Fallback localStorage
+    if (LS_DATA) {
+
+        const expires = new Date(now + DAYS_7).toUTCString();
+
+        document.cookie = `userId=${LS_DATA.userId}; path=/; expires=${expires}`;
+        document.cookie = `userJwt=${LS_DATA.jwt}; path=/; expires=${expires}`;
+
+        return true;
+    }
+
+    // -------- 4. Sin sesión
+    return false;
+}
+
+//-Funciona para encontrar valores en local storage
+function getLocalStorage(key) {
+    const value = localStorage.getItem(key);
+    return value !== null ? value : null;
+}
+
+//-Funciona para setear valores en local storage
+function setLocalStorage(key, value) {
+    localStorage.setItem(key, value);
 }
