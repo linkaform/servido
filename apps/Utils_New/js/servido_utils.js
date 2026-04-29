@@ -205,6 +205,8 @@ async function sendRequestReport(script, dicFilterAd = null){
   }
   //----Cookie 
   const JWTSESSION =  getCookie("userJwt");
+
+
   //----Fetch
 
     if(flagValidation){
@@ -1396,4 +1398,93 @@ function getLocalStorage(key) {
 //-Funciona para setear valores en local storage
 function setLocalStorage(key, value) {
     localStorage.setItem(key, value);
+}
+
+//-Funciona para obtener la sesion
+function getJwtSession() {
+    //--Get local storage
+    let LS_DATA = getLocalStorageJSON("authData");
+    if (LS_DATA && LS_DATA.jwt) {
+        return LS_DATA.jwt;
+    }
+
+    const JWT_COOKIE = getCookie("userJwt");
+    if (JWT_COOKIE && JWT_COOKIE !== "") {
+        return JWT_COOKIE;
+    }
+
+    return false;
+}
+
+
+async function sendRequestReportNew(script, dicFilterAd = null){
+  let dicRes = {};
+  let flagValidation = true;
+
+  //----Get value Filter
+  let dicFilter = {};
+  let componentes = document.querySelectorAll('.filters-servido');
+  for (let i = 0; i < componentes.length; i++) {
+    let valor = componentes[i].value;
+    const id = componentes[i].id;
+    const multiple = componentes[i].multiple;
+    const required = componentes[i].required;
+    if (multiple) {
+        valor = [];
+        const component = componentes[i];
+        Array.from(component.selectedOptions).forEach(option => {
+          valor.push(option.value);  
+        });
+    }
+    if(required){
+      if(!valor || valor.length == 0){
+        flagValidation = false;
+        Swal.fire({
+          title: 'Advertencia',
+          html:'No es posible ejecutar reporte, faltan filtros requeridos.'
+        });
+        break;
+      }else{
+        dicFilter[id] = valor;
+      }
+    }else{
+      dicFilter[id] = valor;
+    }
+  }
+  //----Update Script id
+  dicFilter['script_id'] = script;
+  //----Check Filter Aditional
+  if(dicFilterAd != null){
+    dicFilter = { ...dicFilter, ...dicFilterAd };
+  }
+  //----Cookie 
+  const JWTSESSION =  getJwtSession();
+  //----Fetch
+    if(flagValidation){
+        try {
+            const response = await fetch(getUrlRequest('script'), {
+                method: 'POST',
+                body: JSON.stringify(dicFilter),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${JWTSESSION}`
+                },
+            });
+            const res = await response.json();  
+            if (res.success) {
+                dicRes = res;
+            } else {
+                Swal.fire({
+                  title: 'Error',
+                  html: res.error
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                title: 'Error',
+                html: 'Ocurrió un problema en la solicitud.'
+            });
+        }
+    }
+    return dicRes;
 }
