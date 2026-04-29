@@ -326,7 +326,7 @@ let dataTable7 = [
 
 let columsTable8 = [
     { title: "Técnico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
-    { title: "Count of Voltaje AB", field: 'num_voltaje', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
+    { title: "Voltaje AB", field: 'num_voltaje', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Equipos intervenidos", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
     { title: "Puntuación", field: 'num_puntuacion', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
