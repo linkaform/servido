@@ -7,24 +7,24 @@ let dicReportContext = [
         ] 
     },
     { class:'', _children : [
-            { type:'separator', col: '12', title:'Evaluación Mantenimiento Técnicos'},
+            { type:'separator', col: '12', title:'Detalle Evaluación de Servicios Tecnicos'},
             { type:'table', col: '6', id:'tableSecond', title:'Fallas Identificadas'},
             { type:'chart', col: '6', id:'chartSecond', title:'Porcentaje Por Técnico'},
 
-            { type:'table', col: '12', id:'tableThird', title:'Trabajo Realizado'},
-            { type:'chart', col: '12', id:'chartThird', title:'Porcentaje Por Técnico'},
+            { type:'table', col: '6', id:'tableThird', title:'Trabajo Realizado'},
+            { type:'chart', col: '6', id:'chartThird', title:'Porcentaje Por Técnico'},
 
-            { type:'table', col: '12', id:'tableFourth', title:'Como se Dejo el Equipo'},
-            { type:'chart', col: '12', id:'chartFourth', title:'Porcentaje Por Técnico'},
+            { type:'table', col: '6', id:'tableFourth', title:'Como se Dejo el Equipo'},
+            { type:'chart', col: '6', id:'chartFourth', title:'Porcentaje Por Técnico'},
 
-            { type:'table', col: '12', id:'tableFiveth', title:'Temperatura del Suministro'},
-            { type:'chart', col: '12', id:'chartFiveth', title:'Porcentaje Por Técnico'},
+            { type:'table', col: '6', id:'tableFiveth', title:'Temperatura del Suministro'},
+            { type:'chart', col: '6', id:'chartFiveth', title:'Porcentaje Por Técnico'},
 
-            { type:'table', col: '12', id:'tableSixth', title:'Fotos'},
-            { type:'chart', col: '12', id:'chartSixth', title:'Porcentaje Por Técnico'},
+            { type:'table', col: '6', id:'tableSixth', title:'Fotos'},
+            { type:'chart', col: '6', id:'chartSixth', title:'Porcentaje Por Técnico'},
 
-            { type:'table', col: '12', id:'tableSeventh', title:'Condición del Equipo'},
-            { type:'chart', col: '12', id:'chartSeventh', title:'Porcentaje Por Técnico'},
+            { type:'table', col: '6', id:'tableSeventh', title:'Condición del Equipo'},
+            { type:'chart', col: '6', id:'chartSeventh', title:'Porcentaje Por Técnico'},
 
         ] 
     },
@@ -433,11 +433,11 @@ let dataTable7  = [
 ];
 //-------------Charts Colums
 var dataChart1 = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández"],
+    labels: ["Ana Torres","Juan Pérez","María López","Carlos Ramírez","Luis Hernández"],
     datasets: [
         {
             label: 'Porcentaje',
-            data: [50.0, 50.0, 40.0, 60.0, 40.0],
+            data: [60.0,50.0,50.0,40.0,40.0],
             fill: false,
             backgroundColor: [],
             borderColor: [],
@@ -479,11 +479,11 @@ var setOptions1 = {
 };
 
 var dataChart2 = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández",],
+    labels: ["Ana Torres","Juan Pérez","Luis Hernández","María López","Carlos Ramírez"],
     datasets: [
         {
             label: 'Cantidad',
-            data: [55,44,33,66,45],
+            data: [66,55,45,44,33],
             fill: false,
             backgroundColor: [],
             borderColor: [],
@@ -522,11 +522,11 @@ var setOptions2 = {
 };
 
 var dataChart3 = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández"],
+    labels: ["Ana Torres","Juan Pérez","Luis Hernández","María López","Carlos Ramírez"],
     datasets: [
         {
             label: 'Cantidad',
-            data: [91, 88, 85, 94, 89], // num_cumplimiento
+            data: [94,91,89,88,85],
             fill: false,
             backgroundColor: [],
             borderColor: [],
@@ -534,6 +534,7 @@ var dataChart3 = {
         },
     ]
 };
+
 var setOptions3 = {
     responsive: true,
     maintainAspectRatio: false,
@@ -567,11 +568,11 @@ var setOptions3 = {
 };
 
 var dataChart4 = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández"],
+    labels: ["Ana Torres","Juan Pérez","María López","Luis Hernández","Carlos Ramírez"],
     datasets: [
         {
             label: 'Cumplimiento (%)',
-            data: [33, 33, 20, 40, 25],
+            data: [40,33,33,25,20],
             fill: false,
             backgroundColor: [],
             borderColor: [],
@@ -613,11 +614,11 @@ var setOptions4 = {
 };
 
 var dataChart5 = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández"],
+    labels: ["Ana Torres","María López","Luis Hernández","Juan Pérez","Carlos Ramírez"],
     datasets: [
         {
             label: 'Cumplimiento (%)',
-            data: [33, 40, 20, 50, 38],
+            data: [50,40,38,33,20],
             fill: false,
             backgroundColor: [],
             borderColor: [],
@@ -659,11 +660,11 @@ var setOptions5 = {
 };
 
 var dataChart6  = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández"],
+    labels: ["María López","Ana Torres","Luis Hernández","Juan Pérez","Carlos Ramírez"],
     datasets: [
         {
             label: 'Cumplimiento (%)',
-            data: [33, 50, 25, 50, 40],
+            data: [50,50,40,33,25],
             fill: false,
             backgroundColor: [],
             borderColor: [],
@@ -704,13 +705,12 @@ var setOptions6 = {
     }
 };
 
-
 var dataChart7 = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández"],
+    labels: ["Ana Torres","María López","Luis Hernández","Juan Pérez","Carlos Ramírez"],
     datasets: [
         {
             label: 'Cumplimiento (%)',
-            data: [40, 50, 33, 80, 45],
+            data: [80,50,45,40,33],
             fill: false,
             backgroundColor: [],
             borderColor: [],

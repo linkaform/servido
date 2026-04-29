@@ -7,27 +7,27 @@ let dicReportContext = [
         ] 
     },
     { class:'', _children : [
-            { type:'separator', col: '12', title:'Evaluación Mantenimiento Técnicos  '},
-            { type:'table', col: '6', id:'tableSecond', title:'Cantidad de Equípos Internvenido por Técnicos'},
+            { type:'separator', col: '12', title:'Detalle Mantenimiento Técnicos  '},
+            { type:'table', col: '6', id:'tableSecond', title:'Cantidad de Equípos Intervenidos por Técnicos'},
             { type:'chart', col: '6', id:'chartSecond', title:'Cantidad Por Técnico'},
 
-            { type:'table', col: '12', id:'tableThird', title:'Detalle de Actividades'},
-            { type:'chart', col: '12', id:'chartThird', title:'Porcentaje Por Técnico'},
+            { type:'table', col: '6', id:'tableThird', title:'Detalle de Actividades'},
+            { type:'chart', col: '6', id:'chartThird', title:'Porcentaje Por Técnico'},
 
-            { type:'table', col: '12', id:'tableFourth', title:'Temperatura por Suministro'},
-            { type:'chart', col: '12', id:'chartFourth', title:'Porcentaje Por Técnico'},
+            { type:'table', col: '6', id:'tableFourth', title:'Temperatura por Suministro'},
+            { type:'chart', col: '6', id:'chartFourth', title:'Porcentaje Por Técnico'},
 
-            { type:'table', col: '12', id:'tableFiveth', title:'Fotos de Técnicos'},
-            { type:'chart', col: '12', id:'chartFiveth', title:'Porcentaje Por Técnico'},
+            { type:'table', col: '6', id:'tableFiveth', title:'Fotos de Técnicos'},
+            { type:'chart', col: '6', id:'chartFiveth', title:'Porcentaje Por Técnico'},
 
-            { type:'table', col: '12', id:'tableSixth', title:'Estado Operativo'},
-            { type:'chart', col: '12', id:'chartSixth', title:'Porcentaje Por Técnico'},
+            { type:'table', col: '6', id:'tableSixth', title:'Estado Operativo'},
+            { type:'chart', col: '6', id:'chartSixth', title:'Porcentaje Por Técnico'},
 
-            { type:'table', col: '12', id:'tableSeventh', title:'Condición del Equipo'},
-            { type:'chart', col: '12', id:'chartSeventh', title:'Porcentaje Por Técnico'},
+            { type:'table', col: '6', id:'tableSeventh', title:'Condición del Equipo'},
+            { type:'chart', col: '6', id:'chartSeventh', title:'Porcentaje Por Técnico'},
 
-            { type:'table', col: '12', id:'tableEigth', title:'Reporte de Voltajes'},
-            { type:'chart', col: '12', id:'chartEigth', title:'Porcentaje Por Técnico'},
+            { type:'table', col: '6', id:'tableEigth', title:'Reporte de Voltajes'},
+            { type:'chart', col: '6', id:'chartEigth', title:'Porcentaje Por Técnico'},
         ] 
     },
 ];
@@ -55,14 +55,15 @@ function styleLigth(cell) {
 
 
 let columsTable1 = [
-    { title: "Ténico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
+    { title: "Técnico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
     { title: "Reporte de Actividades", field: 'num_actividades', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Temp - Suministro", field: 'num_suministro', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:210},
     { title: "Foto", field: 'num_foto', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width: 160},
     { title: "Estado Operativo", field: 'num_operativo', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:210},
     { title: "Condición del Equípo", field: 'num_equipo', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:210},
     { title: "Voltaje Ab", field: 'num_voltaje', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width: 180},
-    { title: "Sum", field: 'num_sum', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width: 180},
+    { title: "Puntuación", field: 'num_sum', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width: 180},
+    { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
 ];
 
 let dataTable1 = [
@@ -74,7 +75,8 @@ let dataTable1 = [
         num_operativo: 3.8,
         num_equipo: 2.1,
         num_voltaje: 3.4,
-        num_sum: 19.0
+        num_sum: 19.0,
+        num_cumplimiento:19,
     },
     {
         tecnico: "María López",
@@ -84,7 +86,8 @@ let dataTable1 = [
         num_operativo: 2.8,
         num_equipo: 3.5,
         num_voltaje: 2.6,
-        num_sum: 18.8
+        num_sum: 18.8,
+        num_cumplimiento:78,
     },
     {
         tecnico: "Carlos Ramírez",
@@ -94,7 +97,8 @@ let dataTable1 = [
         num_operativo: 2.2,
         num_equipo: 1.8,
         num_voltaje: 2.0,
-        num_sum: 13.4
+        num_sum: 13.4,
+        num_cumplimiento:75,
     },
     {
         tecnico: "Ana Torres",
@@ -104,7 +108,8 @@ let dataTable1 = [
         num_operativo: 3.9,
         num_equipo: 3.2,
         num_voltaje: 3.6,
-        num_sum: 21.9
+        num_sum: 21.9,
+        num_cumplimiento:90,
     },
     {
         tecnico: "Luis Hernández",
@@ -114,12 +119,13 @@ let dataTable1 = [
         num_operativo: 2.5,
         num_equipo: 2.9,
         num_voltaje: 3.1,
-        num_sum: 16.4
+        num_sum: 16.4,
+        num_cumplimiento:80,
     }
 ];
 
 let columsTable2 = [
-    { title: "Ténico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
+    { title: "Técnico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
     { title: "Cantidad de Equipos Intervenido / Técnicos", field: 'num_equipos_intervenidos', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width: 180},
 ];
 
@@ -147,9 +153,9 @@ let dataTable2 = [
 ];
 
 let columsTable3 = [
-    { title: "Ténico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
+    { title: "Técnico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
     { title: "Reporte de Actividades", field: 'num_actividades', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
-    { title: "Equipo que se le dio Mantenimiento", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
+    { title: "Equipos intervenidos", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
     { title: "Puntuación", field: 'num_puntuacion', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
 ];
@@ -193,9 +199,9 @@ let dataTable3 = [
 ];
 
 let columsTable4 = [
-    { title: "Ténico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
+    { title: "Técnico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
     { title: "Temperatura de Suministro", field: 'num_temp', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
-    { title: "Equipo que se le dio Mantenimiento", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
+    { title: "Equipos intervenidos", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
     { title: "Puntuación", field: 'num_puntuacion', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
 ];
@@ -239,9 +245,9 @@ let dataTable4 = [
 ];
 
 let columsTable5 = [
-    { title: "Ténico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
+    { title: "Técnico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
     { title: "Fotos", field: 'num_foto', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
-    { title: "Equipo que se le dio Mantenimiento", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
+    { title: "Equipos intervenidos", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
     { title: "Puntuación", field: 'num_puntuacion', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
 ];
@@ -286,9 +292,9 @@ let dataTable5  = [
 
 
 let columsTable6 = [
-    { title: "Ténico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
+    { title: "Técnico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
     { title: "Reporte Presión de Liquido", field: 'num_presion', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
-    { title: "Equipo que se le dio Mantenimiento", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
+    { title: "Equipos intervenidos", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
     { title: "Puntuación", field: 'num_puntuacion', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
 ];
@@ -303,9 +309,9 @@ let dataTable6 = [
 
 
 let columsTable7 = [
-    { title: "Ténico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
+    { title: "Técnico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
     { title: "Reporte Consumo Compresor", field: 'num_compresor', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
-    { title: "Equipo que se le dio Mantenimiento", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
+    { title: "Equipos intervenidos", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
     { title: "Puntuación", field: 'num_puntuacion', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
 ];
@@ -319,9 +325,9 @@ let dataTable7 = [
 ];
 
 let columsTable8 = [
-    { title: "Ténico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
+    { title: "Técnico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
     { title: "Count of Voltaje AB", field: 'num_voltaje', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
-    { title: "Equipo que se le dio Mantenimiento", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
+    { title: "Equipos intervenidos", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
     { title: "Puntuación", field: 'num_puntuacion', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
 ];
@@ -336,11 +342,11 @@ let dataTable8 = [
 
 //-------------Charts Colums
 var dataChart1 = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández",],
+    labels: ["Ana Torres","Juan Pérez","María López","Luis Hernández","Carlos Ramírez"],
     datasets: [
         {
             label: 'Porcentaje',
-            data: [19.0,18.8,13.4,21.9,16.4],
+            data: [21.9,19.0,18.8,16.4,13.4],
             fill: false,
             backgroundColor: [],
             borderColor: [],
@@ -382,11 +388,11 @@ var setOptions1 = {
 };
 
 var dataChart2 = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández",],
+    labels: ["Ana Torres","Juan Pérez","Luis Hernández","María López","Carlos Ramírez"],
     datasets: [
         {
             label: 'Cantidad',
-            data: [55,44,33,66,45],
+            data: [66,55,45,44,33],
             fill: false,
             backgroundColor: [],
             borderColor: [],
@@ -425,11 +431,11 @@ var setOptions2 = {
 };
 
 var dataChart3 = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández"],
+    labels: ["Ana Torres","Juan Pérez","Luis Hernández","María López","Carlos Ramírez"],
     datasets: [
         {
             label: 'Cantidad',
-            data: [91, 88, 85, 94, 89], // num_cumplimiento
+            data: [94,91,89,88,85],
             fill: false,
             backgroundColor: [],
             borderColor: [],
@@ -437,6 +443,7 @@ var dataChart3 = {
         },
     ]
 };
+
 var setOptions3 = {
     responsive: true,
     maintainAspectRatio: false,
@@ -470,11 +477,11 @@ var setOptions3 = {
 };
 
 var dataChart4 = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández"],
+    labels: ["Carlos Ramírez","Ana Torres","Juan Pérez","María López","Luis Hernández"],
     datasets: [
         {
             label: 'Cantidad',
-            data: [90, 80, 95, 95.45, 77.78], 
+            data: [95,95.45,90,80,77.78],
             fill: false,
             backgroundColor: [],
             borderColor: [],
@@ -516,11 +523,11 @@ var setOptions4 = {
 };
 
 var dataChart5 = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández"],
+    labels: ["Carlos Ramírez","Ana Torres","Juan Pérez","María López","Luis Hernández"],
     datasets: [
         {
             label: 'Cantidad',
-            data: [90, 80, 95, 95.45, 77.78], 
+            data: [95,95.45,90,80,77.78],
             fill: false,
             backgroundColor: [],
             borderColor: [],
@@ -562,11 +569,11 @@ var setOptions5 = {
 };
 
 var dataChart6 = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández"],
+    labels: ["Ana Torres","María López","Luis Hernández","Juan Pérez","Carlos Ramírez"],
     datasets: [
         {
             label: 'Cumplimiento (%)',
-            data: [80, 88.46, 75, 90.48, 81.25], 
+            data: [90.48,88.46,81.25,80,75],
             fill: false,
             backgroundColor: [],
             borderColor: [],
@@ -608,11 +615,11 @@ var setOptions6 = {
 };
 
 var dataChart7 = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández"],
+    labels: ["María López","Ana Torres","Luis Hernández","Carlos Ramírez","Juan Pérez"],
     datasets: [
         {
             label: 'Cumplimiento (%)',
-            data: [77.84, 87.64, 78.35, 87.50, 79.25],
+            data: [87.64,87.50,79.25,78.35,77.84],
             fill: false,
             backgroundColor: [],
             borderColor: [],
@@ -655,11 +662,11 @@ var setOptions7 = {
 };
 
 var dataChart8 = {
-    labels: ["Juan Pérez","María López","Carlos Ramírez","Ana Torres","Luis Hernández"],
+    labels: ["María López","Ana Torres","Luis Hernández","Juan Pérez","Carlos Ramírez"],
     datasets: [
         {
             label: 'Cumplimiento Voltaje (%)',
-            data: [77.08, 88.13, 75.32, 87.04, 78.57],
+            data: [88.13,87.04,78.57,77.08,75.32],
             fill: false,
             backgroundColor: [],
             borderColor: [],
