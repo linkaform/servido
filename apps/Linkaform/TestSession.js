@@ -10,11 +10,18 @@ let calendarInstance = null;
 window.onload = function(){
     createElements(dicReportContext);
     setElementsStyle();
-    const statusSession = getSession();
+    const statusSession = getSessionNew();
     if (statusSession === 'Active') {
         loadData();
     } else {
         loadDemoData();
+    }
+
+    ///----Test
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const value = localStorage.getItem(key);
+        console.log(key, value);
     }
 }
 
@@ -28,6 +35,10 @@ function loadDemoData(){
 
 //-----LOAD DATA ACTIVE
 function loadData(data) {
+
+
+
+
     //----Search Catalogs
     get_catalog();
     //----Assing Events

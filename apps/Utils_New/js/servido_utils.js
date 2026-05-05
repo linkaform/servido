@@ -1342,13 +1342,14 @@ function getSessionNew(location = null) {
 function syncSessionStorage() {
     const USERID_COOKIE = getCookie("userId");
     const JWT_COOKIE = getCookie("userJwt");
-    let LS_DATA = getLocalStorageJSON("authData");
+    let LS_DATA = getLocalStorage("authData");
 
     const now = new Date().getTime();
     const DAYS_7 = 7 * 24 * 60 * 60 * 1000;
 
     // -------- 1. Validar expiración
     if (LS_DATA && LS_DATA.timestamp) {
+        console.log('Entra bloque 1')
         const isExpired = (now - LS_DATA.timestamp) > DAYS_7;
 
         if (isExpired) {
@@ -1359,24 +1360,30 @@ function syncSessionStorage() {
 
     // -------- 2. Existe cookie (PRIORIDAD)
     if (USERID_COOKIE && JWT_COOKIE) {
-
+        console.log('Entra bloque 2')
+        console.log('LS_DATA',LS_DATA)
         if (!LS_DATA) {
-            setLocalStorageJSON("authData", {
+            setLocalStorage("authData", {
                 userId: USERID_COOKIE,
                 jwt: JWT_COOKIE,
                 timestamp: now
             });
+            console.log('dic',{
+                userId: USERID_COOKIE,
+                jwt: JWT_COOKIE,
+                timestamp: now
+            })
         } else {
             LS_DATA.timestamp = now;
-            setLocalStorageJSON("authData", LS_DATA);
+            setLocalStorage("authData", LS_DATA);
+            console.log('authData', LS_DATA)
         }
-
         return true;
     }
 
     // -------- 3. Fallback localStorage
     if (LS_DATA) {
-
+        console.log('Entra bloque 3')
         const expires = new Date(now + DAYS_7).toUTCString();
 
         document.cookie = `userId=${LS_DATA.userId}; path=/; expires=${expires}`;
@@ -1391,19 +1398,19 @@ function syncSessionStorage() {
 
 //-Funciona para encontrar valores en local storage
 function getLocalStorage(key) {
-    const value = localStorage.getItem(key);
-    return value !== null ? value : null;
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : null;
 }
 
 //-Funciona para setear valores en local storage
 function setLocalStorage(key, value) {
-    localStorage.setItem(key, value);
+    localStorage.setItem(key, JSON.stringify(value));
 }
 
 //-Funciona para obtener la sesion
 function getJwtSession() {
     //--Get local storage
-    let LS_DATA = getLocalStorageJSON("authData");
+    let LS_DATA = getLocalStorage("authData");
     if (LS_DATA && LS_DATA.jwt) {
         return LS_DATA.jwt;
     }
@@ -1416,7 +1423,7 @@ function getJwtSession() {
     return false;
 }
 
-
+//-Hace la petición  a scripts, pero sin la cookie directa
 async function sendRequestReportNew(script, dicFilterAd = null){
   let dicRes = {};
   let flagValidation = true;
