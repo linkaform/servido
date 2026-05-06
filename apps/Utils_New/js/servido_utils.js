@@ -533,7 +533,7 @@ function buildModalHTML({ titleElement, idElement, formElements, optionButtonMod
 // Separador visual
 function buildSeparatorHTML({ titleElement }) {
     return `
-        <div class="col-12 mt-2 mb-2 p-2">
+        <div class="col-12 mt-2 mb-2 p-2 custom-separator">
             <h3 class="border-bottom pb-2">${titleElement}</h3>
         </div>
     `;

@@ -1,0 +1,42 @@
+.custom-separator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    padding-bottom: 10px;
+    background: #6cab44;
+    border-radius: 10px;
+}
+
+.custom-separator h3 {
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #2b2b2b;
+}
+
+
+/* Icono */
+.custom-separator .separator-icon {
+    width: 35px;
+    height: 35px;
+    background: #6cab44;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 18px;
+}
+
+
+.card-header{
+    background: #593719 !important;
+    .text-primary{
+        color: white !important;
+    }
+    .btn-primary{
+        background: #F27B35!important;
+        border-color: #F27B35!important;
+    }
+}

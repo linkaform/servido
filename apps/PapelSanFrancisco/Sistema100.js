@@ -12,8 +12,25 @@ window.onload = function(){
 }
 
 function loadDemoData(){
-    drawTableElement('tableFirst', dataTable1, columsTable1Test);
+    drawChartElement('chartFirst','bar',dataChart1,optionsChart1, undefined,  true);
+    drawChartElement('chartSecond','bar',dataChart2,optionsChart2, undefined,  true);
+    drawChartElement('chartThird','bar',dataChart3,optionsChart3, undefined,  true);
+    drawTableElement('tableFirst', dataTable1, columsTable1);
+
+
+    drawChartElement('chartFourth','line',dataChart4,optionsChart4, undefined,  true);
+
     drawTableElement('tableSecond', dataTable2, columsTable2);
+    drawChartElement('chartFiveth','line',dataChart5,optionsChart5, undefined,  true);
+
+    drawChartElement('chartSixth','line',dataChart6,optionsChart6, undefined,  true);
+
+    drawTableElement('tableThird', dataTable3, columsTable3);
+    drawChartElement('chartSeven','line',dataChart7,optionsChart7, undefined,  true);
+    drawChartElement('chartEigth','bar',dataChart8,optionsChart8, undefined,  true);
+    drawChartElement('chartNineth','bar',dataChart9,optionsChart9, undefined,  true);
+
+    enhanceSeparators();
     setTimeout(() => { hide_loading();}, 2000);
 }
 
@@ -69,37 +86,27 @@ async function getInformation(){
     }
 }
 
-function getDayName(dateStr) {
-  const days = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
-  const [y,m,d] = dateStr.split("-");
-  return days[new Date(y, m-1, d).getDay()];
-}
 
-function statusFormatter(cell) {
-    const value = cell.getValue();
-    const status = STATUS_MAP[value];
+function enhanceSeparators() {
+    const separators = document.querySelectorAll('.custom-separator');
 
-    const el = cell.getElement();
+    separators.forEach((el) => {
+        if (el.querySelector('.separator-icon')) return;
 
-    if (!status) return value;
+        const title = el.querySelector('h3');
+        const text = title ? title.innerText.toUpperCase() : '';
 
-    el.style.backgroundColor = status.color;
-    el.style.textAlign = "center";
-    el.style.fontWeight = "bold";
+        let icon = '⚙️'; // default
+        if (text.includes('ACCIDENTES')) icon = '⚠️';
+        if (text.includes('VENTAS')) icon = '💰';
+        if (text.includes('USUARIOS')) icon = '👤';
 
-    if (status.textColor) {
-        el.style.color = status.textColor;
-    }
+        // Crear icono
+        const iconDiv = document.createElement('div');
+        iconDiv.className = 'separator-icon';
+        iconDiv.innerText = icon;
 
-    if (value === "CM_R" || value === "INC_R" || value === "RCE_R") {
-        const shortValue = value.replace("_R", ""); 
 
-        return `
-            <span style="display:flex;align-items:center;justify-content:center;gap:6px;">
-            ⚠️ ${shortValue}
-            </span>
-        `;
-    }
-
-    return value;
+        el.insertBefore(iconDiv, title);
+    });
 }
