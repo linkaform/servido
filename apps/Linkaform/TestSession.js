@@ -11,6 +11,7 @@ window.onload = function(){
     createElements(dicReportContext);
     setElementsStyle();
     const statusSession = getSessionNew();
+    console.log('statusSession',statusSession)
     if (statusSession === 'Active') {
         loadData();
     } else {
@@ -35,10 +36,6 @@ function loadDemoData(){
 
 //-----LOAD DATA ACTIVE
 function loadData(data) {
-
-
-
-
     //----Search Catalogs
     get_catalog();
     //----Assing Events

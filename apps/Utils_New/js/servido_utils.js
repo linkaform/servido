@@ -1289,8 +1289,14 @@ function getSessionNew(location = null) {
     const SCRIPTID = getParameterURL('script_id');
     const DEMO = getParameterURL('demo');
     const EMBEDED = getParameterURL('embeded');
-
-
+    /*
+    console.log('useFallback',useFallback)
+    console.log('SCRIPTID',SCRIPTID)
+    console.log('DEMO',DEMO)
+    console.log('EMBEDED',EMBEDED)
+    console.log('location',location)
+    console.log('-------------------------')
+    */
     // -------- DEMO (se mantiene igual)
     if (DEMO != "" && DEMO != null) {
         return 'Demo';
@@ -1305,117 +1311,87 @@ function getSessionNew(location = null) {
             if (EMBEDED == "" || EMBEDED == null) {
                 setRedirectionLogin();
             } else {
-
-                // 👇 SOLO si viene de fallback (true)
                 if (useFallback === true) {
-
-                    let div1 = document.getElementById("content-div-noseession");
-                    div1.style.display = "block";
-                    div1.style.height = "100vh";
-
-                    let div2 = document.getElementById("content-div-empty");
-                    div2.style.display = "none";
-
-                    let div3 = document.getElementById("content-div-buttons");
-                    div3.style.display = "none";
-
-                    let div4 = document.getElementById("content-div-filter");
-                    div4.style.display = "none";
-
-                    //---Hide components
-                    const divElements = document.querySelectorAll('.div-content-element');
-                    divElements.forEach(div => div.style.display = 'none');
-
-                    const buttonsElements = document.querySelectorAll('.btn-elements');
-                    buttonsElements.forEach(div => div.style.display = 'none');
-
-                    document.getElementById("buttonExecution").style.display = 'none';
+                    return 'Active';
                 }
             }
         }
-
         return 'Offline';
     }
 }
 
 //-Funciona para Ejecutar flujo de actualización nuevo
 function syncSessionStorage() {
+
     const USERID_COOKIE = getCookie("userId");
     const JWT_COOKIE = getCookie("userJwt");
-    let LS_DATA = getLocalStorage("authData");
+
+    // -------- LocalStorage
+    let LS_USERID = localStorage.getItem("userId");
+    let LS_JWT = localStorage.getItem("jwt");
+    let LS_TIMESTAMP = localStorage.getItem("timestamp");
+
+    // Parse
+    LS_USERID = LS_USERID ? JSON.parse(LS_USERID) : null;
+    LS_JWT = LS_JWT ? JSON.parse(LS_JWT) : null;
+    LS_TIMESTAMP = LS_TIMESTAMP ? JSON.parse(LS_TIMESTAMP) : null;
 
     const now = new Date().getTime();
     const DAYS_7 = 7 * 24 * 60 * 60 * 1000;
 
-    // -------- 1. Validar expiración
-    if (LS_DATA && LS_DATA.timestamp) {
-        console.log('Entra bloque 1')
-        const isExpired = (now - LS_DATA.timestamp) > DAYS_7;
 
+    if (LS_JWT && LS_TIMESTAMP) {
+
+        const isExpired = (now - LS_TIMESTAMP) > DAYS_7;
+
+        // -------- Expiró
         if (isExpired) {
-            localStorage.removeItem("authData");
-            LS_DATA = null;
-        }
-    }
 
-    // -------- 2. Existe cookie (PRIORIDAD)
+            localStorage.removeItem("userId");
+            localStorage.removeItem("jwt");
+            localStorage.removeItem("timestamp");
+            document.cookie = "userId=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+            document.cookie = "userJwt=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+            return false;
+        }
+
+        // -------- Sesión válida
+
+        return true;
+    }
     if (USERID_COOKIE && JWT_COOKIE) {
-        console.log('Entra bloque 2')
-        console.log('LS_DATA',LS_DATA)
-        if (!LS_DATA) {
-            setLocalStorage("authData", {
-                userId: USERID_COOKIE,
-                jwt: JWT_COOKIE,
-                timestamp: now
-            });
-            console.log('dic',{
-                userId: USERID_COOKIE,
-                jwt: JWT_COOKIE,
-                timestamp: now
-            })
-        } else {
-            LS_DATA.timestamp = now;
-            setLocalStorage("authData", LS_DATA);
-            console.log('authData', LS_DATA)
-        }
-        return true;
-    }
 
-    // -------- 3. Fallback localStorage
-    if (LS_DATA) {
-        console.log('Entra bloque 3')
-        const expires = new Date(now + DAYS_7).toUTCString();
+        localStorage.setItem("userId", JSON.stringify(USERID_COOKIE));
+        localStorage.setItem("jwt", JSON.stringify(JWT_COOKIE));
+        localStorage.setItem("timestamp", JSON.stringify(now));
 
-        document.cookie = `userId=${LS_DATA.userId}; path=/; expires=${expires}`;
-        document.cookie = `userJwt=${LS_DATA.jwt}; path=/; expires=${expires}`;
 
         return true;
     }
-
-    // -------- 4. Sin sesión
     return false;
-}
-
-//-Funciona para encontrar valores en local storage
-function getLocalStorage(key) {
-    const data = localStorage.getItem(key);
-    return data ? JSON.parse(data) : null;
-}
-
-//-Funciona para setear valores en local storage
-function setLocalStorage(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
 }
 
 //-Funciona para obtener la sesion
 function getJwtSession() {
-    //--Get local storage
-    let LS_DATA = getLocalStorage("authData");
-    if (LS_DATA && LS_DATA.jwt) {
-        return LS_DATA.jwt;
-    }
 
     const JWT_COOKIE = getCookie("userJwt");
+    let LS_JWT = localStorage.getItem("jwt");
+
+    console.log('JWT_COOKIE', JWT_COOKIE)
+    console.log('LS_JWT', LS_JWT)
+
+    //-- Si viene stringificado
+    if (LS_JWT) {
+        try {
+            LS_JWT = JSON.parse(LS_JWT);
+        } catch (e) {
+            //-- Si no es JSON válido, usar valor normal
+        }
+
+        return LS_JWT;
+    }
+
+    //-- Fallback cookie
     if (JWT_COOKIE && JWT_COOKIE !== "") {
         return JWT_COOKIE;
     }
