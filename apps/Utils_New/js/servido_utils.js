@@ -115,7 +115,6 @@ function getSession(location = null) {
             setRedirectionLogin();
         }else{
             //---Show Alert
-
             let div1 = document.getElementById("content-div-noseession");
             div1.style.display = "block";
             div1.style.height = "100vh";
@@ -1124,7 +1123,6 @@ function dragCard(event) {
 
 function allowDrop(event) {
     // Permitir el drop solo en zonas válidas
-    console.log('Es valido?',event.target.classList.contains("dropzone"))
     if (event.target.classList.contains("dropzone")) {
         event.preventDefault();
     }
@@ -1135,7 +1133,6 @@ function dropCard(event) {
     event.preventDefault();
 
     // Verificar que el objetivo es una zona de drop válida
-    console.log('Es valido?',event.target.classList.contains("dropzone"))
     if (event.target.classList.contains("dropzone")) {
         // Obtener el ID del elemento arrastrado
         const cardId = event.dataTransfer.getData("text");
@@ -1289,14 +1286,12 @@ function getSessionNew(location = null) {
     const SCRIPTID = getParameterURL('script_id');
     const DEMO = getParameterURL('demo');
     const EMBEDED = getParameterURL('embeded');
-    /*
     console.log('useFallback',useFallback)
     console.log('SCRIPTID',SCRIPTID)
     console.log('DEMO',DEMO)
     console.log('EMBEDED',EMBEDED)
     console.log('location',location)
     console.log('-------------------------')
-    */
     // -------- DEMO (se mantiene igual)
     if (DEMO != "" && DEMO != null) {
         return 'Demo';
@@ -1305,7 +1300,6 @@ function getSessionNew(location = null) {
         return 'Offline';
     // -------- OFFLINE / UI CONTROL
     } else {
-
         if (location != 'login' || location == null) {
             // --- Si NO es embeded
             if (EMBEDED == "" || EMBEDED == null) {
@@ -1376,10 +1370,6 @@ function getJwtSession() {
 
     const JWT_COOKIE = getCookie("userJwt");
     let LS_JWT = localStorage.getItem("jwt");
-
-    console.log('JWT_COOKIE', JWT_COOKIE)
-    console.log('LS_JWT', LS_JWT)
-
     //-- Si viene stringificado
     if (LS_JWT) {
         try {
@@ -1390,7 +1380,6 @@ function getJwtSession() {
 
         return LS_JWT;
     }
-
     //-- Fallback cookie
     if (JWT_COOKIE && JWT_COOKIE !== "") {
         return JWT_COOKIE;
@@ -1470,4 +1459,69 @@ async function sendRequestReportNew(script, dicFilterAd = null){
         }
     }
     return dicRes;
+}
+
+
+
+//-Funciona para poner elementos como buscador por defecto
+function setElementsStyleNew(){
+  //---Check Session
+  const statusSession = getSessionNew();
+  if(statusSession == 'Demo'){
+    //---Buttons
+    const btnExecution = document.getElementById("buttonExecution");
+    if (btnExecution) btnExecution.style.display = 'none';
+
+    const btnClose = document.getElementById("buttonClose");
+    if (btnClose) btnClose.style.display = 'none';
+
+    const divEmpty = document.querySelectorAll('.div-content-empty');
+    divEmpty.forEach(div => {
+      div.style.display = 'none';
+    });
+    const divNoSession = document.querySelectorAll('.div-content-no-session');
+    divNoSession.forEach(div => {
+      div.style.display = 'none';
+    });
+  }else if(statusSession == 'Active'){
+    //----Div Containers
+    const divEmpty = document.querySelectorAll('.div-content-empty');
+    const divNoSession = document.querySelectorAll('.div-content-no-session');
+    const divElements = document.querySelectorAll('.div-content-element');
+    divElements.forEach(div => {
+      div.style.visibility = 'hidden';
+    });
+    divNoSession.forEach(div => {
+      div.style.display = 'none';
+    });
+    divEmpty.forEach(div => {
+      div.style.visibility = 'visible';
+    });
+  }
+  //---Check Parameter
+  let embeded = getParameterURL('embeded');
+  if(embeded != null){
+    const btnClose = document.getElementById("buttonClose");
+    if (btnClose) btnClose.style.display = 'none';
+  }
+  if (document.getElementById("buttonClose")){
+   document.getElementById("buttonClose").addEventListener("click", function() {
+        closeSession() ;
+    });
+  }
+  if (document.getElementById("buttonList")){
+   document.getElementById("buttonList").addEventListener("click", function() {
+        setRedirectionList() ;
+    });
+  }
+  //---Load Select2
+  let componentes = document.querySelectorAll('.filters-servido');
+  for (let i = 0; i < componentes.length; i++) {
+    const multiple = componentes[i].multiple;
+    const id = componentes[i].id;
+    if (multiple) {
+      $(`#${id}`).select2();
+      id
+    }
+  }
 }

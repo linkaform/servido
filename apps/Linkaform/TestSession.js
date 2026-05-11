@@ -9,7 +9,7 @@ let calendarInstance = null;
 
 window.onload = function(){
     createElements(dicReportContext);
-    setElementsStyle();
+    setElementsStyleNew();
     const statusSession = getSessionNew();
     console.log('statusSession',statusSession)
     if (statusSession === 'Active') {
