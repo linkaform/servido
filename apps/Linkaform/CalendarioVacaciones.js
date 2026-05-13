@@ -8,14 +8,16 @@ let dateClick = '';
 let calendarInstance = null;
 
 window.onload = function(){
-    createElements(dicReportContext);
-    setElementsStyleNew();
-    const statusSession = getSessionNew();
-    if (statusSession === 'Active') {
-        loadData();
-    } else {
-        loadDemoData();
-    }
+  createElements(dicReportContext);
+  setElementsStyle();
+  const statusSession = getSession();
+  if(statusSession == 'Active'){
+    loadData();
+  }else if(statusSession == 'Demo'){
+    loadDemoData();
+  }else if(statusSession == 'Offline'){
+    loadDemoData();
+  } 
 }
 
 //-----LOAD DATA DEMO
@@ -63,7 +65,7 @@ async function getInformation(){
 //-----GET CATALOG
 function get_catalog(){
     const scriptId = getParameterURL('script_id');
-    const JWT = getJwtSession();
+    const JWT = getCookie("userJwt");
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({

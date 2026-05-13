@@ -16,7 +16,16 @@ window.onload = function(){
 
 //-----LOAD DATA DEMO
 function loadDemoData(){
-    drawTableElement('tableFirst', dataTable1, columsTable1, undefined, configTableCustom1);
+    
+    drawCardElement('cardFirst',60);
+    drawCardElement('cardSecond',30);
+    drawChartElement('chartFirst','bar',dataChart1,setOptions1);
+    drawChartElement('chartSecond','pie',dataChart2,setOptions2, undefined, true);
+    drawChartElement('chartThird','pie',dataChart3,setOptions3);
+    drawChartElement('chartFourth','bar',dataChart4,setOptions4);
+    drawChartElement('chartFiveth','bar',dataChart5,setOptions5);
+    drawTableElement('tableFirst', dataTable1, columsTable1Prod);
+    console.log(getPAlleteColors(6,5))
     setTimeout(() => { hide_loading();}, 2000);
 }
 
@@ -34,7 +43,6 @@ function loadData(data) {
     setTimeout(() => { hide_loading();}, 2000);
 }
 
-
 //-----SET REQUEST ACTIVE
 async function getInformation(){
     showLoadingComponent();
@@ -48,23 +56,13 @@ async function getInformation(){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReport(scriptId,dicAdional);
-        const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-        const colums = data.colums ? data.colums : [];
-        const dataTable = data.data  ? data.data : [];
-        if(dataTable){
-            let updatedColumnsTable = [...columsTable1Prod];
-            let insertIndex = updatedColumnsTable.findIndex(col => col.field === 'name') + 1;
-            updatedColumnsTable.splice(insertIndex, 0, ...colums);
-            drawTableElement('tableFirst', dataTable, updatedColumnsTable, undefined, configTableCustom1);
-        }
         //-----Style
         hideLoadingComponent();
         showElements();
     }
 }
 
-
+//-----GET CATALOG
 function get_catalog(){
     const scriptId = getParameterURL('script_id');
     const JWT = getCookie("userJwt");

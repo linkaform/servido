@@ -2,14 +2,17 @@ let dataCatalogs = [];
 let dicSearchFolio = {};
 
 window.onload = function(){
-    createElements(dicReportContext);
-    setElementsStyleNew();
-    const statusSession = getSessionNew();
-    if (statusSession === 'Active') {
-        loadData();
-    } else {
-        loadDemoData();
-    }
+  createElements(dicReportContext);
+  setElementsStyle();
+  const statusSession = getSession();
+  console.log('statusSession',statusSession)
+  if(statusSession == 'Active'){
+    loadData();
+  }else if(statusSession == 'Demo'){
+    loadDemoData();
+  }else if(statusSession == 'Offline'){
+    loadDemoData();
+  }
 }
 
 //-----FUNCTIONS DEMO
@@ -75,7 +78,7 @@ async function getInformation(){
     showLoadingComponent();
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
-    const statusSession = getSessionNew();
+    const statusSession = getSession();
     const dicAdional =  {'option':'report'};
     if(statusSession == 'Demo' || demo){
         Swal.fire({
@@ -83,7 +86,7 @@ async function getInformation(){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
+        const responseRequest = await sendRequestReport(scriptId, dicAdional);
         if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
             const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
             
@@ -135,7 +138,7 @@ async function getInformation(){
 //----CATALOG
 function get_catalog(){
     const scriptId = getParameterURL('script_id');
-    const JWT = getJwtSession();
+    const JWT = getCookie("userJwt");
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({

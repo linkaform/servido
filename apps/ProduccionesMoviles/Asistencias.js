@@ -1,10 +1,12 @@
 window.onload = function(){
     createElements(dicReportContext);
-    setElementsStyleNew();
-    const statusSession = getSessionNew();
-    if (statusSession === 'Active') {
+    setElementsStyle();
+    const statusSession = getSession();
+    if(statusSession == 'Active'){
         loadData();
-    } else {
+    }else if(statusSession == 'Demo'){
+        loadDemoData();
+    }else if(statusSession == 'Offline'){
         loadDemoData();
     }
 }
@@ -31,7 +33,7 @@ async function getInformation(){
     showLoadingComponent();
     const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
-    const statusSession = getSessionNew();
+    const statusSession = getSession();
     const dicAditional = {'option':'report'}
 
     if(statusSession == 'Demo' || demo){
@@ -40,7 +42,7 @@ async function getInformation(){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReportNew(scriptId, dicAditional);
+        const responseRequest = await sendRequestReport(scriptId, dicAditional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
         //----ELEMENTS
         if(data.response_first){

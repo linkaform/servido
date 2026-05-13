@@ -1,14 +1,17 @@
 let dataCatalogs = [];
 
 window.onload = function(){
-    createElements(dicReportContext);
-    setElementsStyleNew();
-    const statusSession = getSessionNew();
-    if (statusSession === 'Active') {
-        loadData();
-    } else {
-        loadDemoData();
-    }
+  createElements(dicReportContext);
+  setElementsStyle();
+  const statusSession = getSession();
+  console.log('statusSession',statusSession)
+  if(statusSession == 'Active'){
+    loadData();
+  }else if(statusSession == 'Demo'){
+    loadDemoData();
+  }else if(statusSession == 'Offline'){
+    loadDemoData();
+  }
 }
 
 //-----FUNCTIONS DEMO
@@ -47,7 +50,7 @@ function loadData(data) {
 async function getInformation(dicAditional){
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
-    const statusSession = getSessionNew();
+    const statusSession = getSession();
     const dicAdional =  dicAditional;
 
     if(statusSession == 'Demo' || demo){
@@ -56,7 +59,7 @@ async function getInformation(dicAditional){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
+        const responseRequest = await sendRequestReport(scriptId, dicAdional);
         if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
             const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
             if (data.response_first) {
@@ -101,7 +104,14 @@ async function getInformation(dicAditional){
                 drawTableElement('tableSecond', data.response_tenth, columsTable3, null, configTableCustomFooter);
             }
             //-----Style
-            showElements();
+            const divEmpty = document.querySelectorAll('.div-content-empty');
+            const divElements = document.querySelectorAll('.div-content-element');
+            divElements.forEach(div => {
+              div.style.visibility = 'visible';
+            });
+            divEmpty.forEach(div => {
+              div.style.display = 'none';
+            });
         }
     }
 }
@@ -109,7 +119,7 @@ async function getInformation(dicAditional){
 //----CATALOG
 function get_catalog(){
     const scriptId = getParameterURL('script_id');
-    const JWT = getJwtSession();
+    const JWT = getCookie("userJwt");
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({

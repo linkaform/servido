@@ -1,14 +1,17 @@
 let dataCatalogs = [];
 
 window.onload = function(){
-    createElements(dicReportContext);
-    setElementsStyleNew();
-    const statusSession = getSessionNew();
-    if (statusSession === 'Active') {
-        loadData();
-    } else {
-        loadDemoData();
-    }
+  createElements(dicReportContext);
+  setElementsStyle();
+  const statusSession = getSession();
+  console.log('statusSession',statusSession)
+  if(statusSession == 'Active'){
+    loadData();
+  }else if(statusSession == 'Demo'){
+    loadDemoData();
+  }else if(statusSession == 'Offline'){
+    loadDemoData();
+  }
 }
 
 //-----FUNCTIONS DEMO
@@ -42,7 +45,7 @@ function loadData(data) {
 async function getInformation(dicAditional){
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
-    const statusSession = getSessionNew();
+    const statusSession = getSession();
     const dicAdional =  dicAditional;
 
     if(statusSession == 'Demo' || demo){
@@ -76,7 +79,14 @@ async function getInformation(dicAditional){
                drawChartElement('chartFirst','bar',data.chartFirst,setOptions1A);
             }
             //-----Style
-            showElements();
+            const divEmpty = document.querySelectorAll('.div-content-empty');
+            const divElements = document.querySelectorAll('.div-content-element');
+            divElements.forEach(div => {
+              div.style.visibility = 'visible';
+            });
+            divEmpty.forEach(div => {
+              div.style.display = 'none';
+            });
         }
     }
 }

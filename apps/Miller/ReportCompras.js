@@ -3,11 +3,13 @@ let isProductFamiliesOpen = false;
 
 window.onload = function () {
     createElements(dicReportContext);
-    setElementsStyleNew();
-    const statusSession = getSessionNew();
-    if (statusSession === 'Active') {
+    setElementsStyle();
+    const statusSession = getSession();
+    if (statusSession == 'Active') {
         loadData();
-    } else {
+    } else if (statusSession == 'Demo') {
+        loadDemoData();
+    } else if (statusSession == 'Offline') {
         loadDemoData();
     }
 
@@ -67,7 +69,7 @@ async function getInformation() {
     showLoadingComponent();
     const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
-    const statusSession = getSessionNew();
+    const statusSession = getSession();
     if (statusSession == 'Demo' || demo) {
         Swal.fire({
             title: 'Advertencia',
@@ -77,7 +79,7 @@ async function getInformation() {
         const dicAdional = {
             option: 'get_report',
         }
-        const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
+        const responseRequest = await sendRequestReport(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
         // if (data.almacen_monterrey) {
         //     drawTableElement('tableFirst', data?.almacen_monterrey, columsTable1);
@@ -221,7 +223,7 @@ function showLoadingProductFamilies() {
 //-----GET CATALOG
 function get_catalog() {
     const scriptId = getParameterURL('script_id');
-    const JWT = getJwtSession();
+    const JWT = getCookie("userJwt");
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
@@ -275,7 +277,7 @@ function getCatalogLine() {
 
 
     const scriptId = getParameterURL('script_id');
-    const JWT = getJwtSession();
+    const JWT = getCookie("userJwt");
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
@@ -298,7 +300,7 @@ function getCatalogLine() {
 }
 
 const sendCompra = async (type, allSelected) => {
-    const JWT = getJwtSession();
+    const JWT = getCookie("userJwt");
     // try {
     //     const respuesta = await fetch(getUrlRequest('script'), {
     //         method: 'POST',

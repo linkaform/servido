@@ -1,14 +1,17 @@
 let dataCatalogs = [];
 
 window.onload = function(){
-    createElements(dicReportContext);
-    setElementsStyleNew();
-    const statusSession = getSessionNew();
-    if (statusSession === 'Active') {
-        loadData();
-    } else {
-        loadDemoData();
-    }
+  createElements(dicReportContext);
+  setElementsStyle();
+  const statusSession = getSession();
+  console.log('statusSession',statusSession)
+  if(statusSession == 'Active'){
+    loadData();
+  }else if(statusSession == 'Demo'){
+    loadDemoData();
+  }else if(statusSession == 'Offline'){
+    loadDemoData();
+  }
 }
 
 //-----FUNCTIONS DEMO
@@ -40,7 +43,7 @@ function loadData(data) {
 async function getInformation(dicAditional){
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
-    const statusSession = getSessionNew();
+    const statusSession = getSession();
     const dicAdional =  dicAditional;
 
     if(statusSession == 'Demo' || demo){
@@ -62,9 +65,14 @@ async function getInformation(dicAditional){
               drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1, configToltipMap)   
             }
             //-----Style
-            showElements();
-                    
-
+            const divEmpty = document.querySelectorAll('.div-content-empty');
+            const divElements = document.querySelectorAll('.div-content-element');
+            divElements.forEach(div => {
+              div.style.visibility = 'visible';
+            });
+            divEmpty.forEach(div => {
+              div.style.display = 'none';
+            });
         }
     }
 }
@@ -72,7 +80,7 @@ async function getInformation(dicAditional){
 //----CATALOG
 function get_catalog(){
     const scriptId = getParameterURL('script_id');
-    const JWT = getJwtSession();
+    const JWT = getCookie("userJwt");
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
@@ -87,5 +95,6 @@ function get_catalog(){
     .then((res) => res.json())
     .then((res) => {
         const data = res.response && res.response.data ? res.response.data : [];
+        
     })
 }
