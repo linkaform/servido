@@ -71,7 +71,7 @@ async function getInformation(){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
+        const responseRequest = await sendRequestReportNew(scriptId);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
         const cardsDic = data.response_first && data.response_first.dic_cards ? data.response_first.dic_cards : {} ; 
 
