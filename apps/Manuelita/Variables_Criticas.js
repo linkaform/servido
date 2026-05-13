@@ -1,13 +1,11 @@
 window.onload = function(){
-  setElementsStyle();
-  const statusSession = getSession();
-  if(statusSession == 'Active'){
-    loadData();
-  }else if(statusSession == 'Demo'){
-    loadDemoData();
-  }else if(statusSession == 'Offline'){
-    loadDemoData();
-  } 
+  setElementsStyleNew();
+    const statusSession = getSessionNew();
+    if (statusSession === 'Active') {
+        loadData();
+    } else {
+        loadDemoData();
+    }
 }
 
 //-----LOAD DATA DEMO
@@ -56,7 +54,7 @@ async function getInformation(){
         showLoadingComponent();
         const scriptId = getParameterURL('script_id');
         const demo = getParameterURL('demo');
-        const statusSession = getSession();
+         const statusSession = getSessionNew();
         const dicAdional = {'option':'get_records'}
         if(statusSession == 'Demo' || demo){
             Swal.fire({
@@ -64,7 +62,7 @@ async function getInformation(){
               html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
             });
         }else if(scriptId != null && statusSession == 'Active' && !demo){
-            const responseRequest = await sendRequestReport(scriptId, dicAdional);
+            const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
             if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
                 const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
                 setDataInformation(data)

@@ -1,15 +1,13 @@
 let dataCatalogs = [];
 window.onload = function(){
-  createElements(dicReportContext);
-  setElementsStyle();
-  const statusSession = getSession();
-  if(statusSession == 'Active'){
-    loadData();
-  }else if(statusSession == 'Demo'){
-    loadDemoData();
-  }else if(statusSession == 'Offline'){
-    loadDemoData();
-  } 
+    createElements(dicReportContext);
+    setElementsStyleNew();
+    const statusSession = getSessionNew();
+    if (statusSession === 'Active') {
+        loadData();
+    } else {
+        loadDemoData();
+    }
 }
 
 function loadDemoData(){
@@ -40,7 +38,7 @@ async function getInformation(){
     showLoadingComponent();
     const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
-    const statusSession = getSession();
+    const statusSession = getSessionNew();
     const dicAdional = {'option':'report'}
     if(statusSession == 'Demo' || demo){
         Swal.fire({
@@ -48,7 +46,7 @@ async function getInformation(){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReport(scriptId,dicAdional);
+        const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
         if(data.response_first){
             drawTableElement('tableFirst', data.response_first, columsTable1, 'Ordenes_Checks', undefined, designPDF);
@@ -67,7 +65,7 @@ async function getInformation(){
 //------CATALOG
 function get_catalog(){
     const scriptId = getParameterURL('script_id');
-    const JWT = getCookie("userJwt");
+    const JWT = getJwtSession();
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
