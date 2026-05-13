@@ -1333,7 +1333,34 @@ function syncSessionStorage() {
     const now = new Date().getTime();
     const DAYS_7 = 7 * 24 * 60 * 60 * 1000;
 
+    // =========================================================
+    // SI EXISTEN COOKIES -> SIEMPRE SINCRONIZAR LOCALSTORAGE
+    // =========================================================
+    if (USERID_COOKIE && JWT_COOKIE) {
 
+        // Detectar cambio de sesión/cuenta
+        const userChanged = LS_USERID !== USERID_COOKIE;
+        const jwtChanged = LS_JWT !== JWT_COOKIE;
+
+        // Si cambió usuario o token -> limpiar primero
+        if (userChanged || jwtChanged) {
+
+            localStorage.removeItem("userId");
+            localStorage.removeItem("jwt");
+            localStorage.removeItem("timestamp");
+        }
+
+        // Reescribir siempre con datos actuales
+        localStorage.setItem("userId", JSON.stringify(USERID_COOKIE));
+        localStorage.setItem("jwt", JSON.stringify(JWT_COOKIE));
+        localStorage.setItem("timestamp", JSON.stringify(now));
+
+        return true;
+    }
+
+    // =========================================================
+    // VALIDAR LOCALSTORAGE SOLO SI NO HAY COOKIES
+    // =========================================================
     if (LS_JWT && LS_TIMESTAMP) {
 
         const isExpired = (now - LS_TIMESTAMP) > DAYS_7;
@@ -1344,24 +1371,24 @@ function syncSessionStorage() {
             localStorage.removeItem("userId");
             localStorage.removeItem("jwt");
             localStorage.removeItem("timestamp");
+
             document.cookie = "userId=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
             document.cookie = "userJwt=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+
             return false;
         }
 
         // -------- Sesión válida
-
         return true;
     }
-    if (USERID_COOKIE && JWT_COOKIE) {
 
-        localStorage.setItem("userId", JSON.stringify(USERID_COOKIE));
-        localStorage.setItem("jwt", JSON.stringify(JWT_COOKIE));
-        localStorage.setItem("timestamp", JSON.stringify(now));
+    // =========================================================
+    // NO HAY COOKIES NI LOCALSTORAGE VÁLIDO
+    // =========================================================
+    localStorage.removeItem("userId");
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("timestamp");
 
-
-        return true;
-    }
     return false;
 }
 
