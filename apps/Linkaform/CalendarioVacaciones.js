@@ -11,11 +11,13 @@ window.onload = function(){
     createElements(dicReportContext);
     setElementsStyleNew();
     const statusSession = getSessionNew();
+    //console.log('statusSession',statusSession)
     if (statusSession === 'Active') {
         loadData();
     } else {
         loadDemoData();
     }
+
 }
 
 //-----LOAD DATA DEMO
@@ -41,7 +43,7 @@ async function getInformation(){
     showLoadingComponent();
     const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
-    const statusSession = getSession();
+    const statusSession = getSessionNew();
     const dicAdional = {'option':'calendar'}
 
     if(statusSession == 'Demo' || demo){
@@ -51,7 +53,8 @@ async function getInformation(){
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         //----Request
-        const responseRequest = await sendRequestReport(scriptId, dicAdional);
+        const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
+        console.log('responseRequest',responseRequest)
         const dataCalendario = responseRequest.response && responseRequest.response.data.dataCalendario && responseRequest.response.data.dataCalendario.length > 0 ? responseRequest.response.data.dataCalendario : [];
         drawCalendar('calendarFirst', dataCalendario, configCustom);
         //-----Style
