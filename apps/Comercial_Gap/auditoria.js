@@ -1,17 +1,14 @@
 let dataCatalogs = [];
 
 window.onload = function(){
-  createElements(dicReportContext);
-  setElementsStyle();
-  const statusSession = getSession();
-  console.log('statusSession',statusSession)
-  if(statusSession == 'Active'){
-    loadData();
-  }else if(statusSession == 'Demo'){
-    loadDemoData();
-  }else if(statusSession == 'Offline'){
-    loadDemoData();
-  }
+    createElements(dicReportContext);
+    setElementsStyleNew();
+    const statusSession = getSessionNew();
+    if (statusSession === 'Active') {
+        loadData();
+    } else {
+        loadDemoData();
+    }
 }
 
 //-----FUNCTIONS DEMO
@@ -90,7 +87,7 @@ function loadData(data) {
 async function getInformation(){
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
-    const statusSession = getSession();
+    const statusSession = getSessionNew();
     const dicAdional = {'user_name':getCookie("userName").replace(/"/g, ''),'option':'get_data'}
     if(statusSession == 'Demo' || demo){
         Swal.fire({
@@ -98,7 +95,7 @@ async function getInformation(){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReport(scriptId, dicAdional);
+        const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
 
         if(data.data_first){
@@ -137,21 +134,14 @@ async function getInformation(){
         }
 
         //-----Style
-        const divEmpty = document.querySelectorAll('.div-content-empty');
-        const divElements = document.querySelectorAll('.div-content-element');
-        divElements.forEach(div => {
-          div.style.visibility = 'visible';
-        });
-        divEmpty.forEach(div => {
-          div.style.display = 'none';
-        });
+        showElements();
     }
 }
 
 //----CATALOG
 function get_catalog(){
     const scriptId = getParameterURL('script_id');
-    const JWT = getCookie("userJwt");
+    const JWT = getJwtSession();
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({

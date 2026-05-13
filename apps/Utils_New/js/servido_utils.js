@@ -1280,40 +1280,6 @@ function drawModalBody(itemElement){
 
 
 //-------------UPDATE A SESSIÓN---------//
-//-Funciona para obtener los valores de sesion
-function getSessionNew(location = null) {
-    const useFallback = syncSessionStorage();
-    const SCRIPTID = getParameterURL('script_id');
-    const DEMO = getParameterURL('demo');
-    const EMBEDED = getParameterURL('embeded');
-    console.log('useFallback',useFallback)
-    console.log('SCRIPTID',SCRIPTID)
-    console.log('DEMO',DEMO)
-    console.log('EMBEDED',EMBEDED)
-    console.log('location',location)
-    console.log('-------------------------')
-    // -------- DEMO (se mantiene igual)
-    if (DEMO != "" && DEMO != null) {
-        return 'Demo';
-    // -------- ACTIVO 
-    } else if (useFallback === false) {
-        return 'Offline';
-    // -------- OFFLINE / UI CONTROL
-    } else {
-        if (location != 'login' || location == null) {
-            // --- Si NO es embeded
-            if (EMBEDED == "" || EMBEDED == null) {
-                setRedirectionLogin();
-            } else {
-                if (useFallback === true) {
-                    return 'Active';
-                }
-            }
-        }
-        return 'Offline';
-    }
-}
-
 //-Funciona para Ejecutar flujo de actualización nuevo
 function syncSessionStorage() {
 
@@ -1388,6 +1354,43 @@ function getJwtSession() {
     return false;
 }
 
+
+//-Funciona para obtener los valores de sesion
+function getSessionNew(location = null) {
+    const useFallback = syncSessionStorage();
+    const SCRIPTID = getParameterURL('script_id');
+    const DEMO = getParameterURL('demo');
+    const EMBEDED = getParameterURL('embeded');
+    /*
+    console.log('useFallback',useFallback)
+    console.log('SCRIPTID',SCRIPTID)
+    console.log('DEMO',DEMO)
+    console.log('EMBEDED',EMBEDED)
+    console.log('location',location)
+    console.log('-------------------------')
+    */
+    // -------- DEMO (se mantiene igual)
+    if (DEMO != "" && DEMO != null) {
+        return 'Demo';
+    // -------- ACTIVO 
+    } else if (useFallback === false) {
+        return 'Offline';
+    // -------- OFFLINE / UI CONTROL
+    } else {
+        if (location != 'login' || location == null) {
+            // --- Si NO es embeded
+            if (EMBEDED == "" || EMBEDED == null) {
+                setRedirectionLogin();
+            } else {
+                if (useFallback === true) {
+                    return 'Active';
+                }
+            }
+        }
+        return 'Offline';
+    }
+}
+
 //-Hace la petición  a scripts, pero sin la cookie directa
 async function sendRequestReportNew(script, dicFilterAd = null){
   let dicRes = {};
@@ -1460,8 +1463,6 @@ async function sendRequestReportNew(script, dicFilterAd = null){
     }
     return dicRes;
 }
-
-
 
 //-Funciona para poner elementos como buscador por defecto
 function setElementsStyleNew(){

@@ -4,15 +4,13 @@ let isProductFamiliesOpen = false;
 
 window.onload = function(){
   createElements(dicReportContext);
-  setElementsStyle();
-  const statusSession = getSession();
-  if(statusSession == 'Active'){
-    loadData();
-  }else if(statusSession == 'Demo'){
-    loadDemoData();
-  }else if(statusSession == 'Offline'){
-    loadDemoData();
-  } 
+    setElementsStyleNew();
+    const statusSession = getSessionNew();
+    if (statusSession === 'Active') {
+        loadData();
+    } else {
+        loadDemoData();
+    }
 
     $('#product_families').on('select2:open', function () {
         isProductFamiliesOpen = true;
@@ -78,14 +76,14 @@ async function getInformation(){
     showLoadingComponent();
     const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
-    const statusSession = getSession();
+    const statusSession = getSessionNew();
     if(statusSession == 'Demo' || demo){
         Swal.fire({
           title: 'Advertencia',
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReport(scriptId);
+        const responseRequest = await sendRequestReportNew(scriptId);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
         if (data.tableFirst) {
             drawTableElement('tableFirst', data.tableFirst, columsTable1);
@@ -229,7 +227,7 @@ function showLoadingProductFamilies() {
 //-----GET CATALOG
 function get_catalog(){
     const scriptId = getParameterURL('script_id');
-    const JWT = getCookie("userJwt");
+    const JWT = getJwtSession();
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
@@ -256,7 +254,7 @@ function get_catalog(){
 }
 
 const sendTraspaso = async (type, allSelected) => {
-    const JWT = getCookie("userJwt");
+    const JWT = getJwtSession();
     try {
         const respuesta = await fetch(getUrlRequest('script'), {
             method: 'POST',

@@ -1,13 +1,11 @@
 window.onload = function(){
     Chart.register(ChartDataLabels);
     createElements(dicReportContext);
-    setElementsStyle();
-    const statusSession = getSession();
-    if(statusSession == 'Active'){
+    setElementsStyleNew();
+    const statusSession = getSessionNew();
+    if (statusSession === 'Active') {
         loadData();
-    }else if(statusSession == 'Demo'){
-        loadDemoData();
-    }else if(statusSession == 'Offline'){
+    } else {
         loadDemoData();
     }
 }
@@ -52,7 +50,7 @@ async function getInformation(){
     showLoadingComponent();
     const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
-    const statusSession = getSession();
+    const statusSession = getSessionNew();
     const dicAditional = {'option':'report'}
 
     if(statusSession == 'Demo' || demo){
@@ -61,8 +59,7 @@ async function getInformation(){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReport(scriptId, dicAditional);
-
+        const responseRequest = await sendRequestReportNew(scriptId, dicAditional);
         if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
         
             const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
@@ -119,7 +116,7 @@ async function getInformation(){
 //----CATALOG
 function get_catalog(){
     const scriptId = getParameterURL('script_id');
-    const JWT = getCookie("userJwt");
+    const JWT = getJwtSession();
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({

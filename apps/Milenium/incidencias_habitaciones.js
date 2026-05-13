@@ -2,16 +2,14 @@
 let dataCatalogs = [];
 
 window.onload = function(){
-  createElements(dicReportContext);
-  setElementsStyle();
-  const statusSession = getSession();
-  if(statusSession == 'Active'){
-    loadData();
-  }else if(statusSession == 'Demo'){
-    loadDemoData();
-  }else if(statusSession == 'Offline'){
-    loadDemoData();
-  }
+    createElements(dicReportContext);
+    setElementsStyleNew();
+    const statusSession = getSessionNew();
+    if (statusSession === 'Active') {
+        loadData();
+    } else {
+        loadDemoData();
+    }
 }
 
 function loadDemoData(){
@@ -64,7 +62,7 @@ async function getInformation(){
     showLoadingComponent();
     const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
-    const statusSession = getSession();
+    const statusSession = getSessionNew();
     const dicAdional = {
       'option':'report',
     }
@@ -77,7 +75,7 @@ async function getInformation(){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReport(scriptId, dicAdional);
+        const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
         
         //----CARDS
@@ -142,7 +140,7 @@ function capitalize(number) {
 
 function get_catalog(){
   const scriptId = getParameterURL('script_id');
-  const JWT = getCookie("userJwt");
+  const JWT = getJwtSession();
   fetch(getUrlRequest('script'), {
       method: 'POST',
       body: JSON.stringify({
@@ -159,7 +157,6 @@ function get_catalog(){
       const data = res.response && res.response.data  ? res.response.data : [];
       if(data.length > 0){
         setSelect(data, 'form_name', 'form_id', 'hotel')
-        //set_catalog_select(data, 'hotel', 'hotel');
       }
   })
 }
