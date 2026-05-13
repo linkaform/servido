@@ -8,16 +8,14 @@ let dateClick = '';
 let calendarInstance = null;
 
 window.onload = function(){
-  createElements(dicReportContext);
-  setElementsStyle();
-  const statusSession = getSession();
-  if(statusSession == 'Active'){
-    loadData();
-  }else if(statusSession == 'Demo'){
-    loadDemoData();
-  }else if(statusSession == 'Offline'){
-    loadDemoData();
-  } 
+    createElements(dicReportContext);
+    setElementsStyleNew();
+    const statusSession = getSessionNew();
+    if (statusSession === 'Active') {
+        loadData();
+    } else {
+        loadDemoData();
+    }
 }
 
 //-----LOAD DATA DEMO
@@ -61,7 +59,7 @@ async function getInformation(){
     showLoadingComponent();
     const scriptId = getParameterURL('script_id');
     const demo = getParameterURL('demo');
-    const statusSession = getSession();
+    const statusSession = getSessionNew();
     const dicAdional = {'option':'get_records'}
 
     if(statusSession == 'Demo' || demo){
@@ -71,7 +69,7 @@ async function getInformation(){
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         //----Request
-        const responseRequest = await sendRequestReport(scriptId, dicAdional);
+        const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
         const dataCalendario = responseRequest.response && responseRequest.response.dataCalendario && responseRequest.response.dataCalendario.length > 0 ? responseRequest.response.dataCalendario : [];
         drawCalendar('calendarFirst', dataCalendario, configCustom);
         //-----Style
@@ -84,7 +82,7 @@ async function getInformation(){
 async function setCreateRecord(){
     //---Parametros
     const scriptId = getParameterURL('script_id');
-    const JWT = getCookie("userJwt");
+    const JWT = getJwtSession();
     //---Validation Executions
     if (isProcessing) return; 
     isProcessing = true;
@@ -184,7 +182,6 @@ function validationsForm(data) {
 
 //-----GET DATA 
 function cleanForm() {
-    console.log('Entra a cleanForm')
     //---Clean
     const elements = document.querySelectorAll('.classFormInputs');
     elements.forEach(element => {
@@ -288,7 +285,7 @@ function setFormItem(option) {
 //-----GET CATALOG
 function get_catalog(){
     const scriptId = getParameterURL('script_id');
-    const JWT = getCookie("userJwt");
+    const JWT = getJwtSession();
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({
