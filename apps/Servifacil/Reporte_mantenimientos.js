@@ -1,17 +1,14 @@
 let dataCatalogs = [];
 
 window.onload = function(){
-  createElements(dicReportContext);
-  setElementsStyle();
-  const statusSession = getSession();
-  console.log('statusSession',statusSession)
-  if(statusSession == 'Active'){
-    loadData();
-  }else if(statusSession == 'Demo'){
-    loadDemoData();
-  }else if(statusSession == 'Offline'){
-    loadDemoData();
-  }
+    createElements(dicReportContext);
+    setElementsStyleNew();
+    const statusSession = getSessionNew();
+    if (statusSession === 'Active') {
+        loadData();
+    } else {
+        loadDemoData();
+    }
 }
 
 //-----FUNCTIONS DEMO
@@ -46,7 +43,7 @@ async function getInformation(dicAditional){
     showLoadingComponent();
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
-    const statusSession = getSession();
+    const statusSession = getSessionNew();
     const dicAdional =  dicAditional;
 
     if(statusSession == 'Demo' || demo){
@@ -55,7 +52,7 @@ async function getInformation(dicAditional){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReport(scriptId, dicAdional);
+        const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
         if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
             const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
             if(data.response_first){
@@ -91,7 +88,7 @@ async function getInformation(dicAditional){
 //----CATALOG
 function get_catalog(){
     const scriptId = getParameterURL('script_id');
-    const JWT = getCookie("userJwt");
+    const JWT = getJwtSession();
     fetch(getUrlRequest('script'), {
         method: 'POST',
         body: JSON.stringify({

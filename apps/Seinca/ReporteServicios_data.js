@@ -41,9 +41,9 @@ function styleLigth(cell) {
 
     let color = "";
 
-    if (value >= 75) {
+    if (value >= 95) {
         color = "#28a745"; // verde
-    } else if (value > 50) {
+    } else if (value >= 80 || value <= 94) {
         color = "#fd7e14"; // naranja
     } else {
         color = "#dc3545"; // rojo
@@ -54,100 +54,64 @@ function styleLigth(cell) {
 
 var columsTable1  = [
     { title: "Técnico", field: "tecnico", hozAlign: "left", width: 250 },
-    {
-        title: "Fallas Identificadas",
-        columns: [
-            { title: "Valor", field: "fallas_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 120 },
-            { title: "%", field: "fallas_pct", formatter: styleLigth, hozAlign: "center", width: 120 },
-        ],
-    },
-    {
-        title: "Trabajo Realizado",
-        columns: [
-            { title: "Valor", field: "trabajo_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 120 },
-            { title: "%", field: "trabajo_pct", formatter: styleLigth, hozAlign: "center", width: 120 },
-        ],
-    },
-    {
-        title: "Cómo Se Dejó el Equipo",
-        columns: [
-            { title: "Valor", field: "equipo_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 120 },
-            { title: "%", field: "equipo_pct", formatter: styleLigth, hozAlign: "center", width: 120 },
-        ],
-    },
-    {
-        title: "Temperatura de Suministro",
-        columns: [
-            { title: "Valor", field: "temp_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 120 },
-            { title: "%", field: "temp_pct", formatter: styleLigth, hozAlign: "center", width: 120 },
-        ],
-    },
-    {
-        title: "Fotos",
-        columns: [
-            { title: "Valor", field: "fotos_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 120 },
-            { title: "%", field: "fotos_pct", formatter: styleLigth, hozAlign: "center", width: 120 },
-        ],
-    },
-    {
-        title: "Condición del Equipo",
-        columns: [
-            { title: "Valor", field: "condicion_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 120 },
-            { title: "%", field: "condicion_pct", formatter: styleLigth, hozAlign: "center", width: 120 },
-        ],
-    },
+    { title: "Fallas Identificadas", field: "fallas_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 200 },
+    { title: "Trabajo Realizado", field: "trabajo_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 250},
+    { title: "Cómo Se Dejó el Equipo", field: "equipo_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 250},
+    { title: "Temperatura de Suministro", field: "temp_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 250},
+    { title: "Fotos", field: "fotos_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 150},
+    { title: "Condición del Equipo", field: "condicion_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 250 },
     { title: "Acumulado", field: "acumulado", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 140 }
 ];
 
 let dataTable1  = [
     {
         tecnico: "Juan Pérez",
-        fallas_val: 0.67, fallas_pct: 33,
-        trabajo_val: 0.80, trabajo_pct: 40,
-        equipo_val: 0.50, equipo_pct: 25,
-        temp_val: 0.20, temp_pct: 10,
-        fotos_val: 0.70, fotos_pct: 35,
-        condicion_val: 0.60, condicion_pct: 30,
+        fallas_val: 0.67, 
+        trabajo_val: 0.80, 
+        equipo_val: 0.50,
+        temp_val: 0.20, 
+        fotos_val: 0.70, 
+        condicion_val: 0.60,
         acumulado: 3.47
     },
     {
         tecnico: "María López",
-        fallas_val: 0.75, fallas_pct: 38,
-        trabajo_val: 0.65, trabajo_pct: 32,
-        equipo_val: 0.55, equipo_pct: 28,
-        temp_val: 0.10, temp_pct: 5,
-        fotos_val: 0.80, fotos_pct: 40,
-        condicion_val: 0.70, condicion_pct: 35,
+        fallas_val: 0.75, 
+        trabajo_val: 0.65, 
+        equipo_val: 0.55, 
+        temp_val: 0.10, 
+        fotos_val: 0.80, 
+        condicion_val: 0.70, 
         acumulado: 3.55
     },
     {
         tecnico: "Carlos Ramírez",
-        fallas_val: 0.60, fallas_pct: 30,
-        trabajo_val: 0.70, trabajo_pct: 35,
-        equipo_val: 0.40, equipo_pct: 20,
-        temp_val: 0.15, temp_pct: 8,
-        fotos_val: 0.65, fotos_pct: 33,
-        condicion_val: 0.50, condicion_pct: 25,
+        fallas_val: 0.60, 
+        trabajo_val: 0.70,
+        equipo_val: 0.40, 
+        temp_val: 0.15, 
+        fotos_val: 0.65, 
+        condicion_val: 0.50, 
         acumulado: 3.00
     },
     {
         tecnico: "Ana Torres",
-        fallas_val: 0.90, fallas_pct: 45,
-        trabajo_val: 0.85, trabajo_pct: 42,
-        equipo_val: 0.70, equipo_pct: 35,
-        temp_val: 0.30, temp_pct: 15,
-        fotos_val: 0.88, fotos_pct: 44,
-        condicion_val: 0.80, condicion_pct: 40,
+        fallas_val: 0.90, 
+        trabajo_val: 0.85, 
+        equipo_val: 0.70, 
+        temp_val: 0.30, 
+        fotos_val: 0.88, 
+        condicion_val: 0.80, 
         acumulado: 4.43
     },
     {
         tecnico: "Luis Hernández",
-        fallas_val: 0.55, fallas_pct: 28,
-        trabajo_val: 0.60, trabajo_pct: 30,
-        equipo_val: 0.45, equipo_pct: 22,
-        temp_val: 0.05, temp_pct: 2,
-        fotos_val: 0.50, fotos_pct: 25,
-        condicion_val: 0.48, condicion_pct: 24,
+        fallas_val: 0.55, 
+        trabajo_val: 0.60,
+        equipo_val: 0.45, 
+        temp_val: 0.05, 
+        fotos_val: 0.50, 
+        condicion_val: 0.48, 
         acumulado: 2.63
     }
 ];
@@ -157,7 +121,6 @@ let columsTable2 = [
     { title: "Fallas Identificadas", field: 'num_fallas', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Cantidad De Equipos Intervenidos / Técnicos", field: 'num_equipos', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:450},
     { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:210},
-    { title: "Puntuación", field: 'num_puntuacion', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:210},
 ];
 
 let dataTable2 = [
@@ -203,7 +166,6 @@ let columsTable3 = [
     { title: "Temperatura de Suministro", field: 'num_temp', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Cantidad de Equipos Intervenido / Tecnicos", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
-    { title: "Puntuación", field: 'num_puntuacion', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
 ];
 
 let dataTable3 = [
@@ -249,7 +211,6 @@ let columsTable4 = [
     { title: "Reporte Presión de Succión", field: "reporte_succion", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 220 },
     { title: "Cantidad de Equipos Intervenidos / Técnicos", field: "num_equipos", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 320 },
     { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 180 },
-    { title: "Puntuación", field: "puntuacion", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 160 }
 ];
 
 let dataTable4  = [
@@ -295,7 +256,6 @@ let columsTable5 = [
     { title: "Reporte Presión de Líquido", field: "reporte_liquido", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 230 },
     { title: "Cantidad de Equipos Intervenidos / Técnicos", field: "num_equipos", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 320 },
     { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 180 },
-    { title: "Puntuación", field: "puntuacion", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 160 }
 ];
 
 var dataTable5 = [
@@ -341,8 +301,7 @@ let columsTable6 = [
     { title: "Técnico", field: "tecnico", hozAlign: "left", width: 260 },
     { title: "Reporte Consumo Compresor", field: "reporte_compresor", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 240 },
     { title: "Cantidad de Equipos Intervenidos / Técnicos", field: "num_equipos", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 320 },
-    { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 180 },
-    { title: "Puntuación", field: "puntuacion", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 160 }
+    { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 220 },
 ];
 
 let dataTable6  = [
@@ -390,7 +349,6 @@ let columsTable7 = [
     { title: "Condición del Equipo", field: "condicion_equipo", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 220 },
     { title: "Cantidad de Equipos Intervenidos / Técnicos", field: "num_equipos", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 320 },
     { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 180 },
-    { title: "Puntuación", field: "puntuacion", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 160 }
 ];
 
 

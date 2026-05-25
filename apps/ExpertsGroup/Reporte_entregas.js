@@ -1,17 +1,14 @@
 let dataCatalogs = [];
 
 window.onload = function(){
-  createElements(dicReportContext);
-  setElementsStyle();
-  const statusSession = getSession();
-  console.log('statusSession',statusSession)
-  if(statusSession == 'Active'){
-    loadData();
-  }else if(statusSession == 'Demo'){
-    loadDemoData();
-  }else if(statusSession == 'Offline'){
-    loadDemoData();
-  }
+    createElements(dicReportContext);
+    setElementsStyleNew();
+    const statusSession = getSessionNew();
+    if (statusSession === 'Active') {
+        loadData();
+    } else {
+        loadDemoData();
+    }
 }
 
 //-----FUNCTIONS DEMO
@@ -54,7 +51,7 @@ function loadData(data) {
 async function getInformation(dicAditional){
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
-    const statusSession = getSession();
+    const statusSession = getSessionNew();
     const dicAdional =  dicAditional;
 
     if(statusSession == 'Demo' || demo){
@@ -63,7 +60,7 @@ async function getInformation(dicAditional){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReport(scriptId, dicAdional);
+        const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
         if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
           const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
           //----Cards
@@ -154,14 +151,7 @@ async function getInformation(dicAditional){
           }
           
           //-----Style
-          const divEmpty = document.querySelectorAll('.div-content-empty');
-          const divElements = document.querySelectorAll('.div-content-element');
-          divElements.forEach(div => {
-            div.style.visibility = 'visible';
-          });
-          divEmpty.forEach(div => {
-            div.style.display = 'none';
-          });
+          showElements();
         }
     }
 }
@@ -169,7 +159,7 @@ async function getInformation(dicAditional){
 //----DATA TABLE DETAIL
 function getDataTableDetail(state){
     const scriptId = getParameterURL('script_id');
-    const JWT = getCookie("userJwt");
+    const JWT = getJwtSession();
     const MONTH = document.getElementById('month').value;
     fetch(getUrlRequest('script'), {
         method: 'POST',
@@ -187,7 +177,6 @@ function getDataTableDetail(state){
     .then((res) => res.json())
     .then((res) => {
       const data = res.response && res.response.data ? res.response.data : [];
-      console.log('Data',data)
       if(data.length > 0){
         drawTableElement('tableAModal', data, columsTableModal1);
 

@@ -1,17 +1,14 @@
 let dataCatalogs = [];
 
 window.onload = function(){
-  createElements(dicReportContext);
-  setElementsStyle();
-  const statusSession = getSession();
-  console.log('statusSession',statusSession)
-  if(statusSession == 'Active'){
-    loadData();
-  }else if(statusSession == 'Demo'){
-    loadDemoData();
-  }else if(statusSession == 'Offline'){
-    loadDemoData();
-  }
+    createElements(dicReportContext);
+    setElementsStyleNew();
+    const statusSession = getSessionNew();
+    if (statusSession === 'Active') {
+        loadData();
+    } else {
+        loadDemoData();
+    }
 }
 
 //-----FUNCTIONS DEMO
@@ -33,7 +30,6 @@ function loadDemoData(){
 function loadData(data) {
     //---Data
     setEventsLoad();
-
     //---Hide
     setTimeout(() => { hide_loading();}, 2000);
 }
@@ -42,7 +38,7 @@ function loadData(data) {
 async function getInformation(dicAditional){
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
-    const statusSession = getSession();
+    const statusSession = getSessionNew();
     const dicAdional =  dicAditional;
 
     if(statusSession == 'Demo' || demo){
@@ -51,48 +47,35 @@ async function getInformation(dicAditional){
           html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
         });
     }else if(scriptId != null && statusSession == 'Active' && !demo){
-        const responseRequest = await sendRequestReport(scriptId, dicAdional);
+        const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
 
         if(data.chartFirst){
             let itemDic = dicOptionsChart.find(item => item.key === dicAdional.chartFirst);
-            console.log('itemDic',itemDic)
             drawChartElement('chartFirst','line',data.chartFirst, itemDic.configs);
         }
         if(data.chartSecond){
             let itemDic = dicOptionsChart.find(item => item.key === dicAdional.chartSecond);
-            console.log('itemDic',itemDic)
             drawChartElement('chartSecond','line', data.chartSecond, itemDic.configs);
         }
         if(data.chartThird){
             let itemDic = dicOptionsChartTotals.find(item => item.key === dicAdional.chartThird);
-            console.log('itemDic',itemDic)
             drawChartElement('chartThird',itemDic.type, data.chartThird, itemDic.configs);
         }
         if(data.chartFourth){
             let itemDic = dicOptionsChartTotals.find(item => item.key === dicAdional.chartFourth);
-            console.log('chartFourth',itemDic.type, data.chartFourth, itemDic.configs)
             drawChartElement('chartFourth',itemDic.type, data.chartFourth, itemDic.configs);
         }
         if(data.chartFiveth){
             let itemDic = dicOptionsChartTotals.find(item => item.key === dicAdional.chartFiveth);
-            console.log('chartFiveth',itemDic.type, data.chartFiveth, itemDic.configs)
             drawChartElement('chartFiveth',itemDic.type, data.chartFiveth, itemDic.configs);
         }
         if(data.chartSixth){
             let itemDic = dicOptionsChart.find(item => item.key === dicAdional.chartSixth);
-            console.log('chartSixth','line',data.chartSixth, itemDic.configs)
             drawChartElement('chartSixth','line',data.chartSixth, itemDic.configs);
         }
         //-----Style
-        const divEmpty = document.querySelectorAll('.div-content-empty');
-        const divElements = document.querySelectorAll('.div-content-element');
-        divElements.forEach(div => {
-          div.style.visibility = 'visible';
-        });
-        divEmpty.forEach(div => {
-          div.style.display = 'none';
-        });
+        showElements();
     }
 }
 
