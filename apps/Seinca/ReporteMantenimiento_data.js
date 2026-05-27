@@ -297,17 +297,17 @@ let dataTable5  = [
 
 let columsTable6 = [
     { title: "Técnico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
-    { title: "Reporte Presión de Liquido", field: 'num_presion', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
+    { title: "Estado Operativo", field: 'num_operativo', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Equipos intervenidos", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
 ];
 
 let dataTable6 = [
-    {"tecnico": "Juan Pérez", "num_presion": 120, "num_mantenimiento": 150, "num_cumplimiento": 80.0, "num_puntuacion": 1.5},
-    {"tecnico": "María López", "num_presion": 200, "num_mantenimiento": 220, "num_cumplimiento": 90.91, "num_puntuacion": 1.8},
-    {"tecnico": "Carlos Ramírez", "num_presion": 75, "num_mantenimiento": 100, "num_cumplimiento": 75.0, "num_puntuacion": 1.2},
-    {"tecnico": "Ana Torres", "num_presion": 180, "num_mantenimiento": 200, "num_cumplimiento": 90.0, "num_puntuacion": 1.7},
-    {"tecnico": "Luis Hernández", "num_presion": 90, "num_mantenimiento": 120, "num_cumplimiento": 75.0, "num_puntuacion": 1.1},
+    {"tecnico": "Juan Pérez", "num_operativo": 120, "num_mantenimiento": 150, "num_cumplimiento": 80.0, "num_puntuacion": 1.5},
+    {"tecnico": "María López", "num_operativo": 200, "num_mantenimiento": 220, "num_cumplimiento": 90.91, "num_puntuacion": 1.8},
+    {"tecnico": "Carlos Ramírez", "num_operativo": 75, "num_mantenimiento": 100, "num_cumplimiento": 75.0, "num_puntuacion": 1.2},
+    {"tecnico": "Ana Torres", "num_operativo": 180, "num_mantenimiento": 200, "num_cumplimiento": 90.0, "num_puntuacion": 1.7},
+    {"tecnico": "Luis Hernández", "num_operativo": 90, "num_mantenimiento": 120, "num_cumplimiento": 75.0, "num_puntuacion": 1.1},
 ];
 
 
@@ -328,7 +328,7 @@ let dataTable7 = [
 
 let columsTable8 = [
     { title: "Técnico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
-    { title: "Voltaje AB", field: 'num_voltaje', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
+    { title: "Voltaje ", field: 'num_voltaje', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Equipos intervenidos", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
 ];

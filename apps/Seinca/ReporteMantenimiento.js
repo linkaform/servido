@@ -1,4 +1,3 @@
-
 window.onload = function(){
     createElements(dicReportContext);
     setElementsStyleNew();
@@ -66,8 +65,61 @@ async function getInformation(){
     }else if(scriptId != null && statusSession == 'Active' && !demo){
         const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
         const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
-        if(data.response_first){
-            drawTableElement('tableFirst', data.response_first, columsTable1, undefined, configTableCustom1);
+
+        if(data.tableFirst){
+            drawTableElement('tableFirst', data.tableFirst, columsTable1);
+        }
+        if(data.chartFirst){
+            drawChartElement('chartFirst','bar',data.chartFirst,setOptions1);
+        }
+
+        if(data.tableSecond){
+            drawTableElement('tableSecond', data.tableSecond, columsTable2);
+        }
+        if(data.chartSecond){
+            drawChartElement('chartSecond','bar',data.chartSecond,setOptions2);
+        }
+
+        if(data.tableThird){
+            drawTableElement('tableThird', data.tableThird, columsTable3);
+        }
+        if(data.chartThird){
+            drawChartElement('chartThird','bar',data.chartThird,setOptions3);
+        }
+
+        if(data.tableFourth){
+            drawTableElement('tableFourth', data.tableFourth, columsTable4);
+        }
+        if(data.chartFourth){
+            drawChartElement('chartFourth','bar',data.chartFourth,setOptions4);
+        }
+
+        if(data.tableFiveth){
+            drawTableElement('tableFiveth', dataTable5, columsTable5);
+        }
+        if(data.chartFiveth){
+            drawChartElement('chartFiveth','bar',dataChart5,setOptions5);
+        }
+
+        if(data.tableSixth){
+            drawTableElement('tableSixth', data.tableSixth, columsTable6);
+        }
+        if(data.chartSixth){
+            drawChartElement('chartSixth','bar',data.chartSixth,setOptions6);
+        }
+
+        if(data.tableSeventh){
+            drawTableElement('tableSeventh', data.tableSeventh, columsTable7);
+        }
+        if(data.chartSeventh){
+            drawChartElement('chartSeventh','bar',data.chartSeventh,setOptions7);
+        }
+
+        if(data.tableEigth){
+            drawTableElement('tableEigth', data.tableEigth, columsTable8);
+        }
+        if(data.chartEigth){
+            drawChartElement('chartEigth','bar',data.chartEigth, setOptions8);
         }
 
         //-----Style
