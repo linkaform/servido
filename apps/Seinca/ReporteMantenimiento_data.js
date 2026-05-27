@@ -59,12 +59,13 @@ function styleLigth(cell) {
 let columsTable1 = [
     { title: "Técnico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
     { title: "Equipos intervenidos", field: 'num_equipos_intervenidos', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
-    { title: "Reporte de Actividades", field: 'num_actividades', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
-    { title: "Temp - Suministro", field: 'num_suministro', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:210},
-    { title: "Foto", field: 'num_foto', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width: 160},
-    { title: "Estado Operativo", field: 'num_operativo', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:210},
-    { title: "Condición del Equípo", field: 'num_equipo', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:210},
-    { title: "Voltaje Ab", field: 'num_voltaje', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width: 180},
+    
+    { title: "Reporte de Actividades", field: 'num_actividades', headerTooltip: true, formatter: "money", formatterParams:styleLigth , hozAlign: "center", width:250},
+    { title: "Temp - Suministro", field: 'num_suministro', headerTooltip: true, formatter: "money", formatterParams:styleLigth , hozAlign: "center", width:210},
+    { title: "Foto", field: 'num_foto', headerTooltip: true, formatter: "money", formatterParams:styleLigth , hozAlign: "center", width: 160},
+    { title: "Estado Operativo", field: 'num_operativo', headerTooltip: true, formatter: "money", formatterParams:styleLigth , hozAlign: "center", width:210},
+    { title: "Condición del Equípo", field: 'num_equipo', headerTooltip: true, formatter: "money", formatterParams:styleLigth , hozAlign: "center", width:210},
+    { title: "Voltaje Ab", field: 'num_voltaje', headerTooltip: true, formatter: "money", formatterParams:styleLigth , hozAlign: "center", width: 180},
     { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
 ];
 
