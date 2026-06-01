@@ -95,10 +95,10 @@ async function getInformation(){
         }
 
         if(data.tableFiveth){
-            drawTableElement('tableFiveth', dataTable5, columsTable5);
+            drawTableElement('tableFiveth', data.tableFiveth, columsTable5);
         }
         if(data.chartFiveth){
-            drawChartElement('chartFiveth','bar',dataChart5,setOptions5);
+            drawChartElement('chartFiveth','bar',data.chartFiveth,setOptions5);
         }
 
         if(data.tableSixth){
