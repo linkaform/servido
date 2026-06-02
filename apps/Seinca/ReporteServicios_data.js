@@ -124,7 +124,7 @@ let columsTable2 = [
     { title: "Ténico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
     { title: "Fallas Identificadas", field: 'num_fallas', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Equipos Intervenidos", field: 'num_equipos', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:450},
-    { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:210},
+    { title: "Cumplimiento", field: 'cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:210},
 ];
 
 let dataTable2 = [
@@ -132,35 +132,35 @@ let dataTable2 = [
         tecnico: "Juan Pérez",
         num_fallas: 120,
         num_equipos: 240,
-        num_cumplimiento: 50.0,
+        cumplimiento: 50.0,
         num_puntuacion: 1.45
     },
     {
         tecnico: "María López",
         num_fallas: 95,
         num_equipos: 190,
-        num_cumplimiento: 50.0,
+        cumplimiento: 50.0,
         num_puntuacion: 1.30
     },
     {
         tecnico: "Carlos Ramírez",
         num_fallas: 80,
         num_equipos: 200,
-        num_cumplimiento: 40.0,
+        cumplimiento: 40.0,
         num_puntuacion: 1.10
     },
     {
         tecnico: "Ana Torres",
         num_fallas: 150,
         num_equipos: 250,
-        num_cumplimiento: 60.0,
+        cumplimiento: 60.0,
         num_puntuacion: 1.80
     },
     {
         tecnico: "Luis Hernández",
         num_fallas: 70,
         num_equipos: 175,
-        num_cumplimiento: 40.0,
+        cumplimiento: 40.0,
         num_puntuacion: 0.95
     }
 ];
@@ -169,7 +169,7 @@ let columsTable3 = [
     { title: "Ténico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
     { title: "Temperatura de Suministro", field: 'num_temp', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Cantidad de Equipos Intervenido / Tecnicos", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
-    { title: "Cumplimiento", field: 'num_cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
+    { title: "Cumplimiento", field: 'cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
 ];
 
 let dataTable3 = [
@@ -177,35 +177,35 @@ let dataTable3 = [
         tecnico: "Juan Pérez",
         num_temp: 200,
         num_mantenimiento: 180,
-        num_cumplimiento: 90,   
+        cumplimiento: 90,   
         num_puntuacion: 0.90
     },
     {
         tecnico: "María López",
         num_temp: 150,
         num_mantenimiento: 120,
-        num_cumplimiento: 80,
+        cumplimiento: 80,
         num_puntuacion: 0.80
     },
     {
         tecnico: "Carlos Ramírez",
         num_temp: 100,
         num_mantenimiento: 95,
-        num_cumplimiento: 95,
+        cumplimiento: 95,
         num_puntuacion: 0.95
     },
     {
         tecnico: "Ana Torres",
         num_temp: 220,
         num_mantenimiento: 210,
-        num_cumplimiento: 95.45,
+        cumplimiento: 95.45,
         num_puntuacion: 0.95
     },
     {
         tecnico: "Luis Hernández",
         num_temp: 180,
         num_mantenimiento: 140,
-        num_cumplimiento: 77.78,
+        cumplimiento: 77.78,
         num_puntuacion: 0.78
     }
 ];
