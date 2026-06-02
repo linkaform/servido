@@ -64,7 +64,7 @@ var columsTable1  = [
     { title: "Fotos Falla", field: "fotos_falla", formatter: styleLigth, hozAlign: "center", width: 150},
     { title: "Fotos Solución", field: "fotos_sol", formatter: styleLigth, hozAlign: "center", width: 150},
     { title: "Condición del Equipo", field: "condicion_val", formatter: styleLigth, hozAlign: "center", width: 250 },
-    { title: "Acumulado", field: "acumulado", formatter: styleLigth, hozAlign: "center", width: 140 }
+    { title: "Acumulado", field: "acumulado", formatter: styleLigth, hozAlign: "center", width: 140, minWidth: 140 }
 ];
 
 let dataTable1  = [
@@ -124,7 +124,7 @@ let columsTable2 = [
     { title: "Ténico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
     { title: "Fallas Identificadas", field: 'num_fallas', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Equipos Intervenidos", field: 'num_equipos', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:450},
-    { title: "Cumplimiento", field: 'cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:210},
+    { title: "Cumplimiento", field: 'cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:210, minWidth: 210},
 ];
 
 let dataTable2 = [
@@ -169,7 +169,7 @@ let columsTable3 = [
     { title: "Ténico", field: 'tecnico', headerTooltip: true, hozAlign: "left", width: 300},
     { title: "Temperatura de Suministro", field: 'num_temp', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
     { title: "Cantidad de Equipos Intervenido / Tecnicos", field: 'num_mantenimiento', headerTooltip: true, formatter: "money", formatterParams:CONFIG_DECIMAL , hozAlign: "center", width:250},
-    { title: "Cumplimiento", field: 'cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250},
+    { title: "Cumplimiento", field: 'cumplimiento', headerTooltip: true, formatter: styleLigth, hozAlign: "center", width:250, minWidth: 250},
 ];
 
 let dataTable3 = [
@@ -214,7 +214,7 @@ let columsTable4 = [
     { title: "Técnico", field: "tecnico", hozAlign: "left", width: 260 },
     { title: "Reporte Presión de Succión", field: "reporte_succion", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 220 },
     { title: "Equipos Intervenidos", field: "num_equipos", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 320 },
-    { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 180 },
+    { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 180 ,minWidth: 180},
 ];
 
 let dataTable4  = [
@@ -259,7 +259,7 @@ let columsTable5 = [
     { title: "Técnico", field: "tecnico", hozAlign: "left", width: 260 },
     { title: "Reporte Presión de Líquido", field: "reporte_liquido", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 230 },
     { title: "Equipos Intervenidos", field: "num_equipos", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 320 },
-    { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 180 },
+    { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 180, minWidth: 180 },
 ];
 
 var dataTable5 = [
@@ -305,7 +305,7 @@ let columsTable6 = [
     { title: "Técnico", field: "tecnico", hozAlign: "left", width: 260 },
     { title: "Foto Fallas", field: "num_foto", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 240 },
     { title: "Equipos Intervenidos", field: "num_equipos", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 320 },
-    { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 220 },
+    { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 220 , minWidth: 220},
 ];
 
 let dataTable6  = [
@@ -350,7 +350,7 @@ let columsTable7 = [
     { title: "Técnico", field: "tecnico", hozAlign: "left", width: 260 },
     { title: "Foto Solución", field: "num_foto", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 240 },
     { title: "Equipos Intervenidos", field: "num_equipos", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 320 },
-    { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 220 },
+    { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 220 , minWidth: 220},
 ];
 
 let dataTable7  = [
@@ -395,7 +395,7 @@ let columsTable8 = [
     { title: "Técnico", field: "tecnico", hozAlign: "left", width: 260 },
     { title: "Condición del Equipo", field: "condicion_equipo", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 220 },
     { title: "Equipos Intervenidos", field: "num_equipos", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 320 },
-    { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 180 },
+    { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 180 , minWidth: 180},
 ];
 
 let dataTable8  = [
