@@ -57,14 +57,14 @@ function styleLigth(cell) {
 
 var columsTable1  = [
     { title: "Técnico", field: "tecnico", hozAlign: "left", width: 250 },
-    { title: "Fallas Identificadas", field: "fallas_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 200 },
-    { title: "Trabajo Realizado", field: "trabajo_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 250},
-    { title: "Cómo Se Dejó el Equipo", field: "equipo_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 250},
-    { title: "Temperatura de Suministro", field: "temp_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 250},
-    { title: "Fotos Falla", field: "fotos_falla", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 150},
-    { title: "Fotos Solución", field: "fotos_sol", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 150},
-    { title: "Condición del Equipo", field: "condicion_val", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 250 },
-    { title: "Acumulado", field: "acumulado", formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 140 }
+    { title: "Fallas Identificadas", field: "fallas_val", formatter: styleLigth, hozAlign: "center", width: 200 },
+    { title: "Trabajo Realizado", field: "trabajo_val", formatter: styleLigth, hozAlign: "center", width: 250},
+    { title: "Cómo Se Dejó el Equipo", field: "equipo_val", formatter: styleLigth, hozAlign: "center", width: 250},
+    { title: "Temperatura de Suministro", field: "temp_val", formatter: styleLigth, hozAlign: "center", width: 250},
+    { title: "Fotos Falla", field: "fotos_falla", formatter: styleLigth, hozAlign: "center", width: 150},
+    { title: "Fotos Solución", field: "fotos_sol", formatter: styleLigth, hozAlign: "center", width: 150},
+    { title: "Condición del Equipo", field: "condicion_val", formatter: styleLigth, hozAlign: "center", width: 250 },
+    { title: "Acumulado", field: "acumulado", formatter: styleLigth, hozAlign: "center", width: 140 }
 ];
 
 let dataTable1  = [
