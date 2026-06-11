@@ -1,0 +1,548 @@
+/* =========================
+   HEADER
+========================= */
+
+.header-style{
+    width:100%;
+    border-bottom:1px solid rgba(0,0,0,.10);
+    background:#FFF;
+}
+
+.container-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+    max-width:1525px;
+    margin:0 auto;
+    padding:24px 32px;
+    box-sizing:border-box;
+}
+
+.container-text{
+    display:flex;
+    align-items:center;
+    gap:24px;
+}
+
+.container-text-header{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.container-filter{
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+
+
+.container-colum-double{
+    height: 795px;
+}
+/* =========================
+   BUTTON TOOGLE
+========================= */
+
+
+
+.chart-toggle-group {
+    display: flex;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f5f5f5;
+    padding: 3px;          /* ← agrega padding interno */
+    gap: 2px;              /* ← pequeño gap entre botones */
+}
+
+.chart-toggle-btn {
+    padding: 4px 14px;
+    font-size: 12px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #888;
+    background: transparent;
+    border: none;
+    border-radius: 6px;    /* ← radio en todos, no solo el activo */
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+.chart-toggle-btn:hover {
+    background: #ebebeb;
+    color: #444;
+}
+
+.chart-toggle-btn.active {
+    background: #ffffff;
+    color: #222;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+/* =========================
+  BODY GENERAL
+========================= */
+.background-blue{
+    border-left: 4px solid #155DFC;
+    background: linear-gradient(90deg, #C8D6E8 0%, #FFFFFF 100%);
+}
+
+.background-brown{
+    color: #786a5e;
+    border-left: 4px solid #a88f77;
+    background: linear-gradient(90deg, #b8a99b 0%, #FFFFFF 100%);
+}
+
+.background-grey{
+    color: #6a6c6b;
+    border-left: 4px solid #BEC0BF;
+    background: linear-gradient(90deg, #BEC0BF 0%, #FFFFFF 100%);
+}
+
+.background-orange{
+    color: #9b5608;
+    border-left: 4px solid #FC8908;
+    background: linear-gradient(90deg, #FC8908 0%, #FFFFFF 100%);
+}
+
+.background-green{
+    color: #608248e8;
+    border-left: 4px solid #6CC22F;
+    background: linear-gradient(90deg, #86b962e8 0%, #FFFFFF 100%);
+}
+
+
+.container-body{
+    display: flex;
+    width:100%;
+    height: 100vh;
+    padding: 32px;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 0;
+    background:#FFF;
+}
+
+.container-title-section{
+    display: flex;
+    height: 64px;
+    padding: 16px 0 16px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 0;
+    align-self: stretch;
+    border-radius: 0 10px 10px 0;
+    flex-direction: row; 
+    align-items: center; 
+}
+
+.container-chart-section{
+    display: flex;
+    padding-top: 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+.container-group-section{
+    display: flex;
+    padding-top: 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+/* =========================
+   CHARTS
+========================= */
+
+/* Tarjeta contenedora */
+.chart-card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 24px 28px 20px 28px;
+    width: 100%;
+}
+
+/* Título de la gráfica */
+.chart-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 18px;
+    letter-spacing: 0.01em;
+}
+
+/* Contenedor del canvas */
+.chart-wrapper {
+    position: relative;
+    width: 100%;
+    height: 400px;
+}
+
+.chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+/* Quitar el margin-bottom del title cuando está dentro del header */
+.chart-header .chart-title {
+    margin-bottom: 0;
+}
+
+.chart-wrapper-large {
+    height: 300px;   /* ajusta al gusto */
+}
+
+.chart-wrapper-medium {
+    height: 220px;
+}
+
+
+canvas {
+    width: 100% !important;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+/* Tarjeta contenedora */
+.table-card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow:
+    0 1px 3px rgba(0,0,0,.06),
+    0 4px 12px rgba(0,0,0,.04);
+    padding: 24px 28px 20px 28px;
+    width: 100%;
+}
+
+/* Título de la gráfica */
+.table-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 18px;
+    letter-spacing: 0.01em;
+}
+
+/* Contenedor del canvas */
+.table-wrapper {
+    position: relative;
+    width: 100%;
+    height: 400px;
+}
+
+/* Eliminar striped */
+
+.tabulator-row,
+.tabulator-row:nth-child(even),
+.tabulator-row:nth-child(odd){
+    background:#FFF !important;
+}
+
+/* Última columna */
+
+.col-total{
+    background:#EEF4FC !important;
+    font-weight:700;
+}
+
+/* Última fila */
+
+.row-total .tabulator-cell{
+    background:#F4F6F9 !important;
+    font-weight:700;
+    border-top:2px solid #D5DDE8;
+}
+
+/* Intersección última fila + última columna */
+
+.row-total .tabulator-cell.col-total{
+    background:#DCE8F8 !important;
+    font-weight:700;
+}
+
+/* =========================
+   LOGO Y TEXTOS
+========================= */
+
+.logo-img{
+    height:64px;
+    width:auto;
+    flex-shrink:0;
+}
+
+.text-color-brown{
+    color:#564230 !important;
+}
+
+.text-color-blue{
+    color:#0A0A0A !important;
+}
+
+.text-color-grey{
+    color:#666 !important;
+}
+
+
+.text-color-orange{
+    color:#965207 !important;
+}
+
+.text-color-green{
+    color:#41741c !important;
+}
+
+.section-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+
+.text-title{
+    margin:0;
+    font-family:Arimo,sans-serif;
+    font-size:30px;
+    font-weight:700;
+    line-height:36px;
+}
+
+
+
+
+.text-day{
+    margin:0;
+    color:#717182;
+    font-family:Arimo,sans-serif;
+    font-size:14px;
+    font-weight:400;
+    line-height:20px;
+}
+
+.text-title-section{
+    color: #1C398E;
+    font-family: Arimo;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px; /* 133.333% */
+}
+
+.section-progress-brown {
+    font-size: 15px;
+    font-weight: 400;
+    color: #888;
+    padding: 5px 5px 5px 5px;
+    margin-bottom: 5px;
+    background: #e7d5c4;
+    border-radius: 22px;
+}
+
+
+.section-progress-grey {
+    font-size: 15px;
+    font-weight: 400;
+    color: #2f2e2e;
+    padding: 5px 5px 5px 5px;
+    margin-bottom: 5px;
+    border-radius: 22px;
+    background: #a1a1a1;
+}
+
+.section-progress-orange {
+    font-size: 15px;
+    font-weight: 400;
+    color: #2f2e2e;
+    padding: 5px 5px 5px 5px;
+    margin-bottom: 5px;
+    border-radius: 22px;
+    background: #cf8738;
+}
+
+
+.section-progress-green {
+    font-size: 15px;
+    font-weight: 400;
+    color: #2f2e2e;
+    padding: 5px 5px 5px 5px;
+    margin-bottom: 5px;
+    border-radius: 22px;
+    background: #78b44d;
+}
+
+/* =========================
+   DROPDOWNS
+========================= */
+
+.dropdown{
+    position:relative;
+    min-width:180px;
+}
+
+.dropdown-btn{
+    width:100%;
+    height:42px;
+    border:1px solid #d9d9d9;
+    border-radius:12px;
+    background:#FFF;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:0 14px;
+    cursor:pointer;
+    font-size:15px;
+    box-sizing:border-box;
+}
+
+.dropdown-btn:hover{
+    border-color:#cfcfcf;
+}
+
+.dropdown-menu{
+    position:absolute;
+    top:48px;
+    left:0;
+    width:100%;
+    background:#FFF;
+    border:1px solid #DDD;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    overflow:hidden;
+    display:none;
+    z-index:1000;
+}
+
+.dropdown.active .dropdown-menu{
+    display:block;
+}
+
+.item{
+    padding:12px 16px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.item:hover{
+    background:#F5F5F5;
+}
+
+.item.selected{
+    background:#ECECEC;
+}
+
+.arrow{
+    color:#777;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width:1024px){
+
+    .container-header{
+        padding:20px;
+    }
+
+    .text-title{
+        font-size:24px;
+        line-height:30px;
+    }
+
+    .logo-img{
+        height:56px;
+    }
+
+    .container-text{
+        gap:16px;
+    }
+
+   
+}
+
+/* =========================
+   TABLET VERTICAL
+========================= */
+
+@media (max-width:768px){
+
+    .container-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:20px;
+    }
+
+    .container-filter{
+        width:100%;
+        display:flex;
+        flex-wrap:wrap;
+    }
+
+    .dropdown{
+        flex:1;
+        min-width:220px;
+    }
+
+    .text-title{
+        font-size:22px;
+        line-height:28px;
+    }
+
+   
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width:480px){
+
+    .container-header{
+        padding:16px;
+    }
+
+    .container-text{
+        width:100%;
+        gap:12px;
+    }
+
+    .logo-img{
+        height:48px;
+    }
+
+    .text-title{
+        font-size:20px;
+        line-height:26px;
+    }
+
+    .text-day{
+        font-size:12px;
+        line-height:16px;
+    }
+
+    .container-filter{
+        flex-direction:column;
+        width:100%;
+    }
+
+    .dropdown{
+        width:100%;
+        min-width:100%;
+    }
+
+    .dropdown-btn{
+        width:100%;
+    }
+
+    
+}
