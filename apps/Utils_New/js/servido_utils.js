@@ -1286,12 +1286,7 @@ function getSessionNew(location = null) {
     const SCRIPTID = getParameterURL('script_id');
     const DEMO = getParameterURL('demo');
     const EMBEDED = getParameterURL('embeded');
-    console.log('useFallback',useFallback)
-    console.log('SCRIPTID',SCRIPTID)
-    console.log('DEMO',DEMO)
-    console.log('EMBEDED',EMBEDED)
-    console.log('location',location)
-    console.log('-------------------------')
+
     // -------- DEMO (se mantiene igual)
     if (DEMO != "" && DEMO != null) {
         return 'Demo';
