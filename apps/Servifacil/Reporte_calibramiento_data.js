@@ -15,10 +15,9 @@ let dicReportContext = [
     ]},
 ];
 
-
 var dataTable1 = [
     {
-        pregunta: "Operaciones", auditorias: 15, positivas: 13, negativas: 2,
+        pregunta: "Operaciones", positivas: 13, negativas: 2,
         _children: [
             { pregunta: "¿El personal porta uniforme completo?",        auditorias: 5, positivas: 4, negativas: 1 },
             { pregunta: "¿Se respetan los protocolos de despacho?",     auditorias: 5, positivas: 5, negativas: 0 },
@@ -26,7 +25,7 @@ var dataTable1 = [
         ]
     },
     {
-        pregunta: "Mantenimiento", auditorias: 15, positivas: 11, negativas: 4,
+        pregunta: "Mantenimiento", positivas: 11, negativas: 4,
         _children: [
             { pregunta: "¿Las bombas operan sin fallas reportadas?", auditorias: 5, positivas: 2, negativas: 3 },
             { pregunta: "¿La iluminación funciona al 100%?",          auditorias: 5, positivas: 4, negativas: 1 },
@@ -34,7 +33,7 @@ var dataTable1 = [
         ]
     },
     {
-        pregunta: "Sistemas", auditorias: 15, positivas: 11, negativas: 4,
+        pregunta: "Sistemas", positivas: 11, negativas: 4,
         _children: [
             { pregunta: "¿El punto de venta opera sin intermitencias?",    auditorias: 5, positivas: 4, negativas: 1 },
             { pregunta: "¿Las cámaras de seguridad graban correctamente?", auditorias: 5, positivas: 3, negativas: 2 },
@@ -42,7 +41,7 @@ var dataTable1 = [
         ]
     },
     {
-        pregunta: "Desarrollo Humano", auditorias: 15, positivas: 9, negativas: 6,
+        pregunta: "Desarrollo Humano", positivas: 9, negativas: 6,
         _children: [
             { pregunta: "¿El personal recibió la capacitación del periodo?", auditorias: 5, positivas: 1, negativas: 4 },
             { pregunta: "¿Los expedientes del personal están completos?",     auditorias: 5, positivas: 4, negativas: 1 },
@@ -50,7 +49,7 @@ var dataTable1 = [
         ]
     },
     {
-        pregunta: "Finanzas", auditorias: 15, positivas: 14, negativas: 1,
+        pregunta: "Finanzas", positivas: 14, negativas: 1,
         _children: [
             { pregunta: "¿Los cortes de caja cuadran sin diferencias?", auditorias: 5, positivas: 5, negativas: 0 },
             { pregunta: "¿Los depósitos se realizan en tiempo?",        auditorias: 5, positivas: 5, negativas: 0 },
@@ -58,7 +57,7 @@ var dataTable1 = [
         ]
     },
     {
-        pregunta: "Servicio a Clientes", auditorias: 15, positivas: 13, negativas: 2,
+        pregunta: "Servicio a Clientes", positivas: 13, negativas: 2,
         _children: [
             { pregunta: "¿Se atienden las quejas en menos de 48 horas?", auditorias: 5, positivas: 5, negativas: 0 },
             { pregunta: "¿El personal saluda y despide al cliente?",     auditorias: 5, positivas: 4, negativas: 1 },
@@ -66,7 +65,7 @@ var dataTable1 = [
         ]
     },
     {
-        pregunta: "Mercadotecnia", auditorias: 15, positivas: 13, negativas: 2,
+        pregunta: "Mercadotecnia", positivas: 13, negativas: 2,
         _children: [
             { pregunta: "¿La promoción vigente está visible?",   auditorias: 5, positivas: 4, negativas: 1 },
             { pregunta: "¿El material POP está en buen estado?", auditorias: 5, positivas: 4, negativas: 1 },
@@ -74,7 +73,7 @@ var dataTable1 = [
         ]
     },
     {
-        pregunta: "Cumplimiento", auditorias: 15, positivas: 13, negativas: 2,
+        pregunta: "Cumplimiento", positivas: 13, negativas: 2,
         _children: [
             { pregunta: "¿Las licencias y permisos están vigentes?",    auditorias: 5, positivas: 4, negativas: 1 },
             { pregunta: "¿Se cumple la normativa de protección civil?", auditorias: 5, positivas: 5, negativas: 0 },
@@ -113,10 +112,10 @@ var columnsTable1 = [
         },
         formatter: function(cell) {
             const v = cell.getValue();
-            if (v === "" || v === null) return "";
+            if (v === undefined || v === null || v === "") return "";
             const isParent = !!cell.getRow().getData()._children;
-            const weight = isParent ? '700' : '400';
             const color = isParent ? '#3D4A5C' : '#333';
+            const weight = isParent ? '700' : '400';
             return `<span style="font-size:13px; font-weight:${weight}; color:${color};">${v}</span>`;
         }
     },
@@ -136,7 +135,7 @@ var columnsTable1 = [
                 },
                 formatter: function(cell) {
                     const v = cell.getValue();
-                    if (v === "" || v === null) return "";
+                    if (v === undefined || v === null || v === "") return "";
                     const isParent = !!cell.getRow().getData()._children;
                     const color = isParent ? '#2E7D32' : (v === 0 ? '#bbb' : '#4CAF50');
                     const weight = isParent ? '700' : '600';
@@ -155,7 +154,7 @@ var columnsTable1 = [
                 },
                 formatter: function(cell) {
                     const v = cell.getValue();
-                    if (v === "" || v === null) return "";
+                    if (v === undefined || v === null || v === "") return "";
                     const isParent = !!cell.getRow().getData()._children;
                     const color = isParent ? '#C62828' : (v === 0 ? '#bbb' : '#F44336');
                     const weight = isParent ? '700' : '600';
@@ -165,28 +164,6 @@ var columnsTable1 = [
         ]
     }
 ];
-
-var table1 = new Tabulator("#tableDetalle", {
-    data: dataTable1,
-    columns: columnsTable1,
-    layout: "fitData",
-    dataTree: true,
-    dataTreeStartExpanded: true,
-    dataTreeChildField: "_children",
-    dataTreeBranchElement: false,
-    dataTreeChildIndent: 16,
-    rowFormatter: function(row) {
-        const isParent = row.getData()._children;
-        if (isParent) {
-            row.getElement().style.background = "#E8EDF2";
-            row.getElement().style.borderBottom = "1px solid #c8d0da";
-            row.getElement().style.borderTop = "1px solid #c8d0da";
-        } else {
-            row.getElement().style.background = "#ffffff";
-            row.getElement().style.borderBottom = "1px solid #f0f0f0";
-        }
-    }
-});
 
 //---Chart First
 var dataChart1 = {
@@ -474,7 +451,17 @@ var optionsChart3 = {
                 color: '#333',
             }
         },
-        datalabels: { display: false },
+        datalabels: { 
+            display: true,
+            color: 'black',
+            font: {
+                size: 14,
+                weight: 'bold'
+            },
+            anchor: 'end',
+            align: 'left',
+            offset: 5,
+        },
         tooltip: {
             backgroundColor: 'rgba(255,255,255,0.95)',
             titleColor: '#333',

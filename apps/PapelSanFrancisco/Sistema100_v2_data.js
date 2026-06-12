@@ -276,23 +276,28 @@ var dataChart1 = {
     labels: ["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC"],
     datasets: [
         {
-            label: 'INCAP',
-            data: [72, 70, 74, 77, 79, 78, 75, 74, 76, 77, 75, 77],
+            label: 'Año 2025',
+            data: [72.00, 70.00, 74.00, 77.00, 79.00, 78.00, 75.00, 74.00, 76.00, 77.00, 75.00, 77.00],
             backgroundColor: '#f07c2b',
             borderColor: '#f07c2b',
-            borderWidth: 1,
+            borderWidth: 2,
+            pointRadius: 3,
             tension: 0.45,
+            fill: false,
         },
         {
-            label: 'NO INCAP',
-            data: [76, 74, 78, 80, 82, 84, null, null, null, null, null, null],
+            label: 'Año 2026',
+            data: [76.00, 74.00, 78.00, 80.00, 82.00, 84.00, null, null, null, null, null, null],
             backgroundColor: '#6cab44',
             borderColor: '#6cab44',
-            borderWidth: 1,
+            borderWidth: 2,
+            pointRadius: 3,
             tension: 0.45,
+            fill: false,
         }
     ]
 };
+
 var optionsChart1 = {
     responsive: true,
     maintainAspectRatio: false,
@@ -301,35 +306,34 @@ var optionsChart1 = {
         intersect: false,
     },
     plugins: {
-        // Leyenda personalizada (abajo, centrada)
         legend: {
-        display: true,
-        position: 'bottom',
-        align: 'center',
-        labels: {
-            usePointStyle: true,
-            pointStyle: 'circle',
-            padding: 24,
-            font: {
-                size: 11,
-                family: "'Segoe UI', Arial, sans-serif",
-            },
-            color: '#555555',
-            generateLabels(chart) {
-                return chart.data.datasets.map((ds, i) => ({
-                    text: ds.label,
-                    fillStyle: ds.borderColor,
-                    strokeStyle: ds.borderColor,
-                    lineWidth: 0,
-                    pointStyle: 'circle',
-                    datasetIndex: i,
-                    fontColor: ds.borderColor,  // color del texto = color de la línea
-                }));
+            display: true,
+            position: 'bottom',
+            align: 'center',
+            labels: {
+                usePointStyle: true,
+                pointStyle: 'circle',
+                padding: 24,
+                font: {
+                    size: 11,
+                    family: "'Segoe UI', Arial, sans-serif",
+                },
+                color: '#555555',
+                generateLabels(chart) {
+                    return chart.data.datasets.map((ds, i) => ({
+                        text: ds.label,
+                        fillStyle: ds.borderColor,
+                        strokeStyle: ds.borderColor,
+                        lineWidth: 0,
+                        pointStyle: 'circle',
+                        datasetIndex: i,
+                        fontColor: ds.borderColor,
+                    }));
+                }
             }
-        }
-    },
-    tooltip: {
-        backgroundColor: 'rgba(255,255,255,0.95)',
+        },
+        tooltip: {
+            backgroundColor: 'rgba(255,255,255,0.95)',
             titleColor: '#333',
             bodyColor: '#555',
             borderColor: '#ddd',
@@ -337,7 +341,18 @@ var optionsChart1 = {
             padding: 10,
             callbacks: {
                 label(ctx) {
-                    return ` ${ctx.dataset.label}: ${ctx.parsed.y}`;
+                    const v = ctx.parsed.y;
+                    if (v === null || v === undefined) return null;
+                    return ` ${ctx.dataset.label}: ${v.toFixed(2)}%`;
+                },
+                afterBody(ctxArray) {
+                    const v2025 = ctxArray.find(c => c.dataset.label === 'Año 2025')?.parsed.y;
+                    const v2026 = ctxArray.find(c => c.dataset.label === 'Año 2026')?.parsed.y;
+                    if (v2025 == null || v2026 == null) return [];
+                    const diff = (v2026 - v2025).toFixed(2);
+                    const arrow = diff > 0 ? '▲' : diff < 0 ? '▼' : '—';
+                    const sign = diff > 0 ? '+' : '';
+                    return ['', ` Diferencia: ${arrow} ${sign}${diff}%`];
                 }
             }
         }
@@ -347,40 +362,36 @@ var optionsChart1 = {
             grid: {
                 color: '#cccccc',
                 lineWidth: 0.8,
-                borderDash: [4, 4],           // cuadrícula punteada
+                borderDash: [4, 4],
             },
-            border: {
-                display: false,
-            },
+            border: { display: false },
             ticks: {
-                display: false,               // ocultar etiquetas del eje X (igual que la imagen)
+                display: true,
+                font: { size: 11, family: "'Segoe UI', Arial, sans-serif" },
+                color: '#888',
             }
         },
         y: {
             grid: {
                 color: '#cccccc',
                 lineWidth: 0.8,
-                borderDash: [4, 4],           // cuadrícula punteada
+                borderDash: [4, 4],
             },
-            border: {
-                display: false,
-            },
+            border: { display: false },
             ticks: {
-                display: false,               // ocultar etiquetas del eje Y (igual que la imagen)
+                display: true,
+                font: { size: 11, family: "'Segoe UI', Arial, sans-serif" },
+                color: '#888',
+                callback: (val) => val.toFixed(2) + '%',
             },
             min: 60,
             max: 95,
         }
     },
     layout: {
-        padding: {
-            top: 8,
-            right: 8,
-            bottom: 0,
-            left: 8,
-        }
+        padding: { top: 8, right: 8, bottom: 0, left: 8 }
     }
-}
+};
 
 
 var dataChart2 = {
@@ -485,10 +496,10 @@ var optionsChart2 = {
 
 var dataChart3 = {
     labels: [
-        "CON MXL",
-        "CON GDL",
-        "MOLINO",
-        "CON MTY"
+        "Conv. MXL",
+        "Conv. GDL",
+        "Conv. MOLINO",
+        "Conv. MTY"
     ],
     datasets: [
         {
@@ -960,6 +971,8 @@ var dataChart6 = {
     ]
 };
 
+const maxPuntaje = 50;
+
 var optionsChart6 = {
     indexAxis: 'y',
     responsive: true,
@@ -1017,6 +1030,16 @@ var optionsChart6 = {
             callbacks: {
                 label(ctx) {
                     return ` ${ctx.dataset.label}: ${ctx.parsed.x}`;
+                },
+                afterBody(ctxArray) {
+                    const total = ctxArray.reduce((sum, c) => sum + (c.parsed.x || 0), 0);
+                    const pct = ((total / maxPuntaje) * 100).toFixed(1);
+                    const arrow = total >= maxPuntaje ? '✓' : total >= maxPuntaje * 0.8 ? '▲' : '▼';
+                    return [
+                        '─────────────────',
+                        ` Total: ${arrow} ${total} / ${maxPuntaje}`,
+                        ` Cumplimiento: ${pct}%`
+                    ];
                 }
             }
         }
@@ -1025,7 +1048,7 @@ var optionsChart6 = {
         x: {
             stacked: true,
             display: false,
-            max: 50,
+            max: maxPuntaje,
         },
         y: {
             stacked: true,
@@ -1048,25 +1071,24 @@ var dataChart7 = {
         {
             label: 'Año 2025',
             data: [88, 89, 90, 91, 91, 92, 92, 92, 93, 93, 93, 93],
-            backgroundColor: '#888888',
-            borderColor: '#888888',
+            backgroundColor: '#AAAAAA',
+            borderColor: '#AAAAAA',
             borderWidth: 2,
-            pointRadius: 3,
-            pointHoverRadius: 5,
+            pointRadius: 0,
+            pointHoverRadius: 4,
             tension: 0.3,
             fill: false,
         },
         {
             label: 'Año 2026',
             data: [91, 92, 92, 93, 93, 93, 93, 93, 93, 93, 93, 93],
-            backgroundColor: '#bbbbbb',
-            borderColor: '#bbbbbb',
+            backgroundColor: '#444444',
+            borderColor: '#444444',
             borderWidth: 2,
-            pointRadius: 3,
-            pointHoverRadius: 5,
+            pointRadius: 0,
+            pointHoverRadius: 4,
             tension: 0.3,
             fill: false,
-            borderDash: [5, 4],
         }
     ]
 };
@@ -1076,26 +1098,25 @@ var dataChart8 = {
     datasets: [
         {
             label: 'Año 2025',
-            data: [30, 95, 45, 55, 50, 50, 50, 50, 50, 50, 50, 50],
-            backgroundColor: '#F5A623',
-            borderColor: '#F5A623',
+            data: [30, 95, 45, 55.5, 50, 50, 50, 50, 50, 50, 50, 50],
+            backgroundColor: '#F5C96A',
+            borderColor: '#F5C96A',
             borderWidth: 2,
-            pointRadius: 3,
-            pointHoverRadius: 5,
+            pointRadius: 0,
+            pointHoverRadius: 4,
             tension: 0.3,
             fill: false,
         },
         {
             label: 'Año 2026',
-            data: [35, 45, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50],
-            backgroundColor: '#F5C96A',
-            borderColor: '#F5C96A',
+            data: [35, 45.5, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50],
+            backgroundColor: '#D4820A',
+            borderColor: '#D4820A',
             borderWidth: 2,
-            pointRadius: 3,
-            pointHoverRadius: 5,
+            pointRadius: 0,
+            pointHoverRadius: 4,
             tension: 0.3,
             fill: false,
-            borderDash: [5, 4],
         }
     ]
 };
@@ -1105,30 +1126,28 @@ var dataChart9 = {
     datasets: [
         {
             label: 'Año 2025',
-            data: [78, 80, 82, 84, 85, 83, 82, 82, 83, 83, 82, 80],
-            backgroundColor: '#4CAF50',
-            borderColor: '#4CAF50',
+            data: [78, 80.5, 82, 84, 85, 83, 82, 82.5, 83, 83, 82, 80],
+            backgroundColor: '#82C785',
+            borderColor: '#82C785',
             borderWidth: 2,
-            pointRadius: 3,
-            pointHoverRadius: 5,
+            pointRadius: 0,
+            pointHoverRadius: 4,
             tension: 0.3,
             fill: false,
         },
         {
             label: 'Año 2026',
-            data: [75, 76, 77, 78, 76, 75, 74, 74, 74, 74, 74, 73],
-            backgroundColor: '#90D993',
-            borderColor: '#90D993',
+            data: [75, 76, 77.5, 78, 76, 75, 74, 74, 74.5, 74, 74, 73],
+            backgroundColor: '#2E7D32',
+            borderColor: '#2E7D32',
             borderWidth: 2,
-            pointRadius: 3,
-            pointHoverRadius: 5,
+            pointRadius: 0,
+            pointHoverRadius: 4,
             tension: 0.3,
             fill: false,
-            borderDash: [5, 4],
         }
     ]
 };
-
 function getOptionsComplianceTrend(minVal, maxVal) {
     return {
         responsive: true,
@@ -1164,7 +1183,7 @@ function getOptionsComplianceTrend(minVal, maxVal) {
                     }
                 }
             },
-            datalabels: { display: false },
+            datalabels: { display: true },
             tooltip: {
                 backgroundColor: 'rgba(255,255,255,0.95)',
                 titleColor: '#333',
@@ -1174,7 +1193,18 @@ function getOptionsComplianceTrend(minVal, maxVal) {
                 padding: 10,
                 callbacks: {
                     label(ctx) {
-                        return ` ${ctx.dataset.label}: ${ctx.parsed.y}%`;
+                        const v = ctx.parsed.y;
+                        if (v === null || v === undefined) return null;
+                        return ` ${ctx.dataset.label}: ${v.toFixed(2)}%`;
+                    },
+                    afterBody(ctxArray) {
+                        const v2025 = ctxArray.find(c => c.dataset.label === 'Año 2025')?.parsed.y;
+                        const v2026 = ctxArray.find(c => c.dataset.label === 'Año 2026')?.parsed.y;
+                        if (v2025 == null || v2026 == null) return [];
+                        const diff = (v2026 - v2025).toFixed(2);
+                        const arrow = diff > 0 ? '▲' : diff < 0 ? '▼' : '—';
+                        const sign = diff > 0 ? '+' : '';
+                        return ['', ` Diferencia: ${arrow} ${sign}${diff}%`];
                     }
                 }
             }
@@ -1188,6 +1218,7 @@ function getOptionsComplianceTrend(minVal, maxVal) {
                 },
                 border: { display: false },
                 ticks: {
+                    display: true,
                     font: { size: 10, family: "'Segoe UI', Arial, sans-serif" },
                     color: '#aaa',
                 }
@@ -1200,9 +1231,10 @@ function getOptionsComplianceTrend(minVal, maxVal) {
                 },
                 border: { display: false },
                 ticks: {
+                    display: true,
                     font: { size: 10, family: "'Segoe UI', Arial, sans-serif" },
                     color: '#aaa',
-                    callback: (val) => val + '%',
+                    callback: (val) => val.toFixed(2) + '%',
                 },
                 min: minVal,
                 max: maxVal,
@@ -1214,7 +1246,28 @@ function getOptionsComplianceTrend(minVal, maxVal) {
     };
 }
 
-// Uso individual por gráfica:
 let optionsChart7 = getOptionsComplianceTrend(85, 100);
 let optionsChart8 = getOptionsComplianceTrend(20, 100);
 let optionsChart9 = getOptionsComplianceTrend(60, 90);
+
+
+const totalsPlugin = {
+    id: 'totalsLabel',
+    afterDatasetsDraw(chart) {
+        const { ctx, data } = chart;
+        data.labels.forEach((label, i) => {
+            const total = data.datasets.reduce((sum, ds) => sum + (ds.data[i] || 0), 0);
+            const meta = chart.getDatasetMeta(chart.data.datasets.length - 1);
+            const bar = meta.data[i];
+            if (!bar) return;
+            const isMax = total >= maxPuntaje;
+            ctx.save();
+            ctx.font = `700 11px 'Segoe UI', Arial, sans-serif`;
+            ctx.fillStyle = isMax ? '#2E7D32' : '#C62828';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`${total} / ${maxPuntaje}`, bar.x + 8, bar.y);
+            ctx.restore();
+        });
+    }
+};
