@@ -270,6 +270,17 @@ canvas {
     font-weight:700;
 }
 
+.tabulator .tabulator-col .tabulator-col-title {
+    text-align: center;
+    width: 100%;
+}
+
+.tabulator .tabulator-col .tabulator-col-title i {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
 /* =========================
    LOGO Y TEXTOS
 ========================= */

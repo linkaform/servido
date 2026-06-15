@@ -99,6 +99,7 @@ let columnsTable1 = [
     {
         title: "Área",
         field: "area",
+        headerHozAlign: "center",
         hozAlign: "left",
         widthGrow: 2,
         cssClass: "col-area",
@@ -106,61 +107,66 @@ let columnsTable1 = [
         width: 180,
     },
     {
-        title: "🛡️<br>Seguridad<br>(50)",
+        title: '<div><i class="fas fa-shield-halved"></i><br>Seguridad<br>(50)</div>',
         field: "seguridad",
+        headerHozAlign: "center",
         hozAlign: "center",
         formatter: "money",
-        formatterParams:{
-            precision:2,
-            symbol:""
+        formatterParams: {
+            precision: 2,
+            symbol: ""
         },
         tooltip: true,
         width: 150,
     },
     {
-        title: "🧹<br>Orden y limpieza<br>(25)",
+        title: '<div><i class="fas fa-broom"></i><br>Orden y limpieza<br>(25)</div>',
         field: "orden_limpieza",
+        headerHozAlign: "center",
         hozAlign: "center",
         formatter: "money",
-        formatterParams:{
-            precision:2,
-            symbol:""
+        formatterParams: {
+            precision: 2,
+            symbol: ""
         },
         tooltip: true,
         width: 150,
     },
     {
-        title: "🎓<br>Capacitación<br>(15)",
+        title: '<div><i class="fas fa-graduation-cap"></i><br>Capacitación<br>(15)</div>',
         field: "capacitacion",
+        headerHozAlign: "center",
         hozAlign: "center",
         formatter: "money",
-        formatterParams:{
-            precision:2,
-            symbol:""
+        formatterParams: {
+            precision: 2,
+            symbol: ""
         },
         tooltip: true,
         width: 150,
     },
     {
-        title: "🍃<br>Medio ambiente<br>(10)",
+        title: '<div><i class="fas fa-leaf"></i><br>Medio ambiente<br>(10)</div>',
         field: "medio_ambiente",
+        headerHozAlign: "center",
         hozAlign: "center",
         formatter: "money",
-        formatterParams:{
-            precision:2,
-            symbol:""
+        formatterParams: {
+            precision: 2,
+            symbol: ""
         },
         tooltip: true,
         width: 150,
     },
     {
-        title: "Resultado<br>mensual",
+        title: '<div><i class="fas fa-chart-line"></i><br>Resultado<br>mensual</div>',
         field: "resultado",
+        headerHozAlign: "center",
         hozAlign: "center",
         formatter: "money",
-        formatterParams:{
-            precision:2,
-            symbol:""
+        formatterParams: {
+            precision: 2,
+            symbol: ""
         },
         tooltip: true,
         width: 150,
@@ -1009,40 +1015,37 @@ var optionsChart6 = {
             }
         },
         datalabels: {
-            display: true,
-            color: '#ffffff',
+            display: function(context) {
+                return context.datasetIndex === context.chart.data.datasets.length - 1;
+            },
+            color: '#333333',
+            anchor: 'end',
+            align: 'right',
+            offset: 8,
+            clip: false,
             font: {
-                size: 10,
+                size: 11,
                 weight: '700',
                 family: "'Segoe UI', Arial, sans-serif",
             },
-            formatter: (value) => value > 0 ? value : '',
-            anchor: 'center',
-            align: 'center',
-        },
-        tooltip: {
-            backgroundColor: 'rgba(255,255,255,0.95)',
-            titleColor: '#333',
-            bodyColor: '#555',
-            borderColor: '#ddd',
-            borderWidth: 1,
-            padding: 10,
-            callbacks: {
-                label(ctx) {
-                    return ` ${ctx.dataset.label}: ${ctx.parsed.x}`;
-                },
-                afterBody(ctxArray) {
-                    const total = ctxArray.reduce((sum, c) => sum + (c.parsed.x || 0), 0);
-                    const pct = ((total / maxPuntaje) * 100).toFixed(1);
-                    const arrow = total >= maxPuntaje ? '✓' : total >= maxPuntaje * 0.8 ? '▲' : '▼';
-                    return [
-                        '─────────────────',
-                        ` Total: ${arrow} ${total} / ${maxPuntaje}`,
-                        ` Cumplimiento: ${pct}%`
-                    ];
-                }
+            formatter: function(value, context) {
+
+                const datasets = context.chart.data.datasets;
+                const dataIndex = context.dataIndex;
+
+                let total = 0;
+
+                datasets.forEach(ds => {
+                    total += Number(ds.data[dataIndex] || 0);
+                });
+
+                const porcentaje = maxPuntaje > 0
+                    ? ((total / maxPuntaje) * 100).toFixed(0)
+                    : 0;
+
+                return `${total} / ${maxPuntaje} (${porcentaje}%)`;
             }
-        }
+        },
     },
     scales: {
         x: {
@@ -1052,19 +1055,30 @@ var optionsChart6 = {
         },
         y: {
             stacked: true,
-            grid: { display: false },
-            border: { display: false },
+            grid: {
+                display: false
+            },
+            border: {
+                display: false
+            },
             ticks: {
-                font: { size: 11, family: "'Segoe UI', Arial, sans-serif" },
+                font: {
+                    size: 11,
+                    family: "'Segoe UI', Arial, sans-serif"
+                },
                 color: '#333',
             }
         }
     },
     layout: {
-        padding: { top: 0, right: 60, bottom: 0, left: 8 }
+        padding: {
+            top: 0,
+            right: 120,
+            bottom: 0,
+            left: 8
+        }
     }
 };
-
 var dataChart7 = {
     labels: ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"],
     datasets: [
