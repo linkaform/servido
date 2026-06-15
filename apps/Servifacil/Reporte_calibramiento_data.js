@@ -1,10 +1,12 @@
 //------Diseño de reporte
 let dicReportContext = [
     { class:'', _children : [
-            { type:'card', col: '3', id:'cardFirst', title:'Promedio General', hexadecimal:'#FF5733'},
-            { type:'card', col: '3', id:'cardSecond', title:'Mejor estación evaluada', hexadecimal:'#FF5733'},
-            { type:'card', col: '3', id:'cardThird', title:'Mejor departamento evaluado', hexadecimal:'#FF5733'},
-            { type:'card', col: '3', id:'cardFourth', title:'Auditorias', hexadecimal:'#FF5733'},
+            { type:'card', col: '2', id:'cardFirst', title:'Promedio General', hexadecimal:'#FF5733',cardIcon:'<i class="fa-solid fa-gauge-simple fa-2x text-grey"></i>'},
+            { type:'card', col: '2', id:'cardSecond', title:'Estación con mayor puntuación', hexadecimal:'#FF5733',cardIcon:'<i class="fa-solid fa-arrow-up-short-wide fa-2x text-success"></i>'},
+            { type:'card', col: '2', id:'cardThird', title:'Estación con menor puntuación', hexadecimal:'#FF5733',cardIcon:'<i class="fa-solid fa-arrow-down-short-wide fa-2x text-danger"></i>'},
+            { type:'card', col: '2', id:'cardFourth', title:'Departamento con mayor puntuación', hexadecimal:'#FF5733',cardIcon:'<i class="fa-solid fa-arrow-up-short-wide fa-2x text-success"></i>'},
+            { type:'card', col: '2', id:'cardFiveth', title:'Departamento con menor puntuación', hexadecimal:'#FF5733',cardIcon:'<i class="fa-solid fa-arrow-down-short-wide fa-2x text-danger"></i>'},
+            { type:'card', col: '2', id:'cardSixth', title:'Auditorias', hexadecimal:'#FF5733',cardIcon:'<i class="fa-solid fa-list-check fa-2x text-grey"></i>'},
         ] 
     },
     { class:'', _children : [
@@ -12,6 +14,7 @@ let dicReportContext = [
         { type:'chart', col: '12', id:'chartFirst', title:'Calificación por Estación'},
         { type:'chart', col: '12', id:'chartThird', title:'Tendencia mensual por Departamento.'},
         { type:'table', col: '12', id:'tableFirst', title:'Resultados por pregunta', optionExpanded:true},
+        { type:'chart', col: '12', id:'chartFourth', title:'Resultados Negativos'},
     ]},
 ];
 
@@ -503,7 +506,84 @@ var optionsChart3 = {
     layout: { padding: { top: 8, right: 16, bottom: 0, left: 8 } }
 };
 
+//---Chart Fourth
+var dataChart4 = {
+    labels: [
+        "¿El personal recibió la capacitación del periodo?",
+        "¿Las bombas operan sin fallas reportadas?",
+        "¿Las cámaras de seguridad graban correctamente?",
+        "¿El personal porta uniforme completo?",
+        "¿La isla de bombas está limpia y señalizada?",
+        "¿La iluminación funciona al 100%?",
+        "¿El punto de venta opera sin intermitencias?",
+        "¿Los respaldos de información están al día?",
+        "¿Los expedientes del personal están completos?",
+        "¿Se aplicó la evaluación de clima laboral?",
+        "¿Las facturas se emiten correctamente?",
+        "¿La promoción vigente está visible?",
+        "¿El material POP está en buen estado?",
+        "¿Las licencias y permisos están vigentes?",
+        "¿Las bitácoras regulatorias están firmadas?",
+        "¿El personal saluda y despide al cliente?",
+        "¿Los baños están limpios y abastecidos?",
+        "¿Se aplica el programa de lealtad?",
+        "¿Se respetan los protocolos de despacho?",
+        "¿Los extintores están vigentes?",
+        "¿Los cortes de caja cuadran sin diferencias?",
+        "¿Los depósitos se realizan en tiempo?",
+        "¿Se atienden las quejas en menos de 48 horas?",
+        "¿Se cumple la normativa de protección civil?",
+    ],
+    datasets: [{
+        label: 'Respuestas Negativas',
+        data: [18, 14, 11, 9, 8, 8, 7, 7, 6, 6, 5, 5, 5, 4, 4, 4, 3, 3, 2, 2, 1, 1, 1, 1],
+        backgroundColor: '#F44336',
+        borderColor: '#F44336',
+        borderWidth: 1,
+        borderRadius: 4,
+    }]
+};
 
-
-
-
+var optionsChart4 = {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+        legend: { display: false },
+        datalabels: { display: false },
+        tooltip: {
+            backgroundColor: 'rgba(255,255,255,0.95)',
+            titleColor: '#333',
+            bodyColor: '#555',
+            borderColor: '#ddd',
+            borderWidth: 1,
+            padding: 10,
+            callbacks: {
+                label(ctx) {
+                    const v = ctx.parsed.x;
+                    return ` ${v} negativa${v !== 1 ? 's' : ''}`;
+                }
+            }
+        }
+    },
+    scales: {
+        x: {
+            grid: { color: '#e0e0e0', lineWidth: 0.8 },
+            border: { display: false },
+            ticks: {
+                stepSize: 1,
+                precision: 0,
+                font: { size: 12, family: "'Segoe UI', Arial, sans-serif" },
+                color: '#555',
+            },
+            min: 0,
+        },
+        y: {
+            grid: { color: '#e0e0e0', lineWidth: 0.8 },
+            border: { display: false },
+            ticks: { font: { size: 12, family: "'Segoe UI', Arial, sans-serif" }, color: '#555' }
+        }
+    },
+    layout: { padding: { top: 8, right: 16, bottom: 0, left: 8 } }
+};

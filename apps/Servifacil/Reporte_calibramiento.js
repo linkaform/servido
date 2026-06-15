@@ -16,11 +16,17 @@ function loadDemoData(){
     //---Definitions ELements
     drawCardElement('cardFirst',84.7);
     drawCardElement('cardSecond','87.0 | Paso del Toro');
-    drawCardElement('cardThird','90.6 | Mercadotecnia');
-    drawCardElement('cardFourth',40);
+    drawCardElement('cardThird','70.6 | Cruz');
+
+    drawCardElement('cardFourth','90.6 | Mercadotecnia');
+    drawCardElement('cardFiveth','50.7 | Ventas');
+
+    drawCardElement('cardSixth',40);
     drawChartElement('chartFirst','bar',dataChart1,optionsChart1, undefined, true);
     drawChartElement('chartSecond','bar',dataChart2,optionsChart2, undefined,true);
     drawChartElement('chartThird','line',dataChart3,optionsChart3, undefined, true);
+    drawChartElement('chartFourth','bar',dataChart4,optionsChart4, undefined, true);
+
     drawTableElement('tableFirst', dataTable1, columnsTable1);
 
     setTimeout(() => { hide_loading();}, 2000);
