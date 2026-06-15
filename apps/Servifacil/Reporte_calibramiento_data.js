@@ -14,7 +14,7 @@ let dicReportContext = [
         { type:'chart', col: '12', id:'chartFirst', title:'Calificación por Estación'},
         { type:'chart', col: '12', id:'chartThird', title:'Tendencia mensual por Departamento.'},
         { type:'table', col: '12', id:'tableFirst', title:'Resultados por pregunta', optionExpanded:true},
-        { type:'chart', col: '12', id:'chartFourth', title:'Resultados Negativos'},
+        { type:'chart', col: '12', id:'chartFourth', title:'Preguntas con respuestas negativas'},
     ]},
 ];
 
