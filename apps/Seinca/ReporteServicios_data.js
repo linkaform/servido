@@ -257,7 +257,7 @@ let dataTable4  = [
 
 let columsTable5 = [
     { title: "Técnico", field: "tecnico", hozAlign: "left", width: 260 },
-    { title: "Reporte Presión de Líquido", field: "reporte_liquido", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 230 },
+    { title: "Cómo se dejo el equipo", field: "reporte_liquido", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 230 },
     { title: "Equipos Intervenidos", field: "num_equipos", headerTooltip: true, formatter: "money", formatterParams: CONFIG_DECIMAL, hozAlign: "center", width: 320 },
     { title: "Cumplimiento", field: "cumplimiento", headerTooltip: true, formatter: styleLigth, hozAlign: "center", width: 180, minWidth: 180 },
 ];
