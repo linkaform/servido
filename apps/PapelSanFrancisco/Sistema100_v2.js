@@ -1,6 +1,5 @@
 window.onload = function(){
     //----Selectores
-    initDropdown('filterMes');
     initDropdown('filterFabrica');
 
 

@@ -104,7 +104,7 @@ let columnsTable1 = [
         widthGrow: 2,
         cssClass: "col-area",
         tooltip: true,
-        width: 180,
+        width: 300,
     },
     {
         title: '<div><i class="fas fa-shield-halved"></i><br>Seguridad<br>(50)</div>',
@@ -117,7 +117,7 @@ let columnsTable1 = [
             symbol: ""
         },
         tooltip: true,
-        width: 150,
+        width: 160,
     },
     {
         title: '<div><i class="fas fa-broom"></i><br>Orden y limpieza<br>(25)</div>',
@@ -130,7 +130,7 @@ let columnsTable1 = [
             symbol: ""
         },
         tooltip: true,
-        width: 150,
+        width: 160,
     },
     {
         title: '<div><i class="fas fa-graduation-cap"></i><br>Capacitación<br>(15)</div>',
@@ -143,7 +143,7 @@ let columnsTable1 = [
             symbol: ""
         },
         tooltip: true,
-        width: 150,
+        width: 160,
     },
     {
         title: '<div><i class="fas fa-leaf"></i><br>Medio ambiente<br>(10)</div>',
@@ -156,7 +156,7 @@ let columnsTable1 = [
             symbol: ""
         },
         tooltip: true,
-        width: 150,
+        width: 160,
     },
     {
         title: '<div><i class="fas fa-chart-line"></i><br>Resultado<br>mensual</div>',
@@ -169,7 +169,7 @@ let columnsTable1 = [
             symbol: ""
         },
         tooltip: true,
-        width: 150,
+        width: 160,
         cssClass: "col-total"
     }
 ];
@@ -233,12 +233,12 @@ let dataTable1 = [
         resultado: 100.00
     },
     {
-        area: "Total por indicador",
-        seguridad: 244.50,
-        orden_limpieza: 121.50,
-        capacitacion: 73.50,
-        medio_ambiente: 49.80,
-        resultado: 489.30,
+        area: "Promedio por indicador",
+        seguridad: 48.9,
+        orden_limpieza: 24.3,
+        capacitacion: 14.7,
+        medio_ambiente: 9.96,
+        resultado: 97.86,
         rowType: "total"
     }
 ];
@@ -919,6 +919,8 @@ var optionsChart5B = {
     }
 };
 
+const maxPuntaje = 50;
+
 var dataChart6 = {
     labels: [
         "#1  Materiales",
@@ -937,47 +939,51 @@ var dataChart6 = {
         {
             label: 'Entrevistas de Seguridad',
             data: [5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 3],
-            backgroundColor: '#4A2C0A',
-            borderColor: '#4A2C0A',
+            backgroundColor: colorize('#4A2C0A'),
+            borderColor: colorize('#4A2C0A'),
+            baseColor: '#4A2C0A',
             borderWidth: 0,
             borderRadius: 2,
         },
         {
             label: 'Observaciones de condiciones inseguras',
-            data: [5, 5, 5, 5, 5, 4, 4, 4, 4, 3, 3],
-            backgroundColor: '#7B4F2E',
-            borderColor: '#7B4F2E',
+            data: [5, 5, 5, 5, 5, 4, 4, 4, -2, 3, 3],
+            backgroundColor: colorize('#7B4F2E'),
+            borderColor: colorize('#7B4F2E'),
+            baseColor: '#7B4F2E',
             borderWidth: 0,
             borderRadius: 2,
         },
         {
             label: 'Comisión de seguridad',
-            data: [10, 10, 10, 10, 10, 10, 9, 9, 9, 8, 7],
-            backgroundColor: '#A67850',
-            borderColor: '#A67850',
+            data: [10, 10, 10, 10, 10, 10, 9, 9, 9, -3, 7],
+            backgroundColor: colorize('#A67850'),
+            borderColor: colorize('#A67850'),
+            baseColor: '#A67850',
             borderWidth: 0,
             borderRadius: 2,
         },
         {
             label: 'Mejora de área',
-            data: [10, 10, 10, 9, 10, 9, 10, 9, 8, 8, 7],
-            backgroundColor: '#C8954A',
-            borderColor: '#C8954A',
+            data: [10, 10, 10, 9, 10, 9, 10, 9, 8, 8, -4],
+            backgroundColor: colorize('#C8954A'),
+            borderColor: colorize('#C8954A'),
+            baseColor: '#C8954A',
             borderWidth: 0,
             borderRadius: 2,
         },
         {
             label: 'Seguridad basada en conductas',
             data: [20, 20, 20, 20, 19, 19, 18, 17, 18, 16, 15],
-            backgroundColor: '#E8C99A',
-            borderColor: '#E8C99A',
+            backgroundColor: colorize('#E8C99A'),
+            borderColor: colorize('#E8C99A'),
+            baseColor: '#E8C99A',
             borderWidth: 0,
             borderRadius: 2,
         }
     ]
 };
 
-const maxPuntaje = 50;
 
 var optionsChart6 = {
     indexAxis: 'y',
@@ -1004,8 +1010,8 @@ var optionsChart6 = {
                 generateLabels(chart) {
                     return chart.data.datasets.map((ds, i) => ({
                         text: ds.label,
-                        fillStyle: ds.backgroundColor,
-                        strokeStyle: ds.backgroundColor,
+                        fillStyle: ds.baseColor,
+                        strokeStyle: ds.baseColor,
                         lineWidth: 0,
                         pointStyle: 'circle',
                         datasetIndex: i,
@@ -1018,7 +1024,17 @@ var optionsChart6 = {
             display: function(context) {
                 return context.datasetIndex === context.chart.data.datasets.length - 1;
             },
-            color: '#333333',
+            color: function(context) {
+                const datasets = context.chart.data.datasets;
+                const dataIndex = context.dataIndex;
+
+                let total = 0;
+                datasets.forEach(ds => {
+                    total += Number(ds.data[dataIndex] || 0);
+                });
+
+                return total < 0 ? '#D9534F' : '#333333';
+            },
             anchor: 'end',
             align: 'right',
             offset: 8,
@@ -1051,6 +1067,7 @@ var optionsChart6 = {
         x: {
             stacked: true,
             display: false,
+            min: -10,
             max: maxPuntaje,
         },
         y: {
@@ -1079,6 +1096,7 @@ var optionsChart6 = {
         }
     }
 };
+
 var dataChart7 = {
     labels: ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"],
     datasets: [
@@ -1283,5 +1301,36 @@ const totalsPlugin = {
             ctx.fillText(`${total} / ${maxPuntaje}`, bar.x + 8, bar.y);
             ctx.restore();
         });
+    }
+};
+
+
+// Colorea en rojo cualquier segmento con valor negativo, dejando el color
+// original para los valores positivos.
+function colorize(base) {
+    return function(ctx) {
+        const v = ctx.raw;
+        return (typeof v === 'number' && v < 0) ? '#D9534F' : base;
+    };
+}
+
+// Dibuja una línea punteada en x=0 para ubicar el límite entre negativos
+// y positivos, ya que el eje X está oculto (display:false).
+const zeroLinePlugin = {
+    id: 'zeroLine',
+    afterDraw(chart) {
+        const ctx = chart.ctx;
+        const xScale = chart.scales.x;
+        const area = chart.chartArea;
+        const xZero = xScale.getPixelForValue(0);
+        ctx.save();
+        ctx.strokeStyle = '#999999';
+        ctx.setLineDash([4, 4]);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(xZero, area.top);
+        ctx.lineTo(xZero, area.bottom);
+        ctx.stroke();
+        ctx.restore();
     }
 };
