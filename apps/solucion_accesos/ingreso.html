@@ -12,255 +12,325 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="./style.css">
     
-	<style>
-		:root {
-			--primary-color: #1F2A44;      
-			--primary-color-dark: #162033; 
-			--primary-color-light: #2E3C5D;
-			--dark-text: #1F2A44;
-			--light-bg: #f4f6f9;
-			--border-color: #dce1ea;
-		}
-		
-		body {
-			background: #f5f7fb;
-			min-height: 100vh;
-			padding-bottom: 3rem;
-		}
-		
-		/* Header */
-		.custom-header {
-			background: white;
-			box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-			padding: 1rem 2rem;
-			position: fixed;
-			top: 0;
-			left: 0;
-			right: 0;
-			z-index: 1000;
-		}
-		
-		.header-title {
-			color: var(--primary-color);
-			font-weight: 700;
-			margin: 0;
-			font-size: 1.5rem;
-		}
-		
-		/* Main Container */
-		.main-container {
-			background: white;
-			border-radius: 16px;
-			box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-			padding: 2.5rem;
-			margin-top: 120px;
-			max-width: 900px;
-			margin-left: auto;
-			margin-right: auto;
-		}
-		
-		/* Info Banner */
-		.info-banner {
-			background: rgba(31, 42, 68, 0.06);
-			border: 1px solid rgba(31, 42, 68, 0.15);
-			border-radius: 12px;
-			padding: 1.25rem 1.5rem;
-			margin-bottom: 2.5rem;
-			display: flex;
-			justify-content: space-around;
-			align-items: center;
-		}
-		
-		.info-item {
-			display: flex;
-			align-items: center;
-			gap: 0.5rem;
-		}
-		
-		.info-item i {
-			font-size: 1.2rem;
-			color: var(--primary-color);
-			opacity: 0.8;
-		}
-		
-		.info-item-label {
-			font-size: 0.85rem;
-			color: #6c757d;
-			margin-bottom: 0.2rem;
-		}
-		
-		.info-item-value {
-			font-weight: 600;
-			color: var(--primary-color);
-		}
-		
-		.section-title {
-			color: var(--primary-color);
-			font-weight: 700;
-			font-size: 1.1rem;
-			margin-bottom: 1.5rem;
-			padding-bottom: 0.5rem;
-			border-bottom: 2px solid var(--primary-color);
-		}
-		
-		.form-group-custom {
-			margin-bottom: 1.5rem;
-		}
-		
-		.form-label-custom {
-			color: var(--dark-text);
-			font-weight: 600;
-			margin-bottom: 0.5rem;
-			font-size: 0.95rem;
-		}
-		
-		.form-control, .form-select, textarea {
-			border: 1px solid var(--border-color);
-			border-radius: 8px;
-			padding: 0.65rem 0.9rem;
-			transition: all 0.3s ease;
-		}
-		
-		.form-control:focus, .form-select:focus, textarea:focus {
-			border-color: var(--primary-color);
-			box-shadow: 0 0 0 0.2rem rgba(31, 42, 68, 0.15);
-		}
-		
-		.photo-section {
-			background: var(--light-bg);
-			border: 2px dashed var(--border-color);
-			border-radius: 12px;
-			padding: 1.5rem;
-			text-align: center;
-			margin-bottom: 1.5rem;
-			transition: all 0.3s ease;
-		}
-		
-		.photo-section:hover {
-			border-color: var(--primary-color);
-			background: rgba(31, 42, 68, 0.03);
-		}
-		
-		.photo-label {
-			font-weight: 600;
-			color: var(--dark-text);
-			margin-bottom: 1rem;
-			display: block;
-		}
-		
-		.photo-preview {
-			margin: 1rem auto;
-			border-radius: 8px;
-			box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-		}
-		
-		.equipment-card {
-			background: white;
-			border: 1px solid var(--border-color);
-			border-radius: 12px;
-			padding: 2rem;
-			margin-top: 1.5rem;
-			box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-		}
-		
-		.equipment-card-title {
-			color: var(--primary-color);
-			font-weight: 700;
-			margin-bottom: 1.5rem;
-			display: flex;
-			align-items: center;
-			gap: 0.5rem;
-		}
-		
-		.equipment-card-title i {
-			color: var(--primary-color);
-		}
-		
-		/* Buttons */
-		.btn {
-			border-radius: 8px;
-			padding: 0.6rem 1.5rem;
-			font-weight: 600;
-			transition: all 0.3s ease;
-			border: none;
-		}
-		
-		.btn-primary {
-			background: linear-gradient(135deg, #1F2A44 0%, #162033 100%);
-			color: white;
-		}
-		
-		.btn-primary:hover {
-			background: linear-gradient(135deg, #162033 0%, #0f1726 100%);
-			transform: translateY(-2px);
-			box-shadow: 0 4px 12px rgba(31, 42, 68, 0.4);
-		}
-		
-		.btn-success {
-			background: linear-gradient(135deg, #2E3C5D 0%, #1F2A44 100%);
-			color: white;
-		}
-		
-		.btn-success:hover {
-			background: linear-gradient(135deg, #1F2A44 0%, #162033 100%);
-			transform: translateY(-2px);
-			box-shadow: 0 4px 12px rgba(31, 42, 68, 0.3);
-		}
-		
-		.btn-secondary {
-			background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
-			color: white;
-		}
-		
-		.btn-secondary:hover {
-			background: linear-gradient(135deg, #7f8c8d 0%, #707b7c 100%);
-			transform: translateY(-2px);
-		}
-		
-		.btn-danger {
-			background: linear-gradient(135deg, #1F2A44 0%, #162033 100%);
-			color: white;
-		}
-		
-		.btn-danger:hover {
-			background: linear-gradient(135deg, #162033 0%, #0f1726 100%);
-			transform: translateY(-2px);
-			box-shadow: 0 4px 12px rgba(31, 42, 68, 0.4);
-		}
-		
-		.btn-lg {
-			padding: 0.9rem 2.5rem;
-			font-size: 1.1rem;
-		}
-		
-		.spacer-lg {
-			height: 2.5rem;
-		}
-		
-		.spacer-md {
-			height: 1.5rem;
-		}
-		
-		@media (max-width: 768px) {
-			.main-container {
-				padding: 1.5rem;
-				margin-top: 100px;
-			}
-			
-			.header-title {
-				font-size: 1.2rem;
-			}
-			
-			.info-banner {
-				flex-direction: column;
-				gap: 1rem;
-			}
-			
-			.custom-header {
-				padding: 0.75rem 1rem;
-			}
-		}
-	</style>
+    <style>
+        :root {
+            --primary-color: #1F2A44;      
+            --primary-color-dark: #162033; 
+            --primary-color-light: #2E3C5D;
+            --dark-text: #1F2A44;
+            --light-bg: #f4f6f9;
+            --border-color: #dce1ea;
+        }
+        
+        body {
+            background: #f5f7fb;
+            min-height: 100vh;
+            padding-bottom: 3rem;
+        }
+        
+        /* Header */
+        .custom-header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .header-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        /* Main Container */
+        .main-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            padding: 2.5rem;
+            margin-top: 120px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Info Banner */
+        .info-banner {
+            background: rgba(31, 42, 68, 0.06);
+            border: 1px solid rgba(31, 42, 68, 0.15);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .info-item i {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            opacity: 0.8;
+        }
+        
+        .info-item-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 0.2rem;
+        }
+        
+        .info-item-value {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .form-group-custom {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label-custom {
+            color: var(--dark-text);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .form-control, .form-select, textarea {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.65rem 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus, textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(31, 42, 68, 0.15);
+        }
+        
+        .photo-section {
+            background: var(--light-bg);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .photo-section:hover {
+            border-color: var(--primary-color);
+            background: rgba(31, 42, 68, 0.03);
+        }
+        
+        .photo-label {
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .photo-preview {
+            margin: 1rem auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .equipment-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .equipment-card-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .equipment-card-title i {
+            color: var(--primary-color);
+        }
+        
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1F2A44 0%, #162033 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #162033 0%, #0f1726 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(31, 42, 68, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #2E3C5D 0%, #1F2A44 100%);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(135deg, #1F2A44 0%, #162033 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(31, 42, 68, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #7f8c8d 0%, #707b7c 100%);
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #1F2A44 0%, #162033 100%);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #162033 0%, #0f1726 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(31, 42, 68, 0.4);
+        }
+        
+        .btn-lg {
+            padding: 0.9rem 2.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .spacer-lg {
+            height: 2.5rem;
+        }
+        
+        .spacer-md {
+            height: 1.5rem;
+        }
+        
+        /*Condiciones Estilos */
+            .retencion-radio {
+                width: 1rem;
+                height: 1rem;
+                margin: 0;
+                flex-shrink: 0;
+                border: 1px solid #9ca3af;
+                border-radius: 50%;
+                appearance: none;
+                -webkit-appearance: none;
+                background-color: #fff;
+                cursor: pointer;
+                position: relative;
+                transition: border-color 0.15s ease-in-out;
+            }
+            .retencion-radio:checked {
+                border-color: #0d6efd;
+            }
+            .retencion-radio:checked::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 0.5rem;
+                height: 0.5rem;
+                border-radius: 50%;
+                background-color: #0d6efd;
+                transform: translate(-50%, -50%);
+            }
+            .retencion-radio:focus-visible {
+                outline: 2px solid #0d6efd;
+                outline-offset: 2px;
+            }
+            .retencion-radio:disabled {
+                cursor: not-allowed;
+                opacity: 0.5;
+            }
+            .retencion-label {
+                font-size: 0.875rem;
+                color: #374151;
+                cursor: pointer;
+            }
+        /*Condiciones Estilos */
+
+
+        #modalCondicionesServicio .modal-dialog {
+            max-width: 900px;
+        }
+        @media (min-width: 1200px) {
+            #modalCondicionesServicio .modal-dialog {
+                max-width: 1100px;
+            }
+        }
+        #modalCondicionesServicio .modal-content {
+            min-height: 70vh;
+        }
+        #modalCondicionesServicio .tab-content {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        #modalCondicionesServicio .nav-tabs .nav-link {
+            color: var(--text-muted, #6c757d);
+        }
+        #modalCondicionesServicio .nav-tabs .nav-link.active {
+            font-weight: 600;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1.5rem;
+                margin-top: 100px;
+            }
+            
+            .header-title {
+                font-size: 1.2rem;
+            }
+            
+            .info-banner {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .custom-header {
+                padding: 0.75rem 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar custom-header" id="myCustomNavBar">
@@ -300,41 +370,6 @@
                 </div>
             </div>
 
-            <h5 class="section-title">Información Personal</h5>
-            
-            <div class="row">
-                <div class="col-md-6 form-group-custom">
-                    <label class="form-label-custom">Nombre Completo *</label>
-                    <input type="text" class="form-control" id="inputName" 
-                           placeholder="Nombre completo" required>
-                </div>
-            
-                <div class="col-md-6 form-group-custom">
-                    <label class="form-label-custom">Empresa *</label>
-                    <input type="text" class="form-control" id="inputNombreEmpresa" 
-                           placeholder="Nombre de la empresa" required>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 form-group-custom">
-                    <label class="form-label-custom">Email</label>
-                    <input type="email" class="form-control" id="inputEmail" placeholder="correo@ejemplo.com">
-                    <div class="invalid-feedback">
-                        Ingresa un correo válido.
-                    </div>
-                </div>
-                
-                <div class="col-md-6 form-group-custom">
-                    <label class="form-label-custom">Teléfono</label>
-                    <input type="tel" class="form-control" id="inputTelefono" placeholder="10 dígitos">
-                    <div class="invalid-feedback">
-                        Ingresa un teléfono válido (10 dígitos).
-                    </div>
-                </div>
-            </div>
-            <div class="spacer-md"></div>
-
-            
             <div id="photoWrapper" class="position-relative">
                 <div id="photoLoader" class="photo-loader d-none">
                     <div class="spinner-border text-blue" style="width:4rem;height:4rem;" role="status"></div>
@@ -427,10 +462,46 @@
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
             </div>
+
+            <h5 class="section-title">Información Personal</h5>
+            
+            <div class="row">
+                <div class="col-md-6 form-group-custom">
+                    <label class="form-label-custom">Nombre Completo *</label>
+                    <input type="text" class="form-control" id="inputName" 
+                           placeholder="Nombre completo" required>
+                </div>
+            
+                <div class="col-md-6 form-group-custom">
+                    <label class="form-label-custom">Empresa *</label>
+                    <input type="text" class="form-control" id="inputNombreEmpresa" 
+                           placeholder="Nombre de la empresa" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-group-custom">
+                    <label class="form-label-custom">Email</label>
+                    <input type="email" class="form-control" id="inputEmail" placeholder="correo@ejemplo.com">
+                    <div class="invalid-feedback">
+                        Ingresa un correo válido.
+                    </div>
+                </div>
+                
+                <div class="col-md-6 form-group-custom">
+                    <label class="form-label-custom">Teléfono</label>
+                    <input type="tel" class="form-control" id="inputTelefono" placeholder="10 dígitos">
+                    <div class="invalid-feedback">
+                        Ingresa un teléfono válido (10 dígitos).
+                    </div>
+                </div>
+            </div>
+            <div class="spacer-md"></div>
+
+            
+            
 
             <div class="spacer-lg"></div>
 
@@ -467,91 +538,91 @@
                 <input type="text" class="form-control" id="inputMotivoDeLaVisita" placeholder="Escribe el motivo">
             </div>
 
-			<div class="spacer-lg"></div>
+            <div class="spacer-lg"></div>
 
-			<div class="d-flex justify-content-between align-items-center mb-3">
-				<h5 class="section-title mb-0">Vehículos (Opcional)</h5>
-				<button type="button" id="btnAgregarVehiculo" class="btn btn-primary btn-sm">
-					<i class="fas fa-car me-1"></i> 
-					<span class="btn-text">Agregar Vehículo</span>
-				</button>
-			</div>
-			<div id="formVehiculoContainer" style="display: none;">
-				<div class="equipment-card">
-					<div class="d-flex justify-content-between align-items-center mb-3">
-						<h6 class="equipment-card-title mb-0">
-							<i class="fas fa-car-side"></i>
-							Detalles del Vehículo
-						</h6>
-						<button type="button" class="btn btn-danger btn-sm" onclick="ocultarVehiculo()">
-							<i class="fas fa-times"></i>
-						</button>
-					</div>
-			
-					<!-- FILA 1 -->
-					<div class="row">
-						<div class="col-md-6 form-group-custom">
-							<label class="form-label-custom">Tipo de Vehículo *</label>
-							<select class="form-select" id="selectTipoVehiculo">
-								<option value="">Seleccione tipo...</option>
-							</select>
-						</div>
-						<div class="col-md-6 form-group-custom">
-							<label class="form-label-custom">Marca *</label>
-							<select class="form-select" id="selectMarcaVehiculo" disabled>
-								<option value="">Seleccione marca...</option>
-							</select>
-						</div>
-					</div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="section-title mb-0">Vehículos (Opcional)</h5>
+                <button type="button" id="btnAgregarVehiculo" class="btn btn-primary btn-sm">
+                    <i class="fas fa-car me-1"></i> 
+                    <span class="btn-text">Agregar Vehículo</span>
+                </button>
+            </div>
+            <div id="formVehiculoContainer" style="display: none;">
+                <div class="equipment-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="equipment-card-title mb-0">
+                            <i class="fas fa-car-side"></i>
+                            Detalles del Vehículo
+                        </h6>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="ocultarVehiculo()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+            
+                    <!-- FILA 1 -->
+                    <div class="row">
+                        <div class="col-md-6 form-group-custom">
+                            <label class="form-label-custom">Tipo de Vehículo *</label>
+                            <select class="form-select" id="selectTipoVehiculo">
+                                <option value="">Seleccione tipo...</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group-custom">
+                            <label class="form-label-custom">Marca *</label>
+                            <select class="form-select" id="selectMarcaVehiculo" disabled>
+                                <option value="">Seleccione marca...</option>
+                            </select>
+                        </div>
+                    </div>
 
-					<!-- FILA 2 -->
-					<div class="row">
-						<div class="col-md-6 form-group-custom">
-							<label class="form-label-custom">Modelo *</label>
-							<select class="form-select" id="selectModeloVehiculo" disabled>
-								<option value="">Seleccione modelo...</option>
-							</select>
-						</div>
-						<div class="col-md-6 form-group-custom">
-							<label class="form-label-custom">Estado *</label>
-							<select class="form-select" id="selectEstadoVehiculo">
-							</select>
-						</div>
-					</div>
+                    <!-- FILA 2 -->
+                    <div class="row">
+                        <div class="col-md-6 form-group-custom">
+                            <label class="form-label-custom">Modelo *</label>
+                            <select class="form-select" id="selectModeloVehiculo" disabled>
+                                <option value="">Seleccione modelo...</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group-custom">
+                            <label class="form-label-custom">Estado *</label>
+                            <select class="form-select" id="selectEstadoVehiculo">
+                            </select>
+                        </div>
+                    </div>
 
-					<!-- FILA 3 -->
-					<div class="row">
-						<div class="col-md-6 form-group-custom">
-							<label class="form-label-custom">Color *</label>
-							<select class="form-select" id="selectColorVehiculo">
-								<option value="">Seleccione...</option>
-								<option value="Blanco">Blanco</option>
-								<option value="Negro">Negro</option>
-								<option value="Gris">Gris</option>
-								<option value="Rojo">Rojo</option>
-								<option value="Azul">Azul</option>
-								<option value="Plateado">Plateado</option>
-								<option value="Otro">Otro</option>
-							</select>
-						</div>
-						<div class="col-md-6 form-group-custom">
-							<label class="form-label-custom">Placas *</label>
-							<input type="text" class="form-control" id="inputPlacasVehiculo" placeholder="ABC-123-A">
-						</div>
-					</div>
-					<div class="d-flex justify-content-end gap-2 mt-3">
-						<button type="button" class="btn btn-secondary" onclick="resetVehiculoForm()">
-							<i class="fas fa-rotate-left me-1"></i> Limpiar
-						</button>
-						<button type="button" class="btn btn-success" onclick="setAddVehiculo()">
-							<i class="fas fa-check me-1"></i> Guardar
-						</button>
-					</div>
-				</div>
-			</div>
-			<div id="div-vehiculos-agregados" class="mt-3"></div>
+                    <!-- FILA 3 -->
+                    <div class="row">
+                        <div class="col-md-6 form-group-custom">
+                            <label class="form-label-custom">Color *</label>
+                            <select class="form-select" id="selectColorVehiculo">
+                                <option value="">Seleccione...</option>
+                                <option value="Blanco">Blanco</option>
+                                <option value="Negro">Negro</option>
+                                <option value="Gris">Gris</option>
+                                <option value="Rojo">Rojo</option>
+                                <option value="Azul">Azul</option>
+                                <option value="Plateado">Plateado</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group-custom">
+                            <label class="form-label-custom">Placas *</label>
+                            <input type="text" class="form-control" id="inputPlacasVehiculo" placeholder="ABC-123-A">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2 mt-3">
+                        <button type="button" class="btn btn-secondary" onclick="resetVehiculoForm()">
+                            <i class="fas fa-rotate-left me-1"></i> Limpiar
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="setAddVehiculo()">
+                            <i class="fas fa-check me-1"></i> Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="div-vehiculos-agregados" class="mt-3"></div>
 
-			<div class="spacer-lg"></div>
+            <div class="spacer-lg"></div>
 
             <div class="spacer-lg"></div>
 
@@ -625,6 +696,142 @@
 
             <div class="spacer-lg"></div>
 
+            <!-- CONDICIONES -->
+            <!-- Video de condiciones, como componente independiente antes de los checkboxes -->
+            <div class="ratio ratio-16x9 mb-3" id="videoCondicionesContainer">
+                <iframe src="" title="Video condiciones" allowfullscreen id="iframeVideoCondiciones"></iframe>
+            </div>
+
+            <!-- Checkbox 1: Reglas de control de ingreso -->
+            <div class="form-group-custom">
+                <div class="d-flex align-items-start" style="gap: 0.5rem;">
+                    <input class=" mt-1 " 
+                           type="checkbox" 
+                           id="checkReglasIngreso" 
+                           required
+                           style="width: 1.1rem; height: 1.1rem; flex-shrink: 0; cursor: pointer;">
+                    <label class="form-check-label" for="checkReglasIngreso" style="margin-bottom: 0;">
+                        He leído 
+                        <a href="#" 
+                           id="linkReglasIngreso" 
+                           class="fw-bold text-decoration-underline" 
+                           style="color:#0d6efd; cursor:pointer;"
+                           data-bs-toggle="modal" 
+                           data-bs-target="#modalReglasIngreso">
+                            reglas de control de ingreso
+                        </a>
+                    </label>
+                </div>
+                <div class="text-danger small mt-1 d-none" id="errorReglasIngreso">
+                    Debes aceptar las reglas de control de ingreso para continuar.
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalReglasIngreso" tabindex="-1" aria-labelledby="modalReglasIngresoLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalReglasIngresoLabel">Reglas de Control de Ingreso</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body d-flex flex-column p-4">
+                            <div class="text-center py-4">
+                                <i class="fas fa-file-pdf" style="font-size:4rem; color: var(--primary-color); opacity:0.7;"></i>
+                                <p class="mt-3 mb-3">Consulta el documento completo de reglas de control de ingreso en el siguiente enlace:</p>
+                                <div class="docs-list d-inline-block text-start" style="min-width:320px;" id="docsListReglasIngreso"></div>
+                            </div>
+
+                            <!-- Mensaje si no hay documento configurado -->
+                            <div id="reglasIngresoSinDatos" style="display:none;">
+                                <p class="text-muted text-center mb-0 py-5">No hay documento de reglas de control de ingreso configurado.</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkbox 2: Aviso de privacidad -->
+            <div class="form-group-custom">
+                <div class="d-flex align-items-start" style="gap: 0.5rem;">
+                    <input class=" mt-1 " 
+                           type="checkbox" 
+                           id="checkCondiciones" 
+                           required
+                           style="width: 1.1rem; height: 1.1rem; flex-shrink: 0; cursor: pointer;">
+                    <label class="form-check-label" for="checkCondiciones" style="margin-bottom: 0;">
+                        He leído y acepto el 
+                        <a href="#" 
+                           id="linkCondicionesServicio" 
+                           class="fw-bold text-decoration-underline" 
+                           style="color:#0d6efd; cursor:pointer;"
+                           data-bs-toggle="modal" 
+                           data-bs-target="#modalCondicionesServicio">
+                            aviso de privacidad
+                        </a>
+                    </label>
+                </div>
+
+                <!-- Grupo de retención de datos -->
+                <div class="mt-3" id="retencionDatosGroup">
+                    <label class="form-label fw-semibold d-block mb-2" style="font-size: 0.9rem;">
+                        ¿Por cuánto tiempo deseas que conservemos tus datos?
+                    </label>
+                    <div class="d-flex flex-wrap" style="gap: 1rem;">
+                        <div class="d-flex align-items-center" style="gap: 0.5rem;">
+                            <input type="radio" name="retencionDatos" id="r0" value="1 semana" class="retencion-radio">
+                            <label for="r0" class="retencion-label mb-0">1 semana</label>
+                        </div>
+                        <div class="d-flex align-items-center" style="gap: 0.5rem;">
+                            <input type="radio" name="retencionDatos" id="r1" value="1 mes" class="retencion-radio">
+                            <label for="r1" class="retencion-label mb-0">1 mes</label>
+                        </div>
+                        <div class="d-flex align-items-center" style="gap: 0.5rem;">
+                            <input type="radio" name="retencionDatos" id="r2" value="3 meses" class="retencion-radio" checked>
+                            <label for="r2" class="retencion-label mb-0">3 meses</label>
+                        </div>
+                        <div class="d-flex align-items-center" style="gap: 0.5rem;">
+                            <input type="radio" name="retencionDatos" id="r3" value="Hasta que yo los elimine manualmente" class="retencion-radio">
+                            <label for="r3" class="retencion-label mb-0">Hasta que yo los elimine manualmente</label>
+                        </div>
+                        <div class="d-flex align-items-center" style="gap: 0.5rem;">
+                            <input type="radio" name="retencionDatos" id="r4" value="Eliminar mis datos personales de forma definitiva" class="retencion-radio">
+                            <label for="r4" class="retencion-label mb-0">Eliminar mis datos personales de forma definitiva</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-danger small mt-1 d-none" id="errorCondiciones">
+                    Debes aceptar el aviso de privacidad para continuar.
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalCondicionesServicio" tabindex="-1" aria-labelledby="modalCondicionesServicioLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalCondicionesServicioLabel">Aviso de Privacidad</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body d-flex flex-column p-4">
+                            <div id="condicionesTexto"></div>
+
+                            <!-- Mensaje si no hay texto configurado -->
+                            <div id="condicionesSinDatos" style="display:none;">
+                                <p class="text-muted text-center mb-0 py-5">No hay aviso de privacidad configurado.</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
             <!-- Submit Button -->
             <div class="text-center">
                 <button type="button" class="btn btn-primary btn-lg" onclick="AlertSendDataUser();return false;">
@@ -659,6 +866,38 @@
     <script src="./ingreso.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Lee el parámetro "tipo_condiciones" de la URL
+            // Valores posibles: 'texto' | 'iframe' | 'documento'
+            const urlParams = new URLSearchParams(window.location.search);
+            const tipoCondiciones = urlParams.get('tipo_condiciones') || 'texto'; // valor por defecto: 'texto'
+
+            const bloques = {
+                texto: document.getElementById('condicionesTexto'),
+                iframe: document.getElementById('condicionesIframe'),
+                documento: document.getElementById('condicionesDocumento')
+            };
+
+            Object.keys(bloques).forEach(key => {
+                if (bloques[key]) {
+                    bloques[key].style.display = (key === tipoCondiciones) ? 'block' : 'none';
+                }
+            });
+
+            const checkCondiciones = document.getElementById('checkCondiciones');
+            const errorCondiciones = document.getElementById('errorCondiciones');
+            if (checkCondiciones) {
+                checkCondiciones.addEventListener('change', function () {
+                    if (this.checked && errorCondiciones) {
+                        errorCondiciones.classList.add('d-none');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        console.log('Este archivo')
         // Valida tipo y tamaño del archivo antes de aceptarlo
         // Máximo: 5 MB | Tipos: PNG, JPG, JPEG únicamente
         function validateImageFile(input, errorDivId) {

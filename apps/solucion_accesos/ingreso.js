@@ -16,6 +16,8 @@ const coloresCat=["Amarillo", "Azul", "Beige", "Blanco", "Cafe", "Crema", "Dorad
       "Morado", "Naranja","Negro", "Plateado", "Rojo", "Rosa", "Verde", "Violeta", "Otro"];
 const equiposAgregados=[]
 let vehiculosAgregados = [];
+let DICCONDITIONS = {};
+let dicDocument = {};
 
 window.onload = function(){
 	setValueUserLocation('ingreso');
@@ -77,7 +79,14 @@ async function cargarConfiguracionModulo() {
         });
 
         const data = await response.json();
+
         aplicarConfiguracion(data);
+        
+        //---Condiciones de servicio
+        DICCONDITIONS = (data && data.response && data.response.data && data.response.data.condiciones_servicio) || {};
+        renderVideoCondiciones(DICCONDITIONS);
+        renderReglasIngreso(DICCONDITIONS);
+        renderAvisoPrivacidad(DICCONDITIONS);
 
     } catch (error) {
         console.error(error);
@@ -153,7 +162,187 @@ function aplicarConfiguracion(data) {
 
     document.getElementById("colIdentificacion").style.display =
         identificacionRequerida ? "block" : "none";
+
+
+
 }
+
+//---Función para setear condiciones de servicio
+function renderVideoCondiciones(dict) {
+    const container = document.getElementById('videoCondicionesContainer');
+    const iframe = document.getElementById('iframeVideoCondiciones');
+    if (!container || !iframe) return;
+
+    const embedUrl = toEmbedUrl(dict.url_condiciones_servicio || '');
+
+    if (embedUrl) {
+        iframe.src = embedUrl;
+        container.style.display = '';
+    } else {
+        iframe.src = '';
+        container.style.display = 'none';
+    }
+}
+
+function renderReglasIngreso(dict) {
+    const grupo = document.getElementById('checkReglasIngreso')?.closest('.form-group-custom');
+    const checkbox = document.getElementById('checkReglasIngreso');
+    const docsList = document.querySelector('#modalReglasIngreso .docs-list');
+    const sinDatos = document.getElementById('reglasIngresoSinDatos');
+
+    const docs = Array.isArray(dict.doc_condiciones_servicio) ? dict.doc_condiciones_servicio : [];
+    if (docs.length > 0) {
+        dicDocument = docs
+
+        renderDocumentos(docsList, docs);
+        if (sinDatos) sinDatos.style.display = 'none';
+        if (docsList) docsList.parentElement.style.display = '';
+        if (grupo) grupo.style.display = '';
+        if (checkbox) checkbox.required = true;
+    } else {
+        if (docsList) docsList.innerHTML = '';
+        if (sinDatos) sinDatos.style.display = 'block';
+        if (grupo) grupo.style.display = 'none';
+        if (checkbox) {
+            checkbox.required = false;
+            checkbox.checked = false;
+        }
+    }
+}
+
+function renderAvisoPrivacidad(dict) {
+    const grupo = document.getElementById('checkCondiciones')?.closest('.form-group-custom');
+    const checkbox = document.getElementById('checkCondiciones');
+    const texto = document.getElementById('condicionesTexto');
+    const sinDatos = document.getElementById('condicionesSinDatos');
+
+    const desc = dict.desc_condiciones_servicio || '';
+    if (desc.trim().length > 0) {
+        if (texto) texto.innerHTML = formatearDescripcion(desc);
+        if (sinDatos) sinDatos.style.display = 'none';
+        if (texto) texto.style.display = '';
+        if (grupo) grupo.style.display = '';
+        if (checkbox) checkbox.required = true;
+    } else {
+        if (texto) {
+            texto.innerHTML = '';
+            texto.style.display = 'none';
+        }
+        if (sinDatos) sinDatos.style.display = 'block';
+        if (grupo) grupo.style.display = 'none';
+        if (checkbox) {
+            checkbox.required = false;
+            checkbox.checked = false;
+        }
+    }
+}
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+function formatearDescripcion(texto) {
+    if (!texto) return '<p class="text-muted mb-0">Sin descripción disponible.</p>';
+    const escapado = escapeHtml(texto);
+    return escapado
+        .split(/\n\s*\n/)
+        .map(parrafo => `<p>${parrafo.replace(/\n/g, '<br>')}</p>`)
+        .join('');
+}
+
+function toEmbedUrl(urlStr) {
+    if (!urlStr) return '';
+    try {
+        const u = new URL(urlStr);
+        const host = u.hostname.replace('www.', '');
+        if (host.includes('youtube.com')) {
+            if (u.pathname.startsWith('/embed/')) return urlStr;
+            const videoId = u.searchParams.get('v');
+            if (videoId) return `https://www.youtube.com/embed/${videoId}`;
+        }
+        if (host.includes('youtu.be')) {
+            const videoId = u.pathname.slice(1);
+            if (videoId) return `https://www.youtube.com/embed/${videoId}`;
+        }
+        if (host.includes('vimeo.com')) {
+            const videoId = u.pathname.split('/').filter(Boolean).pop();
+            if (videoId) return `https://player.vimeo.com/video/${videoId}`;
+        }
+        return urlStr;
+    } catch (e) {
+        return urlStr;
+    }
+}
+
+function renderDocumentos(container, docs) {
+    if (!container) return;
+    container.innerHTML = '';
+    if (!docs.length) {
+        container.innerHTML = '<p class="text-muted">No hay documentos disponibles.</p>';
+        return;
+    }
+    docs.forEach(doc => {
+        if (!doc || !doc.file_url) return;
+        const link = document.createElement('a');
+        link.href = doc.file_url;
+        link.setAttribute('download', '');
+        link.setAttribute('target', '_blank');
+        link.className = 'btn btn-outline-primary d-block mb-2';
+        link.innerHTML = `<i class="fas fa-download me-2"></i> Descargar ${escapeHtml(doc.file_name || 'documento')}`;
+        container.appendChild(link);
+    });
+}
+
+function normalizarValor(texto) {
+    if (!texto) return null;
+    return texto
+        .trim()
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // quita acentos (opcional pero recomendable)
+        .replace(/\s+/g, "_"); // espacios -> guion bajo
+}
+
+
+//----Función para obtener y  actualizar condicones de servicio
+function agregarDatosCondiciones(access_pass) {
+    const checkCondiciones = document.getElementById("checkCondiciones");
+    const checkReglasIngreso = document.getElementById("checkReglasIngreso");
+    const retencionSeleccionada = document.querySelector('input[name="retencionDatos"]:checked');
+
+    // Aceptación de cada condición
+    access_pass.acepto_aviso_privacidad = !!(checkCondiciones && checkCondiciones.checked);
+    access_pass.acepto_reglas_ingreso = !!(checkReglasIngreso && checkReglasIngreso.checked);
+
+    // Tiempo de conservación de datos (viene del selector de meses)
+     access_pass.conservar_datos_por = retencionSeleccionada? normalizarValor(retencionSeleccionada.value): null;
+
+    // Existencia de cada tipo de contenido mostrado al usuario (bandera por concepto)
+    const dict = (typeof DICCONDITIONS !== 'undefined' && DICCONDITIONS) ? DICCONDITIONS : {};
+    const urlEmbedVideo = toEmbedUrl(dict.url_condiciones_servicio || '');
+    const existeVideo = !!urlEmbedVideo;
+    const existeDocumentoReglasIngreso = Array.isArray(dict.doc_condiciones_servicio) && dict.doc_condiciones_servicio.length > 0;
+    const existeDescripcionAvisoPrivacidad = !!(dict.desc_condiciones_servicio && dict.desc_condiciones_servicio.trim().length > 0);
+
+    access_pass.condiciones_video_mostrado = existeVideo;
+    access_pass.condiciones_documento_mostrado = existeDocumentoReglasIngreso;
+    access_pass.condiciones_descripcion_mostrado = existeDescripcionAvisoPrivacidad;
+
+    // --- Nuevo: URLs reales mostradas al usuario ---
+
+    // URL original del video (tal cual viene del diccionario) y la URL de embed usada en el iframe
+    access_pass.url_video_condiciones = dict.url_condiciones_servicio || null;
+    access_pass.url_embed_video_condiciones = urlEmbedVideo || null;
+
+    // URL(s) del/los documento(s) de reglas de ingreso.
+    access_pass.urls_documentos_reglas_ingreso = dicDocument;
+    // Si solo esperas un documento principal, puedes quedarte con el primero:
+    access_pass.url_documento_reglas_ingreso = urlsDocumentosReglasIngreso[0] || null;
+
+    return access_pass;
+}
+
 
 //FUNCION para obtener la informacion extra en base a el parametro id mandado por la url
 function getExtraInformation(){
@@ -460,6 +649,31 @@ function AlertSendDataUser() {
         }
     });
 
+    const checkCondiciones = document.getElementById("checkCondiciones");
+    if (checkCondiciones) {
+        const errorCondiciones = document.getElementById("errorCondiciones");
+        const esVisibleCondiciones = checkCondiciones.offsetParent !== null;
+        if (esVisibleCondiciones && !checkCondiciones.checked) {
+            if (errorCondiciones) errorCondiciones.classList.remove("d-none");
+            isValid = false;
+        } else {
+            if (errorCondiciones) errorCondiciones.classList.add("d-none");
+        }
+    }
+
+    const checkReglasIngreso = document.getElementById("checkReglasIngreso");
+    if (checkReglasIngreso) {
+        const errorReglasIngreso = document.getElementById("errorReglasIngreso");
+        const esVisibleReglasIngreso = checkReglasIngreso.offsetParent !== null;
+        if (esVisibleReglasIngreso && !checkReglasIngreso.checked) {
+            if (errorReglasIngreso) errorReglasIngreso.classList.remove("d-none");
+            isValid = false;
+        } else {
+            if (errorReglasIngreso) errorReglasIngreso.classList.add("d-none");
+        }
+    }
+
+    
     const emailInput = document.getElementById("inputEmail");
     const email = emailInput.value.trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1015,11 +1229,9 @@ function AlertSendDataUser() {
 		if (result.dismiss === Swal.DismissReason.cancel) {
 			return;
 		}
-		console.log('Crear pase clicked!');
 			loadingService()
             let perfil= caseta=="Lobby"? "Internos": "Walkin"
 			let access_pass={
-				
 				ubicaciones:[location],
 				nombre: name,
 				perfil_pase: perfil,
@@ -1038,6 +1250,12 @@ function AlertSendDataUser() {
 				created_from:"auto_registro",
 			}
 			
+
+
+
+            //---Update condiciones de servicio
+            access_pass = agregarDatosCondiciones(access_pass);
+
 			fetch(url + urlScripts, {
 				method: 'POST',
 				body: JSON.stringify({
@@ -1231,67 +1449,103 @@ function AlertSendDataUser() {
 			
 		});
 }
-function setRequestFileImg(type) {
-	let idInput = '';
-	if(type == 'inputCard'){
-		idInput = 'inputFileCard';
-	}else if(type == 'inputUser'){
-		idInput = 'inputFileUser';
-	}
-	const fileInput = document.getElementById(idInput);
-	const file = fileInput.files[0];
+
+async function setRequestFileImg(type) {
+    let idInput = '';
+    if (type == 'inputCard') {
+        idInput = 'inputFileCard';
+    } else if (type == 'inputUser') {
+        idInput = 'inputFileUser';
+    }
+    const fileInput = document.getElementById(idInput);
+    const file = fileInput.files[0];
+
     if (file) {
-		const formData = new FormData();
-		formData.append('File', file);
-		formData.append('field_id', '660459dde2b2d414bce9cf8f');
-		formData.append('is_image', true);
-		formData.append('form_id', 116852);
-		fetch('https://app.linkaform.com/api/infosync/cloud_upload/', {
-			method: 'POST',
-			body: formData
-		})
-		.then(response => response.json())
-		.then(res => {
-			if(res.file !== undefined && res.file !== null){
-				if(type == 'inputCard'){
-					urlImgCard = res.file;
-					fotosNuevaVisita.identificacion.push({"file_name":res.file_name, "file_url":res.file});
-				
-					var canvas = document.getElementById('canvasPhoto');
-					var ctx = canvas.getContext('2d');
-					ctx.clearRect(0, 0, canvas.width, canvas.height);
-					document.getElementById("buttonResetCard").style.display = "inline-block";
-					const errorId = document.getElementById("errorIdentificacion");
-					const idWrapper = document.getElementById("idWrapper");
-					if (errorId) errorId.classList.add("d-none");
-					if (idWrapper) idWrapper.classList.remove("border", "border-danger");
-				
-				}else if(type == 'inputUser'){
-					urlImgUser = res.file;
-					fotosNuevaVisita.foto.push({"file_name":res.file_name, "file_url":res.file});
-					document.getElementById("buttonResetUser").style.display = "inline-block";
-					var canvas = document.getElementById('canvasPhotoUser');
-					var ctx = canvas.getContext('2d');
-					ctx.clearRect(0, 0, canvas.width, canvas.height);
-				
-					const errorFoto = document.getElementById("errorFoto");
-					const fotoWrapper = document.getElementById("fotoWrapper");
-					if (errorFoto) errorFoto.classList.add("d-none");
-					if (fotoWrapper) fotoWrapper.classList.remove("border", "border-danger");
-				}
-				
-			}else{
-				console.log('Error aqui 2');
-				return 'Error';
-			}
-		})
-		.catch(error => {
-			console.log('Error aqui 3');
-			return 'Error';
-		});
-	}else{
-		return 'Error';
-	}
+        const formData = new FormData();
+        formData.append('File', file);
+        formData.append('field_id', '660459dde2b2d414bce9cf8f');
+        formData.append('is_image', true);
+        formData.append('form_id', 116852);
+
+        try {
+            const uploadResponse = await fetch('https://app.linkaform.com/api/infosync/cloud_upload/', {
+                method: 'POST',
+                body: formData
+            });
+            const res = await uploadResponse.json();
+
+            if (res.file !== undefined && res.file !== null) {
+                if (type == 'inputCard') {
+                    urlImgCard = res.file;
+                    fotosNuevaVisita.identificacion.push({ "file_name": res.file_name, "file_url": res.file });
+
+                    var canvas = document.getElementById('canvasPhoto');
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    document.getElementById("buttonResetCard").style.display = "inline-block";
+
+                    const errorId = document.getElementById("errorIdentificacion");
+                    const idWrapper = document.getElementById("idWrapper");
+                    if (errorId) errorId.classList.add("d-none");
+                    if (idWrapper) idWrapper.classList.remove("border", "border-danger");
+
+                    //----Update Get Information IA
+                    const ocrRes = await getOcrInfo(urlImgCard);
+                    if (ocrRes !== 'Error') {
+                        console.log('ocrRes', ocrRes);
+                        // Aquí ya puedes usar los valores de ocrRes para llenar tus inputs
+                        // Ejemplo: document.getElementById('nombre').value = ocrRes.nombre;
+                    }
+
+                } else if (type == 'inputUser') {
+                    urlImgUser = res.file;
+                    fotosNuevaVisita.foto.push({ "file_name": res.file_name, "file_url": res.file });
+                    document.getElementById("buttonResetUser").style.display = "inline-block";
+
+                    var canvas = document.getElementById('canvasPhotoUser');
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    const errorFoto = document.getElementById("errorFoto");
+                    const fotoWrapper = document.getElementById("fotoWrapper");
+                    if (errorFoto) errorFoto.classList.add("d-none");
+                    if (fotoWrapper) fotoWrapper.classList.remove("border", "border-danger");
+                }
+            } else {
+                console.log('Error aqui 2');
+                return 'Error';
+            }
+        } catch (error) {
+            console.log('Error aqui 3', error);
+            return 'Error';
+        }
+    } else {
+        return 'Error';
+    }
+}
+
+//---Función para obtener información apartir de la identificación
+async function getOcrInfo(urlImgCard) {
+    try {
+        const response = await fetch('https://app.linkaform.com/api/infosyncscripts/run/', {
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+            },
+            body: JSON.stringify({
+                "option": "ocr_id",
+                "image_source": [urlImgCard],
+                "script_name": "ocr_docs.py"
+            })
+        });
+        const res = await response.json();
+        console.log('res', res);
+        return res;
+    } catch (error) {
+        console.log('Error IA get Information', error);
+        return 'Error';
+    }
 }
 
 
