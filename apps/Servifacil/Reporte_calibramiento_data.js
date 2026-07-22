@@ -509,6 +509,8 @@ var optionsChart3 = {
 //---Chart Fourth
 //---Chart Fourth (agrupado por departamento)
 
+//---Chart Fourth (agrupado por departamento + toggle en leyenda)
+
 // 1) Datos con su departamento asignado
 const preguntasData = [
     { label: "¿El personal recibió la capacitación del periodo?", value: 18, departamento: "Desarrollo Humano" },
@@ -547,7 +549,7 @@ const departamentoColors = {
     "Servicio a Cliente": "#00BCD4",
 };
 
-// 3) Orden en que aparecen los grupos en el eje Y
+// 3) Orden de los grupos en el eje Y
 const departamentosOrden = [
     "Operaciones", "Mantenimiento", "Sistemas",
     "Desarrollo Humano", "Finanzas", "Servicio a Cliente"
@@ -560,20 +562,30 @@ const preguntasOrdenadas = [...preguntasData].sort((a, b) => {
     return b.value - a.value;
 });
 
-// 5) Un dataset por departamento (null donde no aplica)
-var dataChart4 = {
-    labels: preguntasOrdenadas.map(q => q.label),
-    datasets: departamentosOrden.map(dep => ({
-        label: dep,
-        data: preguntasOrdenadas.map(q => (q.departamento === dep ? q.value : null)),
-        backgroundColor: departamentoColors[dep],
-        borderColor: departamentoColors[dep],
-        borderWidth: 1,
-        borderRadius: 4,
-        barPercentage: 0.85,
-        categoryPercentage: 0.8,
-    }))
-};
+// 5) Estado: qué departamentos están visibles (todos activos al inicio)
+const departamentoVisible = {};
+departamentosOrden.forEach(dep => { departamentoVisible[dep] = true; });
+
+// 6) Reconstruye labels + datasets según el estado de visibilidad
+function buildChartData() {
+    const preguntasVisibles = preguntasOrdenadas.filter(q => departamentoVisible[q.departamento]);
+
+    return {
+        labels: preguntasVisibles.map(q => q.label),
+        datasets: departamentosOrden.map(dep => ({
+            label: dep,
+            data: preguntasVisibles.map(q => (q.departamento === dep ? q.value : null)),
+            backgroundColor: departamentoColors[dep],
+            borderColor: departamentoColors[dep],
+            borderWidth: 1,
+            borderRadius: 4,
+            barPercentage: 0.85,
+            categoryPercentage: 0.8,
+        }))
+    };
+}
+
+var dataChart4 = buildChartData();
 
 var optionsChart4 = {
     indexAxis: 'y',
@@ -591,6 +603,25 @@ var optionsChart4 = {
                 padding: 14,
                 font: { size: 12, family: "'Segoe UI', Arial, sans-serif" },
                 color: '#444',
+                generateLabels: () => {
+                    return departamentosOrden.map((dep) => ({
+                        text: dep,
+                        fillStyle: departamentoColors[dep],
+                        strokeStyle: departamentoColors[dep],
+                        fontColor: departamentoVisible[dep] ? '#444' : '#aaa',
+                        hidden: !departamentoVisible[dep],
+                    }));
+                }
+            },
+            onClick: (evt, legendItem, legend) => {
+                const dep = legendItem.text;
+                departamentoVisible[dep] = !departamentoVisible[dep];
+
+                const chart = legend.chart;
+                const nuevoData = buildChartData();
+                chart.data.labels = nuevoData.labels;
+                chart.data.datasets = nuevoData.datasets;
+                chart.update();
             }
         },
         datalabels: { display: false },
