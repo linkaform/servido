@@ -507,41 +507,72 @@ var optionsChart3 = {
 };
 
 //---Chart Fourth
+//---Chart Fourth (agrupado por departamento)
+
+// 1) Datos con su departamento asignado
+const preguntasData = [
+    { label: "¿El personal recibió la capacitación del periodo?", value: 18, departamento: "Desarrollo Humano" },
+    { label: "¿Las bombas operan sin fallas reportadas?", value: 14, departamento: "Mantenimiento" },
+    { label: "¿Las cámaras de seguridad graban correctamente?", value: 11, departamento: "Sistemas" },
+    { label: "¿El personal porta uniforme completo?", value: 9, departamento: "Desarrollo Humano" },
+    { label: "¿La isla de bombas está limpia y señalizada?", value: 8, departamento: "Operaciones" },
+    { label: "¿La iluminación funciona al 100%?", value: 8, departamento: "Mantenimiento" },
+    { label: "¿El punto de venta opera sin intermitencias?", value: 7, departamento: "Sistemas" },
+    { label: "¿Los respaldos de información están al día?", value: 7, departamento: "Sistemas" },
+    { label: "¿Los expedientes del personal están completos?", value: 6, departamento: "Desarrollo Humano" },
+    { label: "¿Se aplicó la evaluación de clima laboral?", value: 6, departamento: "Desarrollo Humano" },
+    { label: "¿Las facturas se emiten correctamente?", value: 5, departamento: "Finanzas" },
+    { label: "¿La promoción vigente está visible?", value: 5, departamento: "Servicio a Cliente" },
+    { label: "¿El material POP está en buen estado?", value: 5, departamento: "Servicio a Cliente" },
+    { label: "¿Las licencias y permisos están vigentes?", value: 4, departamento: "Operaciones" },
+    { label: "¿Las bitácoras regulatorias están firmadas?", value: 4, departamento: "Operaciones" },
+    { label: "¿El personal saluda y despide al cliente?", value: 4, departamento: "Servicio a Cliente" },
+    { label: "¿Los baños están limpios y abastecidos?", value: 3, departamento: "Operaciones" },
+    { label: "¿Se aplica el programa de lealtad?", value: 3, departamento: "Servicio a Cliente" },
+    { label: "¿Se respetan los protocolos de despacho?", value: 2, departamento: "Operaciones" },
+    { label: "¿Los extintores están vigentes?", value: 2, departamento: "Mantenimiento" },
+    { label: "¿Los cortes de caja cuadran sin diferencias?", value: 1, departamento: "Finanzas" },
+    { label: "¿Los depósitos se realizan en tiempo?", value: 1, departamento: "Finanzas" },
+    { label: "¿Se atienden las quejas en menos de 48 horas?", value: 1, departamento: "Servicio a Cliente" },
+    { label: "¿Se cumple la normativa de protección civil?", value: 1, departamento: "Mantenimiento" },
+];
+
+// 2) Color fijo por departamento
+const departamentoColors = {
+    "Operaciones": "#F44336",
+    "Mantenimiento": "#FF9800",
+    "Sistemas": "#2196F3",
+    "Desarrollo Humano": "#9C27B0",
+    "Finanzas": "#4CAF50",
+    "Servicio a Cliente": "#00BCD4",
+};
+
+// 3) Orden en que aparecen los grupos en el eje Y
+const departamentosOrden = [
+    "Operaciones", "Mantenimiento", "Sistemas",
+    "Desarrollo Humano", "Finanzas", "Servicio a Cliente"
+];
+
+// 4) Ordenar por departamento y, dentro de cada uno, por valor descendente
+const preguntasOrdenadas = [...preguntasData].sort((a, b) => {
+    const depDiff = departamentosOrden.indexOf(a.departamento) - departamentosOrden.indexOf(b.departamento);
+    if (depDiff !== 0) return depDiff;
+    return b.value - a.value;
+});
+
+// 5) Un dataset por departamento (null donde no aplica)
 var dataChart4 = {
-    labels: [
-        "¿El personal recibió la capacitación del periodo?",
-        "¿Las bombas operan sin fallas reportadas?",
-        "¿Las cámaras de seguridad graban correctamente?",
-        "¿El personal porta uniforme completo?",
-        "¿La isla de bombas está limpia y señalizada?",
-        "¿La iluminación funciona al 100%?",
-        "¿El punto de venta opera sin intermitencias?",
-        "¿Los respaldos de información están al día?",
-        "¿Los expedientes del personal están completos?",
-        "¿Se aplicó la evaluación de clima laboral?",
-        "¿Las facturas se emiten correctamente?",
-        "¿La promoción vigente está visible?",
-        "¿El material POP está en buen estado?",
-        "¿Las licencias y permisos están vigentes?",
-        "¿Las bitácoras regulatorias están firmadas?",
-        "¿El personal saluda y despide al cliente?",
-        "¿Los baños están limpios y abastecidos?",
-        "¿Se aplica el programa de lealtad?",
-        "¿Se respetan los protocolos de despacho?",
-        "¿Los extintores están vigentes?",
-        "¿Los cortes de caja cuadran sin diferencias?",
-        "¿Los depósitos se realizan en tiempo?",
-        "¿Se atienden las quejas en menos de 48 horas?",
-        "¿Se cumple la normativa de protección civil?",
-    ],
-    datasets: [{
-        label: 'Respuestas Negativas',
-        data: [18, 14, 11, 9, 8, 8, 7, 7, 6, 6, 5, 5, 5, 4, 4, 4, 3, 3, 2, 2, 1, 1, 1, 1],
-        backgroundColor: '#F44336',
-        borderColor: '#F44336',
+    labels: preguntasOrdenadas.map(q => q.label),
+    datasets: departamentosOrden.map(dep => ({
+        label: dep,
+        data: preguntasOrdenadas.map(q => (q.departamento === dep ? q.value : null)),
+        backgroundColor: departamentoColors[dep],
+        borderColor: departamentoColors[dep],
         borderWidth: 1,
         borderRadius: 4,
-    }]
+        barPercentage: 0.85,
+        categoryPercentage: 0.8,
+    }))
 };
 
 var optionsChart4 = {
@@ -550,7 +581,18 @@ var optionsChart4 = {
     maintainAspectRatio: false,
     interaction: { mode: 'index', intersect: false },
     plugins: {
-        legend: { display: false },
+        legend: {
+            display: true,
+            position: 'top',
+            align: 'start',
+            labels: {
+                boxWidth: 12,
+                boxHeight: 12,
+                padding: 14,
+                font: { size: 12, family: "'Segoe UI', Arial, sans-serif" },
+                color: '#444',
+            }
+        },
         datalabels: { display: false },
         tooltip: {
             backgroundColor: 'rgba(255,255,255,0.95)',
@@ -559,16 +601,18 @@ var optionsChart4 = {
             borderColor: '#ddd',
             borderWidth: 1,
             padding: 10,
+            filter: (item) => item.parsed.x !== null,
             callbacks: {
                 label(ctx) {
                     const v = ctx.parsed.x;
-                    return ` ${v} negativa${v !== 1 ? 's' : ''}`;
+                    return ` ${ctx.dataset.label}: ${v} negativa${v !== 1 ? 's' : ''}`;
                 }
             }
         }
     },
     scales: {
         x: {
+            stacked: true,
             grid: { color: '#e0e0e0', lineWidth: 0.8 },
             border: { display: false },
             ticks: {
@@ -580,6 +624,7 @@ var optionsChart4 = {
             min: 0,
         },
         y: {
+            stacked: true,
             grid: { color: '#e0e0e0', lineWidth: 0.8 },
             border: { display: false },
             ticks: { font: { size: 12, family: "'Segoe UI', Arial, sans-serif" }, color: '#555' }

@@ -310,39 +310,33 @@ function agregarDatosCondiciones(access_pass) {
     const checkCondiciones = document.getElementById("checkCondiciones");
     const checkReglasIngreso = document.getElementById("checkReglasIngreso");
     const retencionSeleccionada = document.querySelector('input[name="retencionDatos"]:checked');
-
     // Aceptación de cada condición
     access_pass.acepto_aviso_privacidad = !!(checkCondiciones && checkCondiciones.checked);
     access_pass.acepto_reglas_ingreso = !!(checkReglasIngreso && checkReglasIngreso.checked);
-
     // Tiempo de conservación de datos (viene del selector de meses)
      access_pass.conservar_datos_por = retencionSeleccionada? normalizarValor(retencionSeleccionada.value): null;
-
     // Existencia de cada tipo de contenido mostrado al usuario (bandera por concepto)
     const dict = (typeof DICCONDITIONS !== 'undefined' && DICCONDITIONS) ? DICCONDITIONS : {};
     const urlEmbedVideo = toEmbedUrl(dict.url_condiciones_servicio || '');
     const existeVideo = !!urlEmbedVideo;
     const existeDocumentoReglasIngreso = Array.isArray(dict.doc_condiciones_servicio) && dict.doc_condiciones_servicio.length > 0;
     const existeDescripcionAvisoPrivacidad = !!(dict.desc_condiciones_servicio && dict.desc_condiciones_servicio.trim().length > 0);
-
     access_pass.condiciones_video_mostrado = existeVideo;
     access_pass.condiciones_documento_mostrado = existeDocumentoReglasIngreso;
     access_pass.condiciones_descripcion_mostrado = existeDescripcionAvisoPrivacidad;
-
     // --- Nuevo: URLs reales mostradas al usuario ---
-
     // URL original del video (tal cual viene del diccionario) y la URL de embed usada en el iframe
     access_pass.url_video_condiciones = dict.url_condiciones_servicio || null;
     access_pass.url_embed_video_condiciones = urlEmbedVideo || null;
-
     // URL(s) del/los documento(s) de reglas de ingreso.
     access_pass.urls_documentos_reglas_ingreso = dicDocument;
+    // Texto real de la descripción del aviso de privacidad mostrada al usuario
+    access_pass.descripcion_condiciones_servicio = existeDescripcionAvisoPrivacidad
+        ? dict.desc_condiciones_servicio.trim()
+        : null;
     // Si solo esperas un documento principal, puedes quedarte con el primero:
-    access_pass.url_documento_reglas_ingreso = urlsDocumentosReglasIngreso[0] || null;
-
     return access_pass;
 }
-
 
 //FUNCION para obtener la informacion extra en base a el parametro id mandado por la url
 function getExtraInformation(){

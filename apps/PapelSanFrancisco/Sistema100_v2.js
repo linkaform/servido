@@ -15,6 +15,11 @@ window.onload = function(){
 
     drawTableElement('tableFirst', dataTable1, columnsTable1, undefined, configTable1);
 
+    document.getElementById('filterMes').addEventListener('change', (event) => {
+      const valor = event.target.value; // formato "YYYY-MM", ej. "2026-07"
+      console.log(valor);
+    });
+    
 
     /*
     createElements(dicReportContext);
