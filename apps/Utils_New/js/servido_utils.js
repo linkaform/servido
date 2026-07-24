@@ -1287,26 +1287,24 @@ function getSessionNew(location = null) {
     const DEMO = getParameterURL('demo');
     const EMBEDED = getParameterURL('embeded');
 
-    // -------- DEMO (se mantiene igual)
     if (DEMO != "" && DEMO != null) {
         return 'Demo';
-    // -------- ACTIVO 
-    } else if (useFallback === false) {
-        return 'Offline';
-    // -------- OFFLINE / UI CONTROL
-    } else {
-        if (location != 'login' || location == null) {
-            // --- Si NO es embeded
-            if (EMBEDED == "" || EMBEDED == null) {
-                setRedirectionLogin();
-            } else {
-                if (useFallback === true) {
-                    return 'Active';
-                }
-            }
+    }
+
+    // -------- Sin sesión válida (cookies expiradas o inexistentes)
+    if (useFallback == false) {
+        if (location != 'login' && (EMBEDED == "" || EMBEDED == null)) {
+            setRedirectionLogin();
         }
         return 'Offline';
     }
+
+    // -------- Con sesión válida
+    if (location != 'login') {
+        return 'Active';   // ← ahora SIEMPRE retorna 'Active' con sesión válida, sea embeded o no
+    }
+
+    return 'Offline';
 }
 
 //-Funciona para Ejecutar flujo de actualización nuevo

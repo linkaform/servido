@@ -516,6 +516,76 @@ canvas {
     filter:invert(0.35);
 }
 
+.btn-execution{
+    height:42px;
+    padding:0 18px;
+    border:none;
+    border-radius:12px;
+    background:#155DFC;
+    color:#FFF;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background 0.2s;
+    display: block;
+}
+
+.btn-execution:hover{
+    background:#0d4bd6;
+}
+
+/* =========================
+   SKELETON LOADER
+========================= */
+
+@keyframes skeleton-loading {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* Evita que el shimmer se salga de las esquinas redondeadas de la tarjeta */
+.chart-card,
+.table-card {
+  overflow: hidden;
+}
+
+/* Oculta el contenido real (canvas / tabla) mientras carga */
+.chart-wrapper.is-loading > canvas,
+.table-wrapper.is-loading > div {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Overlay gris con efecto shimmer sobre el wrapper */
+.chart-wrapper.is-loading::before,
+.table-wrapper.is-loading::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #e2e2e2 25%, #f0f0f0 37%, #e2e2e2 63%);
+  background-size: 400% 100%;
+  animation: skeleton-loading 1.4s ease infinite;
+}
+
+/* Chips de progreso (Resultado Mensual, % / %, etc.) en modo skeleton */
+.section-progress-blue.is-loading,
+.section-progress-brown.is-loading,
+.section-progress-grey.is-loading,
+.section-progress-orange.is-loading,
+.section-progress-green.is-loading {
+  color: transparent !important;
+  background: linear-gradient(90deg, #e2e2e2 25%, #f0f0f0 37%, #e2e2e2 63%) !important;
+  background-size: 400% 100%;
+  animation: skeleton-loading 1.4s ease infinite;
+}
+
+.item-placeholder{
+    color:#999;
+    font-style:italic;
+}
+
 /* =========================
    TABLET
 ========================= */

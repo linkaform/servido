@@ -22,7 +22,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
 </head>
 <body>
-	<header class="header-style">
+    <header class="header-style">
         <container class="container-header">  
             <container class="container-text">
                 <img  class="logo-img" src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/68600/6076166dfd84fa7ea446b917/2026-06-08T16:09:22.png" style="background: url(<path-to-image>) lightgray 50% / contain no-repeat;" > 
@@ -37,22 +37,20 @@
                     <span class="icon">📅</span>
                     <input type="month" class="month-input" id="filterMes" value="2026-07">
                 </div>
-
                 <!-- Fábrica -->
                 <div class="dropdown" id="filterFabrica">
-                    <button class="dropdown-btn filters-fabrica" data-value="Guadalajara">
+                    <button class="dropdown-btn filters-fabrica" data-value="">
                         <span class="icon">🏭</span>
-                        <span class="selected-text">Guadalajara</span>
+                        <span class="selected-text">Seleccione planta</span>
                         <span class="arrow">⌄</span>
                     </button>
-
                     <div class="dropdown-menu">
-                        <div class="item" data-value="Guadalajara">Guadalajara</div>
-                        <div class="item" data-value="Monterrey">Monterrey</div>
-                        <div class="item" data-value="CDMX">CDMX</div>
-                        <div class="item" data-value="Querétaro">Querétaro</div>
                     </div>
                 </div>
+                <!-- Botón Ejecución (oculto por defecto) -->
+                <button id="buttonExecution" class="btn-execution" style="display:none;">
+                    Ejecutar
+                </button>
             </container>
         </container>   
     </header>
@@ -131,8 +129,8 @@
                         <div class="chart-header">
                             <div class="chart-title">Accidentes por Planta</div>
                             <div class="chart-toggle-group">
-                                <button class="chart-toggle-btn" data-type="barras" onclick="switchChart('barras')">Barras</button>
-                                <button class="chart-toggle-btn active" data-type="tendencia" onclick="switchChart('tendencia')">Tendencia</button>
+                                <button id="btnBarras" class="chart-toggle-btn" data-type="barras">Barras</button>
+                                <button id="btnTendencia" class="chart-toggle-btn active" data-type="tendencia">Tendencia</button>
                             </div>
                         </div>
                         <div class="chart-wrapper chart-wrapper-large">
@@ -203,7 +201,7 @@
 
     </container>
 	<!-- Bootstrap core JavaScript-->
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 	
     <!--Chart-->
