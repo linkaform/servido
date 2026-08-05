@@ -85,7 +85,7 @@ while getopts 'l:r:dm:ca:bh:f:p' opt; do
      #attach to server
      Docker_Command=manual
      echo $OPTARG
-     docker-compose up -d $OPTARG
+     docker compose up -d $OPTARG
      docker exec -it $OPTARG bash
      echo "Docker_Command=manual" >>.env
     ;;
@@ -134,9 +134,9 @@ _build(){
   if [[ $FLUSH == 1 ]]; then
     docker image rm -f linkaform/servido:latest
     docker image rm -f linkaform/servido:develop
-    docker-compose -f docker-prod.yml build --no-cache
+    docker compose -f docker-prod.yml build --no-cache
   else
-    docker-compose -f docker-prod.yml build
+    docker compose -f docker-prod.yml build
     echo "3"
   fi
   docker push linkaform/servido:latest
