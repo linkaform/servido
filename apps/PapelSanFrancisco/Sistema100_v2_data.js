@@ -390,8 +390,8 @@ var optionsChart1 = {
                 color: '#888',
                 callback: (val) => val.toFixed(2) + '%',
             },
-            min: 60,
-            max: 95,
+            min: -20,
+            max: 100,
         }
     },
     layout: {
@@ -1059,7 +1059,7 @@ var optionsChart6 = {
                     ? ((total / maxPuntaje) * 100).toFixed(0)
                     : 0;
 
-                return `${total} / ${maxPuntaje} (${porcentaje}%)`;
+                return `${total.toFixed(2)} / ${maxPuntaje} (${porcentaje}%)`;
             }
         },
     },
@@ -1227,7 +1227,7 @@ function getOptionsComplianceTrend(minVal, maxVal) {
                     label(ctx) {
                         const v = ctx.parsed.y;
                         if (v === null || v === undefined) return null;
-                        return ` ${ctx.dataset.label}: ${v.toFixed(2)}%`;
+                        return ` ${ctx.dataset.label}: ${v.toFixed(2)}`;
                     },
                     afterBody(ctxArray) {
                         const v2025 = ctxArray.find(c => c.dataset.label === 'Año 2025')?.parsed.y;
@@ -1236,7 +1236,7 @@ function getOptionsComplianceTrend(minVal, maxVal) {
                         const diff = (v2026 - v2025).toFixed(2);
                         const arrow = diff > 0 ? '▲' : diff < 0 ? '▼' : '—';
                         const sign = diff > 0 ? '+' : '';
-                        return ['', ` Diferencia: ${arrow} ${sign}${diff}%`];
+                        return ['', ` Diferencia: ${arrow} ${sign}${diff}`];
                     }
                 }
             }
@@ -1266,7 +1266,7 @@ function getOptionsComplianceTrend(minVal, maxVal) {
                     display: true,
                     font: { size: 10, family: "'Segoe UI', Arial, sans-serif" },
                     color: '#aaa',
-                    callback: (val) => val.toFixed(2) + '%',
+                    callback: (val) => val.toFixed(2),
                 },
                 min: minVal,
                 max: maxVal,
@@ -1278,9 +1278,11 @@ function getOptionsComplianceTrend(minVal, maxVal) {
     };
 }
 
-let optionsChart7 = getOptionsComplianceTrend(85, 100);
-let optionsChart8 = getOptionsComplianceTrend(20, 100);
-let optionsChart9 = getOptionsComplianceTrend(60, 90);
+// Rangos ajustados al maximo real de puntos de cada seccion (Orden y limpieza
+// 25, Capacitacion 15, Medio ambiente 10) en vez del 0-100% del demo original.
+let optionsChart7 = getOptionsComplianceTrend(-5, 25);
+let optionsChart8 = getOptionsComplianceTrend(-5, 15);
+let optionsChart9 = getOptionsComplianceTrend(-5, 10);
 
 
 const totalsPlugin = {

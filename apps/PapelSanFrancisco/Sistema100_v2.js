@@ -250,6 +250,20 @@ function pintarCatalogoDropdown(data, dropdownId){
     });
 }
 
+function pintarResumen(summary) {
+    if (!summary) return;
+    const setText = (id, text) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+    };
+    setText('chipResumenEjecutivo', `Resultado Mensual : ${summary.resultado_mensual}%`);
+    setText('chipSeguridadPorcentaje', `${summary.seguridad.obtenido}% / ${summary.seguridad.max}%`);
+    setText('chipSeguridadAccidentes', `Accidentes en el mes: ${summary.accidentes_en_el_mes}`);
+    setText('chipOrdenLimpieza', `${summary.orden_limpieza.obtenido}% / ${summary.orden_limpieza.max}%`);
+    setText('chipCapacitacion', `${summary.capacitacion.obtenido}% / ${summary.capacitacion.max}%`);
+    setText('chipMedioAmbiente', `${summary.medio_ambiente.obtenido}% / ${summary.medio_ambiente.max}%`);
+}
+
 async function getInformation(dicAditional = {}){
     const demo = getParameterURL('demo');
     const scriptId = getParameterURL('script_id');
@@ -276,16 +290,40 @@ async function getInformation(dicAditional = {}){
         const responseRequest = await sendRequestReportNew(scriptId, dicAdional);
         if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
             const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
+
+            pintarResumen(data.response_summary);
+
+            if (data.response_chart_first) {
+              drawChartElement('chartFirst', 'line', data.response_chart_first, optionsChart1, undefined, true);
+            }
+            if (data.response_chart_second) {
+              drawChartElement('chartSecond', 'bar', data.response_chart_second, optionsChart2, undefined, true);
+            }
+            if (data.response_chart_third) {
+              drawChartElement('chartThird', 'bar', data.response_chart_third, optionsChart3, undefined, true);
+            }
+            if (data.response_table_first) {
+              drawTableElement('tableFirst', data.response_table_first, columnsTable1, undefined, configTable1);
+            }
             if (data.response_chart_fourth) {
               drawChartElement('chartFourth', 'line', data.response_chart_fourth, optionsChart4, undefined,  true);
             }
             if (data.response_chart_fiveth) {
                 dataChartA = data.response_chart_fiveth.chart5A ? data.response_chart_fiveth.chart5A : {};
-                dataChartB = data.response_chart_fiveth.chart5A ? data.response_chart_fiveth.chart5A : {};
+                dataChartB = data.response_chart_fiveth.chart5B ? data.response_chart_fiveth.chart5B : {};
                 drawChartElement('chartFiveth', 'line', data.response_chart_fiveth.chart5A, optionsChart5A, undefined,  true);
             }
             if (data.response_chart_sixth) {
               drawChartElement('chartSixth', 'bar', data.response_chart_sixth, optionsChart6, undefined,  true);
+            }
+            if (data.response_chart_seventh) {
+              drawChartElement('chartSeventh', 'line', data.response_chart_seventh, optionsChart7, undefined, true);
+            }
+            if (data.response_chart_eigth) {
+              drawChartElement('chartEigth', 'line', data.response_chart_eigth, optionsChart8, undefined, true);
+            }
+            if (data.response_chart_nineth) {
+              drawChartElement('chartNineth', 'line', data.response_chart_nineth, optionsChart9, undefined, true);
             }
         }
         ocultarLoaders(); 
