@@ -1,6 +1,7 @@
 #FROM python:3.7.10-stretch as develop
 FROM python:3.7.16-bullseye as develop
 
+COPY ./docker/etc.apt/sources.list /etc/apt/
 
 RUN apt-get update && \
     apt-get install -y \
