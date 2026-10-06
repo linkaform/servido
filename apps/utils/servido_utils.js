@@ -200,7 +200,6 @@ function getCompanyLogo(userParentId){
   document.getElementById("image_log").setAttribute("src", "https://f001.backblazeb2.com/file/lkf-media/company_pictures/company_pic_"+userParentId+".thumbnail")
   document.getElementById("image_log").setAttribute("width","125");
   document.getElementById("image_log").setAttribute("height","75");
-
 }
 
 function changeColor() {
@@ -243,6 +242,25 @@ function closeSession(){
   location.reload();
 }
 
+function setCloseSession(argument) {
+    console.log("SALIRR")
+    localStorage.setItem('cerrarSesion', Date.now());
+    closeSession();
+    // redirectionUrl('login',false, true);
+    // let protocol = window.location.protocol;
+    // let host = window.location.host;
+    // window.location.href =`${protocol}//${host}/solucion_accesos/login.html`;
+
+}
+
+function validSession(user, userJwt){
+    if(user =='' && userJwt =='' ){
+        let protocol = window.location.protocol;
+        let host = window.location.host;
+        let urlNew = `${protocol}//${host}/solucion_accesos/login.html`
+        window.location.href =urlNew
+    }
+} 
 
 ///-----STYLE
 function getPAlleteColors(pallete,number){
@@ -275,7 +293,6 @@ function getPAlleteColors(pallete,number){
   }else if(pallete == 13){
     arrayColors = chroma.scale(["#007CB3", "#EFB03B"]).mode('lch').colors(number);
   }
-
   return arrayColors;
 }
 
@@ -525,6 +542,39 @@ function objLength(err,data){
     return objectCount
 }
 
+function formatNumber(num) {
+    return String(num).padStart(2, '0');
+} 
+
+function onChangeAmpmLabel(idHora, labelId){
+    let selectHora = document.getElementById(idHora)
+    if(selectHora.value > String(12) && selectHora.value < String(23)){
+        $('#'+labelId).text('PM')
+    }else{
+        $('#'+labelId).text('AM')
+    }
+    $('#'+labelId).text('hrs')
+}
+
+function iniciarSelectHora(hr, min, lab){
+    let selHora = document.getElementById(hr)
+    let selMin = document.getElementById(min)
+    let label = document.getElementById(lab)
+
+    selMin.innerHTML=""
+    selHora.innerHTML=""
+    for (let i =0; i<60; i++){
+        selMin.innerHTML += '<option value="'+formatNumber(i)+'">'+formatNumber(i)+'</option>';
+    }
+    for (let i = 0; i < 24; i++){
+        selHora.innerHTML += '<option value="'+formatNumber(i)+'">'+formatNumber(i)+'</option>';
+    }
+    selMin.value='00'
+    selHora.value='00'
+    $('#'+lab).text('hrs')
+
+}
+
 function errorAlert(data, title = "Error", type="warning"){
     if(data.hasOwnProperty("json")){
         let errores=[]
@@ -662,9 +712,10 @@ function successMsg(title, text, type = "success"){
     });
 }
 
-function loadingService(){
+function loadingService(text ="Procesando...", html=""){
     Swal.fire({
-        title: 'Procesando...',
+        title: text,
+        html: html, // Icono con animación
         allowOutsideClick: false,
         onBeforeOpen: () => {
             Swal.showLoading();
@@ -703,6 +754,14 @@ function propiedadesVacias(objeto) {
     return array; // Retorna las propiedades vacias
 }
 
+function eliminarObjetosConPropiedadesVacias(array) {
+    return array.filter(obj => {
+        // Verificar si cada propiedad del objeto no está vacía
+        return Object.values(obj).every(value => {
+            return value !== "" && value !== null && value !== undefined && value.toString().trim() !== "";
+        });
+    });
+}
 
 function formatText(text) {
     let replacedText = text.replace(/_/g, ' ');
@@ -742,9 +801,13 @@ function formatearFechaHora(fechaHora) {
 
 
 function capitalizeFirstLetter(text) {
-    if (text.length > 0) {
-        const capitalizedText = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-        return capitalizedText
+    if(text){
+        if (text.length > 0) {
+            const capitalizedText = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+            return capitalizedText
+        }
+    }else{
+        return ""
     }
 }
 
@@ -752,6 +815,7 @@ function capitalizeFirstLetter(text) {
 function getInputsValueByClass(classInput){
     let data = {};
     let elements = document.getElementsByClassName(classInput)
+    console.log("QUE PASAA",elements)
     for (let i = 0; i < elements.length; i++) {
         let id = elements[i].id;
         let value = elements[i].value;
@@ -764,8 +828,6 @@ function getInputsValueByClass(classInput){
             }
         } else if(tag == 'img'){
             data[id]=elements[i].src
-            
-
         }
         else{
             data[id] = value;
@@ -777,8 +839,10 @@ function getInputsValueByClass(classInput){
 function cleanCatalag(catalogsId){
     for (let cat of catalogsId){
         let selectCat = document.getElementById(cat)
-        selectCat.innerHTML=""
-        selectCat.value=""
+        if(selectCat){
+            selectCat.innerHTML=""
+            selectCat.value=""
+        }
     }
 }
 
@@ -791,12 +855,12 @@ function eliminarPropiedadesVacias(obj) {
     return obj;
 }
 
-async function cargarCatalogos(bodys=[]) {
+async function cargarCatalogos(bodys=[], loading=true) {
     let failedRequests=[]
     let format=[]
     let requests=[]
     if(bodys.length>0){
-        loadingService()
+        if(loading)loadingService()
         for (let body of bodys){
             requests.push({
                 url: url + urlScripts,
@@ -858,4 +922,213 @@ async function cargarCatalogos(bodys=[]) {
         }
     }
     return {format,failedRequests}
+}
+
+
+
+function getDataGrupoRepetitivo(divPadre,inputsHijos , cantidadInputs){
+    let array=[]
+    let divP = document.getElementById(divPadre);
+    let inputs = divP.querySelectorAll(inputsHijos);
+    for (let i = 0; i < inputs.length; i += cantidadInputs) { // Incrementar de dos en dos
+        const datoInput1 = inputs[i].value; // Input
+        const dataInput2 = inputs[i + 1].value; // Select
+        let objTemporal={}
+        if (datoInput1 && dataInput2) { // Verificar que el input no esté vacío
+            if(inputsHijos=='.persona-div-nuevo'|| inputsHijos=='.persona-div-editar'){
+                objTemporal.nombre_completo= datoInput1;
+                objTemporal.tipo_persona= dataInput2;
+            }
+            if(inputsHijos=='.dano-div-nuevo' ||inputsHijos=='.dano-div-editar'){
+                objTemporal.responsable_accion= datoInput1;
+                objTemporal.acciones_tomadas= dataInput2;
+            }
+             if(inputsHijos=='.deposito-nuevo' ||inputsHijos=='.deposito-editar'){
+                objTemporal.tipo_deposito= datoInput1;
+                objTemporal.cantidad= dataInput2;
+            }
+            if(inputsHijos=='.com-div-nuevo' ||inputsHijos=='.com-div-nuevo'){
+                objTemporal.tipo_comentario= datoInput1;
+                objTemporal.comentario_pase= dataInput2;
+            }
+            if(inputsHijos=='.area-div-nuevo' ||inputsHijos=='.area-div-nuevo'){
+                objTemporal.nombre_area= datoInput1;
+                objTemporal.commentario_area= dataInput2;
+            }
+            array.push(objTemporal); // Agregar el objeto al array
+        }
+    }
+    return array
+}
+
+function esLink(url) {
+    const regex = /^(https?:\/\/(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[a-zA-Z0-9-._~:?#&=]*$)?/;
+    return regex.test(url);
+}
+
+function hideInMobile(type="User"){
+    let mobile=""
+    mobile = getMobileOperatingSystem()
+    console.log("Tipo de dispositivo = ",mobile, type)
+    if(mobile!=="iOS"){
+        $("#buttonTake"+type).show();
+    }else{
+        $("#buttonTake"+type).hide();
+    }
+}
+
+//FUNCION obtener la imagen del canvas
+function getScreen(type, faceMode='user'){
+    
+    if(!flagVideoUser){
+        flagVideoUser = true;
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: faceMode }})
+            .then(function(stream) {
+                let video = document.createElement('video');
+                video.style.width = '200px';
+                video.style.height = '225px';
+                document.getElementById('container'+type).appendChild(video);
+                video.srcObject = stream;
+                video.play();
+                let canvas = document.getElementById('canvasPhoto'+type);
+                let context = canvas.getContext('2d');
+                //----Take Photo
+                $("#buttonTake"+type).attr('disabled','disabled');
+                $("#buttonTake"+type).hide();
+                $("#buttonSave"+type).show();
+                document.getElementById('buttonSave'+type).addEventListener('click', function() {
+                    setTranslateImage(context, video, canvas, type)
+                    if(type == 'User'){
+                        $("#fotografiaActual img").hide();
+                        $("#fotografiaActual p").css("visibility", "hidden");
+                    }else if (type == 'Card'){
+                        $("#identificacionActual img").hide();
+                        $("#identificacionActual p").css("visibility", "hidden");
+                    }
+                });
+                flagVideoUser=false
+            })
+            .catch(function(error) {
+                console.error('Error al acceder a la cámara:', error);
+                errorAlert("Error al acceder a la cámara")
+            });
+        } else {
+            alert('Lo siento, tu dispositivo no soporta acceso a la cámara.');
+        }
+    }
+}
+
+function setTranslateImage(context, video, canvas, type){
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    let photoUser = document.getElementById('img'+type);
+    photoUser.src = canvas.toDataURL('image/png');
+    photoUser.style.display = 'block';
+    video.pause();
+    video.srcObject.getTracks().forEach(function(track) {
+        track.stop();
+    });
+    video.style.display = 'none';
+    ///-- Save Input
+    canvas.toBlob( (blob) => {
+        const file = new File( [ blob ], "image"+type+".png" );
+        const dT = new DataTransfer();
+        dT.items.add( file );
+        document.getElementById("inputFile"+type).files = dT.files;
+    } );
+    //-----Rquest Photo
+    const flagBlankUser = isCanvasBlank(document.getElementById('canvasPhoto'+type));
+    if(!flagBlankUser){
+        setTimeout(() => {
+            setRequestFileImg('input'+type, type);
+        }, "1000");
+    }
+    //-----Clean ELement
+    $("#buttonSave"+type).hide();
+}
+//FUNCION validar que el canvas este limpio
+function isCanvasBlank(canvas) {
+    const context = canvas.getContext('2d');
+    const pixelBuffer = new Uint32Array(
+        context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+    );
+    return !pixelBuffer.some(color => color !== 0);
+}
+
+function validarFechasConHora(fechaV, fechaH) {
+      fecha1 = new Date(fechaV.replace(' ', 'T')+':00');
+      fecha2 = fechaH ? new Date(fechaH.replace(' ', 'T')+':00') : null;
+      if (isNaN(fecha1.getTime())) {
+        return { valido: false, mensaje: "La fecha de visita no es una fecha válida." };
+      }
+
+      // Verificar si la fecha de visita no es anterior a ahora (fecha y hora)
+      const ahora = new Date();
+      if (fecha1 < ahora) {
+        return { valido: false, mensaje: "La fecha de visita no puede ser anterior a la fecha y hora actual." };
+      }
+
+      // Si hay una fecha de "hasta", verificar que sea válida y posterior a la fecha de visita
+      if (fecha2) {
+        if (isNaN(fecha2.getTime())) {
+          return { valido: false, mensaje: "La fecha hasta no es una fecha válida." };
+        }
+        if (fecha2 < fecha1) {
+          return { valido: false, mensaje: "La fecha hasta debe ser posterior a la fecha de visita." };
+        }
+      }
+
+      // Si todas las validaciones pasan, las fechas y horas son válidas
+      return { valido: true };
+}
+
+// Ejemplo de uso
+const objeto = {
+  fecha1: '2024-11-30T01:13:00', // Fecha y hora de visita
+  fecha2: '2024-12-05T01:13:00'    // Fecha y hora de hasta (opcional)
+};
+
+
+function limpiarInputsPorClase(clase) {
+        // Selecciona todos los elementos con la clase especificada
+    $('.' + clase).each(function() {
+        if ($(this).is('input[type="text"],input[type="tel"], input[type="password"], input[type="email"], input[type="number"], input[type="checkbox"], input[type="radio"],input[type="date"]')) {
+            $(this).val(''); // Limpia el valor de los inputs de texto, número, etc.
+            $(this).prop('checked', false); // Limpia los checkboxes y radios
+        } else if ($(this).is('select')) {
+            $(this).prop('selectedIndex', 0); // Restablece el valor del select a la opción por defecto
+        } else if ($(this).is('textarea')) {
+            $(this).val(''); // Limpia el contenido del textarea
+        }
+    });
+    $('.'+clase).prop('disabled', false);
+    $("#fechaVisitaOA").val('')
+
+}
+
+function formatearTelefono(id) {
+    const input = document.getElementById(id);
+    let tel = input.value.replace(/(\d{4})(\d{4})(\d{2})/, '$1 $2 $3');
+    input.value = tel
+}
+
+function desformatearTelefono(telefonoFormateado) {
+    return telefonoFormateado.replace(/\s+/g, '');  // Elimina todos los espacios
+}
+
+
+function getMobileOperatingSystem() {
+  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      // Windows Phone debe ir primero porque su UA tambien contiene "Android"
+     if (/windows phone/i.test(userAgent)) {
+        return "Windows Phone";
+     }
+     if (/android/i.test(userAgent)) {
+        return "Android";
+    }
+         if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return "iOS";
+    }
+
+    return "desconocido";
 }

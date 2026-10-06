@@ -17,9 +17,14 @@ let colors = getPAlleteColors(12,0)
 let casetaOcupadaFecha =""
 
 window.onload = function(){
-    user = getCookie("userId");
+    user = getCookie("userId_soter");
+    userJwt=getCookie('userJwt_soter');
+    validSession(user, userJwt);
+    
+
     setValueUserLocation('turnos');
     getAllData(getCookie("userCaseta"),getCookie("userLocation"),false);
+    getStats(getCookie("userCaseta"),getCookie("userLocation"),false);
     changeButtonColor();
     customNavbar(getValueUserLocation(), getStatusTurn());
     drawTableNotas('tableGuardiasApoyo',columsDataGuardiasApoyo,[], "420px");
@@ -27,10 +32,10 @@ window.onload = function(){
     drawTableSelect('tableAgregarGuardiaApoyo',columsAgregarGuardiaApoyo, [],"360px",1000);
     date = new Date().toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"});
     $('#todayDateText').append($('<div class="myDateClass"> '+ date +'</div>'));
-    $("#textName").html(getCookie('userName'));
+    $("#textName").html(getCookie('userName_soter'));
     //$("#textPosition").text(getCookie('userPosition'));
-    $("#textEmail").text(getCookie('userEmail'));
     $("#imgProfilePic").attr("src", localStorage.getItem("imagenURL") /*getCookie('userImg')*/);
+    $("#textEmail").text(getCookie('userEmail'));
     $("#textUbicacion").html();
     $("#buttonCambiarCaseta").show();
     $("#loadingButtonCaseta").hide();
@@ -114,8 +119,8 @@ function getNotes(){
 
 
 function cambiarImagenGuardia(){
-    let userId= getCookie('userId')
-    userJwt=getCookie('userJwt')
+    let userId= getCookie('userId_soter')
+    userJwt=getCookie('userJwt_soter')
     let input = document.getElementById('inputFileUser');
     input.click();
     
@@ -213,7 +218,7 @@ function getAllData(area="", location="", loading=false){
                     dataTableGuardiasApoyo=[]
                     if(data.support_guards.length > 0){
                         for(let guard of data.support_guards){
-                            if(guard.user_id.toString() !==  getCookie('userId').toString()){
+                            if(guard.user_id.toString() !==  getCookie('userId_soter').toString()){
                                 dataTableGuardiasApoyo.push({name:guard.name, status: '', img: guard.picture? guard.picture :'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1', 
                                 fechaInicio: '', id:guard.user_id})
 
@@ -222,7 +227,7 @@ function getAllData(area="", location="", loading=false){
                     }else{
                         dataTableGuardiasApoyo = []
                     }
-                    let userName=getCookie('userName')
+                    let userName=getCookie('userName_soter')
 
                     /*if(getCookie('userCaseta') !== data.location.area){
                         getNotes();
@@ -290,6 +295,54 @@ function getAllData(area="", location="", loading=false){
     });
 }
 
+function getStats(area = "", location = "", loading = false) {
+    if (loading) {
+        loadingService();
+    }
+
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'get_stats.py',
+            option: 'get_stats',
+            area: area,
+            location: location,
+            page: 'Turnos'
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userJwt
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(res => {
+        if (res.success) {
+            const data = res.response.data;
+
+            // Actualización de valores en el DOM
+            $("#textPersonalDentro").text(data.in_invitees);
+            $("#textArticulosConsesionados").text(data.articulos_concesionados);
+            $("#textIncidentesPendientes").text(data.incidentes_pendites);
+            $("#textVehiculosEstacionados").text(data.total_vehiculos_dentro);
+            $("#textGafetesPendientes").text(data.gafetes_pendientes);
+        } else {
+            console.error('Error en los datos recibidos:', res.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error en fetch:', error.message || error);
+    })
+    .finally(() => {
+        if (loading) {
+            Swal.close(); // Cierra el servicio de carga si estaba activo
+        }
+    });
+}
 
 function loadBooths(){
     $("#buttonCambiarCaseta").hide();
@@ -377,11 +430,11 @@ function inicializarPagina(loc, notes, guard,booth_status, booth_stats){
      }
      $("#textFechaInicioCaseta").text(casetaOcupadaFecha);
 
-     $("#textPersonalDentro").text(booth_stats.in_invitees);
-     $("#textArticulosConsesionados").text(booth_stats.articulos_concesionados);
-     $("#textIncidentesPendientes").text(booth_stats.incidentes_pendites);
-     $("#textVehiculosEstacionados").text(booth_stats.vehiculos_estacionados);
-     $("#textGafetesPendientes").text(booth_stats.gefetes_pendientes);
+    //  $("#textPersonalDentro").text(booth_stats.in_invitees);
+    //  $("#textArticulosConsesionados").text(booth_stats.articulos_concesionados);
+    //  $("#textIncidentesPendientes").text(booth_stats.incidentes_pendites);
+    //  $("#textVehiculosEstacionados").text(booth_stats.vehiculos_estacionados);
+    //  $("#textGafetesPendientes").text(booth_stats.gefetes_pendientes);
     $("#textEstatusCaseta").removeClass();
     $("#textEstatusCaseta").addClass(getCookie('userCasetaStatus') !== casetaNoDisponible? "text-success":  "text-danger");
     setCookie("userTurn",guard.status_turn, 7);
@@ -794,7 +847,8 @@ function cerrarNotaAlert(name, note, folio, status){
                                     selectedNote[key]= data_update[key]
                                 }
                                     selectedNote.note_status = data_update.note_status
-                                    tables["tableNotas"].setData(dataTableNotas);
+                                    dataTableNotas = dataTableNotas.filter(nota => nota.folio !== folio);
+                                tables["tableNotas"].setData(dataTableNotas);
                                 Swal.fire({
                                     title: "Success",
                                     text: "La nota fue cerrada correctamente",
@@ -835,7 +889,7 @@ function verNotasAlert(folio){
             <tr> <td> <span > `+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span > </td> </tr>`;
         }else{
             commentsItem+=`
-           <tr> <td> <span > `+selectedNota.note_comments[com]+`</span > </td> </tr>`;
+           <tr> <td> <span > `+selectedNota.note_comments[com].note_comments+`</span > </td> </tr>`;
         }
     }
     let htmlComments = comments.length>0 ? `
@@ -986,7 +1040,7 @@ function agregarNuevaNota(){
         'note_status': statusAbierto,
         'note':nota,
         'note_booth':getCookie('userCaseta'),
-        //'created_by_name':getCookie('userName'),
+        //'created_by_name':getCookie('userName_soter'),
         'note_guard_close':'', //este dato no viene en la lista principal...
         'note_pic':arraySuccessFoto ,
         'note_file':arraySuccessArchivo ,
@@ -1055,7 +1109,7 @@ function agregarNuevaNota(){
                             }
                         }
                         let note_open_date= convertDate(data.json.created_at, data.json.timezone)
-                        dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, created_by_name:getCookie('userName'), 
+                        dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, created_by_name:getCookie('userName_soter'), 
                             note_open_date: note_open_date, 
                             note_close_date:"",  note: data_notes.note, 
                             note_pic: data_notes.hasOwnProperty('note_pic') && data_notes.note_pic.length>0 ? data_notes.note_pic  : [], 
@@ -1400,7 +1454,7 @@ function turnoAbierto(idGuardiasEnTurno){
     $('#buttonGuardiaApoyoModal').attr("disabled", false);
     $('#buttonCambiarCaseta').attr("disabled", true);
     $('#buttonForzarCierre').attr("disabled", true);
-    $('#textInfActualCaseta').text('Información:');
+    $('#textInfActualCaseta').text('Resumen de actividad:');
     $('#agregarGuardiasApoyoButton').attr("disabled", false);
     $("#idButtonGuardiasApoyo").prop('disabled', false);
     tables["tableGuardiasApoyo"].updateColumnDefinition("name", {title:"Guardias en Caseta"})
@@ -1420,7 +1474,7 @@ function turnoCerrado(idGuardiasEnTurno){
     $('#buttonChangeStatusTurn').text('Iniciar Turno').removeClass('btn-danger').addClass('btn-success');
     $('#buttonGuardiaApoyoModal').attr("disabled", true);
     $('#buttonCambiarCaseta').attr("disabled", false);
-    $('#textInfActualCaseta').text('Información actual de la caseta:')
+    $('#textInfActualCaseta').text('Resumen de actividad:')
     $('#buttonForzarCierre').attr("disabled", false);
     $('#agregarGuardiasApoyoButton').attr("disabled", true);
     $("#idButtonGuardiasApoyo").prop('disabled', true);

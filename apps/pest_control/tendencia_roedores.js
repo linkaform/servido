@@ -17,6 +17,8 @@ hideElement("title_demo");
 hideElement("firstParameters");
 hideElement("firstElement");
 hideElement("secondElement");
+hideElement("thirdElement");
+hideElement("fourthElement");
 
 window.onload = function(){
   var qs = urlParamstoJson();
@@ -201,7 +203,16 @@ function getFirstElement(dateTo, dateFrom, dispositivo, cliente){
         getDrawGraphicFirst(res.response.json.secondElement, setOptions1);
         document.getElementById("secondElement").style.removeProperty('display');
       }
-      
+      if (res.response.json.secondElement) {
+        getDrawGraphicSecond(res.response.json.secondElement, setOptions2);
+        document.getElementById("thirdElement").style.removeProperty('display');
+      }
+      if (res.response.json.secondElement) {
+        let dataFormat = setFormat(res.response.json.secondElement);
+        getDrawGraphicThird(dataFormat, setOptions3);
+        document.getElementById("fourthElement").style.removeProperty('display');
+      }
+
     } else {
       hideLoading();
       if(res.code == 11){
@@ -221,6 +232,77 @@ function getFirstElement(dateTo, dateFrom, dispositivo, cliente){
   })
 };
 
+//-----FORMAT
+function setFormat(data) {
+  let dicReturn = {
+    'labels': [],
+    'datasets': [
+      {
+        'label': 'Cantidad',
+        'data': [],
+        'backgroundColor': [],
+      },
+    ]
+  };
+
+  for (var i = 0; i < data['datasets'].length; i++) {
+    let suma = data['datasets'][i]['data'].reduce((count, value) => count + value, 0);
+    dicReturn['labels'].push(data['datasets'][i]['label'])
+    dicReturn['datasets'][0]['backgroundColor'].push(data['datasets'][i]['backgroundColor'])
+    dicReturn['datasets'][0]['data'].push(suma)
+  }
+
+  return dicReturn
+}
+
+
+//-----CATALOG
+function get_catalog() 
+{
+  fetch(url + 'infosync/scripts/run/', {
+      method: 'POST',
+      body: JSON.stringify({
+        script_id: 112056,
+        option: 0,
+      }),
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+userJwt
+      },
+    })
+    .then(res => res.json())
+    .then(res => {
+    if (res.success) {
+      console.log("CATALOGO")
+      console.log(res)
+      if (res.response.json.array_filters.dispositivo.length){
+
+        $("#dispositivo").empty();
+        $('#dispositivo').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i <res.response.json.array_filters.dispositivo.length; i++) {
+          value = res.response.json.array_filters.dispositivo[i]
+          $('#dispositivo').append('<option value="'+ value +'"> Dispositivo '+value+'</option>');
+        }
+
+        data = res.response.json.catalogClient;
+        data.sort((a, b) => {
+          let clientA = (a['653fd525b96022a0f257926f'] || a['653fd525b96022a0f257926f']).toLowerCase();
+          let clientB = (b['653fd525b96022a0f257926f'] || b['653fd525b96022a0f257926f']).toLowerCase();
+          if (clientA < clientB) return -1;
+          if (clientA > clientB) return 1;
+          return 0;
+        });
+        
+        $("#cliente").empty();
+        $('#cliente').append('<option value="--">--Seleccione--</option>');
+        for (i = 0; i <data.length; i++) {
+          value = data[i]['653fd525b96022a0f257926f']
+          $('#cliente').append('<option value="'+ value +'">'+value+'</option>');
+        }
+      }
+    } 
+  })
+};
 
 //-----TABLES
 function getDrawTable(id, columnsData, tableData){
@@ -272,50 +354,35 @@ function getDrawGraphicFirst(data, setOptions){
   });
 }
 
-//-----CATALOG
-function get_catalog() 
-{
-  fetch(url + 'infosync/scripts/run/', {
-      method: 'POST',
-      body: JSON.stringify({
-        script_id: 112056,
-        option: 0,
-      }),
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+userJwt
-      },
-    })
-    .then(res => res.json())
-    .then(res => {
-    if (res.success) {
-      console.log("CATALOGO")
-      console.log(res)
-      if (res.response.json.array_filters.dispositivo.length){
+let chart2;
+function getDrawGraphicSecond(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicSecond').getContext('2d');
+  
+  if (chart2) {
+    chart2.destroy();
+  }
 
-        $("#dispositivo").empty();
-        $('#dispositivo').append('<option value="--">--Seleccione--</option>');
-        for (i = 0; i <res.response.json.array_filters.dispositivo.length; i++) {
-          value = res.response.json.array_filters.dispositivo[i]
-          $('#dispositivo').append('<option value="'+ value +'"> Dispositivo '+value+'</option>');
-        }
+  chart2 = new Chart(ctx, {
+    type: 'bar',
+    data:data,
+    options: setOptions,
+  });
+}
 
-        data = res.response.json.catalogClient;
-        data.sort((a, b) => {
-          let clientA = (a['653fd525b96022a0f257926f'] || a['653fd525b96022a0f257926f']).toLowerCase();
-          let clientB = (b['653fd525b96022a0f257926f'] || b['653fd525b96022a0f257926f']).toLowerCase();
-          if (clientA < clientB) return -1;
-          if (clientA > clientB) return 1;
-          return 0;
-        });
-        
-        $("#cliente").empty();
-        $('#cliente').append('<option value="--">--Seleccione--</option>');
-        for (i = 0; i <data.length; i++) {
-          value = data[i]['653fd525b96022a0f257926f']
-          $('#cliente').append('<option value="'+ value +'">'+value+'</option>');
-        }
-      }
-    } 
-  })
-};
+
+let chart3;
+function getDrawGraphicThird(data, setOptions){
+  //---CHART
+  var ctx = document.getElementById('graphicThird').getContext('2d');
+  
+  if (chart3) {
+    chart3.destroy();
+  }
+
+  chart3 = new Chart(ctx, {
+    type: 'doughnut',
+    data:data,
+    options: setOptions,
+  });
+}

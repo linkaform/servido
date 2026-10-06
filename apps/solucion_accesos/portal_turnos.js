@@ -243,8 +243,8 @@ function getGuardLocationListGuardsNotes(){
 }
 
 window.onload = function(){
-    user = getCookie("userId");
-    userJwt = getCookie("userJwt");
+    user = getCookie("userId_soter");
+    userJwt = getCookie("userJwt_soter");
     userTurnCookie= getCookie("userTurn");
     setValueUserLocation('portal_turnos');
     customNavbar(getValueUserLocation(), getStatusTurn());
@@ -262,7 +262,7 @@ window.onload = function(){
     const hour = new Date().toLocaleTimeString();
 
     $('#todayDateText').append($('<div class="myDateClass"> '+ date +'</div>'));
-    $("#textName").html(getCookie('userName'));
+    $("#textName").html(getCookie('userName_soter'));
     $("#textPosition").text(getCookie('userPosition'));
     $("#textEmail").text(getCookie('userEmail'));
     $("#imgProfilePic").attr("src", getCookie('userImg'));

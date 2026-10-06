@@ -1,0 +1,91 @@
+let dataCatalogs = [];
+
+window.onload = function(){
+    createElements(dicReportContext);
+    setElementsStyleNew();
+    const statusSession = getSessionNew();
+    if (statusSession === 'Active') {
+        loadData();
+    } else {
+        loadDemoData();
+    }
+}
+
+//-----FUNCTIONS DEMO
+function loadDemoData(){
+  //---Definitions ELements
+  drawTableElement('tableFirst', dataTable1, columsTable1);
+  drawChartElement('chartFirst','pie',dataChart1A,setOptions1A, undefined, true);
+  //----TEST MAP
+  drawMapElement('mapFirst', 'Delivery progress by state' , dataMap1, configMap1, configToltipMap)
+  setTimeout(() => { hide_loading();}, 2000);
+}
+
+
+//-----FUNCTION ACTIVE
+function loadData(data) {
+    //----Search Catalogs
+    get_catalog();
+    //----Assing Events
+    const buttonExecution = document.getElementById("buttonExecution");
+    buttonExecution.addEventListener("click", () => {
+        getInformation();
+    });
+
+    //---Hide
+    setTimeout(() => { hide_loading();}, 2000);
+}
+
+//-----SET REQUEST
+async function getInformation(dicAditional){
+    const demo = getParameterURL('demo');
+    const scriptId = getParameterURL('script_id');
+    const statusSession = getSessionNew();
+    const dicAdional =  dicAditional;
+
+    if(statusSession == 'Demo' || demo){
+        Swal.fire({
+          title: 'Advertencia',
+          html: 'No es posible ejecutar el reporte, pues esta en formato demo.'
+        });
+    }else if(scriptId != null && statusSession == 'Active' && !demo){
+        const responseRequest = await sendRequestReport(scriptId, dicAdional);
+        if ( typeof responseRequest === 'object' && responseRequest !== null && Object.keys(responseRequest).length > 0) {
+            const data = responseRequest.response && responseRequest.response.data ? responseRequest.response.data : {};
+            if(data.tableFirst){
+              drawTableElement('tableFirst', data.tableFirst, columsTable1);   
+            }
+            if(data.chartFirst){
+              drawChartElement('chartFirst','pie',data.chartFirst,setOptions1A, undefined, true);     
+            }
+            if(data.mapFirst){
+              drawMapElement('mapFirst', 'Delivery progress by state' , data.mapFirst, configMap1, configToltipMap)   
+            }
+            //-----Style
+            showElements();
+                    
+
+        }
+    }
+}
+
+//----CATALOG
+function get_catalog(){
+    const scriptId = getParameterURL('script_id');
+    const JWT = getJwtSession();
+    fetch(getUrlRequest('script'), {
+        method: 'POST',
+        body: JSON.stringify({
+            script_id: scriptId,
+            option: 'catalog',
+        }),
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+JWT
+        },
+    })
+    .then((res) => res.json())
+    .then((res) => {
+        const data = res.response && res.response.data ? res.response.data : [];
+    })
+}

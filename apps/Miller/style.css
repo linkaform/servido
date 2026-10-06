@@ -1,0 +1,58 @@
+.title_tables h3 {
+  color: black;
+  font: 33px gothambook;
+  margin-top: 30px;
+  text-align: left;
+}
+
+
+.hrFirstElement {
+  border-top: 1px solid #707b7c;
+  width: 500px;
+  margin-left: 0%;
+}
+
+.hrSecondElement {
+  border-top: 1px solid #707b7c;
+  width: 550px;
+  margin-left: 0%;
+}
+
+body{
+  font-family: gothambook;
+}
+
+.stock-cedis{
+  text-align: center !important;
+}
+
+.alm-monterrey-header {
+  background-color: #29B6F6 !important;
+  text-align: center !important;
+}
+
+.alm-guadalajara-header {
+  background-color: #BA68C8 !important;
+  text-align: center !important;
+}
+
+.alm-merida-header {
+  background-color: #66BB6A !important;
+  text-align: center !important;
+}
+
+.tabulator-col .alm-monterrey-header-columns {
+  background-color: #81D4FA !important;
+}
+
+.tabulator-col .alm-guadalajara-header-columns {
+  background-color: #CE93D8 !important;
+}
+
+.tabulator-col .alm-merida-header-columns {
+  background-color: #A5D6A7 !important;
+}
+
+.tabulator-cell .header-inicial {
+  background-color: initial !important;
+}

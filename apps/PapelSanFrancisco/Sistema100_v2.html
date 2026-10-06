@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Sistema 100</title>
+	<!-- Custom fonts for this template-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Custom styles for this template-->
+    <link href="../Utils_New/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../Utils_New/css/styles.css" rel="stylesheet">
+    <link href="./Sistema100_v2.css" rel="stylesheet">
+    <!-- Sweet Alerrt -->
+    <link rel="stylesheet" href="../Utils_New/css/sweetalert2.min.css">
+    <!-- Bootstrap 5 CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Tabulator CSS con tema Bootstrap 5 -->
+	<link href="https://cdn.jsdelivr.net/npm/tabulator-tables@5.5.0/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet">
+    <!--Select 2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!--TOom Select -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header-style">
+        <container class="container-header">  
+            <container class="container-text">
+                <img  class="logo-img" src="https://f001.backblazeb2.com/file/app-linkaform/public-client-126/68600/6076166dfd84fa7ea446b917/2026-06-08T16:09:22.png" style="background: url(<path-to-image>) lightgray 50% / contain no-repeat;" > 
+                <container class="container-text-header">
+                    <h3 class="text-title">Reporte Sistema 100</h3>
+                    <p>11 de mayo del 2026</p>
+                </container>  
+            </container>  
+            <container class="container-filter">
+                <!-- Mes -->
+                <div class="month-field">
+                    <span class="icon">📅</span>
+                    <input type="month" class="month-input" id="filterMes" value="2026-07">
+                </div>
+                <!-- Fábrica -->
+                <div class="dropdown" id="filterFabrica">
+                    <button class="dropdown-btn filters-fabrica" data-value="">
+                        <span class="icon">🏭</span>
+                        <span class="selected-text">Seleccione planta</span>
+                        <span class="arrow">⌄</span>
+                    </button>
+                    <div class="dropdown-menu">
+                    </div>
+                </div>
+                <!-- Botón Ejecución (oculto por defecto) -->
+                <button id="buttonExecution" class="btn-execution" style="display:none;">
+                    Ejecutar
+                </button>
+            </container>
+        </container>   
+    </header>
+    <container class="container-body">  
+        <!-- FIRST BLOCK -->
+        <container class="container-title-section background-blue">  
+            <h5 class="text-title-section text-color-blue">
+                Resumen Ejecutivo
+                <span class="section-progress-blue" id="chipResumenEjecutivo">Resultado Mensual : 95.33%</span>
+            </h5>
+        </container>
+        <container class="container-chart-section">  
+            <div class="chart-card">
+                <div class="chart-title">Comparativo mensual por área</div>
+                <div class="chart-wrapper">
+                    <canvas id="chartFirst"></canvas>
+                </div>
+            </div>
+        </container>
+        <div class="container-group-section">
+            <div class="row col-12 m-0 p-0">
+
+                 <!-- TOP -->
+                <div class="col-lg-12 pl-0 pb-3">
+                    <div class="chart-card mt-2">
+                        <div class="chart-title">Comparativo Mensual por Planta</div>
+                        <div class="chart-wrapper chart-wrapper-medium">
+                            <canvas id="chartThird"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IZQUIERDA -->
+                <div class="col-lg-8 pl-0 ">
+                    <div class="table-card ">
+                        <div class="table-title">Resumen Mensual por Área</div>
+                        <div class="table-wrapper">
+                            <div id="tableFirst"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- DERECHA -->
+                <div class="col-lg-4 pl-1">
+                    <div class="chart-card chart-card-full ">
+                        <div class="chart-title">Acumulado Anual por Área</div>
+                        <div class="chart-wrapper chart-wrapper-large" style="height: 400px !important;">
+                            <canvas id="chartSecond"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container-title-section background-brown mt-5">
+            <i class="fa-solid fa-shield section-icon mr-2"></i>
+            <h5 class="text-title-section text-color-brown m-0">
+                Seguridad
+                <span class="section-progress-brown" id="chipSeguridadPorcentaje">48.52% / 50%</span>
+                <span class="section-progress-brown" id="chipSeguridadAccidentes">Accidentes en el mes: 3</span>
+            </h5>
+        </div>
+        <div class="container-group-section">
+            <div class="row col-12 m-0 p-0">
+                <!-- IZQUIERDA -->
+                <div class="col-lg-6 pl-0 pr-1">
+                    <div class="chart-card chart-card-full h-100">
+                        <div class="chart-title">Tendencia Mensual de Accidentes</div>
+                        <div class="chart-wrapper chart-wrapper-large">
+                            <canvas id="chartFourth"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- DERECHA -->
+                <div class="col-lg-6 pl-1 pr-0">
+                    <div class="chart-card chart-card-full h-100">
+                        <div class="chart-header">
+                            <div class="chart-title">Accidentes por Planta</div>
+                            <div class="chart-toggle-group">
+                                <button id="btnBarras" class="chart-toggle-btn" data-type="barras">Barras</button>
+                                <button id="btnTendencia" class="chart-toggle-btn active" data-type="tendencia">Tendencia</button>
+                            </div>
+                        </div>
+                        <div class="chart-wrapper chart-wrapper-large">
+                            <canvas id="chartFiveth"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <container class="container-chart-section">  
+            <div class="chart-card">
+                <div class="chart-title">Desglose de resultados mensuales</div>
+                <div class="chart-wrapper">
+                    <canvas id="chartSixth"></canvas>
+                </div>
+            </div>
+        </container>
+
+
+        <div class="container-title-section background-grey mt-5">
+            <i class="fa-regular fa-star section-icon mr-2"></i>
+            <h5 class="text-title-section text-color-grey m-0">
+                Orden y limpieza
+                <span class="section-progress-grey" id="chipOrdenLimpieza">24.50% / 25%</span>
+            </h5>
+        </div>
+        <container class="container-chart-section">  
+            <div class="chart-card">
+                <div class="chart-title">Tendencia de Cumplimiento</div>
+                <div class="chart-wrapper">
+                    <canvas id="chartSeventh"></canvas>
+                </div>
+            </div>
+        </container>
+
+        <div class="container-title-section background-orange mt-5">
+            <i class="fa-solid fa-graduation-cap section-icon mr-2"></i>
+            <h5 class="text-title-section text-color-orange m-0">
+                Capacitación
+                <span class="section-progress-orange" id="chipCapacitacion">10.00% / 15%</span>
+            </h5>
+        </div>
+        <container class="container-chart-section">  
+            <div class="chart-card">
+                <div class="chart-title">Tendencia de Cumplimiento</div>
+                <div class="chart-wrapper">
+                    <canvas id="chartEigth"></canvas>
+                </div>
+            </div>
+        </container>
+
+        <div class="container-title-section background-green mt-5">
+            <i class="fa-solid fa-leaf section-icon mr-2"></i>
+            <h5 class="text-title-section text-color-green m-0">
+                Medio Ambiente
+                <span class="section-progress-green" id="chipMedioAmbiente">10.00% / 10%</span>
+            </h5>
+        </div>
+        <container class="container-chart-section">  
+            <div class="chart-card">
+                <div class="chart-title">Tendencia de Cumplimiento</div>
+                <div class="chart-wrapper">
+                    <canvas id="chartNineth"></canvas>
+                </div>
+            </div>
+        </container>
+
+
+    </container>
+	<!-- Bootstrap core JavaScript-->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	
+    <!--Chart-->
+	<script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	
+    <!--Table -->
+    <script type="text/javascript" src="../assets/libs/js/tabulator.min.js"></script>
+    <script type="text/javascript" src="../assets/libs/js/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="../assets/libs/js/jspdf.umd.min.js"></script>
+    <script type="text/javascript" src="../assets/libs/js/jspdf.plugin.autotable.min.js"></script>
+    
+    <!-- Select 2-->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Toom Select -->
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+
+    <!-- HTML2Canvas-->
+    <script type="text/javascript" src="../utils/librarys/html2canvas.min.js"></script>
+
+	<!--Utils -->
+	<script type="text/javascript" src="../../styles/js/chroma.min.js"></script>
+    <script type="text/javascript" src="../Utils_New/js/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="../Utils_New/js/lkf_utils.js"></script>
+    <script type="text/javascript" src="../Utils_New/js/servido_utils.js"></script>
+	<!--Report -->
+	<script type="text/javascript" src="./Sistema100_v2.js"></script>
+    <script type="text/javascript" src="./Sistema100_v2_data.js"></script>
+</body>
+</html>

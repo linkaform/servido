@@ -28,23 +28,33 @@ let paseDeAccesoScript= "pase_de_acceso.py"
 let gafeteRegistroIngreso={}
 let gafeteId=""
 let currentStream = null;
+let data_for_msj={}
+
+
 window.onload = function(){
     setValueUserLocation('accesos');
+    user= getCookie("userId_soter");
+    userJwt=getCookie('userJwt_soter');
+    validSession(user, userJwt);
+
     changeButtonColor(); 
     fillCatalogs();
     getInitialData();
+    getStats(getCookie("userCaseta"),getCookie("userLocation"),false);
     selectLocation= document.getElementById("selectLocation")
     selectCaseta= document.getElementById("selectCaseta")
     setHideElements('dataHide');
     setSpinner(true, 'divSpinner');
-    let user = getCookie("userId");
+    // let user = getCookie("userId");
     if(user !='' && userJwt!=''){
         setDataInformation('alerts',data = {})
     }else{
         redirectionUrl('login',false)
     }
     customNavbar(getValueUserLocation(), getCookie('userTurn'));
-    $("#mainSection1").show()
+    //$("#mainSection1").hide()
+    $("#cartaUser").hide()
+    $('#mainSection2').show()
 }
 
 window.addEventListener('storage', function(event) {
@@ -55,8 +65,58 @@ window.addEventListener('storage', function(event) {
     }
 });
 
+function getStats(area = "", location = "", loading = false) {
+    if (loading) {
+        loadingService();
+    }
+
+    fetch(url + urlScripts, {
+        method: 'POST',
+        body: JSON.stringify({
+            script_name: 'get_stats.py',
+            option: 'get_stats',
+            area: area,
+            location: location,
+            page: 'Accesos'
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userJwt
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(res => {
+        if (res.success) {
+            const data = res.response.data;
+
+            console.log('Datos obtenidos:', data);
+            // Actualización de valores en el DOM
+            $("#textVisitasEnElDia").text(data.visitas_en_dia);
+            $("#textPersonalDentro").text(data.personal_dentro);
+            $("#textVehiculosDentro").text(data.total_vehiculos_dentro);
+            $("#textSalidasRegistradas").text(data.salidas_registradas);
+        } else {
+            console.error('Error en los datos recibidos:', res.error);
+            alert('Hubo un problema al obtener los datos: ' + res.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error en fetch:', error.message || error);
+    })
+    .finally(() => {
+        if (loading) {
+            Swal.close(); // Cierra el servicio de carga si estaba activo
+        }
+    });
+}
+
 //funcion Escojer modales
-function setModal(type = 'none',id =""){
+function setModal(type = 'none',id ="", nombre='', email=''){
     if(type == 'comentarioPaseModal'){
         $("#idComentarioPase").val("")
         $('#commentarioPaseModal').modal('show');
@@ -70,15 +130,106 @@ function setModal(type = 'none',id =""){
     }else if(type== "listaPases"){
         verListaPasesActivos()
     }else if(type=="nuevaVisitaModal"){
+        limpiarTomarFoto('User')
+        limpiarTomarFoto('Card')
         abrirModalNuevaVisita()
     }else if(type=="gafeteModal"){
         abrirAsignarGafeteModal()
     }else if(type=="recibirGafete"){
         abrirRecibirGafeteModal()
     }else if(type== "listaPasesTemporales"){
+        $("#cartaUser").hide();
         verListaPasesTemporales()
+    }else if (type== "phoneModal"){
+        verModalPhone(nombre, email)
+    }else if (type== "messageModal"){
+        verModalMessageModal(nombre,email)
     }
      
+}
+
+function verModalPhone(nombre, email){
+    $("#phoneModal").modal("show")
+    if(email){
+        successMsg("Validación", "El email no ha sido configurado para esta persona.","warning")
+    }else{
+
+    }
+}
+
+
+function enviarMensaje(){
+    loadingService()
+    data_for_msj.mensaje= $("#msj").val()
+    data_for_msj.titulo= $("#titulo").val()
+    data_for_msj.email_from= getCookie('userEmail')
+    if(data_for_msj.mensaje=="" && data_for_msj.titulo!=="" && data_for_msj.email_from!=="" && data_for_msj.email_to!==""){
+        successMsg("Validación", "Faltan campos por llenar", "warning")
+    }else{
+        fetch(url + urlScripts, {
+            method: 'POST',
+            body: JSON.stringify({
+                script_name: "script_turnos.py",
+                option: 'enviar_msj',
+                data_msj: data_for_msj
+            }),
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+userJwt
+            },
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                Swal.close()
+                successMsg('Confirmación', "Correo enviado correctamente.", "success")
+                $("#messageModal").modal("hide")
+            } else{
+                errorAlert(res)
+            }
+        });
+    }
+}
+
+function verModalMessageModal(nombre, email){
+    data_for_msj={nombre: nombre, email_to: email, mensaje:''}
+    let nombrePase = $("#nameUserInf").text();
+    $("#textMsjNombre").text(nombre)
+    $("#textMsjCorreo").text(email)
+    $("#titulo").val("Mensaje de "+nombrePase+" enviado desde Accesos.")
+
+    $("#msj").val(nombrePase +" quiere ponerse en contacto contigo.")
+    $("#messageModal").modal("show")
+}
+
+function limpiarTomarFoto(id){
+    $("#container"+id+" video").remove()
+    if(id=="User"){
+        flagVideoUser=false
+        fotosNuevaVisita.foto = []
+    }else if(id=="Card"){
+        flagVideoCard=false
+        fotosNuevaVisita.identificacion = []
+    }
+    currentStream=null
+    $('#buttonTake'+id).show();
+    $('#buttonTake'+id).prop('disabled', false);
+    $('#buttonSave'+id).hide();
+    $('#img'+id).hide();
+    $('#img'+id).attr('src', '');
+    $('#inputFile'+id).val('');
+}
+
+function limpiarSeleccion(type, id=""){
+    if(type =='vehiculos'){
+        $('table input[name="groupCarList"]').prop('checked', false); 
+    }else{
+        if(id!==""){
+            $(`#`+id).prop('checked', false);
+        }else{
+            $('table input[name="equipoCheckGroup"]').prop('checked', false); 
+        }
+    }
 }
 
 function verListaPasesTemporales(){
@@ -88,9 +239,10 @@ function verListaPasesTemporales(){
         method: 'POST',
         body: JSON.stringify({
             script_name: "script_turnos.py",
-            option: 'lista_pases_temporales',
+            option: 'lista_pases',
             caseta: selectCaseta.value,
             location: selectLocation.value,
+            inActive:"true"
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -101,16 +253,14 @@ function verListaPasesTemporales(){
     .then(res => {
         if (res.success) {
             Swal.close();
-            let listPases = res.response.data || []
+            let listPases = res.response.data
             let formatedList=[]
-            if(listPases.length >0){
-                for(let obj of listPases){
-                    formatedList.push({nombre: obj.nombre, folio: obj.folio, qr_code: obj.qr_code, ubicacion: obj.ubicacion, foto: obj.foto})
-                }
+            for(let obj of listPases){
+                formatedList.push({nombre: obj.nombre, folio: obj.folio, qr_code: obj.qr_code, ubicacion: obj.ubicacion, foto: obj.foto})
             }
 
             if(user!="" && userJwt!=""){
-                drawTableSelect('tableListaPases',columsListaPases, [],"500px",1);
+                drawTableSelect('tableListaPases',columsListaPases, formatedList,"500px",1);
                 $("#listaPasesTitulo").text("Lista de Pases Temporales")
                 $("#listModal").modal('show');
             }
@@ -161,8 +311,13 @@ function abrirNuevaVisita(){
 
 function abrirAsignarGafeteModal(){
     loadingService()
-    $("#selectGafete").val("")
-    $("#selectLocker").val("")
+    $('input[name="radioOptionsDocument"]').each(function() {
+        if ($(this).val() === gafeteRegistroIngreso.documento_garantia) {
+            $(this).prop('checked', true);
+        } else {
+            $(this).prop('checked', false); // Opcional: para deseleccionar otros
+        }
+    });
     fetch(url + urlScripts, {
         method: 'POST',
         body: JSON.stringify({
@@ -191,7 +346,7 @@ function abrirAsignarGafeteModal(){
             if(data.length==0){
                  selectLockers.innerHTML += '<option disabled> No hay lockers disponibles </option>';
             }
-            selectLockers.value="" 
+            selectLockers.value = gafeteRegistroIngreso.locker_id
         } 
     });
 
@@ -226,7 +381,7 @@ function abrirAsignarGafeteModal(){
             if(data.length==0){
                  selectGaf.innerHTML += '<option disabled> No hay gafetes disponibles </option>';
             }
-            selectGaf.value=""
+            selectGaf.value=gafeteRegistroIngreso.gafete_id
         } 
     });
 }
@@ -587,7 +742,7 @@ function agregarEquipo(){
         newRow2.append($('<td>').text(modelo));
         newRow2.append($('<td>').text(noserie));
         newRow2.append($('<td>').text(color));
-        newRow2.append('<td><input class="form-check-input checkboxGroupEquipos" style="margin: auto !important; display: block !important;"type="checkbox" id='+id+' '+checked+'></td>');
+        newRow2.append('<td><input class="form-check-input checkboxGroupEquipos" name="equipoCheckGroup" style="margin: auto !important; display: block !important;" type="checkbox" id='+id+' '+checked+'></td>');
         newRow2.append('</tr>');
         $('#listAddItemsModal').append(newRow2);
         $("#tableEquipos").append(newRow2)
@@ -604,11 +759,29 @@ function agregarEquipo(){
     }
 }
 
-function verListaDeEquiposAgregados(){
+function borrarEquipoAgregado(){
+
+}
+
+function borrarVehiculoSeleccionado(tableId, objId=""){
+    if(tableId=='tableAddCarsModal'){
+        let tabla = document.getElementById(tableId);
+        let tbody = tabla.getElementsByTagName('tbody')[0];
+        tbody.innerHTML = '';
+        limpiarSeleccion('vehiculos')
+        verListaDeEquiposAgregados(false)
+    }else{
+        limpiarSeleccion('equipos', objId)
+        verListaDeEquiposAgregados(false)
+    }
+}
+
+
+function verListaDeEquiposAgregados(showModal=true){
     selectedEquipos=[]
     getSelectedCheckbox('tableEquipos', 'checkboxGroupEquipos', selectedEquipos)
     let selectedItems= listItemsData.filter(elemento => selectedEquipos.includes(elemento.id));
-    $('#listAddItemsModal').modal('show');
+    if(showModal){$('#listAddItemsModal').modal('show')};
     let tabla = document.getElementById('tableAddItemsModal');
     let tbody = tabla.getElementsByTagName('tbody')[0];
     tbody.innerHTML = '';
@@ -627,23 +800,31 @@ function verListaDeEquiposAgregados(){
             newRow.append($('<td>').text(modeloCar));
             newRow.append($('<td>').text(numeroSerie));
             newRow.append($('<td>').text(colorCar));
+            newRow.append(`  
+                <td >
+                <button class="btn" style="margin: auto !important; display: block !important; background-color: transparent; 
+                color: black; border: none;" onclick="borrarVehiculoSeleccionado('tableAddItemsModal', '${selectedItems[i].id}' )">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td></td >`)
             newRow.append('</tr>');
-            $('#tableAddItemsModal').append(newRow);
+            $('#tableAddItemsModal').append(newRow)
         }
     } else if(selectedItems.length==0){
         var newRow = $('<tr>');
         newRow.append($('<td colspan="3">').text('No existen equipos seleccionados.'));
         newRow.append('</tr>');
-        $('#tableAddItemsModal').append(newRow);
+        
+        $('#tableAddItemsModal').append(newRow)
     }
-    $("#listAddItemsModal").modal('show');
+    if(showModal){$("#listAddItemsModal").modal('show')}
 }
 
-function verListaDeVehiculosAgregados(){
+function verListaDeVehiculosAgregados(showModal=true){
     selectedVehiculos=[]
     getSelectedCheckbox('tableCars', 'radioGroupItems', selectedVehiculos)
     let selectedVehiculo= listVehiculesData.filter(elemento => selectedVehiculos.includes(elemento.id));
-    $('#listAddCarsModal').modal('show');
+    if(showModal){$('#listAddCarsModal').modal('show');}
     let tabla = document.getElementById('tableAddCarsModal');
     let tbody = tabla.getElementsByTagName('tbody')[0];
     tbody.innerHTML = '';
@@ -660,6 +841,12 @@ function verListaDeVehiculosAgregados(){
             newRow.append($('<td>').text(modeloCar));
             newRow.append($('<td>').text(matriculaCar));
             newRow.append($('<td>').text(colorCar));
+            newRow.append(`  
+                <td >
+                <button class="btn" style="margin: auto !important; display: block !important; background-color: transparent; color: black; border: none;" onclick="borrarVehiculoSeleccionado('tableAddCarsModal')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td></td >`)
             newRow.append('</tr>');
             $('#tableAddCarsModal').append(newRow);
         }
@@ -669,7 +856,7 @@ function verListaDeVehiculosAgregados(){
         newRow.append('</tr>');
         $('#tableAddCarsModal').append(newRow);
     }
-    $("#listAddCarsModal").modal('show');
+    if(showModal){$("#listAddCarsModal").modal('show');}
 }
 
 
@@ -786,11 +973,11 @@ function getInitialData(){
         if (res.success) {
         } 
     });*/
-    let boothStats = load_shift_json.booth_stats.access
-    $("#textVisitasEnElDia").text(boothStats.visits_per_day);
-    $("#textPersonalDentro").text(boothStats.staff_indoors);
-    $("#textVehiculosDentro").text(boothStats.vehicles_inside);
-    $("#textSalidasRegistradas").text(boothStats.registered_exits);
+    // let boothStats = load_shift_json.booth_stats.access
+    // $("#textVisitasEnElDia").text(boothStats.visits_per_day);
+    // $("#textPersonalDentro").text(boothStats.staff_indoors);
+    // $("#textVehiculosDentro").text(boothStats.vehicles_inside);
+    // $("#textSalidasRegistradas").text(boothStats.registered_exits);
 }
 
 
@@ -802,10 +989,10 @@ function crearNuevaVisita(){
     let areaQueVisita=$("#inputAreaVisitaNV").val();
     let visitaA=$("#selectVisitaNV").val();
     let motivoVisita=$("#selectMotivoVisitaNV").val();
-    if(nombre!=='' , empresa!=='', areaQueVisita!=='', visitaA!=='', motivoVisita!==''){
+    if(nombre!=='' && empresa!=='' && areaQueVisita!=='' && visitaA!=='' && motivoVisita!==''){
         let access_pass={
             nombre: nombre,
-            perfil_pase:"Walkin",
+            perfil_pase: "Visita General",
             telefono: "",
             visita_a:visitaA,
             email: getCookie("userEmail"),
@@ -815,6 +1002,7 @@ function crearNuevaVisita(){
             //area_que_visita:areaQueVisita,
             //motivo_visita:motivoVisita,
         }
+        console.log("entrandoo")
         fetch(url + urlScripts, {
             method: 'POST',
             body: JSON.stringify({
@@ -833,7 +1021,7 @@ function crearNuevaVisita(){
             if (res.success) {
                 let data= res.response.data
                 if(data.status_code ==400 || data.status_code==401){
-                    errorAlert(res)
+                    errorAlert(data)
                     //$("#idLoadingButtonVehiculos").hide();
                     //$("#idButtonVehiculos").show();
                 }else{
@@ -858,7 +1046,9 @@ function crearNuevaVisita(){
                 }
                     //
                 //CODE una vez resulta la imagen, cargarla en front                
-            } 
+            }else{
+                errorAlert(res)
+            }
         });
         
     }else{
@@ -872,68 +1062,124 @@ function crearNuevaVisita(){
                                                                                                                                          
 //FUNCION para obtener la informacion del usuario
 function buscarPaseEntrada() {
-    setCleanData()
-    gafeteId=""
-    gafeteRegistroIngreso={}
-    $(document).ready(function() {
-        $("#buttonBuscarPaseEntrada").prop('disabled', true);
-        $("#buttonNew").prop('disabled', true);
-        $("#pasesTemporales").prop('disabled', true);
-    })
-    codeUser = $("#inputCodeUser").val();
-    if(codeUser ==""){
-        successMsg("Validación", "Escribe un codigo para continuar", "warning")
-        $(document).ready(function() {
-            $("#buttonBuscarPaseEntrada").prop('disabled', false);
-            $("#buttonNew").prop('disabled', false);
-            $("#pasesTemporales").prop('disabled', false);
-        })
+    if($("#inputCodeUser").val()==""){
+        successMsg("Validación", "Escribe un código para continuar", "warning")
     }else{
-        
-        $("#divSpinner").show();
-        setHideElements('dataHide');
-        setHideElements('buttonsOptions');
-        fetch(url + urlScripts, {
-            method: 'POST',
-            body: JSON.stringify({
-                script_name: "script_turnos.py",
-                option: 'search_access_pass',
-                location: selectLocation.value,
-                area: selectCaseta.value,
-                qr_code: codeUser
-            }),
-            headers:{
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+userJwt,
-            },
+        console.log("QUE PASA")
+        setCleanData()
+        $("#mainSection1").hide()
+        gafeteId=""
+        gafeteRegistroIngreso={}
+        $(document).ready(function() {
+            $("#buttonBuscarPaseEntrada").prop('disabled', true);
+            $("#buttonNew").prop('disabled', true);
+            $("#pasesTemporales").prop('disabled', true);
+            $("#pasesActivos").prop('disabled', true);
         })
-        .then(res => res.json())
-        .then(res => {
-            if (res.success) {
-                fullData= res.response.data
-                Swal.close()
-                //setCookie('userLocation', res.response.data.ubicacion)
-                setDataInformation('informatioUser', res.response.data);
-                setHideElements('buttonsModal');
-                setHideElements('dataShow');
-                setHideElements(fullData.tipo_movimiento) //Oculta o muestra los botones correspondientes dependiendo de si es Entrada o Salida
-            }else{
-                errorAlert(res)
-                setCleanData();
-                setHideElements('dataHide');
-                $("#buttonNew").show();
-                $("#divSpinner").hide();
-                $("#inputCodeUser").val("")
-                $("#idComentarioPase").val('')
-                $("#idComentarioAcceso").val('')
+        codeUser = $("#inputCodeUser").val();
+        if(codeUser ==""){
+            successMsg("Validación", "Escribe un codigo para continuar", "warning")
+            $(document).ready(function() {
                 $("#buttonBuscarPaseEntrada").prop('disabled', false);
                 $("#buttonNew").prop('disabled', false);
                 $("#pasesTemporales").prop('disabled', false);
-                $("#pasesTemporales").show();
-            }
-        })
+                $("#pasesActivos").prop('disabled', false);
+            })
+        }else{
+            $("#divSpinner").show();
+            $("#mainSection1").hide();
+
+            //setHideElements('dataHide');
+            //setHideElements('buttonsOptions');
+            fetch(url + urlScripts, {
+                method: 'POST',
+                body: JSON.stringify({
+                    script_name: "script_turnos.py",
+                    option: 'search_access_pass',
+                    location: selectLocation.value,
+                    area: selectCaseta.value,
+                    qr_code: codeUser
+                }),
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+userJwt,
+                },
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    Swal.close()
+                    fullData= res.response.data
+                    if(fullData.status_pase.toLowerCase() == 'vencido'){
+                        console.log("VENICDO", fullData)
+                         $("#cartaUser").show(); 
+                        setDataInformation('informatioUser', res.response.data);
+                         fotoPerfilInde(res.response.data)
+                        $("#cartaUser").show(); 
+                        setDataInformation('informatioUser', res.response.data);
+                        setHideElements('buttonsModal');
+                        setHideElements('dataShow');
+                        setHideElements(fullData.tipo_movimiento) //Oculta o muestra los botones correspondientes dependiendo de si es Entrada o Salida
+                        setHideElements('paseVencido');
+                    }else{
+                        setHideElements('paseHabilitar');
+                        fotoPerfilInde(res.response.data)
+                        $("#cartaUser").show(); 
+                        setDataInformation('informatioUser', res.response.data);
+                        setHideElements('buttonsModal');
+                        setHideElements('dataShow');
+                        setHideElements(fullData.tipo_movimiento) //Oculta o muestra los botones correspondientes dependiendo de si es Entrada o Salida
+                    }
+                    
+                }else{
+                    errorAlert(res)
+                    setCleanData();
+                    setHideElements('dataHide');
+                    $("#buttonNew").show();
+                    $("#divSpinner").hide();
+                    $("#inputCodeUser").val("")
+                    $("#idComentarioPase").val('')
+                    $("#idComentarioAcceso").val('')
+                    $("#buttonBuscarPaseEntrada").prop('disabled', false);
+                    $("#buttonNew").prop('disabled', false);
+                    $("#pasesTemporales").prop('disabled', false);
+                    $("#mainSection1").show();
+                    $("#pasesActivos").prop('disabled', false);
+                    /*$("#pasesTemporales").show();*/
+                }
+            })
+        }
     }
 }
+
+
+function fotoPerfilInde(dataUser){
+    console.log("FOTOTOTOT", dataUser.hasOwnProperty('foto'))
+    let imgUser ="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1"
+    if(dataUser.hasOwnProperty('foto')){
+        if(dataUser.foto.length>0){
+            imgUser = dataUser.foto[0].file_url !== '' ? 
+            dataUser.foto[0].file_url : 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
+        }else{
+            imgUser= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
+        }
+    }
+    $('#imgUser1').attr('src', imgUser);
+
+    let imgCard="https://www.creativefabrica.com/wp-content/uploads/2018/12/Id-card-icon-by-rudezstudio-5-580x386.jpg"
+
+    if(dataUser.hasOwnProperty('identificacion')){
+        if(dataUser.identificacion.length>0){
+            imgCard= dataUser.identificacion[0].file_url !==  '' ? 
+            dataUser.identificacion[0].file_url : "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
+        }else{
+            imgCard= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
+        }
+        
+    }
+    $('#imgCard1').attr('src', imgCard); 
+}
+
 
 //FUNCION para obtener la lista de usuario
 function getDataListUser(){
@@ -963,7 +1209,6 @@ function getDataListUser(){
 //FUNCION para setear la informacion en la pantalla principal y mostrar botones parte 1
 function registrarIngreso(){
     loadingService()
-    //let codeUser  = $("#inputCodeUser").val();
     $("#buttonIn").hide();
     $("#buttonOut").hide();
     
@@ -984,14 +1229,14 @@ function registrarIngreso(){
         comPase.push(comP.comentario_pase)
     }
     for (let comA of comentariosAcceso ){
-        comAcc.push("a", comA.comentario_pase)
+        comAcc.push(comA.comentario_pase)
     }
     for (let veh of selectedVe){
-        veh.color_vehiculo= veh.color_vehiculo.toLowerCase();
-        veh.nombre_estado= veh.nombre_estado.toLowerCase();
+        veh.color_vehiculo= veh.color_vehiculo ? veh.color_vehiculo.toLowerCase():""
+        veh.nombre_estado= veh.nombre_estado ? veh.nombre_estado.toLowerCase():""
     }
     for (let eq of selectedEq){
-        eq.color_articulo= eq.color_articulo.toLowerCase();
+        eq.color_articulo= eq.color_articulo ? eq.color_articulo.toLowerCase():""
     }
     fetch(url + urlScripts, {
         method: 'POST',
@@ -1005,7 +1250,8 @@ function registrarIngreso(){
             equipo: selectedEq,
             comentario_pase: comentariosPase,
             comentario_acceso: comentariosAcceso,
-            gafete:gafeteRegistroIngreso
+            gafete:gafeteRegistroIngreso,
+            visita_a:fullData.visita_a
         }),
         headers:{
             'Content-Type': 'application/json',
@@ -1067,10 +1313,8 @@ function registrarSalida(){
     }
 
     if(!salida){
-        console.log("FULL NOOOOO",fullData.gafete_id,fullData.locker_id, gafeteId)
         errorAlert("¡Debes recibir el gafete antes de registrar la salida!","Validación","warning" )
     } else{
-        console.log("FULL DATA",fullData.gafete_id,fullData.locker_id, gafeteId)
         loadingService()
         fetch(url + urlScripts, {
             method: 'POST',
@@ -1151,12 +1395,53 @@ function entregarGafete(){
             'documento_gafete':[radioSeleccionado.value],*/
         }
 
+        let tieneGafete=false
+        let tieneLocker=false
+        if(gafeteRegistroIngreso.hasOwnProperty("gafete_id")){
+            if(gafeteRegistroIngreso.gafete_id==''|| gafeteRegistroIngreso.gafete_id==null || gafeteRegistroIngreso.gafete_id==undefined){
+                $("#gafeteText").hide()
+                $("#divGafete").hide()
+                
+            }else{
+                $("#gafeteText").show()
+                $("#divGafete").show()
+                $("#gafeteText").show();
+                $("#gafete").text(gafeteRegistroIngreso.gafete_id);
+                tieneGafete=true
+            }
+        }else{
+            $("#gafeteText").hide()
+            $("#divGafete").hide()
+            
+        }
+        if(gafeteRegistroIngreso.hasOwnProperty("locker_id")){
+            if(gafeteRegistroIngreso.locker_id=='' || gafeteRegistroIngreso.locker_id==null || gafeteRegistroIngreso.locker_id==undefined){
+                $("#lockerText").hide()
+                $("#divLocker").hide()
+               
+            }else{
+                $("#lockerText").show()
+                $("#divLocker").show()
+                $("#lockerText").show();
+                $("#locker").text(gafeteRegistroIngreso.locker_id)
 
+                tieneLocker=true
+            }
+        }else{
+            $("#lockerText").hide()
+            $("#divLocker").hide()
+            
+        }
+        if(tieneGafete || tieneLocker){
+                $(document).ready(function() {
+                    $("#hrGafeteLocker").show()
+                })
+           }else{
+                $(document).ready(function() {
+                    $("#hrGafeteLocker").hide()
+                })
+           }
         $("#gafeteModal").modal('hide')
-        $("#gafeteText").show();
-        $("#lockerText").show();
-        $("#gafete").text(gafeteRegistroIngreso.gafete_id);
-        $("#locker").text(gafeteRegistroIngreso.locker_id)
         successMsg("Gafete Entregado", "El gafete asignado para el registro de ingreso.")
         $("#idLoadingButtonAsignarGafete").hide();
         $("#idButtonAsignarGafete").show();
@@ -1251,40 +1536,10 @@ function optionCheckOtro(){
 
 //FUNCION al pedir la opcion information user al setear la informacion del usuario
 function dataUserInf(dataUser){
-    if(dataUser.hasOwnProperty('limitado_a_dias')){
-        let dias= dataUser.limitado_a_dias
-        if(dias.length>0){
-            for(let d of dias){
-                $("#"+d+"").removeClass('btn-outline-success');
-                $("#"+d+"").addClass('btn-success');
-            }
-        }
-    }
+    
     $("#folio").text(dataUser.folio !==""? dataUser.folio: "")
 
-    let imgUser ="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1"
-    if(dataUser.hasOwnProperty('foto')){
-        if(dataUser.foto.length>0){
-            imgUser = dataUser.foto[0].file_url !== '' ? 
-            dataUser.foto[0].file_url: 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png';
-        }else{
-            imgUser= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
-        }
-    }
-    $('#imgUser').attr('src', imgUser);
-
-    let imgCard="https://www.creativefabrica.com/wp-content/uploads/2018/12/Id-card-icon-by-rudezstudio-5-580x386.jpg"
-
-    if(dataUser.hasOwnProperty('identificacion')){
-        if(dataUser.identificacion.length>0){
-            imgCard= dataUser.identificacion[0].file_url !==  '' ? 
-            dataUser.identificacion[0].file_url : "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
-        }else{
-            imgCard= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
-        }
-        
-    }
-    $('#imgCard').attr('src', imgCard); 
+    
 
     let nameUser = ""
     if(dataUser.hasOwnProperty("nombre")){
@@ -1308,17 +1563,71 @@ function dataUserInf(dataUser){
     if(dataUser.hasOwnProperty('fecha_de_caducidad')){
         validity= dataUser.fecha_de_caducidad !==  '' ? dataUser.fecha_de_caducidad : '';
     }
-    $('#validity').text(validity);
+    if(validity==""){
+        $('#vigenciaPase').hide()
+    }else{
+        $('#vigenciaPase').show()
+        $('#validity').text(validity.slice(0,-3) + ' hrs');
+    }
+
+    $("#textDiasAcceso").text("")
+    $('#diasAcceso').text("")
+
+    let btns = document.getElementsByClassName('week')
+    for(let b of btns){ 
+        $("#"+b.id).addClass('btn-outline-success')
+        $("#"+b.id).removeClass('bg-dark')
+        $("#"+b.id).removeClass('color-white')
+    }
+    let diasAcceso = ""
+    if(dataUser.hasOwnProperty('config_dia_de_acceso')){
+        if(dataUser.config_dia_de_acceso =="limitar días de acceso"){
+            if(dataUser.limitado_a_acceso!==""){
+                $("#textDiasAcceso").text("Limitado a :")
+                diasAcceso= dataUser.limitado_a_acceso !==  '' ? dataUser.limitado_a_acceso : '';
+                $('#diasAcceso').text(diasAcceso + " accesos");
+            }else{
+                
+                $("#textDiasAcceso").text("")
+                $('#diasAcceso').text("")
+            }
+            let dias= dataUser.limitado_a_dias
+            if(dias.length>0){
+                for(let d of dias){
+                    $("#"+d+"").removeClass('btn-outline-success');
+                    $("#"+d+"").addClass('bg-dark');
+                    $("#"+d+"").addClass('color-white');
+                }
+            }
+        }else{
+            $("#textDiasAcceso").text("Días de acceso :")
+            diasAcceso= 'Cualquier día';
+            $('#diasAcceso').text(diasAcceso)
+        }
+        
+    }
+    
+
+
+
+
 
     let status = ""
     if(dataUser.hasOwnProperty('estatus')){
-        if(dataUser.estatus !=="" ){
+        if(dataUser.estatus !=="" || dataUser.estatus !==null|| dataUser.estatus !==undefined ){
+            $("#divEstatus").show()
+            $("#hrEstatus").show()
             status=dataUser.estatus !=="" ? dataUser.estatus: '';
         }else{
             status=""
+            $("#divEstatus").hide()
+            $("#hrEstatus").hide()
         }
+    }else{
+        $("#divEstatus").hide()
+        $("#hrEstatus").hide()
     }
-    $('#status').text(status);
+    $('#status').text(capitalizeFirstLetter(status) );
     
     let tipoDePase = ""
     if(dataUser.hasOwnProperty("tipo_de_pase")){
@@ -1333,11 +1642,47 @@ function dataUserInf(dataUser){
     $('#motivo').text(motivo);
     
     let visit=""
+    let listaVisitas= document.getElementById('listaVisitas')
+    let listaVisitasPadre= document.getElementById('listaVisitasPadre')
+
     if(dataUser.hasOwnProperty('visita_a')){
-        visit= dataUser.visita_a.length>0 ? dataUser.visita_a[0].nombre: '';
+        if(dataUser.visita_a.length>0){
+            listaVisitasPadre.style.display="block"
+            listaVisitas.innerHTML=""
+            listaVisitas.innerHTML=`
+            <div>
+                <p class="m-0 p-0"><span class="text-gray">Visita a:</span>&nbsp;&nbsp; <br></p>
+            </div>`;
+            for(let v of dataUser.visita_a){
+                let nom= v.nombre || ""
+                let em= v.email || ""
+                let randomID=Math.floor(Math.random() * 1000000);
+                visit +=`
+                    <div class="d-flex flex-row justify-content-between align-items-start">
+                        <div class="col-10"> <p><span id="visita-`+randomID+`">`+v.nombre+` </span></p></div>
+                        <div class="col-2 d-flex justify-content-start p-0" >
+                            <button type="button" class="btn btn-primary btn-sm m-1" onclick="setModal('phoneModal', '', '${nom}', '${em}');">
+                                <i class="fa-solid fa-phone"></i>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm m-1" onclick="setModal('messageModal', '' , '${nom}', '${em}');">
+                                <i class="fa-solid fa-message"></i> 
+                            </button>
+                        </div>
+                    </div>`;
+            }
+            listaVisitas.innerHTML += visit
+        }else {
+            listaVisitasPadre.style.display="none"
+            listaVisitas.innerHTM=""
+        }
+    }else{
+        listaVisitas.innerHTML=""
+        listaVisitasPadre.style.display="none"
     }
-    $('#visita').text(visit);
+    //$('#visita').text(visit);
     
+
+
     /*let authorizePase =""
     if(dataUser.hasOwnProperty("authorize_pase")){
         authorizePase=dataUser.authorize_pase !==  '' ? dataUser.authorize_pase: '';
@@ -1377,7 +1722,7 @@ function tableFill(dataUser){
         //if(i < 3){
             var newRow = $('<tr>');
             newRow.append($('<td>').text(listInstructions[i].comentario_pase));
-            newRow.append($('<td>').text(listInstructions[i].tipo_de_comentario));
+            newRow.append($('<td>').text(capitalizeFirstLetter(listInstructions[i].tipo_de_comentario)));
             newRow.append('</tr>');
             $('#tableInstructions').append(newRow);
         //}
@@ -1504,15 +1849,24 @@ function tableFillEquipos(dataUser){
         //dataUser.tipo_movimiento == 'Entrada'
        
         let isChecked= listItems[i].check == true || listItems[i].check == "checked" ? 'checked' : '';
-        newRow.append('<td ><input class="form-check-input checkboxGroupEquipos" style="margin: auto!important; display: block!important;" type="checkbox" id='+id+' '+isChecked+'></td>');
+        newRow.append('<td ><input class="form-check-input checkboxGroupEquipos" style="margin: auto!important; display: block!important;" type="checkbox" name="equipoCheckGroup" id='+id+' '+isChecked+'></td>');
         newRow.append('</tr>');
         $('#tableEquipos').append(newRow);
         if(dataUser.tipo_movimiento =="Entrada"){
             $('#'+id).prop('disabled', false);
             $("#idButtonEquipoNota").prop('disabled', false);
+            $("#buttonVerListaVehiculos").prop('disabled', false)
+            $("#buttonVerBorradorVehiculos").prop('disabled', false)
+            $("#buttonVerListaEquipos").prop('disabled', false)
+            $("#buttonVerBorradorEquipos").prop('disabled', false)
         }else{
             $("#idButtonEquipoNota").prop('disabled', true);
             $('#'+id).prop('disabled', true);
+            $("#idButtonVehiculos").prop('disabled', true)
+            $("#buttonVerListaVehiculos").prop('disabled', true)
+            $("#buttonVerBorradorVehiculos").prop('disabled', true)
+            $("#buttonVerListaEquipos").prop('disabled', true)
+            $("#buttonVerBorradorEquipos").prop('disabled', true)
         }
     }
     if(listItems.length == 0){
@@ -1551,7 +1905,7 @@ function tableFillVehiculos(dataUser){
         let marcaCar = listCars[i].marca_vehiculo;
         let modeloCar = listCars[i].modelo_vehiculo;
         let matriculaCar = listCars[i].placas_vehiculo;
-        let colorCar = listCars[i].color_vehiculo;
+        let colorCar = capitalizeFirstLetter(listCars[i].color_vehiculo);
         let id = listCars[i].id;
         var newRow = $('<tr>');
         newRow.append($('<td>').text(tipoCar));
@@ -1596,26 +1950,35 @@ function optionInformationUser(data){
         let tieneGafete=false
         let tieneLocker=false
         if(data.hasOwnProperty("gafete_id")){
-            if(data.gafete_id==''|| data.gafete_id==null || data.locker_id==undefined){
+            if(data.gafete_id==''|| data.gafete_id==null || data.gafete_id==undefined){
                 $("#gafeteText").hide()
+                $("#divGafete").hide()
+                
             }else{
                 $("#gafeteText").show()
+                $("#divGafete").show()
                 tieneGafete=true
             }
         }else{
             $("#gafeteText").hide()
+            $("#divGafete").hide()
+            
         }
         if(data.hasOwnProperty("locker_id")){
             if(data.locker_id=='' || data.locker_id==null || data.locker_id==undefined){
                 $("#lockerText").hide()
+                $("#divLocker").hide()
+               
             }else{
                 $("#lockerText").show()
+                $("#divLocker").show()
                 tieneLocker=true
             }
         }else{
             $("#lockerText").hide()
+            $("#divLocker").hide()
+            
         }
-        console.log("TIENE GAFETE LOCKER", tieneGafete, tieneLocker)
         if(data.tipo_movimiento == 'Entrada'){
             tipoMovimiento="Entrada" 
            $("#buttonIn").show();
@@ -1624,10 +1987,12 @@ function optionInformationUser(data){
            if(tieneGafete || tieneLocker){
                 $(document).ready(function() {
                     $("#buttonAsignarGafete").hide()
+                    $("#hrGafeteLocker").show()
                 })
            }else{
                 $(document).ready(function() {
                     $("#buttonAsignarGafete").show()
+                    $("#hrGafeteLocker").hide()
                 })
            }
         }else if(data.tipo_movimiento == 'Salida'){
@@ -1637,15 +2002,20 @@ function optionInformationUser(data){
             $("#textOut").show();
             if(tieneGafete || tieneLocker){
                 $("#buttonRecibirGafete").show()
+                $("#hrGafeteLocker").show()
             }else{
                 $(document).ready(function() {
                     $("#buttonRecibirGafete").hide()
+                    $("#hrGafeteLocker").hide()
                 })
             }
         } 
         
-        $("#gafete").text(data.gafete_id)
-        $("#locker").text(data.locker_id)
+        /*if(data.gafete_info)*/
+
+
+        $("#gafete").text(data.gafete_id !== null ? data.gafete_id : "")
+        $("#locker").text(data.locker_id !== null ? data.locker_id : "")
         $("#buttonNew").hide();
         $("#buttonAsignarGafete").show();
         $("#buttonClean").show();
@@ -1656,9 +2026,9 @@ function optionInformationUser(data){
                 //if(i < 3){
                     //let duration=segundosAHoras(listBitacora[i].duration)
                     let newRow = $('<tr>');
-                    newRow.append($('<td>').text(listBitacora[i].visita_a ? listBitacora[i].visita_a : ''));
+                    newRow.append($('<td>').text(listBitacora[i].visita_a.length>0 ? listBitacora[i].visita_a[0].nombre ||"": ''));
                     newRow.append($('<td>').text(listBitacora[i].fecha ? listBitacora[i].fecha : ''));
-                    newRow.append($('<td>').text(listBitacora[i].duration ? listBitacora[i].duration +' hrs': ''));
+                    newRow.append($('<td>').text(listBitacora[i].duration ? listBitacora[i].duration.slice(0,-3) +' hrs': '00:00 hrs'));
                     if(listBitacora[i].hasOwnProperty('comentarios')){
                         if(listBitacora[i].comentarios.length>0){
                             let stringArray= encodeURIComponent(JSON.stringify(listBitacora[i].comentarios))
@@ -1799,19 +2169,19 @@ function optionListUsers(data){
 function setHideElements(option){
     if (option == 'buttonsModal') {
         $("#buttonCommentsModal").hide();
-        $("#buttonBitacoraModal").hide();
+        $('#buttonBitacoraModal').hide();
         $("#buttonAccessModal").hide();
         $("#buttonLocationsModal").hide();
         $("#buttonItemsModal").hide();
         $("#buttonCarsModal").hide();
     }else if(option == 'buttonsOptions'){
-        $("#pasesTemporales").hide();
         $("#buttonNew").hide()
         $("#buttonIn").hide();
         $("#buttonOut").hide();
         $("#buttonNew").hide();
         $("#buttonAsignarGafete").hide();
         $("#buttonClean").hide();
+        //$("#pasesTemporales").hide()
     }else if(option == 'buttonNew'){
         $("#buttonNew").show();
     }else if(option =='dataHide'){
@@ -1822,11 +2192,11 @@ function setHideElements(option){
             elements[i].style.display = 'none';
         }
     }else if(option =='dataShow'){
+                
         var elements = document.getElementsByClassName('section-data');
         for (var i = 0; i < elements.length; i++) {
             elements[i].style.display = 'block';
         }
-        
     }else if(option==statusVisitaEntrada || option == statusVisitaSalida){
         $("#divSpinner").hide();
         $("#inputCodeUser").val("")
@@ -1834,10 +2204,9 @@ function setHideElements(option){
         $("#idComentarioAcceso").val('')
         $("#buttonBuscarPaseEntrada").prop('disabled', false);
         $("#buttonNew").prop('disabled', false);
-        $("#pasesTemporales").hide()
-        $("#buttonNew").hide()
         $("#pasesTemporales").prop('disabled', false);
-        $("#pasesTemporales").hide();
+        $("#pasesActivos").prop('disabled', false);
+        $("#buttonNew").hide()
         if(option==statusVisitaEntrada){
             $("#buttonAsignarGafete").show()
             $("#buttonRecibirGafete").hide()
@@ -1845,7 +2214,22 @@ function setHideElements(option){
             $("#buttonAsignarGafete").hide()
             $("#buttonRecibirGafete").show()
         }
-    }
+    }else if(option == 'paseVencido') {
+        $("#buttonIn").prop("disabled", true)
+        $("#buttonAsignarGafete").prop("disabled", true)
+        $("#buttonAddCommentarioAccesoModal").prop("disabled", true)
+        $("#buttonAddCommentarioPaseModal").prop("disabled", true)
+        $("#idButtonEquipoNota").prop("disabled", true)
+        $("#buttonVerListaEquipos").prop("disabled", true)
+        $("#buttonVerBorradorEquipos").prop("disabled", true)
+    }else if (option == 'paseHabilitar'){}
+        $("#buttonIn").prop("disabled", false)
+        $("#buttonAsignarGafete").prop("disabled", false)
+        $("#buttonAddCommentarioAccesoModal").prop("disabled", false)
+        $("#buttonAddCommentarioPaseModal").prop("disabled", false)
+        $("#idButtonEquipoNota").prop("disabled", false)
+        $("#buttonVerListaEquipos").prop("disabled", false)
+        $("#buttonVerBorradorEquipos").prop("disabled", false)
 }
 
 
@@ -1895,10 +2279,11 @@ function setCleanData(){
 
     tbody = document.querySelector('#tableModalInstructions tbody');
     tbody.innerHTML = '';
-
-    $('#imgUser').attr('src', 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png'); 
-    $('#imgCard').attr('src', 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg'); 
-    $('#tipoPaseText').text('')
+    $('#imgUser1').attr('src', '');
+    $('#imgCard1').attr('src', '');
+    /*$('#imgUser1').attr('src', 'https://f001.backblazeb2.com/file/app-linkaform/public-client-20/None/5ea35de83ab7dad56c66e045/64eccb863340ee1053751c1f.png'); 
+    $('#imgCard1').attr('src', 'https://f001.backblazeb2.com/file/app-linkaform/public-client-126/71202/60b81349bde5588acca320e1/65dd1061092cd19498857933.jpg'); 
+  */  $('#tipoPaseText').text('')
     $('#name').text('')
     $('#rfc').text('')
     $('#validity').text('')
@@ -1926,6 +2311,14 @@ function setCleanData(){
     $("#viernes").removeClass('btn-success');
     $("#sábado").removeClass('btn-success');
     $("#domingo").removeClass('btn-success');
+
+    let btns = document.getElementsByClassName('week')
+    for(let b of btns){ 
+        $("#"+b.id).addClass('btn-outline-success')
+        $("#"+b.id).removeClass('bg-dark')
+        $("#"+b.id).removeClass('color-white')
+    }
+
     $("#buttonAddCommentarioAccesoModal").hide()
     selectedEquipos=[]
     selectedVehiculos=[]
@@ -1934,12 +2327,15 @@ function setCleanData(){
     tipoMovimiento=""
     gafeteId=""
     gafeteRegistroIngreso={}
+    $("#cartaUser").hide(); 
     $("#buttonAsignarGafete").hide()
     $("#buttonRecibirGafete").hide()
     $("#idButtonEquipoNota").prop('disabled', false);
     $("#idButtonVehiculos").prop('disabled', false);
-    $("#pasesTemporales").prop('disabled', false);
-    $("#pasesTemporales").show();
+    $("#cartaUser").hide();
+    $("#mainSection1").show();
+   // $("#pasesTemporales").prop('disabled', false);
+   // $("#pasesTemporales").show();
     setHideElements('dataHide');
     setHideElements('buttonsOptions');
     setHideElements('buttonNew');
@@ -2052,10 +2448,6 @@ function getFormGafete(){
 
 //FUNCION obtener data para rellenar los catalogos
 function getCatalogs(){
-    //$("#selectTipoVehiculo-123").prop( "disabled", true );
-    //$("#divCatalogMarca123").hide();
-    //$("#divCatalogModelo123").hide();
-    
     fetch(url + urlScripts ,{
         method: 'POST',
         body: JSON.stringify({
@@ -2133,8 +2525,10 @@ function isCanvasBlank(canvas) {
 
 
 function stopStream(stream) {
-    const tracks = stream.getTracks();
-    tracks.forEach(track => track.stop());
+    if(stream!==null){
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+    }
 }
 
 //FUNCION obtener la imagen del canvas
@@ -2189,8 +2583,9 @@ function getScreenUser(){
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true })
             .then(function(stream) {
+                $("#containerUser video").remove()
                 let video = document.createElement('video');
-                video.style.width = '150px';
+                video.style.width = '180px';
                 video.style.height = '150px';
                 document.getElementById('containerUser').appendChild(video);
                 video.srcObject = stream;
@@ -2205,11 +2600,11 @@ function getScreenUser(){
                     setTranslateImageUser(context, video, canvas);
                 });
                // Evento para detener el stream al cerrar el modal o al cancelar
-                document.getElementById('buttonCancel').addEventListener('click', function() {
+                /*document.getElementById('buttonCancel').addEventListener('click', function() {
                     stopStream(currentStream);
                     currentStream = null;
                     flagVideoUser = false;
-                });
+                });*/
 
                 // Enviar un mensaje a otras pestañas para que sepan que el stream está en uso
                 localStorage.setItem('cameraInUse', 'true');
@@ -2234,7 +2629,7 @@ function setTranslateImageUser(context, video, canvas){
     video.srcObject.getTracks().forEach(function(track) {
         track.stop();
     });
-    //video.style.display = 'none';
+    video.style.display = 'none';
     //sdjkfns
     ///-- Save Input
     canvas.toBlob( (blob) => {
@@ -2265,7 +2660,7 @@ function setTranslateImageCard(context, video, canvas){
     video.srcObject.getTracks().forEach(function(track) {
         track.stop();
     });
-    //video.style.display = 'none';
+    video.style.display = 'none';
     ///-- Save Input
     canvas.toBlob( (blob) => {
         const file = new File( [ blob ], "imageCard.png" );
@@ -2312,8 +2707,8 @@ function setRequestFileImg(type) {
                     urlImgCard = res.file;
                     fotosNuevaVisita.identificacion.push({"file_name":res.file_name, "file_url":res.file})
                     //----Clean Canvas
-                    var canvas = document.getElementById('canvasPhoto');
-                    var ctx = canvas.getContext('2d');
+                    let canvas = document.getElementById('canvasPhoto');
+                    let ctx = canvas.getContext('2d');
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     let imgC =document.getElementById('imgCard')
                     imgC.css('display', 'block');
@@ -2322,8 +2717,8 @@ function setRequestFileImg(type) {
                     urlImgUser = res.file;
                     fotosNuevaVisita.foto.push({"file_name":res.file_name, "file_url":res.file})
                     //----Clean Canvas
-                    var canvas = document.getElementById('canvasPhotoUser');
-                    var ctx = canvas.getContext('2d');
+                    let canvas = document.getElementById('canvasPhotoUser');
+                    let ctx = canvas.getContext('2d');
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     let imgU =document.getElementById('imgUser')
                     imgU.css('display', 'block');
@@ -2344,7 +2739,7 @@ function setRequestFileImg(type) {
 
 
 //---Cerrar Sesión
-function setCloseSession() {
-    closeSession();
-    redirectionUrl('login',false);
-}
+// function setCloseSession() {
+//     closeSession();
+//     redirectionUrl('login',false);
+// }

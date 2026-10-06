@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=">
+	<title>Document</title>
+</head>
+<body>
+	 <div id="content-wrapper" class="d-flex flex-column ">    
+
+
+	    <!-- List Content -->
+        <div class="container p-3" id="divList">
+            <div class="col-xl-12 col-lg-12 mt-2" id="divListContent">
+                <h4 class="text-center">Configuración de Rondines Disponibles</h4>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center" style="height: 70px">
+                        A list item
+                        <span class="badge text-bg-primary rounded-pill">Seleccionar</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center" style="height: 70px">
+                        A second list item
+                        <span class="badge text-bg-primary rounded-pill">Seleccionar</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center" style="height: 70px">
+                        A third list item
+                        <span class="badge text-bg-primary rounded-pill">Seleccionar</span>
+                    </li>
+                </ul>
+            </div>
+        
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">No hay configuraciones disponibles</h5>
+                        <p class="card-text">¿Deseas crear una nueva configuración?</p>
+                        <button class="btn btn-primary">Crear configuración</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 col-lg-12 mt-2" id="divCreateConfig">
+                <div class="mb-3">
+                    <label class="form-label">Nombre del recorrido*</label>
+                    <input type="text" class="form-control" id="textName">
+                </div> 
+                <div class="mb-3">
+                    <label class="form-label">Ubicación</label>
+                    <select class="form-select">
+                        <option value="">Seleccione</option>
+                    </select>
+                </div> 
+                <div class="mb-3" id="divContentArea">
+                    <div class="d-flex align-items-center mb-2 selector-item"><select class="form-select">
+                            <option selected="">Seleccione Área</option>
+                            <option value="1">Área 1</option>
+                            <option value="2">Área 2</option>
+                            <option value="3">Área 3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 col-2 mx-auto">
+                    <button class="btn btn-primary" type="button" onclick="addSelector();">Agregar Área</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

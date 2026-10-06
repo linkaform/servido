@@ -2,9 +2,8 @@ let optionsLocation=[]
 let optionsCaseta=[]
 let urlScripts='infosync/scripts/run/';
 let idScript= 117936;
-let user = getCookie("userId");
-//let userJwt = getCookie("userJwt");
-//let arrayUserBoothsLocations=[]
+let user = getCookie("userId_soter");
+
 class lkfLocationCard extends HTMLElement{
 	constructor(){
 		super();
@@ -14,7 +13,7 @@ class lkfLocationCard extends HTMLElement{
 	this.innerHTML=`
     <script type="text/javascript" src="../utils/servido_utils.js"></script>
         <div class="card-body d-flex justify-content-start " >
-            <div class="">
+            <div class="" >
                 <div class="d-flex align-items-center justify-content-between">
                     <h6 class="text-black ">Ubicación: </h6>
                     <select class="form-select ms-1" id="selectLocation"> </select>
@@ -27,7 +26,7 @@ class lkfLocationCard extends HTMLElement{
             <div class=" d-flex flex-column mt-2 ms-2 justify-content-between ">
                 <div class="d-flex justify-content-start ">
                     <h6 class="text-black" id="textJefeGuardia">Jefe en Guardia: </h6>
-                    <h6 class="text-black-50 ms-1" id="textGuardiaApoyo">`+getCookie('userName')+`</h6> 
+                    <h6 class="text-black-50 ms-1" id="textGuardiaApoyo">`+getCookie('userName_soter')+`</h6> 
                 </div>
                 <div id="divTodasLasCasetas" style="display:none;">
                     <input class="form-check-input mt-1"  type="checkbox" id="checkboxTodasLasCasetas">
@@ -156,7 +155,7 @@ function loadCatalogsCaseta(location ,arrayUserBoothsLocations){
 }
 
 
-async function fetchOnChangeCaseta(script, option, area, location){
+async function fetchOnChangeCaseta(script, option, area, location, prioridades=[]){
     loadingService()
     let responseData=""
     let response={ "data":{
@@ -179,7 +178,13 @@ async function fetchOnChangeCaseta(script, option, area, location){
     if (location){
         body.location=location
     }
-    console.log(body)
+    if (status){
+        body.status=status
+    }
+    if (prioridades.length>0){
+        body.prioridades=prioridades
+    } 
+
     let dataCasetas=[]
     let fetchData= await fetch(url + urlScripts, {
         method: 'POST',
@@ -211,7 +216,6 @@ async function fetchOnChangeLocation(location){
     if (location){
         body.location=location
     }
-    console.log(body)
     let dataCasetas=[]
     let fetchData= await fetch(url + urlScripts, {
         method: 'POST',

@@ -10,10 +10,13 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
     <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tabulator CSS con tema Bootstrap 5 -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/tabulator-tables@5.5.0/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet"> -->
 </head>
 <body>
     <navbar-component ></navbar-component>
@@ -39,16 +42,22 @@
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
                             <div class="card  m-2 div-card-portal customShadow">
                                 <div class="card-body p-3">
-                                    <h5 class="card-title text-center text-uppercase text-dark">Fallas X Día</h5>
-                                    <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert1">65</p>
+                                    <div class="d-flex justify-content-center gap-5">
+                                        <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert1">00</p>
+                                        <i class="fa-solid fa-triangle-exclamation" style="font-size: 40px;"></i>
+                                    </div>
+                                    <h5 class="card-title text-center text-uppercase text-dark">Incidentes X Día</h5>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
                             <div class="card  m-2 div-card-portal customShadow">
                                 <div class="card-body p-3">
-                                    <h5 class="card-title text-center text-uppercase text-dark">Fallas por resolver</h5>
-                                    <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert2">29</p>
+                                    <div class="d-flex justify-content-center gap-5">
+                                        <p class="h1 font-weight-bold mb-0 text-dark text-center" id="textAlert2">00</p>
+                                        <i class="fa-solid fa-clock-rotate-left" style="font-size: 40px;"></i>
+                                    </div>
+                                    <h5 class="card-title text-center text-uppercase text-dark">Fallas pendientes</h5>
                                 </div>
                             </div>
                         </div>
@@ -77,44 +86,102 @@
             <div class="tab-content overflow-hidden" id="myTabContent">
                 <div class="tab-pane fade show active" id="div-article-incidencias" role="tabpanel" aria-labelledby="in-location-tab" tabindex="0">
                     <div class="d-flex mt-2 mb-2 justify-content-end">
-                            <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewIncident');return false;">
-                                <i class="fa-solid fa-plus"></i>
-                                Nuevo Incidente
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarIncidencias" >
-                                <i class="fa-solid fa-file-arrow-down"></i>
-                                Descargar
-                            </button>
-                            <!--  <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                Filtros
-                            </button> -->
-                            <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('incidencias')" id="buttonEliminarIncidencias">
-                                <i class="fa-solid fa-trash"></i>
-                                Eliminar
-                            </button>
+                            <div class="d-flex flex-row flex-grow-1 justify-content-start align-items-center mt-0 mb-0 ms-1">
+                                <div class="d-flex flex-row justify-content-center align-items-center">
+                                    <label class="me-3 ms-1"><b>Prioridad: </b></label>
+                                    <div class="checkbox-group me-2">
+                                        <label>
+                                            <input type="checkbox" name="estadoIncidencia" value="alta" onchange="onChangeFiltroEstadoPerdido()"> Alta
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-group me-2">
+                                        <label>
+                                            <input type="checkbox" name="estadoIncidencia" value="media" onchange="onChangeFiltroEstadoPerdido()"> Media
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-group me-2">
+                                        <label>
+                                            <input type="checkbox" name="estadoIncidencia" value="baja" onchange="onChangeFiltroEstadoPerdido()"> Baja
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-group me-2">
+                                        <label>
+                                            <input type="checkbox" name="estadoIncidencia" value="critica" onchange="onChangeFiltroEstadoPerdido()"> Crítica
+                                        </label>
+                                    </div>
+                                    <!-- <label class="me-3 ms-1"><b>Prioridad: </b></label>
+                                    <select class="form-select" style="width:400px;" id="filtroEstadoPerdido" onchange="onChangeFiltroEstadoPerdido()">
+                                        <option value="pendiente">Alta</option>
+                                        <option value="entregado">Mediana</option>
+                                        <option value="donado">Baja</option>
+                                    </select> -->
+                                </div>
+                            </div>
+                            <div class=" d-flex mb-2 ms-1 justify-content-end align-items-center">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewIncident');return false;">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Nuevo Incidente
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarIncidencias" >
+                                    <i class="fa-solid fa-file-arrow-down"></i>
+                                    Descargar
+                                </button>
+                                <!--  <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    Filtros
+                                </button> -->
+                                <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('incidencias')" id="buttonEliminarIncidencias">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Eliminar
+                                </button>
+                            </div>
                     </div>
                         <div class="m-1 mb-2" id="tableIncidencias"></div>
                 </div>
                 <div class="tab-pane fade overflow-hidden" id="div-fallas" role="tabpanel" aria-labelledby="out-location-tab" tabindex="0">
                     <div class="d-flex mt-2 mb-2 justify-content-end">
-                            <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewFail')">
-                                <i class="fa-solid fa-plus"></i>
-                                Nueva Falla
-                            </button>
-                            
-                            <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarFallas" >
-                                <i class="fa-solid fa-file-arrow-down"></i>
-                                Descargar
-                            </button>
-                            <!--  <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                Filtros
-                            </button> -->
-                            <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('fallas')" id="buttonEliminarFallas" >
-                                <i class="fa-solid fa-trash"></i>
-                                Eliminar
-                            </button>
+                            <div class="d-flex flex-row flex-grow-1 justify-content-start align-items-center mt-0 mb-0 ms-1">
+                                <div class="d-flex flex-row justify-content-center align-items-center">
+                                    <div class="d-flex flex-row justify-content-center align-items-center">
+                                        <label class="me-3 ms-1"><b>Prioridad: </b></label>
+                                        <div class="checkbox-group me-2">
+                                            <label>
+                                                <input type="checkbox" name="estadoIncidencia" value="alta" onchange="onChangeFiltroEstadoFallas()"> Abierto
+                                            </label>
+                                        </div>
+                                        <div class="checkbox-group me-2">
+                                            <label>
+                                                <input type="checkbox" name="estadoIncidencia" value="media" onchange="onChangeFiltroEstadoFallas()"> Cerrado
+                                            </label>
+                                        </div>
+                                    </div>
+                                <!-- 
+                                    <label class="me-3 ms-1"><b>Estado: </b></label>
+                                    <select class="form-select" style="width:400px;" id="filtroEstadoFalla" onchange="onChangeFiltroEstadoFalla()">
+                                        <option value="abierto">Abierto</option>
+                                        <option value="resuelto">Resuelto</option>
+                                    </select> -->
+                                </div>
+                            </div>
+                            <div class=" d-flex mb-2 ms-1 justify-content-end align-items-center">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="setModal('NewFail')">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Nueva Falla
+                                </button>
+                                
+                                <button type="button" class="btn btn-primary btn-sm ms-1" id="descargarFallas" >
+                                    <i class="fa-solid fa-file-arrow-down"></i>
+                                    Descargar
+                                </button>
+                                <!--  <button type="button" class="btn btn-primary btn-sm ms-1" onclick="setModal('filtros', 2)">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    Filtros
+                                </button> -->
+                                <button type="button" class="btn btn-danger btn-sm ms-1" onclick="alertEliminarCheckbox('fallas')" id="buttonEliminarFallas" >
+                                    <i class="fa-solid fa-trash"></i>
+                                    Eliminar
+                                </button>
+                            </div>
                     </div>
                         <div class="m-1 mb-2" id="tableFallas"></div>
                 </div>
@@ -145,8 +212,20 @@
                             </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Fecha y hora del incidente: *</label>
-                            <input type="datetime-local" class="form-control contentNuevoIncidencia" id="fechaHoraNuevoIncidencia">
+                            <label class="form-label">Fecha: *</label>
+                            <input type="date" class="form-control contentNuevoIncidencia" id="fechaNuevoIncidencia">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Hora: *</label>
+                            <div class="time-selector">
+                                <select class="form-select time-select contentNuevoIncidencia" id="horaNuevoIncidencia" 
+                                onchange="onChangeAmpmLabel('horaNuevoIncidencia','ampmNuevoIncidencia')">
+                                </select>
+                                <label class="mx-1">:</label>
+                                <select class="form-select time-select contentNuevoIncidencia" id="minNuevoIncidencia">
+                                </select>
+                                <label class="ms-2" id="ampmNuevoIncidencia"></label>
+                            </div>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Reporta: </label>
@@ -154,63 +233,123 @@
                             </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Incidencia: *</label>
-                            <select class="form-select contentNuevoIncidencia" id="incidenciaNuevoIncidencia" onchange="verInputsDeposito()">
-                            </select>
-                        </div>
-                         <div class="mb-3 col-6">
                             <label class="form-label">Importancia: *</label>
                             <select class="form-select contentNuevoIncidencia" id="importanciaNuevoIncidencia">
-                                <option value="baja">Baja</option>
-                                <option value="media">Media</option>
-                                <option value="alta">Alta</option>
-                                <option value="critica">Critica</option>
+                                <option value="Baja">Baja</option>
+                                <option value="Media">Media</option>
+                                <option value="Alta">Alta</option>
+                                <option value="Crítica">Crítica</option>
                             </select>
                         </div>
-                        <div id="depositos-inputs" style="display:none;">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Incidencia: *</label>
+                            <select class="form-select contentNuevoIncidencia" id="incidenciaNuevoIncidencia" onchange="verInputsDeposito('nuevo')">
+                            </select>
+                        </div>
+                        <div id="depositos-padre-nuevo" style="display:none;">
                             <hr>
-                            <div class="d-flex flex-wrap flex-row">
-                                <div class="mb-3 col-6">
-                                    <label class="form-label">Tipo Deposito: *</label>
-                                    <select class="form-select contentNuevoIncidencia" id="tipoDepositoNuevoIncidencia">
-                                        <option value="Efectivo">Efectivo</option>
-                                        <option value="Fichas Deposito">Fichas Deposito</option>
-                                        <option value="Menos Dev. DEP-PDT">Menos Dev. DEP-PDT</option>
-                                        <option value="RecProMes">RecProMes</option>
-                                        <option value="Cheques">Cheques</option>
-                                        <option value="Cheques Dlls">Cheques Dlls</option>
-                                        <option value="Vales">Vales</option>
-                                    </select>
+                            <div class="d-flex flex-wrap flex-row deposito-div-nuevo" id="nuevoDeposito-nuevo-123">
+                                <div class=" d-flex flex-wrap flex-row flex-grow-1">
+                                    <div class="mb-3 col-5 me-3">
+                                        <label class="form-label">Tipo Deposito: </label>
+                                        <select class="form-select contentNuevoIncidencia deposito-nuevo" id="tipoDepositoNuevoIncidencia-nuevo-123">
+                                            <option value="Efectivo">Efectivo</option>
+                                            <option value="Fichas Deposito">Fichas Deposito</option>
+                                            <option value="Menos Dev. DEP-PDT">Menos Dev. DEP-PDT</option>
+                                            <option value="RecProMes">RecProMes</option>
+                                            <option value="Cheques">Cheques</option>
+                                            <option value="Cheques Dlls">Cheques Dlls</option>
+                                            <option value="Vales">Vales</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-6">
+                                        <label class="form-label">Cantidad: </label>
+                                        <input step="0.01" class="form-control contentNuevoIncidencia deposito-nuevo soloNum" id="cantidadNuevoIncidencia-nuevo-123" onChange="getTotal('cantidadNuevoIncidencia-nuevo-123', 'Nuevo')">
+                                    </div>
+                                    
                                 </div>
-                                <div class="mb-3 col-6">
-                                    <label class="form-label">Cantidad: *</label>
-                                    <input type="number" step="0.01" class="form-control contentNuevoIncidencia" id="cantidadNuevoIncidencia">
-                                </div>
-                                <div class="mb-3 col-6">
-                                    <label class="form-label">Total Deposito: *</label>
-                                    <input type="number" step="0.01" class="form-control contentNuevoIncidencia" id="totalDepositoNuevoIncidencia">
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddDeposito('nuevo');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteDeposito('nuevo',123);return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
                                 </div>
                             </div>
+                            <div id="depositos-inputs-nuevo">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label ms-2"><b>Total Deposito: </b></label>
+                                <span id="totalDepositoNuevoIncidencia-nuevo-123"> </span>
+                            </div>
                             <hr>
+                        </div>
+                        <div id="tipoDaño-Nuevo" style="display:none;">
+                            <div class="mb-3 col-6">
+                                <div class="d-flex mb-2">
+                                    <label class="me-3">Tipo de daño: </label>
+                                <div class="checkbox-group me-3">
+                                    <label>
+                                        <input type="checkbox" name="estadoIncidenciaNuevo" value="material" > Material
+                                    </label>
+                                </div>
+                                <div class="checkbox-group me-2">
+                                    <label>
+                                        <input type="checkbox" name="estadoIncidenciaNuevo" value="personal" > Personal
+                                    </label>
+                                </div>
+                                </div>
+                                <!-- <label class="form-label">Tipo de daño: </label>
+                                <select class="form-select contentNuevoIncidencia" id="tipoDanoNuevoIncidencia">
+                                    <option value="material">Material</option>
+                                    <option value="personal">Personal</option>
+                                </select> -->
+                            </div>
+                            <div class="mb-3 col-12">
+                                <label class="form-label m-0 p-0">Daños: </label>
+                                <br>
+                                <small class="m-0 p-0 mb-2 text-gray">Daños causador por el incidente.</small>
+                                <textarea class="form-control contentNuevoIncidencia"  rows="1" id="danoNuevoIncidencia"></textarea>
+                            </div>
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label m-0 p-0">Comentarios: *</label><br>
                             <small class="m-0 p-0 mb-2 text-gray">Información relevante relacionada con el incidente.</small>
                             <textarea class="form-control contentNuevoIncidencia"  rows="1" id="comentarioNuevoIncidencia"></textarea>
                         </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Tipo de daño: </label>
-                            <select class="form-select contentNuevoIncidencia" id="tipoDanoNuevoIncidencia">
-                                <option value="material">Material</option>
-                                <option value="personal">Personal</option>
-                            </select>
+                        
+                        <div class="d-flex flex-row justify-content-start align-items-center mb-3">
+                            <label class="me-3"><b>Selecciona una opción: </b></label>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoIncidencia" id="subirFotoRadio" value="subirFotoRadio" onchange="onChangeTomarFoto()"> Subir foto
+                                </label>
+                            </div>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoIncidencia" id="abrirCamaraRadio" value="abrirCamaraRadio" onchange="onChangeTomarFoto()"> Abrir cámara
+                                </label>
+                            </div>
                         </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label m-0 p-0">Daños: *</label>
-                            <br>
-                            <small class="m-0 p-0 mb-2 text-gray">Daños causador por el incidente.</small>
-                            <textarea class="form-control contentNuevoIncidencia"  rows="1" id="danoNuevoIncidencia"></textarea>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3" id="abrirCamara">
+                            <label class="form-label">Foto de la evidencia: *</label>
+                            <button type="button" class="btn  btn-primary" onclick="getScreen('EvidenciaIncidencia');return false;" id="buttonTakeEvidenciaIncidencia">
+                                <i class="fa-solid fa-camera-retro"></i>
+                            </button>
+                            <button type="button" class="btn  btn-sm btn-success"  style="display: none;" id="buttonSaveEvidenciaIncidencia">
+                                Guardar Foto <i class="fa-solid fa-aperture"></i>
+                            </button>
+                            <!-- Canvas Foto -->
+                            <div id="containerEvidenciaIncidencia" class="mt-2">
+                                <canvas id="canvasPhotoEvidenciaIncidencia" style="display: none;width: 200px;height: 125px;"></canvas>
+                                <img id="imgEvidenciaIncidencia" src="" style="display: none;width: 185px;height: 148px;" class="contentNuevoIncidencia">
+                            </div>
+                            <input type="file" class="form-control mt-2" id="inputFileEvidenciaIncidencia" disabled>
                         </div>
+
+
                         <div id="foto-input-form-nuevo" >
                             <div class="d-flex mb-3 col-12 div-foto-nuevo-123" id="id-foto-div-123">
                                 <div class="flex-grow-1">
@@ -219,10 +358,10 @@
                                     onchange="guardarArchivos('fileInputFotografia-nuevo',true);" id="fileInputFotografia-nuevo">
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('nuevo');return false;">
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('nuevo', 'foto');return false;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('nuevo',123);return false;">
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('nuevo',123,'foto');return false;">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                 </div>
@@ -236,10 +375,11 @@
                                     onchange="guardarArchivos('fileInputArchivo-nuevo', false);" id="fileInputArchivo-nuevo">
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('nuevo');return false;">
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('nuevo', 
+                                    'archivo');return false;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('nuevo',123);return false;">
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('nuevo',123, 'archivo');return false;">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                 </div>
@@ -272,7 +412,7 @@
                                 <div class="flex-grow-1">
                                     <label class="form-label">Acciones Tomadas: </label>
                                     <input type="text" class="form-control dano-div-nuevo mb-2 contentNuevoIncidencia" id="repResponsableNuevoIncidencia" placeholder="Responsable de la accion">
-                                    <textarea class="form-control dano-div-nuevo contentNuevoIncidencia" rows="2" id="repAccionNuevoIncidencia" placeholder="Acciones tomadas"></textarea>
+                                    <textarea class="form-control dano-div-nuevo contentNuevoIncidencia" rows="1" id="repAccionNuevoIncidencia" placeholder="Acciones tomadas"></textarea>
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-success button-add-register" onclick="setAddDaño('nuevo');return false;">
@@ -328,8 +468,20 @@
                             </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Fecha y hora del incidente: *</label>
-                            <input type="datetime-local" class="form-control contentEditarIncidencia" id="fechaHoraEditarIncidencia">
+                            <label class="form-label">Fecha: *</label>
+                            <input type="date" class="form-control contentEditarIncidencia" id="fechaEditarIncidencia">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Hora: *</label>
+                            <div class="time-selector">
+                                <select class="form-select time-select contentEditarIncidencia" id="horaEditarIncidencia" 
+                                onchange="onChangeAmpmLabel('horaEditarIncidencia','ampmEditarIncidencia')">
+                                </select>
+                                <label class="mx-1">:</label>
+                                <select class="form-select time-select contentEditarIncidencia" id="minEditarIncidencia">
+                                </select>
+                                <label class="ms-2" id="ampmEditarIncidencia"></label>
+                            </div>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Reporta: </label>
@@ -337,38 +489,126 @@
                             </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Incidencia: *</label>
-                            <select class="form-select contentEditarIncidencia" id="incidenciaEditarIncidencia">
-                            </select>
-                        </div>
-                         <div class="mb-3 col-6">
                             <label class="form-label">Importancia: *</label>
                             <select class="form-select contentEditarIncidencia" id="importanciaEditarIncidencia">
-                                <option value="baja">Baja</option>
-                                <option value="media">Media</option>
-                                <option value="alta">Alta</option>
-                                <option value="critica">Critica</option>
+                                <option value="Baja">Baja</option>
+                                <option value="Media">Media</option>
+                                <option value="Alta">Alta</option>
+                                <option value="Crítica">Crítica</option>
                             </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Incidencia: *</label>
+                            <select class="form-select contentEditarIncidencia" id="incidenciaEditarIncidencia" onchange="verInputsDeposito('editar')">
+                            </select>
+                        </div>
+                        <div>
+                            <h5 id="texto-cargar-deposito">Registros existentes de depositos</h5>
+                            <div class="mb-3 d-flex flex-wrap justify-content-start" id="cargar-deposito">
+                            </div>
+                        </div>
+                        <div id="depositos-padre-editar" style="display:none;">
+                            <div>
+                                <hr>
+                                <div class="d-flex flex-wrap flex-row deposito-div-editar" id="editarDeposito-editar-123">
+                                    <div class="d-flex flex-wrap flex-row flex-grow-1">
+                                        <div class="mb-3 col-5 me-3">
+                                            <label class="form-label">Tipo Deposito: </label>
+                                            <select class="form-select contentEditarIncidencia deposito-editar" id="tipoDepositoEditarIncidencia-editar-123">
+                                                <option value="Efectivo">Efectivo</option>
+                                                <option value="Fichas Deposito">Fichas Deposito</option>
+                                                <option value="Menos Dev. DEP-PDT">Menos Dev. DEP-PDT</option>
+                                                <option value="RecProMes">RecProMes</option>
+                                                <option value="Cheques">Cheques</option>
+                                                <option value="Cheques Dlls">Cheques Dlls</option>
+                                                <option value="Vales">Vales</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 col-6">
+                                            <label class="form-label">Cantidad: </label>
+                                            <input step="0.01" class="form-control deposito-editar contentEditarIncidencia" id="cantidadEditarIncidencia-editar-123" onChange="getTotal('cantidadEditarIncidencia-editar-123', 'Editar')">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-success button-add-register" onclick="setAddDeposito('editar');return false;">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteDeposito('editar',123);return false;">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="depositos-inputs-editar">
+                            </div>
+                            <div class="col-12 mt-2 mb-3">
+                                <label class="form-label ms-2"><b>Total Deposito: </b></label>
+                                <span id="totalDepositoEditarIncidencia-editar-123" > </span>
+                            </div>
+                            <hr>
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label m-0 p-0">Comentarios: *</label><br>
                             <small class="m-0 p-0 mb-2 text-gray">Información relevante relacionada con el incidente.</small>
                             <textarea class="form-control contentEditarIncidencia"  rows="1" id="comentarioEditarIncidencia"></textarea>
                         </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Tipo de daño: </label>
-                            <select class="form-select contentEditarIncidencia" id="tipoDanoEditarIncidencia">
-                                <option value="material">Material</option>
-                                <option value="personal">Personal</option>
-                            </select>
-                        </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label m-0 p-0">Daños: *</label>
-                            <br>
-                            <small class="m-0 p-0 mb-2 text-gray">Daños causador por el incidente.</small>
-                            <textarea class="form-control contentEditarIncidencia"  rows="1" id="danoEditarIncidencia"></textarea>
+                        <div id="tipoDaño-Editar" style="display:none;">
+                            <div class="d-flex mb-2">
+                                <label class="me-3">Tipo de daño: </label>
+                                <div class="checkbox-group me-3">
+                                    <label>
+                                        <input type="checkbox" name="estadoIncidenciaEditar" value="material" id="material-editar"> Material
+                                    </label>
+                                </div>
+                                <div class="checkbox-group me-2">
+                                    <label>
+                                        <input type="checkbox" name="estadoIncidenciaEditar" value="personal" id="personal-editar"> Personal
+                                    </label>
+                                </div>
+                            </div>
+                                <!-- <label class="form-label">Tipo de daño: </label>
+                                <select class="form-select contentNuevoIncidencia" id="tipoDanoNuevoIncidencia">
+                                    <option value="material">Material</option>
+                                    <option value="personal">Personal</option>
+                                </select> -->
+                            <div class="mb-3 col-12">
+                                <label class="form-label m-0 p-0">Daños: </label>
+                                <br>
+                                <small class="m-0 p-0 mb-2 text-gray">Daños causador por el incidente.</small>
+                                <textarea class="form-control contentEditarIncidencia"  rows="1" id="danoEditarIncidencia"></textarea>
+                            </div>
                         </div>
                         <small class="text-gray mb-2"> Agregar un nuevo archivo o una nueva fotografia, no reemplazara ni eliminara las anteriores.</small>
+                        <div class="d-flex flex-row justify-content-start align-items-center mb-3">
+                            <label class="me-3"><b>Selecciona una opción: </b></label>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoIncidenciaEditar" id="subirFotoRadioEditar" value="subirFotoRadioEditar" onchange="onChangeTomarFotoEditar()"> Subir foto
+                                </label>
+                            </div>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoIncidenciaEditar" id="abrirCamaraRadioEditar" value="abrirCamaraRadioEditar" onchange="onChangeTomarFotoEditar()"> Abrir cámara
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3" id="abrirCamaraEditar">
+                            <label class="form-label">Foto del articulo: *</label>
+                            <button type="button" class="btn  btn-primary" onclick="getScreen('EvidenciaIncidenciaEditar');return false;" id="buttonTakeEvidenciaIncidenciaEditar">
+                                <i class="fa-solid fa-camera-retro"></i>
+                            </button>
+                            <button type="button" class="btn  btn-sm btn-success"  style="display: none;" id="buttonSaveEvidenciaIncidenciaEditar">
+                                Guardar Foto <i class="fa-solid fa-aperture"></i>
+                            </button>
+                            <!-- Canvas Foto -->
+                            <div id="containerEvidenciaIncidenciaEditar" class="mt-2">
+                                <canvas id="canvasPhotoEvidenciaIncidenciaEditar" style="display: none;width: 200px;height: 125px;"></canvas>
+                                <img id="imgEvidenciaIncidenciaEditar" src="" style="display: none;width: 185px;height: 148px;" class="contentEditarIncidencia">
+                            </div>
+                            <input type="file" class="form-control mt-2" id="inputFileEvidenciaIncidenciaEditar" disabled>
+                        </div>
+
                         <div id="foto-input-form-editar" >
                             <div class="d-flex mb-3 col-12 div-foto-editar-123" id="id-foto-div-123">
                                 <div class="flex-grow-1">
@@ -377,10 +617,10 @@
                                     onchange="guardarArchivos('fileInputFotografia-editar',true);" id="fileInputFotografia-editar">
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('editar');return false;">
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('editar', 'foto');return false;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('editar',123);return false;">
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('editar',123, 'foto');return false;">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                 </div>
@@ -394,17 +634,22 @@
                                     onchange="guardarArchivos('fileInputArchivo-editar', false);" id="fileInputArchivo-editar">
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('editar');return false;">
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('editar', 'archivo');return false;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('editar',123);return false;">
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('editar',123, 'archivo');return false;">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
                         <hr>
-                        <div id="persona-input-form-editar">
+                        <div>
+                            <h5 id="texto-cargar-persona">Registros existentes</h5>
+                            <div class="mb-3 d-flex flex-wrap justify-content-start" id="cargar-persona">
+                            </div>
+                        </div>
+                        <div id="persona-input-form-editar" >
                             <div class="d-flex mb-3 div-persona-editar-123" id="div-persona-123">
                                 <div class="flex-grow-1">
                                     <label class="form-label">Personas Involucradas: </label>
@@ -425,12 +670,17 @@
                             </div>
                         </div>
                         <hr>
+                        <div>
+                            <h5 id="texto-cargar-accion">Registros existentes</h5>
+                            <div class="mb-3 d-flex flex-wrap justify-content-start" id="cargar-accion">
+                            </div>
+                        </div>
                         <div id="dano-input-form-editar">
                             <div class="d-flex mb-3 div-dano-editar-123" id="div-dano-123">
                                 <div class="flex-grow-1">
                                     <label class="form-label">Acciones Tomadas: </label>
                                     <input type="text" class="form-control dano-div-editar mb-2 contentEditarIncidencia" id="repResponsableEditarIncidencia" placeholder="Responsable de la accion">
-                                    <textarea class="form-control dano-div-editar contentEditarIncidencia" rows="2" id="repAccionEditarIncidencia" placeholder="Acciones tomadas"></textarea>
+                                    <textarea class="form-control dano-div-editar contentEditarIncidencia" rows="1" id="repAccionEditarIncidencia" placeholder="Acciones tomadas"></textarea>
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-success button-add-register" onclick="setAddDaño('editar');return false;">
@@ -496,10 +746,10 @@
                             <div class="d-flex flex-column">
                                 <div class="col-7 mb-1 d-flex flex-column align-items-start justify-content-start ">
                                 <label class="form-label"><b>Evidencia de la incidencia: </b></label><br>
-                                <div class="d-flex justify-content-between image-container " id="evidenciaIncidencia">
+                                <div class="d-flex justify-content-between image-container" id="evidenciaIncidencia">
                                 </div>
                             </div>
-                            <div class="col-7 mb-3 d-flex flex-column align-items-start justify-content-start ">
+                            <div class="col-7 mb-3 mt-2 d-flex flex-column align-items-start justify-content-start ">
                                 <label class="form-label me-3"><b>Documentos: </b></label><br>
                                 <div class="d-flex flex-row justify-content-start flex-wrap" id="documentosIncidencia">
                                 </div>
@@ -508,17 +758,30 @@
                         </div>
                         
                         <hr>
+                        <div id=div-table-depositos>
+                            <h5>Depositos</h5>
+                            <table class="table table-striped" id="table-depositos">
+                                <thead>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col">Cantidad</th>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+
                         <h5>Detalles de los involucrados</h5>
-                        <div class="d-flex justify-content-start align-items-start">
-                            <div class="mb-3 col-6">
+                        <div class="d-flex justify-content-between align-items-start mt-3">
+                            <div class="mb-3 col-5 me-2" >
                                 <label class="form-label fw-bold">Personas involucradas:&nbsp;&nbsp; <span class="fw-normal" ></span></label>
-                                <div id="personasInvolucradasIncidencia">
+                                <div id="personasInvolucradasIncidencia" class="pt-3">
                                     
                                 </div>
                             </div>
-                            <div class="mb-3 col-6">
+                            <div class="mb-3 col-6 ms-2">
                                 <label class="form-label fw-bold">Acciones tomadas:&nbsp;&nbsp; <span class="fw-normal" ></span></label>
-                                <div id="accionIncidencia">
+                                <div id="accionIncidencia" class="pt-3">
                                     
                                 </div>
                             </div>
@@ -543,57 +806,115 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="mb-3 col-6">
-                            <h6 class="form-label">Ubicación: <span id="ubicacionNuevoFalla" style="font-weight: normal"> </span> </h6>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <h6 class="form-label">Caseta: <span id="casetaNuevaFalla" style="font-weight: normal"> </span> </h6>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Fecha de la falla: *</label>
-                            <input type="datetime-local" class="form-control contentNuevaFalla" id="fechaNuevaFalla">
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Area: *</label>
-                            <select class="form-control contentNuevaFalla" id="areaNuevaFalla">
+                            <label class="form-label">Ubicacion: *</label>
+                            <select class="form-select contentNuevoFalla" id="ubicacionNuevoFalla" onchange="onChangeCatalogoFalla('ubicacionNuevoFalla', 'Nuevo')">
                             </select>
                         </div>
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Falla: *</label>
-                              <textarea class="form-control contentNuevaFalla" id="fallaNuevaFalla" ></textarea>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Area: </label>
+                            <select class="form-select contentNuevoFalla" id="areaNuevoFalla">
+                            </select>
                         </div>
-                        <div id="foto-input-form-nuevaFalla" >
-                            <div class="d-flex mb-3 col-12 div-foto-nuevaFalla-123" id="id-foto-div-123">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Fecha: *</label>
+                            <input type="date" class="form-control contentNuevoFalla" id="fechaNuevoFalla">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Hora: *</label>
+                            <div class="time-selector">
+                                <select class="form-select time-select contentNuevoFalla" id="horaNuevoFalla" 
+                                onchange="onChangeAmpmLabel('horaNuevoFalla','ampmNuevoFalla')">
+                                </select>
+                                <label class="mx-1">:</label>
+                                <select class="form-select time-select contentNuevoFalla" id="minNuevoFalla">
+                                </select>
+                                <label class="ms-2" id="ampmNuevoFalla"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Falla: </label>
+                            <select class="form-select contentNuevoFalla" id="fallaNuevoFalla"  onchange="onChangeCatalogoFalla('fallaNuevoFalla', 'Nuevo')">
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Objeto afectado: </label>
+                              <select class="form-select contentNuevoFalla" id="objetoAfectadoNuevoFalla" ></select>
+                        </div>
+                        <div class="d-flex flex-row justify-content-start align-items-center mb-3">
+                            <label class="me-3"><b>Selecciona una opción: </b></label>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoFalla" id="subirFotoRadioFalla" value="subirFotoRadioFalla" onchange="onChangeTomarFotoFalla()"> Subir foto
+                                </label>
+                            </div>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoFalla" id="abrirCamaraRadioFalla" value="abrirCamaraRadioFalla" onchange="onChangeTomarFotoFalla()"> Abrir cámara
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3" id="abrirCamaraFalla">
+                            <label class="form-label">Tomar foto: *</label>
+                            <button type="button" class="btn  btn-primary" onclick="getScreen('User');return false;" id="buttonTakeUser">
+                                <i class="fa-solid fa-camera-retro"></i>
+                            </button>
+                            <button type="button" class="btn  btn-sm btn-success"  style="display: none;" id="buttonSaveUser">
+                                Guardar Foto <i class="fa-solid fa-aperture"></i>
+                            </button>
+                            <!-- Canvas Foto -->
+                            <div id="containerUser" class="mt-2">
+                                <canvas id="canvasPhotoUser" style="display: none;width: 200px;height: 125px;"></canvas>
+                                <img id="imgUser" src="" style="display: none;width: 185px;height: 148px;" class="contentNuevoFalla">
+                            </div>
+                            <input type="file" class="form-control mt-2" id="inputFileUser" disabled>
+                        </div>
+                        <div id="evidenciaF-input-form-nuevo" >
+                            <div class="d-flex mb-3 col-12 div-evidenciaF-nuevo-123" id="id-evidenciaF-div-123">
                                 <div class="flex-grow-1">
-                                    <label class="form-label">Fotografia </label>
-                                    <input type="file" class="form-control-file foto-div-nuevaFalla" onchange="guardarArchivos('fileInputFotografia-nuevaFalla',true);" id="fileInputFotografia-nuevaFalla">
+                                    <label class="form-label">Evidencia </label>
+                                    <input type="file" class="form-control-file evidenciaF-div-nuevo contentNuevoFalla" onchange="guardarArchivos('evidenciaF-nuevo',true);" id="evidenciaF-nuevo">
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('nuevaFalla');return false;">
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('nuevo','evidenciaF');return false;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('nuevaFalla',123);return false;">
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('nuevo',123,'evidenciaF');return false;">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
+                        <div id="documentoF-input-form-nuevo">
+                            <div class="d-flex mb-3 col-12 div-documentoF-nuevo-123" id="id-documentoF-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Documento </label>
+                                    <input type="file" class="form-control-file documentoF-div-nuevo contentNuevoFalla" onchange="guardarArchivos('documentoF-nuevo', false);" id="documentoF-nuevo">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('nuevo', 'documentoF');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('nuevo',123, 'documentoF');return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentarios: *</label>
-                            <textarea class="form-control contentNuevaFalla" id="comentariosNuevaFalla"  rows="3" ></textarea>
+                            <textarea class="form-control contentNuevoFalla" id="comentariosNuevoFalla"  rows="1" ></textarea>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Reporta: *</label>
-                            <select class="form-control contentNuevaFalla" id="reportaNuevaFalla">
+                            <select class="form-select contentNuevoFalla" id="reportaNuevoFalla">
                             </select>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">Responsable asignado de solucionar: *</label>
-                            <select class="form-control contentNuevaFalla" id="responsableNuevaFalla">
+                            <label class="form-label">Responsable asignado de solucionar: </label>
+                            <select class="form-select contentNuevoFalla" id="responsableNuevoFalla">
                             </select>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Fecha de resolucion: *</label>
-                            <input type="datetime-local" class="form-control contentNuevaFalla" id="fechaResolucionNuevaFalla">
                         </div>
                     </div>
                     
@@ -601,7 +922,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success btn-sm" id="buttonAgregarFalla" onclick="nuevaFalla()">Agregar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="buttonAgregarFalla" onclick="nuevaFalla()">Registrar</button>
                     <button class="btn btn-success btn-sm" type="button" id="loadingButtonAgregarFalla" style="display:none" disabled>
                         <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
                         Cargando...
@@ -620,43 +941,122 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
+                     <div class="row">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Ubicacion: *</label>
+                            <select class="form-select contentEditarFalla" id="ubicacionEditarFalla" onchange="onChangeCatalogoFalla('ubicacionEditarFalla', 'Editar')">
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Area: </label>
+                            <select class="form-select contentEditarFalla" id="areaEditarFalla">
+                            </select>
+                        </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Fecha: *</label>
-                            <input type="datetime-local" class="form-control contentEditFalla" id="fechaEditFalla">
+                            <input type="date" class="form-control contentEditarFalla" id="fechaEditarFalla">
                         </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Ubicación: *</label>
-                            <select class="form-control contentEditFalla" id="ubicacionEditFalla">
-                            </select>
+                        <div class="col-4">
+                            <label class="form-label">Hora: *</label>
+                            <div class="time-selector">
+                                <select class="form-select time-select contentEditarFalla" id="horaEditarFalla" 
+                                onchange="onChangeAmpmLabel('horaEditarFalla','ampmEditarFalla1')">
+                                </select>
+                                <label class="mx-1">:</label>
+                                <select class="form-select time-select contentEditarFalla" id="minEditarFalla">
+                                </select>
+                                <label class="ms-2" id="ampmEditarFalla1"></label>
+                            </div>
                         </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Lugar de la falla: *</label>
-                            <select class="form-control contentEditFalla" id="lugarEditFalla">
-                            </select>
-                        </div>
+
                         <div class="mb-3 col-6">
                             <label class="form-label">Falla: *</label>
-                            <select class="form-control contentEditFalla" id="fallaEditFalla">
+                            <select class="form-select contentEditarFalla" id="fallaEditarFalla" onchange="onChangeCatalogoFalla('fallaEditarFalla', 'Editar')">
                             </select>
                         </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Objeto afectado: </label>
+                              <select class="form-select contentEditarFalla" id="objetoAfectadoEditarFalla" ></select>
+                        </div>
+
+
+                        <div class="d-flex flex-row justify-content-start align-items-center mb-3">
+                            <label class="me-3"><b>Selecciona una opción: </b></label>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoFallaEditar" id="subirFotoRadioEditarFalla" value="subirFotoRadioEditarFalla" onchange="onChangeTomarFotoFallaEditar()"> Subir foto
+                                </label>
+                            </div>
+                            <div class="checkbox-group me-2">
+                                <label>
+                                    <input type="radio" name="tomarFotoFallaEditar" id="abrirCamaraRadioEditarFalla" value="abrirCamaraRadioEditarFalla" onchange="onChangeTomarFotoFallaEditar()"> Abrir cámara
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mb-3" id="abrirCamaraEditarFalla">
+                            <label class="form-label">Tomar foto: *</label>
+                            <button type="button" class="btn  btn-primary" onclick="getScreen('EvidenciaFallaEditar');return false;" id="buttonTakeEvidenciaFallaEditar">
+                                <i class="fa-solid fa-camera-retro"></i>
+                            </button>
+                            <button type="button" class="btn  btn-sm btn-success"  style="display: none;" id="buttonSaveEvidenciaFallaEditar">
+                                Guardar Foto <i class="fa-solid fa-aperture"></i>
+                            </button>
+                            <!-- Canvas Foto -->
+                            <div id="containerEvidenciaFallaEditar" class="mt-2">
+                                <canvas id="canvasPhotoEvidenciaFallaEditar" style="display: none;width: 200px;height: 125px;"></canvas>
+                                <img id="imgEvidenciaFallaEditar" src="" style="display: none;width: 185px;height: 148px;" class="contentNuevoArticuloLose">
+                            </div>
+                            <input type="file" class="form-control mt-2" id="inputFileEvidenciaFallaEditar" disabled>
+                        </div>
+
+
+                        <div id="evidenciaF-input-form-editar" >
+                            <div class="d-flex mb-3 col-12 div-evidenciaF-editar-123" id="id-evidenciaF-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Evidencia </label>
+                                    <input type="file" class="form-control-file evidenciaF-div-editar contentEditarFalla" onchange="guardarArchivos('evidenciaF-editar',true);" id="evidenciaF-editar">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('editar', 'evidenciaF');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('editar',123, 'evidenciaF');return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="documentoF-input-form-editar">
+                            <div class="d-flex mb-3 col-12 div-documentoF-editar-123" id="id-documentoF-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Documento </label>
+                                    <input type="file" class="form-control-file documentoF-div-editar contentEditarFalla" onchange="guardarArchivos('documentoF-editar', false);" id="documentoF-editar">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('editar', 'documentoF');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('editar',123, 'documentoF');return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="mb-3 col-12">
                             <label class="form-label">Comentarios: *</label>
-                            <textarea class="form-control contentEditFalla" id="comentariosEditFalla"  rows="3"></textarea>
+                            <textarea class="form-control contentEditarFalla" id="comentariosEditarFalla"  rows="1" ></textarea>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Reporta: *</label>
-                            <select class="form-control contentEditFalla" id="reportaEditFalla">
+                            <select class="form-select contentEditarFalla" id="reportaEditarFalla">
                             </select>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">Responsable asignado de solucionar: *</label>
-                            <select class="form-control contentEditFalla" id="responsableEditFalla">
+                            <select class="form-select contentEditarFalla" id="responsableEditarFalla">
                             </select>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label class="form-label">Fecha de resolucion: *</label>
-                            <input type="datetime-local" class="form-control contentEditFalla" id="fechaResolucionEditFalla">
                         </div>
                     </div>
                     
@@ -674,57 +1074,142 @@
         </div>
     </div>
 
-    <!-- Modal View Fail -->
-    <div class="modal fade" id="viewFailModal" tabindex="-1"  aria-hidden="true">
+    <div class="modal fade" id="cerrarFallaModal" tabindex="-1"  aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h1 class="modal-title fs-5">Seguimiento</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Folio de reporte accion correctiva: </label>
+                            <input type="text" class="form-control seguimientoFalla" id="folioAccionSeguimientoFalla">
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Comentario: </label>
+                            <textarea type="text" rows="1" class="form-control seguimientoFalla" id="comentarioSeguimientoFalla"></textarea>
+                        </div>
+                         <div id="evidenciaFS-input-form-editar" >
+                            <div class="d-flex mb-3 col-12 div-evidenciaFS-editar-123" id="id-evidenciaFS-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Evidencia de solucion: </label>
+                                    <input type="file" class="form-control-file evidenciaFS-div-editar seguimientoFalla" onchange="guardarArchivos('evidenciaFS-editar',true);" id="evidenciaFS-editar">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddFoto('editar','evidenciaFS');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register"  onclick="setDeleteFoto('editar',123, 'evidenciaFS');return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="documentoFS-input-form-editar">
+                            <div class="d-flex mb-3 col-12 div-documentoFS-editar-123" id="id-documentoFS-div-123">
+                                <div class="flex-grow-1">
+                                    <label class="form-label">Documento de solucion: </label>
+                                    <input type="file" class="form-control-file documentoFS-div-editar seguimientoFalla" onchange="guardarArchivos('documentoFS-editar', false);" id="documentoFS-editar">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success button-add-register" onclick="setAddArchivo('editar', 'documentoFS');return false;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger button-delete-register" onclick="setDeleteArchivo('editar',123, 'documentoFS');return false;">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <small class="text-black-50 mt-3">* Campos son obligatorios</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success btn-sm" id="buttonSeguimientoFalla" onclick="funcionSeguimientoFalla()">Actualizar</button>
+                    <button class="btn btn-success btn-sm" type="button" id="loadingButtonSeguimientoFalla" style="display:none" disabled>
+                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                        Cargando...
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal View Fail -->
+    <div class="modal fade" id="fallaVer" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" >
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-center">
                     <h1 class="modal-title fs-5">Detalles de la falla</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Fecha:&nbsp;&nbsp; <span class="fw-normal">26-04-2024</span></label>
+                        <div class="d-flex justify-content-start align-items-start">
+                            <div class="col-5 mb-3 me-3 d-flex flex-column align-items-start justify-content-between" >
+                                <div class="d-flex flex-column">
+                                    <label class="form-label fw-bold mt-2">Falla:&nbsp;&nbsp; <span class="fw-normal" id="fallaVista"></span></label>
+                                    <label class="form-label fw-bold mt-2">Objeto Afectado:&nbsp;&nbsp; <span class="fw-normal" id="objetoAfectadoVista"></span></label>
+                                    <label class="form-label fw-bold mt-2">Ubicacion:&nbsp;&nbsp; <span class="fw-normal" id="ubicacionVista"></span></label>
+                                    <label class="form-label fw-bold mt-2">Area:&nbsp;&nbsp; <span class="fw-normal" id="areaVista"></span></label>
+                                    <label class="form-label fw-bold mt-2">Comentario:&nbsp;&nbsp; <span class="fw-normal" id="comentarioVista"></span></label>
+                                </div>
+                                <hr style="height: 1px!important; width: 100% !important;">
+                                <div class="d-flex flex-column"> 
+                                    <label class="form-label fw-bold mt-2">Fecha de la falla:&nbsp;&nbsp; <span class="fw-normal" id="fechaFallaVista"></span></label>
+                                    <label class="form-label fw-bold mt-2">Estatus:&nbsp;&nbsp; <span class="fw-normal" id="estatusVista"></span></label>
+                                    <label class="form-label fw-bold mt-2">Reporta:&nbsp;&nbsp; <span class="fw-normal" id="reportaVista"></span></label>
+                                </div>
+                            </div>
+                           <div class="d-flex flex-column">
+                                <div class="col-7 mb-1 d-flex flex-column align-items-start justify-content-start ">
+                                    <label class="form-label"><b>Evidencia de la falla: </b></label><br>
+                                    <div class="d-flex justify-content-between image-container" id="evidenciaFalla">
+                                    </div>
+                                </div>
+                                <div class="col-7 mb-3 d-flex flex-column align-items-start justify-content-start ">
+                                    <label class="form-label me-3"><b>Documentos: </b></label><br>
+                                    <div class="d-flex flex-row justify-content-start flex-wrap" id="documentosFalla">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Hora:&nbsp;&nbsp; <span class="fw-normal">11:56:00 Hrs</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Lugar del fallo:&nbsp;&nbsp; <span class="fw-normal">Sala de servidores</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Ubicación:&nbsp;&nbsp; <span class="fw-normal">Planta Norte</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Fallo:&nbsp;&nbsp; <span class="fw-normal">Fallo en el suministro electrico</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Comentarios:&nbsp;&nbsp; <span class="fw-normal">Corte de energia repentino</span></label>
-                        </div>
-                        <hr style=" border: 1px solid black;">
-                        <h4>Información del personal involucrado</h4>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Reporta:&nbsp;&nbsp; <span class="fw-normal">Juan  Perez Nuñez</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Departamento:&nbsp;&nbsp; <span class="fw-normal">Seguridad</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Responsable asignado:&nbsp;&nbsp; <span class="fw-normal">Rodrgio gonzales</span></label>
-                        </div>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Departamento:&nbsp;&nbsp; <span class="fw-normal">Ti</span></label>
-                        </div>
-                        <hr style=" border: 1px solid black;">
-                        <h4>Seguimiento</h4>
-                        <div class="mb-3 col-6 row">
-                            <label class="form-label fw-bold">Estado:&nbsp;&nbsp; <span class="fw-normal">Resuelto</span></label>
+                        
+                        <hr>
+                        <h5>Información de la solucion</h5>
+                        <div class="d-flex flex-wrap justify-content-start align-items-start">
+                            <div class="mb-3 col-6">
+                                <label class="form-label fw-bold">Folio de accion correctiva:&nbsp;&nbsp; <span class="fw-normal" id="folioVista"></span></label>
+                            </div>
+                            <div class="mb-3 col-6">
+                                <label class="form-label fw-bold">Responsable:&nbsp;&nbsp; <span class="fw-normal" id="responsableVista"></span></label>
+                            </div>
+                            <div class="mb-3 col-6">
+                                <label class="form-label fw-bold">Comentario:&nbsp;&nbsp; <span class="fw-normal" id="comentarioSolucionVista"></span></label>
+                            </div>
+                            <div class="mb-3 col-6">
+                                <label class="form-label fw-bold">Fecha de solucion:&nbsp;&nbsp; <span class="fw-normal" id="fechaSolucionVista"></span></label>
+                            </div>
+                            <div class="col-12 d-flex flex-row">
+                                <div class="col-6 mb-1 d-flex flex-column align-items-start justify-content-start ">
+                                    <label class="form-label"><b>Evidencia de la solucion: </b></label><br>
+                                    <div class="d-flex justify-content-between image-container" id="evidenciaSolucionFalla">
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3 d-flex flex-column align-items-start justify-content-start ">
+                                    <label class="form-label me-3"><b>Documentos: </b></label><br>
+                                    <div class="d-flex flex-row justify-content-start flex-wrap" id="documentosSolucionFalla">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" onclick="cerrarModal('viewFailModal')">Cerrar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -795,6 +1280,8 @@
 
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+
 <!-- Local -->
 <script type="text/javascript" src="../styles/js/chroma.min.js"></script>
 <script type="text/javascript" src="../utils/servido_utils.js"></script>
@@ -810,5 +1297,13 @@
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 <!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- Moment.js -->
+
+
+
 <script type="text/javascript" src="../styles/js/sweetalert2.all.min.js"></script>
+
+<script src=" https://cdn.jsdelivr.net/npm/timepicker@1.14.1/jquery.timepicker.min.js "></script>
+<link href=" https://cdn.jsdelivr.net/npm/timepicker@1.14.1/jquery.timepicker.min.css " rel="stylesheet">
+
 </html>

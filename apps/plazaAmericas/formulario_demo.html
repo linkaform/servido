@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<!---HEAD-->
+<head>
+  <meta charset="utf-8">
+  <title>Firma Mercadeo</title>
+  <meta name="title" content="Servido">
+  <link rel="icon" type="image/png" href="Plaza-de-las-Americas-centro-comercial.webp">
+  <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <link type="image/x-icon" rel="shortcut icon" href="../styles/img/favicon.ico">
+  
+  <!--Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+</head>
+<!---HEADER-->
+<header>
+  <link rel="stylesheet" href="header.css">
+  <div class="headermercadeo">
+    <img src="Plaza-de-las-Americas-centro-comercial.webp" alt="Imagen de encabezado"> <b> SOLICITUD DE PRESTAMO
+    </b>    <nav>
+      <ul>
+        <li><a href="http://localhost/mercadeo/MenuMercadeo/">Menu</a></li>
+        <li><a href="https://app.linkaform.com/#/records/117320/">Ver registros LinkaForm</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+</html>
+<!--------->
+<body>
+  
+  <div class="container mt-5">
+    <div class="mb-3">
+      <label class="form-label">Fecha</label>
+      <input type="date" class="form-control" id="inputDate" onchange="getData('date');return false;">
+    </div>
+    
+    <br>
+    <!--Multiple respuesta personal mercadeo-->
+    <div class="mb-3">
+      <label class="form-label">Persona que entrega</label>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+          value="Sara Garcia">
+        <label class="form-check-label" for="inlineRadio1">Sara Garcia</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+          value="Angela Lancheros">
+        <label class="form-check-label" for="inlineRadio2">Angela Lancheros</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          value="Nasly Castro">
+        <label class="form-check-label" for="inlineRadio3">Nasly Castro</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          value="Daniela Calderon">
+        <label class="form-check-label" for="inlineRadio3">Daniela Calderon</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          value="Tatiana Ortegon">
+        <label class="form-check-label" for="inlineRadio3">Tatiana Ortegon</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          value="Mayerly Poveda">    
+        <label class="form-check-label" for="inlineRadio3">Mayerly Poveda</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          value="Patricia Cely">
+        <label class="form-check-label" for="inlineRadio3">Patricia Cely</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          value="Alejandra Peña">
+        <label class="form-check-label" for="inlineRadio3">Alejandra Peña</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          value="Adriana Avila">
+        <label class="form-check-label" for="inlineRadio3">Adriana Avila</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          value="Jose Rayo">
+        <label class="form-check-label" for="inlineRadio3">Jose Rayo</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          value="Camila Lalinde">
+        <label class="form-check-label" for="inlineRadio3">Camila Lalinde</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          value="Mauricio Florez">
+        <label class="form-check-label" for="inlineRadio3">Mauricio Florez</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          value="Miguel Amaris">
+        <label class="form-check-label" for="inlineRadio3">Miguel Amaris</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          value="Fidel Paez">
+        <label class="form-check-label" for="inlineRadio3">Fidel Paez</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          value="Juan Esteban Adame">
+        <label class="form-check-label" for="inlineRadio3">Juan Esteban Adame</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          value="Sabatino 1">
+        <label class="form-check-label" for="inlineRadio3">Sabatino 1</label>
+      </div>
+      <br>
+      <!--<div class="form-check">
+        <input class="form-check-input input-user-delivery" type="radio" name="inlineRadioOptions" id="inlineRadio4"
+          value="Otro">
+        <label class="form-check-label" for="inlineRadio4v">Otros</label>
+      </div>
+      <div class="mb-3" style="display:none;" id="divInputOther">
+        <label class="form-label">Otra persona</label>
+        <input type="text" class="form-control" id="inputOtro" onkeyup="getData('otro');return false;">
+      </div>
+    </div> -->
+<!-------------------------------------------------------------------------------------------------------------------------------------------->
+<!---Multiple respuesta de que se presta.-->    
+<div class="mb-3">
+  <label class="form-label">Prestamo de:</label>
+  <div class="form-checknew">
+    <input class="form-checknew-input input-checknew" type="radio" name="radioline" id="radioline1"
+      value="Silla de ruedas">
+    <label class="form-check-label" for="radioline1"> SILLA RUEDAS</label>
+  </div>
+<br>
+<!------Info usuarios-->
+<div class="mb-3">
+  <label class="form-label" for="inputName">Nombre usuario</label>
+  <input type="text" class="form-control" id="inputName" onkeyup="getData('name');return false;">
+</div>
+<div class="mb-3">
+  <label class="form-label" for="inputCedula">Cedula del usuario</label>
+  <input type="number" class="form-control" id="inputCedula" onkeyup="getData('cedula');return false;">
+</div>
+<div class="mb-3">
+  <label class="form-label" for="inputTelefono">Numero telefono del usuario</label>
+  <input type="tel" class="form-control" id="inputTelefono" onkeyup="getData('telefono');return false;">
+</div>
+<div class="mb-3">
+  <label class="form-label" for="inputDireccion">Dirección de residencia</label>
+  <input type="text" class="form-control" id="inputDireccion" onkeyup="getData('direccion');return false;">
+</div>
+<div class="mb-3">
+  <label class="form-label" for="inputSilla">Numero de silla</label>
+  <input type="text" class="form-control" id="inputSilla" onkeyup="getData('silla');return false;" >
+</div>
+
+<!-------------------------------------------------Estado fisico de la entrega a tener en cuenta----------------------------------->
+<div class="mb-3">
+  <label class="form-label" for="inputaspecto">Aspecto fisico</label>
+  <input type="text" class="form-control" id="inputaspecto" onkeyup="getData('aspecto');return false;" >
+</div>
+<!----------Canvas firma-->
+</div>
+</div>
+  </div>
+  <div id="container">
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <canvas id="canvas" width="1260" height="700"></canvas>
+    <div class="container mt-5">
+    <br><br><button class="btn btn-danger" id="btnLimpiar" >BORRAR</button>
+   <button class="btn btn-info" id="btnguardar">GUARDAR FIRMA</button>
+    <!-- Botón "Pasar a documento" eliminado -->
+    <br>
+    <script src="script.js"></script>
+    <script>
+      if (window.opener) {
+        document.querySelector("#firma").src = window.opener.obtenerImagen();
+        // Imprimir documento. Si no quieres imprimir, remueve la siguiente línea
+        window.print();
+      }
+    </script>
+<!----------------->
+      <br>
+<!----Ley estatuaria------->
+      <div class="mb-3">
+        <label class="form-label" id="ley"><b>Ley Estatutaria 1581 </b> <br> El usuario deberá responder por cualquier
+          daño o perdida
+          parcial o total, será su responsabilidad devolver el articulo en buenas condiciones. </label>
+      </div>
+      <!-------------->
+      <br>
+      <!--------Firma-->
+      <div class="row">
+        <div class="col-auto">
+          <label for="formFile" class="form-label">Seleccionar firma</label>
+          <input class="form-control" type="file" id="inputFile">
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-warning mt-4" onclick="setImg();return false;" id="buttonSaveImg">Confirmar guardar firma</button>
+        </div>
+      </div>
+      
+      <button type="button" class="btn btn-success mt-4" onclick="setDataRecord();return false;">Enviar Registro</button>
+    </div>
+    <br>
+</body>
+<!-- Jquery -->
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+<!-- Template -->
+<script type="text/javascript" src="formulario_demo.js"></script>
+</body>
+
+</html>

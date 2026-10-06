@@ -7,7 +7,7 @@ var columsTable1 = [
   { title:"Servicios Realizados",field:'servicio',hozAlign:"left", headerFilter:"input",width:300,formatter: function(cell, formatterParams) {
 	   	let value = cell.getValue();
 	    if (cell.getRow().getData().id_record) {
-	        return `<a href="https://app.linkaform.com/#/records/detail/${cell.getRow().getData().id_record}">${value}</a>`;
+	        return `<a href="https://app.linkaform.com/#/records/detail/${cell.getRow().getData().id_record}" target="_blank" rel="noopener noreferrer">${value}</a>`;
 	    } else {
 	        return value;
 	    }
@@ -240,10 +240,18 @@ var setOptions1 = {
 	        }
 	    },
 	    datalabels: {
-        color: 'black',
-        font: {
-            size: 15
-         }
+        	color: 'black',
+       	 	font: {
+            	size: 15
+        	},
+	      	formatter: function (value, context){
+	      		if(value > 0){
+	        		format = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	        		return format;
+	      		}else{
+	      			return '';
+	      		}
+      		}
       }
 	},
 	responsive: true, 
@@ -300,7 +308,15 @@ var setOptions2 = {
         color: 'black',
         font: {
             size: 15
-         }
+         },
+         formatter: function (value, context){
+	      		if(value > 0){
+	        		format = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	        		return format;
+	      		}else{
+	      			return '';
+	      		}
+      		}
       }
 	},
 };
@@ -336,7 +352,15 @@ var setOptions3 = {
         color: 'black',
         font: {
             size: 15
-         }
+         },
+         formatter: function (value, context){
+	      		if(value > 0){
+	        		format = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	        		return format;
+	      		}else{
+	      			return '';
+	      		}
+      		}
       }
 	},
 	responsive: true, 

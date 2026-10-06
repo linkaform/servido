@@ -26,3 +26,9 @@ body{
   width: 600px;
   margin-left: 0%;
 }
+
+.hrSeventhElement {
+  border-top: 1px solid #707b7c;
+  width: 650px;
+  margin-left: 0%;
+}

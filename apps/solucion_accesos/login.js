@@ -1,11 +1,10 @@
 window.onload = function(){
-
-	let user = getCookie("userId");
-	let jw = getCookie("userJwt");
+	let user = getCookie("userId_soter");
+	let jw = getCookie("userJwt_soter");
+	let protocol = window.location.protocol;
+	let host = window.location.host;
 	if(user !='' && jw!=''){
-		let protocol = window.location.protocol;
-		let host = window.location.host;
-		let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
+		let urlNew = `${protocol}//${host}/solucion_accesos/menu.html`
 		window.location.href =urlNew
 		//window.open(`${protocol}//${host}/solucion_accesos/turnos.html`, "turnos")
 		/*let urlNew = `${protocol}//${host}/solucion_accesos/turnos.html`
@@ -13,8 +12,10 @@ window.onload = function(){
 			rel: 'noopener noreferrer',
 			href: urlNew,
 		}).click();*/
-		agregarPestana('turnos')
-	}
+		agregarPestana('menu')
+	}/*else{
+		setCloseSession();
+	}*/
 	let userInput = document.getElementById('user');
 	let userError = document.getElementById('userError');
 	userInput.addEventListener('input', function () {
@@ -57,19 +58,26 @@ function get_login(){
 				let userPosition = res.user.position ? res.user.position: '';
 				let userImg = res.user.thumb ? res.user.thumb: '';
 				console.log("REESPUESTA LOGIN",res)
-				setCookie("sessionid", sessionId, 7);
-				setCookie("userId", userId, 7);
-				setCookie("userJwt", userJwt, 7);
-				setCookie("userName", userName, 7);
+				setCookie("sessionid_soter", sessionId, 7);
+				setCookie("userId_soter", userId, 7);
+				setCookie("userJwt_soter", userJwt, 7);
+				setCookie("userName_soter", userName, 7);
 				setCookie("userParentId", userParentId,7);
 				setCookie("userEmail", userEmail,7);
 				setCookie("userPosition", userPosition,7);
-				console.log("userPosition",userPosition)
+				setCookie("user", userPosition,7);
+				setCookie("soter", true ,7);
+				setCookie('menus_soter',"",7)
+				if (esLink(userImg)){
+					userImg = userImg
+				}else if (userImg.includes('/media/avatar/thumb.jpg')){
+					userImg = 'https://app.linkaform.com/media/avatar/thumb.jpg'
+				}
+
 				localStorage.setItem("imagenURL", userImg);
 
 				setCookie("lkfLogo", res.user.company_logo.picture, 7)
 				//redirectionUrl("turnos",false)
-				
 				let protocol = window.location.protocol;
 				let host = window.location.host;
 				let url = `${protocol}//${host}/solucion_accesos/turnos.html`;

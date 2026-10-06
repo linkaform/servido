@@ -12,7 +12,10 @@ let selectedRowNota=""
 let selectedNotaActualizado=""
 
 window.onload = function(){
-    userJwt = getCookie("userJwt");
+    userJwt = getCookie("userJwt_soter");
+    user = getCookie("userId_soter");
+    validSession(user, userJwt);
+    
     setValueUserLocation('notas');
     changeButtonColor();
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
@@ -29,7 +32,7 @@ window.onload = function(){
     };
     fillCatalogs();
     getAllData();
-    let user = getCookie("userId");
+    // let user = getCookie("userId");
     
     $("#descargarListNotas").on("click", function() {
         descargarExcel(tables, 'tableNotas')
@@ -248,7 +251,7 @@ function agregarNuevaNota(){
             arraySuccessArchivo.push({file_name: file_name, file_url: file});
         }
     }
-    console.log("getCookie('userName')",getCookie('userName'))
+    console.log("getCookie('userName_soter')",getCookie('userName_soter'))
     let data_notes={
         'note_status': statusAbierto,
         'note':nota,
@@ -322,7 +325,7 @@ function agregarNuevaNota(){
                             }
                         }
                         let note_open_date= convertDate(data.json.created_at, data.json.timezone)
-                        dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, created_by_name:getCookie('userName'), 
+                        dataTableNotas.unshift({folio:data.json.folio, note_status: data_notes.note_status, created_by_name:getCookie('userName_soter'), 
                             note_open_date: note_open_date, 
                             note_close_date:"",  note: data_notes.note, 
                             note_pic: data_notes.hasOwnProperty('note_pic') && data_notes.note_pic.length>0 ? data_notes.note_pic  : [], 
@@ -414,8 +417,6 @@ function editarNota(){
     if(validateObj.note_pic.length==0 ){
         delete validateObj['note_pic'];
     }
-    console.log("OBJETOS QUE SE MANDARAN A LA PETICION",validateObj)
-
     if(nota!==""){
         fetch(url + urlScripts, {
             method: 'POST',
@@ -736,7 +737,7 @@ function verNotasAlert(folio){
             <tr> <td> <span > `+selectedNota.note_comments[com]['6647fb38da07bf430e273ea2']+`</span > </td> </tr>`;
         }else{
             commentsItem+=`
-           <tr> <td> <span > `+selectedNota.note_comments[com]+`</span > </td> </tr>`;
+           <tr> <td> <span > `+selectedNota.note_comments[com].note_comments+`</span > </td> </tr>`;
         }
     }
     let htmlComments = comments.length>0 ? `

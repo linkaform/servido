@@ -1,0 +1,54 @@
+.footer-div{
+	background: #020659;
+}
+
+.bg-font{
+	color:  #020659;
+}
+
+.bg-button{
+	background: #F27EBE !important;
+	color: white !important;
+}
+
+.bg-card{
+	background: #e3e7eb;
+	color: white;
+}
+
+
+/*Estilos de imagen */
+.attachments-section {
+  margin-top: 1.5rem;
+}
+
+.attachments-section .attachment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.icon-button {
+  font-size: 1.2rem;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  color: #0056b3;
+}
+
+.loader-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.loader-spinner .fa-spin {
+  margin-right: 8px;
+  font-size: 16px;
+}

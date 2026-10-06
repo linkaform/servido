@@ -264,10 +264,12 @@ function setSelectors() {
 }
 
 function changeSelectors(type){
+    console.log('entra a cambio de selector ',type)
     const valueEdificio = document.getElementById("edificio").value;
     const valuePiso = document.getElementById("piso").value;
 
     if (type == 'piso' && valueEdificio!=''){
+      console.log('Entra a piso')
       //---Clean Selects
       $("#piso").empty();
       $("#cliente").empty();
@@ -285,7 +287,8 @@ function changeSelectors(type){
       $("#cliente").append(defaultOptionCliente);
 
       //---Order
-      let pisos = [...new Set(dicCatalog.map(item => item.piso))];
+      const listFilter = dicCatalog.filter(item => item.edificio === valueEdificio);
+      let pisos = [...new Set(listFilter.map(item => item.piso))];
       pisos.sort();
 
       //----New Options
@@ -310,7 +313,8 @@ function changeSelectors(type){
 
       //---Order
       const selectCliente = document.getElementById("cliente");
-      let clientes = [...new Set(dicCatalog.map(item => item.cliente))];
+      const listFilter = dicCatalog.filter(item => item.piso === valuePiso);
+      let clientes = [...new Set(listFilter.map(item => item.cliente))];
       clientes.sort();
 
       //----New Options
@@ -402,11 +406,8 @@ function drawSecondElement(datasets, dataconfig){
     chart2.destroy();
   }
   //---Color
-  array_colors = getPAlleteColors(13,datasets['datasets'].length);
-  for (let i = 0; i < datasets['datasets'].length; i++) {
-    datasets['datasets'][i]['backgroundColor'] = array_colors[i];
-  }
-  console.log('datasets',datasets)
+  array_colors = getPAlleteColors(13,datasets['labels'].length);
+  datasets['datasets'][0]['backgroundColor'] = array_colors;
   chart2 = new Chart(ctx, {
     type: 'pie',
     data: datasets,

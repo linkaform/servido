@@ -162,9 +162,8 @@ function getFirstElement(){
       $('.load-wrapp').hide();
       $("#divContent").show();
       $('.title_tables').show();
-      if (res.response.json.firstElement.data) {
-        console.log('drawFirstElement.........');
-        getDrawTable('firstElement', columsTable1, res.response.json.firstElement.data);
+      if (res.response.data) {
+        getDrawTable('firstElement', columsTable1, res.response.data);
         document.getElementById("firstElement").style.removeProperty('display');
       }
       

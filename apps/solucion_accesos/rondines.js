@@ -3,6 +3,10 @@ let selectedRondin=""
 
 window.onload = function(){    
     setValueUserLocation('rondines');
+    user = getCookie("userId_soter");
+    userJwt=getCookie('userJwt_soter');
+    validSession(user, userJwt);
+    
     changeButtonColor();
     fillCatalogs();
     customNavbar(getValueUserLocation(), getCookie('userTurn'))
@@ -23,7 +27,7 @@ window.onload = function(){
         drawTable('tableListTodos',columnsTableListPendientes, dataTableListPendientes4 );
 
     } else{
-		redirectionUrl('login',false);
+		setCloseSession()
 	}
     $("#descargarListPendientes").on("click", function() {
         descargarExcel(tables, 'tableListPendientes')

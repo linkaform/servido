@@ -1,0 +1,31 @@
+.card-header {
+    background-color: #261FB3 !important;
+    color: white !important;
+}
+
+.card-header .text-primary {
+    color: white !important;
+}
+
+.card-body {
+    background-color: #fff !important;
+}
+
+#tableThird .tabulator-header {
+    background-color: #fff !important;
+    border: none;
+}
+
+#tableThird .tabulator-col {
+    background-color: #fff !important;
+    color: #333 !important;
+}
+
+#tableThird .tabulator-tableHolder {
+    background-color: #f8f8f8;
+}
+
+#tableThird .tabulator-row:nth-child(even) {
+    background-color: #577BC1;
+    color: white !important;
+}

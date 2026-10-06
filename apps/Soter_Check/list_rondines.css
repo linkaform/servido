@@ -1,0 +1,87 @@
+
+body {
+  background-color: #f8f9fa;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 600px;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  margin-top: 2rem;
+}
+
+.header-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.dashboard-card {
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.dashboard-card h5 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+.dashboard-card .count {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+}
+.hidden {
+  display: none;
+}
+        
+@media (max-width: 1024px) {
+  .container-custom {
+    width: 100vw;
+    height: 100%; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+
+@media (max-width: 768px) {
+  .container-custom {
+    width: 100vw;
+    height: 100%; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+
+@media (max-width: 425px) {
+  .container-custom {
+    width: 100vw;
+    height: 100%; 
+    margin: 0; 
+    padding: 2rem; 
+    border-radius: 0; 
+  }
+}
+

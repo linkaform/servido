@@ -324,65 +324,19 @@ function get_catalog()
   .then(res => res.json())
   .then(res => {
     if (res.success) {
-      if (res.response.json.firstElement.data){
-        /*console.log(res.response.json)
-        console.log("----------------")
-        console.log(res.response.json.firstElement.data)*/
-        //res.response.json.firstElement.data)
-       /* let gestoresContent = $('#gestor');
-        gestoresContent.empty();
-        for (i = 0; i < res.response.json.firstElement.data.length; i++) {
-        value = res.response.json.firstElement.data[i].gestor;
-
-        gestoresContent.append('<option value="'+ value + '">'+value+'</option>');
-        let option = $("<option></option>")
-            .text(value)
-            .val(value)
-        console.log(option)
-
-          gestoresContent.append(option)
-         
-        }
-        
-        gestoresContent.multipleSelect('refresh')*/
-        let listGestor = []
-
-        for (i = 0; i < res.response.json.firstElement.data.length; i++) {
-          valueGestor = res.response.json.firstElement.data[i].gestor;
-
-          if (listGestor.indexOf(valueGestor) === -1) {
-            listGestor.push(valueGestor);
-          }
-
-        }
-
-         //----Pais
-        $("#gestor").empty();
-        for (i = 0; i < listGestor.length; i++) {
-          value = listGestor[i]
-          $('#gestor').append('<option value="'+ value +'">'+value+'</option>');
-        }
-        $("#gestor").multipleSelect('refresh');
-      }
-
       if(res.response.json.catalog){
-
         obj_instituciones = res.response.json.catalog[0];
-
         let instituciones = []
-
         Object.keys(obj_instituciones).forEach((clave) => {
           instituciones.push(clave)
         })
 
         $("#institucion").empty()
-        //$("#institucion").append('<option value="--"> Seleccione la institución</option>');
+        $("#institucion").append('<option value=""> Seleccione la institución</option>');
         instituciones.forEach(value => {
           $("#institucion").append('<option value="' + value + '">' + value + '</option>');
         })
-
         actualizarGrupo(instituciones[0])
-        
       }
     } 
   })
